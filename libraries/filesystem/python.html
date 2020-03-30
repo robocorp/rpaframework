@@ -1,0 +1,860 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python module API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="HTTP" href="../http/index.html" />
+    <link rel="prev" title="Robot Framework API" href="../../libdoc/FileSystem.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">FileSystem</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/FileSystem.html">Robot Framework API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../conventions.html">Conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">FileSystem</a> &raquo;</li>
+        
+      <li>Python module API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/filesystem/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-module-api">
+<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.FileSystem">
+<span id="filesystem"></span><h2>FileSystem<a class="headerlink" href="#module-RPA.FileSystem" title="Permalink to this headline">¶</a></h2>
+<p>Files and filesystems library for Robot Framework</p>
+<dl class="class">
+<dt id="RPA.FileSystem.Directory">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.FileSystem.</code><code class="sig-name descname">Directory</code><a class="headerlink" href="#RPA.FileSystem.Directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<p>Robot Framework friendly container for directories.</p>
+<dl class="method">
+<dt id="RPA.FileSystem.Directory.from_path">
+<em class="property">classmethod </em><code class="sig-name descname">from_path</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.Directory.from_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create directory object from pathlib.Path or path string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.FileSystem.Directory.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#RPA.FileSystem.Directory.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.FileSystem.Directory.path">
+<code class="sig-name descname">path</code><a class="headerlink" href="#RPA.FileSystem.Directory.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.FileSystem.File">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.FileSystem.</code><code class="sig-name descname">File</code><a class="headerlink" href="#RPA.FileSystem.File" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<p>Robot Framework friendly container for files.</p>
+<dl class="method">
+<dt id="RPA.FileSystem.File.from_path">
+<em class="property">classmethod </em><code class="sig-name descname">from_path</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.File.from_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create File object from pathlib.Path or path string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.FileSystem.File.mtime">
+<code class="sig-name descname">mtime</code><a class="headerlink" href="#RPA.FileSystem.File.mtime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.FileSystem.File.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#RPA.FileSystem.File.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.FileSystem.File.path">
+<code class="sig-name descname">path</code><a class="headerlink" href="#RPA.FileSystem.File.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.FileSystem.File.size">
+<code class="sig-name descname">size</code><a class="headerlink" href="#RPA.FileSystem.File.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.FileSystem.FileSystem">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.FileSystem.</code><code class="sig-name descname">FileSystem</code><a class="headerlink" href="#RPA.FileSystem.FileSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p><cite>FileSystem</cite> is a library for finding, creating, and modifying
+files on a local filesystem.</p>
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.append_to_binary_file">
+<code class="sig-name descname">append_to_binary_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">content</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.append_to_binary_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Appends binary content to the given file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to file to append to</p></li>
+<li><p><strong>content</strong> – content to append</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.append_to_file">
+<code class="sig-name descname">append_to_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">content</em>, <em class="sig-param">encoding='utf-8'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.append_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Appends text to the given file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to file to append to</p></li>
+<li><p><strong>content</strong> – content to append</p></li>
+<li><p><strong>encoding</strong> – character encoding of appended content</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.change_file_extension">
+<code class="sig-name descname">change_file_extension</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">extension</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.change_file_extension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces file extension for file at given path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to file to rename</p></li>
+<li><p><strong>extension</strong> – new extension, e.g. .xlsx</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.copy_directory">
+<code class="sig-name descname">copy_directory</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">destination</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.copy_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy directory from source path to destination path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – path to source directory</p></li>
+<li><p><strong>destination</strong> – path to copy destination</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.copy_file">
+<code class="sig-name descname">copy_file</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">destination</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.copy_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy a file from source path to destination path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – path to source file</p></li>
+<li><p><strong>destination</strong> – path to copy destination</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.copy_files">
+<code class="sig-name descname">copy_files</code><span class="sig-paren">(</span><em class="sig-param">sources</em>, <em class="sig-param">destination</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.copy_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy multiple files to destination folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sources</strong> – list of source files</p></li>
+<li><p><strong>destination</strong> – path to destination folder</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.create_binary_file">
+<code class="sig-name descname">create_binary_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">content=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.create_binary_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new binary file, and writes content if any is given.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to file to write</p></li>
+<li><p><strong>content</strong> – content to write to file (optional)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.create_directory">
+<code class="sig-name descname">create_directory</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parents=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.create_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a directory and (optionally) non-existing parent directories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to new directory</p></li>
+<li><p><strong>parents</strong> – create missing parent directories</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.create_file">
+<code class="sig-name descname">create_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">content=None</em>, <em class="sig-param">encoding='utf-8'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.create_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new text file, and writes content if any is given.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to file to write</p></li>
+<li><p><strong>content</strong> – content to write to file (optional)</p></li>
+<li><p><strong>encoding</strong> – character encoding of written content</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.does_directory_exist">
+<code class="sig-name descname">does_directory_exist</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.does_directory_exist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if given directory exists, False if not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to inspected directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.does_directory_not_exist">
+<code class="sig-name descname">does_directory_not_exist</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.does_directory_not_exist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if directory does not exist, False if it does.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to inspected directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.does_file_exist">
+<code class="sig-name descname">does_file_exist</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.does_file_exist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if given file exists, False if not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to inspected file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.does_file_not_exist">
+<code class="sig-name descname">does_file_not_exist</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.does_file_not_exist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if file does not exist, False if it does.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to inspected file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.empty_directory">
+<code class="sig-name descname">empty_directory</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.empty_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all files in the given directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – directory to remove files from</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.find_files">
+<code class="sig-name descname">find_files</code><span class="sig-paren">(</span><em class="sig-param">pattern</em>, <em class="sig-param">include_dirs=True</em>, <em class="sig-param">include_files=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.find_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find files recursively according to pattern.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pattern</strong> – search path in glob format pattern,
+e.g. <em>.xls or *</em>/orders.txt</p></li>
+<li><p><strong>include_dirs</strong> – include directories in results</p></li>
+<li><p><strong>include_files</strong> – include files in results</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of paths that match the pattern</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.get_file_creation_date">
+<code class="sig-name descname">get_file_creation_date</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.get_file_creation_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the creation time in seconds.
+Note: Linux sets this whenever file metadata changes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to file to inspect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.get_file_extension">
+<code class="sig-name descname">get_file_extension</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.get_file_extension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the suffix for the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.get_file_modified_date">
+<code class="sig-name descname">get_file_modified_date</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.get_file_modified_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the modified time in seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to file to inspect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.get_file_name">
+<code class="sig-name descname">get_file_name</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.get_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns only the filename portion of a path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.get_file_size">
+<code class="sig-name descname">get_file_size</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.get_file_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the file size in bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to file to inspect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.is_directory_empty">
+<code class="sig-name descname">is_directory_empty</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.is_directory_empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the given directory has no files or subdirectories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to inspected directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.is_directory_not_empty">
+<code class="sig-name descname">is_directory_not_empty</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.is_directory_not_empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the given directory has any files or subdirectories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to inspected directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.is_file_empty">
+<code class="sig-name descname">is_file_empty</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.is_file_empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the given file has no content, i.e. has zero size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to inspected file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.is_file_not_empty">
+<code class="sig-name descname">is_file_not_empty</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.is_file_not_empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the given file has content, i.e. larger than zero size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to inspected file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.join_path">
+<code class="sig-name descname">join_path</code><span class="sig-paren">(</span><em class="sig-param">*parts</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.join_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Joins multiple parts of a path together.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>*parts</strong> – Components of the path, e.g. dir, subdir, filename.ext</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.list_directories_in_directory">
+<code class="sig-name descname">list_directories_in_directory</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.list_directories_in_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all directories in the given directory, relative to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – base directory for search, defaults to current working dir</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.list_files_in_directory">
+<code class="sig-name descname">list_files_in_directory</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.list_files_in_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all files in the given directory, relative to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – base directory for search, defaults to current working dir</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.log_directory_tree">
+<code class="sig-name descname">log_directory_tree</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.log_directory_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs all of the files in the directory recursively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – base directory to start from, defaults to current working dir</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.move_directory">
+<code class="sig-name descname">move_directory</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">destination</em>, <em class="sig-param">overwrite=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.move_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move directory from source path to destination path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – source directory path for moving</p></li>
+<li><p><strong>destination</strong> – path to move to</p></li>
+<li><p><strong>overwrite</strong> – replace destination directory if it already exists</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.move_file">
+<code class="sig-name descname">move_file</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">destination</em>, <em class="sig-param">overwrite=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.move_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move file from source path to destination path,
+optionally overwriting the destination.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – source file path for moving</p></li>
+<li><p><strong>destination</strong> – path to move to</p></li>
+<li><p><strong>overwrite</strong> – replace destination file if it already exists</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.move_files">
+<code class="sig-name descname">move_files</code><span class="sig-paren">(</span><em class="sig-param">sources</em>, <em class="sig-param">destination</em>, <em class="sig-param">overwrite=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.move_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move multiple files to the destination folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sources</strong> – list of files to move</p></li>
+<li><p><strong>destination</strong> – path to move destination</p></li>
+<li><p><strong>overwrite</strong> – replace destination files if they already exist</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.normalize_path">
+<code class="sig-name descname">normalize_path</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.normalize_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts to absolute path and resolves any symlinks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path that will be normalized</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>absolute path to file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.read_binary_file">
+<code class="sig-name descname">read_binary_file</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.read_binary_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a file in binary mode and returns the content.
+Does not attempt to decode the content in any way.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to file to read</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.read_file">
+<code class="sig-name descname">read_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">encoding='utf-8'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.read_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a file as text, with given <cite>encoding</cite>, and returns the content.”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to file to read</p></li>
+<li><p><strong>encoding</strong> – character encoding of file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.remove_directory">
+<code class="sig-name descname">remove_directory</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">recursive=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.remove_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the given directory, and optionally everything it contains.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to directory</p></li>
+<li><p><strong>recursive</strong> – remove all subdirectories and files</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.remove_file">
+<code class="sig-name descname">remove_file</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.remove_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the given file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to removed file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.remove_files">
+<code class="sig-name descname">remove_files</code><span class="sig-paren">(</span><em class="sig-param">*paths</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.remove_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes multiple files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>*paths</strong> – paths to removed files</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.run_keyword_if_file_exists">
+<code class="sig-name descname">run_keyword_if_file_exists</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">keyword</em>, <em class="sig-param">*args</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.run_keyword_if_file_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>If file exists at <cite>path</cite>, execute given keyword with arguments.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Run keyword if file exists</span><span class="p">    </span><span class="c">orders.xlsx</span><span class="p">    </span><span class="c">Process orders</span><span class="p"></span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to file to inspect</p></li>
+<li><p><strong>keyword</strong> – Robot Framework keyword to execute</p></li>
+<li><p><strong>*args</strong> – arguments to keyword</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.touch_file">
+<code class="sig-name descname">touch_file</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.touch_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a file with no content, or if file already exists,
+updates the modification and access times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to file which is touched</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.wait_until_created">
+<code class="sig-name descname">wait_until_created</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">timeout=5.0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.wait_until_created" title="Permalink to this definition">¶</a></dt>
+<dd><p>Poll path until it exists, or raise exception if timeout
+is reached.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to poll</p></li>
+<li><p><strong>timeout</strong> – time in seconds until keyword fails</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.wait_until_modified">
+<code class="sig-name descname">wait_until_modified</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">timeout=5.0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.wait_until_modified" title="Permalink to this definition">¶</a></dt>
+<dd><p>Poll path until it has been modified after the keyword was called,
+or raise exception if timeout is reached.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to poll</p></li>
+<li><p><strong>timeout</strong> – time in seconds until keyword fails</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.FileSystem.wait_until_removed">
+<code class="sig-name descname">wait_until_removed</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">timeout=5.0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.wait_until_removed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Poll path until it doesn’t exist, or raise exception if timeout
+is reached.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to poll</p></li>
+<li><p><strong>timeout</strong> – time in seconds until keyword fails</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.FileSystem.TimeoutException">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.FileSystem.</code><code class="sig-name descname">TimeoutException</code><a class="headerlink" href="#RPA.FileSystem.TimeoutException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exception raised from wait-prefixed keywords</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../http/index.html" class="btn btn-neutral float-right" title="HTTP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../libdoc/FileSystem.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,809 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python module API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Word.Application" href="../word_application/index.html" />
+    <link rel="prev" title="Robot Framework API" href="../../libdoc/Tables.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tables</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Tables.html">Robot Framework API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../conventions.html">Conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Tables</a> &raquo;</li>
+        
+      <li>Python module API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/tables/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-module-api">
+<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.Tables">
+<span id="tables"></span><h2>Tables<a class="headerlink" href="#module-RPA.Tables" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Tables.Table">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Tables.</code><code class="sig-name descname">Table</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">columns=None</em>, <em class="sig-param">index=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container class for tabular data.</p>
+<p>Supported data formats:</p>
+<ul class="simple">
+<li><p>empty: None values populated according to columns/index</p></li>
+<li><p>list: List of objects that contain values, which themselves
+can be namedtuples, dictionaries, lists, or tuples</p></li>
+<li><p>dict: Dictionary of columns as keys and rows as values</p></li>
+</ul>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>Existing column to index conversion</p>
+</div>
+<div class="admonition-todo admonition" id="id2">
+<p class="admonition-title">Todo</p>
+<p>Index accessing through magic properties?</p>
+</div>
+<div class="admonition-todo admonition" id="id3">
+<p class="admonition-title">Todo</p>
+<p>Index name conflict in exports/imports</p>
+</div>
+<div class="admonition-todo admonition" id="id4">
+<p class="admonition-title">Todo</p>
+<p>Original column/index in export?</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – values for table,  see “Supported data formats”</p></li>
+<li><p><strong>columns</strong> – names for columns, should match data dimensions</p></li>
+<li><p><strong>index</strong> – names for rows,    should match data dimensions</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="RPA.Tables.Table.append_column">
+<code class="sig-name descname">append_column</code><span class="sig-paren">(</span><em class="sig-param">column=None</em>, <em class="sig-param">values=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.append_column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.append_row">
+<code class="sig-name descname">append_row</code><span class="sig-paren">(</span><em class="sig-param">row=None</em>, <em class="sig-param">index=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.append_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append new row to table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.append_rows">
+<code class="sig-name descname">append_rows</code><span class="sig-paren">(</span><em class="sig-param">rows</em>, <em class="sig-param">indexes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.append_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append multiple rows to table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.append_table">
+<code class="sig-name descname">append_table</code><span class="sig-paren">(</span><em class="sig-param">table</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.append_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append data from table to current data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.clear">
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all rows from this table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.column_location">
+<code class="sig-name descname">column_location</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.column_location" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.columns">
+<em class="property">property </em><code class="sig-name descname">columns</code><a class="headerlink" href="#RPA.Tables.Table.columns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a copy of this table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.data">
+<em class="property">property </em><code class="sig-name descname">data</code><a class="headerlink" href="#RPA.Tables.Table.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.delete_columns">
+<code class="sig-name descname">delete_columns</code><span class="sig-paren">(</span><em class="sig-param">columns</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.delete_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove columns with matching names.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.delete_rows">
+<code class="sig-name descname">delete_rows</code><span class="sig-paren">(</span><em class="sig-param">indexes</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.delete_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove rows with matching indexes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.filter_by_column">
+<code class="sig-name descname">filter_by_column</code><span class="sig-paren">(</span><em class="sig-param">column</em>, <em class="sig-param">condition</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.filter_by_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove rows by evaluating <cite>condition</cite> for all <cite>column</cite>
+values. All rows where it evaluates to falsy are removed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">indexes=None</em>, <em class="sig-param">columns=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get values from table. Return type depends on input dimensions.</p>
+<dl class="simple">
+<dt>If <cite>indexes</cite> and <cite>columns</cite> are scalar, i.e. not lists:</dt><dd><p>Returns single cell value</p>
+</dd>
+<dt>If either <cite>indexes</cite> or <cite>columns</cite> is a list:</dt><dd><p>Returns matching cell values as a list</p>
+</dd>
+<dt>If both <cite>indexes</cite> and <cite>columns</cite> are lists:</dt><dd><p>Returns a new Table instance with matching cell values</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>indexes</strong> – </p></li>
+<li><p><strong>columns</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.get_cell">
+<code class="sig-name descname">get_cell</code><span class="sig-paren">(</span><em class="sig-param">index</em>, <em class="sig-param">column</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get single cell value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.get_column">
+<code class="sig-name descname">get_column</code><span class="sig-paren">(</span><em class="sig-param">column</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all row values from column.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.get_row">
+<code class="sig-name descname">get_row</code><span class="sig-paren">(</span><em class="sig-param">index</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all column values from row.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.get_slice">
+<code class="sig-name descname">get_slice</code><span class="sig-paren">(</span><em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get_slice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a new table from rows between start and end index.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.get_table">
+<code class="sig-name descname">get_table</code><span class="sig-paren">(</span><em class="sig-param">indexes</em>, <em class="sig-param">columns</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a new table from all cells matching indexes and columns.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.group_by_column">
+<code class="sig-name descname">group_by_column</code><span class="sig-paren">(</span><em class="sig-param">column</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.group_by_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Group rows by column value and return as list of tables.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.head">
+<code class="sig-name descname">head</code><span class="sig-paren">(</span><em class="sig-param">rows</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.head" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return first n rows of table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.index">
+<em class="property">property </em><code class="sig-name descname">index</code><a class="headerlink" href="#RPA.Tables.Table.index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.index_location">
+<code class="sig-name descname">index_location</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.index_location" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.iter_dicts">
+<code class="sig-name descname">iter_dicts</code><span class="sig-paren">(</span><em class="sig-param">with_index=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.iter_dicts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate rows with values as dicts.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.iter_lists">
+<code class="sig-name descname">iter_lists</code><span class="sig-paren">(</span><em class="sig-param">with_index=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.iter_lists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate rows with values as lists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.iter_tuples">
+<code class="sig-name descname">iter_tuples</code><span class="sig-paren">(</span><em class="sig-param">with_index=True</em>, <em class="sig-param">name='Row'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.iter_tuples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate rows with values as namedtuples.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.reset_index">
+<code class="sig-name descname">reset_index</code><span class="sig-paren">(</span><em class="sig-param">drop=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.reset_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all named row indexes and use range-based values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.set">
+<code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param">indexes=None</em>, <em class="sig-param">columns=None</em>, <em class="sig-param">values=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets multiple cell values at a time.</p>
+<p>Both <cite>indexes</cite> and <cite>columns</cite> can be scalar or list-like,
+which enables setting individual cells, rows/columns, or regions.</p>
+<p>If <cite>values</cite> is scalar, all matching cells will be set to that value.
+Otherwise the length should match the cell count defined by the
+other parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.set_cell">
+<code class="sig-name descname">set_cell</code><span class="sig-paren">(</span><em class="sig-param">index</em>, <em class="sig-param">column</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.set_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set individual cell value.
+If either index or column is missing, they are created.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.set_column">
+<code class="sig-name descname">set_column</code><span class="sig-paren">(</span><em class="sig-param">column</em>, <em class="sig-param">values</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.set_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set values in column. If column is missing, it is created.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.set_row">
+<code class="sig-name descname">set_row</code><span class="sig-paren">(</span><em class="sig-param">index</em>, <em class="sig-param">values</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.set_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set values in row. If index is missing, it is created.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.sort_by_column">
+<code class="sig-name descname">sort_by_column</code><span class="sig-paren">(</span><em class="sig-param">columns</em>, <em class="sig-param">ascending=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.sort_by_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort table by columns.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.sort_by_index">
+<code class="sig-name descname">sort_by_index</code><span class="sig-paren">(</span><em class="sig-param">ascending=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.sort_by_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort table by index values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.tail">
+<code class="sig-name descname">tail</code><span class="sig-paren">(</span><em class="sig-param">rows</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.tail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return last n rows of table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.to_dict">
+<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><em class="sig-param">with_index=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert table to dict representation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Table.to_list">
+<code class="sig-name descname">to_list</code><span class="sig-paren">(</span><em class="sig-param">with_index=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.to_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert table to list representation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Tables.Tables">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Tables.</code><code class="sig-name descname">Tables</code><a class="headerlink" href="#RPA.Tables.Tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Robot Framework library for manipulating tabular data.</p>
+<dl class="method">
+<dt id="RPA.Tables.Tables.add_table_column">
+<code class="sig-name descname">add_table_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">name=None</em>, <em class="sig-param">values=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.add_table_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a column to a table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to modify</p></li>
+<li><p><strong>name</strong> – name of new column</p></li>
+<li><p><strong>values</strong> – row values (or single scalar value for all rows)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.add_table_row">
+<code class="sig-name descname">add_table_row</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">row</em>, <em class="sig-param">index=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.add_table_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append rows to a table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to modify</p></li>
+<li><p><strong>row</strong> – value for new row</p></li>
+<li><p><strong>index</strong> – index name for new row</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.clear_table">
+<code class="sig-name descname">clear_table</code><span class="sig-paren">(</span><em class="sig-param">table</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.clear_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear table in-place, but keep columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table</strong> – table to clear</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.copy_table">
+<code class="sig-name descname">copy_table</code><span class="sig-paren">(</span><em class="sig-param">table</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.copy_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy table object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table</strong> – table to copy</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.create_table">
+<code class="sig-name descname">create_table</code><span class="sig-paren">(</span><em class="sig-param">data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.create_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Table object from data.</p>
+<p>Data can be a combination of various iterable containers, e.g.
+list of lists, list of dicts, dict of lists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – source data for table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.export_table">
+<code class="sig-name descname">export_table</code><span class="sig-paren">(</span><em class="sig-param">table</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.export_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert table object to standard Python containers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table</strong> – table to convert to dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.filter_empty_rows">
+<code class="sig-name descname">filter_empty_rows</code><span class="sig-paren">(</span><em class="sig-param">table</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.filter_empty_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all rows from the table which have only None values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table</strong> – table to filter</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.filter_table_by_column">
+<code class="sig-name descname">filter_table_by_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column</em>, <em class="sig-param">operator</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.filter_table_by_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all rows where the column values match the given condition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to filter</p></li>
+<li><p><strong>column</strong> – column to filter with</p></li>
+<li><p><strong>operator</strong> – filtering operator, e.g. &gt;, &lt;, ==, contains</p></li>
+<li><p><strong>value</strong> – value to compare column to (using operator)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.get_cell_value">
+<code class="sig-name descname">get_cell_value</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">row</em>, <em class="sig-param">column</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.get_cell_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a cell value from table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to read from</p></li>
+<li><p><strong>row</strong> – row of cell</p></li>
+<li><p><strong>column</strong> – column of cell</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.get_table_column">
+<code class="sig-name descname">get_table_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.get_table_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all column values from table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to read</p></li>
+<li><p><strong>column</strong> – column to read</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.get_table_row">
+<code class="sig-name descname">get_table_row</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">index</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.get_table_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single row from table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to read</p></li>
+<li><p><strong>row</strong> – row to read</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.group_table_by_column">
+<code class="sig-name descname">group_table_by_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.group_table_by_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Group table by <cite>column</cite> and return a list of grouped Tables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to use for grouping</p></li>
+<li><p><strong>column</strong> – column which is used as grouping criteria</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.pop_table_column">
+<code class="sig-name descname">pop_table_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.pop_table_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove column from table and return it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to modify</p></li>
+<li><p><strong>column</strong> – column to remove</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.pop_table_row">
+<code class="sig-name descname">pop_table_row</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">index=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.pop_table_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove row from table and return it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to modify</p></li>
+<li><p><strong>index</strong> – row index, pops first row if none given</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.read_table_from_csv">
+<code class="sig-name descname">read_table_from_csv</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">header=None</em>, <em class="sig-param">columns=None</em>, <em class="sig-param">dialect=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.read_table_from_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a CSV file as a table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to CSV file</p></li>
+<li><p><strong>header</strong> – CSV file includes header</p></li>
+<li><p><strong>columns</strong> – names of columns in resulting table</p></li>
+<li><p><strong>dialect</strong> – format of CSV file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.requires_table">
+<em class="property">static </em><code class="sig-name descname">requires_table</code><span class="sig-paren">(</span><em class="sig-param">obj</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.requires_table" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.set_column_as_index">
+<code class="sig-name descname">set_column_as_index</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.set_column_as_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set existing column as index for rows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to modify</p></li>
+<li><p><strong>column</strong> – column to convert to index</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.sort_table_by_column">
+<code class="sig-name descname">sort_table_by_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column</em>, <em class="sig-param">ascending=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.sort_table_by_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort table in-place according to <cite>column</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to sort</p></li>
+<li><p><strong>column</strong> – column to sort with</p></li>
+<li><p><strong>ascending</strong> – table sort order</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.table_head">
+<code class="sig-name descname">table_head</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">count=5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.table_head" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return first <cite>count</cite> rows from table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to read from</p></li>
+<li><p><strong>count</strong> – number of lines to read</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.table_tail">
+<code class="sig-name descname">table_tail</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">count=5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.table_tail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return last <cite>count</cite> rows from table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to read from</p></li>
+<li><p><strong>count</strong> – number of lines to read</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.write_table_to_csv">
+<code class="sig-name descname">write_table_to_csv</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.write_table_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a table as a CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to write to</p></li>
+<li><p><strong>table</strong> – table to write</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Tables.if_none">
+<code class="sig-prename descclassname">RPA.Tables.</code><code class="sig-name descname">if_none</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">default</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.if_none" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return default if value is None.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Tables.to_identifier">
+<code class="sig-prename descclassname">RPA.Tables.</code><code class="sig-name descname">to_identifier</code><span class="sig-paren">(</span><em class="sig-param">val</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.to_identifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert string to valid identifier</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Tables.to_list">
+<code class="sig-prename descclassname">RPA.Tables.</code><code class="sig-name descname">to_list</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">size=1</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.to_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert (possibly scalar) value to list of <cite>size</cite>.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../word_application/index.html" class="btn btn-neutral float-right" title="Word.Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../libdoc/Tables.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

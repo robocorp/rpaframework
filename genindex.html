@@ -91,6 +91,8 @@
 <li class="toctree-l1"><a class="reference internal" href="libraries/email_exchange/index.html">Email.Exchange</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/email_imapsmtp/index.html">Email.ImapSmtp</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries/excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries/filesystem/index.html">FileSystem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/http/index.html">HTTP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/images/index.html">Images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/outlook_application/index.html">Outlook.Application</a></li>
@@ -100,6 +102,7 @@
 <li class="toctree-l1"><a class="reference internal" href="libraries/robotloglistener/index.html">RobotLogListener</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/sap/index.html">SAP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries/tables/index.html">Tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/word_application/index.html">Word.Application</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing</span></p>
@@ -184,6 +187,7 @@
  | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#Q"><strong>Q</strong></a>
@@ -199,6 +203,12 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.active">active() (RPA.Excel.Files.XlsWorkbook property)</a>
+
+      <ul>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.active">(RPA.Excel.Files.XlsxWorkbook property)</a>
+</li>
+      </ul></li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.adapter">adapter (RPA.Robocloud.Items.Items attribute)</a>
 </li>
       <li><a href="libraries/excel_application/python.html#RPA.Excel.Application.Application.add_new_sheet">add_new_sheet() (RPA.Excel.Application.Application method)</a>
@@ -207,6 +217,32 @@
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.add_pages">add_pages() (RPA.PDF.PDF method)</a>
 </li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.add_table_column">add_table_column() (RPA.Tables.Tables method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.add_table_row">add_table_row() (RPA.Tables.Tables method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.append_column">append_column() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.append_row">append_row() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.append_rows">append_rows() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.append_rows_to_worksheet">append_rows_to_worksheet() (RPA.Excel.Files.Files method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.append_table">append_table() (RPA.Tables.Table method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.append_to_binary_file">append_to_binary_file() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.append_to_file">append_to_file() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.append_worksheet">append_worksheet() (RPA.Excel.Files.XlsWorkbook method)</a>
+
+      <ul>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.append_worksheet">(RPA.Excel.Files.XlsxWorkbook method)</a>
+</li>
+      </ul></li>
       <li><a href="libraries/excel_application/python.html#RPA.Excel.Application.Application">Application (class in RPA.Excel.Application)</a>
 
       <ul>
@@ -215,8 +251,6 @@
         <li><a href="libraries/word_application/python.html#RPA.Word.Application.Application">(class in RPA.Word.Application)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/images/python.html#RPA.Images.Region.area">area() (RPA.Images.Region property)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Point.as_tuple">as_tuple() (RPA.Images.Point method)</a>
@@ -265,11 +299,17 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/images/python.html#RPA.Images.Region.center">center() (RPA.Images.Region property)</a>
 </li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.change_file_extension">change_file_extension() (RPA.FileSystem.FileSystem method)</a>
+</li>
       <li><a href="libraries/images/python.html#RPA.Images.chunks">chunks() (in module RPA.Images)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.clamp">clamp() (in module RPA.Images)</a>
 </li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.clear">clear() (RPA.Tables.Table method)</a>
+</li>
       <li><a href="libraries/desktop_clipboard/python.html#RPA.Desktop.Clipboard.Clipboard.clear_clipboard">clear_clipboard() (RPA.Desktop.Clipboard.Clipboard method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.clear_table">clear_table() (RPA.Tables.Tables method)</a>
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.clear_work_item">clear_work_item() (RPA.Robocloud.Items.Items method)</a>
 </li>
@@ -277,18 +317,64 @@
 </li>
       <li><a href="libraries/desktop_clipboard/python.html#RPA.Desktop.Clipboard.Clipboard">Clipboard (class in RPA.Desktop.Clipboard)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.close">close() (RPA.Excel.Files.XlsWorkbook method)</a>
+
+      <ul>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.close">(RPA.Excel.Files.XlsxWorkbook method)</a>
+</li>
+      </ul></li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.close_all_applications">close_all_applications() (RPA.Desktop.Windows.Windows method)</a>
+</li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.close_workbook">close_workbook() (RPA.Excel.Files.Files method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.column_location">column_location() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.columns">columns() (RPA.Tables.Table property)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.connect_by_handle">connect_by_handle() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.connect_by_pid">connect_by_pid() (RPA.Desktop.Windows.Windows method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.copy">copy() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.copy_directory">copy_directory() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.copy_file">copy_file() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.copy_files">copy_files() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.copy_table">copy_table() (RPA.Tables.Tables method)</a>
+</li>
       <li><a href="libraries/desktop_clipboard/python.html#RPA.Desktop.Clipboard.Clipboard.copy_to_clipboard">copy_to_clipboard() (RPA.Desktop.Clipboard.Clipboard method)</a>
+</li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.create">create() (RPA.Excel.Files.XlsWorkbook method)</a>
+
+      <ul>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.create">(RPA.Excel.Files.XlsxWorkbook method)</a>
+</li>
+      </ul></li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.create_binary_file">create_binary_file() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.create_directory">create_directory() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.create_file">create_file() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/word_application/python.html#RPA.Word.Application.Application.create_new_document">create_new_document() (RPA.Word.Application.Application method)</a>
 </li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.create_table">create_table() (RPA.Tables.Tables method)</a>
+</li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.create_workbook">create_workbook() (RPA.Excel.Files.Files method)</a>
+</li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.create_worksheet">create_worksheet() (RPA.Excel.Files.Files method)</a>
+
+      <ul>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.create_worksheet">(RPA.Excel.Files.XlsWorkbook method)</a>
+</li>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.create_worksheet">(RPA.Excel.Files.XlsxWorkbook method)</a>
+</li>
+      </ul></li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.crop_image">crop_image() (RPA.Images.Images method)</a>
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.current">current (RPA.Robocloud.Items.Items attribute)</a>
@@ -301,13 +387,29 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.WorkItem.data">data (RPA.Robocloud.Items.WorkItem attribute)</a>
 </li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.data">data() (RPA.Tables.Table property)</a>
+</li>
       <li><a href="libraries/images/python.html#RPA.Images.TemplateMatcher.DEFAULT_TOLERANCE">DEFAULT_TOLERANCE (RPA.Images.TemplateMatcher attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.delete_columns">delete_columns() (RPA.Tables.Table method)</a>
+</li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.delete_message">delete_message() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.delete_messages">delete_messages() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.delete_rows">delete_rows() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.Directory">Directory (class in RPA.FileSystem)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.does_directory_exist">does_directory_exist() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.does_directory_not_exist">does_directory_not_exist() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.does_file_exist">does_file_exist() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.does_file_not_exist">does_file_not_exist() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.download_driver_if_exists">download_driver_if_exists() (RPA.Browser.Browser method)</a>
 </li>
@@ -317,11 +419,15 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.empty_directory">empty_directory() (RPA.FileSystem.FileSystem method)</a>
+</li>
       <li><a href="libraries/robotloglistener/python.html#RPA.RobotLogListener.RobotLogListener.end_keyword">end_keyword() (RPA.RobotLogListener.RobotLogListener method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.Exchange">Exchange (class in RPA.Email.Exchange)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.export_table">export_table() (RPA.Tables.Tables method)</a>
 </li>
       <li><a href="libraries/word_application/python.html#RPA.Word.Application.Application.export_to_pdf">export_to_pdf() (RPA.Word.Application.Application method)</a>
 </li>
@@ -331,20 +437,40 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.File">File (class in RPA.FileSystem)</a>
+</li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.FileAdapter">FileAdapter (class in RPA.Robocloud.Items)</a>
+</li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files">Files (class in RPA.Excel.Files)</a>
 </li>
       <li><a href="libraries/robocloud_secrets/python.html#RPA.Robocloud.Secrets.FileSecrets">FileSecrets (class in RPA.Robocloud.Secrets)</a>
 </li>
-      <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.find_element">find_element() (RPA.Desktop.Windows.Windows method)</a>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem">FileSystem (class in RPA.FileSystem)</a>
 </li>
-      <li><a href="libraries/excel_application/python.html#RPA.Excel.Application.Application.find_first_available_row">find_first_available_row() (RPA.Excel.Application.Application method)</a>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.filter_by_column">filter_by_column() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.filter_empty_rows">filter_empty_rows() (RPA.Tables.Tables method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.filter_table_by_column">filter_table_by_column() (RPA.Tables.Tables method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.find_element">find_element() (RPA.Desktop.Windows.Windows method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.find_files">find_files() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/excel_application/python.html#RPA.Excel.Application.Application.find_first_available_row">find_first_available_row() (RPA.Excel.Application.Application method)</a>
+</li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.find_template_in_image">find_template_in_image() (RPA.Images.Images method)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.find_template_on_screen">find_template_on_screen() (RPA.Images.Images method)</a>
 </li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.Directory.from_path">from_path() (RPA.FileSystem.Directory class method)</a>
+
+      <ul>
+        <li><a href="libraries/filesystem/python.html#RPA.FileSystem.File.from_path">(RPA.FileSystem.File class method)</a>
+</li>
+      </ul></li>
       <li><a href="libraries/images/python.html#RPA.Images.RGB.from_pixel">from_pixel() (RPA.Images.RGB class method)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Region.from_size">from_size() (RPA.Images.Region class method)</a>
@@ -355,6 +481,10 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.get">get() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.get_active_worksheet">get_active_worksheet() (RPA.Excel.Files.Files method)</a>
+</li>
       <li><a href="libraries/word_application/python.html#RPA.Word.Application.Application.get_all_texts">get_all_texts() (RPA.Word.Application.Application method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.get_app">get_app() (RPA.Desktop.Windows.Windows method)</a>
@@ -362,6 +492,12 @@
       <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.get_boot_time">get_boot_time() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
 </li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.get_browser_order">get_browser_order() (RPA.Browser.Browser method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.get_cell">get_cell() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.get_cell_value">get_cell_value() (RPA.Tables.Tables method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.get_column">get_column() (RPA.Tables.Table method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.get_dialog_rectangle">get_dialog_rectangle() (RPA.Desktop.Windows.Windows method)</a>
 </li>
@@ -373,12 +509,22 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.get_element_rich_text">get_element_rich_text() (RPA.Desktop.Windows.Windows method)</a>
 </li>
-      <li><a href="libraries/robocloud_secrets/python.html#RPA.Robocloud.Secrets.Secrets.get_keyword_names">get_keyword_names() (RPA.Robocloud.Secrets.Secrets method)</a>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.get_file_creation_date">get_file_creation_date() (RPA.FileSystem.FileSystem method)</a>
 </li>
-      <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.get_machine_name">get_machine_name() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.get_file_extension">get_file_extension() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.get_file_modified_date">get_file_modified_date() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.get_file_name">get_file_name() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.get_file_size">get_file_size() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/robocloud_secrets/python.html#RPA.Robocloud.Secrets.Secrets.get_keyword_names">get_keyword_names() (RPA.Robocloud.Secrets.Secrets method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.get_machine_name">get_machine_name() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
+</li>
       <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.get_memory_stats">get_memory_stats() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.get_pixel_color_in_image">get_pixel_color_in_image() (RPA.Images.Images method)</a>
@@ -386,6 +532,8 @@
       <li><a href="libraries/images/python.html#RPA.Images.Images.get_pixel_color_on_screen">get_pixel_color_on_screen() (RPA.Images.Images method)</a>
 </li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.get_preferable_browser_order">get_preferable_browser_order() (RPA.Browser.Browser method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.get_row">get_row() (RPA.Tables.Table method)</a>
 </li>
       <li><a href="libraries/robocloud_secrets/python.html#RPA.Robocloud.Secrets.BaseSecretManager.get_secret">get_secret() (RPA.Robocloud.Secrets.BaseSecretManager method)</a>
 
@@ -395,6 +543,14 @@
         <li><a href="libraries/robocloud_secrets/python.html#RPA.Robocloud.Secrets.RobocloudVault.get_secret">(RPA.Robocloud.Secrets.RobocloudVault method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.get_slice">get_slice() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.get_table">get_table() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.get_table_column">get_table_column() (RPA.Tables.Tables method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.get_table_row">get_table_row() (RPA.Tables.Tables method)</a>
+</li>
       <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.get_username">get_username() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.get_window_elements">get_window_elements() (RPA.Desktop.Windows.Windows method)</a>
@@ -405,6 +561,10 @@
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.RGB.green">green (RPA.Images.RGB attribute)</a>
 </li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.group_by_column">group_by_column() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.group_table_by_column">group_table_by_column() (RPA.Tables.Tables method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -413,10 +573,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.RobocloudAdapter.handle_response">handle_response() (RPA.Robocloud.Items.RobocloudAdapter method)</a>
 </li>
-      <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.RobocloudAdapter.headers">headers() (RPA.Robocloud.Items.RobocloudAdapter property)</a>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.head">head() (RPA.Tables.Table method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.RobocloudAdapter.headers">headers() (RPA.Robocloud.Items.RobocloudAdapter property)</a>
+</li>
       <li><a href="libraries/images/python.html#RPA.Images.Region.height">height() (RPA.Images.Region property)</a>
 </li>
       <li><a href="libraries/http/python.html#RPA.HTTP.HTTP">HTTP (class in RPA.HTTP)</a>
@@ -427,13 +589,23 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/tables/python.html#RPA.Tables.if_none">if_none() (in module RPA.Tables)</a>
+</li>
       <li><a href="libraries/images/python.html#RPA.Images.ImageNotFoundError">ImageNotFoundError</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Images">Images (class in RPA.Images)</a>
 </li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp">ImapSmtp (class in RPA.Email.ImapSmtp)</a>
 </li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.index">index() (RPA.Tables.Table property)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.index_location">index_location() (RPA.Tables.Table method)</a>
+</li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.input_text_when_element_is_visible">input_text_when_element_is_visible() (RPA.Browser.Browser method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.is_directory_empty">is_directory_empty() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.is_directory_not_empty">is_directory_not_empty() (RPA.FileSystem.FileSystem method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -443,13 +615,27 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.is_element_visible">is_element_visible() (RPA.Desktop.Windows.Windows method)</a>
 </li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.is_file_empty">is_file_empty() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.is_file_not_empty">is_file_not_empty() (RPA.FileSystem.FileSystem method)</a>
+</li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items">Items (class in RPA.Robocloud.Items)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.iter_dicts">iter_dicts() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.iter_lists">iter_lists() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.iter_tuples">iter_tuples() (RPA.Tables.Table method)</a>
 </li>
   </ul></td>
 </tr></table>
 
 <h2 id="J">J</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.join_path">join_path() (RPA.FileSystem.FileSystem method)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.json_dump_safe">json_dump_safe() (in module RPA.Robocloud.Items)</a>
 </li>
@@ -473,12 +659,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/images/python.html#RPA.Images.Region.left">left (RPA.Images.Region attribute)</a>
 </li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.list_directories_in_directory">list_directories_in_directory() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.list_files_in_directory">list_files_in_directory() (RPA.FileSystem.FileSystem method)</a>
+</li>
       <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.Exchange.list_messages">list_messages() (RPA.Email.Exchange.Exchange method)</a>
 
       <ul>
         <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.list_messages">(RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.list_worksheets">list_worksheets() (RPA.Excel.Files.Files method)</a>
+</li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.BaseAdapter.load">load() (RPA.Robocloud.Items.BaseAdapter method)</a>
 
       <ul>
@@ -499,6 +691,8 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.lock_screen">lock_screen() (RPA.Desktop.Windows.Windows method)</a>
 </li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.log_directory_tree">log_directory_tree() (RPA.FileSystem.FileSystem method)</a>
+</li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.log_in">log_in() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.RGB.luminance">luminance() (RPA.Images.RGB method)</a>
@@ -517,15 +711,39 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.mouse_click">mouse_click() (RPA.Desktop.Windows.Windows method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.mouse_click_coords">mouse_click_coords() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.mouse_click_image">mouse_click_image() (RPA.Desktop.Windows.Windows method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.mouse_click_ocr">mouse_click_ocr() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Region.move">move() (RPA.Images.Region method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.move_directory">move_directory() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.move_file">move_file() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.move_files">move_files() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.File.mtime">mtime (RPA.FileSystem.File attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.Directory.name">name (RPA.FileSystem.Directory attribute)</a>
+
+      <ul>
+        <li><a href="libraries/filesystem/python.html#RPA.FileSystem.File.name">(RPA.FileSystem.File attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.normalize_path">normalize_path() (RPA.FileSystem.FileSystem method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -533,6 +751,12 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.open">open() (RPA.Excel.Files.XlsWorkbook method)</a>
+
+      <ul>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.open">(RPA.Excel.Files.XlsxWorkbook method)</a>
+</li>
+      </ul></li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.open_application">open_application() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.open_available_browser">open_available_browser() (RPA.Browser.Browser method)</a>
@@ -543,14 +767,14 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.open_executable">open_executable() (RPA.Desktop.Windows.Windows method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.open_file">open_file() (RPA.Desktop.Windows.Windows method)</a>
 
       <ul>
         <li><a href="libraries/word_application/python.html#RPA.Word.Application.Application.open_file">(RPA.Word.Application.Application method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.open_from_search">open_from_search() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.open_headless_chrome_browser">open_headless_chrome_browser() (RPA.Browser.Browser method)</a>
@@ -558,7 +782,11 @@
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.open_using_run_dialog">open_using_run_dialog() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/excel_application/python.html#RPA.Excel.Application.Application.open_workbook">open_workbook() (RPA.Excel.Application.Application method)</a>
+
+      <ul>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.open_workbook">(RPA.Excel.Files.Files method)</a>
 </li>
+      </ul></li>
       <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem">OperatingSystem (class in RPA.Desktop.OperatingSystem)</a>
 </li>
   </ul></td>
@@ -569,12 +797,22 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/desktop_clipboard/python.html#RPA.Desktop.Clipboard.Clipboard.paste_from_clipboard">paste_from_clipboard() (RPA.Desktop.Clipboard.Clipboard method)</a>
 </li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.Directory.path">path (RPA.FileSystem.Directory attribute)</a>
+
+      <ul>
+        <li><a href="libraries/filesystem/python.html#RPA.FileSystem.File.path">(RPA.FileSystem.File attribute)</a>
+</li>
+      </ul></li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF">PDF (class in RPA.PDF)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Point">Point (class in RPA.Images)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.pop_table_column">pop_table_column() (RPA.Tables.Tables method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.pop_table_row">pop_table_row() (RPA.Tables.Tables method)</a>
+</li>
       <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.process_exists">process_exists() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
 </li>
       <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.put_system_to_sleep">put_system_to_sleep() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
@@ -597,13 +835,53 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.read_binary_file">read_binary_file() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.read_file">read_file() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.read_table_from_csv">read_table_from_csv() (RPA.Tables.Tables method)</a>
+</li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.read_worksheet">read_worksheet() (RPA.Excel.Files.Files method)</a>
+
+      <ul>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.read_worksheet">(RPA.Excel.Files.XlsWorkbook method)</a>
+</li>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.read_worksheet">(RPA.Excel.Files.XlsxWorkbook method)</a>
+</li>
+      </ul></li>
       <li><a href="libraries/images/python.html#RPA.Images.RGB.red">red (RPA.Images.RGB attribute)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Region">Region (class in RPA.Images)</a>
 </li>
       <li><a href="libraries/robotloglistener/python.html#RPA.RobotLogListener.RobotLogListener.register_protected_keywords">register_protected_keywords() (RPA.RobotLogListener.RobotLogListener method)</a>
 </li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.remove_directory">remove_directory() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.remove_file">remove_file() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.remove_files">remove_files() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.remove_worksheet">remove_worksheet() (RPA.Excel.Files.Files method)</a>
+
+      <ul>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.remove_worksheet">(RPA.Excel.Files.XlsWorkbook method)</a>
+</li>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.remove_worksheet">(RPA.Excel.Files.XlsxWorkbook method)</a>
+</li>
+      </ul></li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.rename_worksheet">rename_worksheet() (RPA.Excel.Files.Files method)</a>
+
+      <ul>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.rename_worksheet">(RPA.Excel.Files.XlsWorkbook method)</a>
+</li>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.rename_worksheet">(RPA.Excel.Files.XlsxWorkbook method)</a>
+</li>
+      </ul></li>
       <li><a href="libraries/word_application/python.html#RPA.Word.Application.Application.replace_text">replace_text() (RPA.Word.Application.Application method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.requires_table">requires_table() (RPA.Tables.Tables static method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.reset_index">reset_index() (RPA.Tables.Table method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.restore_dialog">restore_dialog() (RPA.Desktop.Windows.Windows method)</a>
 </li>
@@ -617,6 +895,8 @@
 </li>
       <li><a href="libraries/robocloud_secrets/python.html#RPA.Robocloud.Secrets.RobocloudVaultError">RobocloudVaultError</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.ROBOT_LIBRARY_SCOPE">ROBOT_LIBRARY_SCOPE (RPA.Browser.Browser attribute)</a>
 
       <ul>
@@ -635,8 +915,6 @@
       </ul></li>
       <li><a href="libraries/robotloglistener/python.html#RPA.RobotLogListener.RobotLogListener">RobotLogListener (class in RPA.RobotLogListener)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/browser/python.html#module-RPA.Browser">RPA.Browser (module)</a>
 </li>
       <li><a href="libraries/desktop_clipboard/python.html#module-RPA.Desktop.Clipboard">RPA.Desktop.Clipboard (module)</a>
@@ -650,6 +928,10 @@
       <li><a href="libraries/email_imapsmtp/python.html#module-RPA.Email.ImapSmtp">RPA.Email.ImapSmtp (module)</a>
 </li>
       <li><a href="libraries/excel_application/python.html#module-RPA.Excel.Application">RPA.Excel.Application (module)</a>
+</li>
+      <li><a href="libraries/excel_files/python.html#module-RPA.Excel.Files">RPA.Excel.Files (module)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#module-RPA.FileSystem">RPA.FileSystem (module)</a>
 </li>
       <li><a href="libraries/http/python.html#module-RPA.HTTP">RPA.HTTP (module)</a>
 </li>
@@ -669,7 +951,11 @@
 </li>
       <li><a href="libraries/slack/python.html#module-RPA.Slack">RPA.Slack (module)</a>
 </li>
+      <li><a href="libraries/tables/python.html#module-RPA.Tables">RPA.Tables (module)</a>
+</li>
       <li><a href="libraries/word_application/python.html#module-RPA.Word.Application">RPA.Word.Application (module)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.run_keyword_if_file_exists">run_keyword_if_file_exists() (RPA.FileSystem.FileSystem method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -679,9 +965,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/sap/python.html#RPA.SAP.SAP">SAP (class in RPA.SAP)</a>
 </li>
-      <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.BaseAdapter.save">save() (RPA.Robocloud.Items.BaseAdapter method)</a>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.save">save() (RPA.Excel.Files.XlsWorkbook method)</a>
 
       <ul>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.save">(RPA.Excel.Files.XlsxWorkbook method)</a>
+</li>
+        <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.BaseAdapter.save">(RPA.Robocloud.Items.BaseAdapter method)</a>
+</li>
         <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.FileAdapter.save">(RPA.Robocloud.Items.FileAdapter method)</a>
 </li>
         <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.RobocloudAdapter.save">(RPA.Robocloud.Items.RobocloudAdapter method)</a>
@@ -703,6 +993,8 @@
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.save_work_item">save_work_item() (RPA.Robocloud.Items.Items method)</a>
 </li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.save_workbook">save_workbook() (RPA.Excel.Files.Files method)</a>
+</li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.screenshot">screenshot() (RPA.Browser.Browser method)</a>
 
       <ul>
@@ -723,11 +1015,23 @@
         <li><a href="libraries/outlook_application/python.html#RPA.Outlook.Application.Application.send_message">(RPA.Outlook.Application.Application method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.send_smtp_hello">send_smtp_hello() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.set">set() (RPA.Tables.Table method)</a>
+</li>
       <li><a href="libraries/excel_application/python.html#RPA.Excel.Application.Application.set_active_worksheet">set_active_worksheet() (RPA.Excel.Application.Application method)</a>
+
+      <ul>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.set_active_worksheet">(RPA.Excel.Files.Files method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.set_cell">set_cell() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.set_column">set_column() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.set_column_as_index">set_column_as_index() (RPA.Tables.Tables method)</a>
 </li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.set_credentials">set_credentials() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
@@ -741,6 +1045,8 @@
 </li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.set_headless_options">set_headless_options() (RPA.Browser.Browser method)</a>
 </li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.set_row">set_row() (RPA.Tables.Table method)</a>
+</li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.set_task_variables_from_work_item">set_task_variables_from_work_item() (RPA.Robocloud.Items.Items method)</a>
 </li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.set_user_profile">set_user_profile() (RPA.Browser.Browser method)</a>
@@ -749,15 +1055,29 @@
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.set_work_item_variables">set_work_item_variables() (RPA.Robocloud.Items.Items method)</a>
 </li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.sheetnames">sheetnames() (RPA.Excel.Files.XlsWorkbook property)</a>
+
+      <ul>
+        <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.sheetnames">(RPA.Excel.Files.XlsxWorkbook property)</a>
+</li>
+      </ul></li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.WorkItem.show">show() (RPA.Robocloud.Items.WorkItem method)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.show_region_in_image">show_region_in_image() (RPA.Images.Images method)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.show_region_on_screen">show_region_on_screen() (RPA.Images.Images method)</a>
 </li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.File.size">size (RPA.FileSystem.File attribute)</a>
+</li>
       <li><a href="libraries/slack/python.html#RPA.Slack.Slack">Slack (class in RPA.Slack)</a>
 </li>
       <li><a href="libraries/slack/python.html#RPA.Slack.Slack.slack_message_using_webhook">slack_message_using_webhook() (RPA.Slack.Slack method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.sort_by_column">sort_by_column() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.sort_by_index">sort_by_index() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.sort_table_by_column">sort_table_by_column() (RPA.Tables.Tables method)</a>
 </li>
       <li><a href="libraries/robotloglistener/python.html#RPA.RobotLogListener.RobotLogListener.start_keyword">start_keyword() (RPA.RobotLogListener.RobotLogListener method)</a>
 </li>
@@ -769,16 +1089,38 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table">Table (class in RPA.Tables)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.table_head">table_head() (RPA.Tables.Tables method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.table_tail">table_tail() (RPA.Tables.Tables method)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables">Tables (class in RPA.Tables)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.tail">tail() (RPA.Tables.Table method)</a>
+</li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.take_screenshot">take_screenshot() (RPA.Images.Images method)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.template_html_to_pdf">template_html_to_pdf() (RPA.PDF.PDF method)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.TemplateMatcher">TemplateMatcher (class in RPA.Images)</a>
 </li>
-      <li><a href="libraries/images/python.html#RPA.Images.to_image">to_image() (in module RPA.Images)</a>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.TimeoutException">TimeoutException</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.to_dict">to_dict() (RPA.Tables.Table method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/tables/python.html#RPA.Tables.to_identifier">to_identifier() (in module RPA.Tables)</a>
+</li>
+      <li><a href="libraries/images/python.html#RPA.Images.to_image">to_image() (in module RPA.Images)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.to_list">to_list() (in module RPA.Tables)</a>
+
+      <ul>
+        <li><a href="libraries/tables/python.html#RPA.Tables.Table.to_list">(RPA.Tables.Table method)</a>
+</li>
+      </ul></li>
       <li><a href="libraries/images/python.html#RPA.Images.to_point">to_point() (in module RPA.Images)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.to_region">to_region() (in module RPA.Images)</a>
@@ -786,6 +1128,8 @@
       <li><a href="libraries/images/python.html#RPA.Images.TemplateMatcher.tolerance">tolerance() (RPA.Images.TemplateMatcher property)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Region.top">top (RPA.Images.Region attribute)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.touch_file">touch_file() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.type_keys">type_keys() (RPA.Desktop.Windows.Windows method)</a>
 </li>
@@ -809,17 +1153,27 @@
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.wait_template_on_screen">wait_template_on_screen() (RPA.Images.Images method)</a>
 </li>
-      <li><a href="libraries/images/python.html#RPA.Images.Region.width">width() (RPA.Images.Region property)</a>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.wait_until_created">wait_until_created() (RPA.FileSystem.FileSystem method)</a>
 </li>
-      <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.window_exists">window_exists() (RPA.Desktop.Windows.Windows method)</a>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.wait_until_modified">wait_until_modified() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.wait_until_removed">wait_until_removed() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/images/python.html#RPA.Images.Region.width">width() (RPA.Images.Region property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.window_exists">window_exists() (RPA.Desktop.Windows.Windows method)</a>
+</li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows">Windows (class in RPA.Desktop.Windows)</a>
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.WorkItem">WorkItem (class in RPA.Robocloud.Items)</a>
 </li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.worksheet_exists">worksheet_exists() (RPA.Excel.Files.Files method)</a>
+</li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.write_element_info_as_json">write_element_info_as_json() (in module RPA.Desktop.Windows)</a>
+</li>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Tables.write_table_to_csv">write_table_to_csv() (RPA.Tables.Tables method)</a>
 </li>
       <li><a href="libraries/word_application/python.html#RPA.Word.Application.Application.write_text">write_text() (RPA.Word.Application.Application method)</a>
 </li>
@@ -832,6 +1186,12 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/images/python.html#RPA.Images.Point.x">x (RPA.Images.Point attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook">XlsWorkbook (class in RPA.Excel.Files)</a>
+</li>
+      <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook">XlsxWorkbook (class in RPA.Excel.Files)</a>
 </li>
   </ul></td>
 </tr></table>

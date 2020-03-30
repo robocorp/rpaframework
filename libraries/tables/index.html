@@ -1,0 +1,368 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Tables &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Robot Framework API" href="../../libdoc/Tables.html" />
+    <link rel="prev" title="Python module API" href="../slack/python.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Tables.html">Robot Framework API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">Python module API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../conventions.html">Conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Tables</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/tables/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tables">
+<h1>Tables<a class="headerlink" href="#tables" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#description" id="id1">Description</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id2">Examples</a></p></li>
+<li><p><a class="reference internal" href="#api-documentation" id="id3">API Documentation</a></p></li>
+</ul>
+</div>
+<div class="section" id="description">
+<h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><cite>Tables</cite> is a library for manipulating tabular data inside Robot Framework.
+It can import data from various sources and apply different operations to it.
+Common use-cases are reading and writing CSV files, inspecting files in
+directories, or running tasks using existing Excel data.</p>
+<div class="section" id="import-types">
+<h3>Import types<a class="headerlink" href="#import-types" title="Permalink to this headline">¶</a></h3>
+<p>The data from which a table can be created can be of two main types:</p>
+<ol class="arabic simple">
+<li><p>An iterable of individual rows, like a list of lists, or list of dicts</p></li>
+<li><p>A dictionary of columns, where each dictionary value is a list of values</p></li>
+</ol>
+<p>For instance, these two input values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data1</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mark&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">58</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">22</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Adam&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">67</span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="n">data2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Mark&quot;</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Adam&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span>  <span class="p">[</span>    <span class="mi">58</span><span class="p">,</span>     <span class="mi">22</span><span class="p">,</span>     <span class="mi">67</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Would both result in the following table:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 33%" />
+<col style="width: 30%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Index</strong></p></td>
+<td><p><strong>Name</strong></p></td>
+<td><p><strong>Age</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Mark</p></td>
+<td><p>58</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>John</p></td>
+<td><p>22</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Adam</p></td>
+<td><p>67</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="examples">
+<h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="robot-framework">
+<h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
+<p>The <cite>Tables</cite> library can load tabular data from various other libraries
+and manipulate it inside Robot Framework.</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Tables</span><span class="p"></span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Files to Table</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">files</span><span class="p">}=    </span><span class="nf">List files in directory</span><span class="p">    ${</span><span class="nv">CURDIR</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">files</span><span class="p">}=    </span><span class="nf">Create table</span><span class="p">    ${</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Filter table by column</span><span class="p">    ${</span><span class="nv">files</span><span class="p">}    </span><span class="s">size</span><span class="p">  </span><span class="s">&gt;=</span><span class="p">  ${</span><span class="nv">1024</span><span class="p">}</span>
+<span class="p">    FOR    ${</span><span class="nv">file</span><span class="p">}    IN    @{</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log</span><span class="p">    ${</span><span class="nv">file.name</span><span class="p">}</span>
+<span class="p">    END</span>
+<span class="p">    </span><span class="nf">Write table to CSV</span><span class="p">    ${</span><span class="nv">files</span><span class="p">}    ${</span><span class="nv">OUTPUT_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">files.csv</span><span class="p"></span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="python">
+<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<p>The library is also available directly through Python, where it
+is easier to handle multiple different tables or do more bespoke
+manipulation operations.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Tables</span> <span class="kn">import</span> <span class="n">Tables</span>
+
+<span class="n">library</span> <span class="o">=</span> <span class="n">Tables</span><span class="p">()</span>
+<span class="n">orders</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">read_table_from_csv</span><span class="p">(</span>
+    <span class="s2">&quot;orders.csv&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;mail&quot;</span><span class="p">,</span> <span class="s2">&quot;product&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">customers</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">group_table_by_column</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="s2">&quot;mail&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">customer</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">customer</span><span class="p">:</span>
+        <span class="n">add_cart</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+    <span class="n">make_order</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+<div class="section" id="api-documentation">
+<h2><a class="toc-backref" href="#id3">API Documentation</a><a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../libdoc/Tables.html">Robot Framework API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python.html">Python module API</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../libdoc/Tables.html" class="btn btn-neutral float-right" title="Robot Framework API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../slack/python.html" class="btn btn-neutral float-left" title="Python module API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
