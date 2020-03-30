@@ -182,7 +182,7 @@
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list simple">
 <dt class="field-odd">Library scope</dt>
-<dd class="field-odd"><p>Task</p>
+<dd class="field-odd"><p>Global</p>
 </dd>
 </dl>
 <p>Windows methods extending OperatingSystem class.</p>
@@ -260,29 +260,37 @@
 <p>Get element rectangle coordinates</p>
 <p>If <cite>ctrl</cite> is None then get coordinates from <cite>dialog</cite></p>
 </dd>
-<dt class="field-even">Get Element Attributes</dt>
+<dt class="field-even">Get Element</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator, screenshot=False</p>
+</dd>
+</dl>
+<p>Get element by locator.</p>
+</dd>
+<dt class="field-even">Get Element Center</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>element</p>
 </dd>
 </dl>
-<p>Return filtered element dictionary for an element.</p>
-</dd>
-<dt class="field-even">Get Element Center</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>itemdict</p>
-</dd>
-</dl>
 <p>Get element center coordinates</p>
 </dd>
-<dt class="field-even">Get Element Coordinates</dt>
+<dt class="field-even">Get Element Rectangle</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>rectangle</p>
+<dd class="field-odd"><p>locator</p>
 </dd>
 </dl>
-<p>Get element coordinates from pywinauto object.</p>
+<p>Get value of element <cite>rectangle</cite> attribute.</p>
+</dd>
+<dt class="field-even">Get Element Rich Text</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator</p>
+</dd>
+</dl>
+<p>Get value of element <cite>rich text</cite> attribute.</p>
 </dd>
 <dt class="field-even">Get Machine Name</dt>
 <dd class="field-even"><p>Get machine name</p>
@@ -305,16 +313,33 @@ or in humanized memory format.</p>
 <dd class="field-odd"><p>screenshot=False, element_json=False, outline=False</p>
 </dd>
 </dl>
-<p>Get element information about all window dialog control and their descendants.</p>
+<p>Get element information about all window dialog controls
+and their descendants.</p>
+</dd>
+<dt class="field-even">Is Element Enabled</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator</p>
+</dd>
+</dl>
+<p>Is element enabled.</p>
 </dd>
 <dt class="field-even">Is Element Matching</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>itemdict, locator, criteria</p>
+<dd class="field-odd"><p>itemdict, locator, criteria, wildcard=False</p>
 </dd>
 </dl>
 <p>Is element matching. Check if locator is found in <cite>any</cite> field
 or <cite>criteria</cite> field in the window items.</p>
+</dd>
+<dt class="field-even">Is Element Visible</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator</p>
+</dd>
+</dl>
+<p>Is element visible.</p>
 </dd>
 <dt class="field-even">Kill Process</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -389,15 +414,6 @@ center coordinates.</p>
 <dd class="field-odd"><p>[description]</p>
 </dd>
 </dl>
-</dd>
-<dt class="field-even">Mouse Click Locator</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, off_x=0, off_y=0, ctype=click, screenshot=False</p>
-</dd>
-</dl>
-<p>Click at locator on desktop.</p>
-<p>By default click center of the element.</p>
 </dd>
 <dt class="field-even">Mouse Click Ocr</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -474,7 +490,7 @@ Window title name is required to get handle on the application.</p>
 <dt class="field-even">Put System To Sleep</dt>
 <dd class="field-even"><p>Put Windows into sleep mode</p>
 </dd>
-<dt class="field-odd">Quit</dt>
+<dt class="field-odd">Quit Application</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>app_id=None</p>

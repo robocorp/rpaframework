@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: Task
+:Library scope: Global
 
 Windows methods extending OperatingSystem class.
 
@@ -70,22 +70,28 @@ Keywords
 
   If `ctrl` is None then get coordinates from `dialog`
 
-:Get Element Attributes:
-  :Arguments: element
+:Get Element:
+  :Arguments: locator, screenshot=False
 
-  Return filtered element dictionary for an element.
+  Get element by locator.
 
 
 :Get Element Center:
-  :Arguments: itemdict
+  :Arguments: element
 
   Get element center coordinates
 
 
-:Get Element Coordinates:
-  :Arguments: rectangle
+:Get Element Rectangle:
+  :Arguments: locator
 
-  Get element coordinates from pywinauto object.
+  Get value of element `rectangle` attribute.
+
+
+:Get Element Rich Text:
+  :Arguments: locator
+
+  Get value of element `rich text` attribute.
 
 
 :Get Machine Name:
@@ -106,14 +112,27 @@ Keywords
 :Get Window Elements:
   :Arguments: screenshot=False, element_json=False, outline=False
 
-  Get element information about all window dialog control and their descendants.
+  Get element information about all window dialog controls
+  and their descendants.
+
+
+:Is Element Enabled:
+  :Arguments: locator
+
+  Is element enabled.
 
 
 :Is Element Matching:
-  :Arguments: itemdict, locator, criteria
+  :Arguments: itemdict, locator, criteria, wildcard=False
 
   Is element matching. Check if locator is found in `any` field
   or `criteria` field in the window items.
+
+
+:Is Element Visible:
+  :Arguments: locator
+
+  Is element visible.
 
 
 :Kill Process:
@@ -170,14 +189,6 @@ Keywords
 
   :raises NotImplementedError: [description]
 
-:Mouse Click Locator:
-  :Arguments: locator, off_x=0, off_y=0, ctype=click, screenshot=False
-
-  Click at locator on desktop.
-
-  By default click center of the element.
-
-
 :Mouse Click Ocr:
   :Arguments: ocr, off_x=0, off_y=0, ctype=click
 
@@ -233,7 +244,7 @@ Keywords
 :Put System To Sleep:
   Put Windows into sleep mode
 
-:Quit:
+:Quit Application:
   :Arguments: app_id=None
 
   Quit an application by application id or

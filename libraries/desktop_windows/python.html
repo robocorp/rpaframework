@@ -185,6 +185,11 @@
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">Windows</code><span class="sig-paren">(</span><em class="sig-param">backend='uia'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem" title="RPA.Desktop.OperatingSystem.OperatingSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Desktop.OperatingSystem.OperatingSystem</span></code></a></p>
 <p>Windows methods extending OperatingSystem class.</p>
+<dl class="attribute">
+<dt id="RPA.Desktop.Windows.Windows.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Desktop.Windows.Windows.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.click_type">
 <code class="sig-name descname">click_type</code><span class="sig-paren">(</span><em class="sig-param">x=None</em>, <em class="sig-param">y=None</em>, <em class="sig-param">click_type='click'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.click_type" title="Permalink to this definition">¶</a></dt>
@@ -274,26 +279,29 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Desktop.Windows.Windows.get_element_attributes">
-<code class="sig-name descname">get_element_attributes</code><span class="sig-paren">(</span><em class="sig-param">element</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_attributes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return filtered element dictionary for an element.</p>
+<dt id="RPA.Desktop.Windows.Windows.get_element">
+<code class="sig-name descname">get_element</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">screenshot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get element by locator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>element</strong> – should contain <cite>element_info</cite> attribute</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – name of the locator</p></li>
+<li><p><strong>screenshot</strong> – takes element screenshot if True, defaults to False</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dictionary containing element attributes</p>
+<dd class="field-even"><p>element if element was identified, else False</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_element_center">
-<code class="sig-name descname">get_element_center</code><span class="sig-paren">(</span><em class="sig-param">itemdict</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_center" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_element_center</code><span class="sig-paren">(</span><em class="sig-param">element</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_center" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get element center coordinates</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>itemDict</strong> – dictionary of element items</p>
+<dd class="field-odd"><p><strong>element</strong> – dictionary of element items</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>coordinates, x and y</p>
@@ -302,15 +310,29 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Desktop.Windows.Windows.get_element_coordinates">
-<code class="sig-name descname">get_element_coordinates</code><span class="sig-paren">(</span><em class="sig-param">rectangle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_coordinates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get element coordinates from pywinauto object.</p>
+<dt id="RPA.Desktop.Windows.Windows.get_element_rectangle">
+<code class="sig-name descname">get_element_rectangle</code><span class="sig-paren">(</span><em class="sig-param">locator</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get value of element <cite>rectangle</cite> attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>rectangle</strong> – item containing rectangle information</p>
+<dd class="field-odd"><p><strong>locator</strong> – element locator</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>coordinates: left, top, right, bottom</p>
+<dd class="field-even"><p>(left, top, right, bottom) values if found, else False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.get_element_rich_text">
+<code class="sig-name descname">get_element_rich_text</code><span class="sig-paren">(</span><em class="sig-param">locator</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_rich_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get value of element <cite>rich text</cite> attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>locator</strong> – element locator</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>rich_text</cite> value if found, else False</p>
 </dd>
 </dl>
 </dd></dl>
@@ -318,7 +340,8 @@
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_window_elements">
 <code class="sig-name descname">get_window_elements</code><span class="sig-paren">(</span><em class="sig-param">screenshot=False</em>, <em class="sig-param">element_json=False</em>, <em class="sig-param">outline=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_window_elements" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get element information about all window dialog control and their descendants.</p>
+<dd><p>Get element information about all window dialog controls
+and their descendants.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -334,8 +357,22 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.is_element_enabled">
+<code class="sig-name descname">is_element_enabled</code><span class="sig-paren">(</span><em class="sig-param">locator</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.is_element_enabled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is element enabled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>locator</strong> – element locator</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if enabled, else False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.is_element_matching">
-<code class="sig-name descname">is_element_matching</code><span class="sig-paren">(</span><em class="sig-param">itemdict</em>, <em class="sig-param">locator</em>, <em class="sig-param">criteria</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.is_element_matching" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">is_element_matching</code><span class="sig-paren">(</span><em class="sig-param">itemdict</em>, <em class="sig-param">locator</em>, <em class="sig-param">criteria</em>, <em class="sig-param">wildcard=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.is_element_matching" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element matching. Check if locator is found in <cite>any</cite> field
 or <cite>criteria</cite> field in the window items.</p>
 <dl class="field-list simple">
@@ -348,6 +385,20 @@ or <cite>criteria</cite> field in the window items.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>True if element is matching locator and criteria, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.is_element_visible">
+<code class="sig-name descname">is_element_visible</code><span class="sig-paren">(</span><em class="sig-param">locator</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.is_element_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is element visible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>locator</strong> – element locator</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if visible, else False</p>
 </dd>
 </dl>
 </dd></dl>
@@ -455,27 +506,6 @@ center coordinates.</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>NotImplementedError</strong> – [description]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Desktop.Windows.Windows.mouse_click_locator">
-<code class="sig-name descname">mouse_click_locator</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">off_x=0</em>, <em class="sig-param">off_y=0</em>, <em class="sig-param">ctype='click'</em>, <em class="sig-param">screenshot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_locator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Click at locator on desktop.</p>
-<p>By default click center of the element.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>locator</strong> – name of the locator</p></li>
-<li><p><strong>off_x</strong> – horizontal offset for click, defaults to 0</p></li>
-<li><p><strong>off_y</strong> – vertical offset for click, defaults to 0</p></li>
-<li><p><strong>ctype</strong> – click type “click”, “right” or “double”, defaults to “click”</p></li>
-<li><p><strong>screenshot</strong> – takes element screenshot if True, defaults to False</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if element was identified and click, else False</p>
 </dd>
 </dl>
 </dd></dl>
@@ -602,8 +632,8 @@ Window title name is required to get handle on the application.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Desktop.Windows.Windows.quit">
-<code class="sig-name descname">quit</code><span class="sig-paren">(</span><em class="sig-param">app_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.quit" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Desktop.Windows.Windows.quit_application">
+<code class="sig-name descname">quit_application</code><span class="sig-paren">(</span><em class="sig-param">app_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.quit_application" title="Permalink to this definition">¶</a></dt>
 <dd><p>Quit an application by application id or
 active application if <cite>app_id</cite> is None.</p>
 <dl class="field-list simple">
