@@ -40,6 +40,8 @@ class Windows(OperatingSystem):
     """Windows methods extending OperatingSystem class.
     """
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+
     def __init__(self, backend="uia"):
         OperatingSystem.__init__(self)
         self._apps = {}
@@ -79,7 +81,7 @@ class Windows(OperatingSystem):
         self._active_app_instance = self._app_instance_id
         if dialog:
             self.open_dialog(self._apps[self._app_instance_id].get("windowtitle", None))
-        self.logger.info(self._apps[self._app_instance_id])
+        self.logger.info(self._apps)
         return self._active_app_instance
 
     def switch_to_application(self, app_id):
@@ -280,10 +282,13 @@ class Windows(OperatingSystem):
         """
         self.logger.info("Closing all applications")
         application_ids = self._apps.keys()
+        self.logger.debug(self._apps)
+        self.logger.debug(f"Length of applications: {len(self._apps)}")
         for aid in application_ids:
-            self.quit(aid)
+            self.logger.debug(f"Closing application ID {aid}")
+            self.quit_application(aid)
 
-    def quit(self, app_id=None):
+    def quit_application(self, app_id=None):
         """Quit an application by application id or
         active application if `app_id` is None.
 
@@ -350,7 +355,10 @@ class Windows(OperatingSystem):
         self.logger.info(f"mouse click: {locator}")
 
         if method == "locator":
-            self.mouse_click_locator(locator, off_x, off_y, ctype, screenshot)
+            element = self.get_element(locator, screenshot)
+            if element:
+                x, y = self.get_element_center(element)
+                self.click_type(x + off_x, y + off_y, ctype)
         elif method == "coordinates":
             self.mouse_click_coords(x, y, ctype)
         elif method == "image":
@@ -390,21 +398,14 @@ class Windows(OperatingSystem):
         self.click_type(x, y, ctype)
         delay()
 
-    def mouse_click_locator(
-        self, locator, off_x=0, off_y=0, ctype="click", screenshot=False
-    ):
-        """Click at locator on desktop.
-
-        By default click center of the element.
+    def get_element(self, locator, screenshot=False):
+        """Get element by locator.
 
         :param locator: name of the locator
-        :param off_x: horizontal offset for click, defaults to 0
-        :param off_y: vertical offset for click, defaults to 0
-        :param ctype: click type "click", "right" or "double", defaults to "click"
         :param screenshot: takes element screenshot if True, defaults to False
-        :return: True if element was identified and click, else False
+        :return: element if element was identified, else False
         """
-        self.logger.info(f"mouse click locator: {locator}")
+        self.logger.info(f"get element: {locator}")
         # self.connect_by_handle(self.dlg.handle)
         # TODO. move dlg wait into "open_dialog" ?
         self.dlg.wait("exists enabled visible ready")
@@ -427,14 +428,9 @@ class Windows(OperatingSystem):
             element = matching_elements[0]
             if screenshot:
                 self.screenshot(f"locator_{locator}", element=element)
-            self.logger.info(element)
             for key in element.keys():
                 self.logger.debug(f"{key}={element[key]}")
-            x, y = self.get_element_center(element)
-            self.click_type(x + off_x, y + off_y, ctype)
-            # TODO. remove delay() - for demo only ?
-            delay()
-            return True
+            return element
         else:
             # TODO. return more valuable information about what should
             # be matching element ?
@@ -444,6 +440,64 @@ class Windows(OperatingSystem):
                 f"Maybe one of these would be better?\n{locators_string}\n"
             )
         return False
+
+    def get_element_rich_text(self, locator):
+        """Get value of element `rich text` attribute.
+
+        :param locator: element locator
+        :return: `rich_text` value if found, else False
+        """
+        element = self.get_element(locator)
+        if element is not False and "rich_text" in element:
+            return element["rich_text"]
+        elif element is False:
+            self.logger.info(f"Did not find element with locator {locator}")
+            return False
+        else:
+            self.logger.info(
+                f"Element for locator {locator} does not have 'rich_text' attribute"
+            )
+            return False
+
+    def get_element_rectangle(self, locator):
+        """Get value of element `rectangle` attribute.
+
+        :param locator: element locator
+        :return: (left, top, right, bottom) values if found, else False
+        """
+        rectangle = self._get_element_attribute(locator, "rectangle")
+        return self._get_element_coordinates(rectangle)
+
+    def _get_element_attribute(self, locator, attribute):
+        element = self.get_element(locator)
+        if element is not False and attribute in element:
+            return element[attribute]
+        elif element is False:
+            self.logger.info(f"Did not find element with locator {locator}")
+            return False
+        else:
+            self.logger.info(
+                f"Element for locator {locator} does not have 'visible' attribute"
+            )
+            return False
+
+    def is_element_visible(self, locator):
+        """Is element visible.
+
+        :param locator: element locator
+        :return: True if visible, else False
+        """
+        visible = self._get_element_attribute(locator, "visible")
+        return bool(visible)
+
+    def is_element_enabled(self, locator):
+        """Is element enabled.
+
+        :param locator: element locator
+        :return: True if enabled, else False
+        """
+        enabled = self._get_element_attribute(locator, "enabled")
+        return bool(enabled)
 
     def menu_select(self, menuitem):
         """Select item from menu
@@ -486,6 +540,7 @@ class Windows(OperatingSystem):
             - class (class_name)
             - type (contro_type)
             - id (automation_id)
+            - partial name (wildcard search for 'name' attribute)
             - any if none was defined
 
         :param locator: name of the locator
@@ -504,10 +559,13 @@ class Windows(OperatingSystem):
         elif locator.startswith("id:"):
             search_criteria = "automation_id"
             locator = "".join(locator.split("id:")[1:])
+        elif locator.startswith("partial name:"):
+            search_criteria = "partial name"
+            locator = "".join(locator.split("partial name:")[1:])
         return search_criteria, locator
 
     # TODO. supporting multiple search criterias at same time to identify ONE element
-    def is_element_matching(self, itemdict, locator, criteria):
+    def is_element_matching(self, itemdict, locator, criteria, wildcard=False):
         """Is element matching. Check if locator is found in `any` field
         or `criteria` field in the window items.
 
@@ -516,8 +574,11 @@ class Windows(OperatingSystem):
         :param criteria: criteria on which to match element
         :return: True if element is matching locator and criteria, False if not
         """
-        if criteria != "any" and criteria in itemdict and itemdict[criteria] == locator:
-            return True
+        if criteria != "any" and criteria in itemdict:
+            if (wildcard and locator in itemdict[criteria]) or (
+                locator == itemdict[criteria]
+            ):
+                return True
         elif criteria == "any":
             name_search = self.is_element_matching(itemdict, locator, "name")
             class_search = self.is_element_matching(itemdict, locator, "class_name")
@@ -525,6 +586,8 @@ class Windows(OperatingSystem):
             id_search = self.is_element_matching(itemdict, locator, "automation_id")
             if name_search or class_search or type_search or id_search:
                 return True
+        elif criteria == "partial name":
+            return self.is_element_matching(itemdict, locator, "name", True)
         return False
 
     def get_dialog_rectangle(self, ctrl=None):
@@ -540,13 +603,13 @@ class Windows(OperatingSystem):
             rect = self.dlg.element_info.rectangle
         return rect.left, rect.top, rect.right, rect.bottom
 
-    def get_element_center(self, itemdict):
+    def get_element_center(self, element):
         """Get element center coordinates
 
-        :param itemDict: dictionary of element items
+        :param element: dictionary of element items
         :return: coordinates, x and y
         """
-        left, top, right, bottom = self.get_element_coordinates(itemdict["rectangle"])
+        left, top, right, bottom = self._get_element_coordinates(element["rectangle"])
         self.logger.info(f"locator rectangle ({left}, {top}, {right}, {bottom})")
 
         x = int((right - left) / 2) + left
@@ -574,7 +637,8 @@ class Windows(OperatingSystem):
             pywinauto.mouse.right_click(coords=(x, y))
 
     def get_window_elements(self, screenshot=False, element_json=False, outline=False):
-        """Get element information about all window dialog control and their descendants.
+        """Get element information about all window dialog controls
+        and their descendants.
 
         :param screenshot: save element screenshot if True, defaults to False
         :param element_json: save element json if True, defaults to False
@@ -600,7 +664,7 @@ class Windows(OperatingSystem):
                     ctrl.draw_outline(colour="red", thickness=4)
                     delay(0.2)
                     ctrl.draw_outline(colour=0x000000, thickness=4)
-                element = self.get_element_attributes(element=ctrl)
+                element = self._parse_element_attributes(element=ctrl)
                 if element_json:
                     write_element_info_as_json(element, cleaned_filename)
                 all_elements.append(element)
@@ -611,16 +675,19 @@ class Windows(OperatingSystem):
         # self.logger.info(self.dlg.print_control_identifiers())
         return all_ctrls, all_elements
 
-    def get_element_coordinates(self, rectangle):
+    def _get_element_coordinates(self, rectangle):
         """Get element coordinates from pywinauto object.
 
         :param rectangle: item containing rectangle information
         :return: coordinates: left, top, right, bottom
         """
-        left, top, right, bottom = map(
-            int, re.match(r"\(L(\d+).*T(\d+).*R(\d+).*B(\d+)\)", rectangle).groups()
-        )
-        return left, top, right, bottom
+        if rectangle:
+            left, top, right, bottom = map(
+                int,
+                re.match(r"\(L(\d+).*T(\d+).*R(\d+).*B(\d+)\)", rectangle).groups(),
+            )
+            return left, top, right, bottom
+        return False
 
     def screenshot(self, filename, element=None, ctrl=None, desktop=False):
         """Save screenshot into filename.
@@ -633,7 +700,7 @@ class Windows(OperatingSystem):
         if desktop:
             region = None
         elif element:
-            region = self.get_element_coordinates(element["rectangle"])
+            region = self._get_element_coordinates(element["rectangle"])
         elif ctrl:
             region = self.get_dialog_rectangle(ctrl)
         else:
@@ -650,14 +717,13 @@ class Windows(OperatingSystem):
 
         self.logger.info("Saved screenshot as '%s'", filename)
 
-    def get_element_attributes(self, element):
+    def _parse_element_attributes(self, element):
         """Return filtered element dictionary for an element.
 
         :param element: should contain `element_info` attribute
         :return: dictionary containing element attributes
         """
-        # self.logger.debug(f"get_element_attributes: {element}")
-        if element is None or not hasattr(element, "element_info"):
+        if element is None and "element_info" not in element:
             self.logger.warning(
                 f"{element} is none or does not have element_info attribute"
             )
