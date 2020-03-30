@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Robot Framework API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Python module API" href="../../libraries/word_application/python.html" />
+    <link rel="prev" title="Word.Application" href="../../libraries/word_application/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/slack/index.html">Slack</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../libraries/word_application/index.html">Word.Application</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Robot Framework API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../libraries/word_application/python.html">Python module API</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../conventions.html">Conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../libraries/word_application/index.html">Word.Application</a> &raquo;</li>
+        
+      <li>Robot Framework API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libdoc/Word/Application.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="robot-framework-api">
+<h1>Robot Framework API<a class="headerlink" href="#robot-framework-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Library scope</dt>
+<dd class="field-odd"><p>Task</p>
+</dd>
+</dl>
+<p>Library for manipulating Word application.</p>
+</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list">
+<dt class="field-odd">Close Document</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>save_changes=False</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Create New Document</dt>
+<dd class="field-even"><p>Create new document for Word application</p>
+</dd>
+<dt class="field-odd">Export To Pdf</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>filename</p>
+</dd>
+</dl>
+<p>Export active document into PDF file.</p>
+</dd>
+<dt class="field-even">Get All Texts</dt>
+<dd class="field-even"><p>Get all texts from active document</p>
+</dd>
+<dt class="field-odd">Open Application</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>visible=False, display_alerts=False</p>
+</dd>
+</dl>
+<p>Open Microsoft application.</p>
+</dd>
+<dt class="field-even">Open File</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>filename=None</p>
+</dd>
+</dl>
+<p>Open Word document with filename.</p>
+</dd>
+<dt class="field-even">Quit Application</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>save_changes=False</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Replace Text</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>find, replace</p>
+</dd>
+</dl>
+<p>Replace text in active document</p>
+</dd>
+<dt class="field-even">Save Document</dt>
+<dd class="field-even"><p>Save active document</p>
+</dd>
+<dt class="field-odd">Save Document As</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>filename, fileformat=None</p>
+</dd>
+</dl>
+<p>Save document with filename and optionally with given fileformat</p>
+</dd>
+<dt class="field-even">Set Footer</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text</p>
+</dd>
+</dl>
+<p>Set footer for the active document</p>
+</dd>
+<dt class="field-even">Set Header</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text</p>
+</dd>
+</dl>
+<p>Set header for the active document</p>
+</dd>
+<dt class="field-even">Write Text</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text, newline=True</p>
+</dd>
+</dl>
+<p>Writes given text at the end of the document</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../libraries/word_application/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../libraries/word_application/index.html" class="btn btn-neutral float-left" title="Word.Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

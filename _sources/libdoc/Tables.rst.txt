@@ -1,0 +1,143 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: Task
+
+Robot Framework library for manipulating tabular data.
+
+********
+Keywords
+********
+
+:Add Table Column:
+  :Arguments: table, name=None, values=None
+
+  Append a column to a table.
+
+
+:Add Table Row:
+  :Arguments: table, row, index=None
+
+  Append rows to a table.
+
+
+:Clear Table:
+  :Arguments: table
+
+  Clear table in-place, but keep columns.
+
+
+:Copy Table:
+  :Arguments: table
+
+  Copy table object.
+
+
+:Create Table:
+  :Arguments: data=None
+
+  Create Table object from data.
+
+  Data can be a combination of various iterable containers, e.g.
+  list of lists, list of dicts, dict of lists.
+
+
+:Export Table:
+  :Arguments: table
+
+  Convert table object to standard Python containers.
+
+
+:Filter Empty Rows:
+  :Arguments: table
+
+  Remove all rows from the table which have only None values.
+
+
+:Filter Table By Column:
+  :Arguments: table, column, operator, value
+
+  Return all rows where the column values match the given condition.
+
+
+:Get Cell Value:
+  :Arguments: table, row, column
+
+  Get a cell value from table.
+
+
+:Get Table Column:
+  :Arguments: table, column
+
+  Get all column values from table.
+
+
+:Get Table Row:
+  :Arguments: table, index
+
+  Get a single row from table.
+
+
+:Group Table By Column:
+  :Arguments: table, column
+
+  Group table by `column` and return a list of grouped Tables.
+
+
+:Pop Table Column:
+  :Arguments: table, column=None
+
+  Remove column from table and return it.
+
+
+:Pop Table Row:
+  :Arguments: table, index=None
+
+  Remove row from table and return it.
+
+
+:Read Table From Csv:
+  :Arguments: path, header=None, columns=None, dialect=None
+
+  Read a CSV file as a table.
+
+
+:Requires Table:
+  :Arguments: obj
+
+
+
+:Set Column As Index:
+  :Arguments: table, column=None
+
+  Set existing column as index for rows.
+
+
+:Sort Table By Column:
+  :Arguments: table, column, ascending=False
+
+  Sort table in-place according to `column`.
+
+
+:Table Head:
+  :Arguments: table, count=5
+
+  Return first `count` rows from table.
+
+
+:Table Tail:
+  :Arguments: table, count=5
+
+  Return last `count` rows from table.
+
+
+:Write Table To Csv:
+  :Arguments: table, path
+
+  Write a table as a CSV file.
+

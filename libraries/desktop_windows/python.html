@@ -1,0 +1,771 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python module API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Email.Exchange" href="../email_exchange/index.html" />
+    <link rel="prev" title="Robot Framework API" href="../../libdoc/Desktop/Windows.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Desktop.Windows</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Desktop/Windows.html">Robot Framework API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../conventions.html">Conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Desktop.Windows</a> &raquo;</li>
+        
+      <li>Python module API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/desktop_windows/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-module-api">
+<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.Desktop.Windows">
+<span id="windows"></span><h2>Windows<a class="headerlink" href="#module-RPA.Desktop.Windows" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Desktop.Windows.Windows">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">Windows</code><span class="sig-paren">(</span><em class="sig-param">backend='uia'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem" title="RPA.Desktop.OperatingSystem.OperatingSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Desktop.OperatingSystem.OperatingSystem</span></code></a></p>
+<p>Windows methods extending OperatingSystem class.</p>
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.click_type">
+<code class="sig-name descname">click_type</code><span class="sig-paren">(</span><em class="sig-param">x=None</em>, <em class="sig-param">y=None</em>, <em class="sig-param">click_type='click'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.click_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mouse click on coordinates x and y.</p>
+<p>Default click type is <cite>click</cite> meaning <cite>left</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – horizontal coordinate for click, defaults to None</p></li>
+<li><p><strong>y</strong> – vertical coordinate for click, defaults to None</p></li>
+<li><p><strong>click_type</strong> – “click”, “right” or “double”, defaults to “click”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if coordinates are not valid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.close_all_applications">
+<code class="sig-name descname">close_all_applications</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.close_all_applications" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close all applications</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.connect_by_handle">
+<code class="sig-name descname">connect_by_handle</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to application by its handle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>handle</strong> – handle of the application</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.connect_by_pid">
+<code class="sig-name descname">connect_by_pid</code><span class="sig-paren">(</span><em class="sig-param">app_pid</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_pid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to application by its pid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>app_pid</strong> – process id of the application</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.find_element">
+<code class="sig-name descname">find_element</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">search_criteria</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.find_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find element from window by locator and criteria.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – name of locator</p></li>
+<li><p><strong>search_criteria</strong> – criteria by which element is matched</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of matching elements and locators that where found on the window</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.get_app">
+<code class="sig-name descname">get_app</code><span class="sig-paren">(</span><em class="sig-param">app_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_app" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get application object by id</p>
+<p>By default returns active_application application object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>app_id</strong> – id of the application to get, defaults to None</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>application object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.get_dialog_rectangle">
+<code class="sig-name descname">get_dialog_rectangle</code><span class="sig-paren">(</span><em class="sig-param">ctrl=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_dialog_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get element rectangle coordinates</p>
+<p>If <cite>ctrl</cite> is None then get coordinates from <cite>dialog</cite>
+:param ctrl: name of the window control object, defaults to None
+:return: coordinates: left, top, right, bottom</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.get_element_attributes">
+<code class="sig-name descname">get_element_attributes</code><span class="sig-paren">(</span><em class="sig-param">element</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return filtered element dictionary for an element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>element</strong> – should contain <cite>element_info</cite> attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary containing element attributes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.get_element_center">
+<code class="sig-name descname">get_element_center</code><span class="sig-paren">(</span><em class="sig-param">itemdict</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get element center coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>itemDict</strong> – dictionary of element items</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>coordinates, x and y</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.get_element_coordinates">
+<code class="sig-name descname">get_element_coordinates</code><span class="sig-paren">(</span><em class="sig-param">rectangle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get element coordinates from pywinauto object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rectangle</strong> – item containing rectangle information</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>coordinates: left, top, right, bottom</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.get_window_elements">
+<code class="sig-name descname">get_window_elements</code><span class="sig-paren">(</span><em class="sig-param">screenshot=False</em>, <em class="sig-param">element_json=False</em>, <em class="sig-param">outline=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_window_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get element information about all window dialog control and their descendants.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>screenshot</strong> – save element screenshot if True, defaults to False</p></li>
+<li><p><strong>element_json</strong> – save element json if True, defaults to False</p></li>
+<li><p><strong>outline</strong> – highlight elements if True, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>all controls and all elements</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.is_element_matching">
+<code class="sig-name descname">is_element_matching</code><span class="sig-paren">(</span><em class="sig-param">itemdict</em>, <em class="sig-param">locator</em>, <em class="sig-param">criteria</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.is_element_matching" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is element matching. Check if locator is found in <cite>any</cite> field
+or <cite>criteria</cite> field in the window items.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>itemDict</strong> – dictionary of element items</p></li>
+<li><p><strong>locator</strong> – name of the locator</p></li>
+<li><p><strong>criteria</strong> – criteria on which to match element</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if element is matching locator and criteria, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.lock_screen">
+<code class="sig-name descname">lock_screen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.lock_screen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put windows into lock mode</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.log_in">
+<code class="sig-name descname">log_in</code><span class="sig-paren">(</span><em class="sig-param">username</em>, <em class="sig-param">password</em>, <em class="sig-param">domain='.'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.log_in" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log into Windows <cite>domain</cite> with <cite>username</cite> and <cite>password</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> – name of the user</p></li>
+<li><p><strong>password</strong> – password of the user</p></li>
+<li><p><strong>domain</strong> – windows domain for the user, defaults to “.”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.menu_select">
+<code class="sig-name descname">menu_select</code><span class="sig-paren">(</span><em class="sig-param">menuitem</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.menu_select" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select item from menu</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>menuitem</strong> – name of the menu item</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.minimize_dialog">
+<code class="sig-name descname">minimize_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.minimize_dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimize window by its title</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>windowtitle</strong> – name of the window</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.mouse_click">
+<code class="sig-name descname">mouse_click</code><span class="sig-paren">(</span><em class="sig-param">locator=None</em>, <em class="sig-param">x=0</em>, <em class="sig-param">y=0</em>, <em class="sig-param">off_x=0</em>, <em class="sig-param">off_y=0</em>, <em class="sig-param">image=None</em>, <em class="sig-param">ocr=None</em>, <em class="sig-param">method='locator'</em>, <em class="sig-param">ctype='click'</em>, <em class="sig-param">screenshot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mouse click <cite>locator</cite>, <cite>coordinates</cite>, <cite>image</cite> or <cite>ocr</cite>.</p>
+<p>When using method <cite>locator</cite>,`image` or <cite>ocr</cite> mouse is clicked by default at
+center coordinates.</p>
+<dl class="simple">
+<dt>Click types are:</dt><dd><ul class="simple">
+<li><p><cite>click</cite> normal left button mouse click</p></li>
+<li><p><cite>double</cite></p></li>
+<li><p><cite>right</cite></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – element locator on active window</p></li>
+<li><p><strong>x</strong> – coordinate x on desktop</p></li>
+<li><p><strong>y</strong> – coordinate y on desktop</p></li>
+<li><p><strong>off_x</strong> – offset x (used for locator and image clicks)</p></li>
+<li><p><strong>off_y</strong> – offset y (used for locator and image clicks)</p></li>
+<li><p><strong>image</strong> – image to click on desktop</p></li>
+<li><p><strong>ocr</strong> – text to click on desktop</p></li>
+<li><p><strong>method</strong> – one of the available methods to mouse click, default “locator”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.mouse_click_coords">
+<code class="sig-name descname">mouse_click_coords</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">ctype='click'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Click at coordinates on desktop</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – horizontal coordinate on the windows to click</p></li>
+<li><p><strong>y</strong> – vertical coordinate on the windows to click</p></li>
+<li><p><strong>ctype</strong> – click type “click”, “right” or “double”, defaults to “click”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.mouse_click_image">
+<code class="sig-name descname">mouse_click_image</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">off_x=0</em>, <em class="sig-param">off_y=0</em>, <em class="sig-param">ctype='click'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Click at image on desktop</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> – [description]</p></li>
+<li><p><strong>off_x</strong> – [description], defaults to 0</p></li>
+<li><p><strong>off_y</strong> – [description], defaults to 0</p></li>
+<li><p><strong>ctype</strong> – [description], defaults to “click”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – [description]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.mouse_click_locator">
+<code class="sig-name descname">mouse_click_locator</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">off_x=0</em>, <em class="sig-param">off_y=0</em>, <em class="sig-param">ctype='click'</em>, <em class="sig-param">screenshot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_locator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Click at locator on desktop.</p>
+<p>By default click center of the element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – name of the locator</p></li>
+<li><p><strong>off_x</strong> – horizontal offset for click, defaults to 0</p></li>
+<li><p><strong>off_y</strong> – vertical offset for click, defaults to 0</p></li>
+<li><p><strong>ctype</strong> – click type “click”, “right” or “double”, defaults to “click”</p></li>
+<li><p><strong>screenshot</strong> – takes element screenshot if True, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if element was identified and click, else False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.mouse_click_ocr">
+<code class="sig-name descname">mouse_click_ocr</code><span class="sig-paren">(</span><em class="sig-param">ocr</em>, <em class="sig-param">off_x=0</em>, <em class="sig-param">off_y=0</em>, <em class="sig-param">ctype='click'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_ocr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Click at ocr text on desktop</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ocr</strong> – [description]</p></li>
+<li><p><strong>off_x</strong> – [description], defaults to 0</p></li>
+<li><p><strong>off_y</strong> – [description], defaults to 0</p></li>
+<li><p><strong>ctype</strong> – [description], defaults to “click”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – [description]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.open_application">
+<code class="sig-name descname">open_application</code><span class="sig-paren">(</span><em class="sig-param">application</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_application" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open application by dispatch method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>application</strong> – name of the application as <cite>str</cite></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>application instance id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.open_dialog">
+<code class="sig-name descname">open_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle=None</em>, <em class="sig-param">highlight=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open window by its title.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>windowtitle</strong> – name of the window, defaults to active window if None</p></li>
+<li><p><strong>highlight</strong> – draw outline for window if True, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.open_executable">
+<code class="sig-name descname">open_executable</code><span class="sig-paren">(</span><em class="sig-param">executable</em>, <em class="sig-param">windowtitle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_executable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open Windows executable. Window title name is required
+to get handle on the application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>executable</strong> – name of the executable</p></li>
+<li><p><strong>windowtitle</strong> – name of the window</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>application instance id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.open_file">
+<code class="sig-name descname">open_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open associated application when opening file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – path to file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if application is opened, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.open_from_search">
+<code class="sig-name descname">open_from_search</code><span class="sig-paren">(</span><em class="sig-param">executable</em>, <em class="sig-param">windowtitle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_from_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open application using Windows search dialog.
+Window title name is required to get handle on the application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>executable</strong> – name of the executable</p></li>
+<li><p><strong>windowtitle</strong> – name of the window</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>application instance id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.open_using_run_dialog">
+<code class="sig-name descname">open_using_run_dialog</code><span class="sig-paren">(</span><em class="sig-param">executable</em>, <em class="sig-param">windowtitle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_using_run_dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open application using Windows run dialog.
+Window title name is required to get handle on the application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>executable</strong> – name of the executable</p></li>
+<li><p><strong>windowtitle</strong> – name of the window</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>application instance id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.put_system_to_sleep">
+<code class="sig-name descname">put_system_to_sleep</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.put_system_to_sleep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put Windows into sleep mode</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.quit">
+<code class="sig-name descname">quit</code><span class="sig-paren">(</span><em class="sig-param">app_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.quit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quit an application by application id or
+active application if <cite>app_id</cite> is None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>app_id</strong> – application_id, defaults to None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.restore_dialog">
+<code class="sig-name descname">restore_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.restore_dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restore window by its title</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>windowtitle</strong> – name of the window</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.screenshot">
+<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">element=None</em>, <em class="sig-param">ctrl=None</em>, <em class="sig-param">desktop=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.screenshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save screenshot into filename.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – name of the file</p></li>
+<li><p><strong>element</strong> – take element screenshot if True, defaults to None</p></li>
+<li><p><strong>ctrl</strong> – take control screenshot if True, defaults to None</p></li>
+<li><p><strong>desktop</strong> – take desktop screenshot if True, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.send_keys">
+<code class="sig-name descname">send_keys</code><span class="sig-paren">(</span><em class="sig-param">keys</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.send_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send keys into windows</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>keys</strong> – list of keys to send</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.send_keys_to_input">
+<code class="sig-name descname">send_keys_to_input</code><span class="sig-paren">(</span><em class="sig-param">keys_to_type</em>, <em class="sig-param">with_enter=True</em>, <em class="sig-param">send_delay=1.0</em>, <em class="sig-param">enter_delay=3.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.send_keys_to_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send keys to windows and add ENTER if <cite>with_enter</cite> is True</p>
+<p>At the end of send_keys there is by default 1.0 second delay.
+At the end of ENTER there is by default 3.5 second delay.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keys_to_type</strong> – keys to type into Windows</p></li>
+<li><p><strong>with_enter</strong> – send ENTER if <cite>with_enter</cite> is True</p></li>
+<li><p><strong>send_delay</strong> – delay after send_keys</p></li>
+<li><p><strong>enter_delay</strong> – delay after ENTER</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.switch_to_application">
+<code class="sig-name descname">switch_to_application</code><span class="sig-paren">(</span><em class="sig-param">app_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.switch_to_application" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch to application by id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>app_id</strong> – application’s id</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if application is not found by given id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.type_keys">
+<code class="sig-name descname">type_keys</code><span class="sig-paren">(</span><em class="sig-param">keys</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.type_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type keys into application dialog</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>keys</strong> – list of keys to type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.window_exists">
+<code class="sig-name descname">window_exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.window_exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Desktop.Windows.write_element_info_as_json">
+<code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">write_element_info_as_json</code><span class="sig-paren">(</span><em class="sig-param">elements</em>, <em class="sig-param">filename</em>, <em class="sig-param">path='output/json'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.write_element_info_as_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write list of elements into json file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elements</strong> – list of elements to write</p></li>
+<li><p><strong>filename</strong> – output file name</p></li>
+<li><p><strong>path</strong> – output directory, defaults to “output/json”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../email_exchange/index.html" class="btn btn-neutral float-right" title="Email.Exchange" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../libdoc/Desktop/Windows.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

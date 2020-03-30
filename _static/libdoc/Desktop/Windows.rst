@@ -1,0 +1,284 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: Task
+
+Windows methods extending OperatingSystem class.
+
+
+********
+Keywords
+********
+
+:Boot Time In Seconds From Epoch:
+  Get machine boot time
+
+
+:Click Type:
+  :Arguments: x=None, y=None, click_type=click
+
+  Mouse click on coordinates x and y.
+
+  Default click type is `click` meaning `left`
+
+  :raises ValueError: if coordinates are not valid
+
+:Close All Applications:
+  Close all applications
+
+:Connect By Handle:
+  :Arguments: handle
+
+  Connect to application by its handle
+
+
+:Connect By Pid:
+  :Arguments: app_pid
+
+  Connect to application by its pid
+
+
+:Find Element:
+  :Arguments: locator, search_criteria
+
+  Find element from window by locator and criteria.
+
+
+:Get App:
+  :Arguments: app_id=None
+
+  Get application object by id
+
+  By default returns active_application application object.
+
+
+:Get Boot Time:
+  :Arguments: as_datetime=False, datetime_format=%Y-%m-%d %H:%M:%S
+
+  Get computer boot time in seconds from Epoch or in datetime string.
+
+
+:Get Dialog Rectangle:
+  :Arguments: ctrl=None
+
+  Get element rectangle coordinates
+
+  If `ctrl` is None then get coordinates from `dialog`
+
+:Get Element Attributes:
+  :Arguments: element
+
+  Return filtered element dictionary for an element.
+
+
+:Get Element Center:
+  :Arguments: itemdict
+
+  Get element center coordinates
+
+
+:Get Element Coordinates:
+  :Arguments: rectangle
+
+  Get element coordinates from pywinauto object.
+
+
+:Get Machine Name:
+  Get machine name
+
+
+:Get Memory Stats:
+  :Arguments: humanized=True
+
+  Get computer memory stats and return those in bytes
+  or in humanized memory format.
+
+
+:Get Username:
+  Get username of logged in user
+
+
+:Get Window Elements:
+  :Arguments: screenshot=False, element_json=False, outline=False
+
+  Get element information about all window dialog control and their descendants.
+
+
+:Is Element Matching:
+  :Arguments: itemdict, locator, criteria
+
+  Is element matching. Check if locator is found in `any` field
+  or `criteria` field in the window items.
+
+
+:Kill Process:
+  :Arguments: process_name
+
+  Kill process by name
+
+
+:Lock Screen:
+  Put windows into lock mode
+
+:Log In:
+  :Arguments: username, password, domain=.
+
+  Log into Windows `domain` with `username` and `password`.
+
+
+:Menu Select:
+  :Arguments: menuitem
+
+  Select item from menu
+
+
+:Minimize Dialog:
+  :Arguments: windowtitle
+
+  Minimize window by its title
+
+
+:Mouse Click:
+  :Arguments: locator=None, x=0, y=0, off_x=0, off_y=0, image=None, ocr=None, method=locator, ctype=click, screenshot=False
+
+  Mouse click `locator`, `coordinates`, `image` or `ocr`.
+
+  When using method `locator`,`image` or `ocr` mouse is clicked by default at
+  center coordinates.
+
+  Click types are:
+      - `click` normal left button mouse click
+      - `double`
+      - `right`
+
+
+:Mouse Click Coords:
+  :Arguments: x, y, ctype=click
+
+  Click at coordinates on desktop
+
+
+:Mouse Click Image:
+  :Arguments: image, off_x=0, off_y=0, ctype=click
+
+  Click at image on desktop
+
+  :raises NotImplementedError: [description]
+
+:Mouse Click Locator:
+  :Arguments: locator, off_x=0, off_y=0, ctype=click, screenshot=False
+
+  Click at locator on desktop.
+
+  By default click center of the element.
+
+
+:Mouse Click Ocr:
+  :Arguments: ocr, off_x=0, off_y=0, ctype=click
+
+  Click at ocr text on desktop
+
+  :raises NotImplementedError: [description]
+
+:Open Application:
+  :Arguments: application
+
+  Open application by dispatch method
+
+
+:Open Dialog:
+  :Arguments: windowtitle=None, highlight=False
+
+  Open window by its title.
+
+
+:Open Executable:
+  :Arguments: executable, windowtitle
+
+  Open Windows executable. Window title name is required
+  to get handle on the application.
+
+
+:Open File:
+  :Arguments: filename
+
+  Open associated application when opening file
+
+
+:Open From Search:
+  :Arguments: executable, windowtitle
+
+  Open application using Windows search dialog.
+  Window title name is required to get handle on the application.
+
+
+:Open Using Run Dialog:
+  :Arguments: executable, windowtitle
+
+  Open application using Windows run dialog.
+  Window title name is required to get handle on the application.
+
+
+:Process Exists:
+  :Arguments: process_name
+
+  Check if process exists by its name
+
+
+:Put System To Sleep:
+  Put Windows into sleep mode
+
+:Quit:
+  :Arguments: app_id=None
+
+  Quit an application by application id or
+  active application if `app_id` is None.
+
+
+:Restore Dialog:
+  :Arguments: windowtitle
+
+  Restore window by its title
+
+
+:Screenshot:
+  :Arguments: filename, element=None, ctrl=None, desktop=False
+
+  Save screenshot into filename.
+
+
+:Send Keys:
+  :Arguments: keys
+
+  Send keys into windows
+
+
+:Send Keys To Input:
+  :Arguments: keys_to_type, with_enter=True, send_delay=1.0, enter_delay=3.5
+
+  Send keys to windows and add ENTER if `with_enter` is True
+
+  At the end of send_keys there is by default 1.0 second delay.
+  At the end of ENTER there is by default 3.5 second delay.
+
+
+:Switch To Application:
+  :Arguments: app_id
+
+  Switch to application by id.
+
+  :raises ValueError: if application is not found by given id
+
+:Type Keys:
+  :Arguments: keys
+
+  Type keys into application dialog
+
+
+:Window Exists:
+

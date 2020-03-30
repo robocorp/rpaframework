@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Robot Framework API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../conventions.html">Conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Robot Framework API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/libdoc/Tables.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="robot-framework-api">
+<h1>Robot Framework API<a class="headerlink" href="#robot-framework-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Library scope</dt>
+<dd class="field-odd"><p>Task</p>
+</dd>
+</dl>
+<p>Robot Framework library for manipulating tabular data.</p>
+</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list">
+<dt class="field-odd">Add Table Column</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, name=None, values=None</p>
+</dd>
+</dl>
+<p>Append a column to a table.</p>
+</dd>
+<dt class="field-even">Add Table Row</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, row, index=None</p>
+</dd>
+</dl>
+<p>Append rows to a table.</p>
+</dd>
+<dt class="field-even">Clear Table</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table</p>
+</dd>
+</dl>
+<p>Clear table in-place, but keep columns.</p>
+</dd>
+<dt class="field-even">Copy Table</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table</p>
+</dd>
+</dl>
+<p>Copy table object.</p>
+</dd>
+<dt class="field-even">Create Table</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>data=None</p>
+</dd>
+</dl>
+<p>Create Table object from data.</p>
+<p>Data can be a combination of various iterable containers, e.g.
+list of lists, list of dicts, dict of lists.</p>
+</dd>
+<dt class="field-even">Export Table</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table</p>
+</dd>
+</dl>
+<p>Convert table object to standard Python containers.</p>
+</dd>
+<dt class="field-even">Filter Empty Rows</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table</p>
+</dd>
+</dl>
+<p>Remove all rows from the table which have only None values.</p>
+</dd>
+<dt class="field-even">Filter Table By Column</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, column, operator, value</p>
+</dd>
+</dl>
+<p>Return all rows where the column values match the given condition.</p>
+</dd>
+<dt class="field-even">Get Cell Value</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, row, column</p>
+</dd>
+</dl>
+<p>Get a cell value from table.</p>
+</dd>
+<dt class="field-even">Get Table Column</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, column</p>
+</dd>
+</dl>
+<p>Get all column values from table.</p>
+</dd>
+<dt class="field-even">Get Table Row</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, index</p>
+</dd>
+</dl>
+<p>Get a single row from table.</p>
+</dd>
+<dt class="field-even">Group Table By Column</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, column</p>
+</dd>
+</dl>
+<p>Group table by <cite>column</cite> and return a list of grouped Tables.</p>
+</dd>
+<dt class="field-even">Pop Table Column</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, column=None</p>
+</dd>
+</dl>
+<p>Remove column from table and return it.</p>
+</dd>
+<dt class="field-even">Pop Table Row</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, index=None</p>
+</dd>
+</dl>
+<p>Remove row from table and return it.</p>
+</dd>
+<dt class="field-even">Read Table From Csv</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>path, header=None, columns=None, dialect=None</p>
+</dd>
+</dl>
+<p>Read a CSV file as a table.</p>
+</dd>
+<dt class="field-even">Requires Table</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>obj</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Set Column As Index</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, column=None</p>
+</dd>
+</dl>
+<p>Set existing column as index for rows.</p>
+</dd>
+<dt class="field-even">Sort Table By Column</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, column, ascending=False</p>
+</dd>
+</dl>
+<p>Sort table in-place according to <cite>column</cite>.</p>
+</dd>
+<dt class="field-even">Table Head</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, count=5</p>
+</dd>
+</dl>
+<p>Return first <cite>count</cite> rows from table.</p>
+</dd>
+<dt class="field-even">Table Tail</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, count=5</p>
+</dd>
+</dl>
+<p>Return last <cite>count</cite> rows from table.</p>
+</dd>
+<dt class="field-even">Write Table To Csv</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, path</p>
+</dd>
+</dl>
+<p>Write a table as a CSV file.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: Task
+
+RPA Framework library providing SMTP and IMAP operations for specified mail server.
+
+Proper initialization needs `smtp_server` and `imap_server` defined.
+
+********
+Keywords
+********
+
+:Authorize:
+  :Arguments: account=None, password=None
+
+  Authorize user into SMPT and IMAP servers.
+
+  Will use separately set credentials or those given in keyword call.
+
+
+:Delete Message:
+  :Arguments: criterion=
+
+  Delete single message from server based on criterion.
+
+  If criterion does not return exactly 1 message then delete is not done.
+
+
+:Delete Messages:
+  :Arguments: criterion=
+
+  Delete messages from server based on criterion.
+
+
+:List Messages:
+  :Arguments: criterion=
+
+  Return list of messages matching criterion.
+
+
+:Save Attachments:
+  :Arguments: criterion=, target_folder=None, overwrite=False
+
+  Save mail attachments into local folder.
+
+
+:Save Messages:
+  :Arguments: criterion=, target_folder=None
+
+  Save messages based on criteria and store them to target folder
+  with attachment files.
+
+  Does not save message if `target_folder` is not given.
+
+
+:Send Message:
+  :Arguments: sender, recipients, subject, body, attachments=None
+
+  Send SMTP email
+
+  Valid sender values:
+      - First Lastname <address@domain>
+      - address@domain
+
+
+:Send Smtp Hello:
+  Send hello message to SMTP server.
+
+  Required step when creating SMTP connection.
+
+:Set Credentials:
+  :Arguments: account=None, password=None
+
+  Set credentials for library
+
+
+:Wait For Message:
+  :Arguments: criterion=, timeout=5.0, interval=1.0
+
+  Wait for email matching `criterion` to arrive into mailbox.
+
+  Examples:
+      - wait_for_message('SUBJECT "rpa task calling"', timeout=300, interval=10)
+

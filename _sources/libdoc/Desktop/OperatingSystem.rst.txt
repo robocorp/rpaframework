@@ -1,0 +1,56 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: Task
+
+RPA Framework library containing cross platform keywords for managing
+computer properties and actions.
+
+********
+Keywords
+********
+
+:Boot Time In Seconds From Epoch:
+  Get machine boot time
+
+
+:Get Boot Time:
+  :Arguments: as_datetime=False, datetime_format=%Y-%m-%d %H:%M:%S
+
+  Get computer boot time in seconds from Epoch or in datetime string.
+
+
+:Get Machine Name:
+  Get machine name
+
+
+:Get Memory Stats:
+  :Arguments: humanized=True
+
+  Get computer memory stats and return those in bytes
+  or in humanized memory format.
+
+
+:Get Username:
+  Get username of logged in user
+
+
+:Kill Process:
+  :Arguments: process_name
+
+  Kill process by name
+
+
+:Process Exists:
+  :Arguments: process_name
+
+  Check if process exists by its name
+
+
+:Put System To Sleep:
+

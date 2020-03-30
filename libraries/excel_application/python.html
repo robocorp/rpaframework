@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python module API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="HTTP" href="../http/index.html" />
+    <link rel="prev" title="Robot Framework API" href="../../libdoc/Excel/Application.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Excel.Application</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Excel/Application.html">Robot Framework API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../conventions.html">Conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Excel.Application</a> &raquo;</li>
+        
+      <li>Python module API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/excel_application/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-module-api">
+<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.Excel.Application">
+<span id="excel-application"></span><h2>Excel.Application<a class="headerlink" href="#module-RPA.Excel.Application" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Excel.Application.Application">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Excel.Application.</code><code class="sig-name descname">Application</code><a class="headerlink" href="#RPA.Excel.Application.Application" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.core.msoffice.OfficeApplication</span></code></p>
+<p>Library for manipulating Excel application.</p>
+<dl class="method">
+<dt id="RPA.Excel.Application.Application.add_new_sheet">
+<code class="sig-name descname">add_new_sheet</code><span class="sig-paren">(</span><em class="sig-param">sheetname</em>, <em class="sig-param">tabname=None</em>, <em class="sig-param">create_workbook=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.add_new_sheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add new worksheet to workbook. Workbook is created by default if
+it does not exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheetname</strong> – name for sheet</p></li>
+<li><p><strong>tabname</strong> – name for tab, defaults to None</p></li>
+<li><p><strong>create_workbook</strong> – create workbook if True, defaults to True</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – error is raised if workbook does not exist and
+<cite>create_workbook</cite> is False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Application.Application.add_new_workbook">
+<code class="sig-name descname">add_new_workbook</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.add_new_workbook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds new workbook for Excel application</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Application.Application.find_first_available_row">
+<code class="sig-name descname">find_first_available_row</code><span class="sig-paren">(</span><em class="sig-param">worksheet=None</em>, <em class="sig-param">row=1</em>, <em class="sig-param">column=1</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.find_first_available_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find first available free row and cell</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worksheet</strong> – worksheet to handle, defaults to active worksheet if None</p></li>
+<li><p><strong>row</strong> – starting row for search, defaults to 1</p></li>
+<li><p><strong>column</strong> – starting column for search, defaults to 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple (row, column) or (None, None) if not found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Application.Application.open_workbook">
+<code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.open_workbook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open Excel by filename</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – path to filename</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Application.Application.save_excel">
+<code class="sig-name descname">save_excel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.save_excel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves Excel file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Application.Application.save_excel_as">
+<code class="sig-name descname">save_excel_as</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">autofit=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.save_excel_as" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save Excel with name if workbook is open</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – where to save file</p></li>
+<li><p><strong>autofit</strong> – autofit cell widths if True, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Application.Application.set_active_worksheet">
+<code class="sig-name descname">set_active_worksheet</code><span class="sig-paren">(</span><em class="sig-param">sheetname=None</em>, <em class="sig-param">sheetnumber=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.set_active_worksheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set active worksheet by either its sheet number or name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheetname</strong> – [description], defaults to None</p></li>
+<li><p><strong>sheetnumber</strong> – [description], defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Application.Application.write_to_cells">
+<code class="sig-name descname">write_to_cells</code><span class="sig-paren">(</span><em class="sig-param">worksheet=None</em>, <em class="sig-param">row=None</em>, <em class="sig-param">column=None</em>, <em class="sig-param">value=None</em>, <em class="sig-param">number_format=None</em>, <em class="sig-param">formula=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.write_to_cells" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write value, number_format and/or formula into cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worksheet</strong> – worksheet to handle, defaults to active worksheet if None</p></li>
+<li><p><strong>row</strong> – target row, defaults to None</p></li>
+<li><p><strong>column</strong> – target row, defaults to None</p></li>
+<li><p><strong>value</strong> – possible value to set, defaults to None</p></li>
+<li><p><strong>number_format</strong> – possible number format to set, defaults to None</p></li>
+<li><p><strong>formula</strong> – possible format to set, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if cell is not given</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../http/index.html" class="btn btn-neutral float-right" title="HTTP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../libdoc/Excel/Application.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

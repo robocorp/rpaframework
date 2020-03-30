@@ -1,0 +1,495 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python module API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Robocloud.Secrets" href="../robocloud_secrets/index.html" />
+    <link rel="prev" title="Robot Framework API" href="../../libdoc/Robocloud/Items.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Robocloud.Items</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Robocloud/Items.html">Robot Framework API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../conventions.html">Conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Robocloud.Items</a> &raquo;</li>
+        
+      <li>Python module API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/robocloud_items/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-RPA.Robocloud.Items">
+<span id="python-module-api"></span><h1>Python module API<a class="headerlink" href="#module-RPA.Robocloud.Items" title="Permalink to this headline">¶</a></h1>
+<p>WorkItem library skeleton</p>
+<ul class="simple">
+<li><p>Multiple adapters for different backend</p></li>
+<li><p>Default endpoints, tokens, ids from env (runtime)</p></li>
+</ul>
+<dl class="class">
+<dt id="RPA.Robocloud.Items.BaseAdapter">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Items.</code><code class="sig-name descname">BaseAdapter</code><a class="headerlink" href="#RPA.Robocloud.Items.BaseAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Abstract base class for work item adapters.</p>
+<dl class="method">
+<dt id="RPA.Robocloud.Items.BaseAdapter.load">
+<em class="property">abstract </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">workspace_id</em>, <em class="sig-param">item_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.BaseAdapter.load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.BaseAdapter.save">
+<em class="property">abstract </em><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">workspace_id</em>, <em class="sig-param">item_id</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.BaseAdapter.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Robocloud.Items.FileAdapter">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Items.</code><code class="sig-name descname">FileAdapter</code><a class="headerlink" href="#RPA.Robocloud.Items.FileAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Robocloud.Items.BaseAdapter" title="RPA.Robocloud.Items.BaseAdapter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Robocloud.Items.BaseAdapter</span></code></a></p>
+<p>Adapter for saving/loading work items from disk.</p>
+<p>Required environment variables:</p>
+<ul class="simple">
+<li><p>RPA_WORKITEMS_PATH:   Path to work items database file</p></li>
+</ul>
+<dl class="method">
+<dt id="RPA.Robocloud.Items.FileAdapter.load">
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">workspace_id</em>, <em class="sig-param">item_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.FileAdapter.load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.FileAdapter.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">workspace_id</em>, <em class="sig-param">item_id</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.FileAdapter.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Robocloud.Items.Items">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Items.</code><code class="sig-name descname">Items</code><span class="sig-paren">(</span><em class="sig-param">load_env=True</em>, <em class="sig-param">default_adapter=&lt;class 'RPA.Robocloud.Items.RobocloudAdapter'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A library for interacting with RPA work items.</p>
+<p><cite>WorkItems</cite> is a collection of keywords for handling data
+that is moved between different processes and Robot Framework
+tasks. It allows storing and restoring values to/from cloud or file based
+storage, and manipulating their contents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>load_env</strong> – Automatically load work item using environment variables</p></li>
+<li><p><strong>default_adapter</strong> – Set default adapter if not overriden by environment</p></li>
+</ul>
+</dd>
+</dl>
+<p>Environment variables:</p>
+<ul class="simple">
+<li><p>RPA_WORKITEMS_ADAPTER: Import path to adapter, e.g. “mymodule.MyAdapter”</p></li>
+<li><p>RC_WORKSPACE_ID:       Current default workspace ID</p></li>
+<li><p>RC_WORKITEM_ID:        Current default work item ID</p></li>
+</ul>
+<dl class="attribute">
+<dt id="RPA.Robocloud.Items.Items.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Robocloud.Items.Items.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Robocloud.Items.Items.ROBOT_LISTENER_API_VERSION">
+<code class="sig-name descname">ROBOT_LISTENER_API_VERSION</code><em class="property"> = 2</em><a class="headerlink" href="#RPA.Robocloud.Items.Items.ROBOT_LISTENER_API_VERSION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Robocloud.Items.Items.adapter">
+<code class="sig-name descname">adapter</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Robocloud.Items.Items.adapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adapter factory for new work items</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.Items.clear_work_item">
+<code class="sig-name descname">clear_work_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.clear_work_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all data in the current work item.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Robocloud.Items.Items.current">
+<code class="sig-name descname">current</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Robocloud.Items.Items.current" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current active work item, set automatically to latest loaded item</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.Items.get_work_item_variable">
+<code class="sig-name descname">get_work_item_variable</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">default=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.get_work_item_variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a single variable value from the work item,
+or default value if defined and key does not exist.
+If key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – Name of variable</p></li>
+<li><p><strong>default</strong> – Default value if key does not exist</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.Items.get_work_item_variables">
+<code class="sig-name descname">get_work_item_variables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.get_work_item_variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read all variables from the current work item and
+return them as a dictionary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.Items.load_work_item">
+<code class="sig-name descname">load_work_item</code><span class="sig-paren">(</span><em class="sig-param">workspace_id</em>, <em class="sig-param">item_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.load_work_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load work item for reading/writing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workspace_id</strong> – Workspace ID which contains item</p></li>
+<li><p><strong>item_id</strong> – Workitem ID to load</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.Items.load_work_item_from_environment">
+<code class="sig-name descname">load_work_item_from_environment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.load_work_item_from_environment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load current work item defined by the runtime environment.</p>
+<p>The corresponding environment variables are:</p>
+<ul class="simple">
+<li><p>RC_WORKSPACE_ID</p></li>
+<li><p>RC_WORKITEM_ID</p></li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.Items.save_work_item">
+<code class="sig-name descname">save_work_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.save_work_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the current data in the work item. If not saved,
+all changes are discarded when the library goes out of scope.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.Items.set_task_variables_from_work_item">
+<code class="sig-name descname">set_task_variables_from_work_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.set_task_variables_from_work_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert all variables in the current work item to
+Robot Framework task variables.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.Items.set_work_item_variable">
+<code class="sig-name descname">set_work_item_variable</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.set_work_item_variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a single variable value in the current work item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – Name of variable</p></li>
+<li><p><strong>value</strong> – Value of variable</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.Items.set_work_item_variables">
+<code class="sig-name descname">set_work_item_variables</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.set_work_item_variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set multiple variables in the current work item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Pairs of variable names and values</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Robocloud.Items.RobocloudAdapter">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Items.</code><code class="sig-name descname">RobocloudAdapter</code><a class="headerlink" href="#RPA.Robocloud.Items.RobocloudAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Robocloud.Items.BaseAdapter" title="RPA.Robocloud.Items.BaseAdapter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Robocloud.Items.BaseAdapter</span></code></a></p>
+<p>Adapter for saving/loading work items from Robocloud.</p>
+<p>Required environment variables:</p>
+<ul class="simple">
+<li><p>RC_API_WORKITEM_HOST:     Work item data API hostname</p></li>
+<li><p>RC_API_WORKITEM_TOKEN:    Work item data API access token</p></li>
+</ul>
+<dl class="method">
+<dt id="RPA.Robocloud.Items.RobocloudAdapter.handle_response">
+<code class="sig-name descname">handle_response</code><span class="sig-paren">(</span><em class="sig-param">request</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.RobocloudAdapter.handle_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.RobocloudAdapter.headers">
+<em class="property">property </em><code class="sig-name descname">headers</code><a class="headerlink" href="#RPA.Robocloud.Items.RobocloudAdapter.headers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.RobocloudAdapter.load">
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">workspace_id</em>, <em class="sig-param">item_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.RobocloudAdapter.load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.RobocloudAdapter.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">workspace_id</em>, <em class="sig-param">item_id</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.RobocloudAdapter.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.RobocloudAdapter.url">
+<code class="sig-name descname">url</code><span class="sig-paren">(</span><em class="sig-param">workspace_id</em>, <em class="sig-param">item_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.RobocloudAdapter.url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Robocloud.Items.WorkItem">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Items.</code><code class="sig-name descname">WorkItem</code><span class="sig-paren">(</span><em class="sig-param">workspace_id</em>, <em class="sig-param">item_id</em>, <em class="sig-param">adapter</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.WorkItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container for a single work item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workspade_id</strong> – Workspace ID which contains item</p></li>
+<li><p><strong>item_id</strong> – Workitem ID</p></li>
+<li><p><strong>adapter</strong> – Adapter for storage backend</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="RPA.Robocloud.Items.WorkItem.data">
+<code class="sig-name descname">data</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Robocloud.Items.WorkItem.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current item payload</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.WorkItem.load">
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.WorkItem.load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.WorkItem.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.WorkItem.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.WorkItem.show">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.WorkItem.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Robocloud.Items.json_dump_safe">
+<code class="sig-prename descclassname">RPA.Robocloud.Items.</code><code class="sig-name descname">json_dump_safe</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.json_dump_safe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert data to JSON string, and skip invalid values.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../robocloud_secrets/index.html" class="btn btn-neutral float-right" title="Robocloud.Secrets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../libdoc/Robocloud/Items.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

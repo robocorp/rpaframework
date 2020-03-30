@@ -1,0 +1,2866 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: Global
+
+.. raw:: html
+
+   <p>RPA Framework library for Browser operations.</p>
+   <p>Extends functionality of SeleniumLibrary.</p>
+
+********
+Keywords
+********
+
+:Add Cookie:
+  :Arguments: name, value, path=None, domain=None, secure=None, expiry=None
+
+  .. raw:: html
+
+     <p>Adds a cookie to your current session.</p>
+     <p><code>name</code> and <code>value</code> are required, <code>path</code>, <code>domain</code>, <code>secure</code> and <code>expiry</code> are optional.  Expiry supports the same formats as the <a href="http://robotframework.org/robotframework/latest/libraries/DateTime.html">DateTime</a> library or an epoch timestamp.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Add%20Cookie" class="name">Add Cookie</a></td>
+     <td>foo</td>
+     <td>bar</td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Add%20Cookie" class="name">Add Cookie</a></td>
+     <td>foo</td>
+     <td>bar</td>
+     <td>domain=example.com</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Add%20Cookie" class="name">Add Cookie</a></td>
+     <td>foo</td>
+     <td>bar</td>
+     <td>expiry=2027-09-28 16:21:35</td>
+     <td># Expiry as timestamp.</td>
+     </tr>
+     <tr>
+     <td><a href="#Add%20Cookie" class="name">Add Cookie</a></td>
+     <td>foo</td>
+     <td>bar</td>
+     <td>expiry=1822137695</td>
+     <td># Expiry as epoch seconds.</td>
+     </tr>
+     </table>
+     <p>Prior to SeleniumLibrary 3.0 setting expiry did not work.</p>
+
+:Add Location Strategy:
+  :Arguments: strategy_name, strategy_keyword, persist=False
+
+  .. raw:: html
+
+     <p>Adds a custom location strategy.</p>
+     <p>See <span class="name">Custom locators</span> for information on how to create and use custom strategies. <a href="#Remove%20Location%20Strategy" class="name">Remove Location Strategy</a> can be used to remove a registered strategy.</p>
+     <p>Location strategies are automatically removed after leaving the current scope by default. Setting <code>persist</code> to a true value (see <span class="name">Boolean arguments</span>) will cause the location strategy to stay registered throughout the life of the test.</p>
+
+:Alert Should Be Present:
+  :Arguments: text=, action=ACCEPT, timeout=None
+
+  .. raw:: html
+
+     <p>Verifies that an alert is present and by default, accepts it.</p>
+     <p>Fails if no alert is present. If <code>text</code> is a non-empty string, then it is used to verify alert's message. The alert is accepted by default, but that behavior can be controlled by using the <code>action</code> argument same way as with <a href="#Handle%20Alert" class="name">Handle Alert</a>.</p>
+     <p><code>timeout</code> specifies how long to wait for the alert to appear. If it is not given, the global default <span class="name">timeout</span> is used instead.</p>
+     <p><code>action</code> and <code>timeout</code> arguments are new in SeleniumLibrary 3.0. In earlier versions, the alert was always accepted and a timeout was hardcoded to one second.</p>
+
+:Alert Should Not Be Present:
+  :Arguments: action=ACCEPT, timeout=0
+
+  .. raw:: html
+
+     <p>Verifies that no alert is present.</p>
+     <p>If the alert actually exists, the <code>action</code> argument determines how it should be handled. By default, the alert is accepted, but it can be also dismissed or left open the same way as with the <a href="#Handle%20Alert" class="name">Handle Alert</a> keyword.</p>
+     <p><code>timeout</code> specifies how long to wait for the alert to appear. By default, is not waited for the alert at all, but a custom time can be given if alert may be delayed. See the <span class="name">time format</span> section for information about the syntax.</p>
+     <p>New in SeleniumLibrary 3.0.</p>
+
+:Assign Id To Element:
+  :Arguments: locator, id
+
+  .. raw:: html
+
+     <p>Assigns a temporary <code>id</code> to the element specified by <code>locator</code>.</p>
+     <p>This is mainly useful if the locator is complicated and/or slow XPath expression and it is needed multiple times. Identifier expires when the page is reloaded.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Assign%20Id%20To%20Element" class="name">Assign ID to Element</a></td>
+     <td>//ul[@class='example' and ./li[contains(., 'Stuff')]]</td>
+     <td>my id</td>
+     </tr>
+     <tr>
+     <td><a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a></td>
+     <td>my id</td>
+     <td></td>
+     </tr>
+     </table>
+
+:Capture Element Screenshot:
+  :Arguments: locator, filename=selenium-element-screenshot-{index}.png
+
+  .. raw:: html
+
+     <p>Captures a screenshot from the element identified by <code>locator</code> and embeds it into log file.</p>
+     <p>See <a href="#Capture%20Page%20Screenshot" class="name">Capture Page Screenshot</a> for details about <code>filename</code> argument. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>An absolute path to the created element screenshot is returned.</p>
+     <p>Support for capturing the screenshot from an element has limited support among browser vendors. Please check the browser vendor driver documentation does the browser support capturing a screenshot from an element.</p>
+     <p>New in SeleniumLibrary 3.3. Support for EMBED is new in SeleniumLibrary 4.2.</p>
+     <p>Examples:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Capture%20Element%20Screenshot" class="name">Capture Element Screenshot</a></td>
+     <td>id:image_id</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Capture%20Element%20Screenshot" class="name">Capture Element Screenshot</a></td>
+     <td>id:image_id</td>
+     <td>${OUTPUTDIR}/id_image_id-1.png</td>
+     </tr>
+     <tr>
+     <td><a href="#Capture%20Element%20Screenshot" class="name">Capture Element Screenshot</a></td>
+     <td>id:image_id</td>
+     <td>EMBED</td>
+     </tr>
+     </table>
+
+:Capture Page Screenshot:
+  :Arguments: filename=selenium-screenshot-{index}.png
+
+  .. raw:: html
+
+     <p>Takes a screenshot of the current page and embeds it into a log file.</p>
+     <p><code>filename</code> argument specifies the name of the file to write the screenshot into. The directory where screenshots are saved can be set when <a href="#Importing" class="name">importing</a> the library or by using the <a href="#Set%20Screenshot%20Directory" class="name">Set Screenshot Directory</a> keyword. If the directory is not configured, screenshots are saved to the same directory where Robot Framework's log file is written.</p>
+     <p>If <code>filename</code> equals to EMBED (case insensitive), then screenshot is embedded as Base64 image to the log.html. In this case file is not created in the filesystem.</p>
+     <p>Starting from SeleniumLibrary 1.8, if <code>filename</code> contains marker <code>{index}</code>, it will be automatically replaced with an unique running index, preventing files to be overwritten. Indices start from 1, and how they are represented can be customized using Python's <a href="https://docs.python.org/3/library/string.html#format-string-syntax">format string syntax</a>.</p>
+     <p>An absolute path to the created screenshot file is returned or if <code>filename</code>  equals to EMBED, word <span class="name">EMBED</span> is returned.</p>
+     <p>Support for EMBED is new in SeleniumLibrary 4.2</p>
+     <p>Examples:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Capture%20Page%20Screenshot" class="name">Capture Page Screenshot</a></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><span class="name">File Should Exist</span></td>
+     <td>${OUTPUTDIR}/selenium-screenshot-1.png</td>
+     </tr>
+     <tr>
+     <td>${path} =</td>
+     <td><a href="#Capture%20Page%20Screenshot" class="name">Capture Page Screenshot</a></td>
+     </tr>
+     <tr>
+     <td><span class="name">File Should Exist</span></td>
+     <td>${OUTPUTDIR}/selenium-screenshot-2.png</td>
+     </tr>
+     <tr>
+     <td><span class="name">File Should Exist</span></td>
+     <td>${path}</td>
+     </tr>
+     <tr>
+     <td><a href="#Capture%20Page%20Screenshot" class="name">Capture Page Screenshot</a></td>
+     <td>custom_name.png</td>
+     </tr>
+     <tr>
+     <td><span class="name">File Should Exist</span></td>
+     <td>${OUTPUTDIR}/custom_name.png</td>
+     </tr>
+     <tr>
+     <td><a href="#Capture%20Page%20Screenshot" class="name">Capture Page Screenshot</a></td>
+     <td>custom_with_index_{index}.png</td>
+     </tr>
+     <tr>
+     <td><span class="name">File Should Exist</span></td>
+     <td>${OUTPUTDIR}/custom_with_index_1.png</td>
+     </tr>
+     <tr>
+     <td><a href="#Capture%20Page%20Screenshot" class="name">Capture Page Screenshot</a></td>
+     <td>formatted_index_{index:03}.png</td>
+     </tr>
+     <tr>
+     <td><span class="name">File Should Exist</span></td>
+     <td>${OUTPUTDIR}/formatted_index_001.png</td>
+     </tr>
+     <tr>
+     <td><a href="#Capture%20Page%20Screenshot" class="name">Capture Page Screenshot</a></td>
+     <td>EMBED</td>
+     </tr>
+     <tr>
+     <td><span class="name">File Should Not Exist</span></td>
+     <td>EMBED</td>
+     </tr>
+     </table>
+
+:Checkbox Should Be Selected:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Verifies checkbox <code>locator</code> is selected/checked.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Checkbox Should Not Be Selected:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Verifies checkbox <code>locator</code> is not selected/checked.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Choose File:
+  :Arguments: locator, file_path
+
+  .. raw:: html
+
+     <p>Inputs the <code>file_path</code> into the file input field <code>locator</code>.</p>
+     <p>This keyword is most often used to input files into upload forms. The keyword does not check <code>file_path</code> is the file or folder available on the machine where tests are executed. If the <code>file_path</code> points at a file and when using Selenium Grid, Selenium will <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.command.html?highlight=upload#selenium.webdriver.remote.command.Command.UPLOAD_FILE">magically</a>, transfer the file from the machine where the tests are executed to the Selenium Grid node where the browser is running. Then Selenium will send the file path, from the nodes file system, to the browser.</p>
+     <p>That <code>file_path</code> is not checked, is new in SeleniumLibrary 4.0.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Choose%20File" class="name">Choose File</a></td>
+     <td>my_upload_field</td>
+     <td>${CURDIR}/trades.csv</td>
+     </tr>
+     </table>
+
+:Clear Element Text:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Clears the value of the text-input-element identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Click Button:
+  :Arguments: locator, modifier=False
+
+  .. raw:: html
+
+     <p>Clicks the button identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, buttons are searched using <code>id</code>, <code>name</code>, and <code>value</code>.</p>
+     <p>See the <a href="#Click%20Element" class="name">Click Element</a> keyword for details about the <code>modifier</code> argument.</p>
+     <p>The <code>modifier</code> argument is new in SeleniumLibrary 3.3</p>
+
+:Click Element:
+  :Arguments: locator, modifier=False, action_chain=False
+
+  .. raw:: html
+
+     <p>Click the element identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>The <code>modifier</code> argument can be used to pass <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys">Selenium Keys</a> when clicking the element. The <span class="name">+</span> can be used as a separator for different Selenium Keys. The <span class="name">CTRL</span> is internally translated to the <span class="name">CONTROL</span> key. The <code>modifier</code> is space and case insensitive, example "alt" and " aLt " are supported formats to <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys.ALT">ALT key</a> . If <code>modifier</code> does not match to Selenium Keys, keyword fails.</p>
+     <p>If <code>action_chain</code> argument is true, see <span class="name">Boolean arguments</span> for more details on how to set boolean argument, then keyword uses ActionChain based click instead of the &lt;web_element&gt;.click() function. If both <code>action_chain</code> and <code>modifier</code> are defined, the click will be performed using <code>modifier</code> and <code>action_chain</code> will be ignored.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td>Click Element</td>
+     <td>id:button</td>
+     <td></td>
+     <td># Would click element without any modifiers.</td>
+     </tr>
+     <tr>
+     <td>Click Element</td>
+     <td>id:button</td>
+     <td>CTRL</td>
+     <td># Would click element with CTLR key pressed down.</td>
+     </tr>
+     <tr>
+     <td>Click Element</td>
+     <td>id:button</td>
+     <td>CTRL+ALT</td>
+     <td># Would click element with CTLR and ALT keys pressed down.</td>
+     </tr>
+     <tr>
+     <td>Click Element</td>
+     <td>id:button</td>
+     <td>action_chain=True</td>
+     <td># Clicks the button using an Selenium  ActionChains</td>
+     </tr>
+     </table>
+     <p>The <code>modifier</code> argument is new in SeleniumLibrary 3.2 The <code>action_chain</code> argument is new in SeleniumLibrary 4.1</p>
+
+:Click Element At Coordinates:
+  :Arguments: locator, xoffset, yoffset
+
+  .. raw:: html
+
+     <p>Click the element <code>locator</code> at <code>xoffset/yoffset</code>.</p>
+     <p>The Cursor is moved and the center of the element and x/y coordinates are calculated from that point.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Click Image:
+  :Arguments: locator, modifier=False
+
+  .. raw:: html
+
+     <p>Clicks an image identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, images are searched using <code>id</code>, <code>name</code>, <code>src</code> and <code>alt</code>.</p>
+     <p>See the <a href="#Click%20Element" class="name">Click Element</a> keyword for details about the <code>modifier</code> argument.</p>
+     <p>The <code>modifier</code> argument is new in SeleniumLibrary 3.3</p>
+
+:Click Link:
+  :Arguments: locator, modifier=False
+
+  .. raw:: html
+
+     <p>Clicks a link identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, links are searched using <code>id</code>, <code>name</code>, <code>href</code> and the link text.</p>
+     <p>See the <a href="#Click%20Element" class="name">Click Element</a> keyword for details about the <code>modifier</code> argument.</p>
+     <p>The <code>modifier</code> argument is new in SeleniumLibrary 3.3</p>
+
+:Close All Browsers:
+  .. raw:: html
+
+     <p>Closes all open browsers and resets the browser cache.</p>
+     <p>After this keyword, new indexes returned from <a href="#Open%20Browser" class="name">Open Browser</a> keyword are reset to 1.</p>
+     <p>This keyword should be used in test or suite teardown to make sure all browsers are closed.</p>
+
+:Close Browser:
+  .. raw:: html
+
+     <p>Closes the current browser.</p>
+
+:Close Window:
+  .. raw:: html
+
+     <p>Closes currently opened and selected browser window/tab.</p>
+
+:Cover Element:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Will cover elements identified by <code>locator</code> with a blue div without breaking page layout.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>New in SeleniumLibrary 3.3.0</p>
+     <p>Example: |<a href="#Cover%20Element" class="name">Cover Element</a> | css:div#container |</p>
+
+:Create Webdriver:
+  :Arguments: driver_name, alias=None, kwargs={}, \*\*init_kwargs
+
+  .. raw:: html
+
+     <p>Creates an instance of Selenium WebDriver.</p>
+     <p>Like <a href="#Open%20Browser" class="name">Open Browser</a>, but allows passing arguments to the created WebDriver instance directly. This keyword should only be used if the functionality provided by <a href="#Open%20Browser" class="name">Open Browser</a> is not adequate.</p>
+     <p><code>driver_name</code> must be a WebDriver implementation name like Firefox, Chrome, Ie, Opera, Safari, PhantomJS, or Remote.</p>
+     <p>The initialized WebDriver can be configured either with a Python dictionary <code>kwargs</code> or by using keyword arguments <code>**init_kwargs</code>. These arguments are passed directly to WebDriver without any processing. See <a href="https://seleniumhq.github.io/selenium/docs/api/py/api.html">Selenium API documentation</a> for details about the supported arguments.</p>
+     <p>Examples:</p>
+     <table border="1">
+     <tr>
+     <td># Use proxy with Firefox</td>
+     <td></td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>${proxy}=</td>
+     <td><span class="name">Evaluate</span></td>
+     <td>selenium.webdriver.Proxy()</td>
+     <td>modules=selenium, selenium.webdriver</td>
+     </tr>
+     <tr>
+     <td>${proxy.http_proxy}=</td>
+     <td><span class="name">Set Variable</span></td>
+     <td>localhost:8888</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Create%20Webdriver" class="name">Create Webdriver</a></td>
+     <td>Firefox</td>
+     <td>proxy=${proxy}</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td># Use proxy with PhantomJS</td>
+     <td></td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>${service args}=</td>
+     <td><span class="name">Create List</span></td>
+     <td>--proxy=192.168.132.104:8888</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Create%20Webdriver" class="name">Create Webdriver</a></td>
+     <td>PhantomJS</td>
+     <td>service_args=${service args}</td>
+     <td></td>
+     </tr>
+     </table>
+     <p>Returns the index of this browser instance which can be used later to switch back to it. Index starts from 1 and is reset back to it when <a href="#Close%20All%20Browsers" class="name">Close All Browsers</a> keyword is used. See <a href="#Switch%20Browser" class="name">Switch Browser</a> for an example.</p>
+
+:Current Frame Should Contain:
+  :Arguments: text, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies that the current frame contains <code>text</code>.</p>
+     <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about the <code>loglevel</code> argument.</p>
+     <p>Prior to SeleniumLibrary 3.0 this keyword was named <span class="name">Current Frame Contains</span>.</p>
+
+:Current Frame Should Not Contain:
+  :Arguments: text, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies that the current frame does not contain <code>text</code>.</p>
+     <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about the <code>loglevel</code> argument.</p>
+
+:Delete All Cookies:
+  .. raw:: html
+
+     <p>Deletes all cookies.</p>
+
+:Delete Cookie:
+  :Arguments: name
+
+  .. raw:: html
+
+     <p>Deletes the cookie matching <code>name</code>.</p>
+     <p>If the cookie is not found, nothing happens.</p>
+
+:Double Click Element:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Double clicks the element identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Drag And Drop:
+  :Arguments: locator, target
+
+  .. raw:: html
+
+     <p>Drags the element identified by <code>locator</code> into the <code>target</code> element.</p>
+     <p>The <code>locator</code> argument is the locator of the dragged element and the <code>target</code> is the locator of the target. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Drag%20And%20Drop" class="name">Drag And Drop</a></td>
+     <td>css:div#element</td>
+     <td>css:div.target</td>
+     </tr>
+     </table>
+
+:Drag And Drop By Offset:
+  :Arguments: locator, xoffset, yoffset
+
+  .. raw:: html
+
+     <p>Drags the element identified with <code>locator</code> by <code>xoffset/yoffset</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>The element will be moved by <code>xoffset</code> and <code>yoffset</code>, each of which is a negative or positive number specifying the offset.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Drag%20And%20Drop%20By%20Offset" class="name">Drag And Drop By Offset</a></td>
+     <td>myElem</td>
+     <td>50</td>
+     <td>-35</td>
+     <td># Move myElem 50px right and 35px down</td>
+     </tr>
+     </table>
+
+:Element Attribute Value Should Be:
+  :Arguments: locator, attribute, expected, message=None
+
+  .. raw:: html
+
+     <p>Verifies element identified by <code>locator</code> contains expected attribute value.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Example: <a href="#Element%20Attribute%20Value%20Should%20Be" class="name">Element Attribute Value Should Be</a> | css:img | href | value</p>
+     <p>New in SeleniumLibrary 3.2.</p>
+
+:Element Should Be Disabled:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Verifies that element identified by <code>locator</code> is disabled.</p>
+     <p>This keyword considers also elements that are read-only to be disabled.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Element Should Be Enabled:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Verifies that element identified by <code>locator</code> is enabled.</p>
+     <p>This keyword considers also elements that are read-only to be disabled.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Element Should Be Focused:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Verifies that element identified by <code>locator</code> is focused.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>New in SeleniumLibrary 3.0.</p>
+
+:Element Should Be Visible:
+  :Arguments: locator, message=None
+
+  .. raw:: html
+
+     <p>Verifies that the element identified by <code>locator</code> is visible.</p>
+     <p>Herein, visible means that the element is logically visible, not optically visible in the current browser viewport. For example, an element that carries <code>display:none</code> is not logically visible, so using this keyword on that element would fail.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>The <code>message</code> argument can be used to override the default error message.</p>
+
+:Element Should Contain:
+  :Arguments: locator, expected, message=None, ignore_case=False
+
+  .. raw:: html
+
+     <p>Verifies that element <code>locator</code> contains text <code>expected</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>The <code>message</code> argument can be used to override the default error message.</p>
+     <p>The <code>ignore_case</code> argument can be set to True to compare case insensitive, default is False. New in SeleniumLibrary 3.1.</p>
+     <p><code>ignore_case</code> argument is new in SeleniumLibrary 3.1.</p>
+     <p>Use <a href="#Element%20Text%20Should%20Be" class="name">Element Text Should Be</a> if you want to match the exact text, not a substring.</p>
+
+:Element Should Not Be Visible:
+  :Arguments: locator, message=None
+
+  .. raw:: html
+
+     <p>Verifies that the element identified by <code>locator</code> is NOT visible.</p>
+     <p>Passes if the element does not exists. See <a href="#Element%20Should%20Be%20Visible" class="name">Element Should Be Visible</a> for more information about visibility and supported arguments.</p>
+
+:Element Should Not Contain:
+  :Arguments: locator, expected, message=None, ignore_case=False
+
+  .. raw:: html
+
+     <p>Verifies that element <code>locator</code> does not contain text <code>expected</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>The <code>message</code> argument can be used to override the default error message.</p>
+     <p>The <code>ignore_case</code> argument can be set to True to compare case insensitive, default is False.</p>
+     <p><code>ignore_case</code> argument new in SeleniumLibrary 3.1.</p>
+
+:Element Text Should Be:
+  :Arguments: locator, expected, message=None, ignore_case=False
+
+  .. raw:: html
+
+     <p>Verifies that element <code>locator</code> contains exact the text <code>expected</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>The <code>message</code> argument can be used to override the default error message.</p>
+     <p>The <code>ignore_case</code> argument can be set to True to compare case insensitive, default is False.</p>
+     <p><code>ignore_case</code> argument is new in SeleniumLibrary 3.1.</p>
+     <p>Use <a href="#Element%20Should%20Contain" class="name">Element Should Contain</a> if a substring match is desired.</p>
+
+:Element Text Should Not Be:
+  :Arguments: locator, not_expected, message=None, ignore_case=False
+
+  .. raw:: html
+
+     <p>Verifies that element <code>locator</code> does not contain exact the text <code>not_expected</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>The <code>message</code> argument can be used to override the default error message.</p>
+     <p>The <code>ignore_case</code> argument can be set to True to compare case insensitive, default is False.</p>
+     <p>New in SeleniumLibrary 3.1.1</p>
+
+:Execute Async Javascript:
+  :Arguments: \*code
+
+  .. raw:: html
+
+     <p>Executes asynchronous JavaScript code with possible arguments.</p>
+     <p>Similar to <a href="#Execute%20Javascript" class="name">Execute Javascript</a> except that scripts executed with this keyword must explicitly signal they are finished by invoking the provided callback. This callback is always injected into the executed function as the last argument.</p>
+     <p>Scripts must complete within the script timeout or this keyword will fail. See the <span class="name">Timeout</span> section for more information.</p>
+     <p>Starting from SeleniumLibrary 3.2 it is possible to provide JavaScript <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.execute_async_script">arguments</a> as part of <code>code</code> argument. See <a href="#Execute%20Javascript" class="name">Execute Javascript</a> for more details.</p>
+     <p>Examples:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Execute%20Async%20Javascript" class="name">Execute Async JavaScript</a></td>
+     <td>var callback = arguments[arguments.length - 1]; window.setTimeout(callback, 2000);</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Execute%20Async%20Javascript" class="name">Execute Async JavaScript</a></td>
+     <td>${CURDIR}/async_js_to_execute.js</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>${result} =</td>
+     <td><a href="#Execute%20Async%20Javascript" class="name">Execute Async JavaScript</a></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>...</td>
+     <td>var callback = arguments[arguments.length - 1];</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>...</td>
+     <td>function answer(){callback("text");};</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>...</td>
+     <td>window.setTimeout(answer, 2000);</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><span class="name">Should Be Equal</span></td>
+     <td>${result}</td>
+     <td>text</td>
+     </tr>
+     </table>
+
+:Execute Javascript:
+  :Arguments: \*code
+
+  .. raw:: html
+
+     <p>Executes the given JavaScript code with possible arguments.</p>
+     <p><code>code</code> may be divided into multiple cells in the test data and <code>code</code> may contain multiple lines of code and arguments. In that case, the JavaScript code parts are concatenated together without adding spaces and optional arguments are separated from <code>code</code>.</p>
+     <p>If <code>code</code> is a path to an existing file, the JavaScript to execute will be read from that file. Forward slashes work as a path separator on all operating systems.</p>
+     <p>The JavaScript executes in the context of the currently selected frame or window as the body of an anonymous function. Use <code>window</code> to refer to the window of your application and <code>document</code> to refer to the document object of the current frame or window, e.g. <code>document.getElementById('example')</code>.</p>
+     <p>This keyword returns whatever the executed JavaScript code returns. Return values are converted to the appropriate Python types.</p>
+     <p>Starting from SeleniumLibrary 3.2 it is possible to provide JavaScript <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.execute_script">arguments</a> as part of <code>code</code> argument. The JavaScript code and arguments must be separated with <span class="name">JAVASCRIPT</span> and <span class="name">ARGUMENTS</span> markers and must be used exactly with this format. If the Javascript code is first, then the <span class="name">JAVASCRIPT</span> marker is optional. The order of <span class="name">JAVASCRIPT</span> and <span class="name">ARGUMENTS</span> markers can be swapped, but if <span class="name">ARGUMENTS</span> is the first marker, then <span class="name">JAVASCRIPT</span> marker is mandatory. It is only allowed to use <span class="name">JAVASCRIPT</span> and <span class="name">ARGUMENTS</span> markers only one time in the <code>code</code> argument.</p>
+     <p>Examples:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Execute%20Javascript" class="name">Execute JavaScript</a></td>
+     <td>window.myFunc('arg1', 'arg2')</td>
+     <td></td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Execute%20Javascript" class="name">Execute JavaScript</a></td>
+     <td>${CURDIR}/js_to_execute.js</td>
+     <td></td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Execute%20Javascript" class="name">Execute JavaScript</a></td>
+     <td>alert(arguments[0]);</td>
+     <td>ARGUMENTS</td>
+     <td>123</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Execute%20Javascript" class="name">Execute JavaScript</a></td>
+     <td>ARGUMENTS</td>
+     <td>123</td>
+     <td>JAVASCRIPT</td>
+     <td>alert(arguments[0]);</td>
+     </tr>
+     </table>
+
+:Frame Should Contain:
+  :Arguments: locator, text, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies that frame identified by <code>locator</code> contains <code>text</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about the <code>loglevel</code> argument.</p>
+
+:Get All Links:
+  .. raw:: html
+
+     <p>Returns a list containing ids of all links found in current page.</p>
+     <p>If a link has no id, an empty string will be in the list instead.</p>
+
+:Get Browser Aliases:
+  .. raw:: html
+
+     <p>Returns aliases of all active browser that has an alias as NormalizedDict. The dictionary contains the aliases as keys and the index as value. This can be accessed as dictionary <code>${aliases.key}</code> or as list <code>@{aliases}[0]</code>.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="https://example.com">https://example.com</a></td>
+     <td>alias=BrowserA</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="https://example.com">https://example.com</a></td>
+     <td>alias=BrowserB</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>&amp;{aliases}</td>
+     <td><a href="#Get%20Browser%20Aliases" class="name">Get Browser Aliases</a></td>
+     <td></td>
+     <td># &amp;{aliases} = { BrowserA=1|BrowserB=2 }</td>
+     </tr>
+     <tr>
+     <td><span class="name">Log</span></td>
+     <td>${aliases.BrowserA}</td>
+     <td></td>
+     <td># logs <code>1</code></td>
+     </tr>
+     <tr>
+     <td>FOR</td>
+     <td>${alias}</td>
+     <td>IN</td>
+     <td>@{aliases}</td>
+     </tr>
+     <tr>
+     <td></td>
+     <td><span class="name">Log</span></td>
+     <td>${alias}</td>
+     <td># logs <code>BrowserA</code> and <code>BrowserB</code></td>
+     </tr>
+     <tr>
+     <td>END</td>
+     <td></td>
+     <td></td>
+     <td></td>
+     </tr>
+     </table>
+     <p>See <a href="#Switch%20Browser" class="name">Switch Browser</a> for more information and examples.</p>
+     <p>New in SeleniumLibrary 4.0</p>
+
+:Get Browser Ids:
+  .. raw:: html
+
+     <p>Returns index of all active browser as list.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td>@{browser_ids}=</td>
+     <td>Get Browser Ids</td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>FOR</td>
+     <td>${id}</td>
+     <td>IN</td>
+     <td>@{browser_ids}</td>
+     </tr>
+     <tr>
+     <td></td>
+     <td>@{window_titles}=</td>
+     <td>Get Window Titles</td>
+     <td>browser=${id}</td>
+     </tr>
+     <tr>
+     <td></td>
+     <td>Log</td>
+     <td>Browser ${id} has these windows: ${window_titles}</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>END</td>
+     <td></td>
+     <td></td>
+     <td></td>
+     </tr>
+     </table>
+     <p>See <a href="#Switch%20Browser" class="name">Switch Browser</a> for more information and examples.</p>
+     <p>New in SeleniumLibrary 4.0</p>
+
+:Get Cookie:
+  :Arguments: name
+
+  .. raw:: html
+
+     <p>Returns information of cookie with <code>name</code> as an object.</p>
+     <p>If no cookie is found with <code>name</code>, keyword fails. The cookie object contains details about the cookie. Attributes available in the object are documented in the table below.</p>
+     <table border="1">
+     <tr>
+     <th>Attribute</th>
+     <th>Explanation</th>
+     </tr>
+     <tr>
+     <td>name</td>
+     <td>The name of a cookie.</td>
+     </tr>
+     <tr>
+     <td>value</td>
+     <td>Value of the cookie.</td>
+     </tr>
+     <tr>
+     <td>path</td>
+     <td>Indicates a URL path, for example <code>/</code>.</td>
+     </tr>
+     <tr>
+     <td>domain</td>
+     <td>The domain, the cookie is visible to.</td>
+     </tr>
+     <tr>
+     <td>secure</td>
+     <td>When true, the cookie is only used with HTTPS connections.</td>
+     </tr>
+     <tr>
+     <td>httpOnly</td>
+     <td>When true, the cookie is not accessible via JavaScript.</td>
+     </tr>
+     <tr>
+     <td>expiry</td>
+     <td>Python datetime object indicating when the cookie expires.</td>
+     </tr>
+     <tr>
+     <td>extra</td>
+     <td>Possible attributes outside of the WebDriver specification</td>
+     </tr>
+     </table>
+     <p>See the <a href="https://w3c.github.io/webdriver/#cookies">WebDriver specification</a> for details about the cookie information. Notice that <code>expiry</code> is specified as a <a href="https://docs.python.org/3/library/datetime.html#datetime.datetime">datetime object</a>, not as seconds since Unix Epoch like WebDriver natively does.</p>
+     <p>In some cases, example when running a browser in the cloud, it is possible that the cookie contains other attributes than is defined in the <a href="https://w3c.github.io/webdriver/#cookies">WebDriver specification</a>. These other attributes are available in an <code>extra</code> attribute in the cookie object and it contains a dictionary of the other attributes. The <code>extra</code> attribute is new in SeleniumLibrary 4.0.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Add%20Cookie" class="name">Add Cookie</a></td>
+     <td>foo</td>
+     <td>bar</td>
+     </tr>
+     <tr>
+     <td>${cookie} =</td>
+     <td><a href="#Get%20Cookie" class="name">Get Cookie</a></td>
+     <td>foo</td>
+     </tr>
+     <tr>
+     <td><span class="name">Should Be Equal</span></td>
+     <td>${cookie.name}</td>
+     <td>bar</td>
+     </tr>
+     <tr>
+     <td><span class="name">Should Be Equal</span></td>
+     <td>${cookie.value}</td>
+     <td>foo</td>
+     </tr>
+     <tr>
+     <td><span class="name">Should Be True</span></td>
+     <td>${cookie.expiry.year} &gt; 2017</td>
+     <td></td>
+     </tr>
+     </table>
+     <p>New in SeleniumLibrary 3.0.</p>
+
+:Get Cookies:
+  :Arguments: as_dict=False
+
+  .. raw:: html
+
+     <p>Returns all cookies of the current page.</p>
+     <p>If <code>as_dict</code> argument evaluates as false, see <span class="name">Boolean arguments</span> for more details, then cookie information is returned as a single string in format <code>name1=value1; name2=value2; name3=value3</code>. When <code>as_dict</code> argument evaluates as true, cookie information is returned as Robot Framework dictionary format. The string format can be used, for example, for logging purposes or in headers when sending HTTP requests. The dictionary format is helpful when the result can be passed to requests library's Create Session keyword's optional cookies parameter.</p>
+     <p>The <span class="name">` as_dict</span>` argument is new in SeleniumLibrary 3.3</p>
+
+:Get Element Attribute:
+  :Arguments: locator, attribute
+
+  .. raw:: html
+
+     <p>Returns the value of <code>attribute</code> from the element <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td>${id}=</td>
+     <td><a href="#Get%20Element%20Attribute" class="name">Get Element Attribute</a></td>
+     <td>css:h1</td>
+     <td>id</td>
+     </tr>
+     </table>
+     <p>Passing attribute name as part of the <code>locator</code> was removed in SeleniumLibrary 3.2. The explicit <code>attribute</code> argument should be used instead.</p>
+
+:Get Element Count:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Returns the number of elements matching <code>locator</code>.</p>
+     <p>If you wish to assert the number of matching elements, use <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> with <code>limit</code> argument. Keyword will always return an integer.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td>${count} =</td>
+     <td><a href="#Get%20Element%20Count" class="name">Get Element Count</a></td>
+     <td>name:div_name</td>
+     </tr>
+     <tr>
+     <td><span class="name">Should Be True</span></td>
+     <td>${count} &gt; 2</td>
+     <td></td>
+     </tr>
+     </table>
+     <p>New in SeleniumLibrary 3.0.</p>
+
+:Get Element Size:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Returns width and height of the element identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Both width and height are returned as integers.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td>${width}</td>
+     <td>${height} =</td>
+     <td><a href="#Get%20Element%20Size" class="name">Get Element Size</a></td>
+     <td>css:div#container</td>
+     </tr>
+     </table>
+
+:Get Horizontal Position:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Returns the horizontal position of the element identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>The position is returned in pixels off the left side of the page, as an integer.</p>
+     <p>See also <a href="#Get%20Vertical%20Position" class="name">Get Vertical Position</a>.</p>
+
+:Get List Items:
+  :Arguments: locator, values=False
+
+  .. raw:: html
+
+     <p>Returns all labels or values of selection list <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Returns visible labels by default, but values can be returned by setting the <code>values</code> argument to a true value (see <span class="name">Boolean arguments</span>).</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td>${labels} =</td>
+     <td><a href="#Get%20List%20Items" class="name">Get List Items</a></td>
+     <td>mylist</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>${values} =</td>
+     <td><a href="#Get%20List%20Items" class="name">Get List Items</a></td>
+     <td>css:#example select</td>
+     <td>values=True</td>
+     </tr>
+     </table>
+     <p>Support to return values is new in SeleniumLibrary 3.0.</p>
+
+:Get Location:
+  .. raw:: html
+
+     <p>Returns the current browser window URL.</p>
+
+:Get Locations:
+  :Arguments: browser=CURRENT
+
+  .. raw:: html
+
+     <p>Returns and logs URLs of all windows of the selected browser.</p>
+     <p><b>Browser Scope:</b></p>
+     <p>The <code>browser</code> argument specifies the browser that shall return its windows information.</p>
+     <ul>
+     <li><code>browser</code> can be <code>index_or_alias</code> like in <a href="#Switch%20Browser" class="name">Switch Browser</a>.</li>
+     </ul>
+     <ul>
+     <li>If <code>browser</code> is <code>CURRENT</code> (default, case-insensitive) the currently active browser is selected.</li>
+     </ul>
+     <ul>
+     <li>If <code>browser</code> is <code>ALL</code> (case-insensitive) the window information of all windows of all opened browsers are returned.</li>
+     </ul>
+
+:Get Selected List Label:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Returns the label of selected option from selection list <code>locator</code>.</p>
+     <p>If there are multiple selected options, the label of the first option is returned.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Get Selected List Labels:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Returns labels of selected options from selection list <code>locator</code>.</p>
+     <p>Starting from SeleniumLibrary 3.0, returns an empty list if there are no selections. In earlier versions, this caused an error.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Get Selected List Value:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Returns the value of selected option from selection list <code>locator</code>.</p>
+     <p>If there are multiple selected options, the value of the first option is returned.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Get Selected List Values:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Returns values of selected options from selection list <code>locator</code>.</p>
+     <p>Starting from SeleniumLibrary 3.0, returns an empty list if there are no selections. In earlier versions, this caused an error.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Get Selenium Implicit Wait:
+  .. raw:: html
+
+     <p>Gets the implicit wait value used by Selenium.</p>
+     <p>The value is returned as a human-readable string like <code>1 second</code>.</p>
+     <p>See the <span class="name">Implicit wait</span> section above for more information.</p>
+
+:Get Selenium Speed:
+  .. raw:: html
+
+     <p>Gets the delay that is waited after each Selenium command.</p>
+     <p>The value is returned as a human-readable string like <code>1 second</code>.</p>
+     <p>See the <span class="name">Selenium Speed</span> section above for more information.</p>
+
+:Get Selenium Timeout:
+  .. raw:: html
+
+     <p>Gets the timeout that is used by various keywords.</p>
+     <p>The value is returned as a human-readable string like <code>1 second</code>.</p>
+     <p>See the <span class="name">Timeout</span> section above for more information.</p>
+
+:Get Session Id:
+  .. raw:: html
+
+     <p>Returns the currently active browser session id.</p>
+     <p>New in SeleniumLibrary 3.2</p>
+
+:Get Source:
+  .. raw:: html
+
+     <p>Returns the entire HTML source of the current page or frame.</p>
+
+:Get Table Cell:
+  :Arguments: locator, row, column, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Returns contents of a table cell.</p>
+     <p>The table is located using the <code>locator</code> argument and its cell found using <code>row</code> and <code>column</code>. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Both row and column indexes start from 1, and header and footer rows are included in the count. It is possible to refer to rows and columns from the end by using negative indexes so that -1 is the last row/column, -2 is the second last, and so on.</p>
+     <p>All <code>&lt;th&gt;</code> and <code>&lt;td&gt;</code> elements anywhere in the table are considered to be cells.</p>
+     <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about the <code>loglevel</code> argument.</p>
+
+:Get Text:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Returns the text value of the element identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Get Title:
+  .. raw:: html
+
+     <p>Returns the title of the current page.</p>
+
+:Get Value:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Returns the value attribute of the element identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Get Vertical Position:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Returns the vertical position of the element identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>The position is returned in pixels off the top of the page, as an integer.</p>
+     <p>See also <a href="#Get%20Horizontal%20Position" class="name">Get Horizontal Position</a>.</p>
+
+:Get WebElement:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Returns the first WebElement matching the given <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Get WebElements:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Returns a list of WebElement objects matching the <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Starting from SeleniumLibrary 3.0, the keyword returns an empty list if there are no matching elements. In previous releases, the keyword failed in this case.</p>
+
+:Get Window Handles:
+  :Arguments: browser=CURRENT
+
+  .. raw:: html
+
+     <p>Returns all child window handles of the selected browser as a list.</p>
+     <p>Can be used as a list of windows to exclude with <a href="#Select%20Window" class="name">Select Window</a>.</p>
+     <p>How to select the <code>browser</code> scope of this keyword, see <a href="#Get%20Locations" class="name">Get Locations</a>.</p>
+     <p>Prior to SeleniumLibrary 3.0, this keyword was named <span class="name">List Windows</span>.</p>
+
+:Get Window Identifiers:
+  :Arguments: browser=CURRENT
+
+  .. raw:: html
+
+     <p>Returns and logs id attributes of all windows of the selected browser.</p>
+     <p>How to select the <code>browser</code> scope of this keyword, see <a href="#Get%20Locations" class="name">Get Locations</a>.</p>
+
+:Get Window Names:
+  :Arguments: browser=CURRENT
+
+  .. raw:: html
+
+     <p>Returns and logs names of all windows of the selected browser.</p>
+     <p>How to select the <code>browser</code> scope of this keyword, see <a href="#Get%20Locations" class="name">Get Locations</a>.</p>
+
+:Get Window Position:
+  .. raw:: html
+
+     <p>Returns current window position.</p>
+     <p>The position is relative to the top left corner of the screen. Returned values are integers. See also <a href="#Set%20Window%20Position" class="name">Set Window Position</a>.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td>${x}</td>
+     <td>${y}=</td>
+     <td><a href="#Get%20Window%20Position" class="name">Get Window Position</a></td>
+     </tr>
+     </table>
+
+:Get Window Size:
+  :Arguments: inner=False
+
+  .. raw:: html
+
+     <p>Returns current window width and height as integers.</p>
+     <p>See also <a href="#Set%20Window%20Size" class="name">Set Window Size</a>.</p>
+     <p>If <code>inner</code> parameter is set to True, keyword returns HTML DOM window.innerWidth and window.innerHeight properties. See <span class="name">Boolean arguments</span> for more details on how to set boolean arguments. The <code>inner</code> is new in SeleniumLibrary 4.0.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td>${width}</td>
+     <td>${height}=</td>
+     <td><a href="#Get%20Window%20Size" class="name">Get Window Size</a></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>${width}</td>
+     <td>${height}=</td>
+     <td><a href="#Get%20Window%20Size" class="name">Get Window Size</a></td>
+     <td>True</td>
+     </tr>
+     </table>
+
+:Get Window Titles:
+  :Arguments: browser=CURRENT
+
+  .. raw:: html
+
+     <p>Returns and logs titles of all windows of the selected browser.</p>
+     <p>How to select the <code>browser</code> scope of this keyword, see <a href="#Get%20Locations" class="name">Get Locations</a>.</p>
+
+:Go Back:
+  .. raw:: html
+
+     <p>Simulates the user clicking the back button on their browser.</p>
+
+:Go To:
+  :Arguments: url
+
+  .. raw:: html
+
+     <p>Navigates the current browser window to the provided <code>url</code>.</p>
+
+:Handle Alert:
+  :Arguments: action=ACCEPT, timeout=None
+
+  .. raw:: html
+
+     <p>Handles the current alert and returns its message.</p>
+     <p>By default, the alert is accepted, but this can be controlled with the <code>action</code> argument that supports the following case-insensitive values:</p>
+     <ul>
+     <li><code>ACCEPT</code>: Accept the alert i.e. press <code>Ok</code>. Default.</li>
+     <li><code>DISMISS</code>: Dismiss the alert i.e. press <code>Cancel</code>.</li>
+     <li><code>LEAVE</code>: Leave the alert open.</li>
+     </ul>
+     <p>The <code>timeout</code> argument specifies how long to wait for the alert to appear. If it is not given, the global default <span class="name">timeout</span> is used instead.</p>
+     <p>Examples:</p>
+     <table border="1">
+     <tr>
+     <td>Handle Alert</td>
+     <td></td>
+     <td></td>
+     <td># Accept alert.</td>
+     </tr>
+     <tr>
+     <td>Handle Alert</td>
+     <td>action=DISMISS</td>
+     <td></td>
+     <td># Dismiss alert.</td>
+     </tr>
+     <tr>
+     <td>Handle Alert</td>
+     <td>timeout=10 s</td>
+     <td></td>
+     <td># Use custom timeout and accept alert.</td>
+     </tr>
+     <tr>
+     <td>Handle Alert</td>
+     <td>DISMISS</td>
+     <td>1 min</td>
+     <td># Use custom timeout and dismiss alert.</td>
+     </tr>
+     <tr>
+     <td>${message} =</td>
+     <td>Handle Alert</td>
+     <td></td>
+     <td># Accept alert and get its message.</td>
+     </tr>
+     <tr>
+     <td>${message} =</td>
+     <td>Handle Alert</td>
+     <td>LEAVE</td>
+     <td># Leave alert open and get its message.</td>
+     </tr>
+     </table>
+     <p>New in SeleniumLibrary 3.0.</p>
+
+:Input Password:
+  :Arguments: locator, password, clear=True
+
+  .. raw:: html
+
+     <p>Types the given password into the text field identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. See <a href="#Input%20Text" class="name">Input Text</a> for <code>clear</code> argument details.</p>
+     <p>Difference compared to <a href="#Input%20Text" class="name">Input Text</a> is that this keyword does not log the given password on the INFO level. Notice that if you use the keyword like</p>
+     <table border="1">
+     <tr>
+     <td>Input Password</td>
+     <td>password_field</td>
+     <td>password</td>
+     </tr>
+     </table>
+     <p>the password is shown as a normal keyword argument. A way to avoid that is using variables like</p>
+     <table border="1">
+     <tr>
+     <td>Input Password</td>
+     <td>password_field</td>
+     <td>${PASSWORD}</td>
+     </tr>
+     </table>
+     <p>Please notice that Robot Framework logs all arguments using the TRACE level and tests must not be executed using level below DEBUG if the password should not be logged in any format.</p>
+     <p>The <span class="name">clear</span> argument is new in SeleniumLibrary 4.0. Hiding password logging from Selenium logs is new in SeleniumLibrary 4.2.</p>
+
+:Input Text:
+  :Arguments: locator, text, clear=True
+
+  .. raw:: html
+
+     <p>Types the given <code>text</code> into the text field identified by <code>locator</code>.</p>
+     <p>When <code>clear</code> is true, the input element is cleared before the text is typed into the element. When false, the previous text is not cleared from the element. Use <a href="#Input%20Password" class="name">Input Password</a> if you do not want the given <code>text</code> to be logged.</p>
+     <p>If <a href="https://github.com/SeleniumHQ/selenium/wiki/Grid2">Selenium Grid</a> is used and the <code>text</code> argument points to a file in the file system, then this keyword prevents the Selenium to transfer the file to the Selenium Grid hub. Instead, this keyword will send the <code>text</code> string as is to the element. If a file should be transferred to the hub and upload should be performed, please use <a href="#Choose%20File" class="name">Choose File</a> keyword.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. See the <span class="name">Boolean arguments</span> section how Boolean values are handled.</p>
+     <p>Disabling the file upload the Selenium Grid node and the <span class="name">clear</span> argument are new in SeleniumLibrary 4.0</p>
+
+:Input Text Into Alert:
+  :Arguments: text, action=ACCEPT, timeout=None
+
+  .. raw:: html
+
+     <p>Types the given <code>text</code> into an input field in an alert.</p>
+     <p>The alert is accepted by default, but that behavior can be controlled by using the <code>action</code> argument same way as with <a href="#Handle%20Alert" class="name">Handle Alert</a>.</p>
+     <p><code>timeout</code> specifies how long to wait for the alert to appear. If it is not given, the global default <span class="name">timeout</span> is used instead.</p>
+     <p>New in SeleniumLibrary 3.0.</p>
+
+:Input Text When Element Is Visible:
+  :Arguments: locator, text
+
+  .. raw:: html
+
+     <p>Input text into locator after it has become visible</p>
+     <p>:param locator: selector :param text: insert text to locator</p>
+
+:List Selection Should Be:
+  :Arguments: locator, \*expected
+
+  .. raw:: html
+
+     <p>Verifies selection list <code>locator</code> has <code>expected</code> options selected.</p>
+     <p>It is possible to give expected options both as visible labels and as values. Starting from SeleniumLibrary 3.0, mixing labels and values is not possible. Order of the selected options is not validated.</p>
+     <p>If no expected options are given, validates that the list has no selections. A more explicit alternative is using <a href="#List%20Should%20Have%20No%20Selections" class="name">List Should Have No Selections</a>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Examples:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#List%20Selection%20Should%20Be" class="name">List Selection Should Be</a></td>
+     <td>gender</td>
+     <td>Female</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#List%20Selection%20Should%20Be" class="name">List Selection Should Be</a></td>
+     <td>interests</td>
+     <td>Test Automation</td>
+     <td>Python</td>
+     </tr>
+     </table>
+
+:List Should Have No Selections:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Verifies selection list <code>locator</code> has no options selected.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Location Should Be:
+  :Arguments: url, message=None
+
+  .. raw:: html
+
+     <p>Verifies that the current URL is exactly <code>url</code>.</p>
+     <p>The <code>url</code> argument contains the exact url that should exist in browser.</p>
+     <p>The <code>message</code> argument can be used to override the default error message.</p>
+     <p><code>message</code> argument is new in SeleniumLibrary 3.2.0.</p>
+
+:Location Should Contain:
+  :Arguments: expected, message=None
+
+  .. raw:: html
+
+     <p>Verifies that the current URL contains <code>expected</code>.</p>
+     <p>The <code>expected</code> argument contains the expected value in url.</p>
+     <p>The <code>message</code> argument can be used to override the default error message.</p>
+     <p><code>message</code> argument is new in SeleniumLibrary 3.2.0.</p>
+
+:Locator Should Match X Times:
+  :Arguments: locator, x, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p><b>DEPRECATED in SeleniumLibrary 4.0.</b>, use <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> with <code>limit</code> argument instead.</p>
+
+:Log Location:
+  .. raw:: html
+
+     <p>Logs and returns the current browser window URL.</p>
+
+:Log Source:
+  :Arguments: loglevel=INFO
+
+  .. raw:: html
+
+     <p>Logs and returns the HTML source of the current page or frame.</p>
+     <p>The <code>loglevel</code> argument defines the used log level. Valid log levels are <code>WARN</code>, <code>INFO</code> (default), <code>DEBUG</code>, <code>TRACE</code> and <code>NONE</code> (no logging).</p>
+
+:Log Title:
+  .. raw:: html
+
+     <p>Logs and returns the title of the current page.</p>
+
+:Maximize Browser Window:
+  .. raw:: html
+
+     <p>Maximizes current browser window.</p>
+
+:Mouse Down:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Simulates pressing the left mouse button on the element <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>The element is pressed without releasing the mouse button.</p>
+     <p>See also the more specific keywords <a href="#Mouse%20Down%20On%20Image" class="name">Mouse Down On Image</a> and <a href="#Mouse%20Down%20On%20Link" class="name">Mouse Down On Link</a>.</p>
+
+:Mouse Down On Image:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Simulates a mouse down event on an image identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, images are searched using <code>id</code>, <code>name</code>, <code>src</code> and <code>alt</code>.</p>
+
+:Mouse Down On Link:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Simulates a mouse down event on a link identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, links are searched using <code>id</code>, <code>name</code>, <code>href</code> and the link text.</p>
+
+:Mouse Out:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Simulates moving the mouse away from the element <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Mouse Over:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Simulates hovering the mouse over the element <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Mouse Up:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Simulates releasing the left mouse button on the element <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Open Available Browser:
+  :Arguments: url, use_profile=False, headless=False, maximized=False, browser_selection=AUTO
+
+  .. raw:: html
+
+     <p>Open available browser</p>
+     <p>Keywords opens the first available browser it can find from the system in preferred order or given browser (<span class="name">browser_selection</span>)</p>
+     <p>Steps:</p>
+     <p>1. Get order of browsers 2. Loop list of preferred of browsers</p>
+     <p>a. Set webdriver options for browser b. Create webdriver using existing installaiton c. (If step b. failed) Download and install webdriver, try again d. (If step c. failed) Try starting webdriver in headless mode</p>
+     <p>3. Open url</p>
+     <p>If unable to open browser raises <span class="name">BrowserNotFoundError</span>.</p>
+     <p>:param url: address to open :param use_profile: set browser profile, defaults to False :param headless: run in headless mode, defaults to False :param maximized: run window maximized, defaults to False :param browser_selection: browser name, defaults to AUTOMATIC_BROWSER_SELECTION</p>
+
+:Open Browser:
+  :Arguments: url=None, browser=firefox, alias=None, remote_url=False, desired_capabilities=None, ff_profile_dir=None, options=None, service_log_path=None, executable_path=None
+
+  .. raw:: html
+
+     <p>Opens a new browser instance to the optional <code>url</code>.</p>
+     <p>The <code>browser</code> argument specifies which browser to use. The supported browsers are listed in the table below. The browser names are case-insensitive and some browsers have multiple supported names.</p>
+     <table border="1">
+     <tr>
+     <th>Browser</th>
+     <th>Name(s)</th>
+     </tr>
+     <tr>
+     <td>Firefox</td>
+     <td>firefox, ff</td>
+     </tr>
+     <tr>
+     <td>Google Chrome</td>
+     <td>googlechrome, chrome, gc</td>
+     </tr>
+     <tr>
+     <td>Headless Firefox</td>
+     <td>headlessfirefox</td>
+     </tr>
+     <tr>
+     <td>Headless Chrome</td>
+     <td>headlesschrome</td>
+     </tr>
+     <tr>
+     <td>Internet Explorer</td>
+     <td>internetexplorer, ie</td>
+     </tr>
+     <tr>
+     <td>Edge</td>
+     <td>edge</td>
+     </tr>
+     <tr>
+     <td>Safari</td>
+     <td>safari</td>
+     </tr>
+     <tr>
+     <td>Opera</td>
+     <td>opera</td>
+     </tr>
+     <tr>
+     <td>Android</td>
+     <td>android</td>
+     </tr>
+     <tr>
+     <td>Iphone</td>
+     <td>iphone</td>
+     </tr>
+     <tr>
+     <td>PhantomJS</td>
+     <td>phantomjs</td>
+     </tr>
+     <tr>
+     <td>HTMLUnit</td>
+     <td>htmlunit</td>
+     </tr>
+     <tr>
+     <td>HTMLUnit with Javascript</td>
+     <td>htmlunitwithjs</td>
+     </tr>
+     </table>
+     <p>To be able to actually use one of these browsers, you need to have a matching Selenium browser driver available. See the <a href="https://github.com/robotframework/SeleniumLibrary#browser-drivers">project documentation</a> for more details. Headless Firefox and Headless Chrome are new additions in SeleniumLibrary 3.1.0 and require Selenium 3.8.0 or newer.</p>
+     <p>After opening the browser, it is possible to use optional <code>url</code> to navigate the browser to the desired address.</p>
+     <p>Optional <code>alias</code> is an alias given for this browser instance and it can be used for switching between browsers. When same <code>alias</code> is given with two <a href="#Open%20Browser" class="name">Open Browser</a> keywords, the first keyword will open a new browser, but the second one will switch to the already opened browser and will not open a new browser. The <code>alias</code> definition overrules <code>browser</code> definition. When same <code>alias</code> is used but a different <code>browser</code> is defined, then switch to a browser with same alias is done and new browser is not opened. An alternative approach for switching is using an index returned by this keyword. These indices start from 1, are incremented when new browsers are opened, and reset back to 1 when <a href="#Close%20All%20Browsers" class="name">Close All Browsers</a> is called. See <a href="#Switch%20Browser" class="name">Switch Browser</a> for more information and examples.</p>
+     <p>Optional <code>remote_url</code> is the URL for a <a href="https://github.com/SeleniumHQ/selenium/wiki/Grid2">Selenium Grid</a>.</p>
+     <p>Optional <code>desired_capabilities</code> can be used to configure, for example, logging preferences for a browser or a browser and operating system when using <a href="http://saucelabs.com">Sauce Labs</a>. Desired capabilities can be given either as a Python dictionary or as a string in the format <code>key1:value1,key2:value2</code>. <a href="https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities">Selenium documentation</a> lists possible capabilities that can be enabled.</p>
+     <p>Optional <code>ff_profile_dir</code> is the path to the Firefox profile directory if you wish to overwrite the default profile Selenium uses. Notice that prior to SeleniumLibrary 3.0, the library contained its own profile that was used by default. The <code>ff_profile_dir</code> can also be an instance of the <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_firefox/selenium.webdriver.firefox.firefox_profile.html">selenium.webdriver.FirefoxProfile</a> . As a third option, it is possible to use <span class="name">FirefoxProfile</span> methods and attributes to define the profile using methods and attributes in the same way as with <code>options</code> argument. Example: It is possible to use FirefoxProfile <span class="name">set_preference</span> to define different profile settings. See <code>options</code> argument documentation in below how to handle backslash escaping.</p>
+     <p>Optional <code>options</code> argument allows defining browser specific Selenium options. Example for Chrome, the <code>options</code> argument allows defining the following <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options.Options">methods and attributes</a> and for Firefox these <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_firefox/selenium.webdriver.firefox.options.html?highlight=firefox#selenium.webdriver.firefox.options.Options">methods and attributes</a> are available. Please note that not all browsers, supported by the SeleniumLibrary, have Selenium options available. Therefore please consult the Selenium documentation which browsers do support the Selenium options. If <code>browser</code> argument is <span class="name">android</span> then <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options.Options">Chrome options</a> is used. Selenium options are also supported, when <code>remote_url</code> argument is used.</p>
+     <p>The SeleniumLibrary <code>options</code> argument accepts Selenium options in two different formats: as a string and as Python object which is an instance of the Selenium options class.</p>
+     <p>The string format allows defining Selenium options methods or attributes and their arguments in Robot Framework test data. The method and attributes names are case and space sensitive and must match to the Selenium options methods and attributes names. When defining a method, it must be defined in a similar way as in python: method name, opening parenthesis, zero to many arguments and closing parenthesis. If there is a need to define multiple arguments for a single method, arguments must be separated with comma, just like in Python. Example: <span class="name">add_argument("--headless")</span> or <span class="name">add_experimental_option("key", "value")</span>. Attributes are defined in a similar way as in Python: attribute name, equal sign, and attribute value. Example, <span class="name">headless=True</span>. Multiple methods and attributes must be separated by a semicolon. Example: <span class="name">add_argument("--headless");add_argument("--start-maximized")</span>.</p>
+     <p>Arguments allow defining Python data types and arguments are evaluated by using Python <a href="https://docs.python.org/3/library/ast.html#ast.literal_eval">ast.literal_eval</a>. Strings must be quoted with single or double quotes, example "value" or 'value'. It is also possible to define other Python builtin data types, example <span class="name">True</span> or <span class="name">None</span>, by not using quotes around the arguments.</p>
+     <p>The string format is space friendly. Usually, spaces do not alter the defining methods or attributes. There are two exceptions. In some Robot Framework test data formats, two or more spaces are considered as cell separator and instead of defining a single argument, two or more arguments may be defined. Spaces in string arguments are not removed and are left as is. Example <span class="name">add_argument ( "--headless" )</span> is same as <span class="name">add_argument("--headless")</span>. But <span class="name">add_argument(" --headless ")</span> is not same same as <span class="name">add_argument ( "--headless" )</span>, because spaces inside of quotes are not removed. Please note that if options string contains backslash, example a Windows OS path, the backslash needs escaping both in Robot Framework data and in Python side. This means single backslash must be writen using four backslash characters. Example, Windows path: "C:\path\to\profile" must be written as "C:\\\\path\\\to\\\\profile". Another way to write backslash is use Python <a href="https://docs.python.org/3/reference/lexical_analysis.html#string-and-bytes-literals">raw strings</a> and example write: r"C:\\path\\to\\profile".</p>
+     <p>As last format, <code>options</code> argument also supports receiving the Selenium options as Python class instance. In this case, the instance is used as-is and the SeleniumLibrary will not convert the instance to other formats. For example, if the following code return value is saved to <span class="name">${options}</span> variable in the Robot Framework data:</p>
+     <pre>
+     options = webdriver.ChromeOptions()
+     options.add_argument('--disable-dev-shm-usage')
+     return options
+     </pre>
+     <p>Then the <span class="name">${options}</span> variable can be used as an argument to <code>options</code>.</p>
+     <p>Example the <code>options</code> argument can be used to launch Chomium-based applications which utilize the <a href="https://bitbucket.org/chromiumembedded/cef/wiki/UsingChromeDriver">Chromium Embedded Framework</a> . To lauch Chomium-based application, use <code>options</code> to define <span class="name">binary_location</span> attribute and use <span class="name">add_argument</span> method to define <span class="name">remote-debugging-port</span> port for the application. Once the browser is opened, the test can interact with the embedded web-content of the system under test.</p>
+     <p>Optional <code>service_log_path</code> argument defines the name of the file where to write the browser driver logs. If the <code>service_log_path</code>  argument contain a  marker <code>{index}</code>, it will be automatically replaced with unique running index preventing files to be overwritten. Indices start's from 1, and how they are represented can be customized using Python's <a href="https://docs.python.org/3/library/string.html#format-string-syntax">format string syntax</a>.</p>
+     <p>Optional <code>executable_path</code> argument defines the path to the driver executable, example to a chromedriver or a geckodriver. If not defined it is assumed the executable is in the <a href="https://en.wikipedia.org/wiki/PATH_(variable)">$PATH</a>.</p>
+     <p>Examples:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://example.com">http://example.com</a></td>
+     <td>Chrome</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://example.com">http://example.com</a></td>
+     <td>Firefox</td>
+     <td>alias=Firefox</td>
+     </tr>
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://example.com">http://example.com</a></td>
+     <td>Edge</td>
+     <td>remote_url=http://127.0.0.1:4444/wd/hub</td>
+     </tr>
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td>about:blank</td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td>browser=Chrome</td>
+     <td></td>
+     <td></td>
+     </tr>
+     </table>
+     <p>Alias examples:</p>
+     <table border="1">
+     <tr>
+     <td>${1_index} =</td>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://example.com">http://example.com</a></td>
+     <td>Chrome</td>
+     <td>alias=Chrome</td>
+     <td># Opens new browser because alias is new.</td>
+     </tr>
+     <tr>
+     <td>${2_index} =</td>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://example.com">http://example.com</a></td>
+     <td>Firefox</td>
+     <td></td>
+     <td># Opens new browser because alias is not defined.</td>
+     </tr>
+     <tr>
+     <td>${3_index} =</td>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://example.com">http://example.com</a></td>
+     <td>Chrome</td>
+     <td>alias=Chrome</td>
+     <td># Switches to the browser with Chrome alias.</td>
+     </tr>
+     <tr>
+     <td>${4_index} =</td>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://example.com">http://example.com</a></td>
+     <td>Chrome</td>
+     <td>alias=${1_index}</td>
+     <td># Switches to the browser with Chrome alias.</td>
+     </tr>
+     <tr>
+     <td>Should Be Equal</td>
+     <td>${1_index}</td>
+     <td>${3_index}</td>
+     <td></td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>Should Be Equal</td>
+     <td>${1_index}</td>
+     <td>${4_index}</td>
+     <td></td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>Should Be Equal</td>
+     <td>${2_index}</td>
+     <td>${2}</td>
+     <td></td>
+     <td></td>
+     <td></td>
+     </tr>
+     </table>
+     <p>Example when using <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.options.html#selenium.webdriver.chrome.options.Options">Chrome options</a> method:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://example.com">http://example.com</a></td>
+     <td>Chrome</td>
+     <td>options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors")</td>
+     <td># Sting format.</td>
+     </tr>
+     <tr>
+     <td>${options} =</td>
+     <td>Get Options</td>
+     <td></td>
+     <td></td>
+     <td># Selenium options instance.</td>
+     </tr>
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://example.com">http://example.com</a></td>
+     <td>Chrome</td>
+     <td>options=${options}</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td>None</td>
+     <td>Chrome</td>
+     <td>options=binary_location="/path/to/binary";add_argument("remote-debugging-port=port")</td>
+     <td># Start Chomium-based application.</td>
+     </tr>
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td>None</td>
+     <td>Chrome</td>
+     <td>options=binary_location=r"C:\\path\\to\\binary"</td>
+     <td># Windows OS path escaping.</td>
+     </tr>
+     </table>
+     <p>Example for FirefoxProfile</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://example.com">http://example.com</a></td>
+     <td>Firefox</td>
+     <td>ff_profile_dir=/path/to/profile</td>
+     <td># Using profile from disk.</td>
+     </tr>
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://example.com">http://example.com</a></td>
+     <td>Firefox</td>
+     <td>ff_profile_dir=${FirefoxProfile_instance}</td>
+     <td># Using instance of FirefoxProfile.</td>
+     </tr>
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://example.com">http://example.com</a></td>
+     <td>Firefox</td>
+     <td>ff_profile_dir=set_preference("key", "value");set_preference("other", "setting")</td>
+     <td># Defining profile using FirefoxProfile mehtods.</td>
+     </tr>
+     </table>
+     <p>If the provided configuration options are not enough, it is possible to use <a href="#Create%20Webdriver" class="name">Create Webdriver</a> to customize browser initialization even more.</p>
+     <p>Applying <code>desired_capabilities</code> argument also for local browser is new in SeleniumLibrary 3.1.</p>
+     <p>Using <code>alias</code> to decide, is the new browser opened is new in SeleniumLibrary 4.0. The <code>options</code> and <code>service_log_path</code> are new in SeleniumLibrary 4.0. Support for <code>ff_profile_dir</code> accepting an instance of the <span class="name">selenium.webdriver.FirefoxProfile</span> and support defining FirefoxProfile with methods and attributes are new in SeleniumLibrary 4.0.</p>
+     <p>Making <code>url</code> optional is new in SeleniumLibrary 4.1.</p>
+     <p>The <code>executable_path</code> argument is new in SeleniumLibrary 4.2.</p>
+
+:Open Chrome Browser:
+  :Arguments: url, use_profile=False, headless=False, maximized=False
+
+  .. raw:: html
+
+     <p>Open Chrome browser.</p>
+     <p>:param url: address to open :param use_profile: [description], defaults to True :param headless: [description], defaults to False</p>
+
+:Open Context Menu:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Opens the context menu on the element identified by <code>locator</code>.</p>
+
+:Open Headless Chrome Browser:
+  :Arguments: url
+
+  .. raw:: html
+
+     <p>Open Chrome browser in headless mode</p>
+     <p>:param url: address to open</p>
+
+:Page Should Contain:
+  :Arguments: text, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies that current page contains <code>text</code>.</p>
+     <p>If this keyword fails, it automatically logs the page source using the log level specified with the optional <code>loglevel</code> argument. Valid log levels are <code>DEBUG</code>, <code>INFO</code> (default), <code>WARN</code>, and <code>NONE</code>. If the log level is <code>NONE</code> or below the current active log level the source will not be logged.</p>
+
+:Page Should Contain Button:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies button <code>locator</code> is found from current page.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, buttons are searched using <code>id</code>, <code>name</code>, and <code>value</code>.</p>
+
+:Page Should Contain Checkbox:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies checkbox <code>locator</code> is found from the current page.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Page Should Contain Element:
+  :Arguments: locator, message=None, loglevel=TRACE, limit=None
+
+  .. raw:: html
+
+     <p>Verifies that element <code>locator</code> is found on the current page.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>The <code>message</code> argument can be used to override the default error message.</p>
+     <p>The <code>limit</code> argument can used to define how many elements the page should contain. When <code>limit</code> is <code>None</code> (default) page can contain one or more elements. When limit is a number, page must contain same number of elements.</p>
+     <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about the <code>loglevel</code> argument.</p>
+     <p>Examples assumes that locator matches to two elements.</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a></td>
+     <td>div_name</td>
+     <td>limit=1</td>
+     <td># Keyword fails.</td>
+     </tr>
+     <tr>
+     <td><a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a></td>
+     <td>div_name</td>
+     <td>limit=2</td>
+     <td># Keyword passes.</td>
+     </tr>
+     <tr>
+     <td><a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a></td>
+     <td>div_name</td>
+     <td>limit=none</td>
+     <td># None is considered one or more.</td>
+     </tr>
+     <tr>
+     <td><a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a></td>
+     <td>div_name</td>
+     <td></td>
+     <td># Same as above.</td>
+     </tr>
+     </table>
+     <p>The <code>limit</code> argument is new in SeleniumLibrary 3.0.</p>
+
+:Page Should Contain Image:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies image identified by <code>locator</code> is found from current page.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, images are searched using <code>id</code>, <code>name</code>, <code>src</code> and <code>alt</code>.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+
+:Page Should Contain Link:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies link identified by <code>locator</code> is found from current page.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, links are searched using <code>id</code>, <code>name</code>, <code>href</code> and the link text.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+
+:Page Should Contain List:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies selection list <code>locator</code> is found from current page.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Page Should Contain Radio Button:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies radio button <code>locator</code> is found from current page.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, radio buttons are searched using <code>id</code>, <code>name</code> and <code>value</code>.</p>
+
+:Page Should Contain Textfield:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies text field <code>locator</code> is found from current page.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Page Should Not Contain:
+  :Arguments: text, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies the current page does not contain <code>text</code>.</p>
+     <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about the <code>loglevel</code> argument.</p>
+
+:Page Should Not Contain Button:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies button <code>locator</code> is not found from current page.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, buttons are searched using <code>id</code>, <code>name</code>, and <code>value</code>.</p>
+
+:Page Should Not Contain Checkbox:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies checkbox <code>locator</code> is not found from the current page.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Page Should Not Contain Element:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies that element <code>locator</code> is found on the current page.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+
+:Page Should Not Contain Image:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies image identified by <code>locator</code> is found from current page.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, images are searched using <code>id</code>, <code>name</code>, <code>src</code> and <code>alt</code>.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+
+:Page Should Not Contain Link:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies link identified by <code>locator</code> is not found from current page.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, links are searched using <code>id</code>, <code>name</code>, <code>href</code> and the link text.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+
+:Page Should Not Contain List:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies selection list <code>locator</code> is not found from current page.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Page Should Not Contain Radio Button:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies radio button <code>locator</code> is not found from current page.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, radio buttons are searched using <code>id</code>, <code>name</code> and <code>value</code>.</p>
+
+:Page Should Not Contain Textfield:
+  :Arguments: locator, message=None, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies text field <code>locator</code> is not found from current page.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Press Key:
+  :Arguments: locator, key
+
+  .. raw:: html
+
+     <p><b>DEPRECATED in SeleniumLibrary 4.0.</b> use <a href="#Press%20Keys" class="name">Press Keys</a> instead.</p>
+
+:Press Keys:
+  :Arguments: locator=None, \*keys
+
+  .. raw:: html
+
+     <p>Simulates the user pressing key(s) to an element or on the active browser.</p>
+     <p>If <code>locator</code> evaluates as false, see <span class="name">Boolean arguments</span> for more details, then the <code>keys</code> are sent to the currently active browser. Otherwise element is searched and <code>keys</code> are send to the element identified by the <code>locator</code>. In later case, keyword fails if element is not found. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p><code>keys</code> arguments can contain one or many strings, but it can not be empty. <code>keys</code> can also be a combination of <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html">Selenium Keys</a> and strings or a single Selenium Key. If Selenium Key is combined with strings, Selenium key and strings must be separated by the <span class="name">+</span> character, like in <span class="name">CONTROL+c</span>. Selenium Keys are space and case sensitive and Selenium Keys are not parsed inside of the string. Example AALTO, would send string <span class="name">AALTO</span> and <span class="name">ALT</span> not parsed inside of the string. But <span class="name">A+ALT+O</span> would found Selenium ALT key from the <code>keys</code> argument. It also possible to press many Selenium Keys down at the same time, example 'ALT+ARROW_DOWN`.</p>
+     <p>If Selenium Keys are detected in the <code>keys</code> argument, keyword will press the Selenium Key down, send the strings and then release the Selenium Key. If keyword needs to send a Selenium Key as a string, then each character must be separated with <span class="name">+</span> character, example <span class="name">E+N+D</span>.</p>
+     <p><span class="name">CTRL</span> is alias for <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys.CONTROL">Selenium CONTROL</a> and ESC is alias for <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys.ESCAPE">Selenium ESCAPE</a></p>
+     <p>New in SeleniumLibrary 3.3</p>
+     <p>Examples:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Press%20Keys" class="name">Press Keys</a></td>
+     <td>text_field</td>
+     <td>AAAAA</td>
+     <td></td>
+     <td># Sends string "AAAAA" to element.</td>
+     </tr>
+     <tr>
+     <td><a href="#Press%20Keys" class="name">Press Keys</a></td>
+     <td>None</td>
+     <td>BBBBB</td>
+     <td></td>
+     <td># Sends string "BBBBB" to currently active browser.</td>
+     </tr>
+     <tr>
+     <td><a href="#Press%20Keys" class="name">Press Keys</a></td>
+     <td>text_field</td>
+     <td>E+N+D</td>
+     <td></td>
+     <td># Sends string "END" to element.</td>
+     </tr>
+     <tr>
+     <td><a href="#Press%20Keys" class="name">Press Keys</a></td>
+     <td>text_field</td>
+     <td>XXX</td>
+     <td>YY</td>
+     <td># Sends strings "XXX" and "YY" to element.</td>
+     </tr>
+     <tr>
+     <td><a href="#Press%20Keys" class="name">Press Keys</a></td>
+     <td>text_field</td>
+     <td>XXX+YY</td>
+     <td></td>
+     <td># Same as above.</td>
+     </tr>
+     <tr>
+     <td><a href="#Press%20Keys" class="name">Press Keys</a></td>
+     <td>text_field</td>
+     <td>ALT+ARROW_DOWN</td>
+     <td></td>
+     <td># Pressing "ALT" key down, then pressing ARROW_DOWN and then releasing both keys.</td>
+     </tr>
+     <tr>
+     <td><a href="#Press%20Keys" class="name">Press Keys</a></td>
+     <td>text_field</td>
+     <td>ALT</td>
+     <td>ARROW_DOWN</td>
+     <td># Pressing "ALT" key and then pressing ARROW_DOWN.</td>
+     </tr>
+     <tr>
+     <td><a href="#Press%20Keys" class="name">Press Keys</a></td>
+     <td>text_field</td>
+     <td>CTRL+c</td>
+     <td></td>
+     <td># Pressing CTRL key down, sends string "c" and then releases CTRL key.</td>
+     </tr>
+     <tr>
+     <td><a href="#Press%20Keys" class="name">Press Keys</a></td>
+     <td>button</td>
+     <td>RETURN</td>
+     <td></td>
+     <td># Pressing "ENTER" key to element.</td>
+     </tr>
+     </table>
+
+:Radio Button Should Be Set To:
+  :Arguments: group_name, value
+
+  .. raw:: html
+
+     <p>Verifies radio button group <code>group_name</code> is set to <code>value</code>.</p>
+     <p><code>group_name</code> is the <code>name</code> of the radio button group.</p>
+
+:Radio Button Should Not Be Selected:
+  :Arguments: group_name
+
+  .. raw:: html
+
+     <p>Verifies radio button group <code>group_name</code> has no selection.</p>
+     <p><code>group_name</code> is the <code>name</code> of the radio button group.</p>
+
+:Register Keyword To Run On Failure:
+  :Arguments: keyword
+
+  .. raw:: html
+
+     <p>Sets the keyword to execute, when a SeleniumLibrary keyword fails.</p>
+     <p><code>keyword</code> is the name of a keyword that will be executed if a SeleniumLibrary keyword fails. It is possible to use any available keyword, including user keywords or keywords from other libraries, but the keyword must not take any arguments.</p>
+     <p>The initial keyword to use is set when <a href="#Importing" class="name">importing</a> the library, and the keyword that is used by default is <a href="#Capture%20Page%20Screenshot" class="name">Capture Page Screenshot</a>. Taking a screenshot when something failed is a very useful feature, but notice that it can slow down the execution.</p>
+     <p>It is possible to use string <code>NOTHING</code> or <code>NONE</code>, case-insensitively, as well as Python <code>None</code> to disable this feature altogether.</p>
+     <p>This keyword returns the name of the previously registered failure keyword or Python <code>None</code> if this functionality was previously disabled. The return value can be always used to restore the original value later.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Register%20Keyword%20To%20Run%20On%20Failure" class="name">Register Keyword To Run On Failure</a></td>
+     <td>Log Source</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>${previous kw}=</td>
+     <td><a href="#Register%20Keyword%20To%20Run%20On%20Failure" class="name">Register Keyword To Run On Failure</a></td>
+     <td>NONE</td>
+     </tr>
+     <tr>
+     <td><a href="#Register%20Keyword%20To%20Run%20On%20Failure" class="name">Register Keyword To Run On Failure</a></td>
+     <td>${previous kw}</td>
+     <td></td>
+     </tr>
+     </table>
+     <p>Changes in SeleniumLibrary 3.0:</p>
+     <ul>
+     <li>Possible to use string <code>NONE</code> or Python <code>None</code> to disable the functionality.</li>
+     <li>Return Python <code>None</code> when the functionality was disabled earlier. In previous versions special value <code>No Keyword</code> was returned and it could not be used to restore the original state.</li>
+     </ul>
+
+:Reload Page:
+  .. raw:: html
+
+     <p>Simulates user reloading page.</p>
+
+:Remove Location Strategy:
+  :Arguments: strategy_name
+
+  .. raw:: html
+
+     <p>Removes a previously added custom location strategy.</p>
+     <p>See <span class="name">Custom locators</span> for information on how to create and use custom strategies.</p>
+
+:Screenshot:
+  :Arguments: page=True, locator=None, filename_prefix=screenshot
+
+  .. raw:: html
+
+     <p>Capture page and/or element screenshot</p>
+     <p>:param page: capture page screenshot, defaults to True :param locator: if defined take element screenshot, defaults to None :param filename_prefix: prefix for screenshot files, default to 'screenshot'</p>
+
+:Scroll Element Into View:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Scrolls the element identified by <code>locator</code> into view.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>New in SeleniumLibrary 3.2.0</p>
+
+:Select All From List:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Selects all options from multi-selection list <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Select Checkbox:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Selects the checkbox identified by <code>locator</code>.</p>
+     <p>Does nothing if checkbox is already selected.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Select Frame:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Sets frame identified by <code>locator</code> as the current frame.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Works both with frames and iframes. Use <a href="#Unselect%20Frame" class="name">Unselect Frame</a> to cancel the frame selection and return to the main frame.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Select%20Frame" class="name">Select Frame</a></td>
+     <td>top-frame</td>
+     <td># Select frame with id or name 'top-frame'</td>
+     </tr>
+     <tr>
+     <td><a href="#Click%20Link" class="name">Click Link</a></td>
+     <td>example</td>
+     <td># Click link 'example' in the selected frame</td>
+     </tr>
+     <tr>
+     <td><a href="#Unselect%20Frame" class="name">Unselect Frame</a></td>
+     <td></td>
+     <td># Back to main frame.</td>
+     </tr>
+     <tr>
+     <td><a href="#Select%20Frame" class="name">Select Frame</a></td>
+     <td>//iframe[@name='xxx']</td>
+     <td># Select frame using xpath</td>
+     </tr>
+     </table>
+
+:Select From List By Index:
+  :Arguments: locator, \*indexes
+
+  .. raw:: html
+
+     <p>Selects options from selection list <code>locator</code> by <code>indexes</code>.</p>
+     <p>Indexes of list options start from 0.</p>
+     <p>If more than one option is given for a single-selection list, the last value will be selected. With multi-selection lists all specified options are selected, but possible old selections are not cleared.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Select From List By Label:
+  :Arguments: locator, \*labels
+
+  .. raw:: html
+
+     <p>Selects options from selection list <code>locator</code> by <code>labels</code>.</p>
+     <p>If more than one option is given for a single-selection list, the last value will be selected. With multi-selection lists all specified options are selected, but possible old selections are not cleared.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Select From List By Value:
+  :Arguments: locator, \*values
+
+  .. raw:: html
+
+     <p>Selects options from selection list <code>locator</code> by <code>values</code>.</p>
+     <p>If more than one option is given for a single-selection list, the last value will be selected. With multi-selection lists all specified options are selected, but possible old selections are not cleared.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Select Radio Button:
+  :Arguments: group_name, value
+
+  .. raw:: html
+
+     <p>Sets the radio button group <code>group_name</code> to <code>value</code>.</p>
+     <p>The radio button to be selected is located by two arguments:</p>
+     <ul>
+     <li><code>group_name</code> is the name of the radio button group.</li>
+     <li><code>value</code> is the <code>id</code> or <code>value</code> attribute of the actual radio button.</li>
+     </ul>
+     <p>Examples:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Select%20Radio%20Button" class="name">Select Radio Button</a></td>
+     <td>size</td>
+     <td>XL</td>
+     </tr>
+     <tr>
+     <td><a href="#Select%20Radio%20Button" class="name">Select Radio Button</a></td>
+     <td>contact</td>
+     <td>email</td>
+     </tr>
+     </table>
+
+:Select Window:
+  :Arguments: locator=MAIN, timeout=None
+
+  .. raw:: html
+
+     <p>DEPRECATED in SeleniumLibrary 4.0. , use <a href="#Switch%20Window" class="name">Switch Window</a> instead.</p>
+
+:Set Browser Implicit Wait:
+  :Arguments: value
+
+  .. raw:: html
+
+     <p>Sets the implicit wait value used by Selenium.</p>
+     <p>Same as <a href="#Set%20Selenium%20Implicit%20Wait" class="name">Set Selenium Implicit Wait</a> but only affects the current browser.</p>
+
+:Set Focus To Element:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Sets the focus to the element identified by <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Prior to SeleniumLibrary 3.0 this keyword was named <span class="name">Focus</span>.</p>
+
+:Set Screenshot Directory:
+  :Arguments: path
+
+  .. raw:: html
+
+     <p>Sets the directory for captured screenshots.</p>
+     <p><code>path</code> argument specifies the absolute path to a directory where the screenshots should be written to. If the directory does not exist, it will be created. The directory can also be set when <a href="#Importing" class="name">importing</a> the library. If it is not configured anywhere, screenshots are saved to the same directory where Robot Framework's log file is written.</p>
+     <p>If <code>path</code> equals to EMBED (case insensitive) and <a href="#Capture%20Page%20Screenshot" class="name">Capture Page Screenshot</a> or <a href="#Capture%20Element%20Screenshot" class="name">capture Element Screenshot</a> keywords filename argument is not changed from the default value, then the page or element screenshot is embedded as Base64 image to the log.html.</p>
+     <p>The previous value is returned and can be used to restore the original value later if needed.</p>
+     <p>Returning the previous value is new in SeleniumLibrary 3.0. The persist argument was removed in SeleniumLibrary 3.2 and EMBED is new in SeleniumLibrary 4.2.</p>
+
+:Set Selenium Implicit Wait:
+  :Arguments: value
+
+  .. raw:: html
+
+     <p>Sets the implicit wait value used by Selenium.</p>
+     <p>The value can be given as a number that is considered to be seconds or as a human-readable string like <code>1 second</code>. The previous value is returned and can be used to restore the original value later if needed.</p>
+     <p>This keyword sets the implicit wait for all opened browsers. Use <a href="#Set%20Browser%20Implicit%20Wait" class="name">Set Browser Implicit Wait</a> to set it only to the current browser.</p>
+     <p>See the <span class="name">Implicit wait</span> section above for more information.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td>${orig wait} =</td>
+     <td><a href="#Set%20Selenium%20Implicit%20Wait" class="name">Set Selenium Implicit Wait</a></td>
+     <td>10 seconds</td>
+     </tr>
+     <tr>
+     <td><span class="name">Perform AJAX call that is slow</span></td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Set%20Selenium%20Implicit%20Wait" class="name">Set Selenium Implicit Wait</a></td>
+     <td>${orig wait}</td>
+     <td></td>
+     </tr>
+     </table>
+
+:Set Selenium Speed:
+  :Arguments: value
+
+  .. raw:: html
+
+     <p>Sets the delay that is waited after each Selenium command.</p>
+     <p>The value can be given as a number that is considered to be seconds or as a human-readable string like <code>1 second</code>. The previous value is returned and can be used to restore the original value later if needed.</p>
+     <p>See the <span class="name">Selenium Speed</span> section above for more information.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Set%20Selenium%20Speed" class="name">Set Selenium Speed</a></td>
+     <td>0.5 seconds</td>
+     </tr>
+     </table>
+
+:Set Selenium Timeout:
+  :Arguments: value
+
+  .. raw:: html
+
+     <p>Sets the timeout that is used by various keywords.</p>
+     <p>The value can be given as a number that is considered to be seconds or as a human-readable string like <code>1 second</code>. The previous value is returned and can be used to restore the original value later if needed.</p>
+     <p>See the <span class="name">Timeout</span> section above for more information.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td>${orig timeout} =</td>
+     <td><a href="#Set%20Selenium%20Timeout" class="name">Set Selenium Timeout</a></td>
+     <td>15 seconds</td>
+     </tr>
+     <tr>
+     <td><span class="name">Open page that loads slowly</span></td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Set%20Selenium%20Timeout" class="name">Set Selenium Timeout</a></td>
+     <td>${orig timeout}</td>
+     <td></td>
+     </tr>
+     </table>
+
+:Set Window Position:
+  :Arguments: x, y
+
+  .. raw:: html
+
+     <p>Sets window position using <code>x</code> and <code>y</code> coordinates.</p>
+     <p>The position is relative to the top left corner of the screen, but some browsers exclude possible task bar set by the operating system from the calculation. The actual position may thus be different with different browsers.</p>
+     <p>Values can be given using strings containing numbers or by using actual numbers. See also <a href="#Get%20Window%20Position" class="name">Get Window Position</a>.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Set%20Window%20Position" class="name">Set Window Position</a></td>
+     <td>100</td>
+     <td>200</td>
+     </tr>
+     </table>
+
+:Set Window Size:
+  :Arguments: width, height, inner=False
+
+  .. raw:: html
+
+     <p>Sets current windows size to given <code>width</code> and <code>height</code>.</p>
+     <p>Values can be given using strings containing numbers or by using actual numbers. See also <a href="#Get%20Window%20Size" class="name">Get Window Size</a>.</p>
+     <p>Browsers have a limit on their minimum size. Trying to set them smaller will cause the actual size to be bigger than the requested size.</p>
+     <p>If <code>inner</code> parameter is set to True, keyword sets the necessary window width and height to have the desired HTML DOM <i>window.innerWidth</i> and <i>window.innerHeight</i>. See <span class="name">Boolean arguments</span> for more details on how to set boolean arguments.</p>
+     <p>The <code>inner</code> argument is new since SeleniumLibrary 4.0.</p>
+     <p>This <code>inner</code> argument does not support Frames. If a frame is selected, switch to default before running this.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Set%20Window%20Size" class="name">Set Window Size</a></td>
+     <td>800</td>
+     <td>600</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Set%20Window%20Size" class="name">Set Window Size</a></td>
+     <td>800</td>
+     <td>600</td>
+     <td>True</td>
+     </tr>
+     </table>
+
+:Simulate Event:
+  :Arguments: locator, event
+
+  .. raw:: html
+
+     <p>Simulates <code>event</code> on the element identified by <code>locator</code>.</p>
+     <p>This keyword is useful if element has <code>OnEvent</code> handler that needs to be explicitly invoked.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Prior to SeleniumLibrary 3.0 this keyword was named <span class="name">Simulate</span>.</p>
+
+:Submit Form:
+  :Arguments: locator=None
+
+  .. raw:: html
+
+     <p>Submits a form identified by <code>locator</code>.</p>
+     <p>If <code>locator</code> is not given, first form on the page is submitted.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Switch Browser:
+  :Arguments: index_or_alias
+
+  .. raw:: html
+
+     <p>Switches between active browsers using <code>index_or_alias</code>.</p>
+     <p>Indices are returned by the <a href="#Open%20Browser" class="name">Open Browser</a> keyword and aliases can be given to it explicitly. Indices start from 1.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://google.com">http://google.com</a></td>
+     <td>ff</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Location%20Should%20Be" class="name">Location Should Be</a></td>
+     <td><a href="http://google.com">http://google.com</a></td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://yahoo.com">http://yahoo.com</a></td>
+     <td>ie</td>
+     <td>alias=second</td>
+     </tr>
+     <tr>
+     <td><a href="#Location%20Should%20Be" class="name">Location Should Be</a></td>
+     <td><a href="http://yahoo.com">http://yahoo.com</a></td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Switch%20Browser" class="name">Switch Browser</a></td>
+     <td>1</td>
+     <td># index</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Page%20Should%20Contain" class="name">Page Should Contain</a></td>
+     <td>I'm feeling lucky</td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Switch%20Browser" class="name">Switch Browser</a></td>
+     <td>second</td>
+     <td># alias</td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Page%20Should%20Contain" class="name">Page Should Contain</a></td>
+     <td>More Yahoo!</td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Close%20All%20Browsers" class="name">Close All Browsers</a></td>
+     <td></td>
+     <td></td>
+     <td></td>
+     </tr>
+     </table>
+     <p>Above example expects that there was no other open browsers when opening the first one because it used index <code>1</code> when switching to it later. If you are not sure about that, you can store the index into a variable as below.</p>
+     <table border="1">
+     <tr>
+     <td>${index} =</td>
+     <td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+     <td><a href="http://google.com">http://google.com</a></td>
+     </tr>
+     <tr>
+     <td># Do something ...</td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Switch%20Browser" class="name">Switch Browser</a></td>
+     <td>${index}</td>
+     <td></td>
+     </tr>
+     </table>
+
+:Switch Window:
+  :Arguments: locator=MAIN, timeout=None, browser=CURRENT
+
+  .. raw:: html
+
+     <p>Switches to browser window matching <code>locator</code>.</p>
+     <p>If the window is found, all subsequent commands use the selected window, until this keyword is used again. If the window is not found, this keyword fails. The previous windows handle is returned and can be used to switch back to it later.</p>
+     <p>Notice that alerts should be handled with <a href="#Handle%20Alert" class="name">Handle Alert</a> or other alert related keywords.</p>
+     <p>The <code>locator</code> can be specified using different strategies somewhat similarly as when <span class="name">locating elements</span> on pages.</p>
+     <ul>
+     <li>By default, the <code>locator</code> is matched against window handle, name, title, and URL. Matching is done in that order and the first matching window is selected.</li>
+     </ul>
+     <ul>
+     <li>The <code>locator</code> can specify an explicit strategy by using the format <code>strategy:value</code> (recommended) or <code>strategy=value</code>. Supported strategies are <code>name</code>, <code>title</code>, and <code>url</code>. These matches windows using their name, title, or URL, respectively. Additionally, <code>default</code> can be used to explicitly use the default strategy explained above.</li>
+     </ul>
+     <ul>
+     <li>If the <code>locator</code> is <code>NEW</code> (case-insensitive), the latest opened window is selected. It is an error if this is the same as the current window.</li>
+     </ul>
+     <ul>
+     <li>If the <code>locator</code> is <code>MAIN</code> (default, case-insensitive), the main window is selected.</li>
+     </ul>
+     <ul>
+     <li>If the <code>locator</code> is <code>CURRENT</code> (case-insensitive), nothing is done. This effectively just returns the current window handle.</li>
+     </ul>
+     <ul>
+     <li>If the <code>locator</code> is not a string, it is expected to be a list of window handles <i>to exclude</i>. Such a list of excluded windows can be got from <a href="#Get%20Window%20Handles" class="name">Get Window Handles</a> before doing an action that opens a new window.</li>
+     </ul>
+     <p>The <code>timeout</code> is used to specify how long keyword will poll to select the new window. The <code>timeout</code> is new in SeleniumLibrary 3.2.</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Click%20Link" class="name">Click Link</a></td>
+     <td>popup1</td>
+     <td></td>
+     <td># Open new window</td>
+     </tr>
+     <tr>
+     <td><a href="#Switch%20Window" class="name">Switch Window</a></td>
+     <td>example</td>
+     <td></td>
+     <td># Select window using default strategy</td>
+     </tr>
+     <tr>
+     <td><a href="#Title%20Should%20Be" class="name">Title Should Be</a></td>
+     <td>Pop-up 1</td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Click%20Button" class="name">Click Button</a></td>
+     <td>popup2</td>
+     <td></td>
+     <td># Open another window</td>
+     </tr>
+     <tr>
+     <td>${handle} =</td>
+     <td><a href="#Switch%20Window" class="name">Switch Window</a></td>
+     <td>NEW</td>
+     <td># Select latest opened window</td>
+     </tr>
+     <tr>
+     <td><a href="#Title%20Should%20Be" class="name">Title Should Be</a></td>
+     <td>Pop-up 2</td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Switch%20Window" class="name">Switch Window</a></td>
+     <td>${handle}</td>
+     <td></td>
+     <td># Select window using handle</td>
+     </tr>
+     <tr>
+     <td><a href="#Title%20Should%20Be" class="name">Title Should Be</a></td>
+     <td>Pop-up 1</td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td><a href="#Switch%20Window" class="name">Switch Window</a></td>
+     <td>MAIN</td>
+     <td></td>
+     <td># Select the main window</td>
+     </tr>
+     <tr>
+     <td><a href="#Title%20Should%20Be" class="name">Title Should Be</a></td>
+     <td>Main</td>
+     <td></td>
+     <td></td>
+     </tr>
+     <tr>
+     <td>${excludes} =</td>
+     <td><a href="#Get%20Window%20Handles" class="name">Get Window Handles</a></td>
+     <td></td>
+     <td># Get list of current windows</td>
+     </tr>
+     <tr>
+     <td><a href="#Click%20Link" class="name">Click Link</a></td>
+     <td>popup3</td>
+     <td></td>
+     <td># Open one more window</td>
+     </tr>
+     <tr>
+     <td><a href="#Switch%20Window" class="name">Switch Window</a></td>
+     <td>${excludes}</td>
+     <td></td>
+     <td># Select window using excludes</td>
+     </tr>
+     <tr>
+     <td><a href="#Title%20Should%20Be" class="name">Title Should Be</a></td>
+     <td>Pop-up 3</td>
+     <td></td>
+     <td></td>
+     </tr>
+     </table>
+     <p>The <code>browser</code> argument allows with <code>index_or_alias</code> to implicitly switch to a specific browser when switching to a window. See <a href="#Switch%20Browser" class="name">Switch Browser</a></p>
+     <ul>
+     <li>If the <code>browser</code> is <code>CURRENT</code> (case-insensitive), no other browser is selected.</li>
+     </ul>
+     <p><b>NOTE:</b></p>
+     <ul>
+     <li>The <code>strategy:value</code> syntax is only supported by SeleniumLibrary 3.0 and newer.</li>
+     <li>Prior to SeleniumLibrary 3.0 matching windows by name, title and URL was case-insensitive.</li>
+     <li>Earlier versions supported aliases <code>None</code>, <code>null</code> and the empty string for selecting the main window, and alias <code>self</code> for selecting the current window. Support for these aliases was removed in SeleniumLibrary 3.2.</li>
+     </ul>
+
+:Table Cell Should Contain:
+  :Arguments: locator, row, column, expected, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies table cell contains text <code>expected</code>.</p>
+     <p>See <a href="#Get%20Table%20Cell" class="name">Get Table Cell</a> that this keyword uses internally for an explanation about accepted arguments.</p>
+
+:Table Column Should Contain:
+  :Arguments: locator, column, expected, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies table column contains text <code>expected</code>.</p>
+     <p>The table is located using the <code>locator</code> argument and its column found using <code>column</code>. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Column indexes start from 1. It is possible to refer to columns from the end by using negative indexes so that -1 is the last column, -2 is the second last, and so on.</p>
+     <p>If a table contains cells that span multiple columns, those merged cells count as a single column.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about the <code>loglevel</code> argument.</p>
+
+:Table Footer Should Contain:
+  :Arguments: locator, expected, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies table footer contains text <code>expected</code>.</p>
+     <p>Any <code>&lt;td&gt;</code> element inside <code>&lt;tfoot&gt;</code> element is considered to be part of the footer.</p>
+     <p>The table is located using the <code>locator</code> argument. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about the <code>loglevel</code> argument.</p>
+
+:Table Header Should Contain:
+  :Arguments: locator, expected, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies table header contains text <code>expected</code>.</p>
+     <p>Any <code>&lt;th&gt;</code> element anywhere in the table is considered to be part of the header.</p>
+     <p>The table is located using the <code>locator</code> argument. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about the <code>loglevel</code> argument.</p>
+
+:Table Row Should Contain:
+  :Arguments: locator, row, expected, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies that table row contains text <code>expected</code>.</p>
+     <p>The table is located using the <code>locator</code> argument and its column found using <code>column</code>. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>Row indexes start from 1. It is possible to refer to rows from the end by using negative indexes so that -1 is the last row, -2 is the second last, and so on.</p>
+     <p>If a table contains cells that span multiple rows, a match only occurs for the uppermost row of those merged cells.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about the <code>loglevel</code> argument.</p>
+
+:Table Should Contain:
+  :Arguments: locator, expected, loglevel=TRACE
+
+  .. raw:: html
+
+     <p>Verifies table contains text <code>expected</code>.</p>
+     <p>The table is located using the <code>locator</code> argument. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about the <code>loglevel</code> argument.</p>
+
+:Textarea Should Contain:
+  :Arguments: locator, expected, message=None
+
+  .. raw:: html
+
+     <p>Verifies text area <code>locator</code> contains text <code>expected</code>.</p>
+     <p><code>message</code> can be used to override default error message.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Textarea Value Should Be:
+  :Arguments: locator, expected, message=None
+
+  .. raw:: html
+
+     <p>Verifies text area <code>locator</code> has exactly text <code>expected</code>.</p>
+     <p><code>message</code> can be used to override default error message.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Textfield Should Contain:
+  :Arguments: locator, expected, message=None
+
+  .. raw:: html
+
+     <p>Verifies text field <code>locator</code> contains text <code>expected</code>.</p>
+     <p><code>message</code> can be used to override the default error message.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Textfield Value Should Be:
+  :Arguments: locator, expected, message=None
+
+  .. raw:: html
+
+     <p>Verifies text field <code>locator</code> has exactly text <code>expected</code>.</p>
+     <p><code>message</code> can be used to override default error message.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Title Should Be:
+  :Arguments: title, message=None
+
+  .. raw:: html
+
+     <p>Verifies that the current page title equals <code>title</code>.</p>
+     <p>The <code>message</code> argument can be used to override the default error message.</p>
+     <p><code>message</code> argument is new in SeleniumLibrary 3.1.</p>
+
+:Unselect All From List:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Unselects all options from multi-selection list <code>locator</code>.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p>New in SeleniumLibrary 3.0.</p>
+
+:Unselect Checkbox:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Removes the selection of checkbox identified by <code>locator</code>.</p>
+     <p>Does nothing if the checkbox is not selected.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Unselect Frame:
+  .. raw:: html
+
+     <p>Sets the main frame as the current frame.</p>
+     <p>In practice cancels the previous <a href="#Select%20Frame" class="name">Select Frame</a> call.</p>
+
+:Unselect From List By Index:
+  :Arguments: locator, \*indexes
+
+  .. raw:: html
+
+     <p>Unselects options from selection list <code>locator</code> by <code>indexes</code>.</p>
+     <p>Indexes of list options start from 0. This keyword works only with multi-selection lists.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Unselect From List By Label:
+  :Arguments: locator, \*labels
+
+  .. raw:: html
+
+     <p>Unselects options from selection list <code>locator</code> by <code>labels</code>.</p>
+     <p>This keyword works only with multi-selection lists.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Unselect From List By Value:
+  :Arguments: locator, \*values
+
+  .. raw:: html
+
+     <p>Unselects options from selection list <code>locator</code> by <code>values</code>.</p>
+     <p>This keyword works only with multi-selection lists.</p>
+     <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+
+:Wait And Click Button:
+  :Arguments: locator
+
+  .. raw:: html
+
+     <p>Click button once it becomes visible</p>
+     <p>:param locator: [description]</p>
+
+:Wait For Condition:
+  :Arguments: condition, timeout=None, error=None
+
+  .. raw:: html
+
+     <p>Waits until <code>condition</code> is true or <code>timeout</code> expires.</p>
+     <p>The condition can be arbitrary JavaScript expression but it must return a value to be evaluated. See <a href="#Execute%20Javascript" class="name">Execute JavaScript</a> for information about accessing content on pages.</p>
+     <p>Fails if the timeout expires before the condition becomes true. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value.</p>
+     <p><code>error</code> can be used to override the default error message.</p>
+     <p>Examples:</p>
+     <table border="1">
+     <tr>
+     <td><a href="#Wait%20For%20Condition" class="name">Wait For Condition</a></td>
+     <td>return document.title == "New Title"</td>
+     </tr>
+     <tr>
+     <td><a href="#Wait%20For%20Condition" class="name">Wait For Condition</a></td>
+     <td>return jQuery.active == 0</td>
+     </tr>
+     <tr>
+     <td><a href="#Wait%20For%20Condition" class="name">Wait For Condition</a></td>
+     <td>style = document.querySelector('h1').style; return style.background == "red" &amp;&amp; style.color == "white"</td>
+     </tr>
+     </table>
+
+:Wait Until Element Contains:
+  :Arguments: locator, text, timeout=None, error=None
+
+  .. raw:: html
+
+     <p>Waits until the element <code>locator</code> contains <code>text</code>.</p>
+     <p>Fails if <code>timeout</code> expires before the text appears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p><code>error</code> can be used to override the default error message.</p>
+
+:Wait Until Element Does Not Contain:
+  :Arguments: locator, text, timeout=None, error=None
+
+  .. raw:: html
+
+     <p>Waits until the element <code>locator</code> does not contain <code>text</code>.</p>
+     <p>Fails if <code>timeout</code> expires before the text disappears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p><code>error</code> can be used to override the default error message.</p>
+
+:Wait Until Element Is Enabled:
+  :Arguments: locator, timeout=None, error=None
+
+  .. raw:: html
+
+     <p>Waits until the element <code>locator</code> is enabled.</p>
+     <p>Element is considered enabled if it is not disabled nor read-only.</p>
+     <p>Fails if <code>timeout</code> expires before the element is enabled. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p><code>error</code> can be used to override the default error message.</p>
+     <p>Considering read-only elements to be disabled is a new feature in SeleniumLibrary 3.0.</p>
+
+:Wait Until Element Is Not Visible:
+  :Arguments: locator, timeout=None, error=None
+
+  .. raw:: html
+
+     <p>Waits until the element <code>locator</code> is not visible.</p>
+     <p>Fails if <code>timeout</code> expires before the element is not visible. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p><code>error</code> can be used to override the default error message.</p>
+
+:Wait Until Element Is Visible:
+  :Arguments: locator, timeout=None, error=None
+
+  .. raw:: html
+
+     <p>Waits until the element <code>locator</code> is visible.</p>
+     <p>Fails if <code>timeout</code> expires before the element is visible. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p><code>error</code> can be used to override the default error message.</p>
+
+:Wait Until Location Contains:
+  :Arguments: expected, timeout=None, message=None
+
+  .. raw:: html
+
+     <p>Waits until the current URL contains <code>expected</code>.</p>
+     <p>The <code>expected</code> argument contains the expected value in url.</p>
+     <p>Fails if <code>timeout</code> expires before the location contains. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value.</p>
+     <p>The <code>message</code> argument can be used to override the default error message.</p>
+     <p>New in SeleniumLibrary 4.0</p>
+
+:Wait Until Location Does Not Contain:
+  :Arguments: location, timeout=None, message=None
+
+  .. raw:: html
+
+     <p>Waits until the current URL does not contains <code>location</code>.</p>
+     <p>The <code>location</code> argument contains value not expected in url.</p>
+     <p>Fails if <code>timeout</code> expires before the location not contains. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value.</p>
+     <p>The <code>message</code> argument can be used to override the default error message.</p>
+     <p>New in SeleniumLibrary 4.3</p>
+
+:Wait Until Location Is:
+  :Arguments: expected, timeout=None, message=None
+
+  .. raw:: html
+
+     <p>Waits until the current URL is <code>expected</code>.</p>
+     <p>The <code>expected</code> argument is the expected value in url.</p>
+     <p>Fails if <code>timeout</code> expires before the location is. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value.</p>
+     <p>The <code>message</code> argument can be used to override the default error message.</p>
+     <p>New in SeleniumLibrary 4.0</p>
+
+:Wait Until Location Is Not:
+  :Arguments: location, timeout=None, message=None
+
+  .. raw:: html
+
+     <p>Waits until the current URL is not <code>location</code>.</p>
+     <p>The <code>location</code> argument is the unexpected value in url.</p>
+     <p>Fails if <code>timeout</code> expires before the location is not. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value.</p>
+     <p>The <code>message</code> argument can be used to override the default error message.</p>
+     <p>New in SeleniumLibrary 4.3</p>
+
+:Wait Until Page Contains:
+  :Arguments: text, timeout=None, error=None
+
+  .. raw:: html
+
+     <p>Waits until <code>text</code> appears on the current page.</p>
+     <p>Fails if <code>timeout</code> expires before the text appears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value.</p>
+     <p><code>error</code> can be used to override the default error message.</p>
+
+:Wait Until Page Contains Element:
+  :Arguments: locator, timeout=None, error=None
+
+  .. raw:: html
+
+     <p>Waits until the element <code>locator</code> appears on the current page.</p>
+     <p>Fails if <code>timeout</code> expires before the element appears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p><code>error</code> can be used to override the default error message.</p>
+
+:Wait Until Page Does Not Contain:
+  :Arguments: text, timeout=None, error=None
+
+  .. raw:: html
+
+     <p>Waits until <code>text</code> disappears from the current page.</p>
+     <p>Fails if <code>timeout</code> expires before the text disappears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value.</p>
+     <p><code>error</code> can be used to override the default error message.</p>
+
+:Wait Until Page Does Not Contain Element:
+  :Arguments: locator, timeout=None, error=None
+
+  .. raw:: html
+
+     <p>Waits until the element <code>locator</code> disappears from the current page.</p>
+     <p>Fails if <code>timeout</code> expires before the element disappears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+     <p><code>error</code> can be used to override the default error message.</p>

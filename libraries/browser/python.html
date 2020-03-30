@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python module API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Desktop.Clipboard" href="../desktop_clipboard/index.html" />
+    <link rel="prev" title="Robot Framework API" href="../../libdoc/Browser.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Browser</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Browser.html">Robot Framework API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../conventions.html">Conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Browser</a> &raquo;</li>
+        
+      <li>Python module API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/browser/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-module-api">
+<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.Browser">
+<span id="browser"></span><h2>Browser<a class="headerlink" href="#module-RPA.Browser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Browser.Browser">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Browser.</code><code class="sig-name descname">Browser</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SeleniumLibrary.SeleniumLibrary</span></code></p>
+<p>RPA Framework library for Browser operations.</p>
+<p>Extends functionality of SeleniumLibrary.</p>
+<dl class="attribute">
+<dt id="RPA.Browser.Browser.AUTOMATIC_BROWSER_SELECTION">
+<code class="sig-name descname">AUTOMATIC_BROWSER_SELECTION</code><em class="property"> = 'AUTO'</em><a class="headerlink" href="#RPA.Browser.Browser.AUTOMATIC_BROWSER_SELECTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Browser.Browser.AVAILABLE_OPTIONS">
+<code class="sig-name descname">AVAILABLE_OPTIONS</code><em class="property"> = {'chrome': 'ChromeOptions'}</em><a class="headerlink" href="#RPA.Browser.Browser.AVAILABLE_OPTIONS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Browser.Browser.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Browser.Browser.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.download_driver_if_exists">
+<code class="sig-name descname">download_driver_if_exists</code><span class="sig-paren">(</span><em class="sig-param">browser</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.download_driver_if_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download driver for a browser if that exists</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>browser</strong> – download drivers for this browser</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>path to driver or <cite>None</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.get_browser_order">
+<code class="sig-name descname">get_browser_order</code><span class="sig-paren">(</span><em class="sig-param">browser_selection</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.get_browser_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of browser that will be used for open browser
+keywords. Will be one or many.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>browser_selection</strong> – “AUTO” will be OS specfic list,
+or one named browser, eg. “Chrome”</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of browsers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.get_preferable_browser_order">
+<code class="sig-name descname">get_preferable_browser_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.get_preferable_browser_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of RPA Framework preferred browsers by OS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>browser list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.input_text_when_element_is_visible">
+<code class="sig-name descname">input_text_when_element_is_visible</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.input_text_when_element_is_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input text into locator after it has become visible</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – selector</p></li>
+<li><p><strong>text</strong> – insert text to locator</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.location">
+<em class="property">property </em><code class="sig-name descname">location</code><a class="headerlink" href="#RPA.Browser.Browser.location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return browser location</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>url of the page browser is in</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.open_available_browser">
+<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">use_profile=False</em>, <em class="sig-param">headless=False</em>, <em class="sig-param">maximized=False</em>, <em class="sig-param">browser_selection='AUTO'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.open_available_browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open available browser</p>
+<p>Keywords opens the first available browser it can find from the
+system in preferred order or given browser (<cite>browser_selection</cite>)</p>
+<p>Steps:</p>
+<ol class="arabic">
+<li><p>Get order of browsers</p></li>
+<li><p>Loop list of preferred of browsers</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li><p>Set webdriver options for browser</p></li>
+<li><p>Create webdriver using existing installaiton</p></li>
+<li><p>(If step b. failed) Download and install webdriver, try again</p></li>
+<li><p>(If step c. failed) Try starting webdriver in headless mode</p></li>
+</ol>
+</div></blockquote>
+</li>
+<li><p>Open url</p></li>
+</ol>
+<p>If unable to open browser raises <cite>BrowserNotFoundError</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – address to open</p></li>
+<li><p><strong>use_profile</strong> – set browser profile, defaults to False</p></li>
+<li><p><strong>headless</strong> – run in headless mode, defaults to False</p></li>
+<li><p><strong>maximized</strong> – run window maximized, defaults to False</p></li>
+<li><p><strong>browser_selection</strong> – browser name, defaults to AUTOMATIC_BROWSER_SELECTION</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.open_chrome_browser">
+<code class="sig-name descname">open_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">use_profile=False</em>, <em class="sig-param">headless=False</em>, <em class="sig-param">maximized=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.open_chrome_browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open Chrome browser.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – address to open</p></li>
+<li><p><strong>use_profile</strong> – [description], defaults to True</p></li>
+<li><p><strong>headless</strong> – [description], defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.open_headless_chrome_browser">
+<code class="sig-name descname">open_headless_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.open_headless_chrome_browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open Chrome browser in headless mode</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>url</strong> – address to open</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.screenshot">
+<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">page=True</em>, <em class="sig-param">locator=None</em>, <em class="sig-param">filename_prefix='screenshot'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.screenshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Capture page and/or element screenshot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>page</strong> – capture page screenshot, defaults to True</p></li>
+<li><p><strong>locator</strong> – if defined take element screenshot, defaults to None</p></li>
+<li><p><strong>filename_prefix</strong> – prefix for screenshot files, default to ‘screenshot’</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.set_default_options">
+<code class="sig-name descname">set_default_options</code><span class="sig-paren">(</span><em class="sig-param">options</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.set_default_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.set_driver_options">
+<code class="sig-name descname">set_driver_options</code><span class="sig-paren">(</span><em class="sig-param">browser</em>, <em class="sig-param">use_profile=False</em>, <em class="sig-param">headless=False</em>, <em class="sig-param">maximized=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.set_driver_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set options for given browser</p>
+<dl class="simple">
+<dt>Supported at the moment:</dt><dd><ul class="simple">
+<li><p>ChromeOptions</p></li>
+<li><p>FirefoxOptions</p></li>
+<li><p>IeOptions</p></li>
+</ul>
+</dd>
+</dl>
+<p>:param browser
+:param use_profile: if browser user profile is used, defaults to False
+:param headless: if headless mode should be set, defaults to False
+:param maximized: if browser should be run maximized, defaults to False
+:return: driver options or empty dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.set_headless_options">
+<code class="sig-name descname">set_headless_options</code><span class="sig-paren">(</span><em class="sig-param">browser</em>, <em class="sig-param">options</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.set_headless_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set headless mode if possible for the browser</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>browser</strong> – string name of the browser</p></li>
+<li><p><strong>options</strong> – browser options class instance</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.set_user_profile">
+<code class="sig-name descname">set_user_profile</code><span class="sig-paren">(</span><em class="sig-param">options</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.set_user_profile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.wait_and_click_button">
+<code class="sig-name descname">wait_and_click_button</code><span class="sig-paren">(</span><em class="sig-param">locator</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.wait_and_click_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Click button once it becomes visible</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>locator</strong> – [description]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.Browser.BrowserNotFoundError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Browser.</code><code class="sig-name descname">BrowserNotFoundError</code><a class="headerlink" href="#RPA.Browser.BrowserNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when browser can’t be initialized.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../desktop_clipboard/index.html" class="btn btn-neutral float-right" title="Desktop.Clipboard" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../libdoc/Browser.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
