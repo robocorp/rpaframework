@@ -97,14 +97,14 @@ jobs:
         publish_dir: docs/build/html/
         github_token: ${{ secrets.GITHUB_TOKEN }}
         cname: www.rpaframework.org
-    - name: Build JSON documentation
-      run: poetry run python ./tools/libdocext.py --rpa -i src/RPA/core -d rest -f json-html -o json/ src/
-    - name: Publish JSON documentation
+    - name: Build Robohub documentation
+      run: make docs-hub
+    - name: Publish Robohub documentation
       if: success()
       uses: actions/upload-artifact@v1
       with:
-        name: json-docs
-        path: json
+        name: robohub-docs
+        path: dist/hub/
     - name: Build and publish package
       if: success()
       run: |

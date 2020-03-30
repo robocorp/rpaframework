@@ -74,29 +74,42 @@ todo: ## Print all TODO/FIXME comments
 docs: docs-libdoc ## Generate documentation using Sphinx
 	poetry run $(MAKE) -C docs clean
 	poetry run $(MAKE) -C docs html
-	#xdg-open docs/build/html/index.html
 
 docs-libdoc: ## Prebuild libdoc files
 	poetry run python\
 	 ./tools/libdocext.py\
 	 --rpa\
 	 --title "Robot Framework API"\
-	 --ignore src/RPA/core\
 	 --docstring rest\
+	 --override-docstring src/RPA/Browser.py=robot\
+	 --override-docstring src/RPA/HTTP.py=robot\
 	 --format rest\
+	 --override-format src/RPA/Browser.py=rest-html\
+	 --override-format src/RPA/HTTP.py=rest-html\
+	 --ignore src/RPA/core\
 	 --output docs/source/libdoc/\
 	 src/
-	# Browser and HTTP libraries use Robot-style docstrings
+
+docs-hub: docs-libdoc ## Generate documentation for Robohub
+	mkdir -p dist/hub/markdown
+
+	$(call title,"Building Markdown documentation")
+	poetry run $(MAKE) -C docs clean
+	poetry run $(MAKE) -C docs markdown
+	find docs/build/markdown/libraries/ -name "index.md"\
+	 -exec sh -c 'cp {} dist/hub/markdown/$$(basename $$(dirname {})).md' cp {} \;
+
+	$(call title,"Building JSON documentation")
 	poetry run python\
 	 ./tools/libdocext.py\
 	 --rpa\
-	 --title "Robot Framework API"\
+	 --docstring rest\
+	 --format json-html\
+	 --override-docstring src/RPA/Browser.py=robot\
+	 --override-docstring src/RPA/HTTP.py=robot\
 	 --ignore src/RPA/core\
-	 --docstring robot\
-	 --format rest-html\
-	 --output docs/source/libdoc/\
-	 src/RPA/Browser.py\
-	 src/RPA/HTTP.py
+	 --output dist/hub/json\
+	 src/
 
 build: ## Build distribution packages
 	poetry build -vv
