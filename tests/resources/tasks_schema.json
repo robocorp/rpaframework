@@ -1,0 +1,39 @@
+{
+    "tasks": {
+        "Check loop condition": {
+            "alias": "check",
+            "start": true,
+            "next": [
+                "increment",
+                "target"
+            ],
+            "actions": [
+                {
+                    "condition": "$CURRENT >= $TARGET",
+                    "task": "target"
+                },
+                {
+                    "condition": "$CURRENT < $TARGET",
+                    "task": "increment"
+                }
+            ]
+        },
+        "Increment current number": {
+            "alias": "increment",
+            "next": [
+                "check"
+            ],
+            "actions": [
+                {
+                    "status": "PASS",
+                    "task": "check"
+                }
+            ]
+        },
+        "Target reached": {
+            "alias": "target",
+            "end": true,
+            "next": []
+        }
+    }
+}

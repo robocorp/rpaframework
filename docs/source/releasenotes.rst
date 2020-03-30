@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Add new ``Tasks`` library, which allows using flow control between tasks
+
 1.0.4
 -----
 
