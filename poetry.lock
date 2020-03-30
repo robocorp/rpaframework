@@ -331,6 +331,14 @@ python-versions = "*"
 version = "1.7.2"
 
 [[package]]
+category = "dev"
+description = "Turn HTML into equivalent Markdown-structured text."
+name = "html2text"
+optional = false
+python-versions = ">=3.5"
+version = "2020.1.16"
+
+[[package]]
 category = "main"
 description = "Internationalized Domain Names in Applications (IDNA)"
 name = "idna"
@@ -589,6 +597,17 @@ name = "pycparser"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "2.20"
+
+[[package]]
+category = "dev"
+description = "The kitchen sink of Python utility libraries for doing \"stuff\" in a functional way. Based on the Lo-Dash Javascript library."
+name = "pydash"
+optional = false
+python-versions = "*"
+version = "4.7.6"
+
+[package.extras]
+dev = ["coverage", "flake8", "mock", "pylint", "pytest", "pytest-cov", "sphinx", "sphinx-rtd-theme", "tox", "twine", "wheel"]
 
 [[package]]
 category = "dev"
@@ -894,6 +913,21 @@ test = ["pytest (<5.3.3)", "pytest-cov", "html5lib", "flake8 (>=3.5.0)", "flake8
 
 [[package]]
 category = "dev"
+description = "sphinx builder that outputs markdown files"
+name = "sphinx-markdown-builder"
+optional = false
+python-versions = "*"
+version = "0.5.4"
+
+[package.dependencies]
+html2text = "*"
+pydash = "*"
+sphinx = "*"
+unify = "*"
+yapf = "*"
+
+[[package]]
+category = "dev"
 description = "Read the Docs theme for Sphinx"
 name = "sphinx-rtd-theme"
 optional = false
@@ -1013,6 +1047,25 @@ version = "2.0.0"
 pytz = "*"
 
 [[package]]
+category = "dev"
+description = "Modifies strings to all use the same (single/double) quote where possible."
+name = "unify"
+optional = false
+python-versions = "*"
+version = "0.5"
+
+[package.dependencies]
+untokenize = "*"
+
+[[package]]
+category = "dev"
+description = "Transforms tokens into original source code (while preserving whitespace)."
+name = "untokenize"
+optional = false
+python-versions = "*"
+version = "0.1.1"
+
+[[package]]
 category = "main"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 name = "urllib3"
@@ -1090,6 +1143,14 @@ version = "1.3.0"
 
 [[package]]
 category = "dev"
+description = "A formatter for Python code."
+name = "yapf"
+optional = false
+python-versions = "*"
+version = "0.29.0"
+
+[[package]]
+category = "dev"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 marker = "python_version < \"3.8\""
 name = "zipp"
@@ -1105,7 +1166,7 @@ testing = ["jaraco.itertools", "func-timeout"]
 cv = ["opencv-python", "numpy"]
 
 [metadata]
-content-hash = "fe9415d6de70a6bb92a0992ef0ab5860ea7eb93c5e1acc165a8a83e9e9b81a83"
+content-hash = "2a31ab0004a97c544c1668f75b40effe43c6a3ff5f23444398eb47acb0e1ae07"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1272,6 +1333,10 @@ fpdf = [
     {file = "fpdf-1.7.2.tar.gz", hash = "sha256:125840783289e7d12552b1e86ab692c37322e7a65b96a99e0ea86cca041b6779"},
     {file = "fpdf-1.7.2.win-amd64.exe", hash = "sha256:9542f6ad0791d673955da954a0cf3554a0affac79deab87bee06b9b4d4e60990"},
     {file = "fpdf-1.7.2.win32.exe", hash = "sha256:0a94eb783ee933e32a44ad949a1aa6c3ca6fb35b608db53f8b216aec52fc1fb5"},
+]
+html2text = [
+    {file = "html2text-2020.1.16-py3-none-any.whl", hash = "sha256:c7c629882da0cf377d66f073329ccf34a12ed2adf0169b9285ae4e63ef54c82b"},
+    {file = "html2text-2020.1.16.tar.gz", hash = "sha256:e296318e16b059ddb97f7a8a1d6a5c1d7af4544049a01e261731d2d5cc277bbb"},
 ]
 idna = [
     {file = "idna-2.9-py2.py3-none-any.whl", hash = "sha256:a068a21ceac8a4d63dbfd964670474107f541babbd2250d61922f029858365fa"},
@@ -1515,6 +1580,10 @@ pycparser = [
     {file = "pycparser-2.20-py2.py3-none-any.whl", hash = "sha256:7582ad22678f0fcd81102833f60ef8d0e57288b6b5fb00323d101be910e35705"},
     {file = "pycparser-2.20.tar.gz", hash = "sha256:2d475327684562c3a96cc71adf7dc8c4f0565175cf86b6d7a404ff4c771f15f0"},
 ]
+pydash = [
+    {file = "pydash-4.7.6-py2.py3-none-any.whl", hash = "sha256:bc9762159c3fd1f822b131a2d9cbb2b2036595a42ad257d2d821b29803d85f7d"},
+    {file = "pydash-4.7.6.tar.gz", hash = "sha256:a7733886ab811e36510b44ff1de7ccc980327d701fb444a4b2ce395e6f4a4a87"},
+]
 pyflakes = [
     {file = "pyflakes-2.1.1-py2.py3-none-any.whl", hash = "sha256:17dbeb2e3f4d772725c777fabc446d5634d1038f234e77343108ce445ea69ce0"},
     {file = "pyflakes-2.1.1.tar.gz", hash = "sha256:d976835886f8c5b31d47970ed689944a0262b5f3afa00a5a7b4dc81e5449f8a2"},
@@ -1644,6 +1713,10 @@ sphinx = [
     {file = "Sphinx-2.4.4-py3-none-any.whl", hash = "sha256:fc312670b56cb54920d6cc2ced455a22a547910de10b3142276495ced49231cb"},
     {file = "Sphinx-2.4.4.tar.gz", hash = "sha256:b4c750d546ab6d7e05bdff6ac24db8ae3e8b8253a3569b754e445110a0a12b66"},
 ]
+sphinx-markdown-builder = [
+    {file = "sphinx-markdown-builder-0.5.4.tar.gz", hash = "sha256:41def076a9647b3e4412b92084a37f56fe933de62d294a59d148206049fd3f14"},
+    {file = "sphinx_markdown_builder-0.5.4-py2.py3-none-any.whl", hash = "sha256:7bf84d0d3959e09f6aec68c63dac0e3a8cf942eb30d4fe94a23cf39e61f6d04a"},
+]
 sphinx-rtd-theme = [
     {file = "sphinx_rtd_theme-0.4.3-py2.py3-none-any.whl", hash = "sha256:00cf895504a7895ee433807c62094cf1e95f065843bf3acd17037c3e9a2becd4"},
     {file = "sphinx_rtd_theme-0.4.3.tar.gz", hash = "sha256:728607e34d60456d736cc7991fd236afb828b21b82f956c5ea75f94c8414040a"},
@@ -1708,6 +1781,12 @@ tzlocal = [
     {file = "tzlocal-2.0.0-py2.py3-none-any.whl", hash = "sha256:11c9f16e0a633b4b60e1eede97d8a46340d042e67b670b290ca526576e039048"},
     {file = "tzlocal-2.0.0.tar.gz", hash = "sha256:949b9dd5ba4be17190a80c0268167d7e6c92c62b30026cf9764caf3e308e5590"},
 ]
+unify = [
+    {file = "unify-0.5.tar.gz", hash = "sha256:8ddce812b2457212b7598fe574c9e6eb3ad69710f445391338270c7f8a71723c"},
+]
+untokenize = [
+    {file = "untokenize-0.1.1.tar.gz", hash = "sha256:3865dbbbb8efb4bb5eaa72f1be7f3e0be00ea8b7f125c69cbd1f5fda926f37a2"},
+]
 urllib3 = [
     {file = "urllib3-1.25.8-py2.py3-none-any.whl", hash = "sha256:2f3db8b19923a873b3e5256dc9c2dedfa883e33d87c690d9c7913e1f40673cdc"},
     {file = "urllib3-1.25.8.tar.gz", hash = "sha256:87716c2d2a7121198ebcb7ce7cccf6ce5e9ba539041cfbaeecfb641dc0bf6acc"},
@@ -1733,6 +1812,10 @@ xlutils = [
 xlwt = [
     {file = "xlwt-1.3.0-py2.py3-none-any.whl", hash = "sha256:a082260524678ba48a297d922cc385f58278b8aa68741596a87de01a9c628b2e"},
     {file = "xlwt-1.3.0.tar.gz", hash = "sha256:c59912717a9b28f1a3c2a98fd60741014b06b043936dcecbc113eaaada156c88"},
+]
+yapf = [
+    {file = "yapf-0.29.0-py2.py3-none-any.whl", hash = "sha256:cad8a272c6001b3401de3278238fdc54997b6c2e56baa751788915f879a52fca"},
+    {file = "yapf-0.29.0.tar.gz", hash = "sha256:712e23c468506bf12cadd10169f852572ecc61b266258422d45aaf4ad7ef43de"},
 ]
 zipp = [
     {file = "zipp-3.1.0-py3-none-any.whl", hash = "sha256:aa36550ff0c0b7ef7fa639055d797116ee891440eac1a56f378e2d3179e0320b"},
