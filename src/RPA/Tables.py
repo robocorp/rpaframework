@@ -45,10 +45,11 @@ class Table:
     """Container class for tabular data.
 
     Supported data formats:
+
     - empty: None values populated according to columns/index
-    - list:  List of objects that contain values, which themselves
-             can be namedtuples, dictionaries, lists, or tuples
-    - dict:  Dictionary of columns as keys and rows as values
+    - list: List of objects that contain values, which themselves
+      can be namedtuples, dictionaries, lists, or tuples
+    - dict: Dictionary of columns as keys and rows as values
 
     .. todo:: Existing column to index conversion
     .. todo:: Index accessing through magic properties?
