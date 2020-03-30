@@ -23,8 +23,8 @@ CONVERTERS = {}  # Populated dynamically
 
 
 class ConverterMeta(abc.ABCMeta):
-    def __new__(cls, name, bases, dct):
-        converter = super().__new__(cls, name, bases, dct)
+    def __new__(cls, name, bases, namespace, **kwargs):
+        converter = super().__new__(cls, name, bases, namespace, **kwargs)
         if name == "BaseConverter":
             return converter
 
@@ -124,7 +124,7 @@ class RestConverter(BaseConverter):
             if any(re.match(pattern, line) for pattern in self.IGNORE):
                 self.ignore_block = True
                 continue
-            elif line.startswith(" ") and self.ignore_block:
+            if line.startswith(" ") and self.ignore_block:
                 continue
 
             self.ignore_block = False
@@ -261,20 +261,17 @@ class LibdocExt:
         paths = self.find_keyword_files(dir_in)
         assert paths, "No keyword files found"
 
-        dir_out = Path(dir_out)
-        parent = os.path.dirname(os.path.commonprefix(paths))
-
-        converter = CONVERTERS[format_out]
         errors = set()
+        root = os.path.dirname(os.path.commonprefix(paths))
         for path_in in paths:
-            path_rel = path_in.with_suffix(converter.EXTENSION).relative_to(parent)
-            path_out = dir_out / path_rel
-            path_out.parent.mkdir(parents=True, exist_ok=True)
-
             try:
-                self.logger.info("Converting '%s' to '%s'", path_in, path_out)
-                libdoc = self.parse_documentation(path_in, format_in, path_rel.parent)
-                converter().convert(libdoc, path_out)
+                self.convert_path(
+                    path_in=path_in,
+                    dir_out=dir_out,
+                    format_in=format_in,
+                    format_out=format_out,
+                    root=root,
+                )
             except Exception as err:
                 self.logger.error(str(err).split("\n")[0])
                 errors.add(path_in)
@@ -289,7 +286,8 @@ class LibdocExt:
             if self.should_ignore(path):
                 self.logger.debug("Ignoring file: %s", path)
                 continue
-            elif path.is_dir():
+
+            if path.is_dir():
                 if self.is_module_library(path):
                     paths.add(path)
                     # Check for RF resources files in module
@@ -309,19 +307,38 @@ class LibdocExt:
     def should_ignore(self, path):
         return path in self.config.get("ignore", []) or path.name in BLACKLIST
 
-    def parse_documentation(self, path, doc_format, namespace=None):
-        libdoc = LibraryDocumentation(str(path), doc_format=doc_format.upper())
+    def convert_path(self, path_in, dir_out, format_in, format_out, root=None):
+        root = root if root is not None else Path.cwd()
+
+        # Override default docstring format
+        if path_in in self.config.get("override_docstring", {}):
+            self.logger.debug(f"Overriding docstring format for '{path_in}'")
+            format_in = self.config["override_docstring"][path_in]
+
+        # Override default output format
+        if path_in in self.config.get("override_format", {}):
+            self.logger.debug(f"Overriding output format for '{path_in}'")
+            format_out = self.config["override_format"][path_in]
+
+        converter = CONVERTERS[format_out]
+
+        path_rel = path_in.with_suffix(converter.EXTENSION).relative_to(root)
+        path_out = Path(dir_out) / path_rel
+        path_out.parent.mkdir(parents=True, exist_ok=True)
+
+        self.logger.debug("Converting '%s' to '%s'", path_in, path_out)
+        libdoc = LibraryDocumentation(str(path_in), doc_format=format_in.upper())
 
         # Override name with user-given value
         if self.config.get("title"):
             libdoc.name = self.config["title"]
         # Create module path for library, e.g. RPA.Excel.Files
-        elif namespace not in (None, Path(".")):
+        elif path_rel.parent != Path("."):
             libdoc.name = "{namespace}.{name}".format(
-                namespace=str(namespace).replace(os.sep, "."), name=libdoc.name,
+                namespace=str(path_rel.parent).replace(os.sep, "."), name=libdoc.name,
             )
 
-        # Convert scope to RPA format
+        # Convert library scope to RPA format
         if self.config.get("rpa", False):
             scope = normalize(unic(libdoc.scope), ignore="_")
             libdoc.scope = {
@@ -330,7 +347,8 @@ class LibdocExt:
                 "global": "Global",
             }.get(scope, "")
 
-        return libdoc
+        converter().convert(libdoc, path_out)
+
 
     @staticmethod
     def is_module_library(path):
@@ -361,6 +379,23 @@ class LibdocExt:
             return not has_tasks and has_keywords
 
 
+class PathOverrideAction(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        if self.nargs is None:
+            values = [values]
+
+        args = getattr(namespace, self.dest, {})
+        args = args if args is not None else {}
+
+        for value in values:
+            try:
+                key, val = value.split("=")
+                args[Path(key)] = val
+            except Exception as exc:
+                raise argparse.ArgumentError(self, exc)
+        setattr(namespace, self.dest, args)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter
@@ -375,9 +410,6 @@ def main():
         default=Path("dist", "libdoc"),
     )
     parser.add_argument(
-        "-f", "--format", help="Output format", choices=CONVERTERS, default="json"
-    )
-    parser.add_argument(
         "-d",
         "--docstring",
         help="Input docstring format",
@@ -385,19 +417,38 @@ def main():
         default="robot",
     )
     parser.add_argument(
+        "-f", "--format", help="Output format", choices=CONVERTERS, default="json"
+    )
+    parser.add_argument(
+        "--override-docstring",
+        help="Override default docstring format for given files",
+        action=PathOverrideAction,
+        default={},
+        dest="override_docstring",
+        metavar="PATH=FORMAT",
+    )
+    parser.add_argument(
+        "--override-format",
+        help="Override default output format for given files",
+        action=PathOverrideAction,
+        default={},
+        dest="override_format",
+        metavar="PATH=FORMAT",
+    )
+    parser.add_argument(
         "-i",
         "--ignore",
+        help="Ignore given path",
         action="append",
         default=[],
         type=Path,
-        help="Ignore given path",
     )
-    parser.add_argument("--rpa", action="store_true", help="Use tasks instead of tests")
+    parser.add_argument("--rpa", help="Use tasks instead of tests", action="store_true")
     parser.add_argument(
-        "--ignore-errors", action="store_true", help="Ignore all conversion errors"
+        "--ignore-errors", help="Ignore all conversion errors", action="store_true"
     )
     parser.add_argument(
-        "-v", "--verbose", action="store_true", help="Be more talkative"
+        "-v", "--verbose", help="Be more talkative", action="store_true"
     )
     args = parser.parse_args()
 
@@ -409,7 +460,13 @@ def main():
     )
 
     app = LibdocExt(
-        config={"title": args.title, "ignore": args.ignore, "rpa": args.rpa}
+        config={
+            "title": args.title,
+            "ignore": args.ignore,
+            "override_docstring": args.override_docstring,
+            "override_format": args.override_format,
+            "rpa": args.rpa,
+        }
     )
 
     try:
