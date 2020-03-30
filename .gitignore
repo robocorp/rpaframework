@@ -1,0 +1,42 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+
+# Packaging
+dist/
+sdist/
+*.egg-info/
+*.egg
+
+# Documentation
+docs/build/
+docs/source/libdoc/
+docs/source/prebuild/
+
+# Unittests
+.pytest_cache/
+
+# Robot Framework
+tests/results
+tests/*.html
+tests/*.xml
+
+# IDE
+.vscode/
+
+# MacOS
+.DS_Store
+
+# Virtualenv
+*venv/
+
+# Jupyter
+*.ipynb_checkpoints
+
+# LibreOffice
+**/.~lock*
+
+# Webdriver/browser output
+# TODO: Fix somehow
+*.log
+temp

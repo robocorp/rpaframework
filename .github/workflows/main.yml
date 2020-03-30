@@ -1,0 +1,113 @@
+name: main
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [
+          "windows-py36",
+          "windows-py37",
+
+          "ubuntu-py36",
+          "ubuntu-py37",
+          "ubuntu-py38",
+
+          "macos-py36",
+          "macos-py37",
+          "macos-py38",
+        ]
+
+        include:
+          - name: "windows-py36"
+            python: "3.6"
+            os: windows-latest
+          - name: "windows-py37"
+            python: "3.7"
+            os: windows-latest
+          - name: "ubuntu-py36"
+            python: "3.6"
+            os: ubuntu-latest
+          - name: "ubuntu-py37"
+            python: "3.7"
+            os: ubuntu-latest
+          - name: "ubuntu-py38"
+            python: "3.8"
+            os: ubuntu-latest
+          - name: "macos-py36"
+            python: "3.6"
+            os: macos-latest
+          - name: "macos-py37"
+            python: "3.7"
+            os: macos-latest
+          - name: "macos-py38"
+            python: "3.8"
+            os: macos-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Upgrade pip
+      run: python -m pip install --upgrade pip
+    - name: Install poetry
+      run: pip install poetry
+    - name: Install
+      run: make install
+    - name: Test
+      run: make test
+    - uses: actions/upload-artifact@v1
+      if: success() || failure()
+      with:
+          name: ${{ matrix.os }}-py${{ matrix.python }}-test-reports
+          path: tests/results
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.8'
+    - name: Upgrade pip
+      run: python -m pip install --upgrade pip
+    - name: Install poetry
+      run: pip install poetry
+    - name: Install dependencies
+      run: make install
+    - name: Build HTML documentation
+      run: make docs
+    - name: Publish HTML documentation
+      if: success()
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        publish_branch: gh-pages
+        publish_dir: docs/build/html/
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        cname: www.rpaframework.org
+    - name: Build JSON documentation
+      run: poetry run python ./tools/libdocext.py --rpa -i src/RPA/core -d rest -f json-html -o json/ src/
+    - name: Publish JSON documentation
+      if: success()
+      uses: actions/upload-artifact@v1
+      with:
+        name: json-docs
+        path: json
+    - name: Build and publish package
+      if: success()
+      run: |
+        poetry config repositories.devpi ${{ secrets.devpiUrl }}
+        poetry config http-basic.devpi ci ${{ secrets.devpiPassword }}
+        poetry publish --no-interaction --build --repository devpi
