@@ -109,6 +109,7 @@ docs-hub: docs-libdoc ## Generate documentation for Robohub
 	 --override-docstring src/RPA/HTTP.py=robot\
 	 --ignore src/RPA/core\
 	 --output dist/hub/json\
+	 --collapse\
 	 src/
 
 build: ## Build distribution packages

@@ -323,6 +323,9 @@ class LibdocExt:
         converter = CONVERTERS[format_out]
 
         path_rel = path_in.with_suffix(converter.EXTENSION).relative_to(root)
+        if self.config.get("collapse", False):
+            path_rel = Path("_".join(part.lower() for part in path_rel.parts))
+
         path_out = Path(dir_out) / path_rel
         path_out.parent.mkdir(parents=True, exist_ok=True)
 
@@ -348,7 +351,6 @@ class LibdocExt:
             }.get(scope, "")
 
         converter().convert(libdoc, path_out)
-
 
     @staticmethod
     def is_module_library(path):
@@ -401,7 +403,6 @@ def main():
         description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument("path", help="Input file path", type=Path, nargs="+")
-    parser.add_argument("-t", "--title", help="Override title for generated files")
     parser.add_argument(
         "-o",
         "--output",
@@ -443,10 +444,16 @@ def main():
         default=[],
         type=Path,
     )
-    parser.add_argument("--rpa", help="Use tasks instead of tests", action="store_true")
     parser.add_argument(
         "--ignore-errors", help="Ignore all conversion errors", action="store_true"
     )
+    parser.add_argument(
+        "--collapse",
+        help="Convert subdirectories to path prefixes",
+        action="store_true",
+    )
+    parser.add_argument("-t", "--title", help="Override title for generated files")
+    parser.add_argument("--rpa", help="Use tasks instead of tests", action="store_true")
     parser.add_argument(
         "-v", "--verbose", help="Be more talkative", action="store_true"
     )
@@ -461,11 +468,12 @@ def main():
 
     app = LibdocExt(
         config={
+            "rpa": args.rpa,
             "title": args.title,
             "ignore": args.ignore,
             "override_docstring": args.override_docstring,
             "override_format": args.override_format,
-            "rpa": args.rpa,
+            "collapse": args.collapse,
         }
     )
 
