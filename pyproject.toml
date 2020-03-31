@@ -8,8 +8,8 @@ authors = [
 license = "Apache-2.0"
 readme = "README.rst"
 
-homepage = "https://www.rpaframework.org/"
-documentation = "https://www.rpaframework.org/"
+homepage = "https://rpaframework.org/"
+documentation = "https://rpaframework.org/"
 repository = "https://github.com/robocorp/rpa-framework"
 
 keywords = ["robotframework", "rpa", "automation"]

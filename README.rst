@@ -36,7 +36,7 @@ Links
 ^^^^^
 
 - Homepage: `<https://www.github.com/robocorp/rpa-framework/>`_
-- Documentation: `<https://www.rpaframework.org/>`_
+- Documentation: `<https://rpaframework.org/>`_
 - PyPI: `<https://pypi.org/project/rpa-framework/>`_
 
 ------------
@@ -96,22 +96,22 @@ The RPA Framework project currently includes the following libraries:
 | `Robocloud.Secrets`_   | Use the Robocloud Secrets API             |
 +------------------------+-------------------------------------------+
 
-.. _Tables: https://www.rpaframework.org/libraries/tables/
-.. _FileSystem: https://www.rpaframework.org/libraries/filesystem/
-.. _Browser: https://www.rpaframework.org/libraries/browser/
-.. _HTTP: https://www.rpaframework.org/libraries/http/
-.. _PDF: https://www.rpaframework.org/libraries/pdf/
-.. _Slack: https://www.rpaframework.org/libraries/slack/
-.. _Excel.Files: https://www.rpaframework.org/libraries/excel_files/
-.. _Excel.Application: https://www.rpaframework.org/libraries/excel_application/
-.. _Word.Application: https://www.rpaframework.org/libraries/word_application/
-.. _Outlook.Application: https://www.rpaframework.org/libraries/outlook_application/
-.. _Email.Exchange: https://www.rpaframework.org/libraries/email_exchange/
-.. _Email.ImapSmtp: https://www.rpaframework.org/libraries/email_imapsmtp/
-.. _Desktop.Windows: https://www.rpaframework.org/libraries/desktop_windows/
-.. _Desktop.Clipboard: https://www.rpaframework.org/libraries/desktop_clipboard/
-.. _Robocloud.Items: https://www.rpaframework.org/libraries/robocloud_items/
-.. _Robocloud.Secrets: https://www.rpaframework.org/libraries/robocloud_secrets/
+.. _Tables: https://rpaframework.org/libraries/tables/
+.. _FileSystem: https://rpaframework.org/libraries/filesystem/
+.. _Browser: https://rpaframework.org/libraries/browser/
+.. _HTTP: https://rpaframework.org/libraries/http/
+.. _PDF: https://rpaframework.org/libraries/pdf/
+.. _Slack: https://rpaframework.org/libraries/slack/
+.. _Excel.Files: https://rpaframework.org/libraries/excel_files/
+.. _Excel.Application: https://rpaframework.org/libraries/excel_application/
+.. _Word.Application: https://rpaframework.org/libraries/word_application/
+.. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
+.. _Email.Exchange: https://rpaframework.org/libraries/email_exchange/
+.. _Email.ImapSmtp: https://rpaframework.org/libraries/email_imapsmtp/
+.. _Desktop.Windows: https://rpaframework.org/libraries/desktop_windows/
+.. _Desktop.Clipboard: https://rpaframework.org/libraries/desktop_clipboard/
+.. _Robocloud.Items: https://rpaframework.org/libraries/robocloud_items/
+.. _Robocloud.Secrets: https://rpaframework.org/libraries/robocloud_secrets/
 
 Installation
 ------------
