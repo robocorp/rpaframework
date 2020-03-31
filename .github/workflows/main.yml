@@ -96,7 +96,7 @@ jobs:
         publish_branch: gh-pages
         publish_dir: docs/build/html/
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        cname: www.rpaframework.org
+        cname: rpaframework.org
     - name: Build Robohub documentation
       run: make docs-hub
     - name: Publish Robohub documentation
