@@ -10,6 +10,7 @@ from abc import ABC, abstractmethod
 
 import requests
 from requests.exceptions import HTTPError
+from robot.libraries.BuiltIn import BuiltIn
 
 from RPA.core.utils import import_by_name, required_env
 
@@ -298,8 +299,6 @@ class Items:
         """Convert all variables in the current work item to
         Robot Framework task variables.
         """
-        from robot.libraries.BuiltIn import BuiltIn
-
         variables = self.get_work_item_variables()
         for name, value in variables.items():
             BuiltIn().set_task_variable(f"${{{name}}}", value)

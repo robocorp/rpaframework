@@ -298,7 +298,7 @@ class FileSystem:
     def remove_files(self, *paths):
         """Removes multiple files.
 
-        :param \*paths: paths to removed files
+        :param paths: paths to removed files
         """
         # TODO: glob support
         for path in paths:
@@ -438,7 +438,7 @@ class FileSystem:
     def join_path(self, *parts):
         """Joins multiple parts of a path together.
 
-        :param \*parts:  Components of the path, e.g. dir, subdir, filename.ext
+        :param parts:  Components of the path, e.g. dir, subdir, filename.ext
         """
         parts = [str(part) for part in parts]
         return str(Path(*parts))
@@ -548,7 +548,7 @@ class FileSystem:
 
         :param path:    path to file to inspect
         :param keyword: Robot Framework keyword to execute
-        :param \*args:  arguments to keyword
+        :param args:    arguments to keyword
         """
         if self.does_file_exist(path):
             return BuiltIn().run_keyword(keyword, *args)
