@@ -16,6 +16,7 @@ Documentation
    :hidden:
 
    Overview <self>
+   releasenotes
 
 .. toctree::
    :caption: Libraries
