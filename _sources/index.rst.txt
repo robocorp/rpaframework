@@ -8,6 +8,8 @@ RPA Framework
 .. include:: ../../README.rst
    :start-after: include-marker
 
+-------------
+
 Documentation
 -------------
 
@@ -31,7 +33,8 @@ Documentation
    :titlesonly:
    :maxdepth: 1
 
-   conventions
+   contributing/guide
+   contributing/conventions
 
 Indices and tables
 ------------------
