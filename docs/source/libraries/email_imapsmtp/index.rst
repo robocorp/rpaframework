@@ -33,7 +33,7 @@ Robot Framework tasks.
 
 It is highly recommended to secure your passwords and take care
 that they are not stored in the version control by mistake.
-See :py:mod:`RPA.Robocloud.Secrets` how to store RPA Secrets.
+See :py:mod:`RPA.Robocloud.Secrets` how to store RPA Secrets into Robocloud.
 
 .. code-block:: robotframework
     :linenos:

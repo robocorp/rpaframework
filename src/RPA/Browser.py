@@ -2,6 +2,7 @@ import importlib
 import logging
 import os
 import platform
+import tempfile
 import time
 from pathlib import Path
 
@@ -86,26 +87,30 @@ class Browser(SeleniumLibrary):
         :param headless: run in headless mode, defaults to False
         :param maximized: run window maximized, defaults to False
         :param browser_selection: browser name, defaults to AUTOMATIC_BROWSER_SELECTION
+        :return: index of the webdriver session
         """  # noqa: E501
         # https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari
         index = -1
         preferable_browser_order = self.get_browser_order(browser_selection)
         selected_browser = None
 
+        self.logger.info(
+            f"Open Available Browser preferable browser selection order is: "
+            f"{', '.join(preferable_browser_order)}"
+        )
         for browser in preferable_browser_order:
-            self.logger.info(f"webdriver init check: {browser}")
             options = self.set_driver_options(
                 browser, use_profile=use_profile, headless=headless, maximized=maximized
             )
 
             # First try: Without any actions
-            index = self._create_rpa_webdriver(browser, options)
+            index = self.create_rpa_webdriver(browser, options)
             if index is not False:
                 selected_browser = (browser, 1)
                 break
 
             # Second try: Install driver (if there is a manager for driver)
-            index = self._create_rpa_webdriver(browser, options, download=True)
+            index = self.create_rpa_webdriver(browser, options, download=True)
             if index is not False:
                 selected_browser = (browser, 2)
                 break
@@ -118,18 +123,18 @@ class Browser(SeleniumLibrary):
                     headless=True,
                     maximized=maximized,
                 )
-                index = self._create_rpa_webdriver(browser, options, download=True)
+                index = self.create_rpa_webdriver(browser, options, download=True)
                 if index is not False:
                     selected_browser = (browser, 3)
                     break
 
         if selected_browser:
-            self.logger.debug(f"method {selected_browser[1]}")
-            self.logger.debug(options)
+            self.logger.info(f"Browser selection method: {selected_browser[1]}")
             self.logger.info(
                 f"Selected browser is: {selected_browser[0]}, index: {index}"
             )
             self.go_to(url)
+            return index
         else:
             self.logger.error(
                 f"Unable to initialize webdriver "
@@ -137,23 +142,31 @@ class Browser(SeleniumLibrary):
             )
             raise BrowserNotFoundError
 
-    def _create_rpa_webdriver(self, browser, driver_options, download=False):
-        index = -1
+    def create_rpa_webdriver(self, browser, options, download=False):
+        """Create webdriver instance for given browser.
+
+        Driver will be downloaded if it does not exist when `download` is True.
+
+        :param browser: name of the browser
+        :param options: options for webdriver
+        :param download: True if driver should be download, defaults to False
+        :return: index of the webdriver session, False if webdriver was not initialized
+        """
         executable = False
-        self.logger.debug(f"Got: {driver_options}")
-        if download:
-            executable = self.download_driver_if_exists(browser)
+        self.logger.debug(f"Driver options for create_rpa_webdriver: {options}")
+        executable = self.webdriver_init(browser, download)
         try:
             if executable:
                 index = self.create_webdriver(
-                    browser, executable_path=executable, **driver_options
+                    browser, **options, executable_path=executable
                 )
             else:
-                index = self.create_webdriver(browser, **driver_options)
+                index = self.create_webdriver(browser, **options)
             return index
         except WebDriverException as err:
             self.logger.debug(f"Could not open driver: {err}")
             return False
+        return False
 
     def get_browser_order(self, browser_selection):
         """Get list of browser that will be used for open browser
@@ -169,12 +182,18 @@ class Browser(SeleniumLibrary):
             preferable_browser_order = [browser_selection]
         return preferable_browser_order
 
-    def download_driver_if_exists(self, browser):
-        """Download driver for a browser if that exists
+    def webdriver_init(self, browser, download=False):
+        """Webdriver initialization with default driver
+        paths or with downloaded drivers.
 
-        :param browser: download drivers for this browser
+        :param browser: use drivers for this browser
+        :param download: if True drivers are downloaded, not if False
         :return: path to driver or `None`
         """
+        self.logger.info(
+            f"Webdriver initialization for browser: '{browser}'. "
+            f"Download set to: {download}"
+        )
         driver_manager = None
         driver_manager_class = (
             AVAILABLE_DRIVERS[browser.lower()]
@@ -183,23 +202,37 @@ class Browser(SeleniumLibrary):
         )
         if driver_manager_class:
             self.logger.debug(f"Driver manager class: {driver_manager_class}")
-            dir_to_use = Path().cwd() / "temp"
-            driver_manager = driver_manager_class(
-                download_root=dir_to_use, link_path=dir_to_use
-            )
-            driver_path = driver_manager.link_path
+            driver_manager = driver_manager_class()
             driver_executable = driver_manager.get_driver_filename()
-            driver_executable_path = Path(driver_path) / driver_executable
 
-            if driver_executable_path.exists() is False:
-                self.logger.info(f"Downloading and installing: {driver_executable}")
-                driver_manager.download_and_install()
+            if download:
+                tempdir = os.getenv("TEMPDIR") or tempfile.gettempdir()
+                dir_to_use = Path(tempdir) / "drivers"
+                driver_executable_path = Path(dir_to_use) / driver_executable
+
+                if not driver_executable_path.exists():
+                    self.logger.info(
+                        f"Downloading and installing: {str(driver_executable_path)}"
+                    )
+                    driver_manager = driver_manager_class(
+                        download_root=dir_to_use, link_path=dir_to_use
+                    )
+                    driver_manager.download_and_install()
+                    self.logger.debug(
+                        f"{driver_executable} installed into {str(dir_to_use)}"
+                    )
+                else:
+                    self.logger.info(
+                        f"Driver download skipped, because it already existed at "
+                        f"{str(driver_executable_path)}"
+                    )
             else:
-                self.logger.debug(f"Driver {driver_executable} already exists")
+                driver_path = driver_manager.link_path
+                driver_executable_path = Path(driver_path) / driver_executable
+                self.logger.debug(
+                    f"Using already existing driver at: {driver_executable_path}"
+                )
 
-            self.logger.debug(
-                f"Chromedriver installed into: {str(driver_executable_path)}"
-            )
             return r"%s" % str(driver_executable_path)
         else:
             return None
@@ -239,7 +272,10 @@ class Browser(SeleniumLibrary):
 
         if browser_options and browser.lower() == "chrome":
             self.set_default_options(browser_options)
-            prefs = {"safebrowsing.enabled": "true", "enable-logging": "true"}
+            prefs = {"safebrowsing.enabled": "true"}
+            browser_options.add_experimental_option(
+                "excludeSwitches", ["enable-logging"]
+            )
             browser_options.add_experimental_option("prefs", prefs)
             if self.logger.isEnabledFor(logging.DEBUG):
                 driver_options["service_log_path"] = "chromedriver.log"
@@ -255,8 +291,10 @@ class Browser(SeleniumLibrary):
         if browser_options and use_profile:
             self.set_user_profile(browser_options)
 
-        if browser_options:
+        if browser_options and browser.lower() != "chrome":
             driver_options["options"] = browser_options
+        else:
+            driver_options["chrome_options"] = browser_options
 
         return driver_options
 
