@@ -11,11 +11,11 @@ Introduction
 ------------
 
 `RPA Framework` is a collection of open-source libraries and tools for
-Robotic Process Automation (RPA), and they are designed to be used both with
+Robotic Process Automation (RPA), and it is designed to be used both with
 `Robot Framework`_ and Python_. The goal is to offer well-documented and
 actively maintained core libraries for Software Robot Developers.
 
-Learn more about RPA at Robohub_
+Learn more about RPA at Robohub_.
 
 **The project is:**
 
@@ -151,6 +151,23 @@ The libraries are also available inside Python_:
     lib.open_browser("https://example.com")
     lib.input_text("id:user-name", username)
     lib.input_text("id:password", password)
+
+Support and contact
+-------------------
+
+- `rpaframework.org <https://rpaframework.org/>`_ for library documentation
+- Robohub_ for guides and tutorials
+- **#rpa-framework** channel in `Robot Framework Slack`_ if you
+  have open questions or want to contribute
+
+.. _Robot Framework Slack: https://robotframework-slack-invite.herokuapp.com/
+
+Contributing
+------------
+
+Found a bug? Missing a critical feature? Interested in contributing?
+Head over to the `Contribution guide <https://rpaframework.org/contributing/guide/>`_
+to see where to get started.
 
 License
 -------
