@@ -95,8 +95,8 @@ docs-hub: docs-libdoc ## Generate documentation for Robohub
 
 	$(call title,"Building Markdown documentation")
 	poetry run $(MAKE) -C docs clean
-	poetry run $(MAKE) -C docs markdown
-	find docs/build/markdown/libraries/ -name "index.md"\
+	poetry run $(MAKE) -C docs jekyll
+	find docs/build/jekyll/libraries/ -name "index.md"\
 	 -exec sh -c 'cp {} dist/hub/markdown/$$(basename $$(dirname {})).md' cp {} \;
 
 	$(call title,"Building JSON documentation")
