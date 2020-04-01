@@ -205,15 +205,20 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Browser.download_driver_if_exists">
-<code class="sig-name descname">download_driver_if_exists</code><span class="sig-paren">(</span><em class="sig-param">browser</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.download_driver_if_exists" title="Permalink to this definition">¶</a></dt>
-<dd><p>Download driver for a browser if that exists</p>
+<dt id="RPA.Browser.Browser.create_rpa_webdriver">
+<code class="sig-name descname">create_rpa_webdriver</code><span class="sig-paren">(</span><em class="sig-param">browser</em>, <em class="sig-param">options</em>, <em class="sig-param">download=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.create_rpa_webdriver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create webdriver instance for given browser.</p>
+<p>Driver will be downloaded if it does not exist when <cite>download</cite> is True.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>browser</strong> – download drivers for this browser</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>browser</strong> – name of the browser</p></li>
+<li><p><strong>options</strong> – options for webdriver</p></li>
+<li><p><strong>download</strong> – True if driver should be download, defaults to False</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>path to driver or <cite>None</cite></p>
+<dd class="field-even"><p>index of the webdriver session, False if webdriver was not initialized</p>
 </dd>
 </dl>
 </dd></dl>
@@ -301,6 +306,9 @@ system in preferred order or given browser (<cite>browser_selection</cite>)</p>
 <li><p><strong>maximized</strong> – run window maximized, defaults to False</p></li>
 <li><p><strong>browser_selection</strong> – browser name, defaults to AUTOMATIC_BROWSER_SELECTION</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>index of the webdriver session</p>
 </dd>
 </dl>
 </dd></dl>
@@ -396,6 +404,24 @@ system in preferred order or given browser (<cite>browser_selection</cite>)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>locator</strong> – [description]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.webdriver_init">
+<code class="sig-name descname">webdriver_init</code><span class="sig-paren">(</span><em class="sig-param">browser</em>, <em class="sig-param">download=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.webdriver_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Webdriver initialization with default driver
+paths or with downloaded drivers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>browser</strong> – use drivers for this browser</p></li>
+<li><p><strong>download</strong> – if True drivers are downloaded, not if False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>path to driver or <cite>None</cite></p>
 </dd>
 </dl>
 </dd></dl>

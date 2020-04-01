@@ -1444,7 +1444,7 @@ Keywords
      <p>a. Set webdriver options for browser b. Create webdriver using existing installaiton c. (If step b. failed) Download and install webdriver, try again d. (If step c. failed) Try starting webdriver in headless mode</p>
      <p>3. Open url</p>
      <p>If unable to open browser raises <span class="name">BrowserNotFoundError</span>.</p>
-     <p>:param url: address to open :param use_profile: set browser profile, defaults to False :param headless: run in headless mode, defaults to False :param maximized: run window maximized, defaults to False :param browser_selection: browser name, defaults to AUTOMATIC_BROWSER_SELECTION</p>
+     <p>:param url: address to open :param use_profile: set browser profile, defaults to False :param headless: run in headless mode, defaults to False :param maximized: run window maximized, defaults to False :param browser_selection: browser name, defaults to AUTOMATIC_BROWSER_SELECTION :return: index of the webdriver session</p>
 
 :Open Browser:
   :Arguments: url=None, browser=firefox, alias=None, remote_url=False, desired_capabilities=None, ff_profile_dir=None, options=None, service_log_path=None, executable_path=None

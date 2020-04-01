@@ -10,8 +10,13 @@ HTTP
 Description
 ***********
 
-`HTTP` is a library which wraps
-`RequestsLibrary <https://hub.robocorp.com/libraries/bulkan-robotframework-requests/>`_ functionality
+`HTTP` library can be used to make HTTP requests.
+
+Library will be extended by keywords that are more RPA-oriented.
+
+Library is wrapping Robot Framework `RequestsLibrary`_ functionality.
+
+.. _RequestsLibrary: https://hub.robocorp.com/libraries/bulkan-robotframework-requests
 
 ********
 Examples
