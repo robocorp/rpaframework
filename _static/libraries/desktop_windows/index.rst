@@ -14,6 +14,17 @@ Description
 
 `Windows` is a library for managing Windows operating system.
 
+Running Windows applications
+============================
+
+Windows applications can be started in several ways and library supports
+following keywords:
+    - Open Application (dispatch Office applications)
+    - Open File (open file as process which opens associated application)
+    - Open Executable (uses pywinauto start)
+    - Open Using Run Dialog (uses Windows run dialog)
+    - Open From Search (uses Windows search dialog)
+
 Locators
 ========
 
@@ -50,14 +61,22 @@ Robot Framework tasks.
     :linenos:
 
     *** Settings ***
-    Library    RPA.Desktop.Windows
+    Library          RPA.Desktop.Windows
+    Suite Teardown   Close all applications
 
     *** Tasks ***
-    Open application
-        Open Process  calc.exe    Calculator
-        Type Keys     6*55=
-        Sleep         3s
-        Mouse Click   Clear
+    Open Calculator using run dialog
+        ${result}=              Open using run dialog    calc.exe   Calculator
+        ${result}=              Get Window Elements
+        Send Keys               5*2=
+        ${result}=              Get element             partial name:Display is
+        Log Many                ${result}
+        ${result}=              Get element rich text   id:CalculatorResults
+        Should Be Equal As Strings  ${result}  Display is 10
+        ${result}=              Get element rectangle   partial name:Display is
+        ${result}=              Is Element Visible      CalculatorResults
+        ${result}=              Is Element Enabled      partial name:Display is
+
 
 Python
 ======
@@ -68,19 +87,25 @@ own Python modules.
 .. code-block:: python
     :linenos:
 
-    from RPA.Desktop.Windows import Windows, delay
+    from RPA.Desktop.Windows import Windows
 
-    def use_calculator():
-        win = Windows()
-        win.open_process("calc.exe", "Calculator")
-        win.type_keys("6*55=")
-        delay(3)
-        win.mouse_click("Clear")
-        delay(3)
-        win.quit()
+    win = Windows()
+
+    def open_calculator():
+        win.open_from_search("calc.exe", "Calculator")
+        elements = win.get_window_elements()
+
+    def make_calculations(expression):
+        win.send_keys(expression)
+        result = win.get_element_rich_text('id:CalculatorResults')
+        return int(result.strip('Display is '))
 
     if __name__ == "__main__":
-        use_calculator()
+        open_calculator()
+        exp = '5*2='
+        result = make_calculations(exp)
+        print(f"Calculation result of '{exp}' is '{result}'")
+        win.close_all_applications()
 
 *****************
 API Documentation
