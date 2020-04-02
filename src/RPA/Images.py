@@ -364,14 +364,17 @@ class TemplateMatcher:
 
         coefficients = cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)
 
-        # Convert 2d array of coefficients to list of indexes above tolerance,
-        # and sort them according to the coefficient (best first)
-        matches = numpy.where(coefficients >= tolerance)
-        matches = list(zip(*matches[::-1]))
-        matches.sort(key=lambda xy: coefficients[xy[1], xy[0]], reverse=True)
+        while True:
+            _, match_coeff, _, (match_x, match_y) = cv2.minMaxLoc(coefficients)
+            if match_coeff < tolerance:
+                break
 
-        for x, y in matches:
-            yield Region.from_size(x, y, template_width, template_height)
+            coefficients[
+                match_y - template_height // 2 : match_y + template_height // 2,
+                match_x - template_width // 2 : match_x + template_width // 2,
+            ] = 0
+
+            yield Region.from_size(match_x, match_y, template_width, template_height)
 
     def _iter_match_pillow(self, image, template, tolerance):
         """Brute-force search for template image in larger image.
