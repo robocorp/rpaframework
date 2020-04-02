@@ -11,7 +11,7 @@ Introduction
 ------------
 
 `RPA Framework` is a collection of open-source libraries and tools for
-Robotic Process Automation (RPA), and it is designed to be used both with
+Robotic Process Automation (RPA), and it is designed to be used with both
 `Robot Framework`_ and Python_. The goal is to offer well-documented and
 actively maintained core libraries for Software Robot Developers.
 
