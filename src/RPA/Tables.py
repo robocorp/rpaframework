@@ -870,6 +870,26 @@ class Tables:
         self.requires_table(table)
         return table.get_column(column)
 
+    def set_table_row(self, table, row, values):
+        """Assign values to a row in the table.
+
+        :param table:   table to modify
+        :param row:     row to modify
+        :param values:  value(s) to set
+        """
+        self.requires_table(table)
+        table.set_row(row, values)
+
+    def set_table_column(self, table, column, values):
+        """Assign values to entire column in the table.
+
+        :param table:   table to modify
+        :param column:  column to modify
+        :param values:  value(s) to set
+        """
+        self.requires_table(table)
+        table.set_column(column, values)
+
     def pop_table_row(self, table, index=None):
         """Remove row from table and return it.
 
@@ -923,7 +943,7 @@ class Tables:
         self.requires_table(table)
         return table.tail(count)
 
-    def get_cell_value(self, table, row, column):
+    def get_table_cell(self, table, row, column):
         """Get a cell value from table.
 
         :param table:   table to read from
@@ -932,6 +952,17 @@ class Tables:
         """
         self.requires_table(table)
         return table.get_cell(row, column)
+
+    def set_table_cell(self, table, row, column, value):
+        """Set a cell value in the table.
+
+        :param table:   table to modify to
+        :param row:     row of cell
+        :param column:  column of cell
+        :param value:   value to set
+        """
+        self.requires_table(table)
+        table.set_cell(row, column, value)
 
     def sort_table_by_column(self, table, column, ascending=False):
         """Sort table in-place according to `column`.

@@ -183,6 +183,18 @@ def test_keyword_get_table_column(library, table):
     library.get_table_column(table, column)
 
 
+def test_keyword_set_table_row(library, table):
+    assert table[1] == ["a", "b", "c", None]
+    library.set_table_row(table, 1, ["w", "x", "y", "z"])
+    assert table[1] == ["w", "x", "y", "z"]
+
+
+def test_keyword_set_table_column(library, table):
+    library.set_table_column(table, "one", "NaN")
+    for row in table:
+        assert row.one == "NaN"
+
+
 @pytest.mark.skip(reason="Not implemented")
 def test_keyword_pop_table_row(library, table):
     library.pop_table_row(table, index=None)
@@ -209,8 +221,8 @@ def test_keyword_table_tail(library, table):
 
 
 @pytest.mark.skip(reason="Not implemented")
-def test_keyword_get_cell_value(library, table):
-    library.get_cell_value(table, row, column)
+def test_keyword_get_table_cell(library, table):
+    library.get_table_cell(table, row, column)
 
 
 def test_keyword_sort_table_by_column(library, table):
