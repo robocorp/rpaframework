@@ -573,8 +573,8 @@ list of lists, list of dicts, dict of lists.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Tables.Tables.get_cell_value">
-<code class="sig-name descname">get_cell_value</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">row</em>, <em class="sig-param">column</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.get_cell_value" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Tables.Tables.get_table_cell">
+<code class="sig-name descname">get_table_cell</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">row</em>, <em class="sig-param">column</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.get_table_cell" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a cell value from table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -687,6 +687,52 @@ list of lists, list of dicts, dict of lists.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>table</strong> – table to modify</p></li>
 <li><p><strong>column</strong> – column to convert to index</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.set_table_cell">
+<code class="sig-name descname">set_table_cell</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.set_table_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a cell value in the table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to modify to</p></li>
+<li><p><strong>row</strong> – row of cell</p></li>
+<li><p><strong>column</strong> – column of cell</p></li>
+<li><p><strong>value</strong> – value to set</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.set_table_column">
+<code class="sig-name descname">set_table_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column</em>, <em class="sig-param">values</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.set_table_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign values to entire column in the table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to modify</p></li>
+<li><p><strong>column</strong> – column to modify</p></li>
+<li><p><strong>values</strong> – value(s) to set</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.set_table_row">
+<code class="sig-name descname">set_table_row</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">row</em>, <em class="sig-param">values</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.set_table_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign values to a row in the table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to modify</p></li>
+<li><p><strong>row</strong> – row to modify</p></li>
+<li><p><strong>values</strong> – value(s) to set</p></li>
 </ul>
 </dd>
 </dl>

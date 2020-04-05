@@ -65,7 +65,7 @@ Keywords
   Return all rows where the column values match the given condition.
 
 
-:Get Cell Value:
+:Get Table Cell:
   :Arguments: table, row, column
 
   Get a cell value from table.
@@ -116,6 +116,24 @@ Keywords
   :Arguments: table, column=None
 
   Set existing column as index for rows.
+
+
+:Set Table Cell:
+  :Arguments: table, row, column, value
+
+  Set a cell value in the table.
+
+
+:Set Table Column:
+  :Arguments: table, column, values
+
+  Assign values to entire column in the table.
+
+
+:Set Table Row:
+  :Arguments: table, row, values
+
+  Assign values to a row in the table.
 
 
 :Sort Table By Column:
