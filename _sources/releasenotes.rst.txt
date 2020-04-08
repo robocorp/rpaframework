@@ -3,6 +3,10 @@ Release notes
 
 <next release>
 --------------
+
+0.7.3
+--------------
+- Browser: Detect Chrome and chromedriver versions. Download driver if they differ.
 - Images: Don't template match same region multiple times
 - Tables:
 
