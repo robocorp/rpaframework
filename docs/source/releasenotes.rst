@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+- New library: Salesforce
+- New library: Database
+
 0.7.5
 --------------
 

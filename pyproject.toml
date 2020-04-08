@@ -54,6 +54,8 @@ pillow = "^7.0.0"
 pyscreenshot = "^1.0"
 opencv-python = {version = "^4.2.0", optional = true}
 numpy = {version = "^1.18.2", optional = true}
+robotframework-databaselibrary = "^1.2.4"
+simple_salesforce = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }
