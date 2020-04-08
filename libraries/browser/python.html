@@ -215,8 +215,18 @@
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Browser.Browser.CHROMEDRIVER_VERSIONS">
+<code class="sig-name descname">CHROMEDRIVER_VERSIONS</code><em class="property"> = {'79': '79.0.3945.36', '80': '80.0.3987.106', '81': '81.0.4044.69'}</em><a class="headerlink" href="#RPA.Browser.Browser.CHROMEDRIVER_VERSIONS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Browser.Browser.ROBOT_LIBRARY_SCOPE">
 <code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Browser.Browser.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Browser.Browser.VERSION_PATTERN">
+<code class="sig-name descname">VERSION_PATTERN</code><em class="property"> = '\\d+'</em><a class="headerlink" href="#RPA.Browser.Browser.VERSION_PATTERN" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -239,6 +249,20 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Browser.Browser.detect_chrome_version">
+<code class="sig-name descname">detect_chrome_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.detect_chrome_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect Chrome browser version (if possible) on different
+platforms using different commands for each platform.</p>
+<p>Returns corresponding chromedriver version if possible.</p>
+<p>Supported Chrome major versions are 81, 80 and 79.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>chromedriver version number or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Browser.Browser.get_browser_order">
 <code class="sig-name descname">get_browser_order</code><span class="sig-paren">(</span><em class="sig-param">browser_selection</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.get_browser_order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of browser that will be used for open browser
@@ -250,6 +274,22 @@ or one named browser, eg. “Chrome”</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>list of browsers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.get_installed_chromedriver_version">
+<code class="sig-name descname">get_installed_chromedriver_version</code><span class="sig-paren">(</span><em class="sig-param">driver_executable_path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.get_installed_chromedriver_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns full version number for stable chromedriver.</p>
+<p>Stable version is defined internally based on the major version
+of the chromedriver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>driver_executable_path</strong> – path to chromedriver</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>full version number for stable chromedriver or False</p>
 </dd>
 </dl>
 </dd></dl>
