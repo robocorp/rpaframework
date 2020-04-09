@@ -214,7 +214,7 @@ class Table:
 
         else:
             # Fallback to single column
-            def get(obj):
+            def get(_):
                 return self._columns[0] if self._columns else [0]
 
         return get
@@ -242,7 +242,7 @@ class Table:
 
         else:
             # Fallback to single column
-            def get(obj, column):
+            def get(obj, _):
                 return obj
 
         return get

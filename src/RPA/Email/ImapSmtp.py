@@ -28,7 +28,8 @@ except RobotNotRunningError:
 
 
 class ImapSmtp:
-    """RPA Framework library providing SMTP and IMAP operations for specified mail server.
+    """RPA Framework library providing SMTP and IMAP operations for
+    specified mail server.
 
     Proper initialization needs `smtp_server` and `imap_server` defined.
     """

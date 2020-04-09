@@ -211,6 +211,7 @@ class Items:
 
     def _start_suite(self, data, result):
         """Robot Framework listener method, called when suite starts."""
+        # pylint: disable=unused-argument, broad-except
         if self._load_env:
             try:
                 self.load_work_item_from_environment()

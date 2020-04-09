@@ -112,8 +112,8 @@ docs-hub: docs-libdoc ## Generate documentation for Robohub
 	 --collapse\
 	 src/
 
-build: ## Build distribution packages
+build: lint test ## Build distribution packages
 	poetry build -vv
 
-publish: clean ## Publish package to PyPI
-	poetry publish -v --build
+publish: build ## Publish package to PyPI
+	poetry publish -v

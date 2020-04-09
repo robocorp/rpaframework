@@ -353,6 +353,7 @@ class TemplateMatcher:
         `image` to calculate correlation coefficients, and then
         filter with a tolerance to find all relevant global maximums.
         """
+        # pylint: disable=no-member
         tolerance = tolerance or self.tolerance
         template_width, template_height = template.size
 

@@ -204,10 +204,11 @@ class Browser(SeleniumLibrary):
 
         :return: chromedriver version number or False
         """
+        # pylint: disable=line-too-long
         OS_CMDS = {
             "Windows": [
-                r'reg query "HKEY_CURRENT_USER\Software\Google\Chrome\BLBeacon" /v version',
-                r'reg query "HKEY_CURRENT_USER\Software\Chromium\BLBeacon" /v version',
+                r'reg query "HKEY_CURRENT_USER\Software\Google\Chrome\BLBeacon" /v version',  # noqa
+                r'reg query "HKEY_CURRENT_USER\Software\Chromium\BLBeacon" /v version',  # noqa
             ],
             "Linux": [
                 "chromium --version",
@@ -215,8 +216,8 @@ class Browser(SeleniumLibrary):
                 "google-chrome --version",
             ],
             "Darwin": [
-                r"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version"
-                r"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version",
+                r"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version",  # noqa
+                r"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version",  # noqa
                 r"/Applications/Chromium.app/Contents/MacOS/Chromium --version",
             ],
         }
@@ -244,7 +245,7 @@ class Browser(SeleniumLibrary):
                 stderr=subprocess.PIPE,
                 shell=True,
             )
-            output, errors = process.communicate()
+            output, _ = process.communicate()
             return str(output).strip()
         except FileNotFoundError:
             self.logger.debug(f'Command "{command}" not found')

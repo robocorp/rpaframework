@@ -27,6 +27,7 @@ class Exchange:
         """List messages in the account inbox. Order by descending
         received time.
         """
+        # pylint: disable=no-member
         messages = []
         for item in self.account.inbox.all().order_by("-datetime_received")[:count]:
             messages.append(
