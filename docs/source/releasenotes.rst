@@ -1,8 +1,8 @@
 Release notes
 =============
 
-<next release>
---------------
+Upcoming release
+----------------
 
 0.7.3
 --------------
