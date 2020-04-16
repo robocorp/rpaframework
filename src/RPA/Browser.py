@@ -42,7 +42,7 @@ class Browser(SeleniumLibrary):
         "80": "80.0.3987.106",
         "79": "79.0.3945.36",
     }
-    VERSION_PATTERN = r"\d+"  # "\.\d+\.\d+"
+    CHROME_VERSION_PATTERN = r"(\d+)(\.\d+\.\d+.\d+)"
 
     def __init__(self, *args, **kwargs):
         self.logger = logging.getLogger(__name__)
@@ -116,16 +116,25 @@ class Browser(SeleniumLibrary):
             )
 
             # First try: Without any actions
+            self.logger.info("Initializing webdriver with default options (method 1)")
             index = self.create_rpa_webdriver(browser, options)
             if index is not False:
                 selected_browser = (browser, 1)
                 break
+            else:
+                self.logger.info(
+                    f"Could not init webdriver using method 1. "
+                    f"Next trying to download drivers."
+                )
 
             # Second try: Install driver (if there is a manager for driver)
+            self.logger.info("Initializing webdriver with downloaded driver (method 2)")
             index = self.create_rpa_webdriver(browser, options, download=True)
             if index is not False:
                 selected_browser = (browser, 2)
                 break
+            else:
+                self.logger.info("Could not init webdriver using method 2.")
 
             # Third try: Headless
             if headless is False:
@@ -135,15 +144,16 @@ class Browser(SeleniumLibrary):
                     headless=True,
                     maximized=maximized,
                 )
+                self.logger.info("Initializing webdriver in headless mode (method 3)")
                 index = self.create_rpa_webdriver(browser, options, download=True)
                 if index is not False:
                     selected_browser = (browser, 3)
                     break
 
         if selected_browser:
-            self.logger.info(f"Browser selection method: {selected_browser[1]}")
             self.logger.info(
-                f"Selected browser is: {selected_browser[0]}, index: {index}"
+                f"Selected browser (method: {selected_browser[1]}) "
+                f"is: {selected_browser[0]}, index: {index}"
             )
             self.go_to(url)
             return index
@@ -176,7 +186,7 @@ class Browser(SeleniumLibrary):
                 index = self.create_webdriver(browser, **options)
             return index
         except WebDriverException as err:
-            self.logger.debug(f"Could not open driver: {err}")
+            self.logger.info(f"Could not open driver: {err}")
             return False
         return False
 
@@ -225,10 +235,11 @@ class Browser(SeleniumLibrary):
         for cmd in CMDS:
             output = self._run_command_return_output(cmd)
             if output:
-                version = re.search(self.VERSION_PATTERN, output)
+                version = re.search(self.CHROME_VERSION_PATTERN, output)
                 if version:
-                    major = version.group(0)
-                    self.logger.info(f"Detected Chrome major version is: {major}")
+                    major = version.group(1)
+                    detailed = version.group(0)
+                    self.logger.info(f"Detected Chrome major version is: {detailed}")
                     return (
                         self.CHROMEDRIVER_VERSIONS[major]
                         if (major in self.CHROMEDRIVER_VERSIONS.keys())
@@ -262,16 +273,30 @@ class Browser(SeleniumLibrary):
         """
         output = self._run_command_return_output(driver_executable_path)
         if output:
-            version = re.search(self.VERSION_PATTERN, output)
+            version = re.search(self.CHROME_VERSION_PATTERN, output)
             if version:
-                major = version.group(0)
-                self.logger.info(f"Detected chromedriver major version is: {major}")
+                major = version.group(1)
+                detailed = version.group(0)
+                self.logger.info(f"Detected chromedriver major version is: {detailed}")
                 return (
                     self.CHROMEDRIVER_VERSIONS[major]
                     if (major in self.CHROMEDRIVER_VERSIONS.keys())
                     else False
                 )
         return False
+
+    def download_driver(self, driver_manager_class, download_dir, version=None):
+        """ TODO. Docstring
+        """
+        self.logger.info(f"Downloading driver into: {str(download_dir)}")
+        dm = driver_manager_class(download_root=download_dir, link_path=download_dir)
+        if version:
+            dm.download_and_install(version)
+        else:
+            dm.download_and_install()
+        self.logger.debug(
+            f"{dm.get_driver_filename()} downloaded into {str(download_dir)}"
+        )
 
     def webdriver_init(self, browser, download=False):
         """Webdriver initialization with default driver
@@ -281,16 +306,16 @@ class Browser(SeleniumLibrary):
         :param download: if True drivers are downloaded, not if False
         :return: path to driver or `None`
         """
-        self.logger.info(
+        self.logger.debug(
             f"Webdriver initialization for browser: '{browser}'. "
             f"Download set to: {download}"
         )
-        version_to_download = None
+        dm = None
+        browser_version = None
         force_download = False
         if browser.lower() == "chrome":
-            version_to_download = self.detect_chrome_version()
+            browser_version = self.detect_chrome_version()
 
-        dm = None
         driver_manager_class = (
             AVAILABLE_DRIVERS[browser.lower()]
             if browser.lower() in AVAILABLE_DRIVERS.keys()
@@ -300,45 +325,46 @@ class Browser(SeleniumLibrary):
             self.logger.debug(f"Driver manager class: {driver_manager_class}")
             dm = driver_manager_class()
             driver_executable = dm.get_driver_filename()
-            tempdir = os.getenv("TEMPDIR") or tempfile.gettempdir()
-            dir_to_use = Path(tempdir) / "drivers"
-            driver_executable_path = Path(dir_to_use) / driver_executable
+            default_executable_path = Path(dm.link_path) / driver_executable
 
-            if browser.lower() == "chrome":
-                self.logger.debug(f"DRIVER EXECUTABLE PATH: {driver_executable_path}")
-                chromedriver_version = self.get_installed_chromedriver_version(
-                    str(driver_executable_path / " --version")
-                )
-                if chromedriver_version != version_to_download:
-                    self.logger.info(
-                        "Chrome and chromedriver versions are different. Download."
-                    )
-                    force_download = True
+            tempdir = os.getenv("TEMPDIR") or tempfile.gettempdir()
+            driver_tempdir = Path(tempdir) / "drivers"
+            temp_executable_path = Path(driver_tempdir) / driver_executable
+
+            if temp_executable_path.exists() or download:
+                driver_executable_path = temp_executable_path
+            else:
+                driver_executable_path = default_executable_path
 
             if download:
-                if force_download or not driver_executable_path.exists():
-                    self.logger.info(
-                        f"Downloading and installing: {str(driver_executable_path)}"
-                    )
-                    dm = driver_manager_class(
-                        download_root=dir_to_use, link_path=dir_to_use
-                    )
-                    if version_to_download:
-                        dm.download_and_install(version_to_download)
-                    else:
-                        dm.download_and_install()
-                    self.logger.debug(
-                        f"{driver_executable} installed into {str(dir_to_use)}"
+                if not driver_executable_path.exists():
+                    self.download_driver(
+                        driver_manager_class, driver_tempdir, browser_version
                     )
                 else:
-                    self.logger.info(
-                        f"Driver download skipped, because it already existed at "
-                        f"{str(driver_executable_path)}"
-                    )
+                    if browser.lower() == "chrome":
+                        chromedriver_version = self.get_installed_chromedriver_version(
+                            str(driver_executable_path / " --version")
+                        )
+                        if chromedriver_version is False:
+                            self.logger.info("Could not detect chromedriver version.")
+                            force_download = True
+                        elif chromedriver_version != browser_version:
+                            self.logger.info(
+                                "Chrome and chromedriver versions are different."
+                            )
+                            force_download = True
+                    if force_download:
+                        self.download_driver(
+                            driver_manager_class, driver_tempdir, browser_version
+                        )
+                    else:
+                        self.logger.info(
+                            f"Driver download skipped, because it already existed at "
+                            f"{str(driver_executable_path)}"
+                        )
             else:
-                driver_path = dm.link_path
-                driver_executable_path = Path(driver_path) / driver_executable
-                self.logger.debug(
+                self.logger.info(
                     f"Using already existing driver at: {driver_executable_path}"
                 )
 
