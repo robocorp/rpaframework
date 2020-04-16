@@ -47,6 +47,18 @@ Possible search criterias:
     - id (automation_id)
     - any if none was defined
 
+Current method of inspecting elements on Windows is `inspect.exe` which is part
+of `Windows SDK <https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects>`_.
+
+Keyboard
+========
+
+Keyword `send_keys` can be used to send keys to active window and keyword
+`type_keys` sends keys to active window element.
+
+Special key codes are documented on `pywinauto <https://pywinauto.readthedocs.io/en/latest/code/pywinauto.keyboard.html#>`_
+documentation page.
+
 ********
 Examples
 ********
@@ -116,3 +128,9 @@ API Documentation
 
    ../../libdoc/Desktop/Windows.rst
    python
+
+****
+Todo
+****
+
+- Inspecter tool for identifying Windows locators

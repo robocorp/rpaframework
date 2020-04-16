@@ -305,7 +305,7 @@ class Windows(OperatingSystem):
         self._active_app_instance = -1
 
     def type_keys(self, keys):
-        """Type keys into application dialog
+        """Type keys into active window element.
 
         :param keys: list of keys to type
         """
@@ -313,7 +313,7 @@ class Windows(OperatingSystem):
         self.dlg.type_keys(keys)
 
     def send_keys(self, keys):
-        """Send keys into windows
+        """Send keys into active windows.
 
         :param keys: list of keys to send
         """
