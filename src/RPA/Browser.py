@@ -94,14 +94,18 @@ class Browser(SeleniumLibrary):
 
         If unable to open browser raises `BrowserNotFoundError`.
 
+        Details on `Safari webdriver setup`_.
+
         :param url: address to open
         :param use_profile: set browser profile, defaults to False
         :param headless: run in headless mode, defaults to False
         :param maximized: run window maximized, defaults to False
         :param browser_selection: browser name, defaults to AUTOMATIC_BROWSER_SELECTION
         :return: index of the webdriver session
-        """  # noqa: E501
-        # https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari
+
+        .. _Safari webdriver setup:
+            https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari
+        """
         index = -1
         preferable_browser_order = self.get_browser_order(browser_selection)
         selected_browser = None
@@ -198,7 +202,11 @@ class Browser(SeleniumLibrary):
         if browser_selection == self.AUTOMATIC_BROWSER_SELECTION:
             preferable_browser_order = self.get_preferable_browser_order()
         else:
-            preferable_browser_order = [browser_selection]
+            preferable_browser_order = (
+                browser_selection
+                if isinstance(browser_selection, list)
+                else list(browser_selection)
+            )
         return preferable_browser_order
 
     def detect_chrome_version(self):
@@ -293,13 +301,16 @@ class Browser(SeleniumLibrary):
         """
         self.logger.info(f"Downloading driver into: {str(download_dir)}")
         dm = dm_class(download_root=download_dir, link_path=download_dir)
-        if version:
-            dm.download_and_install(version)
-        else:
-            dm.download_and_install()
-        self.logger.debug(
-            f"{dm.get_driver_filename()} downloaded into {str(download_dir)}"
-        )
+        try:
+            if version:
+                dm.download_and_install(version)
+            else:
+                dm.download_and_install()
+            self.logger.debug(
+                f"{dm.get_driver_filename()} downloaded into {str(download_dir)}"
+            )
+        except RuntimeError:
+            pass
 
     def _set_driver_paths(self, dm_class, download):
         driver_executable_path = None
