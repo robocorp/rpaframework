@@ -14,7 +14,8 @@ from email.mime.text import MIMEText
 
 from pathlib import Path
 from imaplib import IMAP4_SSL
-from smtplib import SMTP, SMTP_SSL, ssl, SMTPConnectError, SMTPNotSupportedError
+from smtplib import SMTP, SMTP_SSL, ssl
+from smtplib import SMTPConnectError, SMTPNotSupportedError, SMTPServerDisconnected
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.RobotLogListener import RobotLogListener
@@ -39,12 +40,12 @@ class ImapSmtp:
     ):
         listener = RobotLogListener()
         listener.register_protected_keywords(
-            ["RPA.Email.ImapSmtp.Authorize", "RPA.Email.ImapSmtp.set_credentials"]
+            ["RPA.Email.ImapSmtp.authorize", "RPA.Email.ImapSmtp.set_credentials"]
         )
 
         self.logger = logging.getLogger(__name__)
         self.smtp_server = smtp_server
-        self.imap_server = smtp_server if imap_server is None else imap_server
+        self.imap_server = imap_server
         self.port = int(port)
         self.set_credentials(account, password)
         self.smtp_conn = None
@@ -52,46 +53,112 @@ class ImapSmtp:
 
     def __del__(self):
         if self.smtp_conn:
-            self.smtp_conn.quit()
+            try:
+                self.smtp_conn.quit()
+            except SMTPServerDisconnected:
+                self.logger.debug("Was already disconnected")
+            finally:
+                self.smtp_conn = None
+
         if self.imap_conn:
             self.imap_conn.close()
             self.imap_conn.logout()
+            self.imap_conn = None
 
     def set_credentials(self, account=None, password=None):
-        """Set credentials for library
+        """Set credentials
 
         :param account: user account as string, defaults to None
         :param password: user password as string, defaults to None
         """
-        self.account = account
-        self.password = password
+        if account:
+            self.account = account
+        if password:
+            self.password = password
 
-    def authorize(self, account=None, password=None):
-        """Authorize user into SMPT and IMAP servers.
+    def authorize_smtp(
+        self, account=None, password=None, smtp_server=None, smtp_port=None
+    ):
+        """Authorize to SMTP server.
+
+        Can be called without giving any parameters if library
+        has been initialized with necessary information and/or
+        keyword ``set_credentials`` has been used.
+
+        :param account: SMTP account name, defaults to None
+        :param password: SMTP account password, defaults to None
+        :param smtp_server: SMTP server address, defaults to None
+        :param smtp_port: SMTP server port, defaults to None (587 for SMTP)
+        """
+        if account is None and password is None:
+            account = self.account
+            password = self.password
+        if smtp_server is None:
+            smtp_server = self.smtp_server
+        if smtp_port is None:
+            smtp_port = self.port
+        else:
+            smtp_port = int(smtp_port)
+        if smtp_server and account and password:
+            try:
+                self.smtp_conn = SMTP(smtp_server, smtp_port)
+                self.send_smtp_hello()
+                try:
+                    self.smtp_conn.starttls()
+                except SMTPNotSupportedError:
+                    self.logger.warning("SMTP not supported by the server")
+            except SMTPConnectError:
+                context = ssl.create_default_context()
+                self.smtp_conn = SMTP_SSL(smtp_server, smtp_port, context=context)
+            self.smtp_conn.login(account, password)
+        else:
+            self.logger.warning(
+                "Server address, account and password are needed for "
+                "authentication with SMTP"
+            )
+        if self.smtp_conn is None:
+            self.logger.warning("Not able to establish SMTP connection")
+
+    def authorize_imap(self, account=None, password=None, imap_server=None):
+        """Authorize to IMAP server.
+
+        Can be called without giving any parameters if library
+        has been initialized with necessary information and/or
+        keyword ``set_credentials`` has been used.
+
+        :param account: IMAP account name, defaults to None
+        :param password: IMAP account password, defaults to None
+        :param smtp_server: IMAP server address, defaults to None
+        """
+        if account is None and password is None:
+            account = self.account
+            password = self.password
+        if imap_server is None:
+            imap_server = self.imap_server
+        if imap_server and account and password:
+            self.imap_conn = IMAP4_SSL(imap_server)
+            self.imap_conn.login(account, password)
+            self.imap_conn.select("inbox")
+        else:
+            self.logger.warning(
+                "Server address, account and password are needed for "
+                "authentication with IMAP"
+            )
+        if self.imap_conn is None:
+            self.logger.warning("Not able to establish IMAP connection")
+
+    def authorize(
+        self, account=None, password=None, smtp_server=None, imap_server=None
+    ):
+        """Authorize user to SMTP and IMAP servers.
 
         Will use separately set credentials or those given in keyword call.
 
         :param account: user account as string, defaults to None
         :param password: user password as string, defaults to None
         """
-        if account and password:
-            self.set_credentials(account, password)
-        self.logger.debug(f"connect (SMTP): {self.smtp_server}:{self.port}")
-        try:
-            self.smtp_conn = SMTP(self.smtp_server, self.port)
-            self.send_smtp_hello()
-            try:
-                self.smtp_conn.starttls()
-            except SMTPNotSupportedError:
-                self.logger.warning("SMTP not supported by the server")
-        except SMTPConnectError:
-            context = ssl.create_default_context()
-            self.smtp_conn = SMTP_SSL(self.smtp_server, self.port, context=context)
-        self.imap_conn = IMAP4_SSL(self.imap_server)
-        if self.account and self.password:
-            self.smtp_conn.login(self.account, self.password)
-            self.imap_conn.login(self.account, self.password)
-        self.imap_conn.select("inbox")
+        self.authorize_smtp(account, password, smtp_server)
+        self.authorize_imap(account, password, imap_server)
 
     def send_smtp_hello(self):
         """Send hello message to SMTP server.
@@ -114,6 +181,8 @@ class ImapSmtp:
         :param body: mail body content
         :param attachments: list of filepaths to attach, defaults to []
         """
+        if self.smtp_conn is None:
+            raise ValueError("Requires authorized SMTP connection")
         add_charset("utf-8", QP, QP, "utf-8")
         attachments = attachments or []
         if not isinstance(attachments, list):
@@ -155,7 +224,10 @@ class ImapSmtp:
         g = Generator(str_io, False)
         g.flatten(msg)
 
-        self.smtp_conn.sendmail("", recipients, str_io.getvalue())
+        try:
+            self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
+        except Exception as e:
+            raise ValueError(f"Send Message failed: {str(e)}")
 
     def _fetch_messages(self, mail_ids):
         messages = []
@@ -181,6 +253,8 @@ class ImapSmtp:
         :param criterion: filter messages based on this, defaults to ""
         :return: True if success, False if not
         """
+        if self.imap_conn is None:
+            raise ValueError("Requires authorized IMAP connection")
         if len(criterion) < 1:
             self.logger.warning(
                 "Delete message requires criteria which message is affected."
@@ -204,6 +278,8 @@ class ImapSmtp:
         :param criterion: filter messages based on this, defaults to ""
         :return: True if success, False if not
         """
+        if self.imap_conn is None:
+            raise ValueError("Requires authorized IMAP connection")
         if len(criterion) < 1:
             self.logger.warning(
                 "Delete messages requires criteria which messages are affected."
@@ -224,9 +300,11 @@ class ImapSmtp:
         :param target_folder: path to folder where message are saved, defaults to None
         :return: True if success, False if not
         """
+        if self.imap_conn is None:
+            raise ValueError("Requires authorized IMAP connection")
         if len(criterion) < 1:
             self.logger.warning(
-                "Get messages requires criteria for which messages to store locally."
+                "Save messages requires criteria for which messages to store locally."
             )
             return False
         if target_folder is None:
@@ -246,6 +324,8 @@ class ImapSmtp:
         :param criterion: list emails matching this, defaults to ""
         :return: list of messages or False
         """
+        if self.imap_conn is None:
+            raise ValueError("Requires authorized IMAP connection")
         self.logger.info(f"List messages: {criterion}")
         _, data = self._search_message(criterion)
         mail_ids = data[0].split()
@@ -260,6 +340,8 @@ class ImapSmtp:
         :param overwrite: overwrite existing file is True, defaults to False
         :return: list of saved attachments or False
         """
+        if self.imap_conn is None:
+            raise ValueError("Requires authorized IMAP connection")
         attachments_saved = []
         if target_folder is None:
             target_folder = os.path.expanduser("~")
@@ -290,6 +372,8 @@ class ImapSmtp:
         :param interval: time in seconds for new check, defaults to 1.0
         :return: list of messages or False
         """
+        if self.imap_conn is None:
+            raise ValueError("Requires authorized IMAP connection")
         if len(criterion) < 1:
             self.logger.warning(
                 "Wait for message requires criteria for which message to wait for."
