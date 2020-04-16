@@ -4,6 +4,13 @@ Release notes
 Upcoming release
 ----------------
 
+0.7.5
+--------------
+
+- ImapSmtp: Separate how IMAP and SMTP are handled in the library
+- Windows: Improve documentation for keys
+- Browser: Manage webdrivermanager download error
+
 0.7.4
 --------------
 
