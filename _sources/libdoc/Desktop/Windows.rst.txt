@@ -266,7 +266,7 @@ Keywords
 :Send Keys:
   :Arguments: keys
 
-  Send keys into windows
+  Send keys into active windows.
 
 
 :Send Keys To Input:
@@ -288,7 +288,7 @@ Keywords
 :Type Keys:
   :Arguments: keys
 
-  Type keys into application dialog
+  Type keys into active window element.
 
 
 :Window Exists:
