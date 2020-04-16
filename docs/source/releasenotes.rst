@@ -4,9 +4,14 @@ Release notes
 Upcoming release
 ----------------
 
+0.7.4
+--------------
+
+- Browser: Restructure how driver downloads and logging are handled
+
 0.7.3
 --------------
-- Browser: Detect Chrome and chromedriver versions. Download driver if they differ.
+- Browser: Detect Chrome and chromedriver versions. Download driver if they differ
 - Images: Don't template match same region multiple times
 - Tables:
 
@@ -19,4 +24,4 @@ Upcoming release
 
 0.7.1
 -----
-First public release of RPA Framework.
+First public release of RPA Framework
