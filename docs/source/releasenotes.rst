@@ -4,13 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
-0.7.4
---------------
-- Browser: Restructure driver download handling and logging
-
 0.7.3
 --------------
-- Browser: Detect Chrome and chromedriver versions. Download driver if they differ
+- Browser: Detect Chrome and chromedriver versions. Download driver if they differ.
 - Images: Don't template match same region multiple times
 - Tables:
 
