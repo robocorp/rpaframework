@@ -18,11 +18,31 @@ Keywords
 ********
 
 :Authorize:
-  :Arguments: account=None, password=None
+  :Arguments: account=None, password=None, smtp_server=None, imap_server=None
 
-  Authorize user into SMPT and IMAP servers.
+  Authorize user to SMTP and IMAP servers.
 
   Will use separately set credentials or those given in keyword call.
+
+
+:Authorize Imap:
+  :Arguments: account=None, password=None, imap_server=None
+
+  Authorize to IMAP server.
+
+  Can be called without giving any parameters if library
+  has been initialized with necessary information and/or
+  keyword ``set_credentials`` has been used.
+
+
+:Authorize Smtp:
+  :Arguments: account=None, password=None, smtp_server=None, smtp_port=None
+
+  Authorize to SMTP server.
+
+  Can be called without giving any parameters if library
+  has been initialized with necessary information and/or
+  keyword ``set_credentials`` has been used.
 
 
 :Delete Message:
@@ -78,7 +98,7 @@ Keywords
 :Set Credentials:
   :Arguments: account=None, password=None
 
-  Set credentials for library
+  Set credentials
 
 
 :Wait For Message:

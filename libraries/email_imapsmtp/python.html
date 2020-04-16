@@ -207,14 +207,51 @@ specified mail server.</p>
 <p>Proper initialization needs <cite>smtp_server</cite> and <cite>imap_server</cite> defined.</p>
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize">
-<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">password=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Authorize user into SMPT and IMAP servers.</p>
+<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">smtp_server=None</em>, <em class="sig-param">imap_server=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize user to SMTP and IMAP servers.</p>
 <p>Will use separately set credentials or those given in keyword call.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>account</strong> – user account as string, defaults to None</p></li>
 <li><p><strong>password</strong> – user password as string, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize_imap">
+<code class="sig-name descname">authorize_imap</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">imap_server=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_imap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize to IMAP server.</p>
+<p>Can be called without giving any parameters if library
+has been initialized with necessary information and/or
+keyword <code class="docutils literal notranslate"><span class="pre">set_credentials</span></code> has been used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>account</strong> – IMAP account name, defaults to None</p></li>
+<li><p><strong>password</strong> – IMAP account password, defaults to None</p></li>
+<li><p><strong>smtp_server</strong> – IMAP server address, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize_smtp">
+<code class="sig-name descname">authorize_smtp</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">smtp_server=None</em>, <em class="sig-param">smtp_port=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_smtp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize to SMTP server.</p>
+<p>Can be called without giving any parameters if library
+has been initialized with necessary information and/or
+keyword <code class="docutils literal notranslate"><span class="pre">set_credentials</span></code> has been used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>account</strong> – SMTP account name, defaults to None</p></li>
+<li><p><strong>password</strong> – SMTP account password, defaults to None</p></li>
+<li><p><strong>smtp_server</strong> – SMTP server address, defaults to None</p></li>
+<li><p><strong>smtp_port</strong> – SMTP server port, defaults to None (587 for SMTP)</p></li>
 </ul>
 </dd>
 </dl>
@@ -335,7 +372,7 @@ with attachment files.</p>
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.set_credentials">
 <code class="sig-name descname">set_credentials</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">password=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.set_credentials" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set credentials for library</p>
+<dd><p>Set credentials</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

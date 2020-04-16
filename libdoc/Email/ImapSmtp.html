@@ -213,11 +213,33 @@ specified mail server.</p>
 <dt class="field-odd">Authorize</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>account=None, password=None</p>
+<dd class="field-odd"><p>account=None, password=None, smtp_server=None, imap_server=None</p>
 </dd>
 </dl>
-<p>Authorize user into SMPT and IMAP servers.</p>
+<p>Authorize user to SMTP and IMAP servers.</p>
 <p>Will use separately set credentials or those given in keyword call.</p>
+</dd>
+<dt class="field-even">Authorize Imap</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>account=None, password=None, imap_server=None</p>
+</dd>
+</dl>
+<p>Authorize to IMAP server.</p>
+<p>Can be called without giving any parameters if library
+has been initialized with necessary information and/or
+keyword <code class="docutils literal notranslate"><span class="pre">set_credentials</span></code> has been used.</p>
+</dd>
+<dt class="field-even">Authorize Smtp</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>account=None, password=None, smtp_server=None, smtp_port=None</p>
+</dd>
+</dl>
+<p>Authorize to SMTP server.</p>
+<p>Can be called without giving any parameters if library
+has been initialized with necessary information and/or
+keyword <code class="docutils literal notranslate"><span class="pre">set_credentials</span></code> has been used.</p>
 </dd>
 <dt class="field-even">Delete Message</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -287,7 +309,7 @@ with attachment files.</p>
 <dd class="field-odd"><p>account=None, password=None</p>
 </dd>
 </dl>
-<p>Set credentials for library</p>
+<p>Set credentials</p>
 </dd>
 <dt class="field-even">Wait For Message</dt>
 <dd class="field-even"><dl class="field-list simple">
