@@ -264,8 +264,19 @@ platforms using different commands for each platform.</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.download_driver">
-<code class="sig-name descname">download_driver</code><span class="sig-paren">(</span><em class="sig-param">driver_manager_class</em>, <em class="sig-param">download_dir</em>, <em class="sig-param">version=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.download_driver" title="Permalink to this definition">¶</a></dt>
-<dd><p>TODO. Docstring</p>
+<code class="sig-name descname">download_driver</code><span class="sig-paren">(</span><em class="sig-param">dm_class</em>, <em class="sig-param">download_dir</em>, <em class="sig-param">version=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.download_driver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download driver to given directory. By default downloads
+latest version for given webdriver type, but this can be
+overridden by giving <code class="docutils literal notranslate"><span class="pre">version</span></code> parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dm_class</strong> – driver manager class</p></li>
+<li><p><strong>download_dir</strong> – directory to download driver into</p></li>
+<li><p><strong>version</strong> – None by default (gets latest version)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
