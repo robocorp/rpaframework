@@ -1,0 +1,460 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: Global
+
+Library handling different database operations.
+
+    Extends `robotframework-databaselibrary`_.
+
+.. _robotframework-databaselibrary:
+    https://github.com/franz-see/Robotframework-Database-Library
+
+
+********
+Keywords
+********
+
+:Call Stored Procedure:
+  :Arguments: spName, spParams=None, sansTran=False
+
+  Uses the inputs of `spName` and 'spParams' to call a stored procedure. Set optional input `sansTran` to
+  True to run command without an explicit transaction commit or rollback.
+
+  spName should be the stored procedure name itself
+  spParams [Optional] should be a List of the parameters being sent in.  The list can be one or multiple items.
+
+  The return from this keyword will always be a list.
+
+  Example:
+  | @{ParamList} = | Create List | FirstParam | SecondParam | ThirdParam |
+  | @{QueryResults} = | Call Stored Procedure | DBName.SchemaName.StoredProcName | List of Parameters |
+
+  Example:
+  | @{ParamList} = | Create List | Testing | LastName |
+  | Set Test Variable | ${SPName} = | DBTest.DBSchema.MyStoredProc |
+  | @{QueryResults} = | Call Stored Procedure | ${SPName} | ${ParamList} |
+  | Log List | @{QueryResults} |
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | @{QueryResults} = | Call Stored Procedure | DBName.SchemaName.StoredProcName | List of Parameters | True |
+
+:Check If Exists In Database:
+  :Arguments: selectStatement, sansTran=False
+
+  Check if any row would be returned by given the input `selectStatement`. If there are no results, then this will
+  throw an AssertionError. Set optional input `sansTran` to True to run command without an explicit transaction
+  commit or rollback.
+
+  For example, given we have a table `person` with the following data:
+  | id | first_name  | last_name |
+  |  1 | Franz Allan | See       |
+
+  When you have the following assertions in your robot
+  | Check If Exists In Database | SELECT id FROM person WHERE first_name = 'Franz Allan' |
+  | Check If Exists In Database | SELECT id FROM person WHERE first_name = 'John' |
+
+  Then you will get the following:
+  | Check If Exists In Database | SELECT id FROM person WHERE first_name = 'Franz Allan' | # PASS |
+  | Check If Exists In Database | SELECT id FROM person WHERE first_name = 'John' | # FAIL |
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | Check If Exists In Database | SELECT id FROM person WHERE first_name = 'John' | True |
+
+:Check If Not Exists In Database:
+  :Arguments: selectStatement, sansTran=False
+
+  This is the negation of `check_if_exists_in_database`.
+
+  Check if no rows would be returned by given the input `selectStatement`. If there are any results, then this
+  will throw an AssertionError. Set optional input `sansTran` to True to run command without an explicit
+  transaction commit or rollback.
+
+  For example, given we have a table `person` with the following data:
+  | id | first_name  | last_name |
+  |  1 | Franz Allan | See       |
+
+  When you have the following assertions in your robot
+  | Check If Not Exists In Database | SELECT id FROM person WHERE first_name = 'John' |
+  | Check If Not Exists In Database | SELECT id FROM person WHERE first_name = 'Franz Allan' |
+
+  Then you will get the following:
+  | Check If Not Exists In Database | SELECT id FROM person WHERE first_name = 'John' | # PASS |
+  | Check If Not Exists In Database | SELECT id FROM person WHERE first_name = 'Franz Allan' | # FAIL |
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | Check If Not Exists In Database | SELECT id FROM person WHERE first_name = 'John' | True |
+
+:Connect To Database:
+  :Arguments: dbapiModuleName=None, dbName=None, dbUsername=None, dbPassword=None, dbHost=None, dbPort=None, dbCharset=None, dbConfigFile=./resources/db.cfg
+
+  Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+  connect to the database using `dbName`, `dbUsername`, and `dbPassword`.
+
+  Optionally, you can specify a `dbConfigFile` wherein it will load the
+  default property values for `dbapiModuleName`, `dbName` `dbUsername`
+  and `dbPassword` (note: specifying `dbapiModuleName`, `dbName`
+  `dbUsername` or `dbPassword` directly will override the properties of
+  the same key in `dbConfigFile`). If no `dbConfigFile` is specified, it
+  defaults to `./resources/db.cfg`.
+
+  The `dbConfigFile` is useful if you don't want to check into your SCM
+  your database credentials.
+
+  Example db.cfg file
+  | [default]
+  | dbapiModuleName=pymysqlforexample
+  | dbName=yourdbname
+  | dbUsername=yourusername
+  | dbPassword=yourpassword
+  | dbHost=yourhost
+  | dbPort=yourport
+
+  Example usage:
+  | # explicitly specifies all db property values |
+  | Connect To Database | psycopg2 | my_db | postgres | s3cr3t | tiger.foobar.com | 5432 |
+
+  | # loads all property values from default.cfg |
+  | Connect To Database | dbConfigFile=default.cfg |
+
+  | # loads all property values from ./resources/db.cfg |
+  | Connect To Database |
+
+  | # uses explicit `dbapiModuleName` and `dbName` but uses the `dbUsername` and `dbPassword` in 'default.cfg' |
+  | Connect To Database | psycopg2 | my_db_test | dbConfigFile=default.cfg |
+
+  | # uses explicit `dbapiModuleName` and `dbName` but uses the `dbUsername` and `dbPassword` in './resources/db.cfg' |
+  | Connect To Database | psycopg2 | my_db_test |
+
+:Connect To Database Using Custom Params:
+  :Arguments: dbapiModuleName=None, db_connect_string=
+
+  Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+  connect to the database using the map string `db_custom_param_string`.
+
+  Example usage:
+  | # for psycopg2 |
+  | Connect To Database Using Custom Params | psycopg2 | database='my_db_test', user='postgres', password='s3cr3t', host='tiger.foobar.com', port=5432 |
+
+  | # for JayDeBeApi |
+  | Connect To Database Using Custom Params | JayDeBeApi | 'oracle.jdbc.driver.OracleDriver', 'my_db_test', 'system', 's3cr3t' |
+
+:Database Query Result As Table:
+  :Arguments: query_string
+
+  Make database query and return result as `RPA.Table`.
+
+
+:Delete All Rows From Table:
+  :Arguments: tableName, sansTran=False
+
+  Delete all the rows within a given table. Set optional input `sansTran` to True to run command without an
+  explicit transaction commit or rollback.
+
+  For example, given we have a table `person` in a database
+
+  When you do the following:
+  | Delete All Rows From Table | person |
+
+  If all the rows can be successfully deleted, then you will get:
+  | Delete All Rows From Table | person | # PASS |
+  If the table doesn't exist or all the data can't be deleted, then you
+  will get:
+  | Delete All Rows From Table | first_name | # FAIL |
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | Delete All Rows From Table | person | True |
+
+:Description:
+  :Arguments: selectStatement, sansTran=False
+
+  Uses the input `selectStatement` to query a table in the db which will be used to determine the description. Set
+  optional input `sansTran` to True to run command without an explicit transaction commit or rollback.
+
+  For example, given we have a table `person` with the following data:
+  | id | first_name  | last_name |
+  |  1 | Franz Allan | See       |
+
+  When you do the following:
+  | @{queryResults} | Description | SELECT * FROM person |
+  | Log Many | @{queryResults} |
+
+  You will get the following:
+  [Column(name='id', type_code=1043, display_size=None, internal_size=255, precision=None, scale=None, null_ok=None)]
+  [Column(name='first_name', type_code=1043, display_size=None, internal_size=255, precision=None, scale=None, null_ok=None)]
+  [Column(name='last_name', type_code=1043, display_size=None, internal_size=255, precision=None, scale=None, null_ok=None)]
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | @{queryResults} | Description | SELECT * FROM person | True |
+
+:Disconnect From Database:
+  Disconnects from the database.
+
+  For example:
+  | Disconnect From Database | # disconnects from current connection to the database |
+
+:Execute Sql Script:
+  :Arguments: sqlScriptFileName, sansTran=False
+
+  Executes the content of the `sqlScriptFileName` as SQL commands. Useful for setting the database to a known
+  state before running your tests, or clearing out your test data after running each a test. Set optional input
+  `sansTran` to True to run command without an explicit transaction commit or rollback.
+
+  Sample usage :
+  | Execute Sql Script | ${EXECDIR}${/}resources${/}DDL-setup.sql |
+  | Execute Sql Script | ${EXECDIR}${/}resources${/}DML-setup.sql |
+  | #interesting stuff here |
+  | Execute Sql Script | ${EXECDIR}${/}resources${/}DML-teardown.sql |
+  | Execute Sql Script | ${EXECDIR}${/}resources${/}DDL-teardown.sql |
+
+  SQL commands are expected to be delimited by a semi-colon (';').
+
+  For example:
+  DELETE FROM person_employee_table;
+  DELETE FROM person_table;
+  DELETE FROM employee_table;
+
+  Also, the last SQL command can optionally omit its trailing semi-colon.
+
+  For example:
+  DELETE FROM person_employee_table;
+  DELETE FROM person_table;
+  DELETE FROM employee_table
+
+  Given this, that means you can create spread your SQL commands in several
+  lines.
+
+  For example:
+  DELETE
+    FROM person_employee_table;
+  DELETE
+    FROM person_table;
+  DELETE
+    FROM employee_table
+
+  However, lines that starts with a number sign (`#`) are treated as a
+  commented line. Thus, none of the contents of that line will be executed.
+
+  For example:
+  # Delete the bridging table first...
+  DELETE
+    FROM person_employee_table;
+    # ...and then the bridged tables.
+  DELETE
+    FROM person_table;
+  DELETE
+    FROM employee_table
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | Execute Sql Script | ${EXECDIR}${/}resources${/}DDL-setup.sql | True |
+
+:Execute Sql String:
+  :Arguments: sqlString, sansTran=False
+
+  Executes the sqlString as SQL commands. Useful to pass arguments to your sql. Set optional input `sansTran` to
+  True to run command without an explicit transaction commit or rollback.
+
+  SQL commands are expected to be delimited by a semi-colon (';').
+
+  For example:
+  | Execute Sql String | DELETE FROM person_employee_table; DELETE FROM person_table |
+
+  For example with an argument:
+  | Execute Sql String | SELECT * FROM person WHERE first_name = ${FIRSTNAME} |
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | Execute Sql String | DELETE FROM person_employee_table; DELETE FROM person_table | True |
+
+:Query:
+  :Arguments: selectStatement, sansTran=False, returnAsDict=False
+
+  Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+  input `sansTran` to True to run command without an explicit transaction commit or rollback.
+  Set optional input `returnAsDict` to True to return values as a list of dictionaries.
+
+  Tip: Unless you want to log all column values of the specified rows,
+  try specifying the column names in your select statements
+  as much as possible to prevent any unnecessary surprises with schema
+  changes and to easily see what your [] indexing is trying to retrieve
+  (i.e. instead of `"select * from my_table"`, try
+  `"select id, col_1, col_2 from my_table"`).
+
+  For example, given we have a table `person` with the following data:
+  | id | first_name  | last_name |
+  |  1 | Franz Allan | See       |
+
+  When you do the following:
+  | @{queryResults} | Query | SELECT * FROM person |
+  | Log Many | @{queryResults} |
+
+  You will get the following:
+  [1, 'Franz Allan', 'See']
+
+  Also, you can do something like this:
+  | ${queryResults} | Query | SELECT first_name, last_name FROM person |
+  | Log | ${queryResults[0][1]}, ${queryResults[0][0]} |
+
+  And get the following
+  See, Franz Allan
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | @{queryResults} | Query | SELECT * FROM person | True |
+
+:Row Count:
+  :Arguments: selectStatement, sansTran=False
+
+  Uses the input `selectStatement` to query the database and returns the number of rows from the query. Set
+  optional input `sansTran` to True to run command without an explicit transaction commit or rollback.
+
+  For example, given we have a table `person` with the following data:
+  | id | first_name  | last_name |
+  |  1 | Franz Allan | See       |
+  |  2 | Jerry       | Schneider |
+
+  When you do the following:
+  | ${rowCount} | Row Count | SELECT * FROM person |
+  | Log | ${rowCount} |
+
+  You will get the following:
+  2
+
+  Also, you can do something like this:
+  | ${rowCount} | Row Count | SELECT * FROM person WHERE id = 2 |
+  | Log | ${rowCount} |
+
+  And get the following
+  1
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | ${rowCount} | Row Count | SELECT * FROM person | True |
+
+:Row Count Is 0:
+  :Arguments: selectStatement, sansTran=False
+
+  Check if any rows are returned from the submitted `selectStatement`. If there are, then this will throw an
+  AssertionError. Set optional input `sansTran` to True to run command without an explicit transaction commit or
+  rollback.
+
+  For example, given we have a table `person` with the following data:
+  | id | first_name  | last_name |
+  |  1 | Franz Allan | See       |
+
+  When you have the following assertions in your robot
+  | Row Count is 0 | SELECT id FROM person WHERE first_name = 'Franz Allan' |
+  | Row Count is 0 | SELECT id FROM person WHERE first_name = 'John' |
+
+  Then you will get the following:
+  | Row Count is 0 | SELECT id FROM person WHERE first_name = 'Franz Allan' | # FAIL |
+  | Row Count is 0 | SELECT id FROM person WHERE first_name = 'John' | # PASS |
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | Row Count is 0 | SELECT id FROM person WHERE first_name = 'John' | True |
+
+:Row Count Is Equal To X:
+  :Arguments: selectStatement, numRows, sansTran=False
+
+  Check if the number of rows returned from `selectStatement` is equal to the value submitted. If not, then this
+  will throw an AssertionError. Set optional input `sansTran` to True to run command without an explicit
+  transaction commit or rollback.
+
+  For example, given we have a table `person` with the following data:
+  | id | first_name  | last_name |
+  |  1 | Franz Allan | See       |
+  |  2 | Jerry       | Schneider |
+
+  When you have the following assertions in your robot
+  | Row Count Is Equal To X | SELECT id FROM person | 1 |
+  | Row Count Is Equal To X | SELECT id FROM person WHERE first_name = 'John' | 0 |
+
+  Then you will get the following:
+  | Row Count Is Equal To X | SELECT id FROM person | 1 | # FAIL |
+  | Row Count Is Equal To X | SELECT id FROM person WHERE first_name = 'John' | 0 | # PASS |
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | Row Count Is Equal To X | SELECT id FROM person WHERE first_name = 'John' | 0 | True |
+
+:Row Count Is Greater Than X:
+  :Arguments: selectStatement, numRows, sansTran=False
+
+  Check if the number of rows returned from `selectStatement` is greater than the value submitted. If not, then
+  this will throw an AssertionError. Set optional input `sansTran` to True to run command without an explicit
+  transaction commit or rollback.
+
+  For example, given we have a table `person` with the following data:
+  | id | first_name  | last_name |
+  |  1 | Franz Allan | See       |
+  |  2 | Jerry       | Schneider |
+
+  When you have the following assertions in your robot
+  | Row Count Is Greater Than X | SELECT id FROM person | 1 |
+  | Row Count Is Greater Than X | SELECT id FROM person WHERE first_name = 'John' | 0 |
+
+  Then you will get the following:
+  | Row Count Is Greater Than X | SELECT id FROM person | 1 | # PASS |
+  | Row Count Is Greater Than X | SELECT id FROM person WHERE first_name = 'John' | 0 | # FAIL |
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | Row Count Is Greater Than X | SELECT id FROM person | 1 | True |
+
+:Row Count Is Less Than X:
+  :Arguments: selectStatement, numRows, sansTran=False
+
+  Check if the number of rows returned from `selectStatement` is less than the value submitted. If not, then this
+  will throw an AssertionError. Set optional input `sansTran` to True to run command without an explicit
+  transaction commit or rollback.
+
+  For example, given we have a table `person` with the following data:
+  | id | first_name  | last_name |
+  |  1 | Franz Allan | See       |
+  |  2 | Jerry       | Schneider |
+
+  When you have the following assertions in your robot
+  | Row Count Is Less Than X | SELECT id FROM person | 3 |
+  | Row Count Is Less Than X | SELECT id FROM person WHERE first_name = 'John' | 1 |
+
+  Then you will get the following:
+  | Row Count Is Less Than X | SELECT id FROM person | 3 | # PASS |
+  | Row Count Is Less Than X | SELECT id FROM person WHERE first_name = 'John' | 1 | # FAIL |
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | Row Count Is Less Than X | SELECT id FROM person | 3 | True |
+
+:Set Auto Commit:
+  :Arguments: autoCommit=True
+
+  Turn the autocommit on the database connection ON or OFF. 
+
+  The default behaviour on a newly created database connection is to automatically start a 
+  transaction, which means that database actions that won't work if there is an active 
+  transaction will fail. Common examples of these actions are creating or deleting a database 
+  or database snapshot. By turning on auto commit on the database connection these actions 
+  can be performed.
+
+  Example:
+  | # Default behaviour, sets auto commit to true
+  | Set Auto Commit
+  | # Explicitly set the desired state
+  | Set Auto Commit | False
+
+:Table Must Exist:
+  :Arguments: tableName, sansTran=False
+
+  Check if the table given exists in the database. Set optional input `sansTran` to True to run command without an
+  explicit transaction commit or rollback.
+
+  For example, given we have a table `person` in a database
+
+  When you do the following:
+  | Table Must Exist | person |
+
+  Then you will get the following:
+  | Table Must Exist | person | # PASS |
+  | Table Must Exist | first_name | # FAIL |
+
+  Using optional `sansTran` to run command without an explicit transaction commit or rollback:
+  | Table Must Exist | person | True |

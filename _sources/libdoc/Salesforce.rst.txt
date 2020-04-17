@@ -1,0 +1,161 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: Task
+
+Library for accessing Salesforce using REST API.
+
+
+********
+Keywords
+********
+
+:Add Product Into Opportunity:
+  :Arguments: \*args, \*\*kwargs
+
+  Add Salesforce Product into Opportunity.
+
+
+:Auth With Token:
+  :Arguments: username, password, api_token
+
+  Authorize to Salesforce with security token, username
+  and password creating instance.
+
+
+:Create New Opportunity:
+  :Arguments: \*args, \*\*kwargs
+
+  Create Salesforce Opportunity object.
+
+
+:Create Salesforce Object:
+  :Arguments: \*args, \*\*kwargs
+
+  Create Salesforce object by type and data.
+
+  :raises SalesforceDataNotAnDictionary: when `object_data` is not dictionary
+
+:Delete Salesforce Object:
+  :Arguments: \*args, \*\*kwargs
+
+  Delete Salesfoce object by type and id.
+
+
+:Describe Salesforce Object:
+  :Arguments: \*args, \*\*kwargs
+
+  Get Salesfoce object description by type.
+
+
+:Execute Dataloader Insert:
+  :Arguments: \*args, \*\*kwargs
+
+  Keyword mimics Salesforce Dataloader 'insert' behaviour by taking
+  in a `input_object`representing dictionary of data to input into Salesforce,
+  a `mapping_object` representing dictionary mapping the input keys into
+  Salesforce keys, an `object_type` representing Salesforce object which
+  Datahandler will handle with `operation` type.
+
+  Stores operation successes into `Salesforce.dataloader_success` array.
+  Stores operation errors into `Salesforce.dataloader_errors`.
+
+  These can be retrieved with keywords `get_dataloader_success_table` and
+  `get_dataloader_error_table` which return corresponding data as
+  `RPA.Table`.
+
+
+:Get Dataloader Error Table:
+  Return Dataloader error entries as `RPA.Table`
+
+:Get Dataloader Success Table:
+  Return Dataloader success entries as `RPA.Table`
+
+:Get Opportunity Id:
+  :Arguments: opportunity_name
+
+  Get ID of an Opportunity linked to set account.
+
+
+:Get Pricebook Entries:
+  Get all pricebook entries.
+
+
+:Get Pricebook Id:
+  :Arguments: pricebook_name
+
+  Get ID of a pricelist.
+
+  Returns False if unique Id is not found.
+
+
+:Get Products In Pricelist:
+  :Arguments: pricebook_name
+
+  Get all products in a pricelist.
+
+
+:Get Salesforce Object By Id:
+  :Arguments: \*args, \*\*kwargs
+
+  Get Salesforce object by id and type.
+
+
+:Get Salesforce Object Metadata:
+  :Arguments: \*args, \*\*kwargs
+
+  Get Salesfoce object metadata by type.
+
+
+:Read Dictionary From File:
+  :Arguments: mapping_file
+
+  Read dictionary from file.
+
+
+:Salesforce Query:
+  :Arguments: \*args, \*\*kwargs
+
+  Perform SQL query.
+
+
+:Salesforce Query Result As Table:
+  :Arguments: sql_string
+
+  Perform SQL query and return result as `RPA.Table`.
+
+
+:Set Account:
+  :Arguments: account_name=, account_id=
+
+  Set account name and id by giving either parameter.
+
+  Can be used together with keywords:
+      - get_opportunity_id
+      - create_new_opportunity
+
+
+:Set Pricebook:
+  :Arguments: pricebook_name
+
+  Sets Pricebook to be used in Salesforce operations.
+
+
+:Update Salesforce Object:
+  :Arguments: \*args, \*\*kwargs
+
+  Update Salesfoce object by type, id and data.
+
+  :raises SalesforceDataNotAnDictionary: when `object_data` is not dictionary
+
+:Upsert Salesforce Object:
+  :Arguments: \*args, \*\*kwargs
+
+  Upsert Salesfoce object by type, id and data.
+
+  :raises SalesforceDataNotAnDictionary: when `object_data` is not dictionary

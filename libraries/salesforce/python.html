@@ -1,0 +1,647 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python module API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SAP" href="../sap/index.html" />
+    <link rel="prev" title="Robot Framework API" href="../../libdoc/Salesforce.html" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!-- PureCookie -->
+<link async rel="stylesheet" type="text/css" href="../../_static/purecookie.css"/>
+<script async src="../../_static/purecookie.js"></script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Salesforce</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Salesforce.html">Robot Framework API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Salesforce</a> &raquo;</li>
+        
+      <li>Python module API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/salesforce/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-module-api">
+<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.Salesforce">
+<span id="salesforce"></span><h2>Salesforce<a class="headerlink" href="#module-RPA.Salesforce" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Salesforce.Salesforce">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Salesforce.</code><code class="sig-name descname">Salesforce</code><span class="sig-paren">(</span><em class="sig-param">sandbox=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Library for accessing Salesforce using REST API.</p>
+<dl class="attribute">
+<dt id="RPA.Salesforce.Salesforce.account">
+<code class="sig-name descname">account</code><em class="property"> = {'Id': None, 'Name': None}</em><a class="headerlink" href="#RPA.Salesforce.Salesforce.account" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.add_product_into_opportunity">
+<code class="sig-name descname">add_product_into_opportunity</code><span class="sig-paren">(</span><em class="sig-param">product_name</em>, <em class="sig-param">quantity</em>, <em class="sig-param">opportunity_id=False</em>, <em class="sig-param">pricebook_name=False</em>, <em class="sig-param">custom_total_price=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.add_product_into_opportunity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Salesforce Product into Opportunity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>product_name</strong> – type of the product in the Pricelist</p></li>
+<li><p><strong>quantity</strong> – number of products to add</p></li>
+<li><p><strong>opportunity_id</strong> – identifier of Opportunity, defaults to False</p></li>
+<li><p><strong>pricebook_name</strong> – name of the pricelist, defaults to False</p></li>
+<li><p><strong>custom_total_price</strong> – price that overrides quantity and product price,
+defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True is operation is successful or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.auth_with_token">
+<code class="sig-name descname">auth_with_token</code><span class="sig-paren">(</span><em class="sig-param">username</em>, <em class="sig-param">password</em>, <em class="sig-param">api_token</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.auth_with_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize to Salesforce with security token, username
+and password creating instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> – Salesforce API username</p></li>
+<li><p><strong>password</strong> – Salesforce API password</p></li>
+<li><p><strong>api_token</strong> – Salesforce API security token</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.create_new_opportunity">
+<code class="sig-name descname">create_new_opportunity</code><span class="sig-paren">(</span><em class="sig-param">close_date</em>, <em class="sig-param">opportunity_name</em>, <em class="sig-param">stage_name='Closed Won'</em>, <em class="sig-param">account_name=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.create_new_opportunity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Salesforce Opportunity object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>close_date</strong> – closing date for the Opportunity, format ‘YYYY-MM-DD’</p></li>
+<li><p><strong>opportunity_name</strong> – as string</p></li>
+<li><p><strong>stage_name</strong> – needs to be one of the defined stages,
+defaults to “Closed Won”</p></li>
+<li><p><strong>account_name</strong> – by default uses previously set account, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>created opportunity or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.create_salesforce_object">
+<code class="sig-name descname">create_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type</em>, <em class="sig-param">object_data</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.create_salesforce_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Salesforce object by type and data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_type</strong> – Salesforce object type</p></li>
+<li><p><strong>object_data</strong> – Salesforce object data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#RPA.Salesforce.SalesforceDataNotAnDictionary" title="RPA.Salesforce.SalesforceDataNotAnDictionary"><strong>SalesforceDataNotAnDictionary</strong></a> – when <cite>object_data</cite> is not dictionary</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>resulting object as dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.delete_salesforce_object">
+<code class="sig-name descname">delete_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type</em>, <em class="sig-param">object_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.delete_salesforce_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete Salesfoce object by type and id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_type</strong> – Salesforce object type</p></li>
+<li><p><strong>object_id</strong> – Salesforce object id</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if successful</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.describe_salesforce_object">
+<code class="sig-name descname">describe_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.describe_salesforce_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Salesfoce object description by type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>object_type</strong> – Salesforce object type</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>object description as dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.execute_dataloader_insert">
+<code class="sig-name descname">execute_dataloader_insert</code><span class="sig-paren">(</span><em class="sig-param">input_object</em>, <em class="sig-param">mapping_object</em>, <em class="sig-param">object_type</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.execute_dataloader_insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keyword mimics Salesforce Dataloader ‘insert’ behaviour by taking
+in a <cite>input_object`representing dictionary of data to input into Salesforce,
+a `mapping_object</cite> representing dictionary mapping the input keys into
+Salesforce keys, an <cite>object_type</cite> representing Salesforce object which
+Datahandler will handle with <cite>operation</cite> type.</p>
+<p>Stores operation successes into <cite>Salesforce.dataloader_success</cite> array.
+Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
+<p>These can be retrieved with keywords <cite>get_dataloader_success_table</cite> and
+<cite>get_dataloader_error_table</cite> which return corresponding data as
+<cite>RPA.Table</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_object</strong> – filepath or list of dictionaries</p></li>
+<li><p><strong>mapping_object</strong> – filepath or dictionary</p></li>
+<li><p><strong>object_type</strong> – Salesforce object type</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if operation is successful</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.get_dataloader_error_table">
+<code class="sig-name descname">get_dataloader_error_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_dataloader_error_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return Dataloader error entries as <cite>RPA.Table</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.get_dataloader_success_table">
+<code class="sig-name descname">get_dataloader_success_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_dataloader_success_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return Dataloader success entries as <cite>RPA.Table</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.get_opportunity_id">
+<code class="sig-name descname">get_opportunity_id</code><span class="sig-paren">(</span><em class="sig-param">opportunity_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_opportunity_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ID of an Opportunity linked to set account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>opportunity_name</strong> – opportunity to query</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Id of the opportunity or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.get_pricebook_entries">
+<code class="sig-name descname">get_pricebook_entries</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_pricebook_entries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all pricebook entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.get_pricebook_id">
+<code class="sig-name descname">get_pricebook_id</code><span class="sig-paren">(</span><em class="sig-param">pricebook_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_pricebook_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ID of a pricelist.</p>
+<p>Returns False if unique Id is not found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pricebook_name</strong> – pricelist to query</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Id of the pricelist or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.get_products_in_pricelist">
+<code class="sig-name descname">get_products_in_pricelist</code><span class="sig-paren">(</span><em class="sig-param">pricebook_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_products_in_pricelist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all products in a pricelist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pricebook_name</strong> – pricelist to query</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>products in dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.get_salesforce_object_by_id">
+<code class="sig-name descname">get_salesforce_object_by_id</code><span class="sig-paren">(</span><em class="sig-param">object_type</em>, <em class="sig-param">object_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_salesforce_object_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Salesforce object by id and type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_type</strong> – Salesforce object type</p></li>
+<li><p><strong>object_id</strong> – Salesforce object id</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary of object attributes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.get_salesforce_object_metadata">
+<code class="sig-name descname">get_salesforce_object_metadata</code><span class="sig-paren">(</span><em class="sig-param">object_type</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_salesforce_object_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Salesfoce object metadata by type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>object_type</strong> – Salesforce object type</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>object metadata as dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.instance">
+<em class="property">property </em><code class="sig-name descname">instance</code><a class="headerlink" href="#RPA.Salesforce.Salesforce.instance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.read_dictionary_from_file">
+<code class="sig-name descname">read_dictionary_from_file</code><span class="sig-paren">(</span><em class="sig-param">mapping_file</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.read_dictionary_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read dictionary from file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mapping_file</strong> – path to the file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>file content as dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.salesforce_query">
+<code class="sig-name descname">salesforce_query</code><span class="sig-paren">(</span><em class="sig-param">sql_string</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform SQL query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sql_string</strong> – SQL clause to perform</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>result of the SQL query</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.salesforce_query_result_as_table">
+<code class="sig-name descname">salesforce_query_result_as_table</code><span class="sig-paren">(</span><em class="sig-param">sql_string</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query_result_as_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform SQL query and return result as <cite>RPA.Table</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sql_string</strong> – SQL clause to perform</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>result of the SQL query as Table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.session_id">
+<em class="property">property </em><code class="sig-name descname">session_id</code><a class="headerlink" href="#RPA.Salesforce.Salesforce.session_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.set_account">
+<code class="sig-name descname">set_account</code><span class="sig-paren">(</span><em class="sig-param">account_name=''</em>, <em class="sig-param">account_id=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.set_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set account name and id by giving either parameter.</p>
+<dl class="simple">
+<dt>Can be used together with keywords:</dt><dd><ul class="simple">
+<li><p>get_opportunity_id</p></li>
+<li><p>create_new_opportunity</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>account_name</strong> – string, defaults to “”</p></li>
+<li><p><strong>account_id</strong> – string, defaults to “”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if account was found from Salesforce, else False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.set_pricebook">
+<code class="sig-name descname">set_pricebook</code><span class="sig-paren">(</span><em class="sig-param">pricebook_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.set_pricebook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets Pricebook to be used in Salesforce operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pricebook_name</strong> – pricelist to use</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.update_salesforce_object">
+<code class="sig-name descname">update_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type</em>, <em class="sig-param">object_id</em>, <em class="sig-param">object_data</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.update_salesforce_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update Salesfoce object by type, id and data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_type</strong> – Salesforce object type</p></li>
+<li><p><strong>object_id</strong> – Salesforce object id</p></li>
+<li><p><strong>object_data</strong> – Salesforce object data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#RPA.Salesforce.SalesforceDataNotAnDictionary" title="RPA.Salesforce.SalesforceDataNotAnDictionary"><strong>SalesforceDataNotAnDictionary</strong></a> – when <cite>object_data</cite> is not dictionary</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if successful</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Salesforce.Salesforce.upsert_salesforce_object">
+<code class="sig-name descname">upsert_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type</em>, <em class="sig-param">object_id</em>, <em class="sig-param">object_data</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.upsert_salesforce_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upsert Salesfoce object by type, id and data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_type</strong> – Salesforce object type</p></li>
+<li><p><strong>object_id</strong> – Salesforce object id</p></li>
+<li><p><strong>object_data</strong> – Salesforce object data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#RPA.Salesforce.SalesforceDataNotAnDictionary" title="RPA.Salesforce.SalesforceDataNotAnDictionary"><strong>SalesforceDataNotAnDictionary</strong></a> – when <cite>object_data</cite> is not dictionary</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if successful</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.Salesforce.SalesforceAuthenticationError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Salesforce.</code><code class="sig-name descname">SalesforceAuthenticationError</code><a class="headerlink" href="#RPA.Salesforce.SalesforceAuthenticationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error when authenticated Salesforce instance does not exist.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.Salesforce.SalesforceDataNotAnDictionary">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Salesforce.</code><code class="sig-name descname">SalesforceDataNotAnDictionary</code><a class="headerlink" href="#RPA.Salesforce.SalesforceDataNotAnDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error when parameter is not dictionary as expected.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Salesforce.sf_instance_required">
+<code class="sig-prename descclassname">RPA.Salesforce.</code><code class="sig-name descname">sf_instance_required</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.sf_instance_required" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../sap/index.html" class="btn btn-neutral float-right" title="SAP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../libdoc/Salesforce.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -11,7 +11,10 @@ Description
 ***********
 
 `Browser` is library for interfacing with web browsers like Chrome,
-Firefox, Safari, Edge and Opera. Library extends `SeleniumLibrary <https://hub.robocorp.com/libraries/robotframework-SeleniumLibrary/>`_.
+Firefox, Safari, Edge and Opera. Library extends `SeleniumLibrary`_.
+
+.. _SeleniumLibrary:
+    https://hub.robocorp.com/libraries/robotframework-SeleniumLibrary/
 
 ********
 Examples
