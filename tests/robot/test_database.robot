@@ -1,7 +1,7 @@
 *** Settings ***
 Library         RPA.Database
 Library         OperatingSystem
-Force Tags      database
+Force Tags      database  skip
 
 *** Variables ***
 ${NOT_AUTHENTICATED_ERROR}  SalesforceAuthenticationError: *
