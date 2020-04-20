@@ -205,7 +205,7 @@ class Browser(SeleniumLibrary):
             preferable_browser_order = (
                 browser_selection
                 if isinstance(browser_selection, list)
-                else list(browser_selection)
+                else [browser_selection]
             )
         return preferable_browser_order
 
