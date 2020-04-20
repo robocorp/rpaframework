@@ -3,6 +3,7 @@ Release notes
 
 Upcoming release
 ----------------
+- Windows: Add keyword for clicking image templates
 
 0.8.1
 --------------

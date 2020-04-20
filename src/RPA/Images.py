@@ -236,7 +236,7 @@ class Images:
         logging.info("Scanned image in %.2f seconds", time.time() - start)
 
         if not matches:
-            raise ImageNotFoundError("Template not found in image")
+            raise ImageNotFoundError("No matches for given template")
 
         # Convert region coördinates back to full-size coördinates
         if region is not None:

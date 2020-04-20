@@ -377,8 +377,8 @@ class Windows(OperatingSystem):
         """
         raise NotImplementedError
 
-    def mouse_click_image(self, image, off_x=0, off_y=0, ctype="click"):
-        """Click at image on desktop
+    def mouse_click_image(self, template, off_x=0, off_y=0, ctype="click"):
+        """Click at template image on desktop
 
         :param image: [description]
         :param off_x: [description], defaults to 0
@@ -386,7 +386,12 @@ class Windows(OperatingSystem):
         :param ctype: [description], defaults to "click"
         :raises NotImplementedError: [description]
         """
-        raise NotImplementedError
+        matches = Images().find_template_on_screen(template, limit=1)
+
+        center_x = matches[0].center.x + int(off_x)
+        center_y = matches[0].center.y + int(off_y)
+
+        self.click_type(center_x, center_y, ctype)
 
     def mouse_click_coords(self, x, y, ctype="click"):
         """Click at coordinates on desktop
