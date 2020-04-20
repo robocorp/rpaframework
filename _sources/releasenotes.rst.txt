@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+0.8.1
+--------------
+- Browser: Fix open_available_browser kw parameter bug
 
 0.8.0
 --------------
