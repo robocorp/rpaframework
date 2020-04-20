@@ -183,9 +183,9 @@ Keywords
 
 
 :Mouse Click Image:
-  :Arguments: image, off_x=0, off_y=0, ctype=click
+  :Arguments: template, off_x=0, off_y=0, ctype=click
 
-  Click at image on desktop
+  Click at template image on desktop
 
   :raises NotImplementedError: [description]
 
