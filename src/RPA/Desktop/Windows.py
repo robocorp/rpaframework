@@ -65,9 +65,7 @@ class Windows(OperatingSystem):
     # TODO. add possibility to define alias for application
     def _add_app_instance(self, app=None, dialog=True, params=None):
         self._app_instance_id += 1
-        if app is None:
-            app = self.app
-        else:
+        if app:
             self.app = app
         default_params = {
             "app": app,
@@ -148,18 +146,21 @@ class Windows(OperatingSystem):
 
         return False
 
-    def open_executable(self, executable, windowtitle):
+    def open_executable(self, executable, windowtitle, backend="uia", work_dir=None):
         """Open Windows executable. Window title name is required
         to get handle on the application.
 
         :param executable: name of the executable
         :param windowtitle: name of the window
+        :param work_dir: path to working directory, default None
         :return: application instance id
         """
         self.logger.info(f"Opening executable: {executable} - window: {windowtitle}")
         params = {"executable": executable, "windowtitle": windowtitle}
         self.windowtitle = windowtitle
-        app = pywinauto.Application(backend="uia").start(executable)
+        app = pywinauto.Application(backend=backend).start(
+            cmd_line=executable, work_dir=work_dir
+        )
         return self._add_app_instance(app, dialog=True, params=params)
 
     def open_using_run_dialog(self, executable, windowtitle):
@@ -515,21 +516,24 @@ class Windows(OperatingSystem):
         # self.logger.warning(f"Window '{app['windowtitle']}'
         # does not have menu_select")
 
-    def find_element(self, locator, search_criteria):
+    def find_element(self, locator, search_criteria=None):
         """Find element from window by locator and criteria.
 
         :param locator: name of locator
         :param search_criteria: criteria by which element is matched
         :return: list of matching elements and locators that where found on the window
         """
+        search_locator = locator
+        if search_criteria is None:
+            search_criteria, search_locator = self._determine_search_criteria(locator)
         self.logger.info(
-            f"find element, locator: {locator} - criteria: {search_criteria}"
+            f"find element(locator: {locator}, criteria: {search_criteria})"
         )
         locators = []
         matching_elements = []
         _, elements = self.get_window_elements()
         for element in elements:
-            if self.is_element_matching(element, locator, search_criteria):
+            if self.is_element_matching(element, search_locator, search_criteria):
                 matching_elements.append(element)
             if search_criteria == "any" and "name" in element:
                 locators.append(element["name"])
@@ -567,6 +571,9 @@ class Windows(OperatingSystem):
         elif locator.startswith("partial name:"):
             search_criteria = "partial name"
             locator = "".join(locator.split("partial name:")[1:])
+        elif locator.startswith("regexp:"):
+            search_criteria = "regexp"
+            locator = "".join(locator.split("regexp:")[1:])
         return search_criteria, locator
 
     # TODO. supporting multiple search criterias at same time to identify ONE element
@@ -577,9 +584,16 @@ class Windows(OperatingSystem):
         :param itemDict: dictionary of element items
         :param locator: name of the locator
         :param criteria: criteria on which to match element
+        :param wildcard: whether to do reg exp match or not, default False
         :return: True if element is matching locator and criteria, False if not
         """
-        if criteria != "any" and criteria in itemdict:
+        if criteria == "regexp":
+            name_search = re.search(locator, itemdict["name"])
+            class_search = re.search(locator, itemdict["class_name"])
+            type_search = re.search(locator, itemdict["control_type"])
+            id_search = re.search(locator, itemdict["automation_id"])
+            return name_search or class_search or type_search or id_search
+        elif criteria != "any" and criteria in itemdict:
             if (wildcard and locator in itemdict[criteria]) or (
                 locator == itemdict[criteria]
             ):
@@ -614,12 +628,7 @@ class Windows(OperatingSystem):
         :param element: dictionary of element items
         :return: coordinates, x and y
         """
-        left, top, right, bottom = self._get_element_coordinates(element["rectangle"])
-        self.logger.info(f"locator rectangle ({left}, {top}, {right}, {bottom})")
-
-        x = int((right - left) / 2) + left
-        y = int((bottom - top) / 2) + top
-        return x, y
+        return self.calculate_rectangle_center(element["rectangle"])
 
     def click_type(self, x=None, y=None, click_type="click"):
         """Mouse click on coordinates x and y.
@@ -650,7 +659,7 @@ class Windows(OperatingSystem):
         :param outline: highlight elements if True, defaults to False
         :return: all controls and all elements
         """
-        self.logger.info("get window elements")
+        self.logger.debug("get window elements")
         # Create a list of this control and all its descendants
         all_ctrls = [self.dlg]
         if hasattr(self.dlg, "descendants"):
@@ -689,7 +698,9 @@ class Windows(OperatingSystem):
         if rectangle:
             left, top, right, bottom = map(
                 int,
-                re.match(r"\(L(\d+).*T(\d+).*R(\d+).*B(\d+)\)", rectangle).groups(),
+                re.match(
+                    r"\(L(\d+).*T(\d+).*R(\d+).*B(\d+)\)", str(rectangle)
+                ).groups(),
             )
             return left, top, right, bottom
         return False
@@ -816,3 +827,117 @@ class Windows(OperatingSystem):
             win32con.LOGON32_LOGON_INTERACTIVE,
             win32con.LOGON32_PROVIDER_DEFAULT,
         )
+
+    def _validate_target(self, target, target_locator):
+        target_x = target_y = 0
+        if target_locator is not None:
+            self.switch_to_application(target["id"])
+            target_elements, _ = self.find_element(target_locator)
+            if len(target_elements) == 0:
+                raise ValueError(
+                    f"Target element was not found by locator '{target_locator}'"
+                )
+            elif len(target_elements) > 1:
+                raise ValueError(
+                    f"Target element matched more than 1 element "
+                    f"({len(target_elements)}) by locator '{target_locator}'"
+                )
+            target_x, target_y = self.calculate_rectangle_center(
+                target_elements[0]["rectangle"]
+            )
+        else:
+            target_x, target_y = self.calculate_rectangle_center(
+                target["dlg"].rectangle()
+            )
+        return target_x, target_y
+
+    def _select_elements_for_drag(self, src, src_locator):
+        self.switch_to_application(src["id"])
+        source_elements, _ = self.find_element(src_locator)
+        if len(source_elements) == 0:
+            raise ValueError(
+                f"Source elements where not found by locator '{src_locator}'"
+            )
+        selections = []
+        source_min_left = 99999
+        source_max_right = -1
+        source_min_top = 99999
+        source_max_bottom = -1
+        for elem in source_elements:
+            self.logger.debug(f"Source element: {elem}")
+            left, top, right, bottom = self._get_element_coordinates(elem["rectangle"])
+            if left < source_min_left:
+                source_min_left = left
+            if right > source_max_right:
+                source_max_right = right
+            if top < source_min_top:
+                source_min_top = top
+            if bottom > source_max_bottom:
+                source_max_bottom = bottom
+            mid_x = int((right - left) / 2) + left
+            mid_y = int((bottom - top) / 2) + top
+            selections.append((mid_x, mid_y))
+        source_x = int((source_max_right - source_min_left) / 2) + source_min_left
+        source_y = int((source_max_bottom - source_min_top) / 2) + source_min_top
+        return selections, source_x, source_y
+
+    def drag_and_drop(
+        self, src, target, src_locator, target_locator=None, handle_ctrl_key=True
+    ):
+        """Drag elements from source and drop them on target.
+
+        Please note that if CTRL is not pressed down during drag and drop then
+        operation is MOVE operation, on CTRL down the operation is COPY operation.
+
+        There will be also overwrite notification if dropping over existing files.
+
+        :param src: application object or instance id
+        :param target: application object or instance id
+        :param ssrc_locator: elements to move
+        :param target_locator: target element to drop source elements into
+        :param handle_ctrl_key: True if keyword should press CTRL down dragging
+        :raises ValueError: on validation errors
+        """
+        if isinstance(src, int):
+            src = self.get_app(src)
+        if isinstance(target, int):
+            target = self.get_app(target)
+
+        selections, source_x, source_y = self._select_elements_for_drag(
+            src, src_locator
+        )
+        target_x, target_y = self._validate_target(target, target_locator)
+
+        self.logger.info(
+            f"Dragging {len(selections)} elements from "
+            f"({source_x},{source_y}) to ({target_x},{target_y})"
+        )
+
+        if handle_ctrl_key:
+            self.send_keys("{VK_LCONTROL down}")
+        # Select elements by mouse clicking
+        for selection in selections:
+            self.mouse_click_coords(selection[0], selection[1])
+        src["dlg"].drag_mouse_input(
+            dst=(target_x, target_y),
+            src=(source_x, source_y),
+            button="left",
+            absolute=True,
+        )
+        if handle_ctrl_key:
+            self.send_keys("{VK_LCONTROL up}")
+        delay(1.0)
+        # Deselect elements by mouse clicking
+        for selection in selections:
+            self.mouse_click_coords(selection[0], selection[1])
+
+    def calculate_rectangle_center(self, rectangle):
+        """Calculate x and y center coordinates from rectangle.
+
+        :param rectangle: element rectangle coordinates
+        :return: x and y coordinates of rectangle center
+        """
+        left, top, right, bottom = self._get_element_coordinates(rectangle)
+        x = int((right - left) / 2) + left
+        y = int((bottom - top) / 2) + top
+        return x, y

@@ -4,6 +4,7 @@ Release notes
 Upcoming release
 ----------------
 - Windows: Add keyword for clicking image templates
+- Windows: Add keyword for drag and drop
 
 0.8.1
 --------------
