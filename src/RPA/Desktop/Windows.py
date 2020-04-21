@@ -828,40 +828,8 @@ class Windows(OperatingSystem):
             win32con.LOGON32_PROVIDER_DEFAULT,
         )
 
-    def drag_and_drop(
-        self, source, target, source_locator, target_locator=None, handle_ctrl_key=True
-    ):
-        """Drag elements from source and drop them on target.
-
-        Please note that if CTRL is not pressed down during drag and drop then
-        operation is MOVE operation, on CTRL down the operation is COPY operation.
-
-        There will be also overwrite notification if dropping over existing files.
-
-        :param source: application object or instance id
-        :param target: application object or instance id
-        :param source_locator: elements to move
-        :param target_locator: target element to drop source elements into
-        :param handle_ctrl_key: True if keyword should press CTRL down dragging
-        :raises ValueError
-        """
-        if isinstance(source, int):
-            source = self.get_app(source)
-        if isinstance(target, int):
-            target = self.get_app(target)
-
-        source_min_left = 99999
-        source_max_right = -1
-        source_min_top = 99999
-        source_max_bottom = -1
-
-        self.switch_to_application(source["id"])
-        source_elements, _ = self.find_element(source_locator)
-
-        if len(source_elements) == 0:
-            raise ValueError(
-                f"Source elements where not found by locator '{source_locator}'"
-            )
+    def _validate_target(self, target, target_locator):
+        target_x = target_y = 0
         if target_locator is not None:
             self.switch_to_application(target["id"])
             target_elements, _ = self.find_element(target_locator)
@@ -881,10 +849,20 @@ class Windows(OperatingSystem):
             target_x, target_y = self.calculate_rectangle_center(
                 target["dlg"].rectangle()
             )
-        if handle_ctrl_key:
-            self.send_keys("{VK_LCONTROL down}")
+        return target_x, target_y
 
+    def _select_elements_for_drag(self, src, src_locator):
+        self.switch_to_application(src["id"])
+        source_elements, _ = self.find_element(src_locator)
+        if len(source_elements) == 0:
+            raise ValueError(
+                f"Source elements where not found by locator '{src_locator}'"
+            )
         selections = []
+        source_min_left = 99999
+        source_max_right = -1
+        source_min_top = 99999
+        source_max_bottom = -1
         for elem in source_elements:
             self.logger.debug(f"Source element: {elem}")
             left, top, right, bottom = self._get_element_coordinates(elem["rectangle"])
@@ -898,16 +876,49 @@ class Windows(OperatingSystem):
                 source_max_bottom = bottom
             mid_x = int((right - left) / 2) + left
             mid_y = int((bottom - top) / 2) + top
-            self.mouse_click_coords(mid_x, mid_y)
             selections.append((mid_x, mid_y))
-
         source_x = int((source_max_right - source_min_left) / 2) + source_min_left
         source_y = int((source_max_bottom - source_min_top) / 2) + source_min_top
+        return selections, source_x, source_y
+
+    def drag_and_drop(
+        self, src, target, src_locator, target_locator=None, handle_ctrl_key=True
+    ):
+        """Drag elements from source and drop them on target.
+
+        Please note that if CTRL is not pressed down during drag and drop then
+        operation is MOVE operation, on CTRL down the operation is COPY operation.
+
+        There will be also overwrite notification if dropping over existing files.
+
+        :param src: application object or instance id
+        :param target: application object or instance id
+        :param ssrc_locator: elements to move
+        :param target_locator: target element to drop source elements into
+        :param handle_ctrl_key: True if keyword should press CTRL down dragging
+        :raises ValueError: on validation errors
+        """
+        if isinstance(src, int):
+            src = self.get_app(src)
+        if isinstance(target, int):
+            target = self.get_app(target)
+
+        selections, source_x, source_y = self._select_elements_for_drag(
+            src, src_locator
+        )
+        target_x, target_y = self._validate_target(target, target_locator)
+
         self.logger.info(
-            f"Dragging {len(source_elements)} elements from "
+            f"Dragging {len(selections)} elements from "
             f"({source_x},{source_y}) to ({target_x},{target_y})"
         )
-        source["dlg"].drag_mouse_input(
+
+        if handle_ctrl_key:
+            self.send_keys("{VK_LCONTROL down}")
+        # Select elements by mouse clicking
+        for selection in selections:
+            self.mouse_click_coords(selection[0], selection[1])
+        src["dlg"].drag_mouse_input(
             dst=(target_x, target_y),
             src=(source_x, source_y),
             button="left",
@@ -915,6 +926,8 @@ class Windows(OperatingSystem):
         )
         if handle_ctrl_key:
             self.send_keys("{VK_LCONTROL up}")
+        delay(1.0)
+        # Deselect elements by mouse clicking
         for selection in selections:
             self.mouse_click_coords(selection[0], selection[1])
 
