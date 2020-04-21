@@ -213,6 +213,14 @@
 <dt class="field-odd">Boot Time In Seconds From Epoch</dt>
 <dd class="field-odd"><p>Get machine boot time</p>
 </dd>
+<dt class="field-even">Calculate Rectangle Center</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>rectangle</p>
+</dd>
+</dl>
+<p>Calculate x and y center coordinates from rectangle.</p>
+</dd>
 <dt class="field-even">Click Type</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -246,10 +254,26 @@
 </dl>
 <p>Connect to application by its pid</p>
 </dd>
+<dt class="field-even">Drag And Drop</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>src, target, src_locator, target_locator=None, handle_ctrl_key=True</p>
+</dd>
+</dl>
+<p>Drag elements from source and drop them on target.</p>
+<p>Please note that if CTRL is not pressed down during drag and drop then
+operation is MOVE operation, on CTRL down the operation is COPY operation.</p>
+<p>There will be also overwrite notification if dropping over existing files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">raises ValueError</dt>
+<dd class="field-odd"><p>on validation errors</p>
+</dd>
+</dl>
+</dd>
 <dt class="field-even">Find Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, search_criteria</p>
+<dd class="field-odd"><p>locator, search_criteria=None</p>
 </dd>
 </dl>
 <p>Find element from window by locator and criteria.</p>
@@ -467,7 +491,7 @@ center coordinates.</p>
 <dt class="field-even">Open Executable</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>executable, windowtitle</p>
+<dd class="field-odd"><p>executable, windowtitle, backend=uia, work_dir=None</p>
 </dd>
 </dl>
 <p>Open Windows executable. Window title name is required

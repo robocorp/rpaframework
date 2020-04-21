@@ -19,6 +19,7 @@ Running Windows applications
 
 Windows applications can be started in several ways and library supports
 following keywords:
+
     - Open Application (dispatch Office applications)
     - Open File (open file as process which opens associated application)
     - Open Executable (uses pywinauto start)

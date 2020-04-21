@@ -19,6 +19,12 @@ Keywords
   Get machine boot time
 
 
+:Calculate Rectangle Center:
+  :Arguments: rectangle
+
+  Calculate x and y center coordinates from rectangle.
+
+
 :Click Type:
   :Arguments: x=None, y=None, click_type=click
 
@@ -43,8 +49,20 @@ Keywords
   Connect to application by its pid
 
 
+:Drag And Drop:
+  :Arguments: src, target, src_locator, target_locator=None, handle_ctrl_key=True
+
+  Drag elements from source and drop them on target.
+
+  Please note that if CTRL is not pressed down during drag and drop then
+  operation is MOVE operation, on CTRL down the operation is COPY operation.
+
+  There will be also overwrite notification if dropping over existing files.
+
+  :raises ValueError: on validation errors
+
 :Find Element:
-  :Arguments: locator, search_criteria
+  :Arguments: locator, search_criteria=None
 
   Find element from window by locator and criteria.
 
@@ -209,7 +227,7 @@ Keywords
 
 
 :Open Executable:
-  :Arguments: executable, windowtitle
+  :Arguments: executable, windowtitle, backend=uia, work_dir=None
 
   Open Windows executable. Window title name is required
   to get handle on the application.

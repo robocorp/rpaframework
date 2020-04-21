@@ -211,6 +211,20 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.calculate_rectangle_center">
+<code class="sig-name descname">calculate_rectangle_center</code><span class="sig-paren">(</span><em class="sig-param">rectangle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.calculate_rectangle_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate x and y center coordinates from rectangle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rectangle</strong> – element rectangle coordinates</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>x and y coordinates of rectangle center</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.click_type">
 <code class="sig-name descname">click_type</code><span class="sig-paren">(</span><em class="sig-param">x=None</em>, <em class="sig-param">y=None</em>, <em class="sig-param">click_type='click'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.click_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mouse click on coordinates x and y.</p>
@@ -258,8 +272,31 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.drag_and_drop">
+<code class="sig-name descname">drag_and_drop</code><span class="sig-paren">(</span><em class="sig-param">src</em>, <em class="sig-param">target</em>, <em class="sig-param">src_locator</em>, <em class="sig-param">target_locator=None</em>, <em class="sig-param">handle_ctrl_key=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.drag_and_drop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drag elements from source and drop them on target.</p>
+<p>Please note that if CTRL is not pressed down during drag and drop then
+operation is MOVE operation, on CTRL down the operation is COPY operation.</p>
+<p>There will be also overwrite notification if dropping over existing files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src</strong> – application object or instance id</p></li>
+<li><p><strong>target</strong> – application object or instance id</p></li>
+<li><p><strong>ssrc_locator</strong> – elements to move</p></li>
+<li><p><strong>target_locator</strong> – target element to drop source elements into</p></li>
+<li><p><strong>handle_ctrl_key</strong> – True if keyword should press CTRL down dragging</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – on validation errors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.find_element">
-<code class="sig-name descname">find_element</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">search_criteria</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.find_element" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">find_element</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">search_criteria=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.find_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find element from window by locator and criteria.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -401,6 +438,7 @@ or <cite>criteria</cite> field in the window items.</p>
 <li><p><strong>itemDict</strong> – dictionary of element items</p></li>
 <li><p><strong>locator</strong> – name of the locator</p></li>
 <li><p><strong>criteria</strong> – criteria on which to match element</p></li>
+<li><p><strong>wildcard</strong> – whether to do reg exp match or not, default False</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -579,7 +617,7 @@ center coordinates.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_executable">
-<code class="sig-name descname">open_executable</code><span class="sig-paren">(</span><em class="sig-param">executable</em>, <em class="sig-param">windowtitle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_executable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_executable</code><span class="sig-paren">(</span><em class="sig-param">executable</em>, <em class="sig-param">windowtitle</em>, <em class="sig-param">backend='uia'</em>, <em class="sig-param">work_dir=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_executable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Windows executable. Window title name is required
 to get handle on the application.</p>
 <dl class="field-list simple">
@@ -587,6 +625,7 @@ to get handle on the application.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>executable</strong> – name of the executable</p></li>
 <li><p><strong>windowtitle</strong> – name of the window</p></li>
+<li><p><strong>work_dir</strong> – path to working directory, default None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
