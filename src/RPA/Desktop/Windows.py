@@ -146,18 +146,21 @@ class Windows(OperatingSystem):
 
         return False
 
-    def open_executable(self, executable, windowtitle):
+    def open_executable(self, executable, windowtitle, backend="uia", work_dir=None):
         """Open Windows executable. Window title name is required
         to get handle on the application.
 
         :param executable: name of the executable
         :param windowtitle: name of the window
+        :param work_dir: path to working directory, default None
         :return: application instance id
         """
         self.logger.info(f"Opening executable: {executable} - window: {windowtitle}")
         params = {"executable": executable, "windowtitle": windowtitle}
         self.windowtitle = windowtitle
-        app = pywinauto.Application(backend="uia").start(executable)
+        app = pywinauto.Application(backend=backend).start(
+            cmd_line=executable, work_dir=work_dir
+        )
         return self._add_app_instance(app, dialog=True, params=params)
 
     def open_using_run_dialog(self, executable, windowtitle):
@@ -524,7 +527,7 @@ class Windows(OperatingSystem):
         if search_criteria is None:
             search_criteria, search_locator = self._determine_search_criteria(locator)
         self.logger.info(
-            f"find element, locator: {locator} - criteria: {search_criteria}"
+            f"find element(locator: {locator}, criteria: {search_criteria})"
         )
         locators = []
         matching_elements = []
@@ -584,9 +587,6 @@ class Windows(OperatingSystem):
         :param wildcard: whether to do reg exp match or not, default False
         :return: True if element is matching locator and criteria, False if not
         """
-        self.logger.debug(
-            f"is_element_matching(locator={locator}, criteria={criteria})"
-        )
         if criteria == "regexp":
             name_search = re.search(locator, itemdict["name"])
             class_search = re.search(locator, itemdict["class_name"])
@@ -659,7 +659,7 @@ class Windows(OperatingSystem):
         :param outline: highlight elements if True, defaults to False
         :return: all controls and all elements
         """
-        self.logger.info("get window elements")
+        self.logger.debug("get window elements")
         # Create a list of this control and all its descendants
         all_ctrls = [self.dlg]
         if hasattr(self.dlg, "descendants"):
@@ -828,24 +828,65 @@ class Windows(OperatingSystem):
             win32con.LOGON32_PROVIDER_DEFAULT,
         )
 
-    def drag_and_drop(self, source, target, locator):
+    def drag_and_drop(
+        self, source, target, source_locator, target_locator=None, handle_ctrl_key=True
+    ):
+        """Drag elements from source and drop them on target.
+
+        Please note that if CTRL is not pressed down during drag and drop then
+        operation is MOVE operation, on CTRL down the operation is COPY operation.
+
+        There will be also overwrite notification if dropping over existing files.
+
+        :param source: application object or instance id
+        :param target: application object or instance id
+        :param source_locator: elements to move
+        :param target_locator: target element to drop source elements into
+        :param handle_ctrl_key: True if keyword should press CTRL down dragging
+        :raises ValueError
+        """
         if isinstance(source, int):
             source = self.get_app(source)
         if isinstance(target, int):
             target = self.get_app(target)
 
-        target_x, target_y = self.calculate_rectangle_center(target["dlg"].rectangle())
-        self.switch_to_application(source["id"])
-
-        elements, _ = self.find_element(locator)
         source_min_left = 99999
         source_max_right = -1
         source_min_top = 99999
         source_max_bottom = -1
 
-        if len(elements) == 0:
-            raise ValueError(f"Source files where not found by locator '{locator}'")
-        for elem in elements:
+        self.switch_to_application(source["id"])
+        source_elements, _ = self.find_element(source_locator)
+
+        if len(source_elements) == 0:
+            raise ValueError(
+                f"Source elements where not found by locator '{source_locator}'"
+            )
+        if target_locator is not None:
+            self.switch_to_application(target["id"])
+            target_elements, _ = self.find_element(target_locator)
+            if len(target_elements) == 0:
+                raise ValueError(
+                    f"Target element was not found by locator '{target_locator}'"
+                )
+            elif len(target_elements) > 1:
+                raise ValueError(
+                    f"Target element matched more than 1 element "
+                    f"({len(target_elements)}) by locator '{target_locator}'"
+                )
+            target_x, target_y = self.calculate_rectangle_center(
+                target_elements[0]["rectangle"]
+            )
+        else:
+            target_x, target_y = self.calculate_rectangle_center(
+                target["dlg"].rectangle()
+            )
+        if handle_ctrl_key:
+            self.send_keys("{VK_LCONTROL down}")
+
+        selections = []
+        for elem in source_elements:
+            self.logger.debug(f"Source element: {elem}")
             left, top, right, bottom = self._get_element_coordinates(elem["rectangle"])
             if left < source_min_left:
                 source_min_left = left
@@ -858,20 +899,32 @@ class Windows(OperatingSystem):
             mid_x = int((right - left) / 2) + left
             mid_y = int((bottom - top) / 2) + top
             self.mouse_click_coords(mid_x, mid_y)
+            selections.append((mid_x, mid_y))
 
         source_x = int((source_max_right - source_min_left) / 2) + source_min_left
         source_y = int((source_max_bottom - source_min_top) / 2) + source_min_top
+        self.logger.info(
+            f"Dragging {len(source_elements)} elements from "
+            f"({source_x},{source_y}) to ({target_x},{target_y})"
+        )
         source["dlg"].drag_mouse_input(
             dst=(target_x, target_y),
             src=(source_x, source_y),
             button="left",
             absolute=True,
         )
+        if handle_ctrl_key:
+            self.send_keys("{VK_LCONTROL up}")
+        for selection in selections:
+            self.mouse_click_coords(selection[0], selection[1])
 
     def calculate_rectangle_center(self, rectangle):
-        left, top, right, bottom = self._get_element_coordinates(rectangle)
-        self.logger.info(f"locator rectangle ({left}, {top}, {right}, {bottom})")
+        """Calculate x and y center coordinates from rectangle.
 
+        :param rectangle: element rectangle coordinates
+        :return: x and y coordinates of rectangle center
+        """
+        left, top, right, bottom = self._get_element_coordinates(rectangle)
         x = int((right - left) / 2) + left
         y = int((bottom - top) / 2) + top
         return x, y
