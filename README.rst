@@ -166,7 +166,7 @@ Contributing
 ------------
 
 Found a bug? Missing a critical feature? Interested in contributing?
-Head over to the `Contribution guide <https://rpaframework.org/contributing/guide/>`_
+Head over to the `Contribution guide <https://rpaframework.org/contributing/guide.html>`_
 to see where to get started.
 
 License
