@@ -53,7 +53,7 @@ Robot Framework tasks.
         ${bills}=           Create table    ${bills}
         Create Workbook
         Append Rows To Worksheet  ${bills}
-        Save Workbook       netsuite_accounts.xlsx
+        Save Workbook       netsuite_bills.xlsx
         Close Workbook
 
 
