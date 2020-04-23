@@ -49,7 +49,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "1.3.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Classes Without Boilerplate"
 name = "attrs"
 optional = false
@@ -494,6 +494,17 @@ yaml = ["PyYAML (>=5.1.0)"]
 
 [[package]]
 category = "main"
+description = "Python SDK for accessing the NetSuite SOAP webservice"
+name = "netsuitesdk"
+optional = false
+python-versions = "*"
+version = "1.1.0"
+
+[package.dependencies]
+zeep = "*"
+
+[[package]]
+category = "main"
 description = "Creates NTLM authentication structures"
 name = "ntlm-auth"
 optional = false
@@ -825,6 +836,17 @@ requests = ">=2.0.0"
 
 [package.extras]
 rsa = ["oauthlib (>=3.0.0)"]
+
+[[package]]
+category = "main"
+description = "A utility belt for advanced users of python-requests"
+name = "requests-toolbelt"
+optional = false
+python-versions = "*"
+version = "0.9.1"
+
+[package.dependencies]
+requests = ">=2.0.1,<3.0.0"
 
 [[package]]
 category = "main"
@@ -1262,6 +1284,33 @@ python-versions = "*"
 version = "0.29.0"
 
 [[package]]
+category = "main"
+description = "A modern/fast Python SOAP client based on lxml / requests"
+name = "zeep"
+optional = false
+python-versions = "*"
+version = "3.4.0"
+
+[package.dependencies]
+appdirs = ">=1.4.0"
+attrs = ">=17.2.0"
+cached-property = ">=1.3.0"
+defusedxml = ">=0.4.1"
+isodate = ">=0.5.4"
+lxml = ">=3.1.0"
+pytz = "*"
+requests = ">=2.7.0"
+requests-toolbelt = ">=0.7.1"
+six = ">=1.9.0"
+
+[package.extras]
+async = ["aiohttp (>=1.0)"]
+docs = ["sphinx (>=1.4.0)"]
+test = ["freezegun (0.3.8)", "mock (2.0.0)", "pretend (1.0.8)", "pytest-cov (2.5.1)", "pytest (3.1.3)", "requests-mock (>=0.7.0)", "pytest-tornado (0.4.5)", "isort (4.2.15)", "flake8 (3.3.0)", "flake8-blind-except (0.1.1)", "flake8-debugger (1.4.0)", "flake8-imports (0.1.1)", "aioresponses (>=0.4.1)"]
+tornado = ["tornado (>=4.0.2,<5)"]
+xmlsec = ["xmlsec (>=0.6.1)"]
+
+[[package]]
 category = "dev"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 marker = "python_version < \"3.8\""
@@ -1278,7 +1327,7 @@ testing = ["jaraco.itertools", "func-timeout"]
 cv = ["opencv-python", "numpy"]
 
 [metadata]
-content-hash = "c624c844f78acde0acf3b6f258397d6b3794f45aae6667c4c55944783eabe7fa"
+content-hash = "0aa7faf02af464165871a24abf50b55cb85d8d2dc382206383a3b789aa72046e"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1581,6 +1630,10 @@ munch = [
     {file = "munch-2.5.0-py2.py3-none-any.whl", hash = "sha256:6f44af89a2ce4ed04ff8de41f70b226b984db10a91dcc7b9ac2efc1c77022fdd"},
     {file = "munch-2.5.0.tar.gz", hash = "sha256:2d735f6f24d4dba3417fa448cae40c6e896ec1fdab6cdb5e6510999758a4dbd2"},
 ]
+netsuitesdk = [
+    {file = "netsuitesdk-1.1.0-py3-none-any.whl", hash = "sha256:38c479e231b4a4772f28c6978ed012a8d0da5a04e37a0181016b6a407d484780"},
+    {file = "netsuitesdk-1.1.0.tar.gz", hash = "sha256:2c20cb9797bfae7c653d1f77e201987e01bade9414ad3da3df3a57e1804b1dd3"},
+]
 ntlm-auth = [
     {file = "ntlm-auth-1.4.0.tar.gz", hash = "sha256:350f2389c8ee5517f47db55a36ac2f8efc9742a60a678d6e2caa92385bdcaa9a"},
     {file = "ntlm_auth-1.4.0-py2.py3-none-any.whl", hash = "sha256:11f7a3cec38155b7cecdd9bbc8c37cd738d8012f0523b3f98d8caefe394feb97"},
@@ -1811,6 +1864,10 @@ requests-oauthlib = [
     {file = "requests_oauthlib-1.3.0-py2.py3-none-any.whl", hash = "sha256:7f71572defaecd16372f9006f33c2ec8c077c3cfa6f5911a9a90202beb513f3d"},
     {file = "requests_oauthlib-1.3.0-py3.7.egg", hash = "sha256:fa6c47b933f01060936d87ae9327fead68768b69c6c9ea2109c48be30f2d4dbc"},
 ]
+requests-toolbelt = [
+    {file = "requests-toolbelt-0.9.1.tar.gz", hash = "sha256:968089d4584ad4ad7c171454f0a5c6dac23971e9472521ea3b6d49d610aa6fc0"},
+    {file = "requests_toolbelt-0.9.1-py2.py3-none-any.whl", hash = "sha256:380606e1d10dc85c3bd47bf5a6095f815ec007be7a8b69c878507068df059e6f"},
+]
 robotframework = [
     {file = "robotframework-3.1.2-py2.py3-none-any.whl", hash = "sha256:cc4b04f711677c94c7d1e30ef1e5cdd50c0b731f8038d6214379c3def183c7f0"},
     {file = "robotframework-3.1.2.zip", hash = "sha256:f10dd7c0c8c7962a4f80dd1e026b5db731b9391bc6e1f9ebb96d685eb1230dbc"},
@@ -1975,6 +2032,10 @@ xlwt = [
 yapf = [
     {file = "yapf-0.29.0-py2.py3-none-any.whl", hash = "sha256:cad8a272c6001b3401de3278238fdc54997b6c2e56baa751788915f879a52fca"},
     {file = "yapf-0.29.0.tar.gz", hash = "sha256:712e23c468506bf12cadd10169f852572ecc61b266258422d45aaf4ad7ef43de"},
+]
+zeep = [
+    {file = "zeep-3.4.0-py2.py3-none-any.whl", hash = "sha256:59a4068ab3817b589ee21c6c34166c35baa8f2be7ad69f045d005076a29911c1"},
+    {file = "zeep-3.4.0.tar.gz", hash = "sha256:0e98669cfeb60756231ae185498f9ae21b30b2681786b8de58ed34c3b93e41dd"},
 ]
 zipp = [
     {file = "zipp-3.1.0-py3-none-any.whl", hash = "sha256:aa36550ff0c0b7ef7fa639055d797116ee891440eac1a56f378e2d3179e0320b"},
