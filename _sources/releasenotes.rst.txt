@@ -3,11 +3,16 @@ Release notes
 
 Upcoming release
 ----------------
+
+0.8.2
+--------------
+
 - Windows: Add keyword for clicking image templates
 - Windows: Add keyword for drag and drop
 
 0.8.1
 --------------
+
 - Browser: Fix open_available_browser kw parameter bug
 
 0.8.0
@@ -30,6 +35,7 @@ Upcoming release
 
 0.7.3
 --------------
+
 - Browser: Detect Chrome and chromedriver versions. Download driver if they differ
 - Images: Don't template match same region multiple times
 - Tables:
@@ -39,6 +45,7 @@ Upcoming release
 
 0.7.2
 -----
+
 - Browser: Store webdrivers in temporary directory
 
 0.7.1

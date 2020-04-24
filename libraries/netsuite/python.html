@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python module API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Outlook.Application" href="../outlook_application/index.html" />
+    <link rel="prev" title="Robot Framework API" href="../../libdoc/Netsuite.html" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!-- PureCookie -->
+<link async rel="stylesheet" type="text/css" href="../../_static/purecookie.css"/>
+<script async src="../../_static/purecookie.js"></script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Netsuite</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Netsuite.html">Robot Framework API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Netsuite</a> &raquo;</li>
+        
+      <li>Python module API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/netsuite/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-module-api">
+<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.Netsuite">
+<span id="netsuite"></span><h2>Netsuite<a class="headerlink" href="#module-RPA.Netsuite" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Netsuite.Netsuite">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Netsuite.</code><code class="sig-name descname">Netsuite</code><a class="headerlink" href="#RPA.Netsuite.Netsuite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Library for accessing Netsuite.</p>
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.connect">
+<code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">consumer_key=None</em>, <em class="sig-param">consumer_secret=None</em>, <em class="sig-param">token_key=None</em>, <em class="sig-param">token_secret=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to Netsuite with credentials from environment
+variables.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.get_accounts">
+<code class="sig-name descname">get_accounts</code><span class="sig-paren">(</span><em class="sig-param">count=100</em>, <em class="sig-param">account_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_accounts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Accounts of any type or specified type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>count</strong> – number of Accounts to return, defaults to 100</p></li>
+<li><p><strong>account_type</strong> – if None returns all account types, example. “_expense”,
+defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>accounts</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.get_classifications">
+<code class="sig-name descname">get_classifications</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_classifications" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all Netsuite Classifications</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>classifications</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.get_currencies">
+<code class="sig-name descname">get_currencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_currencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all Netsuite Currencies</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>currencies</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.get_currency">
+<code class="sig-name descname">get_currency</code><span class="sig-paren">(</span><em class="sig-param">currency_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_currency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all a Netsuite Currency by its ID</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>currency_id</strong> – ID of the currency to get</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>currency</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.get_departments">
+<code class="sig-name descname">get_departments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_departments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all Netsuite Departments</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>departments</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.get_locations">
+<code class="sig-name descname">get_locations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_locations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all Netsuite Locations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>locations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.get_vendor_bills">
+<code class="sig-name descname">get_vendor_bills</code><span class="sig-paren">(</span><em class="sig-param">count=10</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_vendor_bills" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of vendor bills</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>count</strong> – number of vendor bills to return, defaults to 10</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of vendor bills</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.get_vendors">
+<code class="sig-name descname">get_vendors</code><span class="sig-paren">(</span><em class="sig-param">count=10</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_vendors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of vendors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>count</strong> – number of vendors to return, defaults to 10</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of vendors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.login">
+<code class="sig-name descname">login</code><span class="sig-paren">(</span><em class="sig-param">account=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.login" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.netsuite_get">
+<code class="sig-name descname">netsuite_get</code><span class="sig-paren">(</span><em class="sig-param">record_type=None</em>, <em class="sig-param">internal_id=None</em>, <em class="sig-param">external_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.netsuite_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all records of given type and internalId and/or externalId.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>record_type</strong> – type of Netsuite record to get</p></li>
+<li><p><strong>internal_id</strong> – internalId of the type, default None</p></li>
+<li><p><strong>external_id</strong> – external_id of the type, default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if record_type is not given</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[description]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.netsuite_get_all">
+<code class="sig-name descname">netsuite_get_all</code><span class="sig-paren">(</span><em class="sig-param">record_type</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.netsuite_get_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all records of given type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>record_type</strong> – type of Netsuite record to get</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if record_type is not given</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[description]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.netsuite_search">
+<code class="sig-name descname">netsuite_search</code><span class="sig-paren">(</span><em class="sig-param">type_name</em>, <em class="sig-param">search_value</em>, <em class="sig-param">operator='contains'</em>, <em class="sig-param">page_size=5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.netsuite_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search Netsuite for value from a type. Default operator is
+<cite>contains</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_name</strong> – search target type name</p></li>
+<li><p><strong>search_value</strong> – what to search for within type</p></li>
+<li><p><strong>operator</strong> – name of the operation, defaults to “contains”</p></li>
+<li><p><strong>page_size</strong> – result items within one page, defaults to 5</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>paginated search object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Netsuite.Netsuite.netsuite_search_all">
+<code class="sig-name descname">netsuite_search_all</code><span class="sig-paren">(</span><em class="sig-param">type_name</em>, <em class="sig-param">page_size=20</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.netsuite_search_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search Netsuite for a type results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_name</strong> – search target type name</p></li>
+<li><p><strong>page_size</strong> – result items within one page, defaults to 5</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>paginated search object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.Netsuite.NetsuiteAuthenticationError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Netsuite.</code><code class="sig-name descname">NetsuiteAuthenticationError</code><a class="headerlink" href="#RPA.Netsuite.NetsuiteAuthenticationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error when authenticated Netsuite instance does not exist.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Netsuite.ns_instance_required">
+<code class="sig-prename descclassname">RPA.Netsuite.</code><code class="sig-name descname">ns_instance_required</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.ns_instance_required" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../outlook_application/index.html" class="btn btn-neutral float-right" title="Outlook.Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../libdoc/Netsuite.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
