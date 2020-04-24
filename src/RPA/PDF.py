@@ -23,6 +23,7 @@ class PDF(FPDF, HTMLMixin):
         HTMLMixin.__init__(self)
         self.logger = logging.getLogger(__name__)
         self.output_directory = Path(outdir)
+        self.source_pdf = None
         listener = RobotLogListener()
         listener.register_protected_keywords(["RPA.PDF.decrypt"])
 
@@ -142,7 +143,7 @@ class PDF(FPDF, HTMLMixin):
                 raise ValueError("Source filepath is missing.")
             elif source is None:
                 source = self.source_pdf
-            return source
+        return source
 
     def page_rotate(
         self, pages, source_pdf=None, target_pdf=None, clockwise=True, angle=90

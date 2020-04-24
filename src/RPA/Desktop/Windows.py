@@ -335,7 +335,6 @@ class Windows(OperatingSystem):
         ocr=None,
         method="locator",
         ctype="click",
-        screenshot=False,
     ):
         """Mouse click `locator`, `coordinates`, `image` or `ocr`.
 
@@ -355,6 +354,7 @@ class Windows(OperatingSystem):
         :param image: image to click on desktop
         :param ocr: text to click on desktop
         :param method: one of the available methods to mouse click, default "locator"
+        :param ctype: type of mouse click
         """
         self.logger.info(f"mouse click: {locator}")
 
@@ -949,9 +949,8 @@ class Windows(OperatingSystem):
         delay(1)
         pywinauto.mouse.move(coords=(target_x, target_y))
 
-        for i in range(drop_delay):
-            self.logger.debug(f"Cursor position: {win32api.GetCursorPos()}")
-            delay(1.0)
+        self.logger.debug(f"Cursor position: {win32api.GetCursorPos()}")
+        delay(drop_delay)
         pywinauto.mouse.click(coords=(target_x, target_y))
         pywinauto.mouse.release(coords=(target_x, target_y))
 

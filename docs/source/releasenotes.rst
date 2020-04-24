@@ -4,6 +4,10 @@ Release notes
 Upcoming release
 ----------------
 
+0.8.3
+--------------
+
+- Fix: Windows drag_and_drop keyword
 - New library: Netsuite
 - PDF: add new keywords
 

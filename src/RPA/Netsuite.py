@@ -1,7 +1,7 @@
 from functools import wraps
 import itertools
 import logging
-import os
+
 from netsuitesdk import NetSuiteConnection
 from netsuitesdk.internal.client import NetSuiteClient
 from netsuitesdk.internal.utils import PaginatedSearch
