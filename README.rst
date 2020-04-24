@@ -62,39 +62,49 @@ Libraries
 
 The RPA Framework project currently includes the following libraries:
 
-+------------------------+-------------------------------------------+
-| `Tables`_              | Manipulate, sort, and filter tabular data |
-+------------------------+-------------------------------------------+
-| `FileSystem`_          | Read and manipulate files and paths       |
-+------------------------+-------------------------------------------+
-| `Browser`_             | Control browsers and automate the web     |
-+------------------------+-------------------------------------------+
-| `HTTP`_                | Interact directly with web APIs           |
-+------------------------+-------------------------------------------+
-| `PDF`_                 | Read and create PDF documents             |
-+------------------------+-------------------------------------------+
-| `Slack`_               | Send notifications to Slack channels      |
-+------------------------+-------------------------------------------+
-| `Excel.Files`_         | Manipulate Excel files directly           |
-+------------------------+-------------------------------------------+
-| `Excel.Application`_   | Control the Excel desktop application     |
-+------------------------+-------------------------------------------+
-| `Word.Application`_    | Control the Word desktop application      |
-+------------------------+-------------------------------------------+
-| `Outlook.Application`_ | Control the Outlook desktop application   |
-+------------------------+-------------------------------------------+
-| `Email.Exchange`_      | E-Mail operations (Exchange protocol)     |
-+------------------------+-------------------------------------------+
-| `Email.ImapSmtp`_      | E-Mail operations (IMAP & SMTP)           |
-+------------------------+-------------------------------------------+
-| `Desktop.Windows`_     | Automate Windows desktop applications     |
-+------------------------+-------------------------------------------+
-| `Desktop.Clipboard`_   | Interact with the system clipboard        |
-+------------------------+-------------------------------------------+
-| `Robocloud.Items`_     | Use the Robocloud Work Items API          |
-+------------------------+-------------------------------------------+
-| `Robocloud.Secrets`_   | Use the Robocloud Secrets API             |
-+------------------------+-------------------------------------------+
++----------------------------+----------------------------------------------+
+| `Browser`_                 | Control browsers and automate the web        |
++----------------------------+----------------------------------------------+
+| `Database`_                | Interact with databases                      |
++----------------------------+----------------------------------------------+
+| `Desktop.Clipboard`_       | Interact with the system clipboard           |
++----------------------------+----------------------------------------------+
+| `Desktop.OperatingSystem`_ | Read OS information and manipulate processes |
++----------------------------+----------------------------------------------+
+| `Desktop.Windows`_         | Automate Windows desktop applications        |
++----------------------------+----------------------------------------------+
+| `Email.Exchange`_          | E-Mail operations (Exchange protocol)        |
++----------------------------+----------------------------------------------+
+| `Email.ImapSmtp`_          | E-Mail operations (IMAP & SMTP)              |
++----------------------------+----------------------------------------------+
+| `Excel.Application`_       | Control the Excel desktop application        |
++----------------------------+----------------------------------------------+
+| `Excel.Files`_             | Manipulate Excel files directly              |
++----------------------------+----------------------------------------------+
+| `FileSystem`_              | Read and manipulate files and paths          |
++----------------------------+----------------------------------------------+
+| `HTTP`_                    | Interact directly with web APIs              |
++----------------------------+----------------------------------------------+
+| `Images`_                  | Manipulate images                            |
++----------------------------+----------------------------------------------+
+| `Outlook.Application`_     | Control the Outlook desktop application      |
++----------------------------+----------------------------------------------+
+| `PDF`_                     | Read and create PDF documents                |
++----------------------------+----------------------------------------------+
+| `Robocloud.Items`_         | Use the Robocloud Work Items API             |
++----------------------------+----------------------------------------------+
+| `Robocloud.Secrets`_       | Use the Robocloud Secrets API                |
++----------------------------+----------------------------------------------+
+| `Salesforce`_              | Salesforce operations                        |
++----------------------------+----------------------------------------------+
+| `Slack`_                   | Send notifications to Slack channels         |
++----------------------------+----------------------------------------------+
+| `SAP`_                     | Control SAP GUI desktop client               |
++----------------------------+----------------------------------------------+
+| `Tables`_                  | Manipulate, sort, and filter tabular data    |
++----------------------------+----------------------------------------------+
+| `Word.Application`_        | Control the Word desktop application         |
++----------------------------+----------------------------------------------+
 
 .. _Tables: https://rpaframework.org/libraries/tables/
 .. _FileSystem: https://rpaframework.org/libraries/filesystem/
@@ -112,6 +122,12 @@ The RPA Framework project currently includes the following libraries:
 .. _Desktop.Clipboard: https://rpaframework.org/libraries/desktop_clipboard/
 .. _Robocloud.Items: https://rpaframework.org/libraries/robocloud_items/
 .. _Robocloud.Secrets: https://rpaframework.org/libraries/robocloud_secrets/
+.. _Salesforce: https://rpaframework.org/libraries/salesforce/
+.. _Images: https://rpaframework.org/libraries/images/
+.. _Database: https://rpaframework.org/libraries/database/
+.. _Desktop.Operatingsystem: https://rpaframework.org/libraries/desktop_operatingsystem/
+.. _SAP: https://rpaframework.org/libraries/sap/
+
 
 Installation
 ------------
