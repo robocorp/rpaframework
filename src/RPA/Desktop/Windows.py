@@ -197,7 +197,7 @@ class Windows(OperatingSystem):
         return self._add_app_instance(params=params, dialog=True)
 
     def send_keys_to_input(
-        self, keys_to_type, with_enter=True, send_delay=1.0, enter_delay=3.5
+        self, keys_to_type, with_enter=True, send_delay=0.5, enter_delay=1.5
     ):
         """Send keys to windows and add ENTER if `with_enter` is True
 
@@ -283,13 +283,12 @@ class Windows(OperatingSystem):
         """
         self.logger.info("Closing all applications")
         application_ids = self._apps.keys()
-        self.logger.debug(self._apps)
-        self.logger.debug(f"Length of applications: {len(self._apps)}")
+        self.logger.debug(f"Applications in memory: {len(self._apps)}")
         for aid in application_ids:
             self.logger.debug(f"Closing application ID {aid}")
             self.quit_application(aid)
 
-    def quit_application(self, app_id=None):
+    def quit_application(self, app_id=None, send_keys=False):
         """Quit an application by application id or
         active application if `app_id` is None.
 
@@ -298,10 +297,14 @@ class Windows(OperatingSystem):
         app = self.get_app(app_id)
         app_id_to_quit = app["id"]
         self.logger.info(f"quit application {app_id_to_quit}")
-        if app["dispatched"]:
-            app["app"].Quit()
+        if send_keys:
+            self.switch_to_application(app_id)
+            self.send_keys("%{F4}")
         else:
-            app["app"].kill()
+            if app["dispatched"]:
+                app["app"].Quit()
+            else:
+                app["app"].kill()
         self._apps[app_id_to_quit]["app"] = None
         self._active_app_instance = -1
 
@@ -356,10 +359,12 @@ class Windows(OperatingSystem):
         self.logger.info(f"mouse click: {locator}")
 
         if method == "locator":
-            element = self.get_element(locator, screenshot)
-            if element:
-                x, y = self.get_element_center(element)
+            element, _ = self.find_element(locator)
+            if element and len(element) == 1:
+                x, y = self.get_element_center(element[0])
                 self.click_type(x + off_x, y + off_y, ctype)
+            else:
+                self.logger.warning("Did not find element to click")
         elif method == "coordinates":
             self.mouse_click_coords(x, y, ctype)
         elif method == "image":
@@ -695,7 +700,17 @@ class Windows(OperatingSystem):
         :param rectangle: item containing rectangle information
         :return: coordinates: left, top, right, bottom
         """
-        if rectangle:
+        self.logger.debug(
+            f"Get element coordinates from rectangle: {rectangle} "
+            f"of type {type(rectangle)}"
+        )
+        if isinstance(rectangle, pywinauto.win32structures.RECT):
+            left = rectangle.left
+            top = rectangle.top
+            right = rectangle.right
+            bottom = rectangle.bottom
+            return left, top, right, bottom
+        else:
             left, top, right, bottom = map(
                 int,
                 re.match(
@@ -864,7 +879,6 @@ class Windows(OperatingSystem):
         source_min_top = 99999
         source_max_bottom = -1
         for elem in source_elements:
-            self.logger.debug(f"Source element: {elem}")
             left, top, right, bottom = self._get_element_coordinates(elem["rectangle"])
             if left < source_min_left:
                 source_min_left = left
@@ -882,7 +896,13 @@ class Windows(OperatingSystem):
         return selections, source_x, source_y
 
     def drag_and_drop(
-        self, src, target, src_locator, target_locator=None, handle_ctrl_key=True
+        self,
+        src,
+        target,
+        src_locator,
+        target_locator=None,
+        handle_ctrl_key=False,
+        drop_delay=2,
     ):
         """Drag elements from source and drop them on target.
 
@@ -896,6 +916,8 @@ class Windows(OperatingSystem):
         :param ssrc_locator: elements to move
         :param target_locator: target element to drop source elements into
         :param handle_ctrl_key: True if keyword should press CTRL down dragging
+        :param drop_delay: how many seconds to wait until releasing mouse drop,
+            default 2
         :raises ValueError: on validation errors
         """
         if isinstance(src, int):
@@ -915,20 +937,30 @@ class Windows(OperatingSystem):
 
         if handle_ctrl_key:
             self.send_keys("{VK_LCONTROL down}")
+            delay(0.5)
         # Select elements by mouse clicking
-        for selection in selections:
-            self.mouse_click_coords(selection[0], selection[1])
-        src["dlg"].drag_mouse_input(
-            dst=(target_x, target_y),
-            src=(source_x, source_y),
-            button="left",
-            absolute=True,
-        )
+
+        for idx, selection in enumerate(selections):
+            self.logger.debug(f"Selecting item {idx} by mouse_click")
+            pywinauto.mouse.click(coords=(selection[0], selection[1]))
+
+        # Start drag from the last item
+        pywinauto.mouse.press(coords=(source_x, source_y))
+        delay(1)
+        pywinauto.mouse.move(coords=(target_x, target_y))
+
+        for i in range(drop_delay):
+            self.logger.debug(f"Cursor position: {win32api.GetCursorPos()}")
+            delay(1.0)
+        pywinauto.mouse.click(coords=(target_x, target_y))
+        pywinauto.mouse.release(coords=(target_x, target_y))
+
         if handle_ctrl_key:
             self.send_keys("{VK_LCONTROL up}")
-        delay(1.0)
+            delay(0.5)
         # Deselect elements by mouse clicking
         for selection in selections:
+            self.logger.debug("Deselecting item by mouse_click")
             self.mouse_click_coords(selection[0], selection[1])
 
     def calculate_rectangle_center(self, rectangle):
