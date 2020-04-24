@@ -53,6 +53,14 @@ class Netsuite:
     ):
         """ Connect to Netsuite with credentials from environment
         variables.
+
+        Parameters are not logged into Robot Framework log.
+
+        :param account: parameter or environment variable `NS_ACCOUNT`
+        :param consumer_key:  parameter or environment variable `NS_CONSUMER_KEY`
+        :param consumer_secret: parameter or environment variable `NS_CONSUMER_SECRET`
+        :param token_key: parameter or environment variable `NS_TOKEN_KEY`
+        :param token_secret: parameter or environment variable `NS_TOKEN_SECRET`
         """
         if account is None:
             self.account = required_env("NS_ACCOUNT")
@@ -71,15 +79,25 @@ class Netsuite:
             token_secret=NS_TOKEN_SECRET,
         )
 
-    def login(self, account=None):
+    def login(self, account=None, email=None, password=None, role=None, appid=None):
+        """Login to Netsuite with credentials from environment variables
+
+        Parameters are not logged into Robot Framework log.
+
+        :param account: parameter or environment variable `NS_ACCOUNT`
+        :param email: parameter or environment variable `NS_EMAIL`
+        :param password: parameter or environment variable `NS_PASSWORD`
+        :param role: parameter or environment variable `NS_ROLE`
+        :param appid: parameter or environment variable `NS_APPID`
+        """
         if account is None:
             account = required_env("NS_ACCOUNT", self.account)
         if account is None:
             raise NetsuiteAuthenticationError("Authentication is not completed")
-        NS_EMAIL = os.getenv("NS_EMAIL")
-        NS_PASSWORD = os.getenv("NS_PASSWORD")
-        NS_ROLE = os.getenv("NS_ROLE")
-        NS_APPID = os.getenv("NS_APPID")
+        NS_EMAIL = required_env("NS_EMAIL", email)
+        NS_PASSWORD = required_env("NS_PASSWORD", password)
+        NS_ROLE = required_env("NS_ROLE", role)
+        NS_APPID = required_env("NS_APPID", appid)
 
         if self.client is None:
             self.client = NetSuiteClient(account=account)
@@ -95,7 +113,7 @@ class Netsuite:
         :param internal_id: internalId of the type, default None
         :param external_id: external_id of the type, default None
         :raises ValueError: if record_type is not given
-        :return: [description]
+        :return: records as a list or None
         """
         if record_type is None:
             raise ValueError("Parameter 'record_type' is required for kw: netsuite_get")
@@ -118,7 +136,7 @@ class Netsuite:
 
         :param record_type: type of Netsuite record to get
         :raises ValueError: if record_type is not given
-        :return: [description]
+        :return: records as a list or None
         """
         if record_type is None:
             raise ValueError(

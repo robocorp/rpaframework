@@ -689,6 +689,14 @@ version = "2.4.6"
 
 [[package]]
 category = "main"
+description = "PDF toolkit"
+name = "pypdf2"
+optional = false
+python-versions = "*"
+version = "1.26.0"
+
+[[package]]
+category = "main"
 description = "A cross-platform clipboard module for Python. (Only handles plain text for now.)"
 name = "pyperclip"
 optional = false
@@ -1327,7 +1335,7 @@ testing = ["jaraco.itertools", "func-timeout"]
 cv = ["opencv-python", "numpy"]
 
 [metadata]
-content-hash = "0aa7faf02af464165871a24abf50b55cb85d8d2dc382206383a3b789aa72046e"
+content-hash = "f2c35325289e88d9dbb09f4fee23ac29d8b885dbbd4f42a446d241ab3cb80bd2"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1777,6 +1785,9 @@ pylint = [
 pyparsing = [
     {file = "pyparsing-2.4.6-py2.py3-none-any.whl", hash = "sha256:c342dccb5250c08d45fd6f8b4a559613ca603b57498511740e65cd11a2e7dcec"},
     {file = "pyparsing-2.4.6.tar.gz", hash = "sha256:4c830582a84fb022400b85429791bc551f1f4871c33f23e44f353119e92f969f"},
+]
+pypdf2 = [
+    {file = "PyPDF2-1.26.0.tar.gz", hash = "sha256:e28f902f2f0a1603ea95ebe21dff311ef09be3d0f0ef29a3e44a932729564385"},
 ]
 pyperclip = [
     {file = "pyperclip-1.8.0.tar.gz", hash = "sha256:b75b975160428d84608c26edba2dec146e7799566aea42c1fe1b32e72b6028f2"},

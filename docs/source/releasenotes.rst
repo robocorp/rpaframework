@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+- New library: Netsuite
+- PDF: add new keywords
+
 0.8.2
 --------------
 
