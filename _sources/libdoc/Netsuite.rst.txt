@@ -21,6 +21,9 @@ Keywords
   Connect to Netsuite with credentials from environment
   variables.
 
+  Parameters are not logged into Robot Framework log.
+
+
 :Get Accounts:
   :Arguments: \*args, \*\*kwargs
 
@@ -70,8 +73,11 @@ Keywords
 
 
 :Login:
-  :Arguments: account=None
+  :Arguments: account=None, email=None, password=None, role=None, appid=None
 
+  Login to Netsuite with credentials from environment variables
+
+  Parameters are not logged into Robot Framework log.
 
 
 :Netsuite Get:

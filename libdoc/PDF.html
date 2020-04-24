@@ -239,7 +239,7 @@
 <dd class="field-odd"><p>pages=1</p>
 </dd>
 </dl>
-<p>Adds pages into PDF documents</p>
+<p>Adds pages into PDF documents.</p>
 </dd>
 <dt class="field-even">Alias Nb Pages</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -297,28 +297,125 @@
 </dl>
 <p>Fatal error</p>
 </dd>
+<dt class="field-even">Extract Pages From Pdf</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>pages, source_pdf=None, target_pdf=None</p>
+</dd>
+</dl>
+<p>Extract pages from source PDF and save to target PDF document.</p>
+</dd>
 <dt class="field-even">Footer</dt>
 <dd class="field-even"><p>Footer to be implemented in your own inherited class</p>
 </dd>
-<dt class="field-odd">Get String Width</dt>
+<dt class="field-odd">Get Fields</dt>
 <dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf=None, target_file=None, tree=None, retval=None</p>
+</dd>
+</dl>
+<p>Get interactive form fields from PDF source and store into target
+file in text format.</p>
+</dd>
+<dt class="field-even">Get Form Text Fields</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf=None</p>
+</dd>
+</dl>
+<p>Get form text fields with textual data (inputs, dropdowns).</p>
+</dd>
+<dt class="field-even">Get Info</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf=None</p>
+</dd>
+</dl>
+<p>Get information from PDF document.</p>
+</dd>
+<dt class="field-even">Get Named Destinations</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf=None, tree=None, retval=None</p>
+</dd>
+</dl>
+<p>Get named destination in the document.</p>
+</dd>
+<dt class="field-even">Get Number Of Pages</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf=None</p>
+</dd>
+</dl>
+<p>Get number of pages in the document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">raises PdfReadError</dt>
+<dd class="field-odd"><p>if file is encrypted or other restrictions are in place</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Get Outlines</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf=None, node=None, outlines=None</p>
+</dd>
+</dl>
+<p>Get document outline.</p>
+</dd>
+<dt class="field-even">Get Output Directory</dt>
+<dd class="field-even"><p>Get output directory where target files are saved to.</p>
+</dd>
+<dt class="field-odd">Get Page Layout</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf=None</p>
+</dd>
+</dl>
+<p>Get page layout setting.</p>
+</dd>
+<dt class="field-even">Get Page Mode</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf=None</p>
+</dd>
+</dl>
+<p>Get page mode setting.</p>
+</dd>
+<dt class="field-even">Get String Width</dt>
+<dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>s</p>
 </dd>
 </dl>
 <p>Get width of a string in the current font</p>
 </dd>
+<dt class="field-even">Get Text From Pdf</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>pages, source_pdf=None</p>
+</dd>
+</dl>
+<p>Get text from set of pages in source PDF document.</p>
+</dd>
 <dt class="field-even">Get X</dt>
 <dd class="field-even"><p>Get x position</p>
 </dd>
-<dt class="field-odd">Get Y</dt>
-<dd class="field-odd"><p>Get y position</p>
-</dd>
-<dt class="field-even">Header</dt>
-<dd class="field-even"><p>Header to be implemented in your own inherited class</p>
-</dd>
-<dt class="field-odd">Image</dt>
+<dt class="field-odd">Get Xmp Metadata</dt>
 <dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf=None</p>
+</dd>
+</dl>
+<p>Get document XMP (Extensible Metadata Platform) data.</p>
+</dd>
+<dt class="field-even">Get Y</dt>
+<dd class="field-even"><p>Get y position</p>
+</dd>
+<dt class="field-odd">Header</dt>
+<dd class="field-odd"><p>Header to be implemented in your own inherited class</p>
+</dd>
+<dt class="field-even">Image</dt>
+<dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>*args, **kwargs</p>
 </dd>
@@ -332,6 +429,15 @@
 </dd>
 </dl>
 <p>Barcode I2of5 (numeric), adds a 0 if odd lenght</p>
+</dd>
+<dt class="field-even">Is Pdf Encrypted</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf=None</p>
+</dd>
+</dl>
+<p>Check if PDF is encrypted.</p>
+<p>Returns True even if PDF was decrypted.</p>
 </dd>
 <dt class="field-even">Line</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -387,8 +493,29 @@
 <dt class="field-even">Page No</dt>
 <dd class="field-even"><p>Get current page number</p>
 </dd>
-<dt class="field-odd">Rect</dt>
+<dt class="field-odd">Page Rotate</dt>
 <dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>pages, source_pdf=None, target_pdf=None, clockwise=True, angle=90</p>
+</dd>
+</dl>
+<p>Rotate pages in source PDF document and save to target PDF document.</p>
+</dd>
+<dt class="field-even">Pdf Decrypt</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf=None, password=None</p>
+</dd>
+</dl>
+<p>Decrypt PDF with password.</p>
+<dl class="field-list simple">
+<dt class="field-odd">raises ValueError</dt>
+<dd class="field-odd"><p>on decryption errors</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Rect</dt>
+<dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>*args, **kwargs</p>
 </dd>
@@ -516,6 +643,14 @@
 </dl>
 <p>Set left, top and right margins</p>
 </dd>
+<dt class="field-even">Set Output Directory</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>outdir=.</p>
+</dd>
+</dl>
+<p>Set output directory where target files are saved to.</p>
+</dd>
 <dt class="field-even">Set Right Margin</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -523,6 +658,14 @@
 </dd>
 </dl>
 <p>Set right margin</p>
+</dd>
+<dt class="field-even">Set Source Document</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf</p>
+</dd>
+</dl>
+<p>Set source PDF document for further operations.</p>
 </dd>
 <dt class="field-even">Set Subject</dt>
 <dd class="field-even"><dl class="field-list simple">

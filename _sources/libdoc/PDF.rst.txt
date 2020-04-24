@@ -34,7 +34,7 @@ Keywords
 :Add Pages:
   :Arguments: pages=1
 
-  Adds pages into PDF documents
+  Adds pages into PDF documents.
 
 
 :Alias Nb Pages:
@@ -75,16 +75,88 @@ Keywords
 
   Fatal error
 
+:Extract Pages From Pdf:
+  :Arguments: pages, source_pdf=None, target_pdf=None
+
+  Extract pages from source PDF and save to target PDF document.
+
+
 :Footer:
   Footer to be implemented in your own inherited class
+
+:Get Fields:
+  :Arguments: source_pdf=None, target_file=None, tree=None, retval=None
+
+  Get interactive form fields from PDF source and store into target
+  file in text format.
+
+
+:Get Form Text Fields:
+  :Arguments: source_pdf=None
+
+  Get form text fields with textual data (inputs, dropdowns).
+
+
+:Get Info:
+  :Arguments: source_pdf=None
+
+  Get information from PDF document.
+
+
+:Get Named Destinations:
+  :Arguments: source_pdf=None, tree=None, retval=None
+
+  Get named destination in the document.
+
+
+:Get Number Of Pages:
+  :Arguments: source_pdf=None
+
+  Get number of pages in the document.
+
+  :raises PdfReadError: if file is encrypted or other restrictions are in place
+
+:Get Outlines:
+  :Arguments: source_pdf=None, node=None, outlines=None
+
+  Get document outline.
+
+
+:Get Output Directory:
+  Get output directory where target files are saved to.
+
+
+:Get Page Layout:
+  :Arguments: source_pdf=None
+
+  Get page layout setting.
+
+
+:Get Page Mode:
+  :Arguments: source_pdf=None
+
+  Get page mode setting.
+
 
 :Get String Width:
   :Arguments: s
 
   Get width of a string in the current font
 
+:Get Text From Pdf:
+  :Arguments: pages, source_pdf=None
+
+  Get text from set of pages in source PDF document.
+
+
 :Get X:
   Get x position
+
+:Get Xmp Metadata:
+  :Arguments: source_pdf=None
+
+  Get document XMP (Extensible Metadata Platform) data.
+
 
 :Get Y:
   Get y position
@@ -101,6 +173,14 @@ Keywords
   :Arguments: \*args, \*\*kwargs
 
   Barcode I2of5 (numeric), adds a 0 if odd lenght
+
+:Is Pdf Encrypted:
+  :Arguments: source_pdf=None
+
+  Check if PDF is encrypted.
+
+  Returns True even if PDF was decrypted.
+
 
 :Line:
   :Arguments: \*args, \*\*kwargs
@@ -137,6 +217,19 @@ Keywords
 
 :Page No:
   Get current page number
+
+:Page Rotate:
+  :Arguments: pages, source_pdf=None, target_pdf=None, clockwise=True, angle=90
+
+  Rotate pages in source PDF document and save to target PDF document.
+
+
+:Pdf Decrypt:
+  :Arguments: source_pdf=None, password=None
+
+  Decrypt PDF with password.
+
+  :raises ValueError: on decryption errors
 
 :Rect:
   :Arguments: \*args, \*\*kwargs
@@ -221,10 +314,22 @@ Keywords
 
   Set left, top and right margins
 
+:Set Output Directory:
+  :Arguments: outdir=.
+
+  Set output directory where target files are saved to.
+
+
 :Set Right Margin:
   :Arguments: margin
 
   Set right margin
+
+:Set Source Document:
+  :Arguments: source_pdf
+
+  Set source PDF document for further operations.
+
 
 :Set Subject:
   :Arguments: subject

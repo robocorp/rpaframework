@@ -181,7 +181,7 @@ Keywords
 
 
 :Mouse Click:
-  :Arguments: locator=None, x=0, y=0, off_x=0, off_y=0, image=None, ocr=None, method=locator, ctype=click, screenshot=False
+  :Arguments: locator=None, x=0, y=0, off_x=0, off_y=0, image=None, ocr=None, method=locator, ctype=click
 
   Mouse click `locator`, `coordinates`, `image` or `ocr`.
 

@@ -211,6 +211,18 @@
 <code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">consumer_key=None</em>, <em class="sig-param">consumer_secret=None</em>, <em class="sig-param">token_key=None</em>, <em class="sig-param">token_secret=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.connect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to Netsuite with credentials from environment
 variables.</p>
+<p>Parameters are not logged into Robot Framework log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>account</strong> – parameter or environment variable <cite>NS_ACCOUNT</cite></p></li>
+<li><p><strong>consumer_key</strong> – parameter or environment variable <cite>NS_CONSUMER_KEY</cite></p></li>
+<li><p><strong>consumer_secret</strong> – parameter or environment variable <cite>NS_CONSUMER_SECRET</cite></p></li>
+<li><p><strong>token_key</strong> – parameter or environment variable <cite>NS_TOKEN_KEY</cite></p></li>
+<li><p><strong>token_secret</strong> – parameter or environment variable <cite>NS_TOKEN_SECRET</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -319,8 +331,21 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.login">
-<code class="sig-name descname">login</code><span class="sig-paren">(</span><em class="sig-param">account=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.login" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">login</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">email=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">role=None</em>, <em class="sig-param">appid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Login to Netsuite with credentials from environment variables</p>
+<p>Parameters are not logged into Robot Framework log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>account</strong> – parameter or environment variable <cite>NS_ACCOUNT</cite></p></li>
+<li><p><strong>email</strong> – parameter or environment variable <cite>NS_EMAIL</cite></p></li>
+<li><p><strong>password</strong> – parameter or environment variable <cite>NS_PASSWORD</cite></p></li>
+<li><p><strong>role</strong> – parameter or environment variable <cite>NS_ROLE</cite></p></li>
+<li><p><strong>appid</strong> – parameter or environment variable <cite>NS_APPID</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.netsuite_get">
@@ -338,7 +363,7 @@ defaults to None</p></li>
 <dd class="field-even"><p><strong>ValueError</strong> – if record_type is not given</p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>[description]</p>
+<dd class="field-odd"><p>records as a list or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -355,7 +380,7 @@ defaults to None</p></li>
 <dd class="field-even"><p><strong>ValueError</strong> – if record_type is not given</p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>[description]</p>
+<dd class="field-odd"><p>records as a list or None</p>
 </dd>
 </dl>
 </dd></dl>

@@ -203,16 +203,276 @@
 <span id="pdf"></span><h2>PDF<a class="headerlink" href="#module-RPA.PDF" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="RPA.PDF.PDF">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.PDF.</code><code class="sig-name descname">PDF</code><span class="sig-paren">(</span><em class="sig-param">pages=1</em>, <em class="sig-param">outdir='.'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.PDF.</code><code class="sig-name descname">PDF</code><span class="sig-paren">(</span><em class="sig-param">outdir='.'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">fpdf.fpdf.FPDF</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">fpdf.html.HTMLMixin</span></code></p>
 <p>RPA Framework library for PDF management.</p>
 <dl class="method">
 <dt id="RPA.PDF.PDF.add_pages">
 <code class="sig-name descname">add_pages</code><span class="sig-paren">(</span><em class="sig-param">pages=1</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.add_pages" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds pages into PDF documents</p>
+<dd><p>Adds pages into PDF documents.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>pages</strong> – number of pages to add, defaults to 1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.extract_pages_from_pdf">
+<code class="sig-name descname">extract_pages_from_pdf</code><span class="sig-paren">(</span><em class="sig-param">pages</em>, <em class="sig-param">source_pdf=None</em>, <em class="sig-param">target_pdf=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.extract_pages_from_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract pages from source PDF and save to target PDF document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_pdf</strong> – filepath to the source pdf</p></li>
+<li><p><strong>target_pdf</strong> – filename to the target pdf, stored by default
+to <cite>output_directory</cite></p></li>
+<li><p><strong>pages</strong> – page numbers to extract from PDF (numbers start from 0)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.get_fields">
+<code class="sig-name descname">get_fields</code><span class="sig-paren">(</span><em class="sig-param">source_pdf=None</em>, <em class="sig-param">target_file=None</em>, <em class="sig-param">tree=None</em>, <em class="sig-param">retval=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get interactive form fields from PDF source and store into target
+file in text format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_pdf</strong> – filepath to the source pdf</p></li>
+<li><p><strong>target_file</strong> – filepath to save field information into</p></li>
+<li><p><strong>tree</strong> – used for recursive purposes, default is None</p></li>
+<li><p><strong>retval</strong> – used for recursive purposes, default is None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict of fields or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.get_form_text_fields">
+<code class="sig-name descname">get_form_text_fields</code><span class="sig-paren">(</span><em class="sig-param">source_pdf=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_form_text_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get form text fields with textual data (inputs, dropdowns).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict of fields or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.get_info">
+<code class="sig-name descname">get_info</code><span class="sig-paren">(</span><em class="sig-param">source_pdf=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information from PDF document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary of PDF information</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.get_named_destinations">
+<code class="sig-name descname">get_named_destinations</code><span class="sig-paren">(</span><em class="sig-param">source_pdf=None</em>, <em class="sig-param">tree=None</em>, <em class="sig-param">retval=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_named_destinations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get named destination in the document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_pdf</strong> – filepath to the source pdf</p></li>
+<li><p><strong>tree</strong> – used for recursive purposes, default is None</p></li>
+<li><p><strong>retval</strong> – used for recursive purposes, default is None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict of destinations or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.get_number_of_pages">
+<code class="sig-name descname">get_number_of_pages</code><span class="sig-paren">(</span><em class="sig-param">source_pdf=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_number_of_pages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get number of pages in the document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>PdfReadError</strong> – if file is encrypted or other restrictions are in place</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.get_outlines">
+<code class="sig-name descname">get_outlines</code><span class="sig-paren">(</span><em class="sig-param">source_pdf=None</em>, <em class="sig-param">node=None</em>, <em class="sig-param">outlines=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_outlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get document outline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_pdf</strong> – filepath to the source pdf</p></li>
+<li><p><strong>node</strong> – source node to check for outlines</p></li>
+<li><p><strong>outlines</strong> – <p>…</p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>nested list of outlines</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.get_output_directory">
+<code class="sig-name descname">get_output_directory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_output_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get output directory where target files are saved to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>absolute filepath as string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.get_page_layout">
+<code class="sig-name descname">get_page_layout</code><span class="sig-paren">(</span><em class="sig-param">source_pdf=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_page_layout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get page layout setting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>page layout currently in use as string or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.get_page_mode">
+<code class="sig-name descname">get_page_mode</code><span class="sig-paren">(</span><em class="sig-param">source_pdf=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_page_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get page mode setting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>page mode currently in use as string or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.get_text_from_pdf">
+<code class="sig-name descname">get_text_from_pdf</code><span class="sig-paren">(</span><em class="sig-param">pages</em>, <em class="sig-param">source_pdf=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_text_from_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get text from set of pages in source PDF document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_pdf</strong> – filepath to the source pdf</p></li>
+<li><p><strong>pages</strong> – page numbers to get text (numbers start from 0)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary of pages and their texts</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.get_xmp_metadata">
+<code class="sig-name descname">get_xmp_metadata</code><span class="sig-paren">(</span><em class="sig-param">source_pdf=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_xmp_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get document XMP (Extensible Metadata Platform) data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>XmpInformation object or None if no metadata was found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.is_pdf_encrypted">
+<code class="sig-name descname">is_pdf_encrypted</code><span class="sig-paren">(</span><em class="sig-param">source_pdf=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.is_pdf_encrypted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if PDF is encrypted.</p>
+<p>Returns True even if PDF was decrypted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if file is encrypted</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.page_rotate">
+<code class="sig-name descname">page_rotate</code><span class="sig-paren">(</span><em class="sig-param">pages</em>, <em class="sig-param">source_pdf=None</em>, <em class="sig-param">target_pdf=None</em>, <em class="sig-param">clockwise=True</em>, <em class="sig-param">angle=90</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.page_rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate pages in source PDF document and save to target PDF document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_pdf</strong> – filepath to the source pdf</p></li>
+<li><p><strong>target_pdf</strong> – filename to the target pdf, stored by default
+to <cite>output_directory</cite></p></li>
+<li><p><strong>pages</strong> – page numbers to extract from PDF (numbers start from 0)</p></li>
+<li><p><strong>clockwise</strong> – directorion that page will be rotated to, default True</p></li>
+<li><p><strong>angle</strong> – number of degrees to rotate, default 90</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.pdf_decrypt">
+<code class="sig-name descname">pdf_decrypt</code><span class="sig-paren">(</span><em class="sig-param">source_pdf=None</em>, <em class="sig-param">password=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.pdf_decrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypt PDF with password.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_pdf</strong> – filepath to the source pdf</p></li>
+<li><p><strong>password</strong> – password as a string</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if decrypt was successful, else False or Exception</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – on decryption errors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_output_directory">
+<code class="sig-name descname">set_output_directory</code><span class="sig-paren">(</span><em class="sig-param">outdir='.'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_output_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set output directory where target files are saved to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>outdir</strong> – output directory path, default to current directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_source_document">
+<code class="sig-name descname">set_source_document</code><span class="sig-paren">(</span><em class="sig-param">source_pdf</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_source_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set source PDF document for further operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
 </dd>
 </dl>
 </dd></dl>
