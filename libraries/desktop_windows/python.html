@@ -274,7 +274,7 @@
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.drag_and_drop">
-<code class="sig-name descname">drag_and_drop</code><span class="sig-paren">(</span><em class="sig-param">src</em>, <em class="sig-param">target</em>, <em class="sig-param">src_locator</em>, <em class="sig-param">target_locator=None</em>, <em class="sig-param">handle_ctrl_key=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.drag_and_drop" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">drag_and_drop</code><span class="sig-paren">(</span><em class="sig-param">src</em>, <em class="sig-param">target</em>, <em class="sig-param">src_locator</em>, <em class="sig-param">target_locator=None</em>, <em class="sig-param">handle_ctrl_key=False</em>, <em class="sig-param">drop_delay=2</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.drag_and_drop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Drag elements from source and drop them on target.</p>
 <p>Please note that if CTRL is not pressed down during drag and drop then
 operation is MOVE operation, on CTRL down the operation is COPY operation.</p>
@@ -287,6 +287,8 @@ operation is MOVE operation, on CTRL down the operation is COPY operation.</p>
 <li><p><strong>ssrc_locator</strong> – elements to move</p></li>
 <li><p><strong>target_locator</strong> – target element to drop source elements into</p></li>
 <li><p><strong>handle_ctrl_key</strong> – True if keyword should press CTRL down dragging</p></li>
+<li><p><strong>drop_delay</strong> – how many seconds to wait until releasing mouse drop,
+default 2</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -693,7 +695,7 @@ Window title name is required to get handle on the application.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.quit_application">
-<code class="sig-name descname">quit_application</code><span class="sig-paren">(</span><em class="sig-param">app_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.quit_application" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">quit_application</code><span class="sig-paren">(</span><em class="sig-param">app_id=None</em>, <em class="sig-param">send_keys=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.quit_application" title="Permalink to this definition">¶</a></dt>
 <dd><p>Quit an application by application id or
 active application if <cite>app_id</cite> is None.</p>
 <dl class="field-list simple">
@@ -743,7 +745,7 @@ active application if <cite>app_id</cite> is None.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.send_keys_to_input">
-<code class="sig-name descname">send_keys_to_input</code><span class="sig-paren">(</span><em class="sig-param">keys_to_type</em>, <em class="sig-param">with_enter=True</em>, <em class="sig-param">send_delay=1.0</em>, <em class="sig-param">enter_delay=3.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.send_keys_to_input" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_keys_to_input</code><span class="sig-paren">(</span><em class="sig-param">keys_to_type</em>, <em class="sig-param">with_enter=True</em>, <em class="sig-param">send_delay=0.5</em>, <em class="sig-param">enter_delay=1.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.send_keys_to_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send keys to windows and add ENTER if <cite>with_enter</cite> is True</p>
 <p>At the end of send_keys there is by default 1.0 second delay.
 At the end of ENTER there is by default 3.5 second delay.</p>

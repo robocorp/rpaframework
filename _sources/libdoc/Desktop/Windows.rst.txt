@@ -50,7 +50,7 @@ Keywords
 
 
 :Drag And Drop:
-  :Arguments: src, target, src_locator, target_locator=None, handle_ctrl_key=True
+  :Arguments: src, target, src_locator, target_locator=None, handle_ctrl_key=False, drop_delay=2
 
   Drag elements from source and drop them on target.
 
@@ -263,7 +263,7 @@ Keywords
   Put Windows into sleep mode
 
 :Quit Application:
-  :Arguments: app_id=None
+  :Arguments: app_id=None, send_keys=False
 
   Quit an application by application id or
   active application if `app_id` is None.
@@ -288,7 +288,7 @@ Keywords
 
 
 :Send Keys To Input:
-  :Arguments: keys_to_type, with_enter=True, send_delay=1.0, enter_delay=3.5
+  :Arguments: keys_to_type, with_enter=True, send_delay=0.5, enter_delay=1.5
 
   Send keys to windows and add ENTER if `with_enter` is True
 
