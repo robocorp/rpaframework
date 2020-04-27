@@ -4,10 +4,13 @@ Release notes
 Upcoming release
 ----------------
 
+- PDF: Add encrypt_pdf and add_pages_to_source_pdf
+  keywords.
+
 0.8.4
 --------------
 
-Fix: PDF template_html_to_pdf keyword
+- Fix: PDF template_html_to_pdf keyword
 
 
 0.8.3
