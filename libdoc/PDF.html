@@ -236,10 +236,18 @@
 <dt class="field-even">Add Pages</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>pages=1</p>
+<dd class="field-odd"><p>pages: int=1</p>
 </dd>
 </dl>
 <p>Adds pages into PDF documents.</p>
+</dd>
+<dt class="field-even">Add Pages To Source Document</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>pages: int=1, source_pdf: str=None, target_pdf: str=None</p>
+</dd>
+</dl>
+<p>Add pages into current source document</p>
 </dd>
 <dt class="field-even">Alias Nb Pages</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -300,7 +308,7 @@
 <dt class="field-even">Extract Pages From Pdf</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>pages, source_pdf=None, target_pdf=None</p>
+<dd class="field-odd"><p>pages: int, source_pdf: str=None, target_pdf: str=None</p>
 </dd>
 </dl>
 <p>Extract pages from source PDF and save to target PDF document.</p>
@@ -311,7 +319,7 @@
 <dt class="field-odd">Get Fields</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf=None, target_file=None, tree=None, retval=None</p>
+<dd class="field-odd"><p>source_pdf: str=None, target_file: str=None, tree: str=None, retval: str=None</p>
 </dd>
 </dl>
 <p>Get interactive form fields from PDF source and store into target
@@ -320,7 +328,7 @@ file in text format.</p>
 <dt class="field-even">Get Form Text Fields</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf=None</p>
+<dd class="field-odd"><p>source_pdf: str=None</p>
 </dd>
 </dl>
 <p>Get form text fields with textual data (inputs, dropdowns).</p>
@@ -328,7 +336,7 @@ file in text format.</p>
 <dt class="field-even">Get Info</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf=None</p>
+<dd class="field-odd"><p>source_pdf: str=None</p>
 </dd>
 </dl>
 <p>Get information from PDF document.</p>
@@ -336,7 +344,7 @@ file in text format.</p>
 <dt class="field-even">Get Named Destinations</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf=None, tree=None, retval=None</p>
+<dd class="field-odd"><p>source_pdf: str=None, tree: str=None, retval: str=None</p>
 </dd>
 </dl>
 <p>Get named destination in the document.</p>
@@ -344,7 +352,7 @@ file in text format.</p>
 <dt class="field-even">Get Number Of Pages</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf=None</p>
+<dd class="field-odd"><p>source_pdf: str=None</p>
 </dd>
 </dl>
 <p>Get number of pages in the document.</p>
@@ -357,7 +365,7 @@ file in text format.</p>
 <dt class="field-even">Get Outlines</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf=None, node=None, outlines=None</p>
+<dd class="field-odd"><p>source_pdf: str=None, node: str=None, outlines: str=None</p>
 </dd>
 </dl>
 <p>Get document outline.</p>
@@ -368,7 +376,7 @@ file in text format.</p>
 <dt class="field-odd">Get Page Layout</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf=None</p>
+<dd class="field-odd"><p>source_pdf: str=None</p>
 </dd>
 </dl>
 <p>Get page layout setting.</p>
@@ -376,7 +384,7 @@ file in text format.</p>
 <dt class="field-even">Get Page Mode</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf=None</p>
+<dd class="field-odd"><p>source_pdf: str=None</p>
 </dd>
 </dl>
 <p>Get page mode setting.</p>
@@ -392,7 +400,7 @@ file in text format.</p>
 <dt class="field-even">Get Text From Pdf</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>pages, source_pdf=None</p>
+<dd class="field-odd"><p>pages: int, source_pdf: str=None</p>
 </dd>
 </dl>
 <p>Get text from set of pages in source PDF document.</p>
@@ -403,7 +411,7 @@ file in text format.</p>
 <dt class="field-odd">Get Xmp Metadata</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf=None</p>
+<dd class="field-odd"><p>source_pdf: str=None</p>
 </dd>
 </dl>
 <p>Get document XMP (Extensible Metadata Platform) data.</p>
@@ -433,7 +441,7 @@ file in text format.</p>
 <dt class="field-even">Is Pdf Encrypted</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf=None</p>
+<dd class="field-odd"><p>source_pdf: str=None</p>
 </dd>
 </dl>
 <p>Check if PDF is encrypted.</p>
@@ -496,7 +504,7 @@ file in text format.</p>
 <dt class="field-odd">Page Rotate</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>pages, source_pdf=None, target_pdf=None, clockwise=True, angle=90</p>
+<dd class="field-odd"><p>pages: int, source_pdf: str=None, target_pdf: str=None, clockwise: bool=True, angle: int=90</p>
 </dd>
 </dl>
 <p>Rotate pages in source PDF document and save to target PDF document.</p>
@@ -504,7 +512,7 @@ file in text format.</p>
 <dt class="field-even">Pdf Decrypt</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf=None, password=None</p>
+<dd class="field-odd"><p>source_pdf: str=None, password: str=None</p>
 </dd>
 </dl>
 <p>Decrypt PDF with password.</p>
@@ -513,6 +521,14 @@ file in text format.</p>
 <dd class="field-odd"><p>on decryption errors</p>
 </dd>
 </dl>
+</dd>
+<dt class="field-even">Pdf Encrypt</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf: str=None, target_pdf: str=None, user_pwd: str=, owner_pwd: str=None, use_128bit: bool=True</p>
+</dd>
+</dl>
+<p>Encrypt PDF document.</p>
 </dd>
 <dt class="field-even">Rect</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -646,7 +662,7 @@ file in text format.</p>
 <dt class="field-even">Set Output Directory</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>outdir=.</p>
+<dd class="field-odd"><p>outdir: str=.</p>
 </dd>
 </dl>
 <p>Set output directory where target files are saved to.</p>
@@ -662,7 +678,7 @@ file in text format.</p>
 <dt class="field-even">Set Source Document</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf</p>
+<dd class="field-odd"><p>source_pdf: str=None</p>
 </dd>
 </dl>
 <p>Set source PDF document for further operations.</p>
@@ -726,7 +742,7 @@ file in text format.</p>
 <dt class="field-even">Template Html To Pdf</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>template, filename, variables=None</p>
+<dd class="field-odd"><p>template: str, filename: str, variables: dict=None</p>
 </dd>
 </dl>
 <p>Use HTML template file to generate PDF file.</p>

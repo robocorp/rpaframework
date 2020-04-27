@@ -214,7 +214,7 @@
 <dt class="field-odd">Add Product Into Opportunity</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>product_name, quantity, opportunity_id=False, pricebook_name=False, custom_total_price=False</p>
 </dd>
 </dl>
 <p>Add Salesforce Product into Opportunity.</p>
@@ -231,7 +231,7 @@ and password creating instance.</p>
 <dt class="field-even">Create New Opportunity</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>close_date, opportunity_name, stage_name=Closed Won, account_name=False</p>
 </dd>
 </dl>
 <p>Create Salesforce Opportunity object.</p>
@@ -239,7 +239,7 @@ and password creating instance.</p>
 <dt class="field-even">Create Salesforce Object</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>object_type, object_data</p>
 </dd>
 </dl>
 <p>Create Salesforce object by type and data.</p>
@@ -252,7 +252,7 @@ and password creating instance.</p>
 <dt class="field-even">Delete Salesforce Object</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>object_type, object_id</p>
 </dd>
 </dl>
 <p>Delete Salesfoce object by type and id.</p>
@@ -260,7 +260,7 @@ and password creating instance.</p>
 <dt class="field-even">Describe Salesforce Object</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>object_type</p>
 </dd>
 </dl>
 <p>Get Salesfoce object description by type.</p>
@@ -268,7 +268,7 @@ and password creating instance.</p>
 <dt class="field-even">Execute Dataloader Insert</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>input_object, mapping_object, object_type</p>
 </dd>
 </dl>
 <p>Keyword mimics Salesforce Dataloader ‘insert’ behaviour by taking
@@ -319,7 +319,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 <dt class="field-even">Get Salesforce Object By Id</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>object_type, object_id</p>
 </dd>
 </dl>
 <p>Get Salesforce object by id and type.</p>
@@ -327,7 +327,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 <dt class="field-even">Get Salesforce Object Metadata</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>object_type</p>
 </dd>
 </dl>
 <p>Get Salesfoce object metadata by type.</p>
@@ -343,7 +343,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 <dt class="field-even">Salesforce Query</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>sql_string</p>
 </dd>
 </dl>
 <p>Perform SQL query.</p>
@@ -382,7 +382,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 <dt class="field-even">Update Salesforce Object</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>object_type, object_id, object_data</p>
 </dd>
 </dl>
 <p>Update Salesfoce object by type, id and data.</p>
@@ -395,7 +395,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 <dt class="field-even">Upsert Salesforce Object</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>object_type, object_id, object_data</p>
 </dd>
 </dl>
 <p>Upsert Salesfoce object by type, id and data.</p>

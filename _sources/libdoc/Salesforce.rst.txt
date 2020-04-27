@@ -16,7 +16,7 @@ Keywords
 ********
 
 :Add Product Into Opportunity:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: product_name, quantity, opportunity_id=False, pricebook_name=False, custom_total_price=False
 
   Add Salesforce Product into Opportunity.
 
@@ -29,32 +29,32 @@ Keywords
 
 
 :Create New Opportunity:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: close_date, opportunity_name, stage_name=Closed Won, account_name=False
 
   Create Salesforce Opportunity object.
 
 
 :Create Salesforce Object:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: object_type, object_data
 
   Create Salesforce object by type and data.
 
   :raises SalesforceDataNotAnDictionary: when `object_data` is not dictionary
 
 :Delete Salesforce Object:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: object_type, object_id
 
   Delete Salesfoce object by type and id.
 
 
 :Describe Salesforce Object:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: object_type
 
   Get Salesfoce object description by type.
 
 
 :Execute Dataloader Insert:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: input_object, mapping_object, object_type
 
   Keyword mimics Salesforce Dataloader 'insert' behaviour by taking
   in a `input_object`representing dictionary of data to input into Salesforce,
@@ -101,13 +101,13 @@ Keywords
 
 
 :Get Salesforce Object By Id:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: object_type, object_id
 
   Get Salesforce object by id and type.
 
 
 :Get Salesforce Object Metadata:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: object_type
 
   Get Salesfoce object metadata by type.
 
@@ -119,7 +119,7 @@ Keywords
 
 
 :Salesforce Query:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: sql_string
 
   Perform SQL query.
 
@@ -147,14 +147,14 @@ Keywords
 
 
 :Update Salesforce Object:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: object_type, object_id, object_data
 
   Update Salesfoce object by type, id and data.
 
   :raises SalesforceDataNotAnDictionary: when `object_data` is not dictionary
 
 :Upsert Salesforce Object:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: object_type, object_id, object_data
 
   Upsert Salesfoce object by type, id and data.
 

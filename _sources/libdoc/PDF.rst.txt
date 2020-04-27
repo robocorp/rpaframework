@@ -32,9 +32,15 @@ Keywords
   Start a new page
 
 :Add Pages:
-  :Arguments: pages=1
+  :Arguments: pages: int=1
 
   Adds pages into PDF documents.
+
+
+:Add Pages To Source Document:
+  :Arguments: pages: int=1, source_pdf: str=None, target_pdf: str=None
+
+  Add pages into current source document
 
 
 :Alias Nb Pages:
@@ -76,7 +82,7 @@ Keywords
   Fatal error
 
 :Extract Pages From Pdf:
-  :Arguments: pages, source_pdf=None, target_pdf=None
+  :Arguments: pages: int, source_pdf: str=None, target_pdf: str=None
 
   Extract pages from source PDF and save to target PDF document.
 
@@ -85,39 +91,39 @@ Keywords
   Footer to be implemented in your own inherited class
 
 :Get Fields:
-  :Arguments: source_pdf=None, target_file=None, tree=None, retval=None
+  :Arguments: source_pdf: str=None, target_file: str=None, tree: str=None, retval: str=None
 
   Get interactive form fields from PDF source and store into target
   file in text format.
 
 
 :Get Form Text Fields:
-  :Arguments: source_pdf=None
+  :Arguments: source_pdf: str=None
 
   Get form text fields with textual data (inputs, dropdowns).
 
 
 :Get Info:
-  :Arguments: source_pdf=None
+  :Arguments: source_pdf: str=None
 
   Get information from PDF document.
 
 
 :Get Named Destinations:
-  :Arguments: source_pdf=None, tree=None, retval=None
+  :Arguments: source_pdf: str=None, tree: str=None, retval: str=None
 
   Get named destination in the document.
 
 
 :Get Number Of Pages:
-  :Arguments: source_pdf=None
+  :Arguments: source_pdf: str=None
 
   Get number of pages in the document.
 
   :raises PdfReadError: if file is encrypted or other restrictions are in place
 
 :Get Outlines:
-  :Arguments: source_pdf=None, node=None, outlines=None
+  :Arguments: source_pdf: str=None, node: str=None, outlines: str=None
 
   Get document outline.
 
@@ -127,13 +133,13 @@ Keywords
 
 
 :Get Page Layout:
-  :Arguments: source_pdf=None
+  :Arguments: source_pdf: str=None
 
   Get page layout setting.
 
 
 :Get Page Mode:
-  :Arguments: source_pdf=None
+  :Arguments: source_pdf: str=None
 
   Get page mode setting.
 
@@ -144,7 +150,7 @@ Keywords
   Get width of a string in the current font
 
 :Get Text From Pdf:
-  :Arguments: pages, source_pdf=None
+  :Arguments: pages: int, source_pdf: str=None
 
   Get text from set of pages in source PDF document.
 
@@ -153,7 +159,7 @@ Keywords
   Get x position
 
 :Get Xmp Metadata:
-  :Arguments: source_pdf=None
+  :Arguments: source_pdf: str=None
 
   Get document XMP (Extensible Metadata Platform) data.
 
@@ -175,7 +181,7 @@ Keywords
   Barcode I2of5 (numeric), adds a 0 if odd lenght
 
 :Is Pdf Encrypted:
-  :Arguments: source_pdf=None
+  :Arguments: source_pdf: str=None
 
   Check if PDF is encrypted.
 
@@ -219,17 +225,23 @@ Keywords
   Get current page number
 
 :Page Rotate:
-  :Arguments: pages, source_pdf=None, target_pdf=None, clockwise=True, angle=90
+  :Arguments: pages: int, source_pdf: str=None, target_pdf: str=None, clockwise: bool=True, angle: int=90
 
   Rotate pages in source PDF document and save to target PDF document.
 
 
 :Pdf Decrypt:
-  :Arguments: source_pdf=None, password=None
+  :Arguments: source_pdf: str=None, password: str=None
 
   Decrypt PDF with password.
 
   :raises ValueError: on decryption errors
+
+:Pdf Encrypt:
+  :Arguments: source_pdf: str=None, target_pdf: str=None, user_pwd: str=, owner_pwd: str=None, use_128bit: bool=True
+
+  Encrypt PDF document.
+
 
 :Rect:
   :Arguments: \*args, \*\*kwargs
@@ -315,7 +327,7 @@ Keywords
   Set left, top and right margins
 
 :Set Output Directory:
-  :Arguments: outdir=.
+  :Arguments: outdir: str=.
 
   Set output directory where target files are saved to.
 
@@ -326,7 +338,7 @@ Keywords
   Set right margin
 
 :Set Source Document:
-  :Arguments: source_pdf
+  :Arguments: source_pdf: str=None
 
   Set source PDF document for further operations.
 
@@ -367,7 +379,7 @@ Keywords
   Set y position and reset x
 
 :Template Html To Pdf:
-  :Arguments: template, filename, variables=None
+  :Arguments: template: str, filename: str, variables: dict=None
 
   Use HTML template file to generate PDF file.
 
