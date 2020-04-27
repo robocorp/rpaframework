@@ -77,7 +77,7 @@ class PDF(FPDF, HTMLMixin):
             None, source_page.mediaBox.getWidth(), source_page.mediaBox.getHeight()
         )
         pdf_writer.appendPagesFromReader(source_reader)
-        for pageno in range(int(pages)):
+        for _ in range(int(pages)):
             pdf_writer.addPage(pageobject)
         with open(output_filepath, "wb") as f:
             pdf_writer.write(f)
@@ -232,8 +232,17 @@ class PDF(FPDF, HTMLMixin):
         user_pwd: str = "",
         owner_pwd: str = None,
         use_128bit: bool = True,
-    ):
-        """
+    ) -> None:
+        """Encrypt PDF document.
+
+        :param source_pdf: filepath to the source pdf
+        :param target_pdf: filename to the target pdf, stored by default
+            to `output_directory`
+        :param user_pwd: allows opening and reading PDF with restrictions
+        :param owner_pwd: allows opening PDF without any restrictions, by
+            default same `user_pwd`
+        :param use_128bit: whether to 128bit encryption, when false 40bit
+            encryption is used, default True
         """
         source_pdf = self._validate(source_pdf, target_pdf)
         output_filepath = Path(self.output_directory / target_pdf)
