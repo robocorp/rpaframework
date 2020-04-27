@@ -234,6 +234,7 @@ Test Get File Size
     Should be equal as integers    ${result}    0
 
 Test Wait Until Created
+    [Tags]   skip
     Execute deferred    touch will_exist    timeout=1.0
     Run keyword and expect error    *TimeoutException*    Wait until created    will_exist    timeout=0.5
     Wait until created    will_exist    timeout=1.0

@@ -35,7 +35,6 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.6"
 dataclasses = {version = "^0.7", python=">=3.6,<3.7"}
-robotframework = "^3.2"
 robotframework-seleniumlibrary = "^4.1.0"
 robotframework-sapguilibrary = {version = "^1.1", platform = "win32"}
 robotframework-requests = "^0.6.5"
@@ -58,6 +57,7 @@ robotframework-databaselibrary = "^1.2.4"
 simple_salesforce = "^1.0.0"
 netsuitesdk = "^1.1.0"
 pypdf2 = "^1.26.0"
+robotframework = "3.1.2"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }

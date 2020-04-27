@@ -163,7 +163,7 @@ description = "Composable command line interface toolkit"
 name = "click"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "7.1.1"
+version = "7.1.2"
 
 [[package]]
 category = "main"
@@ -863,7 +863,7 @@ description = "Generic automation framework for acceptance testing and robotic p
 name = "robotframework"
 optional = false
 python-versions = "*"
-version = "3.2"
+version = "3.1.2"
 
 [[package]]
 category = "main"
@@ -1336,7 +1336,7 @@ testing = ["jaraco.itertools", "func-timeout"]
 cv = ["opencv-python", "numpy"]
 
 [metadata]
-content-hash = "0bebd4f70d9487fd38b86a4b376070404532982f25b27d4e4d3a391b570a8e90"
+content-hash = "264bed4d5801cdfa092bfbaf671f2fab3d2422a77461451c2a991916eeb81b6c"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1424,8 +1424,8 @@ chardet = [
     {file = "chardet-3.0.4.tar.gz", hash = "sha256:84ab92ed1c4d4f16916e05906b6b75a6c0fb5db821cc65e70cbd64a3e2a5eaae"},
 ]
 click = [
-    {file = "click-7.1.1-py2.py3-none-any.whl", hash = "sha256:e345d143d80bf5ee7534056164e5e112ea5e22716bbb1ce727941f4c8b471b9a"},
-    {file = "click-7.1.1.tar.gz", hash = "sha256:8a18b4ea89d8820c5d0c7da8a64b2c324b4dabb695804dbfea19b9be9d88c0cc"},
+    {file = "click-7.1.2-py2.py3-none-any.whl", hash = "sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc"},
+    {file = "click-7.1.2.tar.gz", hash = "sha256:d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a"},
 ]
 clipboard = [
     {file = "clipboard-0.0.4.tar.gz", hash = "sha256:a72a78e9c9bf68da1c3f29ee022417d13ec9e3824b511559fd2b702b1dd5b817"},
@@ -1865,8 +1865,8 @@ requests-toolbelt = [
     {file = "requests_toolbelt-0.9.1-py2.py3-none-any.whl", hash = "sha256:380606e1d10dc85c3bd47bf5a6095f815ec007be7a8b69c878507068df059e6f"},
 ]
 robotframework = [
-    {file = "robotframework-3.2-py2.py3-none-any.whl", hash = "sha256:f2b797693126c400ed2a288d55763b36ec3dab386fc3b57681bcbd8be2fe31cb"},
-    {file = "robotframework-3.2.zip", hash = "sha256:8ea812a96311a2e18eeda138349ae64fa77ee7aefba1a9a43f9115cb576ea06c"},
+    {file = "robotframework-3.1.2-py2.py3-none-any.whl", hash = "sha256:cc4b04f711677c94c7d1e30ef1e5cdd50c0b731f8038d6214379c3def183c7f0"},
+    {file = "robotframework-3.1.2.zip", hash = "sha256:f10dd7c0c8c7962a4f80dd1e026b5db731b9391bc6e1f9ebb96d685eb1230dbc"},
 ]
 robotframework-databaselibrary = [
     {file = "robotframework-databaselibrary-1.2.4.tar.gz", hash = "sha256:627d872b3dda6a308a650ac9e676dadedf9c294e4ef70ad207cbb86b78eb8847"},
