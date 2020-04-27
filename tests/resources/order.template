@@ -1,0 +1,9 @@
+<h1>Order confirmation</h1>
+<p>Thank you for the order.</p>
+<p>
+    <h3>Name: {{name}}</h3>
+    email: {{email}}
+    zip: {{zip}}
+</p>
+<br>
+<p>{{items}}</p>
