@@ -66,6 +66,7 @@ class PDF(FPDF, HTMLMixin):
         variables = variables or {}
 
         html = ""
+        self.add_pages(1)
         with open(template, "r") as templatefile:
             html = templatefile.read()
             for key, value in variables.items():

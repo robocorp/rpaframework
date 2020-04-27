@@ -4,6 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+0.8.4
+--------------
+
+Fix: PDF template_html_to_pdf keyword
+
+
 0.8.3
 --------------
 
