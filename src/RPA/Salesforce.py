@@ -1,4 +1,3 @@
-from functools import wraps
 import json
 import logging
 import requests
@@ -7,16 +6,6 @@ from simple_salesforce import Salesforce as SimpleSalesforce
 from simple_salesforce import SFType
 
 from RPA.Tables import Table
-
-
-def sf_instance_required(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        if args[0].sf is None:
-            raise SalesforceAuthenticationError("Authentication is not completed")
-        return f(*args, **kwargs)
-
-    return wrapper
 
 
 class SalesforceAuthenticationError(Exception):
@@ -41,6 +30,10 @@ class Salesforce:
         self.pricebook_name = None
         self.dataloader_success = []
         self.dataloader_errors = []
+
+    def _require_authentication(self):
+        if self.sf is None:
+            raise SalesforceAuthenticationError("Authentication is not completed")
 
     @property
     def session_id(self):
@@ -68,13 +61,13 @@ class Salesforce:
         )
         self.logger.debug(f"Salesforce session id: {self.session_id}")
 
-    @sf_instance_required
     def salesforce_query(self, sql_string):
         """Perform SQL query.
 
         :param sql_string: SQL clause to perform
         :return: result of the SQL query
         """
+        self._require_authentication()
         return self.sf.query(sql_string)
 
     def salesforce_query_result_as_table(self, sql_string):
@@ -185,7 +178,6 @@ class Salesforce:
         """
         self.pricebook_name = pricebook_name
 
-    @sf_instance_required
     def add_product_into_opportunity(
         self,
         product_name,
@@ -204,6 +196,7 @@ class Salesforce:
             defaults to False
         :return: True is operation is successful or False
         """
+        self._require_authentication()
         if opportunity_id is False:
             return False
         if pricebook_name:
@@ -225,7 +218,6 @@ class Salesforce:
                 return True
         return False
 
-    @sf_instance_required
     def create_new_opportunity(
         self, close_date, opportunity_name, stage_name="Closed Won", account_name=False
     ):
@@ -238,6 +230,7 @@ class Salesforce:
         :param account_name: by default uses previously set account, defaults to False
         :return: created opportunity or False
         """
+        self._require_authentication()
         # "2020-04-03"
         if account_name:
             self.set_account(account_name=account_name)
@@ -286,7 +279,6 @@ class Salesforce:
                 input_iterable = input_dict
         return input_iterable
 
-    @sf_instance_required
     def execute_dataloader_insert(self, input_object, mapping_object, object_type):
         """Keyword mimics Salesforce Dataloader 'insert' behaviour by taking
         in a `input_object`representing dictionary of data to input into Salesforce,
@@ -306,6 +298,7 @@ class Salesforce:
         :param object_type: Salesforce object type
         :return: True if operation is successful
         """
+        self._require_authentication()
         if not isinstance(mapping_object, (dict, Table)):
             mapping_dict = self.read_dictionary_from_file(mapping_object)
         else:
@@ -336,7 +329,6 @@ class Salesforce:
         "Return Dataloader error entries as `RPA.Table`"
         return Table(self.dataloader_errors)
 
-    @sf_instance_required
     def get_salesforce_object_by_id(self, object_type, object_id):
         """Get Salesforce object by id and type.
 
@@ -344,10 +336,10 @@ class Salesforce:
         :param object_id: Salesforce object id
         :return: dictionary of object attributes
         """
+        self._require_authentication()
         sfobject = SFType(object_type, self.session_id, self.instance)
         return sfobject.get(object_id)
 
-    @sf_instance_required
     def create_salesforce_object(self, object_type, object_data):
         """Create Salesforce object by type and data.
 
@@ -356,13 +348,13 @@ class Salesforce:
         :raises SalesforceDataNotAnDictionary: when `object_data` is not dictionary
         :return: resulting object as dictionary
         """
+        self._require_authentication()
         if not isinstance(object_data, dict):
             raise SalesforceDataNotAnDictionary(object_data)
         salesforce_object = SFType(object_type, self.session_id, self.instance)
         result = salesforce_object.create(object_data)
         return dict(result)
 
-    @sf_instance_required
     def update_salesforce_object(self, object_type, object_id, object_data):
         """Update Salesfoce object by type, id and data.
 
@@ -372,13 +364,13 @@ class Salesforce:
         :raises SalesforceDataNotAnDictionary: when `object_data` is not dictionary
         :return: True if successful
         """
+        self._require_authentication()
         if not isinstance(object_data, dict):
             raise SalesforceDataNotAnDictionary(object_data)
         salesforce_object = SFType(object_type, self.session_id, self.instance)
         result_code = salesforce_object.update(object_id, object_data)
         return result_code == 204
 
-    @sf_instance_required
     def upsert_salesforce_object(self, object_type, object_id, object_data):
         """Upsert Salesfoce object by type, id and data.
 
@@ -388,13 +380,13 @@ class Salesforce:
         :raises SalesforceDataNotAnDictionary: when `object_data` is not dictionary
         :return: True if successful
         """
+        self._require_authentication()
         if not isinstance(object_data, dict):
             raise SalesforceDataNotAnDictionary(object_data)
         salesforce_object = SFType(object_type, self.session_id, self.instance)
         result_code = salesforce_object.upsert(object_id, object_data)
         return result_code == 204
 
-    @sf_instance_required
     def delete_salesforce_object(self, object_type, object_id):
         """Delete Salesfoce object by type and id.
 
@@ -402,26 +394,27 @@ class Salesforce:
         :param object_id: Salesforce object id
         :return: True if successful
         """
+        self._require_authentication()
         salesforce_object = SFType(object_type, self.session_id, self.instance)
         result_code = salesforce_object.delete(object_id)
         return result_code == 204
 
-    @sf_instance_required
     def get_salesforce_object_metadata(self, object_type):
         """Get Salesfoce object metadata by type.
 
         :param object_type: Salesforce object type
         :return: object metadata as dictionary
         """
+        self._require_authentication()
         salesforce_object = SFType(object_type, self.session_id, self.instance)
         return dict(salesforce_object.metadata())
 
-    @sf_instance_required
     def describe_salesforce_object(self, object_type):
         """Get Salesfoce object description by type.
 
         :param object_type: Salesforce object type
         :return: object description as dictionary
         """
+        self._require_authentication()
         salesforce_object = SFType(object_type, self.session_id, self.instance)
         return dict(salesforce_object.describe())
