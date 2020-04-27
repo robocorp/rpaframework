@@ -49,6 +49,14 @@ def required_env(name: str, default: Any = UNDEFINED) -> str:
     return val
 
 
+def required_param(method_name: str = None, param_name: str = None):
+    """Check that required parameter is not None"""
+    if param_name is None:
+        raise KeyError(
+            "Parameter '%s' is required for kw: %s" % (param_name, method_name)
+        )
+
+
 def import_by_name(name: str, caller: str = None) -> Any:
     """Import module (or attribute) by name.
 

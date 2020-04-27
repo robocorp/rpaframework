@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- New library: Twitter
+
 0.9.1
 -----
 
