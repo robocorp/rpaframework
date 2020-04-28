@@ -16,7 +16,7 @@ Keywords
 ********
 
 :Connect:
-  :Arguments: account=None, consumer_key=None, consumer_secret=None, token_key=None, token_secret=None
+  :Arguments: account: str=None, consumer_key: str=None, consumer_secret: str=None, token_key: str=None, token_secret: str=None
 
   Connect to Netsuite with credentials from environment
   variables.
@@ -73,7 +73,7 @@ Keywords
 
 
 :Login:
-  :Arguments: account=None, email=None, password=None, role=None, appid=None
+  :Arguments: account: str=None, email: str=None, password: str=None, role: str=None, appid: str=None
 
   Login to Netsuite with credentials from environment variables
 
@@ -95,14 +95,14 @@ Keywords
   :raises ValueError: if record_type is not given
 
 :Netsuite Search:
-  :Arguments: type_name, search_value, operator=contains, page_size=5
+  :Arguments: type_name: str, search_value: str, operator: str=contains, page_size: int=5
 
   Search Netsuite for value from a type. Default operator is
   `contains`.
 
 
 :Netsuite Search All:
-  :Arguments: type_name, page_size=20
+  :Arguments: type_name: str, page_size: int=20
 
   Search Netsuite for a type results.
 

@@ -18,7 +18,7 @@ Keywords
 ********
 
 :Authorize:
-  :Arguments: account=None, password=None, smtp_server=None, imap_server=None
+  :Arguments: account: str=None, password: str=None, smtp_server: str=None, imap_server: str=None
 
   Authorize user to SMTP and IMAP servers.
 
@@ -26,7 +26,7 @@ Keywords
 
 
 :Authorize Imap:
-  :Arguments: account=None, password=None, imap_server=None
+  :Arguments: account: str=None, password: str=None, imap_server: str=None
 
   Authorize to IMAP server.
 
@@ -36,7 +36,7 @@ Keywords
 
 
 :Authorize Smtp:
-  :Arguments: account=None, password=None, smtp_server=None, smtp_port=None
+  :Arguments: account: str=None, password: str=None, smtp_server: str=None, smtp_port: int=None
 
   Authorize to SMTP server.
 
@@ -46,7 +46,7 @@ Keywords
 
 
 :Delete Message:
-  :Arguments: criterion=
+  :Arguments: criterion: str=
 
   Delete single message from server based on criterion.
 
@@ -54,25 +54,25 @@ Keywords
 
 
 :Delete Messages:
-  :Arguments: criterion=
+  :Arguments: criterion: str=
 
   Delete messages from server based on criterion.
 
 
 :List Messages:
-  :Arguments: criterion=
+  :Arguments: criterion: str=
 
   Return list of messages matching criterion.
 
 
 :Save Attachments:
-  :Arguments: criterion=, target_folder=None, overwrite=False
+  :Arguments: criterion: str=, target_folder: str=None, overwrite: bool=False
 
   Save mail attachments into local folder.
 
 
 :Save Messages:
-  :Arguments: criterion=, target_folder=None
+  :Arguments: criterion: str=, target_folder: str=None
 
   Save messages based on criteria and store them to target folder
   with attachment files.
@@ -81,7 +81,7 @@ Keywords
 
 
 :Send Message:
-  :Arguments: sender, recipients, subject, body, attachments=None
+  :Arguments: sender: str, recipients: list, subject: str, body: str, attachments: list=None
 
   Send SMTP email
 
@@ -96,13 +96,13 @@ Keywords
   Required step when creating SMTP connection.
 
 :Set Credentials:
-  :Arguments: account=None, password=None
+  :Arguments: account: str=None, password: str=None
 
   Set credentials
 
 
 :Wait For Message:
-  :Arguments: criterion=, timeout=5.0, interval=1.0
+  :Arguments: criterion: str=, timeout: float=5.0, interval: float=1.0
 
   Wait for email matching `criterion` to arrive into mailbox.
 

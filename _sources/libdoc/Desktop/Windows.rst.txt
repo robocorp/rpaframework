@@ -20,13 +20,13 @@ Keywords
 
 
 :Calculate Rectangle Center:
-  :Arguments: rectangle
+  :Arguments: rectangle: typing.Any
 
   Calculate x and y center coordinates from rectangle.
 
 
 :Click Type:
-  :Arguments: x=None, y=None, click_type=click
+  :Arguments: x: int=None, y: int=None, click_type: str=click
 
   Mouse click on coordinates x and y.
 
@@ -38,19 +38,19 @@ Keywords
   Close all applications
 
 :Connect By Handle:
-  :Arguments: handle
+  :Arguments: handle: str
 
   Connect to application by its handle
 
 
 :Connect By Pid:
-  :Arguments: app_pid
+  :Arguments: app_pid: str
 
   Connect to application by its pid
 
 
 :Drag And Drop:
-  :Arguments: src, target, src_locator, target_locator=None, handle_ctrl_key=False, drop_delay=2
+  :Arguments: src: typing.Any, target: typing.Any, src_locator: str, target_locator: str=None, handle_ctrl_key: bool=False, drop_delay: float=2.0
 
   Drag elements from source and drop them on target.
 
@@ -62,13 +62,13 @@ Keywords
   :raises ValueError: on validation errors
 
 :Find Element:
-  :Arguments: locator, search_criteria=None
+  :Arguments: locator: str, search_criteria: str=None
 
   Find element from window by locator and criteria.
 
 
 :Get App:
-  :Arguments: app_id=None
+  :Arguments: app_id: int=None
 
   Get application object by id
 
@@ -82,32 +82,32 @@ Keywords
 
 
 :Get Dialog Rectangle:
-  :Arguments: ctrl=None
+  :Arguments: ctrl: typing.Any=None
 
   Get element rectangle coordinates
 
   If `ctrl` is None then get coordinates from `dialog`
 
 :Get Element:
-  :Arguments: locator, screenshot=False
+  :Arguments: locator: str, screenshot: bool=False
 
   Get element by locator.
 
 
 :Get Element Center:
-  :Arguments: element
+  :Arguments: element: dict
 
   Get element center coordinates
 
 
 :Get Element Rectangle:
-  :Arguments: locator
+  :Arguments: locator: str
 
   Get value of element `rectangle` attribute.
 
 
 :Get Element Rich Text:
-  :Arguments: locator
+  :Arguments: locator: str
 
   Get value of element `rich text` attribute.
 
@@ -128,27 +128,27 @@ Keywords
 
 
 :Get Window Elements:
-  :Arguments: screenshot=False, element_json=False, outline=False
+  :Arguments: screenshot: bool=False, element_json: bool=False, outline: bool=False
 
   Get element information about all window dialog controls
   and their descendants.
 
 
 :Is Element Enabled:
-  :Arguments: locator
+  :Arguments: locator: str
 
   Is element enabled.
 
 
 :Is Element Matching:
-  :Arguments: itemdict, locator, criteria, wildcard=False
+  :Arguments: itemdict: dict, locator: str, criteria: str, wildcard: bool=False
 
   Is element matching. Check if locator is found in `any` field
   or `criteria` field in the window items.
 
 
 :Is Element Visible:
-  :Arguments: locator
+  :Arguments: locator: str
 
   Is element visible.
 
@@ -163,25 +163,25 @@ Keywords
   Put windows into lock mode
 
 :Log In:
-  :Arguments: username, password, domain=.
+  :Arguments: username: str, password: str, domain: str=.
 
   Log into Windows `domain` with `username` and `password`.
 
 
 :Menu Select:
-  :Arguments: menuitem
+  :Arguments: menuitem: str
 
   Select item from menu
 
 
 :Minimize Dialog:
-  :Arguments: windowtitle
+  :Arguments: windowtitle: str
 
   Minimize window by its title
 
 
 :Mouse Click:
-  :Arguments: locator=None, x=0, y=0, off_x=0, off_y=0, image=None, ocr=None, method=locator, ctype=click
+  :Arguments: locator: str=None, x: int=0, y: int=0, off_x: int=0, off_y: int=0, image: str=None, ocr: str=None, method: str=locator, ctype: str=click
 
   Mouse click `locator`, `coordinates`, `image` or `ocr`.
 
@@ -195,13 +195,13 @@ Keywords
 
 
 :Mouse Click Coords:
-  :Arguments: x, y, ctype=click
+  :Arguments: x: int, y: int, ctype: str=click, delay_time: float=None
 
   Click at coordinates on desktop
 
 
 :Mouse Click Image:
-  :Arguments: template, off_x=0, off_y=0, ctype=click
+  :Arguments: template: str, off_x: int=0, off_y: int=0, ctype: str=click
 
   Click at template image on desktop
 
@@ -215,39 +215,39 @@ Keywords
   :raises NotImplementedError: [description]
 
 :Open Application:
-  :Arguments: application
+  :Arguments: application: str
 
   Open application by dispatch method
 
 
 :Open Dialog:
-  :Arguments: windowtitle=None, highlight=False
+  :Arguments: windowtitle: str=None, highlight: bool=False
 
   Open window by its title.
 
 
 :Open Executable:
-  :Arguments: executable, windowtitle, backend=uia, work_dir=None
+  :Arguments: executable: str, windowtitle: str, backend: str=uia, work_dir: str=None
 
   Open Windows executable. Window title name is required
   to get handle on the application.
 
 
 :Open File:
-  :Arguments: filename
+  :Arguments: filename: str
 
   Open associated application when opening file
 
 
 :Open From Search:
-  :Arguments: executable, windowtitle
+  :Arguments: executable: str, windowtitle: str
 
   Open application using Windows search dialog.
   Window title name is required to get handle on the application.
 
 
 :Open Using Run Dialog:
-  :Arguments: executable, windowtitle
+  :Arguments: executable: str, windowtitle: str
 
   Open application using Windows run dialog.
   Window title name is required to get handle on the application.
@@ -263,32 +263,32 @@ Keywords
   Put Windows into sleep mode
 
 :Quit Application:
-  :Arguments: app_id=None, send_keys=False
+  :Arguments: app_id: str=None, send_keys: bool=False
 
   Quit an application by application id or
   active application if `app_id` is None.
 
 
 :Restore Dialog:
-  :Arguments: windowtitle
+  :Arguments: windowtitle: str
 
   Restore window by its title
 
 
 :Screenshot:
-  :Arguments: filename, element=None, ctrl=None, desktop=False
+  :Arguments: filename: str, element: dict=None, ctrl: typing.Any=None, desktop: bool=False
 
   Save screenshot into filename.
 
 
 :Send Keys:
-  :Arguments: keys
+  :Arguments: keys: str
 
   Send keys into active windows.
 
 
 :Send Keys To Input:
-  :Arguments: keys_to_type, with_enter=True, send_delay=0.5, enter_delay=1.5
+  :Arguments: keys_to_type: str, with_enter: bool=True, send_delay: float=0.5, enter_delay: float=1.5
 
   Send keys to windows and add ENTER if `with_enter` is True
 
@@ -297,14 +297,14 @@ Keywords
 
 
 :Switch To Application:
-  :Arguments: app_id
+  :Arguments: app_id: int
 
   Switch to application by id.
 
   :raises ValueError: if application is not found by given id
 
 :Type Keys:
-  :Arguments: keys
+  :Arguments: keys: str
 
   Type keys into active window element.
 

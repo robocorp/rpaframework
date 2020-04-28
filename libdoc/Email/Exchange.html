@@ -214,7 +214,7 @@
 <dt class="field-odd">Authorize</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>username, password, autodiscover=True</p>
+<dd class="field-odd"><p>username: str, password: str, autodiscover: bool=True</p>
 </dd>
 </dl>
 <p>Connect to Exchange account</p>
@@ -222,7 +222,7 @@
 <dt class="field-even">List Messages</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>count=100</p>
+<dd class="field-odd"><p>count: int=100</p>
 </dd>
 </dl>
 <p>List messages in the account inbox. Order by descending
@@ -231,7 +231,7 @@ received time.</p>
 <dt class="field-even">Send Message</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>recipients=None, cc_recipients=None, bcc_recipients=None, subject=, body=, save=False</p>
+<dd class="field-odd"><p>recipients: list=None, cc_recipients: list=None, bcc_recipients: list=None, subject: str=, body: str=, save: bool=False</p>
 </dd>
 </dl>
 <p>Keyword for sending message through connected Exchange account.</p>

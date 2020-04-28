@@ -15,18 +15,18 @@ Keywords
 ********
 
 :Close Document:
-  :Arguments: save_changes=False
+  :Arguments: save_changes: bool=False
 
 
 
 :Open Application:
-  :Arguments: visible=False, display_alerts=False
+  :Arguments: visible: bool=False, display_alerts: bool=False
 
   Open Microsoft application.
 
 
 :Quit Application:
-  :Arguments: save_changes=False
+  :Arguments: save_changes: bool=False
 
 
 

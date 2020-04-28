@@ -208,13 +208,13 @@
 <p>Library for manipulating Word application.</p>
 <dl class="method">
 <dt id="RPA.Word.Application.Application.create_new_document">
-<code class="sig-name descname">create_new_document</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.create_new_document" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_new_document</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.create_new_document" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create new document for Word application</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Word.Application.Application.export_to_pdf">
-<code class="sig-name descname">export_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.export_to_pdf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">export_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.export_to_pdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export active document into PDF file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -225,7 +225,7 @@
 
 <dl class="method">
 <dt id="RPA.Word.Application.Application.get_all_texts">
-<code class="sig-name descname">get_all_texts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.get_all_texts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_all_texts</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Word.Application.Application.get_all_texts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all texts from active document</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -236,7 +236,7 @@
 
 <dl class="method">
 <dt id="RPA.Word.Application.Application.open_file">
-<code class="sig-name descname">open_file</code><span class="sig-paren">(</span><em class="sig-param">filename=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.open_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.open_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Word document with filename.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -247,7 +247,7 @@
 
 <dl class="method">
 <dt id="RPA.Word.Application.Application.replace_text">
-<code class="sig-name descname">replace_text</code><span class="sig-paren">(</span><em class="sig-param">find</em>, <em class="sig-param">replace</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.replace_text" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">replace_text</code><span class="sig-paren">(</span><em class="sig-param">find: str</em>, <em class="sig-param">replace: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.replace_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace text in active document</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -261,13 +261,13 @@
 
 <dl class="method">
 <dt id="RPA.Word.Application.Application.save_document">
-<code class="sig-name descname">save_document</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.save_document" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_document</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.save_document" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save active document</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Word.Application.Application.save_document_as">
-<code class="sig-name descname">save_document_as</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">fileformat=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.save_document_as" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_document_as</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">fileformat: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.save_document_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save document with filename and optionally with given fileformat</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -282,7 +282,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Word.Application.Application.set_footer">
-<code class="sig-name descname">set_footer</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.set_footer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_footer</code><span class="sig-paren">(</span><em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.set_footer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set footer for the active document</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -293,7 +293,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Word.Application.Application.set_header">
-<code class="sig-name descname">set_header</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.set_header" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_header</code><span class="sig-paren">(</span><em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.set_header" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set header for the active document</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -304,7 +304,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Word.Application.Application.write_text">
-<code class="sig-name descname">write_text</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">newline=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Word.Application.Application.write_text" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_text</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">newline: bool = True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.write_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes given text at the end of the document</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

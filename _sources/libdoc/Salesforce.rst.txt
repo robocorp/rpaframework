@@ -16,45 +16,45 @@ Keywords
 ********
 
 :Add Product Into Opportunity:
-  :Arguments: product_name, quantity, opportunity_id=False, pricebook_name=False, custom_total_price=False
+  :Arguments: product_name: str, quantity: int, opportunity_id: str=None, pricebook_name: str=None, custom_total_price: float=None
 
   Add Salesforce Product into Opportunity.
 
 
 :Auth With Token:
-  :Arguments: username, password, api_token
+  :Arguments: username: str, password: str, api_token: str
 
   Authorize to Salesforce with security token, username
   and password creating instance.
 
 
 :Create New Opportunity:
-  :Arguments: close_date, opportunity_name, stage_name=Closed Won, account_name=False
+  :Arguments: close_date: str, opportunity_name: str, stage_name: str=Closed Won, account_name: str=None
 
   Create Salesforce Opportunity object.
 
 
 :Create Salesforce Object:
-  :Arguments: object_type, object_data
+  :Arguments: object_type: str, object_data: typing.Any
 
   Create Salesforce object by type and data.
 
   :raises SalesforceDataNotAnDictionary: when `object_data` is not dictionary
 
 :Delete Salesforce Object:
-  :Arguments: object_type, object_id
+  :Arguments: object_type: str, object_id: str
 
   Delete Salesfoce object by type and id.
 
 
 :Describe Salesforce Object:
-  :Arguments: object_type
+  :Arguments: object_type: str
 
   Get Salesfoce object description by type.
 
 
 :Execute Dataloader Insert:
-  :Arguments: input_object, mapping_object, object_type
+  :Arguments: input_object: typing.Any, mapping_object: typing.Any, object_type: str
 
   Keyword mimics Salesforce Dataloader 'insert' behaviour by taking
   in a `input_object`representing dictionary of data to input into Salesforce,
@@ -77,7 +77,7 @@ Keywords
   Return Dataloader success entries as `RPA.Table`
 
 :Get Opportunity Id:
-  :Arguments: opportunity_name
+  :Arguments: opportunity_name: str
 
   Get ID of an Opportunity linked to set account.
 
@@ -87,7 +87,7 @@ Keywords
 
 
 :Get Pricebook Id:
-  :Arguments: pricebook_name
+  :Arguments: pricebook_name: str
 
   Get ID of a pricelist.
 
@@ -95,43 +95,43 @@ Keywords
 
 
 :Get Products In Pricelist:
-  :Arguments: pricebook_name
+  :Arguments: pricebook_name: str
 
   Get all products in a pricelist.
 
 
 :Get Salesforce Object By Id:
-  :Arguments: object_type, object_id
+  :Arguments: object_type: str, object_id: str
 
   Get Salesforce object by id and type.
 
 
 :Get Salesforce Object Metadata:
-  :Arguments: object_type
+  :Arguments: object_type: str
 
   Get Salesfoce object metadata by type.
 
 
 :Read Dictionary From File:
-  :Arguments: mapping_file
+  :Arguments: mapping_file: str
 
   Read dictionary from file.
 
 
 :Salesforce Query:
-  :Arguments: sql_string
+  :Arguments: sql_string: str
 
   Perform SQL query.
 
 
 :Salesforce Query Result As Table:
-  :Arguments: sql_string
+  :Arguments: sql_string: str
 
   Perform SQL query and return result as `RPA.Table`.
 
 
 :Set Account:
-  :Arguments: account_name=, account_id=
+  :Arguments: account_name: str=, account_id: str=
 
   Set account name and id by giving either parameter.
 
@@ -141,20 +141,20 @@ Keywords
 
 
 :Set Pricebook:
-  :Arguments: pricebook_name
+  :Arguments: pricebook_name: str
 
   Sets Pricebook to be used in Salesforce operations.
 
 
 :Update Salesforce Object:
-  :Arguments: object_type, object_id, object_data
+  :Arguments: object_type: str, object_id: str, object_data: typing.Any
 
   Update Salesfoce object by type, id and data.
 
   :raises SalesforceDataNotAnDictionary: when `object_data` is not dictionary
 
 :Upsert Salesforce Object:
-  :Arguments: object_type, object_id, object_data
+  :Arguments: object_type: str, object_id: str, object_data: typing.Any
 
   Upsert Salesfoce object by type, id and data.
 

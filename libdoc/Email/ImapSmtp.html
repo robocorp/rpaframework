@@ -216,7 +216,7 @@ specified mail server.</p>
 <dt class="field-odd">Authorize</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>account=None, password=None, smtp_server=None, imap_server=None</p>
+<dd class="field-odd"><p>account: str=None, password: str=None, smtp_server: str=None, imap_server: str=None</p>
 </dd>
 </dl>
 <p>Authorize user to SMTP and IMAP servers.</p>
@@ -225,7 +225,7 @@ specified mail server.</p>
 <dt class="field-even">Authorize Imap</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>account=None, password=None, imap_server=None</p>
+<dd class="field-odd"><p>account: str=None, password: str=None, imap_server: str=None</p>
 </dd>
 </dl>
 <p>Authorize to IMAP server.</p>
@@ -236,7 +236,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <dt class="field-even">Authorize Smtp</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>account=None, password=None, smtp_server=None, smtp_port=None</p>
+<dd class="field-odd"><p>account: str=None, password: str=None, smtp_server: str=None, smtp_port: int=None</p>
 </dd>
 </dl>
 <p>Authorize to SMTP server.</p>
@@ -247,7 +247,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <dt class="field-even">Delete Message</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>criterion=</p>
+<dd class="field-odd"><p>criterion: str=</p>
 </dd>
 </dl>
 <p>Delete single message from server based on criterion.</p>
@@ -256,7 +256,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <dt class="field-even">Delete Messages</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>criterion=</p>
+<dd class="field-odd"><p>criterion: str=</p>
 </dd>
 </dl>
 <p>Delete messages from server based on criterion.</p>
@@ -264,7 +264,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <dt class="field-even">List Messages</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>criterion=</p>
+<dd class="field-odd"><p>criterion: str=</p>
 </dd>
 </dl>
 <p>Return list of messages matching criterion.</p>
@@ -272,7 +272,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <dt class="field-even">Save Attachments</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>criterion=, target_folder=None, overwrite=False</p>
+<dd class="field-odd"><p>criterion: str=, target_folder: str=None, overwrite: bool=False</p>
 </dd>
 </dl>
 <p>Save mail attachments into local folder.</p>
@@ -280,7 +280,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <dt class="field-even">Save Messages</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>criterion=, target_folder=None</p>
+<dd class="field-odd"><p>criterion: str=, target_folder: str=None</p>
 </dd>
 </dl>
 <p>Save messages based on criteria and store them to target folder
@@ -290,7 +290,7 @@ with attachment files.</p>
 <dt class="field-even">Send Message</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>sender, recipients, subject, body, attachments=None</p>
+<dd class="field-odd"><p>sender: str, recipients: list, subject: str, body: str, attachments: list=None</p>
 </dd>
 </dl>
 <p>Send SMTP email</p>
@@ -309,7 +309,7 @@ with attachment files.</p>
 <dt class="field-odd">Set Credentials</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>account=None, password=None</p>
+<dd class="field-odd"><p>account: str=None, password: str=None</p>
 </dd>
 </dl>
 <p>Set credentials</p>
@@ -317,7 +317,7 @@ with attachment files.</p>
 <dt class="field-even">Wait For Message</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>criterion=, timeout=5.0, interval=1.0</p>
+<dd class="field-odd"><p>criterion: str=, timeout: float=5.0, interval: float=1.0</p>
 </dd>
 </dl>
 <p>Wait for email matching <cite>criterion</cite> to arrive into mailbox.</p>

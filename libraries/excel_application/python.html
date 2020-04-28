@@ -208,7 +208,7 @@
 <p>Library for manipulating Excel application.</p>
 <dl class="method">
 <dt id="RPA.Excel.Application.Application.add_new_sheet">
-<code class="sig-name descname">add_new_sheet</code><span class="sig-paren">(</span><em class="sig-param">sheetname</em>, <em class="sig-param">tabname=None</em>, <em class="sig-param">create_workbook=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.add_new_sheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_new_sheet</code><span class="sig-paren">(</span><em class="sig-param">sheetname: str</em>, <em class="sig-param">tabname: str = None</em>, <em class="sig-param">create_workbook: bool = True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.add_new_sheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add new worksheet to workbook. Workbook is created by default if
 it does not exist.</p>
 <dl class="field-list simple">
@@ -228,13 +228,13 @@ it does not exist.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Application.Application.add_new_workbook">
-<code class="sig-name descname">add_new_workbook</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.add_new_workbook" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_new_workbook</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.add_new_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds new workbook for Excel application</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Application.Application.find_first_available_row">
-<code class="sig-name descname">find_first_available_row</code><span class="sig-paren">(</span><em class="sig-param">worksheet=None</em>, <em class="sig-param">row=1</em>, <em class="sig-param">column=1</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.find_first_available_row" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">find_first_available_row</code><span class="sig-paren">(</span><em class="sig-param">worksheet: Any = None</em>, <em class="sig-param">row: int = 1</em>, <em class="sig-param">column: int = 1</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Excel.Application.Application.find_first_available_row" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find first available free row and cell</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -252,7 +252,7 @@ it does not exist.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Application.Application.open_workbook">
-<code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.open_workbook" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.open_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Excel by filename</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -263,13 +263,13 @@ it does not exist.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Application.Application.save_excel">
-<code class="sig-name descname">save_excel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.save_excel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_excel</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.save_excel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves Excel file</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Application.Application.save_excel_as">
-<code class="sig-name descname">save_excel_as</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">autofit=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.save_excel_as" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_excel_as</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">autofit: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.save_excel_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save Excel with name if workbook is open</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -283,13 +283,13 @@ it does not exist.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Application.Application.set_active_worksheet">
-<code class="sig-name descname">set_active_worksheet</code><span class="sig-paren">(</span><em class="sig-param">sheetname=None</em>, <em class="sig-param">sheetnumber=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.set_active_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_active_worksheet</code><span class="sig-paren">(</span><em class="sig-param">sheetname: str = None</em>, <em class="sig-param">sheetnumber: int = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.set_active_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set active worksheet by either its sheet number or name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sheetname</strong> – [description], defaults to None</p></li>
-<li><p><strong>sheetnumber</strong> – [description], defaults to None</p></li>
+<li><p><strong>sheetname</strong> – name of Excel sheet, defaults to None</p></li>
+<li><p><strong>sheetnumber</strong> – index of Excel sheet, defaults to None</p></li>
 </ul>
 </dd>
 </dl>
@@ -297,7 +297,7 @@ it does not exist.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Application.Application.write_to_cells">
-<code class="sig-name descname">write_to_cells</code><span class="sig-paren">(</span><em class="sig-param">worksheet=None</em>, <em class="sig-param">row=None</em>, <em class="sig-param">column=None</em>, <em class="sig-param">value=None</em>, <em class="sig-param">number_format=None</em>, <em class="sig-param">formula=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.write_to_cells" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_to_cells</code><span class="sig-paren">(</span><em class="sig-param">worksheet: Any = None</em>, <em class="sig-param">row: int = None</em>, <em class="sig-param">column: int = None</em>, <em class="sig-param">value: str = None</em>, <em class="sig-param">number_format: str = None</em>, <em class="sig-param">formula: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.write_to_cells" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write value, number_format and/or formula into cell.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

@@ -145,7 +145,7 @@ Keywords
   | Connect To Database Using Custom Params | JayDeBeApi | 'oracle.jdbc.driver.OracleDriver', 'my_db_test', 'system', 's3cr3t' |
 
 :Database Query Result As Table:
-  :Arguments: query_string
+  :Arguments: query_string: str
 
   Make database query and return result as `RPA.Table`.
 

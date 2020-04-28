@@ -203,14 +203,14 @@
 <span id="imapsmtp"></span><h2>ImapSmtp<a class="headerlink" href="#module-RPA.Email.ImapSmtp" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">ImapSmtp</code><span class="sig-paren">(</span><em class="sig-param">smtp_server=None</em>, <em class="sig-param">port=587</em>, <em class="sig-param">imap_server=None</em>, <em class="sig-param">account=None</em>, <em class="sig-param">password=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">ImapSmtp</code><span class="sig-paren">(</span><em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">port: int = 587</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>RPA Framework library providing SMTP and IMAP operations for
 specified mail server.</p>
 <p>Proper initialization needs <cite>smtp_server</cite> and <cite>imap_server</cite> defined.</p>
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize">
-<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">smtp_server=None</em>, <em class="sig-param">imap_server=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">imap_server: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorize user to SMTP and IMAP servers.</p>
 <p>Will use separately set credentials or those given in keyword call.</p>
 <dl class="field-list simple">
@@ -225,7 +225,7 @@ specified mail server.</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize_imap">
-<code class="sig-name descname">authorize_imap</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">imap_server=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_imap" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">authorize_imap</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">imap_server: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_imap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorize to IMAP server.</p>
 <p>Can be called without giving any parameters if library
 has been initialized with necessary information and/or
@@ -243,7 +243,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize_smtp">
-<code class="sig-name descname">authorize_smtp</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">smtp_server=None</em>, <em class="sig-param">smtp_port=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_smtp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">authorize_smtp</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">smtp_port: int = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_smtp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorize to SMTP server.</p>
 <p>Can be called without giving any parameters if library
 has been initialized with necessary information and/or
@@ -262,7 +262,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.delete_message">
-<code class="sig-name descname">delete_message</code><span class="sig-paren">(</span><em class="sig-param">criterion=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.delete_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_message</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.delete_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete single message from server based on criterion.</p>
 <p>If criterion does not return exactly 1 message then delete is not done.</p>
 <dl class="field-list simple">
@@ -277,7 +277,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.delete_messages">
-<code class="sig-name descname">delete_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.delete_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.delete_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete messages from server based on criterion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -291,7 +291,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.list_messages">
-<code class="sig-name descname">list_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.list_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.list_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return list of messages matching criterion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -305,7 +305,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.save_attachments">
-<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">criterion=''</em>, <em class="sig-param">target_folder=None</em>, <em class="sig-param">overwrite=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachments" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save mail attachments into local folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -324,7 +324,7 @@ defaults to user’s home directory if None</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.save_messages">
-<code class="sig-name descname">save_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion=''</em>, <em class="sig-param">target_folder=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">target_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save messages based on criteria and store them to target folder
 with attachment files.</p>
 <p>Does not save message if <cite>target_folder</cite> is not given.</p>
@@ -343,7 +343,7 @@ with attachment files.</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.send_message">
-<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">sender</em>, <em class="sig-param">recipients</em>, <em class="sig-param">subject</em>, <em class="sig-param">body</em>, <em class="sig-param">attachments=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">sender: str</em>, <em class="sig-param">recipients: list</em>, <em class="sig-param">subject: str</em>, <em class="sig-param">body: str</em>, <em class="sig-param">attachments: list = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send SMTP email</p>
 <dl class="simple">
 <dt>Valid sender values:</dt><dd><ul class="simple">
@@ -367,14 +367,14 @@ with attachment files.</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.send_smtp_hello">
-<code class="sig-name descname">send_smtp_hello</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_smtp_hello" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_smtp_hello</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_smtp_hello" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send hello message to SMTP server.</p>
 <p>Required step when creating SMTP connection.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.set_credentials">
-<code class="sig-name descname">set_credentials</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">password=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.set_credentials" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_credentials</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.set_credentials" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set credentials</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -388,7 +388,7 @@ with attachment files.</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.wait_for_message">
-<code class="sig-name descname">wait_for_message</code><span class="sig-paren">(</span><em class="sig-param">criterion=''</em>, <em class="sig-param">timeout=5.0</em>, <em class="sig-param">interval=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.wait_for_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wait_for_message</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">timeout: float = 5.0</em>, <em class="sig-param">interval: float = 1.0</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.wait_for_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait for email matching <cite>criterion</cite> to arrive into mailbox.</p>
 <dl class="simple">
 <dt>Examples:</dt><dd><ul class="simple">

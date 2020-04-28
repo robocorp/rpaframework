@@ -208,7 +208,7 @@
 <p>Library for interfacing with Microsoft Exchange Web Services (EWS).</p>
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.authorize">
-<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">username</em>, <em class="sig-param">password</em>, <em class="sig-param">autodiscover=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.authorize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">username: str</em>, <em class="sig-param">password: str</em>, <em class="sig-param">autodiscover: bool = True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.Exchange.Exchange.authorize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to Exchange account</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -223,14 +223,19 @@
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.list_messages">
-<code class="sig-name descname">list_messages</code><span class="sig-paren">(</span><em class="sig-param">count=100</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.list_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_messages</code><span class="sig-paren">(</span><em class="sig-param">count: int = 100</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.list_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>List messages in the account inbox. Order by descending
 received time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>count</strong> – number of messages to list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.send_message">
-<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">recipients=None</em>, <em class="sig-param">cc_recipients=None</em>, <em class="sig-param">bcc_recipients=None</em>, <em class="sig-param">subject=''</em>, <em class="sig-param">body=''</em>, <em class="sig-param">save=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.send_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">recipients: list = None</em>, <em class="sig-param">cc_recipients: list = None</em>, <em class="sig-param">bcc_recipients: list = None</em>, <em class="sig-param">subject: str = ''</em>, <em class="sig-param">body: str = ''</em>, <em class="sig-param">save: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.send_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keyword for sending message through connected Exchange account.</p>
 <p>Email addresses can be prefixed with <cite>ex:</cite> to indicate Exchange
 account address.</p>

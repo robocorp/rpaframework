@@ -203,7 +203,7 @@
 <span id="salesforce"></span><h2>Salesforce<a class="headerlink" href="#module-RPA.Salesforce" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="RPA.Salesforce.Salesforce">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Salesforce.</code><code class="sig-name descname">Salesforce</code><span class="sig-paren">(</span><em class="sig-param">sandbox=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Salesforce.</code><code class="sig-name descname">Salesforce</code><span class="sig-paren">(</span><em class="sig-param">sandbox: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Library for accessing Salesforce using REST API.</p>
 <dl class="attribute">
@@ -213,17 +213,17 @@
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.add_product_into_opportunity">
-<code class="sig-name descname">add_product_into_opportunity</code><span class="sig-paren">(</span><em class="sig-param">product_name</em>, <em class="sig-param">quantity</em>, <em class="sig-param">opportunity_id=False</em>, <em class="sig-param">pricebook_name=False</em>, <em class="sig-param">custom_total_price=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.add_product_into_opportunity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_product_into_opportunity</code><span class="sig-paren">(</span><em class="sig-param">product_name: str</em>, <em class="sig-param">quantity: int</em>, <em class="sig-param">opportunity_id: str = None</em>, <em class="sig-param">pricebook_name: str = None</em>, <em class="sig-param">custom_total_price: float = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Salesforce.Salesforce.add_product_into_opportunity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add Salesforce Product into Opportunity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>product_name</strong> – type of the product in the Pricelist</p></li>
 <li><p><strong>quantity</strong> – number of products to add</p></li>
-<li><p><strong>opportunity_id</strong> – identifier of Opportunity, defaults to False</p></li>
-<li><p><strong>pricebook_name</strong> – name of the pricelist, defaults to False</p></li>
+<li><p><strong>opportunity_id</strong> – identifier of Opportunity, default None</p></li>
+<li><p><strong>pricebook_name</strong> – name of the pricelist, default None</p></li>
 <li><p><strong>custom_total_price</strong> – price that overrides quantity and product price,
-defaults to False</p></li>
+default None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -234,7 +234,7 @@ defaults to False</p></li>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.auth_with_token">
-<code class="sig-name descname">auth_with_token</code><span class="sig-paren">(</span><em class="sig-param">username</em>, <em class="sig-param">password</em>, <em class="sig-param">api_token</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.auth_with_token" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">auth_with_token</code><span class="sig-paren">(</span><em class="sig-param">username: str</em>, <em class="sig-param">password: str</em>, <em class="sig-param">api_token: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Salesforce.Salesforce.auth_with_token" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorize to Salesforce with security token, username
 and password creating instance.</p>
 <dl class="field-list simple">
@@ -250,7 +250,7 @@ and password creating instance.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.create_new_opportunity">
-<code class="sig-name descname">create_new_opportunity</code><span class="sig-paren">(</span><em class="sig-param">close_date</em>, <em class="sig-param">opportunity_name</em>, <em class="sig-param">stage_name='Closed Won'</em>, <em class="sig-param">account_name=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.create_new_opportunity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_new_opportunity</code><span class="sig-paren">(</span><em class="sig-param">close_date: str</em>, <em class="sig-param">opportunity_name: str</em>, <em class="sig-param">stage_name: str = 'Closed Won'</em>, <em class="sig-param">account_name: str = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Salesforce.Salesforce.create_new_opportunity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Salesforce Opportunity object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -259,7 +259,7 @@ and password creating instance.</p>
 <li><p><strong>opportunity_name</strong> – as string</p></li>
 <li><p><strong>stage_name</strong> – needs to be one of the defined stages,
 defaults to “Closed Won”</p></li>
-<li><p><strong>account_name</strong> – by default uses previously set account, defaults to False</p></li>
+<li><p><strong>account_name</strong> – by default uses previously set account, defaults to None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -270,7 +270,7 @@ defaults to “Closed Won”</p></li>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.create_salesforce_object">
-<code class="sig-name descname">create_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type</em>, <em class="sig-param">object_data</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.create_salesforce_object" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type: str</em>, <em class="sig-param">object_data: Any</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Salesforce.Salesforce.create_salesforce_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Salesforce object by type and data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -290,7 +290,7 @@ defaults to “Closed Won”</p></li>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.delete_salesforce_object">
-<code class="sig-name descname">delete_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type</em>, <em class="sig-param">object_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.delete_salesforce_object" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type: str</em>, <em class="sig-param">object_id: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Salesforce.Salesforce.delete_salesforce_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete Salesfoce object by type and id.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -307,7 +307,7 @@ defaults to “Closed Won”</p></li>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.describe_salesforce_object">
-<code class="sig-name descname">describe_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.describe_salesforce_object" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">describe_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Salesforce.Salesforce.describe_salesforce_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Salesfoce object description by type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -321,7 +321,7 @@ defaults to “Closed Won”</p></li>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.execute_dataloader_insert">
-<code class="sig-name descname">execute_dataloader_insert</code><span class="sig-paren">(</span><em class="sig-param">input_object</em>, <em class="sig-param">mapping_object</em>, <em class="sig-param">object_type</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.execute_dataloader_insert" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">execute_dataloader_insert</code><span class="sig-paren">(</span><em class="sig-param">input_object: Any</em>, <em class="sig-param">mapping_object: Any</em>, <em class="sig-param">object_type: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Salesforce.Salesforce.execute_dataloader_insert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keyword mimics Salesforce Dataloader ‘insert’ behaviour by taking
 in a <cite>input_object`representing dictionary of data to input into Salesforce,
 a `mapping_object</cite> representing dictionary mapping the input keys into
@@ -348,19 +348,19 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.get_dataloader_error_table">
-<code class="sig-name descname">get_dataloader_error_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_dataloader_error_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_dataloader_error_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; RPA.Tables.Table<a class="headerlink" href="#RPA.Salesforce.Salesforce.get_dataloader_error_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return Dataloader error entries as <cite>RPA.Table</cite></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.get_dataloader_success_table">
-<code class="sig-name descname">get_dataloader_success_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_dataloader_success_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_dataloader_success_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; RPA.Tables.Table<a class="headerlink" href="#RPA.Salesforce.Salesforce.get_dataloader_success_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return Dataloader success entries as <cite>RPA.Table</cite></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.get_opportunity_id">
-<code class="sig-name descname">get_opportunity_id</code><span class="sig-paren">(</span><em class="sig-param">opportunity_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_opportunity_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_opportunity_id</code><span class="sig-paren">(</span><em class="sig-param">opportunity_name: str</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Salesforce.Salesforce.get_opportunity_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get ID of an Opportunity linked to set account.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -374,7 +374,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.get_pricebook_entries">
-<code class="sig-name descname">get_pricebook_entries</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_pricebook_entries" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_pricebook_entries</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Salesforce.Salesforce.get_pricebook_entries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all pricebook entries.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -385,7 +385,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.get_pricebook_id">
-<code class="sig-name descname">get_pricebook_id</code><span class="sig-paren">(</span><em class="sig-param">pricebook_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_pricebook_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_pricebook_id</code><span class="sig-paren">(</span><em class="sig-param">pricebook_name: str</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Salesforce.Salesforce.get_pricebook_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get ID of a pricelist.</p>
 <p>Returns False if unique Id is not found.</p>
 <dl class="field-list simple">
@@ -400,7 +400,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.get_products_in_pricelist">
-<code class="sig-name descname">get_products_in_pricelist</code><span class="sig-paren">(</span><em class="sig-param">pricebook_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_products_in_pricelist" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_products_in_pricelist</code><span class="sig-paren">(</span><em class="sig-param">pricebook_name: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Salesforce.Salesforce.get_products_in_pricelist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all products in a pricelist.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -414,7 +414,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.get_salesforce_object_by_id">
-<code class="sig-name descname">get_salesforce_object_by_id</code><span class="sig-paren">(</span><em class="sig-param">object_type</em>, <em class="sig-param">object_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_salesforce_object_by_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_salesforce_object_by_id</code><span class="sig-paren">(</span><em class="sig-param">object_type: str</em>, <em class="sig-param">object_id: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Salesforce.Salesforce.get_salesforce_object_by_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Salesforce object by id and type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -431,7 +431,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.get_salesforce_object_metadata">
-<code class="sig-name descname">get_salesforce_object_metadata</code><span class="sig-paren">(</span><em class="sig-param">object_type</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.get_salesforce_object_metadata" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_salesforce_object_metadata</code><span class="sig-paren">(</span><em class="sig-param">object_type: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Salesforce.Salesforce.get_salesforce_object_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Salesfoce object metadata by type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -450,7 +450,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.read_dictionary_from_file">
-<code class="sig-name descname">read_dictionary_from_file</code><span class="sig-paren">(</span><em class="sig-param">mapping_file</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.read_dictionary_from_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_dictionary_from_file</code><span class="sig-paren">(</span><em class="sig-param">mapping_file: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Salesforce.Salesforce.read_dictionary_from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read dictionary from file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -464,7 +464,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.salesforce_query">
-<code class="sig-name descname">salesforce_query</code><span class="sig-paren">(</span><em class="sig-param">sql_string</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">salesforce_query</code><span class="sig-paren">(</span><em class="sig-param">sql_string: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform SQL query.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -478,7 +478,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.salesforce_query_result_as_table">
-<code class="sig-name descname">salesforce_query_result_as_table</code><span class="sig-paren">(</span><em class="sig-param">sql_string</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query_result_as_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">salesforce_query_result_as_table</code><span class="sig-paren">(</span><em class="sig-param">sql_string: str</em><span class="sig-paren">)</span> &#x2192; RPA.Tables.Table<a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query_result_as_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform SQL query and return result as <cite>RPA.Table</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -497,7 +497,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.set_account">
-<code class="sig-name descname">set_account</code><span class="sig-paren">(</span><em class="sig-param">account_name=''</em>, <em class="sig-param">account_id=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.set_account" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_account</code><span class="sig-paren">(</span><em class="sig-param">account_name: str = ''</em>, <em class="sig-param">account_id: str = ''</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Salesforce.Salesforce.set_account" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set account name and id by giving either parameter.</p>
 <dl class="simple">
 <dt>Can be used together with keywords:</dt><dd><ul class="simple">
@@ -521,7 +521,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.set_pricebook">
-<code class="sig-name descname">set_pricebook</code><span class="sig-paren">(</span><em class="sig-param">pricebook_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.set_pricebook" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_pricebook</code><span class="sig-paren">(</span><em class="sig-param">pricebook_name: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Salesforce.Salesforce.set_pricebook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets Pricebook to be used in Salesforce operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -532,7 +532,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.update_salesforce_object">
-<code class="sig-name descname">update_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type</em>, <em class="sig-param">object_id</em>, <em class="sig-param">object_data</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.update_salesforce_object" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type: str</em>, <em class="sig-param">object_id: str</em>, <em class="sig-param">object_data: Any</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Salesforce.Salesforce.update_salesforce_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update Salesfoce object by type, id and data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -553,7 +553,7 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.upsert_salesforce_object">
-<code class="sig-name descname">upsert_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type</em>, <em class="sig-param">object_id</em>, <em class="sig-param">object_data</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Salesforce.Salesforce.upsert_salesforce_object" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">upsert_salesforce_object</code><span class="sig-paren">(</span><em class="sig-param">object_type: str</em>, <em class="sig-param">object_id: str</em>, <em class="sig-param">object_data: Any</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Salesforce.Salesforce.upsert_salesforce_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upsert Salesfoce object by type, id and data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

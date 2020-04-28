@@ -208,7 +208,7 @@
 <p>Library for accessing Netsuite.</p>
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.connect">
-<code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">consumer_key=None</em>, <em class="sig-param">consumer_secret=None</em>, <em class="sig-param">token_key=None</em>, <em class="sig-param">token_secret=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.connect" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">consumer_key: str = None</em>, <em class="sig-param">consumer_secret: str = None</em>, <em class="sig-param">token_key: str = None</em>, <em class="sig-param">token_secret: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Netsuite.Netsuite.connect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to Netsuite with credentials from environment
 variables.</p>
 <p>Parameters are not logged into Robot Framework log.</p>
@@ -227,7 +227,7 @@ variables.</p>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.get_accounts">
-<code class="sig-name descname">get_accounts</code><span class="sig-paren">(</span><em class="sig-param">count=100</em>, <em class="sig-param">account_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_accounts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_accounts</code><span class="sig-paren">(</span><em class="sig-param">count: int = 100</em>, <em class="sig-param">account_type: str = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Netsuite.Netsuite.get_accounts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Accounts of any type or specified type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -245,7 +245,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.get_classifications">
-<code class="sig-name descname">get_classifications</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_classifications" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_classifications</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Netsuite.Netsuite.get_classifications" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all Netsuite Classifications</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -256,7 +256,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.get_currencies">
-<code class="sig-name descname">get_currencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_currencies" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_currencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Netsuite.Netsuite.get_currencies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all Netsuite Currencies</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -267,7 +267,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.get_currency">
-<code class="sig-name descname">get_currency</code><span class="sig-paren">(</span><em class="sig-param">currency_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_currency" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_currency</code><span class="sig-paren">(</span><em class="sig-param">currency_id: str</em><span class="sig-paren">)</span> &#x2192; object<a class="headerlink" href="#RPA.Netsuite.Netsuite.get_currency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all a Netsuite Currency by its ID</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -281,7 +281,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.get_departments">
-<code class="sig-name descname">get_departments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_departments" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_departments</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Netsuite.Netsuite.get_departments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all Netsuite Departments</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -292,7 +292,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.get_locations">
-<code class="sig-name descname">get_locations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_locations" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_locations</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Netsuite.Netsuite.get_locations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all Netsuite Locations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -303,7 +303,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.get_vendor_bills">
-<code class="sig-name descname">get_vendor_bills</code><span class="sig-paren">(</span><em class="sig-param">count=10</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_vendor_bills" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_vendor_bills</code><span class="sig-paren">(</span><em class="sig-param">count: int = 10</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Netsuite.Netsuite.get_vendor_bills" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of vendor bills</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -317,7 +317,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.get_vendors">
-<code class="sig-name descname">get_vendors</code><span class="sig-paren">(</span><em class="sig-param">count=10</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.get_vendors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_vendors</code><span class="sig-paren">(</span><em class="sig-param">count: int = 10</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Netsuite.Netsuite.get_vendors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of vendors</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -331,7 +331,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.login">
-<code class="sig-name descname">login</code><span class="sig-paren">(</span><em class="sig-param">account=None</em>, <em class="sig-param">email=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">role=None</em>, <em class="sig-param">appid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.login" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">login</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">email: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">role: str = None</em>, <em class="sig-param">appid: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Netsuite.Netsuite.login" title="Permalink to this definition">¶</a></dt>
 <dd><p>Login to Netsuite with credentials from environment variables</p>
 <p>Parameters are not logged into Robot Framework log.</p>
 <dl class="field-list simple">
@@ -349,7 +349,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.netsuite_get">
-<code class="sig-name descname">netsuite_get</code><span class="sig-paren">(</span><em class="sig-param">record_type=None</em>, <em class="sig-param">internal_id=None</em>, <em class="sig-param">external_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.netsuite_get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">netsuite_get</code><span class="sig-paren">(</span><em class="sig-param">record_type: str = None</em>, <em class="sig-param">internal_id: str = None</em>, <em class="sig-param">external_id: str = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Netsuite.Netsuite.netsuite_get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all records of given type and internalId and/or externalId.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -370,7 +370,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.netsuite_get_all">
-<code class="sig-name descname">netsuite_get_all</code><span class="sig-paren">(</span><em class="sig-param">record_type</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.netsuite_get_all" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">netsuite_get_all</code><span class="sig-paren">(</span><em class="sig-param">record_type: str</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Netsuite.Netsuite.netsuite_get_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all records of given type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -387,7 +387,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.netsuite_search">
-<code class="sig-name descname">netsuite_search</code><span class="sig-paren">(</span><em class="sig-param">type_name</em>, <em class="sig-param">search_value</em>, <em class="sig-param">operator='contains'</em>, <em class="sig-param">page_size=5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.netsuite_search" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">netsuite_search</code><span class="sig-paren">(</span><em class="sig-param">type_name: str</em>, <em class="sig-param">search_value: str</em>, <em class="sig-param">operator: str = 'contains'</em>, <em class="sig-param">page_size: int = 5</em><span class="sig-paren">)</span> &#x2192; netsuitesdk.internal.utils.PaginatedSearch<a class="headerlink" href="#RPA.Netsuite.Netsuite.netsuite_search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search Netsuite for value from a type. Default operator is
 <cite>contains</cite>.</p>
 <dl class="field-list simple">
@@ -407,7 +407,7 @@ defaults to None</p></li>
 
 <dl class="method">
 <dt id="RPA.Netsuite.Netsuite.netsuite_search_all">
-<code class="sig-name descname">netsuite_search_all</code><span class="sig-paren">(</span><em class="sig-param">type_name</em>, <em class="sig-param">page_size=20</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Netsuite.Netsuite.netsuite_search_all" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">netsuite_search_all</code><span class="sig-paren">(</span><em class="sig-param">type_name: str</em>, <em class="sig-param">page_size: int = 20</em><span class="sig-paren">)</span> &#x2192; netsuitesdk.internal.utils.PaginatedSearch<a class="headerlink" href="#RPA.Netsuite.Netsuite.netsuite_search_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search Netsuite for a type results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

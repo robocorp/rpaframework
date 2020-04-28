@@ -16,19 +16,20 @@ Keywords
 ********
 
 :Authorize:
-  :Arguments: username, password, autodiscover=True
+  :Arguments: username: str, password: str, autodiscover: bool=True
 
   Connect to Exchange account
 
 
 :List Messages:
-  :Arguments: count=100
+  :Arguments: count: int=100
 
   List messages in the account inbox. Order by descending
   received time.
 
+
 :Send Message:
-  :Arguments: recipients=None, cc_recipients=None, bcc_recipients=None, subject=, body=, save=False
+  :Arguments: recipients: list=None, cc_recipients: list=None, bcc_recipients: list=None, subject: str=, body: str=, save: bool=False
 
   Keyword for sending message through connected Exchange account.
 

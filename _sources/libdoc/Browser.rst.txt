@@ -1700,7 +1700,7 @@ Keywords
   .. raw:: html
 
      <p>Open Chrome browser.</p>
-     <p>:param url: address to open :param use_profile: [description], defaults to True :param headless: [description], defaults to False</p>
+     <p>:param url: address to open :param use_profile: if browser user profile is used, defaults to False :param headless: if headless mode should be set, defaults to False :param maximized: if browser should be run maximized, defaults to False</p>
 
 :Open Context Menu:
   :Arguments: locator

@@ -234,7 +234,7 @@
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.create_rpa_webdriver">
-<code class="sig-name descname">create_rpa_webdriver</code><span class="sig-paren">(</span><em class="sig-param">browser</em>, <em class="sig-param">options</em>, <em class="sig-param">download=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.create_rpa_webdriver" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_rpa_webdriver</code><span class="sig-paren">(</span><em class="sig-param">browser: str</em>, <em class="sig-param">options: dict</em>, <em class="sig-param">download: bool = False</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.create_rpa_webdriver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create webdriver instance for given browser.</p>
 <p>Driver will be downloaded if it does not exist when <cite>download</cite> is True.</p>
 <dl class="field-list simple">
@@ -253,21 +253,21 @@
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.detect_chrome_version">
-<code class="sig-name descname">detect_chrome_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.detect_chrome_version" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">detect_chrome_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Browser.detect_chrome_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect Chrome browser version (if possible) on different
 platforms using different commands for each platform.</p>
 <p>Returns corresponding chromedriver version if possible.</p>
 <p>Supported Chrome major versions are 81, 80 and 79.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>chromedriver version number or False</p>
+<dd class="field-odd"><p>chromedriver version number or None</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.download_driver">
-<code class="sig-name descname">download_driver</code><span class="sig-paren">(</span><em class="sig-param">dm_class</em>, <em class="sig-param">download_dir</em>, <em class="sig-param">version=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.download_driver" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">download_driver</code><span class="sig-paren">(</span><em class="sig-param">dm_class: str</em>, <em class="sig-param">download_dir: str</em>, <em class="sig-param">version: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.download_driver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download driver to given directory. By default downloads
 latest version for given webdriver type, but this can be
 overridden by giving <code class="docutils literal notranslate"><span class="pre">version</span></code> parameter.</p>
@@ -284,7 +284,7 @@ overridden by giving <code class="docutils literal notranslate"><span class="pre
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.get_browser_order">
-<code class="sig-name descname">get_browser_order</code><span class="sig-paren">(</span><em class="sig-param">browser_selection</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.get_browser_order" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_browser_order</code><span class="sig-paren">(</span><em class="sig-param">browser_selection: Any</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Browser.Browser.get_browser_order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of browser that will be used for open browser
 keywords. Will be one or many.</p>
 <dl class="field-list simple">
@@ -300,7 +300,7 @@ or one named browser, eg. “Chrome”</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.get_installed_chromedriver_version">
-<code class="sig-name descname">get_installed_chromedriver_version</code><span class="sig-paren">(</span><em class="sig-param">driver_executable_path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.get_installed_chromedriver_version" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_installed_chromedriver_version</code><span class="sig-paren">(</span><em class="sig-param">driver_executable_path: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Browser.get_installed_chromedriver_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns full version number for stable chromedriver.</p>
 <p>Stable version is defined internally based on the major version
 of the chromedriver.</p>
@@ -309,14 +309,14 @@ of the chromedriver.</p>
 <dd class="field-odd"><p><strong>driver_executable_path</strong> – path to chromedriver</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>full version number for stable chromedriver or False</p>
+<dd class="field-even"><p>full version number for stable chromedriver or None</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.get_preferable_browser_order">
-<code class="sig-name descname">get_preferable_browser_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.get_preferable_browser_order" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_preferable_browser_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Browser.Browser.get_preferable_browser_order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns list of RPA Framework preferred browsers by OS.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -327,7 +327,7 @@ of the chromedriver.</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.input_text_when_element_is_visible">
-<code class="sig-name descname">input_text_when_element_is_visible</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.input_text_when_element_is_visible" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">input_text_when_element_is_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.input_text_when_element_is_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Input text into locator after it has become visible</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -352,7 +352,7 @@ of the chromedriver.</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.open_available_browser">
-<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">use_profile=False</em>, <em class="sig-param">headless=False</em>, <em class="sig-param">maximized=False</em>, <em class="sig-param">browser_selection='AUTO'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.open_available_browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: bool = False</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.open_available_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open available browser</p>
 <p>Keywords opens the first available browser it can find from the
 system in preferred order or given browser (<cite>browser_selection</cite>)</p>
@@ -391,14 +391,15 @@ system in preferred order or given browser (<cite>browser_selection</cite>)</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.open_chrome_browser">
-<code class="sig-name descname">open_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">use_profile=False</em>, <em class="sig-param">headless=False</em>, <em class="sig-param">maximized=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.open_chrome_browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: bool = False</em>, <em class="sig-param">maximized: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.open_chrome_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Chrome browser.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>url</strong> – address to open</p></li>
-<li><p><strong>use_profile</strong> – [description], defaults to True</p></li>
-<li><p><strong>headless</strong> – [description], defaults to False</p></li>
+<li><p><strong>use_profile</strong> – if browser user profile is used, defaults to False</p></li>
+<li><p><strong>headless</strong> – if headless mode should be set, defaults to False</p></li>
+<li><p><strong>maximized</strong> – if browser should be run maximized, defaults to False</p></li>
 </ul>
 </dd>
 </dl>
@@ -406,7 +407,7 @@ system in preferred order or given browser (<cite>browser_selection</cite>)</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.open_headless_chrome_browser">
-<code class="sig-name descname">open_headless_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.open_headless_chrome_browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_headless_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.open_headless_chrome_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Chrome browser in headless mode</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -417,7 +418,7 @@ system in preferred order or given browser (<cite>browser_selection</cite>)</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.screenshot">
-<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">page=True</em>, <em class="sig-param">locator=None</em>, <em class="sig-param">filename_prefix='screenshot'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.screenshot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">page: bool = True</em>, <em class="sig-param">locator: str = None</em>, <em class="sig-param">filename_prefix: str = 'screenshot'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.screenshot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Capture page and/or element screenshot</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -432,12 +433,12 @@ system in preferred order or given browser (<cite>browser_selection</cite>)</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.set_default_options">
-<code class="sig-name descname">set_default_options</code><span class="sig-paren">(</span><em class="sig-param">options</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.set_default_options" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_default_options</code><span class="sig-paren">(</span><em class="sig-param">options: dict</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.set_default_options" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.set_driver_options">
-<code class="sig-name descname">set_driver_options</code><span class="sig-paren">(</span><em class="sig-param">browser</em>, <em class="sig-param">use_profile=False</em>, <em class="sig-param">headless=False</em>, <em class="sig-param">maximized=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.set_driver_options" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_driver_options</code><span class="sig-paren">(</span><em class="sig-param">browser: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: bool = False</em>, <em class="sig-param">maximized: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Browser.Browser.set_driver_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set options for given browser</p>
 <dl class="simple">
 <dt>Supported at the moment:</dt><dd><ul class="simple">
@@ -456,7 +457,7 @@ system in preferred order or given browser (<cite>browser_selection</cite>)</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.set_headless_options">
-<code class="sig-name descname">set_headless_options</code><span class="sig-paren">(</span><em class="sig-param">browser</em>, <em class="sig-param">options</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.set_headless_options" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_headless_options</code><span class="sig-paren">(</span><em class="sig-param">browser: str</em>, <em class="sig-param">options: dict</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.set_headless_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set headless mode if possible for the browser</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -470,12 +471,12 @@ system in preferred order or given browser (<cite>browser_selection</cite>)</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.set_user_profile">
-<code class="sig-name descname">set_user_profile</code><span class="sig-paren">(</span><em class="sig-param">options</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.set_user_profile" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_user_profile</code><span class="sig-paren">(</span><em class="sig-param">options: dict</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.set_user_profile" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.wait_and_click_button">
-<code class="sig-name descname">wait_and_click_button</code><span class="sig-paren">(</span><em class="sig-param">locator</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.wait_and_click_button" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wait_and_click_button</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.wait_and_click_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click button once it becomes visible</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -486,7 +487,7 @@ system in preferred order or given browser (<cite>browser_selection</cite>)</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.webdriver_init">
-<code class="sig-name descname">webdriver_init</code><span class="sig-paren">(</span><em class="sig-param">browser</em>, <em class="sig-param">download=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.webdriver_init" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">webdriver_init</code><span class="sig-paren">(</span><em class="sig-param">browser: str</em>, <em class="sig-param">download: bool = False</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Browser.webdriver_init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Webdriver initialization with default driver
 paths or with downloaded drivers.</p>
 <dl class="field-list simple">

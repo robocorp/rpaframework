@@ -203,7 +203,7 @@
 <span id="windows"></span><h2>Windows<a class="headerlink" href="#module-RPA.Desktop.Windows" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="RPA.Desktop.Windows.Windows">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">Windows</code><span class="sig-paren">(</span><em class="sig-param">backend='uia'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">Windows</code><span class="sig-paren">(</span><em class="sig-param">backend: str = 'uia'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem" title="RPA.Desktop.OperatingSystem.OperatingSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Desktop.OperatingSystem.OperatingSystem</span></code></a></p>
 <p>Windows methods extending OperatingSystem class.</p>
 <dl class="attribute">
@@ -213,7 +213,7 @@
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.calculate_rectangle_center">
-<code class="sig-name descname">calculate_rectangle_center</code><span class="sig-paren">(</span><em class="sig-param">rectangle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.calculate_rectangle_center" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">calculate_rectangle_center</code><span class="sig-paren">(</span><em class="sig-param">rectangle: Any</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.calculate_rectangle_center" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate x and y center coordinates from rectangle.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -227,7 +227,7 @@
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.click_type">
-<code class="sig-name descname">click_type</code><span class="sig-paren">(</span><em class="sig-param">x=None</em>, <em class="sig-param">y=None</em>, <em class="sig-param">click_type='click'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.click_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">click_type</code><span class="sig-paren">(</span><em class="sig-param">x: int = None</em>, <em class="sig-param">y: int = None</em>, <em class="sig-param">click_type: str = 'click'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.click_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mouse click on coordinates x and y.</p>
 <p>Default click type is <cite>click</cite> meaning <cite>left</cite></p>
 <dl class="field-list simple">
@@ -246,13 +246,13 @@
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.close_all_applications">
-<code class="sig-name descname">close_all_applications</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.close_all_applications" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">close_all_applications</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.close_all_applications" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close all applications</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.connect_by_handle">
-<code class="sig-name descname">connect_by_handle</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_handle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">connect_by_handle</code><span class="sig-paren">(</span><em class="sig-param">handle: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_handle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to application by its handle</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -263,7 +263,7 @@
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.connect_by_pid">
-<code class="sig-name descname">connect_by_pid</code><span class="sig-paren">(</span><em class="sig-param">app_pid</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_pid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">connect_by_pid</code><span class="sig-paren">(</span><em class="sig-param">app_pid: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_pid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to application by its pid</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -274,7 +274,7 @@
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.drag_and_drop">
-<code class="sig-name descname">drag_and_drop</code><span class="sig-paren">(</span><em class="sig-param">src</em>, <em class="sig-param">target</em>, <em class="sig-param">src_locator</em>, <em class="sig-param">target_locator=None</em>, <em class="sig-param">handle_ctrl_key=False</em>, <em class="sig-param">drop_delay=2</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.drag_and_drop" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">drag_and_drop</code><span class="sig-paren">(</span><em class="sig-param">src: Any</em>, <em class="sig-param">target: Any</em>, <em class="sig-param">src_locator: str</em>, <em class="sig-param">target_locator: str = None</em>, <em class="sig-param">handle_ctrl_key: bool = False</em>, <em class="sig-param">drop_delay: float = 2.0</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.drag_and_drop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Drag elements from source and drop them on target.</p>
 <p>Please note that if CTRL is not pressed down during drag and drop then
 operation is MOVE operation, on CTRL down the operation is COPY operation.</p>
@@ -288,7 +288,7 @@ operation is MOVE operation, on CTRL down the operation is COPY operation.</p>
 <li><p><strong>target_locator</strong> – target element to drop source elements into</p></li>
 <li><p><strong>handle_ctrl_key</strong> – True if keyword should press CTRL down dragging</p></li>
 <li><p><strong>drop_delay</strong> – how many seconds to wait until releasing mouse drop,
-default 2</p></li>
+default 2.0</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -299,7 +299,7 @@ default 2</p></li>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.find_element">
-<code class="sig-name descname">find_element</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">search_criteria=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.find_element" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">find_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">search_criteria: str = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.find_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find element from window by locator and criteria.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -316,7 +316,7 @@ default 2</p></li>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_app">
-<code class="sig-name descname">get_app</code><span class="sig-paren">(</span><em class="sig-param">app_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_app" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_app</code><span class="sig-paren">(</span><em class="sig-param">app_id: int = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_app" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get application object by id</p>
 <p>By default returns active_application application object.</p>
 <dl class="field-list simple">
@@ -331,7 +331,7 @@ default 2</p></li>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_dialog_rectangle">
-<code class="sig-name descname">get_dialog_rectangle</code><span class="sig-paren">(</span><em class="sig-param">ctrl=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_dialog_rectangle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_dialog_rectangle</code><span class="sig-paren">(</span><em class="sig-param">ctrl: Any = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_dialog_rectangle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get element rectangle coordinates</p>
 <p>If <cite>ctrl</cite> is None then get coordinates from <cite>dialog</cite>
 :param ctrl: name of the window control object, defaults to None
@@ -340,7 +340,7 @@ default 2</p></li>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_element">
-<code class="sig-name descname">get_element</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">screenshot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">screenshot: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get element by locator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -357,7 +357,7 @@ default 2</p></li>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_element_center">
-<code class="sig-name descname">get_element_center</code><span class="sig-paren">(</span><em class="sig-param">element</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_center" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_element_center</code><span class="sig-paren">(</span><em class="sig-param">element: dict</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_center" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get element center coordinates</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -371,7 +371,7 @@ default 2</p></li>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_element_rectangle">
-<code class="sig-name descname">get_element_rectangle</code><span class="sig-paren">(</span><em class="sig-param">locator</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_rectangle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_element_rectangle</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_rectangle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get value of element <cite>rectangle</cite> attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -385,7 +385,7 @@ default 2</p></li>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_element_rich_text">
-<code class="sig-name descname">get_element_rich_text</code><span class="sig-paren">(</span><em class="sig-param">locator</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_rich_text" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_element_rich_text</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_rich_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get value of element <cite>rich text</cite> attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -399,7 +399,7 @@ default 2</p></li>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_window_elements">
-<code class="sig-name descname">get_window_elements</code><span class="sig-paren">(</span><em class="sig-param">screenshot=False</em>, <em class="sig-param">element_json=False</em>, <em class="sig-param">outline=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_window_elements" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_window_elements</code><span class="sig-paren">(</span><em class="sig-param">screenshot: bool = False</em>, <em class="sig-param">element_json: bool = False</em>, <em class="sig-param">outline: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_window_elements" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get element information about all window dialog controls
 and their descendants.</p>
 <dl class="field-list simple">
@@ -418,7 +418,7 @@ and their descendants.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.is_element_enabled">
-<code class="sig-name descname">is_element_enabled</code><span class="sig-paren">(</span><em class="sig-param">locator</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.is_element_enabled" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">is_element_enabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Desktop.Windows.Windows.is_element_enabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element enabled.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -432,7 +432,7 @@ and their descendants.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.is_element_matching">
-<code class="sig-name descname">is_element_matching</code><span class="sig-paren">(</span><em class="sig-param">itemdict</em>, <em class="sig-param">locator</em>, <em class="sig-param">criteria</em>, <em class="sig-param">wildcard=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.is_element_matching" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">is_element_matching</code><span class="sig-paren">(</span><em class="sig-param">itemdict: dict</em>, <em class="sig-param">locator: str</em>, <em class="sig-param">criteria: str</em>, <em class="sig-param">wildcard: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Desktop.Windows.Windows.is_element_matching" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element matching. Check if locator is found in <cite>any</cite> field
 or <cite>criteria</cite> field in the window items.</p>
 <dl class="field-list simple">
@@ -452,7 +452,7 @@ or <cite>criteria</cite> field in the window items.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.is_element_visible">
-<code class="sig-name descname">is_element_visible</code><span class="sig-paren">(</span><em class="sig-param">locator</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.is_element_visible" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">is_element_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Desktop.Windows.Windows.is_element_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element visible.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -466,13 +466,13 @@ or <cite>criteria</cite> field in the window items.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.lock_screen">
-<code class="sig-name descname">lock_screen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.lock_screen" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">lock_screen</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.lock_screen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Put windows into lock mode</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.log_in">
-<code class="sig-name descname">log_in</code><span class="sig-paren">(</span><em class="sig-param">username</em>, <em class="sig-param">password</em>, <em class="sig-param">domain='.'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.log_in" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">log_in</code><span class="sig-paren">(</span><em class="sig-param">username: str</em>, <em class="sig-param">password: str</em>, <em class="sig-param">domain: str = '.'</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Desktop.Windows.Windows.log_in" title="Permalink to this definition">¶</a></dt>
 <dd><p>Log into Windows <cite>domain</cite> with <cite>username</cite> and <cite>password</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -482,12 +482,15 @@ or <cite>criteria</cite> field in the window items.</p>
 <li><p><strong>domain</strong> – windows domain for the user, defaults to “.”</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>handle</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.menu_select">
-<code class="sig-name descname">menu_select</code><span class="sig-paren">(</span><em class="sig-param">menuitem</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.menu_select" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">menu_select</code><span class="sig-paren">(</span><em class="sig-param">menuitem: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.menu_select" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select item from menu</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -498,7 +501,7 @@ or <cite>criteria</cite> field in the window items.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.minimize_dialog">
-<code class="sig-name descname">minimize_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.minimize_dialog" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">minimize_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.minimize_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimize window by its title</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -509,7 +512,7 @@ or <cite>criteria</cite> field in the window items.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.mouse_click">
-<code class="sig-name descname">mouse_click</code><span class="sig-paren">(</span><em class="sig-param">locator=None</em>, <em class="sig-param">x=0</em>, <em class="sig-param">y=0</em>, <em class="sig-param">off_x=0</em>, <em class="sig-param">off_y=0</em>, <em class="sig-param">image=None</em>, <em class="sig-param">ocr=None</em>, <em class="sig-param">method='locator'</em>, <em class="sig-param">ctype='click'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mouse_click</code><span class="sig-paren">(</span><em class="sig-param">locator: str = None</em>, <em class="sig-param">x: int = 0</em>, <em class="sig-param">y: int = 0</em>, <em class="sig-param">off_x: int = 0</em>, <em class="sig-param">off_y: int = 0</em>, <em class="sig-param">image: str = None</em>, <em class="sig-param">ocr: str = None</em>, <em class="sig-param">method: str = 'locator'</em>, <em class="sig-param">ctype: str = 'click'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mouse click <cite>locator</cite>, <cite>coordinates</cite>, <cite>image</cite> or <cite>ocr</cite>.</p>
 <p>When using method <cite>locator</cite>,`image` or <cite>ocr</cite> mouse is clicked by default at
 center coordinates.</p>
@@ -540,7 +543,7 @@ center coordinates.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.mouse_click_coords">
-<code class="sig-name descname">mouse_click_coords</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">ctype='click'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_coords" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mouse_click_coords</code><span class="sig-paren">(</span><em class="sig-param">x: int</em>, <em class="sig-param">y: int</em>, <em class="sig-param">ctype: str = 'click'</em>, <em class="sig-param">delay_time: float = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_coords" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click at coordinates on desktop</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -548,6 +551,7 @@ center coordinates.</p>
 <li><p><strong>x</strong> – horizontal coordinate on the windows to click</p></li>
 <li><p><strong>y</strong> – vertical coordinate on the windows to click</p></li>
 <li><p><strong>ctype</strong> – click type “click”, “right” or “double”, defaults to “click”</p></li>
+<li><p><strong>delay</strong> – delay in seconds after, default is no delay</p></li>
 </ul>
 </dd>
 </dl>
@@ -555,7 +559,7 @@ center coordinates.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.mouse_click_image">
-<code class="sig-name descname">mouse_click_image</code><span class="sig-paren">(</span><em class="sig-param">template</em>, <em class="sig-param">off_x=0</em>, <em class="sig-param">off_y=0</em>, <em class="sig-param">ctype='click'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_image" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mouse_click_image</code><span class="sig-paren">(</span><em class="sig-param">template: str</em>, <em class="sig-param">off_x: int = 0</em>, <em class="sig-param">off_y: int = 0</em>, <em class="sig-param">ctype: str = 'click'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click at template image on desktop</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -593,7 +597,7 @@ center coordinates.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_application">
-<code class="sig-name descname">open_application</code><span class="sig-paren">(</span><em class="sig-param">application</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_application" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_application</code><span class="sig-paren">(</span><em class="sig-param">application: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_application" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open application by dispatch method</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -607,7 +611,7 @@ center coordinates.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_dialog">
-<code class="sig-name descname">open_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle=None</em>, <em class="sig-param">highlight=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_dialog" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">highlight: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open window by its title.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -621,7 +625,7 @@ center coordinates.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_executable">
-<code class="sig-name descname">open_executable</code><span class="sig-paren">(</span><em class="sig-param">executable</em>, <em class="sig-param">windowtitle</em>, <em class="sig-param">backend='uia'</em>, <em class="sig-param">work_dir=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_executable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_executable</code><span class="sig-paren">(</span><em class="sig-param">executable: str</em>, <em class="sig-param">windowtitle: str</em>, <em class="sig-param">backend: str = 'uia'</em>, <em class="sig-param">work_dir: str = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_executable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Windows executable. Window title name is required
 to get handle on the application.</p>
 <dl class="field-list simple">
@@ -640,7 +644,7 @@ to get handle on the application.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_file">
-<code class="sig-name descname">open_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open associated application when opening file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -654,7 +658,7 @@ to get handle on the application.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_from_search">
-<code class="sig-name descname">open_from_search</code><span class="sig-paren">(</span><em class="sig-param">executable</em>, <em class="sig-param">windowtitle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_from_search" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_from_search</code><span class="sig-paren">(</span><em class="sig-param">executable: str</em>, <em class="sig-param">windowtitle: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_from_search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open application using Windows search dialog.
 Window title name is required to get handle on the application.</p>
 <dl class="field-list simple">
@@ -672,7 +676,7 @@ Window title name is required to get handle on the application.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_using_run_dialog">
-<code class="sig-name descname">open_using_run_dialog</code><span class="sig-paren">(</span><em class="sig-param">executable</em>, <em class="sig-param">windowtitle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_using_run_dialog" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_using_run_dialog</code><span class="sig-paren">(</span><em class="sig-param">executable: str</em>, <em class="sig-param">windowtitle: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_using_run_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open application using Windows run dialog.
 Window title name is required to get handle on the application.</p>
 <dl class="field-list simple">
@@ -690,13 +694,13 @@ Window title name is required to get handle on the application.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.put_system_to_sleep">
-<code class="sig-name descname">put_system_to_sleep</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.put_system_to_sleep" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">put_system_to_sleep</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.put_system_to_sleep" title="Permalink to this definition">¶</a></dt>
 <dd><p>Put Windows into sleep mode</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.quit_application">
-<code class="sig-name descname">quit_application</code><span class="sig-paren">(</span><em class="sig-param">app_id=None</em>, <em class="sig-param">send_keys=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.quit_application" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">quit_application</code><span class="sig-paren">(</span><em class="sig-param">app_id: str = None</em>, <em class="sig-param">send_keys: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.quit_application" title="Permalink to this definition">¶</a></dt>
 <dd><p>Quit an application by application id or
 active application if <cite>app_id</cite> is None.</p>
 <dl class="field-list simple">
@@ -708,7 +712,7 @@ active application if <cite>app_id</cite> is None.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.restore_dialog">
-<code class="sig-name descname">restore_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.restore_dialog" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">restore_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.restore_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Restore window by its title</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -719,7 +723,7 @@ active application if <cite>app_id</cite> is None.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.screenshot">
-<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">element=None</em>, <em class="sig-param">ctrl=None</em>, <em class="sig-param">desktop=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.screenshot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">element: dict = None</em>, <em class="sig-param">ctrl: Any = None</em>, <em class="sig-param">desktop: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.screenshot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save screenshot into filename.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -735,7 +739,7 @@ active application if <cite>app_id</cite> is None.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.send_keys">
-<code class="sig-name descname">send_keys</code><span class="sig-paren">(</span><em class="sig-param">keys</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.send_keys" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_keys</code><span class="sig-paren">(</span><em class="sig-param">keys: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.send_keys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send keys into active windows.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -746,7 +750,7 @@ active application if <cite>app_id</cite> is None.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.send_keys_to_input">
-<code class="sig-name descname">send_keys_to_input</code><span class="sig-paren">(</span><em class="sig-param">keys_to_type</em>, <em class="sig-param">with_enter=True</em>, <em class="sig-param">send_delay=0.5</em>, <em class="sig-param">enter_delay=1.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.send_keys_to_input" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_keys_to_input</code><span class="sig-paren">(</span><em class="sig-param">keys_to_type: str</em>, <em class="sig-param">with_enter: bool = True</em>, <em class="sig-param">send_delay: float = 0.5</em>, <em class="sig-param">enter_delay: float = 1.5</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.send_keys_to_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send keys to windows and add ENTER if <cite>with_enter</cite> is True</p>
 <p>At the end of send_keys there is by default 1.0 second delay.
 At the end of ENTER there is by default 3.5 second delay.</p>
@@ -764,7 +768,7 @@ At the end of ENTER there is by default 3.5 second delay.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.switch_to_application">
-<code class="sig-name descname">switch_to_application</code><span class="sig-paren">(</span><em class="sig-param">app_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.switch_to_application" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">switch_to_application</code><span class="sig-paren">(</span><em class="sig-param">app_id: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.switch_to_application" title="Permalink to this definition">¶</a></dt>
 <dd><p>Switch to application by id.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -778,7 +782,7 @@ At the end of ENTER there is by default 3.5 second delay.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.type_keys">
-<code class="sig-name descname">type_keys</code><span class="sig-paren">(</span><em class="sig-param">keys</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.type_keys" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">type_keys</code><span class="sig-paren">(</span><em class="sig-param">keys: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.type_keys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Type keys into active window element.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -796,7 +800,7 @@ At the end of ENTER there is by default 3.5 second delay.</p>
 
 <dl class="function">
 <dt id="RPA.Desktop.Windows.write_element_info_as_json">
-<code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">write_element_info_as_json</code><span class="sig-paren">(</span><em class="sig-param">elements</em>, <em class="sig-param">filename</em>, <em class="sig-param">path='output/json'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.write_element_info_as_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">write_element_info_as_json</code><span class="sig-paren">(</span><em class="sig-param">elements: Any</em>, <em class="sig-param">filename: str</em>, <em class="sig-param">path: str = 'output/json'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.write_element_info_as_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write list of elements into json file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

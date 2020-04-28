@@ -15,7 +15,7 @@ Keywords
 ********
 
 :Close Document:
-  :Arguments: save_changes=False
+  :Arguments: save_changes: bool=False
 
 
 
@@ -23,7 +23,7 @@ Keywords
   Create new document for Word application
 
 :Export To Pdf:
-  :Arguments: filename
+  :Arguments: filename: str
 
   Export active document into PDF file.
 
@@ -33,24 +33,24 @@ Keywords
 
 
 :Open Application:
-  :Arguments: visible=False, display_alerts=False
+  :Arguments: visible: bool=False, display_alerts: bool=False
 
   Open Microsoft application.
 
 
 :Open File:
-  :Arguments: filename=None
+  :Arguments: filename: str=None
 
   Open Word document with filename.
 
 
 :Quit Application:
-  :Arguments: save_changes=False
+  :Arguments: save_changes: bool=False
 
 
 
 :Replace Text:
-  :Arguments: find, replace
+  :Arguments: find: str, replace: str
 
   Replace text in active document
 
@@ -59,25 +59,25 @@ Keywords
   Save active document
 
 :Save Document As:
-  :Arguments: filename, fileformat=None
+  :Arguments: filename: str, fileformat: str=None
 
   Save document with filename and optionally with given fileformat
 
 
 :Set Footer:
-  :Arguments: text
+  :Arguments: text: str
 
   Set footer for the active document
 
 
 :Set Header:
-  :Arguments: text
+  :Arguments: text: str
 
   Set header for the active document
 
 
 :Write Text:
-  :Arguments: text, newline=True
+  :Arguments: text: str, newline: bool=True
 
   Writes given text at the end of the document
 

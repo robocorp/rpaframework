@@ -214,7 +214,7 @@
 <dt class="field-odd">Connect</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>account=None, consumer_key=None, consumer_secret=None, token_key=None, token_secret=None</p>
+<dd class="field-odd"><p>account: str=None, consumer_key: str=None, consumer_secret: str=None, token_key: str=None, token_secret: str=None</p>
 </dd>
 </dl>
 <p>Connect to Netsuite with credentials from environment
@@ -288,7 +288,7 @@ variables.</p>
 <dt class="field-even">Login</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>account=None, email=None, password=None, role=None, appid=None</p>
+<dd class="field-odd"><p>account: str=None, email: str=None, password: str=None, role: str=None, appid: str=None</p>
 </dd>
 </dl>
 <p>Login to Netsuite with credentials from environment variables</p>
@@ -323,7 +323,7 @@ variables.</p>
 <dt class="field-even">Netsuite Search</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>type_name, search_value, operator=contains, page_size=5</p>
+<dd class="field-odd"><p>type_name: str, search_value: str, operator: str=contains, page_size: int=5</p>
 </dd>
 </dl>
 <p>Search Netsuite for value from a type. Default operator is
@@ -332,7 +332,7 @@ variables.</p>
 <dt class="field-even">Netsuite Search All</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>type_name, page_size=20</p>
+<dd class="field-odd"><p>type_name: str, page_size: int=20</p>
 </dd>
 </dl>
 <p>Search Netsuite for a type results.</p>
