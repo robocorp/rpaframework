@@ -51,7 +51,7 @@ lint: ## Verify code formatting and conventions
 	poetry run flake8 src
 
 	$(call title,"Verifying pylint")
-	poetry run pylint src
+	poetry run pylint src/RPA
 
 test: test-python test-robot ## Run all acceptance tests
 

@@ -1,11 +1,12 @@
 import json
 import logging
 import os
+from pathlib import Path
 import platform
 import re
 import subprocess
 
-from pathlib import Path
+from typing import Any
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 
@@ -24,7 +25,9 @@ if platform.system() == "Windows":
     import pywinauto
 
 
-def write_element_info_as_json(elements, filename, path="output/json"):
+def write_element_info_as_json(
+    elements: Any, filename: str, path: str = "output/json"
+) -> None:
     """Write list of elements into json file
 
     :param elements: list of elements to write
@@ -42,7 +45,7 @@ class Windows(OperatingSystem):
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
 
-    def __init__(self, backend="uia"):
+    def __init__(self, backend: str = "uia") -> None:
         OperatingSystem.__init__(self)
         self._apps = {}
         self._app_instance_id = 0
@@ -63,7 +66,9 @@ class Windows(OperatingSystem):
             self.logger.debug("Failed to clear clipboard: %s", err)
 
     # TODO. add possibility to define alias for application
-    def _add_app_instance(self, app=None, dialog=True, params=None):
+    def _add_app_instance(
+        self, app: Any = None, dialog: bool = True, params: dict = None,
+    ) -> int:
         self._app_instance_id += 1
         if app:
             self.app = app
@@ -82,7 +87,7 @@ class Windows(OperatingSystem):
         self.logger.info(self._apps)
         return self._active_app_instance
 
-    def switch_to_application(self, app_id):
+    def switch_to_application(self, app_id: int) -> None:
         """Switch to application by id.
 
         :param app_id: application's id
@@ -98,7 +103,7 @@ class Windows(OperatingSystem):
         else:
             raise ValueError(f"No open application with id '{app_id}'")
 
-    def get_app(self, app_id=None):
+    def get_app(self, app_id: int = None) -> Any:
         """Get application object by id
 
         By default returns active_application application object.
@@ -111,13 +116,13 @@ class Windows(OperatingSystem):
         else:
             return self._apps[app_id]
 
-    def open_application(self, application):
+    def open_application(self, application: str) -> int:
         """Open application by dispatch method
 
         :param application: name of the application as `str`
         :return: application instance id
         """
-        self.logger.info(f"open_application({application})")
+        self.logger.info("open_application: %s", application)
         app = win32com.client.gencache.EnsureDispatch(f"{application}.Application")
         app.Visible = True
         # show eg. file overwrite warning or not
@@ -126,13 +131,13 @@ class Windows(OperatingSystem):
         return self._add_app_instance(app, dialog=False, params={"dispatched": True})
 
     # TODO. How to manage app launched by open_file
-    def open_file(self, filename):
+    def open_file(self, filename: str) -> bool:
         """Open associated application when opening file
 
         :param filename: path to file
         :return: True if application is opened, False if not
         """
-        self.logger.info(f"open_file({filename})")
+        self.logger.info("open_file: %s", filename)
         if platform.system() == "Windows":
             # pylint: disable=no-member
             os.startfile(filename)
@@ -146,7 +151,13 @@ class Windows(OperatingSystem):
 
         return False
 
-    def open_executable(self, executable, windowtitle, backend="uia", work_dir=None):
+    def open_executable(
+        self,
+        executable: str,
+        windowtitle: str,
+        backend: str = "uia",
+        work_dir: str = None,
+    ) -> int:
         """Open Windows executable. Window title name is required
         to get handle on the application.
 
@@ -155,7 +166,7 @@ class Windows(OperatingSystem):
         :param work_dir: path to working directory, default None
         :return: application instance id
         """
-        self.logger.info(f"Opening executable: {executable} - window: {windowtitle}")
+        self.logger.info("Opening executable: %s - window: %s", executable, windowtitle)
         params = {"executable": executable, "windowtitle": windowtitle}
         self.windowtitle = windowtitle
         app = pywinauto.Application(backend=backend).start(
@@ -163,7 +174,7 @@ class Windows(OperatingSystem):
         )
         return self._add_app_instance(app, dialog=True, params=params)
 
-    def open_using_run_dialog(self, executable, windowtitle):
+    def open_using_run_dialog(self, executable: str, windowtitle: str) -> int:
         """Open application using Windows run dialog.
         Window title name is required to get handle on the application.
 
@@ -179,7 +190,7 @@ class Windows(OperatingSystem):
         params = {"windowtitle": windowtitle, "executable": executable}
         return self._add_app_instance(params=params, dialog=True)
 
-    def open_from_search(self, executable, windowtitle):
+    def open_from_search(self, executable: str, windowtitle: str) -> int:
         """Open application using Windows search dialog.
         Window title name is required to get handle on the application.
 
@@ -187,7 +198,7 @@ class Windows(OperatingSystem):
         :param windowtitle: name of the window
         :return: application instance id
         """
-        self.logger.info(f"Run from start menu: {executable}")
+        self.logger.info("Run from start menu: %s", executable)
         self.send_keys("{LWIN}")
         delay(1)
 
@@ -197,8 +208,12 @@ class Windows(OperatingSystem):
         return self._add_app_instance(params=params, dialog=True)
 
     def send_keys_to_input(
-        self, keys_to_type, with_enter=True, send_delay=0.5, enter_delay=1.5
-    ):
+        self,
+        keys_to_type: str,
+        with_enter: bool = True,
+        send_delay: float = 0.5,
+        enter_delay: float = 1.5,
+    ) -> None:
         """Send keys to windows and add ENTER if `with_enter` is True
 
         At the end of send_keys there is by default 1.0 second delay.
@@ -219,31 +234,31 @@ class Windows(OperatingSystem):
             self.send_keys("{ENTER}")
             delay(enter_delay)
 
-    def minimize_dialog(self, windowtitle):
+    def minimize_dialog(self, windowtitle: str) -> None:
         """Minimize window by its title
 
         :param windowtitle: name of the window
         """
-        self.logger.info(f"minimize_dialog({windowtitle})")
+        self.logger.info("minimize_dialog: %s", windowtitle)
         self.dlg = pywinauto.Desktop(backend="uia")[windowtitle]
         self.dlg.minimize()
 
-    def restore_dialog(self, windowtitle):
+    def restore_dialog(self, windowtitle: str) -> None:
         """Restore window by its title
 
         :param windowtitle: name of the window
         """
-        self.logger.info(f"restore_dialog({windowtitle})")
+        self.logger.info("restore_dialog: %s", windowtitle)
         self.dlg = pywinauto.Desktop(backend="uia")[windowtitle]
         self.dlg.restore()
 
-    def open_dialog(self, windowtitle=None, highlight=False):
+    def open_dialog(self, windowtitle: str = None, highlight: bool = False) -> None:
         """Open window by its title.
 
         :param windowtitle: name of the window, defaults to active window if None
         :param highlight: draw outline for window if True, defaults to False
         """
-        self.logger.info(f"open_dialog('{windowtitle}', '{highlight}')")
+        self.logger.info("open_dialog: '%s', '%s'", windowtitle, highlight)
         if windowtitle:
             self.windowtitle = windowtitle
         else:
@@ -256,39 +271,39 @@ class Windows(OperatingSystem):
         if highlight:
             self.dlg.draw_outline()
 
-    def connect_by_pid(self, app_pid):
+    def connect_by_pid(self, app_pid: str) -> None:
         """Connect to application by its pid
 
         :param app_pid: process id of the application
         """
-        self.logger.info(f"Connect to application pid: {app_pid}")
+        self.logger.info("Connect to application pid: %s", app_pid)
         app = pywinauto.Application(backend="uia").connect(
             process=app_pid, visible_only=False
         )
         self.logger.debug(app)
 
-    def connect_by_handle(self, handle):
+    def connect_by_handle(self, handle: str) -> None:
         """Connect to application by its handle
 
         :param handle: handle of the application
         """
-        self.logger.info(f"Connect to application handle: {handle}")
+        self.logger.info("Connect to application handle: %s", handle)
         self.app = pywinauto.Application(backend="uia").connect(
             handle=handle, visible_only=False
         )
         self._apps[self._active_app_instance]["app"] = self.app
 
-    def close_all_applications(self):
+    def close_all_applications(self) -> None:
         """Close all applications
         """
         self.logger.info("Closing all applications")
         application_ids = self._apps.keys()
-        self.logger.debug(f"Applications in memory: {len(self._apps)}")
+        self.logger.debug("Applications in memory: %d", len(self._apps))
         for aid in application_ids:
-            self.logger.debug(f"Closing application ID {aid}")
+            self.logger.debug("Closing application ID: %s", aid)
             self.quit_application(aid)
 
-    def quit_application(self, app_id=None, send_keys=False):
+    def quit_application(self, app_id: str = None, send_keys: bool = False) -> None:
         """Quit an application by application id or
         active application if `app_id` is None.
 
@@ -296,7 +311,7 @@ class Windows(OperatingSystem):
         """
         app = self.get_app(app_id)
         app_id_to_quit = app["id"]
-        self.logger.info(f"quit application {app_id_to_quit}")
+        self.logger.info("quit application: %s", app_id_to_quit)
         if send_keys:
             self.switch_to_application(app_id)
             self.send_keys("%{F4}")
@@ -308,34 +323,34 @@ class Windows(OperatingSystem):
         self._apps[app_id_to_quit]["app"] = None
         self._active_app_instance = -1
 
-    def type_keys(self, keys):
+    def type_keys(self, keys: str) -> None:
         """Type keys into active window element.
 
         :param keys: list of keys to type
         """
-        self.logger.info(f"type keys: {keys}")
+        self.logger.info("type keys: %s", keys)
         self.dlg.type_keys(keys)
 
-    def send_keys(self, keys):
+    def send_keys(self, keys: str) -> None:
         """Send keys into active windows.
 
         :param keys: list of keys to send
         """
-        self.logger.info(f"send keys: {keys}")
+        self.logger.info("send keys: %s", keys)
         pywinauto.keyboard.send_keys(keys)
 
     def mouse_click(
         self,
-        locator=None,
-        x=0,
-        y=0,
-        off_x=0,
-        off_y=0,
-        image=None,
-        ocr=None,
-        method="locator",
-        ctype="click",
-    ):
+        locator: str = None,
+        x: int = 0,
+        y: int = 0,
+        off_x: int = 0,
+        off_y: int = 0,
+        image: str = None,
+        ocr: str = None,
+        method: str = "locator",
+        ctype: str = "click",
+    ) -> None:
         """Mouse click `locator`, `coordinates`, `image` or `ocr`.
 
         When using method `locator`,`image` or `ocr` mouse is clicked by default at
@@ -356,7 +371,7 @@ class Windows(OperatingSystem):
         :param method: one of the available methods to mouse click, default "locator"
         :param ctype: type of mouse click
         """
-        self.logger.info(f"mouse click: {locator}")
+        self.logger.info("mouse click: %s", locator)
 
         if method == "locator":
             element, _ = self.find_element(locator)
@@ -383,7 +398,9 @@ class Windows(OperatingSystem):
         """
         raise NotImplementedError
 
-    def mouse_click_image(self, template, off_x=0, off_y=0, ctype="click"):
+    def mouse_click_image(
+        self, template: str, off_x: int = 0, off_y: int = 0, ctype: str = "click"
+    ) -> None:
         """Click at template image on desktop
 
         :param image: [description]
@@ -399,24 +416,28 @@ class Windows(OperatingSystem):
 
         self.click_type(center_x, center_y, ctype)
 
-    def mouse_click_coords(self, x, y, ctype="click"):
+    def mouse_click_coords(
+        self, x: int, y: int, ctype: str = "click", delay_time: float = None
+    ) -> None:
         """Click at coordinates on desktop
 
         :param x: horizontal coordinate on the windows to click
         :param y: vertical coordinate on the windows to click
         :param ctype: click type "click", "right" or "double", defaults to "click"
+        :param delay: delay in seconds after, default is no delay
         """
         self.click_type(x, y, ctype)
-        delay()
+        if delay_time:
+            delay(delay_time)
 
-    def get_element(self, locator, screenshot=False):
+    def get_element(self, locator: str, screenshot: bool = False) -> Any:
         """Get element by locator.
 
         :param locator: name of the locator
         :param screenshot: takes element screenshot if True, defaults to False
         :return: element if element was identified, else False
         """
-        self.logger.info(f"get element: {locator}")
+        self.logger.info("get element: %s", locator)
         # self.connect_by_handle(self.dlg.handle)
         # TODO. move dlg wait into "open_dialog" ?
         self.dlg.wait("exists enabled visible ready")
@@ -431,28 +452,33 @@ class Windows(OperatingSystem):
 
         if len(matching_elements) == 0:
             self.logger.info(
-                f"locator '{locator}' using search criteria '{search_criteria}'"
-                f" not found in '{self.windowtitle}'.\n"
-                f"Maybe one of these would be better?\n{locators_string}\n"
+                "locator '%s' using search criteria '%s' not found in '%s'.\n"
+                "Maybe one of these would be better?\n%s\n",
+                locator,
+                search_criteria,
+                self.windowtitle,
+                locators_string,
             )
         elif len(matching_elements) == 1:
             element = matching_elements[0]
             if screenshot:
                 self.screenshot(f"locator_{locator}", element=element)
             for key in element.keys():
-                self.logger.debug(f"{key}={element[key]}")
+                self.logger.debug("%s=%s", key, element[key])
             return element
         else:
             # TODO. return more valuable information about what should
             # be matching element ?
             self.logger.info(
-                f"locator '{locator}' matched multiple elements"
-                f" in '{self.windowtitle}'. "
-                f"Maybe one of these would be better?\n{locators_string}\n"
+                "locator '%s' matched multiple elements in '%s'. "
+                "Maybe one of these would be better?\n%s\n",
+                locator,
+                self.windowtitle,
+                locators_string,
             )
         return False
 
-    def get_element_rich_text(self, locator):
+    def get_element_rich_text(self, locator: str) -> Any:
         """Get value of element `rich text` attribute.
 
         :param locator: element locator
@@ -462,15 +488,15 @@ class Windows(OperatingSystem):
         if element is not False and "rich_text" in element:
             return element["rich_text"]
         elif element is False:
-            self.logger.info(f"Did not find element with locator {locator}")
+            self.logger.info("Did not find element with locator: %s", locator)
             return False
         else:
             self.logger.info(
-                f"Element for locator {locator} does not have 'rich_text' attribute"
+                "Element for locator %s does not have 'rich_text' attribute", locator
             )
             return False
 
-    def get_element_rectangle(self, locator):
+    def get_element_rectangle(self, locator: str) -> Any:
         """Get value of element `rectangle` attribute.
 
         :param locator: element locator
@@ -479,20 +505,20 @@ class Windows(OperatingSystem):
         rectangle = self._get_element_attribute(locator, "rectangle")
         return self._get_element_coordinates(rectangle)
 
-    def _get_element_attribute(self, locator, attribute):
+    def _get_element_attribute(self, locator: str, attribute: str) -> Any:
         element = self.get_element(locator)
         if element is not False and attribute in element:
             return element[attribute]
         elif element is False:
-            self.logger.info(f"Did not find element with locator {locator}")
+            self.logger.info("Did not find element with locator %s", locator)
             return False
         else:
             self.logger.info(
-                f"Element for locator {locator} does not have 'visible' attribute"
+                "Element for locator %s does not have 'visible' attribute", locator
             )
             return False
 
-    def is_element_visible(self, locator):
+    def is_element_visible(self, locator: str) -> bool:
         """Is element visible.
 
         :param locator: element locator
@@ -501,7 +527,7 @@ class Windows(OperatingSystem):
         visible = self._get_element_attribute(locator, "visible")
         return bool(visible)
 
-    def is_element_enabled(self, locator):
+    def is_element_enabled(self, locator: str) -> bool:
         """Is element enabled.
 
         :param locator: element locator
@@ -510,18 +536,18 @@ class Windows(OperatingSystem):
         enabled = self._get_element_attribute(locator, "enabled")
         return bool(enabled)
 
-    def menu_select(self, menuitem):
+    def menu_select(self, menuitem: str) -> None:
         """Select item from menu
 
         :param menuitem: name of the menu item
         """
-        self.logger.info(f"menu select: {menuitem}")
+        self.logger.info("menu select: %s", menuitem)
         app = self.get_app()
         app["dlg"].menu_select(menuitem)
         # self.logger.warning(f"Window '{app['windowtitle']}'
         # does not have menu_select")
 
-    def find_element(self, locator, search_criteria=None):
+    def find_element(self, locator: str, search_criteria: str = None) -> Any:
         """Find element from window by locator and criteria.
 
         :param locator: name of locator
@@ -532,7 +558,7 @@ class Windows(OperatingSystem):
         if search_criteria is None:
             search_criteria, search_locator = self._determine_search_criteria(locator)
         self.logger.info(
-            f"find element(locator: {locator}, criteria: {search_criteria})"
+            "find element: (locator: %s, criteria: %s)", locator, search_criteria,
         )
         locators = []
         matching_elements = []
@@ -546,7 +572,7 @@ class Windows(OperatingSystem):
                 locators.append(element[search_criteria])
         return matching_elements, locators
 
-    def _determine_search_criteria(self, locator):
+    def _determine_search_criteria(self, locator: str) -> Any:
         """Check search criteria from locator.
 
         Possible search criterias:
@@ -582,7 +608,9 @@ class Windows(OperatingSystem):
         return search_criteria, locator
 
     # TODO. supporting multiple search criterias at same time to identify ONE element
-    def is_element_matching(self, itemdict, locator, criteria, wildcard=False):
+    def is_element_matching(
+        self, itemdict: dict, locator: str, criteria: str, wildcard: bool = False
+    ) -> bool:
         """Is element matching. Check if locator is found in `any` field
         or `criteria` field in the window items.
 
@@ -614,7 +642,7 @@ class Windows(OperatingSystem):
             return self.is_element_matching(itemdict, locator, "name", True)
         return False
 
-    def get_dialog_rectangle(self, ctrl=None):
+    def get_dialog_rectangle(self, ctrl: Any = None) -> Any:
         """Get element rectangle coordinates
 
         If `ctrl` is None then get coordinates from `dialog`
@@ -627,7 +655,7 @@ class Windows(OperatingSystem):
             rect = self.dlg.element_info.rectangle
         return rect.left, rect.top, rect.right, rect.bottom
 
-    def get_element_center(self, element):
+    def get_element_center(self, element: dict) -> Any:
         """Get element center coordinates
 
         :param element: dictionary of element items
@@ -635,7 +663,9 @@ class Windows(OperatingSystem):
         """
         return self.calculate_rectangle_center(element["rectangle"])
 
-    def click_type(self, x=None, y=None, click_type="click"):
+    def click_type(
+        self, x: int = None, y: int = None, click_type: str = "click"
+    ) -> None:
         """Mouse click on coordinates x and y.
 
         Default click type is `click` meaning `left`
@@ -645,9 +675,9 @@ class Windows(OperatingSystem):
         :param click_type: "click", "right" or "double", defaults to "click"
         :raises ValueError: if coordinates are not valid
         """
-        self.logger.info(f"click type '{click_type}' at ({x}, {y})")
+        self.logger.info("click type '%s' at (%s, %s)", click_type, x, y)
         if (x is None and y is None) or (x < 0 or y < 0):
-            raise ValueError("Can't click on given coordinates: ({x}, {y})")
+            raise ValueError(("Can't click on given coordinates: (%s, %s)", x, y))
         if click_type == "click":
             pywinauto.mouse.click(coords=(x, y))
         elif click_type == "double":
@@ -655,7 +685,12 @@ class Windows(OperatingSystem):
         elif click_type == "right":
             pywinauto.mouse.right_click(coords=(x, y))
 
-    def get_window_elements(self, screenshot=False, element_json=False, outline=False):
+    def get_window_elements(
+        self,
+        screenshot: bool = False,
+        element_json: bool = False,
+        outline: bool = False,
+    ) -> Any:
         """Get element information about all window dialog controls
         and their descendants.
 
@@ -694,22 +729,26 @@ class Windows(OperatingSystem):
         # self.logger.info(self.dlg.print_control_identifiers())
         return all_ctrls, all_elements
 
-    def _get_element_coordinates(self, rectangle):
+    def _get_element_coordinates(self, rectangle: Any) -> Any:
         """Get element coordinates from pywinauto object.
 
         :param rectangle: item containing rectangle information
         :return: coordinates: left, top, right, bottom
         """
         self.logger.debug(
-            f"Get element coordinates from rectangle: {rectangle} "
-            f"of type {type(rectangle)}"
+            "Get element coordinates from rectangle: %s of type %s",
+            rectangle,
+            type(rectangle),
         )
+        left = 0
+        top = 0
+        right = 0
+        bottom = 0
         if isinstance(rectangle, pywinauto.win32structures.RECT):
             left = rectangle.left
             top = rectangle.top
             right = rectangle.right
             bottom = rectangle.bottom
-            return left, top, right, bottom
         else:
             left, top, right, bottom = map(
                 int,
@@ -717,10 +756,15 @@ class Windows(OperatingSystem):
                     r"\(L(\d+).*T(\d+).*R(\d+).*B(\d+)\)", str(rectangle)
                 ).groups(),
             )
-            return left, top, right, bottom
-        return False
+        return left, top, right, bottom
 
-    def screenshot(self, filename, element=None, ctrl=None, desktop=False):
+    def screenshot(
+        self,
+        filename: str,
+        element: dict = None,
+        ctrl: Any = None,
+        desktop: bool = False,
+    ) -> None:
         """Save screenshot into filename.
 
         :param filename: name of the file
@@ -748,7 +792,7 @@ class Windows(OperatingSystem):
 
         self.logger.info("Saved screenshot as '%s'", filename)
 
-    def _parse_element_attributes(self, element):
+    def _parse_element_attributes(self, element: dict) -> dict:
         """Return filtered element dictionary for an element.
 
         :param element: should contain `element_info` attribute
@@ -756,7 +800,7 @@ class Windows(OperatingSystem):
         """
         if element is None and "element_info" not in element:
             self.logger.warning(
-                f"{element} is none or does not have element_info attribute"
+                "%s is none or does not have element_info attribute", element
             )
             return None
 
@@ -802,13 +846,13 @@ class Windows(OperatingSystem):
                 except TypeError:
                     pass
             else:
-                self.logger.warning(f"did not have attr {attr}")
+                self.logger.warning("did not have attr %s", attr)
         return element_dict
 
     def window_exists(self):
         raise NotImplementedError
 
-    def put_system_to_sleep(self):
+    def put_system_to_sleep(self) -> None:
         """Put Windows into sleep mode
         """
         access = win32security.TOKEN_ADJUST_PRIVILEGES | win32security.TOKEN_QUERY
@@ -823,17 +867,18 @@ class Windows(OperatingSystem):
             ctypes.windll.powrprof.SetSuspendState(False, True, True)
             win32api.CloseHandle(htoken)
 
-    def lock_screen(self):
+    def lock_screen(self) -> None:
         """Put windows into lock mode
         """
         ctypes.windll.User32.LockWorkStation()
 
-    def log_in(self, username, password, domain="."):
+    def log_in(self, username: str, password: str, domain: str = ".") -> str:
         """Log into Windows `domain` with `username` and `password`.
 
         :param username: name of the user
         :param password: password of the user
         :param domain: windows domain for the user, defaults to "."
+        :return: handle
         """
         return win32security.LogonUser(
             username,
@@ -843,19 +888,23 @@ class Windows(OperatingSystem):
             win32con.LOGON32_PROVIDER_DEFAULT,
         )
 
-    def _validate_target(self, target, target_locator):
+    def _validate_target(self, target: dict, target_locator: str) -> Any:
         target_x = target_y = 0
         if target_locator is not None:
             self.switch_to_application(target["id"])
             target_elements, _ = self.find_element(target_locator)
             if len(target_elements) == 0:
                 raise ValueError(
-                    f"Target element was not found by locator '{target_locator}'"
+                    ("Target element was not found by locator '%s'", target_locator)
                 )
             elif len(target_elements) > 1:
                 raise ValueError(
-                    f"Target element matched more than 1 element "
-                    f"({len(target_elements)}) by locator '{target_locator}'"
+                    (
+                        "Target element matched more than 1 element (%d) "
+                        "by locator '%s'",
+                        len(target_elements),
+                        target_locator,
+                    )
                 )
             target_x, target_y = self.calculate_rectangle_center(
                 target_elements[0]["rectangle"]
@@ -866,12 +915,14 @@ class Windows(OperatingSystem):
             )
         return target_x, target_y
 
-    def _select_elements_for_drag(self, src, src_locator):
+    def _select_elements_for_drag(
+        self, src: dict, src_locator: str
+    ) -> Any:
         self.switch_to_application(src["id"])
         source_elements, _ = self.find_element(src_locator)
         if len(source_elements) == 0:
             raise ValueError(
-                f"Source elements where not found by locator '{src_locator}'"
+                ("Source elements where not found by locator '%s'", src_locator)
             )
         selections = []
         source_min_left = 99999
@@ -897,13 +948,13 @@ class Windows(OperatingSystem):
 
     def drag_and_drop(
         self,
-        src,
-        target,
-        src_locator,
-        target_locator=None,
-        handle_ctrl_key=False,
-        drop_delay=2,
-    ):
+        src: Any,
+        target: Any,
+        src_locator: str,
+        target_locator: str = None,
+        handle_ctrl_key: bool = False,
+        drop_delay: float = 2.0,
+    ) -> None:
         """Drag elements from source and drop them on target.
 
         Please note that if CTRL is not pressed down during drag and drop then
@@ -917,7 +968,7 @@ class Windows(OperatingSystem):
         :param target_locator: target element to drop source elements into
         :param handle_ctrl_key: True if keyword should press CTRL down dragging
         :param drop_delay: how many seconds to wait until releasing mouse drop,
-            default 2
+            default 2.0
         :raises ValueError: on validation errors
         """
         if isinstance(src, int):
@@ -931,8 +982,12 @@ class Windows(OperatingSystem):
         target_x, target_y = self._validate_target(target, target_locator)
 
         self.logger.info(
-            f"Dragging {len(selections)} elements from "
-            f"({source_x},{source_y}) to ({target_x},{target_y})"
+            "Dragging %d elements from (%d,%d) to (%d,%d)",
+            len(selections),
+            source_x,
+            source_y,
+            target_x,
+            target_y,
         )
 
         if handle_ctrl_key:
@@ -941,7 +996,7 @@ class Windows(OperatingSystem):
         # Select elements by mouse clicking
 
         for idx, selection in enumerate(selections):
-            self.logger.debug(f"Selecting item {idx} by mouse_click")
+            self.logger.debug("Selecting item %d by mouse_click", idx)
             pywinauto.mouse.click(coords=(selection[0], selection[1]))
 
         # Start drag from the last item
@@ -949,7 +1004,7 @@ class Windows(OperatingSystem):
         delay(1)
         pywinauto.mouse.move(coords=(target_x, target_y))
 
-        self.logger.debug(f"Cursor position: {win32api.GetCursorPos()}")
+        self.logger.debug("Cursor position: %s", win32api.GetCursorPos())
         delay(drop_delay)
         pywinauto.mouse.click(coords=(target_x, target_y))
         pywinauto.mouse.release(coords=(target_x, target_y))
@@ -962,7 +1017,7 @@ class Windows(OperatingSystem):
             self.logger.debug("Deselecting item by mouse_click")
             self.mouse_click_coords(selection[0], selection[1])
 
-    def calculate_rectangle_center(self, rectangle):
+    def calculate_rectangle_center(self, rectangle: Any) -> Any:
         """Calculate x and y center coordinates from rectangle.
 
         :param rectangle: element rectangle coordinates

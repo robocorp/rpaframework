@@ -6,12 +6,14 @@ class Exchange:
     """Library for interfacing with Microsoft Exchange Web Services (EWS).
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
         self.credentials = None
         self.account = None
 
-    def authorize(self, username, password, autodiscover=True):
+    def authorize(
+        self, username: str, password: str, autodiscover: bool = True
+    ) -> None:
         """Connect to Exchange account
 
         :param username: account username
@@ -23,9 +25,11 @@ class Exchange:
             username, credentials=self.credentials, autodiscover=autodiscover
         )
 
-    def list_messages(self, count=100):
+    def list_messages(self, count: int = 100) -> list:
         """List messages in the account inbox. Order by descending
         received time.
+
+        :param count: number of messages to list
         """
         # pylint: disable=no-member
         messages = []
@@ -41,12 +45,12 @@ class Exchange:
 
     def send_message(
         self,
-        recipients=None,
-        cc_recipients=None,
-        bcc_recipients=None,
-        subject="",
-        body="",
-        save=False,
+        recipients: list = None,
+        cc_recipients: list = None,
+        bcc_recipients: list = None,
+        subject: str = "",
+        body: str = "",
+        save: bool = False,
     ):
         """Keyword for sending message through connected Exchange account.
 
@@ -77,7 +81,7 @@ class Exchange:
         if not isinstance(bcc_recipients, list):
             bcc_recipients = [bcc_recipients]
 
-        self.logger.info(f"Sending message to {','.join(recipients)}")
+        self.logger.info("Sending message to %s", ",".join(recipients))
 
         mail_recipients = []
         mail_cc = []

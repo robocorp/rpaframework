@@ -17,8 +17,11 @@ from imaplib import IMAP4_SSL
 from smtplib import SMTP, SMTP_SSL, ssl
 from smtplib import SMTPConnectError, SMTPNotSupportedError, SMTPServerDisconnected
 
+from typing import Any
+
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.RobotLogListener import RobotLogListener
+
 
 IMAGE_FORMATS = ["jpg", "jpeg", "bmp", "png", "gif"]
 
@@ -36,8 +39,13 @@ class ImapSmtp:
     """
 
     def __init__(
-        self, smtp_server=None, port=587, imap_server=None, account=None, password=None
-    ):
+        self,
+        smtp_server: str = None,
+        port: int = 587,
+        imap_server: str = None,
+        account: str = None,
+        password: str = None,
+    ) -> None:
         listener = RobotLogListener()
         listener.register_protected_keywords(
             ["RPA.Email.ImapSmtp.authorize", "RPA.Email.ImapSmtp.set_credentials"]
@@ -51,7 +59,7 @@ class ImapSmtp:
         self.smtp_conn = None
         self.imap_conn = None
 
-    def __del__(self):
+    def __del__(self) -> None:
         if self.smtp_conn:
             try:
                 self.smtp_conn.quit()
@@ -65,7 +73,7 @@ class ImapSmtp:
             self.imap_conn.logout()
             self.imap_conn = None
 
-    def set_credentials(self, account=None, password=None):
+    def set_credentials(self, account: str = None, password: str = None) -> None:
         """Set credentials
 
         :param account: user account as string, defaults to None
@@ -77,8 +85,12 @@ class ImapSmtp:
             self.password = password
 
     def authorize_smtp(
-        self, account=None, password=None, smtp_server=None, smtp_port=None
-    ):
+        self,
+        account: str = None,
+        password: str = None,
+        smtp_server: str = None,
+        smtp_port: int = None,
+    ) -> None:
         """Authorize to SMTP server.
 
         Can be called without giving any parameters if library
@@ -119,7 +131,9 @@ class ImapSmtp:
         if self.smtp_conn is None:
             self.logger.warning("Not able to establish SMTP connection")
 
-    def authorize_imap(self, account=None, password=None, imap_server=None):
+    def authorize_imap(
+        self, account: str = None, password: str = None, imap_server: str = None
+    ) -> None:
         """Authorize to IMAP server.
 
         Can be called without giving any parameters if library
@@ -148,8 +162,12 @@ class ImapSmtp:
             self.logger.warning("Not able to establish IMAP connection")
 
     def authorize(
-        self, account=None, password=None, smtp_server=None, imap_server=None
-    ):
+        self,
+        account: str = None,
+        password: str = None,
+        smtp_server: str = None,
+        imap_server: str = None,
+    ) -> None:
         """Authorize user to SMTP and IMAP servers.
 
         Will use separately set credentials or those given in keyword call.
@@ -160,7 +178,7 @@ class ImapSmtp:
         self.authorize_smtp(account, password, smtp_server)
         self.authorize_imap(account, password, imap_server)
 
-    def send_smtp_hello(self):
+    def send_smtp_hello(self) -> None:
         """Send hello message to SMTP server.
 
         Required step when creating SMTP connection.
@@ -168,7 +186,14 @@ class ImapSmtp:
         if self.smtp_conn:
             self.smtp_conn.ehlo()
 
-    def send_message(self, sender, recipients, subject, body, attachments=None):
+    def send_message(
+        self,
+        sender: str,
+        recipients: list,
+        subject: str,
+        body: str,
+        attachments: list = None,
+    ) -> None:
         """Send SMTP email
 
         Valid sender values:
@@ -227,9 +252,9 @@ class ImapSmtp:
         try:
             self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
         except Exception as e:
-            raise ValueError(f"Send Message failed: {str(e)}")
+            raise ValueError(("Send Message failed: %s", str(e)))
 
-    def _fetch_messages(self, mail_ids):
+    def _fetch_messages(self, mail_ids: list) -> list:
         messages = []
         for mail_id in mail_ids:
             _, data = self.imap_conn.fetch(mail_id, "(RFC822)")
@@ -237,15 +262,15 @@ class ImapSmtp:
             messages.append(message)
         return messages
 
-    def _search_message(self, criterion):
+    def _search_message(self, criterion: str) -> list:
         return self.imap_conn.search(None, "(" + criterion + ")")
 
-    def _delete_message(self, mail_ids):
+    def _delete_message(self, mail_ids: list) -> None:
         for mail_id in mail_ids:
             self.imap_conn.store(mail_id, "+FLAGS", "\\Deleted")
         self.imap_conn.expunge()
 
-    def delete_message(self, criterion=""):
+    def delete_message(self, criterion: str = "") -> bool:
         """Delete single message from server based on criterion.
 
         If criterion does not return exactly 1 message then delete is not done.
@@ -264,15 +289,15 @@ class ImapSmtp:
         mail_ids = data[0].split()
         if len(mail_ids) != 1:
             self.logger.warning(
-                f"Delete message criteria matched {len(mail_ids)} messages. "
-                "Not deleting."
+                "Delete message criteria matched %d messages. Not deleting.",
+                len(mail_ids),
             )
             return False
         else:
             self._delete_message(mail_ids)
             return True
 
-    def delete_messages(self, criterion=""):
+    def delete_messages(self, criterion: str = "") -> bool:
         """Delete messages from server based on criterion.
 
         :param criterion: filter messages based on this, defaults to ""
@@ -290,7 +315,7 @@ class ImapSmtp:
         self._delete_message(mail_ids)
         return True
 
-    def save_messages(self, criterion="", target_folder=None):
+    def save_messages(self, criterion: str = "", target_folder: str = None) -> bool:
         """Save messages based on criteria and store them to target folder
         with attachment files.
 
@@ -318,7 +343,7 @@ class ImapSmtp:
                 f.write(data[0][1])
         return True
 
-    def list_messages(self, criterion=""):
+    def list_messages(self, criterion: str = "") -> Any:
         """Return list of messages matching criterion.
 
         :param criterion: list emails matching this, defaults to ""
@@ -326,12 +351,14 @@ class ImapSmtp:
         """
         if self.imap_conn is None:
             raise ValueError("Requires authorized IMAP connection")
-        self.logger.info(f"List messages: {criterion}")
+        self.logger.info("List messages: %s", criterion)
         _, data = self._search_message(criterion)
         mail_ids = data[0].split()
         return self._fetch_messages(mail_ids)
 
-    def save_attachments(self, criterion="", target_folder=None, overwrite=False):
+    def save_attachments(
+        self, criterion: str = "", target_folder: str = None, overwrite: bool = False
+    ) -> Any:
         """Save mail attachments into local folder.
 
         :param criterion: attachments are saved for mails matching this, defaults to ""
@@ -352,7 +379,7 @@ class ImapSmtp:
                 content_disposition = part.get("Content-Disposition")
                 if content_maintype != "multipart" and content_disposition is not None:
                     filename = part.get_filename()
-                    self.logger.info(f"{filename} {content_maintype}")
+                    self.logger.info("%s %s", filename, content_maintype)
                     if bool(filename):
                         filepath = Path(target_folder) / filename
                         if not filepath.exists() or overwrite:
@@ -361,7 +388,9 @@ class ImapSmtp:
                                 attachments_saved.append(filepath)
         return attachments_saved if len(attachments_saved) > 0 else False
 
-    def wait_for_message(self, criterion="", timeout=5.0, interval=1.0):
+    def wait_for_message(
+        self, criterion: str = "", timeout: float = 5.0, interval: float = 1.0
+    ) -> Any:
         """Wait for email matching `criterion` to arrive into mailbox.
 
         Examples:
@@ -385,7 +414,7 @@ class ImapSmtp:
             _, data = self._search_message(criterion)
             mail_ids = data[0].split()
             self.logger.warning(
-                f"Wait for message found matching message {len(mail_ids)} time(s)."
+                "Wait for message found matching message %d time(s).", len(mail_ids)
             )
             if len(mail_ids) > 0:
                 return self._fetch_messages(mail_ids)

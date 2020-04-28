@@ -1,4 +1,5 @@
 import logging
+from typing import Any
 from robot.libraries.BuiltIn import BuiltIn
 
 
@@ -13,12 +14,12 @@ class RobotLogListener:
 
     KEYWORDS_TO_PROTECT = ["rpa.robocloud.secrets."]
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.ROBOT_LIBRARY_LISTENER = self
         self.logger = logging.getLogger(__name__)
         self.previous_level = None
 
-    def register_protected_keywords(self, names=None):
+    def register_protected_keywords(self, names: Any = None) -> None:
         """Register keywords that are not going to be logged into Robot Framework logs.
 
         :param names: list of keywords to protect
@@ -44,7 +45,7 @@ class RobotLogListener:
         """
         robotized_keyword = self._robotize_keyword(name)
         if any(k in robotized_keyword for k in self.KEYWORDS_TO_PROTECT):
-            self.logger.info(f"protecting keyword: {robotized_keyword}")
+            self.logger.info("protecting keyword: %s", robotized_keyword)
             self.previous_level = BuiltIn().set_log_level("NONE")
 
     def end_keyword(self, name, attributes):  # pylint: disable=W0613
@@ -60,7 +61,7 @@ class RobotLogListener:
         if any(k in robotized_keyword for k in self.KEYWORDS_TO_PROTECT):
             BuiltIn().set_log_level(self.previous_level)
 
-    def _robotize_keyword(self, kw_name):
+    def _robotize_keyword(self, kw_name: str) -> str:
         """Modifies keyword name for programmatic use.
 
         Keyword is lowercased and spaces are replaced by underscores.

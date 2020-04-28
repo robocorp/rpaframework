@@ -6,5 +6,5 @@ class HTTP(RequestsLibrary):
     `RequestsLibrary <https://hub.robocorp.com/libraries/bulkan-robotframework-requests/>`_ functionality.
     """  # noqa: E501; pylint: disable=line-too-long
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         RequestsLibrary.__init__(self, *args, **kwargs)

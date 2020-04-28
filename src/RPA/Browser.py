@@ -8,6 +8,7 @@ import subprocess
 # import selenium
 import tempfile
 import time
+from typing import Any
 from pathlib import Path
 
 from SeleniumLibrary import SeleniumLibrary
@@ -44,13 +45,12 @@ class Browser(SeleniumLibrary):
     }
     CHROME_VERSION_PATTERN = r"(\d+)(\.\d+\.\d+.\d+)"
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         self.logger = logging.getLogger(__name__)
         SeleniumLibrary.__init__(self, *args, **kwargs)
         self.drivers = []
-        self.logger.debug(f"seleniumlibrary drivers {self.drivers}")
 
-    def get_preferable_browser_order(self):
+    def get_preferable_browser_order(self) -> list:
         """Returns list of RPA Framework preferred browsers by OS.
 
         :return: browser list
@@ -69,12 +69,12 @@ class Browser(SeleniumLibrary):
     @keyword
     def open_available_browser(
         self,
-        url,
-        use_profile=False,
-        headless=False,
-        maximized=False,
-        browser_selection=AUTOMATIC_BROWSER_SELECTION,
-    ):
+        url: str,
+        use_profile: bool = False,
+        headless: bool = False,
+        maximized: bool = False,
+        browser_selection: Any = AUTOMATIC_BROWSER_SELECTION,
+    ) -> int:
         """Open available browser
 
         Keywords opens the first available browser it can find from the
@@ -111,8 +111,8 @@ class Browser(SeleniumLibrary):
         selected_browser = None
 
         self.logger.info(
-            f"Open Available Browser preferable browser selection order is: "
-            f"{', '.join(preferable_browser_order)}"
+            "Open Available Browser preferable browser selection order is: %s",
+            ", ".join(preferable_browser_order),
         )
         for browser in preferable_browser_order:
             options = self.set_driver_options(
@@ -153,19 +153,23 @@ class Browser(SeleniumLibrary):
 
         if selected_browser:
             self.logger.info(
-                f"Selected browser (method: {selected_browser[1]}) "
-                f"is: {selected_browser[0]}, index: {index}"
+                "Selected browser (method: %s) is: %s, index: %d",
+                selected_browser[1],
+                selected_browser[0],
+                index,
             )
             self.go_to(url)
             return index
         else:
             self.logger.error(
-                f"Unable to initialize webdriver "
-                f"({', '.join(preferable_browser_order)})"
+                "Unable to initialize webdriver (%s)",
+                ", ".join(preferable_browser_order),
             )
             raise BrowserNotFoundError
 
-    def create_rpa_webdriver(self, browser, options, download=False):
+    def create_rpa_webdriver(
+        self, browser: str, options: dict, download: bool = False
+    ) -> int:
         """Create webdriver instance for given browser.
 
         Driver will be downloaded if it does not exist when `download` is True.
@@ -176,7 +180,7 @@ class Browser(SeleniumLibrary):
         :return: index of the webdriver session, False if webdriver was not initialized
         """
         executable = False
-        self.logger.debug(f"Driver options for create_rpa_webdriver: {options}")
+        self.logger.debug("Driver options for create_rpa_webdriver: %s", options)
         executable = self.webdriver_init(browser, download)
         try:
             if executable:
@@ -187,11 +191,11 @@ class Browser(SeleniumLibrary):
                 index = self.create_webdriver(browser, **options)
             return index
         except WebDriverException as err:
-            self.logger.info(f"Could not open driver: {err}")
+            self.logger.info("Could not open driver: %s", err)
             return False
         return False
 
-    def get_browser_order(self, browser_selection):
+    def get_browser_order(self, browser_selection: Any) -> list:
         """Get list of browser that will be used for open browser
         keywords. Will be one or many.
 
@@ -209,7 +213,7 @@ class Browser(SeleniumLibrary):
             )
         return preferable_browser_order
 
-    def detect_chrome_version(self):
+    def detect_chrome_version(self) -> str:
         """Detect Chrome browser version (if possible) on different
         platforms using different commands for each platform.
 
@@ -217,7 +221,7 @@ class Browser(SeleniumLibrary):
 
         Supported Chrome major versions are 81, 80 and 79.
 
-        :return: chromedriver version number or False
+        :return: chromedriver version number or None
         """
         # pylint: disable=line-too-long
         OS_CMDS = {
@@ -244,15 +248,15 @@ class Browser(SeleniumLibrary):
                 if version:
                     major = version.group(1)
                     detailed = version.group(0)
-                    self.logger.info(f"Detected Chrome major version is: {detailed}")
+                    self.logger.info("Detected Chrome major version is: %s", detailed)
                     return (
                         self.CHROMEDRIVER_VERSIONS[major]
                         if (major in self.CHROMEDRIVER_VERSIONS.keys())
-                        else False
+                        else None
                     )
-        return False
+        return None
 
-    def _run_command_return_output(self, command):
+    def _run_command_return_output(self, command: str) -> str:
         try:
             process = subprocess.Popen(
                 command,
@@ -264,17 +268,17 @@ class Browser(SeleniumLibrary):
             output, _ = process.communicate()
             return str(output).strip()
         except FileNotFoundError:
-            self.logger.debug(f'Command "{command}" not found')
-            return False
+            self.logger.debug('Command "%s" not found', command)
+            return None
 
-    def get_installed_chromedriver_version(self, driver_executable_path):
+    def get_installed_chromedriver_version(self, driver_executable_path: str) -> str:
         """Returns full version number for stable chromedriver.
 
         Stable version is defined internally based on the major version
         of the chromedriver.
 
         :param driver_executable_path: path to chromedriver
-        :return: full version number for stable chromedriver or False
+        :return: full version number for stable chromedriver or None
         """
         output = self._run_command_return_output(driver_executable_path)
         if output:
@@ -282,15 +286,17 @@ class Browser(SeleniumLibrary):
             if version:
                 major = version.group(1)
                 detailed = version.group(0)
-                self.logger.info(f"Detected chromedriver major version is: {detailed}")
+                self.logger.info("Detected chromedriver major version is: %s", detailed)
                 return (
                     self.CHROMEDRIVER_VERSIONS[major]
                     if (major in self.CHROMEDRIVER_VERSIONS.keys())
-                    else False
+                    else None
                 )
-        return False
+        return None
 
-    def download_driver(self, dm_class, download_dir, version=None):
+    def download_driver(
+        self, dm_class: str, download_dir: str, version: str = None
+    ) -> None:
         """ Download driver to given directory. By default downloads
         latest version for given webdriver type, but this can be
         overridden by giving ``version`` parameter.
@@ -299,7 +305,7 @@ class Browser(SeleniumLibrary):
         :param download_dir: directory to download driver into
         :param version: None by default (gets latest version)
         """
-        self.logger.info(f"Downloading driver into: {str(download_dir)}")
+        self.logger.info("Downloading driver into: %s", str(download_dir))
         dm = dm_class(download_root=download_dir, link_path=download_dir)
         try:
             if version:
@@ -307,12 +313,12 @@ class Browser(SeleniumLibrary):
             else:
                 dm.download_and_install()
             self.logger.debug(
-                f"{dm.get_driver_filename()} downloaded into {str(download_dir)}"
+                "%s downloaded into %s", dm.get_driver_filename(), str(download_dir)
             )
         except RuntimeError:
             pass
 
-    def _set_driver_paths(self, dm_class, download):
+    def _set_driver_paths(self, dm_class: str, download: bool) -> Any:
         driver_executable_path = None
 
         dm = dm_class()
@@ -329,7 +335,9 @@ class Browser(SeleniumLibrary):
             driver_executable_path = default_executable_path
         return driver_executable_path, driver_tempdir
 
-    def _check_chrome_and_driver_versions(self, driver_ex_path, browser_version):
+    def _check_chrome_and_driver_versions(
+        self, driver_ex_path: str, browser_version: str
+    ) -> bool:
         download_driver = False
         chromedriver_version = self.get_installed_chromedriver_version(
             str(driver_ex_path / " --version")
@@ -342,7 +350,7 @@ class Browser(SeleniumLibrary):
             download_driver = True
         return download_driver
 
-    def webdriver_init(self, browser, download=False):
+    def webdriver_init(self, browser: str, download: bool = False) -> str:
         """Webdriver initialization with default driver
         paths or with downloaded drivers.
 
@@ -351,8 +359,9 @@ class Browser(SeleniumLibrary):
         :return: path to driver or `None`
         """
         self.logger.debug(
-            f"Webdriver initialization for browser: '{browser}'. "
-            f"Download set to: {download}"
+            "Webdriver initialization for browser: '%s'. Download set to: %s",
+            browser,
+            download,
         )
         browser_version = self.detect_chrome_version()
         dm_class = (
@@ -361,7 +370,7 @@ class Browser(SeleniumLibrary):
             else None
         )
         if dm_class:
-            self.logger.debug(f"Driver manager class: {dm_class}")
+            self.logger.debug("Driver manager class: %s", dm_class)
             driver_ex_path, driver_tempdir = self._set_driver_paths(dm_class, download)
             if download:
                 if not driver_ex_path.exists():
@@ -377,19 +386,24 @@ class Browser(SeleniumLibrary):
                             )
                     else:
                         self.logger.info(
-                            f"Driver download skipped, because it already existed at "
-                            f"{str(driver_ex_path)}"
+                            "Driver download skipped, because it already "
+                            "existed at %s",
+                            driver_ex_path,
                         )
             else:
-                self.logger.info(f"Using already existing driver at: {driver_ex_path}")
+                self.logger.info("Using already existing driver at: %s", driver_ex_path)
 
             return r"%s" % str(driver_ex_path)
         else:
             return None
 
     def set_driver_options(
-        self, browser, use_profile=False, headless=False, maximized=False,
-    ):
+        self,
+        browser: str,
+        use_profile: bool = False,
+        headless: bool = False,
+        maximized: bool = False,
+    ) -> dict:
         """Set options for given browser
 
         Supported at the moment:
@@ -414,10 +428,9 @@ class Browser(SeleniumLibrary):
             return driver_options
 
         if browser.lower() in self.AVAILABLE_OPTIONS.keys():
-            module = importlib.import_module(f"selenium.webdriver")
+            module = importlib.import_module("selenium.webdriver")
             class_ = getattr(module, browser_option_class)
             browser_options = class_()
-            self.logger.debug(type(browser_options))
             # self.set_default_options(browser_options)
 
         if browser_options and browser.lower() == "chrome":
@@ -450,13 +463,18 @@ class Browser(SeleniumLibrary):
 
     @keyword
     def open_chrome_browser(
-        self, url, use_profile=False, headless=False, maximized=False
-    ):
+        self,
+        url: str,
+        use_profile: bool = False,
+        headless: bool = False,
+        maximized: bool = False,
+    ) -> None:
         """Open Chrome browser.
 
         :param url: address to open
-        :param use_profile: [description], defaults to True
-        :param headless: [description], defaults to False
+        :param use_profile: if browser user profile is used, defaults to False
+        :param headless: if headless mode should be set, defaults to False
+        :param maximized: if browser should be run maximized, defaults to False
         """
         # webdrivermanager
         # https://stackoverflow.com/questions/41084124/chrome-options-in-robot-framework
@@ -468,13 +486,13 @@ class Browser(SeleniumLibrary):
             browser_selection="Chrome",
         )
 
-    def set_default_options(self, options):
+    def set_default_options(self, options: dict) -> None:
         options.add_argument("--disable-web-security")
         options.add_argument("--allow-running-insecure-content")
         options.add_argument("--remote-debugging-port=12922")
         options.add_argument("--no-sandbox")
 
-    def set_headless_options(self, browser, options):
+    def set_headless_options(self, browser: str, options: dict) -> None:
         """Set headless mode if possible for the browser
 
         :param browser: string name of the browser
@@ -492,7 +510,7 @@ class Browser(SeleniumLibrary):
             options.add_argument("--disable-gpu")
             options.add_argument("--disable-dev-shm-usage")
 
-    def set_user_profile(self, options):
+    def set_user_profile(self, options: dict) -> None:
         user_profile_dir = os.getenv("RPA_CHROME_USER_PROFILE_DIR", None)
         if user_profile_dir is None:
             self.logger.warning(
@@ -505,7 +523,7 @@ class Browser(SeleniumLibrary):
         options.add_argument(f"--local-sync-backend-dir='{user_profile_dir}'")
 
     @keyword
-    def open_headless_chrome_browser(self, url):
+    def open_headless_chrome_browser(self, url: str) -> None:
         """Open Chrome browser in headless mode
 
         :param url: address to open
@@ -513,7 +531,12 @@ class Browser(SeleniumLibrary):
         self.open_chrome_browser(url, headless=True)
 
     @keyword
-    def screenshot(self, page=True, locator=None, filename_prefix="screenshot"):
+    def screenshot(
+        self,
+        page: bool = True,
+        locator: str = None,
+        filename_prefix: str = "screenshot",
+    ) -> None:
         """Capture page and/or element screenshot
 
         :param page: capture page screenshot, defaults to True
@@ -522,7 +545,7 @@ class Browser(SeleniumLibrary):
         """
         if page:
             filename = os.path.join(
-                os.curdir, f"{filename_prefix}-%s-page.png" % int(time.time())
+                os.curdir, ("%s-%s-page.png", filename_prefix, int(time.time()))
             )
             capture_location = self.capture_page_screenshot(filename)
             self.logger.info(
@@ -530,7 +553,7 @@ class Browser(SeleniumLibrary):
             )
         if locator:
             filename = os.path.join(
-                os.curdir, f"{filename_prefix}-%s-element.png" % int(time.time())
+                os.curdir, ("%s-%s-element.png", filename_prefix, int(time.time()))
             )
             capture_location = self.capture_element_screenshot(
                 locator, filename=filename
@@ -540,7 +563,7 @@ class Browser(SeleniumLibrary):
             )
 
     @keyword
-    def input_text_when_element_is_visible(self, locator, text):
+    def input_text_when_element_is_visible(self, locator: str, text: str) -> None:
         """Input text into locator after it has become visible
 
         :param locator: selector
@@ -550,7 +573,7 @@ class Browser(SeleniumLibrary):
         self.input_text(locator, text)
 
     @keyword
-    def wait_and_click_button(self, locator):
+    def wait_and_click_button(self, locator: str) -> None:
         """Click button once it becomes visible
 
         :param locator: [description]
@@ -559,7 +582,7 @@ class Browser(SeleniumLibrary):
         self.click_button(locator)
 
     @property
-    def location(self):
+    def location(self) -> str:
         """Return browser location
 
         :return: url of the page browser is in

@@ -3,23 +3,24 @@ import logging
 import os
 import string
 import time
+from typing import Any
 import unicodedata
 
 # Sentinel value for undefined argument
 UNDEFINED = object()
 
 
-def delay(sleeptime=0):
+def delay(sleeptime: int = 0):
     """delay execution for given seconds
 
     :param sleeptime: seconds as integer, defaults to 0
     """
     if sleeptime > 0:
-        logging.debug(f"sleeping for {sleeptime} second(s)")
+        logging.debug("sleeping for %d second(s)", sleeptime)
         time.sleep(sleeptime)
 
 
-def clean_filename(filename, replace=" "):
+def clean_filename(filename: str, replace: str = " ") -> str:
     """clean filename to valid format which can be used file operations
 
     :param filename: name to be cleaned
@@ -40,15 +41,15 @@ def clean_filename(filename, replace=" "):
     return cleaned_filename
 
 
-def required_env(name, default=UNDEFINED):
+def required_env(name: str, default: Any = UNDEFINED) -> str:
     """Load required environment variable."""
     val = os.getenv(name, default)
     if val is UNDEFINED:
-        raise KeyError(f"Missing required environment variable: {name}")
+        raise KeyError(("Missing required environment variable: %s", name))
     return val
 
 
-def import_by_name(name, caller=None):
+def import_by_name(name: str, caller: str = None) -> Any:
     """Import module (or attribute) by name.
 
     :param name: Import path, e.g. RPA.WorkItems.RobocloudAdapter
@@ -78,4 +79,4 @@ def import_by_name(name, caller=None):
         except (AttributeError, ImportError):
             pass
 
-    raise ValueError(f"No module/attribute with name: {name}")
+    raise ValueError(("No module/attribute with name: %s", name))

@@ -1,45 +1,49 @@
 import logging
 from pathlib import Path
-
+from typing import Any
 from RPA.core.msoffice import OfficeApplication
 
 
 class Application(OfficeApplication):
     """Library for manipulating Excel application."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         OfficeApplication.__init__(self, application_name="Excel")
         self.logger = logging.getLogger(__name__)
         self.workbook = None
         self.active_worksheet = None
 
-    def add_new_workbook(self):
+    def add_new_workbook(self) -> None:
         """Adds new workbook for Excel application
         """
         self.workbook = self.app.Workbooks.Add()
 
-    def open_workbook(self, filename):
+    def open_workbook(self, filename: str) -> None:
         """Open Excel by filename
 
         :param filename: path to filename
         """
         excel_filepath = str(Path(filename).resolve())
-        self.logger.info(f"Opening workbook: {excel_filepath}")
+        self.logger.info("Opening workbook: %s", excel_filepath)
         self.workbook = self.app.Workbooks.Open(excel_filepath)
-        self.logger.debug(f"Workbook: {self.workbook}")
+        self.logger.debug("Workbook: %s", self.workbook)
 
-    def set_active_worksheet(self, sheetname=None, sheetnumber=None):
+    def set_active_worksheet(
+        self, sheetname: str = None, sheetnumber: int = None
+    ) -> None:
         """Set active worksheet by either its sheet number or name
 
-        :param sheetname: [description], defaults to None
-        :param sheetnumber: [description], defaults to None
+        :param sheetname: name of Excel sheet, defaults to None
+        :param sheetnumber: index of Excel sheet, defaults to None
         """
         if sheetnumber:
             self.active_worksheet = self.workbook.Worksheets(int(sheetnumber))
         elif sheetname:
             self.active_worksheet = self.workbook.Worksheets(sheetname)
 
-    def add_new_sheet(self, sheetname, tabname=None, create_workbook=True):
+    def add_new_sheet(
+        self, sheetname: str, tabname: str = None, create_workbook: bool = True
+    ) -> None:
         """Add new worksheet to workbook. Workbook is created by default if
         it does not exist.
 
@@ -49,7 +53,7 @@ class Application(OfficeApplication):
         :raises ValueError: error is raised if workbook does not exist and
             `create_workbook` is False
         """
-        self.logger.info(f"Adding sheet: {sheetname}")
+        self.logger.info("Adding sheet: %s", sheetname)
         if self.workbook is None:
             if not create_workbook:
                 raise ValueError("No workbook open")
@@ -58,7 +62,9 @@ class Application(OfficeApplication):
         if tabname:
             self.active_worksheet.Name = tabname
 
-    def find_first_available_row(self, worksheet=None, row=1, column=1):
+    def find_first_available_row(
+        self, worksheet: Any = None, row: int = 1, column: int = 1
+    ) -> Any:
         """Find first available free row and cell
 
         :param worksheet: worksheet to handle, defaults to active worksheet if None
@@ -79,13 +85,13 @@ class Application(OfficeApplication):
 
     def write_to_cells(
         self,
-        worksheet=None,
-        row=None,
-        column=None,
-        value=None,
-        number_format=None,
-        formula=None,
-    ):
+        worksheet: Any = None,
+        row: int = None,
+        column: int = None,
+        value: str = None,
+        number_format: str = None,
+        formula: str = None,
+    ) -> None:
         """Write value, number_format and/or formula into cell.
 
         :param worksheet: worksheet to handle, defaults to active worksheet if None
@@ -109,12 +115,12 @@ class Application(OfficeApplication):
         if formula:
             worksheet.Cells(row, column).Formula = formula
 
-    def save_excel(self):
+    def save_excel(self) -> None:
         """Saves Excel file
         """
         self.workbook.Save()
 
-    def save_excel_as(self, filename, autofit=False):
+    def save_excel_as(self, filename: str, autofit: bool = False) -> None:
         """Save Excel with name if workbook is open
 
         :param filename: where to save file

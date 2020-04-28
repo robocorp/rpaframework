@@ -1,9 +1,12 @@
+from typing import Any
+
 import json
 import logging
 import requests
 
 from simple_salesforce import Salesforce as SimpleSalesforce
 from simple_salesforce import SFType
+
 
 from RPA.Tables import Table
 
@@ -22,7 +25,7 @@ class Salesforce:
 
     account = {"Name": None, "Id": None}
 
-    def __init__(self, sandbox=False):
+    def __init__(self, sandbox: bool = False) -> None:
         self.logger = logging.getLogger(__name__)
         self.sf = None
         self.domain = "test" if sandbox else "login"
@@ -31,7 +34,7 @@ class Salesforce:
         self.dataloader_success = []
         self.dataloader_errors = []
 
-    def _require_authentication(self):
+    def _require_authentication(self) -> None:
         if self.sf is None:
             raise SalesforceAuthenticationError("Authentication is not completed")
 
@@ -43,7 +46,7 @@ class Salesforce:
     def instance(self):
         return self.sf.sf_instance if self.sf else None
 
-    def auth_with_token(self, username, password, api_token):
+    def auth_with_token(self, username: str, password: str, api_token: str) -> None:
         """Authorize to Salesforce with security token, username
         and password creating instance.
 
@@ -59,9 +62,9 @@ class Salesforce:
             domain=self.domain,
             session=self.session,
         )
-        self.logger.debug(f"Salesforce session id: {self.session_id}")
+        self.logger.debug("Salesforce session id: %s", self.session_id)
 
-    def salesforce_query(self, sql_string):
+    def salesforce_query(self, sql_string: str) -> dict:
         """Perform SQL query.
 
         :param sql_string: SQL clause to perform
@@ -70,19 +73,18 @@ class Salesforce:
         self._require_authentication()
         return self.sf.query(sql_string)
 
-    def salesforce_query_result_as_table(self, sql_string):
+    def salesforce_query_result_as_table(self, sql_string: str) -> Table:
         """Perform SQL query and return result as `RPA.Table`.
 
         :param sql_string: SQL clause to perform
         :return: result of the SQL query as Table
         """
-
         results = self.salesforce_query(sql_string)
         table = Table(results["records"])
         table.delete_columns(["attributes"])
         return table
 
-    def set_account(self, account_name="", account_id=""):
+    def set_account(self, account_name: str = "", account_id: str = "") -> bool:
         """Set account name and id by giving either parameter.
 
         Can be used together with keywords:
@@ -94,34 +96,33 @@ class Salesforce:
         :return: True if account was found from Salesforce, else False
         """
         result = self.salesforce_query(
-            f"SELECT Id, Name FROM Account "
-            f"WHERE Name = '{account_name}' or Id = '{account_id}'"
+            f"SELECT Id, Name FROM Account WHERE Name = '{account_name}' "
+            f"or Id = '{account_id}'"
         )
         if result["totalSize"] == 1:
             self.account["Id"] = result["records"][0]["Id"]
             self.account["Name"] = result["records"][0]["Name"]
-            self.logger.debug(f"Found account: {self.account}")
+            self.logger.debug("Found account: %s", self.account)
             return True
         else:
             self.account = {"Name": None, "Id": None}
             return False
 
-    def get_pricebook_entries(self):
+    def get_pricebook_entries(self) -> dict:
         """Get all pricebook entries.
 
         :return: query result
         """
         return self.salesforce_query("SELECT Id, Name FROM Pricebook2")
 
-    def get_opportunity_id(self, opportunity_name):
+    def get_opportunity_id(self, opportunity_name: str) -> Any:
         """Get ID of an Opportunity linked to set account.
 
         :param opportunity_name: opportunity to query
         :return: Id of the opportunity or False
         """
         sql_query = (
-            f"SELECT Id, AccountId FROM Opportunity WHERE Name = '%s'"
-            % opportunity_name
+            f"SELECT Id, AccountId FROM Opportunity WHERE Name = '{opportunity_name}'"
         )
 
         if self.account["Id"] is not None:
@@ -132,7 +133,7 @@ class Salesforce:
             return result["records"][0]["Id"]
         return False
 
-    def get_pricebook_id(self, pricebook_name):
+    def get_pricebook_id(self, pricebook_name: str) -> Any:
         """Get ID of a pricelist.
 
         Returns False if unique Id is not found.
@@ -147,7 +148,7 @@ class Salesforce:
             return result["records"][0]["Id"]
         return False
 
-    def get_products_in_pricelist(self, pricebook_name):
+    def get_products_in_pricelist(self, pricebook_name: str) -> dict:
         """Get all products in a pricelist.
 
         :param pricebook_name: pricelist to query
@@ -166,12 +167,9 @@ class Salesforce:
                 "pricebook_entry_id": pricebook_entry_id,
                 "unit_price": product_unitprice,
             }
-            print(f"Name               : {product_name}")
-            print(f"UnitPrice          : {product_unitprice}")
-            print(f"Pricebook entry id : {pricebook_entry_id}")
         return products
 
-    def set_pricebook(self, pricebook_name):
+    def set_pricebook(self, pricebook_name: str) -> None:
         """Sets Pricebook to be used in Salesforce operations.
 
         :param pricebook_name: pricelist to use
@@ -180,24 +178,24 @@ class Salesforce:
 
     def add_product_into_opportunity(
         self,
-        product_name,
-        quantity,
-        opportunity_id=False,
-        pricebook_name=False,
-        custom_total_price=False,
-    ):
+        product_name: str,
+        quantity: int,
+        opportunity_id: str = None,
+        pricebook_name: str = None,
+        custom_total_price: float = None,
+    ) -> bool:
         """Add Salesforce Product into Opportunity.
 
         :param product_name: type of the product in the Pricelist
         :param quantity: number of products to add
-        :param opportunity_id: identifier of Opportunity, defaults to False
-        :param pricebook_name: name of the pricelist, defaults to False
+        :param opportunity_id: identifier of Opportunity, default None
+        :param pricebook_name: name of the pricelist, default None
         :param custom_total_price: price that overrides quantity and product price,
-            defaults to False
+            default None
         :return: True is operation is successful or False
         """
         self._require_authentication()
-        if opportunity_id is False:
+        if opportunity_id is None:
             return False
         if pricebook_name:
             products = self.get_products_in_pricelist(pricebook_name)
@@ -219,15 +217,19 @@ class Salesforce:
         return False
 
     def create_new_opportunity(
-        self, close_date, opportunity_name, stage_name="Closed Won", account_name=False
-    ):
+        self,
+        close_date: str,
+        opportunity_name: str,
+        stage_name: str = "Closed Won",
+        account_name: str = None,
+    ) -> Any:
         """Create Salesforce Opportunity object.
 
         :param close_date: closing date for the Opportunity, format 'YYYY-MM-DD'
         :param opportunity_name: as string
         :param stage_name: needs to be one of the defined stages,
             defaults to "Closed Won"
-        :param account_name: by default uses previously set account, defaults to False
+        :param account_name: by default uses previously set account, defaults to None
         :return: created opportunity or False
         """
         self._require_authentication()
@@ -247,10 +249,10 @@ class Salesforce:
                 "AccountId": self.account["Id"],
             }
         )
-        self.logger.debug(f"create new opportunity: {result}")
+        self.logger.debug("create new opportunity: %s", result)
         return result.get("id") or False
 
-    def read_dictionary_from_file(self, mapping_file):
+    def read_dictionary_from_file(self, mapping_file: str) -> dict:
         """Read dictionary from file.
 
         :param mapping_file: path to the file
@@ -279,7 +281,9 @@ class Salesforce:
                 input_iterable = input_dict
         return input_iterable
 
-    def execute_dataloader_insert(self, input_object, mapping_object, object_type):
+    def execute_dataloader_insert(
+        self, input_object: Any, mapping_object: Any, object_type: str
+    ) -> bool:
         """Keyword mimics Salesforce Dataloader 'insert' behaviour by taking
         in a `input_object`representing dictionary of data to input into Salesforce,
         a `mapping_object` representing dictionary mapping the input keys into
@@ -321,15 +325,15 @@ class Salesforce:
                 self.dataloader_errors.append({**data_status, **item})
         return True
 
-    def get_dataloader_success_table(self):
+    def get_dataloader_success_table(self) -> Table:
         "Return Dataloader success entries as `RPA.Table`"
         return Table(self.dataloader_success)
 
-    def get_dataloader_error_table(self):
+    def get_dataloader_error_table(self) -> Table:
         "Return Dataloader error entries as `RPA.Table`"
         return Table(self.dataloader_errors)
 
-    def get_salesforce_object_by_id(self, object_type, object_id):
+    def get_salesforce_object_by_id(self, object_type: str, object_id: str) -> dict:
         """Get Salesforce object by id and type.
 
         :param object_type: Salesforce object type
@@ -340,7 +344,7 @@ class Salesforce:
         sfobject = SFType(object_type, self.session_id, self.instance)
         return sfobject.get(object_id)
 
-    def create_salesforce_object(self, object_type, object_data):
+    def create_salesforce_object(self, object_type: str, object_data: Any) -> dict:
         """Create Salesforce object by type and data.
 
         :param object_type: Salesforce object type
@@ -355,7 +359,9 @@ class Salesforce:
         result = salesforce_object.create(object_data)
         return dict(result)
 
-    def update_salesforce_object(self, object_type, object_id, object_data):
+    def update_salesforce_object(
+        self, object_type: str, object_id: str, object_data: Any
+    ) -> bool:
         """Update Salesfoce object by type, id and data.
 
         :param object_type: Salesforce object type
@@ -371,7 +377,9 @@ class Salesforce:
         result_code = salesforce_object.update(object_id, object_data)
         return result_code == 204
 
-    def upsert_salesforce_object(self, object_type, object_id, object_data):
+    def upsert_salesforce_object(
+        self, object_type: str, object_id: str, object_data: Any
+    ) -> bool:
         """Upsert Salesfoce object by type, id and data.
 
         :param object_type: Salesforce object type
@@ -387,7 +395,7 @@ class Salesforce:
         result_code = salesforce_object.upsert(object_id, object_data)
         return result_code == 204
 
-    def delete_salesforce_object(self, object_type, object_id):
+    def delete_salesforce_object(self, object_type: str, object_id: str) -> bool:
         """Delete Salesfoce object by type and id.
 
         :param object_type: Salesforce object type
@@ -399,7 +407,7 @@ class Salesforce:
         result_code = salesforce_object.delete(object_id)
         return result_code == 204
 
-    def get_salesforce_object_metadata(self, object_type):
+    def get_salesforce_object_metadata(self, object_type: str) -> dict:
         """Get Salesfoce object metadata by type.
 
         :param object_type: Salesforce object type
@@ -409,7 +417,7 @@ class Salesforce:
         salesforce_object = SFType(object_type, self.session_id, self.instance)
         return dict(salesforce_object.metadata())
 
-    def describe_salesforce_object(self, object_type):
+    def describe_salesforce_object(self, object_type: str) -> dict:
         """Get Salesfoce object description by type.
 
         :param object_type: Salesforce object type

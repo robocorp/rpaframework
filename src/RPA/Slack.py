@@ -8,11 +8,16 @@ class Slack:
 
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
 
     def slack_message_using_webhook(
-        self, webhook_url, channel, sender, text, icon_emoji=None
+        self,
+        webhook_url: str,
+        channel: str,
+        sender: str,
+        text: str,
+        icon_emoji: str = None,
     ):
         """Send message to Slack channel using webhook.
 
@@ -24,11 +29,11 @@ class Slack:
         """
         headers = {"Content-Type": "application/json"}
         payload = {
-            "channel": channel if "#" in channel else f"#{channel}",
+            "channel": channel if "#" in channel else ("#%s", channel),
             "username": sender,
             "text": text,
         }
         if icon_emoji:
             payload["icon_emoji"] = icon_emoji
         response = requests.post(webhook_url, headers=headers, data=json.dumps(payload))
-        self.logger.debug(f"{response.status_code}")
+        self.logger.debug(response.status_code)

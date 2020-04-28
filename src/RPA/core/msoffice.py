@@ -8,7 +8,7 @@ if platform.system() == "Windows":
 class OfficeApplication:
     """Parent class for Microsoft Office applications."""
 
-    def __init__(self, application_name=None):
+    def __init__(self, application_name: str = None) -> None:
         self.logger = logging.getLogger(__name__)
         if platform.system() != "Windows":
             self.logger.warning(
@@ -26,31 +26,31 @@ class OfficeApplication:
         self.application_name = application_name
         self.app = None
 
-    def open_application(self, visible=False, display_alerts=False):
+    def open_application(
+        self, visible: bool = False, display_alerts: bool = False
+    ) -> None:
         """Open Microsoft application.
 
         :param visible: show Word window if True, defaults to False
         :param display_alerts: show alert popups if True, defaults to False
         """
         self.app = win32com.client.gencache.EnsureDispatch(
-            f"{self.application_name}.Application"
+            ("%s.Application", self.application_name)
         )
 
-        self.logger.debug(f"{self.application_name}.Application launched")
-        self.logger.debug(f"{self.app}")
+        self.logger.debug("%s.Application launched", self.application_name)
+        self.logger.debug(self.app)
         if hasattr(self.app, "Visible"):
-            self.logger.debug(f"Setting Visible: {visible}")
             self.app.Visible = visible
         # show eg. file overwrite warning or not
         if hasattr(self.app, "DisplayAlerts"):
-            self.logger.debug(f"Setting DisplayAlerts: {display_alerts}")
             self.app.DisplayAlerts = display_alerts
 
-    def close_document(self, save_changes=False):
+    def close_document(self, save_changes: bool = False) -> None:
         if hasattr(self, "app") and self.app is not None:
             self.app.ActiveDocument.Close(save_changes)
 
-    def quit_application(self, save_changes=False):
+    def quit_application(self, save_changes: bool = False) -> None:
         if hasattr(self, "app") and self.app is not None:
             self.close_document(save_changes)
             self.app.Quit()

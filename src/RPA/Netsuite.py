@@ -34,7 +34,7 @@ class Netsuite:
     """Library for accessing Netsuite.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.client = None
         self.account = None
         self.logger = logging.getLogger(__name__)
@@ -45,12 +45,12 @@ class Netsuite:
 
     def connect(
         self,
-        account=None,
-        consumer_key=None,
-        consumer_secret=None,
-        token_key=None,
-        token_secret=None,
-    ):
+        account: str = None,
+        consumer_key: str = None,
+        consumer_secret: str = None,
+        token_key: str = None,
+        token_secret: str = None,
+    ) -> None:
         """ Connect to Netsuite with credentials from environment
         variables.
 
@@ -79,7 +79,14 @@ class Netsuite:
             token_secret=NS_TOKEN_SECRET,
         )
 
-    def login(self, account=None, email=None, password=None, role=None, appid=None):
+    def login(
+        self,
+        account: str = None,
+        email: str = None,
+        password: str = None,
+        role: str = None,
+        appid: str = None,
+    ) -> None:
         """Login to Netsuite with credentials from environment variables
 
         Parameters are not logged into Robot Framework log.
@@ -106,7 +113,9 @@ class Netsuite:
         )
 
     @ns_instance_required
-    def netsuite_get(self, record_type=None, internal_id=None, external_id=None):
+    def netsuite_get(
+        self, record_type: str = None, internal_id: str = None, external_id: str = None
+    ) -> list:
         """Get all records of given type and internalId and/or externalId.
 
         :param record_type: type of Netsuite record to get
@@ -131,7 +140,7 @@ class Netsuite:
         return self.client.get(**kwargs)
 
     @ns_instance_required
-    def netsuite_get_all(self, record_type):
+    def netsuite_get_all(self, record_type: str) -> list:
         """Get all records of given type.
 
         :param record_type: type of Netsuite record to get
@@ -145,8 +154,12 @@ class Netsuite:
         return self.client.getAll(recordType=record_type)
 
     def netsuite_search(
-        self, type_name, search_value, operator="contains", page_size=5
-    ):
+        self,
+        type_name: str,
+        search_value: str,
+        operator: str = "contains",
+        page_size: int = 5,
+    ) -> PaginatedSearch:
         """Search Netsuite for value from a type. Default operator is
         `contains`.
 
@@ -171,7 +184,9 @@ class Netsuite:
         )
         return paginated_search
 
-    def netsuite_search_all(self, type_name, page_size=20):
+    def netsuite_search_all(
+        self, type_name: str, page_size: int = 20
+    ) -> PaginatedSearch:
         """Search Netsuite for a type results.
 
         :param type_name: search target type name
@@ -184,7 +199,7 @@ class Netsuite:
         return paginated_search
 
     @ns_instance_required
-    def get_accounts(self, count=100, account_type=None):
+    def get_accounts(self, count: int = 100, account_type: str = None) -> list:
         """Get Accounts of any type or specified type.
 
         :param count: number of Accounts to return, defaults to 100
@@ -200,7 +215,7 @@ class Netsuite:
         return [a for a in all_accounts if a["acctType"] == account_type]
 
     @ns_instance_required
-    def get_currency(self, currency_id):
+    def get_currency(self, currency_id: str) -> object:
         """Get all a Netsuite Currency by its ID
 
         :param currency_id: ID of the currency to get
@@ -209,7 +224,7 @@ class Netsuite:
         return self.client.currencies.get(internalId=currency_id)
 
     @ns_instance_required
-    def get_currencies(self):
+    def get_currencies(self) -> list:
         """Get all Netsuite Currencies
 
         :return: currencies
@@ -217,7 +232,7 @@ class Netsuite:
         return self.client.currencies.get_all()
 
     @ns_instance_required
-    def get_locations(self):
+    def get_locations(self) -> list:
         """Get all Netsuite Locations
 
         :return: locations
@@ -225,7 +240,7 @@ class Netsuite:
         return self.client.locations.get_all()
 
     @ns_instance_required
-    def get_departments(self):
+    def get_departments(self) -> list:
         """Get all Netsuite Departments
 
         :return: departments
@@ -233,7 +248,7 @@ class Netsuite:
         return self.client.departments.get_all()
 
     @ns_instance_required
-    def get_classifications(self):
+    def get_classifications(self) -> list:
         """Get all Netsuite Classifications
 
         :return: classifications
@@ -241,7 +256,7 @@ class Netsuite:
         return self.client.classifications.get_all()
 
     @ns_instance_required
-    def get_vendors(self, count=10):
+    def get_vendors(self, count: int = 10) -> list:
         """Get list of vendors
 
         :param count: number of vendors to return, defaults to 10
@@ -250,7 +265,7 @@ class Netsuite:
         return list(itertools.islice(self.client.vendors.get_all_generator(), count))
 
     @ns_instance_required
-    def get_vendor_bills(self, count=10):
+    def get_vendor_bills(self, count: int = 10) -> list:
         """Get list of vendor bills
 
         :param count: number of vendor bills to return, defaults to 10

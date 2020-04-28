@@ -13,11 +13,11 @@ class Database(DatabaseLibrary):
     https://github.com/franz-see/Robotframework-Database-Library
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         self.logger = logging.getLogger(__name__)
         DatabaseLibrary.__init__(self, *args, **kwargs)
 
-    def database_query_result_as_table(self, query_string):
+    def database_query_result_as_table(self, query_string: str) -> Table:
         """Make database query and return result as `RPA.Table`.
 
         :param query_string: SQL query string
