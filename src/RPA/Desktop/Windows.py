@@ -577,34 +577,36 @@ class Windows(OperatingSystem):
 
         Possible search criterias:
             - name
-            - class (class_name)
-            - type (contro_type)
-            - id (automation_id)
+            - class / class_name
+            - type / control_type
+            - id / automation_id
             - partial name (wildcard search for 'name' attribute)
-            - any if none was defined
+            - any (if none was defined)
 
         :param locator: name of the locator
         :return: criteria and locator
         """
-        search_criteria = "any"
         if locator.startswith("name:"):
             search_criteria = "name"
-            locator = "".join(locator.split("name:")[1:])
-        elif locator.startswith("class:"):
+            _, locator = locator.split(":", 1)
+        elif locator.startswith(("class_name:", "class:")):
             search_criteria = "class_name"
-            locator = "".join(locator.split("class:")[1:])
-        elif locator.startswith("type:"):
+            _, locator = locator.split(":", 1)
+        elif locator.startswith(("control_type:", "type:")):
             search_criteria = "control_type"
-            locator = "".join(locator.split("type:")[1:])
-        elif locator.startswith("id:"):
+            _, locator = locator.split(":", 1)
+        elif locator.startswith(("automation_id:", "id:")):
             search_criteria = "automation_id"
-            locator = "".join(locator.split("id:")[1:])
+            _, locator = locator.split(":", 1)
         elif locator.startswith("partial name:"):
             search_criteria = "partial name"
-            locator = "".join(locator.split("partial name:")[1:])
+            _, locator = locator.split(":", 1)
         elif locator.startswith("regexp:"):
             search_criteria = "regexp"
-            locator = "".join(locator.split("regexp:")[1:])
+            _, locator = locator.split(":", 1)
+        else:
+            search_criteria = "any"
+
         return search_criteria, locator
 
     # TODO. supporting multiple search criterias at same time to identify ONE element
@@ -915,9 +917,7 @@ class Windows(OperatingSystem):
             )
         return target_x, target_y
 
-    def _select_elements_for_drag(
-        self, src: dict, src_locator: str
-    ) -> Any:
+    def _select_elements_for_drag(self, src: dict, src_locator: str) -> Any:
         self.switch_to_application(src["id"])
         source_elements, _ = self.find_element(src_locator)
         if len(source_elements) == 0:
