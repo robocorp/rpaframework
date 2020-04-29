@@ -3,6 +3,7 @@ import logging
 import os
 import platform
 import re
+import stat
 import subprocess
 
 # import selenium
@@ -308,15 +309,29 @@ class Browser(SeleniumLibrary):
         self.logger.info("Downloading driver into: %s", str(download_dir))
         dm = dm_class(download_root=download_dir, link_path=download_dir)
         try:
+            dm_result = None
             if version:
-                dm.download_and_install(version)
+                dm_result = dm.download_and_install(version)
             else:
-                dm.download_and_install()
+                dm_result = dm.download_and_install()
+            if platform.system() == "Darwin" and dm_result:
+                self._set_executable_permissions(dm_result[0])
             self.logger.debug(
                 "%s downloaded into %s", dm.get_driver_filename(), str(download_dir)
             )
         except RuntimeError:
             pass
+
+    def _set_executable_permissions(self, chromedriver_filepath: str = None) -> None:
+        if chromedriver_filepath:
+            self.logger.debug(
+                "Set Executable Permissions for file: %s", chromedriver_filepath
+            )
+            st = os.stat(chromedriver_filepath)
+            os.chmod(
+                chromedriver_filepath,
+                st.st_mode | stat.S_IXOTH | stat.S_IXGRP | stat.S_IEXEC,
+            )
 
     def _set_driver_paths(self, dm_class: str, download: bool) -> Any:
         driver_executable_path = None
