@@ -4,7 +4,7 @@ Release notes
 Upcoming release
 ----------------
 
-- PDF: Add ``encrypt_pdf`` and ``add_pages_to_source_pdf``` keywords.
+- PDF: Add ``encrypt_pdf`` and ``add_pages_to_source_pdf`` keywords.
 - Windows: Add aliases for element locators,
   for better Robocode Lab compatibility
 - HTTP: Add keyword ``http_get``
