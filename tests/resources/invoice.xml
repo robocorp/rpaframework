@@ -1,0 +1,1025 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages>
+    <page id="1" bbox="0.000,0.000,595.280,841.890" rotate="0">
+        <textbox id="0" bbox="42.520,645.904,148.762,723.070">
+            <textline bbox="42.520,708.638,67.450,723.070">
+                <text font="RUMLVE+Helvetica-Bold" bbox="42.520,708.638,47.897,723.070" size="14.432">F</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="47.897,708.638,51.320,723.070" size="14.432">r</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="51.320,708.638,56.697,723.070" size="14.432">o</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="56.697,708.638,64.520,723.070" size="14.432">m</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="64.520,708.638,67.450,723.070" size="14.432">:</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="42.520,696.190,135.430,710.296">
+                <text font="JQRQXM+Helvetica" bbox="42.520,696.190,48.874,710.296" size="14.106">D</text>
+                <text font="JQRQXM+Helvetica" bbox="48.874,696.190,54.743,710.296" size="14.106">E</text>
+                <text font="JQRQXM+Helvetica" bbox="54.743,696.190,62.074,710.296" size="14.106">M</text>
+                <text font="JQRQXM+Helvetica" bbox="62.074,696.190,68.920,710.296" size="14.106">O</text>
+                <text font="JQRQXM+Helvetica" bbox="68.920,696.190,71.366,710.296" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="71.366,696.190,74.297,710.296" size="14.106">-</text>
+                <text font="JQRQXM+Helvetica" bbox="74.297,696.190,76.743,710.296" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="76.743,696.190,82.613,710.296" size="14.106">S</text>
+                <text font="JQRQXM+Helvetica" bbox="82.613,696.190,84.566,710.296" size="14.106">l</text>
+                <text font="JQRQXM+Helvetica" bbox="84.566,696.190,86.520,710.296" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="86.520,696.190,90.920,710.296" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="90.920,696.190,95.813,710.296" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="95.813,696.190,100.706,710.296" size="14.106">d</text>
+                <text font="JQRQXM+Helvetica" bbox="100.706,696.190,103.152,710.296" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="103.152,696.190,105.598,710.296" size="14.106">I</text>
+                <text font="JQRQXM+Helvetica" bbox="105.598,696.190,110.491,710.296" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="110.491,696.190,114.891,710.296" size="14.106">v</text>
+                <text font="JQRQXM+Helvetica" bbox="114.891,696.190,119.784,710.296" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="119.784,696.190,121.738,710.296" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="121.738,696.190,126.138,710.296" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="126.138,696.190,131.030,710.296" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="131.030,696.190,135.430,710.296" size="14.106">s</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="42.520,683.618,98.286,697.724">
+                <text font="JQRQXM+Helvetica" bbox="42.520,683.618,48.390,697.724" size="14.106">S</text>
+                <text font="JQRQXM+Helvetica" bbox="48.390,683.618,53.282,697.724" size="14.106">u</text>
+                <text font="JQRQXM+Helvetica" bbox="53.282,683.618,55.236,697.724" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="55.236,683.618,57.682,697.724" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="57.682,683.618,62.575,697.724" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="62.575,683.618,65.022,697.724" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="65.022,683.618,69.914,697.724" size="14.106">5</text>
+                <text font="JQRQXM+Helvetica" bbox="69.914,683.618,75.784,697.724" size="14.106">A</text>
+                <text font="JQRQXM+Helvetica" bbox="75.784,683.618,78.714,697.724" size="14.106">-</text>
+                <text font="JQRQXM+Helvetica" bbox="78.714,683.618,83.607,697.724" size="14.106">1</text>
+                <text font="JQRQXM+Helvetica" bbox="83.607,683.618,88.500,697.724" size="14.106">2</text>
+                <text font="JQRQXM+Helvetica" bbox="88.500,683.618,93.393,697.724" size="14.106">0</text>
+                <text font="JQRQXM+Helvetica" bbox="93.393,683.618,98.286,697.724" size="14.106">4</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="42.520,671.047,132.518,685.153">
+                <text font="JQRQXM+Helvetica" bbox="42.520,671.047,47.413,685.153" size="14.106">1</text>
+                <text font="JQRQXM+Helvetica" bbox="47.413,671.047,52.306,685.153" size="14.106">2</text>
+                <text font="JQRQXM+Helvetica" bbox="52.306,671.047,57.198,685.153" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="57.198,671.047,59.645,685.153" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="59.645,671.047,65.514,685.153" size="14.106">S</text>
+                <text font="JQRQXM+Helvetica" bbox="65.514,671.047,70.407,685.153" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="70.407,671.047,77.738,685.153" size="14.106">m</text>
+                <text font="JQRQXM+Helvetica" bbox="77.738,671.047,82.630,685.153" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="82.630,671.047,88.984,685.153" size="14.106">w</text>
+                <text font="JQRQXM+Helvetica" bbox="88.984,671.047,93.877,685.153" size="14.106">h</text>
+                <text font="JQRQXM+Helvetica" bbox="93.877,671.047,98.770,685.153" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="98.770,671.047,101.700,685.153" size="14.106">r</text>
+                <text font="JQRQXM+Helvetica" bbox="101.700,671.047,106.593,685.153" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="106.593,671.047,109.039,685.153" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="109.039,671.047,114.909,685.153" size="14.106">S</text>
+                <text font="JQRQXM+Helvetica" bbox="114.909,671.047,117.355,685.153" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="117.355,671.047,120.286,685.153" size="14.106">r</text>
+                <text font="JQRQXM+Helvetica" bbox="120.286,671.047,125.178,685.153" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="125.178,671.047,130.071,685.153" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="130.071,671.047,132.518,685.153" size="14.106">t</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="42.520,658.476,119.309,672.582">
+                <text font="JQRQXM+Helvetica" bbox="42.520,658.476,48.390,672.582" size="14.106">Y</text>
+                <text font="JQRQXM+Helvetica" bbox="48.390,658.476,53.282,672.582" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="53.282,658.476,58.175,672.582" size="14.106">u</text>
+                <text font="JQRQXM+Helvetica" bbox="58.175,658.476,61.106,672.582" size="14.106">r</text>
+                <text font="JQRQXM+Helvetica" bbox="61.106,658.476,63.552,672.582" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="63.552,658.476,69.906,672.582" size="14.106">C</text>
+                <text font="JQRQXM+Helvetica" bbox="69.906,658.476,71.859,672.582" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="71.859,658.476,74.306,672.582" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="74.306,658.476,78.706,672.582" size="14.106">y</text>
+                <text font="JQRQXM+Helvetica" bbox="78.706,658.476,81.152,672.582" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="81.152,658.476,87.022,672.582" size="14.106">A</text>
+                <text font="JQRQXM+Helvetica" bbox="87.022,658.476,92.398,672.582" size="14.106">Z</text>
+                <text font="JQRQXM+Helvetica" bbox="92.398,658.476,94.845,672.582" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="94.845,658.476,99.738,672.582" size="14.106">1</text>
+                <text font="JQRQXM+Helvetica" bbox="99.738,658.476,104.630,672.582" size="14.106">2</text>
+                <text font="JQRQXM+Helvetica" bbox="104.630,658.476,109.523,672.582" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="109.523,658.476,114.416,672.582" size="14.106">4</text>
+                <text font="JQRQXM+Helvetica" bbox="114.416,658.476,119.309,672.582" size="14.106">5</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="42.520,645.904,148.762,660.010">
+                <text font="JQRQXM+Helvetica" bbox="42.520,645.904,47.413,660.010" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="47.413,645.904,52.306,660.010" size="14.106">d</text>
+                <text font="JQRQXM+Helvetica" bbox="52.306,645.904,59.636,660.010" size="14.106">m</text>
+                <text font="JQRQXM+Helvetica" bbox="59.636,645.904,61.590,660.010" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="61.590,645.904,66.482,660.010" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="66.482,645.904,75.414,660.010" size="14.106">@</text>
+                <text font="JQRQXM+Helvetica" bbox="75.414,645.904,79.814,660.010" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="79.814,645.904,81.768,660.010" size="14.106">l</text>
+                <text font="JQRQXM+Helvetica" bbox="81.768,645.904,83.722,660.010" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="83.722,645.904,88.122,660.010" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="88.122,645.904,93.014,660.010" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="93.014,645.904,97.907,660.010" size="14.106">d</text>
+                <text font="JQRQXM+Helvetica" bbox="97.907,645.904,99.861,660.010" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="99.861,645.904,104.754,660.010" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="104.754,645.904,109.154,660.010" size="14.106">v</text>
+                <text font="JQRQXM+Helvetica" bbox="109.154,645.904,114.046,660.010" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="114.046,645.904,116.000,660.010" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="116.000,645.904,120.400,660.010" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="120.400,645.904,125.293,660.010" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="125.293,645.904,129.693,660.010" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="129.693,645.904,132.139,660.010" size="14.106">.</text>
+                <text font="JQRQXM+Helvetica" bbox="132.139,645.904,136.539,660.010" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="136.539,645.904,141.432,660.010" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="141.432,645.904,148.762,660.010" size="14.106">m</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="1" bbox="479.981,766.183,552.761,800.820">
+            <textline bbox="479.981,766.183,552.761,800.820">
+                <text font="RUMLVE+Helvetica-Bold" bbox="479.981,766.183,485.852,800.820" size="34.637">I</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="485.852,766.183,498.757,800.820" size="34.637">n</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="498.757,766.183,510.499,800.820" size="34.637">v</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="510.499,766.183,523.404,800.820" size="34.637">o</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="523.404,766.183,529.275,800.820" size="34.637">i</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="529.275,766.183,541.018,800.820" size="34.637">c</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="541.018,766.183,552.761,800.820" size="34.637">e</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="2" bbox="348.410,650.904,410.028,728.373">
+            <textline bbox="348.410,714.267,410.028,728.373">
+                <text font="JQRQXM+Helvetica" bbox="348.410,714.267,350.856,728.373" size="14.106">I</text>
+                <text font="JQRQXM+Helvetica" bbox="350.856,714.267,355.749,728.373" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="355.749,714.267,360.149,728.373" size="14.106">v</text>
+                <text font="JQRQXM+Helvetica" bbox="360.149,714.267,365.042,728.373" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="365.042,714.267,366.996,728.373" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="366.996,714.267,371.396,728.373" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="371.396,714.267,376.288,728.373" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="376.288,714.267,378.735,728.373" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="378.735,714.267,385.088,728.373" size="14.106">N</text>
+                <text font="JQRQXM+Helvetica" bbox="385.088,714.267,389.981,728.373" size="14.106">u</text>
+                <text font="JQRQXM+Helvetica" bbox="389.981,714.267,397.312,728.373" size="14.106">m</text>
+                <text font="JQRQXM+Helvetica" bbox="397.312,714.267,402.204,728.373" size="14.106">b</text>
+                <text font="JQRQXM+Helvetica" bbox="402.204,714.267,407.097,728.373" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="407.097,714.267,410.028,728.373" size="14.106">r</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="348.410,698.457,404.642,712.563">
+                <text font="JQRQXM+Helvetica" bbox="348.410,698.457,355.256,712.563" size="14.106">O</text>
+                <text font="JQRQXM+Helvetica" bbox="355.256,698.457,358.187,712.563" size="14.106">r</text>
+                <text font="JQRQXM+Helvetica" bbox="358.187,698.457,363.080,712.563" size="14.106">d</text>
+                <text font="JQRQXM+Helvetica" bbox="363.080,698.457,367.972,712.563" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="367.972,698.457,370.903,712.563" size="14.106">r</text>
+                <text font="JQRQXM+Helvetica" bbox="370.903,698.457,373.349,712.563" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="373.349,698.457,379.703,712.563" size="14.106">N</text>
+                <text font="JQRQXM+Helvetica" bbox="379.703,698.457,384.596,712.563" size="14.106">u</text>
+                <text font="JQRQXM+Helvetica" bbox="384.596,698.457,391.926,712.563" size="14.106">m</text>
+                <text font="JQRQXM+Helvetica" bbox="391.926,698.457,396.819,712.563" size="14.106">b</text>
+                <text font="JQRQXM+Helvetica" bbox="396.819,698.457,401.712,712.563" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="401.712,698.457,404.642,712.563" size="14.106">r</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="348.410,682.647,397.320,696.753">
+                <text font="JQRQXM+Helvetica" bbox="348.410,682.647,350.856,696.753" size="14.106">I</text>
+                <text font="JQRQXM+Helvetica" bbox="350.856,682.647,355.749,696.753" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="355.749,682.647,360.149,696.753" size="14.106">v</text>
+                <text font="JQRQXM+Helvetica" bbox="360.149,682.647,365.042,696.753" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="365.042,682.647,366.996,696.753" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="366.996,682.647,371.396,696.753" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="371.396,682.647,376.288,696.753" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="376.288,682.647,378.735,696.753" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="378.735,682.647,385.088,696.753" size="14.106">D</text>
+                <text font="JQRQXM+Helvetica" bbox="385.088,682.647,389.981,696.753" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="389.981,682.647,392.428,696.753" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="392.428,682.647,397.320,696.753" size="14.106">e</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="348.410,666.837,385.581,680.943">
+                <text font="JQRQXM+Helvetica" bbox="348.410,666.837,354.764,680.943" size="14.106">D</text>
+                <text font="JQRQXM+Helvetica" bbox="354.764,666.837,359.656,680.943" size="14.106">u</text>
+                <text font="JQRQXM+Helvetica" bbox="359.656,666.837,364.549,680.943" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="364.549,666.837,366.996,680.943" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="366.996,666.837,373.349,680.943" size="14.106">D</text>
+                <text font="JQRQXM+Helvetica" bbox="373.349,666.837,378.242,680.943" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="378.242,666.837,380.688,680.943" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="380.688,666.837,385.581,680.943" size="14.106">e</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="348.410,650.904,388.503,665.336">
+                <text font="RUMLVE+Helvetica-Bold" bbox="348.410,650.904,353.787,665.336" size="14.432">T</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="353.787,650.904,359.164,665.336" size="14.432">o</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="359.164,650.904,362.094,665.336" size="14.432">t</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="362.094,650.904,366.987,665.336" size="14.432">a</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="366.987,650.904,369.433,665.336" size="14.432">l</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="369.433,650.904,371.880,665.336" size="14.432"></text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="371.880,650.904,378.233,665.336" size="14.432">D</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="378.233,650.904,383.610,665.336" size="14.432">u</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="383.610,650.904,388.503,665.336" size="14.432">e</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="3" bbox="451.935,650.904,519.933,728.373">
+            <textline bbox="451.935,714.267,489.106,728.373">
+                <text font="JQRQXM+Helvetica" bbox="451.935,714.267,454.381,728.373" size="14.106">I</text>
+                <text font="JQRQXM+Helvetica" bbox="454.381,714.267,460.735,728.373" size="14.106">N</text>
+                <text font="JQRQXM+Helvetica" bbox="460.735,714.267,466.605,728.373" size="14.106">V</text>
+                <text font="JQRQXM+Helvetica" bbox="466.605,714.267,469.535,728.373" size="14.106">-</text>
+                <text font="JQRQXM+Helvetica" bbox="469.535,714.267,474.428,728.373" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="474.428,714.267,479.321,728.373" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="479.321,714.267,484.213,728.373" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="484.213,714.267,489.106,728.373" size="14.106">7</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="451.935,698.457,476.399,712.563">
+                <text font="JQRQXM+Helvetica" bbox="451.935,698.457,456.828,712.563" size="14.106">1</text>
+                <text font="JQRQXM+Helvetica" bbox="456.828,698.457,461.721,712.563" size="14.106">2</text>
+                <text font="JQRQXM+Helvetica" bbox="461.721,698.457,466.613,712.563" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="466.613,698.457,471.506,712.563" size="14.106">4</text>
+                <text font="JQRQXM+Helvetica" bbox="471.506,698.457,476.399,712.563" size="14.106">5</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="451.935,682.647,519.933,696.753">
+                <text font="JQRQXM+Helvetica" bbox="451.935,682.647,456.335,696.753" size="14.106">J</text>
+                <text font="JQRQXM+Helvetica" bbox="456.335,682.647,461.228,696.753" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="461.228,682.647,466.121,696.753" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="466.121,682.647,471.013,696.753" size="14.106">u</text>
+                <text font="JQRQXM+Helvetica" bbox="471.013,682.647,475.906,696.753" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="475.906,682.647,478.837,696.753" size="14.106">r</text>
+                <text font="JQRQXM+Helvetica" bbox="478.837,682.647,483.237,696.753" size="14.106">y</text>
+                <text font="JQRQXM+Helvetica" bbox="483.237,682.647,485.683,696.753" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="485.683,682.647,490.576,696.753" size="14.106">2</text>
+                <text font="JQRQXM+Helvetica" bbox="490.576,682.647,495.469,696.753" size="14.106">5</text>
+                <text font="JQRQXM+Helvetica" bbox="495.469,682.647,497.915,696.753" size="14.106">,</text>
+                <text font="JQRQXM+Helvetica" bbox="497.915,682.647,500.361,696.753" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="500.361,682.647,505.254,696.753" size="14.106">2</text>
+                <text font="JQRQXM+Helvetica" bbox="505.254,682.647,510.147,696.753" size="14.106">0</text>
+                <text font="JQRQXM+Helvetica" bbox="510.147,682.647,515.040,696.753" size="14.106">1</text>
+                <text font="JQRQXM+Helvetica" bbox="515.040,682.647,519.933,696.753" size="14.106">6</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="451.935,666.837,519.933,680.943">
+                <text font="JQRQXM+Helvetica" bbox="451.935,666.837,456.335,680.943" size="14.106">J</text>
+                <text font="JQRQXM+Helvetica" bbox="456.335,666.837,461.228,680.943" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="461.228,666.837,466.121,680.943" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="466.121,666.837,471.013,680.943" size="14.106">u</text>
+                <text font="JQRQXM+Helvetica" bbox="471.013,666.837,475.906,680.943" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="475.906,666.837,478.837,680.943" size="14.106">r</text>
+                <text font="JQRQXM+Helvetica" bbox="478.837,666.837,483.237,680.943" size="14.106">y</text>
+                <text font="JQRQXM+Helvetica" bbox="483.237,666.837,485.683,680.943" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="485.683,666.837,490.576,680.943" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="490.576,666.837,495.469,680.943" size="14.106">1</text>
+                <text font="JQRQXM+Helvetica" bbox="495.469,666.837,497.915,680.943" size="14.106">,</text>
+                <text font="JQRQXM+Helvetica" bbox="497.915,666.837,500.361,680.943" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="500.361,666.837,505.254,680.943" size="14.106">2</text>
+                <text font="JQRQXM+Helvetica" bbox="505.254,666.837,510.147,680.943" size="14.106">0</text>
+                <text font="JQRQXM+Helvetica" bbox="510.147,666.837,515.040,680.943" size="14.106">1</text>
+                <text font="JQRQXM+Helvetica" bbox="515.040,666.837,519.933,680.943" size="14.106">6</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="451.935,650.904,478.845,665.336">
+                <text font="RUMLVE+Helvetica-Bold" bbox="451.935,650.904,456.828,665.336" size="14.432">$</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="456.828,650.904,461.721,665.336" size="14.432">9</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="461.721,650.904,466.613,665.336" size="14.432">3</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="466.613,650.904,469.060,665.336" size="14.432">.</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="469.060,650.904,473.953,665.336" size="14.432">5</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="473.953,650.904,478.845,665.336" size="14.432">0</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="4" bbox="52.862,500.240,84.648,514.672">
+            <textline bbox="52.862,500.240,84.648,514.672">
+                <text font="RUMLVE+Helvetica-Bold" bbox="52.862,500.240,59.216,514.672" size="14.432">H</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="59.216,500.240,62.639,514.672" size="14.432">r</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="62.639,500.240,67.532,514.672" size="14.432">s</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="67.532,500.240,69.978,514.672" size="14.432">/</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="69.978,500.240,76.824,514.672" size="14.432">Q</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="76.824,500.240,79.755,514.672" size="14.432">t</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="79.755,500.240,84.648,514.672" size="14.432">y</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="5" bbox="60.192,476.051,77.317,490.157">
+            <textline bbox="60.192,476.051,77.317,490.157">
+                <text font="JQRQXM+Helvetica" bbox="60.192,476.051,65.085,490.157" size="14.106">1</text>
+                <text font="JQRQXM+Helvetica" bbox="65.085,476.051,67.531,490.157" size="14.106">.</text>
+                <text font="JQRQXM+Helvetica" bbox="67.531,476.051,72.424,490.157" size="14.106">0</text>
+                <text font="JQRQXM+Helvetica" bbox="72.424,476.051,77.317,490.157" size="14.106">0</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="6" bbox="102.490,471.284,206.804,514.672">
+            <textline bbox="102.490,500.240,133.800,514.672">
+                <text font="RUMLVE+Helvetica-Bold" bbox="102.490,500.240,108.360,514.672" size="14.432">S</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="108.360,500.240,113.252,514.672" size="14.432">e</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="113.252,500.240,116.676,514.672" size="14.432">r</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="116.676,500.240,121.568,514.672" size="14.432">v</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="121.568,500.240,124.015,514.672" size="14.432">i</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="124.015,500.240,128.908,514.672" size="14.432">c</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="128.908,500.240,133.800,514.672" size="14.432">e</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="102.490,480.803,150.415,494.909">
+                <text font="JQRQXM+Helvetica" bbox="102.490,480.803,110.797,494.909" size="14.106">W</text>
+                <text font="JQRQXM+Helvetica" bbox="110.797,480.803,115.690,494.909" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="115.690,480.803,120.583,494.909" size="14.106">b</text>
+                <text font="JQRQXM+Helvetica" bbox="120.583,480.803,123.029,494.909" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="123.029,480.803,129.383,494.909" size="14.106">D</text>
+                <text font="JQRQXM+Helvetica" bbox="129.383,480.803,134.276,494.909" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="134.276,480.803,138.676,494.909" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="138.676,480.803,140.629,494.909" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="140.629,480.803,145.522,494.909" size="14.106">g</text>
+                <text font="JQRQXM+Helvetica" bbox="145.522,480.803,150.415,494.909" size="14.106">n</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="102.490,471.284,206.804,483.980">
+                <text font="JQRQXM+Helvetica" bbox="102.490,471.284,107.329,483.980" size="12.696">T</text>
+                <text font="JQRQXM+Helvetica" bbox="107.329,471.284,111.733,483.980" size="12.696">h</text>
+                <text font="JQRQXM+Helvetica" bbox="111.733,471.284,113.491,483.980" size="12.696">i</text>
+                <text font="JQRQXM+Helvetica" bbox="113.491,471.284,117.451,483.980" size="12.696">s</text>
+                <text font="JQRQXM+Helvetica" bbox="117.451,471.284,119.653,483.980" size="12.696"></text>
+                <text font="JQRQXM+Helvetica" bbox="119.653,471.284,121.411,483.980" size="12.696">i</text>
+                <text font="JQRQXM+Helvetica" bbox="121.411,471.284,125.371,483.980" size="12.696">s</text>
+                <text font="JQRQXM+Helvetica" bbox="125.371,471.284,127.573,483.980" size="12.696"></text>
+                <text font="JQRQXM+Helvetica" bbox="127.573,471.284,131.976,483.980" size="12.696">a</text>
+                <text font="JQRQXM+Helvetica" bbox="131.976,471.284,134.178,483.980" size="12.696"></text>
+                <text font="JQRQXM+Helvetica" bbox="134.178,471.284,138.138,483.980" size="12.696">s</text>
+                <text font="JQRQXM+Helvetica" bbox="138.138,471.284,142.541,483.980" size="12.696">a</text>
+                <text font="JQRQXM+Helvetica" bbox="142.541,471.284,149.139,483.980" size="12.696">m</text>
+                <text font="JQRQXM+Helvetica" bbox="149.139,471.284,153.542,483.980" size="12.696">p</text>
+                <text font="JQRQXM+Helvetica" bbox="153.542,471.284,155.301,483.980" size="12.696">l</text>
+                <text font="JQRQXM+Helvetica" bbox="155.301,471.284,159.704,483.980" size="12.696">e</text>
+                <text font="JQRQXM+Helvetica" bbox="159.704,471.284,161.906,483.980" size="12.696"></text>
+                <text font="JQRQXM+Helvetica" bbox="161.906,471.284,166.309,483.980" size="12.696">d</text>
+                <text font="JQRQXM+Helvetica" bbox="166.309,471.284,170.713,483.980" size="12.696">e</text>
+                <text font="JQRQXM+Helvetica" bbox="170.713,471.284,174.673,483.980" size="12.696">s</text>
+                <text font="JQRQXM+Helvetica" bbox="174.673,471.284,178.633,483.980" size="12.696">c</text>
+                <text font="JQRQXM+Helvetica" bbox="178.633,471.284,181.270,483.980" size="12.696">r</text>
+                <text font="JQRQXM+Helvetica" bbox="181.270,471.284,183.028,483.980" size="12.696">i</text>
+                <text font="JQRQXM+Helvetica" bbox="183.028,471.284,187.432,483.980" size="12.696">p</text>
+                <text font="JQRQXM+Helvetica" bbox="187.432,471.284,189.634,483.980" size="12.696">t</text>
+                <text font="JQRQXM+Helvetica" bbox="189.634,471.284,191.392,483.980" size="12.696">i</text>
+                <text font="JQRQXM+Helvetica" bbox="191.392,471.284,195.796,483.980" size="12.696">o</text>
+                <text font="JQRQXM+Helvetica" bbox="195.796,471.284,200.199,483.980" size="12.696">n</text>
+                <text font="JQRQXM+Helvetica" bbox="200.199,471.284,202.401,483.980" size="12.696">.</text>
+                <text font="JQRQXM+Helvetica" bbox="202.401,471.284,204.603,483.980" size="12.696">.</text>
+                <text font="JQRQXM+Helvetica" bbox="204.603,471.284,206.804,483.980" size="12.696">.</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="7" bbox="42.520,548.678,125.671,613.273">
+            <textline bbox="42.520,598.841,56.204,613.273">
+                <text font="RUMLVE+Helvetica-Bold" bbox="42.520,598.841,47.897,613.273" size="14.432">T</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="47.897,598.841,53.274,613.273" size="14.432">o</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="53.274,598.841,56.204,613.273" size="14.432">:</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="42.520,586.393,97.784,600.499">
+                <text font="JQRQXM+Helvetica" bbox="42.520,586.393,47.897,600.499" size="14.106">T</text>
+                <text font="JQRQXM+Helvetica" bbox="47.897,586.393,52.790,600.499" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="52.790,586.393,57.190,600.499" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="57.190,586.393,59.636,600.499" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="59.636,586.393,62.082,600.499" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="62.082,586.393,67.952,600.499" size="14.106">B</text>
+                <text font="JQRQXM+Helvetica" bbox="67.952,586.393,72.845,600.499" size="14.106">u</text>
+                <text font="JQRQXM+Helvetica" bbox="72.845,586.393,77.245,600.499" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="77.245,586.393,79.198,600.499" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="79.198,586.393,84.091,600.499" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="84.091,586.393,88.984,600.499" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="88.984,586.393,93.384,600.499" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="93.384,586.393,97.784,600.499" size="14.106">s</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="42.520,573.821,117.355,587.927">
+                <text font="JQRQXM+Helvetica" bbox="42.520,573.821,47.413,587.927" size="14.106">1</text>
+                <text font="JQRQXM+Helvetica" bbox="47.413,573.821,52.306,587.927" size="14.106">2</text>
+                <text font="JQRQXM+Helvetica" bbox="52.306,573.821,57.198,587.927" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="57.198,573.821,59.645,587.927" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="59.645,573.821,65.514,587.927" size="14.106">S</text>
+                <text font="JQRQXM+Helvetica" bbox="65.514,573.821,70.407,587.927" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="70.407,573.821,77.738,587.927" size="14.106">m</text>
+                <text font="JQRQXM+Helvetica" bbox="77.738,573.821,82.630,587.927" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="82.630,573.821,88.984,587.927" size="14.106">w</text>
+                <text font="JQRQXM+Helvetica" bbox="88.984,573.821,93.877,587.927" size="14.106">h</text>
+                <text font="JQRQXM+Helvetica" bbox="93.877,573.821,98.770,587.927" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="98.770,573.821,101.700,587.927" size="14.106">r</text>
+                <text font="JQRQXM+Helvetica" bbox="101.700,573.821,106.593,587.927" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="106.593,573.821,109.039,587.927" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="109.039,573.821,114.909,587.927" size="14.106">S</text>
+                <text font="JQRQXM+Helvetica" bbox="114.909,573.821,117.355,587.927" size="14.106">t</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="42.520,561.250,125.671,575.356">
+                <text font="JQRQXM+Helvetica" bbox="42.520,561.250,49.850,575.356" size="14.106">M</text>
+                <text font="JQRQXM+Helvetica" bbox="49.850,561.250,54.743,575.356" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="54.743,561.250,56.697,575.356" size="14.106">l</text>
+                <text font="JQRQXM+Helvetica" bbox="56.697,561.250,61.590,575.356" size="14.106">b</text>
+                <text font="JQRQXM+Helvetica" bbox="61.590,561.250,66.482,575.356" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="66.482,561.250,71.375,575.356" size="14.106">u</text>
+                <text font="JQRQXM+Helvetica" bbox="71.375,561.250,74.306,575.356" size="14.106">r</text>
+                <text font="JQRQXM+Helvetica" bbox="74.306,561.250,79.198,575.356" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="79.198,561.250,84.091,575.356" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="84.091,561.250,86.538,575.356" size="14.106">,</text>
+                <text font="JQRQXM+Helvetica" bbox="86.538,561.250,88.984,575.356" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="88.984,561.250,94.854,575.356" size="14.106">V</text>
+                <text font="JQRQXM+Helvetica" bbox="94.854,561.250,97.300,575.356" size="14.106">I</text>
+                <text font="JQRQXM+Helvetica" bbox="97.300,561.250,103.654,575.356" size="14.106">C</text>
+                <text font="JQRQXM+Helvetica" bbox="103.654,561.250,106.100,575.356" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="106.100,561.250,110.993,575.356" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="110.993,561.250,115.886,575.356" size="14.106">0</text>
+                <text font="JQRQXM+Helvetica" bbox="115.886,561.250,120.778,575.356" size="14.106">0</text>
+                <text font="JQRQXM+Helvetica" bbox="120.778,561.250,125.671,575.356" size="14.106">0</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="42.520,548.678,98.893,562.784">
+                <text font="JQRQXM+Helvetica" bbox="42.520,548.678,44.966,562.784" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="44.966,548.678,49.859,562.784" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="49.859,548.678,54.259,562.784" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="54.259,548.678,56.706,562.784" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="56.706,548.678,65.638,562.784" size="14.106">@</text>
+                <text font="JQRQXM+Helvetica" bbox="65.638,548.678,68.084,562.784" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="68.084,548.678,72.977,562.784" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="72.977,548.678,77.377,562.784" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="77.377,548.678,79.823,562.784" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="79.823,548.678,82.270,562.784" size="14.106">.</text>
+                <text font="JQRQXM+Helvetica" bbox="82.270,548.678,86.670,562.784" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="86.670,548.678,91.562,562.784" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="91.562,548.678,98.893,562.784" size="14.106">m</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="8" bbox="42.520,311.840,383.078,629.944">
+            <textline bbox="42.520,311.840,383.078,629.944">
+                <text font="JQRQXM+Helvetica" bbox="42.520,336.056,48.390,350.162" size="14.106">B</text>
+                <text font="JQRQXM+Helvetica" bbox="48.390,336.056,54.259,350.162" size="14.106">S</text>
+                <text font="JQRQXM+Helvetica" bbox="54.259,336.056,60.129,350.162" size="14.106">B</text>
+                <text font="JQRQXM+Helvetica" bbox="60.129,336.056,62.575,350.162" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="62.575,336.056,67.468,350.162" size="14.106">#</text>
+                <text font="JQRQXM+Helvetica" bbox="67.468,336.056,69.914,350.162" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="69.914,336.056,74.807,350.162" size="14.106">4</text>
+                <text font="JQRQXM+Helvetica" bbox="74.807,336.056,79.700,350.162" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="79.700,336.056,84.593,350.162" size="14.106">2</text>
+                <text font="JQRQXM+Helvetica" bbox="84.593,336.056,89.486,350.162" size="14.106">1</text>
+                <text font="JQRQXM+Helvetica" bbox="89.486,336.056,91.932,350.162" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="91.932,336.056,96.825,350.162" size="14.106">4</text>
+                <text font="JQRQXM+Helvetica" bbox="96.825,336.056,101.718,350.162" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="101.718,336.056,106.610,350.162" size="14.106">2</text>
+                <text></text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="173.327,311.840,255.820,507.433" size="195.593">P</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="220.466,368.390,312.370,554.572" size="186.182">a</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="244.035,415.529,359.509,578.142" size="162.613">i</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="295.837,439.099,383.078,629.944" size="190.845">d</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="9" bbox="42.520,348.627,112.471,375.305">
+            <textline bbox="42.520,361.199,82.622,375.305">
+                <text font="JQRQXM+Helvetica" bbox="42.520,361.199,48.390,375.305" size="14.106">A</text>
+                <text font="JQRQXM+Helvetica" bbox="48.390,361.199,54.743,375.305" size="14.106">N</text>
+                <text font="JQRQXM+Helvetica" bbox="54.743,361.199,60.120,375.305" size="14.106">Z</text>
+                <text font="JQRQXM+Helvetica" bbox="60.120,361.199,62.566,375.305" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="62.566,361.199,68.436,375.305" size="14.106">B</text>
+                <text font="JQRQXM+Helvetica" bbox="68.436,361.199,73.329,375.305" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="73.329,361.199,78.222,375.305" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="78.222,361.199,82.622,375.305" size="14.106">k</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="42.520,348.627,112.471,362.733">
+                <text font="JQRQXM+Helvetica" bbox="42.520,348.627,48.390,362.733" size="14.106">A</text>
+                <text font="JQRQXM+Helvetica" bbox="48.390,348.627,54.743,362.733" size="14.106">C</text>
+                <text font="JQRQXM+Helvetica" bbox="54.743,348.627,61.097,362.733" size="14.106">C</text>
+                <text font="JQRQXM+Helvetica" bbox="61.097,348.627,63.543,362.733" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="63.543,348.627,68.436,362.733" size="14.106">#</text>
+                <text font="JQRQXM+Helvetica" bbox="68.436,348.627,70.882,362.733" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="70.882,348.627,75.775,362.733" size="14.106">1</text>
+                <text font="JQRQXM+Helvetica" bbox="75.775,348.627,80.668,362.733" size="14.106">2</text>
+                <text font="JQRQXM+Helvetica" bbox="80.668,348.627,85.561,362.733" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="85.561,348.627,90.454,362.733" size="14.106">4</text>
+                <text font="JQRQXM+Helvetica" bbox="90.454,348.627,92.900,362.733" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="92.900,348.627,97.793,362.733" size="14.106">1</text>
+                <text font="JQRQXM+Helvetica" bbox="97.793,348.627,102.686,362.733" size="14.106">2</text>
+                <text font="JQRQXM+Helvetica" bbox="102.686,348.627,107.578,362.733" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="107.578,348.627,112.471,362.733" size="14.106">4</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="10" bbox="346.874,500.240,389.915,514.672">
+            <textline bbox="346.874,500.240,389.915,514.672">
+                <text font="RUMLVE+Helvetica-Bold" bbox="346.874,500.240,353.228,514.672" size="14.432">R</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="353.228,500.240,358.120,514.672" size="14.432">a</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="358.120,500.240,361.051,514.672" size="14.432">t</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="361.051,500.240,365.944,514.672" size="14.432">e</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="365.944,500.240,368.390,514.672" size="14.432">/</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="368.390,500.240,374.260,514.672" size="14.432">P</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="374.260,500.240,377.683,514.672" size="14.432">r</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="377.683,500.240,380.129,514.672" size="14.432">i</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="380.129,500.240,385.022,514.672" size="14.432">c</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="385.022,500.240,389.915,514.672" size="14.432">e</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="11" bbox="363.004,476.051,389.914,490.157">
+            <textline bbox="363.004,476.051,389.914,490.157">
+                <text font="JQRQXM+Helvetica" bbox="363.004,476.051,367.897,490.157" size="14.106">$</text>
+                <text font="JQRQXM+Helvetica" bbox="367.897,476.051,372.790,490.157" size="14.106">8</text>
+                <text font="JQRQXM+Helvetica" bbox="372.790,476.051,377.682,490.157" size="14.106">5</text>
+                <text font="JQRQXM+Helvetica" bbox="377.682,476.051,380.129,490.157" size="14.106">.</text>
+                <text font="JQRQXM+Helvetica" bbox="380.129,476.051,385.022,490.157" size="14.106">0</text>
+                <text font="JQRQXM+Helvetica" bbox="385.022,476.051,389.914,490.157" size="14.106">0</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="12" bbox="439.765,500.240,467.142,514.672">
+            <textline bbox="439.765,500.240,467.142,514.672">
+                <text font="RUMLVE+Helvetica-Bold" bbox="439.765,500.240,446.119,514.672" size="14.432">A</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="446.119,500.240,451.495,514.672" size="14.432">d</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="451.495,500.240,453.942,514.672" size="14.432">j</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="453.942,500.240,459.319,514.672" size="14.432">u</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="459.319,500.240,464.211,514.672" size="14.432">s</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="464.211,500.240,467.142,514.672" size="14.432">t</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="13" bbox="442.194,476.051,467.142,490.157">
+            <textline bbox="442.194,476.051,467.142,490.157">
+                <text font="JQRQXM+Helvetica" bbox="442.194,476.051,447.087,490.157" size="14.106">0</text>
+                <text font="JQRQXM+Helvetica" bbox="447.087,476.051,449.533,490.157" size="14.106">.</text>
+                <text font="JQRQXM+Helvetica" bbox="449.533,476.051,454.426,490.157" size="14.106">0</text>
+                <text font="JQRQXM+Helvetica" bbox="454.426,476.051,459.319,490.157" size="14.106">0</text>
+                <text font="JQRQXM+Helvetica" bbox="459.319,476.051,467.142,490.157" size="14.106">%</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="14" bbox="504.418,500.240,544.511,514.672">
+            <textline bbox="504.418,500.240,544.511,514.672">
+                <text font="RUMLVE+Helvetica-Bold" bbox="504.418,500.240,510.288,514.672" size="14.432">S</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="510.288,500.240,515.664,514.672" size="14.432">u</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="515.664,500.240,521.041,514.672" size="14.432">b</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="521.041,500.240,523.488,514.672" size="14.432"></text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="523.488,500.240,528.864,514.672" size="14.432">T</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="528.864,500.240,534.241,514.672" size="14.432">o</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="534.241,500.240,537.172,514.672" size="14.432">t</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="537.172,500.240,542.064,514.672" size="14.432">a</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="542.064,500.240,544.511,514.672" size="14.432">l</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="15" bbox="517.600,476.051,544.510,490.157">
+            <textline bbox="517.600,476.051,544.510,490.157">
+                <text font="JQRQXM+Helvetica" bbox="517.600,476.051,522.493,490.157" size="14.106">$</text>
+                <text font="JQRQXM+Helvetica" bbox="522.493,476.051,527.386,490.157" size="14.106">8</text>
+                <text font="JQRQXM+Helvetica" bbox="527.386,476.051,532.278,490.157" size="14.106">5</text>
+                <text font="JQRQXM+Helvetica" bbox="532.278,476.051,534.725,490.157" size="14.106">.</text>
+                <text font="JQRQXM+Helvetica" bbox="534.725,476.051,539.618,490.157" size="14.106">0</text>
+                <text font="JQRQXM+Helvetica" bbox="539.618,476.051,544.510,490.157" size="14.106">0</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="16" bbox="397.303,407.996,434.968,453.845">
+            <textline bbox="397.303,439.739,434.967,453.845">
+                <text font="JQRQXM+Helvetica" bbox="397.303,439.739,403.173,453.845" size="14.106">S</text>
+                <text font="JQRQXM+Helvetica" bbox="403.173,439.739,408.065,453.845" size="14.106">u</text>
+                <text font="JQRQXM+Helvetica" bbox="408.065,439.739,412.958,453.845" size="14.106">b</text>
+                <text font="JQRQXM+Helvetica" bbox="412.958,439.739,415.405,453.845" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="415.405,439.739,420.781,453.845" size="14.106">T</text>
+                <text font="JQRQXM+Helvetica" bbox="420.781,439.739,425.674,453.845" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="425.674,439.739,428.121,453.845" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="428.121,439.739,433.013,453.845" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="433.013,439.739,434.967,453.845" size="14.106">l</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="420.298,423.929,434.968,438.035">
+                <text font="JQRQXM+Helvetica" bbox="420.298,423.929,425.675,438.035" size="14.106">T</text>
+                <text font="JQRQXM+Helvetica" bbox="425.675,423.929,430.568,438.035" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="430.568,423.929,434.968,438.035" size="14.106">x</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="413.944,407.996,434.967,422.428">
+                <text font="RUMLVE+Helvetica-Bold" bbox="413.944,407.996,419.321,422.428" size="14.432">T</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="419.321,407.996,424.698,422.428" size="14.432">o</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="424.698,407.996,427.628,422.428" size="14.432">t</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="427.628,407.996,432.521,422.428" size="14.432">a</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="432.521,407.996,434.967,422.428" size="14.432">l</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="17" bbox="517.600,407.996,544.511,453.845">
+            <textline bbox="517.600,439.739,544.510,453.845">
+                <text font="JQRQXM+Helvetica" bbox="517.600,439.739,522.493,453.845" size="14.106">$</text>
+                <text font="JQRQXM+Helvetica" bbox="522.493,439.739,527.386,453.845" size="14.106">8</text>
+                <text font="JQRQXM+Helvetica" bbox="527.386,439.739,532.278,453.845" size="14.106">5</text>
+                <text font="JQRQXM+Helvetica" bbox="532.278,439.739,534.725,453.845" size="14.106">.</text>
+                <text font="JQRQXM+Helvetica" bbox="534.725,439.739,539.618,453.845" size="14.106">0</text>
+                <text font="JQRQXM+Helvetica" bbox="539.618,439.739,544.510,453.845" size="14.106">0</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="522.493,423.929,544.511,438.035">
+                <text font="JQRQXM+Helvetica" bbox="522.493,423.929,527.386,438.035" size="14.106">$</text>
+                <text font="JQRQXM+Helvetica" bbox="527.386,423.929,532.279,438.035" size="14.106">8</text>
+                <text font="JQRQXM+Helvetica" bbox="532.279,423.929,534.725,438.035" size="14.106">.</text>
+                <text font="JQRQXM+Helvetica" bbox="534.725,423.929,539.618,438.035" size="14.106">5</text>
+                <text font="JQRQXM+Helvetica" bbox="539.618,423.929,544.511,438.035" size="14.106">0</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="517.600,407.996,544.510,422.428">
+                <text font="RUMLVE+Helvetica-Bold" bbox="517.600,407.996,522.493,422.428" size="14.432">$</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="522.493,407.996,527.386,422.428" size="14.432">9</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="527.386,407.996,532.278,422.428" size="14.432">3</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="532.278,407.996,534.725,422.428" size="14.432">.</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="534.725,407.996,539.618,422.428" size="14.432">5</text>
+                <text font="RUMLVE+Helvetica-Bold" bbox="539.618,407.996,544.510,422.428" size="14.432">0</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <textbox id="18" bbox="42.520,34.165,436.267,73.415">
+            <textline bbox="42.520,59.308,436.267,73.415">
+                <text font="JQRQXM+Helvetica" bbox="42.520,59.308,48.390,73.415" size="14.106">P</text>
+                <text font="JQRQXM+Helvetica" bbox="48.390,59.308,53.282,73.415" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="53.282,59.308,57.682,73.415" size="14.106">y</text>
+                <text font="JQRQXM+Helvetica" bbox="57.682,59.308,65.013,73.415" size="14.106">m</text>
+                <text font="JQRQXM+Helvetica" bbox="65.013,59.308,69.906,73.415" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="69.906,59.308,74.798,73.415" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="74.798,59.308,77.245,73.415" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="77.245,59.308,79.691,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="79.691,59.308,81.645,73.415" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="81.645,59.308,86.045,73.415" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="86.045,59.308,88.491,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="88.491,59.308,93.384,73.415" size="14.106">d</text>
+                <text font="JQRQXM+Helvetica" bbox="93.384,59.308,98.277,73.415" size="14.106">u</text>
+                <text font="JQRQXM+Helvetica" bbox="98.277,59.308,103.170,73.415" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="103.170,59.308,105.616,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="105.616,59.308,111.970,73.415" size="14.106">w</text>
+                <text font="JQRQXM+Helvetica" bbox="111.970,59.308,113.923,73.415" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="113.923,59.308,116.370,73.415" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="116.370,59.308,121.262,73.415" size="14.106">h</text>
+                <text font="JQRQXM+Helvetica" bbox="121.262,59.308,123.216,73.415" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="123.216,59.308,128.109,73.415" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="128.109,59.308,130.555,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="130.555,59.308,135.448,73.415" size="14.106">3</text>
+                <text font="JQRQXM+Helvetica" bbox="135.448,59.308,140.341,73.415" size="14.106">0</text>
+                <text font="JQRQXM+Helvetica" bbox="140.341,59.308,142.787,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="142.787,59.308,147.680,73.415" size="14.106">d</text>
+                <text font="JQRQXM+Helvetica" bbox="147.680,59.308,152.573,73.415" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="152.573,59.308,156.973,73.415" size="14.106">y</text>
+                <text font="JQRQXM+Helvetica" bbox="156.973,59.308,161.373,73.415" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="161.373,59.308,163.819,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="163.819,59.308,166.266,73.415" size="14.106">f</text>
+                <text font="JQRQXM+Helvetica" bbox="166.266,59.308,169.196,73.415" size="14.106">r</text>
+                <text font="JQRQXM+Helvetica" bbox="169.196,59.308,174.089,73.415" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="174.089,59.308,181.419,73.415" size="14.106">m</text>
+                <text font="JQRQXM+Helvetica" bbox="181.419,59.308,183.866,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="183.866,59.308,188.758,73.415" size="14.106">d</text>
+                <text font="JQRQXM+Helvetica" bbox="188.758,59.308,193.651,73.415" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="193.651,59.308,196.098,73.415" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="196.098,59.308,200.990,73.415" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="200.990,59.308,203.437,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="203.437,59.308,208.330,73.415" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="208.330,59.308,210.776,73.415" size="14.106">f</text>
+                <text font="JQRQXM+Helvetica" bbox="210.776,59.308,213.222,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="213.222,59.308,215.176,73.415" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="215.176,59.308,220.069,73.415" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="220.069,59.308,224.469,73.415" size="14.106">v</text>
+                <text font="JQRQXM+Helvetica" bbox="224.469,59.308,229.362,73.415" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="229.362,59.308,231.315,73.415" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="231.315,59.308,235.715,73.415" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="235.715,59.308,240.608,73.415" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="240.608,59.308,243.054,73.415" size="14.106">.</text>
+                <text font="JQRQXM+Helvetica" bbox="243.054,59.308,245.501,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="245.501,59.308,250.394,73.415" size="14.106">L</text>
+                <text font="JQRQXM+Helvetica" bbox="250.394,59.308,255.286,73.415" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="255.286,59.308,257.733,73.415" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="257.733,59.308,262.626,73.415" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="262.626,59.308,265.072,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="265.072,59.308,269.965,73.415" size="14.106">p</text>
+                <text font="JQRQXM+Helvetica" bbox="269.965,59.308,274.858,73.415" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="274.858,59.308,279.258,73.415" size="14.106">y</text>
+                <text font="JQRQXM+Helvetica" bbox="279.258,59.308,286.588,73.415" size="14.106">m</text>
+                <text font="JQRQXM+Helvetica" bbox="286.588,59.308,291.481,73.415" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="291.481,59.308,296.374,73.415" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="296.374,59.308,298.820,73.415" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="298.820,59.308,301.266,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="301.266,59.308,303.220,73.415" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="303.220,59.308,307.620,73.415" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="307.620,59.308,310.066,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="310.066,59.308,314.466,73.415" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="314.466,59.308,319.359,73.415" size="14.106">u</text>
+                <text font="JQRQXM+Helvetica" bbox="319.359,59.308,324.252,73.415" size="14.106">b</text>
+                <text font="JQRQXM+Helvetica" bbox="324.252,59.308,326.206,73.415" size="14.106">j</text>
+                <text font="JQRQXM+Helvetica" bbox="326.206,59.308,331.098,73.415" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="331.098,59.308,335.498,73.415" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="335.498,59.308,337.945,73.415" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="337.945,59.308,340.391,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="340.391,59.308,342.838,73.415" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="342.838,59.308,347.730,73.415" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="347.730,59.308,350.177,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="350.177,59.308,352.623,73.415" size="14.106">f</text>
+                <text font="JQRQXM+Helvetica" bbox="352.623,59.308,357.516,73.415" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="357.516,59.308,362.409,73.415" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="362.409,59.308,366.809,73.415" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="366.809,59.308,369.255,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="369.255,59.308,374.148,73.415" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="374.148,59.308,376.594,73.415" size="14.106">f</text>
+                <text font="JQRQXM+Helvetica" bbox="376.594,59.308,379.041,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="379.041,59.308,383.934,73.415" size="14.106">5</text>
+                <text font="JQRQXM+Helvetica" bbox="383.934,59.308,391.757,73.415" size="14.106">%</text>
+                <text font="JQRQXM+Helvetica" bbox="391.757,59.308,394.203,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="394.203,59.308,399.096,73.415" size="14.106">p</text>
+                <text font="JQRQXM+Helvetica" bbox="399.096,59.308,403.989,73.415" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="403.989,59.308,406.919,73.415" size="14.106">r</text>
+                <text font="JQRQXM+Helvetica" bbox="406.919,59.308,409.366,73.415" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="409.366,59.308,416.696,73.415" size="14.106">m</text>
+                <text font="JQRQXM+Helvetica" bbox="416.696,59.308,421.589,73.415" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="421.589,59.308,426.482,73.415" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="426.482,59.308,428.928,73.415" size="14.106">t</text>
+                <text font="JQRQXM+Helvetica" bbox="428.928,59.308,433.821,73.415" size="14.106">h</text>
+                <text font="JQRQXM+Helvetica" bbox="433.821,59.308,436.267,73.415" size="14.106">.</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="42.520,46.736,330.534,60.843">
+                <text font="JQRQXM+Helvetica" bbox="42.520,46.736,47.897,60.843" size="14.106">T</text>
+                <text font="JQRQXM+Helvetica" bbox="47.897,46.736,52.790,60.843" size="14.106">h</text>
+                <text font="JQRQXM+Helvetica" bbox="52.790,46.736,57.682,60.843" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="57.682,46.736,62.575,60.843" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="62.575,46.736,66.975,60.843" size="14.106">k</text>
+                <text font="JQRQXM+Helvetica" bbox="66.975,46.736,71.375,60.843" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="71.375,46.736,73.822,60.843" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="73.822,46.736,76.268,60.843" size="14.106">f</text>
+                <text font="JQRQXM+Helvetica" bbox="76.268,46.736,81.161,60.843" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="81.161,46.736,84.091,60.843" size="14.106">r</text>
+                <text font="JQRQXM+Helvetica" bbox="84.091,46.736,86.538,60.843" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="86.538,46.736,90.938,60.843" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="90.938,46.736,95.830,60.843" size="14.106">h</text>
+                <text font="JQRQXM+Helvetica" bbox="95.830,46.736,100.723,60.843" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="100.723,46.736,105.616,60.843" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="105.616,46.736,110.016,60.843" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="110.016,46.736,111.970,60.843" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="111.970,46.736,116.862,60.843" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="116.862,46.736,121.755,60.843" size="14.106">g</text>
+                <text font="JQRQXM+Helvetica" bbox="121.755,46.736,124.202,60.843" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="124.201,46.736,130.555,60.843" size="14.106">D</text>
+                <text font="JQRQXM+Helvetica" bbox="130.555,46.736,136.424,60.843" size="14.106">E</text>
+                <text font="JQRQXM+Helvetica" bbox="136.424,46.736,143.755,60.843" size="14.106">M</text>
+                <text font="JQRQXM+Helvetica" bbox="143.755,46.736,150.601,60.843" size="14.106">O</text>
+                <text font="JQRQXM+Helvetica" bbox="150.601,46.736,153.047,60.843" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="153.047,46.736,155.978,60.843" size="14.106">-</text>
+                <text font="JQRQXM+Helvetica" bbox="155.978,46.736,158.424,60.843" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="158.424,46.736,164.294,60.843" size="14.106">S</text>
+                <text font="JQRQXM+Helvetica" bbox="164.294,46.736,166.247,60.843" size="14.106">l</text>
+                <text font="JQRQXM+Helvetica" bbox="166.247,46.736,168.201,60.843" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="168.201,46.736,172.601,60.843" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="172.601,46.736,177.494,60.843" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="177.494,46.736,182.387,60.843" size="14.106">d</text>
+                <text font="JQRQXM+Helvetica" bbox="182.387,46.736,184.833,60.843" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="184.833,46.736,187.279,60.843" size="14.106">I</text>
+                <text font="JQRQXM+Helvetica" bbox="187.279,46.736,192.172,60.843" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="192.172,46.736,196.572,60.843" size="14.106">v</text>
+                <text font="JQRQXM+Helvetica" bbox="196.572,46.736,201.465,60.843" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="201.465,46.736,203.419,60.843" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="203.419,46.736,207.819,60.843" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="207.819,46.736,212.711,60.843" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="212.711,46.736,217.111,60.843" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="217.112,46.736,219.558,60.843" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="219.558,46.736,221.846,60.843" size="14.106">|</text>
+                <text font="JQRQXM+Helvetica" bbox="221.846,46.736,224.293,60.843" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="224.292,46.736,229.185,60.843" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="229.185,46.736,234.078,60.843" size="14.106">d</text>
+                <text font="JQRQXM+Helvetica" bbox="234.078,46.736,241.408,60.843" size="14.106">m</text>
+                <text font="JQRQXM+Helvetica" bbox="241.408,46.736,243.362,60.843" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="243.362,46.736,248.254,60.843" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="248.254,46.736,257.186,60.843" size="14.106">@</text>
+                <text font="JQRQXM+Helvetica" bbox="257.186,46.736,261.586,60.843" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="261.586,46.736,263.540,60.843" size="14.106">l</text>
+                <text font="JQRQXM+Helvetica" bbox="263.540,46.736,265.494,60.843" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="265.494,46.736,269.894,60.843" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="269.894,46.736,274.786,60.843" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="274.786,46.736,279.679,60.843" size="14.106">d</text>
+                <text font="JQRQXM+Helvetica" bbox="279.679,46.736,281.633,60.843" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="281.633,46.736,286.526,60.843" size="14.106">n</text>
+                <text font="JQRQXM+Helvetica" bbox="286.526,46.736,290.926,60.843" size="14.106">v</text>
+                <text font="JQRQXM+Helvetica" bbox="290.926,46.736,295.818,60.843" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="295.818,46.736,297.772,60.843" size="14.106">i</text>
+                <text font="JQRQXM+Helvetica" bbox="297.772,46.736,302.172,60.843" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="302.172,46.736,307.065,60.843" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="307.065,46.736,311.465,60.843" size="14.106">s</text>
+                <text font="JQRQXM+Helvetica" bbox="311.465,46.736,313.911,60.843" size="14.106">.</text>
+                <text font="JQRQXM+Helvetica" bbox="313.911,46.736,318.311,60.843" size="14.106">c</text>
+                <text font="JQRQXM+Helvetica" bbox="318.311,46.736,323.204,60.843" size="14.106">o</text>
+                <text font="JQRQXM+Helvetica" bbox="323.204,46.736,330.534,60.843" size="14.106">m</text>
+                <text>
+                </text>
+            </textline>
+            <textline bbox="42.520,34.165,77.746,48.272">
+                <text font="JQRQXM+Helvetica" bbox="42.520,34.165,48.390,48.272" size="14.106">P</text>
+                <text font="JQRQXM+Helvetica" bbox="48.390,34.165,53.282,48.272" size="14.106">a</text>
+                <text font="JQRQXM+Helvetica" bbox="53.282,34.165,58.175,48.272" size="14.106">g</text>
+                <text font="JQRQXM+Helvetica" bbox="58.175,34.165,63.068,48.272" size="14.106">e</text>
+                <text font="JQRQXM+Helvetica" bbox="63.068,34.165,65.514,48.272" size="14.106"></text>
+                <text font="JQRQXM+Helvetica" bbox="65.514,34.165,70.407,48.272" size="14.106">1</text>
+                <text font="JQRQXM+Helvetica" bbox="70.407,34.165,72.854,48.272" size="14.106">/</text>
+                <text font="JQRQXM+Helvetica" bbox="72.854,34.165,77.746,48.272" size="14.106">1</text>
+                <text>
+                </text>
+            </textline>
+        </textbox>
+        <rect linewidth="0" bbox="42.520,317.546,552.761,742.677" />
+        <figure name="Im1" bbox="42.520,793.878,192.520,816.378">
+            <image width="150" height="22" />
+        </figure>
+        <rect linewidth="0" bbox="340.535,648.252,444.060,664.062" />
+        <rect linewidth="0" bbox="444.060,648.252,552.386,664.062" />
+        <line linewidth="0" bbox="340.535,711.492,340.535,727.302" />
+        <line linewidth="0" bbox="340.535,711.492,444.060,711.492" />
+        <line linewidth="0" bbox="444.060,711.492,444.060,727.302" />
+        <line linewidth="0" bbox="340.535,727.302,444.060,727.302" />
+        <line linewidth="0" bbox="340.535,695.682,340.535,711.492" />
+        <line linewidth="0" bbox="340.535,695.682,444.060,695.682" />
+        <line linewidth="0" bbox="444.060,695.682,444.060,711.492" />
+        <line linewidth="0" bbox="340.535,711.492,444.060,711.492" />
+        <line linewidth="0" bbox="340.535,679.872,340.535,695.682" />
+        <line linewidth="0" bbox="340.535,679.872,444.060,679.872" />
+        <line linewidth="0" bbox="444.060,679.872,444.060,695.682" />
+        <line linewidth="0" bbox="340.535,695.682,444.060,695.682" />
+        <line linewidth="0" bbox="340.535,664.062,340.535,679.872" />
+        <line linewidth="0" bbox="340.535,664.062,444.060,664.062" />
+        <line linewidth="0" bbox="444.060,664.062,444.060,679.872" />
+        <line linewidth="0" bbox="340.535,679.872,444.060,679.872" />
+        <line linewidth="0" bbox="340.535,648.252,340.535,664.062" />
+        <line linewidth="0" bbox="340.535,648.252,444.060,648.252" />
+        <line linewidth="0" bbox="444.060,648.252,444.060,664.062" />
+        <line linewidth="0" bbox="340.535,664.062,444.060,664.062" />
+        <line linewidth="0" bbox="444.060,711.492,444.060,727.302" />
+        <line linewidth="0" bbox="444.060,711.492,552.385,711.492" />
+        <line linewidth="0" bbox="552.385,711.492,552.385,727.302" />
+        <line linewidth="0" bbox="444.060,727.302,552.385,727.302" />
+        <line linewidth="0" bbox="444.060,695.682,444.060,711.492" />
+        <line linewidth="0" bbox="444.060,695.682,552.385,695.682" />
+        <line linewidth="0" bbox="552.385,695.682,552.385,711.492" />
+        <line linewidth="0" bbox="444.060,711.492,552.385,711.492" />
+        <line linewidth="0" bbox="444.060,679.872,444.060,695.682" />
+        <line linewidth="0" bbox="444.060,679.872,552.385,679.872" />
+        <line linewidth="0" bbox="552.385,679.872,552.385,695.682" />
+        <line linewidth="0" bbox="444.060,695.682,552.385,695.682" />
+        <line linewidth="0" bbox="444.060,664.062,444.060,679.872" />
+        <line linewidth="0" bbox="444.060,664.062,552.385,664.062" />
+        <line linewidth="0" bbox="552.385,664.062,552.385,679.872" />
+        <line linewidth="0" bbox="444.060,679.872,552.385,679.872" />
+        <line linewidth="0" bbox="444.060,648.252,444.060,664.062" />
+        <line linewidth="0" bbox="444.060,648.252,552.385,648.252" />
+        <line linewidth="0" bbox="552.385,648.252,552.385,664.062" />
+        <line linewidth="0" bbox="444.060,664.062,552.385,664.062" />
+        <rect linewidth="0" bbox="42.895,493.838,94.615,517.148" />
+        <rect linewidth="0" bbox="94.615,493.838,320.393,517.148" />
+        <rect linewidth="0" bbox="320.393,493.838,397.789,517.148" />
+        <rect linewidth="0" bbox="397.790,493.838,475.017,517.148" />
+        <rect linewidth="0" bbox="475.017,493.838,552.385,517.148" />
+        <line linewidth="0" bbox="42.895,493.838,42.895,517.148" />
+        <line linewidth="0" bbox="94.615,493.838,94.615,517.148" />
+        <line linewidth="0" bbox="42.895,517.148,94.615,517.148" />
+        <line linewidth="0" bbox="42.895,468.524,42.895,493.838" />
+        <line linewidth="0" bbox="42.895,468.524,94.615,468.524" />
+        <line linewidth="0" bbox="94.615,468.524,94.615,493.838" />
+        <line linewidth="0" bbox="42.895,493.838,94.615,493.838" />
+        <line linewidth="0" bbox="94.615,493.838,94.615,517.148" />
+        <line linewidth="0" bbox="320.393,493.838,320.393,517.148" />
+        <line linewidth="0" bbox="94.615,517.148,320.393,517.148" />
+        <line linewidth="0" bbox="94.615,468.524,94.615,493.838" />
+        <line linewidth="0" bbox="94.615,468.524,320.393,468.524" />
+        <line linewidth="0" bbox="320.393,468.524,320.393,493.838" />
+        <line linewidth="0" bbox="94.615,493.838,320.393,493.838" />
+        <line linewidth="0" bbox="320.393,493.838,320.393,517.148" />
+        <line linewidth="0" bbox="397.790,493.838,397.790,517.148" />
+        <line linewidth="0" bbox="320.393,517.148,397.790,517.148" />
+        <line linewidth="0" bbox="320.393,468.524,320.393,493.838" />
+        <line linewidth="0" bbox="320.393,468.524,397.790,468.524" />
+        <line linewidth="0" bbox="397.790,468.524,397.790,493.838" />
+        <line linewidth="0" bbox="320.393,493.838,397.790,493.838" />
+        <line linewidth="0" bbox="397.790,493.838,397.790,517.148" />
+        <line linewidth="0" bbox="475.017,493.838,475.017,517.148" />
+        <line linewidth="0" bbox="397.790,517.148,475.017,517.148" />
+        <line linewidth="0" bbox="397.790,468.524,397.790,493.838" />
+        <line linewidth="0" bbox="397.790,468.524,475.017,468.524" />
+        <line linewidth="0" bbox="475.017,468.524,475.017,493.838" />
+        <line linewidth="0" bbox="397.790,493.838,475.017,493.838" />
+        <line linewidth="0" bbox="475.017,493.838,475.017,517.148" />
+        <line linewidth="0" bbox="552.385,493.838,552.385,517.148" />
+        <line linewidth="0" bbox="475.017,517.148,552.385,517.148" />
+        <line linewidth="0" bbox="475.017,468.524,475.017,493.838" />
+        <line linewidth="0" bbox="475.017,468.524,552.385,468.524" />
+        <line linewidth="0" bbox="552.385,468.524,552.385,493.838" />
+        <line linewidth="0" bbox="475.017,493.838,552.385,493.838" />
+        <rect linewidth="0" bbox="340.535,405.344,442.842,421.154" />
+        <rect linewidth="0" bbox="442.842,405.344,552.385,421.154" />
+        <line linewidth="0" bbox="340.535,436.964,340.535,452.774" />
+        <line linewidth="0" bbox="340.535,436.964,442.842,436.964" />
+        <line linewidth="0" bbox="442.842,436.964,442.842,452.774" />
+        <line linewidth="0" bbox="340.535,452.774,442.842,452.774" />
+        <line linewidth="0" bbox="340.535,421.154,340.535,436.964" />
+        <line linewidth="0" bbox="340.535,421.154,442.842,421.154" />
+        <line linewidth="0" bbox="442.842,421.154,442.842,436.964" />
+        <line linewidth="0" bbox="340.535,436.964,442.842,436.964" />
+        <line linewidth="0" bbox="340.535,405.344,340.535,421.154" />
+        <line linewidth="0" bbox="340.535,405.344,442.842,405.344" />
+        <line linewidth="0" bbox="442.842,405.344,442.842,421.154" />
+        <line linewidth="0" bbox="340.535,421.154,442.842,421.154" />
+        <line linewidth="0" bbox="442.842,436.964,442.842,452.774" />
+        <line linewidth="0" bbox="442.842,436.964,552.385,436.964" />
+        <line linewidth="0" bbox="552.385,436.964,552.385,452.774" />
+        <line linewidth="0" bbox="442.842,452.774,552.385,452.774" />
+        <line linewidth="0" bbox="442.842,421.154,442.842,436.964" />
+        <line linewidth="0" bbox="442.842,421.154,552.385,421.154" />
+        <line linewidth="0" bbox="552.385,421.154,552.385,436.964" />
+        <line linewidth="0" bbox="442.842,436.964,552.385,436.964" />
+        <line linewidth="0" bbox="442.842,405.344,442.842,421.154" />
+        <line linewidth="0" bbox="442.842,405.344,552.385,405.344" />
+        <line linewidth="0" bbox="552.385,405.344,552.385,421.154" />
+        <line linewidth="0" bbox="442.842,421.154,552.385,421.154" />
+        <layout>
+            <textgroup bbox="42.520,34.165,552.761,800.820">
+                <textgroup bbox="42.520,311.840,552.761,800.820">
+                    <textgroup bbox="42.520,645.904,552.761,800.820">
+                        <textbox id="0" bbox="42.520,645.904,148.762,723.070" />
+                        <textgroup bbox="348.410,650.904,552.761,800.820">
+                            <textbox id="1" bbox="479.981,766.183,552.761,800.820" />
+                            <textgroup bbox="348.410,650.904,519.933,728.373">
+                                <textbox id="2" bbox="348.410,650.904,410.028,728.373" />
+                                <textbox id="3" bbox="451.935,650.904,519.933,728.373" />
+                            </textgroup>
+                        </textgroup>
+                    </textgroup>
+                    <textgroup bbox="42.520,311.840,544.511,629.944">
+                        <textgroup bbox="42.520,311.840,383.078,629.944">
+                            <textgroup bbox="52.862,476.051,84.648,514.672">
+                                <textbox id="4" bbox="52.862,500.240,84.648,514.672" />
+                                <textbox id="5" bbox="60.192,476.051,77.317,490.157" />
+                            </textgroup>
+                            <textgroup bbox="42.520,311.840,383.078,629.944">
+                                <textgroup bbox="42.520,311.840,383.078,629.944">
+                                    <textbox id="6" bbox="102.490,471.284,206.804,514.672" />
+                                    <textgroup bbox="42.520,311.840,383.078,629.944">
+                                        <textbox id="7" bbox="42.520,548.678,125.671,613.273" />
+                                        <textbox id="8" bbox="42.520,311.840,383.078,629.944" />
+                                    </textgroup>
+                                </textgroup>
+                                <textbox id="9" bbox="42.520,348.627,112.471,375.305" />
+                            </textgroup>
+                        </textgroup>
+                        <textgroup bbox="346.874,407.996,544.511,514.672">
+                            <textgroup bbox="346.874,476.051,389.915,514.672">
+                                <textbox id="10" bbox="346.874,500.240,389.915,514.672" />
+                                <textbox id="11" bbox="363.004,476.051,389.914,490.157" />
+                            </textgroup>
+                            <textgroup bbox="397.303,407.996,544.511,514.672">
+                                <textgroup bbox="439.765,476.051,544.511,514.672">
+                                    <textgroup bbox="439.765,476.051,467.142,514.672">
+                                        <textbox id="12" bbox="439.765,500.240,467.142,514.672" />
+                                        <textbox id="13" bbox="442.194,476.051,467.142,490.157" />
+                                    </textgroup>
+                                    <textgroup bbox="504.418,476.051,544.511,514.672">
+                                        <textbox id="14" bbox="504.418,500.240,544.511,514.672" />
+                                        <textbox id="15" bbox="517.600,476.051,544.510,490.157" />
+                                    </textgroup>
+                                </textgroup>
+                                <textgroup bbox="397.303,407.996,544.511,453.845">
+                                    <textbox id="16" bbox="397.303,407.996,434.968,453.845" />
+                                    <textbox id="17" bbox="517.600,407.996,544.511,453.845" />
+                                </textgroup>
+                            </textgroup>
+                        </textgroup>
+                    </textgroup>
+                </textgroup>
+                <textbox id="18" bbox="42.520,34.165,436.267,73.415" />
+            </textgroup>
+        </layout>
+    </page>
+</pages>

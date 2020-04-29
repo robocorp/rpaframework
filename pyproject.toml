@@ -56,8 +56,9 @@ numpy = {version = "^1.18.2", optional = true}
 robotframework-databaselibrary = "^1.2.4"
 simple_salesforce = "^1.0.0"
 netsuitesdk = "^1.1.0"
-pypdf2 = "^1.26.0"
 robotframework = "3.1.2"
+"pdfminer.six" = "^20200402"
+pypdf2 = "^1.26.0"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }

@@ -4,14 +4,15 @@ Library           OperatingSystem
 Force Tags        pdf
 
 *** Variables ***
-${TEMPLATE}       ${CURDIR}${/}..${/}resources${/}order.template
-${NORMAL_PDF}     ${CURDIR}${/}..${/}resources${/}generated.pdf
+${TEMPLATE}         ${CURDIR}${/}..${/}resources${/}order.template
+${NORMAL_PDF}       ${CURDIR}${/}..${/}resources${/}generated.pdf
 ${ENCRYPTED_PDF}    ${CURDIR}${/}..${/}resources${/}encrypted.pdf
-${PDF}            ${OUTPUT_DIR}${/}result.pdf
-&{VARS}           name=Robot Generated
-...               email=robot@domain.com
-...               zip=00100
-...               items=Item 1, Item 2
+${IMAGES_PDF}       ${CURDIR}${/}..${/}resources${/}imagesandtext.pdf
+${PDF}              ${OUTPUT_DIR}${/}result.pdf
+&{VARS}             name=Robot Generated
+...                 email=robot@domain.com
+...                 zip=00100
+...                 items=Item 1, Item 2
 
 *** Tasks ***
 Create PDF from HTML template
@@ -52,7 +53,7 @@ Get page outlines
 Get form text fields
     ${fields}=    Get form text fields    ${NORMAL_PDF}
 
-Get fields
+Get fieldse
     ${fields}=    Get fields    ${NORMAL_PDF}    ${OUTPUT_DIR}${/}fields.txt
 
 PDF decryption
@@ -67,3 +68,12 @@ PDF encrypt
     PDF encrypt    ${NORMAL_PDF}    ${OUTPUT_DIR}${/}encrypted.pdf    mysecretpassword
     ${isdecrypted}=    Is PDF encrypted    ${OUTPUT_DIR}${/}encrypted.pdf
     Should Be True    ${isdecrypted}
+
+Extract text from PDF with images
+    &{text}=    Get Text From PDF    ${IMAGES_PDF}
+    &{info}=    Get Info    ${IMAGES_PDF}
+    ${result}=  Get Outlines  ${IMAGES_PDF}
+    ${layout}=  Get Page Layout  ${IMAGES_PDF}
+    ${mode}=  Get Page Mode  ${IMAGES_PDF}
+    ${xmp}=   Get XMP Metadata  ${IMAGES_PDF}
+    ${named}=  Get Named Destinations  ${IMAGES_PDF}
