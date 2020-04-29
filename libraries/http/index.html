@@ -242,18 +242,18 @@ Robot Framework tasks.</p>
 <div class="section" id="python">
 <h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
 <p>This is a section which describes how to use the library in your
-own Python modules.
-.. code-block:: python</p>
-<blockquote>
-<div><dl class="field-list simple">
-<dt class="field-odd">linenos</dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-<p>from RPA.HTTP import HTTP</p>
-<p>h = HTTP()
-url = “<a class="reference external" href="https://ec.europa.eu/energy/sites/ener/files/documents/EnergyDailyPricesReport-EUROPA_0.pdf">https://ec.europa.eu/energy/sites/ener/files/documents/EnergyDailyPricesReport-EUROPA_0.pdf</a>”
-response = h.http_get(url, “prices.pdf”)</p>
-</div></blockquote>
+own Python modules.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.HTTP</span> <span class="kn">import</span> <span class="n">HTTP</span>
+
+<span class="n">library</span> <span class="o">=</span> <span class="n">HTTP</span><span class="p">()</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://ec.europa.eu/energy/sites/ener/files/documents/EnergyDailyPricesReport-EUROPA_0.pdf&quot;</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">http_get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="s2">&quot;prices.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
 </div>
 </div>
 <div class="section" id="api-documentation">
