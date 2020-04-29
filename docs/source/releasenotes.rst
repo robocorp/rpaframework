@@ -4,19 +4,20 @@ Release notes
 Upcoming release
 ----------------
 
-- PDF: Add encrypt_pdf and add_pages_to_source_pdf keywords.
+- PDF: Add ``encrypt_pdf`` and ``add_pages_to_source_pdf``` keywords.
 - Windows: Add aliases for element locators,
   for better Robocode Lab compatibility
+- HTTP: Add keyword ``http_get``
 
 0.8.4
 --------------
 
-- Fix: PDF template_html_to_pdf keyword
+- Fix: PDF ``template_html_to_pdf`` keyword
 
 0.8.3
 --------------
 
-- Fix: Windows drag_and_drop keyword
+- Fix: Windows ``drag_and_drop`` keyword
 - New library: Netsuite
 - PDF: add new keywords
 
@@ -29,7 +30,7 @@ Upcoming release
 0.8.1
 --------------
 
-- Browser: Fix open_available_browser kw parameter bug
+- Browser: Fix ``open_available_browser`` kw parameter bug
 
 0.8.0
 --------------
