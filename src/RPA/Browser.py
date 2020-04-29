@@ -545,7 +545,7 @@ class Browser(SeleniumLibrary):
         """
         if page:
             filename = os.path.join(
-                os.curdir, ("%s-%s-page.png", filename_prefix, int(time.time()))
+                os.curdir, f"{filename_prefix}-{int(time.time())}-page.png"
             )
             capture_location = self.capture_page_screenshot(filename)
             self.logger.info(
@@ -553,7 +553,7 @@ class Browser(SeleniumLibrary):
             )
         if locator:
             filename = os.path.join(
-                os.curdir, ("%s-%s-element.png", filename_prefix, int(time.time()))
+                os.curdir, f"{filename_prefix}-{int(time.time())}-element.png"
             )
             capture_location = self.capture_element_screenshot(
                 locator, filename=filename
