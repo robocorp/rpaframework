@@ -217,11 +217,43 @@
 <h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
 <p>This is a section which describes how to use the library in your
 Robot Framework tasks.</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.HTTP</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">URL</span><span class="p">}       </span><span class="s">https://ec.europa.eu/energy/sites/ener/files/documents/EnergyDailyPricesReport-EUROPA_0.pdf</span><span class="p"></span>
+<span class="p">${</span><span class="nv">PDF_FILE</span><span class="p">}  </span><span class="s">prices.pdf</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Get Energy Prices</span><span class="p"></span>
+<span class="p">    </span><span class="nf">HTTP GET</span><span class="p">   ${</span><span class="nv">URL</span><span class="p">}  ${</span><span class="nv">PDF_FILE</span><span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
 </div>
 <div class="section" id="python">
 <h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
 <p>This is a section which describes how to use the library in your
-own Python modules.</p>
+own Python modules.
+.. code-block:: python</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">linenos</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>from RPA.HTTP import HTTP</p>
+<p>h = HTTP()
+url = “<a class="reference external" href="https://ec.europa.eu/energy/sites/ener/files/documents/EnergyDailyPricesReport-EUROPA_0.pdf">https://ec.europa.eu/energy/sites/ener/files/documents/EnergyDailyPricesReport-EUROPA_0.pdf</a>”
+response = h.http_get(url, “prices.pdf”)</p>
+</div></blockquote>
 </div>
 </div>
 <div class="section" id="api-documentation">
