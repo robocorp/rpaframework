@@ -35,7 +35,7 @@ class OfficeApplication:
         :param display_alerts: show alert popups if True, defaults to False
         """
         self.app = win32com.client.gencache.EnsureDispatch(
-            ("%s.Application", self.application_name)
+            f"{self.application_name}.Application"
         )
 
         self.logger.debug("%s.Application launched", self.application_name)

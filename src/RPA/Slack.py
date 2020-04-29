@@ -29,7 +29,7 @@ class Slack:
         """
         headers = {"Content-Type": "application/json"}
         payload = {
-            "channel": channel if "#" in channel else ("#%s", channel),
+            "channel": channel if "#" in channel else f"#{channel}",
             "username": sender,
             "text": text,
         }
