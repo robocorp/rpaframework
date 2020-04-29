@@ -8,6 +8,7 @@ Upcoming release
 - Windows: Add aliases for element locators,
   for better Robocode Lab compatibility
 - HTTP: Add keyword ``http_get``
+- Tables: Fix missing cell values for sanitized columns
 
 0.8.4
 --------------
