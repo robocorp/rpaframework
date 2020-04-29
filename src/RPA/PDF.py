@@ -2,10 +2,10 @@ import logging
 from pathlib import Path
 
 from fpdf import FPDF, HTMLMixin
+from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 import PyPDF2
 from PyPDF2.xmp import XmpInformation
 
-from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.core.utils import UNDEFINED
 from RPA.RobotLogListener import RobotLogListener
 

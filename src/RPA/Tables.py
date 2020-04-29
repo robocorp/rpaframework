@@ -219,7 +219,7 @@ class Table:
 
         return get
 
-    def _column_value_getter(self, obj):
+    def _column_value_getter(self, obj):  # noqa: C901
         """Create callable that returns column values for given object types."""
         if is_namedtuple(obj):
             # Get values using properties
