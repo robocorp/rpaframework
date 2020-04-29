@@ -36,6 +36,7 @@ class HTTP(RequestsLibrary):
         :param binary: if `True` file is saved as binary, default `True`
         :param verify: if SSL verification should be done, default `True`
         :param force_new_session: if new HTTP session should be created, default `False`
+        :return: request response
         """
         uc = urlparse(url)
 
