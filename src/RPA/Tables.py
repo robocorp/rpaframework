@@ -224,12 +224,18 @@ class Table:
         if is_namedtuple(obj):
             # Get values using properties
             def get(obj, column):
-                return getattr(obj, column, None)
+                for field in obj._fields:
+                    if column == to_identifier(field):
+                        return getattr(obj, field)
+                return None
 
         elif is_dict_like(obj):
             # Get values using dictionary keys
             def get(obj, column):
-                return obj.get(column, None)
+                for key in obj:
+                    if column == to_identifier(key):
+                        return obj[key]
+                return None
 
         elif is_list_like(obj):
             # Get values using list indexes

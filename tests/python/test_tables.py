@@ -106,7 +106,7 @@ def test_table_none_columns():
         Table([{"one": 1, "two": 2, None: 3}, {"one": 1, None: 3, "four": 4}])
 
 
-def test_table_sanitize_columns():
+def test_table_sanitize_init():
     table = Table(
         [{"valid_key": 1, "invalid-key1": 2, "invalid/key2": 3, "123invalidkey3": 4}]
     )
@@ -120,12 +120,22 @@ def test_table_sanitize_columns():
 
     rows = list(table.iter_tuples(with_index=False))
     assert len(rows) == 1
+    assert rows[0] == (1, 2, 3, 4)
     assert rows[0]._fields == (
         "valid_key",
         "invalid_key1",
         "invalid_key2",
         "invalidkey3",
     )
+
+
+def test_table_sanitize_append_rows():
+    table = Table(
+        [{"valid_key": 1, "invalid-key1": 2, "invalid/key2": 3, "123invalidkey3": 4}]
+    )
+
+    table.append_rows([{"valid_key": 5, "123invalidkey3": 6}])
+    assert table[1] == [5, None, None, 6]
 
 
 def test_keyword_export_table(library, table):
