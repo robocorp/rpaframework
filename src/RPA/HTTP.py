@@ -63,3 +63,14 @@ class HTTP(RequestsLibrary):
         :return: name of session alias
         """
         return self.current_session_alias
+
+    def download(
+        self,
+        url: str,
+        target_file: str = None,
+        binary: bool = True,
+        verify: bool = True,
+        force_new_session: bool = False,
+    ) -> dict:
+        """Alias for keyword http_get"""
+        return self.http_get(url, target_file, binary, verify, force_new_session)
