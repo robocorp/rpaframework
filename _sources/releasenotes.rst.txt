@@ -3,6 +3,8 @@ Release notes
 
 Upcoming release
 ----------------
+
+- HTTP: Add keyword ``Download``
 - FileSystem: Fix string interpolation in error messages
 - Tables: Add keyword ``Trim empty rows``
 - Excel files library:
