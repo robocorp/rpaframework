@@ -154,6 +154,13 @@ Keywords
   Return last `count` rows from table.
 
 
+:Trim Empty Rows:
+  :Arguments: table
+
+  Remove all rows from the end of the table
+  which have only None values.
+
+
 :Write Table To Csv:
   :Arguments: table, path
 

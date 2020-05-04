@@ -10,7 +10,7 @@ Description
 
 Robot Framework library for manipulating Excel files.
 
-To run macros or load password protected worksheets,
+Note: To run macros or load password protected worksheets,
 please use the Excel application library.
 
 ********
@@ -20,23 +20,26 @@ Keywords
 :Append Rows To Worksheet:
   :Arguments: content, name=None
 
+  Append values to the end of the worksheet.
 
 
 :Close Workbook:
-
+  Close the active workbook.
 
 :Create Workbook:
   :Arguments: path=None, fmt=xlsx
 
+  Create and open a new Excel workbook.
 
 
 :Create Worksheet:
   :Arguments: name, content=None, exist_ok=False
 
+  Create a new worksheet in the current workbook.
 
 
 :Get Active Worksheet:
-
+  Get the name of the worksheet which is currently active.
 
 :List Worksheets:
   List all names of worksheets in the given workbook.
@@ -44,31 +47,47 @@ Keywords
 :Open Workbook:
   :Arguments: path
 
+  Open an existing Excel workbook.
 
 
 :Read Worksheet:
   :Arguments: name=None, header=False
 
-  Read the content of a worksheet into a list.
+  Read the content of a worksheet into a list of dictionaries.
+
+  Each key in the dictionary will be either values from the header row,
+  or Excel-style column letters.
+
+
+:Read Worksheet As Table:
+  :Arguments: name=None, header=False, trim=True
+
+  Read the content of a worksheet into a Table container. Allows
+  sorting/filtering/manipulating using the `RPA.Tables` library.
+
 
 :Remove Worksheet:
   :Arguments: name=None
 
+  Remove a worksheet from the active workbook.
 
 
 :Rename Worksheet:
   :Arguments: src_name, dst_name
 
+  Rename an existing worksheet in the active workbook.
 
 
 :Save Workbook:
   :Arguments: path=None
 
+  Save the active workbook.
 
 
 :Set Active Worksheet:
   :Arguments: value
 
+  Set the active worksheet.
 
 
 :Worksheet Exists:

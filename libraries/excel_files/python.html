@@ -206,32 +206,62 @@
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">Files</code><a class="headerlink" href="#RPA.Excel.Files.Files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Robot Framework library for manipulating Excel files.</p>
-<p>To run macros or load password protected worksheets,
+<p>Note: To run macros or load password protected worksheets,
 please use the Excel application library.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.append_rows_to_worksheet">
 <code class="sig-name descname">append_rows_to_worksheet</code><span class="sig-paren">(</span><em class="sig-param">content</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.append_rows_to_worksheet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Append values to the end of the worksheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>content</strong> – Rows of values to append</p></li>
+<li><p><strong>name</strong> – Name of worksheet to append to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.close_workbook">
 <code class="sig-name descname">close_workbook</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.close_workbook" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Close the active workbook.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.create_workbook">
 <code class="sig-name descname">create_workbook</code><span class="sig-paren">(</span><em class="sig-param">path=None</em>, <em class="sig-param">fmt='xlsx'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.create_workbook" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create and open a new Excel workbook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – Default save path for workbook</p></li>
+<li><p><strong>fmt</strong> – Format of workbook, i.e. xlsx or xls</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.create_worksheet">
 <code class="sig-name descname">create_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">content=None</em>, <em class="sig-param">exist_ok=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.create_worksheet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create a new worksheet in the current workbook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of new worksheet</p></li>
+<li><p><strong>content</strong> – Optional content for worksheet</p></li>
+<li><p><strong>exist_ok</strong> – If <cite>False</cite>, raise an error if name is already in use</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.get_active_worksheet">
 <code class="sig-name descname">get_active_worksheet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.get_active_worksheet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get the name of the worksheet which is currently active.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.list_worksheets">
@@ -242,33 +272,95 @@ please use the Excel application library.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.open_workbook">
 <code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.open_workbook" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Open an existing Excel workbook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path to Excel file</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.read_worksheet">
 <code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read the content of a worksheet into a list.</p>
+<dd><p>Read the content of a worksheet into a list of dictionaries.</p>
+<p>Each key in the dictionary will be either values from the header row,
+or Excel-style column letters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of worksheet to read</p></li>
+<li><p><strong>header</strong> – If <cite>True</cite>, use the first row of the worksheet
+as headers for the rest of the rows.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.Files.read_worksheet_as_table">
+<code class="sig-name descname">read_worksheet_as_table</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">trim=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet_as_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the content of a worksheet into a Table container. Allows
+sorting/filtering/manipulating using the <cite>RPA.Tables</cite> library.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Name of worksheet to read</p></li>
+<li><p><strong>header</strong> – If <cite>True</cite>, use the first row of the worksheet
+as headers for the rest of the rows.</p></li>
+<li><p><strong>trim</strong> – Remove all empty rows from the end of the worksheet</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.remove_worksheet">
 <code class="sig-name descname">remove_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.remove_worksheet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Remove a worksheet from the active workbook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – Name of worksheet to remove</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.rename_worksheet">
 <code class="sig-name descname">rename_worksheet</code><span class="sig-paren">(</span><em class="sig-param">src_name</em>, <em class="sig-param">dst_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.rename_worksheet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Rename an existing worksheet in the active workbook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src_name</strong> – Current name of worksheet</p></li>
+<li><p><strong>dst_name</strong> – Future name of worksheet</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.save_workbook">
 <code class="sig-name descname">save_workbook</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.save_workbook" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Save the active workbook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – Path to save to. If not given, uses path given
+when opened or created.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.set_active_worksheet">
 <code class="sig-name descname">set_active_worksheet</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_active_worksheet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set the active worksheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> – Index or name of worksheet</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.worksheet_exists">
@@ -282,7 +374,7 @@ please use the Excel application library.</p>
 <dt id="RPA.Excel.Files.XlsWorkbook">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">XlsWorkbook</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Keywords for manipulating legacy Excel files (.xls)</p>
+<p>Container for manipulating legacy Excel files (.xls)</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.active">
 <em class="property">property </em><code class="sig-name descname">active</code><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.active" title="Permalink to this definition">¶</a></dt>
@@ -344,7 +436,7 @@ please use the Excel application library.</p>
 <dt id="RPA.Excel.Files.XlsxWorkbook">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">XlsxWorkbook</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Keywords for manipulating moden Excel files (.xlsx)</p>
+<p>Container for manipulating moden Excel files (.xlsx)</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.active">
 <em class="property">property </em><code class="sig-name descname">active</code><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.active" title="Permalink to this definition">¶</a></dt>

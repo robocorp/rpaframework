@@ -207,7 +207,7 @@
 </dd>
 </dl>
 <p>Robot Framework library for manipulating Excel files.</p>
-<p>To run macros or load password protected worksheets,
+<p>Note: To run macros or load password protected worksheets,
 please use the Excel application library.</p>
 </div>
 <div class="section" id="keywords">
@@ -219,15 +219,18 @@ please use the Excel application library.</p>
 <dd class="field-odd"><p>content, name=None</p>
 </dd>
 </dl>
+<p>Append values to the end of the worksheet.</p>
 </dd>
 <dt class="field-even">Close Workbook</dt>
-<dd class="field-even"><p></p></dd>
+<dd class="field-even"><p>Close the active workbook.</p>
+</dd>
 <dt class="field-odd">Create Workbook</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>path=None, fmt=xlsx</p>
 </dd>
 </dl>
+<p>Create and open a new Excel workbook.</p>
 </dd>
 <dt class="field-even">Create Worksheet</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -235,9 +238,11 @@ please use the Excel application library.</p>
 <dd class="field-odd"><p>name, content=None, exist_ok=False</p>
 </dd>
 </dl>
+<p>Create a new worksheet in the current workbook.</p>
 </dd>
 <dt class="field-even">Get Active Worksheet</dt>
-<dd class="field-even"><p></p></dd>
+<dd class="field-even"><p>Get the name of the worksheet which is currently active.</p>
+</dd>
 <dt class="field-odd">List Worksheets</dt>
 <dd class="field-odd"><p>List all names of worksheets in the given workbook.</p>
 </dd>
@@ -247,6 +252,7 @@ please use the Excel application library.</p>
 <dd class="field-odd"><p>path</p>
 </dd>
 </dl>
+<p>Open an existing Excel workbook.</p>
 </dd>
 <dt class="field-even">Read Worksheet</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -254,7 +260,18 @@ please use the Excel application library.</p>
 <dd class="field-odd"><p>name=None, header=False</p>
 </dd>
 </dl>
-<p>Read the content of a worksheet into a list.</p>
+<p>Read the content of a worksheet into a list of dictionaries.</p>
+<p>Each key in the dictionary will be either values from the header row,
+or Excel-style column letters.</p>
+</dd>
+<dt class="field-even">Read Worksheet As Table</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>name=None, header=False, trim=True</p>
+</dd>
+</dl>
+<p>Read the content of a worksheet into a Table container. Allows
+sorting/filtering/manipulating using the <cite>RPA.Tables</cite> library.</p>
 </dd>
 <dt class="field-even">Remove Worksheet</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -262,6 +279,7 @@ please use the Excel application library.</p>
 <dd class="field-odd"><p>name=None</p>
 </dd>
 </dl>
+<p>Remove a worksheet from the active workbook.</p>
 </dd>
 <dt class="field-even">Rename Worksheet</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -269,6 +287,7 @@ please use the Excel application library.</p>
 <dd class="field-odd"><p>src_name, dst_name</p>
 </dd>
 </dl>
+<p>Rename an existing worksheet in the active workbook.</p>
 </dd>
 <dt class="field-even">Save Workbook</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -276,6 +295,7 @@ please use the Excel application library.</p>
 <dd class="field-odd"><p>path=None</p>
 </dd>
 </dl>
+<p>Save the active workbook.</p>
 </dd>
 <dt class="field-even">Set Active Worksheet</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -283,6 +303,7 @@ please use the Excel application library.</p>
 <dd class="field-odd"><p>value</p>
 </dd>
 </dl>
+<p>Set the active worksheet.</p>
 </dd>
 <dt class="field-even">Worksheet Exists</dt>
 <dd class="field-even"><dl class="field-list simple">
