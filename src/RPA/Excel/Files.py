@@ -10,6 +10,8 @@ import xlrd
 import xlwt
 from xlutils.copy import copy as xlutils_copy
 
+from RPA.Tables import Tables
+
 
 class Files:
     """Robot Framework library for manipulating Excel files.
@@ -143,6 +145,24 @@ class Files:
         """
         assert self.workbook, "No active workbook"
         return self.workbook.read_worksheet(name, header)
+
+    def read_worksheet_as_table(self, name=None, header=False, trim=True):
+        """Read the content of a worksheet into a Table container. Allows
+        sorting/filtering/manipulating using the `RPA.Tables` library.
+
+        :param name:   Name of worksheet to read
+        :param header: If `True`, use the first row of the worksheet
+                       as headers for the rest of the rows.
+        :param trim:   Remove all empty rows from the end of the worksheet
+        """
+        library = Tables()
+        sheet = self.read_worksheet(name, header)
+
+        table = library.create_table(sheet)
+        if trim:
+            library.trim_empty_rows(table)
+
+        return table
 
     def append_rows_to_worksheet(self, content, name=None):
         """Append values to the end of the worksheet.
