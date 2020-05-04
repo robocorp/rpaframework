@@ -10,11 +10,13 @@ import xlrd
 import xlwt
 from xlutils.copy import copy as xlutils_copy
 
+from RPA.Tables import Tables
+
 
 class Files:
     """Robot Framework library for manipulating Excel files.
 
-    To run macros or load password protected worksheets,
+    Note: To run macros or load password protected worksheets,
     please use the Excel application library.
     """
 
@@ -47,6 +49,11 @@ class Files:
         raise ValueError(f"Not a valid Excel file: {path}")
 
     def create_workbook(self, path=None, fmt="xlsx"):
+        """Create and open a new Excel workbook.
+
+        :param path: Default save path for workbook
+        :param fmt:  Format of workbook, i.e. xlsx or xls
+        """
         if self.workbook:
             self.close_workbook()
 
@@ -62,6 +69,10 @@ class Files:
         return self.workbook
 
     def open_workbook(self, path):
+        """Open an existing Excel workbook.
+
+        :param path: path to Excel file
+        """
         if self.workbook:
             self.close_workbook()
 
@@ -70,11 +81,17 @@ class Files:
         return self.workbook
 
     def close_workbook(self):
+        """Close the active workbook."""
         if self.workbook:
             self.logger.info("Closing workbook: %s", self.workbook)
             self.workbook.close()
 
     def save_workbook(self, path=None):
+        """Save the active workbook.
+
+        :param path: Path to save to. If not given, uses path given
+                     when opened or created.
+        """
         assert self.workbook, "No active workbook"
         return self.workbook.save(path)
 
@@ -89,41 +106,93 @@ class Files:
         return bool(str(name) in self.list_worksheets())
 
     def get_active_worksheet(self):
+        """Get the name of the worksheet which is currently active."""
         assert self.workbook, "No active workbook"
         return self.workbook.active
 
     def set_active_worksheet(self, value):
+        """Set the active worksheet.
+
+        :param value: Index or name of worksheet
+        """
         assert self.workbook, "No active workbook"
         self.workbook.active = value
 
     def create_worksheet(self, name, content=None, exist_ok=False):
+        """Create a new worksheet in the current workbook.
+
+        :param name:     Name of new worksheet
+        :param content:  Optional content for worksheet
+        :param exist_ok: If `False`, raise an error if name is already in use
+        """
         assert self.workbook, "No active workbook"
         if name in self.workbook.sheetnames and not exist_ok:
             raise ValueError(f"Sheet with name {name} already exists")
+
         self.workbook.create_worksheet(name)
         if content:
             self.workbook.append_worksheet(name, content)
 
     def read_worksheet(self, name=None, header=False):
-        """Read the content of a worksheet into a list."""
+        """Read the content of a worksheet into a list of dictionaries.
+
+        Each key in the dictionary will be either values from the header row,
+        or Excel-style column letters.
+
+        :param name:   Name of worksheet to read
+        :param header: If `True`, use the first row of the worksheet
+                       as headers for the rest of the rows.
+        """
         assert self.workbook, "No active workbook"
         return self.workbook.read_worksheet(name, header)
 
+    def read_worksheet_as_table(self, name=None, header=False, trim=True):
+        """Read the content of a worksheet into a Table container. Allows
+        sorting/filtering/manipulating using the `RPA.Tables` library.
+
+        :param name:   Name of worksheet to read
+        :param header: If `True`, use the first row of the worksheet
+                       as headers for the rest of the rows.
+        :param trim:   Remove all empty rows from the end of the worksheet
+        """
+        library = Tables()
+        sheet = self.read_worksheet(name, header)
+
+        table = library.create_table(sheet)
+        if trim:
+            library.trim_empty_rows(table)
+
+        return table
+
     def append_rows_to_worksheet(self, content, name=None):
+        """Append values to the end of the worksheet.
+
+        :param content: Rows of values to append
+        :param name:    Name of worksheet to append to
+        """
         assert self.workbook, "No active workbook"
         return self.workbook.append_worksheet(name, content)
 
     def remove_worksheet(self, name=None):
+        """Remove a worksheet from the active workbook.
+
+        :param name: Name of worksheet to remove
+        """
         assert self.workbook, "No active workbook"
         self.workbook.remove_worksheet(name)
 
     def rename_worksheet(self, src_name, dst_name):
+        """Rename an existing worksheet in the active workbook.
+
+        :param src_name: Current name of worksheet
+        :param dst_name: Future name of worksheet
+        """
         assert self.workbook, "No active workbook"
         self.workbook.rename_worksheet(dst_name, src_name)
 
 
 class XlsxWorkbook:
-    """Keywords for manipulating moden Excel files (.xlsx)"""
+    """Container for manipulating moden Excel files (.xlsx)"""
 
     def __init__(self, path=None):
         self.path = path
@@ -243,7 +312,7 @@ class XlsxWorkbook:
 
 
 class XlsWorkbook:
-    """Keywords for manipulating legacy Excel files (.xls)"""
+    """Container for manipulating legacy Excel files (.xls)"""
 
     def __init__(self, path=None):
         self.path = path
@@ -377,14 +446,16 @@ class XlsWorkbook:
         return data
 
     def _parse_type(self, cell):
+        value = cell.value
+
         if cell.ctype == xlrd.XL_CELL_DATE:
-            value = xlrd.xldate_as_datetime(cell.value, self._book.datemode)
+            value = xlrd.xldate_as_datetime(value, self._book.datemode)
         elif cell.ctype == xlrd.XL_CELL_BOOLEAN:
-            value = bool(cell.value)
+            value = bool(value)
         elif cell.ctype == xlrd.XL_CELL_ERROR:
-            value = xlrd.biffh.error_text_from_code.get(cell.value, "#ERROR")
-        else:
-            value = cell.value
+            value = xlrd.biffh.error_text_from_code.get(value, "#ERROR")
+        elif cell.ctype == xlrd.XL_CELL_NUMBER and value.is_integer():
+            value = int(value)
 
         return value
 

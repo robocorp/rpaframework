@@ -3,6 +3,7 @@ import pytest
 from io import BytesIO
 
 from RPA.Excel.Files import Files, XlsxWorkbook, XlsWorkbook
+from RPA.Tables import Table
 
 
 @pytest.fixture(
@@ -100,6 +101,14 @@ def test_read_worksheet_header(library):
 def test_read_worksheet_timestamp(library):
     data = library.read_worksheet(name="Second", header=True)
     assert data[5]["Date"] == datetime.datetime(2015, 5, 21)
+
+
+def test_read_worksheet_as_table(library):
+    table = library.read_worksheet_as_table(name="First")
+    assert isinstance(table, Table)
+    assert len(table) == 10
+    assert table[2, 1] == "Mara"
+    assert table[2, 2] == "Hashimoto"
 
 
 def test_append_to_worksheet(library):

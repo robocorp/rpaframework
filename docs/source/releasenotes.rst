@@ -3,6 +3,12 @@ Release notes
 
 Upcoming release
 ----------------
+- FileSystem: Fix string interpolation in error messages
+- Tables: Add keyword ``Trim empty rows``
+- Excel files library:
+
+  - Add keyword ``Read worksheet as table``
+  - Auto-convert integer values in .xls worksheets
 
 0.8.5
 --------------
