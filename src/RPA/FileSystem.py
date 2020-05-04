@@ -174,7 +174,7 @@ class FileSystem:
         :param path:    path to inspected directory
         """
         if self.does_directory_not_exist(path):
-            raise NotADirectoryError("Not a valid directory: {path}")
+            raise NotADirectoryError(f"Not a valid directory: {path}")
 
         return not bool(self.find_files(Path(path, "*")))
 
@@ -236,7 +236,7 @@ class FileSystem:
         :param encoding:    character encoding of written content
         """
         if Path(path).exists():
-            raise FileExistsError("Path already exists: {path}")
+            raise FileExistsError(f"Path already exists: {path}")
 
         with open(path, "w", encoding=encoding) as fd:
             if content:
@@ -249,7 +249,7 @@ class FileSystem:
         :param content:     content to write to file (optional)
         """
         if Path(path).exists():
-            raise FileExistsError("Path already exists: {path}")
+            raise FileExistsError(f"Path already exists: {path}")
 
         with open(path, "wb") as fd:
             if content:
@@ -263,7 +263,7 @@ class FileSystem:
         :param encoding:    character encoding of appended content
         """
         if not Path(path).exists():
-            raise FileNotFoundError("File does not exist: {path}")
+            raise FileNotFoundError(f"File does not exist: {path}")
 
         with open(path, "a", encoding=encoding) as fd:
             fd.write(content)
@@ -275,7 +275,7 @@ class FileSystem:
         :param content:     content to append
         """
         if not Path(path).exists():
-            raise FileNotFoundError("File does not exist: {path}")
+            raise FileNotFoundError(f"File does not exist: {path}")
 
         with open(path, "ab") as fd:
             fd.write(content)
