@@ -16,6 +16,7 @@ DATA_NAMEDTUPLE = [
     TUPLE_SPARSE(1, 2, 4),
     TUPLE_EMPTY(),
     TUPLE_FOUR(1, 2, 3, 4),
+    TUPLE_EMPTY(),
 ]
 
 DATA_DICT = [
@@ -24,9 +25,10 @@ DATA_DICT = [
     {"one": 1, "two": 2, "four": 4},
     {},
     {"one": 1, "two": 2, "three": 3, "four": 4},
+    {},
 ]
 
-DATA_LIST = [[1, 2, 3], ["a", "b", "c"], [1, 2, None, 4], [], [1, 2, 3, 4]]
+DATA_LIST = [[1, 2, 3], ["a", "b", "c"], [1, 2, None, 4], [], [1, 2, 3, 4], []]
 
 DATA_FIXTURE = {
     "dict": (DATA_DICT, None),
@@ -51,7 +53,7 @@ def test_table_columns(table):
 
 
 def test_table_index(table):
-    assert table.index == [0, 1, 2, 3, 4]
+    assert table.index == [0, 1, 2, 3, 4, 5]
 
 
 def test_table_pad_short(table):
@@ -67,20 +69,21 @@ def test_table_empty_row(table):
 
 
 def test_table_negative_index(table):
-    assert table[-1] == [1, 2, 3, 4]
-    assert table[-2] == [None, None, None, None]
+    assert table[-1] == [None, None, None, None]
+    assert table[-2] == [1, 2, 3, 4]
+    assert table[-3] == [None, None, None, None]
 
 
 def test_table_length(table):
-    assert len(table) == 5
+    assert len(table) == 6
 
 
 def test_table_append_rows_index(table):
     table.append_rows(["first", "second", "third"], indexes=["new_one", "new_two"])
-    assert len(table) == 8
+    assert len(table) == 9
     assert table.index[-3] == "new_one"
     assert table.index[-2] == "new_two"
-    assert table.index[-1] == 7
+    assert table.index[-1] == 8
 
 
 def test_table_invalid_column(table):
@@ -96,7 +99,7 @@ def test_table_range_columns():
 def test_table_named_columns():
     table = Table(DATA_NAMEDTUPLE, columns=["two", "four"])
     assert table.columns == ["two", "four"]
-    assert table.index == [0, 1, 2, 3, 4]
+    assert table.index == [0, 1, 2, 3, 4, 5]
     assert table[0] == [2, None]
     assert table[4] == [2, 4]
 
@@ -142,11 +145,11 @@ def test_keyword_export_table(library, table):
     exported = library.export_table(table)
     assert exported == OrderedDict(
         {
-            "index": [0, 1, 2, 3, 4],
-            "one": [1, "a", 1, None, 1],
-            "two": [2, "b", 2, None, 2],
-            "three": [3, "c", None, None, 3],
-            "four": [None, None, 4, None, 4],
+            "index": [0, 1, 2, 3, 4, 5],
+            "one": [1, "a", 1, None, 1, None],
+            "two": [2, "b", 2, None, 2, None],
+            "three": [3, "c", None, None, 3, None],
+            "four": [None, None, 4, None, 4, None],
         }
     )
 
@@ -171,15 +174,15 @@ def test_keyword_add_table_column(library, table):
 
 def test_keyword_add_table_rows(library, table):
     library.add_table_row(table, ["x", "y", "z"])
-    assert len(table) == 6
-    assert table.index[-1] == 5
+    assert len(table) == 7
+    assert table.index[-2] == 5
     assert table[-1] == ["x", "y", "z", None]
 
 
 def test_keyword_add_table_rows_too_long(library, table):
     library.add_table_row(table, ["x", "y", "z", "i", "j", "k"])
-    assert len(table) == 6
-    assert table.index[-1] == 5
+    assert len(table) == 7
+    assert table.index[-2] == 5
     assert table[-1] == ["x", "y", "z", "i"]
 
 
@@ -238,7 +241,7 @@ def test_keyword_get_table_cell(library, table):
 def test_keyword_sort_table_by_column(library, table):
     library.sort_table_by_column(table, "three")
     values = library.get_table_column(table, "three")
-    assert values == ["c", 3, 3, None, None]
+    assert values == ["c", 3, 3, None, None, None]
 
 
 @pytest.mark.skip(reason="Not implemented")
@@ -251,9 +254,17 @@ def test_keyword_filter_table_by_column(library, table):
     library.filter_table_by_column(table, column, operator, value)
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_keyword_filter_empty_rows(library, table):
     library.filter_empty_rows(table)
+    assert len(table) == 4
+    assert table[-1] == [1, 2, 3, 4]
+
+
+def test_keyword_trim_empty_rows(library, table):
+    library.trim_empty_rows(table)
+    assert len(table) == 5
+    assert table[-1] == [1, 2, 3, 4]
+    assert table[-2] == [None, None, None, None]
 
 
 @pytest.mark.skip(reason="Not implemented")

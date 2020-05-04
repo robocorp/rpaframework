@@ -1034,6 +1034,23 @@ class Tables:
 
         table.delete_rows(empty)
 
+    def trim_empty_rows(self, table):
+        """Remove all rows from the end of the table
+        which have only None values.
+
+        :param table:    table to filter
+        """
+        self.requires_table(table)
+
+        empty = []
+        for idx in reversed(table.index):
+            row = table[idx]
+            if any(value is not None for value in row):
+                break
+            empty.append(idx)
+
+        table.delete_rows(empty)
+
     def read_table_from_csv(self, path, header=None, columns=None, dialect=None):
         """Read a CSV file as a table.
 
