@@ -446,14 +446,16 @@ class XlsWorkbook:
         return data
 
     def _parse_type(self, cell):
+        value = cell.value
+
         if cell.ctype == xlrd.XL_CELL_DATE:
-            value = xlrd.xldate_as_datetime(cell.value, self._book.datemode)
+            value = xlrd.xldate_as_datetime(value, self._book.datemode)
         elif cell.ctype == xlrd.XL_CELL_BOOLEAN:
-            value = bool(cell.value)
+            value = bool(value)
         elif cell.ctype == xlrd.XL_CELL_ERROR:
-            value = xlrd.biffh.error_text_from_code.get(cell.value, "#ERROR")
-        else:
-            value = cell.value
+            value = xlrd.biffh.error_text_from_code.get(value, "#ERROR")
+        elif cell.ctype == xlrd.XL_CELL_NUMBER and value.is_integer():
+            value = int(value)
 
         return value
 
