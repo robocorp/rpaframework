@@ -228,27 +228,29 @@ class FileSystem:
         """
         Path(path).touch()
 
-    def create_file(self, path, content=None, encoding="utf-8"):
+    def create_file(self, path, content=None, encoding="utf-8", overwrite=False):
         """Creates a new text file, and writes content if any is given.
 
         :param path:        path to file to write
         :param content:     content to write to file (optional)
         :param encoding:    character encoding of written content
+        :param overwrite:   replace destination file if it already exists
         """
-        if Path(path).exists():
+        if not overwrite and Path(path).exists():
             raise FileExistsError(f"Path already exists: {path}")
 
         with open(path, "w", encoding=encoding) as fd:
             if content:
                 fd.write(content)
 
-    def create_binary_file(self, path, content=None):
+    def create_binary_file(self, path, content=None, overwrite=False):
         """Creates a new binary file, and writes content if any is given.
 
         :param path:        path to file to write
         :param content:     content to write to file (optional)
+        :param overwrite:   replace destination file if it already exists
         """
-        if Path(path).exists():
+        if not overwrite and Path(path).exists():
             raise FileExistsError(f"Path already exists: {path}")
 
         with open(path, "wb") as fd:
