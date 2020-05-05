@@ -52,7 +52,7 @@ Keywords
 
 
 :Create Binary File:
-  :Arguments: path, content=None
+  :Arguments: path, content=None, overwrite=False
 
   Creates a new binary file, and writes content if any is given.
 
@@ -64,7 +64,7 @@ Keywords
 
 
 :Create File:
-  :Arguments: path, content=None, encoding=utf-8
+  :Arguments: path, content=None, encoding=utf-8, overwrite=False
 
   Creates a new text file, and writes content if any is given.
 

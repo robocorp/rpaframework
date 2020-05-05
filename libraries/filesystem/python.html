@@ -357,13 +357,14 @@ files on a local filesystem.</p>
 
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.create_binary_file">
-<code class="sig-name descname">create_binary_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">content=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.create_binary_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_binary_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">content=None</em>, <em class="sig-param">overwrite=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.create_binary_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a new binary file, and writes content if any is given.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> – path to file to write</p></li>
 <li><p><strong>content</strong> – content to write to file (optional)</p></li>
+<li><p><strong>overwrite</strong> – replace destination file if it already exists</p></li>
 </ul>
 </dd>
 </dl>
@@ -385,7 +386,7 @@ files on a local filesystem.</p>
 
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.create_file">
-<code class="sig-name descname">create_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">content=None</em>, <em class="sig-param">encoding='utf-8'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.create_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">content=None</em>, <em class="sig-param">encoding='utf-8'</em>, <em class="sig-param">overwrite=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.create_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a new text file, and writes content if any is given.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -393,6 +394,7 @@ files on a local filesystem.</p>
 <li><p><strong>path</strong> – path to file to write</p></li>
 <li><p><strong>content</strong> – content to write to file (optional)</p></li>
 <li><p><strong>encoding</strong> – character encoding of written content</p></li>
+<li><p><strong>overwrite</strong> – replace destination file if it already exists</p></li>
 </ul>
 </dd>
 </dl>

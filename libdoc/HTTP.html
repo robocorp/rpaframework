@@ -206,14 +206,14 @@
 <dd class="field-odd"><p>Global</p>
 </dd>
 </dl>
-<p>RPA Framework HTTP library which wraps <span class="name">RequestsLibrary &lt;https://github.com/MarketSquare/robotframework-requests/&gt;</span>_ functionality.</p></div>
+<p>RPA Framework HTTP library which wraps <i>RequestsLibrary</i> functionality.</p></div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list">
 <dt class="field-odd">Create Client Cert Session</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=[‘TRACE’, ‘OPTIONS’, ‘PUT’, ‘HEAD’, ‘GET’, ‘DELETE’]</p>
+<dd class="field-odd"><p>alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=[‘TRACE’, ‘OPTIONS’, ‘DELETE’, ‘PUT’, ‘HEAD’, ‘GET’]</p>
 </dd>
 </dl>
 <p>Create Session: create a HTTP session to a server</p>
@@ -234,7 +234,7 @@
 <dt class="field-even">Create Custom Session</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=[‘TRACE’, ‘OPTIONS’, ‘PUT’, ‘HEAD’, ‘GET’, ‘DELETE’]</p>
+<dd class="field-odd"><p>alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=[‘TRACE’, ‘OPTIONS’, ‘DELETE’, ‘PUT’, ‘HEAD’, ‘GET’]</p>
 </dd>
 </dl>
 <p>Create Session: create a HTTP session to a server</p>
@@ -255,7 +255,7 @@
 <dt class="field-even">Create Digest Session</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=[‘TRACE’, ‘OPTIONS’, ‘PUT’, ‘HEAD’, ‘GET’, ‘DELETE’]</p>
+<dd class="field-odd"><p>alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=[‘TRACE’, ‘OPTIONS’, ‘DELETE’, ‘PUT’, ‘HEAD’, ‘GET’]</p>
 </dd>
 </dl>
 <p>Create Session: create a HTTP session to a server</p>
@@ -276,7 +276,7 @@
 <dt class="field-even">Create Ntlm Session</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=[‘TRACE’, ‘OPTIONS’, ‘PUT’, ‘HEAD’, ‘GET’, ‘DELETE’]</p>
+<dd class="field-odd"><p>alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=[‘TRACE’, ‘OPTIONS’, ‘DELETE’, ‘PUT’, ‘HEAD’, ‘GET’]</p>
 </dd>
 </dl>
 <p>Create Session: create a HTTP session to a server</p>
@@ -297,7 +297,7 @@
 <dt class="field-even">Create Session</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=[‘TRACE’, ‘OPTIONS’, ‘PUT’, ‘HEAD’, ‘GET’, ‘DELETE’]</p>
+<dd class="field-odd"><p>alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=[‘TRACE’, ‘OPTIONS’, ‘DELETE’, ‘PUT’, ‘HEAD’, ‘GET’]</p>
 </dd>
 </dl>
 <p>Create Session: create a HTTP session to a server</p>
@@ -333,10 +333,11 @@
 <dt class="field-even">Download</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>url: str, target_file: str=None, binary: bool=True, verify: bool=True, force_new_session: bool=False</p>
+<dd class="field-odd"><p>url: str, target_file: str=None, binary: bool=True, verify: bool=True, force_new_session: bool=False, overwrite: bool=False</p>
 </dd>
 </dl>
-<p>Alias for keyword http_get</p></dd>
+<p>Alias for keyword <a href="#Http%20Get" class="name">HTTP Get</a>.</p>
+<p>Difference in use is that URL is always downloaded based on the URL path (even without <span class="name">target_file</span>). If there is a filename in the path then that is used as <span class="name">target_file</span> to save to. By default filename will be <span class="name">downloaded.html</span>.</p></dd>
 <dt class="field-even">Get Current Session Alias</dt>
 <dd class="field-even"><p>Get request session alias which was used with <a href="#Http%20Get" class="name">HTTP Get</a> keyword.</p>
 <p>:return: name of session alias</p></dd>
@@ -370,12 +371,12 @@
 <dt class="field-even">Http Get</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>url: str, target_file: str=None, binary: bool=True, verify: bool=True, force_new_session: bool=False</p>
+<dd class="field-odd"><p>url: str, target_file: str=None, binary: bool=True, verify: bool=True, force_new_session: bool=False, overwrite: bool=False</p>
 </dd>
 </dl>
 <p>Helper method for <a href="#Get%20Request" class="name">Get Request</a> which will create session and perform Get and stores target file if set by <span class="name">target_file</span> parameter.</p>
 <p>Old session will be used if URL scheme and host are same as previously, eg. '<a href="https://www.google.fi">https://www.google.fi</a>' part of the URL.</p>
-<p>:param url: target url for Get requesdt :param target_file: filepath to save request content, default <span class="name">None</span> :param binary: if <span class="name">True</span> file is saved as binary, default <span class="name">True</span> :param verify: if SSL verification should be done, default <span class="name">True</span> :param force_new_session: if new HTTP session should be created, default <span class="name">False</span> :return: request response</p></dd>
+<p>:param url: target url for Get request :param target_file: filepath to save request content, default <span class="name">None</span> :param binary: if <span class="name">True</span> file is saved as binary, default <span class="name">True</span> :param verify: if SSL verification should be done, default <span class="name">True</span> :param force_new_session: if new HTTP session should be created, default <span class="name">False</span> :param overwrite: used together with <span class="name">target_file</span>, if <span class="name">True</span> will overwrite the target file :return: request response</p></dd>
 <dt class="field-even">Options Request</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>

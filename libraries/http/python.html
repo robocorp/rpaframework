@@ -206,11 +206,15 @@
 <em class="property">class </em><code class="sig-prename descclassname">RPA.HTTP.</code><code class="sig-name descname">HTTP</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RequestsLibrary.RequestsLibrary</span></code></p>
 <p>RPA Framework HTTP library which wraps
-<a class="reference external" href="https://github.com/MarketSquare/robotframework-requests/">RequestsLibrary</a> functionality.</p>
+_RequestsLibrary_ functionality.</p>
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.download">
-<code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">target_file: str = None</em>, <em class="sig-param">binary: bool = True</em>, <em class="sig-param">verify: bool = True</em>, <em class="sig-param">force_new_session: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.HTTP.HTTP.download" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for keyword http_get</p>
+<code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">target_file: str = None</em>, <em class="sig-param">binary: bool = True</em>, <em class="sig-param">verify: bool = True</em>, <em class="sig-param">force_new_session: bool = False</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.HTTP.HTTP.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for keyword <cite>HTTP Get</cite>.</p>
+<p>Difference in use is that URL is always downloaded based on
+the URL path (even without <cite>target_file</cite>). If there is a filename
+in the path then that is used as <cite>target_file</cite> to save to. By default
+filename will be <cite>downloaded.html</cite>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -226,7 +230,7 @@
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.http_get">
-<code class="sig-name descname">http_get</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">target_file: str = None</em>, <em class="sig-param">binary: bool = True</em>, <em class="sig-param">verify: bool = True</em>, <em class="sig-param">force_new_session: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.HTTP.HTTP.http_get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">http_get</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">target_file: str = None</em>, <em class="sig-param">binary: bool = True</em>, <em class="sig-param">verify: bool = True</em>, <em class="sig-param">force_new_session: bool = False</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.HTTP.HTTP.http_get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper method for <cite>Get Request</cite> which will create session and
 perform Get and stores target file if set by <cite>target_file</cite> parameter.</p>
 <p>Old session will be used if URL scheme and host are same as previously,
@@ -234,11 +238,13 @@ eg. ‘<a class="reference external" href="https://www.google.fi">https://www.go
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>url</strong> – target url for Get requesdt</p></li>
+<li><p><strong>url</strong> – target url for Get request</p></li>
 <li><p><strong>target_file</strong> – filepath to save request content, default <cite>None</cite></p></li>
 <li><p><strong>binary</strong> – if <cite>True</cite> file is saved as binary, default <cite>True</cite></p></li>
 <li><p><strong>verify</strong> – if SSL verification should be done, default <cite>True</cite></p></li>
 <li><p><strong>force_new_session</strong> – if new HTTP session should be created, default <cite>False</cite></p></li>
+<li><p><strong>overwrite</strong> – used together with <cite>target_file</cite>, if <cite>True</cite> will
+overwrite the target file</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

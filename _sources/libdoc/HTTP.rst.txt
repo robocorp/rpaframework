@@ -10,14 +10,14 @@ Description
 
 .. raw:: html
 
-   <p>RPA Framework HTTP library which wraps <span class="name">RequestsLibrary &lt;https://github.com/MarketSquare/robotframework-requests/&gt;</span>_ functionality.</p>
+   <p>RPA Framework HTTP library which wraps <i>RequestsLibrary</i> functionality.</p>
 
 ********
 Keywords
 ********
 
 :Create Client Cert Session:
-  :Arguments: alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'PUT', 'HEAD', 'GET', 'DELETE']
+  :Arguments: alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'DELETE', 'PUT', 'HEAD', 'GET']
 
   .. raw:: html
 
@@ -38,7 +38,7 @@ Keywords
      <p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>
 
 :Create Custom Session:
-  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'PUT', 'HEAD', 'GET', 'DELETE']
+  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'DELETE', 'PUT', 'HEAD', 'GET']
 
   .. raw:: html
 
@@ -59,7 +59,7 @@ Keywords
      <p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>
 
 :Create Digest Session:
-  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'PUT', 'HEAD', 'GET', 'DELETE']
+  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'DELETE', 'PUT', 'HEAD', 'GET']
 
   .. raw:: html
 
@@ -80,7 +80,7 @@ Keywords
      <p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>
 
 :Create Ntlm Session:
-  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'PUT', 'HEAD', 'GET', 'DELETE']
+  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'DELETE', 'PUT', 'HEAD', 'GET']
 
   .. raw:: html
 
@@ -101,7 +101,7 @@ Keywords
      <p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>
 
 :Create Session:
-  :Arguments: alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'PUT', 'HEAD', 'GET', 'DELETE']
+  :Arguments: alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'DELETE', 'PUT', 'HEAD', 'GET']
 
   .. raw:: html
 
@@ -140,11 +140,12 @@ Keywords
      <p><code>timeout</code> connection timeout</p>
 
 :Download:
-  :Arguments: url: str, target_file: str=None, binary: bool=True, verify: bool=True, force_new_session: bool=False
+  :Arguments: url: str, target_file: str=None, binary: bool=True, verify: bool=True, force_new_session: bool=False, overwrite: bool=False
 
   .. raw:: html
 
-     <p>Alias for keyword http_get</p>
+     <p>Alias for keyword <a href="#Http%20Get" class="name">HTTP Get</a>.</p>
+     <p>Difference in use is that URL is always downloaded based on the URL path (even without <span class="name">target_file</span>). If there is a filename in the path then that is used as <span class="name">target_file</span> to save to. By default filename will be <span class="name">downloaded.html</span>.</p>
 
 :Get Current Session Alias:
   .. raw:: html
@@ -180,13 +181,13 @@ Keywords
      <p><code>timeout</code> connection timeout</p>
 
 :Http Get:
-  :Arguments: url: str, target_file: str=None, binary: bool=True, verify: bool=True, force_new_session: bool=False
+  :Arguments: url: str, target_file: str=None, binary: bool=True, verify: bool=True, force_new_session: bool=False, overwrite: bool=False
 
   .. raw:: html
 
      <p>Helper method for <a href="#Get%20Request" class="name">Get Request</a> which will create session and perform Get and stores target file if set by <span class="name">target_file</span> parameter.</p>
      <p>Old session will be used if URL scheme and host are same as previously, eg. '<a href="https://www.google.fi">https://www.google.fi</a>' part of the URL.</p>
-     <p>:param url: target url for Get requesdt :param target_file: filepath to save request content, default <span class="name">None</span> :param binary: if <span class="name">True</span> file is saved as binary, default <span class="name">True</span> :param verify: if SSL verification should be done, default <span class="name">True</span> :param force_new_session: if new HTTP session should be created, default <span class="name">False</span> :return: request response</p>
+     <p>:param url: target url for Get request :param target_file: filepath to save request content, default <span class="name">None</span> :param binary: if <span class="name">True</span> file is saved as binary, default <span class="name">True</span> :param verify: if SSL verification should be done, default <span class="name">True</span> :param force_new_session: if new HTTP session should be created, default <span class="name">False</span> :param overwrite: used together with <span class="name">target_file</span>, if <span class="name">True</span> will overwrite the target file :return: request response</p>
 
 :Options Request:
   :Arguments: alias, uri, headers=None, allow_redirects=None, timeout=None
