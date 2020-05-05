@@ -290,24 +290,30 @@ class FileSystem:
         """
         Path(path).mkdir(parents=parents)
 
-    def remove_file(self, path):
+    def remove_file(self, path, force=False):
         """Removes the given file.
 
         :param path:    path to removed file
+        :param force:   ignore non-existent files
         """
-        Path(path).unlink()
+        try:
+            Path(path).unlink()
+        except FileNotFoundError:
+            if not force:
+                raise
 
-    def remove_files(self, *paths):
+    def remove_files(self, *paths, force=False):
         """Removes multiple files.
 
-        :param paths: paths to removed files
+        :param paths:   paths to removed files
+        :param force:   ignore non-existent files
         """
         # TODO: glob support
         for path in paths:
-            self.remove_file(path)
+            self.remove_file(path, force)
 
     def remove_directory(self, path, recursive=False):
-        """Returns the given directory, and optionally everything it contains.
+        """Removes the given directory, and optionally everything it contains.
 
         :param path:        path to directory
         :param recursive:   remove all subdirectories and files

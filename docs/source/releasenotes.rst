@@ -5,7 +5,11 @@ Upcoming release
 ----------------
 
 - HTTP: Add keyword ``Download``
-- FileSystem: Fix string interpolation in error messages
+- FileSystem:
+
+  - Fix string interpolation in error messages
+  - Add ``force`` option for file removal keywords
+
 - Tables: Add keyword ``Trim empty rows``
 - Excel files library:
 
