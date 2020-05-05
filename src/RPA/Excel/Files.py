@@ -155,12 +155,13 @@ class Files:
                        as headers for the rest of the rows.
         :param trim:   Remove all empty rows from the end of the worksheet
         """
-        library = Tables()
+        tables = Tables()
         sheet = self.read_worksheet(name, header)
 
-        table = library.create_table(sheet)
+        table = tables.create_table(sheet)
         if trim:
-            library.trim_empty_rows(table)
+            tables.trim_empty_rows(table)
+            tables.trim_column_names(table)
 
         return table
 
