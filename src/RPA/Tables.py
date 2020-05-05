@@ -1051,6 +1051,11 @@ class Tables:
 
         table.delete_rows(empty)
 
+    def trim_column_names(self, table):
+        """Remove all extraneous whitespace from column names."""
+        self.requires_table(table)
+        table.columns = [column.strip() for column in table.columns]
+
     def read_table_from_csv(self, path, header=None, columns=None, dialect=None):
         """Read a CSV file as a table.
 
