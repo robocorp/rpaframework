@@ -4,6 +4,15 @@ Release notes
 Upcoming release
 ----------------
 
+- Tables:
+
+  - Removed limitation of column names being valid Python identifiers
+  - Default iteration method changed to dictionaries instead of namedtuples
+  - Keywords that return rows or columns now harmonized to return them in
+    dictionary format by default, with option to use lists
+  - Table head/tail keywords changed to return new Table instance
+
+
 0.8.7
 --------------
 

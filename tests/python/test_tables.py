@@ -109,16 +109,16 @@ def test_table_none_columns():
         Table([{"one": 1, "two": 2, None: 3}, {"one": 1, None: 3, "four": 4}])
 
 
-def test_table_sanitize_init():
+def test_table_iterate_tuples():
     table = Table(
         [{"valid_key": 1, "invalid-key1": 2, "invalid/key2": 3, "123invalidkey3": 4}]
     )
 
     assert table.columns == [
         "valid_key",
-        "invalid_key1",
-        "invalid_key2",
-        "invalidkey3",
+        "invalid-key1",
+        "invalid/key2",
+        "123invalidkey3",
     ]
 
     rows = list(table.iter_tuples(with_index=False))
@@ -130,15 +130,6 @@ def test_table_sanitize_init():
         "invalid_key2",
         "invalidkey3",
     )
-
-
-def test_table_sanitize_append_rows():
-    table = Table(
-        [{"valid_key": 1, "invalid-key1": 2, "invalid/key2": 3, "123invalidkey3": 4}]
-    )
-
-    table.append_rows([{"valid_key": 5, "123invalidkey3": 6}])
-    assert table[1] == [5, None, None, 6]
 
 
 def test_keyword_export_table(library, table):
@@ -205,7 +196,7 @@ def test_keyword_set_table_row(library, table):
 def test_keyword_set_table_column(library, table):
     library.set_table_column(table, "one", "NaN")
     for row in table:
-        assert row.one == "NaN"
+        assert row["one"] == "NaN"
 
 
 @pytest.mark.skip(reason="Not implemented")
@@ -223,9 +214,20 @@ def test_keyword_set_column_as_index(library, table):
     library.set_column_as_index(table, column=None)
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_keyword_table_head(library, table):
-    library.table_head(table, count=5)
+    head = library.table_head(table, count=3)
+    assert isinstance(head, Table)
+    assert len(head) == 3
+    assert head[0] == table[0]
+    assert head[-1] == table[2]
+
+
+def test_keyword_table_head_list(library, table):
+    head = library.table_head(table, count=3, as_list=True)
+    assert isinstance(head, list)
+    assert len(head) == 3
+    assert head[0] == table[0]
+    assert head[-1] == table[2]
 
 
 @pytest.mark.skip(reason="Not implemented")
@@ -240,7 +242,7 @@ def test_keyword_get_table_cell(library, table):
 
 def test_keyword_sort_table_by_column(library, table):
     library.sort_table_by_column(table, "three")
-    values = library.get_table_column(table, "three")
+    values = library.get_table_column(table, "three", as_list=True)
     assert values == ["c", 3, 3, None, None, None]
 
 

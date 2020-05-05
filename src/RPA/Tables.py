@@ -52,9 +52,9 @@ class Table:
     - dict: Dictionary of columns as keys and rows as values
 
     .. todo:: Existing column to index conversion
-    .. todo:: Index accessing through magic properties?
+    .. todo:: Index accessing through dot notation?
     .. todo:: Index name conflict in exports/imports
-    .. todo:: Original column/index in export?
+    .. todo:: Return Robot Framework DotDict instead of dict?
 
     :param data:     values for table,  see "Supported data formats"
     :param columns:  names for columns, should match data dimensions
@@ -74,10 +74,10 @@ class Table:
 
         if not data:
             self._init_empty()
-        elif is_list_like(data):
-            self._init_list(data)
         elif is_dict_like(data):
             self._init_dict(data)
+        elif is_list_like(data):
+            self._init_list(data)
         else:
             raise TypeError("Not a valid input format")
 
@@ -126,7 +126,7 @@ class Table:
     def _init_dict(self, data):
         """Initialize table from dict-like container."""
         if not self._columns:
-            self._columns = [to_identifier(key) for key in data.keys()]
+            self._columns = list(data.keys())
 
         # Filter values by defined columns
         columns = (
@@ -141,15 +141,13 @@ class Table:
         self._index = self._index or list(range(len(self._data)))
 
     def __repr__(self):
-        return "Table(columns='{}', rows={})".format(
-            ", ".join(str(column) for column in self.columns), len(self)
-        )
+        return "Table(columns={}, rows={})".format(self.columns, len(self))
 
     def __len__(self):
         return len(self._index)
 
     def __iter__(self):
-        return self.iter_tuples(with_index=False)
+        return self.iter_dicts(with_index=False)
 
     def __eq__(self, other):
         if not isinstance(other, Table):
@@ -171,9 +169,8 @@ class Table:
     @columns.setter
     def columns(self, names):
         """Rename columns with given values."""
-        names = [to_identifier(name) for name in names]
         self._validate_columns(names)
-        self._columns = names
+        self._columns = list(names)
 
     def _validate_columns(self, names):
         """Validate that given column names can be used."""
@@ -191,12 +188,12 @@ class Table:
         if is_namedtuple(obj):
             # Use namedtuple fields as columns
             def get(obj):
-                return [to_identifier(field) for field in obj._fields]
+                return list(obj._fields)
 
         elif is_dict_like(obj):
             # Use dictionary keys as columns
             def get(obj):
-                return [to_identifier(key) for key in obj.keys()]
+                return list(obj.keys())
 
         elif is_list_like(obj):
             # Use either predefined columns, or
@@ -219,23 +216,17 @@ class Table:
 
         return get
 
-    def _column_value_getter(self, obj):  # noqa: C901
+    def _column_value_getter(self, obj):
         """Create callable that returns column values for given object types."""
         if is_namedtuple(obj):
             # Get values using properties
             def get(obj, column):
-                for field in obj._fields:
-                    if column == to_identifier(field):
-                        return getattr(obj, field)
-                return None
+                return getattr(obj, column, None)
 
         elif is_dict_like(obj):
             # Get values using dictionary keys
             def get(obj, column):
-                for key in obj:
-                    if column == to_identifier(key):
-                        return obj[key]
-                return None
+                return obj.get(column)
 
         elif is_list_like(obj):
             # Get values using list indexes
@@ -272,9 +263,8 @@ class Table:
     @index.setter
     def index(self, names):
         """Renames index with given values."""
-        names = [to_identifier(name) for name in names]
         self._validate_index(names)
-        self._index = names
+        self._index = list(names)
 
     def _validate_index(self, names):
         """Validate that given index names can be used."""
@@ -341,13 +331,13 @@ class Table:
         if isinstance(key, tuple):
             index, column = key
             index = self._slice_index(index) if isinstance(index, slice) else index
-            return self.get(indexes=index, columns=column)
+            return self.get(indexes=index, columns=column, as_list=True)
         # Row indexed with slice, all columns
         elif isinstance(key, slice):
-            return self.get(indexes=self._slice_index(key))
+            return self.get(indexes=self._slice_index(key), as_list=True)
         # Single row
         else:
-            return self.get(indexes=key)
+            return self.get(indexes=key, as_list=True)
 
     def __setitem__(self, key, value):
         """Helper method for setting items in the Table.
@@ -399,41 +389,40 @@ class Table:
         """Remove all rows from this table."""
         self.delete_rows(self.index)
 
-    def head(self, rows):
+    def head(self, rows, as_list=False):
         """Return first n rows of table."""
-        return self._data[: int(rows)]
+        indexes = self._index[: int(rows)]
+        return self.get_table(indexes, as_list=as_list)
 
-    def tail(self, rows):
+    def tail(self, rows, as_list=False):
         """Return last n rows of table."""
-        return self._data[-int(rows) :]
+        indexes = self._index[-int(rows) :]
+        return self.get_table(indexes, as_list=as_list)
 
-    def get(self, indexes=None, columns=None):
+    def get(self, indexes=None, columns=None, as_list=False):
         """Get values from table. Return type depends on input dimensions.
 
         If `indexes` and `columns` are scalar, i.e. not lists:
             Returns single cell value
 
         If either `indexes` or `columns` is a list:
-            Returns matching cell values as a list
+            Returns matching row or column
 
         If both `indexes` and `columns` are lists:
             Returns a new Table instance with matching cell values
 
-        :param indexes:
-        :param columns:
+        :param indexes: list of indexes, or all if not given
+        :param columns: list of columns, or all if not given
         """
         indexes = if_none(indexes, self._index)
         columns = if_none(columns, self._columns)
 
         if is_list_like(indexes) and is_list_like(columns):
-            return self.get_table(indexes, columns)
-
-        elif is_list_like(indexes) and not is_list_like(columns):
-            return [self.get_cell(index, columns) for index in indexes]
-
+            return self.get_table(indexes, columns, as_list)
         elif not is_list_like(indexes) and is_list_like(columns):
-            return [self.get_cell(indexes, column) for column in columns]
-
+            return self.get_row(indexes, columns, as_list)
+        elif is_list_like(indexes) and not is_list_like(columns):
+            return self.get_column(columns, indexes, as_list)
         else:
             return self.get_cell(indexes, columns)
 
@@ -443,23 +432,68 @@ class Table:
         col = self.column_location(column)
         return self._data[idx][col]
 
-    def get_row(self, index):
-        """Get all column values from row."""
+    def get_row(self, index, columns=None, as_list=False):
+        """Get column values from row.
+
+        :param index:   index for row
+        :param columns: column names to include, or all if not given
+        :param as_list: return row as dictionary, instead of list
+        """
+        columns = if_none(columns, self._columns)
         idx = self.index_location(index)
-        return list(self._data[idx])
 
-    def get_column(self, column):
-        """Get all row values from column."""
+        if as_list:
+            row = []
+            for column in columns:
+                col = self.column_location(column)
+                row.append(self._data[idx][col])
+            return row
+        else:
+            row = {}
+            for column in columns:
+                col = self.column_location(column)
+                row[self._columns[col]] = self._data[idx][col]
+            return row
+
+    def get_column(self, column, indexes=None, as_list=False):
+        """Get row values from column.
+
+        :param columns: name for column
+        :param indexes: row indexes to include, or all if not given
+        :param as_list: return column as dictionary, instead of list
+        """
+        indexes = if_none(indexes, self._index)
         col = self.column_location(column)
-        return [row[col] for row in self._data]
 
-    def get_table(self, indexes, columns):
+        if as_list:
+            column = []
+            for index in indexes:
+                idx = self.index_location(index)
+                column.append(self._data[idx][col])
+            return column
+        else:
+            column = {}
+            for index in indexes:
+                idx = self.index_location(index)
+                column[self._index[idx]] = self._data[idx][col]
+            return column
+
+    def get_table(self, indexes=None, columns=None, as_list=False):
         """Get a new table from all cells matching indexes and columns."""
+        indexes = if_none(indexes, self._index)
+        columns = if_none(columns, self._columns)
+
+        if indexes == self._index and columns == self._columns:
+            return self.copy()
+
         idxs = [self.index_location(index) for index in indexes]
         cols = [self.column_location(column) for column in columns]
         data = [[self._data[idx][col] for col in cols] for idx in idxs]
 
-        return Table(data=data, index=indexes, columns=columns)
+        if as_list:
+            return data
+        else:
+            return Table(data=data, index=indexes, columns=columns)
 
     def get_slice(self, start=None, end=None):
         """Get a new table from rows between start and end index."""
@@ -490,8 +524,6 @@ class Table:
         """Add a new empty column into the table."""
         if column is None:
             column = len(self._columns)
-        elif not isinstance(column, int):
-            column = to_identifier(column)
         elif isinstance(column, int) and not allow_index:
             raise ValueError("Unable to add column by index")
 
@@ -660,7 +692,8 @@ class Table:
         columns = to_list(columns)
 
         # Create sort criteria list, with each row as tuple of column values
-        values = list(zip(*(self.get_column(column) for column in columns)))
+        values = (self.get_column(column, as_list=True) for column in columns)
+        values = list(zip(*values))
 
         self._sort_by(values, reverse=not ascending)
 
@@ -751,12 +784,18 @@ class Table:
             yield row
 
     def iter_tuples(self, with_index=True, name="Row"):
-        """Iterate rows with values as namedtuples."""
+        """Iterate rows with values as namedtuples.
+        Converts column names to valid Python identifiers,
+        e.g. "First Name" -> "First_Name"
+        """
+        columns = {column: to_identifier(column) for column in self._columns}
+
         fields = ["index"] if with_index else []
-        fields.extend(self._columns)
+        fields.extend(columns.values())
 
         container = namedtuple(name, fields)
         for row in self.iter_dicts(with_index):
+            row = {columns[k]: v for k, v in row.items()}
             yield container(**row)
 
     def to_list(self, with_index=True):
@@ -858,23 +897,25 @@ class Tables:
         self.requires_table(table)
         table.append_row(row, index=index)
 
-    def get_table_row(self, table, index):
+    def get_table_row(self, table, index, as_list=False):
         """Get a single row from table.
 
         :param table:   table to read
         :param row:     row to read
+        :param as_list: return list instead of dictionary
         """
         self.requires_table(table)
-        return table.get_row(index)
+        return table.get_row(index, as_list=as_list)
 
-    def get_table_column(self, table, column):
+    def get_table_column(self, table, column, as_list=False):
         """Get all column values from table.
 
         :param table:   table to read
         :param column:  column to read
+        :param as_list: return list instead of dictionary
         """
         self.requires_table(table)
-        return table.get_column(column)
+        return table.get_column(column, as_list=as_list)
 
     def set_table_row(self, table, row, values):
         """Assign values to a row in the table.
@@ -896,29 +937,31 @@ class Tables:
         self.requires_table(table)
         table.set_column(column, values)
 
-    def pop_table_row(self, table, index=None):
+    def pop_table_row(self, table, index=None, as_list=False):
         """Remove row from table and return it.
 
         :param table:   table to modify
         :param index:   row index, pops first row if none given
+        :param as_list: return list instead of dictionary
         """
         self.requires_table(table)
         index = if_none(index, table.index[0])
 
-        values = table.get_row(table, index)
+        values = table.get_row(table, index, as_list)
         table.delete_rows(index)
         return values
 
-    def pop_table_column(self, table, column=None):
+    def pop_table_column(self, table, column=None, as_list=False):
         """Remove column from table and return it.
 
         :param table:   table to modify
         :param column:  column to remove
+        :param as_list: return list instead of dictionary
         """
         self.requires_table(table)
         column = if_none(column, table.columns[0])
 
-        values = self.get_table_column(table, column)
+        values = self.get_table_column(table, column, as_list)
         table.delete_columns(column)
         return values
 
@@ -931,23 +974,25 @@ class Tables:
         values = self.pop_table_column(column)
         table.index = values
 
-    def table_head(self, table, count=5):
+    def table_head(self, table, count=5, as_list=False):
         """Return first `count` rows from table.
 
         :param table:   table to read from
         :param count:   number of lines to read
+        :param as_list: return list instead of Table
         """
         self.requires_table(table)
-        return table.head(count)
+        return table.head(count, as_list)
 
-    def table_tail(self, table, count=5):
+    def table_tail(self, table, count=5, as_list=False):
         """Return last `count` rows from table.
 
         :param table:   table to read from
         :param count:   number of lines to read
+        :param as_list: return list instead of Table
         """
         self.requires_table(table)
-        return table.tail(count)
+        return table.tail(count, as_list)
 
     def get_table_cell(self, table, row, column):
         """Get a cell value from table.

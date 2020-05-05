@@ -13,7 +13,7 @@ Files to Table
     ${files}=    Create table    ${files}
     Filter table by column    ${files}    size  >=  ${1024}
     FOR    ${file}    IN    @{files}
-        Log    ${file.name}
+        Log    ${file}[name]
     END
     Write table to CSV    ${files}    ${OUTPUT_DIR}${/}files.csv
 
@@ -26,9 +26,18 @@ Excel to Table
         List group IDs    ${rows}
     END
 
+Table With Non-identifier Columns
+    ${data}=    Create dictionary    123=asd    _\\1=33    cool key=value
+    ${table}=   Create table    ${data}
+    FOR    ${row}    IN    @{table}
+        Log    ${row}[123]
+        Log    ${row}[_\\1]
+        Log    ${row}[cool key]
+    END
+
 *** Keywords ***
 List group IDs
     [Arguments]    ${rows}
     FOR    ${row}    IN    @{rows}
-        Log    ${row.Id}
+        Log    ${row}[Id]
     END
