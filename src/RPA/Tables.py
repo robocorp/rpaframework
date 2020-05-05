@@ -853,13 +853,18 @@ class Tables:
         self.logger.info("Created table: %s", table)
         return table
 
-    def export_table(self, table):
+    def export_table(self, table, with_index=False, as_list=True):
         """Convert table object to standard Python containers.
 
-        :param table:   table to convert to dict
+        :param table:       table to convert to dict
+        :param with_index:  include index in values
+        :param as_list:     export data as list instead of dict
         """
         self.requires_table(table)
-        return table.to_list()
+        if as_list:
+            return table.to_list(with_index)
+        else:
+            return table.to_dict(with_index)
 
     def copy_table(self, table):
         """Copy table object.

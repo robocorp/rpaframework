@@ -132,8 +132,20 @@ def test_table_iterate_tuples():
     )
 
 
-def test_keyword_export_table(library, table):
+def test_keyword_export_table_as_list(library, table):
     exported = library.export_table(table)
+    assert exported == [
+        {"one": 1, "two": 2, "three": 3, "four": None},
+        {"one": "a", "two": "b", "three": "c", "four": None},
+        {"one": 1, "two": 2, "three": None, "four": 4},
+        {"one": None, "two": None, "three": None, "four": None},
+        {"one": 1, "two": 2, "three": 3, "four": 4},
+        {"one": None, "two": None, "three": None, "four": None},
+    ]
+
+
+def test_keyword_export_table_as_dict(library, table):
+    exported = library.export_table(table, with_index=True, as_list=False)
     assert exported == OrderedDict(
         {
             "index": [0, 1, 2, 3, 4, 5],
