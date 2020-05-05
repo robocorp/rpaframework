@@ -4,11 +4,20 @@ Release notes
 Upcoming release
 ----------------
 
-- HTTP: Add keyword ``Download``
+
+0.8.6
+--------------
+
+- HTTP:
+
+  - Add keyword ``Download``
+  - Add ``overwrite`` option to ``HTTP Get``
+
 - FileSystem:
 
   - Fix string interpolation in error messages
   - Add ``force`` option for file removal keywords
+  - Add ``overwrite`` option for file create keywords
 
 - Tables: Add keyword ``Trim empty rows``
 - Excel files library:
