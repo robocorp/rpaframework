@@ -483,7 +483,7 @@ class Browser(SeleniumLibrary):
         use_profile: bool = False,
         headless: bool = False,
         maximized: bool = False,
-    ) -> None:
+    ) -> int:
         """Open Chrome browser.
 
         :param url: address to open
@@ -493,13 +493,14 @@ class Browser(SeleniumLibrary):
         """
         # webdrivermanager
         # https://stackoverflow.com/questions/41084124/chrome-options-in-robot-framework
-        self.open_available_browser(
+        index = self.open_available_browser(
             url,
             use_profile=use_profile,
             headless=headless,
             maximized=maximized,
             browser_selection="Chrome",
         )
+        return index
 
     def set_default_options(self, options: dict) -> None:
         options.add_argument("--disable-web-security")
@@ -538,12 +539,13 @@ class Browser(SeleniumLibrary):
         options.add_argument(f"--local-sync-backend-dir='{user_profile_dir}'")
 
     @keyword
-    def open_headless_chrome_browser(self, url: str) -> None:
+    def open_headless_chrome_browser(self, url: str) -> int:
         """Open Chrome browser in headless mode
 
         :param url: address to open
         """
-        self.open_chrome_browser(url, headless=True)
+        index = self.open_chrome_browser(url, headless=True)
+        return index
 
     @keyword
     def screenshot(
