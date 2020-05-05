@@ -8,6 +8,11 @@ sdist/
 *.egg-info/
 *.egg
 
+# Exports
+requirements.txt
+requirements-dev.txt
+setup.py
+
 # Documentation
 docs/build/
 docs/source/libdoc/

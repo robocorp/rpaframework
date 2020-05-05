@@ -1,6 +1,8 @@
 .PHONY: help clean docs
 .DEFAULT_GOAL := help
 
+EXPORTS = requirements.txt requirements-dev.txt setup.py
+
 define PRINT_HELP_PYSCRIPT
 import re, sys
 
@@ -36,6 +38,7 @@ clean: ## Remove all build/test artifacts
 	$(rm) docs/source/libdoc/
 	$(rm) .pytest_cache
 	$(rm) temp/
+	$(rm) $(EXPORTS)
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.egg-info' -exec rm -rf {} +
 	find . -name "__pycache__" -exec rm -rf {} +
@@ -111,6 +114,11 @@ docs-hub: docs-libdoc ## Generate documentation for Robohub
 	 --output dist/hub/json\
 	 --collapse\
 	 src/
+
+exports: ## Create setup.py and requirements.txt files
+	poetry export --without-hashes -f requirements.txt -o requirements.txt
+	poetry export --dev --without-hashes -f requirements.txt -o requirements-dev.txt
+	./tools/setup.py
 
 build: lint test ## Build distribution packages
 	poetry build -vv
