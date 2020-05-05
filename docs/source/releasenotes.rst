@@ -6,12 +6,15 @@ Upcoming release
 
 - Tables:
 
+  - **Note**: This change is backwards incompatible
   - Removed limitation of column names being valid Python identifiers
   - Default iteration method changed to dictionaries instead of namedtuples
   - Keywords that return rows or columns now harmonized to return them in
     dictionary format by default, with option to use lists
   - Table head/tail keywords changed to return new Table instance
+  - Added keyword for trimming extra whitespace from column names
 
+- Excel files library: Trim column names if requested
 
 0.8.7
 --------------
