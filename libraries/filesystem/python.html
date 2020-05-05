@@ -707,7 +707,7 @@ Does not attempt to decode the content in any way.</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.remove_directory">
 <code class="sig-name descname">remove_directory</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">recursive=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.remove_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the given directory, and optionally everything it contains.</p>
+<dd><p>Removes the given directory, and optionally everything it contains.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -720,22 +720,28 @@ Does not attempt to decode the content in any way.</p>
 
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.remove_file">
-<code class="sig-name descname">remove_file</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.remove_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">remove_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">force=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.remove_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes the given file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>path</strong> – path to removed file</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to removed file</p></li>
+<li><p><strong>force</strong> – ignore non-existent files</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.remove_files">
-<code class="sig-name descname">remove_files</code><span class="sig-paren">(</span><em class="sig-param">*paths</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.remove_files" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">remove_files</code><span class="sig-paren">(</span><em class="sig-param">*paths</em>, <em class="sig-param">force=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.remove_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes multiple files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>paths</strong> – paths to removed files</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>paths</strong> – paths to removed files</p></li>
+<li><p><strong>force</strong> – ignore non-existent files</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

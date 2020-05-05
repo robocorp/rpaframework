@@ -225,17 +225,17 @@ Keywords
 :Remove Directory:
   :Arguments: path, recursive=False
 
-  Returns the given directory, and optionally everything it contains.
+  Removes the given directory, and optionally everything it contains.
 
 
 :Remove File:
-  :Arguments: path
+  :Arguments: path, force=False
 
   Removes the given file.
 
 
 :Remove Files:
-  :Arguments: \*paths
+  :Arguments: \*paths, force=False
 
   Removes multiple files.
 
