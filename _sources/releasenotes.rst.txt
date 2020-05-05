@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+0.8.7
+--------------
+
+- OperatingSystem: psutils dependency marked as Windows only because
+  it has wheel files only for Windows
 
 0.8.6
 --------------
