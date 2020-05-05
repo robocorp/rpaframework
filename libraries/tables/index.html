@@ -285,7 +285,7 @@ and manipulate it inside Robot Framework.</p>
 <span class="p">    ${</span><span class="nv">files</span><span class="p">}=    </span><span class="nf">Create table</span><span class="p">    ${</span><span class="nv">files</span><span class="p">}</span>
 <span class="p">    </span><span class="nf">Filter table by column</span><span class="p">    ${</span><span class="nv">files</span><span class="p">}    </span><span class="s">size</span><span class="p">  </span><span class="s">&gt;=</span><span class="p">  ${</span><span class="nv">1024</span><span class="p">}</span>
 <span class="p">    FOR    ${</span><span class="nv">file</span><span class="p">}    IN    @{</span><span class="nv">files</span><span class="p">}</span>
-<span class="p">        </span><span class="nf">Log</span><span class="p">    ${</span><span class="nv">file.name</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log</span><span class="p">    ${</span><span class="nv">file</span><span class="p">}[</span><span class="nv">name</span><span class="p">]</span>
 <span class="p">    END</span>
 <span class="p">    </span><span class="nf">Write table to CSV</span><span class="p">    ${</span><span class="nv">files</span><span class="p">}    ${</span><span class="nv">OUTPUT_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">files.csv</span><span class="p"></span>
 </pre></div>

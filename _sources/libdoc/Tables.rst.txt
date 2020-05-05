@@ -72,13 +72,13 @@ Keywords
 
 
 :Get Table Column:
-  :Arguments: table, column
+  :Arguments: table, column, as_list=False
 
   Get all column values from table.
 
 
 :Get Table Row:
-  :Arguments: table, index
+  :Arguments: table, index, as_list=False
 
   Get a single row from table.
 
@@ -90,13 +90,13 @@ Keywords
 
 
 :Pop Table Column:
-  :Arguments: table, column=None
+  :Arguments: table, column=None, as_list=False
 
   Remove column from table and return it.
 
 
 :Pop Table Row:
-  :Arguments: table, index=None
+  :Arguments: table, index=None, as_list=False
 
   Remove row from table and return it.
 
@@ -143,16 +143,21 @@ Keywords
 
 
 :Table Head:
-  :Arguments: table, count=5
+  :Arguments: table, count=5, as_list=False
 
   Return first `count` rows from table.
 
 
 :Table Tail:
-  :Arguments: table, count=5
+  :Arguments: table, count=5, as_list=False
 
   Return last `count` rows from table.
 
+
+:Trim Column Names:
+  :Arguments: table
+
+  Remove all extraneous whitespace from column names.
 
 :Trim Empty Rows:
   :Arguments: table

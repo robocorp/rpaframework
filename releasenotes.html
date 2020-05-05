@@ -211,6 +211,20 @@
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="upcoming-release">
 <h2>Upcoming release<a class="headerlink" href="#upcoming-release" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Tables:</p>
+<ul>
+<li><p><strong>Note</strong>: This change is backwards incompatible</p></li>
+<li><p>Removed limitation of column names being valid Python identifiers</p></li>
+<li><p>Default iteration method changed to dictionaries instead of namedtuples</p></li>
+<li><p>Keywords that return rows or columns now harmonized to return them in
+dictionary format by default, with option to use lists</p></li>
+<li><p>Table head/tail keywords changed to return new Table instance</p></li>
+<li><p>Added keyword for trimming extra whitespace from column names</p></li>
+</ul>
+</li>
+<li><p>Excel files library: Trim column names if requested</p></li>
+</ul>
 </div>
 <div class="section" id="id1">
 <h2>0.8.7<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>

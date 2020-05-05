@@ -219,7 +219,7 @@ can be namedtuples, dictionaries, lists, or tuples</p></li>
 </div>
 <div class="admonition-todo admonition" id="id2">
 <p class="admonition-title">Todo</p>
-<p>Index accessing through magic properties?</p>
+<p>Index accessing through dot notation?</p>
 </div>
 <div class="admonition-todo admonition" id="id3">
 <p class="admonition-title">Todo</p>
@@ -227,7 +227,7 @@ can be namedtuples, dictionaries, lists, or tuples</p></li>
 </div>
 <div class="admonition-todo admonition" id="id4">
 <p class="admonition-title">Todo</p>
-<p>Original column/index in export?</p>
+<p>Return Robot Framework DotDict instead of dict?</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -309,12 +309,12 @@ values. All rows where it evaluates to falsy are removed.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Table.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">indexes=None</em>, <em class="sig-param">columns=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">indexes=None</em>, <em class="sig-param">columns=None</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get values from table. Return type depends on input dimensions.</p>
 <dl class="simple">
 <dt>If <cite>indexes</cite> and <cite>columns</cite> are scalar, i.e. not lists:</dt><dd><p>Returns single cell value</p>
 </dd>
-<dt>If either <cite>indexes</cite> or <cite>columns</cite> is a list:</dt><dd><p>Returns matching cell values as a list</p>
+<dt>If either <cite>indexes</cite> or <cite>columns</cite> is a list:</dt><dd><p>Returns matching row or column</p>
 </dd>
 <dt>If both <cite>indexes</cite> and <cite>columns</cite> are lists:</dt><dd><p>Returns a new Table instance with matching cell values</p>
 </dd>
@@ -322,8 +322,8 @@ values. All rows where it evaluates to falsy are removed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>indexes</strong> – </p></li>
-<li><p><strong>columns</strong> – </p></li>
+<li><p><strong>indexes</strong> – list of indexes, or all if not given</p></li>
+<li><p><strong>columns</strong> – list of columns, or all if not given</p></li>
 </ul>
 </dd>
 </dl>
@@ -337,14 +337,32 @@ values. All rows where it evaluates to falsy are removed.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Table.get_column">
-<code class="sig-name descname">get_column</code><span class="sig-paren">(</span><em class="sig-param">column</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get_column" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all row values from column.</p>
+<code class="sig-name descname">get_column</code><span class="sig-paren">(</span><em class="sig-param">column</em>, <em class="sig-param">indexes=None</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get row values from column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>columns</strong> – name for column</p></li>
+<li><p><strong>indexes</strong> – row indexes to include, or all if not given</p></li>
+<li><p><strong>as_list</strong> – return column as dictionary, instead of list</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Tables.Table.get_row">
-<code class="sig-name descname">get_row</code><span class="sig-paren">(</span><em class="sig-param">index</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get_row" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all column values from row.</p>
+<code class="sig-name descname">get_row</code><span class="sig-paren">(</span><em class="sig-param">index</em>, <em class="sig-param">columns=None</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get column values from row.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> – index for row</p></li>
+<li><p><strong>columns</strong> – column names to include, or all if not given</p></li>
+<li><p><strong>as_list</strong> – return row as dictionary, instead of list</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -355,7 +373,7 @@ values. All rows where it evaluates to falsy are removed.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Table.get_table">
-<code class="sig-name descname">get_table</code><span class="sig-paren">(</span><em class="sig-param">indexes</em>, <em class="sig-param">columns</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_table</code><span class="sig-paren">(</span><em class="sig-param">indexes=None</em>, <em class="sig-param">columns=None</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.get_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a new table from all cells matching indexes and columns.</p>
 </dd></dl>
 
@@ -367,7 +385,7 @@ values. All rows where it evaluates to falsy are removed.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Table.head">
-<code class="sig-name descname">head</code><span class="sig-paren">(</span><em class="sig-param">rows</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.head" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">head</code><span class="sig-paren">(</span><em class="sig-param">rows</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.head" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return first n rows of table.</p>
 </dd></dl>
 
@@ -396,7 +414,9 @@ values. All rows where it evaluates to falsy are removed.</p>
 <dl class="method">
 <dt id="RPA.Tables.Table.iter_tuples">
 <code class="sig-name descname">iter_tuples</code><span class="sig-paren">(</span><em class="sig-param">with_index=True</em>, <em class="sig-param">name='Row'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.iter_tuples" title="Permalink to this definition">¶</a></dt>
-<dd><p>Iterate rows with values as namedtuples.</p>
+<dd><p>Iterate rows with values as namedtuples.
+Converts column names to valid Python identifiers,
+e.g. “First Name” -&gt; “First_Name”</p>
 </dd></dl>
 
 <dl class="method">
@@ -449,7 +469,7 @@ If either index or column is missing, they are created.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Table.tail">
-<code class="sig-name descname">tail</code><span class="sig-paren">(</span><em class="sig-param">rows</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.tail" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">tail</code><span class="sig-paren">(</span><em class="sig-param">rows</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.tail" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return last n rows of table.</p>
 </dd></dl>
 
@@ -592,13 +612,14 @@ list of lists, list of dicts, dict of lists.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.get_table_column">
-<code class="sig-name descname">get_table_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.get_table_column" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_table_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.get_table_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all column values from table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>table</strong> – table to read</p></li>
 <li><p><strong>column</strong> – column to read</p></li>
+<li><p><strong>as_list</strong> – return list instead of dictionary</p></li>
 </ul>
 </dd>
 </dl>
@@ -606,13 +627,14 @@ list of lists, list of dicts, dict of lists.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.get_table_row">
-<code class="sig-name descname">get_table_row</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">index</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.get_table_row" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_table_row</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">index</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.get_table_row" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a single row from table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>table</strong> – table to read</p></li>
 <li><p><strong>row</strong> – row to read</p></li>
+<li><p><strong>as_list</strong> – return list instead of dictionary</p></li>
 </ul>
 </dd>
 </dl>
@@ -634,13 +656,14 @@ list of lists, list of dicts, dict of lists.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.pop_table_column">
-<code class="sig-name descname">pop_table_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.pop_table_column" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pop_table_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column=None</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.pop_table_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove column from table and return it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>table</strong> – table to modify</p></li>
 <li><p><strong>column</strong> – column to remove</p></li>
+<li><p><strong>as_list</strong> – return list instead of dictionary</p></li>
 </ul>
 </dd>
 </dl>
@@ -648,13 +671,14 @@ list of lists, list of dicts, dict of lists.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.pop_table_row">
-<code class="sig-name descname">pop_table_row</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">index=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.pop_table_row" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pop_table_row</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">index=None</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.pop_table_row" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove row from table and return it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>table</strong> – table to modify</p></li>
 <li><p><strong>index</strong> – row index, pops first row if none given</p></li>
+<li><p><strong>as_list</strong> – return list instead of dictionary</p></li>
 </ul>
 </dd>
 </dl>
@@ -758,13 +782,14 @@ list of lists, list of dicts, dict of lists.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.table_head">
-<code class="sig-name descname">table_head</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">count=5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.table_head" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">table_head</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">count=5</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.table_head" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return first <cite>count</cite> rows from table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>table</strong> – table to read from</p></li>
 <li><p><strong>count</strong> – number of lines to read</p></li>
+<li><p><strong>as_list</strong> – return list instead of Table</p></li>
 </ul>
 </dd>
 </dl>
@@ -772,16 +797,23 @@ list of lists, list of dicts, dict of lists.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.table_tail">
-<code class="sig-name descname">table_tail</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">count=5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.table_tail" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">table_tail</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">count=5</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.table_tail" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return last <cite>count</cite> rows from table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>table</strong> – table to read from</p></li>
 <li><p><strong>count</strong> – number of lines to read</p></li>
+<li><p><strong>as_list</strong> – return list instead of Table</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.trim_column_names">
+<code class="sig-name descname">trim_column_names</code><span class="sig-paren">(</span><em class="sig-param">table</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.trim_column_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all extraneous whitespace from column names.</p>
 </dd></dl>
 
 <dl class="method">

@@ -72,7 +72,7 @@ and manipulate it inside Robot Framework.
         ${files}=    Create table    ${files}
         Filter table by column    ${files}    size  >=  ${1024}
         FOR    ${file}    IN    @{files}
-            Log    ${file.name}
+            Log    ${file}[name]
         END
         Write table to CSV    ${files}    ${OUTPUT_DIR}${/}files.csv
 

@@ -18,7 +18,7 @@ Keywords
 ********
 
 :Add Cookie:
-  :Arguments: name, value, path=None, domain=None, secure=None, expiry=None
+  :Arguments: name, value, path: NoneType=None, domain: NoneType=None, secure: NoneType=None, expiry: NoneType=None
 
   .. raw:: html
 
@@ -58,7 +58,7 @@ Keywords
      <p>Prior to SeleniumLibrary 3.0 setting expiry did not work.</p>
 
 :Add Location Strategy:
-  :Arguments: strategy_name, strategy_keyword, persist=False
+  :Arguments: strategy_name, strategy_keyword, persist: bool=False
 
   .. raw:: html
 
@@ -67,7 +67,7 @@ Keywords
      <p>Location strategies are automatically removed after leaving the current scope by default. Setting <code>persist</code> to a true value (see <span class="name">Boolean arguments</span>) will cause the location strategy to stay registered throughout the life of the test.</p>
 
 :Alert Should Be Present:
-  :Arguments: text=, action=ACCEPT, timeout=None
+  :Arguments: text=, action=ACCEPT, timeout: NoneType=None
 
   .. raw:: html
 
@@ -246,7 +246,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Click Button:
-  :Arguments: locator, modifier=False
+  :Arguments: locator, modifier: bool=False
 
   .. raw:: html
 
@@ -256,7 +256,7 @@ Keywords
      <p>The <code>modifier</code> argument is new in SeleniumLibrary 3.3</p>
 
 :Click Element:
-  :Arguments: locator, modifier=False, action_chain=False
+  :Arguments: locator, modifier: bool=False, action_chain: bool=False
 
   .. raw:: html
 
@@ -303,7 +303,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Click Image:
-  :Arguments: locator, modifier=False
+  :Arguments: locator, modifier: bool=False
 
   .. raw:: html
 
@@ -313,7 +313,7 @@ Keywords
      <p>The <code>modifier</code> argument is new in SeleniumLibrary 3.3</p>
 
 :Click Link:
-  :Arguments: locator, modifier=False
+  :Arguments: locator, modifier: bool=False
 
   .. raw:: html
 
@@ -350,7 +350,7 @@ Keywords
      <p>Example: |<a href="#Cover%20Element" class="name">Cover Element</a> | css:div#container |</p>
 
 :Create Webdriver:
-  :Arguments: driver_name, alias=None, kwargs={}, \*\*init_kwargs
+  :Arguments: driver_name, alias: NoneType=None, kwargs={}, \*\*init_kwargs
 
   .. raw:: html
 
@@ -479,7 +479,7 @@ Keywords
      </table>
 
 :Element Attribute Value Should Be:
-  :Arguments: locator, attribute, expected, message=None
+  :Arguments: locator, attribute, expected, message: NoneType=None
 
   .. raw:: html
 
@@ -516,7 +516,7 @@ Keywords
      <p>New in SeleniumLibrary 3.0.</p>
 
 :Element Should Be Visible:
-  :Arguments: locator, message=None
+  :Arguments: locator, message: NoneType=None
 
   .. raw:: html
 
@@ -526,7 +526,7 @@ Keywords
      <p>The <code>message</code> argument can be used to override the default error message.</p>
 
 :Element Should Contain:
-  :Arguments: locator, expected, message=None, ignore_case=False
+  :Arguments: locator, expected, message: NoneType=None, ignore_case: bool=False
 
   .. raw:: html
 
@@ -538,7 +538,7 @@ Keywords
      <p>Use <a href="#Element%20Text%20Should%20Be" class="name">Element Text Should Be</a> if you want to match the exact text, not a substring.</p>
 
 :Element Should Not Be Visible:
-  :Arguments: locator, message=None
+  :Arguments: locator, message: NoneType=None
 
   .. raw:: html
 
@@ -546,7 +546,7 @@ Keywords
      <p>Passes if the element does not exists. See <a href="#Element%20Should%20Be%20Visible" class="name">Element Should Be Visible</a> for more information about visibility and supported arguments.</p>
 
 :Element Should Not Contain:
-  :Arguments: locator, expected, message=None, ignore_case=False
+  :Arguments: locator, expected, message: NoneType=None, ignore_case: bool=False
 
   .. raw:: html
 
@@ -557,7 +557,7 @@ Keywords
      <p><code>ignore_case</code> argument new in SeleniumLibrary 3.1.</p>
 
 :Element Text Should Be:
-  :Arguments: locator, expected, message=None, ignore_case=False
+  :Arguments: locator, expected, message: NoneType=None, ignore_case: bool=False
 
   .. raw:: html
 
@@ -569,7 +569,7 @@ Keywords
      <p>Use <a href="#Element%20Should%20Contain" class="name">Element Should Contain</a> if a substring match is desired.</p>
 
 :Element Text Should Not Be:
-  :Arguments: locator, not_expected, message=None, ignore_case=False
+  :Arguments: locator, not_expected, message: NoneType=None, ignore_case: bool=False
 
   .. raw:: html
 
@@ -839,12 +839,12 @@ Keywords
      <tr>
      <td><span class="name">Should Be Equal</span></td>
      <td>${cookie.name}</td>
-     <td>bar</td>
+     <td>foo</td>
      </tr>
      <tr>
      <td><span class="name">Should Be Equal</span></td>
      <td>${cookie.value}</td>
-     <td>foo</td>
+     <td>bar</td>
      </tr>
      <tr>
      <td><span class="name">Should Be True</span></td>
@@ -855,7 +855,7 @@ Keywords
      <p>New in SeleniumLibrary 3.0.</p>
 
 :Get Cookies:
-  :Arguments: as_dict=False
+  :Arguments: as_dict: bool=False
 
   .. raw:: html
 
@@ -932,7 +932,7 @@ Keywords
      <p>See also <a href="#Get%20Vertical%20Position" class="name">Get Vertical Position</a>.</p>
 
 :Get List Items:
-  :Arguments: locator, values=False
+  :Arguments: locator, values: bool=False
 
   .. raw:: html
 
@@ -1147,7 +1147,7 @@ Keywords
      </table>
 
 :Get Window Size:
-  :Arguments: inner=False
+  :Arguments: inner: bool=False
 
   .. raw:: html
 
@@ -1191,7 +1191,7 @@ Keywords
      <p>Navigates the current browser window to the provided <code>url</code>.</p>
 
 :Handle Alert:
-  :Arguments: action=ACCEPT, timeout=None
+  :Arguments: action=ACCEPT, timeout: NoneType=None
 
   .. raw:: html
 
@@ -1245,7 +1245,7 @@ Keywords
      <p>New in SeleniumLibrary 3.0.</p>
 
 :Input Password:
-  :Arguments: locator, password, clear=True
+  :Arguments: locator, password, clear: bool=True
 
   .. raw:: html
 
@@ -1271,7 +1271,7 @@ Keywords
      <p>The <span class="name">clear</span> argument is new in SeleniumLibrary 4.0. Hiding password logging from Selenium logs is new in SeleniumLibrary 4.2.</p>
 
 :Input Text:
-  :Arguments: locator, text, clear=True
+  :Arguments: locator, text, clear: bool=True
 
   .. raw:: html
 
@@ -1282,7 +1282,7 @@ Keywords
      <p>Disabling the file upload the Selenium Grid node and the <span class="name">clear</span> argument are new in SeleniumLibrary 4.0</p>
 
 :Input Text Into Alert:
-  :Arguments: text, action=ACCEPT, timeout=None
+  :Arguments: text, action=ACCEPT, timeout: NoneType=None
 
   .. raw:: html
 
@@ -1292,7 +1292,7 @@ Keywords
      <p>New in SeleniumLibrary 3.0.</p>
 
 :Input Text When Element Is Visible:
-  :Arguments: locator, text
+  :Arguments: locator: str, text: str
 
   .. raw:: html
 
@@ -1333,7 +1333,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Location Should Be:
-  :Arguments: url, message=None
+  :Arguments: url, message: NoneType=None
 
   .. raw:: html
 
@@ -1343,7 +1343,7 @@ Keywords
      <p><code>message</code> argument is new in SeleniumLibrary 3.2.0.</p>
 
 :Location Should Contain:
-  :Arguments: expected, message=None
+  :Arguments: expected, message: NoneType=None
 
   .. raw:: html
 
@@ -1353,7 +1353,7 @@ Keywords
      <p><code>message</code> argument is new in SeleniumLibrary 3.2.0.</p>
 
 :Locator Should Match X Times:
-  :Arguments: locator, x, message=None, loglevel=TRACE
+  :Arguments: locator, x, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1433,7 +1433,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Open Available Browser:
-  :Arguments: url, use_profile=False, headless=False, maximized=False, browser_selection=AUTO
+  :Arguments: url: str, use_profile: bool=False, headless: bool=False, maximized: bool=False, browser_selection: typing.Any=AUTO
 
   .. raw:: html
 
@@ -1449,7 +1449,7 @@ Keywords
      <p>.. _Safari webdriver setup: <a href="https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p>
 
 :Open Browser:
-  :Arguments: url=None, browser=firefox, alias=None, remote_url=False, desired_capabilities=None, ff_profile_dir=None, options=None, service_log_path=None, executable_path=None
+  :Arguments: url: NoneType=None, browser=firefox, alias: NoneType=None, remote_url: bool=False, desired_capabilities: NoneType=None, ff_profile_dir: NoneType=None, options: NoneType=None, service_log_path: NoneType=None, executable_path: NoneType=None
 
   .. raw:: html
 
@@ -1695,7 +1695,7 @@ Keywords
      <p>The <code>executable_path</code> argument is new in SeleniumLibrary 4.2.</p>
 
 :Open Chrome Browser:
-  :Arguments: url, use_profile=False, headless=False, maximized=False
+  :Arguments: url: str, use_profile: bool=False, headless: bool=False, maximized: bool=False
 
   .. raw:: html
 
@@ -1710,7 +1710,7 @@ Keywords
      <p>Opens the context menu on the element identified by <code>locator</code>.</p>
 
 :Open Headless Chrome Browser:
-  :Arguments: url
+  :Arguments: url: str
 
   .. raw:: html
 
@@ -1726,7 +1726,7 @@ Keywords
      <p>If this keyword fails, it automatically logs the page source using the log level specified with the optional <code>loglevel</code> argument. Valid log levels are <code>DEBUG</code>, <code>INFO</code> (default), <code>WARN</code>, and <code>NONE</code>. If the log level is <code>NONE</code> or below the current active log level the source will not be logged.</p>
 
 :Page Should Contain Button:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1735,7 +1735,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, buttons are searched using <code>id</code>, <code>name</code>, and <code>value</code>.</p>
 
 :Page Should Contain Checkbox:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1744,7 +1744,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Page Should Contain Element:
-  :Arguments: locator, message=None, loglevel=TRACE, limit=None
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE, limit: NoneType=None
 
   .. raw:: html
 
@@ -1783,7 +1783,7 @@ Keywords
      <p>The <code>limit</code> argument is new in SeleniumLibrary 3.0.</p>
 
 :Page Should Contain Image:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1792,7 +1792,7 @@ Keywords
      <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
 
 :Page Should Contain Link:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1801,7 +1801,7 @@ Keywords
      <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
 
 :Page Should Contain List:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1810,7 +1810,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Page Should Contain Radio Button:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1819,7 +1819,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, radio buttons are searched using <code>id</code>, <code>name</code> and <code>value</code>.</p>
 
 :Page Should Contain Textfield:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1836,7 +1836,7 @@ Keywords
      <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about the <code>loglevel</code> argument.</p>
 
 :Page Should Not Contain Button:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1845,7 +1845,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, buttons are searched using <code>id</code>, <code>name</code>, and <code>value</code>.</p>
 
 :Page Should Not Contain Checkbox:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1854,7 +1854,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Page Should Not Contain Element:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1863,7 +1863,7 @@ Keywords
      <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
 
 :Page Should Not Contain Image:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1872,7 +1872,7 @@ Keywords
      <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
 
 :Page Should Not Contain Link:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1881,7 +1881,7 @@ Keywords
      <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
 
 :Page Should Not Contain List:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1890,7 +1890,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Page Should Not Contain Radio Button:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1899,7 +1899,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, radio buttons are searched using <code>id</code>, <code>name</code> and <code>value</code>.</p>
 
 :Page Should Not Contain Textfield:
-  :Arguments: locator, message=None, loglevel=TRACE
+  :Arguments: locator, message: NoneType=None, loglevel=TRACE
 
   .. raw:: html
 
@@ -1915,7 +1915,7 @@ Keywords
      <p><b>DEPRECATED in SeleniumLibrary 4.0.</b> use <a href="#Press%20Keys" class="name">Press Keys</a> instead.</p>
 
 :Press Keys:
-  :Arguments: locator=None, \*keys
+  :Arguments: locator: NoneType=None, \*keys
 
   .. raw:: html
 
@@ -2056,7 +2056,7 @@ Keywords
      <p>See <span class="name">Custom locators</span> for information on how to create and use custom strategies.</p>
 
 :Screenshot:
-  :Arguments: page=True, locator=None, filename_prefix=screenshot
+  :Arguments: page: bool=True, locator: typing.Union[str, NoneType]=None, filename_prefix: str=screenshot
 
   .. raw:: html
 
@@ -2175,7 +2175,7 @@ Keywords
      </table>
 
 :Select Window:
-  :Arguments: locator=MAIN, timeout=None
+  :Arguments: locator=MAIN, timeout: NoneType=None
 
   .. raw:: html
 
@@ -2298,7 +2298,7 @@ Keywords
      </table>
 
 :Set Window Size:
-  :Arguments: width, height, inner=False
+  :Arguments: width, height, inner: bool=False
 
   .. raw:: html
 
@@ -2335,7 +2335,7 @@ Keywords
      <p>Prior to SeleniumLibrary 3.0 this keyword was named <span class="name">Simulate</span>.</p>
 
 :Submit Form:
-  :Arguments: locator=None
+  :Arguments: locator: NoneType=None
 
   .. raw:: html
 
@@ -2427,7 +2427,7 @@ Keywords
      </table>
 
 :Switch Window:
-  :Arguments: locator=MAIN, timeout=None, browser=CURRENT
+  :Arguments: locator=MAIN, timeout: NoneType=None, browser=CURRENT
 
   .. raw:: html
 
@@ -2612,7 +2612,7 @@ Keywords
      <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about the <code>loglevel</code> argument.</p>
 
 :Textarea Should Contain:
-  :Arguments: locator, expected, message=None
+  :Arguments: locator, expected, message: NoneType=None
 
   .. raw:: html
 
@@ -2621,7 +2621,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Textarea Value Should Be:
-  :Arguments: locator, expected, message=None
+  :Arguments: locator, expected, message: NoneType=None
 
   .. raw:: html
 
@@ -2630,7 +2630,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Textfield Should Contain:
-  :Arguments: locator, expected, message=None
+  :Arguments: locator, expected, message: NoneType=None
 
   .. raw:: html
 
@@ -2639,7 +2639,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Textfield Value Should Be:
-  :Arguments: locator, expected, message=None
+  :Arguments: locator, expected, message: NoneType=None
 
   .. raw:: html
 
@@ -2648,7 +2648,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Title Should Be:
-  :Arguments: title, message=None
+  :Arguments: title, message: NoneType=None
 
   .. raw:: html
 
@@ -2708,7 +2708,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Wait And Click Button:
-  :Arguments: locator
+  :Arguments: locator: str
 
   .. raw:: html
 
@@ -2716,7 +2716,7 @@ Keywords
      <p>:param locator: [description]</p>
 
 :Wait For Condition:
-  :Arguments: condition, timeout=None, error=None
+  :Arguments: condition, timeout: NoneType=None, error: NoneType=None
 
   .. raw:: html
 
@@ -2741,7 +2741,7 @@ Keywords
      </table>
 
 :Wait Until Element Contains:
-  :Arguments: locator, text, timeout=None, error=None
+  :Arguments: locator, text, timeout: NoneType=None, error: NoneType=None
 
   .. raw:: html
 
@@ -2750,7 +2750,7 @@ Keywords
      <p><code>error</code> can be used to override the default error message.</p>
 
 :Wait Until Element Does Not Contain:
-  :Arguments: locator, text, timeout=None, error=None
+  :Arguments: locator, text, timeout: NoneType=None, error: NoneType=None
 
   .. raw:: html
 
@@ -2759,7 +2759,7 @@ Keywords
      <p><code>error</code> can be used to override the default error message.</p>
 
 :Wait Until Element Is Enabled:
-  :Arguments: locator, timeout=None, error=None
+  :Arguments: locator, timeout: NoneType=None, error: NoneType=None
 
   .. raw:: html
 
@@ -2770,7 +2770,7 @@ Keywords
      <p>Considering read-only elements to be disabled is a new feature in SeleniumLibrary 3.0.</p>
 
 :Wait Until Element Is Not Visible:
-  :Arguments: locator, timeout=None, error=None
+  :Arguments: locator, timeout: NoneType=None, error: NoneType=None
 
   .. raw:: html
 
@@ -2779,7 +2779,7 @@ Keywords
      <p><code>error</code> can be used to override the default error message.</p>
 
 :Wait Until Element Is Visible:
-  :Arguments: locator, timeout=None, error=None
+  :Arguments: locator, timeout: NoneType=None, error: NoneType=None
 
   .. raw:: html
 
@@ -2788,7 +2788,7 @@ Keywords
      <p><code>error</code> can be used to override the default error message.</p>
 
 :Wait Until Location Contains:
-  :Arguments: expected, timeout=None, message=None
+  :Arguments: expected, timeout: NoneType=None, message: NoneType=None
 
   .. raw:: html
 
@@ -2799,7 +2799,7 @@ Keywords
      <p>New in SeleniumLibrary 4.0</p>
 
 :Wait Until Location Does Not Contain:
-  :Arguments: location, timeout=None, message=None
+  :Arguments: location, timeout: NoneType=None, message: NoneType=None
 
   .. raw:: html
 
@@ -2810,7 +2810,7 @@ Keywords
      <p>New in SeleniumLibrary 4.3</p>
 
 :Wait Until Location Is:
-  :Arguments: expected, timeout=None, message=None
+  :Arguments: expected, timeout: NoneType=None, message: NoneType=None
 
   .. raw:: html
 
@@ -2821,7 +2821,7 @@ Keywords
      <p>New in SeleniumLibrary 4.0</p>
 
 :Wait Until Location Is Not:
-  :Arguments: location, timeout=None, message=None
+  :Arguments: location, timeout: NoneType=None, message: NoneType=None
 
   .. raw:: html
 
@@ -2832,7 +2832,7 @@ Keywords
      <p>New in SeleniumLibrary 4.3</p>
 
 :Wait Until Page Contains:
-  :Arguments: text, timeout=None, error=None
+  :Arguments: text, timeout: NoneType=None, error: NoneType=None
 
   .. raw:: html
 
@@ -2841,16 +2841,18 @@ Keywords
      <p><code>error</code> can be used to override the default error message.</p>
 
 :Wait Until Page Contains Element:
-  :Arguments: locator, timeout=None, error=None
+  :Arguments: locator, timeout: NoneType=None, error: NoneType=None, limit: NoneType=None
 
   .. raw:: html
 
      <p>Waits until the element <code>locator</code> appears on the current page.</p>
      <p>Fails if <code>timeout</code> expires before the element appears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
      <p><code>error</code> can be used to override the default error message.</p>
+     <p>The <code>limit</code> argument can used to define how many elements the page should contain. When <code>limit</code> is <span class="name">None</span> (default) page can contain one or more elements. When limit is a number, page must contain same number of elements.</p>
+     <p><code>limit</code> is new in SeleniumLibrary 4.4</p>
 
 :Wait Until Page Does Not Contain:
-  :Arguments: text, timeout=None, error=None
+  :Arguments: text, timeout: NoneType=None, error: NoneType=None
 
   .. raw:: html
 
@@ -2859,10 +2861,12 @@ Keywords
      <p><code>error</code> can be used to override the default error message.</p>
 
 :Wait Until Page Does Not Contain Element:
-  :Arguments: locator, timeout=None, error=None
+  :Arguments: locator, timeout: NoneType=None, error: NoneType=None, limit: NoneType=None
 
   .. raw:: html
 
      <p>Waits until the element <code>locator</code> disappears from the current page.</p>
      <p>Fails if <code>timeout</code> expires before the element disappears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
      <p><code>error</code> can be used to override the default error message.</p>
+     <p>The <code>limit</code> argument can used to define how many elements the page should not contain. When <code>limit</code> is <span class="name">None</span> (default) page can`t contain any elements. When limit is a number, page must not contain same number of elements.</p>
+     <p><code>limit</code> is new in SeleniumLibrary 4.4</p>
