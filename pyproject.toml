@@ -41,7 +41,7 @@ robotframework-requests = "^0.6.5"
 webdrivermanager = ">=0.7.4"
 pywinauto = {version = "^0.6.8", platform = "win32", python = "!=3.8.1,!=3.7.6"}
 pywin32 = {version = "^227", platform = "win32", python = "!=3.8.1,!=3.7.6"}
-psutil = {version = "^5.7.0", platform = "!=linux"}
+psutil = {version = "^5.7.0", platform = "win32"}
 clipboard = "^0.0.4"
 exchangelib = "^3.1.1"
 fpdf = "^1.7.2"
