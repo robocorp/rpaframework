@@ -859,7 +859,7 @@ class Tables:
         :param table:   table to convert to dict
         """
         self.requires_table(table)
-        return table.to_dict()
+        return table.to_list()
 
     def copy_table(self, table):
         """Copy table object.
