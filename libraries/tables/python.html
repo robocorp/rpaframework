@@ -559,11 +559,15 @@ list of lists, list of dicts, dict of lists.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.export_table">
-<code class="sig-name descname">export_table</code><span class="sig-paren">(</span><em class="sig-param">table</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.export_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">export_table</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">with_index=False</em>, <em class="sig-param">as_list=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.export_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert table object to standard Python containers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>table</strong> – table to convert to dict</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to convert to dict</p></li>
+<li><p><strong>with_index</strong> – include index in values</p></li>
+<li><p><strong>as_list</strong> – export data as list instead of dict</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

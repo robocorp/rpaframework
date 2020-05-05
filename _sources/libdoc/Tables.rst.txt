@@ -48,7 +48,7 @@ Keywords
 
 
 :Export Table:
-  :Arguments: table
+  :Arguments: table, with_index=False, as_list=True
 
   Convert table object to standard Python containers.
 
