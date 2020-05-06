@@ -251,8 +251,8 @@ class ImapSmtp:
 
         try:
             self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
-        except Exception as e:
-            raise ValueError(("Send Message failed: %s", str(e)))
+        except Exception as err:
+            raise ValueError(f"Send Message failed: {err}")
 
     def _fetch_messages(self, mail_ids: list) -> list:
         messages = []

@@ -679,7 +679,7 @@ class Windows(OperatingSystem):
         """
         self.logger.info("click type '%s' at (%s, %s)", click_type, x, y)
         if (x is None and y is None) or (x < 0 or y < 0):
-            raise ValueError(("Can't click on given coordinates: (%s, %s)", x, y))
+            raise ValueError(f"Can't click on given coordinates: ({x}, {y})")
         if click_type == "click":
             pywinauto.mouse.click(coords=(x, y))
         elif click_type == "double":
