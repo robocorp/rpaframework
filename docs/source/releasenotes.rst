@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+0.9.0
+-----
+
 - Tables:
 
   - **Note**: This change is backwards incompatible
@@ -14,16 +17,16 @@ Upcoming release
   - Table head/tail keywords changed to return new Table instance
   - Added keyword for trimming extra whitespace from column names
 
-- Excel files library: Trim column names if requested
+- Excel files library: Trim column names in addition to rows
 
 0.8.7
---------------
+-----
 
 - OperatingSystem: psutils dependency marked as Windows only because
   it has wheel files only for Windows
 
 0.8.6
---------------
+-----
 
 - HTTP:
 
@@ -43,7 +46,7 @@ Upcoming release
   - Auto-convert integer values in .xls worksheets
 
 0.8.5
---------------
+-----
 
 - PDF: Add ``encrypt_pdf`` and ``add_pages_to_source_pdf`` keywords.
 - Windows: Add aliases for element locators,
@@ -52,48 +55,48 @@ Upcoming release
 - Tables: Fix missing cell values for sanitized columns
 
 0.8.4
---------------
+-----
 
 - Fix: PDF ``template_html_to_pdf`` keyword
 
 0.8.3
---------------
+-----
 
 - Fix: Windows ``drag_and_drop`` keyword
 - New library: Netsuite
 - PDF: add new keywords
 
 0.8.2
---------------
+-----
 
 - Windows: Add keyword for clicking image templates
 - Windows: Add keyword for drag and drop
 
 0.8.1
---------------
+-----
 
 - Browser: Fix ``open_available_browser`` kw parameter bug
 
 0.8.0
---------------
+-----
 
 - New library: Salesforce
 - New library: Database
 
 0.7.5
---------------
+-----
 
 - ImapSmtp: Separate how IMAP and SMTP are handled in the library
 - Windows: Improve documentation for keys
 - Browser: Manage webdrivermanager download error
 
 0.7.4
---------------
+-----
 
 - Browser: Restructure how driver downloads and logging are handled
 
 0.7.3
---------------
+-----
 
 - Browser: Detect Chrome and chromedriver versions. Download driver if they differ
 - Images: Don't template match same region multiple times
