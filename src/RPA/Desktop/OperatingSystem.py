@@ -6,7 +6,7 @@ import os
 import platform
 import socket
 
-if platform.system() != "Linux":
+if platform.system() == "Windows":
     import psutil
     from psutil._common import bytes2human
 else:
