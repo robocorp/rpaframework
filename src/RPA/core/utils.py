@@ -45,7 +45,7 @@ def required_env(name: str, default: Any = UNDEFINED) -> str:
     """Load required environment variable."""
     val = os.getenv(name, default)
     if val is UNDEFINED:
-        raise KeyError(("Missing required environment variable: %s", name))
+        raise KeyError(f"Missing required environment variable: {name}")
     return val
 
 
@@ -79,4 +79,4 @@ def import_by_name(name: str, caller: str = None) -> Any:
         except (AttributeError, ImportError):
             pass
 
-    raise ValueError(("No module/attribute with name: %s", name))
+    raise ValueError(f"No module/attribute with name: {name}")
