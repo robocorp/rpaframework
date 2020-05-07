@@ -60,6 +60,7 @@ netsuitesdk = "^1.1.0"
 pypdf2 = "^1.26.0"
 tweepy = "^3.8.0"
 robotframework = "^3.2.1"
+boto3 = "^1.13.4"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }

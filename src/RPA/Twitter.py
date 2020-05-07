@@ -1,9 +1,20 @@
 from dataclasses import dataclass
 import datetime
 import logging
+from robot.libraries.BuiltIn import (
+    BuiltIn,
+    RobotNotRunningError,
+)
 import tweepy
 from tweepy.error import TweepError
 from RPA.core.utils import required_env, required_param
+from RPA.RobotLogListener import RobotLogListener
+
+
+try:
+    BuiltIn().import_library("RPA.RobotLogListener")
+except RobotNotRunningError:
+    pass
 
 
 @dataclass
@@ -21,6 +32,7 @@ class Tweet:
     hashtags: list
     is_truncated: bool = False
     favorite_count: int = 0
+    retweeted: bool = False
     retweet_count: int = 0
 
 
@@ -28,7 +40,7 @@ class Twitter:
     """Library for managing Twitter.
 
     Library usage requires Twitter developer credentials, which can
-    be received from https://developer.twitter.com/.
+    be requested from https://developer.twitter.com/
     """
 
     def __init__(self) -> None:
@@ -36,6 +48,19 @@ class Twitter:
         self._auth = None
         self.api = None
         self._me = None
+        listener = RobotLogListener()
+        listener.register_protected_keywords("authorize")
+        listener.only_info_level(
+            [
+                "get_me",
+                "get_user_tweets",
+                "text_search_tweets",
+                "get_user_profile",
+                "tweet",
+                "like",
+                "unlike",
+            ]
+        )
 
     def authorize(
         self,
@@ -51,12 +76,14 @@ class Twitter:
         :param access_token: user access token
         :param access_token_secret: user access token secret
         """
-        consumer_key = required_env("TWITTER_CONSUMER_KEY", consumer_key)
-        consumer_secret = required_env("TWITTER_CONSUMER_SECRET", consumer_secret)
-        access_token = required_env("TWITTER_ACCESS_TOKEN", access_token)
-        access_token_secret = required_env(
-            "TWITTER_ACCESS_TOKEN_SECRET", access_token_secret
-        )
+        if consumer_key is None:
+            consumer_key = required_env("TWITTER_CONSUMER_KEY")
+        if consumer_secret is None:
+            consumer_secret = required_env("TWITTER_CONSUMER_SECRET")
+        if access_token is None:
+            access_token = required_env("TWITTER_ACCESS_TOKEN")
+        if access_token_secret is None:
+            access_token_secret = required_env("TWITTER_ACCESS_TOKEN_SECRET")
         self._auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         self._auth.set_access_token(access_token, access_token_secret)
         self.api = tweepy.API(self._auth, wait_on_rate_limit=True)
@@ -66,6 +93,7 @@ class Twitter:
             self._me = self.api.me()
         except TweepError as e:
             self.logger.error("Error during Twitter authentication: %s", str(e))
+            raise TweepError(e)
 
     def get_me(self) -> dict:
         """Get Twitter profile of authenticated user
@@ -99,6 +127,7 @@ class Twitter:
                     hashtags=[ht["text"] for ht in tweet.entities["hashtags"]],
                     is_truncated=tweet.truncated,
                     favorite_count=tweet.favorite_count,
+                    retweeted=tweet.retweeted,
                     retweet_count=tweet.retweet_count,
                 )
                 tweets.append(tw)
@@ -154,13 +183,27 @@ class Twitter:
                 since_id=since_id,
                 max_id=max_id,
             ):
-                # Adding to list that contains all tweets
-                tweets.append((tweet.created_at, tweet.id, tweet.text))
+                tw = Tweet(
+                    created_at=tweet.created_at,
+                    id=tweet.id,
+                    tweet_id_str=tweet.id_str,
+                    text=tweet.text,
+                    in_reply_to_screen_name=tweet.in_reply_to_screen_name,
+                    lang=tweet.lang,
+                    name=tweet.user.name,
+                    screen_name=tweet.user.screen_name,
+                    hashtags=[ht["text"] for ht in tweet.entities["hashtags"]],
+                    is_truncated=tweet.truncated,
+                    favorite_count=tweet.favorite_count,
+                    retweeted=tweet.retweeted,
+                    retweet_count=tweet.retweet_count,
+                )
+                tweets.append(tw)
         except TweepError as e:
             self.logger.warning("Twitter search failed: %s", str(e))
         return tweets
 
-    def get_user_profile(self, username: str = None):
+    def get_user_profile(self, username: str = None) -> dict:
         """Get user's Twitter profile
 
         :param username: whose profile to get
@@ -173,15 +216,15 @@ class Twitter:
         except TweepError:
             return None
 
-    def tweet(self, content: str = None):
+    def tweet(self, content: str = None) -> None:
         """Make a tweet with content
 
-        :param content: [description]
+        :param content: text for the status update
         """
         required_param(content, "tweet")
         self.api.update_status(content)
 
-    def like(self, tweet):
+    def like(self, tweet: Tweet = None) -> bool:
         """Like a tweet
 
         :param tweet: as a class `Tweet`
@@ -197,12 +240,13 @@ class Twitter:
             )
             return False
 
-    def unlike(self, tweet):
+    def unlike(self, tweet: Tweet = None) -> bool:
         """Unlike a tweet
 
         :param tweet: as a class `Tweet`
         :return: `True` if Tweet was unliked, `False` if not
         """
+        required_param(tweet, "unlike")
         try:
             self.api.destroy_favorite(tweet.id)
             return True
@@ -212,4 +256,32 @@ class Twitter:
                 tweet.text,
                 tweet.screen_name,
             )
+            return False
+
+    def follow(self, user: str = None) -> bool:
+        """Follow Twitter user
+
+        :param user: screen name of the user
+        :return:  `True` if user was followed, `False` if not
+        """
+        required_param(user, "follow")
+        try:
+            self.api.create_friendship(user)
+            return True
+        except TweepError:
+            self.logger.warning("Could not follow user: %s", user)
+            return False
+
+    def unfollow(self, user: str = None) -> bool:
+        """Unfollow Twitter user
+
+        :param user: screen name of the user
+        :return:  `True` if user was followed, `False` if not
+        """
+        required_param(user, "unfollow")
+        try:
+            self.api.destroy_friendship(user)
+            return True
+        except TweepError:
+            self.logger.warning("Could not unfollow user: %s", user)
             return False

@@ -1,6 +1,7 @@
 import logging
 from typing import Any
 from robot.libraries.BuiltIn import BuiltIn
+from RPA.core.utils import required_param
 
 
 class RobotLogListener:
@@ -13,20 +14,32 @@ class RobotLogListener:
     ROBOT_LISTENER_API_VERSION = 2
 
     KEYWORDS_TO_PROTECT = ["rpa.robocloud.secrets."]
+    INFO_LEVEL_KEYWORDS = []
 
     def __init__(self) -> None:
         self.ROBOT_LIBRARY_LISTENER = self
         self.logger = logging.getLogger(__name__)
         self.previous_level = None
 
+    def only_info_level(self, names: Any = None):
+        """Register keywords that are allowed only INFO level logging
+
+        :param names: list of keywords to protect
+        """
+        required_param(names, "only_info_level")
+        if not isinstance(names, list):
+            names = [names]
+        for name in names:
+            robotized_keyword = self._robotize_keyword(name)
+            if robotized_keyword not in self.INFO_LEVEL_KEYWORDS:
+                self.INFO_LEVEL_KEYWORDS.append(robotized_keyword)
+
     def register_protected_keywords(self, names: Any = None) -> None:
         """Register keywords that are not going to be logged into Robot Framework logs.
 
         :param names: list of keywords to protect
         """
-        if names is None:
-            self.logger.info("Register protected keywords called without 'names'.")
-            return
+        required_param(names, "register_protected_keywords")
         if not isinstance(names, list):
             names = [names]
         for name in names:
@@ -47,6 +60,8 @@ class RobotLogListener:
         if any(k in robotized_keyword for k in self.KEYWORDS_TO_PROTECT):
             self.logger.info("protecting keyword: %s", robotized_keyword)
             self.previous_level = BuiltIn().set_log_level("NONE")
+        elif any(k in robotized_keyword for k in self.INFO_LEVEL_KEYWORDS):
+            self.previous_level = BuiltIn().set_log_level("INFO")
 
     def end_keyword(self, name, attributes):  # pylint: disable=W0613
         """Listener method for keyword end.
