@@ -565,14 +565,14 @@ class PDF(FPDF, HTMLMixin):
         except KeyError:
             pass
         info = {
-            "author": docinfo.author,
-            "creator": docinfo.creator,
-            "producer": docinfo.producer,
-            "subject": docinfo.subject,
-            "title": docinfo.title,
-            "pages": pdf.getNumPages(),
-            "encrypted": self.is_pdf_encrypted(source_pdf),
-            "fields": bool(fields),
+            "Author": docinfo.author,
+            "Creator": docinfo.creator,
+            "Producer": docinfo.producer,
+            "Subject": docinfo.subject,
+            "Title": docinfo.title,
+            "Pages": pdf.getNumPages(),
+            "Encrypted": self.is_pdf_encrypted(source_pdf),
+            "Fields": bool(fields),
         }
         return info
 
@@ -966,7 +966,7 @@ class PDF(FPDF, HTMLMixin):
         if self.anchor_element:
             self.logger.debug("we have anchor: %s", self.anchor_element.bbox)
             possibles = []
-            page = self.rpa_pdf_document.get_page(pagenum)
+            page = self.rpa_pdf_document.get_page(int(pagenum))
             for _, item in page.get_textboxes().items():
                 # Skip anchor element from matching
                 if item.boxid == self.anchor_element.boxid:
@@ -974,7 +974,7 @@ class PDF(FPDF, HTMLMixin):
                 if direction in ["left", "right"]:
                     text = self._is_match_on_horizontal(direction, item, regexp)
                     if text:
-                        return text
+                        return str(text)
                 elif direction in ["top", "bottom"]:
                     possible = self._is_match_on_vertical(
                         direction, item, strict, regexp
@@ -1041,7 +1041,7 @@ class PDF(FPDF, HTMLMixin):
                 distance = calc_distance
                 closest = p
         if closest:
-            return closest.text
+            return str(closest.text)
         return None
 
     def get_all_figures(self) -> dict:

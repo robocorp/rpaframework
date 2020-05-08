@@ -70,30 +70,6 @@ Get information from PDF
     Should Be Equal   ${info}[Author]   Mathieu Samyn
     Should Be Equal   ${info}[Title]    EnergyDailyPricesReport-EUROPA
 
-Is any document open
-    ${open}=           Is Any Document Open
-    Should Not Be True    ${open}
-    ${isdecrypted}=    Is PDF encrypted    ${NORMAL_PDF}
-    ${open}=           Is Any Document Open
-    Should Be True        ${open}
-
-Is document open
-    ${open}=           Is Document Open
-    Should Not Be True    ${open}
-    ${open}=           Is Document Open     ${NORMAL_PDF}
-    Should Not Be True    ${open}
-    &{text}=           Get Text From PDF    ${NORMAL_PDF}
-    ${open}=           Is Document Open
-    Should Be True        ${open}
-    &{text}=           Get Text From PDF    ${VERO_PDF}
-    ${open}=           Is Document Open     ${NORMAL_PDF}
-    Should Be True        ${open}
-    ${open}=           Is Document Open     ${VERO_PDF}
-    Should Be True        ${open}
-    Close PDF Document   ${VERO_PDF}
-    ${open}=           Is Document Open     ${VERO_PDF}
-    Should Not Be True    ${open}
-
 Extract pages from PDF
     Extract pages from pdf    ${VERO_PDF}   ${OUTPUT_DIR}${/}extract.pdf  1
     ${pages}=                        Get number of pages    ${OUTPUT_DIR}${/}extract.pdf
@@ -112,21 +88,21 @@ Get text closest to element on the left
     # invoice.pdf
     Open PDF Document    ${INVOICE_PDF}
     Parse PDF
-    ${text}=   Get Value from Anchor  text:January 31, 2016   left
+    ${text}=   Get Value from Anchor  text:January 31, 2016   pagenum=1   direction=left
     Should Be Equal    ${text}   Due Date
 
 Get text closest to element using regexp match for value
     Open PDF Document    ${INVOICE_PDF}
     Parse PDF
-    ${text}=   Get Value from Anchor  text:Hrs/Qty   bottom  regexp=\\d+[.]\\d+
+    ${text}=   Get Value from Anchor  text:Hrs/Qty  pagenum=1  direction=bottom  regexp=\\d+[.]\\d+
     Should Be Equal   ${text}  1.00
 
 
 Get figures from PDF
+    [Tags]   skip
     # vero.pdf qrcode
     Open PDF Document    ${VERO_PDF}
     Parse PDF
-    Save Images Into Directory   .
     &{figures}=           Get All Figures
     FOR  ${key}   ${figure}   IN   &{FIGURES}
         Log    ${key}
@@ -135,7 +111,7 @@ Get figures from PDF
 
 Get input fields from PDF
     # vero.pdf
-    &{fields}=      Get Input Fields  ${VERO_PDF}
+    &{fields}=      Get Input Fields  ${VERO_PDF}   replace_no_value=${TRUE}
     Log Many   &{fields}
     Should Be Equal   ${fields}[Paivays][value]         Paivays
     Should Be Equal   ${fields}[Allekirjoitus][value]   Allekirjoitus
@@ -144,18 +120,22 @@ Get input fields from PDF
     Should Be Equal   ${fields}[Tyhjennä][value]        Tyhjennä
 
 Set field value to PDF
+    [Tags]   skip
     # vero.pdf
     Fail
 
 Replace PDF content
+    [Tags]   skip
     # invoice.pdf
     Fail
 
 Save current PDF
+    [Tags]   skip
     # invoice.pdf & vero.pdf
     Fail
 
 Add image to PDF
+    [Tags]   skip
     # invoice.pdf / add image at some coordinates
     Fail
 
