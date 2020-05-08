@@ -9,6 +9,7 @@ import logging
 import os
 import re
 import sys
+import traceback
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -273,6 +274,8 @@ class LibdocExt:
                     root=root,
                 )
             except Exception as err:
+                if self.logger.isEnabledFor(logging.DEBUG):
+                    traceback.print_exc()
                 self.logger.error(str(err).split("\n")[0])
                 errors.add(path_in)
 
