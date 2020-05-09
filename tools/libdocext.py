@@ -9,6 +9,7 @@ import logging
 import os
 import re
 import sys
+import traceback
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -168,7 +169,14 @@ class RestHtmlConverter(RestConverter):
             libdoc.keywords, libdoc.doc, libdoc.doc_format
         )
 
-        libdoc.doc = self._raw_html(formatter.html(libdoc.doc))
+        doc = self._raw_html(formatter.html(libdoc.doc))
+        try:
+            # Robot Framework < 3.2
+            libdoc.doc = doc
+        except AttributeError:
+            # Robot Framework >= 3.2
+            libdoc._doc = doc
+
         for init in libdoc.inits:
             init.doc = self._raw_html(formatter.html(init.doc))
         for kw in libdoc.keywords:
@@ -273,6 +281,8 @@ class LibdocExt:
                     root=root,
                 )
             except Exception as err:
+                if self.logger.isEnabledFor(logging.DEBUG):
+                    traceback.print_exc()
                 self.logger.error(str(err).split("\n")[0])
                 errors.add(path_in)
 
