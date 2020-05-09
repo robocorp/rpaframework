@@ -437,7 +437,7 @@ class PDF(FPDF, HTMLMixin):
         :param source_pdf: filepath
         :raises ValueError: if file descriptor for the file is not found
         """
-        if source_pdf not in self.fileobjects.keys():
+        if str(source_pdf) not in self.fileobjects.keys():
             raise ValueError('PDF "%s" is not open' % source_pdf)
         self.logger.info("Closing PDF document: %s", source_pdf)
         self.fileobjects[source_pdf].close()
@@ -471,11 +471,11 @@ class PDF(FPDF, HTMLMixin):
         """
         if source_pdf is None:
             raise ValueError("Source PDF is missing")
-        if source_pdf in self.fileobjects.keys():
+        if str(source_pdf) in self.fileobjects.keys():
             raise ValueError(
                 "PDF file is already open. Please close it before opening again."
             )
-        self.active_pdf = source_pdf
+        self.active_pdf = str(source_pdf)
         self.active_fileobject = open(source_pdf, "rb")
         self.active_fields = None
         self.fileobjects[source_pdf] = self.active_fileobject
@@ -489,7 +489,7 @@ class PDF(FPDF, HTMLMixin):
         :raises ValueError: if PDF filepath is not given and there are no active
             file to activate
         """
-        if source_pdf is not None and source_pdf not in self.fileobjects.keys():
+        if source_pdf is not None and str(source_pdf) not in self.fileobjects.keys():
             self.open_pdf_document(source_pdf)
             return
         if source_pdf is None and self.active_fileobject is None:
@@ -498,8 +498,8 @@ class PDF(FPDF, HTMLMixin):
             source_pdf is not None
             and self.active_fileobject != self.fileobjects[source_pdf]
         ):
-            self.active_pdf = source_pdf
-            self.active_fileobject = self.fileobjects[source_pdf]
+            self.active_pdf = str(source_pdf)
+            self.active_fileobject = self.fileobjects[str(source_pdf)]
             self.active_fields = None
             self.rpa_pdf_document = None
 
@@ -1154,7 +1154,7 @@ class PDF(FPDF, HTMLMixin):
         if use_modified_reader:
             reader = self.modified_reader
         else:
-            reader = PdfFileReader(self.active_pdf)
+            reader = PdfFileReader(str(self.active_pdf))
         writer = PdfFileWriter()
         writer.cloneDocumentFromReader(reader)
         with open(target, "wb") as f:

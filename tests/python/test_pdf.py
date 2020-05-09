@@ -1,12 +1,15 @@
+from pathlib import Path
 import pytest
 from RPA.PDF import PDF
 
-imagesandtext_pdf = "tests/resources/imagesandtext.pdf"
-invoice_pdf = "tests/resources/invoice.pdf"
-vero_pdf = "tests/resources/vero.pdf"
-pytest_pdf = "tests/resources/18467.pdf"
-loremipsum_pdf = "tests/resources/LoremIpsum.pdf"
-encrypted_pdf = "tests/resources/encrypted.pdf"
+RESOURCE_DIR = Path(__file__).resolve().parent / ".." / "resources"
+RESULTS_DIR = Path(__file__).resolve().parent / ".." / "results"
+imagesandtext_pdf = RESOURCE_DIR / "imagesandtext.pdf"
+invoice_pdf = RESOURCE_DIR / "invoice.pdf"
+vero_pdf = RESOURCE_DIR / "vero.pdf"
+pytest_pdf = RESOURCE_DIR / "18467.pdf"
+loremipsum_pdf = RESOURCE_DIR / "LoremIpsum.pdf"
+encrypted_pdf = RESOURCE_DIR / "encrypted.pdf"
 
 
 @pytest.fixture
@@ -86,7 +89,7 @@ def test_get_from_anchor_from_top(library):
 
 def test_extract_pages_from_pdf(library):
     pages = [7, 8]
-    target_pdf = "tests/results/extracted.pdf"
+    target_pdf = RESULTS_DIR / "extracted.pdf"
     library.extract_pages_from_pdf(pytest_pdf, target_pdf, pages)
     assert library.get_number_of_pages(target_pdf) == 2
     text = library.get_text_from_pdf(target_pdf)
@@ -94,7 +97,7 @@ def test_extract_pages_from_pdf(library):
 
 
 def test_rotating(library):
-    target_pdf = "tests/results/rotated.pdf"
+    target_pdf = RESULTS_DIR / "rotated.pdf"
     library.page_rotate(1, vero_pdf, target_pdf)
     # TODO. Assert
 
@@ -115,7 +118,7 @@ def test_get_input_fields(library):
 
 def test_update_field_values(library):
     update_fields = {"Puhelinnumero": "10-1231233", "Paivays": "01.01.2020"}
-    target_pdf = "tests/results/values_updated.pdf"
+    target_pdf = RESULTS_DIR / "values_updated.pdf"
 
     fields = library.get_input_fields(vero_pdf)
     assert fields["Puhelinnumero"]["value"] is None
@@ -127,7 +130,7 @@ def test_update_field_values(library):
 
 
 def test_set_field_value(library):
-    target_pdf = "tests/results/copy_of_vero.pdf"
+    target_pdf = RESULTS_DIR / "copy_of_vero.pdf"
     library.open_pdf_document(vero_pdf)
     library.save_pdf(vero_pdf, target_pdf)
     library.open_pdf_document(target_pdf)
