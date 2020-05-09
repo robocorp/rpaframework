@@ -16,6 +16,7 @@ ${PDF}              ${OUTPUT_DIR}${/}result.pdf
 ...                 email=robot@domain.com
 ...                 zip=00100
 ...                 items=Item 1, Item 2
+${PASSWORD}         mysecretpassword
 
 *** Tasks ***
 Create PDF from HTML template
@@ -24,27 +25,24 @@ Create PDF from HTML template
     Should Be True           ${exists}
 
 Get text from one page
-    &{text}=    Get Text From PDF    ${NORMAL_PDF}    0
-    RPA Should Contain    ${text}[${0}]    Robot Generated
-    RPA Should Contain    ${text}[${0}]    robot@domain.com
-    RPA Should Contain    ${text}[${0}]    00100
-    RPA Should Contain    ${text}[${0}]    Item 1, Item 2
+    &{text}=    Get Text From PDF    ${VERO_PDF}    1
+    RPA Should Contain        ${text}[${1}].text    Omaisuus on saatu
 
 Get text from multiple pages as string parameter
-    &{text}=    Get Text From PDF    ${VERO_PDF}    0,1
-    RPA Should Contain        ${text}[${0}]    Omaisuus on saatu
-    RPA Should Contain        ${text}[${1}]    4.5 Omaisuuden hankkimisesta aiheutuneet menot
-    RPA Should Not Contain    ${text}[${1}]    Omaisuus on saatu
+    &{text}=    Get Text From PDF    ${VERO_PDF}    1,2
+    RPA Should Contain        ${text}[${1}].text    Omaisuus on saatu
+    RPA Should Contain        ${text}[${2}].text    4.5 Omaisuuden hankkimisesta aiheutuneet menot
+    RPA Should Not Contain    ${text}[${2}].text    Omaisuus on saatu
 
 Get text from multiple pages as list parameter
     @{pages}=            Create List    0   1
     &{text}=             Get Text From PDF    ${VERO_PDF}   ${pages}
-    RPA Should Contain   ${text}[${0}]    Omaisuus on saatu
+    RPA Should Contain   ${text}[${1}]    Omaisuus on saatu
 
 Get text from all pages
     &{text}=             Get Text From PDF    ${VERO_PDF}
-    RPA Should Contain   ${text}[${0}]    Omaisuus on saatu
-    RPA Should Contain   ${text}[${1}]    4.5 Omaisuuden hankkimisesta aiheutuneet menot
+    RPA Should Contain   ${text}[${1}].text    Omaisuus on saatu
+    RPA Should Contain   ${text}[${2}].text    4.5 Omaisuuden hankkimisesta aiheutuneet menot
 
 Get number of pages
     ${pages}=                        Get number of pages    ${NORMAL_PDF}
@@ -55,13 +53,11 @@ Get number of pages
 PDF decrypt
     ${isdecrypted}=    Is PDF encrypted    ${NORMAL_PDF}
     Should Not Be True    ${isdecrypted}
-    ${result}=    PDF Decrypt    ${NORMAL_PDF}    mysecretpassword
-    Should Not Be True    ${result}
-    ${result}=    PDF Decrypt    ${ENCRYPTED_PDF}    mysecretpassword
+    ${result}=    PDF Decrypt    ${ENCRYPTED_PDF}   ${OUTPUT_DIR}${/}now_decrypted.pdf   password=${PASSWORD}
     Should Be True    ${result}
 
 PDF encrypt
-    PDF encrypt    ${NORMAL_PDF}    ${OUTPUT_DIR}${/}encrypted.pdf    mysecretpassword
+    PDF encrypt    ${NORMAL_PDF}    ${OUTPUT_DIR}${/}encrypted.pdf    ${PASSWORD}
     ${is_encrypted}=    Is PDF encrypted    ${OUTPUT_DIR}${/}encrypted.pdf
     Should Be True    ${is_encrypted}
 
@@ -71,38 +67,34 @@ Get information from PDF
     Should Be Equal   ${info}[Title]    EnergyDailyPricesReport-EUROPA
 
 Extract pages from PDF
-    Extract pages from pdf    ${VERO_PDF}   ${OUTPUT_DIR}${/}extract.pdf  1
+    Extract pages from pdf    ${VERO_PDF}   ${OUTPUT_DIR}${/}extract.pdf  2
     ${pages}=                        Get number of pages    ${OUTPUT_DIR}${/}extract.pdf
     Should Be Equal As Integers      ${pages}    1
-    &{text}=    Get Text From PDF    ${OUTPUT_DIR}${/}extract.pdf
-    RPA Should Contain   ${text}[${0}]    4.5 Omaisuuden hankkimisesta aiheutuneet menot
+    &{item}=    Get Text From PDF    ${OUTPUT_DIR}${/}extract.pdf
+    RPA Should Contain   ${item}[${1}]    4.5 Omaisuuden hankkimisesta aiheutuneet menot
 
 Get text closest to element on the right (default)
     # invoice.pdf
     Open PDF Document    ${INVOICE_PDF}
-    Parse PDF
-    ${text}=   Get Value from Anchor  text:due date
-    Should Be Equal    ${text}   January 31, 2016
+    ${item}=   Get Value from Anchor  text:due date
+    Should Be Equal    ${item.text}   January 31, 2016
 
 Get text closest to element on the left
     # invoice.pdf
     Open PDF Document    ${INVOICE_PDF}
-    Parse PDF
-    ${text}=   Get Value from Anchor  text:January 31, 2016   pagenum=1   direction=left
-    Should Be Equal    ${text}   Due Date
+    ${item}=   Get Value from Anchor  text:January 31, 2016   pagenum=1   direction=left
+    Should Be Equal    ${item.text}   Due Date
 
 Get text closest to element using regexp match for value
     Open PDF Document    ${INVOICE_PDF}
-    Parse PDF
-    ${text}=   Get Value from Anchor  text:Hrs/Qty  pagenum=1  direction=bottom  regexp=\\d+[.]\\d+
-    Should Be Equal   ${text}  1.00
+    ${item}=   Get Value from Anchor  text:Hrs/Qty  pagenum=1  direction=bottom  regexp=\\d+[.]\\d+
+    Should Be Equal   ${item.text}  1.00
 
 
 Get figures from PDF
     [Tags]   skip
     # vero.pdf qrcode
     Open PDF Document    ${VERO_PDF}
-    Parse PDF
     &{figures}=           Get All Figures
     FOR  ${key}   ${figure}   IN   &{FIGURES}
         Log    ${key}

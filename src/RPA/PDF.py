@@ -37,7 +37,7 @@ from pdfminer.utils import enc, bbox2str
 from pdfminer.converter import PDFConverter
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
-from PyPDF2.generic import NameObject, BooleanObject, IndirectObject
+from PyPDF2.generic import NameObject, BooleanObject
 import PyPDF2
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
@@ -53,6 +53,9 @@ def iterable_items_to_int(bbox):
     if bbox is None:
         return list()
     return list(map(int, bbox))
+
+
+logging.getLogger("pdfminer").setLevel(logging.WARNING)
 
 
 class RpaFigure:
@@ -387,6 +390,10 @@ class PDF(FPDF, HTMLMixin):
     """RPA Framework library for PDF management.
     """
 
+    anchor_element: dict
+    active_fileobject: object
+    fileobjects: dict
+    modified_reader: PdfFileReader
     output_directory: Path
     rpa_pdf_document: RpaPdfDocument
 
@@ -394,14 +401,17 @@ class PDF(FPDF, HTMLMixin):
         FPDF.__init__(self)
         HTMLMixin.__init__(self)
         self.logger = logging.getLogger(__name__)
-        self.set_output_directory(outdir)
 
-        self.anchor_element = None
-        self.fileobjects = {}
+        self.active_fields = None
         self.active_fileobject = None
         self.active_pdf = None
-        self.active_fields = None
+        self.anchor_element = None
+        self.fileobjects = {}
+        self.modified_reader = None
         self.rpa_pdf_document = None
+
+        self.set_output_directory(outdir)
+
         listener = RobotLogListener()
         listener.register_protected_keywords(["RPA.PDF.decrypt"])
 
@@ -581,6 +591,8 @@ class PDF(FPDF, HTMLMixin):
     ) -> None:
         """Extract pages from source PDF and save to target PDF document.
 
+        Page numbers starting from 1.
+
         :param source_pdf: filepath to the source pdf
         :param target_pdf: filename to the target pdf, stored by default
             to `output_directory`
@@ -595,28 +607,37 @@ class PDF(FPDF, HTMLMixin):
             pages = pages.split(",")
         elif pages is None:
             pages = range(reader.getNumPages())
+        pages = list(map(int, pages))
         for pagenum in pages:
-            writer.addPage(reader.getPage(int(pagenum)))
+            writer.addPage(reader.getPage(int(pagenum) - 1))
         with open(str(output_filepath), "wb") as f:
             writer.write(f)
 
     def get_text_from_pdf(self, source_pdf: str = None, pages: Any = None) -> dict:
         """Get text from set of pages in source PDF document.
 
+        PDF needs to be parsed before text can be read.
+
         :param source_pdf: filepath to the source pdf
         :param pages: page numbers to get text (numbers start from 0)
         :return: dictionary of pages and their texts
         """
         self.switch_to_pdf_document(source_pdf)
-        reader = PyPDF2.PdfFileReader(self.active_fileobject)
-        pdf_text = {}
+        if self.rpa_pdf_document is None:
+            self.parse_pdf()
         if pages and not isinstance(pages, list):
             pages = pages.split(",")
-        elif pages is None:
-            pages = range(reader.getNumPages())
-        for pagenum in pages:
-            page = reader.getPage(int(pagenum))
-            pdf_text[int(pagenum)] = page.extractText()
+        if pages is not None:
+            pages = list(map(int, pages))
+        pdf_text = {}
+        for idx, page in self.rpa_pdf_document.get_pages().items():
+            self.logger.info("%s:%s", idx, pages)
+            for _, item in page.get_textboxes().items():
+                if pages is None or idx in pages:
+                    if idx in pdf_text:
+                        pdf_text[idx] += item.text
+                    else:
+                        pdf_text[idx] = item.text
         return pdf_text
 
     def page_rotate(
@@ -700,10 +721,13 @@ class PDF(FPDF, HTMLMixin):
         with open(str(output_filepath), "wb") as f:
             writer.write(f)
 
-    def pdf_decrypt(self, source_pdf: str = None, password: str = None) -> bool:
+    def pdf_decrypt(
+        self, source_pdf: str = None, target_pdf: str = None, password: str = None
+    ) -> bool:
         """Decrypt PDF with password.
 
         :param source_pdf: filepath to the source pdf
+        :param target_pdf: filepath to the decrypted pdf
         :param password: password as a string
         :return: True if decrypt was successful, else False or Exception
         :raises ValueError: on decryption errors
@@ -711,15 +735,20 @@ class PDF(FPDF, HTMLMixin):
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject)
         try:
+            self.modified_reader = None
             match_result = reader.decrypt(password)
             if match_result == 0:
                 raise ValueError("PDF decrypt failed.")
             elif match_result == 1:
                 self.logger.info("PDF was decrypted with user password.")
-                return True
             elif match_result == 2:
                 self.logger.info("PDF was decrypted with owner password.")
-                return True
+            else:
+                return False
+            self.modified_reader = reader
+            self.save_pdf(None, target_pdf, reader)
+            return True
+
         except NotImplementedError:
             raise ValueError(
                 f"Document {source_pdf} uses an unsupported encryption method."
@@ -781,11 +810,7 @@ class PDF(FPDF, HTMLMixin):
                 {NameObject("/NeedAppearances"): BooleanObject(True)}
             )
         writer = PdfFileWriter()
-        self._set_need_appearances_writer(writer)
-        if "/AcroForm" in writer._root_object:  # pylint: disable=W0212
-            writer._root_object["/AcroForm"].update(  # pylint: disable=W0212
-                {NameObject("/NeedAppearances"): BooleanObject(True)}
-            )
+        writer.cloneDocumentFromReader(reader)
 
         for i in range(reader.getNumPages()):
             page = reader.getPage(i)
@@ -808,34 +833,10 @@ class PDF(FPDF, HTMLMixin):
                 self.logger.warning(repr(e))
                 writer.addPage(page)
 
+        if target_pdf is None:
+            target_pdf = self.active_pdf
         with open(target_pdf, "wb") as f:
             writer.write(f)
-
-    def _set_need_appearances_writer(
-        self, writer: PdfFileWriter
-    ):  # pylint: disable=W0212
-        # See 12.7.2 and 7.7.2 for more information:
-        # http://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf
-        try:
-            catalog = writer._root_object
-            # get the AcroForm tree
-            if "/AcroForm" not in catalog:
-                writer._root_object.update(
-                    {
-                        NameObject("/AcroForm"): IndirectObject(
-                            len(writer._objects), 0, writer
-                        )
-                    }
-                )
-
-            need_appearances = NameObject("/NeedAppearances")
-            writer._root_object["/AcroForm"][need_appearances] = BooleanObject(True)
-            # del writer._root_object["/AcroForm"]['NeedAppearances']
-            return writer
-
-        except Exception as e:  # pylint: disable=W0703
-            self.logger.warning("set_need_appearances_writer() catch : %s", repr(e))
-            return writer
 
     def get_input_fields(
         self, source_pdf: str = None, replace_none_value: bool = False
@@ -847,10 +848,10 @@ class PDF(FPDF, HTMLMixin):
 
         Parameter `replace_none_value` is for convience to visualize fields.
 
-        :param source_pdf: [description], defaults to None
+        :param source_pdf: source filepath, defaults to None
         :param replace_none_value: if value is None replace it with key name,
             defaults to False
-        :return: dictionary of input key values or `False`
+        :return: dictionary of input key values or `None`
         """
         record_fields = {}
         if source_pdf is None and self.active_fields:
@@ -864,7 +865,7 @@ class PDF(FPDF, HTMLMixin):
             self.logger.info(
                 'PDF "%s" does not have any input fields.', self.active_pdf
             )
-            return False
+            return None
 
         for i in fields:
             field = resolve1(i)
@@ -901,7 +902,7 @@ class PDF(FPDF, HTMLMixin):
         """
         self.logger.info("Set anchor to element: ('locator=%s')", locator)
         if self.rpa_pdf_document is None:
-            raise ValueError("PDF has not been parsed yet")
+            self.parse_pdf()
         if locator.startswith("text:"):
             criteria = "text"
             _, locator = locator.split(":", 1)
@@ -974,7 +975,7 @@ class PDF(FPDF, HTMLMixin):
                 if direction in ["left", "right"]:
                     text = self._is_match_on_horizontal(direction, item, regexp)
                     if text:
-                        return str(text)
+                        return item
                 elif direction in ["top", "bottom"]:
                     possible = self._is_match_on_vertical(
                         direction, item, strict, regexp
@@ -990,10 +991,10 @@ class PDF(FPDF, HTMLMixin):
         text = None
         if direction == "right" and item.top == top and item.left > right:
             self.logger.debug("MATCH %s %s %s", item.boxid, item.text, item.bbox)
-            text = item.text
+            text = item
         elif direction == "left" and item.top == top and item.right < left:
             self.logger.debug("MATCH %s %s %s", item.boxid, item.text, item.bbox)
-            text = item.text
+            text = item
         if regexp and text and re.match(regexp, text):
             return item
         elif regexp is None and text:
@@ -1007,9 +1008,9 @@ class PDF(FPDF, HTMLMixin):
             direction == "top" and item.bottom > top
         ):
             if not strict and (item.right <= right or item.left >= left):
-                text = item.text
+                text = item
             elif strict and (item.right == right or item.left == left):
-                text = item.text
+                text = item
             if regexp and text and re.match(regexp, item.text):
                 self.logger.debug(
                     "POSSIBLE MATCH %s %s %s", item.boxid, item.text, item.bbox
@@ -1041,7 +1042,7 @@ class PDF(FPDF, HTMLMixin):
                 distance = calc_distance
                 closest = p
         if closest:
-            return str(closest.text)
+            return closest
         return None
 
     def get_all_figures(self) -> dict:
@@ -1058,7 +1059,7 @@ class PDF(FPDF, HTMLMixin):
             pages[pagenum] = page.get_figures()
         return pages
 
-    def set_field_value(self, field_name: str, value: Any):
+    def set_field_value(self, field_name: str, value: Any, save: bool = False):
         """Set value for field with given name.
 
         :param field_name: field to update
@@ -1067,17 +1068,18 @@ class PDF(FPDF, HTMLMixin):
         if not self.active_fields:
             self.get_input_fields()
         self.active_fields[field_name]["value"] = value
+        if save:
+            self.update_field_values(None, None, self.active_fields)
 
     def replace_text(self, text: str, replace: str):
         """Replace text content with something else in the PDF.
 
-        PDF needs to be parsed before elements can be found.
 
         :param text: this text will be replaced
         :param replace: used to replace `text`
         """
         if self.rpa_pdf_document is None:
-            raise ValueError("PDF has not been parsed yet")
+            self.parse_pdf()
         for _, page in self.rpa_pdf_document.get_pages().items():
             for _, textbox in page.get_textboxes().items():
                 if textbox.text == text:
@@ -1134,18 +1136,37 @@ class PDF(FPDF, HTMLMixin):
         with open(target, "wb") as f:
             writer.write(f)
 
-    def save_current_pdf(self, target=None):
+    def save_pdf(
+        self, source: str = None, target: str = None, use_modified_reader: bool = False
+    ):
         """Save current over itself or to `target_pdf`
 
-        :param target_pdf: filepath to target PDF
+        :param source: filepath to source PDF
+        :param target: filepath to target PDF
+        :param use_modified_reader: needs to be set to `True` if
+            using modified PDF reader
         """
+        if source is not None:
+            self.switch_to_pdf_document(source)
         if target is None:
             target = self.active_pdf
         self.logger.info("Saving: %s", target)
-        reader = PdfFileReader(self.active_fileobject)
+        if use_modified_reader:
+            reader = self.modified_reader
+        else:
+            reader = PdfFileReader(self.active_pdf)
         writer = PdfFileWriter()
-        for n in range(reader.getNumPages()):
-            writer.addPage(reader.getPage(n))
-        self.active_fileobject.close()
+        writer.cloneDocumentFromReader(reader)
         with open(target, "wb") as f:
             writer.write(f)
+
+    def dump_pdf_as_xml(self, source_pdf: str = None):
+        """Get PDFMiner format XML dump of the PDF
+
+        :param source_pdf: filepath
+        :return: XML content
+        """
+        self.switch_to_pdf_document(source_pdf)
+        if self.rpa_pdf_document is None:
+            self.parse_pdf()
+        return self.rpa_pdf_document.dump_xml()
