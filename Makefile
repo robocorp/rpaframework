@@ -18,6 +18,7 @@ export PRINT_HELP_PYSCRIPT
 ifeq ($(OS),Windows_NT)
 robot_args = --exclude skip --exclude posix
 rm = -rmdir /s /q
+mkdir = mkdir
 else
 robot_args = --exclude skip --exclude windows
 rm = rm -fr
@@ -60,8 +61,7 @@ lint: ## Verify code formatting and conventions
 test: test-python test-robot ## Run all acceptance tests
 
 test-python: ## Run python unittests
-	$(rm) tests/temp
-	${mkdir} tests/temp
+	$(mkdir) tests/temp
 	poetry run pytest -v tests/python
 
 test-robot: ## Run Robot Framework tests
