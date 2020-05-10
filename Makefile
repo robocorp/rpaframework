@@ -21,6 +21,7 @@ rm = -rmdir /s /q
 else
 robot_args = --exclude skip --exclude windows
 rm = rm -fr
+mkdir = mkdir -p
 endif
 
 bold := $(shell tput bold)
@@ -59,6 +60,8 @@ lint: ## Verify code formatting and conventions
 test: test-python test-robot ## Run all acceptance tests
 
 test-python: ## Run python unittests
+	$(rm) tests/temp
+	${mkdir} tests/temp
 	poetry run pytest -v tests/python
 
 test-robot: ## Run Robot Framework tests
