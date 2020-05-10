@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: Task
+:Library scope: 
 
 RPA Framework library for PDF management.
 
@@ -23,6 +23,16 @@ Keywords
 
   Add a TrueType or Type1 font
 
+:Add Image To Pdf:
+  :Arguments: imagefile, source=None, target=None, coverage=0.2
+
+  Add image to PDF which can be new or existing PDF.
+
+  Result will be always written to `target_pdf` so that needs
+  to be given for the keyword.
+
+  :raises ValueError: [description]
+
 :Add Link:
   Create a new internal link
 
@@ -37,10 +47,10 @@ Keywords
   Adds pages into PDF documents.
 
 
-:Add Pages To Source Document:
+:Add Pages To Document:
   :Arguments: pages: int=1, source_pdf: str=None, target_pdf: str=None
 
-  Add pages into current source document
+  Add empty pages into current source document
 
 
 :Alias Nb Pages:
@@ -49,7 +59,7 @@ Keywords
   Define an alias for total number of pages
 
 :Cell:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: w, h=0, txt=, border=0, ln=0, align=, fill=0, link=
 
   Output a cell
 
@@ -59,20 +69,36 @@ Keywords
 :Close:
   Terminate document
 
+:Close All Pdf Documents:
+  Close all opened PDF file descriptors.
+
+:Close Pdf Document:
+  :Arguments: source_pdf: str=None
+
+  Close PDF file descriptor for certain file.
+
+  :raises ValueError: if file descriptor for the file is not found
+
 :Code 39:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: txt, x, y, w=1.5, h=5.0
 
   Barcode 3of9
 
 :Dashed Line:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: x1, y1, x2, y2, dash_length=1, space_length=1
 
   Draw a dashed line. Same interface as line() except:
   - dash_length: Length of the dash
   - space_length: Length of the space between dashes
 
+:Dump Pdf As Xml:
+  :Arguments: source_pdf: str=None
+
+  Get PDFMiner format XML dump of the PDF
+
+
 :Ellipse:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: x, y, w, h, style=
 
   Draw a ellipse
 
@@ -82,25 +108,20 @@ Keywords
   Fatal error
 
 :Extract Pages From Pdf:
-  :Arguments: pages: int, source_pdf: str=None, target_pdf: str=None
+  :Arguments: source_pdf: str=None, target_pdf: str=None, pages: typing.Any=None
 
   Extract pages from source PDF and save to target PDF document.
+
+  Page numbers starting from 1.
 
 
 :Footer:
   Footer to be implemented in your own inherited class
 
-:Get Fields:
-  :Arguments: source_pdf: str=None, target_file: str=None, tree: str=None, retval: str=None
+:Get All Figures:
+  Return all figures in the PDF document.
 
-  Get interactive form fields from PDF source and store into target
-  file in text format.
-
-
-:Get Form Text Fields:
-  :Arguments: source_pdf: str=None
-
-  Get form text fields with textual data (inputs, dropdowns).
+  PDF needs to be parsed before elements can be found.
 
 
 :Get Info:
@@ -109,10 +130,15 @@ Keywords
   Get information from PDF document.
 
 
-:Get Named Destinations:
-  :Arguments: source_pdf: str=None, tree: str=None, retval: str=None
+:Get Input Fields:
+  :Arguments: source_pdf: str=None, replace_none_value: bool=False
 
-  Get named destination in the document.
+  Get input fields in the PDF.
+
+  Stores input fields internally so that they can be used without
+  parsing PDF again.
+
+  Parameter `replace_none_value` is for convience to visualize fields.
 
 
 :Get Number Of Pages:
@@ -122,26 +148,8 @@ Keywords
 
   :raises PdfReadError: if file is encrypted or other restrictions are in place
 
-:Get Outlines:
-  :Arguments: source_pdf: str=None, node: str=None, outlines: str=None
-
-  Get document outline.
-
-
 :Get Output Directory:
   Get output directory where target files are saved to.
-
-
-:Get Page Layout:
-  :Arguments: source_pdf: str=None
-
-  Get page layout setting.
-
-
-:Get Page Mode:
-  :Arguments: source_pdf: str=None
-
-  Get page mode setting.
 
 
 :Get String Width:
@@ -150,19 +158,23 @@ Keywords
   Get width of a string in the current font
 
 :Get Text From Pdf:
-  :Arguments: pages: int, source_pdf: str=None
+  :Arguments: source_pdf: str=None, pages: typing.Any=None
 
   Get text from set of pages in source PDF document.
+
+  PDF needs to be parsed before text can be read.
+
+
+:Get Value From Anchor:
+  :Arguments: locator: str, pagenum: int=1, direction: str=right, strict: bool=False, regexp: str=None
+
+  Get closest text (value) to anchor element.
+
+  PDF needs to be parsed before elements can be found.
 
 
 :Get X:
   Get x position
-
-:Get Xmp Metadata:
-  :Arguments: source_pdf: str=None
-
-  Get document XMP (Extensible Metadata Platform) data.
-
 
 :Get Y:
   Get y position
@@ -171,12 +183,12 @@ Keywords
   Header to be implemented in your own inherited class
 
 :Image:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: name, x=None, y=None, w=0, h=0, type=, link=
 
   Put an image on the page
 
 :Interleaved 2 Of 5:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: txt, x, y, w=1.0, h=10.0
 
   Barcode I2of5 (numeric), adds a 0 if odd lenght
 
@@ -189,7 +201,7 @@ Keywords
 
 
 :Line:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: x1, y1, x2, y2
 
   Draw a line
 
@@ -199,12 +211,12 @@ Keywords
   Put a link on the page
 
 :Ln:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: h=
 
   Line Feed; default value is last cell height
 
 :Multi Cell:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: w, h, txt=, border=0, align=J, fill=0, split_only=False
 
   Output text with automatic or explicit line breaks
 
@@ -215,6 +227,15 @@ Keywords
 
 :Open:
   Begin document
+
+:Open Pdf Document:
+  :Arguments: source_pdf: str=None
+
+  Open PDF document.
+
+  Also opens file for reading.
+
+  :raises ValueError: if PDF is already open
 
 :Output:
   :Arguments: name=, dest=
@@ -230,8 +251,15 @@ Keywords
   Rotate pages in source PDF document and save to target PDF document.
 
 
+:Parse Pdf:
+  :Arguments: source_pdf: str=None
+
+  Parse source PDF into entities which can be
+  used for text searches for example.
+
+
 :Pdf Decrypt:
-  :Arguments: source_pdf: str=None, password: str=None
+  :Arguments: source_pdf: str=None, target_pdf: str=None, password: str=None
 
   Decrypt PDF with password.
 
@@ -244,13 +272,34 @@ Keywords
 
 
 :Rect:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: x, y, w, h, style=
 
   Draw a rectangle
 
-:Rotate:
-  :Arguments: \*args, \*\*kwargs
+:Replace Text:
+  :Arguments: text: str, replace: str
 
+  Replace text content with something else in the PDF.
+
+
+
+:Rotate:
+  :Arguments: angle, x=None, y=None
+
+
+
+:Save Pdf:
+  :Arguments: source: str=None, target: str=None, use_modified_reader: bool=False
+
+  Save current over itself or to `target_pdf`
+
+
+:Set Anchor To Element:
+  :Arguments: locator: str
+
+  Sets anchor point in the document for further searches.
+
+  PDF needs to be parsed before elements can be found.
 
 
 :Set Author:
@@ -285,6 +334,12 @@ Keywords
   :Arguments: r, g=-1, b=-1
 
   Set color for all stroking operations
+
+:Set Field Value:
+  :Arguments: field_name: str, value: typing.Any, save: bool=False
+
+  Set value for field with given name.
+
 
 :Set Fill Color:
   :Arguments: r, g=-1, b=-1
@@ -337,12 +392,6 @@ Keywords
 
   Set right margin
 
-:Set Source Document:
-  :Arguments: source_pdf: str=None
-
-  Set source PDF document for further operations.
-
-
 :Set Subject:
   :Arguments: subject
 
@@ -378,6 +427,15 @@ Keywords
 
   Set y position and reset x
 
+:Switch To Pdf Document:
+  :Arguments: source_pdf: str=None
+
+  Switch library's current fileobject to already open file
+  or open file if not opened.
+
+  :raises ValueError: if PDF filepath is not given and there are no active
+      file to activate
+
 :Template Html To Pdf:
   :Arguments: template: str, filename: str, variables: dict=None
 
@@ -385,12 +443,18 @@ Keywords
 
 
 :Text:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: x, y, txt=
 
   Output a string
 
+:Update Field Values:
+  :Arguments: source_pdf: str=None, target_pdf: str=None, newvals: dict=None
+
+  Update field values in PDF if it has fields.
+
+
 :Write:
-  :Arguments: \*args, \*\*kwargs
+  :Arguments: h, txt=, link=
 
   Output text in flowing mode
 

@@ -206,6 +206,33 @@
 <em class="property">class </em><code class="sig-prename descclassname">RPA.PDF.</code><code class="sig-name descname">PDF</code><span class="sig-paren">(</span><em class="sig-param">outdir: str = '.'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">fpdf.fpdf.FPDF</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">fpdf.html.HTMLMixin</span></code></p>
 <p>RPA Framework library for PDF management.</p>
+<dl class="attribute">
+<dt id="RPA.PDF.PDF.active_fileobject">
+<code class="sig-name descname">active_fileobject</code><em class="property">: object</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.PDF.active_fileobject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.add_image_to_pdf">
+<code class="sig-name descname">add_image_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">imagefile</em>, <em class="sig-param">source=None</em>, <em class="sig-param">target=None</em>, <em class="sig-param">coverage=0.2</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.add_image_to_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add image to PDF which can be new or existing PDF.</p>
+<p>Result will be always written to <cite>target_pdf</cite> so that needs
+to be given for the keyword.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>imagefile</strong> – filepath to image file to add into PDF</p></li>
+<li><p><strong>source</strong> – filepath to source, if not given add image to currently
+active PDF</p></li>
+<li><p><strong>target</strong> – filepath of target PDF</p></li>
+<li><p><strong>coverage</strong> – [description], defaults to 0.2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – [description]</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="method">
 <dt id="RPA.PDF.PDF.add_pages">
 <code class="sig-name descname">add_pages</code><span class="sig-paren">(</span><em class="sig-param">pages: int = 1</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.add_pages" title="Permalink to this definition">¶</a></dt>
@@ -218,9 +245,9 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.PDF.PDF.add_pages_to_source_document">
-<code class="sig-name descname">add_pages_to_source_document</code><span class="sig-paren">(</span><em class="sig-param">pages: int = 1</em>, <em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">target_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.add_pages_to_source_document" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add pages into current source document</p>
+<dt id="RPA.PDF.PDF.add_pages_to_document">
+<code class="sig-name descname">add_pages_to_document</code><span class="sig-paren">(</span><em class="sig-param">pages: int = 1</em>, <em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">target_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.add_pages_to_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add empty pages into current source document</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -233,52 +260,76 @@ to <cite>output_directory</cite></p></li>
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.PDF.PDF.anchor_element">
+<code class="sig-name descname">anchor_element</code><em class="property">: dict</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.PDF.anchor_element" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.close_all_pdf_documents">
+<code class="sig-name descname">close_all_pdf_documents</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.close_all_pdf_documents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close all opened PDF file descriptors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.close_pdf_document">
+<code class="sig-name descname">close_pdf_document</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.close_pdf_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close PDF file descriptor for certain file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_pdf</strong> – filepath</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if file descriptor for the file is not found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.dump_pdf_as_xml">
+<code class="sig-name descname">dump_pdf_as_xml</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.dump_pdf_as_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get PDFMiner format XML dump of the PDF</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_pdf</strong> – filepath</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>XML content</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="method">
 <dt id="RPA.PDF.PDF.extract_pages_from_pdf">
-<code class="sig-name descname">extract_pages_from_pdf</code><span class="sig-paren">(</span><em class="sig-param">pages: int</em>, <em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">target_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.extract_pages_from_pdf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">extract_pages_from_pdf</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">target_pdf: str = None</em>, <em class="sig-param">pages: Any = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.extract_pages_from_pdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract pages from source PDF and save to target PDF document.</p>
+<p>Page numbers starting from 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source_pdf</strong> – filepath to the source pdf</p></li>
 <li><p><strong>target_pdf</strong> – filename to the target pdf, stored by default
 to <cite>output_directory</cite></p></li>
-<li><p><strong>pages</strong> – page numbers to extract from PDF (numbers start from 0)</p></li>
+<li><p><strong>pages</strong> – page numbers to extract from PDF (numbers start from 0)
+if None then extracts all pages</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="RPA.PDF.PDF.get_fields">
-<code class="sig-name descname">get_fields</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">target_file: str = None</em>, <em class="sig-param">tree: str = None</em>, <em class="sig-param">retval: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.PDF.PDF.get_fields" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get interactive form fields from PDF source and store into target
-file in text format.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source_pdf</strong> – filepath to the source pdf</p></li>
-<li><p><strong>target_file</strong> – filepath to save field information into</p></li>
-<li><p><strong>tree</strong> – used for recursive purposes, default is None</p></li>
-<li><p><strong>retval</strong> – used for recursive purposes, default is None</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dict of fields or None</p>
-</dd>
-</dl>
-</dd></dl>
+<dl class="attribute">
+<dt id="RPA.PDF.PDF.fileobjects">
+<code class="sig-name descname">fileobjects</code><em class="property">: dict</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.PDF.fileobjects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
-<dt id="RPA.PDF.PDF.get_form_text_fields">
-<code class="sig-name descname">get_form_text_fields</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.PDF.PDF.get_form_text_fields" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get form text fields with textual data (inputs, dropdowns).</p>
+<dt id="RPA.PDF.PDF.get_all_figures">
+<code class="sig-name descname">get_all_figures</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.PDF.PDF.get_all_figures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all figures in the PDF document.</p>
+<p>PDF needs to be parsed before elements can be found.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dict of fields or None</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dictionary of figures divided into pages</p>
 </dd>
 </dl>
 </dd></dl>
@@ -298,19 +349,22 @@ file in text format.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.PDF.PDF.get_named_destinations">
-<code class="sig-name descname">get_named_destinations</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">tree: str = None</em>, <em class="sig-param">retval: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.PDF.PDF.get_named_destinations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get named destination in the document.</p>
+<dt id="RPA.PDF.PDF.get_input_fields">
+<code class="sig-name descname">get_input_fields</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">replace_none_value: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.PDF.PDF.get_input_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get input fields in the PDF.</p>
+<p>Stores input fields internally so that they can be used without
+parsing PDF again.</p>
+<p>Parameter <cite>replace_none_value</cite> is for convience to visualize fields.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source_pdf</strong> – filepath to the source pdf</p></li>
-<li><p><strong>tree</strong> – used for recursive purposes, default is None</p></li>
-<li><p><strong>retval</strong> – used for recursive purposes, default is None</p></li>
+<li><p><strong>source_pdf</strong> – source filepath, defaults to None</p></li>
+<li><p><strong>replace_none_value</strong> – if value is None replace it with key name,
+defaults to False</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dict of destinations or None</p>
+<dd class="field-even"><p>dictionary of input key values or <cite>None</cite></p>
 </dd>
 </dl>
 </dd></dl>
@@ -330,25 +384,6 @@ file in text format.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.PDF.PDF.get_outlines">
-<code class="sig-name descname">get_outlines</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">node: str = None</em>, <em class="sig-param">outlines: str = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.PDF.PDF.get_outlines" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get document outline.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source_pdf</strong> – filepath to the source pdf</p></li>
-<li><p><strong>node</strong> – source node to check for outlines</p></li>
-<li><p><strong>outlines</strong> – <p>…</p>
-</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>nested list of outlines</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
 <dt id="RPA.PDF.PDF.get_output_directory">
 <code class="sig-name descname">get_output_directory</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.PDF.PDF.get_output_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get output directory where target files are saved to.</p>
@@ -360,37 +395,10 @@ file in text format.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.PDF.PDF.get_page_layout">
-<code class="sig-name descname">get_page_layout</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.PDF.PDF.get_page_layout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get page layout setting.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>page layout currently in use as string or None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.PDF.PDF.get_page_mode">
-<code class="sig-name descname">get_page_mode</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.PDF.PDF.get_page_mode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get page mode setting.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>page mode currently in use as string or None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
 <dt id="RPA.PDF.PDF.get_text_from_pdf">
-<code class="sig-name descname">get_text_from_pdf</code><span class="sig-paren">(</span><em class="sig-param">pages: int</em>, <em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.PDF.PDF.get_text_from_pdf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_text_from_pdf</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">pages: Any = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.PDF.PDF.get_text_from_pdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get text from set of pages in source PDF document.</p>
+<p>PDF needs to be parsed before text can be read.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -405,15 +413,24 @@ file in text format.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.PDF.PDF.get_xmp_metadata">
-<code class="sig-name descname">get_xmp_metadata</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; PyPDF2.xmp.XmpInformation<a class="headerlink" href="#RPA.PDF.PDF.get_xmp_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get document XMP (Extensible Metadata Platform) data.</p>
+<dt id="RPA.PDF.PDF.get_value_from_anchor">
+<code class="sig-name descname">get_value_from_anchor</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">pagenum: int = 1</em>, <em class="sig-param">direction: str = 'right'</em>, <em class="sig-param">strict: bool = False</em>, <em class="sig-param">regexp: str = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.PDF.PDF.get_value_from_anchor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get closest text (value) to anchor element.</p>
+<p>PDF needs to be parsed before elements can be found.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – element to set anchor to</p></li>
+<li><p><strong>pagenum</strong> – page number where search if performed on, default 1 (first)</p></li>
+<li><p><strong>direction</strong> – in which direction to search for text,
+directions  ‘top’, ‘bottom’, ‘left’ or ‘right’, defaults to ‘right’</p></li>
+<li><p><strong>strict</strong> – if element margins should be used for matching points,
+used when direction is ‘top’ or ‘bottom’, default <cite>False</cite></p></li>
+<li><p><strong>regexp</strong> – expected format of value to match, defaults to None</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>XmpInformation object or None if no metadata was found</p>
+<dd class="field-even"><p>closest matching text or <cite>None</cite></p>
 </dd>
 </dl>
 </dd></dl>
@@ -432,6 +449,31 @@ file in text format.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.PDF.modified_reader">
+<code class="sig-name descname">modified_reader</code><em class="property">: PdfFileReader</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.PDF.modified_reader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.open_pdf_document">
+<code class="sig-name descname">open_pdf_document</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.open_pdf_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open PDF document.</p>
+<p>Also opens file for reading.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if PDF is already open</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.PDF.output_directory">
+<code class="sig-name descname">output_directory</code><em class="property">: Path</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.PDF.output_directory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.PDF.PDF.page_rotate">
@@ -452,13 +494,26 @@ to <cite>output_directory</cite></p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.PDF.PDF.parse_pdf">
+<code class="sig-name descname">parse_pdf</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.parse_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse source PDF into entities which can be
+used for text searches for example.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source_pdf</strong> – source</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.PDF.PDF.pdf_decrypt">
-<code class="sig-name descname">pdf_decrypt</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">password: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.PDF.PDF.pdf_decrypt" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pdf_decrypt</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">target_pdf: str = None</em>, <em class="sig-param">password: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.PDF.PDF.pdf_decrypt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decrypt PDF with password.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source_pdf</strong> – filepath to the source pdf</p></li>
+<li><p><strong>target_pdf</strong> – filepath to the decrypted pdf</p></li>
 <li><p><strong>password</strong> – password as a string</p></li>
 </ul>
 </dd>
@@ -492,6 +547,70 @@ encryption is used, default True</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.PDF.PDF.replace_text">
+<code class="sig-name descname">replace_text</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">replace: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.replace_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace text content with something else in the PDF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – this text will be replaced</p></li>
+<li><p><strong>replace</strong> – used to replace <cite>text</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.PDF.rpa_pdf_document">
+<code class="sig-name descname">rpa_pdf_document</code><em class="property">: RpaPdfDocument</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.PDF.rpa_pdf_document" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.save_pdf">
+<code class="sig-name descname">save_pdf</code><span class="sig-paren">(</span><em class="sig-param">source: str = None</em>, <em class="sig-param">target: str = None</em>, <em class="sig-param">use_modified_reader: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.save_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save current over itself or to <cite>target_pdf</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – filepath to source PDF</p></li>
+<li><p><strong>target</strong> – filepath to target PDF</p></li>
+<li><p><strong>use_modified_reader</strong> – needs to be set to <cite>True</cite> if
+using modified PDF reader</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_anchor_to_element">
+<code class="sig-name descname">set_anchor_to_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.PDF.PDF.set_anchor_to_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets anchor point in the document for further searches.</p>
+<p>PDF needs to be parsed before elements can be found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>locator</strong> – element to search for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if element was found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_field_value">
+<code class="sig-name descname">set_field_value</code><span class="sig-paren">(</span><em class="sig-param">field_name: str</em>, <em class="sig-param">value: Any</em>, <em class="sig-param">save: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_field_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set value for field with given name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field_name</strong> – field to update</p></li>
+<li><p><strong>value</strong> – new value for the field</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.PDF.PDF.set_output_directory">
 <code class="sig-name descname">set_output_directory</code><span class="sig-paren">(</span><em class="sig-param">outdir: str = '.'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.set_output_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set output directory where target files are saved to.</p>
@@ -503,12 +622,17 @@ encryption is used, default True</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.PDF.PDF.set_source_document">
-<code class="sig-name descname">set_source_document</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.set_source_document" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set source PDF document for further operations.</p>
+<dt id="RPA.PDF.PDF.switch_to_pdf_document">
+<code class="sig-name descname">switch_to_pdf_document</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.switch_to_pdf_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch library’s current fileobject to already open file
+or open file if not opened.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
+<dd class="field-odd"><p><strong>source_pdf</strong> – filepath</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if PDF filepath is not given and there are no active
+file to activate</p>
 </dd>
 </dl>
 </dd></dl>
@@ -528,7 +652,279 @@ encryption is used, default True</p></li>
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="RPA.PDF.PDF.update_field_values">
+<code class="sig-name descname">update_field_values</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">target_pdf: str = None</em>, <em class="sig-param">newvals: dict = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.update_field_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update field values in PDF if it has fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_pdf</strong> – source PDF with fields to update</p></li>
+<li><p><strong>target_pdf</strong> – updated target PDF</p></li>
+<li><p><strong>newvals</strong> – dictionary with key values to update</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.PDF.PageGenerator">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.PDF.</code><code class="sig-name descname">PageGenerator</code><span class="sig-paren">(</span><em class="sig-param">gen</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PageGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Supporting generator class for Pages</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.PDF.RPAConverter">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.PDF.</code><code class="sig-name descname">RPAConverter</code><span class="sig-paren">(</span><em class="sig-param">rsrcmgr</em>, <em class="sig-param">codec='utf-8'</em>, <em class="sig-param">pageno=1</em>, <em class="sig-param">laparams=None</em>, <em class="sig-param">imagewriter=None</em>, <em class="sig-param">stripcontrol=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pdfminer.converter.PDFConverter</span></code></p>
+<p>Class for converting PDF into RPA classes</p>
+<dl class="attribute">
+<dt id="RPA.PDF.RPAConverter.CONTROL">
+<code class="sig-name descname">CONTROL</code><em class="property"> = re.compile('[\x00-\x08\x0b-\x0c\x0e-\x1f]')</em><a class="headerlink" href="#RPA.PDF.RPAConverter.CONTROL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.receive_layout">
+<code class="sig-name descname">receive_layout</code><span class="sig-paren">(</span><em class="sig-param">ltpage</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.receive_layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.write_footer">
+<code class="sig-name descname">write_footer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.write_footer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.write_header">
+<code class="sig-name descname">write_header</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.write_header" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.write_text">
+<code class="sig-name descname">write_text</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.write_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.PDF.RpaFigure">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.PDF.</code><code class="sig-name descname">RpaFigure</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">bbox: Iterable</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RpaFigure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for each LTFigure element in the PDF</p>
+<dl class="method">
+<dt id="RPA.PDF.RpaFigure.details">
+<code class="sig-name descname">details</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RpaFigure.details" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaFigure.figure_bbox">
+<code class="sig-name descname">figure_bbox</code><em class="property">: list</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaFigure.figure_bbox" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaFigure.figure_name">
+<code class="sig-name descname">figure_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaFigure.figure_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaFigure.image_name">
+<code class="sig-name descname">image_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaFigure.image_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaFigure.item">
+<code class="sig-name descname">item</code><em class="property">: dict</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaFigure.item" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaFigure.set_item">
+<code class="sig-name descname">set_item</code><span class="sig-paren">(</span><em class="sig-param">item: Any</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RpaFigure.set_item" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.PDF.RpaPdfDocument">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.PDF.</code><code class="sig-name descname">RpaPdfDocument</code><a class="headerlink" href="#RPA.PDF.RpaPdfDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for parsed PDF document</p>
+<dl class="method">
+<dt id="RPA.PDF.RpaPdfDocument.add_page">
+<code class="sig-name descname">add_page</code><span class="sig-paren">(</span><em class="sig-param">page: RPA.PDF.RpaPdfPage</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.RpaPdfDocument.add_page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaPdfDocument.append_xml">
+<code class="sig-name descname">append_xml</code><span class="sig-paren">(</span><em class="sig-param">xml: bytes</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.RpaPdfDocument.append_xml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaPdfDocument.dump_xml">
+<code class="sig-name descname">dump_xml</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.PDF.RpaPdfDocument.dump_xml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaPdfDocument.encoding">
+<code class="sig-name descname">encoding</code><em class="property">: str</em><em class="property"> = 'utf-8'</em><a class="headerlink" href="#RPA.PDF.RpaPdfDocument.encoding" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaPdfDocument.get_page">
+<code class="sig-name descname">get_page</code><span class="sig-paren">(</span><em class="sig-param">pagenum: int</em><span class="sig-paren">)</span> &#x2192; RPA.PDF.RpaPdfPage<a class="headerlink" href="#RPA.PDF.RpaPdfDocument.get_page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaPdfDocument.get_pages">
+<code class="sig-name descname">get_pages</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; collections.OrderedDict<a class="headerlink" href="#RPA.PDF.RpaPdfDocument.get_pages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaPdfDocument.pages">
+<code class="sig-name descname">pages</code><em class="property">: OrderedDict</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaPdfDocument.pages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaPdfDocument.xml_content">
+<code class="sig-name descname">xml_content</code><em class="property">: bytearray</em><em class="property"> = bytearray(b'')</em><a class="headerlink" href="#RPA.PDF.RpaPdfDocument.xml_content" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.PDF.RpaPdfPage">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.PDF.</code><code class="sig-name descname">RpaPdfPage</code><span class="sig-paren">(</span><em class="sig-param">pageid: int</em>, <em class="sig-param">bbox: Iterable</em>, <em class="sig-param">rotate: int</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RpaPdfPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for each PDF page</p>
+<dl class="method">
+<dt id="RPA.PDF.RpaPdfPage.add_content">
+<code class="sig-name descname">add_content</code><span class="sig-paren">(</span><em class="sig-param">content: Any</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.RpaPdfPage.add_content" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaPdfPage.bbox">
+<code class="sig-name descname">bbox</code><em class="property">: list</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaPdfPage.bbox" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaPdfPage.content">
+<code class="sig-name descname">content</code><em class="property">: OrderedDict</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaPdfPage.content" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaPdfPage.content_id">
+<code class="sig-name descname">content_id</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaPdfPage.content_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaPdfPage.get_content">
+<code class="sig-name descname">get_content</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; collections.OrderedDict<a class="headerlink" href="#RPA.PDF.RpaPdfPage.get_content" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaPdfPage.get_figures">
+<code class="sig-name descname">get_figures</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; collections.OrderedDict<a class="headerlink" href="#RPA.PDF.RpaPdfPage.get_figures" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaPdfPage.get_textboxes">
+<code class="sig-name descname">get_textboxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; collections.OrderedDict<a class="headerlink" href="#RPA.PDF.RpaPdfPage.get_textboxes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaPdfPage.pageid">
+<code class="sig-name descname">pageid</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaPdfPage.pageid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaPdfPage.rotate">
+<code class="sig-name descname">rotate</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaPdfPage.rotate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.PDF.RpaTextBox">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.PDF.</code><code class="sig-name descname">RpaTextBox</code><span class="sig-paren">(</span><em class="sig-param">boxid: int</em>, <em class="sig-param">bbox: Iterable</em>, <em class="sig-param">wmode: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RpaTextBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for each LTTextBox element in the PDF</p>
+<dl class="method">
+<dt id="RPA.PDF.RpaTextBox.bbox">
+<em class="property">property </em><code class="sig-name descname">bbox</code><a class="headerlink" href="#RPA.PDF.RpaTextBox.bbox" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaTextBox.bottom">
+<em class="property">property </em><code class="sig-name descname">bottom</code><a class="headerlink" href="#RPA.PDF.RpaTextBox.bottom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaTextBox.boxid">
+<em class="property">property </em><code class="sig-name descname">boxid</code><a class="headerlink" href="#RPA.PDF.RpaTextBox.boxid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaTextBox.item">
+<code class="sig-name descname">item</code><em class="property">: dict</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaTextBox.item" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaTextBox.left">
+<em class="property">property </em><code class="sig-name descname">left</code><a class="headerlink" href="#RPA.PDF.RpaTextBox.left" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaTextBox.right">
+<em class="property">property </em><code class="sig-name descname">right</code><a class="headerlink" href="#RPA.PDF.RpaTextBox.right" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaTextBox.set_item">
+<code class="sig-name descname">set_item</code><span class="sig-paren">(</span><em class="sig-param">item: Any</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RpaTextBox.set_item" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaTextBox.text">
+<em class="property">property </em><code class="sig-name descname">text</code><a class="headerlink" href="#RPA.PDF.RpaTextBox.text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaTextBox.textbox_bbox">
+<code class="sig-name descname">textbox_bbox</code><em class="property">: list</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaTextBox.textbox_bbox" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaTextBox.textbox_id">
+<code class="sig-name descname">textbox_id</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaTextBox.textbox_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.RpaTextBox.textbox_wmode">
+<code class="sig-name descname">textbox_wmode</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.RpaTextBox.textbox_wmode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RpaTextBox.top">
+<em class="property">property </em><code class="sig-name descname">top</code><a class="headerlink" href="#RPA.PDF.RpaTextBox.top" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.PDF.iterable_items_to_int">
+<code class="sig-prename descclassname">RPA.PDF.</code><code class="sig-name descname">iterable_items_to_int</code><span class="sig-paren">(</span><em class="sig-param">bbox</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.iterable_items_to_int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 </div>

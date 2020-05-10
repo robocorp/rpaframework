@@ -203,8 +203,7 @@
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list simple">
 <dt class="field-odd">Library scope</dt>
-<dd class="field-odd"><p>Task</p>
-</dd>
+<dd class="field-odd"><p></p></dd>
 </dl>
 <p>RPA Framework library for PDF management.</p>
 </div>
@@ -221,6 +220,21 @@
 </dd>
 </dl>
 <p>Add a TrueType or Type1 font</p>
+</dd>
+<dt class="field-even">Add Image To Pdf</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>imagefile, source=None, target=None, coverage=0.2</p>
+</dd>
+</dl>
+<p>Add image to PDF which can be new or existing PDF.</p>
+<p>Result will be always written to <cite>target_pdf</cite> so that needs
+to be given for the keyword.</p>
+<dl class="field-list simple">
+<dt class="field-odd">raises ValueError</dt>
+<dd class="field-odd"><p>[description]</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Add Link</dt>
 <dd class="field-even"><p>Create a new internal link</p>
@@ -241,13 +255,13 @@
 </dl>
 <p>Adds pages into PDF documents.</p>
 </dd>
-<dt class="field-even">Add Pages To Source Document</dt>
+<dt class="field-even">Add Pages To Document</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>pages: int=1, source_pdf: str=None, target_pdf: str=None</p>
 </dd>
 </dl>
-<p>Add pages into current source document</p>
+<p>Add empty pages into current source document</p>
 </dd>
 <dt class="field-even">Alias Nb Pages</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -260,7 +274,7 @@
 <dt class="field-even">Cell</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>w, h=0, txt=, border=0, ln=0, align=, fill=0, link=</p>
 </dd>
 </dl>
 <p>Output a cell</p>
@@ -271,10 +285,26 @@
 <dt class="field-odd">Close</dt>
 <dd class="field-odd"><p>Terminate document</p>
 </dd>
+<dt class="field-even">Close All Pdf Documents</dt>
+<dd class="field-even"><p>Close all opened PDF file descriptors.</p>
+</dd>
+<dt class="field-odd">Close Pdf Document</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf: str=None</p>
+</dd>
+</dl>
+<p>Close PDF file descriptor for certain file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">raises ValueError</dt>
+<dd class="field-odd"><p>if file descriptor for the file is not found</p>
+</dd>
+</dl>
+</dd>
 <dt class="field-even">Code 39</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>txt, x, y, w=1.5, h=5.0</p>
 </dd>
 </dl>
 <p>Barcode 3of9</p>
@@ -282,17 +312,25 @@
 <dt class="field-even">Dashed Line</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>x1, y1, x2, y2, dash_length=1, space_length=1</p>
 </dd>
 </dl>
 <p>Draw a dashed line. Same interface as line() except:
 - dash_length: Length of the dash
 - space_length: Length of the space between dashes</p>
 </dd>
+<dt class="field-even">Dump Pdf As Xml</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf: str=None</p>
+</dd>
+</dl>
+<p>Get PDFMiner format XML dump of the PDF</p>
+</dd>
 <dt class="field-even">Ellipse</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>x, y, w, h, style=</p>
 </dd>
 </dl>
 <p>Draw a ellipse</p>
@@ -308,30 +346,18 @@
 <dt class="field-even">Extract Pages From Pdf</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>pages: int, source_pdf: str=None, target_pdf: str=None</p>
+<dd class="field-odd"><p>source_pdf: str=None, target_pdf: str=None, pages: typing.Any=None</p>
 </dd>
 </dl>
 <p>Extract pages from source PDF and save to target PDF document.</p>
+<p>Page numbers starting from 1.</p>
 </dd>
 <dt class="field-even">Footer</dt>
 <dd class="field-even"><p>Footer to be implemented in your own inherited class</p>
 </dd>
-<dt class="field-odd">Get Fields</dt>
-<dd class="field-odd"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf: str=None, target_file: str=None, tree: str=None, retval: str=None</p>
-</dd>
-</dl>
-<p>Get interactive form fields from PDF source and store into target
-file in text format.</p>
-</dd>
-<dt class="field-even">Get Form Text Fields</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf: str=None</p>
-</dd>
-</dl>
-<p>Get form text fields with textual data (inputs, dropdowns).</p>
+<dt class="field-odd">Get All Figures</dt>
+<dd class="field-odd"><p>Return all figures in the PDF document.</p>
+<p>PDF needs to be parsed before elements can be found.</p>
 </dd>
 <dt class="field-even">Get Info</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -341,13 +367,16 @@ file in text format.</p>
 </dl>
 <p>Get information from PDF document.</p>
 </dd>
-<dt class="field-even">Get Named Destinations</dt>
+<dt class="field-even">Get Input Fields</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf: str=None, tree: str=None, retval: str=None</p>
+<dd class="field-odd"><p>source_pdf: str=None, replace_none_value: bool=False</p>
 </dd>
 </dl>
-<p>Get named destination in the document.</p>
+<p>Get input fields in the PDF.</p>
+<p>Stores input fields internally so that they can be used without
+parsing PDF again.</p>
+<p>Parameter <cite>replace_none_value</cite> is for convience to visualize fields.</p>
 </dd>
 <dt class="field-even">Get Number Of Pages</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -362,35 +391,11 @@ file in text format.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Get Outlines</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf: str=None, node: str=None, outlines: str=None</p>
-</dd>
-</dl>
-<p>Get document outline.</p>
-</dd>
 <dt class="field-even">Get Output Directory</dt>
 <dd class="field-even"><p>Get output directory where target files are saved to.</p>
 </dd>
-<dt class="field-odd">Get Page Layout</dt>
+<dt class="field-odd">Get String Width</dt>
 <dd class="field-odd"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf: str=None</p>
-</dd>
-</dl>
-<p>Get page layout setting.</p>
-</dd>
-<dt class="field-even">Get Page Mode</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf: str=None</p>
-</dd>
-</dl>
-<p>Get page mode setting.</p>
-</dd>
-<dt class="field-even">Get String Width</dt>
-<dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>s</p>
 </dd>
@@ -400,32 +405,34 @@ file in text format.</p>
 <dt class="field-even">Get Text From Pdf</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>pages: int, source_pdf: str=None</p>
+<dd class="field-odd"><p>source_pdf: str=None, pages: typing.Any=None</p>
 </dd>
 </dl>
 <p>Get text from set of pages in source PDF document.</p>
+<p>PDF needs to be parsed before text can be read.</p>
+</dd>
+<dt class="field-even">Get Value From Anchor</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, pagenum: int=1, direction: str=right, strict: bool=False, regexp: str=None</p>
+</dd>
+</dl>
+<p>Get closest text (value) to anchor element.</p>
+<p>PDF needs to be parsed before elements can be found.</p>
 </dd>
 <dt class="field-even">Get X</dt>
 <dd class="field-even"><p>Get x position</p>
 </dd>
-<dt class="field-odd">Get Xmp Metadata</dt>
+<dt class="field-odd">Get Y</dt>
+<dd class="field-odd"><p>Get y position</p>
+</dd>
+<dt class="field-even">Header</dt>
+<dd class="field-even"><p>Header to be implemented in your own inherited class</p>
+</dd>
+<dt class="field-odd">Image</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf: str=None</p>
-</dd>
-</dl>
-<p>Get document XMP (Extensible Metadata Platform) data.</p>
-</dd>
-<dt class="field-even">Get Y</dt>
-<dd class="field-even"><p>Get y position</p>
-</dd>
-<dt class="field-odd">Header</dt>
-<dd class="field-odd"><p>Header to be implemented in your own inherited class</p>
-</dd>
-<dt class="field-even">Image</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>name, x=None, y=None, w=0, h=0, type=, link=</p>
 </dd>
 </dl>
 <p>Put an image on the page</p>
@@ -433,7 +440,7 @@ file in text format.</p>
 <dt class="field-even">Interleaved 2 Of 5</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>txt, x, y, w=1.0, h=10.0</p>
 </dd>
 </dl>
 <p>Barcode I2of5 (numeric), adds a 0 if odd lenght</p>
@@ -450,7 +457,7 @@ file in text format.</p>
 <dt class="field-even">Line</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>x1, y1, x2, y2</p>
 </dd>
 </dl>
 <p>Draw a line</p>
@@ -466,7 +473,7 @@ file in text format.</p>
 <dt class="field-even">Ln</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>h=</p>
 </dd>
 </dl>
 <p>Line Feed; default value is last cell height</p>
@@ -474,7 +481,7 @@ file in text format.</p>
 <dt class="field-even">Multi Cell</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>w, h, txt=, border=0, align=J, fill=0, split_only=False</p>
 </dd>
 </dl>
 <p>Output text with automatic or explicit line breaks</p>
@@ -490,8 +497,22 @@ file in text format.</p>
 <dt class="field-even">Open</dt>
 <dd class="field-even"><p>Begin document</p>
 </dd>
-<dt class="field-odd">Output</dt>
+<dt class="field-odd">Open Pdf Document</dt>
 <dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf: str=None</p>
+</dd>
+</dl>
+<p>Open PDF document.</p>
+<p>Also opens file for reading.</p>
+<dl class="field-list simple">
+<dt class="field-odd">raises ValueError</dt>
+<dd class="field-odd"><p>if PDF is already open</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Output</dt>
+<dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>name=, dest=</p>
 </dd>
@@ -509,10 +530,19 @@ file in text format.</p>
 </dl>
 <p>Rotate pages in source PDF document and save to target PDF document.</p>
 </dd>
+<dt class="field-even">Parse Pdf</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf: str=None</p>
+</dd>
+</dl>
+<p>Parse source PDF into entities which can be
+used for text searches for example.</p>
+</dd>
 <dt class="field-even">Pdf Decrypt</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf: str=None, password: str=None</p>
+<dd class="field-odd"><p>source_pdf: str=None, target_pdf: str=None, password: str=None</p>
 </dd>
 </dl>
 <p>Decrypt PDF with password.</p>
@@ -533,17 +563,42 @@ file in text format.</p>
 <dt class="field-even">Rect</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>x, y, w, h, style=</p>
 </dd>
 </dl>
 <p>Draw a rectangle</p>
 </dd>
+<dt class="field-even">Replace Text</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text: str, replace: str</p>
+</dd>
+</dl>
+<p>Replace text content with something else in the PDF.</p>
+</dd>
 <dt class="field-even">Rotate</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>angle, x=None, y=None</p>
 </dd>
 </dl>
+</dd>
+<dt class="field-even">Save Pdf</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source: str=None, target: str=None, use_modified_reader: bool=False</p>
+</dd>
+</dl>
+<p>Save current over itself or to <cite>target_pdf</cite></p>
+</dd>
+<dt class="field-even">Set Anchor To Element</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Sets anchor point in the document for further searches.</p>
+<p>PDF needs to be parsed before elements can be found.</p>
 </dd>
 <dt class="field-even">Set Author</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -594,6 +649,14 @@ file in text format.</p>
 </dd>
 </dl>
 <p>Set color for all stroking operations</p>
+</dd>
+<dt class="field-even">Set Field Value</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>field_name: str, value: typing.Any, save: bool=False</p>
+</dd>
+</dl>
+<p>Set value for field with given name.</p>
 </dd>
 <dt class="field-even">Set Fill Color</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -675,14 +738,6 @@ file in text format.</p>
 </dl>
 <p>Set right margin</p>
 </dd>
-<dt class="field-even">Set Source Document</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>source_pdf: str=None</p>
-</dd>
-</dl>
-<p>Set source PDF document for further operations.</p>
-</dd>
 <dt class="field-even">Set Subject</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -739,6 +794,21 @@ file in text format.</p>
 </dl>
 <p>Set y position and reset x</p>
 </dd>
+<dt class="field-even">Switch To Pdf Document</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf: str=None</p>
+</dd>
+</dl>
+<p>Switch library’s current fileobject to already open file
+or open file if not opened.</p>
+<dl class="field-list simple">
+<dt class="field-odd">raises ValueError</dt>
+<dd class="field-odd"><p>if PDF filepath is not given and there are no active
+file to activate</p>
+</dd>
+</dl>
+</dd>
 <dt class="field-even">Template Html To Pdf</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -750,15 +820,23 @@ file in text format.</p>
 <dt class="field-even">Text</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>x, y, txt=</p>
 </dd>
 </dl>
 <p>Output a string</p>
 </dd>
+<dt class="field-even">Update Field Values</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source_pdf: str=None, target_pdf: str=None, newvals: dict=None</p>
+</dd>
+</dl>
+<p>Update field values in PDF if it has fields.</p>
+</dd>
 <dt class="field-even">Write</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>h, txt=, link=</p>
 </dd>
 </dl>
 <p>Output text in flowing mode</p>
