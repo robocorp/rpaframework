@@ -189,10 +189,11 @@ class ImapSmtp:
     def send_message(
         self,
         sender: str,
-        recipients: list,
+        recipients: str,
         subject: str,
         body: str,
-        attachments: list = None,
+        attachments: str = None,
+        html: bool = False,
     ) -> None:
         """Send SMTP email
 
@@ -205,17 +206,20 @@ class ImapSmtp:
         :param subject: mail subject field
         :param body: mail body content
         :param attachments: list of filepaths to attach, defaults to []
+        :param html: if message content is in HTML, default `False`
         """
         if self.smtp_conn is None:
             raise ValueError("Requires authorized SMTP connection")
         add_charset("utf-8", QP, QP, "utf-8")
         attachments = attachments or []
         if not isinstance(attachments, list):
-            attachments = [attachments]
+            attachments = attachments.split(",")
 
-        msg = MIMEMultipart("alternative")
+        msg = MIMEMultipart()
+
         if len(attachments) > 0:
             for filename in attachments:
+                self.logger.debug("Adding attachment: %s", filename)
                 with open(filename, "rb") as attachment:
                     _, ext = filename.lower().rsplit(".", 1)
                     ctype, _ = mimetypes.guess_type(filename)
@@ -233,22 +237,28 @@ class ImapSmtp:
                         part.set_payload(attachment.read())
                         encoders.encode_base64(part)
                     part.add_header(
-                        "Content-Disposition", f"attachment; filename= {filename}"
+                        "Content-Disposition",
+                        f"attachment; filename= {Path(filename).name}",
                     )
                     msg.attach(part)
 
         msg["From"] = sender
         msg["Subject"] = Header(subject, "utf-8")
-        htmlpart = MIMEText(body, "html", "UTF-8")
-        textpart = MIMEText(body, "plain", "UTF-8")
-        msg.attach(htmlpart)
-        msg.attach(textpart)
+
+        if html:
+            htmlpart = MIMEText(body, "html", "UTF-8")
+            msg.attach(htmlpart)
+        else:
+            textpart = MIMEText(body, "plain", "UTF-8")
+            msg.attach(textpart)
 
         # Create a generator and flatten message object to 'file’
         str_io = StringIO()
         g = Generator(str_io, False)
         g.flatten(msg)
 
+        if not isinstance(recipients, list):
+            recipients = recipients.split(",")
         try:
             self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
         except Exception as err:
