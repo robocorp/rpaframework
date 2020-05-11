@@ -1,0 +1,69 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: Task
+
+Library for managing Twitter.
+
+Library usage requires Twitter developer credentials, which can
+be received from https://developer.twitter.com/.
+
+********
+Keywords
+********
+
+:Authorize:
+  :Arguments: consumer_key: str=None, consumer_secret: str=None, access_token: str=None, access_token_secret: str=None
+
+  Authorize to Twitter API
+
+
+:Get Me:
+  Get Twitter profile of authenticated user
+
+
+:Get User Profile:
+  :Arguments: username: str=None
+
+  Get user's Twitter profile
+
+
+:Get User Tweets:
+  :Arguments: username: str=None, count: int=100
+
+  Get user tweets
+
+
+:Like:
+  :Arguments: tweet
+
+  Like a tweet
+
+
+:Text Search Tweets:
+  :Arguments: query: str=None, count: int=100, geocode: str=None, lang: str=None, locale: str=None, result_type: str=mixed, until: str=None, since_id: str=None, max_id: str=None
+
+  Search tweets defined by search query
+
+  Results types:
+      - mixed : include both popular and real time results in the response
+      - recent : return only the most recent results in the response
+      - popular : return only the most popular results in the response
+
+
+:Tweet:
+  :Arguments: content: str=None
+
+  Make a tweet with content
+
+
+:Unlike:
+  :Arguments: tweet
+
+  Unlike a tweet
+
