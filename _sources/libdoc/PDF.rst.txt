@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: 
+:Library scope: Task
 
 RPA Framework library for PDF management.
 
@@ -59,7 +59,7 @@ Keywords
   Define an alias for total number of pages
 
 :Cell:
-  :Arguments: w, h=0, txt=, border=0, ln=0, align=, fill=0, link=
+  :Arguments: \*args, \*\*kwargs
 
   Output a cell
 
@@ -80,12 +80,12 @@ Keywords
   :raises ValueError: if file descriptor for the file is not found
 
 :Code 39:
-  :Arguments: txt, x, y, w=1.5, h=5.0
+  :Arguments: \*args, \*\*kwargs
 
   Barcode 3of9
 
 :Dashed Line:
-  :Arguments: x1, y1, x2, y2, dash_length=1, space_length=1
+  :Arguments: \*args, \*\*kwargs
 
   Draw a dashed line. Same interface as line() except:
   - dash_length: Length of the dash
@@ -98,7 +98,7 @@ Keywords
 
 
 :Ellipse:
-  :Arguments: x, y, w, h, style=
+  :Arguments: \*args, \*\*kwargs
 
   Draw a ellipse
 
@@ -183,12 +183,12 @@ Keywords
   Header to be implemented in your own inherited class
 
 :Image:
-  :Arguments: name, x=None, y=None, w=0, h=0, type=, link=
+  :Arguments: \*args, \*\*kwargs
 
   Put an image on the page
 
 :Interleaved 2 Of 5:
-  :Arguments: txt, x, y, w=1.0, h=10.0
+  :Arguments: \*args, \*\*kwargs
 
   Barcode I2of5 (numeric), adds a 0 if odd lenght
 
@@ -201,7 +201,7 @@ Keywords
 
 
 :Line:
-  :Arguments: x1, y1, x2, y2
+  :Arguments: \*args, \*\*kwargs
 
   Draw a line
 
@@ -211,12 +211,12 @@ Keywords
   Put a link on the page
 
 :Ln:
-  :Arguments: h=
+  :Arguments: \*args, \*\*kwargs
 
   Line Feed; default value is last cell height
 
 :Multi Cell:
-  :Arguments: w, h, txt=, border=0, align=J, fill=0, split_only=False
+  :Arguments: \*args, \*\*kwargs
 
   Output text with automatic or explicit line breaks
 
@@ -272,7 +272,7 @@ Keywords
 
 
 :Rect:
-  :Arguments: x, y, w, h, style=
+  :Arguments: \*args, \*\*kwargs
 
   Draw a rectangle
 
@@ -284,7 +284,7 @@ Keywords
 
 
 :Rotate:
-  :Arguments: angle, x=None, y=None
+  :Arguments: \*args, \*\*kwargs
 
 
 
@@ -443,7 +443,7 @@ Keywords
 
 
 :Text:
-  :Arguments: x, y, txt=
+  :Arguments: \*args, \*\*kwargs
 
   Output a string
 
@@ -454,7 +454,7 @@ Keywords
 
 
 :Write:
-  :Arguments: h, txt=, link=
+  :Arguments: \*args, \*\*kwargs
 
   Output text in flowing mode
 

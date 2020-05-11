@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: 
+:Library scope: Task
 
 Library for accessing Netsuite.
 
@@ -25,41 +25,49 @@ Keywords
 
 
 :Get Accounts:
-  :Arguments: count: int=100, account_type: str=None
+  :Arguments: \*args, \*\*kwargs
 
   Get Accounts of any type or specified type.
 
 
 :Get Classifications:
+  :Arguments: \*args, \*\*kwargs
+
   Get all Netsuite Classifications
 
 
 :Get Currencies:
+  :Arguments: \*args, \*\*kwargs
+
   Get all Netsuite Currencies
 
 
 :Get Currency:
-  :Arguments: currency_id: str
+  :Arguments: \*args, \*\*kwargs
 
   Get all a Netsuite Currency by its ID
 
 
 :Get Departments:
+  :Arguments: \*args, \*\*kwargs
+
   Get all Netsuite Departments
 
 
 :Get Locations:
+  :Arguments: \*args, \*\*kwargs
+
   Get all Netsuite Locations
 
 
 :Get Vendor Bills:
-  :Arguments: count: int=10
+  :Arguments: \*args, \*\*kwargs
 
   Get list of vendor bills
 
 
 :Get Vendors:
-  :Arguments: count: int=10
+  :Arguments: \*args, \*\*kwargs
 
   Get list of vendors
 
@@ -73,14 +81,14 @@ Keywords
 
 
 :Netsuite Get:
-  :Arguments: record_type: str=None, internal_id: str=None, external_id: str=None
+  :Arguments: \*args, \*\*kwargs
 
   Get all records of given type and internalId and/or externalId.
 
   :raises ValueError: if record_type is not given
 
 :Netsuite Get All:
-  :Arguments: record_type: str
+  :Arguments: \*args, \*\*kwargs
 
   Get all records of given type.
 

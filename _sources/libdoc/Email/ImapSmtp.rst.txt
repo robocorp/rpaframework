@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: 
+:Library scope: Task
 
 RPA Framework library providing SMTP and IMAP operations for
 specified mail server.
@@ -81,7 +81,7 @@ Keywords
 
 
 :Send Message:
-  :Arguments: sender: str, recipients: list, subject: str, body: str, attachments: list=None
+  :Arguments: sender: str, recipients: str, subject: str, body: str, attachments: str=None, html: bool=False
 
   Send SMTP email
 

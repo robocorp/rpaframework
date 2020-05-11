@@ -343,7 +343,7 @@ with attachment files.</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.send_message">
-<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">sender: str</em>, <em class="sig-param">recipients: list</em>, <em class="sig-param">subject: str</em>, <em class="sig-param">body: str</em>, <em class="sig-param">attachments: list = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">sender: str</em>, <em class="sig-param">recipients: str</em>, <em class="sig-param">subject: str</em>, <em class="sig-param">body: str</em>, <em class="sig-param">attachments: str = None</em>, <em class="sig-param">html: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send SMTP email</p>
 <dl class="simple">
 <dt>Valid sender values:</dt><dd><ul class="simple">
@@ -360,6 +360,7 @@ with attachment files.</p>
 <li><p><strong>subject</strong> – mail subject field</p></li>
 <li><p><strong>body</strong> – mail body content</p></li>
 <li><p><strong>attachments</strong> – list of filepaths to attach, defaults to []</p></li>
+<li><p><strong>html</strong> – if message content is in HTML, default <cite>False</cite></p></li>
 </ul>
 </dd>
 </dl>

@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: 
+:Library scope: Task
 
 Library for manipulating Excel application.
 
@@ -52,6 +52,12 @@ Keywords
 :Quit Application:
   :Arguments: save_changes: bool=False
 
+
+
+:Run Macro:
+  :Arguments: macro_name: str=None
+
+  Run Excel macro with given name
 
 
 :Save Excel:

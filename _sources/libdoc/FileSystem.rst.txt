@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: 
+:Library scope: Task
 
 `FileSystem` is a library for finding, creating, and modifying
 files on a local filesystem.

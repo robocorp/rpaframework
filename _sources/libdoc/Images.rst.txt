@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: 
+:Library scope: Task
 
 Library for taking screenshots, matching templates, and
 manipulating images.
