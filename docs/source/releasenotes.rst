@@ -4,6 +4,23 @@ Release notes
 Upcoming release
 ----------------
 
+0.9.1
+-----
+
+- Email.ImapStmp: Fix attachment handling for kw ``Send Message``
+- Excel Application library: Add keyword ``Run Macro``
+- PDF: Add keywords:
+
+  - ``Parse PDF``
+  - ``Get input fields``
+  - ``Update field values``
+  - ``Set field value``
+  - ``Set anchor to element``
+  - ``Get value from anchor``
+  - ``Add image to PDF``
+  - ``Save PDF``
+  - ``Dump PDF as XML``
+
 0.9.0
 -----
 
@@ -48,16 +65,16 @@ Upcoming release
 0.8.5
 -----
 
-- PDF: Add ``encrypt_pdf`` and ``add_pages_to_source_pdf`` keywords.
+- PDF: Add ``Encrypt PDF`` and ``Add Pages To Source PDF`` keywords.
 - Windows: Add aliases for element locators,
   for better Robocode Lab compatibility
-- HTTP: Add keyword ``http_get``
+- HTTP: Add keyword ``HTTP Get``
 - Tables: Fix missing cell values for sanitized columns
 
 0.8.4
 -----
 
-- Fix: PDF ``template_html_to_pdf`` keyword
+- Fix: PDF ``Template HTML to PDF`` keyword
 
 0.8.3
 -----
@@ -75,7 +92,7 @@ Upcoming release
 0.8.1
 -----
 
-- Browser: Fix ``open_available_browser`` kw parameter bug
+- Browser: Fix ``Open Available Browser`` kw parameter bug
 
 0.8.0
 -----
