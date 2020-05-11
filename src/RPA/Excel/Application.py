@@ -11,6 +11,7 @@ class Application(OfficeApplication):
         OfficeApplication.__init__(self, application_name="Excel")
         self.logger = logging.getLogger(__name__)
         self.workbook = None
+        self.workbook_name = None
         self.active_worksheet = None
 
     def add_new_workbook(self) -> None:
@@ -23,7 +24,10 @@ class Application(OfficeApplication):
 
         :param filename: path to filename
         """
+        if self.app is None:
+            self.open_application()
         excel_filepath = str(Path(filename).resolve())
+        self.workbook_name = Path(filename).name
         self.logger.info("Opening workbook: %s", excel_filepath)
         self.workbook = self.app.Workbooks.Open(excel_filepath)
         self.logger.debug("Workbook: %s", self.workbook)
@@ -132,3 +136,14 @@ class Application(OfficeApplication):
                 self.active_worksheet.Columns.AutoFit()
             excel_filepath = str(Path(filename).resolve())
             self.workbook.SaveAs(excel_filepath)
+
+    def run_macro(self, macro_name: str = None):
+        """Run Excel macro with given name
+
+        :param macro_name: macro to run
+        """
+        if self.app is None:
+            raise ValueError(
+                "Open Excel file with macros first, e.g. `Open Workbook <filename>`"
+            )
+        self.app.Application.Run(f"{self.workbook_name}!{macro_name}")
