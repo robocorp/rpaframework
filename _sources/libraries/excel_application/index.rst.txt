@@ -39,6 +39,9 @@ Robot Framework tasks.
         ...                     value=my data
         Save Excel
 
+    Run Excel Macro
+        Open Workbook   orders_with_macro.xlsm
+        Run Macro       Sheet1.CommandButton1_Click
 
 Python
 ======

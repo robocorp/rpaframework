@@ -227,7 +227,11 @@ Robot Framework tasks.</p>
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">             </span><span class="nn">RPA.Excel.Application</span><span class="p"></span>
 <span class="kn">Task Setup</span><span class="p">          </span><span class="nf">Open Application</span><span class="p"></span>
 <span class="kn">Task Teardown</span><span class="p">       </span><span class="nf">Quit Application</span><span class="p"></span>
@@ -240,6 +244,10 @@ Robot Framework tasks.</p>
 <span class="p">    ...                     </span><span class="s">column=1</span><span class="p"></span>
 <span class="p">    ...                     </span><span class="s">value=my data</span><span class="p"></span>
 <span class="p">    </span><span class="nf">Save Excel</span><span class="p"></span>
+
+<span class="gu">Run Excel Macro</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Open Workbook</span><span class="p">   </span><span class="s">orders_with_macro.xlsm</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Run Macro</span><span class="p">       </span><span class="s">Sheet1.CommandButton1_Click</span><span class="p"></span>
 </pre></div>
 </td></tr></table></div>
 </div>
