@@ -121,6 +121,9 @@ docs-hub: docs-libdoc ## Generate documentation for Robohub
 	 --collapse\
 	 src/
 
+changelog: ## Print changes in latest release
+	poetry run python ./tools/changelog.py
+
 exports: ## Create setup.py and requirements.txt files
 	poetry export --without-hashes -f requirements.txt -o requirements.txt
 	poetry export --dev --without-hashes -f requirements.txt -o requirements-dev.txt
@@ -131,3 +134,4 @@ build: lint test ## Build distribution packages
 
 publish: build ## Publish package to PyPI
 	poetry publish -v
+	${MAKE} changelog
