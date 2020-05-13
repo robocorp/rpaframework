@@ -111,7 +111,7 @@ class Table:
                     if not add_columns:
                         continue
 
-                    self._add_column(column, allow_index=isinstance(column, int))
+                    self._add_column(column)
                     row.append(None)
 
                 col = self.column_location(column)
@@ -161,6 +161,10 @@ class Table:
     @property
     def data(self):
         return self._data.copy()
+
+    @property
+    def dimensions(self):
+        return len(self._index), len(self._columns)
 
     @property
     def columns(self):
@@ -508,27 +512,34 @@ class Table:
 
     def _add_row(self, index):
         """Add a new empty row into the table."""
-        assert index not in self._index
-
         if index is None:
             index = len(self._index)
-        else:
-            index = str(index)
+
+        if index in self._index:
+            raise ValueError(f"Duplicate row index: {index}")
+
+        if isinstance(index, int):
+            assert index >= len(self._index)
+            for empty in range(len(self._index), index):
+                self._add_row(empty)
 
         self._index.append(index)
         self._data.append([None] * len(self._columns))
 
         return len(self._index) - 1
 
-    def _add_column(self, column, allow_index=False):
+    def _add_column(self, column):
         """Add a new empty column into the table."""
         if column is None:
             column = len(self._columns)
-        elif isinstance(column, int) and not allow_index:
-            raise ValueError("Unable to add column by index")
 
         if column in self._columns:
             raise ValueError(f"Duplicate column name: {column}")
+
+        if isinstance(column, int):
+            assert column >= len(self._columns)
+            for empty in range(len(self._columns), column):
+                self._add_column(empty)
 
         self._columns.append(column)
         for idx, _ in enumerate(self._index):
@@ -567,12 +578,12 @@ class Table:
         """
         try:
             idx = self.index_location(index)
-        except ValueError:
+        except (IndexError, ValueError):
             idx = self._add_row(index)
 
         try:
             col = self.column_location(column)
-        except ValueError:
+        except (IndexError, ValueError):
             col = self._add_column(column)
 
         self._data[idx][col] = value
@@ -881,6 +892,14 @@ class Tables:
         """
         self.requires_table(table)
         table.clear()
+
+    def get_table_dimensions(self, table):
+        """Return table dimensions, as (rows, columns).
+
+        :param table:    table to inspect
+        """
+        self.requires_table(table)
+        return table.dimensions
 
     def add_table_column(self, table, name=None, values=None):
         """Append a column to a table.

@@ -169,6 +169,12 @@ def test_keyword_clear_table(library, table):
     assert table.columns == DATA_COLUMNS
 
 
+def test_keyword_get_table_dimensions(library, table):
+    rows, columns = library.get_table_dimensions(table)
+    assert rows == 6
+    assert columns == 4
+
+
 def test_keyword_add_table_column(library, table):
     library.add_table_column(table, name="five")
     assert table.columns == ["one", "two", "three", "four", "five"]
@@ -250,6 +256,20 @@ def test_keyword_table_tail(library, table):
 @pytest.mark.skip(reason="Not implemented")
 def test_keyword_get_table_cell(library, table):
     library.get_table_cell(table, row, column)
+
+
+def test_keyword_set_table_cell_existing(library, table):
+    library.set_table_cell(table, 0, 0, 123)
+    assert table[0, 0] == 123
+    library.set_table_cell(table, 1, "one", 321)
+    assert table[1, 0] == 321
+
+
+def test_keyword_set_table_cell_new(library, table):
+    assert table.dimensions == (6, 4)
+    library.set_table_cell(table, 9, 7, ">9000")
+    assert table.dimensions == (10, 8)
+    assert table[9, 7] == ">9000"
 
 
 def test_keyword_sort_table_by_column(library, table):
