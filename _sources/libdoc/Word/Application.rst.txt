@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: Task
+:Library scope: 
 
 Library for manipulating Word application.
 

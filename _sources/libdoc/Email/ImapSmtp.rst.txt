@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: Task
+:Library scope: 
 
 RPA Framework library providing SMTP and IMAP operations for
 specified mail server.

@@ -203,8 +203,7 @@
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list simple">
 <dt class="field-odd">Library scope</dt>
-<dd class="field-odd"><p>Task</p>
-</dd>
+<dd class="field-odd"><p></p></dd>
 </dl>
 <p>RPA Framework library for PDF management.</p>
 </div>
@@ -275,7 +274,7 @@ to be given for the keyword.</p>
 <dt class="field-even">Cell</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>w, h=0, txt=, border=0, ln=0, align=, fill=0, link=</p>
 </dd>
 </dl>
 <p>Output a cell</p>
@@ -305,7 +304,7 @@ to be given for the keyword.</p>
 <dt class="field-even">Code 39</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>txt, x, y, w=1.5, h=5.0</p>
 </dd>
 </dl>
 <p>Barcode 3of9</p>
@@ -313,7 +312,7 @@ to be given for the keyword.</p>
 <dt class="field-even">Dashed Line</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>x1, y1, x2, y2, dash_length=1, space_length=1</p>
 </dd>
 </dl>
 <p>Draw a dashed line. Same interface as line() except:
@@ -331,7 +330,7 @@ to be given for the keyword.</p>
 <dt class="field-even">Ellipse</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>x, y, w, h, style=</p>
 </dd>
 </dl>
 <p>Draw a ellipse</p>
@@ -433,7 +432,7 @@ parsing PDF again.</p>
 <dt class="field-odd">Image</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>name, x=None, y=None, w=0, h=0, type=, link=</p>
 </dd>
 </dl>
 <p>Put an image on the page</p>
@@ -441,7 +440,7 @@ parsing PDF again.</p>
 <dt class="field-even">Interleaved 2 Of 5</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>txt, x, y, w=1.0, h=10.0</p>
 </dd>
 </dl>
 <p>Barcode I2of5 (numeric), adds a 0 if odd lenght</p>
@@ -458,7 +457,7 @@ parsing PDF again.</p>
 <dt class="field-even">Line</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>x1, y1, x2, y2</p>
 </dd>
 </dl>
 <p>Draw a line</p>
@@ -474,7 +473,7 @@ parsing PDF again.</p>
 <dt class="field-even">Ln</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>h=</p>
 </dd>
 </dl>
 <p>Line Feed; default value is last cell height</p>
@@ -482,7 +481,7 @@ parsing PDF again.</p>
 <dt class="field-even">Multi Cell</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>w, h, txt=, border=0, align=J, fill=0, split_only=False</p>
 </dd>
 </dl>
 <p>Output text with automatic or explicit line breaks</p>
@@ -564,7 +563,7 @@ used for text searches for example.</p>
 <dt class="field-even">Rect</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>x, y, w, h, style=</p>
 </dd>
 </dl>
 <p>Draw a rectangle</p>
@@ -580,7 +579,7 @@ used for text searches for example.</p>
 <dt class="field-even">Rotate</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>angle, x=None, y=None</p>
 </dd>
 </dl>
 </dd>
@@ -821,7 +820,7 @@ file to activate</p>
 <dt class="field-even">Text</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>x, y, txt=</p>
 </dd>
 </dl>
 <p>Output a string</p>
@@ -837,7 +836,7 @@ file to activate</p>
 <dt class="field-even">Write</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>h, txt=, link=</p>
 </dd>
 </dl>
 <p>Output text in flowing mode</p>

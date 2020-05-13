@@ -203,8 +203,7 @@
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list simple">
 <dt class="field-odd">Library scope</dt>
-<dd class="field-odd"><p>Task</p>
-</dd>
+<dd class="field-odd"><p></p></dd>
 </dl>
 <p>Library for accessing Netsuite.</p>
 </div>
@@ -224,55 +223,35 @@ variables.</p>
 <dt class="field-even">Get Accounts</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>count: int=100, account_type: str=None</p>
 </dd>
 </dl>
 <p>Get Accounts of any type or specified type.</p>
 </dd>
 <dt class="field-even">Get Classifications</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-even"><p>Get all Netsuite Classifications</p>
 </dd>
-</dl>
-<p>Get all Netsuite Classifications</p>
-</dd>
-<dt class="field-even">Get Currencies</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
-</dd>
-</dl>
-<p>Get all Netsuite Currencies</p>
+<dt class="field-odd">Get Currencies</dt>
+<dd class="field-odd"><p>Get all Netsuite Currencies</p>
 </dd>
 <dt class="field-even">Get Currency</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>currency_id: str</p>
 </dd>
 </dl>
 <p>Get all a Netsuite Currency by its ID</p>
 </dd>
 <dt class="field-even">Get Departments</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-even"><p>Get all Netsuite Departments</p>
 </dd>
-</dl>
-<p>Get all Netsuite Departments</p>
-</dd>
-<dt class="field-even">Get Locations</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
-</dd>
-</dl>
-<p>Get all Netsuite Locations</p>
+<dt class="field-odd">Get Locations</dt>
+<dd class="field-odd"><p>Get all Netsuite Locations</p>
 </dd>
 <dt class="field-even">Get Vendor Bills</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>count: int=10</p>
 </dd>
 </dl>
 <p>Get list of vendor bills</p>
@@ -280,7 +259,7 @@ variables.</p>
 <dt class="field-even">Get Vendors</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>count: int=10</p>
 </dd>
 </dl>
 <p>Get list of vendors</p>
@@ -297,7 +276,7 @@ variables.</p>
 <dt class="field-even">Netsuite Get</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>record_type: str=None, internal_id: str=None, external_id: str=None</p>
 </dd>
 </dl>
 <p>Get all records of given type and internalId and/or externalId.</p>
@@ -310,7 +289,7 @@ variables.</p>
 <dt class="field-even">Netsuite Get All</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>*args, **kwargs</p>
+<dd class="field-odd"><p>record_type: str</p>
 </dd>
 </dl>
 <p>Get all records of given type.</p>
