@@ -58,8 +58,8 @@ simple_salesforce = "^1.0.0"
 netsuitesdk = "^1.1.0"
 "pdfminer.six" = "^20200402"
 pypdf2 = "^1.26.0"
-robotframework = "3.1.2"
 tweepy = "^3.8.0"
+robotframework = "^3.2.1"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }
