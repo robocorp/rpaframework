@@ -6,6 +6,12 @@ Upcoming release
 
 - New library: Twitter
 
+0.9.2
+-----
+
+- Updated Robot Framework to 3.2.1
+
+
 0.9.1
 -----
 
