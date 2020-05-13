@@ -309,3 +309,18 @@ def test_keyword_read_table_from_csv(library, table):
 @pytest.mark.skip(reason="Not implemented")
 def test_keyword_write_table_to_csv(library, table):
     library.write_table_to_csv(path, table)
+
+
+def test_import_with_integer_keys():
+    data = [
+        {1: "Sub Total", 2: "$85.00 "},
+        {1: "Tax", 2: "$8.50 "},
+        {1: "Total", 2: "$93.50 "},
+    ]
+
+    table = Table(data)
+    assert table.dimensions == (3, 3)
+    assert table[0, 0] == None
+
+    table = Table(data, columns=("Field", "Value"))
+    assert table.dimensions == (3, 2)

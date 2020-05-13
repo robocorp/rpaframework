@@ -112,7 +112,8 @@ class Table:
                         continue
 
                     self._add_column(column)
-                    row.append(None)
+                    while len(row) < len(self._columns):
+                        row.append(None)
 
                 col = self.column_location(column)
                 row[col] = column_values(obj, column)
