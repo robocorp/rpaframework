@@ -312,7 +312,7 @@ class Table:
             else:
                 location = value
 
-            if location > len(container):
+            if location >= len(container):
                 raise IndexError(f"{name.title()} out of of range")
 
         # Finding index by name

@@ -324,3 +324,10 @@ def test_import_with_integer_keys():
 
     table = Table(data, columns=("Field", "Value"))
     assert table.dimensions == (3, 2)
+
+
+def test_set_cell_empty_table():
+    table = Table()
+    table.set_cell(0, 0, "value")
+    assert table.dimensions == (1, 1)
+    assert table[0, 0] == "value"
