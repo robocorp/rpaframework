@@ -77,6 +77,12 @@ Keywords
   Get all column values from table.
 
 
+:Get Table Dimensions:
+  :Arguments: table
+
+  Return table dimensions, as (rows, columns).
+
+
 :Get Table Row:
   :Arguments: table, index, as_list=False
 

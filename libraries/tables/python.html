@@ -301,6 +301,11 @@ can be namedtuples, dictionaries, lists, or tuples</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Tables.Table.dimensions">
+<em class="property">property </em><code class="sig-name descname">dimensions</code><a class="headerlink" href="#RPA.Tables.Table.dimensions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="RPA.Tables.Table.filter_by_column">
 <code class="sig-name descname">filter_by_column</code><span class="sig-paren">(</span><em class="sig-param">column</em>, <em class="sig-param">condition</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.filter_by_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove rows by evaluating <cite>condition</cite> for all <cite>column</cite>
@@ -625,6 +630,17 @@ list of lists, list of dicts, dict of lists.</p>
 <li><p><strong>column</strong> – column to read</p></li>
 <li><p><strong>as_list</strong> – return list instead of dictionary</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.get_table_dimensions">
+<code class="sig-name descname">get_table_dimensions</code><span class="sig-paren">(</span><em class="sig-param">table</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.get_table_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return table dimensions, as (rows, columns).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table</strong> – table to inspect</p>
 </dd>
 </dl>
 </dd></dl>

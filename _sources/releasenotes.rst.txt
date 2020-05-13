@@ -3,6 +3,7 @@ Release notes
 
 Upcoming release
 ----------------
+- Tables: Add keyword ``Get table dimensions``, allow setting arbitrary cell value
 
 - New library: Twitter
 
