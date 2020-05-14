@@ -100,6 +100,7 @@
 <p class="caption"><span class="caption-text">Libraries</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
@@ -125,6 +126,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter/index.html">Twitter</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing</span></p>
@@ -208,6 +210,11 @@
 <p>RPA Framework library which implements Robot Framework Listener v2 interface.</p>
 <p>Is used to filter out logging for specified parts of the task execution.</p>
 <dl class="attribute">
+<dt id="RPA.RobotLogListener.RobotLogListener.INFO_LEVEL_KEYWORDS">
+<code class="sig-name descname">INFO_LEVEL_KEYWORDS</code><em class="property"> = []</em><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.INFO_LEVEL_KEYWORDS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.RobotLogListener.RobotLogListener.KEYWORDS_TO_PROTECT">
 <code class="sig-name descname">KEYWORDS_TO_PROTECT</code><em class="property"> = ['rpa.robocloud.secrets.']</em><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.KEYWORDS_TO_PROTECT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -234,6 +241,17 @@ restored back to level it was before settings to NONE.</p>
 <li><p><strong>name</strong> – keyword name</p></li>
 <li><p><strong>attributes</strong> – keyword attributes</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.RobotLogListener.RobotLogListener.only_info_level">
+<code class="sig-name descname">only_info_level</code><span class="sig-paren">(</span><em class="sig-param">names: Any = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.only_info_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register keywords that are allowed only INFO level logging</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>names</strong> – list of keywords to protect</p>
 </dd>
 </dl>
 </dd></dl>

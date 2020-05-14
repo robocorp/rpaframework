@@ -11,7 +11,7 @@ Description
 Library for managing Twitter.
 
 Library usage requires Twitter developer credentials, which can
-be received from https://developer.twitter.com/.
+be requested from https://developer.twitter.com/
 
 ********
 Keywords
@@ -21,6 +21,12 @@ Keywords
   :Arguments: consumer_key: str=None, consumer_secret: str=None, access_token: str=None, access_token_secret: str=None
 
   Authorize to Twitter API
+
+
+:Follow:
+  :Arguments: user: str=None
+
+  Follow Twitter user
 
 
 :Get Me:
@@ -40,7 +46,7 @@ Keywords
 
 
 :Like:
-  :Arguments: tweet
+  :Arguments: tweet: Tweet=None
 
   Like a tweet
 
@@ -62,8 +68,14 @@ Keywords
   Make a tweet with content
 
 
+:Unfollow:
+  :Arguments: user: str=None
+
+  Unfollow Twitter user
+
+
 :Unlike:
-  :Arguments: tweet
+  :Arguments: tweet: Tweet=None
 
   Unlike a tweet
 

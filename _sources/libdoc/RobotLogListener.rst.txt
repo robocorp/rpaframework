@@ -25,6 +25,12 @@ Keywords
   restored back to level it was before settings to NONE.
 
 
+:Only Info Level:
+  :Arguments: names: typing.Any=None
+
+  Register keywords that are allowed only INFO level logging
+
+
 :Register Protected Keywords:
   :Arguments: names: typing.Any=None
 

@@ -35,6 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python module API" href="../libraries/twitter/python.html" />
+    <link rel="prev" title="Twitter" href="../libraries/twitter/index.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -96,8 +98,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../releasenotes.html">Release notes</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Libraries</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../libraries/browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/cloud_aws/index.html">Cloud.AWS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/database/index.html">Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_clipboard/index.html">Desktop.Clipboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
@@ -119,6 +122,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../libraries/sap/index.html">SAP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/slack/index.html">Slack</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/tables/index.html">Tables</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../libraries/twitter/index.html">Twitter</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Robot Framework API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/twitter/python.html">Python module API</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/word_application/index.html">Word.Application</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing</span></p>
@@ -170,6 +178,8 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
+          <li><a href="../libraries/twitter/index.html">Twitter</a> &raquo;</li>
+        
       <li>Robot Framework API</li>
     
     
@@ -199,7 +209,7 @@
 </dl>
 <p>Library for managing Twitter.</p>
 <p>Library usage requires Twitter developer credentials, which can
-be received from <a class="reference external" href="https://developer.twitter.com/">https://developer.twitter.com/</a>.</p>
+be requested from <a class="reference external" href="https://developer.twitter.com/">https://developer.twitter.com/</a></p>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
@@ -211,6 +221,14 @@ be received from <a class="reference external" href="https://developer.twitter.c
 </dd>
 </dl>
 <p>Authorize to Twitter API</p>
+</dd>
+<dt class="field-even">Follow</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>user: str=None</p>
+</dd>
+</dl>
+<p>Follow Twitter user</p>
 </dd>
 <dt class="field-even">Get Me</dt>
 <dd class="field-even"><p>Get Twitter profile of authenticated user</p>
@@ -234,7 +252,7 @@ be received from <a class="reference external" href="https://developer.twitter.c
 <dt class="field-even">Like</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>tweet</p>
+<dd class="field-odd"><p>tweet: Tweet=None</p>
 </dd>
 </dl>
 <p>Like a tweet</p>
@@ -263,10 +281,18 @@ be received from <a class="reference external" href="https://developer.twitter.c
 </dl>
 <p>Make a tweet with content</p>
 </dd>
+<dt class="field-even">Unfollow</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>user: str=None</p>
+</dd>
+</dl>
+<p>Unfollow Twitter user</p>
+</dd>
 <dt class="field-even">Unlike</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>tweet</p>
+<dd class="field-odd"><p>tweet: Tweet=None</p>
 </dd>
 </dl>
 <p>Unlike a tweet</p>
@@ -280,6 +306,15 @@ be received from <a class="reference external" href="https://developer.twitter.c
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../libraries/twitter/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../libraries/twitter/index.html" class="btn btn-neutral float-left" title="Twitter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

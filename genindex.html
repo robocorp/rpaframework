@@ -99,6 +99,7 @@
 <p class="caption"><span class="caption-text">Libraries</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="libraries/browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries/cloud_aws/index.html">Cloud.AWS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/database/index.html">Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/desktop_clipboard/index.html">Desktop.Clipboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
@@ -120,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="libraries/sap/index.html">SAP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/slack/index.html">Slack</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries/twitter/index.html">Twitter</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/word_application/index.html">Word.Application</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Contributing</span></p>
@@ -253,6 +255,8 @@
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Tables.add_table_row">add_table_row() (RPA.Tables.Tables method)</a>
 </li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceTextract.analyze_document">analyze_document() (RPA.Cloud.AWS.ServiceTextract method)</a>
+</li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.anchor_element">anchor_element (RPA.PDF.PDF attribute)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.append_column">append_column() (RPA.Tables.Table method)</a>
@@ -261,10 +265,10 @@
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.append_rows">append_rows() (RPA.Tables.Table method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.append_rows_to_worksheet">append_rows_to_worksheet() (RPA.Excel.Files.Files method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.append_table">append_table() (RPA.Tables.Table method)</a>
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.append_to_binary_file">append_to_binary_file() (RPA.FileSystem.FileSystem method)</a>
@@ -302,6 +306,8 @@
       <ul>
         <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.authorize">(RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
+        <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.authorize">(RPA.Twitter.Twitter method)</a>
+</li>
       </ul></li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.authorize_imap">authorize_imap() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
@@ -310,6 +316,10 @@
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.AUTOMATIC_BROWSER_SELECTION">AUTOMATIC_BROWSER_SELECTION (RPA.Browser.Browser attribute)</a>
 </li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.AVAILABLE_OPTIONS">AVAILABLE_OPTIONS (RPA.Browser.Browser attribute)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS">AWS (class in RPA.Cloud.AWS)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWSBase">AWSBase (class in RPA.Cloud.AWS)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -371,6 +381,8 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.click_type">click_type() (RPA.Desktop.Windows.Windows method)</a>
 </li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWSBase.clients">clients (RPA.Cloud.AWS.AWSBase attribute)</a>
+</li>
       <li><a href="libraries/desktop_clipboard/python.html#RPA.Desktop.Clipboard.Clipboard">Clipboard (class in RPA.Desktop.Clipboard)</a>
 </li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.close">close() (RPA.Excel.Files.XlsWorkbook method)</a>
@@ -399,10 +411,10 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.connect_by_pid">connect_by_pid() (RPA.Desktop.Windows.Windows method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaPdfPage.content">content (RPA.PDF.RpaPdfPage attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaPdfPage.content_id">content_id (RPA.PDF.RpaPdfPage attribute)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RPAConverter.CONTROL">CONTROL (RPA.PDF.RPAConverter attribute)</a>
@@ -427,6 +439,8 @@
       </ul></li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.create_binary_file">create_binary_file() (RPA.FileSystem.FileSystem method)</a>
 </li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3.create_bucket">create_bucket() (RPA.Cloud.AWS.ServiceS3 method)</a>
+</li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.create_directory">create_directory() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.create_file">create_file() (RPA.FileSystem.FileSystem method)</a>
@@ -434,6 +448,8 @@
       <li><a href="libraries/word_application/python.html#RPA.Word.Application.Application.create_new_document">create_new_document() (RPA.Word.Application.Application method)</a>
 </li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.create_new_opportunity">create_new_opportunity() (RPA.Salesforce.Salesforce method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceSQS.create_queue">create_queue() (RPA.Cloud.AWS.ServiceSQS method)</a>
 </li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.create_rpa_webdriver">create_rpa_webdriver() (RPA.Browser.Browser method)</a>
 </li>
@@ -451,6 +467,8 @@
         <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.create_worksheet">(RPA.Excel.Files.XlsxWorkbook method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet.created_at">created_at (RPA.Twitter.Tweet attribute)</a>
+</li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.crop_image">crop_image() (RPA.Images.Images method)</a>
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.current">current (RPA.Robocloud.Items.Items attribute)</a>
@@ -471,11 +489,21 @@
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.TemplateMatcher.DEFAULT_TOLERANCE">DEFAULT_TOLERANCE (RPA.Images.TemplateMatcher attribute)</a>
 </li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3.delete_bucket">delete_bucket() (RPA.Cloud.AWS.ServiceS3 method)</a>
+</li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.delete_columns">delete_columns() (RPA.Tables.Table method)</a>
 </li>
-      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.delete_message">delete_message() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3.delete_files">delete_files() (RPA.Cloud.AWS.ServiceS3 method)</a>
 </li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceSQS.delete_message">delete_message() (RPA.Cloud.AWS.ServiceSQS method)</a>
+
+      <ul>
+        <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.delete_message">(RPA.Email.ImapSmtp.ImapSmtp method)</a>
+</li>
+      </ul></li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.delete_messages">delete_messages() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceSQS.delete_queue">delete_queue() (RPA.Cloud.AWS.ServiceSQS method)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.delete_rows">delete_rows() (RPA.Tables.Table method)</a>
 </li>
@@ -488,6 +516,12 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.detect_chrome_version">detect_chrome_version() (RPA.Browser.Browser method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceTextract.detect_document_text">detect_document_text() (RPA.Cloud.AWS.ServiceTextract method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceComprehend.detect_entities">detect_entities() (RPA.Cloud.AWS.ServiceComprehend method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceComprehend.detect_sentiment">detect_sentiment() (RPA.Cloud.AWS.ServiceComprehend method)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.dimensions">dimensions() (RPA.Tables.Table property)</a>
 </li>
@@ -504,6 +538,8 @@
       <li><a href="libraries/http/python.html#RPA.HTTP.HTTP.download">download() (RPA.HTTP.HTTP method)</a>
 </li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.download_driver">download_driver() (RPA.Browser.Browser method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3.download_files">download_files() (RPA.Cloud.AWS.ServiceS3 method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.drag_and_drop">drag_and_drop() (RPA.Desktop.Windows.Windows method)</a>
 </li>
@@ -541,6 +577,8 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet.favorite_count">favorite_count (RPA.Twitter.Tweet attribute)</a>
+</li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaFigure.figure_bbox">figure_bbox (RPA.PDF.RpaFigure attribute)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaFigure.figure_name">figure_name (RPA.PDF.RpaFigure attribute)</a>
@@ -575,6 +613,8 @@
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.find_template_on_screen">find_template_on_screen() (RPA.Images.Images method)</a>
 </li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.follow">follow() (RPA.Twitter.Twitter method)</a>
+</li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.Directory.from_path">from_path() (RPA.FileSystem.Directory class method)</a>
 
       <ul>
@@ -608,6 +648,8 @@
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.get_browser_order">get_browser_order() (RPA.Browser.Browser method)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.get_cell">get_cell() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceTextract.get_cells">get_cells() (RPA.Cloud.AWS.ServiceTextract method)</a>
 </li>
       <li><a href="libraries/netsuite/python.html#RPA.Netsuite.Netsuite.get_classifications">get_classifications() (RPA.Netsuite.Netsuite method)</a>
 </li>
@@ -661,10 +703,12 @@
 </li>
       <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.get_machine_name">get_machine_name() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.get_me">get_me() (RPA.Twitter.Twitter method)</a>
+</li>
       <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.get_memory_stats">get_memory_stats() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.get_number_of_pages">get_number_of_pages() (RPA.PDF.PDF method)</a>
 </li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.get_opportunity_id">get_opportunity_id() (RPA.Salesforce.Salesforce method)</a>
@@ -713,9 +757,15 @@
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Tables.get_table_row">get_table_row() (RPA.Tables.Tables method)</a>
 </li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceTextract.get_tables">get_tables() (RPA.Cloud.AWS.ServiceTextract method)</a>
+</li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.get_text_from_pdf">get_text_from_pdf() (RPA.PDF.PDF method)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaPdfPage.get_textboxes">get_textboxes() (RPA.PDF.RpaPdfPage method)</a>
+</li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.get_user_profile">get_user_profile() (RPA.Twitter.Twitter method)</a>
+</li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.get_user_tweets">get_user_tweets() (RPA.Twitter.Twitter method)</a>
 </li>
       <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.get_username">get_username() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
 </li>
@@ -726,6 +776,8 @@
       <li><a href="libraries/netsuite/python.html#RPA.Netsuite.Netsuite.get_vendors">get_vendors() (RPA.Netsuite.Netsuite method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.get_window_elements">get_window_elements() (RPA.Desktop.Windows.Windows method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceTextract.get_words">get_words() (RPA.Cloud.AWS.ServiceTextract method)</a>
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.get_work_item_variable">get_work_item_variable() (RPA.Robocloud.Items.Items method)</a>
 </li>
@@ -745,12 +797,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.RobocloudAdapter.handle_response">handle_response() (RPA.Robocloud.Items.RobocloudAdapter method)</a>
 </li>
-      <li><a href="libraries/tables/python.html#RPA.Tables.Table.head">head() (RPA.Tables.Table method)</a>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet.hashtags">hashtags (RPA.Twitter.Tweet attribute)</a>
 </li>
-      <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.RobocloudAdapter.headers">headers() (RPA.Robocloud.Items.RobocloudAdapter property)</a>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.head">head() (RPA.Tables.Table method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.RobocloudAdapter.headers">headers() (RPA.Robocloud.Items.RobocloudAdapter property)</a>
+</li>
       <li><a href="libraries/images/python.html#RPA.Images.Region.height">height() (RPA.Images.Region property)</a>
 </li>
       <li><a href="libraries/http/python.html#RPA.HTTP.HTTP">HTTP (class in RPA.HTTP)</a>
@@ -763,6 +817,8 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet.id">id (RPA.Twitter.Tweet attribute)</a>
+</li>
       <li><a href="libraries/tables/python.html#RPA.Tables.if_none">if_none() (in module RPA.Tables)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaFigure.image_name">image_name (RPA.PDF.RpaFigure attribute)</a>
@@ -773,22 +829,34 @@
 </li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp">ImapSmtp (class in RPA.Email.ImapSmtp)</a>
 </li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet.in_reply_to_screen_name">in_reply_to_screen_name (RPA.Twitter.Tweet attribute)</a>
+</li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.index">index() (RPA.Tables.Table property)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.index_location">index_location() (RPA.Tables.Table method)</a>
+</li>
+      <li><a href="libraries/robotloglistener/python.html#RPA.RobotLogListener.RobotLogListener.INFO_LEVEL_KEYWORDS">INFO_LEVEL_KEYWORDS (RPA.RobotLogListener.RobotLogListener attribute)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceComprehend.init_comprehend_client">init_comprehend_client() (RPA.Cloud.AWS.ServiceComprehend method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3.init_s3_client">init_s3_client() (RPA.Cloud.AWS.ServiceS3 method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceSQS.init_sqs_client">init_sqs_client() (RPA.Cloud.AWS.ServiceSQS method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceTextract.init_textract_client">init_textract_client() (RPA.Cloud.AWS.ServiceTextract method)</a>
 </li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.input_text_when_element_is_visible">input_text_when_element_is_visible() (RPA.Browser.Browser method)</a>
 </li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.instance">instance() (RPA.Salesforce.Salesforce property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.is_directory_empty">is_directory_empty() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.is_directory_not_empty">is_directory_not_empty() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.is_element_enabled">is_element_enabled() (RPA.Desktop.Windows.Windows method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.is_element_matching">is_element_matching() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.is_element_visible">is_element_visible() (RPA.Desktop.Windows.Windows method)</a>
@@ -798,6 +866,8 @@
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.is_file_not_empty">is_file_not_empty() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.is_pdf_encrypted">is_pdf_encrypted() (RPA.PDF.PDF method)</a>
+</li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet.is_truncated">is_truncated (RPA.Twitter.Tweet attribute)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaFigure.item">item (RPA.PDF.RpaFigure attribute)</a>
 
@@ -845,11 +915,19 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet.lang">lang (RPA.Twitter.Tweet attribute)</a>
+</li>
       <li><a href="libraries/images/python.html#RPA.Images.Region.left">left (RPA.Images.Region attribute)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaTextBox.left">left() (RPA.PDF.RpaTextBox property)</a>
 </li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.like">like() (RPA.Twitter.Twitter method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3.list_buckets">list_buckets() (RPA.Cloud.AWS.ServiceS3 method)</a>
+</li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.list_directories_in_directory">list_directories_in_directory() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3.list_files">list_files() (RPA.Cloud.AWS.ServiceS3 method)</a>
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.list_files_in_directory">list_files_in_directory() (RPA.FileSystem.FileSystem method)</a>
 </li>
@@ -884,6 +962,8 @@
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.log_directory_tree">log_directory_tree() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.log_in">log_in() (RPA.Desktop.Windows.Windows method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWSBase.logger">logger (RPA.Cloud.AWS.AWSBase attribute)</a>
 </li>
       <li><a href="libraries/netsuite/python.html#RPA.Netsuite.Netsuite.login">login() (RPA.Netsuite.Netsuite method)</a>
 </li>
@@ -934,15 +1014,17 @@
       <ul>
         <li><a href="libraries/filesystem/python.html#RPA.FileSystem.File.name">(RPA.FileSystem.File attribute)</a>
 </li>
+        <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet.name">(RPA.Twitter.Tweet attribute)</a>
+</li>
       </ul></li>
       <li><a href="libraries/netsuite/python.html#RPA.Netsuite.Netsuite">Netsuite (class in RPA.Netsuite)</a>
 </li>
       <li><a href="libraries/netsuite/python.html#RPA.Netsuite.Netsuite.netsuite_get">netsuite_get() (RPA.Netsuite.Netsuite method)</a>
 </li>
-      <li><a href="libraries/netsuite/python.html#RPA.Netsuite.Netsuite.netsuite_get_all">netsuite_get_all() (RPA.Netsuite.Netsuite method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/netsuite/python.html#RPA.Netsuite.Netsuite.netsuite_get_all">netsuite_get_all() (RPA.Netsuite.Netsuite method)</a>
+</li>
       <li><a href="libraries/netsuite/python.html#RPA.Netsuite.Netsuite.netsuite_search">netsuite_search() (RPA.Netsuite.Netsuite method)</a>
 </li>
       <li><a href="libraries/netsuite/python.html#RPA.Netsuite.Netsuite.netsuite_search_all">netsuite_search_all() (RPA.Netsuite.Netsuite method)</a>
@@ -959,6 +1041,8 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/robotloglistener/python.html#RPA.RobotLogListener.RobotLogListener.only_info_level">only_info_level() (RPA.RobotLogListener.RobotLogListener method)</a>
+</li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.open">open() (RPA.Excel.Files.XlsWorkbook method)</a>
 
       <ul>
@@ -1081,9 +1165,13 @@
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RPAConverter.receive_layout">receive_layout() (RPA.PDF.RPAConverter method)</a>
 </li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceSQS.receive_message">receive_message() (RPA.Cloud.AWS.ServiceSQS method)</a>
+</li>
       <li><a href="libraries/images/python.html#RPA.Images.RGB.red">red (RPA.Images.RGB attribute)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Region">Region (class in RPA.Images)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWSBase.region">region (RPA.Cloud.AWS.AWSBase attribute)</a>
 </li>
       <li><a href="libraries/robotloglistener/python.html#RPA.RobotLogListener.RobotLogListener.register_protected_keywords">register_protected_keywords() (RPA.RobotLogListener.RobotLogListener method)</a>
 </li>
@@ -1121,6 +1209,10 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.restore_dialog">restore_dialog() (RPA.Desktop.Windows.Windows method)</a>
 </li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet.retweet_count">retweet_count (RPA.Twitter.Tweet attribute)</a>
+</li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet.retweeted">retweeted (RPA.Twitter.Tweet attribute)</a>
+</li>
       <li><a href="libraries/images/python.html#RPA.Images.RGB">RGB (class in RPA.Images)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Region.right">right (RPA.Images.Region attribute)</a>
@@ -1156,6 +1248,8 @@
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaPdfPage.rotate">rotate (RPA.PDF.RpaPdfPage attribute)</a>
 </li>
       <li><a href="libraries/browser/python.html#module-RPA.Browser">RPA.Browser (module)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#module-RPA.Cloud.AWS">RPA.Cloud.AWS (module)</a>
 </li>
       <li><a href="libraries/database/python.html#module-RPA.Database">RPA.Database (module)</a>
 </li>
@@ -1198,6 +1292,8 @@
       <li><a href="libraries/slack/python.html#module-RPA.Slack">RPA.Slack (module)</a>
 </li>
       <li><a href="libraries/tables/python.html#module-RPA.Tables">RPA.Tables (module)</a>
+</li>
+      <li><a href="libraries/twitter/python.html#module-RPA.Twitter">RPA.Twitter (module)</a>
 </li>
       <li><a href="libraries/word_application/python.html#module-RPA.Word.Application">RPA.Word.Application (module)</a>
 </li>
@@ -1267,6 +1363,8 @@
 </li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.save_workbook">save_workbook() (RPA.Excel.Files.Files method)</a>
 </li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet.screen_name">screen_name (RPA.Twitter.Tweet attribute)</a>
+</li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.screenshot">screenshot() (RPA.Browser.Browser method)</a>
 
       <ul>
@@ -1279,9 +1377,11 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.send_keys_to_input">send_keys_to_input() (RPA.Desktop.Windows.Windows method)</a>
 </li>
-      <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.Exchange.send_message">send_message() (RPA.Email.Exchange.Exchange method)</a>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceSQS.send_message">send_message() (RPA.Cloud.AWS.ServiceSQS method)</a>
 
       <ul>
+        <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.Exchange.send_message">(RPA.Email.Exchange.Exchange method)</a>
+</li>
         <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.send_message">(RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
         <li><a href="libraries/outlook_application/python.html#RPA.Outlook.Application.Application.send_message">(RPA.Outlook.Application.Application method)</a>
@@ -1289,10 +1389,22 @@
       </ul></li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.send_smtp_hello">send_smtp_hello() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceComprehend">ServiceComprehend (class in RPA.Cloud.AWS)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWSBase.services">services (RPA.Cloud.AWS.AWSBase attribute)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3">ServiceS3 (class in RPA.Cloud.AWS)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceSQS">ServiceSQS (class in RPA.Cloud.AWS)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceTextract">ServiceTextract (class in RPA.Cloud.AWS)</a>
+</li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.session_id">session_id() (RPA.Salesforce.Salesforce property)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.set">set() (RPA.Tables.Table method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.set_account">set_account() (RPA.Salesforce.Salesforce method)</a>
 </li>
       <li><a href="libraries/excel_application/python.html#RPA.Excel.Application.Application.set_active_worksheet">set_active_worksheet() (RPA.Excel.Application.Application method)</a>
@@ -1303,8 +1415,6 @@
       </ul></li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.set_anchor_to_element">set_anchor_to_element() (RPA.PDF.PDF method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.set_cell">set_cell() (RPA.Tables.Table method)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.set_column">set_column() (RPA.Tables.Table method)</a>
@@ -1403,7 +1513,11 @@
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.TemplateMatcher">TemplateMatcher (class in RPA.Images)</a>
 </li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet.text">text (RPA.Twitter.Tweet attribute)</a>
+</li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaTextBox.text">text() (RPA.PDF.RpaTextBox property)</a>
+</li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.text_search_tweets">text_search_tweets() (RPA.Twitter.Twitter method)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaTextBox.textbox_bbox">textbox_bbox (RPA.PDF.RpaTextBox attribute)</a>
 </li>
@@ -1413,10 +1527,10 @@
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.TimeoutException">TimeoutException</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.to_dict">to_dict() (RPA.Tables.Table method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/tables/python.html#RPA.Tables.to_identifier">to_identifier() (in module RPA.Tables)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.to_image">to_image() (in module RPA.Images)</a>
@@ -1443,6 +1557,14 @@
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Tables.trim_empty_rows">trim_empty_rows() (RPA.Tables.Tables method)</a>
 </li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet">Tweet (class in RPA.Twitter)</a>
+</li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.tweet">tweet() (RPA.Twitter.Twitter method)</a>
+</li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Tweet.tweet_id_str">tweet_id_str (RPA.Twitter.Tweet attribute)</a>
+</li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter">Twitter (class in RPA.Twitter)</a>
+</li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.type_keys">type_keys() (RPA.Desktop.Windows.Windows method)</a>
 </li>
   </ul></td>
@@ -1451,12 +1573,20 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.unfollow">unfollow() (RPA.Twitter.Twitter method)</a>
+</li>
+      <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.unlike">unlike() (RPA.Twitter.Twitter method)</a>
+</li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.update_field_values">update_field_values() (RPA.PDF.PDF method)</a>
 </li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.update_salesforce_object">update_salesforce_object() (RPA.Salesforce.Salesforce method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3.upload_file">upload_file() (RPA.Cloud.AWS.ServiceS3 method)</a>
+</li>
+      <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3.upload_files">upload_files() (RPA.Cloud.AWS.ServiceS3 method)</a>
+</li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.upsert_salesforce_object">upsert_salesforce_object() (RPA.Salesforce.Salesforce method)</a>
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.RobocloudAdapter.url">url() (RPA.Robocloud.Items.RobocloudAdapter method)</a>

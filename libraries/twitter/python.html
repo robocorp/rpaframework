@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python module API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Word.Application" href="../word_application/index.html" />
+    <link rel="prev" title="Robot Framework API" href="../../libdoc/Twitter.html" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!-- PureCookie -->
+<link async rel="stylesheet" type="text/css" href="../../_static/purecookie.css"/>
+<script async src="../../_static/purecookie.js"></script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Twitter</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Twitter.html">Robot Framework API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Twitter</a> &raquo;</li>
+        
+      <li>Python module API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/twitter/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-module-api">
+<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.Twitter">
+<span id="twitter"></span><h2>Twitter<a class="headerlink" href="#module-RPA.Twitter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Twitter.Tweet">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Twitter.</code><code class="sig-name descname">Tweet</code><span class="sig-paren">(</span><em class="sig-param">created_at: datetime.datetime</em>, <em class="sig-param">id: int</em>, <em class="sig-param">tweet_id_str: str</em>, <em class="sig-param">text: str</em>, <em class="sig-param">in_reply_to_screen_name: str</em>, <em class="sig-param">lang: str</em>, <em class="sig-param">name: str</em>, <em class="sig-param">screen_name: str</em>, <em class="sig-param">hashtags: list</em>, <em class="sig-param">is_truncated: bool = False</em>, <em class="sig-param">favorite_count: int = 0</em>, <em class="sig-param">retweeted: bool = False</em>, <em class="sig-param">retweet_count: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Twitter.Tweet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents Tweet</p>
+<dl class="attribute">
+<dt id="RPA.Twitter.Tweet.created_at">
+<code class="sig-name descname">created_at</code><em class="property">: datetime.datetime</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Twitter.Tweet.created_at" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Twitter.Tweet.favorite_count">
+<code class="sig-name descname">favorite_count</code><em class="property">: int</em><em class="property"> = 0</em><a class="headerlink" href="#RPA.Twitter.Tweet.favorite_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Twitter.Tweet.hashtags">
+<code class="sig-name descname">hashtags</code><em class="property">: list</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Twitter.Tweet.hashtags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Twitter.Tweet.id">
+<code class="sig-name descname">id</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Twitter.Tweet.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Twitter.Tweet.in_reply_to_screen_name">
+<code class="sig-name descname">in_reply_to_screen_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Twitter.Tweet.in_reply_to_screen_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Twitter.Tweet.is_truncated">
+<code class="sig-name descname">is_truncated</code><em class="property">: bool</em><em class="property"> = False</em><a class="headerlink" href="#RPA.Twitter.Tweet.is_truncated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Twitter.Tweet.lang">
+<code class="sig-name descname">lang</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Twitter.Tweet.lang" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Twitter.Tweet.name">
+<code class="sig-name descname">name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Twitter.Tweet.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Twitter.Tweet.retweet_count">
+<code class="sig-name descname">retweet_count</code><em class="property">: int</em><em class="property"> = 0</em><a class="headerlink" href="#RPA.Twitter.Tweet.retweet_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Twitter.Tweet.retweeted">
+<code class="sig-name descname">retweeted</code><em class="property">: bool</em><em class="property"> = False</em><a class="headerlink" href="#RPA.Twitter.Tweet.retweeted" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Twitter.Tweet.screen_name">
+<code class="sig-name descname">screen_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Twitter.Tweet.screen_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Twitter.Tweet.text">
+<code class="sig-name descname">text</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Twitter.Tweet.text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Twitter.Tweet.tweet_id_str">
+<code class="sig-name descname">tweet_id_str</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Twitter.Tweet.tweet_id_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Twitter.Twitter">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Twitter.</code><code class="sig-name descname">Twitter</code><a class="headerlink" href="#RPA.Twitter.Twitter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Library for managing Twitter.</p>
+<p>Library usage requires Twitter developer credentials, which can
+be requested from <a class="reference external" href="https://developer.twitter.com/">https://developer.twitter.com/</a></p>
+<dl class="method">
+<dt id="RPA.Twitter.Twitter.authorize">
+<code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">consumer_key: str = None</em>, <em class="sig-param">consumer_secret: str = None</em>, <em class="sig-param">access_token: str = None</em>, <em class="sig-param">access_token_secret: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Twitter.Twitter.authorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authorize to Twitter API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>consumer_key</strong> – app consumer key</p></li>
+<li><p><strong>consumer_secret</strong> – app consumer secret</p></li>
+<li><p><strong>access_token</strong> – user access token</p></li>
+<li><p><strong>access_token_secret</strong> – user access token secret</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Twitter.Twitter.follow">
+<code class="sig-name descname">follow</code><span class="sig-paren">(</span><em class="sig-param">user: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Twitter.Twitter.follow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Follow Twitter user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>user</strong> – screen name of the user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>True</cite> if user was followed, <cite>False</cite> if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Twitter.Twitter.get_me">
+<code class="sig-name descname">get_me</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Twitter.Twitter.get_me" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Twitter profile of authenticated user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>user profile as dictionary or <cite>None</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Twitter.Twitter.get_user_profile">
+<code class="sig-name descname">get_user_profile</code><span class="sig-paren">(</span><em class="sig-param">username: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Twitter.Twitter.get_user_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get user’s Twitter profile</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>username</strong> – whose profile to get</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>profile as dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Twitter.Twitter.get_user_tweets">
+<code class="sig-name descname">get_user_tweets</code><span class="sig-paren">(</span><em class="sig-param">username: str = None</em>, <em class="sig-param">count: int = 100</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Twitter.Twitter.get_user_tweets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get user tweets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> – whose tweets to get</p></li>
+<li><p><strong>count</strong> – maximum number of tweets, defaults to 100</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of user tweets</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Twitter.Twitter.like">
+<code class="sig-name descname">like</code><span class="sig-paren">(</span><em class="sig-param">tweet: RPA.Twitter.Tweet = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Twitter.Twitter.like" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like a tweet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tweet</strong> – as a class <cite>Tweet</cite></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>True</cite> if Tweet was liked, <cite>False</cite> if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Twitter.Twitter.text_search_tweets">
+<code class="sig-name descname">text_search_tweets</code><span class="sig-paren">(</span><em class="sig-param">query: str = None</em>, <em class="sig-param">count: int = 100</em>, <em class="sig-param">geocode: str = None</em>, <em class="sig-param">lang: str = None</em>, <em class="sig-param">locale: str = None</em>, <em class="sig-param">result_type: str = 'mixed'</em>, <em class="sig-param">until: str = None</em>, <em class="sig-param">since_id: str = None</em>, <em class="sig-param">max_id: str = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Twitter.Twitter.text_search_tweets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search tweets defined by search query</p>
+<dl class="simple">
+<dt>Results types:</dt><dd><ul class="simple">
+<li><p>mixed : include both popular and real time results in the response</p></li>
+<li><p>recent : return only the most recent results in the response</p></li>
+<li><p>popular : return only the most popular results in the response</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> – search query string of 500 characters maximum,
+including operators</p></li>
+<li><p><strong>count</strong> – maximum number of tweets, defaults to 100</p></li>
+<li><p><strong>geocode</strong> – tweets by users located within a given
+radius of the given latitude/longitude</p></li>
+<li><p><strong>lang</strong> – language code of tweets</p></li>
+<li><p><strong>locale</strong> – language of the query you are sending</p></li>
+<li><p><strong>result_type</strong> – type of search results you would prefer to receive,
+default “mixed”</p></li>
+<li><p><strong>until</strong> – tweets created before the given date</p></li>
+<li><p><strong>since_id</strong> – Returns only statuses with an ID greater than</p></li>
+<li><p><strong>max_id</strong> – only statuses with an ID less than</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of matching tweets</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Twitter.Twitter.tweet">
+<code class="sig-name descname">tweet</code><span class="sig-paren">(</span><em class="sig-param">content: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Twitter.Twitter.tweet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a tweet with content</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>content</strong> – text for the status update</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Twitter.Twitter.unfollow">
+<code class="sig-name descname">unfollow</code><span class="sig-paren">(</span><em class="sig-param">user: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Twitter.Twitter.unfollow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unfollow Twitter user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>user</strong> – screen name of the user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>True</cite> if user was followed, <cite>False</cite> if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Twitter.Twitter.unlike">
+<code class="sig-name descname">unlike</code><span class="sig-paren">(</span><em class="sig-param">tweet: RPA.Twitter.Tweet = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Twitter.Twitter.unlike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unlike a tweet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tweet</strong> – as a class <cite>Tweet</cite></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>True</cite> if Tweet was unliked, <cite>False</cite> if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../word_application/index.html" class="btn btn-neutral float-right" title="Word.Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../libdoc/Twitter.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
