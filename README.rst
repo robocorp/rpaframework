@@ -65,6 +65,8 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `Browser`_                 | Control browsers and automate the web        |
 +----------------------------+----------------------------------------------+
+| `Cloud.AWS`_               | Use AWS services                             |
++----------------------------+----------------------------------------------+
 | `Database`_                | Interact with databases                      |
 +----------------------------+----------------------------------------------+
 | `Desktop.Clipboard`_       | Interact with the system clipboard           |
@@ -97,36 +99,40 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `Salesforce`_              | Salesforce operations                        |
 +----------------------------+----------------------------------------------+
-| `Slack`_                   | Send notifications to Slack channels         |
-+----------------------------+----------------------------------------------+
 | `SAP`_                     | Control SAP GUI desktop client               |
 +----------------------------+----------------------------------------------+
+| `Slack`_                   | Send notifications to Slack channels         |
++----------------------------+----------------------------------------------+
 | `Tables`_                  | Manipulate, sort, and filter tabular data    |
++----------------------------+----------------------------------------------+
+| `Twitter`_                 | Twitter API interface                        |
 +----------------------------+----------------------------------------------+
 | `Word.Application`_        | Control the Word desktop application         |
 +----------------------------+----------------------------------------------+
 
-.. _Tables: https://rpaframework.org/libraries/tables/
-.. _FileSystem: https://rpaframework.org/libraries/filesystem/
 .. _Browser: https://rpaframework.org/libraries/browser/
-.. _HTTP: https://rpaframework.org/libraries/http/
-.. _PDF: https://rpaframework.org/libraries/pdf/
-.. _Slack: https://rpaframework.org/libraries/slack/
-.. _Excel.Files: https://rpaframework.org/libraries/excel_files/
-.. _Excel.Application: https://rpaframework.org/libraries/excel_application/
-.. _Word.Application: https://rpaframework.org/libraries/word_application/
-.. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
+.. _Cloud.AWS: https://rpaframework.org/libraries/cloud_aws/
+.. _Database: https://rpaframework.org/libraries/database/
+.. _Desktop.Clipboard: https://rpaframework.org/libraries/desktop_clipboard/
+.. _Desktop.Operatingsystem: https://rpaframework.org/libraries/desktop_operatingsystem/
+.. _Desktop.Windows: https://rpaframework.org/libraries/desktop_windows/
 .. _Email.Exchange: https://rpaframework.org/libraries/email_exchange/
 .. _Email.ImapSmtp: https://rpaframework.org/libraries/email_imapsmtp/
-.. _Desktop.Windows: https://rpaframework.org/libraries/desktop_windows/
-.. _Desktop.Clipboard: https://rpaframework.org/libraries/desktop_clipboard/
+.. _Excel.Application: https://rpaframework.org/libraries/excel_application/
+.. _Excel.Files: https://rpaframework.org/libraries/excel_files/
+.. _FileSystem: https://rpaframework.org/libraries/filesystem/
+.. _HTTP: https://rpaframework.org/libraries/http/
+.. _Images: https://rpaframework.org/libraries/images/
+.. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
+.. _PDF: https://rpaframework.org/libraries/pdf/
 .. _Robocloud.Items: https://rpaframework.org/libraries/robocloud_items/
 .. _Robocloud.Secrets: https://rpaframework.org/libraries/robocloud_secrets/
 .. _Salesforce: https://rpaframework.org/libraries/salesforce/
-.. _Images: https://rpaframework.org/libraries/images/
-.. _Database: https://rpaframework.org/libraries/database/
-.. _Desktop.Operatingsystem: https://rpaframework.org/libraries/desktop_operatingsystem/
 .. _SAP: https://rpaframework.org/libraries/sap/
+.. _Slack: https://rpaframework.org/libraries/slack/
+.. _Tables: https://rpaframework.org/libraries/tables/
+.. _Twitter: https://rpaframework.org/libraries/twitter/index.html
+.. _Word.Application: https://rpaframework.org/libraries/word_application/
 
 
 Installation
