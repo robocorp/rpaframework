@@ -3,8 +3,18 @@ Release notes
 
 Upcoming release
 ----------------
-- Tables: Add keyword ``Get table dimensions``, allow setting arbitrary cell value
 
+0.9.3
+-----
+
+- New library: Cloud.AWS, supporting following services:
+
+  - ``Comprehend``
+  - ``S3``
+  - ``SQS``
+  - ``Textract``
+
+- Tables: Add keyword ``Get table dimensions``, allow setting arbitrary cell value
 - New library: Twitter
 
 0.9.2
