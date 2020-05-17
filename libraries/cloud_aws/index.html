@@ -209,8 +209,7 @@
 </div>
 <div class="section" id="description">
 <h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p><cite>AWS</cite> is a library for operating with Amazon AWS services.
-Base dependency is <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html">boto3</a> library.</p>
+<p><cite>AWS</cite> is a library for operating with Amazon AWS services.</p>
 <p>Service initialization can be given as parameters for <code class="docutils literal notranslate"><span class="pre">init_s3_service</span></code> keyword
 for example or keyword can read them in as environment variables:</p>
 <blockquote>
@@ -219,6 +218,13 @@ for example or keyword can read them in as environment variables:</p>
 <li><p><cite>AWS_KEY</cite></p></li>
 </ul>
 </div></blockquote>
+<div class="section" id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
+<p>The default installation depends on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html">boto3</a> library. Due to the size of the
+dependency this has been set as optional package for <code class="docutils literal notranslate"><span class="pre">rpa-framework</span></code>.</p>
+<p>This can be installed by opting in to the <cite>aws</cite> dependency:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpa-framework[aws]</span></code></p>
+</div>
 </div>
 <div class="section" id="examples">
 <h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>

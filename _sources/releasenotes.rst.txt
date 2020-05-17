@@ -4,6 +4,10 @@ Release notes
 Upcoming release
 ----------------
 
+- Email.ImapSmtp: Allow sending inline images - parameter ``images`` for kw ``Send Message``
+- HTTP: Return response of ``Download`` keyword (including content)
+- Cloud.AWS: Due to ``boto3`` dependency size, library requires ``pip install rpa-framework[aws]`` to use
+
 0.9.3
 -----
 
