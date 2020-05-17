@@ -126,12 +126,12 @@ d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
 category = "main"
 description = "The AWS SDK for Python"
 name = "boto3"
-optional = false
+optional = true
 python-versions = "*"
-version = "1.13.9"
+version = "1.13.10"
 
 [package.dependencies]
-botocore = ">=1.16.9,<1.17.0"
+botocore = ">=1.16.10,<1.17.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
@@ -139,18 +139,15 @@ s3transfer = ">=0.3.0,<0.4.0"
 category = "main"
 description = "Low-level, data-driven core of boto 3."
 name = "botocore"
-optional = false
+optional = true
 python-versions = "*"
-version = "1.16.9"
+version = "1.16.10"
 
 [package.dependencies]
 docutils = ">=0.10,<0.16"
 jmespath = ">=0.7.1,<1.0.0"
 python-dateutil = ">=2.1,<3.0.0"
-
-[package.dependencies.urllib3]
-python = "<3.4.0 || >=3.5.0"
-version = ">=1.20,<1.26"
+urllib3 = ">=1.20,<1.26"
 
 [[package]]
 category = "main"
@@ -451,7 +448,7 @@ i18n = ["Babel (>=0.8)"]
 category = "main"
 description = "JSON Matching Expressions"
 name = "jmespath"
-optional = false
+optional = true
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 version = "0.10.0"
 
@@ -858,7 +855,7 @@ description = "Alternative regular expression module, to replace re."
 name = "regex"
 optional = false
 python-versions = "*"
-version = "2020.5.13"
+version = "2020.5.14"
 
 [[package]]
 category = "main"
@@ -985,7 +982,7 @@ version = "1.1"
 category = "main"
 description = "An Amazon S3 Transfer Manager"
 name = "s3transfer"
-optional = false
+optional = true
 python-versions = "*"
 version = "0.3.3"
 
@@ -1228,7 +1225,7 @@ description = "Python Library for Tom's Obvious, Minimal Language"
 name = "toml"
 optional = false
 python-versions = "*"
-version = "0.10.0"
+version = "0.10.1"
 
 [[package]]
 category = "main"
@@ -1426,10 +1423,11 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [extras]
+aws = ["boto3"]
 cv = ["opencv-python", "numpy"]
 
 [metadata]
-content-hash = "daca01a3a3dda631f638837f8e0f564b7b4a173fc12e24c6e10ec70713e92da6"
+content-hash = "86332c2951547aa9aacbc1b5df9350089716b4a7339af35c356e569afbc75bb7"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1475,11 +1473,11 @@ black = [
     {file = "black-19.10b0.tar.gz", hash = "sha256:c2edb73a08e9e0e6f65a0e6af18b059b8b1cdd5bef997d7a0b181df93dc81539"},
 ]
 boto3 = [
-    {file = "boto3-1.13.9.tar.gz", hash = "sha256:06dd5d0f2ed3570f60eab04b9f04d229ff980b55102447481992756efe268639"},
+    {file = "boto3-1.13.10-py2.py3-none-any.whl", hash = "sha256:2c00bad7d049e363111d67f9eb1bdde34df0bfe4083fd8602ce1249aca691093"},
+    {file = "boto3-1.13.10.tar.gz", hash = "sha256:6d8459706a17752a98f5c8e8258b8c207189960c60da74384de81b6f68732f26"},
 ]
 botocore = [
-    {file = "botocore-1.16.9-py2.py3-none-any.whl", hash = "sha256:d82f34844f9fc64d51b46046eed1f98fc367897832e5c4734ce58c0e17e7188f"},
-    {file = "botocore-1.16.9.tar.gz", hash = "sha256:8743cd10500b6c4c4d9423d3aa2905ed886fea2bd4bb7c8eff6e6c08283c9ab9"},
+    {file = "botocore-1.16.10.tar.gz", hash = "sha256:76c3ee2e2f2d37e69e697946b24806c6686e68380599d3e6509da1b39f6dec19"},
 ]
 cached-property = [
     {file = "cached-property-1.5.1.tar.gz", hash = "sha256:9217a59f14a5682da7c4b8829deadbfc194ac22e9908ccf7c8820234e80a1504"},
@@ -1963,27 +1961,27 @@ pyyaml = [
     {file = "PyYAML-5.3.1.tar.gz", hash = "sha256:b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d"},
 ]
 regex = [
-    {file = "regex-2020.5.13-cp27-cp27m-win32.whl", hash = "sha256:d20ba8d3a844d6cd9bbe127a60cc8f61cfe2d2b77da997775639999a48fbbfe3"},
-    {file = "regex-2020.5.13-cp27-cp27m-win_amd64.whl", hash = "sha256:2cdf6bb8112a6b49092a9320edc823d41b21a06c8c7ac88a845b73462193f3ac"},
-    {file = "regex-2020.5.13-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:9d801d3693c5a6af5a506f9905b0e6d8ae419a00054d8d80ed9d65f81fc37e1f"},
-    {file = "regex-2020.5.13-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:705e334ac42cf807f33d4daafe58da33e23a93389233ab2f80f63dee09488d9b"},
-    {file = "regex-2020.5.13-cp36-cp36m-manylinux2010_i686.whl", hash = "sha256:78014742b047ea2c9849e85db2dc84cad365b7f2dee404f86882d1fb9ff38df2"},
-    {file = "regex-2020.5.13-cp36-cp36m-manylinux2010_x86_64.whl", hash = "sha256:078024a52a72c98f157c380bea7beab7e0b907854ca337e3d4eecd44b363d4fb"},
-    {file = "regex-2020.5.13-cp36-cp36m-win32.whl", hash = "sha256:4088da3b99f1341c2904679ffbfe6f08f5cc13e5cad1c6b053728da7cf68d28c"},
-    {file = "regex-2020.5.13-cp36-cp36m-win_amd64.whl", hash = "sha256:14026bf953137a5cdc6a2a8fda314a0296ce5cd6da6e46fe79d6e03caf3c1bac"},
-    {file = "regex-2020.5.13-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:03284826c5f5cd4b252ab7d510cb4d6b7e7f849cdea8e1b384c57e0996a9a3f9"},
-    {file = "regex-2020.5.13-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:36e6e7ca33a70f859e532110c2b1af28f98622424681e2e158f0f49735f1a9c8"},
-    {file = "regex-2020.5.13-cp37-cp37m-manylinux2010_i686.whl", hash = "sha256:707d2fcfdce12ca946830839c4c243c1b258c0d2c61350dc2efe0af00a4d2fdf"},
-    {file = "regex-2020.5.13-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:76668d1f91af08275313799bbd6ab04971ab08919defde886f5c94c7fc0f4623"},
-    {file = "regex-2020.5.13-cp37-cp37m-win32.whl", hash = "sha256:0be1cb724d43a7fb017e868d809640de03be7db88ab83d212fd802bc3d0277a0"},
-    {file = "regex-2020.5.13-cp37-cp37m-win_amd64.whl", hash = "sha256:9d42213927eede46bd4eb0c225600d82cf2b3c8882eb449f00b7cfa9bbf0975e"},
-    {file = "regex-2020.5.13-cp38-cp38-manylinux1_i686.whl", hash = "sha256:7163cac9621e9099dc8768ddec32372f50893c934be961f58826d46f0668ea0c"},
-    {file = "regex-2020.5.13-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:efae79f5eb3a6e2d9fa246605870887e0187ed66a4c56fc4cf22da00aa2ec220"},
-    {file = "regex-2020.5.13-cp38-cp38-manylinux2010_i686.whl", hash = "sha256:89d4a97682170c32a13c4223e72cf75f9d0c6223b40fb4abe717bbb6c271c6ea"},
-    {file = "regex-2020.5.13-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:4f144eb977800d7ef593893204c2e7f1f109e8a943f6e822990d22385b12c5d6"},
-    {file = "regex-2020.5.13-cp38-cp38-win32.whl", hash = "sha256:3b7f9c0051179325d7efd76271b783de593a50608e48e130c1590a95ea411f59"},
-    {file = "regex-2020.5.13-cp38-cp38-win_amd64.whl", hash = "sha256:3cec763e0428beb8668edf004aa9a8a4c1b502d0ecb97dc4d77e5a67a9077186"},
-    {file = "regex-2020.5.13.tar.gz", hash = "sha256:cd931f9cca663617ba7a74b6500c6857405271b142edff68b2530e458b80a116"},
+    {file = "regex-2020.5.14-cp27-cp27m-win32.whl", hash = "sha256:e565569fc28e3ba3e475ec344d87ed3cd8ba2d575335359749298a0899fe122e"},
+    {file = "regex-2020.5.14-cp27-cp27m-win_amd64.whl", hash = "sha256:d466967ac8e45244b9dfe302bbe5e3337f8dc4dec8d7d10f5e950d83b140d33a"},
+    {file = "regex-2020.5.14-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:27ff7325b297fb6e5ebb70d10437592433601c423f5acf86e5bc1ee2919b9561"},
+    {file = "regex-2020.5.14-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:ea55b80eb0d1c3f1d8d784264a6764f931e172480a2f1868f2536444c5f01e01"},
+    {file = "regex-2020.5.14-cp36-cp36m-manylinux2010_i686.whl", hash = "sha256:c9bce6e006fbe771a02bda468ec40ffccbf954803b470a0345ad39c603402577"},
+    {file = "regex-2020.5.14-cp36-cp36m-manylinux2010_x86_64.whl", hash = "sha256:d881c2e657c51d89f02ae4c21d9adbef76b8325fe4d5cf0e9ad62f850f3a98fd"},
+    {file = "regex-2020.5.14-cp36-cp36m-win32.whl", hash = "sha256:99568f00f7bf820c620f01721485cad230f3fb28f57d8fbf4a7967ec2e446994"},
+    {file = "regex-2020.5.14-cp36-cp36m-win_amd64.whl", hash = "sha256:70c14743320a68c5dac7fc5a0f685be63bc2024b062fe2aaccc4acc3d01b14a1"},
+    {file = "regex-2020.5.14-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:a7c37f048ec3920783abab99f8f4036561a174f1314302ccfa4e9ad31cb00eb4"},
+    {file = "regex-2020.5.14-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:89d76ce33d3266173f5be80bd4efcbd5196cafc34100fdab814f9b228dee0fa4"},
+    {file = "regex-2020.5.14-cp37-cp37m-manylinux2010_i686.whl", hash = "sha256:51f17abbe973c7673a61863516bdc9c0ef467407a940f39501e786a07406699c"},
+    {file = "regex-2020.5.14-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:ce5cc53aa9fbbf6712e92c7cf268274eaff30f6bd12a0754e8133d85a8fb0f5f"},
+    {file = "regex-2020.5.14-cp37-cp37m-win32.whl", hash = "sha256:8044d1c085d49673aadb3d7dc20ef5cb5b030c7a4fa253a593dda2eab3059929"},
+    {file = "regex-2020.5.14-cp37-cp37m-win_amd64.whl", hash = "sha256:c2062c7d470751b648f1cacc3f54460aebfc261285f14bc6da49c6943bd48bdd"},
+    {file = "regex-2020.5.14-cp38-cp38-manylinux1_i686.whl", hash = "sha256:329ba35d711e3428db6b45a53b1b13a0a8ba07cbbcf10bbed291a7da45f106c3"},
+    {file = "regex-2020.5.14-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:579ea215c81d18da550b62ff97ee187b99f1b135fd894a13451e00986a080cad"},
+    {file = "regex-2020.5.14-cp38-cp38-manylinux2010_i686.whl", hash = "sha256:3a9394197664e35566242686d84dfd264c07b20f93514e2e09d3c2b3ffdf78fe"},
+    {file = "regex-2020.5.14-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:ce367d21f33e23a84fb83a641b3834dd7dd8e9318ad8ff677fbfae5915a239f7"},
+    {file = "regex-2020.5.14-cp38-cp38-win32.whl", hash = "sha256:1386e75c9d1574f6aa2e4eb5355374c8e55f9aac97e224a8a5a6abded0f9c927"},
+    {file = "regex-2020.5.14-cp38-cp38-win_amd64.whl", hash = "sha256:7e61be8a2900897803c293247ef87366d5df86bf701083b6c43119c7c6c99108"},
+    {file = "regex-2020.5.14.tar.gz", hash = "sha256:ce450ffbfec93821ab1fea94779a8440e10cf63819be6e176eb1973a6017aff5"},
 ]
 requests = [
     {file = "requests-2.23.0-py2.py3-none-any.whl", hash = "sha256:43999036bfa82904b6af1d99e4882b560e5e2c68e5c4b0aa03b655f3d7d73fee"},
@@ -2099,9 +2097,8 @@ sphinxcontrib-websupport = [
     {file = "sphinxcontrib_websupport-1.2.2-py2.py3-none-any.whl", hash = "sha256:c155cfa18e8b7c832b3cac0a2d41810ebacd26b26ba9624cd2f42c3496dad04b"},
 ]
 toml = [
-    {file = "toml-0.10.0-py2.7.egg", hash = "sha256:f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"},
-    {file = "toml-0.10.0-py2.py3-none-any.whl", hash = "sha256:235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e"},
-    {file = "toml-0.10.0.tar.gz", hash = "sha256:229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c"},
+    {file = "toml-0.10.1-py2.py3-none-any.whl", hash = "sha256:bda89d5935c2eac546d648028b9901107a595863cb36bae0c73ac804a9b4ce88"},
+    {file = "toml-0.10.1.tar.gz", hash = "sha256:926b612be1e5ce0634a2ca03470f95169cf16f939018233a670519cb4ac58b0f"},
 ]
 tqdm = [
     {file = "tqdm-4.46.0-py2.py3-none-any.whl", hash = "sha256:acdafb20f51637ca3954150d0405ff1a7edde0ff19e38fb99a80a66210d2a28f"},

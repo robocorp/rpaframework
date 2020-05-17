@@ -60,7 +60,7 @@ netsuitesdk = "^1.1.0"
 pypdf2 = "^1.26.0"
 tweepy = "^3.8.0"
 robotframework = "^3.2.1"
-boto3 = "^1.13.4"
+boto3 = {version = "^1.13.4", optional = true}
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }
@@ -74,6 +74,7 @@ sphinx-jekyll-builder = "^0.3.0"
 
 [tool.poetry.extras]
 cv = ["opencv-python", "numpy"]
+aws = ["boto3"]
 
 [tool.black]
 target-version = ["py36", "py37", "py38"]

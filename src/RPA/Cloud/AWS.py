@@ -1,11 +1,17 @@
+from functools import wraps
 import json
 import logging
 from pathlib import Path
 from typing import Any
 
-import boto3
-from botocore.exceptions import ClientError
-from boto3.exceptions import S3UploadFailedError
+try:
+    import boto3
+    from botocore.exceptions import ClientError
+    from boto3.exceptions import S3UploadFailedError
+
+    HAS_BOTO3 = True
+except ImportError:
+    HAS_BOTO3 = False
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.RobotLogListener import RobotLogListener
@@ -18,6 +24,19 @@ except RobotNotRunningError:
     pass
 
 DEFAULT_REGION = "eu-west-1"
+
+
+def aws_dependency_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if not HAS_BOTO3:
+            raise ValueError(
+                "Please install optional `aws` package, "
+                "`pip install rpa-framework[aws]` to use RPA.Cloud.AWS library"
+            )
+        return f(*args, **kwargs)
+
+    return wrapper
 
 
 class AWSBase:
@@ -43,6 +62,7 @@ class AWSBase:
     def _set_service(self, service_name: str = None, client: Any = None):
         self.clients[service_name] = client
 
+    @aws_dependency_required
     def _init_client(
         self,
         service_name: str,
@@ -83,6 +103,7 @@ class ServiceS3(AWSBase):
         """
         self._init_client("s3", aws_key_id, aws_key, region)
 
+    @aws_dependency_required
     def create_bucket(self, bucket_name: str = None) -> bool:
         """Create S3 bucket with name
 
@@ -98,6 +119,7 @@ class ServiceS3(AWSBase):
             self.logger.error(e)
             return False
 
+    @aws_dependency_required
     def delete_bucket(self, bucket_name: str = None) -> bool:
         """Delete S3 bucket with name
 
@@ -113,6 +135,7 @@ class ServiceS3(AWSBase):
             self.logger.error(e)
             return False
 
+    @aws_dependency_required
     def list_buckets(self) -> list:
         """List all buckets for this account
 
@@ -122,6 +145,7 @@ class ServiceS3(AWSBase):
         response = client.list_buckets()
         return response["Buckets"] if "Buckets" in response else []
 
+    @aws_dependency_required
     def delete_files(self, bucket_name: str = None, files: list = None):
         """Delete files in the bucket
 
@@ -146,6 +170,7 @@ class ServiceS3(AWSBase):
             self.logger.error(e)
             return False
 
+    @aws_dependency_required
     def list_files(self, bucket_name) -> list:
         """List files in the bucket
 
@@ -162,6 +187,7 @@ class ServiceS3(AWSBase):
             self.logger.error(e)
         return files
 
+    @aws_dependency_required
     def _s3_upload_file(self, bucket_name, filename, object_name):
         client = self._get_client_for_service("s3")
         uploaded = False
@@ -180,6 +206,7 @@ class ServiceS3(AWSBase):
             uploaded = False
         return (uploaded, error)
 
+    @aws_dependency_required
     def upload_file(
         self, bucket_name: str = None, filename: str = None, object_name: str = None
     ) -> tuple:
@@ -198,6 +225,7 @@ class ServiceS3(AWSBase):
             object_name = Path(filename).name
         return self._s3_upload_file(bucket_name, filename, object_name)
 
+    @aws_dependency_required
     def upload_files(self, bucket_name: str = None, files: list = None) -> list:
         """Upload multiple files into bucket
 
@@ -236,6 +264,7 @@ class ServiceS3(AWSBase):
                 self.logger.warning("File upload failed with error: %s", error)
         return upload_count
 
+    @aws_dependency_required
     def download_files(
         self, bucket_name: str = None, files: list = None, target_directory: str = None
     ) -> list:
@@ -286,6 +315,7 @@ class ServiceTextract(AWSBase):
         """
         self._init_client("textract", aws_key_id, aws_key, region)
 
+    @aws_dependency_required
     def analyze_document(
         self, image_file: str = None, json_file: str = None, bucket_name: str = None
     ) -> bool:
@@ -393,6 +423,7 @@ class ServiceTextract(AWSBase):
         """
         return self.cells
 
+    @aws_dependency_required
     def detect_document_text(
         self, image_file: str = None, bucket_name: str = None
     ) -> bool:
@@ -432,6 +463,7 @@ class ServiceComprehend(AWSBase):
         """
         self._init_client("comprehend", aws_key_id, aws_key, region)
 
+    @aws_dependency_required
     def detect_sentiment(self, text: str = None, lang="en") -> dict:
         """Inspects text and returns an inference of the prevailing sentiment
 
@@ -449,6 +481,7 @@ class ServiceComprehend(AWSBase):
             else False,
         }
 
+    @aws_dependency_required
     def detect_entities(self, text: str = None, lang="en") -> dict:
         """Inspects text for named entities, and returns information about them
 
@@ -486,6 +519,7 @@ class ServiceSQS(AWSBase):
         self._init_client("sqs", aws_key_id, aws_key, region)
         self.queue_url = queue_url
 
+    @aws_dependency_required
     def send_message(
         self, message: str = None, message_attributes: dict = None
     ) -> dict:
@@ -507,6 +541,7 @@ class ServiceSQS(AWSBase):
         )
         return response
 
+    @aws_dependency_required
     def receive_message(self) -> dict:
         """Receive message from queue
 
@@ -516,6 +551,7 @@ class ServiceSQS(AWSBase):
         response = client.receive_message(QueueUrl=self.queue_url,)
         return response["Messages"][0] if "Messages" in response else None
 
+    @aws_dependency_required
     def delete_message(self, receipt_handle: str = None):
         """Delete message in the queue
 
@@ -529,6 +565,7 @@ class ServiceSQS(AWSBase):
         )
         return response
 
+    @aws_dependency_required
     def create_queue(self, queue_name: str = None):
         """Create queue with name
 
@@ -540,6 +577,7 @@ class ServiceSQS(AWSBase):
         response = client.create_queue(queue_name)
         return response
 
+    @aws_dependency_required
     def delete_queue(self, queue_name: str = None):
         """Delete queue with name
 

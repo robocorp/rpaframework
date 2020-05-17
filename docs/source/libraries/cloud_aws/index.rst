@@ -11,13 +11,22 @@ Description
 ***********
 
 `AWS` is a library for operating with Amazon AWS services.
-Base dependency is `boto3`_ library.
 
 Service initialization can be given as parameters for ``init_s3_service`` keyword
 for example or keyword can read them in as environment variables:
 
     - `AWS_KEY_ID`
     - `AWS_KEY`
+
+Requirements
+============
+
+The default installation depends on `boto3`_ library. Due to the size of the
+dependency this has been set as optional package for ``rpa-framework``.
+
+This can be installed by opting in to the `aws` dependency:
+
+``pip install rpa-framework[aws]``
 
 .. _boto3:
     https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
