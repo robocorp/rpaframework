@@ -104,3 +104,4 @@ class HTTP(RequestsLibrary):
             self._create_or_overwrite_target_file(
                 target, response.content, binary, overwrite
             )
+        return response
