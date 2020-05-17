@@ -194,6 +194,7 @@ class ImapSmtp:
         body: str,
         attachments: str = None,
         html: bool = False,
+        images: str = None,
     ) -> None:
         """Send SMTP email
 
@@ -212,13 +213,59 @@ class ImapSmtp:
             raise ValueError("Requires authorized SMTP connection")
         add_charset("utf-8", QP, QP, "utf-8")
         attachments = attachments or []
-        if not isinstance(attachments, list):
+        if images and not isinstance(images, list):
+            images = images.strip().split(",")
+        if attachments and not isinstance(attachments, list):
             attachments = attachments.split(",")
-
+        if not isinstance(recipients, list):
+            recipients = recipients.split(",")
         msg = MIMEMultipart()
 
+        self._add_attachments_to_msg(attachments, msg)
+
+        msg["From"] = sender
+        msg["To"] = ",".join(recipients)
+        msg["Subject"] = Header(subject, "utf-8")
+
+        if html:
+            for im in images:
+                im = im.strip()
+                imname = Path(im).name
+                body = body.replace(str(imname), f"cid:{imname}")
+                with open(im, "rb") as f:
+                    img = MIMEImage(f.read())
+                    img.add_header("Content-ID", f"<{imname}>")
+                    msg.attach(img)
+            htmlpart = MIMEText(body, "html", "UTF-8")
+            msg.attach(htmlpart)
+        else:
+            textpart = MIMEText(body, "plain", "UTF-8")
+            msg.attach(textpart)
+            for im in images:
+                im = im.strip()
+                imname = Path(im).name
+                with open(im, "rb") as f:
+                    img = MIMEImage(f.read())
+                    msg.add_header(
+                        "Content-Disposition", f"inline; filename= {imname}",
+                    )
+                    msg.attach(img)
+
+        # Create a generator and flatten message object to 'file’
+        str_io = StringIO()
+        g = Generator(str_io, False)
+        g.flatten(msg)
+
+        try:
+            self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
+        except Exception as err:
+            raise ValueError(f"Send Message failed: {err}")
+
+    def _add_attachments_to_msg(self, attachments: list = None, msg=None):
         if len(attachments) > 0:
             for filename in attachments:
+                if os.path.dirname(filename) == "":
+                    filename = str(Path.cwd() / filename)
                 self.logger.debug("Adding attachment: %s", filename)
                 with open(filename, "rb") as attachment:
                     _, ext = filename.lower().rsplit(".", 1)
@@ -228,7 +275,7 @@ class ImapSmtp:
                         # image attachment
                         part = MIMEImage(
                             attachment.read(),
-                            name=os.path.basename(filename),
+                            name=Path(filename).name,
                             _subtype=subtype,
                         )
                     else:
@@ -241,28 +288,6 @@ class ImapSmtp:
                         f"attachment; filename= {Path(filename).name}",
                     )
                     msg.attach(part)
-
-        msg["From"] = sender
-        msg["Subject"] = Header(subject, "utf-8")
-
-        if html:
-            htmlpart = MIMEText(body, "html", "UTF-8")
-            msg.attach(htmlpart)
-        else:
-            textpart = MIMEText(body, "plain", "UTF-8")
-            msg.attach(textpart)
-
-        # Create a generator and flatten message object to 'file’
-        str_io = StringIO()
-        g = Generator(str_io, False)
-        g.flatten(msg)
-
-        if not isinstance(recipients, list):
-            recipients = recipients.split(",")
-        try:
-            self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
-        except Exception as err:
-            raise ValueError(f"Send Message failed: {err}")
 
     def _fetch_messages(self, mail_ids: list) -> list:
         messages = []
