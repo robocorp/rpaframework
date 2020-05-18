@@ -71,6 +71,7 @@ sphinx = "^2.3.1"
 sphinx_rtd_theme = "^0.4.3"
 robotframeworklexer = "^1.1"
 sphinx-jekyll-builder = "^0.3.0"
+mock = "^4.0.2"
 
 [tool.poetry.extras]
 cv = ["opencv-python", "numpy"]
