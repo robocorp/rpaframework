@@ -208,6 +208,7 @@ class ImapSmtp:
         :param body: mail body content
         :param attachments: list of filepaths to attach, defaults to []
         :param html: if message content is in HTML, default `False`
+        :param images: list of filepaths for inline use, defaults to []
         """
         if self.smtp_conn is None:
             raise ValueError("Requires authorized SMTP connection")
