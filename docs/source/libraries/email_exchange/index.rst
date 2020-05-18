@@ -36,13 +36,20 @@ Robot Framework tasks.
     ${ACCOUNT}              ACCOUNT_NAME
     ${PASSWORD}             ACCOUNT_PASSWORD
     ${RECIPIENT_ADDRESS}    RECIPIENT
+    ${IMAGES}               myimage.png
+    ${ATTACHMENTS}          C:${/}files${/}mydocument.pdf
 
     *** Tasks ***
     Sending email
         Send Message  recipients=${RECIPIENT_ADDRESS}
         ...           subject=Exchange Message from RPA Robot
-        ...           body=Exchange RPA Robot message body
+        ...           body=<p>Exchange RPA Robot message body<br><img src='myimage.png'/></p>
         ...           save=${TRUE}
+        ...           html=${TRUE}
+        ...           images=${IMAGES}
+        ...           cc=EMAIL_ADDRESS
+        ...           bcc=EMAIL_ADDRESS
+        ...           attachments=${ATTACHMENTS}
 
 Python
 ======

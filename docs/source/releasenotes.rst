@@ -4,6 +4,7 @@ Release notes
 Upcoming release
 ----------------
 
+- Email.Exchange: Add support for ``HTML`` content, ``attachments``, and inline ``images``
 - Email.ImapSmtp: Allow sending inline images - parameter ``images`` for kw ``Send Message``
 - HTTP: Return response of ``Download`` keyword (including content)
 - Cloud.AWS: Due to ``boto3`` dependency size, library requires ``pip install rpa-framework[aws]`` to use
