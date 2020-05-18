@@ -1,6 +1,7 @@
 from pathlib import Path
 import logging
 from exchangelib import Account, Credentials, FileAttachment, HTMLBody, Mailbox, Message
+from RPA.core.utils import required_param
 
 
 class Exchange:
@@ -61,6 +62,7 @@ class Exchange:
         Email addresses can be prefixed with `ex:` to indicate Exchange
         account address.
 
+        Recipients is ``required`` parameter.
 
         :param recipients: list of email addresses, defaults to []
         :param subject: message subject, defaults to ""
@@ -73,9 +75,7 @@ class Exchange:
         :param save: is sent message saved to Sent messages folder or not,
             defaults to False
         """
-        if recipients is None:
-            self.logger.warning("recipients is None - not sending message")
-            return
+        required_param(recipients, "send_message")
         recipients, cc, bcc, attachments, images = self._handle_message_parameters(
             recipients, cc, bcc, attachments, images
         )
@@ -103,22 +103,27 @@ class Exchange:
             m.send_and_save()
         else:
             m.send()
+        return True
 
     def _handle_message_parameters(self, recipients, cc, bcc, attachments, images):
         if cc is None:
             cc = []
         if bcc is None:
             bcc = []
+        if attachments is None:
+            attachments = []
+        if images is None:
+            images = []
         if not isinstance(recipients, list):
-            recipients = [recipients]
+            recipients = recipients.split(",")
         if not isinstance(cc, list):
             cc = [cc]
         if not isinstance(bcc, list):
             bcc = [bcc]
         if not isinstance(attachments, list):
-            attachments = [attachments]
+            attachments = str(attachments).split(",")
         if not isinstance(images, list):
-            images = [images]
+            images = str(images).split(",")
         recipients, cc, bcc = self._handle_recipients(recipients, cc, bcc)
         return recipients, cc, bcc, attachments, images
 
@@ -135,6 +140,7 @@ class Exchange:
 
     def _add_attachments_to_msg(self, attachments, msg):
         for attachment in attachments:
+            attachment = attachment.strip()
             with open(attachment, "rb") as f:
                 atname = str(Path(attachment).name)
                 fileat = FileAttachment(name=atname, content=f.read())
@@ -142,6 +148,7 @@ class Exchange:
 
     def _add_images_inline_to_msg(self, images, html, body, msg):
         for image in images:
+            image = image.strip()
             with open(image, "rb") as f:
                 imname = str(Path(image).name)
                 fileat = FileAttachment(
