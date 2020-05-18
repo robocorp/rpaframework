@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+0.10.1
+------
+
+- Email.Exchange: Fix parameter handling for kw ``send_message``
+
 0.10.0
 ------
 

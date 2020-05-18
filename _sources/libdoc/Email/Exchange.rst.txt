@@ -36,4 +36,5 @@ Keywords
   Email addresses can be prefixed with `ex:` to indicate Exchange
   account address.
 
+  Recipients is ``required`` parameter.
 
