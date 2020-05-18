@@ -1,5 +1,6 @@
+from pathlib import Path
 import logging
-from exchangelib import Credentials, Account, Message, Mailbox
+from exchangelib import Account, Credentials, FileAttachment, HTMLBody, Mailbox, Message
 
 
 class Exchange:
@@ -45,11 +46,14 @@ class Exchange:
 
     def send_message(
         self,
-        recipients: list = None,
-        cc_recipients: list = None,
-        bcc_recipients: list = None,
+        recipients: str = None,
         subject: str = "",
         body: str = "",
+        attachments: str = None,
+        html: bool = False,
+        images: str = None,
+        cc: str = None,
+        bcc: str = None,
         save: bool = False,
     ):
         """Keyword for sending message through connected Exchange account.
@@ -59,56 +63,90 @@ class Exchange:
 
 
         :param recipients: list of email addresses, defaults to []
-        :param cc_recipients: list of email addresses, defaults to []
-        :param bcc_recipients: list of email addresses, defaults to []
         :param subject: message subject, defaults to ""
         :param body: message body, defaults to ""
+        :param attachments: list of filepaths to attach, defaults to []
+        :param html: if message content is in HTML, default `False`
+        :param images: list of filepaths for inline use, defaults to []
+        :param cc: list of email addresses, defaults to []
+        :param bcc: list of email addresses, defaults to []
         :param save: is sent message saved to Sent messages folder or not,
             defaults to False
-
         """
         if recipients is None:
             self.logger.warning("recipients is None - not sending message")
             return
-        if cc_recipients is None:
-            cc_recipients = []
-        if bcc_recipients is None:
-            bcc_recipients = []
-        if not isinstance(recipients, list):
-            recipients = [recipients]
-        if not isinstance(cc_recipients, list):
-            cc_recipients = [cc_recipients]
-        if not isinstance(bcc_recipients, list):
-            bcc_recipients = [bcc_recipients]
-
+        recipients, cc, bcc, attachments, images = self._handle_message_parameters(
+            recipients, cc, bcc, attachments, images
+        )
         self.logger.info("Sending message to %s", ",".join(recipients))
 
-        mail_recipients = []
-        mail_cc = []
-        mail_bcc = []
-
-        mail_recipients = [
-            Mailbox(email_address=p.split("ex:")[1]) if "ex:" in p else p
-            for p in recipients
-        ]
-        mail_cc = [
-            Mailbox(email_address=p.split("ex:")[1]) if "ex:" in p else p
-            for p in cc_recipients
-        ]
-        mail_bcc = [
-            Mailbox(email_address=p.split("ex:")[1]) if "ex:" in p else p
-            for p in bcc_recipients
-        ]
         m = Message(
             account=self.account,
             subject=subject,
             body=body,
-            to_recipients=mail_recipients,
-            cc_recipients=mail_cc,
-            bcc_recipients=mail_bcc,
+            to_recipients=recipients,
+            cc_recipients=cc,
+            bcc_recipients=bcc,
         )
+
+        self._add_attachments_to_msg(attachments, m)
+        self._add_images_inline_to_msg(images, html, body, m)
+
+        if html:
+            m.body = HTMLBody(body)
+        else:
+            m.body = body
+
         if save:
             m.folder = self.account.sent
             m.send_and_save()
         else:
             m.send()
+
+    def _handle_message_parameters(self, recipients, cc, bcc, attachments, images):
+        if cc is None:
+            cc = []
+        if bcc is None:
+            bcc = []
+        if not isinstance(recipients, list):
+            recipients = [recipients]
+        if not isinstance(cc, list):
+            cc = [cc]
+        if not isinstance(bcc, list):
+            bcc = [bcc]
+        if not isinstance(attachments, list):
+            attachments = [attachments]
+        if not isinstance(images, list):
+            images = [images]
+        recipients, cc, bcc = self._handle_recipients(recipients, cc, bcc)
+        return recipients, cc, bcc, attachments, images
+
+    def _handle_recipients(self, recipients, cc, bcc):
+        recipients = [
+            Mailbox(email_address=p.split("ex:")[1]) if "ex:" in p else p
+            for p in recipients
+        ]
+        cc = [Mailbox(email_address=p.split("ex:")[1]) if "ex:" in p else p for p in cc]
+        bcc = [
+            Mailbox(email_address=p.split("ex:")[1]) if "ex:" in p else p for p in bcc
+        ]
+        return recipients, cc, bcc
+
+    def _add_attachments_to_msg(self, attachments, msg):
+        for attachment in attachments:
+            with open(attachment, "rb") as f:
+                atname = str(Path(attachment).name)
+                fileat = FileAttachment(name=atname, content=f.read())
+                msg.attach(fileat)
+
+    def _add_images_inline_to_msg(self, images, html, body, msg):
+        for image in images:
+            with open(image, "rb") as f:
+                imname = str(Path(image).name)
+                fileat = FileAttachment(
+                    name=imname, content=f.read(), content_id=imname
+                )
+                msg.attach(fileat)
+                if html:
+                    body = body.replace(imname, f"cid:{imname}")
