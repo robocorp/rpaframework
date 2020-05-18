@@ -29,7 +29,7 @@ Keywords
 
 
 :Send Message:
-  :Arguments: recipients: list=None, cc_recipients: list=None, bcc_recipients: list=None, subject: str=, body: str=, save: bool=False
+  :Arguments: recipients: str=None, subject: str=, body: str=, attachments: str=None, html: bool=False, images: str=None, cc: str=None, bcc: str=None, save: bool=False
 
   Keyword for sending message through connected Exchange account.
 

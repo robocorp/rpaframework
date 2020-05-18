@@ -237,7 +237,7 @@ received time.</p>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.send_message">
-<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">recipients: list = None</em>, <em class="sig-param">cc_recipients: list = None</em>, <em class="sig-param">bcc_recipients: list = None</em>, <em class="sig-param">subject: str = ''</em>, <em class="sig-param">body: str = ''</em>, <em class="sig-param">save: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.send_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">recipients: str = None</em>, <em class="sig-param">subject: str = ''</em>, <em class="sig-param">body: str = ''</em>, <em class="sig-param">attachments: str = None</em>, <em class="sig-param">html: bool = False</em>, <em class="sig-param">images: str = None</em>, <em class="sig-param">cc: str = None</em>, <em class="sig-param">bcc: str = None</em>, <em class="sig-param">save: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.send_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keyword for sending message through connected Exchange account.</p>
 <p>Email addresses can be prefixed with <cite>ex:</cite> to indicate Exchange
 account address.</p>
@@ -245,10 +245,13 @@ account address.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>recipients</strong> – list of email addresses, defaults to []</p></li>
-<li><p><strong>cc_recipients</strong> – list of email addresses, defaults to []</p></li>
-<li><p><strong>bcc_recipients</strong> – list of email addresses, defaults to []</p></li>
 <li><p><strong>subject</strong> – message subject, defaults to “”</p></li>
 <li><p><strong>body</strong> – message body, defaults to “”</p></li>
+<li><p><strong>attachments</strong> – list of filepaths to attach, defaults to []</p></li>
+<li><p><strong>html</strong> – if message content is in HTML, default <cite>False</cite></p></li>
+<li><p><strong>images</strong> – list of filepaths for inline use, defaults to []</p></li>
+<li><p><strong>cc</strong> – list of email addresses, defaults to []</p></li>
+<li><p><strong>bcc</strong> – list of email addresses, defaults to []</p></li>
 <li><p><strong>save</strong> – is sent message saved to Sent messages folder or not,
 defaults to False</p></li>
 </ul>
