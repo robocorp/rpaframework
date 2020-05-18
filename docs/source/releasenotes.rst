@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+0.10.0
+------
+
 - Email.Exchange: Add support for ``HTML`` content, ``attachments``, and inline ``images``
 - Email.ImapSmtp: Allow sending inline images - parameter ``images`` for kw ``Send Message``
 - HTTP: Return response of ``Download`` keyword (including content)
