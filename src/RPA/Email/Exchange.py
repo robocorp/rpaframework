@@ -1,7 +1,6 @@
 from pathlib import Path
 import logging
 from exchangelib import Account, Credentials, FileAttachment, HTMLBody, Mailbox, Message
-from RPA.core.utils import required_param
 
 
 class Exchange:
@@ -47,7 +46,7 @@ class Exchange:
 
     def send_message(
         self,
-        recipients: str = None,
+        recipients: str,
         subject: str = "",
         body: str = "",
         attachments: str = None,
@@ -75,7 +74,6 @@ class Exchange:
         :param save: is sent message saved to Sent messages folder or not,
             defaults to False
         """
-        required_param(recipients, "send_message")
         recipients, cc, bcc, attachments, images = self._handle_message_parameters(
             recipients, cc, bcc, attachments, images
         )

@@ -190,12 +190,12 @@ class ImapSmtp:
         self,
         sender: str,
         recipients: str,
-        subject: str,
-        body: str,
+        subject: str = "",
+        body: str = "",
         attachments: str = None,
         html: bool = False,
         images: str = None,
-    ) -> None:
+    ) -> bool:
         """Send SMTP email
 
         Valid sender values:
@@ -213,13 +213,9 @@ class ImapSmtp:
         if self.smtp_conn is None:
             raise ValueError("Requires authorized SMTP connection")
         add_charset("utf-8", QP, QP, "utf-8")
-        attachments = attachments or []
-        if images and not isinstance(images, list):
-            images = images.strip().split(",")
-        if attachments and not isinstance(attachments, list):
-            attachments = attachments.split(",")
-        if not isinstance(recipients, list):
-            recipients = recipients.split(",")
+        recipients, attachments, images = self._handle_message_parameters(
+            recipients, attachments, images
+        )
         msg = MIMEMultipart()
 
         self._add_attachments_to_msg(attachments, msg)
@@ -261,6 +257,20 @@ class ImapSmtp:
             self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
         except Exception as err:
             raise ValueError(f"Send Message failed: {err}")
+        return True
+
+    def _handle_message_parameters(self, recipients, attachments, images):
+        if attachments is None:
+            attachments = []
+        if images is None:
+            images = []
+        if not isinstance(recipients, list):
+            recipients = recipients.split(",")
+        if not isinstance(attachments, list):
+            attachments = str(attachments).split(",")
+        if not isinstance(images, list):
+            images = str(images).split(",")
+        return recipients, attachments, images
 
     def _add_attachments_to_msg(self, attachments: list = None, msg=None):
         if len(attachments) > 0:
