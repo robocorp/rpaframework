@@ -81,7 +81,7 @@ Keywords
 
 
 :Send Message:
-  :Arguments: sender: str, recipients: str, subject: str, body: str, attachments: str=None, html: bool=False, images: str=None
+  :Arguments: sender: str, recipients: str, subject: str=, body: str=, attachments: str=None, html: bool=False, images: str=None
 
   Send SMTP email
 
