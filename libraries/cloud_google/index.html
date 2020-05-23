@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Python module API &mdash; RPA Framework  documentation</title>
+  <title>Cloud.Google &mdash; RPA Framework  documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Desktop.Clipboard" href="../desktop_clipboard/index.html" />
-    <link rel="prev" title="Robot Framework API" href="../../libdoc/Database.html" />
+    <link rel="next" title="Robot Framework API" href="../../libdoc/Cloud/Google.html" />
+    <link rel="prev" title="Python module API" href="../cloud_aws/python.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -101,12 +101,12 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cloud_google/index.html">Cloud.Google</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Database</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Database.html">Robot Framework API</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Cloud.Google</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Cloud/Google.html">Robot Framework API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">Python module API</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
@@ -179,15 +179,13 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">Database</a> &raquo;</li>
-        
-      <li>Python module API</li>
+      <li>Cloud.Google</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/libraries/database/python.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/libraries/cloud_google/index.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -200,34 +198,41 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="python-module-api">
-<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-RPA.Database">
-<span id="database"></span><h2>Database<a class="headerlink" href="#module-RPA.Database" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="RPA.Database.Database">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Database.</code><code class="sig-name descname">Database</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Database.Database" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DatabaseLibrary.DatabaseLibrary</span></code></p>
-<p>Library handling different database operations.</p>
-<blockquote>
-<div><p>Extends <a class="reference external" href="https://github.com/franz-see/Robotframework-Database-Library">robotframework-databaselibrary</a>.</p>
-</div></blockquote>
-<dl class="method">
-<dt id="RPA.Database.Database.database_query_result_as_table">
-<code class="sig-name descname">database_query_result_as_table</code><span class="sig-paren">(</span><em class="sig-param">query_string: str</em><span class="sig-paren">)</span> &#x2192; RPA.Tables.Table<a class="headerlink" href="#RPA.Database.Database.database_query_result_as_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make database query and return result as <cite>RPA.Table</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>query_string</strong> – SQL query string</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>query result as <cite>RPA.Table</cite></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="cloud-google">
+<h1>Cloud.Google<a class="headerlink" href="#cloud-google" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#description" id="id1">Description</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id2">Examples</a></p></li>
+<li><p><a class="reference internal" href="#api-documentation" id="id3">API Documentation</a></p></li>
+</ul>
+</div>
+<div class="section" id="description">
+<h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><cite>Google</cite> is a library for operating with Google API endpoints.</p>
+</div>
+<div class="section" id="examples">
+<h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="robot-framework">
+<h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
+<p>This is a section which describes how to use the library in your
+Robot Framework tasks.</p>
+</div>
+<div class="section" id="python">
+<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<p>This is a section which describes how to use the library in your
+own Python modules.</p>
+</div>
+</div>
+<div class="section" id="api-documentation">
+<h2><a class="toc-backref" href="#id3">API Documentation</a><a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../libdoc/Cloud/Google.html">Robot Framework API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python.html">Python module API</a></li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -239,10 +244,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../desktop_clipboard/index.html" class="btn btn-neutral float-right" title="Desktop.Clipboard" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../libdoc/Cloud/Google.html" class="btn btn-neutral float-right" title="Robot Framework API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../../libdoc/Database.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../cloud_aws/python.html" class="btn btn-neutral float-left" title="Python module API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

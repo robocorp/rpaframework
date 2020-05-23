@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Python module API" href="../../libraries/excel_files/python.html" />
-    <link rel="prev" title="Excel.Files" href="../../libraries/excel_files/index.html" />
+    <link rel="next" title="Python module API" href="../../libraries/cloud_google/python.html" />
+    <link rel="prev" title="Cloud.Google" href="../../libraries/cloud_google/index.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -101,7 +101,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/browser/index.html">Browser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/cloud_aws/index.html">Cloud.AWS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../libraries/cloud_google/index.html">Cloud.Google</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../libraries/cloud_google/index.html">Cloud.Google</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Robot Framework API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../libraries/cloud_google/python.html">Python module API</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/database/index.html">Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/desktop_clipboard/index.html">Desktop.Clipboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
@@ -109,11 +113,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/email_exchange/index.html">Email.Exchange</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/email_imapsmtp/index.html">Email.ImapSmtp</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/excel_application/index.html">Excel.Application</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../libraries/excel_files/index.html">Excel.Files</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Robot Framework API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../libraries/excel_files/python.html">Python module API</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/excel_files/index.html">Excel.Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/filesystem/index.html">FileSystem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/http/index.html">HTTP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/images/index.html">Images</a></li>
@@ -179,7 +179,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../../libraries/excel_files/index.html">Excel.Files</a> &raquo;</li>
+          <li><a href="../../libraries/cloud_google/index.html">Cloud.Google</a> &raquo;</li>
         
       <li>Robot Framework API</li>
     
@@ -187,7 +187,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/libdoc/Excel/Files.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/libdoc/Cloud/Google.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -208,112 +208,261 @@
 <dt class="field-odd">Library scope</dt>
 <dd class="field-odd"><p></p></dd>
 </dl>
-<p>Robot Framework library for manipulating Excel files.</p>
-<p>Note: To run macros or load password protected worksheets,
-please use the Excel application library.</p>
+<p>Library for interacting with Google services</p>
+<p>Google Storage URI:</p>
+<blockquote>
+<div><p>gs://&lt;bucket_name&gt;/&lt;file_path_inside_bucket&gt;</p>
+</div></blockquote>
+<dl class="simple">
+<dt>The usage requires the following steps:</dt><dd><ul class="simple">
+<li><p>Create GCP project</p></li>
+<li><p>Create service account key file (json) and save it to a place the robot
+can use it</p></li>
+<li><p>Enable APIs</p></li>
+<li><p>Install rpa-framework[google]</p></li>
+</ul>
+</dd>
+</dl>
+<p>Services are taken into use with <code class="docutils literal notranslate"><span class="pre">init_SERVICENAME_client</span></code> keywords,
+which take as parameter an <code class="docutils literal notranslate"><span class="pre">service_account</span></code> JSON file.</p>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list">
-<dt class="field-odd">Append Rows To Worksheet</dt>
+<dt class="field-odd">Analyze Sentiment</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>content, name=None</p>
+<dd class="field-odd"><p>text_file: str, file_type: str=text, json_file: str=None, lang=None</p>
 </dd>
 </dl>
-<p>Append values to the end of the worksheet.</p>
+<p>Analyze sentiment in a text file</p>
 </dd>
-<dt class="field-even">Close Workbook</dt>
-<dd class="field-even"><p>Close the active workbook.</p>
+<dt class="field-even">Annotate Image</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>image_uri: str, json_file: str=None</p>
 </dd>
-<dt class="field-odd">Create Workbook</dt>
+</dl>
+<p>Annotate image</p>
+</dd>
+<dt class="field-even">Annotate Video</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>video_uri: str=None, video_file: str=None, json_file: str=None, features: list=None</p>
+</dd>
+</dl>
+<p>Annotate video</p>
+<p>Possible values for features:
+- FEATURE_UNSPECIFIED, Unspecified.
+- LABEL_DETECTION, Label detection. Detect objects, such as dog or flower.
+- SHOT_CHANGE_DETECTION, Shot change detection.
+- EXPLICIT_CONTENT_DETECTION, Explicit content detection.
+- SPEECH_TRANSCRIPTION, Speech transcription.
+- TEXT_DETECTION, OCR text detection and tracking.
+- OBJECT_TRACKING, Object detection and tracking.
+- LOGO_RECOGNITION, Logo detection, tracking, and recognition.</p>
+<p>if <cite>video_uri</cite> is given then that is used even if <cite>video_file</cite> is None.</p>
+</dd>
+<dt class="field-even">Classify Text</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text_file, json_file, lang=None</p>
+</dd>
+</dl>
+<p>Classify text</p>
+</dd>
+<dt class="field-even">Create Bucket</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>bucket_name: str</p>
+</dd>
+</dl>
+<p>Create Google Cloud Storage bucket</p>
+</dd>
+<dt class="field-even">Delete Bucket</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>bucket_name: str</p>
+</dd>
+</dl>
+<p>Delete Google Cloud Storage bucket</p>
+<p>Bucket needs to be empty before it can be deleted.</p>
+</dd>
+<dt class="field-even">Delete Files</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>bucket_name: str, files: typing.Any</p>
+</dd>
+</dl>
+<p>Delete files in the bucket</p>
+<p>Files need to be object name in the bucket.</p>
+</dd>
+<dt class="field-even">Detect Document</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>image_file: str, json_file: str=None</p>
+</dd>
+</dl>
+<p>Detect document</p>
+</dd>
+<dt class="field-even">Detect Labels</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>image_file: str, json_file: str=None</p>
+</dd>
+</dl>
+<p>Detect labels in the image</p>
+</dd>
+<dt class="field-even">Detect Text</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>image_file: str, json_file: str=None</p>
+</dd>
+</dl>
+<p>Detect text in the image</p>
+</dd>
+<dt class="field-even">Download Files</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>bucket_name: str, files: typing.Any</p>
+</dd>
+</dl>
+<p>Download files from a bucket</p>
+<p>Example <cite>files</cite>:
+files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf</p>
+</dd>
+<dt class="field-even">Face Detection</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>image_uri: str, json_file: str=None</p>
+</dd>
+</dl>
+<p>Detect faces</p>
+</dd>
+<dt class="field-even">Get Bucket</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>bucket_name: str</p>
+</dd>
+</dl>
+<p>Get Google Cloud Storage bucket</p>
+</dd>
+<dt class="field-even">Init Natural Language Client</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>service_credentials_file: str=None</p>
+</dd>
+</dl>
+<p>Initialize Google Natural Language client</p>
+</dd>
+<dt class="field-even">Init Speech To Text Client</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>service_credentials_file: str</p>
+</dd>
+</dl>
+<p>Initialize Google Speech To Text client</p>
+</dd>
+<dt class="field-even">Init Storage Client</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>service_credentials_file: str=None</p>
+</dd>
+</dl>
+<p>Initialize Google Cloud Storage client</p>
+</dd>
+<dt class="field-even">Init Text To Speech Client</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>service_credentials_file: str</p>
+</dd>
+</dl>
+<p>Initialize Google Text To Speech client</p>
+</dd>
+<dt class="field-even">Init Translation Client</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>service_credentials_file: str, project_identifier: str</p>
+</dd>
+</dl>
+<p>Initialize Google Translation client</p>
+</dd>
+<dt class="field-even">Init Video Intelligence Client</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>service_credentials_file: str=None</p>
+</dd>
+</dl>
+<p>Initialize Google Video Intelligence client</p>
+</dd>
+<dt class="field-even">Init Vision Client</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>service_credentials_file: str=None</p>
+</dd>
+</dl>
+<p>Initialize Google Vision client</p>
+</dd>
+<dt class="field-even">List Buckets</dt>
+<dd class="field-even"><p>List Google Cloud Storage buckets</p>
+</dd>
+<dt class="field-odd">List Files</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>path=None, fmt=xlsx</p>
+<dd class="field-odd"><p>bucket_name: str</p>
 </dd>
 </dl>
-<p>Create and open a new Excel workbook.</p>
+<p>List files in the bucket</p>
 </dd>
-<dt class="field-even">Create Worksheet</dt>
+<dt class="field-even">List Supported Voices</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>name, content=None, exist_ok=False</p>
+<dd class="field-odd"><p>language_code: str=None</p>
 </dd>
 </dl>
-<p>Create a new worksheet in the current workbook.</p>
+<p>List supported voices for the speech</p>
 </dd>
-<dt class="field-even">Get Active Worksheet</dt>
-<dd class="field-even"><p>Get the name of the worksheet which is currently active.</p>
-</dd>
-<dt class="field-odd">List Worksheets</dt>
-<dd class="field-odd"><p>List all names of worksheets in the given workbook.</p>
-</dd>
-<dt class="field-even">Open Workbook</dt>
+<dt class="field-even">Recognize</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>path</p>
+<dd class="field-odd"><p>audio_file_uri, encoding: str=FLAC, language_code: str=en_US, audio_channel_count=2</p>
 </dd>
 </dl>
-<p>Open an existing Excel workbook.</p>
+<p>Recognize text in the audio file</p>
 </dd>
-<dt class="field-even">Read Worksheet</dt>
+<dt class="field-even">Synthesize Speech</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>name=None, header=False</p>
+<dd class="field-odd"><p>text, language=en-US, name=en-US-Standard-B, gender=MALE, encoding=MP3, target_file=synthesized.mp3</p>
 </dd>
 </dl>
-<p>Read the content of a worksheet into a list of dictionaries.</p>
-<p>Each key in the dictionary will be either values from the header row,
-or Excel-style column letters.</p>
+<p>Synthesize speech synchronously</p>
 </dd>
-<dt class="field-even">Read Worksheet As Table</dt>
+<dt class="field-even">Translate</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>name=None, header=False, trim=True</p>
+<dd class="field-odd"><p>text: typing.Any, source_language: str=None, target_language: str=None</p>
 </dd>
 </dl>
-<p>Read the content of a worksheet into a Table container. Allows
-sorting/filtering/manipulating using the <cite>RPA.Tables</cite> library.</p>
+<p>Translate text</p>
 </dd>
-<dt class="field-even">Remove Worksheet</dt>
+<dt class="field-even">Upload File</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>name=None</p>
+<dd class="field-odd"><p>bucket_name: str, filename: str, target_name: str</p>
 </dd>
 </dl>
-<p>Remove a worksheet from the active workbook.</p>
+<p>Upload a file into a bucket</p>
 </dd>
-<dt class="field-even">Rename Worksheet</dt>
+<dt class="field-even">Upload Files</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>src_name, dst_name</p>
+<dd class="field-odd"><p>bucket_name: str, files: dict</p>
 </dd>
 </dl>
-<p>Rename an existing worksheet in the active workbook.</p>
-</dd>
-<dt class="field-even">Save Workbook</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>path=None</p>
-</dd>
-</dl>
-<p>Save the active workbook.</p>
-</dd>
-<dt class="field-even">Set Active Worksheet</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>value</p>
-</dd>
-</dl>
-<p>Set the active worksheet.</p>
-</dd>
-<dt class="field-even">Worksheet Exists</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>name</p>
-</dd>
-</dl>
-<p>Return True if worksheet with given name is in workbook.</p>
+<p>Upload files into a bucket</p>
+<p>Example <cite>files</cite>:
+files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 </dd>
 </dl>
 </div>
@@ -327,10 +476,10 @@ sorting/filtering/manipulating using the <cite>RPA.Tables</cite> library.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../libraries/excel_files/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../libraries/cloud_google/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../../libraries/excel_files/index.html" class="btn btn-neutral float-left" title="Excel.Files" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../../libraries/cloud_google/index.html" class="btn btn-neutral float-left" title="Cloud.Google" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

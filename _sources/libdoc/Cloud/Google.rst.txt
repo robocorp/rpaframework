@@ -1,0 +1,210 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: 
+
+Library for interacting with Google services
+
+Google Storage URI:
+
+    gs://<bucket_name>/<file_path_inside_bucket>
+
+The usage requires the following steps:
+    - Create GCP project
+    - Create service account key file (json) and save it to a place the robot
+      can use it
+    - Enable APIs
+    - Install rpa-framework[google]
+
+Services are taken into use with ``init_SERVICENAME_client`` keywords,
+which take as parameter an ``service_account`` JSON file.
+
+********
+Keywords
+********
+
+:Analyze Sentiment:
+  :Arguments: text_file: str, file_type: str=text, json_file: str=None, lang=None
+
+  Analyze sentiment in a text file
+
+
+:Annotate Image:
+  :Arguments: image_uri: str, json_file: str=None
+
+  Annotate image
+
+
+:Annotate Video:
+  :Arguments: video_uri: str=None, video_file: str=None, json_file: str=None, features: list=None
+
+  Annotate video
+
+  Possible values for features:
+  - FEATURE_UNSPECIFIED, Unspecified.
+  - LABEL_DETECTION, Label detection. Detect objects, such as dog or flower.
+  - SHOT_CHANGE_DETECTION, Shot change detection.
+  - EXPLICIT_CONTENT_DETECTION, Explicit content detection.
+  - SPEECH_TRANSCRIPTION, Speech transcription.
+  - TEXT_DETECTION, OCR text detection and tracking.
+  - OBJECT_TRACKING, Object detection and tracking.
+  - LOGO_RECOGNITION, Logo detection, tracking, and recognition.
+
+  if `video_uri` is given then that is used even if `video_file` is None.
+
+
+:Classify Text:
+  :Arguments: text_file, json_file, lang=None
+
+  Classify text
+
+
+:Create Bucket:
+  :Arguments: bucket_name: str
+
+  Create Google Cloud Storage bucket
+
+
+:Delete Bucket:
+  :Arguments: bucket_name: str
+
+  Delete Google Cloud Storage bucket
+
+  Bucket needs to be empty before it can be deleted.
+
+
+:Delete Files:
+  :Arguments: bucket_name: str, files: typing.Any
+
+  Delete files in the bucket
+
+  Files need to be object name in the bucket.
+
+
+:Detect Document:
+  :Arguments: image_file: str, json_file: str=None
+
+  Detect document
+
+
+:Detect Labels:
+  :Arguments: image_file: str, json_file: str=None
+
+  Detect labels in the image
+
+
+:Detect Text:
+  :Arguments: image_file: str, json_file: str=None
+
+  Detect text in the image
+
+
+:Download Files:
+  :Arguments: bucket_name: str, files: typing.Any
+
+  Download files from a bucket
+
+  Example `files`:
+  files = {"mytestimg": "image1.png", "mydoc": "google.pdf
+
+
+:Face Detection:
+  :Arguments: image_uri: str, json_file: str=None
+
+  Detect faces
+
+
+:Get Bucket:
+  :Arguments: bucket_name: str
+
+  Get Google Cloud Storage bucket
+
+
+:Init Natural Language Client:
+  :Arguments: service_credentials_file: str=None
+
+  Initialize Google Natural Language client
+
+:Init Speech To Text Client:
+  :Arguments: service_credentials_file: str
+
+  Initialize Google Speech To Text client
+
+:Init Storage Client:
+  :Arguments: service_credentials_file: str=None
+
+  Initialize Google Cloud Storage client
+
+:Init Text To Speech Client:
+  :Arguments: service_credentials_file: str
+
+  Initialize Google Text To Speech client
+
+:Init Translation Client:
+  :Arguments: service_credentials_file: str, project_identifier: str
+
+  Initialize Google Translation client
+
+:Init Video Intelligence Client:
+  :Arguments: service_credentials_file: str=None
+
+  Initialize Google Video Intelligence client
+
+:Init Vision Client:
+  :Arguments: service_credentials_file: str=None
+
+  Initialize Google Vision client
+
+:List Buckets:
+  List Google Cloud Storage buckets
+
+
+:List Files:
+  :Arguments: bucket_name: str
+
+  List files in the bucket
+
+
+:List Supported Voices:
+  :Arguments: language_code: str=None
+
+  List supported voices for the speech
+
+
+:Recognize:
+  :Arguments: audio_file_uri, encoding: str=FLAC, language_code: str=en_US, audio_channel_count=2
+
+  Recognize text in the audio file
+
+
+:Synthesize Speech:
+  :Arguments: text, language=en-US, name=en-US-Standard-B, gender=MALE, encoding=MP3, target_file=synthesized.mp3
+
+  Synthesize speech synchronously
+
+
+:Translate:
+  :Arguments: text: typing.Any, source_language: str=None, target_language: str=None
+
+  Translate text
+
+
+:Upload File:
+  :Arguments: bucket_name: str, filename: str, target_name: str
+
+  Upload a file into a bucket
+
+
+:Upload Files:
+  :Arguments: bucket_name: str, files: dict
+
+  Upload files into a bucket
+
+  Example `files`:
+  files = {"mytestimg": "image1.png", "mydoc": "google.pdf"}
+

@@ -4,6 +4,19 @@ Release notes
 Upcoming release
 ----------------
 
+- Cloud.Google: Added as optional package, needs to be installed
+  with ``pip install rpa-framework[google]``
+
+  Support for services:
+
+    - ``Google Cloud Natural Language``
+    - ``Google Cloud Speech to Text``
+    - ``Google Cloud Storage``
+    - ``Google Cloud Text to Speech``
+    - ``Google Cloud Translation``
+    - ``Google Cloud Video Intelligence``
+    - ``Google Cloud Vision``
+
 0.10.1
 ------
 
