@@ -16,7 +16,7 @@ try:
         VoiceSelectionParams,
         SynthesisInput,
     )
-    from google.cloud import speech_v1
+    from google.cloud import speech
 
     HAS_GOOGLECLOUD = True
 except ImportError:
@@ -468,16 +468,19 @@ class ServiceSpeechToText(GoogleBase):
     """
 
     __service_name = "speech-to-text"
-    __encodings = {
-        "AMR": speech_v1.enums.RecognitionConfig.AudioEncoding.AMR,
-        "AMR_WB": speech_v1.enums.RecognitionConfig.AudioEncoding.AMR_WB,
-        "FLAC": speech_v1.enums.RecognitionConfig.AudioEncoding.FLAC,
-        "LINEAR16": speech_v1.enums.RecognitionConfig.AudioEncoding.LINEAR16,
-        "MULAW": speech_v1.enums.RecognitionConfig.AudioEncoding.MULAW,
-        "OGG": speech_v1.enums.RecognitionConfig.AudioEncoding.OGG_OPUS,
-        "SPEEX": speech_v1.enums.RecognitionConfig.AudioEncoding.SPEEX_WITH_HEADER_BYTE,
-        "UNSPECIFIED": speech_v1.enums.RecognitionConfig.AudioEncoding.ENCODING_UNSPECIFIED,  # noqa: E501 # pylint: disable=C0301
-    }
+    if HAS_GOOGLECLOUD:
+        __encodings = {
+            "AMR": speech.enums.RecognitionConfig.AudioEncoding.AMR,
+            "AMR_WB": speech.enums.RecognitionConfig.AudioEncoding.AMR_WB,
+            "FLAC": speech.enums.RecognitionConfig.AudioEncoding.FLAC,
+            "LINEAR16": speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
+            "MULAW": speech.enums.RecognitionConfig.AudioEncoding.MULAW,
+            "OGG": speech.enums.RecognitionConfig.AudioEncoding.OGG_OPUS,
+            "SPEEX": speech.enums.RecognitionConfig.AudioEncoding.SPEEX_WITH_HEADER_BYTE,  # noqa: E501 # pylint: disable=C0301
+            "UNSPECIFIED": speech.enums.RecognitionConfig.AudioEncoding.ENCODING_UNSPECIFIED,  # noqa: E501 # pylint: disable=C0301
+        }
+    else:
+        __encodings = {}
 
     def __init__(self) -> None:
         self.services.append(self.__service_name)
@@ -487,7 +490,7 @@ class ServiceSpeechToText(GoogleBase):
     def init_speech_to_text_client(self, service_credentials_file: str) -> None:
         """Initialize Google Speech To Text client
         """
-        client = speech_v1.SpeechClient.from_service_account_json(  # noqa: E501 # pylint: disable=C0301
+        client = speech.SpeechClient.from_service_account_json(  # noqa: E501 # pylint: disable=C0301
             service_credentials_file
         )
         self._set_service(self.__service_name, client)
@@ -507,12 +510,12 @@ class ServiceSpeechToText(GoogleBase):
         """
         # flac or wav, does not require encoding type
         client = self._get_client_for_service(self.__service_name)
-        audio = speech_v1.types.RecognitionAudio(  # pylint: disable=E1101
+        audio = speech.types.RecognitionAudio(  # pylint: disable=E1101
             uri=audio_file_uri
         )
         if encoding and encoding not in self.__encodings:
             encoding = self.__encodings["UNSPECIFIED"]
-        config = speech_v1.types.RecognitionConfig(  # pylint: disable=E1101
+        config = speech.types.RecognitionConfig(  # pylint: disable=E1101
             encoding=encoding,
             language_code=language_code,
             audio_channel_count=audio_channel_count,
