@@ -297,7 +297,7 @@ class ServiceVideoIntelligence(GoogleBase):
         - OBJECT_TRACKING, Object detection and tracking.
         - LOGO_RECOGNITION, Logo detection, tracking, and recognition.
 
-        if `video_uri` is given then that is used even if `video_file` is None.
+        If `video_uri` is given then that is used even if `video_file` is None.
 
         :param video_uri: Google Cloud Storage URI
         :param video_file: filepath to video
@@ -739,6 +739,7 @@ class Google(  # pylint: disable=R0901
         gs://<bucket_name>/<file_path_inside_bucket>
 
     The usage requires the following steps:
+
         - Create GCP project
         - Create service account key file (json) and save it to a place the robot
           can use it
