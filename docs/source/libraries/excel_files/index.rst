@@ -40,6 +40,34 @@ which can be iterated over later in a Robot Framework keyword or task.
         [Return]         ${orders}
         [Teardown]       Close workbook
 
+Processing all worksheets in the Excel and checking row count.
+
+.. code-block:: robotframework
+    :linenos:
+
+    *** Settings ***
+    Library    RPA.Excel.Files
+
+    *** Variables ***
+    ${EXCEL_FILE}   /path/to/excel.xlsx
+
+    *** Tasks ***
+    Rows in the sheet
+        [Setup]      Open Workbook    ${EXCEL_FILE}
+        @{sheets}=   List Worksheets
+        FOR  ${sheet}  IN   @{sheets}
+            ${count}=  Get row count in the sheet   ${sheet}
+            Log   Worksheet '${sheet}' has ${count} rows
+        END
+
+    *** Keywords ***
+    Get row count in the sheet
+        [Arguments]      ${SHEET_NAME}
+        ${sheet}=        Read Worksheet   ${SHEET_NAME}
+        ${rows}=         Get Length  ${sheet}
+        [Return]         ${rows}
+
+
 Python
 ======
 
