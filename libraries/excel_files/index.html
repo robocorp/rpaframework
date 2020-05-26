@@ -243,6 +243,50 @@ which can be iterated over later in a Robot Framework keyword or task.</p>
 <span class="p">    [</span><span class="kn">Teardown</span><span class="p">]       </span><span class="nf">Close workbook</span><span class="p"></span>
 </pre></div>
 </td></tr></table></div>
+<p>Processing all worksheets in the Excel and checking row count.</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Excel.Files</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">EXCEL_FILE</span><span class="p">}   </span><span class="s">/path/to/excel.xlsx</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Rows in the sheet</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Setup</span><span class="p">]      </span><span class="nf">Open Workbook</span><span class="p">    ${</span><span class="nv">EXCEL_FILE</span><span class="p">}</span>
+<span class="p">    @{</span><span class="nv">sheets</span><span class="p">}=   </span><span class="nf">List Worksheets</span><span class="p"></span>
+<span class="p">    FOR  ${</span><span class="nv">sheet</span><span class="p">}  IN   @{</span><span class="nv">sheets</span><span class="p">}</span>
+<span class="p">        ${</span><span class="nv">count</span><span class="p">}=  </span><span class="nf">Get row count in the sheet</span><span class="p">   ${</span><span class="nv">sheet</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log</span><span class="p">   </span><span class="s">Worksheet &#39;</span><span class="p">${</span><span class="nv">sheet</span><span class="p">}</span><span class="s">&#39; has </span><span class="p">${</span><span class="nv">count</span><span class="p">}</span><span class="s"> rows</span><span class="p"></span>
+<span class="p">    END</span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Get row count in the sheet</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Arguments</span><span class="p">]      ${</span><span class="nv">SHEET_NAME</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">sheet</span><span class="p">}=        </span><span class="nf">Read Worksheet</span><span class="p">   ${</span><span class="nv">SHEET_NAME</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">rows</span><span class="p">}=         </span><span class="nf">Get Length</span><span class="p">  ${</span><span class="nv">sheet</span><span class="p">}</span>
+<span class="p">    [</span><span class="kn">Return</span><span class="p">]         ${</span><span class="nv">rows</span><span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
 </div>
 <div class="section" id="python">
 <h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>

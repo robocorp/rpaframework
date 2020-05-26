@@ -213,16 +213,16 @@
 <blockquote>
 <div><p>gs://&lt;bucket_name&gt;/&lt;file_path_inside_bucket&gt;</p>
 </div></blockquote>
-<dl class="simple">
-<dt>The usage requires the following steps:</dt><dd><ul class="simple">
+<p>The usage requires the following steps:</p>
+<blockquote>
+<div><ul class="simple">
 <li><p>Create GCP project</p></li>
 <li><p>Create service account key file (json) and save it to a place the robot
 can use it</p></li>
 <li><p>Enable APIs</p></li>
 <li><p>Install rpa-framework[google]</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 <p>Services are taken into use with <code class="docutils literal notranslate"><span class="pre">init_SERVICENAME_client</span></code> keywords,
 which take as parameter an <code class="docutils literal notranslate"><span class="pre">service_account</span></code> JSON file.</p>
 </div>
@@ -261,7 +261,7 @@ which take as parameter an <code class="docutils literal notranslate"><span clas
 - TEXT_DETECTION, OCR text detection and tracking.
 - OBJECT_TRACKING, Object detection and tracking.
 - LOGO_RECOGNITION, Logo detection, tracking, and recognition.</p>
-<p>if <cite>video_uri</cite> is given then that is used even if <cite>video_file</cite> is None.</p>
+<p>If <cite>video_uri</cite> is given then that is used even if <cite>video_file</cite> is None.</p>
 </dd>
 <dt class="field-even">Classify Text</dt>
 <dd class="field-even"><dl class="field-list simple">

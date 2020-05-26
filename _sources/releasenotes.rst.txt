@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+- New library: Cloud.Azure
+
+0.11.0
+------
+
 - Cloud.Google: Added as optional package, needs to be installed
   with ``pip install rpa-framework[google]``
 
@@ -16,6 +21,8 @@ Upcoming release
     - ``Google Cloud Translation``
     - ``Google Cloud Video Intelligence``
     - ``Google Cloud Vision``
+
+- Excel.Files: Minor documentation update
 
 0.10.1
 ------
@@ -47,7 +54,6 @@ Upcoming release
 -----
 
 - Updated Robot Framework to 3.2.1
-
 
 0.9.1
 -----
