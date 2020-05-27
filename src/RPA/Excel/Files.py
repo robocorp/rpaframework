@@ -10,7 +10,8 @@ import xlrd
 import xlwt
 from xlutils.copy import copy as xlutils_copy
 
-from RPA.Tables import Tables
+from RPA.Tables import Tables, Table
+from RPA.core.inspect import is_list_like, is_dict_like
 
 
 class Files:
@@ -133,7 +134,7 @@ class Files:
         if content:
             self.workbook.append_worksheet(name, content)
 
-    def read_worksheet(self, name=None, header=False):
+    def read_worksheet(self, name=None, header=False, start=None):
         """Read the content of a worksheet into a list of dictionaries.
 
         Each key in the dictionary will be either values from the header row,
@@ -144,9 +145,9 @@ class Files:
                        as headers for the rest of the rows.
         """
         assert self.workbook, "No active workbook"
-        return self.workbook.read_worksheet(name, header)
+        return self.workbook.read_worksheet(name, header, start)
 
-    def read_worksheet_as_table(self, name=None, header=False, trim=True):
+    def read_worksheet_as_table(self, name=None, header=False, trim=True, start=None):
         """Read the content of a worksheet into a Table container. Allows
         sorting/filtering/manipulating using the `RPA.Tables` library.
 
@@ -154,9 +155,10 @@ class Files:
         :param header: If `True`, use the first row of the worksheet
                        as headers for the rest of the rows.
         :param trim:   Remove all empty rows from the end of the worksheet
+        :param start:  Row index to start reading data from (1-indexed)
         """
         tables = Tables()
-        sheet = self.read_worksheet(name, header)
+        sheet = self.read_worksheet(name, header, start)
 
         table = tables.create_table(sheet)
         if trim:
@@ -165,14 +167,16 @@ class Files:
 
         return table
 
-    def append_rows_to_worksheet(self, content, name=None):
+    def append_rows_to_worksheet(self, content, name=None, header=False, start=None):
         """Append values to the end of the worksheet.
 
         :param content: Rows of values to append
         :param name:    Name of worksheet to append to
+        :param header:  Set rows according to existing header row
+        :param start:   Start of data, NOTE: Only required when headers is True
         """
         assert self.workbook, "No active workbook"
-        return self.workbook.append_worksheet(name, content)
+        return self.workbook.append_worksheet(name, content, header, start)
 
     def remove_worksheet(self, name=None):
         """Remove a worksheet from the active workbook.
@@ -232,15 +236,11 @@ class XlsxWorkbook:
 
         return name
 
-    def _get_columns(self, sheet, header):
-        if header:
-            columns = [cell.value for cell in sheet[1]]
-            start = 2
-        else:
-            columns = [get_column_letter(i + 1) for i in range(sheet.max_column)]
-            start = 1
-
-        return start, columns
+    def _to_index(self, value):
+        value = int(value) if value is not None else 1
+        if value < 1:
+            raise ValueError("Invalid row index")
+        return value
 
     def create(self):
         self._book = openpyxl.Workbook()
@@ -266,10 +266,16 @@ class XlsxWorkbook:
         self._book.create_sheet(title=name)
         self.active = name
 
-    def read_worksheet(self, name=None, header=False):
+    def read_worksheet(self, name=None, header=False, start=None):
         name = self._get_sheetname(name)
         sheet = self._book[name]
-        start, columns = self._get_columns(sheet, header)
+        start = self._to_index(start)
+
+        if header:
+            columns = [cell.value for cell in sheet[start]]
+            start += 1
+        else:
+            columns = [get_column_letter(i + 1) for i in range(sheet.max_column)]
 
         data = []
         for cells in sheet.iter_rows(min_row=start):
@@ -283,18 +289,33 @@ class XlsxWorkbook:
         self.active = name
         return data
 
-    def append_worksheet(self, name=None, content=None, header=False):
-        content = content or []
+    def append_worksheet(self, name=None, content=None, header=False, start=None):
+        content = Table(content)
+        if not content:
+            return
+
         name = self._get_sheetname(name)
         sheet = self._book[name]
-        _, columns = self._get_columns(sheet, header)
+        start = self._to_index(start)
+        is_empty = sheet.max_row <= 1 and sheet.max_column <= 1
+
+        if header and not is_empty:
+            columns = [cell.value for cell in sheet[start]]
+        else:
+            columns = content.columns
+
+        if header and is_empty:
+            sheet.append(columns)
 
         for row in content:
-            if header and isinstance(row, dict):
-                for column, value in row.items():
+            values = [""] * len(columns)
+            for column, value in row.items():
+                try:
                     index = columns.index(column)
-                    row[index] = value
-            sheet.append(row)
+                    values[index] = value
+                except ValueError:
+                    pass
+            sheet.append(values)
 
         self.active = name
 
@@ -363,15 +384,11 @@ class XlsWorkbook:
 
         return name
 
-    def _get_columns(self, sheet, header):
-        if header:
-            columns = [cell.value for cell in sheet.row(0)]
-            start = 1
-        else:
-            columns = [get_column_letter(i + 1) for i in range(sheet.ncols)]
-            start = 0
-
-        return start, columns
+    def _to_index(self, value):
+        value = (int(value) - 1) if value is not None else 0
+        if value < 0:
+            raise ValueError("Invalid row index")
+        return value
 
     def create(self, sheet="Sheet"):
         fd = BytesIO()
@@ -429,10 +446,16 @@ class XlsWorkbook:
 
         self.active = name
 
-    def read_worksheet(self, name=None, header=False):
+    def read_worksheet(self, name=None, header=False, start=None):
         name = self._get_sheetname(name)
         sheet = self._book.sheet_by_name(name)
-        start, columns = self._get_columns(sheet, header)
+        start = self._to_index(start)
+
+        if header:
+            columns = [cell.value for cell in sheet.row(start)]
+            start += 1
+        else:
+            columns = [get_column_letter(i + 1) for i in range(sheet.ncols)]
 
         data = []
         for r in range(start, sheet.nrows):
@@ -460,24 +483,33 @@ class XlsWorkbook:
 
         return value
 
-    def append_worksheet(self, name=None, content=None, header=False):
-        content = content or []
+    def append_worksheet(self, name=None, content=None, header=False, start=None):
+        content = Table(content)
+        if not content:
+            return
+
         name = self._get_sheetname(name)
         sheet_read = self._book.sheet_by_name(name)
-        _, columns = self._get_columns(sheet_read, header)
+        start = self._to_index(start)
+        is_empty = sheet_read.ncols <= 1 and sheet_read.nrows <= 1
+
+        if header and not is_empty:
+            columns = [cell.value for cell in sheet_read.row(start)]
+        else:
+            columns = content.columns
 
         with self._book_write() as book:
             sheet_write = book.get_sheet(name)
+            start_row = sheet_read.nrows
 
-            for r, row in enumerate(content, sheet_read.nrows):
-                if isinstance(row, (list, tuple)):
-                    for c, value in enumerate(row):
-                        sheet_write.write(r, c, value)
-                elif isinstance(row, dict):
-                    for column, value in row.items():
-                        sheet_write.write(r, columns.index[column], value)
-                else:
-                    raise ValueError(f"Unknown row type: {type(row)}")
+            if header and is_empty:
+                for column, value in enumerate(columns):
+                    sheet_write.write(0, column, value)
+                start_row += 1
+
+            for r, row in enumerate(content, start_row):
+                for column, value in row.items():
+                    sheet_write.write(r, columns.index(column), value)
 
         self.active = name
 
