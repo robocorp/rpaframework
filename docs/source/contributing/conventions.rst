@@ -11,7 +11,7 @@ Naming
 ======
 
 All libraries in the framework are named with a shared convention. This convention
-is the prefix ``rpa-framework-*``, for example ``rpa-framework-secrets`` for
+is the prefix ``rpaframework-*``, for example ``rpaframework-secrets`` for
 a secrets management library. This name is used for both the git repository
 and PyPI package.
 

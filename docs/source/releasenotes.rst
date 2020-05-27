@@ -6,6 +6,13 @@ Upcoming release
 
 - New library: Cloud.Azure
 
+1.0.0
+-----
+
+- **MAJOR** change. Package has been renamed to ``rpaframework``. The old PyPI package
+  will continue to work for a while (not receiving updates anymore), but it will be removed
+  before official GA launch in the beginning of July.
+
 0.11.0
 ------
 

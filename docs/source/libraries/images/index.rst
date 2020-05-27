@@ -46,7 +46,7 @@ For more robust and faster template matching, the library can use a combination
 of `NumPy <https://numpy.org/>`_ and `OpenCV <https://opencv.org/>`_.
 They can be installed by opting in to the `cv` dependency:
 
-``pip install rpa-framework[cv]``
+``pip install rpaframework[cv]``
 
 ********
 Examples
