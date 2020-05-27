@@ -35,21 +35,21 @@ Learn more about RPA at Robohub_.
 Links
 ^^^^^
 
-- Homepage: `<https://www.github.com/robocorp/rpa-framework/>`_
+- Homepage: `<https://www.github.com/robocorp/rpaframework/>`_
 - Documentation: `<https://rpaframework.org/>`_
-- PyPI: `<https://pypi.org/project/rpa-framework/>`_
+- PyPI: `<https://pypi.org/project/rpaframework/>`_
 
 ------------
 
-.. image:: https://github.com/robocorp/rpa-framework/workflows/main/badge.svg
-   :target: https://github.com/robocorp/rpa-framework/actions?query=workflow%3Amain
+.. image:: https://github.com/robocorp/rpaframework/workflows/main/badge.svg
+   :target: https://github.com/robocorp/rpaframework/actions?query=workflow%3Amain
    :alt: Status
 
-.. image:: https://img.shields.io/pypi/v/rpa-framework.svg?label=version
-   :target: https://pypi.python.org/pypi/rpa-framework
+.. image:: https://img.shields.io/pypi/v/rpaframework.svg?label=version
+   :target: https://pypi.python.org/pypi/rpaframework
    :alt: Latest version
 
-.. image:: https://img.shields.io/pypi/l/rpa-framework.svg
+.. image:: https://img.shields.io/pypi/l/rpaframework.svg
    :target: http://www.apache.org/licenses/LICENSE-2.0.html
    :alt: License
 
@@ -144,7 +144,7 @@ Installation
 If you already have Python_ and `pip <http://pip-installer.org>`_ installed,
 you can use:
 
-``pip install rpa-framework``
+``pip install rpaframework``
 
 .. note:: Python 3.6 or higher is required
 
@@ -182,7 +182,7 @@ Support and contact
 
 - `rpaframework.org <https://rpaframework.org/>`_ for library documentation
 - Robohub_ for guides and tutorials
-- **#rpa-framework** channel in `Robot Framework Slack`_ if you
+- **#rpaframework** channel in `Robot Framework Slack`_ if you
   have open questions or want to contribute
 
 .. _Robot Framework Slack: https://robotframework-slack-invite.herokuapp.com/

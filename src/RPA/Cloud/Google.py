@@ -29,7 +29,7 @@ def google_dependency_required(f):
         if not HAS_GOOGLECLOUD:
             raise ValueError(
                 "Please install optional `google` package, "
-                "`pip install rpa-framework[google]` to use RPA.Cloud.Google library"
+                "`pip install rpaframework[google]` to use RPA.Cloud.Google library"
             )
         return f(*args, **kwargs)
 
@@ -744,7 +744,7 @@ class Google(  # pylint: disable=R0901
         - Create service account key file (json) and save it to a place the robot
           can use it
         - Enable APIs
-        - Install rpa-framework[google]
+        - Install rpaframework[google]
 
     Services are taken into use with ``init_SERVICENAME_client`` keywords,
     which take as parameter an ``service_account`` JSON file.

@@ -32,7 +32,7 @@ def aws_dependency_required(f):
         if not HAS_BOTO3:
             raise ValueError(
                 "Please install optional `aws` package, "
-                "`pip install rpa-framework[aws]` to use RPA.Cloud.AWS library"
+                "`pip install rpaframework[aws]` to use RPA.Cloud.AWS library"
             )
         return f(*args, **kwargs)
 

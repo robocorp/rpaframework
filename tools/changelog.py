@@ -41,7 +41,7 @@ def main():
             if line.strip():
                 output.append(to_markup(line))
 
-        print(f"\nrpa-framework version *{version}*\n")
+        print(f"\nrpaframework version *{version}*\n")
         print("".join(output))
 
 
