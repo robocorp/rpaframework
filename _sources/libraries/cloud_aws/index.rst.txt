@@ -22,11 +22,11 @@ Requirements
 ============
 
 The default installation depends on `boto3`_ library. Due to the size of the
-dependency this has been set as optional package for ``rpa-framework``.
+dependency this has been set as optional package for ``rpaframework``.
 
 This can be installed by opting in to the `aws` dependency:
 
-``pip install rpa-framework[aws]``
+``pip install rpaframework[aws]``
 
 .. _boto3:
     https://boto3.amazonaws.com/v1/documentation/api/latest/index.html

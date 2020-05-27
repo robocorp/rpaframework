@@ -18,7 +18,7 @@ Description
         - Create service account key file (json) and save it to a place the robot
           can use it
         - Enable APIs
-        - Install rpa-framework[google]
+        - Install rpaframework[google]
 
 ********
 Examples

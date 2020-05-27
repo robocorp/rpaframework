@@ -20,7 +20,7 @@ The usage requires the following steps:
     - Create service account key file (json) and save it to a place the robot
       can use it
     - Enable APIs
-    - Install rpa-framework[google]
+    - Install rpaframework[google]
 
 Services are taken into use with ``init_SERVICENAME_client`` keywords,
 which take as parameter an ``service_account`` JSON file.

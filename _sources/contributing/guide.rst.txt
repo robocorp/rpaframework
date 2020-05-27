@@ -20,7 +20,7 @@ the expected outcome was, and possibly the steps to reproduce it.
 
 The report should contain at least the following information:
 
-- rpa-framework library version
+- rpaframework library version
 - Python version
 - Operating system
 - Error message and traceback, if applicable
@@ -29,7 +29,7 @@ If possible, supply a minimal example that replicates the problem. This
 will help in tracking down and fixing the issue.
 
 .. _tracker:
-.. _issue tracker: https://github.com/robocorp/rpa-framework/issues
+.. _issue tracker: https://github.com/robocorp/rpaframework/issues
 
 Requesting enhancements
 =======================
@@ -42,7 +42,7 @@ A good enhancement proposal should describe the problem it is trying to
 solve and - in case of a library - example ways how it would be used.
 
 If you're unsure if the request is worth implementing, you can first ask
-from the **#rpa-framework** channel in `Robot Framework Slack`_.
+from the **#rpaframework** channel in `Robot Framework Slack`_.
 
 .. _Slack:
 .. _Robot Framework Slack: https://robotframework-slack-invite.herokuapp.com/
