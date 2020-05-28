@@ -664,6 +664,21 @@ list of lists, list of dicts, dict of lists.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Tables.Tables.get_table_slice">
+<code class="sig-name descname">get_table_slice</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">start=None</em>, <em class="sig-param">end=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.get_table_slice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new Table from a subset of given Table rows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to read from</p></li>
+<li><p><strong>start</strong> – start index (inclusive)</p></li>
+<li><p><strong>start</strong> – end index (inclusive)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Tables.Tables.group_table_by_column">
 <code class="sig-name descname">group_table_by_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.group_table_by_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Group table by <cite>column</cite> and return a list of grouped Tables.</p>
@@ -718,6 +733,23 @@ list of lists, list of dicts, dict of lists.</p>
 <li><p><strong>header</strong> – CSV file includes header</p></li>
 <li><p><strong>columns</strong> – names of columns in resulting table</p></li>
 <li><p><strong>dialect</strong> – format of CSV file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.rename_table_columns">
+<code class="sig-name descname">rename_table_columns</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">columns</em>, <em class="sig-param">strict=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.rename_table_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renames columns in the Table with given values. Columns with
+name as <cite>None</cite> will be use previous value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to modify</p></li>
+<li><p><strong>columns</strong> – list of new column names</p></li>
+<li><p><strong>strict</strong> – if True, raises ValueError if column lengths
+do not match</p></li>
 </ul>
 </dd>
 </dl>

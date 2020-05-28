@@ -18,7 +18,7 @@ Keywords
 ********
 
 :Append Rows To Worksheet:
-  :Arguments: content, name=None
+  :Arguments: content, name=None, header=False, start=None
 
   Append values to the end of the worksheet.
 
@@ -51,7 +51,7 @@ Keywords
 
 
 :Read Worksheet:
-  :Arguments: name=None, header=False
+  :Arguments: name=None, header=False, start=None
 
   Read the content of a worksheet into a list of dictionaries.
 
@@ -60,7 +60,7 @@ Keywords
 
 
 :Read Worksheet As Table:
-  :Arguments: name=None, header=False, trim=True
+  :Arguments: name=None, header=False, trim=True, start=None
 
   Read the content of a worksheet into a Table container. Allows
   sorting/filtering/manipulating using the `RPA.Tables` library.

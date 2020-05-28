@@ -311,6 +311,14 @@ list of lists, list of dicts, dict of lists.</p>
 </dl>
 <p>Get a single row from table.</p>
 </dd>
+<dt class="field-even">Get Table Slice</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, start=None, end=None</p>
+</dd>
+</dl>
+<p>Return a new Table from a subset of given Table rows.</p>
+</dd>
 <dt class="field-even">Group Table By Column</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -342,6 +350,15 @@ list of lists, list of dicts, dict of lists.</p>
 </dd>
 </dl>
 <p>Read a CSV file as a table.</p>
+</dd>
+<dt class="field-even">Rename Table Columns</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, columns, strict=False</p>
+</dd>
+</dl>
+<p>Renames columns in the Table with given values. Columns with
+name as <cite>None</cite> will be use previous value.</p>
 </dd>
 <dt class="field-even">Requires Table</dt>
 <dd class="field-even"><dl class="field-list simple">

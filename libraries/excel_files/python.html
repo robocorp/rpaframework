@@ -213,13 +213,15 @@
 please use the Excel application library.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.append_rows_to_worksheet">
-<code class="sig-name descname">append_rows_to_worksheet</code><span class="sig-paren">(</span><em class="sig-param">content</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.append_rows_to_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">append_rows_to_worksheet</code><span class="sig-paren">(</span><em class="sig-param">content</em>, <em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.append_rows_to_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append values to the end of the worksheet.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>content</strong> – Rows of values to append</p></li>
 <li><p><strong>name</strong> – Name of worksheet to append to</p></li>
+<li><p><strong>header</strong> – Set rows according to existing header row</p></li>
+<li><p><strong>start</strong> – Start of data, NOTE: Only required when headers is True</p></li>
 </ul>
 </dd>
 </dl>
@@ -285,7 +287,7 @@ please use the Excel application library.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.read_worksheet">
-<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the content of a worksheet into a list of dictionaries.</p>
 <p>Each key in the dictionary will be either values from the header row,
 or Excel-style column letters.</p>
@@ -302,7 +304,7 @@ as headers for the rest of the rows.</p></li>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.read_worksheet_as_table">
-<code class="sig-name descname">read_worksheet_as_table</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">trim=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet_as_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_worksheet_as_table</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">trim=True</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet_as_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the content of a worksheet into a Table container. Allows
 sorting/filtering/manipulating using the <cite>RPA.Tables</cite> library.</p>
 <dl class="field-list simple">
@@ -312,6 +314,7 @@ sorting/filtering/manipulating using the <cite>RPA.Tables</cite> library.</p>
 <li><p><strong>header</strong> – If <cite>True</cite>, use the first row of the worksheet
 as headers for the rest of the rows.</p></li>
 <li><p><strong>trim</strong> – Remove all empty rows from the end of the worksheet</p></li>
+<li><p><strong>start</strong> – Row index to start reading data from (1-indexed)</p></li>
 </ul>
 </dd>
 </dl>
@@ -385,7 +388,7 @@ when opened or created.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.append_worksheet">
-<code class="sig-name descname">append_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">content=None</em>, <em class="sig-param">header=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.append_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">append_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">content=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.append_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -410,7 +413,7 @@ when opened or created.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.read_worksheet">
-<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.read_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.read_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -447,7 +450,7 @@ when opened or created.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.append_worksheet">
-<code class="sig-name descname">append_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">content=None</em>, <em class="sig-param">header=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.append_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">append_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">content=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.append_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -472,7 +475,7 @@ when opened or created.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.read_worksheet">
-<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.read_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.read_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -495,6 +498,14 @@ when opened or created.</p>
 <em class="property">property </em><code class="sig-name descname">sheetnames</code><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.sheetnames" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Excel.Files.ensure_unique">
+<code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">ensure_unique</code><span class="sig-paren">(</span><em class="sig-param">values</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.ensure_unique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensures that each value in the list is unique.
+Adds a suffix to each value that has duplicates,
+e.g. [Banana, Apple, Lemon, Apple] -&gt; [Banana, Apple, Lemon, Apple_2]</p>
 </dd></dl>
 
 </div>

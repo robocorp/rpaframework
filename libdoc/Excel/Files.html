@@ -218,7 +218,7 @@ please use the Excel application library.</p>
 <dt class="field-odd">Append Rows To Worksheet</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>content, name=None</p>
+<dd class="field-odd"><p>content, name=None, header=False, start=None</p>
 </dd>
 </dl>
 <p>Append values to the end of the worksheet.</p>
@@ -259,7 +259,7 @@ please use the Excel application library.</p>
 <dt class="field-even">Read Worksheet</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>name=None, header=False</p>
+<dd class="field-odd"><p>name=None, header=False, start=None</p>
 </dd>
 </dl>
 <p>Read the content of a worksheet into a list of dictionaries.</p>
@@ -269,7 +269,7 @@ or Excel-style column letters.</p>
 <dt class="field-even">Read Worksheet As Table</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>name=None, header=False, trim=True</p>
+<dd class="field-odd"><p>name=None, header=False, trim=True, start=None</p>
 </dd>
 </dl>
 <p>Read the content of a worksheet into a Table container. Allows

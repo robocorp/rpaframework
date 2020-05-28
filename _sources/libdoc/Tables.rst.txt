@@ -89,6 +89,12 @@ Keywords
   Get a single row from table.
 
 
+:Get Table Slice:
+  :Arguments: table, start=None, end=None
+
+  Return a new Table from a subset of given Table rows.
+
+
 :Group Table By Column:
   :Arguments: table, column
 
@@ -111,6 +117,13 @@ Keywords
   :Arguments: path, header=None, columns=None, dialect=None
 
   Read a CSV file as a table.
+
+
+:Rename Table Columns:
+  :Arguments: table, columns, strict=False
+
+  Renames columns in the Table with given values. Columns with
+  name as `None` will be use previous value.
 
 
 :Requires Table:
