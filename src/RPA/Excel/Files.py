@@ -12,7 +12,6 @@ import xlwt
 from xlutils.copy import copy as xlutils_copy
 
 from RPA.Tables import Tables, Table
-from RPA.core.inspect import is_list_like, is_dict_like
 
 
 def ensure_unique(values):
@@ -20,6 +19,7 @@ def ensure_unique(values):
     Adds a suffix to each value that has duplicates,
     e.g. [Banana, Apple, Lemon, Apple] -> [Banana, Apple, Lemon, Apple_2]
     """
+
     def to_unique(values):
         output = []
         seen = defaultdict(int)

@@ -367,6 +367,6 @@ def test_create_table_1d_dict():
 
 
 def test_create_table_1d_list():
-    data = [1,2,3]
+    data = [1, 2, 3]
     table = Table(data)
     assert len(table) == 3
