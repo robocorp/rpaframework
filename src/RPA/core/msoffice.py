@@ -52,6 +52,7 @@ class OfficeApplication:
 
     def quit_application(self, save_changes: bool = False) -> None:
         if hasattr(self, "app") and self.app is not None:
-            self.close_document(save_changes)
+            if self.application_name == "Word":
+                self.close_document(save_changes)
             self.app.Quit()
             self.app = None
