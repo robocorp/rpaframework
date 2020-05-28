@@ -6,6 +6,11 @@ Upcoming release
 
 - New library: Cloud.Azure
 
+1.0.1
+-----
+
+- Outlook: Fix attachment handling
+
 1.0.0
 -----
 

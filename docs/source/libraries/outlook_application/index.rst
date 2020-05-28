@@ -38,7 +38,7 @@ Robot Framework tasks.
         Send Message       recipients=${RECIPIENT}
         ...                subject=Message from RPA
         ...                body=Sending message body contains more details
-
+        ..                 attachments=approved.png
 
 Python
 ======
@@ -55,13 +55,11 @@ own Python modules.
         app = Application()
         app.open_application()
         app.send_message(
-            recipients='EMAILADDRESS',
+            recipients='EMAILADDRESS_1, EMAILADDRESS_2',
             subject='email subject',
-            body='email body message'
-        )
+            body='email body message',
+            attachments='../orders.csv'
 
-    if __name__ == "__main__":
-        send_message()
 
 *****************
 API Documentation
