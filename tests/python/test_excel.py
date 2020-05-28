@@ -2,7 +2,7 @@ import datetime
 import pytest
 from io import BytesIO
 
-from RPA.Excel.Files import Files, XlsxWorkbook, XlsWorkbook
+from RPA.Excel.Files import Files, XlsxWorkbook, XlsWorkbook, ensure_unique
 from RPA.Tables import Table
 
 
@@ -111,8 +111,59 @@ def test_read_worksheet_as_table(library):
     assert table[2, 2] == "Hashimoto"
 
 
-def test_append_to_worksheet(library):
-    library.append_rows_to_worksheet([["one", "two", "three"]])
+def test_read_worksheet_as_table_start_offset(library):
+    table = library.read_worksheet_as_table(name="First", start=3)
+    assert len(table) == 8
+    assert table[0, 1] == "Mara"
+    assert table[0, 2] == "Hashimoto"
+
+
+def test_append_to_worksheet_headers(library):
+    table = Table(
+        [
+            {"Index": 98, "Date": "today", "Id": "some_value"},
+            {"Index": 99, "Date": "tomorrow", "Id": "another_value"},
+        ]
+    )
+    library.append_rows_to_worksheet(table, header=True)
+
+    result = library.read_worksheet_as_table(header=True)
+    assert len(result) == 11
+    assert result[-1] == [99, "tomorrow", "another_value"]
+
+
+@pytest.mark.parametrize("fmt", ("xlsx", "xls"))
+def test_append_to_worksheet_empty(fmt):
+    table = Table(
+        [
+            {"Index": 98, "Date": "today", "Id": "some_value"},
+            {"Index": 99, "Date": "tomorrow", "Id": "another_value"},
+        ]
+    )
+    library = Files()
+    library.create_workbook(fmt=fmt)
+    library.append_rows_to_worksheet(table)
+
+    result = library.read_worksheet_as_table()
+    assert len(result) == 2
+    assert result[0] == [98, "today", "some_value"]
+
+
+@pytest.mark.parametrize("fmt", ("xlsx", "xls"))
+def test_append_to_worksheet_empty_with_headers(fmt):
+    table = Table(
+        [
+            {"Index": 98, "Date": "today", "Id": "some_value"},
+            {"Index": 99, "Date": "tomorrow", "Id": "another_value"},
+        ]
+    )
+    library = Files()
+    library.create_workbook(fmt=fmt)
+    library.append_rows_to_worksheet(table, header=True)
+
+    result = library.read_worksheet_as_table()
+    assert len(result) == 3
+    assert result[0] == ["Index", "Date", "Id"]
 
 
 def test_remove_worksheet(library):
@@ -123,3 +174,13 @@ def test_remove_worksheet(library):
 def test_rename_worksheet(library):
     library.rename_worksheet("Second", "Toinen")
     assert library.list_worksheets() == ["First", "Toinen"]
+
+
+def test_ensure_unique():
+    result = ensure_unique(["Banana", "Apple", "Lemon", "Apple", "Apple", "Banana"])
+    assert result == ["Banana", "Apple", "Lemon", "Apple_2", "Apple_3", "Banana_2"]
+
+
+def test_ensure_unique_nested():
+    result = ensure_unique(["Banana", "Apple", "Lemon", "Apple", "Apple_2", "Banana"])
+    assert result == ["Banana", "Apple", "Lemon", "Apple_2", "Apple_2_2", "Banana_2"]

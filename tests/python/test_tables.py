@@ -175,6 +175,15 @@ def test_keyword_get_table_dimensions(library, table):
     assert columns == 4
 
 
+def test_keyword_rename_table_columns(library, table):
+    library.rename_table_columns(table, ["a", "b", "c", "d"])
+    assert table.columns == ["a", "b", "c", "d"]
+    assert table.get_column("a", as_list=True) == [1, "a", 1, None, 1, None]
+
+    library.rename_table_columns(table, ["1", None, "2"])
+    assert table.columns == ["1", "b", "2", "d"]
+
+
 def test_keyword_add_table_column(library, table):
     library.add_table_column(table, name="five")
     assert table.columns == ["one", "two", "three", "four", "five"]
@@ -225,6 +234,23 @@ def test_keyword_pop_table_row(library, table):
 @pytest.mark.skip(reason="Not implemented")
 def test_keyword_pop_table_column(library, table):
     library.pop_table_column(table, column=None)
+
+
+def test_keyword_get_table_slice(library, table):
+    result = library.get_table_slice(table)
+    assert result == table
+
+    result = library.get_table_slice(table, start=3)
+    assert len(result) == 3
+
+    result = library.get_table_slice(table, end=2)
+    assert len(result) == 3
+
+    result = library.get_table_slice(table, start=2, end=2)
+    assert len(result) == 1
+
+    with pytest.raises(ValueError):
+        library.get_table_slice(table, start=3, end=2)
 
 
 @pytest.mark.skip(reason="Not implemented")
@@ -331,3 +357,16 @@ def test_set_cell_empty_table():
     table.set_cell(0, 0, "value")
     assert table.dimensions == (1, 1)
     assert table[0, 0] == "value"
+
+
+def test_create_table_1d_dict():
+    data = {"a": 1, "b": 2, "c": 3}
+    table = Table(data)
+    assert len(table) == 1
+    assert table.columns == ["a", "b", "c"]
+
+
+def test_create_table_1d_list():
+    data = [1, 2, 3]
+    table = Table(data)
+    assert len(table) == 3
