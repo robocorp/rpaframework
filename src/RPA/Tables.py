@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 import copy
 import csv
 import keyword
@@ -74,6 +75,8 @@ class Table:
 
         if not data:
             self._init_empty()
+        elif isinstance(data, Table):
+            self._init_table(data)
         elif is_dict_like(data):
             self._init_dict(data)
         elif is_list_like(data):
@@ -89,6 +92,14 @@ class Table:
     def _init_empty(self):
         """Initialize table with empty data."""
         self._data = [[None for _ in self._columns] for _ in self._index]
+
+    def _init_table(self, table):
+        """Initialize table with another table."""
+        if not self.columns:
+            self.columns = table.columns
+        if not self.index:
+            self.index = table.index
+        self._data = table.data
 
     def _init_list(self, data):
         """Initialize table from list-like container."""
@@ -902,6 +913,32 @@ class Tables:
         self.requires_table(table)
         return table.dimensions
 
+    def rename_table_columns(self, table, columns, strict=False):
+        """Renames columns in the Table with given values. Columns with
+        name as `None` will be use previous value.
+
+        :param table:   table to modify
+        :param columns: list of new column names
+        :param strict:  if True, raises ValueError if column lengths
+                        do not match
+        """
+        self.requires_table(table)
+        before = table.columns
+
+        if strict and len(before) != len(columns):
+            raise ValueError("Column lengths do not match")
+
+        after = []
+        for old, new in zip_longest(before, columns):
+            if old is None:
+                break
+            elif new is None:
+                after.append(old)
+            else:
+                after.append(new)
+
+        table.columns = after
+
     def add_table_column(self, table, name=None, values=None):
         """Append a column to a table.
 
@@ -989,6 +1026,16 @@ class Tables:
         values = self.get_table_column(table, column, as_list)
         table.delete_columns(column)
         return values
+
+    def get_table_slice(self, table, start=None, end=None):
+        """Return a new Table from a subset of given Table rows.
+
+        :param table:   table to read from
+        :param start:   start index (inclusive)
+        :param start:   end index (inclusive)
+        """
+        self.requires_table(table)
+        return table.get_slice(start, end)
 
     def set_column_as_index(self, table, column=None):
         """Set existing column as index for rows.
