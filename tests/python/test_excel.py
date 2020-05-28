@@ -132,6 +132,10 @@ def test_append_to_worksheet_headers(library):
     assert result[-1] == [99, "tomorrow", "another_value"]
 
 
+def test_append_to_worksheet_list(library):
+    pass
+
+
 @pytest.mark.parametrize("fmt", ("xlsx", "xls"))
 def test_append_to_worksheet_empty(fmt):
     table = Table(

@@ -357,3 +357,16 @@ def test_set_cell_empty_table():
     table.set_cell(0, 0, "value")
     assert table.dimensions == (1, 1)
     assert table[0, 0] == "value"
+
+
+def test_create_table_1d_dict():
+    data = {"a": 1, "b": 2, "c": 3}
+    table = Table(data)
+    assert len(table) == 1
+    assert table.columns == ["a", "b", "c"]
+
+
+def test_create_table_1d_list():
+    data = [1,2,3]
+    table = Table(data)
+    assert len(table) == 3
