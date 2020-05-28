@@ -67,6 +67,41 @@ Processing all worksheets in the Excel and checking row count.
         ${rows}=         Get Length  ${sheet}
         [Return]         ${rows}
 
+Creating new Excel with dictionary
+
+.. code-block:: robotframework
+    :linenos:
+
+    *** Tasks ***
+    Creating new Excel
+        Create Workbook  my_new_excel.xlsx
+        FOR    ${index}    IN RANGE    20
+            &{row}=       Create Dictionary
+            ...           Row No   ${index}
+            ...           Amount   ${index * 25}
+            Append Rows to Worksheet  ${row}  header=${TRUE}
+        END
+        Save Workbook
+
+Creating new Excel with list
+
+.. code-block:: robotframework
+    :linenos:
+
+    *** Variables ***
+    @{heading}   Row No   Amount
+    @{rows}      @{heading}
+
+    *** Tasks ***
+    Creating new Excel
+        Create Workbook  my_new_excel.xlsx
+        FOR    ${index}    IN RANGE   1  20
+            @{row}=         Create List   ${index}   ${index * 25}
+            Append To List  ${rows}  ${row}
+        END
+        Append Rows to Worksheet  ${rows}
+        Save Workbook
+
 
 Python
 ======

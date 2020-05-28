@@ -5,12 +5,12 @@ Upcoming release
 ----------------
 
 - New library: Cloud.Azure
-- Tables: Added keywords ``Get table slice`` and ``Rename table columns``
-- Excel: Files: Fixed various issues with appending data to empty worksheet
 
 1.0.1
 -----
 
+- Tables: Added keywords ``Get table slice`` and ``Rename table columns``
+- Excel: Files: Fixed various issues with appending data to empty worksheet
 - Outlook: Fix attachment handling
 
 1.0.0

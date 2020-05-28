@@ -287,6 +287,56 @@ which can be iterated over later in a Robot Framework keyword or task.</p>
 <span class="p">    [</span><span class="kn">Return</span><span class="p">]         ${</span><span class="nv">rows</span><span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
+<p>Creating new Excel with dictionary</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Creating new Excel</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Create Workbook</span><span class="p">  </span><span class="s">my_new_excel.xlsx</span><span class="p"></span>
+<span class="p">    FOR    ${</span><span class="nv">index</span><span class="p">}    IN RANGE    </span><span class="s">20</span><span class="p"></span>
+<span class="p">        &amp;{</span><span class="nv">row</span><span class="p">}=       </span><span class="nf">Create Dictionary</span><span class="p"></span>
+<span class="p">        ...           </span><span class="s">Row No</span><span class="p">   ${</span><span class="nv">index</span><span class="p">}</span>
+<span class="p">        ...           </span><span class="s">Amount</span><span class="p">   ${</span><span class="nv">index * 25</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Append Rows to Worksheet</span><span class="p">  ${</span><span class="nv">row</span><span class="p">}  </span><span class="s">header=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+<span class="p">    END</span>
+<span class="p">    </span><span class="nf">Save Workbook</span><span class="p"></span>
+</pre></div>
+</td></tr></table></div>
+<p>Creating new Excel with list</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">@{</span><span class="nv">heading</span><span class="p">}   </span><span class="s">Row No</span><span class="p">   </span><span class="s">Amount</span><span class="p"></span>
+<span class="p">@{</span><span class="nv">rows</span><span class="p">}      @{</span><span class="nv">heading</span><span class="p">}</span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Creating new Excel</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Create Workbook</span><span class="p">  </span><span class="s">my_new_excel.xlsx</span><span class="p"></span>
+<span class="p">    FOR    ${</span><span class="nv">index</span><span class="p">}    IN RANGE   </span><span class="s">1</span><span class="p">  </span><span class="s">20</span><span class="p"></span>
+<span class="p">        @{</span><span class="nv">row</span><span class="p">}=         </span><span class="nf">Create List</span><span class="p">   ${</span><span class="nv">index</span><span class="p">}   ${</span><span class="nv">index * 25</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Append To List</span><span class="p">  ${</span><span class="nv">rows</span><span class="p">}  ${</span><span class="nv">row</span><span class="p">}</span>
+<span class="p">    END</span>
+<span class="p">    </span><span class="nf">Append Rows to Worksheet</span><span class="p">  ${</span><span class="nv">rows</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Save Workbook</span><span class="p"></span>
+</pre></div>
+</td></tr></table></div>
 </div>
 <div class="section" id="python">
 <h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
