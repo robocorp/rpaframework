@@ -31,7 +31,7 @@ Keywords
 
 
 :Send Message:
-  :Arguments: recipients, subject, body, html_body=False, attachments=None
+  :Arguments: recipients: typing.Any, subject: str, body: str, html_body: bool=False, attachments: typing.Any=None
 
   Send message with Outlook
 

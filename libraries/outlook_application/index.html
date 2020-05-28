@@ -230,7 +230,8 @@ Robot Framework tasks.</p>
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">                 </span><span class="nn">RPA.Outlook.Application</span><span class="p"></span>
 <span class="kn">Task Setup</span><span class="p">              </span><span class="nf">Open Application</span><span class="p"></span>
 <span class="kn">Suite Teardown</span><span class="p">          </span><span class="nf">Quit Application</span><span class="p"></span>
@@ -243,6 +244,7 @@ Robot Framework tasks.</p>
 <span class="p">    </span><span class="nf">Send Message</span><span class="p">       </span><span class="s">recipients=</span><span class="p">${</span><span class="nv">RECIPIENT</span><span class="p">}</span>
 <span class="p">    ...                </span><span class="s">subject=Message from RPA</span><span class="p"></span>
 <span class="p">    ...                </span><span class="s">body=Sending message body contains more details</span><span class="p"></span>
+<span class="p">    </span><span class="nf">..</span><span class="p">                 </span><span class="s">attachments=approved.png</span><span class="p"></span>
 </pre></div>
 </td></tr></table></div>
 </div>
@@ -259,22 +261,16 @@ own Python modules.</p>
  7
  8
  9
-10
-11
-12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Outlook.Application</span> <span class="kn">import</span> <span class="n">Application</span>
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Outlook.Application</span> <span class="kn">import</span> <span class="n">Application</span>
 
 <span class="k">def</span> <span class="nf">send_message</span><span class="p">():</span>
     <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
     <span class="n">app</span><span class="o">.</span><span class="n">open_application</span><span class="p">()</span>
     <span class="n">app</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span>
-        <span class="n">recipients</span><span class="o">=</span><span class="s1">&#39;EMAILADDRESS&#39;</span><span class="p">,</span>
+        <span class="n">recipients</span><span class="o">=</span><span class="s1">&#39;EMAILADDRESS_1, EMAILADDRESS_2&#39;</span><span class="p">,</span>
         <span class="n">subject</span><span class="o">=</span><span class="s1">&#39;email subject&#39;</span><span class="p">,</span>
-        <span class="n">body</span><span class="o">=</span><span class="s1">&#39;email body message&#39;</span>
-    <span class="p">)</span>
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">send_message</span><span class="p">()</span>
+        <span class="n">body</span><span class="o">=</span><span class="s1">&#39;email body message&#39;</span><span class="p">,</span>
+        <span class="n">attachments</span><span class="o">=</span><span class="s1">&#39;../orders.csv&#39;</span>
 </pre></div>
 </td></tr></table></div>
 </div>

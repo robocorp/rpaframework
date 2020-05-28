@@ -211,7 +211,7 @@
 <p>Library for manipulating Outlook application.</p>
 <dl class="method">
 <dt id="RPA.Outlook.Application.Application.send_message">
-<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">recipients</em>, <em class="sig-param">subject</em>, <em class="sig-param">body</em>, <em class="sig-param">html_body=False</em>, <em class="sig-param">attachments=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Outlook.Application.Application.send_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">recipients: Any</em>, <em class="sig-param">subject: str</em>, <em class="sig-param">body: str</em>, <em class="sig-param">html_body: bool = False</em>, <em class="sig-param">attachments: Any = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Outlook.Application.Application.send_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send message with Outlook</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -222,6 +222,9 @@
 <li><p><strong>html_body</strong> – True if body contains HTML, defaults to False</p></li>
 <li><p><strong>attachments</strong> – list of filepaths to include in the email, defaults to []</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><cite>True</cite> if there were no errors</p>
 </dd>
 </dl>
 </dd></dl>
