@@ -2,7 +2,7 @@ import datetime
 import pytest
 from io import BytesIO
 
-from RPA.Excel.Files import Files, XlsxWorkbook, XlsWorkbook
+from RPA.Excel.Files import Files, XlsxWorkbook, XlsWorkbook, ensure_unique
 from RPA.Tables import Table
 
 
@@ -132,10 +132,6 @@ def test_append_to_worksheet_headers(library):
     assert result[-1] == [99, "tomorrow", "another_value"]
 
 
-def test_append_to_worksheet_list(library):
-    pass
-
-
 @pytest.mark.parametrize("fmt", ("xlsx", "xls"))
 def test_append_to_worksheet_empty(fmt):
     table = Table(
@@ -178,3 +174,13 @@ def test_remove_worksheet(library):
 def test_rename_worksheet(library):
     library.rename_worksheet("Second", "Toinen")
     assert library.list_worksheets() == ["First", "Toinen"]
+
+
+def test_ensure_unique():
+    result = ensure_unique(["Banana", "Apple", "Lemon", "Apple", "Apple", "Banana"])
+    assert result == ["Banana", "Apple", "Lemon", "Apple_2", "Apple_3", "Banana_2"]
+
+
+def test_ensure_unique_nested():
+    result = ensure_unique(["Banana", "Apple", "Lemon", "Apple", "Apple_2", "Banana"])
+    assert result == ["Banana", "Apple", "Lemon", "Apple_2", "Apple_2_2", "Banana_2"]

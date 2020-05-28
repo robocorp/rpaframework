@@ -1,5 +1,6 @@
 import logging
 import pathlib
+from collections import defaultdict
 from contextlib import contextmanager
 from io import BytesIO
 
@@ -12,6 +13,33 @@ from xlutils.copy import copy as xlutils_copy
 
 from RPA.Tables import Tables, Table
 from RPA.core.inspect import is_list_like, is_dict_like
+
+
+def ensure_unique(values):
+    """Ensures that each value in the list is unique.
+    Adds a suffix to each value that has duplicates,
+    e.g. [Banana, Apple, Lemon, Apple] -> [Banana, Apple, Lemon, Apple_2]
+    """
+    def to_unique(values):
+        output = []
+        seen = defaultdict(int)
+        for value in values:
+            if seen[value]:
+                output.append("%s_%d" % (value, seen[value] + 1))
+            else:
+                output.append(value)
+            seen[value] += 1
+        return output
+
+    # Repeat process until each column is unique
+    output = to_unique(values)
+    while True:
+        verify = to_unique(output)
+        if output == verify:
+            break
+        output = verify
+
+    return output
 
 
 class Files:
@@ -277,6 +305,8 @@ class XlsxWorkbook:
         else:
             columns = [get_column_letter(i + 1) for i in range(sheet.max_column)]
 
+        columns = ensure_unique(columns)
+
         data = []
         for cells in sheet.iter_rows(min_row=start):
             row = {}
@@ -456,6 +486,8 @@ class XlsWorkbook:
             start += 1
         else:
             columns = [get_column_letter(i + 1) for i in range(sheet.ncols)]
+
+        columns = ensure_unique(columns)
 
         data = []
         for r in range(start, sheet.nrows):
