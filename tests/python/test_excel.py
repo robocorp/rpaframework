@@ -26,6 +26,25 @@ def test_create_workbook(fmt, instance):
     assert library.workbook._book is not None
 
 
+@pytest.mark.parametrize(
+    "fmt", ["xlsx", "xls"]
+)
+def test_create_after_close(fmt):
+    library = Files()
+    library.create_workbook(fmt=fmt)
+    library.close_workbook()
+    library.create_workbook(fmt=fmt)
+
+
+@pytest.mark.parametrize(
+    "fmt", ["xlsx", "xls"]
+)
+def test_create_without_close(fmt):
+    library = Files()
+    library.create_workbook(fmt=fmt)
+    library.create_workbook(fmt=fmt)
+
+
 def test_save_workbook(library):
     fd = BytesIO()
     library.save_workbook(fd)
