@@ -114,6 +114,7 @@ class Files:
         if self.workbook:
             self.logger.info("Closing workbook: %s", self.workbook)
             self.workbook.close()
+            self.workbook = None
 
     def save_workbook(self, path=None):
         """Save the active workbook.
