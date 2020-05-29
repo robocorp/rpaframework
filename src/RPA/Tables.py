@@ -52,6 +52,8 @@ class Table:
       can be namedtuples, dictionaries, lists, or tuples
     - dict: Dictionary of columns as keys and rows as values
 
+    .. todo:: Integers as column names? Columns forced to strings?
+    .. todo:: Implement column slicing
     .. todo:: Existing column to index conversion
     .. todo:: Index accessing through dot notation?
     .. todo:: Index name conflict in exports/imports
@@ -329,7 +331,7 @@ class Table:
         # Finding index by name
         else:
             try:
-                location = container.index(str(value))
+                location = container.index(value)
             except ValueError:
                 raise ValueError(f"Unknown {name} name: {value}")
 
@@ -1171,7 +1173,10 @@ class Tables:
     def trim_column_names(self, table):
         """Remove all extraneous whitespace from column names."""
         self.requires_table(table)
-        table.columns = [column.strip() for column in table.columns]
+        table.columns = [
+            column.strip() if isinstance(column, str) else column
+            for column in table.columns
+        ]
 
     def read_table_from_csv(self, path, header=None, columns=None, dialect=None):
         """Read a CSV file as a table.
