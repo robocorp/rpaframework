@@ -6,6 +6,14 @@ Upcoming release
 
 - New library: Cloud.Azure
 
+1.0.2
+-----
+
+- msoffice: Fix. Call `close document` only on Word documents
+- Browser: Fix Geckodriver downloading version based on Chrome version
+
+Thank you https://github.com/mdp for providing fix for the ``msoffice``
+
 1.0.1
 -----
 
