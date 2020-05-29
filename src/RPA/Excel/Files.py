@@ -15,7 +15,7 @@ from RPA.Tables import Tables, Table
 
 
 def ensure_unique(values):
-    """Ensures that each value in the list is unique.
+    """Ensures that each string value in the list is unique.
     Adds a suffix to each value that has duplicates,
     e.g. [Banana, Apple, Lemon, Apple] -> [Banana, Apple, Lemon, Apple_2]
     """
@@ -24,7 +24,7 @@ def ensure_unique(values):
         output = []
         seen = defaultdict(int)
         for value in values:
-            if seen[value]:
+            if seen[value] and isinstance(value, str):
                 output.append("%s_%d" % (value, seen[value] + 1))
             else:
                 output.append(value)
@@ -483,7 +483,9 @@ class XlsWorkbook:
         start = self._to_index(start)
 
         if header:
-            columns = [cell.value for cell in sheet.row(start)]
+            columns = [
+                cell.value if cell.value != "" else None for cell in sheet.row(start)
+            ]
             start += 1
         else:
             columns = [get_column_letter(i + 1) for i in range(sheet.ncols)]
@@ -495,8 +497,9 @@ class XlsWorkbook:
             row = {}
             for c in range(sheet.ncols):
                 column = columns[c]
-                cell = sheet.cell(r, c)
-                row[column] = self._parse_type(cell)
+                if column is not None:
+                    cell = sheet.cell(r, c)
+                    row[column] = self._parse_type(cell)
             data.append(row)
 
         self.active = name
