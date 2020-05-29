@@ -184,6 +184,7 @@ class Browser(SeleniumLibrary):
         self.logger.debug("Driver options for create_rpa_webdriver: %s", options)
         executable = self.webdriver_init(browser, download)
         try:
+            browser = browser.lower().capitalize()
             if executable:
                 index = self.create_webdriver(
                     browser, **options, executable_path=executable
@@ -373,16 +374,18 @@ class Browser(SeleniumLibrary):
         :param download: if True drivers are downloaded, not if False
         :return: path to driver or `None`
         """
+        browser = browser.lower()
         self.logger.debug(
             "Webdriver initialization for browser: '%s'. Download set to: %s",
             browser,
             download,
         )
-        browser_version = self.detect_chrome_version()
+        if browser == "chrome":
+            browser_version = self.detect_chrome_version()
+        else:
+            browser_version = None
         dm_class = (
-            AVAILABLE_DRIVERS[browser.lower()]
-            if browser.lower() in AVAILABLE_DRIVERS.keys()
-            else None
+            AVAILABLE_DRIVERS[browser] if browser in AVAILABLE_DRIVERS.keys() else None
         )
         if dm_class:
             self.logger.debug("Driver manager class: %s", dm_class)
@@ -391,7 +394,7 @@ class Browser(SeleniumLibrary):
                 if not driver_ex_path.exists():
                     self.download_driver(dm_class, driver_tempdir, browser_version)
                 else:
-                    if browser.lower() == "chrome":
+                    if browser == "chrome":
                         force_download = self._check_chrome_and_driver_versions(
                             driver_ex_path, browser_version
                         )
@@ -434,30 +437,19 @@ class Browser(SeleniumLibrary):
         """
         browser_options = None
         driver_options = {}
+        browser = browser.lower()
         browser_option_class = (
-            self.AVAILABLE_OPTIONS[browser.lower()]
-            if browser.lower() in self.AVAILABLE_OPTIONS.keys()
+            self.AVAILABLE_OPTIONS[browser]
+            if browser in self.AVAILABLE_OPTIONS.keys()
             else None
         )
         if browser_option_class is None:
             return driver_options
 
-        if browser.lower() in self.AVAILABLE_OPTIONS.keys():
+        if browser in self.AVAILABLE_OPTIONS.keys():
             module = importlib.import_module("selenium.webdriver")
             class_ = getattr(module, browser_option_class)
             browser_options = class_()
-            # self.set_default_options(browser_options)
-
-        if browser_options and browser.lower() == "chrome":
-            self.set_default_options(browser_options)
-            prefs = {"safebrowsing.enabled": "true"}
-            browser_options.add_experimental_option(
-                "excludeSwitches", ["enable-logging"]
-            )
-            browser_options.add_experimental_option("prefs", prefs)
-            if self.logger.isEnabledFor(logging.DEBUG):
-                driver_options["service_log_path"] = "chromedriver.log"
-                driver_options["service_args"] = ["--verbose"]
 
         if headless:
             self.set_headless_options(browser, browser_options)
@@ -469,9 +461,18 @@ class Browser(SeleniumLibrary):
         if browser_options and use_profile:
             self.set_user_profile(browser_options)
 
-        if browser_options and browser.lower() != "chrome":
+        if browser_options and browser != "chrome":
             driver_options["options"] = browser_options
-        else:
+        elif browser_options and browser == "chrome":
+            self.set_default_options(browser_options)
+            prefs = {"safebrowsing.enabled": "true"}
+            browser_options.add_experimental_option(
+                "excludeSwitches", ["enable-logging"]
+            )
+            browser_options.add_experimental_option("prefs", prefs)
+            if self.logger.isEnabledFor(logging.DEBUG):
+                driver_options["service_log_path"] = "chromedriver.log"
+                driver_options["service_args"] = ["--verbose"]
             driver_options["chrome_options"] = browser_options
 
         return driver_options
