@@ -4,7 +4,6 @@ Release notes
 Upcoming release
 ----------------
 
-- New library: Cloud.Azure
 - Excel: Files: Fixed double close issue with workbooks
 - Excel: Files: Ignoring columns with empty header
 - Tables: Improved handling of non-string columns
