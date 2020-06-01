@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+1.0.3
+-----
+
 - Excel: Files: Fixed double close issue with workbooks
 - Excel: Files: Ignoring columns with empty header
 - Tables: Improved handling of non-string columns
