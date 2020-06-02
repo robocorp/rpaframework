@@ -137,6 +137,23 @@ class Files:
                      when opened or created.
         """
         assert self.workbook, "No active workbook"
+
+        try:
+            extension = pathlib.Path(path).suffix
+        except TypeError:
+            extension = None
+
+        if (
+            self.workbook.extension is not None
+            and extension is not None
+            and self.workbook.extension != extension
+        ):
+            self.logger.warning(
+                "Changed file extension from %s to %s",
+                self.workbook.extension,
+                extension,
+            )
+
         return self.workbook.save(path)
 
     def list_worksheets(self):
@@ -262,8 +279,10 @@ class XlsxWorkbook:
     """Container for manipulating moden Excel files (.xlsx)"""
 
     def __init__(self, path=None):
+        self.logger = logging.getLogger(__name__)
         self.path = path
         self._book = None
+        self._extension = None
         self._active = None
 
     @property
@@ -287,6 +306,10 @@ class XlsxWorkbook:
         self._book.active = self.sheetnames.index(value)
         self._active = value
 
+    @property
+    def extension(self):
+        return self._extension
+
     def _get_sheetname(self, name=None):
         if not self.sheetnames:
             raise ValueError("No worksheets in file")
@@ -306,22 +329,37 @@ class XlsxWorkbook:
 
     def create(self):
         self._book = openpyxl.Workbook()
+        self._extension = None
 
     def open(self, path=None):
         path = path or self.path
+
         if not path:
             raise ValueError("No path defined for workbook")
-        self._book = openpyxl.load_workbook(filename=path, keep_vba=True)
+
+        try:
+            extension = pathlib.Path(path).suffix
+        except TypeError:
+            extension = None
+
+        if extension in (".xlsm", ".xltm"):
+            self._book = openpyxl.load_workbook(filename=path, keep_vba=True)
+        else:
+            self._book = openpyxl.load_workbook(filename=path)
+
+        self._extension = extension
 
     def close(self):
         self._book.close()
         self._book = None
+        self._extension = None
         self._active = None
 
     def save(self, path=None):
         path = path or self.path
         if not path:
             raise ValueError("No path defined for workbook")
+
         self._book.save(filename=path)
 
     def create_worksheet(self, name):
@@ -425,8 +463,10 @@ class XlsWorkbook:
     """Container for manipulating legacy Excel files (.xls)"""
 
     def __init__(self, path=None):
+        self.logger = logging.getLogger(__name__)
         self.path = path
         self._book = None
+        self._extension = None
         self._active = None
 
     @property
@@ -459,6 +499,10 @@ class XlsWorkbook:
 
         self._active = value
 
+    @property
+    def extension(self):
+        return self._extension
+
     def _get_sheetname(self, name):
         if self._book.nsheets == 0:
             raise ValueError("No worksheets in file")
@@ -489,21 +533,37 @@ class XlsWorkbook:
         finally:
             fd.close()
 
+        self._extension = None
+
     def open(self, path_or_file=None):
         path_or_file = path_or_file or self.path
 
+        options = {"on_demand": True, "formatting_info": True}
+
         if hasattr(path_or_file, "read"):
-            self._book = xlrd.open_workbook(
-                file_contents=path_or_file.read(), on_demand=True, formatting_info=True,
-            )
+            options["file_contents"] = path_or_file.read()
+            extension = None
         else:
-            self._book = xlrd.open_workbook(
-                filename=path_or_file, on_demand=True, formatting_info=True
-            )
+            options["filename"] = path_or_file
+            extension = pathlib.Path(path_or_file).suffix
+
+        try:
+            self._book = xlrd.open_workbook(**options)
+        except NotImplementedError:
+            del options["formatting_info"]
+            self._book = xlrd.open_workbook(**options)
+
+            if extension == ".xls":
+                self.logger.warning(
+                    "Workbook '%s' file extension does not match content", path_or_file
+                )
+
+        self._extension = extension
 
     def close(self):
         self._book.release_resources()
         self._book = None
+        self._extension = None
         self._active = None
 
     @contextmanager

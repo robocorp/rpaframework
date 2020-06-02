@@ -1,6 +1,7 @@
 import datetime
 import pytest
 from io import BytesIO
+from pathlib import Path
 
 from RPA.Excel.Files import Files, XlsxWorkbook, XlsWorkbook, ensure_unique
 from RPA.Tables import Table
@@ -24,6 +25,7 @@ def test_create_workbook(fmt, instance):
     library.create_workbook(fmt=fmt)
     assert isinstance(library.workbook, instance)
     assert library.workbook._book is not None
+    assert library.workbook.extension is None
 
 
 @pytest.mark.parametrize("fmt", ["xlsx", "xls"])
@@ -39,6 +41,10 @@ def test_create_without_close(fmt):
     library = Files()
     library.create_workbook(fmt=fmt)
     library.create_workbook(fmt=fmt)
+
+
+def test_extension_property(library):
+    assert library.workbook.extension == Path(library.workbook.path).suffix
 
 
 def test_save_workbook(library):
