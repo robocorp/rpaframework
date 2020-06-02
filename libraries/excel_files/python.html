@@ -263,6 +263,17 @@ please use the Excel application library.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Excel.Files.Files.find_empty_row">
+<code class="sig-name descname">find_empty_row</code><span class="sig-paren">(</span><em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.find_empty_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the first empty row after existing content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – Name of worksheet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Excel.Files.Files.get_active_worksheet">
 <code class="sig-name descname">get_active_worksheet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.get_active_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the name of the worksheet which is currently active.</p>
@@ -369,6 +380,22 @@ when opened or created.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Excel.Files.Files.set_worksheet_value">
+<code class="sig-name descname">set_worksheet_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">value</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_worksheet_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a cell value in the given worksheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> – Index of row to write, e.g. 3</p></li>
+<li><p><strong>column</strong> – Name or index of column, e.g. C or 7</p></li>
+<li><p><strong>value</strong> – New value of cell</p></li>
+<li><p><strong>name</strong> – Name of worksheet</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Excel.Files.Files.worksheet_exists">
 <code class="sig-name descname">worksheet_exists</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.worksheet_exists" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if worksheet with given name is in workbook.</p>
@@ -407,6 +434,16 @@ when opened or created.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Excel.Files.XlsWorkbook.extension">
+<em class="property">property </em><code class="sig-name descname">extension</code><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.extension" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsWorkbook.find_empty_row">
+<code class="sig-name descname">find_empty_row</code><span class="sig-paren">(</span><em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.find_empty_row" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.open">
 <code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param">path_or_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.open" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -429,6 +466,11 @@ when opened or created.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.save">
 <code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsWorkbook.set_cell_value">
+<code class="sig-name descname">set_cell_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">value</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.set_cell_value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -469,6 +511,16 @@ when opened or created.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Excel.Files.XlsxWorkbook.extension">
+<em class="property">property </em><code class="sig-name descname">extension</code><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.extension" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsxWorkbook.find_empty_row">
+<code class="sig-name descname">find_empty_row</code><span class="sig-paren">(</span><em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.find_empty_row" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.open">
 <code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.open" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -494,6 +546,11 @@ when opened or created.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Excel.Files.XlsxWorkbook.set_cell_value">
+<code class="sig-name descname">set_cell_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">value</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.set_cell_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.sheetnames">
 <em class="property">property </em><code class="sig-name descname">sheetnames</code><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.sheetnames" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -506,6 +563,13 @@ when opened or created.</p>
 <dd><p>Ensures that each string value in the list is unique.
 Adds a suffix to each value that has duplicates,
 e.g. [Banana, Apple, Lemon, Apple] -&gt; [Banana, Apple, Lemon, Apple_2]</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Excel.Files.get_column_index">
+<code class="sig-prename descclassname">RPA.Excel.Files.</code><code class="sig-name descname">get_column_index</code><span class="sig-paren">(</span><em class="sig-param">column</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.get_column_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get column index from name, e.g. A -&gt; 1, D -&gt; 4, AC -&gt; 29.
+Reverse of <cite>get_column_letter()</cite></p>
 </dd></dl>
 
 </div>

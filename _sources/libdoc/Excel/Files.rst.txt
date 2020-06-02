@@ -38,6 +38,12 @@ Keywords
   Create a new worksheet in the current workbook.
 
 
+:Find Empty Row:
+  :Arguments: name=None
+
+  Find the first empty row after existing content.
+
+
 :Get Active Worksheet:
   Get the name of the worksheet which is currently active.
 
@@ -88,6 +94,12 @@ Keywords
   :Arguments: value
 
   Set the active worksheet.
+
+
+:Set Worksheet Value:
+  :Arguments: row, column, value, name=None
+
+  Set a cell value in the given worksheet.
 
 
 :Worksheet Exists:
