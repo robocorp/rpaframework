@@ -26,9 +26,7 @@ def test_create_workbook(fmt, instance):
     assert library.workbook._book is not None
 
 
-@pytest.mark.parametrize(
-    "fmt", ["xlsx", "xls"]
-)
+@pytest.mark.parametrize("fmt", ["xlsx", "xls"])
 def test_create_after_close(fmt):
     library = Files()
     library.create_workbook(fmt=fmt)
@@ -36,9 +34,7 @@ def test_create_after_close(fmt):
     library.create_workbook(fmt=fmt)
 
 
-@pytest.mark.parametrize(
-    "fmt", ["xlsx", "xls"]
-)
+@pytest.mark.parametrize("fmt", ["xlsx", "xls"])
 def test_create_without_close(fmt):
     library = Files()
     library.create_workbook(fmt=fmt)
@@ -211,3 +207,21 @@ def test_ensure_unique():
 def test_ensure_unique_nested():
     result = ensure_unique(["Banana", "Apple", "Lemon", "Apple", "Apple_2", "Banana"])
     assert result == ["Banana", "Apple", "Lemon", "Apple_2", "Apple_2_2", "Banana_2"]
+
+
+def test_find_empty_row(library):
+    row = library.find_empty_row()
+    assert row == 10
+
+
+def test_set_worksheet_value(library):
+    library.set_worksheet_value(11, "A", "First")
+    library.set_worksheet_value(11, 2, "Second")
+    library.set_worksheet_value(11, "3", "Third")
+
+    data = library.read_worksheet()
+
+    row = data[-1]
+    assert row["A"] == "First"
+    assert row["B"] == "Second"
+    assert row["C"] == "Third"

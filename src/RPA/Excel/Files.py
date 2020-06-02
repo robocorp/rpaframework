@@ -14,6 +14,20 @@ from xlutils.copy import copy as xlutils_copy
 from RPA.Tables import Tables, Table
 
 
+def get_column_index(column):
+    """Get column index from name, e.g. A -> 1, D -> 4, AC -> 29.
+    Reverse of `get_column_letter()`
+    """
+    column = str(column).lower()
+
+    col = 0
+    for digit, char in enumerate(column[::-1]):
+        value = ord(char) - 96
+        col += (26 ** digit) * value
+
+    return col
+
+
 def ensure_unique(values):
     """Ensures that each string value in the list is unique.
     Adds a suffix to each value that has duplicates,
@@ -224,6 +238,25 @@ class Files:
         assert self.workbook, "No active workbook"
         self.workbook.rename_worksheet(dst_name, src_name)
 
+    def find_empty_row(self, name=None):
+        """Find the first empty row after existing content.
+
+        :param name:    Name of worksheet
+        """
+        assert self.workbook, "No active workbook"
+        return self.workbook.find_empty_row(name)
+
+    def set_worksheet_value(self, row, column, value, name=None):
+        """Set a cell value in the given worksheet.
+
+        :param row:     Index of row to write, e.g. 3
+        :param column:  Name or index of column, e.g. C or 7
+        :param value:   New value of cell
+        :param name:    Name of worksheet
+        """
+        assert self.workbook, "No active workbook"
+        self.workbook.set_cell_value(row, column, value, name)
+
 
 class XlsxWorkbook:
     """Container for manipulating moden Excel files (.xlsx)"""
@@ -362,6 +395,30 @@ class XlsxWorkbook:
 
         sheet.title = title
         self.active = title
+
+    def find_empty_row(self, name=None):
+        name = self._get_sheetname(name)
+        sheet = self._book[name]
+
+        for idx in reversed(range(sheet.max_row)):
+            idx += 1
+            if any(value for value in sheet[idx]):
+                return idx
+
+        return 1
+
+    def set_cell_value(self, row, column, value, name=None):
+        name = self._get_sheetname(name)
+        sheet = self._book[name]
+
+        row = int(row)
+        try:
+            column = int(column)
+            column = get_column_letter(column)
+        except ValueError:
+            pass
+
+        sheet["%s%s" % (column, row)] = value
 
 
 class XlsWorkbook:
@@ -572,3 +629,26 @@ class XlsWorkbook:
             sheet.name = title
 
         self.active = title
+
+    def find_empty_row(self, name=None):
+        name = self._get_sheetname(name)
+        sheet = self._book.sheet_by_name(name)
+
+        for row in reversed(range(sheet.nrows)):
+            if any(cell.value for cell in sheet.row(row)):
+                return row + 1
+
+        return 1
+
+    def set_cell_value(self, row, column, value, name=None):
+        name = self._get_sheetname(name)
+
+        row = int(row)
+        try:
+            column = int(column)
+        except ValueError:
+            column = get_column_index(column)
+
+        with self._book_write() as book:
+            sheet = book.get_sheet(name)
+            sheet.write(row - 1, column - 1, value)
