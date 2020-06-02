@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+1.0.4
+-----
+
 - Excel: Files: Add keyword for setting cell values
 - Excel: Files: Mitigate compatibility issues with file extensions
 
