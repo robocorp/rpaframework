@@ -12,16 +12,16 @@ Desktop.Windows
 Description
 ***********
 
-`Windows` is a library for managing Windows operating system.
+`Windows` is a library for managing the Windows operating system.
 
 Running Windows applications
 ============================
 
-Windows applications can be started in several ways and library supports
-following keywords:
+Windows applications can be started in several ways. The library supports
+the following keywords:
 
     - Open Application (dispatch Office applications)
-    - Open File (open file as process which opens associated application)
+    - Open File (open the file as process which opens the associated application)
     - Open Executable (uses pywinauto start)
     - Open Using Run Dialog (uses Windows run dialog)
     - Open From Search (uses Windows search dialog)
@@ -29,17 +29,17 @@ following keywords:
 Locators
 ========
 
-`Locator` is used to identify element for interaction - usually for mouse click.
+`Locator` is used to identify the element for interaction - usually for a mouse click.
 
 Locators can investigated for application once it has been opened by calling
-keyword `get_windows_elements` which can also store locator information into `json` file
-and `screenshot` of the element into image file.
+the keyword `get_windows_elements` which can store locator information into `json` file
+and `screenshot` of the element into an image file.
 
 Identifying locator
 ===================
 
-Element needs to be identified by unique method for example "Three" for button 3
-in the Calculator application. It can be given either by `Three` or `name:Three`.
+The element needs to be identified by a unique method, for example, "Three" for button 3
+in the Calculator application. It can be given either as `Three` or `name:Three`.
 
 Possible search criterias:
     - name
@@ -48,14 +48,14 @@ Possible search criterias:
     - id (automation_id)
     - any if none was defined
 
-Current method of inspecting elements on Windows is `inspect.exe` which is part
+The current method of inspecting elements on Windows is `inspect.exe` which is part
 of `Windows SDK <https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects>`_.
 
 Keyboard
 ========
 
-Keyword `send_keys` can be used to send keys to active window and keyword
-`type_keys` sends keys to active window element.
+The keyword `send_keys` can be used to send keys to the active window. The keyword
+`type_keys` sends keys to the active window element.
 
 Special key codes are documented on `pywinauto <https://pywinauto.readthedocs.io/en/latest/code/pywinauto.keyboard.html#>`_
 documentation page.
@@ -67,8 +67,7 @@ Examples
 Robot Framework
 ===============
 
-This is a section which describes how to use the library in your
-Robot Framework tasks.
+This section describes how to use the library in your Robot Framework tasks.
 
 .. code-block:: robotframework
     :linenos:
@@ -94,8 +93,7 @@ Robot Framework tasks.
 Python
 ======
 
-This is a section which describes how to use the library in your
-own Python modules.
+This section describes how to use the library in your own Python modules.
 
 .. code-block:: python
     :linenos:
@@ -134,4 +132,4 @@ API Documentation
 Todo
 ****
 
-- Inspecter tool for identifying Windows locators
+- Inspector tool for identifying Windows locators
