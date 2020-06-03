@@ -12,10 +12,10 @@ Description
 
 `Google` is a library for operating with Google API endpoints.
 
-    The usage requires the following steps:
+    Usage requires the following steps:
 
-        - Create GCP project
-        - Create service account key file (json) and save it to a place the robot
+        - Create a GCP project
+        - Create a service account key file (json) and save it to a place the robot
           can use it
         - Enable APIs
         - Install rpaframework[google]
@@ -27,8 +27,7 @@ Examples
 Robot Framework
 ===============
 
-This is a section which describes how to use the library in your
-Robot Framework tasks.
+This section describes how to use the library in your Robot Framework tasks.
 
 .. code-block:: robotframework
     :linenos:
@@ -54,8 +53,7 @@ Robot Framework tasks.
 Python
 ======
 
-This is a section which describes how to use the library in your
-own Python modules.
+This section describes how to use the library in your own Python modules.
 
 .. code-block:: python
     :linenos:

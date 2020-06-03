@@ -219,7 +219,7 @@ files without the need to start the actual Excel application.</p>
 <div class="section" id="robot-framework">
 <h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
 <p>A common use-case is to load an existing Excel file as a table,
-which can be iterated over later in a Robot Framework keyword or task.</p>
+which can be iterated over later in a Robot Framework keyword or task:</p>
 <div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -243,7 +243,7 @@ which can be iterated over later in a Robot Framework keyword or task.</p>
 <span class="p">    [</span><span class="kn">Teardown</span><span class="p">]       </span><span class="nf">Close workbook</span><span class="p"></span>
 </pre></div>
 </td></tr></table></div>
-<p>Processing all worksheets in the Excel and checking row count.</p>
+<p>Processing all worksheets in the Excel file and checking row count:</p>
 <div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -287,7 +287,7 @@ which can be iterated over later in a Robot Framework keyword or task.</p>
 <span class="p">    [</span><span class="kn">Return</span><span class="p">]         ${</span><span class="nv">rows</span><span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
-<p>Creating new Excel with dictionary</p>
+<p>Creating a new Excel file with a dictionary:</p>
 <div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -309,7 +309,7 @@ which can be iterated over later in a Robot Framework keyword or task.</p>
 <span class="p">    </span><span class="nf">Save Workbook</span><span class="p"></span>
 </pre></div>
 </td></tr></table></div>
-<p>Creating new Excel with list</p>
+<p>Creating a new Excel file with a list:</p>
 <div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3

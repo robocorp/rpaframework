@@ -10,7 +10,7 @@ Email.ImapSmtp
 Description
 ***********
 
-`ImapSmtp` is a library for sending, reading and
+`ImapSmtp` is a library for sending, reading, and
 deleting emails. `ImapSmtp` is interfacing with SMTP and IMAP
 protocols.
 
@@ -28,15 +28,14 @@ Examples
 Robot Framework
 ===============
 
-This is a section which describes how to use the library in your
-Robot Framework tasks.
+This section describes how to use the library in your Robot Framework tasks.
 
 It is highly recommended to secure your passwords and take care
 that they are not stored in the version control by mistake.
 See :py:mod:`RPA.Robocloud.Secrets` how to store RPA Secrets into Robocloud.
 
-When sending HTML content with IMG tags the ``src`` filenames must match
-the base image name given with ``images`` parameter.
+When sending HTML content with IMG tags, the ``src`` filenames must match
+the base image name given with the ``images`` parameter.
 
 .. code-block:: robotframework
     :linenos:
@@ -75,8 +74,7 @@ the base image name given with ``images`` parameter.
 Python
 ======
 
-This is a section which describes how to use the library in your
-own Python modules.
+This section describes how to use the library in your own Python modules.
 
 .. code-block:: python
     :linenos:

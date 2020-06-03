@@ -10,7 +10,7 @@ Email.Exchange
 Description
 ***********
 
-`Exchange` is a library for sending, reading and
+`Exchange` is a library for sending, reading, and
 deleting emails. `Exchange` is interfacing with
 Exchange Web Services (EWS).
 
@@ -22,8 +22,7 @@ Examples
 Robot Framework
 ===============
 
-This is a section which describes how to use the library in your
-Robot Framework tasks.
+This section describes how to use the library in your Robot Framework tasks.
 
 .. code-block:: robotframework
     :linenos:
@@ -54,8 +53,7 @@ Robot Framework tasks.
 Python
 ======
 
-This is a section which describes how to use the library in your
-own Python modules.
+This section describes how to use the library in your own Python modules.
 
 .. code-block:: python
     :linenos:
