@@ -13,7 +13,7 @@ Description
 `AWS` is a library for operating with Amazon AWS services.
 
 Service initialization can be given as parameters for ``init_s3_service`` keyword
-for example or keyword can read them in as environment variables:
+for example, or keyword can read them in as environment variables:
 
     - `AWS_KEY_ID`
     - `AWS_KEY`
@@ -22,7 +22,7 @@ Requirements
 ============
 
 The default installation depends on `boto3`_ library. Due to the size of the
-dependency this has been set as optional package for ``rpaframework``.
+dependency, this has been set as an optional package for ``rpaframework``.
 
 This can be installed by opting in to the `aws` dependency:
 
@@ -38,8 +38,7 @@ Examples
 Robot Framework
 ===============
 
-This is a section which describes how to use the library in your
-Robot Framework tasks.
+This section describes how to use the library in your Robot Framework tasks.
 
 .. code-block:: robotframework
     :linenos:
@@ -63,8 +62,7 @@ Robot Framework tasks.
 Python
 ======
 
-This is a section which describes how to use the library in your
-own Python modules.
+This section describes how to use the library in your own Python modules.
 
 .. code-block:: python
     :linenos:
