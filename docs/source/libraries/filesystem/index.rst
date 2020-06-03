@@ -14,7 +14,7 @@ The `FileSystem` library can be used to interact with files and directories
 on the local computer. It can inspect and list files, remove and create them,
 read contents from files, and write data out.
 
-It shadows the built-in `OperatingSystem` library, but contains keywords
+It shadows the built-in `OperatingSystem` library but contains keywords
 which are more RPA-oriented.
 
 ********
@@ -24,7 +24,7 @@ Examples
 Robot Framework
 ===============
 
-The library allows for instance iterating over files and inspecting them.
+The library allows, for instance, iterating over files and inspecting them.
 
 .. code-block:: robotframework
     :linenos:
