@@ -23,7 +23,7 @@ Robot Framework
 ===============
 
 A common use-case is to load an existing Excel file as a table,
-which can be iterated over later in a Robot Framework keyword or task.
+which can be iterated over later in a Robot Framework keyword or task:
 
 .. code-block:: robotframework
     :linenos:
@@ -40,7 +40,7 @@ which can be iterated over later in a Robot Framework keyword or task.
         [Return]         ${orders}
         [Teardown]       Close workbook
 
-Processing all worksheets in the Excel and checking row count.
+Processing all worksheets in the Excel file and checking row count:
 
 .. code-block:: robotframework
     :linenos:
@@ -67,7 +67,7 @@ Processing all worksheets in the Excel and checking row count.
         ${rows}=         Get Length  ${sheet}
         [Return]         ${rows}
 
-Creating new Excel with dictionary
+Creating a new Excel file with a dictionary:
 
 .. code-block:: robotframework
     :linenos:
@@ -83,7 +83,7 @@ Creating new Excel with dictionary
         END
         Save Workbook
 
-Creating new Excel with list
+Creating a new Excel file with a list:
 
 .. code-block:: robotframework
     :linenos:
