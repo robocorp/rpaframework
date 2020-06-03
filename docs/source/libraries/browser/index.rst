@@ -10,11 +10,11 @@ Browser
 Description
 ***********
 
-`Browser` is library for interfacing with web browsers like Chrome,
-Firefox, Safari, Edge and Opera. Library extends `SeleniumLibrary`_.
+`Browser` is a library for interfacing with web browsers like Chrome,
+Firefox, Safari, Edge, and Opera. The library extends `SeleniumLibrary`_.
 
 .. _SeleniumLibrary:
-    https://hub.robocorp.com/libraries/robotframework-SeleniumLibrary/
+    https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html
 
 ********
 Examples
@@ -23,21 +23,19 @@ Examples
 Robot Framework
 ===============
 
-This is a section which describes how to use the library in your
-Robot Framework tasks.
+This section describes how to use the library in your Robot Framework tasks.
 
-Library provides special keyword `Open Available Browser` which
-requires an explanation.
+The library provides a special keyword `Open Available Browser`.
 
-Keyword opens the first available webdriver in the running environment
-which it can. For example for `Windows` the browser list in preference order
-is Chrome, Firefox, Edge, IE and Opera. Opening is tried in three different
-ways for each webdriver type.
+The keyword opens the first available webdriver in the running environment.
+For example, for `Windows`, the browser list in preference order
+is Chrome, Firefox, Edge, IE, and Opera. The opening is tried in three
+different ways for each webdriver type.
 
-    1. Try to open webdriver "normally"
-    2. Download browser driver if browser has driven available and try open webdriver again
-    3. Try to open webdriver in "headless" mode if that was not original intention
-    4. Move to the next webdriver type if none of the steps 1-3 succeeds
+    1. Try to open the webdriver "normally"
+    2. Download the driver if the browser has driver available and try to open the webdriver again
+    3. Try to open the webdriver in "headless" mode if that was not the original intention
+    4. Move to the next webdriver type if steps 1-3 fail
 
 
 .. code-block:: robotframework
@@ -53,8 +51,7 @@ ways for each webdriver type.
 Python
 ======
 
-This is a section which describes how to use the library in your
-own Python modules.
+This section describes how to use the library in your own Python modules.
 
 .. code-block:: python
     :linenos:
