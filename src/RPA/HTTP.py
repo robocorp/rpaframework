@@ -31,7 +31,7 @@ class HTTP(RequestsLibrary):
         A helper method for `Get Request` that will create a session, perform GET
         request, and store the target file, if set by the `target_file` parameter.
 
-        The old session will be used if thr URL scheme and the host are the same as
+        The old session will be used if the URL scheme and the host are the same as
         previously, e.g., 'https://www.google.fi' part of the URL.
 
         :param url: target URL for GET request
