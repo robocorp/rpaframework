@@ -10,8 +10,8 @@ Images
 Description
 ***********
 
-`Images` a library for taking screenshots, matching templates, and
-generally manipulating images. It can also be used for GUI-based automation,
+`Images` is a library for taking screenshots, matching templates, and
+generally manipulating images. It can also be used for GUI-based automation
 when traditional UI locators are not available.
 
 Coordinates
@@ -23,7 +23,7 @@ is (0, 0). The x-coordinate increases towards the right, and the y-coordinate
 increases towards the bottom.
 
 Regions are represented as tuples of (left, top, right, bottom). For example,
-a 400 by 200 pixel region in the upper left corner would be (0, 0, 400, 200).
+a 400 by 200-pixel region in the upper left corner would be (0, 0, 400, 200).
 
 Template matching
 =================
@@ -56,10 +56,10 @@ Robot Framework
 ===============
 
 The `Images` library can be imported and used directly in Robot Framework,
-for instance for capturing screenshots or verifying something on screen.
+for instance, for capturing screenshots or verifying something on the screen.
 
 Desktop automation based on images should be done using the corresponding
-desktop library, e.g. :ref:`library-desktop-windows`.
+desktop library, e.g., :ref:`library-desktop-windows`.
 
 .. code-block:: robotframework
     :linenos:
@@ -79,9 +79,6 @@ desktop library, e.g. :ref:`library-desktop-windows`.
 
 Python
 ======
-
-This is a section which describes how to use the library in your
-own Python modules.
 
 .. code-block:: python
     :linenos:

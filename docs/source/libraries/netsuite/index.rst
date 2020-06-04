@@ -10,8 +10,8 @@ Netsuite
 Description
 ***********
 
-`Netsuite` is library for accessing Netsuite using NetSuite SOAP web service SuiteTalk.
-Library extends `netsuitesdk library`_.
+`Netsuite` is a library for accessing Netsuite using NetSuite SOAP web service SuiteTalk.
+The library extends `netsuitesdk library`_.
 
 More information available at `NetSuite SOAP webservice SuiteTalk`_.
 
@@ -28,9 +28,6 @@ Examples
 
 Robot Framework
 ===============
-
-This is a section which describes how to use the library in your
-Robot Framework tasks.
 
 .. code-block:: robotframework
     :linenos:
@@ -69,9 +66,6 @@ Robot Framework tasks.
 
 Python
 ======
-
-This is a section which describes how to use the library in your
-own Python modules.
 
 .. code-block:: python
     :linenos:

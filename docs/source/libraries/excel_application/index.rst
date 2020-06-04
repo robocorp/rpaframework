@@ -19,8 +19,6 @@ Examples
 Robot Framework
 ===============
 
-This section describes how to use the library in your Robot Framework tasks.
-
 .. code-block:: robotframework
     :linenos:
 
@@ -44,8 +42,6 @@ This section describes how to use the library in your Robot Framework tasks.
 
 Python
 ======
-
-This section describes how to use the library in your own Python modules.
 
 .. code-block:: python
     :linenos:

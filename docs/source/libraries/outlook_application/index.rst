@@ -19,9 +19,6 @@ Examples
 Robot Framework
 ===============
 
-This is a section which describes how to use the library in your
-Robot Framework tasks.
-
 .. code-block:: robotframework
     :linenos:
 
@@ -36,15 +33,12 @@ Robot Framework tasks.
     *** Tasks ***
     Send message
         Send Message       recipients=${RECIPIENT}
-        ...                subject=Message from RPA
-        ...                body=Sending message body contains more details
+        ...                subject=This is the subject
+        ...                body=This is the message body
         ..                 attachments=approved.png
 
 Python
 ======
-
-This is a section which describes how to use the library in your
-own Python modules.
 
 .. code-block:: python
     :linenos:

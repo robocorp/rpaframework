@@ -10,8 +10,8 @@ Twitter
 Description
 ***********
 
-`Twitter` is library for accessing Twitter using developer API.
-Library extends `tweepy`_ library.
+`Twitter` is a library for accessing Twitter using developer API.
+The library extends `tweepy`_ library.
 
 Authorization credentials can be given as parameters for ``authorize`` keyword
 or keyword can read them in as environment variables:
@@ -21,7 +21,7 @@ or keyword can read them in as environment variables:
     - `TWITTER_ACCESS_TOKEN`
     - `TWITTER_ACCESS_TOKEN_SECRET`
 
-Library usage requires Twitter developer credentials and those can be requested from `Twitter developer site`_
+Library usage requires Twitter developer credentials. Those can be requested from `Twitter developer site`_
 
 .. _tweepy:
     http://docs.tweepy.org/en/latest/index.html
@@ -35,9 +35,6 @@ Examples
 
 Robot Framework
 ===============
-
-This is a section which describes how to use the library in your
-Robot Framework tasks.
 
 .. code-block:: robotframework
     :linenos:
@@ -55,9 +52,6 @@ Robot Framework tasks.
 
 Python
 ======
-
-This is a section which describes how to use the library in your
-own Python modules.
 
 .. code-block:: python
     :linenos:

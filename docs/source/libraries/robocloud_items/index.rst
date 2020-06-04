@@ -12,12 +12,12 @@ Description
 
 `WorkItems` is a library for managing data that goes through multiple
 activities in an RPA process. Each execution of an activity receives
-a work item from the previous activity, and after the activity is finished it
-is forwarded to the next one. During the execution it can freely
+a work item from the previous activity, and after the activity is finished, it
+is forwarded to the next one. During the execution, it can freely
 read and update the data contained in an item.
 
-The default implementation uses Robocloud (todo: documentation link) to
-store the data, but the libary allows using custom adapters.
+The default implementation uses Robocloud to store the data, but the library
+allows using custom adapters.
 
 ********
 Examples
@@ -26,18 +26,12 @@ Examples
 Robot Framework
 ===============
 
-This is a section which describes how to use the library in your
-Robot Framework tasks.
-
 .. literalinclude:: ../../../../tests/robot/test_robocloud_items.robot
     :language: robotframework
     :end-before: Keywords
 
 Python
 ======
-
-This is a section which describes how to use the library in your
-own Python modules.
 
 .. code-block:: python
     :linenos:

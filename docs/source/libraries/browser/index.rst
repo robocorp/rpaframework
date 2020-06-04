@@ -23,8 +23,6 @@ Examples
 Robot Framework
 ===============
 
-This section describes how to use the library in your Robot Framework tasks.
-
 The library provides a special keyword `Open Available Browser`.
 
 The keyword opens the first available webdriver in the running environment.
@@ -46,12 +44,10 @@ different ways for each webdriver type.
 
     *** Tasks ***
     Opening page
-        Open Available Browser  https://www.google.fi
+        Open Available Browser  https://www.google.com
 
 Python
 ======
-
-This section describes how to use the library in your own Python modules.
 
 .. code-block:: python
     :linenos:
@@ -59,7 +55,7 @@ This section describes how to use the library in your own Python modules.
     from RPA.Browser import Browser
 
     br = Browser()
-    br.open_available_browser("https://www.google.fi", headless=True)
+    br.open_available_browser("https://www.google.com", headless=True)
     br.input_text("//input[@name='q']", "robocorp")
     br.screenshot(page=True, locator="//input[@name='q']")
 

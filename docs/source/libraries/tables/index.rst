@@ -20,7 +20,7 @@ Import types
 
 The data from which a table can be created can be of two main types:
 
-1. An iterable of individual rows, like a list of lists, or list of dicts
+1. An iterable of individual rows, like a list of lists, or list of dictionaries
 2. A dictionary of columns, where each dictionary value is a list of values
 
 For instance, these two input values:

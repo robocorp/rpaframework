@@ -10,7 +10,7 @@ SAP
 Description
 ***********
 
-`SAP` is a library which is wrapping `SapGuiLibrary` functionality.
+`SAP` is a library that wraps `SapGuiLibrary` functionality.
 
 ********
 Examples
@@ -19,17 +19,12 @@ Examples
 Robot Framework
 ===============
 
-This is a section which describes how to use the library in your
-Robot Framework tasks.
-
-
+TODO
 
 Python
 ======
 
-This is a section which describes how to use the library in your
-own Python modules.
-
+TODO
 
 *****************
 API Documentation

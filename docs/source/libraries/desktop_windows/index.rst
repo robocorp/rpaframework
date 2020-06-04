@@ -32,7 +32,7 @@ Locators
 `Locator` is used to identify the element for interaction - usually for a mouse click.
 
 Locators can investigated for application once it has been opened by calling
-the keyword `get_windows_elements` which can store locator information into `json` file
+the keyword `get_windows_elements` which can store locator information into JSON file
 and `screenshot` of the element into an image file.
 
 Identifying locator
@@ -67,8 +67,6 @@ Examples
 Robot Framework
 ===============
 
-This section describes how to use the library in your Robot Framework tasks.
-
 .. code-block:: robotframework
     :linenos:
 
@@ -92,8 +90,6 @@ This section describes how to use the library in your Robot Framework tasks.
 
 Python
 ======
-
-This section describes how to use the library in your own Python modules.
 
 .. code-block:: python
     :linenos:
