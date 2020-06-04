@@ -217,7 +217,6 @@ Firefox, Safari, Edge, and Opera. The library extends <a class="reference extern
 <h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="robot-framework">
 <h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
-<p>This section describes how to use the library in your Robot Framework tasks.</p>
 <p>The library provides a special keyword <cite>Open Available Browser</cite>.</p>
 <p>The keyword opens the first available webdriver in the running environment.
 For example, for <cite>Windows</cite>, the browser list in preference order
@@ -241,13 +240,12 @@ different ways for each webdriver type.</p>
 
 <span class="gh">*** Tasks ***</span><span class="p"></span>
 <span class="gu">Opening page</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Open Available Browser</span><span class="p">  </span><span class="s">https://www.google.fi</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Open Available Browser</span><span class="p">  </span><span class="s">https://www.google.com</span><span class="p"></span>
 </pre></div>
 </td></tr></table></div>
 </div>
 <div class="section" id="python">
 <h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
-<p>This section describes how to use the library in your own Python modules.</p>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -256,7 +254,7 @@ different ways for each webdriver type.</p>
 6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Browser</span> <span class="kn">import</span> <span class="n">Browser</span>
 
 <span class="n">br</span> <span class="o">=</span> <span class="n">Browser</span><span class="p">()</span>
-<span class="n">br</span><span class="o">.</span><span class="n">open_available_browser</span><span class="p">(</span><span class="s2">&quot;https://www.google.fi&quot;</span><span class="p">,</span> <span class="n">headless</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">br</span><span class="o">.</span><span class="n">open_available_browser</span><span class="p">(</span><span class="s2">&quot;https://www.google.com&quot;</span><span class="p">,</span> <span class="n">headless</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">br</span><span class="o">.</span><span class="n">input_text</span><span class="p">(</span><span class="s2">&quot;//input[@name=&#39;q&#39;]&quot;</span><span class="p">,</span> <span class="s2">&quot;robocorp&quot;</span><span class="p">)</span>
 <span class="n">br</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="s2">&quot;//input[@name=&#39;q&#39;]&quot;</span><span class="p">)</span>
 </pre></div>

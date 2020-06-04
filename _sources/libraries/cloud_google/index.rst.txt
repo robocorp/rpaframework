@@ -15,7 +15,7 @@ Description
     Usage requires the following steps:
 
         - Create a GCP project
-        - Create a service account key file (json) and save it to a place the robot
+        - Create a service account key file (JSON) and save it to a place the robot
           can use it
         - Enable APIs
         - Install rpaframework[google]
@@ -26,8 +26,6 @@ Examples
 
 Robot Framework
 ===============
-
-This section describes how to use the library in your Robot Framework tasks.
 
 .. code-block:: robotframework
     :linenos:
@@ -40,7 +38,7 @@ This section describes how to use the library in your Robot Framework tasks.
     ${BUCKET_NAME}            testbucket12213123123
 
     *** Tasks ***
-    Upload file into new storage bucket
+    Upload a file into a new storage bucket
         [Setup]   Init Storage Client   ${SERVICE CREDENTIALS}
         Create Bucket    ${BUCKET_NAME}
         Upload File      ${BUCKET_NAME}   ${/}path${/}to${/}file.pdf  myfile.pdf
@@ -52,8 +50,6 @@ This section describes how to use the library in your Robot Framework tasks.
 
 Python
 ======
-
-This section describes how to use the library in your own Python modules.
 
 .. code-block:: python
     :linenos:

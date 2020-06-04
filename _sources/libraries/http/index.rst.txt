@@ -12,11 +12,10 @@ Description
 
 `HTTP` library can be used to make HTTP requests.
 
-Library will be extended by keywords that are more RPA-oriented.
+The library extends Robot Framework `RequestsLibrary`_ functionality with
+RPA-oriented keywords.
 
-Library is wrapping Robot Framework `RequestsLibrary`_ functionality.
-
-.. _RequestsLibrary: https://hub.robocorp.com/libraries/bulkan-robotframework-requests
+.. _RequestsLibrary: https://github.com/MarketSquare/robotframework-requests
 
 ********
 Examples
@@ -24,9 +23,6 @@ Examples
 
 Robot Framework
 ===============
-
-This is a section which describes how to use the library in your
-Robot Framework tasks.
 
 .. code-block:: robotframework
     :linenos:
@@ -45,9 +41,6 @@ Robot Framework tasks.
 
 Python
 ======
-
-This is a section which describes how to use the library in your
-own Python modules.
 
 .. code-block:: python
     :linenos:

@@ -28,8 +28,6 @@ Examples
 Robot Framework
 ===============
 
-This section describes how to use the library in your Robot Framework tasks.
-
 It is highly recommended to secure your passwords and take care
 that they are not stored in the version control by mistake.
 See :py:mod:`RPA.Robocloud.Secrets` how to store RPA Secrets into Robocloud.
@@ -73,8 +71,6 @@ the base image name given with the ``images`` parameter.
 
 Python
 ======
-
-This section describes how to use the library in your own Python modules.
 
 .. code-block:: python
     :linenos:

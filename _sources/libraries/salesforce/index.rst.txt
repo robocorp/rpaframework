@@ -10,19 +10,19 @@ Salesforce
 Description
 ***********
 
-`Salesforce` is library for accessing Salesforce using REST API.
-Library extends `simple-salesforce library`_.
+`Salesforce` is a library for accessing Salesforce using REST API.
+The library extends `simple-salesforce library`_.
 
 More information available at `Salesforce REST API Developer Guide`_.
 
 Dataloader
 ==========
 
-There is keyword `execute_dataloader_import` which can be used to mimic
+The keyword `execute_dataloader_import` can be used to mimic
 `Salesforce Dataloader`_ import behaviour.
 
-`input_object` can be given in different formats, below is example where
-input is `RPA.Table` format in **method a** and list format in **method b**.
+`input_object` can be given in different formats. Below is an example where
+input is in `RPA.Table` format in **method a** and list format in **method b**.
 
 .. code-block:: robotframework
     :linenos:
@@ -57,8 +57,8 @@ Example file **orders.json**
         },
     ]
 
-`mapping_object` describes how input data fields are mapped into Salesforce
-object attributes. In the example mapping defines that `asiakas` attribute in the
+`mapping_object` describes how the input data fields are mapped into Salesforce
+object attributes. In the example, the mapping defines that `asiakas` attribute in the
 input object is mapped into `Tilaaja__c` attribute of `Tilaus__c` custom Salesforce object.
 
 .. code-block:: json
@@ -70,7 +70,7 @@ input object is mapped into `Tilaaja__c` attribute of `Tilaus__c` custom Salesfo
         },
     }
 
-Object type could be for example. `Tilaus__c`
+Object type could be, for example, `Tilaus__c`.
 
 Salesforce object operations
 ============================
@@ -101,9 +101,6 @@ Examples
 Robot Framework
 ===============
 
-This is a section which describes how to use the library in your
-Robot Framework tasks.
-
 .. code-block:: robotframework
     :linenos:
 
@@ -130,9 +127,6 @@ Robot Framework tasks.
 
 Python
 ======
-
-This is a section which describes how to use the library in your
-own Python modules.
 
 .. code-block:: python
     :linenos:
