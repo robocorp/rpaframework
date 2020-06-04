@@ -7,7 +7,7 @@ from RPA.FileSystem import FileSystem
 
 
 class HTTP(RequestsLibrary):
-    """RPA Framework HTTP library which wraps
+    """RPA Framework HTTP library that wraps
     _RequestsLibrary_ functionality.
     """
 
@@ -28,15 +28,15 @@ class HTTP(RequestsLibrary):
         overwrite: bool = False,
     ) -> dict:
         """
-        Helper method for `Get Request` which will create session and
-        perform Get and stores target file if set by `target_file` parameter.
+        A helper method for `Get Request` that will create a session, perform GET
+        request, and store the target file, if set by the `target_file` parameter.
 
-        Old session will be used if URL scheme and host are same as previously,
-        eg. 'https://www.google.fi' part of the URL.
+        The old session will be used if the URL scheme and the host are the same as
+        previously, e.g., 'https://www.google.fi' part of the URL.
 
-        :param url: target url for Get request
+        :param url: target URL for GET request
         :param target_file: filepath to save request content, default `None`
-        :param binary: if `True` file is saved as binary, default `True`
+        :param binary: if `True`, file is saved as binary, default `True`
         :param verify: if SSL verification should be done, default `True`
         :param force_new_session: if new HTTP session should be created, default `False`
         :param overwrite: used together with `target_file`, if `True` will
@@ -49,7 +49,7 @@ class HTTP(RequestsLibrary):
         request_alias = f"{self.session_alias_prefix}{uc.scheme}{uc.netloc}"
         url_path = url.replace(http_host, "")
         if force_new_session or not self.session_exists(request_alias):
-            self.logger.info("Creating new HTTP session")
+            self.logger.info("Creating a new HTTP session")
             self.create_session(request_alias, http_host, verify=verify)
         else:
             self.logger.info("Using already existing HTTP session")
@@ -70,7 +70,7 @@ class HTTP(RequestsLibrary):
             self.fs.create_file(target_file, content, overwrite)
 
     def get_current_session_alias(self) -> str:
-        """Get request session alias which was used with `HTTP Get` keyword.
+        """Get request session alias that was used with the `HTTP Get` keyword.
 
         :return: name of session alias
         """
@@ -85,12 +85,12 @@ class HTTP(RequestsLibrary):
         force_new_session: bool = False,
         overwrite: bool = False,
     ) -> dict:
-        """Alias for keyword `HTTP Get`.
+        """An alias for the `HTTP Get` keyword.
 
-        Difference in use is that URL is always downloaded based on
+        The difference in use is that the URL is always downloaded based on
         the URL path (even without `target_file`). If there is a filename
-        in the path then that is used as `target_file` to save to. By default
-        filename will be `downloaded.html`.
+        in the path, then that is used as `target_file` to save to. By default,
+        the filename will be `downloaded.html`.
         """
         response = self.http_get(
             url, target_file, binary, verify, force_new_session, overwrite

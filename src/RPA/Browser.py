@@ -52,7 +52,7 @@ class Browser(SeleniumLibrary):
         self.drivers = []
 
     def get_preferable_browser_order(self) -> list:
-        """Returns list of RPA Framework preferred browsers by OS.
+        """Return a list of RPA Framework preferred browsers by OS.
 
         :return: browser list
         """
@@ -76,28 +76,28 @@ class Browser(SeleniumLibrary):
         maximized: bool = False,
         browser_selection: Any = AUTOMATIC_BROWSER_SELECTION,
     ) -> int:
-        """Open available browser
+        """Open available browser.
 
-        Keywords opens the first available browser it can find from the
-        system in preferred order or given browser (`browser_selection`)
+        Opens the first available browser in the system in preferred order, or the
+        given browser (`browser_selection`).
 
         Steps:
 
-        1. Get order of browsers
-        2. Loop list of preferred of browsers
+        1. Get the order of browsers
+        2. Loop the list of preferred browsers
 
-            a. Set webdriver options for browser
-            b. Create webdriver using existing installaiton
+            a. Set the webdriver options for the browser
+            b. Create the webdriver using existing installation
             c. (If step b. failed) Download and install webdriver, try again
             d. (If step c. failed) Try starting webdriver in headless mode
 
-        3. Open url
+        3. Open the URL
 
-        If unable to open browser raises `BrowserNotFoundError`.
+        Raises `BrowserNotFoundError` if unable to open the browser.
 
         Details on `Safari webdriver setup`_.
 
-        :param url: address to open
+        :param url: URL to open
         :param use_profile: set browser profile, defaults to False
         :param headless: run in headless mode, defaults to False
         :param maximized: run window maximized, defaults to False
@@ -171,13 +171,13 @@ class Browser(SeleniumLibrary):
     def create_rpa_webdriver(
         self, browser: str, options: dict, download: bool = False
     ) -> int:
-        """Create webdriver instance for given browser.
+        """Create a webdriver instance for the given browser.
 
-        Driver will be downloaded if it does not exist when `download` is True.
+        The driver will be downloaded if it does not exist when `download` is True.
 
         :param browser: name of the browser
         :param options: options for webdriver
-        :param download: True if driver should be download, defaults to False
+        :param download: True if the driver should be download, defaults to False
         :return: index of the webdriver session, False if webdriver was not initialized
         """
         executable = False
@@ -198,10 +198,10 @@ class Browser(SeleniumLibrary):
         return False
 
     def get_browser_order(self, browser_selection: Any) -> list:
-        """Get list of browser that will be used for open browser
+        """Get a list of browsers that will be used for open browser
         keywords. Will be one or many.
 
-        :param browser_selection: "AUTO" will be OS specfic list,
+        :param browser_selection: "AUTO" will be OS-specific list,
             or one named browser, eg. "Chrome"
         :return: list of browsers
         """
@@ -219,7 +219,7 @@ class Browser(SeleniumLibrary):
         """Detect Chrome browser version (if possible) on different
         platforms using different commands for each platform.
 
-        Returns corresponding chromedriver version if possible.
+        Return corresponding chromedriver version, if possible.
 
         Supported Chrome major versions are 81, 80 and 79.
 
@@ -274,9 +274,9 @@ class Browser(SeleniumLibrary):
             return None
 
     def get_installed_chromedriver_version(self, driver_executable_path: str) -> str:
-        """Returns full version number for stable chromedriver.
+        """Return the full version number for a stable chromedriver.
 
-        Stable version is defined internally based on the major version
+        The stable version is defined internally based on the major version
         of the chromedriver.
 
         :param driver_executable_path: path to chromedriver
@@ -299,13 +299,13 @@ class Browser(SeleniumLibrary):
     def download_driver(
         self, dm_class: str, download_dir: str, version: str = None
     ) -> None:
-        """ Download driver to given directory. By default downloads
-        latest version for given webdriver type, but this can be
-        overridden by giving ``version`` parameter.
+        """ Download the driver to a given directory. By default, downloads
+        the latest version for the given webdriver type. This can be
+        overridden by giving the ``version`` parameter.
 
         :param dm_class: driver manager class
         :param download_dir: directory to download driver into
-        :param version: None by default (gets latest version)
+        :param version: None by default (gets the latest version)
         """
         self.logger.info("Downloading driver into: %s", str(download_dir))
         dm = dm_class(download_root=download_dir, link_path=download_dir)
@@ -371,7 +371,7 @@ class Browser(SeleniumLibrary):
         paths or with downloaded drivers.
 
         :param browser: use drivers for this browser
-        :param download: if True drivers are downloaded, not if False
+        :param download: if True, drivers are downloaded, not if False
         :return: path to driver or `None`
         """
         browser = browser.lower()
@@ -422,7 +422,7 @@ class Browser(SeleniumLibrary):
         headless: bool = False,
         maximized: bool = False,
     ) -> dict:
-        """Set options for given browser
+        """Set options for the given browser.
 
         Supported at the moment:
             - ChromeOptions
@@ -430,10 +430,10 @@ class Browser(SeleniumLibrary):
             - IeOptions
 
         :param browser
-        :param use_profile: if browser user profile is used, defaults to False
+        :param use_profile: if a browser user profile is used, defaults to False
         :param headless: if headless mode should be set, defaults to False
-        :param maximized: if browser should be run maximized, defaults to False
-        :return: driver options or empty dictionary
+        :param maximized: if the browser should be run maximized, defaults to False
+        :return: driver options or an empty dictionary
         """
         browser_options = None
         driver_options = {}
@@ -487,10 +487,10 @@ class Browser(SeleniumLibrary):
     ) -> int:
         """Open Chrome browser.
 
-        :param url: address to open
-        :param use_profile: if browser user profile is used, defaults to False
+        :param url: URL to open
+        :param use_profile: if a browser user profile is used, defaults to False
         :param headless: if headless mode should be set, defaults to False
-        :param maximized: if browser should be run maximized, defaults to False
+        :param maximized: if the browser should be run maximized, defaults to False
         """
         # webdrivermanager
         # https://stackoverflow.com/questions/41084124/chrome-options-in-robot-framework
@@ -510,7 +510,7 @@ class Browser(SeleniumLibrary):
         options.add_argument("--no-sandbox")
 
     def set_headless_options(self, browser: str, options: dict) -> None:
-        """Set headless mode if possible for the browser
+        """Set headless mode for the browser, if possible.
 
         :param browser: string name of the browser
         :param options: browser options class instance
@@ -541,9 +541,9 @@ class Browser(SeleniumLibrary):
 
     @keyword
     def open_headless_chrome_browser(self, url: str) -> int:
-        """Open Chrome browser in headless mode
+        """Open Chrome browser in headless mode.
 
-        :param url: address to open
+        :param url: URL to open
         """
         index = self.open_chrome_browser(url, headless=True)
         return index
@@ -555,11 +555,11 @@ class Browser(SeleniumLibrary):
         locator: str = None,
         filename_prefix: str = "screenshot",
     ) -> None:
-        """Capture page and/or element screenshot
+        """Capture page and/or element screenshot.
 
-        :param page: capture page screenshot, defaults to True
-        :param locator: if defined take element screenshot, defaults to None
-        :param filename_prefix: prefix for screenshot files, default to 'screenshot'
+        :param page: capture a page screenshot, defaults to True
+        :param locator: if defined, take element screenshot, defaults to None
+        :param filename_prefix: prefix for screenshot files, defaults to 'screenshot'
         """
         if page:
             filename = os.path.join(
@@ -582,7 +582,7 @@ class Browser(SeleniumLibrary):
 
     @keyword
     def input_text_when_element_is_visible(self, locator: str, text: str) -> None:
-        """Input text into locator after it has become visible
+        """Input text into locator after it has become visible.
 
         :param locator: selector
         :param text: insert text to locator
@@ -592,7 +592,7 @@ class Browser(SeleniumLibrary):
 
     @keyword
     def wait_and_click_button(self, locator: str) -> None:
-        """Click button once it becomes visible
+        """Click button once it becomes visible.
 
         :param locator: [description]
         """
@@ -601,8 +601,8 @@ class Browser(SeleniumLibrary):
 
     @property
     def location(self) -> str:
-        """Return browser location
+        """Return browser location.
 
-        :return: url of the page browser is in
+        :return: URL of the page the browser is in
         """
         return self.get_location()
