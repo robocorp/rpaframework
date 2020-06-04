@@ -4,7 +4,16 @@ Release notes
 Upcoming release
 ----------------
 
-- Add new ``Tasks`` library, which allows using flow control between tasks
+- New ``Tasks`` library, which allows using flow control between tasks
+- Cloud.AWS. Fix parameters and return options for keywords
+  ``Detect Document Text`` and ``Analyze Document``
+- New ``Cloud.Azure`` library, which supports following Azure APIs:
+
+  - ``Text Analytics``
+  - ``Face``
+  - ``Computer Vision``
+  - ``Speech``
+
 
 1.0.4
 -----
