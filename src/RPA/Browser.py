@@ -76,7 +76,7 @@ class Browser(SeleniumLibrary):
         maximized: bool = False,
         browser_selection: Any = AUTOMATIC_BROWSER_SELECTION,
     ) -> int:
-        """Open available browser
+        """Open available browser.
 
         Opens the first available browser in the system in preferred order, or the
         given browser (`browser_selection`).
@@ -219,7 +219,7 @@ class Browser(SeleniumLibrary):
         """Detect Chrome browser version (if possible) on different
         platforms using different commands for each platform.
 
-        Return corresponding chromedriver version if possible.
+        Return corresponding chromedriver version, if possible.
 
         Supported Chrome major versions are 81, 80 and 79.
 
