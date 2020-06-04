@@ -1,0 +1,67 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: Global
+
+`Tasks` is a Robot Framework library for controlling
+task execution inside a suite. It allows changing the next scheduled task
+or jumping immediately to other tasks by using the keywords it provides.
+
+If ``Graphviz`` is available, it will also create a directed graph
+to visualize connected tasks, which is visible in the suite documentation
+field of the test log.
+
+********
+Keywords
+********
+
+:Jump To Task:
+  :Arguments: name
+
+  Jump directly to given task, skipping the rest of the task
+  execution. If run inside a teardown, also skips the rest of the
+  teardown sequence.
+
+:Jump To Task If:
+  :Arguments: condition, name, default=None
+
+  Jump directly to given task according to the condition.
+
+:Jump To Task If Keyword Fails:
+  :Arguments: task, keyword, \*args
+
+  Executes given keyword and jumps to given task if it fails.
+
+:Jump To Task If Keyword Succeeds:
+  :Arguments: task, keyword, \*args
+
+  Executes given keyword and jumps to given task if it succeeds.
+
+:Set Next Task:
+  :Arguments: name
+
+  Set the next task to be executed.
+  Should be a task in the same suite.
+
+
+:Set Next Task If:
+  :Arguments: condition, name, default=None
+
+  Set the next task according to the condition.
+  If no default is given, does not modify execution order.
+
+
+:Set Next Task If Keyword Fails:
+  :Arguments: task, keyword, \*args
+
+  Executes given keyword and sets the next task if it fails.
+
+:Set Next Task If Keyword Succeeds:
+  :Arguments: task, keyword, \*args
+
+  Executes given keyword and sets the next task if it succeeds.
