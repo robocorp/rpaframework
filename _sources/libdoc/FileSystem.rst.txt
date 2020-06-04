@@ -72,37 +72,37 @@ Keywords
 :Does Directory Exist:
   :Arguments: path
 
-  Returns True if given directory exists, False if not.
+  Returns True if the given directory exists, False if not.
 
 
 :Does Directory Not Exist:
   :Arguments: path
 
-  Return True if directory does not exist, False if it does.
+  Returns True if the directory does not exist, False if it does.
 
 
 :Does File Exist:
   :Arguments: path
 
-  Returns True if given file exists, False if not.
+  Returns True if the given file exists, False if not.
 
 
 :Does File Not Exist:
   :Arguments: path
 
-  Returns True if file does not exist, False if it does.
+  Returns True if the file does not exist, False if it does.
 
 
 :Empty Directory:
   :Arguments: path
 
-  Removes all files in the given directory.
+  Removes all the files in the given directory.
 
 
 :Find Files:
   :Arguments: pattern, include_dirs=True, include_files=True
 
-  Find files recursively according to pattern.
+  Find files recursively according to a pattern.
 
 
 :Get File Creation Date:
@@ -169,31 +169,31 @@ Keywords
 :List Directories In Directory:
   :Arguments: path=None
 
-  Lists all directories in the given directory, relative to it.
+  Lists all the directories in the given directory, relative to it.
 
 
 :List Files In Directory:
   :Arguments: path=None
 
-  Lists all files in the given directory, relative to it.
+  Lists all the files in the given directory, relative to it.
 
 
 :Log Directory Tree:
   :Arguments: path=None
 
-  Logs all of the files in the directory recursively.
+  Logs all the files in the directory recursively.
 
 
 :Move Directory:
   :Arguments: source, destination, overwrite=False
 
-  Move directory from source path to destination path.
+  Move a directory from source path to destination path.
 
 
 :Move File:
   :Arguments: source, destination, overwrite=False
 
-  Move file from source path to destination path,
+  Move a file from source path to destination path,
   optionally overwriting the destination.
 
 

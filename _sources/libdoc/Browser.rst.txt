@@ -1296,7 +1296,7 @@ Keywords
 
   .. raw:: html
 
-     <p>Input text into locator after it has become visible</p>
+     <p>Input text into locator after it has become visible.</p>
      <p>:param locator: selector :param text: insert text to locator</p>
 
 :List Selection Should Be:
@@ -1437,15 +1437,15 @@ Keywords
 
   .. raw:: html
 
-     <p>Open available browser</p>
-     <p>Keywords opens the first available browser it can find from the system in preferred order or given browser (<span class="name">browser_selection</span>)</p>
+     <p>Open available browser.</p>
+     <p>Opens the first available browser in the system in preferred order, or the given browser (<span class="name">browser_selection</span>).</p>
      <p>Steps:</p>
-     <p>1. Get order of browsers 2. Loop list of preferred of browsers</p>
-     <p>a. Set webdriver options for browser b. Create webdriver using existing installaiton c. (If step b. failed) Download and install webdriver, try again d. (If step c. failed) Try starting webdriver in headless mode</p>
-     <p>3. Open url</p>
-     <p>If unable to open browser raises <span class="name">BrowserNotFoundError</span>.</p>
+     <p>1. Get the order of browsers 2. Loop the list of preferred browsers</p>
+     <p>a. Set the webdriver options for the browser b. Create the webdriver using existing installation c. (If step b. failed) Download and install webdriver, try again d. (If step c. failed) Try starting webdriver in headless mode</p>
+     <p>3. Open the URL</p>
+     <p>Raises <span class="name">BrowserNotFoundError</span> if unable to open the browser.</p>
      <p>Details on <span class="name">Safari webdriver setup</span>_.</p>
-     <p>:param url: address to open :param use_profile: set browser profile, defaults to False :param headless: run in headless mode, defaults to False :param maximized: run window maximized, defaults to False :param browser_selection: browser name, defaults to AUTOMATIC_BROWSER_SELECTION :return: index of the webdriver session</p>
+     <p>:param url: URL to open :param use_profile: set browser profile, defaults to False :param headless: run in headless mode, defaults to False :param maximized: run window maximized, defaults to False :param browser_selection: browser name, defaults to AUTOMATIC_BROWSER_SELECTION :return: index of the webdriver session</p>
      <p>.. _Safari webdriver setup: <a href="https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p>
 
 :Open Browser:
@@ -1700,7 +1700,7 @@ Keywords
   .. raw:: html
 
      <p>Open Chrome browser.</p>
-     <p>:param url: address to open :param use_profile: if browser user profile is used, defaults to False :param headless: if headless mode should be set, defaults to False :param maximized: if browser should be run maximized, defaults to False</p>
+     <p>:param url: URL to open :param use_profile: if a browser user profile is used, defaults to False :param headless: if headless mode should be set, defaults to False :param maximized: if the browser should be run maximized, defaults to False</p>
 
 :Open Context Menu:
   :Arguments: locator
@@ -1714,8 +1714,8 @@ Keywords
 
   .. raw:: html
 
-     <p>Open Chrome browser in headless mode</p>
-     <p>:param url: address to open</p>
+     <p>Open Chrome browser in headless mode.</p>
+     <p>:param url: URL to open</p>
 
 :Page Should Contain:
   :Arguments: text, loglevel=TRACE
@@ -2060,8 +2060,8 @@ Keywords
 
   .. raw:: html
 
-     <p>Capture page and/or element screenshot</p>
-     <p>:param page: capture page screenshot, defaults to True :param locator: if defined take element screenshot, defaults to None :param filename_prefix: prefix for screenshot files, default to 'screenshot'</p>
+     <p>Capture page and/or element screenshot.</p>
+     <p>:param page: capture a page screenshot, defaults to True :param locator: if defined, take element screenshot, defaults to None :param filename_prefix: prefix for screenshot files, defaults to 'screenshot'</p>
 
 :Scroll Element Into View:
   :Arguments: locator
@@ -2712,7 +2712,7 @@ Keywords
 
   .. raw:: html
 
-     <p>Click button once it becomes visible</p>
+     <p>Click button once it becomes visible.</p>
      <p>:param locator: [description]</p>
 
 :Wait For Condition:

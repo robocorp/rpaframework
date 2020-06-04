@@ -209,11 +209,11 @@
 <dt id="RPA.FileSystem.Directory">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.FileSystem.</code><code class="sig-name descname">Directory</code><a class="headerlink" href="#RPA.FileSystem.Directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
-<p>Robot Framework friendly container for directories.</p>
+<p>Robot Framework -friendly container for directories.</p>
 <dl class="method">
 <dt id="RPA.FileSystem.Directory.from_path">
 <em class="property">classmethod </em><code class="sig-name descname">from_path</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.Directory.from_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create directory object from pathlib.Path or path string.</p>
+<dd><p>Create a directory object from pathlib.Path or a path string.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -234,11 +234,11 @@
 <dt id="RPA.FileSystem.File">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.FileSystem.</code><code class="sig-name descname">File</code><a class="headerlink" href="#RPA.FileSystem.File" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
-<p>Robot Framework friendly container for files.</p>
+<p>Robot Framework -friendly container for files.</p>
 <dl class="method">
 <dt id="RPA.FileSystem.File.from_path">
 <em class="property">classmethod </em><code class="sig-name descname">from_path</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.File.from_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create File object from pathlib.Path or path string.</p>
+<dd><p>Create a File object from pathlib.Path or a path string.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -406,7 +406,7 @@ files on a local filesystem.</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.does_directory_exist">
 <code class="sig-name descname">does_directory_exist</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.does_directory_exist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns True if given directory exists, False if not.</p>
+<dd><p>Returns True if the given directory exists, False if not.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> – path to inspected directory</p>
@@ -417,7 +417,7 @@ files on a local filesystem.</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.does_directory_not_exist">
 <code class="sig-name descname">does_directory_not_exist</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.does_directory_not_exist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if directory does not exist, False if it does.</p>
+<dd><p>Returns True if the directory does not exist, False if it does.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> – path to inspected directory</p>
@@ -428,7 +428,7 @@ files on a local filesystem.</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.does_file_exist">
 <code class="sig-name descname">does_file_exist</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.does_file_exist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns True if given file exists, False if not.</p>
+<dd><p>Returns True if the given file exists, False if not.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> – path to inspected file</p>
@@ -439,7 +439,7 @@ files on a local filesystem.</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.does_file_not_exist">
 <code class="sig-name descname">does_file_not_exist</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.does_file_not_exist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns True if file does not exist, False if it does.</p>
+<dd><p>Returns True if the file does not exist, False if it does.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> – path to inspected file</p>
@@ -450,7 +450,7 @@ files on a local filesystem.</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.empty_directory">
 <code class="sig-name descname">empty_directory</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.empty_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes all files in the given directory.</p>
+<dd><p>Removes all the files in the given directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> – directory to remove files from</p>
@@ -461,7 +461,7 @@ files on a local filesystem.</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.find_files">
 <code class="sig-name descname">find_files</code><span class="sig-paren">(</span><em class="sig-param">pattern</em>, <em class="sig-param">include_dirs=True</em>, <em class="sig-param">include_files=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.find_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find files recursively according to pattern.</p>
+<dd><p>Find files recursively according to a pattern.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -591,7 +591,7 @@ Note: Linux sets this whenever file metadata changes</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.list_directories_in_directory">
 <code class="sig-name descname">list_directories_in_directory</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.list_directories_in_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Lists all directories in the given directory, relative to it.</p>
+<dd><p>Lists all the directories in the given directory, relative to it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> – base directory for search, defaults to current working dir</p>
@@ -602,7 +602,7 @@ Note: Linux sets this whenever file metadata changes</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.list_files_in_directory">
 <code class="sig-name descname">list_files_in_directory</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.list_files_in_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Lists all files in the given directory, relative to it.</p>
+<dd><p>Lists all the files in the given directory, relative to it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> – base directory for search, defaults to current working dir</p>
@@ -613,7 +613,7 @@ Note: Linux sets this whenever file metadata changes</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.log_directory_tree">
 <code class="sig-name descname">log_directory_tree</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.log_directory_tree" title="Permalink to this definition">¶</a></dt>
-<dd><p>Logs all of the files in the directory recursively.</p>
+<dd><p>Logs all the files in the directory recursively.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> – base directory to start from, defaults to current working dir</p>
@@ -624,7 +624,7 @@ Note: Linux sets this whenever file metadata changes</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.move_directory">
 <code class="sig-name descname">move_directory</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">destination</em>, <em class="sig-param">overwrite=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.move_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Move directory from source path to destination path.</p>
+<dd><p>Move a directory from source path to destination path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -639,7 +639,7 @@ Note: Linux sets this whenever file metadata changes</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.move_file">
 <code class="sig-name descname">move_file</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">destination</em>, <em class="sig-param">overwrite=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.move_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Move file from source path to destination path,
+<dd><p>Move a file from source path to destination path,
 optionally overwriting the destination.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -728,7 +728,7 @@ Does not attempt to decode the content in any way.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> – path to removed file</p></li>
+<li><p><strong>path</strong> – path to the file to remove</p></li>
 <li><p><strong>force</strong> – ignore non-existent files</p></li>
 </ul>
 </dd>
@@ -742,7 +742,7 @@ Does not attempt to decode the content in any way.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>paths</strong> – paths to removed files</p></li>
+<li><p><strong>paths</strong> – paths to files to be removed</p></li>
 <li><p><strong>force</strong> – ignore non-existent files</p></li>
 </ul>
 </dd>
