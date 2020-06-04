@@ -12,8 +12,8 @@ Description
 
 `AWS` is a library for operating with Amazon AWS services.
 
-Service initialization can be given as parameters for ``init_s3_service`` keyword
-for example, or keyword can read them in as environment variables:
+Service initialization can be given as parameters for ``init_s3_service`` keyword,
+or the keyword can read them in as environment variables:
 
     - `AWS_KEY_ID`
     - `AWS_KEY`
@@ -38,8 +38,6 @@ Examples
 Robot Framework
 ===============
 
-This section describes how to use the library in your Robot Framework tasks.
-
 .. code-block:: robotframework
     :linenos:
 
@@ -50,7 +48,7 @@ This section describes how to use the library in your Robot Framework tasks.
     ${BUCKET_NAME}        testbucket12213123123
 
     *** Tasks ***
-    Upload file into S3 bucket
+    Upload a file into S3 bucket
         [Setup]   Init S3 Client
         Upload File      ${BUCKET_NAME}   ${/}path${/}to${/}file.pdf
         @{files}         List Files   ${BUCKET_NAME}
@@ -61,8 +59,6 @@ This section describes how to use the library in your Robot Framework tasks.
 
 Python
 ======
-
-This section describes how to use the library in your own Python modules.
 
 .. code-block:: python
     :linenos:

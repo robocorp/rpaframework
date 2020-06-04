@@ -10,9 +10,10 @@ PDF
 Description
 ***********
 
-`PDF` is library for managing PDF documents.
+`PDF` is a library for managing PDF documents.
 
-It provides easy method of generating PDF from HTML formatted template file.
+It provides an easy method of generating a PDF document from an HTML formatted
+template file.
 
 ********
 Examples
@@ -20,9 +21,6 @@ Examples
 
 Robot Framework
 ===============
-
-This is a section which describes how to use the library in your
-Robot Framework tasks.
 
 .. literalinclude:: order.template
     :linenos:
@@ -50,9 +48,6 @@ Robot Framework tasks.
 
 Python
 ======
-
-This is a section which describes how to use the library in your
-own Python modules.
 
 .. code-block:: python
     :linenos:

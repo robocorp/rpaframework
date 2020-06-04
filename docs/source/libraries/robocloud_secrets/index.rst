@@ -10,7 +10,7 @@ Robocloud.Secrets
 Description
 ***********
 
-`Secrets` is library for interfacing secrets set in the Robocloud Vault
+`Secrets` is a library for interfacing secrets set in the Robocloud Vault
 (used by default) or file-based secrets, which can be taken into use
 by setting two environment variables below.
 
@@ -46,9 +46,6 @@ Examples
 Robot Framework
 ===============
 
-This is a section which describes how to use the library in your
-Robot Framework tasks.
-
 .. code-block:: robotframework
     :linenos:
 
@@ -63,9 +60,6 @@ Robot Framework tasks.
 
 Python
 ======
-
-This is a section which describes how to use the library in your
-own Python modules.
 
 .. code-block:: python
     :linenos:

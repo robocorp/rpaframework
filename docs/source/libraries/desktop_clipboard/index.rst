@@ -20,8 +20,6 @@ Examples
 Robot Framework
 ===============
 
-This section describes how to use the library in your Robot Framework tasks.
-
 .. code-block:: robotframework
     :linenos:
 
@@ -30,14 +28,12 @@ This section describes how to use the library in your Robot Framework tasks.
 
     *** Tasks ***
     Clipping
-        Copy To Clipboard   text from Robot to clipboard
+        Copy To Clipboard   Text from Robot to clipboard
         ${var}=             Paste From Clipboard
         Clear Clipboard
 
 Python
 ======
-
-This section describes how to use the library in your own Python modules.
 
 .. code-block:: python
     :linenos:
@@ -45,7 +41,7 @@ This section describes how to use the library in your own Python modules.
     from RPA.Desktop.Clipboard import Clipboard
 
     clip = Clipboard()
-    clip.copy_to_clipboard('text from Python to clipboard')
+    clip.copy_to_clipboard('Text from Python to clipboard')
     text = clip.paste_from_clipboard()
     print(f"clipboard had text: '{text}'")
     clip.clear_clipboard()
