@@ -13,7 +13,7 @@ class TimeoutException(Exception):
 
 
 class File(NamedTuple):
-    """Robot Framework friendly container for files."""
+    """Robot Framework -friendly container for files."""
 
     path: str
     name: str
@@ -29,7 +29,7 @@ class File(NamedTuple):
 
     @classmethod
     def from_path(cls, path):
-        """Create File object from pathlib.Path or path string."""
+        """Create a File object from pathlib.Path or a path string."""
         path = Path(path)
         stat = path.stat()
         return cls(
@@ -41,7 +41,7 @@ class File(NamedTuple):
 
 
 class Directory(NamedTuple):
-    """Robot Framework friendly container for directories."""
+    """Robot Framework -friendly container for directories."""
 
     path: str
     name: str
@@ -55,7 +55,7 @@ class Directory(NamedTuple):
 
     @classmethod
     def from_path(cls, path):
-        """Create directory object from pathlib.Path or path string."""
+        """Create a directory object from pathlib.Path or a path string."""
         path = Path(path)
         return cls(str(path.resolve()), path.name)
 
@@ -69,7 +69,7 @@ class FileSystem:
         self.logger = logging.getLogger(__name__)
 
     def find_files(self, pattern, include_dirs=True, include_files=True):
-        """Find files recursively according to pattern.
+        """Find files recursively according to a pattern.
 
         :param pattern:         search path in glob format pattern,
                                 e.g. *.xls or **/orders.txt
@@ -100,21 +100,21 @@ class FileSystem:
         return sorted(matches)
 
     def list_files_in_directory(self, path=None):
-        """Lists all files in the given directory, relative to it.
+        """Lists all the files in the given directory, relative to it.
 
         :param path:    base directory for search, defaults to current working dir
         """
         return self.find_files(Path(path, "*"), include_dirs=False)
 
     def list_directories_in_directory(self, path=None):
-        """Lists all directories in the given directory, relative to it.
+        """Lists all the directories in the given directory, relative to it.
 
         :param path:    base directory for search, defaults to current working dir
         """
         return self.find_files(Path(path, "*"), include_files=False)
 
     def log_directory_tree(self, path=None):
-        """Logs all of the files in the directory recursively.
+        """Logs all the files in the directory recursively.
 
         :param path:    base directory to start from, defaults to current working dir
         """
@@ -141,28 +141,28 @@ class FileSystem:
         self.logger.info("\n".join(rows))
 
     def does_file_exist(self, path):
-        """Returns True if given file exists, False if not.
+        """Returns True if the given file exists, False if not.
 
         :param path:    path to inspected file
         """
         return bool(self.find_files(path, include_dirs=False))
 
     def does_file_not_exist(self, path):
-        """Returns True if file does not exist, False if it does.
+        """Returns True if the file does not exist, False if it does.
 
         :param path:    path to inspected file
         """
         return not self.does_file_exist(path)
 
     def does_directory_exist(self, path):
-        """Returns True if given directory exists, False if not.
+        """Returns True if the given directory exists, False if not.
 
         :param path:    path to inspected directory
         """
         return bool(self.find_files(path, include_files=False))
 
     def does_directory_not_exist(self, path):
-        """Return True if directory does not exist, False if it does.
+        """Returns True if the directory does not exist, False if it does.
 
         :param path:    path to inspected directory
         """
@@ -293,7 +293,7 @@ class FileSystem:
     def remove_file(self, path, force=False):
         """Removes the given file.
 
-        :param path:    path to removed file
+        :param path:    path to the file to remove
         :param force:   ignore non-existent files
         """
         try:
@@ -305,7 +305,7 @@ class FileSystem:
     def remove_files(self, *paths, force=False):
         """Removes multiple files.
 
-        :param paths:   paths to removed files
+        :param paths:   paths to files to be removed
         :param force:   ignore non-existent files
         """
         # TODO: glob support
@@ -324,7 +324,7 @@ class FileSystem:
             Path(path).rmdir()
 
     def empty_directory(self, path):
-        """Removes all files in the given directory.
+        """Removes all the files in the given directory.
 
         :param path:    directory to remove files from
         """
@@ -383,7 +383,7 @@ class FileSystem:
         shutil.copytree(src, dst)
 
     def move_file(self, source, destination, overwrite=False):
-        """Move file from source path to destination path,
+        """Move a file from source path to destination path,
         optionally overwriting the destination.
 
         :param source:      source file path for moving
@@ -418,7 +418,7 @@ class FileSystem:
             self.move_file(str(src), dst, overwrite)
 
     def move_directory(self, source, destination, overwrite=False):
-        """Move directory from source path to destination path.
+        """Move a directory from source path to destination path.
 
         :param source:      source directory path for moving
         :param destination: path to move to
