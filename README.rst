@@ -109,6 +109,8 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `Tables`_                  | Manipulate, sort, and filter tabular data    |
 +----------------------------+----------------------------------------------+
+| `Tasks`_                   | Control task execution                       |
++----------------------------+----------------------------------------------+
 | `Twitter`_                 | Twitter API interface                        |
 +----------------------------+----------------------------------------------+
 | `Word.Application`_        | Control the Word desktop application         |
@@ -137,7 +139,8 @@ The RPA Framework project currently includes the following libraries:
 .. _SAP: https://rpaframework.org/libraries/sap/
 .. _Slack: https://rpaframework.org/libraries/slack/
 .. _Tables: https://rpaframework.org/libraries/tables/
-.. _Twitter: https://rpaframework.org/libraries/twitter/index.html
+.. _Tasks: https://rpaframework.org/libraries/tasks/
+.. _Twitter: https://rpaframework.org/libraries/twitter/
 .. _Word.Application: https://rpaframework.org/libraries/word_application/
 
 
