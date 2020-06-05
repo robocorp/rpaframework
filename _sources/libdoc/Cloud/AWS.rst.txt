@@ -64,7 +64,7 @@ Keywords
 
 
 :Detect Document Text:
-  :Arguments: image_file: str=None, bucket_name: str=None
+  :Arguments: image_file: str=None, json_file: str=None, bucket_name: str=None
 
   Detects text in the input document.
 

@@ -1,0 +1,149 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: 
+
+Library for interacting with Azure services
+
+Authentication to Azure API is handled by `service subcription key` which
+can set for all services using environment variable `AZURE_SUBSCRIPTION_KEY`.
+
+If there are service specific subscription keys, these can be set using
+environment variable `AZURE_SERVICENAME_KEY`. Replace `SERVICENAME` with service
+name.
+
+********
+Keywords
+********
+
+:Detect Face:
+  :Arguments: image_file: str=None, image_url: str=None, face_attributes: str=None, face_landmarks: bool=False, recognition_model: str=recognition_02, json_file: str=None
+
+  Detect facial attributes in the image
+
+  Read more about `face_attributes` at `Face detection explained`_:
+
+      - age
+      - gender
+      - smile
+      - facialHair
+      - headPose
+      - glasses
+      - emotion
+      - hair
+      - makeup
+      - accessories
+      - blur
+      - exposure
+      - nouse
+
+
+  .. _Face detection explained: https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection  # noqa: E501
+
+:Detect Language:
+  :Arguments: text: str, json_file: str=None
+
+  Detect languages in the given text
+
+
+:Find Entities:
+  :Arguments: text: str, language: str=None, json_file=None
+
+  Detect entities in the given text
+
+
+:Init Computer Vision Service:
+  :Arguments: region: str=None
+
+  Initialize Azure Computer Vision
+
+
+:Init Face Service:
+  :Arguments: region: str=None
+
+  Initialize Azure Face
+
+
+:Init Speech Service:
+  :Arguments: region: str=None
+
+  Initialize Azure Speech
+
+
+:Init Text Analytics Service:
+  :Arguments: region: str=None
+
+  Initialize Azure Text Analyticts
+
+
+:Key Phrases:
+  :Arguments: text: str, language: str=None, json_file: str=None
+
+  Detect key phrases in the given text
+
+
+:List Supported Voices:
+  :Arguments: locale: str=None, neural_only: bool=False, json_file: str=None
+
+  List supported voices for Azure API Speech Services.
+
+  Available voice selection might differ between regions.
+
+
+:Sentiment Analyze:
+  :Arguments: text: str, language: str=None, json_file: str=None
+
+  Analyze sentiments in the given text
+
+
+:Text To Speech:
+  :Arguments: text: str, language: str=en-US, name: str=en-US-AriaRUS, gender: str=FEMALE, encoding: str=MP3, neural_voice_style: typing.Any=None, target_file: str=synthesized.mp3
+
+  Synthesize speech synchronously
+
+  Neural voices are only supported for Speech resources created in
+  East US, South East Asia, and West Europe regions.
+
+
+:Vision Analyze:
+  :Arguments: image_file: str=None, image_url: str=None, visual_features: str=None, json_file: str=None
+
+  Identify features in the image
+
+  See `Computer Vision API`_ for valid feature names and their explanations:
+
+      - Adult
+      - Brands
+      - Categories
+      - Color
+      - Description
+      - Faces
+      - ImageType
+      - Objects
+      - Tags
+
+
+  .. _Computer Vision API: https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga  # noqa: E501
+
+:Vision Describe:
+  :Arguments: image_file: str=None, image_url: str=None, json_file: str=None
+
+  Describe image with tags and captions
+
+
+:Vision Detect Objects:
+  :Arguments: image_file: str=None, image_url: str=None, json_file: str=None
+
+  Detect objects in the image
+
+
+:Vision Ocr:
+  :Arguments: image_file: str=None, image_url: str=None, json_file: str=None
+
+  Optical Character Recognition (OCR) detects text in an image
+

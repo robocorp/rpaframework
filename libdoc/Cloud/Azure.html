@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Python module API" href="../../libraries/robocloud_items/python.html" />
-    <link rel="prev" title="Robocloud.Items" href="../../libraries/robocloud_items/index.html" />
+    <link rel="next" title="Python module API" href="../../libraries/cloud_azure/python.html" />
+    <link rel="prev" title="Cloud.Azure" href="../../libraries/cloud_azure/index.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -101,7 +101,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/browser/index.html">Browser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/cloud_aws/index.html">Cloud.AWS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../libraries/cloud_azure/index.html">Cloud.Azure</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../libraries/cloud_azure/index.html">Cloud.Azure</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Robot Framework API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../libraries/cloud_azure/python.html">Python module API</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/cloud_google/index.html">Cloud.Google</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/database/index.html">Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/desktop_clipboard/index.html">Desktop.Clipboard</a></li>
@@ -117,11 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/netsuite/index.html">Netsuite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/outlook_application/index.html">Outlook.Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/pdf/index.html">PDF</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../libraries/robocloud_items/index.html">Robocloud.Items</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Robot Framework API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../libraries/robocloud_items/python.html">Python module API</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/robocloud_items/index.html">Robocloud.Items</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/robocloud_secrets/index.html">Robocloud.Secrets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/robotloglistener/index.html">RobotLogListener</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../libraries/salesforce/index.html">Salesforce</a></li>
@@ -181,7 +181,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../../libraries/robocloud_items/index.html">Robocloud.Items</a> &raquo;</li>
+          <li><a href="../../libraries/cloud_azure/index.html">Cloud.Azure</a> &raquo;</li>
         
       <li>Robot Framework API</li>
     
@@ -189,7 +189,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/libdoc/Robocloud/Items.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/libdoc/Cloud/Azure.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -208,80 +208,172 @@
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list simple">
 <dt class="field-odd">Library scope</dt>
-<dd class="field-odd"><p>Global</p>
-</dd>
+<dd class="field-odd"><p></p></dd>
 </dl>
-<p>A library for interacting with RPA work items.</p>
-<p><cite>WorkItems</cite> is a collection of keywords for handling data
-that is moved between different processes and Robot Framework
-tasks. It allows storing and restoring values to/from cloud or file based
-storage, and manipulating their contents.</p>
-<p>Environment variables:</p>
-<ul class="simple">
-<li><p>RPA_WORKITEMS_ADAPTER: Import path to adapter, e.g. “mymodule.MyAdapter”</p></li>
-<li><p>RC_WORKSPACE_ID:       Current default workspace ID</p></li>
-<li><p>RC_WORKITEM_ID:        Current default work item ID</p></li>
-</ul>
+<p>Library for interacting with Azure services</p>
+<p>Authentication to Azure API is handled by <cite>service subcription key</cite> which
+can set for all services using environment variable <cite>AZURE_SUBSCRIPTION_KEY</cite>.</p>
+<p>If there are service specific subscription keys, these can be set using
+environment variable <cite>AZURE_SERVICENAME_KEY</cite>. Replace <cite>SERVICENAME</cite> with service
+name.</p>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list">
-<dt class="field-odd">Clear Work Item</dt>
-<dd class="field-odd"><p>Remove all data in the current work item.</p>
-</dd>
-<dt class="field-even">Get Work Item Variable</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>name, default=None</p>
-</dd>
-</dl>
-<p>Return a single variable value from the work item,
-or default value if defined and key does not exist.
-If key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>
-</dd>
-<dt class="field-even">Get Work Item Variables</dt>
-<dd class="field-even"><p>Read all variables from the current work item and
-return them as a dictionary.</p>
-</dd>
-<dt class="field-odd">Load Work Item</dt>
+<dt class="field-odd">Detect Face</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>workspace_id, item_id</p>
+<dd class="field-odd"><p>image_file: str=None, image_url: str=None, face_attributes: str=None, face_landmarks: bool=False, recognition_model: str=recognition_02, json_file: str=None</p>
 </dd>
 </dl>
-<p>Load work item for reading/writing.</p>
-</dd>
-<dt class="field-even">Load Work Item From Environment</dt>
-<dd class="field-even"><p>Load current work item defined by the runtime environment.</p>
-<p>The corresponding environment variables are:</p>
-<ul class="simple">
-<li><p>RC_WORKSPACE_ID</p></li>
-<li><p>RC_WORKITEM_ID</p></li>
+<p>Detect facial attributes in the image</p>
+<p>Read more about <cite>face_attributes</cite> at <a class="reference external" href="https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection#noqa:E501">Face detection explained</a>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>age</p></li>
+<li><p>gender</p></li>
+<li><p>smile</p></li>
+<li><p>facialHair</p></li>
+<li><p>headPose</p></li>
+<li><p>glasses</p></li>
+<li><p>emotion</p></li>
+<li><p>hair</p></li>
+<li><p>makeup</p></li>
+<li><p>accessories</p></li>
+<li><p>blur</p></li>
+<li><p>exposure</p></li>
+<li><p>nouse</p></li>
 </ul>
+</div></blockquote>
 </dd>
-<dt class="field-odd">Save Work Item</dt>
-<dd class="field-odd"><p>Save the current data in the work item. If not saved,
-all changes are discarded when the library goes out of scope.</p>
-</dd>
-<dt class="field-even">Set Task Variables From Work Item</dt>
-<dd class="field-even"><p>Convert all variables in the current work item to
-Robot Framework task variables.</p>
-</dd>
-<dt class="field-odd">Set Work Item Variable</dt>
-<dd class="field-odd"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>name, value</p>
-</dd>
-</dl>
-<p>Set a single variable value in the current work item.</p>
-</dd>
-<dt class="field-even">Set Work Item Variables</dt>
+<dt class="field-even">Detect Language</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>**kwargs</p>
+<dd class="field-odd"><p>text: str, json_file: str=None</p>
 </dd>
 </dl>
-<p>Set multiple variables in the current work item.</p>
+<p>Detect languages in the given text</p>
+</dd>
+<dt class="field-even">Find Entities</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text: str, language: str=None, json_file=None</p>
+</dd>
+</dl>
+<p>Detect entities in the given text</p>
+</dd>
+<dt class="field-even">Init Computer Vision Service</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>region: str=None</p>
+</dd>
+</dl>
+<p>Initialize Azure Computer Vision</p>
+</dd>
+<dt class="field-even">Init Face Service</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>region: str=None</p>
+</dd>
+</dl>
+<p>Initialize Azure Face</p>
+</dd>
+<dt class="field-even">Init Speech Service</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>region: str=None</p>
+</dd>
+</dl>
+<p>Initialize Azure Speech</p>
+</dd>
+<dt class="field-even">Init Text Analytics Service</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>region: str=None</p>
+</dd>
+</dl>
+<p>Initialize Azure Text Analyticts</p>
+</dd>
+<dt class="field-even">Key Phrases</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text: str, language: str=None, json_file: str=None</p>
+</dd>
+</dl>
+<p>Detect key phrases in the given text</p>
+</dd>
+<dt class="field-even">List Supported Voices</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locale: str=None, neural_only: bool=False, json_file: str=None</p>
+</dd>
+</dl>
+<p>List supported voices for Azure API Speech Services.</p>
+<p>Available voice selection might differ between regions.</p>
+</dd>
+<dt class="field-even">Sentiment Analyze</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text: str, language: str=None, json_file: str=None</p>
+</dd>
+</dl>
+<p>Analyze sentiments in the given text</p>
+</dd>
+<dt class="field-even">Text To Speech</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text: str, language: str=en-US, name: str=en-US-AriaRUS, gender: str=FEMALE, encoding: str=MP3, neural_voice_style: typing.Any=None, target_file: str=synthesized.mp3</p>
+</dd>
+</dl>
+<p>Synthesize speech synchronously</p>
+<p>Neural voices are only supported for Speech resources created in
+East US, South East Asia, and West Europe regions.</p>
+</dd>
+<dt class="field-even">Vision Analyze</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>image_file: str=None, image_url: str=None, visual_features: str=None, json_file: str=None</p>
+</dd>
+</dl>
+<p>Identify features in the image</p>
+<p>See <a class="reference external" href="https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga#noqa:E501">Computer Vision API</a> for valid feature names and their explanations:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Adult</p></li>
+<li><p>Brands</p></li>
+<li><p>Categories</p></li>
+<li><p>Color</p></li>
+<li><p>Description</p></li>
+<li><p>Faces</p></li>
+<li><p>ImageType</p></li>
+<li><p>Objects</p></li>
+<li><p>Tags</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt class="field-even">Vision Describe</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>image_file: str=None, image_url: str=None, json_file: str=None</p>
+</dd>
+</dl>
+<p>Describe image with tags and captions</p>
+</dd>
+<dt class="field-even">Vision Detect Objects</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>image_file: str=None, image_url: str=None, json_file: str=None</p>
+</dd>
+</dl>
+<p>Detect objects in the image</p>
+</dd>
+<dt class="field-even">Vision Ocr</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>image_file: str=None, image_url: str=None, json_file: str=None</p>
+</dd>
+</dl>
+<p>Optical Character Recognition (OCR) detects text in an image</p>
 </dd>
 </dl>
 </div>
@@ -295,10 +387,10 @@ Robot Framework task variables.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../libraries/robocloud_items/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../libraries/cloud_azure/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../../libraries/robocloud_items/index.html" class="btn btn-neutral float-left" title="Robocloud.Items" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../../libraries/cloud_azure/index.html" class="btn btn-neutral float-left" title="Cloud.Azure" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

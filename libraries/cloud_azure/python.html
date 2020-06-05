@@ -1,0 +1,641 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python module API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Cloud.Google" href="../cloud_google/index.html" />
+    <link rel="prev" title="Robot Framework API" href="../../libdoc/Cloud/Azure.html" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!-- PureCookie -->
+<link async rel="stylesheet" type="text/css" href="../../_static/purecookie.css"/>
+<script async src="../../_static/purecookie.js"></script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Cloud.Azure</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Cloud/Azure.html">Robot Framework API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_google/index.html">Cloud.Google</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../slack/index.html">Slack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter/index.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Cloud.Azure</a> &raquo;</li>
+        
+      <li>Python module API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/cloud_azure/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-module-api">
+<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.Cloud.Azure">
+<span id="azure"></span><h2>Azure<a class="headerlink" href="#module-RPA.Cloud.Azure" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Cloud.Azure.Azure">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Azure.</code><code class="sig-name descname">Azure</code><span class="sig-paren">(</span><em class="sig-param">region: str = 'northeurope'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.Azure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Azure.ServiceTextAnalytics" title="RPA.Cloud.Azure.ServiceTextAnalytics"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Azure.ServiceTextAnalytics</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Azure.ServiceFace" title="RPA.Cloud.Azure.ServiceFace"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Azure.ServiceFace</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Azure.ServiceComputerVision" title="RPA.Cloud.Azure.ServiceComputerVision"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Azure.ServiceComputerVision</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Azure.ServiceSpeech" title="RPA.Cloud.Azure.ServiceSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Azure.ServiceSpeech</span></code></a></p>
+<p>Library for interacting with Azure services</p>
+<p>Authentication to Azure API is handled by <cite>service subcription key</cite> which
+can set for all services using environment variable <cite>AZURE_SUBSCRIPTION_KEY</cite>.</p>
+<p>If there are service specific subscription keys, these can be set using
+environment variable <cite>AZURE_SERVICENAME_KEY</cite>. Replace <cite>SERVICENAME</cite> with service
+name.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.Azure.AzureBase">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Azure.</code><code class="sig-name descname">AzureBase</code><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for all Azure servives.</p>
+<p><cite>TOKEN_LIFESPAN</cite> is in seconds, token is valid for 10 minutes so max lifetime
+is set to 9.5 minutes = 570.0 seconds</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.Azure.AzureBase.COGNITIVE_API">
+<code class="sig-name descname">COGNITIVE_API</code><em class="property"> = 'api.cognitive.microsoft.com'</em><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.COGNITIVE_API" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Azure.AzureBase.TOKEN_LIFESPAN">
+<code class="sig-name descname">TOKEN_LIFESPAN</code><em class="property"> = 570.0</em><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.TOKEN_LIFESPAN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Azure.AzureBase.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Azure.AzureBase.region">
+<code class="sig-name descname">region</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Azure.AzureBase.services">
+<code class="sig-name descname">services</code><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Azure.AzureBase.token">
+<code class="sig-name descname">token</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Azure.AzureBase.token_time">
+<code class="sig-name descname">token_time</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.token_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.Azure.ServiceComputerVision">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Azure.</code><code class="sig-name descname">ServiceComputerVision</code><a class="headerlink" href="#RPA.Cloud.Azure.ServiceComputerVision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Azure.AzureBase" title="RPA.Cloud.Azure.AzureBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Azure.AzureBase</span></code></a></p>
+<p>Class for Azure Computer Vision service</p>
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceComputerVision.init_computer_vision_service">
+<code class="sig-name descname">init_computer_vision_service</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Azure.ServiceComputerVision.init_computer_vision_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Azure Computer Vision</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>region</strong> – identifier for service region</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceComputerVision.vision_analyze">
+<code class="sig-name descname">vision_analyze</code><span class="sig-paren">(</span><em class="sig-param">image_file: str = None</em>, <em class="sig-param">image_url: str = None</em>, <em class="sig-param">visual_features: str = None</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Azure.ServiceComputerVision.vision_analyze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identify features in the image</p>
+<p>See <a class="reference external" href="https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga#noqa:E501">Computer Vision API</a> for valid feature names and their explanations:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Adult</p></li>
+<li><p>Brands</p></li>
+<li><p>Categories</p></li>
+<li><p>Color</p></li>
+<li><p>Description</p></li>
+<li><p>Faces</p></li>
+<li><p>ImageType</p></li>
+<li><p>Objects</p></li>
+<li><p>Tags</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – filepath of image file</p></li>
+<li><p><strong>image_url</strong> – URI to image, if given will be used instead of <cite>image_file</cite></p></li>
+<li><p><strong>visual_features</strong> – comma separated list of features,
+for example. “Categories,Description,Color”</p></li>
+<li><p><strong>json_file</strong> – filepath to write results into</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis in json format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceComputerVision.vision_describe">
+<code class="sig-name descname">vision_describe</code><span class="sig-paren">(</span><em class="sig-param">image_file: str = None</em>, <em class="sig-param">image_url: str = None</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Azure.ServiceComputerVision.vision_describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describe image with tags and captions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – filepath of image file</p></li>
+<li><p><strong>image_url</strong> – URI to image, if given will be used instead of <cite>image_file</cite></p></li>
+<li><p><strong>json_file</strong> – filepath to write results into</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis in json format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceComputerVision.vision_detect_objects">
+<code class="sig-name descname">vision_detect_objects</code><span class="sig-paren">(</span><em class="sig-param">image_file: str = None</em>, <em class="sig-param">image_url: str = None</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Azure.ServiceComputerVision.vision_detect_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect objects in the image</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – filepath of image file</p></li>
+<li><p><strong>image_url</strong> – URI to image, if given will be used instead of <cite>image_file</cite></p></li>
+<li><p><strong>json_file</strong> – filepath to write results into</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis in json format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceComputerVision.vision_ocr">
+<code class="sig-name descname">vision_ocr</code><span class="sig-paren">(</span><em class="sig-param">image_file: str = None</em>, <em class="sig-param">image_url: str = None</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Azure.ServiceComputerVision.vision_ocr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optical Character Recognition (OCR) detects text in an image</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – filepath of image file</p></li>
+<li><p><strong>image_url</strong> – URI to image, if given will be used instead of <cite>image_file</cite></p></li>
+<li><p><strong>json_file</strong> – filepath to write results into</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis in json format</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.Azure.ServiceFace">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Azure.</code><code class="sig-name descname">ServiceFace</code><a class="headerlink" href="#RPA.Cloud.Azure.ServiceFace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Azure.AzureBase" title="RPA.Cloud.Azure.AzureBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Azure.AzureBase</span></code></a></p>
+<p>Class for Azure Face service</p>
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceFace.detect_face">
+<code class="sig-name descname">detect_face</code><span class="sig-paren">(</span><em class="sig-param">image_file: str = None</em>, <em class="sig-param">image_url: str = None</em>, <em class="sig-param">face_attributes: str = None</em>, <em class="sig-param">face_landmarks: bool = False</em>, <em class="sig-param">recognition_model: str = 'recognition_02'</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Azure.ServiceFace.detect_face" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect facial attributes in the image</p>
+<p>Read more about <cite>face_attributes</cite> at <a class="reference external" href="https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection#noqa:E501">Face detection explained</a>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>age</p></li>
+<li><p>gender</p></li>
+<li><p>smile</p></li>
+<li><p>facialHair</p></li>
+<li><p>headPose</p></li>
+<li><p>glasses</p></li>
+<li><p>emotion</p></li>
+<li><p>hair</p></li>
+<li><p>makeup</p></li>
+<li><p>accessories</p></li>
+<li><p>blur</p></li>
+<li><p>exposure</p></li>
+<li><p>nouse</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – filepath of image file</p></li>
+<li><p><strong>image_url</strong> – URI to image, if given will be used instead of <cite>image_file</cite></p></li>
+<li><p><strong>face_attributes</strong> – comma separated list of attributes,
+for example. “age,gender,smile”</p></li>
+<li><p><strong>face_landmarks</strong> – return face landmarks of the detected faces
+or not. The default value is <cite>False</cite></p></li>
+<li><p><strong>recognition_model</strong> – model used by Azure to detech faces, options
+are “recognition_01” or “recognition_02”, default is “recognition_02”</p></li>
+<li><p><strong>json_file</strong> – filepath to write results into</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis in json format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceFace.init_face_service">
+<code class="sig-name descname">init_face_service</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Azure.ServiceFace.init_face_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Azure Face</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>region</strong> – identifier for service region</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.Azure.ServiceSpeech">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Azure.</code><code class="sig-name descname">ServiceSpeech</code><a class="headerlink" href="#RPA.Cloud.Azure.ServiceSpeech" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Azure.AzureBase" title="RPA.Cloud.Azure.AzureBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Azure.AzureBase</span></code></a></p>
+<p>Class for Azure Speech service</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.Azure.ServiceSpeech.audio_formats">
+<code class="sig-name descname">audio_formats</code><em class="property"> = {'MP3': 'audio-24khz-96kbitrate-mono-mp3', 'WAV': 'riff-24khz-16bit-mono-pcm'}</em><a class="headerlink" href="#RPA.Cloud.Azure.ServiceSpeech.audio_formats" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceSpeech.init_speech_service">
+<code class="sig-name descname">init_speech_service</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Azure.ServiceSpeech.init_speech_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Azure Speech</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>region</strong> – identifier for service region</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceSpeech.list_supported_voices">
+<code class="sig-name descname">list_supported_voices</code><span class="sig-paren">(</span><em class="sig-param">locale: str = None</em>, <em class="sig-param">neural_only: bool = False</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceSpeech.list_supported_voices" title="Permalink to this definition">¶</a></dt>
+<dd><p>List supported voices for Azure API Speech Services.</p>
+<p>Available voice selection might differ between regions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locale</strong> – list only voices specific to locale, by default return all voices</p></li>
+<li><p><strong>neural_only</strong> – <cite>True</cite> if only neural voices should be returned,
+<cite>False</cite> by default</p></li>
+<li><p><strong>json_file</strong> – filepath to write results into</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>voices in json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceSpeech.text_to_speech">
+<code class="sig-name descname">text_to_speech</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">language: str = 'en-US'</em>, <em class="sig-param">name: str = 'en-US-AriaRUS'</em>, <em class="sig-param">gender: str = 'FEMALE'</em>, <em class="sig-param">encoding: str = 'MP3'</em>, <em class="sig-param">neural_voice_style: Any = None</em>, <em class="sig-param">target_file: str = 'synthesized.mp3'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceSpeech.text_to_speech" title="Permalink to this definition">¶</a></dt>
+<dd><p>Synthesize speech synchronously</p>
+<p>Neural voices are only supported for Speech resources created in
+East US, South East Asia, and West Europe regions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – input text to synthesize</p></li>
+<li><p><strong>language</strong> – voice language, defaults to “en-US”</p></li>
+<li><p><strong>name</strong> – voice name, defaults to “en-US-AriaRUS”</p></li>
+<li><p><strong>gender</strong> – voice gender, defaults to “FEMALE”</p></li>
+<li><p><strong>encoding</strong> – result encoding type, defaults to “MP3”</p></li>
+<li><p><strong>neural_voice_style</strong> – if given then neural voice is used,
+example style. “cheerful”</p></li>
+<li><p><strong>target_file</strong> – save synthesized output to file,
+defaults to “synthesized.mp3”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>synthesized output in bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.Azure.ServiceTextAnalytics">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Azure.</code><code class="sig-name descname">ServiceTextAnalytics</code><a class="headerlink" href="#RPA.Cloud.Azure.ServiceTextAnalytics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Azure.AzureBase" title="RPA.Cloud.Azure.AzureBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Azure.AzureBase</span></code></a></p>
+<p>Class for Azure TextAnalytics service</p>
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceTextAnalytics.detect_language">
+<code class="sig-name descname">detect_language</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Azure.ServiceTextAnalytics.detect_language" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect languages in the given text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – A UTF-8 text string</p></li>
+<li><p><strong>json_file</strong> – filepath to write results into</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis in json format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceTextAnalytics.find_entities">
+<code class="sig-name descname">find_entities</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">language: str = None</em>, <em class="sig-param">json_file=None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Azure.ServiceTextAnalytics.find_entities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect entities in the given text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – A UTF-8 text string</p></li>
+<li><p><strong>language</strong> – if input language is known</p></li>
+<li><p><strong>json_file</strong> – filepath to write results into</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis in json format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceTextAnalytics.init_text_analytics_service">
+<code class="sig-name descname">init_text_analytics_service</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceTextAnalytics.init_text_analytics_service" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Azure Text Analyticts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>region</strong> – identifier for service region</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceTextAnalytics.key_phrases">
+<code class="sig-name descname">key_phrases</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">language: str = None</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Azure.ServiceTextAnalytics.key_phrases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect key phrases in the given text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – A UTF-8 text string</p></li>
+<li><p><strong>language</strong> – if input language is known</p></li>
+<li><p><strong>json_file</strong> – filepath to write results into</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis in json format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Azure.ServiceTextAnalytics.sentiment_analyze">
+<code class="sig-name descname">sentiment_analyze</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">language: str = None</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Azure.ServiceTextAnalytics.sentiment_analyze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyze sentiments in the given text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – A UTF-8 text string</p></li>
+<li><p><strong>language</strong> – if input language is known</p></li>
+<li><p><strong>json_file</strong> – filepath to write results into</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis in json format</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cloud_google/index.html" class="btn btn-neutral float-right" title="Cloud.Google" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../libdoc/Cloud/Azure.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

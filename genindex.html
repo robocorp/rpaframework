@@ -100,6 +100,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="libraries/browser/index.html">Browser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries/cloud_azure/index.html">Cloud.Azure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/cloud_google/index.html">Cloud.Google</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/database/index.html">Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/desktop_clipboard/index.html">Desktop.Clipboard</a></li>
@@ -217,6 +218,7 @@
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
  | <a href="#X"><strong>X</strong></a>
  | <a href="#Y"><strong>Y</strong></a>
@@ -273,12 +275,12 @@
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.append_rows">append_rows() (RPA.Tables.Table method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.append_rows_to_worksheet">append_rows_to_worksheet() (RPA.Excel.Files.Files method)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.append_table">append_table() (RPA.Tables.Table method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.append_to_binary_file">append_to_binary_file() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.append_to_file">append_to_file() (RPA.FileSystem.FileSystem method)</a>
@@ -307,6 +309,8 @@
         <li><a href="libraries/images/python.html#RPA.Images.Region.as_tuple">(RPA.Images.Region method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceSpeech.audio_formats">audio_formats (RPA.Cloud.Azure.ServiceSpeech attribute)</a>
+</li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.auth_with_token">auth_with_token() (RPA.Salesforce.Salesforce method)</a>
 </li>
       <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.Exchange.authorize">authorize() (RPA.Email.Exchange.Exchange method)</a>
@@ -330,6 +334,10 @@
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.aws_dependency_required">aws_dependency_required() (in module RPA.Cloud.AWS)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWSBase">AWSBase (class in RPA.Cloud.AWS)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.Azure">Azure (class in RPA.Cloud.Azure)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.AzureBase">AzureBase (class in RPA.Cloud.Azure)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -416,6 +424,8 @@
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.close_pdf_document">close_pdf_document() (RPA.PDF.PDF method)</a>
 </li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.close_workbook">close_workbook() (RPA.Excel.Files.Files method)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.AzureBase.COGNITIVE_API">COGNITIVE_API (RPA.Cloud.Azure.AzureBase attribute)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.column_location">column_location() (RPA.Tables.Table method)</a>
 </li>
@@ -543,15 +553,19 @@
 </li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.detect_chrome_version">detect_chrome_version() (RPA.Browser.Browser method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceVision.detect_document">detect_document() (RPA.Cloud.Google.ServiceVision method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceTextract.detect_document_text">detect_document_text() (RPA.Cloud.AWS.ServiceTextract method)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceComprehend.detect_entities">detect_entities() (RPA.Cloud.AWS.ServiceComprehend method)</a>
 </li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceFace.detect_face">detect_face() (RPA.Cloud.Azure.ServiceFace method)</a>
+</li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceVision.detect_labels">detect_labels() (RPA.Cloud.Google.ServiceVision method)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceTextAnalytics.detect_language">detect_language() (RPA.Cloud.Azure.ServiceTextAnalytics method)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceComprehend.detect_sentiment">detect_sentiment() (RPA.Cloud.AWS.ServiceComprehend method)</a>
 </li>
@@ -661,6 +675,8 @@
         <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.find_empty_row">(RPA.Excel.Files.XlsxWorkbook method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceTextAnalytics.find_entities">find_entities() (RPA.Cloud.Azure.ServiceTextAnalytics method)</a>
+</li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.find_files">find_files() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/excel_application/python.html#RPA.Excel.Application.Application.find_first_available_row">find_first_available_row() (RPA.Excel.Application.Application method)</a>
@@ -907,9 +923,15 @@
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceComprehend.init_comprehend_client">init_comprehend_client() (RPA.Cloud.AWS.ServiceComprehend method)</a>
 </li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceComputerVision.init_computer_vision_service">init_computer_vision_service() (RPA.Cloud.Azure.ServiceComputerVision method)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceFace.init_face_service">init_face_service() (RPA.Cloud.Azure.ServiceFace method)</a>
+</li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceNaturalLanguage.init_natural_language_client">init_natural_language_client() (RPA.Cloud.Google.ServiceNaturalLanguage method)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3.init_s3_client">init_s3_client() (RPA.Cloud.AWS.ServiceS3 method)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceSpeech.init_speech_service">init_speech_service() (RPA.Cloud.Azure.ServiceSpeech method)</a>
 </li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceSpeechToText.init_speech_to_text_client">init_speech_to_text_client() (RPA.Cloud.Google.ServiceSpeechToText method)</a>
 </li>
@@ -917,14 +939,16 @@
 </li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceStorage.init_storage_client">init_storage_client() (RPA.Cloud.Google.ServiceStorage method)</a>
 </li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceTextAnalytics.init_text_analytics_service">init_text_analytics_service() (RPA.Cloud.Azure.ServiceTextAnalytics method)</a>
+</li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceTextToSpeech.init_text_to_speech_client">init_text_to_speech_client() (RPA.Cloud.Google.ServiceTextToSpeech method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceTextract.init_textract_client">init_textract_client() (RPA.Cloud.AWS.ServiceTextract method)</a>
 </li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceTranslation.init_translation_client">init_translation_client() (RPA.Cloud.Google.ServiceTranslation method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceVideoIntelligence.init_video_intelligence_client">init_video_intelligence_client() (RPA.Cloud.Google.ServiceVideoIntelligence method)</a>
 </li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceVision.init_vision_client">init_vision_client() (RPA.Cloud.Google.ServiceVision method)</a>
@@ -985,10 +1009,12 @@
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="libraries/robotloglistener/python.html#RPA.RobotLogListener.RobotLogListener.KEYWORDS_TO_PROTECT">KEYWORDS_TO_PROTECT (RPA.RobotLogListener.RobotLogListener attribute)</a>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceTextAnalytics.key_phrases">key_phrases() (RPA.Cloud.Azure.ServiceTextAnalytics method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/robotloglistener/python.html#RPA.RobotLogListener.RobotLogListener.KEYWORDS_TO_PROTECT">KEYWORDS_TO_PROTECT (RPA.RobotLogListener.RobotLogListener attribute)</a>
+</li>
       <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.kill_process">kill_process() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
 </li>
   </ul></td>
@@ -1027,8 +1053,12 @@
         <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.list_messages">(RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
       </ul></li>
-      <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceTextToSpeech.list_supported_voices">list_supported_voices() (RPA.Cloud.Google.ServiceTextToSpeech method)</a>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceSpeech.list_supported_voices">list_supported_voices() (RPA.Cloud.Azure.ServiceSpeech method)</a>
+
+      <ul>
+        <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceTextToSpeech.list_supported_voices">(RPA.Cloud.Google.ServiceTextToSpeech method)</a>
 </li>
+      </ul></li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.list_worksheets">list_worksheets() (RPA.Excel.Files.Files method)</a>
 </li>
   </ul></td>
@@ -1058,6 +1088,8 @@
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWSBase.logger">logger (RPA.Cloud.AWS.AWSBase attribute)</a>
 
       <ul>
+        <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.AzureBase.logger">(RPA.Cloud.Azure.AzureBase attribute)</a>
+</li>
         <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.GoogleBase.logger">(RPA.Cloud.Google.GoogleBase attribute)</a>
 </li>
       </ul></li>
@@ -1272,6 +1304,8 @@
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWSBase.region">region (RPA.Cloud.AWS.AWSBase attribute)</a>
 
       <ul>
+        <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.AzureBase.region">(RPA.Cloud.Azure.AzureBase attribute)</a>
+</li>
         <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.GoogleBase.region">(RPA.Cloud.Google.GoogleBase attribute)</a>
 </li>
       </ul></li>
@@ -1354,6 +1388,8 @@
       <li><a href="libraries/browser/python.html#module-RPA.Browser">RPA.Browser (module)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#module-RPA.Cloud.AWS">RPA.Cloud.AWS (module)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#module-RPA.Cloud.Azure">RPA.Cloud.Azure (module)</a>
 </li>
       <li><a href="libraries/cloud_google/python.html#module-RPA.Cloud.Google">RPA.Cloud.Google (module)</a>
 </li>
@@ -1495,17 +1531,27 @@
       </ul></li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.send_smtp_hello">send_smtp_hello() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceTextAnalytics.sentiment_analyze">sentiment_analyze() (RPA.Cloud.Azure.ServiceTextAnalytics method)</a>
+</li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceComprehend">ServiceComprehend (class in RPA.Cloud.AWS)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceComputerVision">ServiceComputerVision (class in RPA.Cloud.Azure)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceFace">ServiceFace (class in RPA.Cloud.Azure)</a>
 </li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceNaturalLanguage">ServiceNaturalLanguage (class in RPA.Cloud.Google)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWSBase.services">services (RPA.Cloud.AWS.AWSBase attribute)</a>
 
       <ul>
+        <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.AzureBase.services">(RPA.Cloud.Azure.AzureBase attribute)</a>
+</li>
         <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.GoogleBase.services">(RPA.Cloud.Google.GoogleBase attribute)</a>
 </li>
       </ul></li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceS3">ServiceS3 (class in RPA.Cloud.AWS)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceSpeech">ServiceSpeech (class in RPA.Cloud.Azure)</a>
 </li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceSpeechToText">ServiceSpeechToText (class in RPA.Cloud.Google)</a>
 </li>
@@ -1513,18 +1559,20 @@
 </li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceStorage">ServiceStorage (class in RPA.Cloud.Google)</a>
 </li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceTextAnalytics">ServiceTextAnalytics (class in RPA.Cloud.Azure)</a>
+</li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceTextract">ServiceTextract (class in RPA.Cloud.AWS)</a>
 </li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceTextToSpeech">ServiceTextToSpeech (class in RPA.Cloud.Google)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceTranslation">ServiceTranslation (class in RPA.Cloud.Google)</a>
 </li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceVideoIntelligence">ServiceVideoIntelligence (class in RPA.Cloud.Google)</a>
 </li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceVision">ServiceVision (class in RPA.Cloud.Google)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.session_id">session_id() (RPA.Salesforce.Salesforce property)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.set">set() (RPA.Tables.Table method)</a>
@@ -1653,6 +1701,8 @@
 </li>
       <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter.text_search_tweets">text_search_tweets() (RPA.Twitter.Twitter method)</a>
 </li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceSpeech.text_to_speech">text_to_speech() (RPA.Cloud.Azure.ServiceSpeech method)</a>
+</li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaTextBox.textbox_bbox">textbox_bbox (RPA.PDF.RpaTextBox attribute)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaTextBox.textbox_id">textbox_id (RPA.PDF.RpaTextBox attribute)</a>
@@ -1665,10 +1715,10 @@
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.to_identifier">to_identifier() (in module RPA.Tables)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/images/python.html#RPA.Images.to_image">to_image() (in module RPA.Images)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/tables/python.html#RPA.Tables.to_list">to_list() (in module RPA.Tables)</a>
 
       <ul>
@@ -1678,6 +1728,12 @@
       <li><a href="libraries/images/python.html#RPA.Images.to_point">to_point() (in module RPA.Images)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.to_region">to_region() (in module RPA.Images)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.AzureBase.token">token (RPA.Cloud.Azure.AzureBase attribute)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.AzureBase.TOKEN_LIFESPAN">TOKEN_LIFESPAN (RPA.Cloud.Azure.AzureBase attribute)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.AzureBase.token_time">token_time (RPA.Cloud.Azure.AzureBase attribute)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.TemplateMatcher.tolerance">tolerance() (RPA.Images.TemplateMatcher property)</a>
 </li>
@@ -1734,6 +1790,22 @@
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.upsert_salesforce_object">upsert_salesforce_object() (RPA.Salesforce.Salesforce method)</a>
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.RobocloudAdapter.url">url() (RPA.Robocloud.Items.RobocloudAdapter method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceComputerVision.vision_analyze">vision_analyze() (RPA.Cloud.Azure.ServiceComputerVision method)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceComputerVision.vision_describe">vision_describe() (RPA.Cloud.Azure.ServiceComputerVision method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceComputerVision.vision_detect_objects">vision_detect_objects() (RPA.Cloud.Azure.ServiceComputerVision method)</a>
+</li>
+      <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceComputerVision.vision_ocr">vision_ocr() (RPA.Cloud.Azure.ServiceComputerVision method)</a>
 </li>
   </ul></td>
 </tr></table>
