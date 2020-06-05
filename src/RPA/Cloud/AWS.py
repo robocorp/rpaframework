@@ -324,7 +324,7 @@ class ServiceTextract(AWSBase):
         :param image_file: filepath (or object name) of image file
         :param json_file: filepath to resulting json file
         :param bucket_name: if given then using `image_file` from the bucket
-        :return: `True` if analysis was done, `False` if there was an issue
+        :return: analysis response in json
         """
         client = self._get_client_for_service("textract")
         if bucket_name:
@@ -339,9 +339,10 @@ class ServiceTextract(AWSBase):
                 )
         self.pages = response["DocumentMetadata"]["Pages"]
         self._parse_response_blocks(response)
-        with open(json_file, "w") as f:
-            json.dump(response, f)
-        return True
+        if json_file:
+            with open(json_file, "w") as f:
+                json.dump(response, f)
+        return response
 
     def _parse_response_blocks(self, response):
         if "Blocks" not in response:
@@ -425,13 +426,14 @@ class ServiceTextract(AWSBase):
 
     @aws_dependency_required
     def detect_document_text(
-        self, image_file: str = None, bucket_name: str = None
+        self, image_file: str = None, json_file: str = None, bucket_name: str = None
     ) -> bool:
         """Detects text in the input document.
 
         :param image_file: filepath (or object name) of image file
+        :param json_file: filepath to resulting json file
         :param bucket_name: if given then using `image_file` from the bucket
-        :return: `True` if analysis was done, `False` if there was an issue
+        :return: analysis response in json
         """
         client = self._get_client_for_service("textract")
         if bucket_name:
@@ -442,7 +444,10 @@ class ServiceTextract(AWSBase):
             with open(image_file, "rb") as img:
                 response = client.detect_document_text(Document={"Bytes": img.read()},)
         self._parse_response_blocks(response)
-        return True
+        if json_file:
+            with open(json_file, "w") as f:
+                json.dump(response, f)
+        return response
 
 
 class ServiceComprehend(AWSBase):
