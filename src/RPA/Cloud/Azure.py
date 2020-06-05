@@ -136,6 +136,12 @@ class AzureBase:
                 content_type="application/octet-stream",
             )
 
+    def _image_url_or_image_file_is_required(
+        self, image_url: str = None, image_file: str = None
+    ):
+        if image_url is None and image_file is None:
+            raise KeyError("Parameter 'image_url' or 'image_file' must be given.")
+
 
 class ServiceTextAnalytics(AzureBase):
     """Class for Azure TextAnalytics service"""
@@ -284,6 +290,7 @@ class ServiceFace(AzureBase):
 
         .. _Face detection explained: https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection  # noqa: E501
         """
+        self._image_url_or_image_file_is_required(image_url, image_file)
         analyze_url = f"{self.__base_url}/face/v1.0/detect"
         params = {
             "returnFaceId": "true",
@@ -347,6 +354,7 @@ class ServiceComputerVision(AzureBase):
 
         .. _Computer Vision API: https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga  # noqa: E501
         """
+        self._image_url_or_image_file_is_required(image_url, image_file)
         analyze_url = f"{self.__base_url}/vision/v3.0/analyze"
         params = {}
         if visual_features:
@@ -366,6 +374,7 @@ class ServiceComputerVision(AzureBase):
         :param json_file: filepath to write results into
         :return: analysis in json format
         """
+        self._image_url_or_image_file_is_required(image_url, image_file)
         analyze_url = f"{self.__base_url}/vision/v3.0/describe"
         params = {"maxCandidates": "3", "language": "en"}
         response = self._azure_request_image(
@@ -383,6 +392,7 @@ class ServiceComputerVision(AzureBase):
         :param json_file: filepath to write results into
         :return: analysis in json format
         """
+        self._image_url_or_image_file_is_required(image_url, image_file)
         analyze_url = f"{self.__base_url}/vision/v3.0/ocr"
         params = {"detectOrientation": "true", "language": "en"}
         response = self._azure_request_image(
@@ -400,6 +410,7 @@ class ServiceComputerVision(AzureBase):
         :param json_file: filepath to write results into
         :return: analysis in json format
         """
+        self._image_url_or_image_file_is_required(image_url, image_file)
         analyze_url = f"{self.__base_url}/vision/v3.0/detect"
         response = self._azure_request_image(
             self.__service_name, analyze_url, image_url, image_file
