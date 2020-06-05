@@ -65,7 +65,9 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `Browser`_                 | Control browsers and automate the web        |
 +----------------------------+----------------------------------------------+
-| `Cloud.AWS`_               | Use AWS services                             |
+| `Cloud.AWS`_               | Use Amazon AWS services                      |
++----------------------------+----------------------------------------------+
+| `Cloud.Azure`_             | Use Microsoft Azure services                 |
 +----------------------------+----------------------------------------------+
 | `Cloud.Google`_            | Use Google Cloud services                    |
 +----------------------------+----------------------------------------------+
@@ -114,6 +116,7 @@ The RPA Framework project currently includes the following libraries:
 
 .. _Browser: https://rpaframework.org/libraries/browser/
 .. _Cloud.AWS: https://rpaframework.org/libraries/cloud_aws/
+.. _Cloud.Azure: https://rpaframework.org/libraries/cloud_azure/
 .. _Cloud.Google: https://rpaframework.org/libraries/cloud_google/
 .. _Database: https://rpaframework.org/libraries/database/
 .. _Desktop.Clipboard: https://rpaframework.org/libraries/desktop_clipboard/

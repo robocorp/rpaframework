@@ -1,8 +1,10 @@
 import json
 import logging
 import os
-import requests
 import time
+from typing import Any
+import requests
+
 
 DEFAULT_REGION = "northeurope"
 
@@ -14,17 +16,15 @@ class AzureBase:
     is set to 9.5 minutes = 570.0 seconds
     """
 
+    __base_url = None
+    __region = None
     COGNITIVE_API = "api.cognitive.microsoft.com"
     TOKEN_LIFESPAN = 570.0
+    region = None
     services = {}
     token = None
     token_time = None
-
-    def __init__(self, region="northeurope"):
-        self.region = region
-        self.services = {}
-        self.token_time = None
-        self.token = None
+    logger = None
 
     def _azure_request(
         self,
@@ -68,9 +68,9 @@ class AzureBase:
             request_parameters["params"] = params
         if body:
             request_parameters["data"] = body
-        self.logger.debug("Azure %s: %s" % (method, url))
+        self.logger.debug("Azure %s: %s", method, url)
         self.logger.debug(
-            "Content-Type: %s" % request_parameters["headers"]["Content-Type"]
+            "Content-Type: %s", request_parameters["headers"]["Content-Type"]
         )
         if method == "POST":
             response = requests.post(url, **request_parameters)
@@ -116,74 +116,112 @@ class AzureBase:
         self._write_json(json_filepath, response_json)
         return response_json
 
+    def _azure_request_image(
+        self, service_name, request_url, image_url, image_file, params=None
+    ):
+        if image_url:
+            return self._azure_request(
+                service_name,
+                request_url,
+                params=params,
+                jsondata={"url": image_url},
+                content_type="application/json",
+            )
+        else:
+            return self._azure_request(
+                service_name,
+                request_url,
+                params=params,
+                filepath=image_file,
+                content_type="application/octet-stream",
+            )
+
 
 class ServiceTextAnalytics(AzureBase):
     """Class for Azure TextAnalytics service"""
 
-    # TODO documents format explained or only single text string
     __service_name = "textanalytics"
 
     def __init__(self) -> None:
         self.logger.debug("ServiceTextAnalytics init")
+        self.__region = None
 
-    def init_textanalytics_service(self, region: str = None):
+    def init_text_analytics_service(self, region: str = None):
         """Initialize Azure Text Analyticts
 
-        :param region: [description], defaults to None
+        :param region: identifier for service region
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
         self._set_subscription_key(self.__service_name)
 
-    def sentiment_analyze(self, documents, json_file=None):
+    def sentiment_analyze(
+        self, text: str, language: str = None, json_file: str = None
+    ) -> dict:
         """Analyze sentiments in the given text
 
-        :param documents: [description]
+        :param text: A UTF-8 text string
+        :param language: if input language is known
         :param json_file: filepath to write results into
-        :return: sentiment analysis in json format
+        :return: analysis in json format
         """
         analyze_url = f"{self.__base_url}/text/analytics/v3.0/sentiment"
+
+        document = {"id": "1", "text": text}
+        if language:
+            document["language"] = language
         response = self._azure_request(
-            self.__service_name, analyze_url, jsondata=documents
+            self.__service_name, analyze_url, jsondata={"documents": [document]}
         )
         return self._handle_response(json_file, response)
 
-    def detect_language(self, documents, json_file=None):
+    def detect_language(self, text: str, json_file: str = None) -> dict:
         """Detect languages in the given text
 
-        :param documents: [description]
+        :param text: A UTF-8 text string
         :param json_file: filepath to write results into
-        :return: language analysis in json format
+        :return: analysis in json format
         """
         analyze_url = f"{self.__base_url}/text/analytics/v3.0/languages"
+        document = {"id": "1", "text": text}
         response = self._azure_request(
-            self.__service_name, analyze_url, jsondata=documents
+            self.__service_name, analyze_url, jsondata={"documents": [document]}
         )
         return self._handle_response(json_file, response)
 
-    def key_phrases(self, documents, json_file=None):
+    def key_phrases(
+        self, text: str, language: str = None, json_file: str = None
+    ) -> dict:
         """Detect key phrases in the given text
 
-        :param documents: [description]
+        :param text: A UTF-8 text string
+        :param language: if input language is known
         :param json_file: filepath to write results into
-        :return: key phrases in json format
+        :return: analysis in json format
         """
         analyze_url = f"{self.__base_url}/text/analytics/v3.0/keyphrases"
+        document = {"id": "1", "text": text}
+        if language:
+            document["language"] = language
         response = self._azure_request(
-            self.__service_name, analyze_url, jsondata=documents
+            self.__service_name, analyze_url, jsondata={"documents": [document]}
         )
         return self._handle_response(json_file, response)
 
-    def find_entities(self, documents, json_file=None):
+    def find_entities(self, text: str, language: str = None, json_file=None) -> dict:
         """Detect entities in the given text
 
-        :param documents: [description]
+        :param text: A UTF-8 text string
+        :param language: if input language is known
         :param json_file: filepath to write results into
-        :return: entities in json format
+        :return: analysis in json format
         """
         analyze_url = f"{self.__base_url}/text/analytics/v2.1/entities"
+        document = {"id": "1", "text": text}
+        if language:
+            document["language"] = language
         response = self._azure_request(
-            self.__service_name, analyze_url, jsondata=documents
+            self.__service_name, analyze_url, jsondata={"documents": [document]}
         )
         return self._handle_response(json_file, response)
 
@@ -196,38 +234,67 @@ class ServiceFace(AzureBase):
     def __init__(self) -> None:
         self.logger.debug("ServiceFace init")
 
-    def init_face_service(self, region: str = None):
+    def init_face_service(self, region: str = None) -> None:
         """Initialize Azure Face
 
-        :param region: [description], defaults to None
+        :param region: identifier for service region
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
         self._set_subscription_key(self.__service_name)
 
-    def detect_face(self, image_file: str, json_file: str = None):
+    def detect_face(
+        self,
+        image_file: str = None,
+        image_url: str = None,
+        face_attributes: str = None,
+        face_landmarks: bool = False,
+        recognition_model: str = "recognition_02",
+        json_file: str = None,
+    ) -> dict:
+        # pylint: disable=C0301
         """Detect facial attributes in the image
 
-        # TODO. handle different FaceAttributes, RecognitionModels
-        :param image_file: [description]
+        Read more about `face_attributes` at `Face detection explained`_:
+
+            - age
+            - gender
+            - smile
+            - facialHair
+            - headPose
+            - glasses
+            - emotion
+            - hair
+            - makeup
+            - accessories
+            - blur
+            - exposure
+            - nouse
+
+        :param image_file: filepath of image file
+        :param image_url: URI to image, if given will be used instead of `image_file`
+        :param face_attributes: comma separated list of attributes,
+            for example. "age,gender,smile"
+        :param face_landmarks: return face landmarks of the detected faces
+            or not. The default value is `False`
+        :param recognition_model: model used by Azure to detech faces, options
+            are "recognition_01" or "recognition_02", default is "recognition_02"
         :param json_file: filepath to write results into
-        :return: [description]
+        :return: analysis in json format
+
+        .. _Face detection explained: https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection  # noqa: E501
         """
         analyze_url = f"{self.__base_url}/face/v1.0/detect"
         params = {
             "returnFaceId": "true",
-            "returnFaceLandmarks": "false",
-            "returnFaceAttributes": "age,gender,smile,facialHair,glasses,emotion,hair",
-            "recognitionModel": "recognition_01",
+            "returnFaceLandmarks": str(face_landmarks),
+            "recognitionModel": recognition_model,
             "returnRecognitionModel": "false",
         }
-        content_type = "application/octet-stream"
-        response = self._azure_request(
-            self.__service_name,
-            analyze_url,
-            params=params,
-            filepath=image_file,
-            content_type=content_type,
+        if face_attributes:
+            params["returnFaceAttributes"] = face_attributes
+        response = self._azure_request_image(
+            self.__service_name, analyze_url, image_url, image_file, params
         )
         return self._handle_response(json_file, response)
 
@@ -240,83 +307,102 @@ class ServiceComputerVision(AzureBase):
     def __init__(self) -> None:
         self.logger.debug("ServiceComputerVision init")
 
-    def init_computervision_service(self, region: str = None):
+    def init_computer_vision_service(self, region: str = None) -> None:
         """Initialize Azure Computer Vision
 
-        :param region: [description], defaults to None
+        :param region: identifier for service region
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
         self._set_subscription_key(self.__service_name)
 
-    def vision_analyze(self, image_file: str, json_file: str = None):
+    def vision_analyze(
+        self,
+        image_file: str = None,
+        image_url: str = None,
+        visual_features: str = None,
+        json_file: str = None,
+    ) -> dict:
+        # pylint: disable=C0301
         """Identify features in the image
 
-        :param image_file: [description]
+        See `Computer Vision API`_ for valid feature names and their explanations:
+
+            - Adult
+            - Brands
+            - Categories
+            - Color
+            - Description
+            - Faces
+            - ImageType
+            - Objects
+            - Tags
+
+        :param image_file: filepath of image file
+        :param image_url: URI to image, if given will be used instead of `image_file`
+        :param visual_features: comma separated list of features,
+            for example. "Categories,Description,Color"
         :param json_file: filepath to write results into
-        :return: [description]
+        :return: analysis in json format
+
+        .. _Computer Vision API: https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga  # noqa: E501
         """
         analyze_url = f"{self.__base_url}/vision/v3.0/analyze"
-        params = {"visualFeatures": "Categories,Description,Color"}
-        content_type = "application/octet-stream"
-        response = self._azure_request(
-            self.__service_name,
-            analyze_url,
-            params=params,
-            filepath=image_file,
-            content_type=content_type,
+        params = {}
+        if visual_features:
+            params["visualFeatures"] = visual_features
+        response = self._azure_request_image(
+            self.__service_name, analyze_url, image_url, image_file, params
         )
         return self._handle_response(json_file, response)
 
-    def vision_describe(self, image_file: str, json_file: str = None):
-        """Describe image with terms
+    def vision_describe(
+        self, image_file: str = None, image_url: str = None, json_file: str = None
+    ) -> dict:
+        """Describe image with tags and captions
 
-        :param image_file: [description]
-        :param json_file: [description], defaults to None
-        :return: [description]
+        :param image_file: filepath of image file
+        :param image_url: URI to image, if given will be used instead of `image_file`
+        :param json_file: filepath to write results into
+        :return: analysis in json format
         """
         analyze_url = f"{self.__base_url}/vision/v3.0/describe"
         params = {"maxCandidates": "3", "language": "en"}
-        response = self._azure_request(
-            self.__service_name, analyze_url, params=params, filepath=image_file
-        )
-        response_json = response.json()
-        self._write_json(json_file, response_json)
-        return response_json
-
-    def vision_read(self, image_file: str, json_file: str = None):
-        """[summary]
-
-        :param image_file: [description]
-        :param json_file: filepath to write results into
-        :return: [description]
-        """
-        analyze_url = f"{self.__base_url}/vision/v3.0/ocr"
-        params = {"detectOrientation": "true", "language": "en"}
-        content_type = "application/octet-stream"
-        response = self._azure_request(
-            self.__service_name,
-            analyze_url,
-            params=params,
-            filepath=image_file,
-            content_type=content_type,
+        response = self._azure_request_image(
+            self.__service_name, analyze_url, image_url, image_file, params
         )
         return self._handle_response(json_file, response)
 
-    def vision_see(self, image_file: str, json_file: str = None):
+    def vision_ocr(
+        self, image_file: str = None, image_url: str = None, json_file: str = None
+    ) -> dict:
+        """Optical Character Recognition (OCR) detects text in an image
+
+        :param image_file: filepath of image file
+        :param image_url: URI to image, if given will be used instead of `image_file`
+        :param json_file: filepath to write results into
+        :return: analysis in json format
+        """
+        analyze_url = f"{self.__base_url}/vision/v3.0/ocr"
+        params = {"detectOrientation": "true", "language": "en"}
+        response = self._azure_request_image(
+            self.__service_name, analyze_url, image_url, image_file, params
+        )
+        return self._handle_response(json_file, response)
+
+    def vision_detect_objects(
+        self, image_file: str = None, image_url: str = None, json_file: str = None
+    ) -> dict:
         """Detect objects in the image
 
-        :param image_file: [description]
+        :param image_file: filepath of image file
+        :param image_url: URI to image, if given will be used instead of `image_file`
         :param json_file: filepath to write results into
-        :return: [description]
+        :return: analysis in json format
         """
         analyze_url = f"{self.__base_url}/vision/v3.0/detect"
-        content_type = "application/octet-stream"
-        response = self._azure_request(
-            self.__service_name,
-            analyze_url,
-            filepath=image_file,
-            content_type=content_type,
+        response = self._azure_request_image(
+            self.__service_name, analyze_url, image_url, image_file
         )
         return self._handle_response(json_file, response)
 
@@ -325,15 +411,18 @@ class ServiceSpeech(AzureBase):
     """Class for Azure Speech service"""
 
     __service_name = "speech"
+    audio_formats = {
+        "MP3": "audio-24khz-96kbitrate-mono-mp3",
+        "WAV": "riff-24khz-16bit-mono-pcm",
+    }
 
     def __init__(self) -> None:
         self.logger.debug("ServiceSpeech init")
 
-    def init_speech_service(self, region: str = None):
+    def init_speech_service(self, region: str = None) -> None:
         """Initialize Azure Speech
 
-        :param region: [description], defaults to None
-        :type region: str, optional
+        :param region: identifier for service region
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.tts.speech.microsoft.com"
@@ -341,33 +430,39 @@ class ServiceSpeech(AzureBase):
 
     def text_to_speech(
         self,
-        text,
-        language="en-US",
-        name="en-US-AriaRUS",
-        gender="FEMALE",
-        encoding="MP3",
-        neural_voice_style=None,
-        target_file="synthesized.mp3",
+        text: str,
+        language: str = "en-US",
+        name: str = "en-US-AriaRUS",
+        gender: str = "FEMALE",
+        encoding: str = "MP3",
+        neural_voice_style: Any = None,
+        target_file: str = "synthesized.mp3",
     ):
         """Synthesize speech synchronously
 
-        Available encoding types:
-
-            - audio-24khz-96kbitrate-mono-mp3
+        Neural voices are only supported for Speech resources created in
+        East US, South East Asia, and West Europe regions.
 
         :param text: input text to synthesize
         :param language: voice language, defaults to "en-US"
         :param name: voice name, defaults to "en-US-AriaRUS"
         :param gender: voice gender, defaults to "FEMALE"
         :param encoding: result encoding type, defaults to "MP3"
+        :param neural_voice_style: if given then neural voice is used,
+            example style. "cheerful"
         :param target_file: save synthesized output to file,
             defaults to "synthesized.mp3"
         :return: synthesized output in bytes
         """
-
+        encoding = encoding.upper() if encoding else None
+        if encoding is None or encoding not in self.audio_formats.keys():
+            raise KeyError(
+                "Unknown encoding %s for text_to_speech, available formats are: %s"
+                % (encoding, ", ".join(self.audio_formats.keys()))
+            )
         token = self._get_token(self.__service_name, self.__region)
         headers = {
-            "X-Microsoft-OutputFormat": "audio-24khz-96kbitrate-mono-mp3",
+            "X-Microsoft-OutputFormat": self.audio_formats[encoding],
             "Content-Type": "application/ssml+xml",
             "Authorization": "Bearer " + token,
             "User-Agent": "RPA software robot",
@@ -415,6 +510,8 @@ class ServiceSpeech(AzureBase):
         Available voice selection might differ between regions.
 
         :param locale: list only voices specific to locale, by default return all voices
+        :param neural_only: `True` if only neural voices should be returned,
+            `False` by default
         :param json_file: filepath to write results into
         :return: voices in json
         """
@@ -423,8 +520,13 @@ class ServiceSpeech(AzureBase):
         response = self._azure_request(
             self.__service_name, voice_url, method="GET", token=token
         )
-        # TODO filter by locale and neural
-        return self._handle_response(json_file, response)
+        response_json = response.json()
+        if neural_only:
+            response_json = [x for x in response_json if x["VoiceType"] == "Neural"]
+        if locale:
+            response_json = [x for x in response_json if locale in x["Locale"]]
+        self._write_json(json_file, response_json)
+        return response_json
 
 
 class Azure(ServiceTextAnalytics, ServiceFace, ServiceComputerVision, ServiceSpeech):
@@ -436,18 +538,6 @@ class Azure(ServiceTextAnalytics, ServiceFace, ServiceComputerVision, ServiceSpe
     If there are service specific subscription keys, these can be set using
     environment variable `AZURE_SERVICENAME_KEY`. Replace `SERVICENAME` with service
     name.
-
-    List of supported service names:
-
-        - computervision (Azure `Computer Vision`_ API)
-        - face (Azure `Face`_ API)
-        - speech (Azure `Speech Services`_ API)
-        - textanalytics (Azure `Text Analytics`_ API)
-
-    .. _Computer Vision: https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/
-    .. _Face: https://docs.microsoft.com/en-us/azure/cognitive-services/face/
-    .. _Speech Services: https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/
-    .. _Text Analytics: https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/
     """
 
     def __init__(self, region: str = DEFAULT_REGION):
@@ -457,4 +547,4 @@ class Azure(ServiceTextAnalytics, ServiceFace, ServiceComputerVision, ServiceSpe
         ServiceComputerVision.__init__(self)
         ServiceSpeech.__init__(self)
         self.region = region
-        self.logger.info("Azure library initialized. Default region: %s" % self.region)
+        self.logger.info("Azure library initialized. Default region: %s", self.region)
