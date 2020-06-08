@@ -211,9 +211,8 @@
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Database.</code><code class="sig-name descname">Database</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Database.Database" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DatabaseLibrary.DatabaseLibrary</span></code></p>
 <p>Library handling different database operations.</p>
-<blockquote>
-<div><p>Extends <a class="reference external" href="https://github.com/franz-see/Robotframework-Database-Library">robotframework-databaselibrary</a>.</p>
-</div></blockquote>
+<p>Extends functionality of DatabaseLibrary, for more information see
+<a class="reference external" href="https://github.com/franz-see/Robotframework-Database-Library">https://github.com/franz-see/Robotframework-Database-Library</a></p>
 <dl class="attribute">
 <dt id="RPA.Database.Database.ROBOT_LIBRARY_SCOPE">
 <code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Database.Database.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
@@ -338,14 +337,7 @@ connect to the database using the map string <cite>db_custom_param_string</cite>
 <dt id="RPA.Database.Database.database_query_result_as_table">
 <code class="sig-name descname">database_query_result_as_table</code><span class="sig-paren">(</span><em class="sig-param">query_string: str</em><span class="sig-paren">)</span> &#x2192; RPA.Tables.Table<a class="headerlink" href="#RPA.Database.Database.database_query_result_as_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make database query and return result as <cite>RPA.Table</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>query_string</strong> – SQL query string</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>query result as <cite>RPA.Table</cite></p>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">query_string</span></code> SQL query string</p>
 </dd></dl>
 
 <dl class="method">

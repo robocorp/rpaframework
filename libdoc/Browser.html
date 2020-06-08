@@ -212,7 +212,7 @@
 </dd>
 </dl>
 <p>RPA Framework library for Browser operations.</p>
-<p>Extends functionality of SeleniumLibrary.</p></div>
+<p>Extends functionality of SeleniumLibrary, for more information see <a href="https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html">https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html</a></p></div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list">
@@ -1449,7 +1449,8 @@
 </dd>
 </dl>
 <p>Input text into locator after it has become visible.</p>
-<p>:param locator: selector :param text: insert text to locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p><code>text</code> insert text to locator</p></dd>
 <dt class="field-even">List Selection Should Be</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1580,16 +1581,23 @@
 <dd class="field-odd"><p>url: str, use_profile: bool=False, headless: bool=False, maximized: bool=False, browser_selection: typing.Any=AUTO</p>
 </dd>
 </dl>
-<p>Open available browser.</p>
-<p>Opens the first available browser in the system in preferred order, or the given browser (<span class="name">browser_selection</span>).</p>
-<p>Steps:</p>
-<p>1. Get the order of browsers 2. Loop the list of preferred browsers</p>
-<p>a. Set the webdriver options for the browser b. Create the webdriver using existing installation c. (If step b. failed) Download and install webdriver, try again d. (If step c. failed) Try starting webdriver in headless mode</p>
+<p>Opens the first available browser in the system in preferred order, or the given browser (<code>browser_selection</code>).</p>
+<p><code>url</code> URL to open</p>
+<p><code>use_profile</code> set browser profile, default <code>False</code></p>
+<p><code>headless</code> run in headless mode, default <code>False</code></p>
+<p><code>maximized</code> run window maximized, default <code>False</code></p>
+<p><code>browser_selection</code> browser name, default <code>AUTOMATIC_BROWSER_SELECTION</code></p>
+<p>Returns an index of the webdriver session.</p>
+<h4>Process of opening a browser</h4>
+<p>1. Get the order of browsers</p>
+<p>2. Loop the list of preferred browsers</p>
+<p>a. Set the webdriver options for the browser</p>
+<p>b. Create the webdriver using existing installation</p>
+<p>c. (If step b. failed) Download and install webdriver, try again</p>
+<p>d. (If step c. failed) Try starting webdriver in headless mode</p>
 <p>3. Open the URL</p>
-<p>Raises <span class="name">BrowserNotFoundError</span> if unable to open the browser.</p>
-<p>Details on <span class="name">Safari webdriver setup</span>_.</p>
-<p>:param url: URL to open :param use_profile: set browser profile, defaults to False :param headless: run in headless mode, defaults to False :param maximized: run window maximized, defaults to False :param browser_selection: browser name, defaults to AUTOMATIC_BROWSER_SELECTION :return: index of the webdriver session</p>
-<p>.. _Safari webdriver setup: <a href="https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p></dd>
+<p>Raises <code>BrowserNotFoundError</code> if unable to open the browser.</p>
+<p>For information about Safari webdriver setup, see <a href="https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p></dd>
 <dt class="field-even">Open Browser</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1843,7 +1851,10 @@ return options
 </dd>
 </dl>
 <p>Open Chrome browser.</p>
-<p>:param url: URL to open :param use_profile: if a browser user profile is used, defaults to False :param headless: if headless mode should be set, defaults to False :param maximized: if the browser should be run maximized, defaults to False</p></dd>
+<p><code>url</code> URL to open</p>
+<p><code>use_profile</code> if a browser user profile is used, default <code>False</code></p>
+<p><code>headless</code> if headless mode should be set, default <code>False</code></p>
+<p><code>maximized</code> if the browser should be run maximized, default <code>False</code></p></dd>
 <dt class="field-even">Open Context Menu</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1858,7 +1869,7 @@ return options
 </dd>
 </dl>
 <p>Open Chrome browser in headless mode.</p>
-<p>:param url: URL to open</p></dd>
+<p><code>url</code> URL to open</p></dd>
 <dt class="field-even">Page Should Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2201,7 +2212,9 @@ return options
 </dd>
 </dl>
 <p>Capture page and/or element screenshot.</p>
-<p>:param page: capture a page screenshot, defaults to True :param locator: if defined, take element screenshot, defaults to None :param filename_prefix: prefix for screenshot files, defaults to 'screenshot'</p></dd>
+<p><code>page</code> capture a page screenshot, default <code>True</code></p>
+<p><code>locator</code> if defined, take element screenshot, default <code>None</code></p>
+<p><code>filename_prefix</code> prefix for screenshot files, default "screenshot"</p></dd>
 <dt class="field-even">Scroll Element Into View</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2850,7 +2863,7 @@ return options
 </dd>
 </dl>
 <p>Click button once it becomes visible.</p>
-<p>:param locator: [description]</p></dd>
+<p><code>locator</code> element locator</p></dd>
 <dt class="field-even">Wait For Condition</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>

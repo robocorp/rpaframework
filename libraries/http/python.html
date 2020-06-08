@@ -210,11 +210,12 @@
 <dt id="RPA.HTTP.HTTP">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.HTTP.</code><code class="sig-name descname">HTTP</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RequestsLibrary.RequestsLibrary</span></code></p>
-<p>RPA Framework HTTP library that wraps
-_RequestsLibrary_ functionality.</p>
+<p>RPA Framework HTTP library that extends functionality of RequestsLibrary,
+for more information see
+<a class="reference external" href="https://github.com/robotframework/SeleniumLibrary">https://github.com/robotframework/SeleniumLibrary</a></p>
 <dl class="attribute">
 <dt id="RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST">
-<code class="sig-name descname">DEFAULT_RETRY_METHOD_LIST</code><em class="property"> = ['PUT', 'DELETE', 'GET', 'HEAD', 'TRACE', 'OPTIONS']</em><a class="headerlink" href="#RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">DEFAULT_RETRY_METHOD_LIST</code><em class="property"> = ['GET', 'TRACE', 'DELETE', 'PUT', 'HEAD', 'OPTIONS']</em><a class="headerlink" href="#RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -224,7 +225,7 @@ _RequestsLibrary_ functionality.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_client_cert_session">
-<code class="sig-name descname">create_client_cert_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'DELETE', 'GET', 'HEAD', 'TRACE', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_client_cert_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_client_cert_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['GET', 'TRACE', 'DELETE', 'PUT', 'HEAD', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_client_cert_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -261,7 +262,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_custom_session">
-<code class="sig-name descname">create_custom_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'DELETE', 'GET', 'HEAD', 'TRACE', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_custom_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_custom_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['GET', 'TRACE', 'DELETE', 'PUT', 'HEAD', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_custom_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -301,7 +302,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_digest_session">
-<code class="sig-name descname">create_digest_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'DELETE', 'GET', 'HEAD', 'TRACE', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_digest_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_digest_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['GET', 'TRACE', 'DELETE', 'PUT', 'HEAD', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_digest_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -338,7 +339,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_ntlm_session">
-<code class="sig-name descname">create_ntlm_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'DELETE', 'GET', 'HEAD', 'TRACE', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_ntlm_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_ntlm_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['GET', 'TRACE', 'DELETE', 'PUT', 'HEAD', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_ntlm_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -375,7 +376,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_session">
-<code class="sig-name descname">create_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'DELETE', 'GET', 'HEAD', 'TRACE', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['GET', 'TRACE', 'DELETE', 'PUT', 'HEAD', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
@@ -434,22 +435,25 @@ given <cite>alias</cite></p>
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.download">
 <code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">target_file: str = None</em>, <em class="sig-param">binary: bool = True</em>, <em class="sig-param">verify: bool = True</em>, <em class="sig-param">force_new_session: bool = False</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.HTTP.HTTP.download" title="Permalink to this definition">¶</a></dt>
-<dd><p>An alias for the <cite>HTTP Get</cite> keyword.</p>
+<dd><p>An alias for the <code class="docutils literal notranslate"><span class="pre">HTTP</span> <span class="pre">Get</span></code> keyword.</p>
 <p>The difference in use is that the URL is always downloaded based on
-the URL path (even without <cite>target_file</cite>). If there is a filename
-in the path, then that is used as <cite>target_file</cite> to save to. By default,
-the filename will be <cite>downloaded.html</cite>.</p>
+the URL path (even without <code class="docutils literal notranslate"><span class="pre">target_file</span></code>). If there is a filename
+in the path, then that is used as <code class="docutils literal notranslate"><span class="pre">target_file</span></code> to save to. By default,
+the filename will be “downloaded.html”.</p>
+<p><code class="docutils literal notranslate"><span class="pre">url</span></code> target URL for GET request</p>
+<p><code class="docutils literal notranslate"><span class="pre">target_file</span></code> filepath to save request content, default <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">binary</span></code> if file is saved as binary, default <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">verify</span></code> if SSL verification should be done, default <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">force_new_session</span></code> if new HTTP session should be created, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">overwrite</span></code> used together with <code class="docutils literal notranslate"><span class="pre">target_file</span></code>, if <code class="docutils literal notranslate"><span class="pre">True</span></code> will overwrite
+the target file, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.get_current_session_alias">
 <code class="sig-name descname">get_current_session_alias</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.HTTP.HTTP.get_current_session_alias" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get request session alias that was used with the <cite>HTTP Get</cite> keyword.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>name of session alias</p>
-</dd>
-</dl>
+<dd><p>Get request session alias that was used with the <code class="docutils literal notranslate"><span class="pre">HTTP</span> <span class="pre">Get</span></code> keyword.</p>
+<p>Return name of session alias.</p>
 </dd></dl>
 
 <dl class="method">
@@ -487,26 +491,18 @@ given <cite>alias</cite></p>
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.http_get">
 <code class="sig-name descname">http_get</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">target_file: str = None</em>, <em class="sig-param">binary: bool = True</em>, <em class="sig-param">verify: bool = True</em>, <em class="sig-param">force_new_session: bool = False</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.HTTP.HTTP.http_get" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper method for <cite>Get Request</cite> that will create a session, perform GET
-request, and store the target file, if set by the <cite>target_file</cite> parameter.</p>
+<dd><p>A helper method for <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Request</span></code> that will create a session, perform GET
+request, and store the target file, if set by the <code class="docutils literal notranslate"><span class="pre">target_file</span></code> parameter.</p>
 <p>The old session will be used if the URL scheme and the host are the same as
 previously, e.g., ‘<a class="reference external" href="https://www.google.fi">https://www.google.fi</a>’ part of the URL.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>url</strong> – target URL for GET request</p></li>
-<li><p><strong>target_file</strong> – filepath to save request content, default <cite>None</cite></p></li>
-<li><p><strong>binary</strong> – if <cite>True</cite>, file is saved as binary, default <cite>True</cite></p></li>
-<li><p><strong>verify</strong> – if SSL verification should be done, default <cite>True</cite></p></li>
-<li><p><strong>force_new_session</strong> – if new HTTP session should be created, default <cite>False</cite></p></li>
-<li><p><strong>overwrite</strong> – used together with <cite>target_file</cite>, if <cite>True</cite> will
-overwrite the target file</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>request response</p>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">url</span></code> target URL for GET request</p>
+<p><code class="docutils literal notranslate"><span class="pre">target_file</span></code> filepath to save request content, default <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">binary</span></code> if file is saved as binary, default <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">verify</span></code> if SSL verification should be done, default <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">force_new_session</span></code> if new HTTP session should be created, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">overwrite</span></code> used together with <code class="docutils literal notranslate"><span class="pre">target_file</span></code>, if <code class="docutils literal notranslate"><span class="pre">True</span></code> will overwrite
+the target file, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Returns request response.</p>
 </dd></dl>
 
 <dl class="method">

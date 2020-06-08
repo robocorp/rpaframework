@@ -11,8 +11,7 @@ Description
 .. raw:: html
 
    <p>Library handling different database operations.</p>
-   <p>Extends <span class="name">robotframework-databaselibrary</span>_.</p>
-   <p>.. _robotframework-databaselibrary: <a href="https://github.com/franz-see/Robotframework-Database-Library">https://github.com/franz-see/Robotframework-Database-Library</a></p>
+   <p>Extends functionality of DatabaseLibrary, for more information see <a href="https://github.com/franz-see/Robotframework-Database-Library">https://github.com/franz-see/Robotframework-Database-Library</a></p>
 
 ********
 Keywords
@@ -308,7 +307,7 @@ Keywords
   .. raw:: html
 
      <p>Make database query and return result as <span class="name">RPA.Table</span>.</p>
-     <p>:param query_string: SQL query string :return: query result as <span class="name">RPA.Table</span></p>
+     <p><code>query_string</code> SQL query string</p>
 
 :Delete All Rows From Table:
   :Arguments: tableName, sansTran=False

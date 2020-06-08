@@ -211,7 +211,8 @@
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Browser.</code><code class="sig-name descname">Browser</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SeleniumLibrary.SeleniumLibrary</span></code></p>
 <p>RPA Framework library for Browser operations.</p>
-<p>Extends functionality of SeleniumLibrary.</p>
+<p>Extends functionality of SeleniumLibrary, for more information see
+<a class="reference external" href="https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html">https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html</a></p>
 <dl class="attribute">
 <dt id="RPA.Browser.Browser.AUTOMATIC_BROWSER_SELECTION">
 <code class="sig-name descname">AUTOMATIC_BROWSER_SELECTION</code><em class="property"> = 'AUTO'</em><a class="headerlink" href="#RPA.Browser.Browser.AUTOMATIC_BROWSER_SELECTION" title="Permalink to this definition">¶</a></dt>
@@ -249,21 +250,14 @@
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.create_rpa_webdriver">
-<code class="sig-name descname">create_rpa_webdriver</code><span class="sig-paren">(</span><em class="sig-param">browser: str</em>, <em class="sig-param">options: dict</em>, <em class="sig-param">download: bool = False</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.create_rpa_webdriver" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_rpa_webdriver</code><span class="sig-paren">(</span><em class="sig-param">browser: str</em>, <em class="sig-param">options: dict</em>, <em class="sig-param">download: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Browser.Browser.create_rpa_webdriver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a webdriver instance for the given browser.</p>
-<p>The driver will be downloaded if it does not exist when <cite>download</cite> is True.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>browser</strong> – name of the browser</p></li>
-<li><p><strong>options</strong> – options for webdriver</p></li>
-<li><p><strong>download</strong> – True if the driver should be download, defaults to False</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>index of the webdriver session, False if webdriver was not initialized</p>
-</dd>
-</dl>
+<p>The driver will be downloaded if it does not exist when <code class="docutils literal notranslate"><span class="pre">download</span></code> is True.</p>
+<p><code class="docutils literal notranslate"><span class="pre">browser</span></code> name of the browser</p>
+<p><code class="docutils literal notranslate"><span class="pre">options</span></code> options for webdriver</p>
+<p><code class="docutils literal notranslate"><span class="pre">download</span></code> if the driver should be download, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Returns an index of the webdriver session, <code class="docutils literal notranslate"><span class="pre">False</span></code> if webdriver 
+was not initialized.</p>
 </dd></dl>
 
 <dl class="method">
@@ -271,13 +265,8 @@
 <code class="sig-name descname">detect_chrome_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Browser.detect_chrome_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect Chrome browser version (if possible) on different
 platforms using different commands for each platform.</p>
-<p>Return corresponding chromedriver version, if possible.</p>
+<p>Returns corresponding chromedriver version, if possible.</p>
 <p>Supported Chrome major versions are 81, 80 and 79.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>chromedriver version number or None</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
@@ -286,15 +275,9 @@ platforms using different commands for each platform.</p>
 <dd><p>Download the driver to a given directory. By default, downloads
 the latest version for the given webdriver type. This can be
 overridden by giving the <code class="docutils literal notranslate"><span class="pre">version</span></code> parameter.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dm_class</strong> – driver manager class</p></li>
-<li><p><strong>download_dir</strong> – directory to download driver into</p></li>
-<li><p><strong>version</strong> – None by default (gets the latest version)</p></li>
-</ul>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">dm_class</span></code> driver manager class</p>
+<p><code class="docutils literal notranslate"><span class="pre">download_dir</span></code> directory to download driver into</p>
+<p><code class="docutils literal notranslate"><span class="pre">version</span></code> download specific version, by default downloads the latest version</p>
 </dd></dl>
 
 <dl class="method">
@@ -372,13 +355,8 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 <code class="sig-name descname">get_browser_order</code><span class="sig-paren">(</span><em class="sig-param">browser_selection: Any</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Browser.Browser.get_browser_order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of browsers that will be used for open browser
 keywords. Will be one or many.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>browser_selection</strong> – “AUTO” will be OS-specific list,
-or one named browser, eg. “Chrome”</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of browsers</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">browser_selection</span></code> <code class="docutils literal notranslate"><span class="pre">AUTOMATIC_BROWSER_SELECTION</span></code> will be OS-specific list,</dt><dd><p>or one named browser, eg. “Chrome”</p>
 </dd>
 </dl>
 </dd></dl>
@@ -386,17 +364,10 @@ or one named browser, eg. “Chrome”</p>
 <dl class="method">
 <dt id="RPA.Browser.Browser.get_installed_chromedriver_version">
 <code class="sig-name descname">get_installed_chromedriver_version</code><span class="sig-paren">(</span><em class="sig-param">driver_executable_path: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Browser.get_installed_chromedriver_version" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the full version number for a stable chromedriver.</p>
+<dd><p>Returns the full version number for a stable chromedriver.</p>
 <p>The stable version is defined internally based on the major version
 of the chromedriver.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>driver_executable_path</strong> – path to chromedriver</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>full version number for stable chromedriver or None</p>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">driver_executable_path</span></code> path to chromedriver</p>
 </dd></dl>
 
 <dl class="method">
@@ -433,45 +404,34 @@ of the chromedriver.</p>
 <dt id="RPA.Browser.Browser.get_preferable_browser_order">
 <code class="sig-name descname">get_preferable_browser_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Browser.Browser.get_preferable_browser_order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of RPA Framework preferred browsers by OS.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>browser list</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.input_text_when_element_is_visible">
 <code class="sig-name descname">input_text_when_element_is_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.input_text_when_element_is_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Input text into locator after it has become visible.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>locator</strong> – selector</p></li>
-<li><p><strong>text</strong> – insert text to locator</p></li>
-</ul>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">text</span></code> insert text to locator</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.location">
 <em class="property">property </em><code class="sig-name descname">location</code><a class="headerlink" href="#RPA.Browser.Browser.location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return browser location.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>URL of the page the browser is in</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.open_available_browser">
 <code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: bool = False</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.open_available_browser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Open available browser.</p>
-<p>Opens the first available browser in the system in preferred order, or the
-given browser (<cite>browser_selection</cite>).</p>
-<p>Steps:</p>
+<dd><p>Opens the first available browser in the system in preferred order, or the
+given browser (<code class="docutils literal notranslate"><span class="pre">browser_selection</span></code>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open</p>
+<p><code class="docutils literal notranslate"><span class="pre">use_profile</span></code> set browser profile, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">headless</span></code> run in headless mode, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">maximized</span></code> run window maximized, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">browser_selection</span></code> browser name, default <code class="docutils literal notranslate"><span class="pre">AUTOMATIC_BROWSER_SELECTION</span></code></p>
+<p>Returns an index of the webdriver session.</p>
+<p>=== Process of opening a browser ===</p>
 <ol class="arabic">
 <li><p>Get the order of browsers</p></li>
 <li><p>Loop the list of preferred browsers</p>
@@ -486,49 +446,26 @@ given browser (<cite>browser_selection</cite>).</p>
 </li>
 <li><p>Open the URL</p></li>
 </ol>
-<p>Raises <cite>BrowserNotFoundError</cite> if unable to open the browser.</p>
-<p>Details on <a class="reference external" href="https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari">Safari webdriver setup</a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>url</strong> – URL to open</p></li>
-<li><p><strong>use_profile</strong> – set browser profile, defaults to False</p></li>
-<li><p><strong>headless</strong> – run in headless mode, defaults to False</p></li>
-<li><p><strong>maximized</strong> – run window maximized, defaults to False</p></li>
-<li><p><strong>browser_selection</strong> – browser name, defaults to AUTOMATIC_BROWSER_SELECTION</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>index of the webdriver session</p>
-</dd>
-</dl>
+<p>Raises <code class="docutils literal notranslate"><span class="pre">BrowserNotFoundError</span></code> if unable to open the browser.</p>
+<p>For information about Safari webdriver setup, see 
+<a class="reference external" href="https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.open_chrome_browser">
 <code class="sig-name descname">open_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: bool = False</em>, <em class="sig-param">maximized: bool = False</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.open_chrome_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Chrome browser.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>url</strong> – URL to open</p></li>
-<li><p><strong>use_profile</strong> – if a browser user profile is used, defaults to False</p></li>
-<li><p><strong>headless</strong> – if headless mode should be set, defaults to False</p></li>
-<li><p><strong>maximized</strong> – if the browser should be run maximized, defaults to False</p></li>
-</ul>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open</p>
+<p><code class="docutils literal notranslate"><span class="pre">use_profile</span></code> if a browser user profile is used, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">headless</span></code> if headless mode should be set, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">maximized</span></code> if the browser should be run maximized, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.open_headless_chrome_browser">
 <code class="sig-name descname">open_headless_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.open_headless_chrome_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Chrome browser in headless mode.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>url</strong> – URL to open</p>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open</p>
 </dd></dl>
 
 <dl class="method">
@@ -560,69 +497,58 @@ given browser (<cite>browser_selection</cite>).</p>
 <dt id="RPA.Browser.Browser.screenshot">
 <code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">page: bool = True</em>, <em class="sig-param">locator: str = None</em>, <em class="sig-param">filename_prefix: str = 'screenshot'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.screenshot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Capture page and/or element screenshot.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>page</strong> – capture a page screenshot, defaults to True</p></li>
-<li><p><strong>locator</strong> – if defined, take element screenshot, defaults to None</p></li>
-<li><p><strong>filename_prefix</strong> – prefix for screenshot files, defaults to ‘screenshot’</p></li>
-</ul>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">page</span></code> capture a page screenshot, default <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> if defined, take element screenshot, default <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">filename_prefix</span></code> prefix for screenshot files, default “screenshot”</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.set_default_options">
 <code class="sig-name descname">set_default_options</code><span class="sig-paren">(</span><em class="sig-param">options: dict</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.set_default_options" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set default browser options</p>
+<p><code class="docutils literal notranslate"><span class="pre">options</span></code> browser options</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.set_driver_options">
 <code class="sig-name descname">set_driver_options</code><span class="sig-paren">(</span><em class="sig-param">browser: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: bool = False</em>, <em class="sig-param">maximized: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Browser.Browser.set_driver_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set options for the given browser.</p>
-<dl class="simple">
-<dt>Supported at the moment:</dt><dd><ul class="simple">
+<p>Supported at the moment:</p>
+<blockquote>
+<div><ul class="simple">
 <li><p>ChromeOptions</p></li>
 <li><p>FirefoxOptions</p></li>
 <li><p>IeOptions</p></li>
 </ul>
-</dd>
-</dl>
-<p>:param browser
-:param use_profile: if a browser user profile is used, defaults to False
-:param headless: if headless mode should be set, defaults to False
-:param maximized: if the browser should be run maximized, defaults to False
-:return: driver options or an empty dictionary</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">browser</span></code> to set options for</p>
+<p><code class="docutils literal notranslate"><span class="pre">use_profile</span></code> if a browser user profile is used, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">headless</span></code> if headless mode should be set, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">maximized</span></code> if the browser should be run maximized, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.set_headless_options">
 <code class="sig-name descname">set_headless_options</code><span class="sig-paren">(</span><em class="sig-param">browser: str</em>, <em class="sig-param">options: dict</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.set_headless_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set headless mode for the browser, if possible.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>browser</strong> – string name of the browser</p></li>
-<li><p><strong>options</strong> – browser options class instance</p></li>
-</ul>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">browser</span></code> string name of the browser</p>
+<p><code class="docutils literal notranslate"><span class="pre">options</span></code> browser options class instance</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.set_user_profile">
 <code class="sig-name descname">set_user_profile</code><span class="sig-paren">(</span><em class="sig-param">options: dict</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.set_user_profile" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set user profile configuration into browser options</p>
+<p>Requires environment variable <code class="docutils literal notranslate"><span class="pre">RPA_CHROME_USER_PROFILE_DIR</span></code>
+to point into user profile directory.</p>
+<p><code class="docutils literal notranslate"><span class="pre">options</span></code> dictionary of browser options</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.wait_and_click_button">
 <code class="sig-name descname">wait_and_click_button</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.wait_and_click_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click button once it becomes visible.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>locator</strong> – [description]</p>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 </dd></dl>
 
 <dl class="method">
@@ -630,17 +556,8 @@ given browser (<cite>browser_selection</cite>).</p>
 <code class="sig-name descname">webdriver_init</code><span class="sig-paren">(</span><em class="sig-param">browser: str</em>, <em class="sig-param">download: bool = False</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Browser.webdriver_init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Webdriver initialization with default driver
 paths or with downloaded drivers.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>browser</strong> – use drivers for this browser</p></li>
-<li><p><strong>download</strong> – if True, drivers are downloaded, not if False</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>path to driver or <cite>None</cite></p>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">browser</span></code> use drivers for this browser</p>
+<p><code class="docutils literal notranslate"><span class="pre">download</span></code> if drivers should be downloaded, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd></dl>
 
 </dd></dl>
