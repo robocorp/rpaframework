@@ -227,6 +227,424 @@ can use it</p></li>
 </div></blockquote>
 <p>Services are taken into use with <code class="docutils literal notranslate"><span class="pre">init_SERVICENAME_client</span></code> keywords,
 which take as parameter an <code class="docutils literal notranslate"><span class="pre">service_account</span></code> JSON file.</p>
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.analyze_sentiment">
+<code class="sig-name descname">analyze_sentiment</code><span class="sig-paren">(</span><em class="sig-param">text_file: str</em>, <em class="sig-param">file_type: str = 'text'</em>, <em class="sig-param">json_file: str = None</em>, <em class="sig-param">lang=None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Google.Google.analyze_sentiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyze sentiment in a text file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text_file</strong> – source text file</p></li>
+<li><p><strong>json_file</strong> – json target to save result, defaults to None</p></li>
+<li><p><strong>lang</strong> – language code of the source, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.annotate_image">
+<code class="sig-name descname">annotate_image</code><span class="sig-paren">(</span><em class="sig-param">image_uri: str</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Google.Google.annotate_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotate image</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – source image file</p></li>
+<li><p><strong>json_file</strong> – json target to save result, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>detection response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.annotate_video">
+<code class="sig-name descname">annotate_video</code><span class="sig-paren">(</span><em class="sig-param">video_uri: str = None</em>, <em class="sig-param">video_file: str = None</em>, <em class="sig-param">json_file: str = None</em>, <em class="sig-param">features: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.annotate_video" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotate video</p>
+<p>Possible values for features:
+- FEATURE_UNSPECIFIED, Unspecified.
+- LABEL_DETECTION, Label detection. Detect objects, such as dog or flower.
+- SHOT_CHANGE_DETECTION, Shot change detection.
+- EXPLICIT_CONTENT_DETECTION, Explicit content detection.
+- SPEECH_TRANSCRIPTION, Speech transcription.
+- TEXT_DETECTION, OCR text detection and tracking.
+- OBJECT_TRACKING, Object detection and tracking.
+- LOGO_RECOGNITION, Logo detection, tracking, and recognition.</p>
+<p>If <cite>video_uri</cite> is given then that is used even if <cite>video_file</cite> is None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>video_uri</strong> – Google Cloud Storage URI</p></li>
+<li><p><strong>video_file</strong> – filepath to video</p></li>
+<li><p><strong>json_file</strong> – json target to save result, defaults to None</p></li>
+<li><p><strong>features</strong> – list of annotation features to detect,
+defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>annotate result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.classify_text">
+<code class="sig-name descname">classify_text</code><span class="sig-paren">(</span><em class="sig-param">text_file</em>, <em class="sig-param">json_file</em>, <em class="sig-param">lang=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.classify_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text_file</strong> – source text file</p></li>
+<li><p><strong>json_file</strong> – json target to save result, defaults to None</p></li>
+<li><p><strong>lang</strong> – language code of the source, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>classify response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.Google.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.Google.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.create_bucket">
+<code class="sig-name descname">create_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.create_bucket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Google Cloud Storage bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> – name as string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bucket</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.delete_bucket">
+<code class="sig-name descname">delete_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.delete_bucket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete Google Cloud Storage bucket</p>
+<p>Bucket needs to be empty before it can be deleted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> – name as string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.delete_files">
+<code class="sig-name descname">delete_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em>, <em class="sig-param">files: Any</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.delete_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete files in the bucket</p>
+<p>Files need to be object name in the bucket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name as string</p></li>
+<li><p><strong>files</strong> – single file, list of files or
+comma separated list of files</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of files which could not be deleted,
+or True if all were deleted</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.detect_document">
+<code class="sig-name descname">detect_document</code><span class="sig-paren">(</span><em class="sig-param">image_file: str</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Google.Google.detect_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect document</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – source image file</p></li>
+<li><p><strong>json_file</strong> – json target to save result, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>detection response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.detect_labels">
+<code class="sig-name descname">detect_labels</code><span class="sig-paren">(</span><em class="sig-param">image_file: str</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Google.Google.detect_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect labels in the image</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – source image file</p></li>
+<li><p><strong>json_file</strong> – json target to save result, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>detection response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.detect_text">
+<code class="sig-name descname">detect_text</code><span class="sig-paren">(</span><em class="sig-param">image_file: str</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Google.Google.detect_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect text in the image</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – source image file</p></li>
+<li><p><strong>json_file</strong> – json target to save result, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>detection response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.download_files">
+<code class="sig-name descname">download_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em>, <em class="sig-param">files: Any</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.download_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download files from a bucket</p>
+<p>Example <cite>files</cite>:
+files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name as string</p></li>
+<li><p><strong>files</strong> – list of object names or dictionary of
+object names and target files</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of files which could not be downloaded, or
+True if all were downloaded</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.face_detection">
+<code class="sig-name descname">face_detection</code><span class="sig-paren">(</span><em class="sig-param">image_uri: str</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Google.Google.face_detection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect faces</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_uri</strong> – Google Cloud Storage URI</p></li>
+<li><p><strong>json_file</strong> – json target to save result, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>detection response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.get_bucket">
+<code class="sig-name descname">get_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.get_bucket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Google Cloud Storage bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> – name as string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bucket</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.init_natural_language_client">
+<code class="sig-name descname">init_natural_language_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_natural_language_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Natural Language client</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.init_speech_to_text_client">
+<code class="sig-name descname">init_speech_to_text_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_speech_to_text_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Speech To Text client</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.init_storage_client">
+<code class="sig-name descname">init_storage_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_storage_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Cloud Storage client</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.init_text_to_speech_client">
+<code class="sig-name descname">init_text_to_speech_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_text_to_speech_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Text To Speech client</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.init_translation_client">
+<code class="sig-name descname">init_translation_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str</em>, <em class="sig-param">project_identifier: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_translation_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Translation client</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.init_video_intelligence_client">
+<code class="sig-name descname">init_video_intelligence_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_video_intelligence_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Video Intelligence client</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.init_vision_client">
+<code class="sig-name descname">init_vision_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_vision_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Vision client</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.list_buckets">
+<code class="sig-name descname">list_buckets</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.Google.Google.list_buckets" title="Permalink to this definition">¶</a></dt>
+<dd><p>List Google Cloud Storage buckets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of buckets</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.list_files">
+<code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.list_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>List files in the bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> – name as string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of object names in the bucket</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.list_supported_voices">
+<code class="sig-name descname">list_supported_voices</code><span class="sig-paren">(</span><em class="sig-param">language_code: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.list_supported_voices" title="Permalink to this definition">¶</a></dt>
+<dd><p>List supported voices for the speech</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>language_code</strong> – voice languages to list, defaults to None (all)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of supported voices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.Google.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.Google.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.recognize">
+<code class="sig-name descname">recognize</code><span class="sig-paren">(</span><em class="sig-param">audio_file_uri</em>, <em class="sig-param">encoding: str = 'FLAC'</em>, <em class="sig-param">language_code: str = 'en_US'</em>, <em class="sig-param">audio_channel_count=2</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.recognize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recognize text in the audio file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>audio_file_uri</strong> – Google Cloud Storage URI</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>recognized texts</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.Google.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.Google.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.Google.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.Google.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.synthesize_speech">
+<code class="sig-name descname">synthesize_speech</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">language='en-US'</em>, <em class="sig-param">name='en-US-Standard-B'</em>, <em class="sig-param">gender='MALE'</em>, <em class="sig-param">encoding='MP3'</em>, <em class="sig-param">target_file='synthesized.mp3'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.synthesize_speech" title="Permalink to this definition">¶</a></dt>
+<dd><p>Synthesize speech synchronously</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – input text to synthesize</p></li>
+<li><p><strong>language</strong> – voice language, defaults to “en-US”</p></li>
+<li><p><strong>name</strong> – voice name, defaults to “en-US-Standard-B”</p></li>
+<li><p><strong>gender</strong> – voice gender, defaults to “MALE”</p></li>
+<li><p><strong>encoding</strong> – result encoding type, defaults to “MP3”</p></li>
+<li><p><strong>target_file</strong> – save synthesized output to file,
+defaults to “synthesized.mp3”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>synthesized output in bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.translate">
+<code class="sig-name descname">translate</code><span class="sig-paren">(</span><em class="sig-param">text: Any</em>, <em class="sig-param">source_language: str = None</em>, <em class="sig-param">target_language: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Google.Google.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – text to translate</p></li>
+<li><p><strong>source_language</strong> – language code, defaults to None</p></li>
+<li><p><strong>target_language</strong> – language code, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>translated text</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.upload_file">
+<code class="sig-name descname">upload_file</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em>, <em class="sig-param">filename: str</em>, <em class="sig-param">target_name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.upload_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload a file into a bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name as string</p></li>
+<li><p><strong>filename</strong> – filepath to upload file</p></li>
+<li><p><strong>target_name</strong> – target object name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.upload_files">
+<code class="sig-name descname">upload_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em>, <em class="sig-param">files: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.upload_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload files into a bucket</p>
+<p>Example <cite>files</cite>:
+files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name as string</p></li>
+<li><p><strong>files</strong> – dictionary of object names and filepaths</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -298,11 +716,31 @@ which take as parameter an <code class="docutils literal notranslate"><span clas
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceNaturalLanguage.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceNaturalLanguage.init_natural_language_client">
 <code class="sig-name descname">init_natural_language_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.init_natural_language_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize Google Natural Language client</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceNaturalLanguage.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceNaturalLanguage.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceNaturalLanguage.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -325,11 +763,21 @@ which take as parameter an <code class="docutils literal notranslate"><span clas
 </dd>
 </dl>
 <p>Link to <a class="reference external" href="https://pypi.org/project/google-cloud-speech/">Speech To Text PyPI</a> page.</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSpeechToText.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceSpeechToText.init_speech_to_text_client">
 <code class="sig-name descname">init_speech_to_text_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.init_speech_to_text_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize Google Speech To Text client</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSpeechToText.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceSpeechToText.recognize">
@@ -344,6 +792,16 @@ which take as parameter an <code class="docutils literal notranslate"><span clas
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSpeechToText.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSpeechToText.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -360,6 +818,11 @@ service account you are using to authenticate with
 &#64;google-cloud/storage. The IAM page in the console is here:
 <a class="reference external" href="https://console.cloud.google.com/iam-admin/iam/project">https://console.cloud.google.com/iam-admin/iam/project</a></p>
 <p>Link to <a class="reference external" href="https://pypi.org/project/google-cloud-storage/">Google Storage PyPI</a> page.</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceStorage.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceStorage.create_bucket">
 <code class="sig-name descname">create_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.create_bucket" title="Permalink to this definition">¶</a></dt>
@@ -472,6 +935,21 @@ True if all were downloaded</p>
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceStorage.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceStorage.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceStorage.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceStorage.upload_file">
 <code class="sig-name descname">upload_file</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em>, <em class="sig-param">filename: str</em>, <em class="sig-param">target_name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.upload_file" title="Permalink to this definition">¶</a></dt>
@@ -511,6 +989,11 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Google.GoogleBase" title="RPA.Cloud.Google.GoogleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.GoogleBase</span></code></a></p>
 <p>Class for Google Cloud Text-to-Speech API</p>
 <p>Link to <a class="reference external" href="https://pypi.org/project/google-cloud-texttospeech/">Text To Speech PyPI</a> page.</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTextToSpeech.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceTextToSpeech.init_text_to_speech_client">
 <code class="sig-name descname">init_text_to_speech_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.init_text_to_speech_client" title="Permalink to this definition">¶</a></dt>
@@ -530,6 +1013,21 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTextToSpeech.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTextToSpeech.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTextToSpeech.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceTextToSpeech.synthesize_speech">
@@ -561,11 +1059,31 @@ defaults to “synthesized.mp3”</p></li>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Google.GoogleBase" title="RPA.Cloud.Google.GoogleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.GoogleBase</span></code></a></p>
 <p>Class for Google Cloud Translation API</p>
 <p>Link to <a class="reference external" href="https://pypi.org/project/google-cloud-translate/">Translation PyPI</a> page.</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTranslation.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceTranslation.init_translation_client">
 <code class="sig-name descname">init_translation_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str</em>, <em class="sig-param">project_identifier: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.init_translation_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize Google Translation client</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTranslation.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTranslation.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTranslation.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceTranslation.translate">
@@ -624,11 +1142,31 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVideoIntelligence.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceVideoIntelligence.init_video_intelligence_client">
 <code class="sig-name descname">init_video_intelligence_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.init_video_intelligence_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize Google Video Intelligence client</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVideoIntelligence.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVideoIntelligence.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVideoIntelligence.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -654,6 +1192,11 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVision.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceVision.detect_document">
@@ -728,6 +1271,21 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 <code class="sig-name descname">init_vision_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.init_vision_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize Google Vision client</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVision.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVision.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVision.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

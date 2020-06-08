@@ -212,6 +212,11 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.core.msoffice.OfficeApplication</span></code></p>
 <p>Library for manipulating Word application.</p>
 <dl class="method">
+<dt id="RPA.Word.Application.Application.close_document">
+<code class="sig-name descname">close_document</code><span class="sig-paren">(</span><em class="sig-param">save_changes: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.close_document" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="RPA.Word.Application.Application.create_new_document">
 <code class="sig-name descname">create_new_document</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.create_new_document" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create new document for Word application</p>
@@ -240,6 +245,20 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Word.Application.Application.open_application">
+<code class="sig-name descname">open_application</code><span class="sig-paren">(</span><em class="sig-param">visible: bool = False</em>, <em class="sig-param">display_alerts: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.open_application" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open Microsoft application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>visible</strong> – show Word window if True, defaults to False</p></li>
+<li><p><strong>display_alerts</strong> – show alert popups if True, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Word.Application.Application.open_file">
 <code class="sig-name descname">open_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.open_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Word document with filename.</p>
@@ -249,6 +268,11 @@
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="method">
+<dt id="RPA.Word.Application.Application.quit_application">
+<code class="sig-name descname">quit_application</code><span class="sig-paren">(</span><em class="sig-param">save_changes: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Word.Application.Application.quit_application" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Word.Application.Application.replace_text">

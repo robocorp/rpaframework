@@ -211,10 +211,22 @@
 <em class="property">class </em><code class="sig-prename descclassname">RPA.PDF.</code><code class="sig-name descname">PDF</code><span class="sig-paren">(</span><em class="sig-param">outdir: str = '.'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">fpdf.fpdf.FPDF</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">fpdf.html.HTMLMixin</span></code></p>
 <p>RPA Framework library for PDF management.</p>
+<dl class="method">
+<dt id="RPA.PDF.PDF.accept_page_break">
+<code class="sig-name descname">accept_page_break</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.accept_page_break" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accept automatic page break or not</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="RPA.PDF.PDF.active_fileobject">
 <code class="sig-name descname">active_fileobject</code><em class="property">: object</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.PDF.active_fileobject" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.add_font">
+<code class="sig-name descname">add_font</code><span class="sig-paren">(</span><em class="sig-param">family</em>, <em class="sig-param">style=''</em>, <em class="sig-param">fname=''</em>, <em class="sig-param">uni=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.add_font" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a TrueType or Type1 font</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.PDF.PDF.add_image_to_pdf">
@@ -236,6 +248,18 @@ active PDF</p></li>
 <dd class="field-even"><p><strong>ValueError</strong> – [description]</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.add_link">
+<code class="sig-name descname">add_link</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.add_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new internal link</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.add_page">
+<code class="sig-name descname">add_page</code><span class="sig-paren">(</span><em class="sig-param">orientation=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.add_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start a new page</p>
 </dd></dl>
 
 <dl class="method">
@@ -265,10 +289,34 @@ to <cite>output_directory</cite></p></li>
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="RPA.PDF.PDF.alias_nb_pages">
+<code class="sig-name descname">alias_nb_pages</code><span class="sig-paren">(</span><em class="sig-param">alias='{nb}'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.alias_nb_pages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define an alias for total number of pages</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="RPA.PDF.PDF.anchor_element">
 <code class="sig-name descname">anchor_element</code><em class="property">: dict</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.PDF.anchor_element" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.cell">
+<code class="sig-name descname">cell</code><span class="sig-paren">(</span><em class="sig-param">w</em>, <em class="sig-param">h=0</em>, <em class="sig-param">txt=''</em>, <em class="sig-param">border=0</em>, <em class="sig-param">ln=0</em>, <em class="sig-param">align=''</em>, <em class="sig-param">fill=0</em>, <em class="sig-param">link=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output a cell</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.check_page">
+<code class="sig-name descname">check_page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.check_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to protect drawing methods</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminate document</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.PDF.PDF.close_all_pdf_documents">
@@ -291,6 +339,20 @@ to <cite>output_directory</cite></p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.PDF.PDF.code39">
+<code class="sig-name descname">code39</code><span class="sig-paren">(</span><em class="sig-param">txt</em>, <em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">w=1.5</em>, <em class="sig-param">h=5.0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.code39" title="Permalink to this definition">¶</a></dt>
+<dd><p>Barcode 3of9</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.dashed_line">
+<code class="sig-name descname">dashed_line</code><span class="sig-paren">(</span><em class="sig-param">x1</em>, <em class="sig-param">y1</em>, <em class="sig-param">x2</em>, <em class="sig-param">y2</em>, <em class="sig-param">dash_length=1</em>, <em class="sig-param">space_length=1</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.dashed_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw a dashed line. Same interface as line() except:
+- dash_length: Length of the dash
+- space_length: Length of the space between dashes</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.PDF.PDF.dump_pdf_as_xml">
 <code class="sig-name descname">dump_pdf_as_xml</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.dump_pdf_as_xml" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get PDFMiner format XML dump of the PDF</p>
@@ -302,6 +364,18 @@ to <cite>output_directory</cite></p></li>
 <dd class="field-even"><p>XML content</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.ellipse">
+<code class="sig-name descname">ellipse</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">w</em>, <em class="sig-param">h</em>, <em class="sig-param">style=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.ellipse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw a ellipse</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.error">
+<code class="sig-name descname">error</code><span class="sig-paren">(</span><em class="sig-param">msg</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fatal error</p>
 </dd></dl>
 
 <dl class="method">
@@ -326,6 +400,12 @@ if None then extracts all pages</p></li>
 <dt id="RPA.PDF.PDF.fileobjects">
 <code class="sig-name descname">fileobjects</code><em class="property">: dict</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.PDF.fileobjects" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.footer">
+<code class="sig-name descname">footer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.footer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Footer to be implemented in your own inherited class</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.PDF.PDF.get_all_figures">
@@ -400,6 +480,12 @@ defaults to False</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.PDF.PDF.get_string_width">
+<code class="sig-name descname">get_string_width</code><span class="sig-paren">(</span><em class="sig-param">s</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_string_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get width of a string in the current font</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.PDF.PDF.get_text_from_pdf">
 <code class="sig-name descname">get_text_from_pdf</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">pages: Any = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.PDF.PDF.get_text_from_pdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get text from set of pages in source PDF document.</p>
@@ -441,6 +527,36 @@ used when direction is ‘top’ or ‘bottom’, default <cite>False</cite></p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.PDF.PDF.get_x">
+<code class="sig-name descname">get_x</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get x position</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.get_y">
+<code class="sig-name descname">get_y</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.get_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get y position</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.header">
+<code class="sig-name descname">header</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Header to be implemented in your own inherited class</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.image">
+<code class="sig-name descname">image</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">x=None</em>, <em class="sig-param">y=None</em>, <em class="sig-param">w=0</em>, <em class="sig-param">h=0</em>, <em class="sig-param">type=''</em>, <em class="sig-param">link=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put an image on the page</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.interleaved2of5">
+<code class="sig-name descname">interleaved2of5</code><span class="sig-paren">(</span><em class="sig-param">txt</em>, <em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">w=1.0</em>, <em class="sig-param">h=10.0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.interleaved2of5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Barcode I2of5 (numeric), adds a 0 if odd lenght</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.PDF.PDF.is_pdf_encrypted">
 <code class="sig-name descname">is_pdf_encrypted</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.PDF.PDF.is_pdf_encrypted" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if PDF is encrypted.</p>
@@ -455,10 +571,46 @@ used when direction is ‘top’ or ‘bottom’, default <cite>False</cite></p>
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="RPA.PDF.PDF.line">
+<code class="sig-name descname">line</code><span class="sig-paren">(</span><em class="sig-param">x1</em>, <em class="sig-param">y1</em>, <em class="sig-param">x2</em>, <em class="sig-param">y2</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw a line</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.link">
+<code class="sig-name descname">link</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">w</em>, <em class="sig-param">h</em>, <em class="sig-param">link</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put a link on the page</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.ln">
+<code class="sig-name descname">ln</code><span class="sig-paren">(</span><em class="sig-param">h=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.ln" title="Permalink to this definition">¶</a></dt>
+<dd><p>Line Feed; default value is last cell height</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="RPA.PDF.PDF.modified_reader">
 <code class="sig-name descname">modified_reader</code><em class="property">: PdfFileReader</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.PDF.modified_reader" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.multi_cell">
+<code class="sig-name descname">multi_cell</code><span class="sig-paren">(</span><em class="sig-param">w</em>, <em class="sig-param">h</em>, <em class="sig-param">txt=''</em>, <em class="sig-param">border=0</em>, <em class="sig-param">align='J'</em>, <em class="sig-param">fill=0</em>, <em class="sig-param">split_only=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.multi_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output text with automatic or explicit line breaks</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.normalize_text">
+<code class="sig-name descname">normalize_text</code><span class="sig-paren">(</span><em class="sig-param">txt</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.normalize_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that text input is in the correct format/encoding</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.open">
+<code class="sig-name descname">open</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Begin document</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.PDF.PDF.open_pdf_document">
@@ -475,10 +627,22 @@ used when direction is ‘top’ or ‘bottom’, default <cite>False</cite></p>
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="RPA.PDF.PDF.output">
+<code class="sig-name descname">output</code><span class="sig-paren">(</span><em class="sig-param">name=''</em>, <em class="sig-param">dest=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output PDF to some destination</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="RPA.PDF.PDF.output_directory">
 <code class="sig-name descname">output_directory</code><em class="property">: Path</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.PDF.output_directory" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.page_no">
+<code class="sig-name descname">page_no</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.page_no" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get current page number</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.PDF.PDF.page_rotate">
@@ -552,6 +716,12 @@ encryption is used, default True</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.PDF.PDF.rect">
+<code class="sig-name descname">rect</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">w</em>, <em class="sig-param">h</em>, <em class="sig-param">style=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw a rectangle</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.PDF.PDF.replace_text">
 <code class="sig-name descname">replace_text</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">replace: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.replace_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace text content with something else in the PDF.</p>
@@ -564,6 +734,11 @@ encryption is used, default True</p></li>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.rotate">
+<code class="sig-name descname">rotate</code><span class="sig-paren">(</span><em class="sig-param">angle</em>, <em class="sig-param">x=None</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.rotate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="RPA.PDF.PDF.rpa_pdf_document">
@@ -602,6 +777,44 @@ using modified PDF reader</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.PDF.PDF.set_author">
+<code class="sig-name descname">set_author</code><span class="sig-paren">(</span><em class="sig-param">author</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_author" title="Permalink to this definition">¶</a></dt>
+<dd><p>Author of document</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_auto_page_break">
+<code class="sig-name descname">set_auto_page_break</code><span class="sig-paren">(</span><em class="sig-param">auto</em>, <em class="sig-param">margin=0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_auto_page_break" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set auto page break mode and triggering margin</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_compression">
+<code class="sig-name descname">set_compression</code><span class="sig-paren">(</span><em class="sig-param">compress</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_compression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set page compression</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_creator">
+<code class="sig-name descname">set_creator</code><span class="sig-paren">(</span><em class="sig-param">creator</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_creator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creator of document</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_display_mode">
+<code class="sig-name descname">set_display_mode</code><span class="sig-paren">(</span><em class="sig-param">zoom</em>, <em class="sig-param">layout='continuous'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_display_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set display mode in viewer</p>
+<p>The “zoom” argument may be ‘fullpage’, ‘fullwidth’, ‘real’,
+‘default’, or a number, interpreted as a percentage.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_draw_color">
+<code class="sig-name descname">set_draw_color</code><span class="sig-paren">(</span><em class="sig-param">r</em>, <em class="sig-param">g=-1</em>, <em class="sig-param">b=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_draw_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set color for all stroking operations</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.PDF.PDF.set_field_value">
 <code class="sig-name descname">set_field_value</code><span class="sig-paren">(</span><em class="sig-param">field_name: str</em>, <em class="sig-param">value: Any</em>, <em class="sig-param">save: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_field_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set value for field with given name.</p>
@@ -616,6 +829,54 @@ using modified PDF reader</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.PDF.PDF.set_fill_color">
+<code class="sig-name descname">set_fill_color</code><span class="sig-paren">(</span><em class="sig-param">r</em>, <em class="sig-param">g=-1</em>, <em class="sig-param">b=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_fill_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set color for all filling operations</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_font">
+<code class="sig-name descname">set_font</code><span class="sig-paren">(</span><em class="sig-param">family</em>, <em class="sig-param">style=''</em>, <em class="sig-param">size=0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_font" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select a font; size given in points</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_font_size">
+<code class="sig-name descname">set_font_size</code><span class="sig-paren">(</span><em class="sig-param">size</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_font_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set font size in points</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_keywords">
+<code class="sig-name descname">set_keywords</code><span class="sig-paren">(</span><em class="sig-param">keywords</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_keywords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keywords of document</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_left_margin">
+<code class="sig-name descname">set_left_margin</code><span class="sig-paren">(</span><em class="sig-param">margin</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_left_margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set left margin</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_line_width">
+<code class="sig-name descname">set_line_width</code><span class="sig-paren">(</span><em class="sig-param">width</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_line_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set line width</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_link">
+<code class="sig-name descname">set_link</code><span class="sig-paren">(</span><em class="sig-param">link</em>, <em class="sig-param">y=0</em>, <em class="sig-param">page=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set destination of internal link</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_margins">
+<code class="sig-name descname">set_margins</code><span class="sig-paren">(</span><em class="sig-param">left</em>, <em class="sig-param">top</em>, <em class="sig-param">right=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_margins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set left, top and right margins</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.PDF.PDF.set_output_directory">
 <code class="sig-name descname">set_output_directory</code><span class="sig-paren">(</span><em class="sig-param">outdir: str = '.'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.set_output_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set output directory where target files are saved to.</p>
@@ -624,6 +885,54 @@ using modified PDF reader</p></li>
 <dd class="field-odd"><p><strong>outdir</strong> – output directory path, default to current directory</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_right_margin">
+<code class="sig-name descname">set_right_margin</code><span class="sig-paren">(</span><em class="sig-param">margin</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_right_margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set right margin</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_subject">
+<code class="sig-name descname">set_subject</code><span class="sig-paren">(</span><em class="sig-param">subject</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_subject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subject of document</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_text_color">
+<code class="sig-name descname">set_text_color</code><span class="sig-paren">(</span><em class="sig-param">r</em>, <em class="sig-param">g=-1</em>, <em class="sig-param">b=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_text_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set color for text</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_title">
+<code class="sig-name descname">set_title</code><span class="sig-paren">(</span><em class="sig-param">title</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Title of document</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_top_margin">
+<code class="sig-name descname">set_top_margin</code><span class="sig-paren">(</span><em class="sig-param">margin</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_top_margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set top margin</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_x">
+<code class="sig-name descname">set_x</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set x position</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_xy">
+<code class="sig-name descname">set_xy</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set x and y positions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.set_y">
+<code class="sig-name descname">set_y</code><span class="sig-paren">(</span><em class="sig-param">y</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set y position and reset x</p>
 </dd></dl>
 
 <dl class="method">
@@ -658,6 +967,12 @@ file to activate</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.PDF.PDF.text">
+<code class="sig-name descname">text</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">txt=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output a string</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.PDF.PDF.update_field_values">
 <code class="sig-name descname">update_field_values</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">target_pdf: str = None</em>, <em class="sig-param">newvals: dict = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.update_field_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update field values in PDF if it has fields.</p>
@@ -670,6 +985,18 @@ file to activate</p>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param">h</em>, <em class="sig-param">txt=''</em>, <em class="sig-param">link=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output text in flowing mode</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.PDF.write_html">
+<code class="sig-name descname">write_html</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">image_map=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.write_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse HTML and convert it to PDF</p>
 </dd></dl>
 
 </dd></dl>
@@ -692,13 +1019,88 @@ file to activate</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.PDF.RPAConverter.begin_figure">
+<code class="sig-name descname">begin_figure</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">bbox</em>, <em class="sig-param">matrix</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.begin_figure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.begin_page">
+<code class="sig-name descname">begin_page</code><span class="sig-paren">(</span><em class="sig-param">page</em>, <em class="sig-param">ctm</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.begin_page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.begin_tag">
+<code class="sig-name descname">begin_tag</code><span class="sig-paren">(</span><em class="sig-param">tag</em>, <em class="sig-param">props=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.begin_tag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="RPA.PDF.RPAConverter.close">
 <code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.close" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.PDF.RPAConverter.do_tag">
+<code class="sig-name descname">do_tag</code><span class="sig-paren">(</span><em class="sig-param">tag</em>, <em class="sig-param">props=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.do_tag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.end_figure">
+<code class="sig-name descname">end_figure</code><span class="sig-paren">(</span><em class="sig-param">_</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.end_figure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.end_page">
+<code class="sig-name descname">end_page</code><span class="sig-paren">(</span><em class="sig-param">page</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.end_page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.end_tag">
+<code class="sig-name descname">end_tag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.end_tag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.handle_undefined_char">
+<code class="sig-name descname">handle_undefined_char</code><span class="sig-paren">(</span><em class="sig-param">font</em>, <em class="sig-param">cid</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.handle_undefined_char" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.paint_path">
+<code class="sig-name descname">paint_path</code><span class="sig-paren">(</span><em class="sig-param">gstate</em>, <em class="sig-param">stroke</em>, <em class="sig-param">fill</em>, <em class="sig-param">evenodd</em>, <em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.paint_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="RPA.PDF.RPAConverter.receive_layout">
 <code class="sig-name descname">receive_layout</code><span class="sig-paren">(</span><em class="sig-param">ltpage</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.receive_layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.render_char">
+<code class="sig-name descname">render_char</code><span class="sig-paren">(</span><em class="sig-param">matrix</em>, <em class="sig-param">font</em>, <em class="sig-param">fontsize</em>, <em class="sig-param">scaling</em>, <em class="sig-param">rise</em>, <em class="sig-param">cid</em>, <em class="sig-param">ncs</em>, <em class="sig-param">graphicstate</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.render_char" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.render_image">
+<code class="sig-name descname">render_image</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">stream</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.render_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.render_string">
+<code class="sig-name descname">render_string</code><span class="sig-paren">(</span><em class="sig-param">textstate</em>, <em class="sig-param">seq</em>, <em class="sig-param">ncs</em>, <em class="sig-param">graphicstate</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.render_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.render_string_horizontal">
+<code class="sig-name descname">render_string_horizontal</code><span class="sig-paren">(</span><em class="sig-param">seq</em>, <em class="sig-param">matrix</em>, <em class="sig-param">pos</em>, <em class="sig-param">font</em>, <em class="sig-param">fontsize</em>, <em class="sig-param">scaling</em>, <em class="sig-param">charspace</em>, <em class="sig-param">wordspace</em>, <em class="sig-param">rise</em>, <em class="sig-param">dxscale</em>, <em class="sig-param">ncs</em>, <em class="sig-param">graphicstate</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.render_string_horizontal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.render_string_vertical">
+<code class="sig-name descname">render_string_vertical</code><span class="sig-paren">(</span><em class="sig-param">seq</em>, <em class="sig-param">matrix</em>, <em class="sig-param">pos</em>, <em class="sig-param">font</em>, <em class="sig-param">fontsize</em>, <em class="sig-param">scaling</em>, <em class="sig-param">charspace</em>, <em class="sig-param">wordspace</em>, <em class="sig-param">rise</em>, <em class="sig-param">dxscale</em>, <em class="sig-param">ncs</em>, <em class="sig-param">graphicstate</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.render_string_vertical" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.PDF.RPAConverter.set_ctm">
+<code class="sig-name descname">set_ctm</code><span class="sig-paren">(</span><em class="sig-param">ctm</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.RPAConverter.set_ctm" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

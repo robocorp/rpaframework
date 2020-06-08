@@ -213,9 +213,22 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
 <p>Robot Framework -friendly container for directories.</p>
 <dl class="method">
+<dt id="RPA.FileSystem.Directory.count">
+<code class="sig-name descname">count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.Directory.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of occurrences of value.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.FileSystem.Directory.from_path">
 <em class="property">classmethod </em><code class="sig-name descname">from_path</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.Directory.from_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a directory object from pathlib.Path or a path string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.Directory.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.Directory.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return first index of value.</p>
+<p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -238,9 +251,22 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
 <p>Robot Framework -friendly container for files.</p>
 <dl class="method">
+<dt id="RPA.FileSystem.File.count">
+<code class="sig-name descname">count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.File.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of occurrences of value.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.FileSystem.File.from_path">
 <em class="property">classmethod </em><code class="sig-name descname">from_path</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.File.from_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a File object from pathlib.Path or a path string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.File.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.File.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return first index of value.</p>
+<p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -834,6 +860,18 @@ is reached.</p>
 <em class="property">exception </em><code class="sig-prename descclassname">RPA.FileSystem.</code><code class="sig-name descname">TimeoutException</code><a class="headerlink" href="#RPA.FileSystem.TimeoutException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Exception raised from wait-prefixed keywords</p>
+<dl class="attribute">
+<dt id="RPA.FileSystem.TimeoutException.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.FileSystem.TimeoutException.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.FileSystem.TimeoutException.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.TimeoutException.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>

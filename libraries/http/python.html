@@ -212,6 +212,225 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RequestsLibrary.RequestsLibrary</span></code></p>
 <p>RPA Framework HTTP library that wraps
 _RequestsLibrary_ functionality.</p>
+<dl class="attribute">
+<dt id="RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST">
+<code class="sig-name descname">DEFAULT_RETRY_METHOD_LIST</code><em class="property"> = ['PUT', 'DELETE', 'GET', 'HEAD', 'TRACE', 'OPTIONS']</em><a class="headerlink" href="#RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.HTTP.HTTP.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.HTTP.HTTP.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.create_client_cert_session">
+<code class="sig-name descname">create_client_cert_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'DELETE', 'GET', 'HEAD', 'TRACE', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_client_cert_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Session: create a HTTP session to a server</p>
+<p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
+<p><code class="docutils literal notranslate"><span class="pre">headers</span></code> Dictionary of default headers</p>
+<p><code class="docutils literal notranslate"><span class="pre">cookies</span></code> Dictionary of cookies</p>
+<p><code class="docutils literal notranslate"><span class="pre">client_certs</span></code> [‘client certificate’, ‘client key’] PEM files containing the client key and certificate</p>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> Connection timeout</p>
+<p><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">verify</span></code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</dt><dd><p>Defaults to False.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">debug</span></code> Enable http verbosity option more information</dt><dd><p><a class="reference external" href="https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">max_retries</span></code> Number of maximum retries each connection should attempt.</dt><dd><p>By default it will retry 3 times in case of connection errors only.
+A 0 value will disable any kind of retries regardless of other retry settings.
+In case the number of retries is reached a retry exception is raised.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">disable_warnings</span></code> Disable requests warning useful when you have large number of testcases</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">backoff_factor</span></code> Introduces a delay time between retries that is longer after each retry.</dt><dd><p>eg. if backoff_factor is set to 0.1
+the sleep between attemps will be: 0.0, 0.2, 0.4
+More info here: <a class="reference external" href="https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">retry_method_list</span></code> List of uppercased HTTP method verbs where retries are allowed.</dt><dd><p>By default retries are allowed only on HTTP requests methods that are considered to be
+idempotent (multiple requests with the same parameters end with the same state).
+eg. set to [‘POST’, ‘GET’] to retry only those kind of requests.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">retry_status_list</span></code> List of integer HTTP status codes that, if returned, a retry is attempted.</dt><dd><p>eg. set to [502, 503] to retry requests if those status are returned.
+Note that max_retries must be greater than 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.create_custom_session">
+<code class="sig-name descname">create_custom_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'DELETE', 'GET', 'HEAD', 'TRACE', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_custom_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Session: create a HTTP session to a server</p>
+<p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
+<p><code class="docutils literal notranslate"><span class="pre">headers</span></code> Dictionary of default headers</p>
+<p><code class="docutils literal notranslate"><span class="pre">cookies</span></code> Dictionary of cookies</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">auth</span></code> A Custom Authentication object to be passed on to the requests library.</dt><dd><p><a class="reference external" href="http://docs.python-requests.org/en/master/user/advanced/#custom-authentication">http://docs.python-requests.org/en/master/user/advanced/#custom-authentication</a></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> Connection timeout</p>
+<p><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">verify</span></code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</dt><dd><p>Defaults to False.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">debug</span></code> Enable http verbosity option more information</dt><dd><p><a class="reference external" href="https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">max_retries</span></code> Number of maximum retries each connection should attempt.</dt><dd><p>By default it will retry 3 times in case of connection errors only.
+A 0 value will disable any kind of retries regardless of other retry settings.
+In case the number of retries is reached a retry exception is raised.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">disable_warnings</span></code> Disable requests warning useful when you have large number of testcases</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">backoff_factor</span></code> Introduces a delay time between retries that is longer after each retry.</dt><dd><p>eg. if backoff_factor is set to 0.1
+the sleep between attemps will be: 0.0, 0.2, 0.4
+More info here: <a class="reference external" href="https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">retry_method_list</span></code> List of uppercased HTTP method verbs where retries are allowed.</dt><dd><p>By default retries are allowed only on HTTP requests methods that are considered to be
+idempotent (multiple requests with the same parameters end with the same state).
+eg. set to [‘POST’, ‘GET’] to retry only those kind of requests.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">retry_status_list</span></code> List of integer HTTP status codes that, if returned, a retry is attempted.</dt><dd><p>eg. set to [502, 503] to retry requests if those status are returned.
+Note that max_retries must be greater than 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.create_digest_session">
+<code class="sig-name descname">create_digest_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'DELETE', 'GET', 'HEAD', 'TRACE', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_digest_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Session: create a HTTP session to a server</p>
+<p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
+<p><code class="docutils literal notranslate"><span class="pre">headers</span></code> Dictionary of default headers</p>
+<p><code class="docutils literal notranslate"><span class="pre">cookies</span></code> Dictionary of cookies</p>
+<p><code class="docutils literal notranslate"><span class="pre">auth</span></code> [‘DOMAIN’, ‘username’, ‘password’] for NTLM Authentication</p>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> Connection timeout</p>
+<p><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">verify</span></code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</dt><dd><p>Defaults to False.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">debug</span></code> Enable http verbosity option more information</dt><dd><p><a class="reference external" href="https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">max_retries</span></code> Number of maximum retries each connection should attempt.</dt><dd><p>By default it will retry 3 times in case of connection errors only.
+A 0 value will disable any kind of retries regardless of other retry settings.
+In case the number of retries is reached a retry exception is raised.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">disable_warnings</span></code> Disable requests warning useful when you have large number of testcases</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">backoff_factor</span></code> Introduces a delay time between retries that is longer after each retry.</dt><dd><p>eg. if backoff_factor is set to 0.1
+the sleep between attemps will be: 0.0, 0.2, 0.4
+More info here: <a class="reference external" href="https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">retry_method_list</span></code> List of uppercased HTTP method verbs where retries are allowed.</dt><dd><p>By default retries are allowed only on HTTP requests methods that are considered to be
+idempotent (multiple requests with the same parameters end with the same state).
+eg. set to [‘POST’, ‘GET’] to retry only those kind of requests.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">retry_status_list</span></code> List of integer HTTP status codes that, if returned, a retry is attempted.</dt><dd><p>eg. set to [502, 503] to retry requests if those status are returned.
+Note that max_retries must be greater than 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.create_ntlm_session">
+<code class="sig-name descname">create_ntlm_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'DELETE', 'GET', 'HEAD', 'TRACE', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_ntlm_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Session: create a HTTP session to a server</p>
+<p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
+<p><code class="docutils literal notranslate"><span class="pre">headers</span></code> Dictionary of default headers</p>
+<p><code class="docutils literal notranslate"><span class="pre">cookies</span></code> Dictionary of cookies</p>
+<p><code class="docutils literal notranslate"><span class="pre">auth</span></code> [‘DOMAIN’, ‘username’, ‘password’] for NTLM Authentication</p>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> Connection timeout</p>
+<p><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">verify</span></code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</dt><dd><p>Defaults to False.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">debug</span></code> Enable http verbosity option more information</dt><dd><p><a class="reference external" href="https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">max_retries</span></code> Number of maximum retries each connection should attempt.</dt><dd><p>By default it will retry 3 times in case of connection errors only.
+A 0 value will disable any kind of retries regardless of other retry settings.
+In case the number of retries is reached a retry exception is raised.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">disable_warnings</span></code> Disable requests warning useful when you have large number of testcases</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">backoff_factor</span></code> Introduces a delay time between retries that is longer after each retry.</dt><dd><p>eg. if backoff_factor is set to 0.1
+the sleep between attemps will be: 0.0, 0.2, 0.4
+More info here: <a class="reference external" href="https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">retry_method_list</span></code> List of uppercased HTTP method verbs where retries are allowed.</dt><dd><p>By default retries are allowed only on HTTP requests methods that are considered to be
+idempotent (multiple requests with the same parameters end with the same state).
+eg. set to [‘POST’, ‘GET’] to retry only those kind of requests.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">retry_status_list</span></code> List of integer HTTP status codes that, if returned, a retry is attempted.</dt><dd><p>eg. set to [502, 503] to retry requests if those status are returned.
+Note that max_retries must be greater than 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.create_session">
+<code class="sig-name descname">create_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'DELETE', 'GET', 'HEAD', 'TRACE', 'OPTIONS']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Session: create a HTTP session to a server</p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
+<p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
+<p><code class="docutils literal notranslate"><span class="pre">headers</span></code> Dictionary of default headers</p>
+<p><code class="docutils literal notranslate"><span class="pre">cookies</span></code> Dictionary of cookies</p>
+<p><code class="docutils literal notranslate"><span class="pre">auth</span></code> List of username &amp; password for HTTP Basic Auth</p>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> Connection timeout</p>
+<p><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>
+<p><code class="docutils literal notranslate"><span class="pre">verify</span></code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">debug</span></code> Enable http verbosity option more information</dt><dd><p><a class="reference external" href="https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">max_retries</span></code> Number of maximum retries each connection should attempt.</dt><dd><p>By default it will retry 3 times in case of connection errors only.
+A 0 value will disable any kind of retries regardless of other retry settings.
+In case the number of retries is reached a retry exception is raised.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">disable_warnings</span></code> Disable requests warning useful when you have large number of testcases</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">backoff_factor</span></code> Introduces a delay time between retries that is longer after each retry.</dt><dd><p>eg. if backoff_factor is set to 0.1
+the sleep between attemps will be: 0.0, 0.2, 0.4
+More info here: <a class="reference external" href="https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">retry_method_list</span></code> List of uppercased HTTP method verbs where retries are allowed.</dt><dd><p>By default retries are allowed only on HTTP requests methods that are considered to be
+idempotent (multiple requests with the same parameters end with the same state).
+eg. set to [‘POST’, ‘GET’] to retry only those kind of requests.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">retry_status_list</span></code> List of integer HTTP status codes that, if returned, a retry is attempted.</dt><dd><p>eg. set to [502, 503] to retry requests if those status are returned.
+Note that max_retries must be greater than 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.delete_all_sessions">
+<code class="sig-name descname">delete_all_sessions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.delete_all_sessions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all the session objects</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.delete_request">
+<code class="sig-name descname">delete_request</code><span class="sig-paren">(</span><em class="sig-param">alias</em>, <em class="sig-param">uri</em>, <em class="sig-param">data=None</em>, <em class="sig-param">json=None</em>, <em class="sig-param">params=None</em>, <em class="sig-param">headers=None</em>, <em class="sig-param">allow_redirects=None</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.delete_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a DELETE request on the session object found using the
+given <cite>alias</cite></p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> that will be used to identify the Session object in the cache</p>
+<p><code class="docutils literal notranslate"><span class="pre">uri</span></code> to send the DELETE request to</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">json</span></code> a value that will be json encoded</dt><dd><p>and sent as request data if data is not specified</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">headers</span></code> a dictionary of headers to use with the request</p>
+<p><code class="docutils literal notranslate"><span class="pre">allow_redirects</span></code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> connection timeout</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.download">
 <code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">target_file: str = None</em>, <em class="sig-param">binary: bool = True</em>, <em class="sig-param">verify: bool = True</em>, <em class="sig-param">force_new_session: bool = False</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.HTTP.HTTP.download" title="Permalink to this definition">¶</a></dt>
@@ -231,6 +450,38 @@ the filename will be <cite>downloaded.html</cite>.</p>
 <dd class="field-odd"><p>name of session alias</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.get_request">
+<code class="sig-name descname">get_request</code><span class="sig-paren">(</span><em class="sig-param">alias</em>, <em class="sig-param">uri</em>, <em class="sig-param">headers=None</em>, <em class="sig-param">data=None</em>, <em class="sig-param">json=None</em>, <em class="sig-param">params=None</em>, <em class="sig-param">allow_redirects=None</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.get_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a GET request on the session object found using the
+given <cite>alias</cite></p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> that will be used to identify the Session object in the cache</p>
+<p><code class="docutils literal notranslate"><span class="pre">uri</span></code> to send the GET request to</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> url parameters to append to the uri</p>
+<p><code class="docutils literal notranslate"><span class="pre">headers</span></code> a dictionary of headers to use with the request</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">data</span></code> a dictionary of key-value pairs that will be urlencoded</dt><dd><p>and sent as GET data
+or binary data that is sent as the raw body content</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">json</span></code> a value that will be json encoded</dt><dd><p>and sent as GET data if data is not specified</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">allow_redirects</span></code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> connection timeout</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.head_request">
+<code class="sig-name descname">head_request</code><span class="sig-paren">(</span><em class="sig-param">alias</em>, <em class="sig-param">uri</em>, <em class="sig-param">headers=None</em>, <em class="sig-param">allow_redirects=None</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.head_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a HEAD request on the session object found using the
+given <cite>alias</cite></p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> that will be used to identify the Session object in the cache</p>
+<p><code class="docutils literal notranslate"><span class="pre">uri</span></code> to send the HEAD request to</p>
+<p><code class="docutils literal notranslate"><span class="pre">allow_redirects</span></code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>
+<p><code class="docutils literal notranslate"><span class="pre">headers</span></code> a dictionary of headers to use with the request</p>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> connection timeout</p>
 </dd></dl>
 
 <dl class="method">
@@ -256,6 +507,126 @@ overwrite the target file</p></li>
 <dd class="field-even"><p>request response</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.options_request">
+<code class="sig-name descname">options_request</code><span class="sig-paren">(</span><em class="sig-param">alias</em>, <em class="sig-param">uri</em>, <em class="sig-param">headers=None</em>, <em class="sig-param">allow_redirects=None</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.options_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send an OPTIONS request on the session object found using the
+given <cite>alias</cite></p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> that will be used to identify the Session object in the cache</p>
+<p><code class="docutils literal notranslate"><span class="pre">uri</span></code> to send the OPTIONS request to</p>
+<p><code class="docutils literal notranslate"><span class="pre">allow_redirects</span></code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>
+<p><code class="docutils literal notranslate"><span class="pre">headers</span></code> a dictionary of headers to use with the request</p>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> connection timeout</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.patch_request">
+<code class="sig-name descname">patch_request</code><span class="sig-paren">(</span><em class="sig-param">alias</em>, <em class="sig-param">uri</em>, <em class="sig-param">data=None</em>, <em class="sig-param">json=None</em>, <em class="sig-param">params=None</em>, <em class="sig-param">headers=None</em>, <em class="sig-param">files=None</em>, <em class="sig-param">allow_redirects=None</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.patch_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a PATCH request on the session object found using the
+given <cite>alias</cite></p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> that will be used to identify the Session object in the cache</p>
+<p><code class="docutils literal notranslate"><span class="pre">uri</span></code> to send the PATCH request to</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">data</span></code> a dictionary of key-value pairs that will be urlencoded</dt><dd><p>and sent as PATCH data
+or binary data that is sent as the raw body content</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">json</span></code> a value that will be json encoded</dt><dd><p>and sent as PATCH data if data is not specified</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">headers</span></code> a dictionary of headers to use with the request</p>
+<p><code class="docutils literal notranslate"><span class="pre">files</span></code> a dictionary of file names containing file data to PATCH to the server</p>
+<p><code class="docutils literal notranslate"><span class="pre">allow_redirects</span></code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> url parameters to append to the uri</p>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> connection timeout</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.post_request">
+<code class="sig-name descname">post_request</code><span class="sig-paren">(</span><em class="sig-param">alias</em>, <em class="sig-param">uri</em>, <em class="sig-param">data=None</em>, <em class="sig-param">json=None</em>, <em class="sig-param">params=None</em>, <em class="sig-param">headers=None</em>, <em class="sig-param">files=None</em>, <em class="sig-param">allow_redirects=None</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.post_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a POST request on the session object found using the
+given <cite>alias</cite></p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> that will be used to identify the Session object in the cache</p>
+<p><code class="docutils literal notranslate"><span class="pre">uri</span></code> to send the POST request to</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">data</span></code> a dictionary of key-value pairs that will be urlencoded</dt><dd><p>and sent as POST data
+or binary data that is sent as the raw body content
+or passed as such for multipart form data if <code class="docutils literal notranslate"><span class="pre">files</span></code> is also</p>
+<blockquote>
+<div><p>defined</p>
+</div></blockquote>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">json</span></code> a value that will be json encoded</dt><dd><p>and sent as POST data if files or data is not specified</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> url parameters to append to the uri</p>
+<p><code class="docutils literal notranslate"><span class="pre">headers</span></code> a dictionary of headers to use with the request</p>
+<p><code class="docutils literal notranslate"><span class="pre">files</span></code> a dictionary of file names containing file data to POST to the server</p>
+<p><code class="docutils literal notranslate"><span class="pre">allow_redirects</span></code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> connection timeout</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.put_request">
+<code class="sig-name descname">put_request</code><span class="sig-paren">(</span><em class="sig-param">alias</em>, <em class="sig-param">uri</em>, <em class="sig-param">data=None</em>, <em class="sig-param">json=None</em>, <em class="sig-param">params=None</em>, <em class="sig-param">files=None</em>, <em class="sig-param">headers=None</em>, <em class="sig-param">allow_redirects=None</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.put_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a PUT request on the session object found using the
+given <cite>alias</cite></p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> that will be used to identify the Session object in the cache</p>
+<p><code class="docutils literal notranslate"><span class="pre">uri</span></code> to send the PUT request to</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">data</span></code> a dictionary of key-value pairs that will be urlencoded</dt><dd><p>and sent as PUT data
+or binary data that is sent as the raw body content</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">json</span></code> a value that will be json encoded</dt><dd><p>and sent as PUT data if data is not specified</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">headers</span></code> a dictionary of headers to use with the request</p>
+<p><code class="docutils literal notranslate"><span class="pre">allow_redirects</span></code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> url parameters to append to the uri</p>
+<p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> connection timeout</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.request_should_be_successful">
+<code class="sig-name descname">request_should_be_successful</code><span class="sig-paren">(</span><em class="sig-param">response</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.request_should_be_successful" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fails if response status code is a client or server error (4xx, 5xx).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">response</span></code> is the output of other requests keywords like <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Request</span></code>.</p>
+<p>In case of failure an HTTPError will be automatically raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.session_exists">
+<code class="sig-name descname">session_exists</code><span class="sig-paren">(</span><em class="sig-param">alias</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the session has been already created</p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> that has been used to identify the Session object in the cache</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.status_should_be">
+<code class="sig-name descname">status_should_be</code><span class="sig-paren">(</span><em class="sig-param">expected_status</em>, <em class="sig-param">response</em>, <em class="sig-param">msg=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.status_should_be" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fails if response status code is different than the expected.</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected_status</span></code> could be the code number as an integer or as string.
+But it could also be a named status code like ‘ok’, ‘created’, ‘accepted’ or
+‘bad request’, ‘not found’ etc.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">response</span></code> is the output of other requests keywords like <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Request</span></code>.</p>
+<p>A custom message <code class="docutils literal notranslate"><span class="pre">msg</span></code> can be added to work like built in keywords.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.to_json">
+<code class="sig-name descname">to_json</code><span class="sig-paren">(</span><em class="sig-param">content</em>, <em class="sig-param">pretty_print=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a string to a JSON object</p>
+<p><code class="docutils literal notranslate"><span class="pre">content</span></code> String content to convert into JSON</p>
+<p><code class="docutils literal notranslate"><span class="pre">pretty_print</span></code> If defined, will output JSON is pretty print format</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.HTTP.HTTP.update_session">
+<code class="sig-name descname">update_session</code><span class="sig-paren">(</span><em class="sig-param">alias</em>, <em class="sig-param">headers=None</em>, <em class="sig-param">cookies=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.update_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update Session Headers: update a HTTP Session Headers</p>
+<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
+<p><code class="docutils literal notranslate"><span class="pre">headers</span></code> Dictionary of headers merge into session</p>
 </dd></dl>
 
 </dd></dl>

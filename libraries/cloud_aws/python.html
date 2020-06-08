@@ -220,6 +220,388 @@
 <li><p>Textract</p></li>
 </ul>
 </div></blockquote>
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.analyze_document">
+<code class="sig-name descname">analyze_document</code><span class="sig-paren">(</span><em class="sig-param">image_file: str = None</em>, <em class="sig-param">json_file: str = None</em>, <em class="sig-param">bucket_name: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.AWS.analyze_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Analyzes an input document for relationships between detected items</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – filepath (or object name) of image file</p></li>
+<li><p><strong>json_file</strong> – filepath to resulting json file</p></li>
+<li><p><strong>bucket_name</strong> – if given then using <cite>image_file</cite> from the bucket</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis response in json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWS.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.create_bucket">
+<code class="sig-name descname">create_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.AWS.create_bucket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create S3 bucket with name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean indicating status of operation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.create_queue">
+<code class="sig-name descname">create_queue</code><span class="sig-paren">(</span><em class="sig-param">queue_name: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.create_queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create queue with name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>queue_name</strong> – [description], defaults to None</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>create queue response as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.delete_bucket">
+<code class="sig-name descname">delete_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.AWS.delete_bucket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete S3 bucket with name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean indicating status of operation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.delete_files">
+<code class="sig-name descname">delete_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str = None</em>, <em class="sig-param">files: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.delete_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete files in the bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>files</strong> – list of files to delete</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>number of files deleted or <cite>False</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.delete_message">
+<code class="sig-name descname">delete_message</code><span class="sig-paren">(</span><em class="sig-param">receipt_handle: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.delete_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete message in the queue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>receipt_handle</strong> – message handle to delete</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>delete message response as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.delete_queue">
+<code class="sig-name descname">delete_queue</code><span class="sig-paren">(</span><em class="sig-param">queue_name: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.delete_queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete queue with name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>queue_name</strong> – [description], defaults to None</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>delete queue response as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.detect_document_text">
+<code class="sig-name descname">detect_document_text</code><span class="sig-paren">(</span><em class="sig-param">image_file: str = None</em>, <em class="sig-param">json_file: str = None</em>, <em class="sig-param">bucket_name: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.AWS.detect_document_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects text in the input document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_file</strong> – filepath (or object name) of image file</p></li>
+<li><p><strong>json_file</strong> – filepath to resulting json file</p></li>
+<li><p><strong>bucket_name</strong> – if given then using <cite>image_file</cite> from the bucket</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>analysis response in json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.detect_entities">
+<code class="sig-name descname">detect_entities</code><span class="sig-paren">(</span><em class="sig-param">text: str = None</em>, <em class="sig-param">lang='en'</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.detect_entities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inspects text for named entities, and returns information about them</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – A UTF-8 text string. Each string must contain fewer
+that 5,000 bytes of UTF-8 encoded characters</p></li>
+<li><p><strong>lang</strong> – language code of the text, defaults to “en”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.detect_sentiment">
+<code class="sig-name descname">detect_sentiment</code><span class="sig-paren">(</span><em class="sig-param">text: str = None</em>, <em class="sig-param">lang='en'</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.detect_sentiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inspects text and returns an inference of the prevailing sentiment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – A UTF-8 text string. Each string must contain fewer
+that 5,000 bytes of UTF-8 encoded characters</p></li>
+<li><p><strong>lang</strong> – language code of the text, defaults to “en”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.download_files">
+<code class="sig-name descname">download_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str = None</em>, <em class="sig-param">files: list = None</em>, <em class="sig-param">target_directory: str = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.AWS.download_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download files from bucket to local filesystem</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>files</strong> – list of S3 object names</p></li>
+<li><p><strong>target_directory</strong> – location for the downloaded files, default
+current directory</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>number of files downloaded</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.get_cells">
+<code class="sig-name descname">get_cells</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_cells" title="Permalink to this definition">¶</a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[description]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.get_tables">
+<code class="sig-name descname">get_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[description]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.get_words">
+<code class="sig-name descname">get_words</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_words" title="Permalink to this definition">¶</a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[description]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.init_comprehend_client">
+<code class="sig-name descname">init_comprehend_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_comprehend_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS Comprehend client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.init_s3_client">
+<code class="sig-name descname">init_s3_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_s3_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS S3 client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.init_sqs_client">
+<code class="sig-name descname">init_sqs_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em>, <em class="sig-param">queue_url: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_sqs_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS SQS client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.init_textract_client">
+<code class="sig-name descname">init_textract_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_textract_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AWS Textract client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>aws_key_id</strong> – access key ID</p></li>
+<li><p><strong>aws_key</strong> – secret access key</p></li>
+<li><p><strong>region</strong> – AWS region</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.list_buckets">
+<code class="sig-name descname">list_buckets</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_buckets" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all buckets for this account</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of buckets</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.list_files">
+<code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.AWS.list_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>List files in the bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of files</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWS.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.receive_message">
+<code class="sig-name descname">receive_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.receive_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive message from queue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>message as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWS.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.send_message">
+<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">message_attributes: dict = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.send_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send message to the queue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – body of the message</p></li>
+<li><p><strong>message_attributes</strong> – attributes of the message</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>send message response as dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWS.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.upload_file">
+<code class="sig-name descname">upload_file</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str = None</em>, <em class="sig-param">filename: str = None</em>, <em class="sig-param">object_name: str = None</em><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#RPA.Cloud.AWS.AWS.upload_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload single file into bucket</p>
+<p>If <cite>object_name</cite> is not given then basename of the file is
+used as <cite>object_name</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>filename</strong> – filepath for the file to be uploaded</p></li>
+<li><p><strong>object_name</strong> – name of the object in the bucket, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple of upload status and error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.upload_files">
+<code class="sig-name descname">upload_files</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str = None</em>, <em class="sig-param">files: list = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.AWS.AWS.upload_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload multiple files into bucket</p>
+<dl class="simple">
+<dt>Giving files as list of filepaths:</dt><dd><p>[‘/path/to/file1.txt’, ‘/path/to/file2.txt’]</p>
+</dd>
+<dt>Giving files as list of dictionaries (including filepath and object name):</dt><dd><p>[{‘filepath’:’/path/to/file1.txt’, ‘object_name’: ‘file1.txt’},
+{‘filepath’: ‘/path/to/file2.txt’, ‘object_name’: ‘file2.txt’}]</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – name for the bucket</p></li>
+<li><p><strong>files</strong> – list of files (2 possible ways, see above)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>number of files uploaded</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -254,6 +636,11 @@
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">ServiceComprehend</code><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.AWS.AWSBase" title="RPA.Cloud.AWS.AWSBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.AWSBase</span></code></a></p>
 <p>Class for AWS Comprehend service</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceComprehend.detect_entities">
 <code class="sig-name descname">detect_entities</code><span class="sig-paren">(</span><em class="sig-param">text: str = None</em>, <em class="sig-param">lang='en'</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.detect_entities" title="Permalink to this definition">¶</a></dt>
@@ -299,6 +686,21 @@ that 5,000 bytes of UTF-8 encoded characters</p></li>
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -306,6 +708,11 @@ that 5,000 bytes of UTF-8 encoded characters</p></li>
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">ServiceS3</code><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.AWS.AWSBase" title="RPA.Cloud.AWS.AWSBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.AWSBase</span></code></a></p>
 <p>Class for AWS S3 service</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceS3.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceS3.create_bucket">
 <code class="sig-name descname">create_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.create_bucket" title="Permalink to this definition">¶</a></dt>
@@ -410,6 +817,21 @@ current directory</p></li>
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceS3.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceS3.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceS3.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceS3.upload_file">
 <code class="sig-name descname">upload_file</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str = None</em>, <em class="sig-param">filename: str = None</em>, <em class="sig-param">object_name: str = None</em><span class="sig-paren">)</span> &#x2192; tuple<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.upload_file" title="Permalink to this definition">¶</a></dt>
@@ -461,6 +883,11 @@ used as <cite>object_name</cite>.</p>
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">ServiceSQS</code><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.AWS.AWSBase" title="RPA.Cloud.AWS.AWSBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.AWSBase</span></code></a></p>
 <p>Class for AWS SQS service</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSQS.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceSQS.create_queue">
 <code class="sig-name descname">create_queue</code><span class="sig-paren">(</span><em class="sig-param">queue_name: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.create_queue" title="Permalink to this definition">¶</a></dt>
@@ -518,6 +945,11 @@ used as <cite>object_name</cite>.</p>
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSQS.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceSQS.receive_message">
 <code class="sig-name descname">receive_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.receive_message" title="Permalink to this definition">¶</a></dt>
@@ -528,6 +960,11 @@ used as <cite>object_name</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSQS.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceSQS.send_message">
@@ -545,6 +982,11 @@ used as <cite>object_name</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSQS.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -570,6 +1012,11 @@ used as <cite>object_name</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceTextract.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceTextract.detect_document_text">
@@ -636,6 +1083,21 @@ used as <cite>object_name</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceTextract.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceTextract.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceTextract.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

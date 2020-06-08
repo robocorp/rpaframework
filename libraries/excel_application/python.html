@@ -238,6 +238,11 @@ it does not exist.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Excel.Application.Application.close_document">
+<code class="sig-name descname">close_document</code><span class="sig-paren">(</span><em class="sig-param">save_changes: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.close_document" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="RPA.Excel.Application.Application.find_first_available_row">
 <code class="sig-name descname">find_first_available_row</code><span class="sig-paren">(</span><em class="sig-param">worksheet: Any = None</em>, <em class="sig-param">row: int = 1</em>, <em class="sig-param">column: int = 1</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Excel.Application.Application.find_first_available_row" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find first available free row and cell</p>
@@ -256,6 +261,20 @@ it does not exist.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Excel.Application.Application.open_application">
+<code class="sig-name descname">open_application</code><span class="sig-paren">(</span><em class="sig-param">visible: bool = False</em>, <em class="sig-param">display_alerts: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.open_application" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open Microsoft application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>visible</strong> – show Word window if True, defaults to False</p></li>
+<li><p><strong>display_alerts</strong> – show alert popups if True, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Excel.Application.Application.open_workbook">
 <code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.open_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Excel by filename</p>
@@ -265,6 +284,11 @@ it does not exist.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Application.Application.quit_application">
+<code class="sig-name descname">quit_application</code><span class="sig-paren">(</span><em class="sig-param">save_changes: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.quit_application" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Application.Application.run_macro">

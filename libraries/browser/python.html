@@ -237,6 +237,16 @@
 <code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Browser.Browser.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.Browser.Browser.ROBOT_LIBRARY_VERSION">
+<code class="sig-name descname">ROBOT_LIBRARY_VERSION</code><em class="property"> = '4.4.0'</em><a class="headerlink" href="#RPA.Browser.Browser.ROBOT_LIBRARY_VERSION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.add_library_components">
+<code class="sig-name descname">add_library_components</code><span class="sig-paren">(</span><em class="sig-param">library_components</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.add_library_components" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Browser.Browser.create_rpa_webdriver">
 <code class="sig-name descname">create_rpa_webdriver</code><span class="sig-paren">(</span><em class="sig-param">browser: str</em>, <em class="sig-param">options: dict</em>, <em class="sig-param">download: bool = False</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.create_rpa_webdriver" title="Permalink to this definition">¶</a></dt>
@@ -288,6 +298,76 @@ overridden by giving the <code class="docutils literal notranslate"><span class=
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Browser.Browser.driver">
+<em class="property">property </em><code class="sig-name descname">driver</code><a class="headerlink" href="#RPA.Browser.Browser.driver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current active driver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>selenium.webdriver.remote.webdriver.WebDriver</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>SeleniumLibrary.errors.NoOpenBrowser</strong> – If browser is not open.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.failure_occurred">
+<code class="sig-name descname">failure_occurred</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.failure_occurred" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that is executed when a SeleniumLibrary keyword fails.</p>
+<p>By default, executes the registered run-on-failure keyword.
+Libraries extending SeleniumLibrary can overwrite this hook
+method if they want to provide custom functionality instead.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.find_element">
+<code class="sig-name descname">find_element</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.find_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find element matching <cite>locator</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> (<em>str</em><em> or </em><em>selenium.webdriver.remote.webelement.WebElement</em>) – Locator to use when searching the element.
+See library documentation for the supported locator syntax.</p></li>
+<li><p><strong>parent</strong> (<em>selenium.webdriver.remote.webelement.WebElement</em>) – Optional parent <cite>WebElememt</cite> to search child elements
+from. By default, search starts from the root using <cite>WebDriver</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Found <cite>WebElement</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>selenium.webdriver.remote.webelement.WebElement</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>SeleniumLibrary.errors.ElementNotFound</strong> – If element not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.find_elements">
+<code class="sig-name descname">find_elements</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.find_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all elements matching <cite>locator</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> (<em>str</em><em> or </em><em>selenium.webdriver.remote.webelement.WebElement</em>) – Locator to use when searching the element.
+See library documentation for the supported locator syntax.</p></li>
+<li><p><strong>parent</strong> (<em>selenium.webdriver.remote.webelement.WebElement</em>) – Optional parent <cite>WebElememt</cite> to search child elements
+from. By default, search starts from the root using <cite>WebDriver</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of found <cite>WebElement</cite> or e,mpty if elements are not found.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list[selenium.webdriver.remote.webelement.WebElement]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Browser.Browser.get_browser_order">
 <code class="sig-name descname">get_browser_order</code><span class="sig-paren">(</span><em class="sig-param">browser_selection: Any</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Browser.Browser.get_browser_order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of browsers that will be used for open browser
@@ -318,6 +398,36 @@ of the chromedriver.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.get_keyword_arguments">
+<code class="sig-name descname">get_keyword_arguments</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.get_keyword_arguments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.get_keyword_documentation">
+<code class="sig-name descname">get_keyword_documentation</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.get_keyword_documentation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.get_keyword_names">
+<code class="sig-name descname">get_keyword_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.get_keyword_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.get_keyword_source">
+<code class="sig-name descname">get_keyword_source</code><span class="sig-paren">(</span><em class="sig-param">keyword_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.get_keyword_source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.get_keyword_tags">
+<code class="sig-name descname">get_keyword_tags</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.get_keyword_tags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.get_keyword_types">
+<code class="sig-name descname">get_keyword_types</code><span class="sig-paren">(</span><em class="sig-param">keyword_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.get_keyword_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.get_preferable_browser_order">
@@ -422,6 +532,31 @@ given browser (<cite>browser_selection</cite>).</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Browser.Browser.register_driver">
+<code class="sig-name descname">register_driver</code><span class="sig-paren">(</span><em class="sig-param">driver</em>, <em class="sig-param">alias</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.register_driver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add’s a <cite>driver</cite> to the library WebDriverCache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>driver</strong> (<em>selenium.webdriver.remote.webdriver.WebDriver</em>) – Instance of the Selenium <cite>WebDriver</cite>.</p></li>
+<li><p><strong>alias</strong> (<em>str</em>) – Alias given for this <cite>WebDriver</cite> instance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The index of the <cite>WebDriver</cite> instance.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.run_keyword">
+<code class="sig-name descname">run_keyword</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">args</em>, <em class="sig-param">kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.run_keyword" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="RPA.Browser.Browser.screenshot">
 <code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">page: bool = True</em>, <em class="sig-param">locator: str = None</em>, <em class="sig-param">filename_prefix: str = 'screenshot'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.screenshot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Capture page and/or element screenshot.</p>
@@ -515,6 +650,18 @@ paths or with downloaded drivers.</p>
 <em class="property">exception </em><code class="sig-prename descclassname">RPA.Browser.</code><code class="sig-name descname">BrowserNotFoundError</code><a class="headerlink" href="#RPA.Browser.BrowserNotFoundError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Raised when browser can’t be initialized.</p>
+<dl class="attribute">
+<dt id="RPA.Browser.BrowserNotFoundError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Browser.BrowserNotFoundError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.BrowserNotFoundError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.BrowserNotFoundError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
