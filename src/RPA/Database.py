@@ -7,9 +7,7 @@ from RPA.Tables import Table
 class Database(DatabaseLibrary):
     """Library handling different database operations.
 
-    Extends `robotframework-databaselibrary`_.
-
-.. _robotframework-databaselibrary:
+    Extends functionality of DatabaseLibrary, for more information see
     https://github.com/franz-see/Robotframework-Database-Library
     """
 
@@ -20,7 +18,6 @@ class Database(DatabaseLibrary):
     def database_query_result_as_table(self, query_string: str) -> Table:
         """Make database query and return result as `RPA.Table`.
 
-        :param query_string: SQL query string
-        :return: query result as `RPA.Table`
+        ``query_string`` SQL query string
         """
         return Table(self.query(query_string, returnAsDict=True))
