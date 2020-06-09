@@ -107,7 +107,7 @@ class Browser(SeleniumLibrary):
 
         Raises ``BrowserNotFoundError`` if unable to open the browser.
 
-        For information about Safari webdriver setup, see 
+        For information about Safari webdriver setup, see
         https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari
         """
         index = -1
@@ -184,7 +184,7 @@ class Browser(SeleniumLibrary):
 
         ``download`` if the driver should be download, default ``False``
 
-        Returns an index of the webdriver session, ``False`` if webdriver 
+        Returns an index of the webdriver session, ``False`` if webdriver
         was not initialized.
         """
         executable = False
