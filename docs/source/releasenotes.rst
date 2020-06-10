@@ -4,10 +4,13 @@ Release notes
 Upcoming release
 ----------------
 
+1.2.0
+-----
+
 - Add support for Robocloud Vault for the following libraries:
 
-  - ``Cloud.AWS```
-  - ``Cloud.Azure```
+  - ``Cloud.AWS``
+  - ``Cloud.Azure``
   - ``Cloud.Google``
 
 - Images: Automatically convert points/regions from strings
