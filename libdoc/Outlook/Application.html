@@ -211,6 +211,7 @@
 <dd class="field-odd"><p></p></dd>
 </dl>
 <p>Library for manipulating Outlook application.</p>
+<p>For more information: <a class="reference external" href="https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2007/bb219950(v=office.12">https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2007/bb219950(v=office.12</a>) # noqa: E501</p>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
@@ -244,6 +245,21 @@
 </dd>
 </dl>
 <p>Send message with Outlook</p>
+</dd>
+<dt class="field-even">Wait For Message</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>criterion: str=None, timeout: float=5.0, interval: float=1.0</p>
+</dd>
+</dl>
+<p>Wait for email matching <cite>criterion</cite> to arrive into mailbox.</p>
+<p>Possible wait criterias are: SUBJECT, SENDER and BODY</p>
+<dl class="simple">
+<dt>Examples:</dt><dd><ul class="simple">
+<li><p>wait_for_message(‘SUBJECT:rpa task calling’, timeout=300, interval=10)</p></li>
+</ul>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>

@@ -11,6 +11,7 @@ Upcoming release
   - ``Cloud.Google``
 
 - Images: Automatically convert points/regions from strings
+- Outlook.Application: Add keyword ``Wait For Message``
 
 1.1.0
 -----

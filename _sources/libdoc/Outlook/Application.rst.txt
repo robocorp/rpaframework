@@ -10,6 +10,8 @@ Description
 
 Library for manipulating Outlook application.
 
+For more information: https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2007/bb219950(v=office.12) # noqa: E501
+
 ********
 Keywords
 ********
@@ -34,4 +36,15 @@ Keywords
   :Arguments: recipients: typing.Any, subject: str, body: str, html_body: bool=False, attachments: typing.Any=None
 
   Send message with Outlook
+
+
+:Wait For Message:
+  :Arguments: criterion: str=None, timeout: float=5.0, interval: float=1.0
+
+  Wait for email matching `criterion` to arrive into mailbox.
+
+  Possible wait criterias are: SUBJECT, SENDER and BODY
+
+  Examples:
+      - wait_for_message('SUBJECT:rpa task calling', timeout=300, interval=10)
 
