@@ -34,9 +34,7 @@ class OfficeApplication:
         :param visible: show Word window if True, defaults to False
         :param display_alerts: show alert popups if True, defaults to False
         """
-        self.app = win32com.client.gencache.EnsureDispatch(
-            f"{self.application_name}.Application"
-        )
+        self.app = win32com.client.DispatchEx(f"{self.application_name}.Application")
 
         self.logger.debug("%s.Application launched", self.application_name)
         self.logger.debug(self.app)
