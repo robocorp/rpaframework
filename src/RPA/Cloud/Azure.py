@@ -5,6 +5,7 @@ import time
 from typing import Any
 import requests
 
+from RPA.Robocloud.Secrets import RobocloudVault
 
 DEFAULT_REGION = "northeurope"
 
@@ -16,12 +17,13 @@ class AzureBase:
     is set to 9.5 minutes = 570.0 seconds
     """
 
-    __base_url = None
-    __region = None
+    __base_url: str = None
+    __region: str = None
     COGNITIVE_API = "api.cognitive.microsoft.com"
     TOKEN_LIFESPAN = 570.0
     region = None
-    services = {}
+    robocloud_vault_name: str = None
+    services: dict = {}
     token = None
     token_time = None
     logger = None
@@ -91,8 +93,34 @@ class AzureBase:
             with open(json_filepath, "w") as f:
                 json.dump(response_json, f)
 
-    def _set_subscription_key(self, service_name):
-        sub_key = os.getenv(f"AZURE_{service_name.upper()}_KEY")
+    def _set_subscription_key(self, service_name, use_robocloud_vault):
+        common_key = "AZURE_SUBSCRIPTION_KEY"
+        service_key = f"AZURE_{service_name.upper()}_KEY"
+        sub_key = None
+        if use_robocloud_vault:
+            vault = RobocloudVault()
+            vault_items = vault.get_secret(self.robocloud_vault_name)
+            vault_items = {k.upper(): v for (k, v) in vault_items.items()}
+            if service_key in vault_items and vault_items[service_key].strip() != "":
+                sub_key = vault_items[service_key]
+            elif common_key in vault_items and vault_items[common_key].strip() != "":
+                sub_key = vault_items[common_key]
+            if sub_key is None:
+                raise KeyError(
+                    "The 'robocloud_vault_name' is required to access "
+                    "Robocloud Vault. Set them in library "
+                    "init or with `set_robocloud_vault` keyword."
+                )
+        else:
+            sub_key = os.getenv(service_key)
+            if sub_key is None or sub_key.strip() == "":
+                sub_key = os.getenv(common_key)
+            if sub_key is None or sub_key.strip() == "":
+                raise KeyError(
+                    "Azure service key is required to use Azure Cloud "
+                    "service: %s" % service_name
+                )
+
         self.services[service_name] = sub_key
 
     def _get_token(self, service_name, region):
@@ -142,6 +170,14 @@ class AzureBase:
         if image_url is None and image_file is None:
             raise KeyError("Parameter 'image_url' or 'image_file' must be given.")
 
+    def set_robocloud_vault(self, vault_name):
+        """Set Robocloud Vault name
+
+        :param vault_name: Robocloud Vault name
+        """
+        if vault_name:
+            self.robocloud_vault_name = vault_name
+
 
 class ServiceTextAnalytics(AzureBase):
     """Class for Azure TextAnalytics service"""
@@ -152,14 +188,17 @@ class ServiceTextAnalytics(AzureBase):
         self.logger.debug("ServiceTextAnalytics init")
         self.__region = None
 
-    def init_text_analytics_service(self, region: str = None):
+    def init_text_analytics_service(
+        self, region: str = None, use_robocloud_vault: bool = False
+    ):
         """Initialize Azure Text Analyticts
 
         :param region: identifier for service region
+        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
-        self._set_subscription_key(self.__service_name)
+        self._set_subscription_key(self.__service_name, use_robocloud_vault)
 
     def sentiment_analyze(
         self, text: str, language: str = None, json_file: str = None
@@ -240,14 +279,17 @@ class ServiceFace(AzureBase):
     def __init__(self) -> None:
         self.logger.debug("ServiceFace init")
 
-    def init_face_service(self, region: str = None) -> None:
+    def init_face_service(
+        self, region: str = None, use_robocloud_vault: bool = False
+    ) -> None:
         """Initialize Azure Face
 
         :param region: identifier for service region
+        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
-        self._set_subscription_key(self.__service_name)
+        self._set_subscription_key(self.__service_name, use_robocloud_vault)
 
     def detect_face(
         self,
@@ -314,14 +356,17 @@ class ServiceComputerVision(AzureBase):
     def __init__(self) -> None:
         self.logger.debug("ServiceComputerVision init")
 
-    def init_computer_vision_service(self, region: str = None) -> None:
+    def init_computer_vision_service(
+        self, region: str = None, use_robocloud_vault: bool = False
+    ) -> None:
         """Initialize Azure Computer Vision
 
         :param region: identifier for service region
+        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
-        self._set_subscription_key(self.__service_name)
+        self._set_subscription_key(self.__service_name, use_robocloud_vault)
 
     def vision_analyze(
         self,
@@ -430,14 +475,17 @@ class ServiceSpeech(AzureBase):
     def __init__(self) -> None:
         self.logger.debug("ServiceSpeech init")
 
-    def init_speech_service(self, region: str = None) -> None:
+    def init_speech_service(
+        self, region: str = None, use_robocloud_vault: bool = False
+    ) -> None:
         """Initialize Azure Speech
 
         :param region: identifier for service region
+        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.tts.speech.microsoft.com"
-        self._set_subscription_key(self.__service_name)
+        self._set_subscription_key(self.__service_name, use_robocloud_vault)
 
     def text_to_speech(
         self,
@@ -551,7 +599,8 @@ class Azure(ServiceTextAnalytics, ServiceFace, ServiceComputerVision, ServiceSpe
     name.
     """
 
-    def __init__(self, region: str = DEFAULT_REGION):
+    def __init__(self, region: str = DEFAULT_REGION, robocloud_vault_name: str = None):
+        self.set_robocloud_vault(robocloud_vault_name)
         self.logger = logging.getLogger(__name__)
         ServiceTextAnalytics.__init__(self)
         ServiceFace.__init__(self)

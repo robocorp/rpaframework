@@ -1,5 +1,8 @@
 from functools import wraps
+import json
 import logging
+import os
+import tempfile
 from typing import Any
 
 try:
@@ -22,6 +25,8 @@ try:
 except ImportError:
     HAS_GOOGLECLOUD = False
 
+from RPA.Robocloud.Secrets import RobocloudVault
+
 
 def google_dependency_required(f):
     @wraps(f)
@@ -43,6 +48,8 @@ class GoogleBase:
     services: list = []
     clients: dict = {}
     region: str = None
+    robocloud_vault_name: str = None
+    robocloud_vault_secret_key: str = None
 
     def _get_client_for_service(self, service_name: str = None):
         """Return client instance for servive if it has been initialized.
@@ -65,6 +72,50 @@ class GoogleBase:
             with open(json_file, "w") as f:
                 f.write(MessageToJson(response))
 
+    @google_dependency_required
+    def _init_with_robocloud(self, client_object, service_name):
+        temp_filedesc = None
+        if self.robocloud_vault_name is None or self.robocloud_vault_secret_key is None:
+            raise KeyError(
+                "Both 'robocloud_vault_name' and 'robocloud_vault_secret_key' "
+                "are required to access Robocloud Vault. Set them in library "
+                "init or with `set_robocloud_vault` keyword."
+            )
+        vault = RobocloudVault()
+        try:
+            vault_items = vault.get_secret(self.robocloud_vault_name)
+            secret = json.loads(vault_items[self.robocloud_vault_secret_key].strip())
+            with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_filedesc:
+                json.dump(secret, temp_filedesc, ensure_ascii=False)
+            client = client_object.from_service_account_json(temp_filedesc.name)
+            self._set_service(service_name, client)
+        finally:
+            if temp_filedesc:
+                os.remove(temp_filedesc.name)
+
+    def _init_service(
+        self, client_object, service_name, service_credentials_file, use_robocloud_vault
+    ):
+        if use_robocloud_vault:
+            self._init_with_robocloud(client_object, service_name)
+        elif service_credentials_file:
+            client = client_object.from_service_account_json(service_credentials_file)
+            self._set_service(service_name, client)
+        else:
+            client = client_object()
+            self._set_service(service_name, client)
+
+    def set_robocloud_vault(self, vault_name, vault_secret_key):
+        """Set Robocloud Vault name and secret key name
+
+        :param vault_name: Robocloud Vault name
+        :param vault_secret_key: Rococloud Vault secret key name
+        """
+        if vault_name:
+            self.robocloud_vault_name = vault_name
+        if vault_secret_key:
+            self.robocloud_vault_secret_key = vault_secret_key
+
 
 class ServiceVision(GoogleBase):
     """Class for Google Cloud Vision API
@@ -81,13 +132,20 @@ class ServiceVision(GoogleBase):
         self.logger.debug("ServiceVision init")
 
     @google_dependency_required
-    def init_vision_client(self, service_credentials_file: str = None) -> None:
-        """Initialize Google Vision client
+    def init_vision_client(
+        self, service_credentials_file: str = None, use_robocloud_vault: bool = False,
+    ) -> None:
+        """Initialize Google Cloud Vision client
+
+        :param service_credentials_file: filepath to credentials JSON
+        :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
-        client = vision.ImageAnnotatorClient.from_service_account_json(
-            service_credentials_file
+        self._init_service(
+            vision.ImageAnnotatorClient,
+            self.__service_name,
+            service_credentials_file,
+            use_robocloud_vault,
         )
-        self._set_service(self.__service_name, client)
 
     @google_dependency_required
     def _get_google_image(self, image_file):
@@ -184,14 +242,19 @@ class ServiceNaturalLanguage(GoogleBase):
 
     @google_dependency_required
     def init_natural_language_client(
-        self, service_credentials_file: str = None
+        self, service_credentials_file: str = None, use_robocloud_vault: bool = False
     ) -> None:
-        """Initialize Google Natural Language client
+        """Initialize Google Cloud Natural Language client
+
+        :param service_credentials_file: filepath to credentials JSON
+        :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
-        client = language_v1.LanguageServiceClient.from_service_account_json(
-            service_credentials_file
+        self._init_service(
+            language_v1.LanguageServiceClient,
+            self.__service_name,
+            service_credentials_file,
+            use_robocloud_vault,
         )
-        self._set_service(self.__service_name, client)
 
     @google_dependency_required
     def analyze_sentiment(
@@ -268,14 +331,19 @@ class ServiceVideoIntelligence(GoogleBase):
 
     @google_dependency_required
     def init_video_intelligence_client(
-        self, service_credentials_file: str = None
+        self, service_credentials_file: str = None, use_robocloud_vault: bool = False,
     ) -> None:
-        """Initialize Google Video Intelligence client
+        """Initialize Google Cloud Video Intelligence client
+
+        :param service_credentials_file: filepath to credentials JSON
+        :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
-        client = videointelligence.VideoIntelligenceServiceClient.from_service_account_json(  # noqa: E501 # pylint: disable=C0301
-            service_credentials_file
+        self._init_service(
+            videointelligence.VideoIntelligenceServiceClient,
+            self.__service_name,
+            service_credentials_file,
+            use_robocloud_vault,
         )
-        self._set_service(self.__service_name, client)
 
     @google_dependency_required
     def annotate_video(
@@ -340,14 +408,23 @@ class ServiceTranslation(GoogleBase):
 
     @google_dependency_required
     def init_translation_client(
-        self, service_credentials_file: str, project_identifier: str
+        self,
+        service_credentials_file: str = None,
+        project_identifier: str = None,
+        use_robocloud_vault: bool = False,
     ) -> None:
-        """Initialize Google Translation client
+        """Initialize Google Cloud Translation client
+
+        :param service_credentials_file: filepath to credentials JSON
+        :param project_identifier: identifier for Translation project
+        :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
-        client = translate_v3.TranslationServiceClient.from_service_account_json(  # noqa: E501 # pylint: disable=C0301
-            service_credentials_file
+        self._init_service(
+            translate_v3.TranslationServiceClient,
+            self.__service_name,
+            service_credentials_file,
+            use_robocloud_vault,
         )
-        self._set_service(self.__service_name, client)
         self.__project_id = project_identifier
 
     @google_dependency_required
@@ -391,13 +468,20 @@ class ServiceTextToSpeech(GoogleBase):
         self.logger.debug("ServiceTextToSpeech init")
 
     @google_dependency_required
-    def init_text_to_speech_client(self, service_credentials_file: str) -> None:
-        """Initialize Google Text To Speech client
+    def init_text_to_speech_client(
+        self, service_credentials_file: str = None, use_robocloud_vault: bool = False
+    ) -> None:
+        """Initialize Google Cloud Text to Speech client
+
+        :param service_credentials_file: filepath to credentials JSON
+        :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
-        client = texttospeech_v1.TextToSpeechClient.from_service_account_json(  # noqa: E501 # pylint: disable=C0301
-            service_credentials_file
+        self._init_service(
+            texttospeech_v1.TextToSpeechClient,
+            self.__service_name,
+            service_credentials_file,
+            use_robocloud_vault,
         )
-        self._set_service(self.__service_name, client)
 
     @google_dependency_required
     def list_supported_voices(self, language_code: str = None):
@@ -487,13 +571,20 @@ class ServiceSpeechToText(GoogleBase):
         self.logger.debug("ServiceSpeechToText init")
 
     @google_dependency_required
-    def init_speech_to_text_client(self, service_credentials_file: str) -> None:
-        """Initialize Google Speech To Text client
+    def init_speech_to_text_client(
+        self, service_credentials_file: str = None, use_robocloud_vault: bool = False,
+    ) -> None:
+        """Initialize Google Cloud Speech to Text client
+
+        :param service_credentials_file: filepath to credentials JSON
+        :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
-        client = speech.SpeechClient.from_service_account_json(  # noqa: E501 # pylint: disable=C0301
-            service_credentials_file
+        self._init_service(
+            speech.SpeechClient,
+            self.__service_name,
+            service_credentials_file,
+            use_robocloud_vault,
         )
-        self._set_service(self.__service_name, client)
 
     @google_dependency_required
     def recognize(
@@ -546,11 +637,20 @@ class ServiceStorage(GoogleBase):
         self.logger.debug("ServiceStorage init")
 
     @google_dependency_required
-    def init_storage_client(self, service_credentials_file: str = None) -> None:
+    def init_storage_client(
+        self, service_credentials_file: str = None, use_robocloud_vault: bool = False,
+    ) -> None:
         """Initialize Google Cloud Storage client
+
+        :param service_credentials_file: filepath to credentials JSON
+        :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
-        client = storage.Client.from_service_account_json(service_credentials_file)
-        self._set_service(self.__service_name, client)
+        self._init_service(
+            storage.Client,
+            self.__service_name,
+            service_credentials_file,
+            use_robocloud_vault,
+        )
 
     @google_dependency_required
     def create_bucket(self, bucket_name: str):
@@ -750,7 +850,10 @@ class Google(  # pylint: disable=R0901
     which take as parameter an ``service_account`` JSON file.
     """
 
-    def __init__(self):
+    def __init__(
+        self, robocloud_vault_name: str = None, robocloud_vault_secret_key: str = None
+    ):
+        self.set_robocloud_vault(robocloud_vault_name, robocloud_vault_secret_key)
         self.logger = logging.getLogger(__name__)
         ServiceVision.__init__(self)
         ServiceNaturalLanguage.__init__(self)
