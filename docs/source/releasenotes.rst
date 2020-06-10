@@ -4,6 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+- Add support for Robocloud Vault for the following libraries:
+
+  - ``Cloud.AWS```
+  - ``Cloud.Azure```
+  - ``Cloud.Google``
+
 1.1.0
 -----
 
