@@ -17,6 +17,7 @@ from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.RobotLogListener import RobotLogListener
 from RPA.core.utils import required_param, required_env
 from RPA.Tables import Tables
+from RPA.Robocloud.Secrets import RobocloudVault
 
 try:
     BuiltIn().import_library("RPA.RobotLogListener")
@@ -46,6 +47,7 @@ class AWSBase:
     services: list = []
     clients: dict = {}
     region: str = None
+    robocloud_vault_name: str = None
 
     def _get_client_for_service(self, service_name: str = None):
         """Return client instance for servive if it has been initialized.
@@ -69,13 +71,31 @@ class AWSBase:
         aws_key_id: str = None,
         aws_key: str = None,
         region: str = None,
+        use_robocloud_vault: bool = False,
     ):
         if region is None:
             region = self.region
-        if aws_key_id is None:
-            aws_key_id = required_env("AWS_KEY_ID")
-        if aws_key is None:
-            aws_key = required_env("AWS_KEY")
+        if use_robocloud_vault:
+            vault = RobocloudVault()
+            vault_items = vault.get_secret(self.robocloud_vault_name)
+            vault_items = {k.upper(): v for (k, v) in vault_items.items()}
+            aws_key_id = vault_items["AWS_KEY_ID"]
+            aws_key = vault_items["AWS_KEY"]
+        else:
+            if aws_key_id is None or aws_key_id.strip() == "":
+                aws_key_id = required_env("AWS_KEY_ID")
+            if aws_key is None or aws_key.strip() == "":
+                aws_key = required_env("AWS_KEY")
+        if (
+            aws_key_id is None
+            or aws_key_id.strip() == ""
+            or aws_key is None
+            or aws_key.strip() == ""
+        ):
+            raise KeyError(
+                "AWS key ID and secret access key are required "
+                " to use AWS cloud service: %s" % service_name
+            )
         client = boto3.client(
             service_name,
             region_name=region,
@@ -83,6 +103,14 @@ class AWSBase:
             aws_secret_access_key=aws_key,
         )
         self._set_service(service_name, client)
+
+    def set_robocloud_vault(self, vault_name):
+        """Set Robocloud Vault name
+
+        :param vault_name: Robocloud Vault name
+        """
+        if vault_name:
+            self.robocloud_vault_name = vault_name
 
 
 class ServiceS3(AWSBase):
@@ -93,15 +121,20 @@ class ServiceS3(AWSBase):
         self.logger.debug("ServiceS3 init")
 
     def init_s3_client(
-        self, aws_key_id: str = None, aws_key: str = None, region: str = None
+        self,
+        aws_key_id: str = None,
+        aws_key: str = None,
+        region: str = None,
+        use_robocloud_vault: bool = False,
     ) -> None:
         """Initialize AWS S3 client
 
         :param aws_key_id: access key ID
         :param aws_key: secret access key
         :param region: AWS region
+        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
-        self._init_client("s3", aws_key_id, aws_key, region)
+        self._init_client("s3", aws_key_id, aws_key, region, use_robocloud_vault)
 
     @aws_dependency_required
     def create_bucket(self, bucket_name: str = None) -> bool:
@@ -305,15 +338,20 @@ class ServiceTextract(AWSBase):
         self.pages = 0
 
     def init_textract_client(
-        self, aws_key_id: str = None, aws_key: str = None, region: str = None
+        self,
+        aws_key_id: str = None,
+        aws_key: str = None,
+        region: str = None,
+        use_robocloud_vault: bool = False,
     ):
         """Initialize AWS Textract client
 
         :param aws_key_id: access key ID
         :param aws_key: secret access key
         :param region: AWS region
+        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
-        self._init_client("textract", aws_key_id, aws_key, region)
+        self._init_client("textract", aws_key_id, aws_key, region, use_robocloud_vault)
 
     @aws_dependency_required
     def analyze_document(
@@ -458,15 +496,22 @@ class ServiceComprehend(AWSBase):
         self.logger.debug("ServiceComprehend init")
 
     def init_comprehend_client(
-        self, aws_key_id: str = None, aws_key: str = None, region: str = None
+        self,
+        aws_key_id: str = None,
+        aws_key: str = None,
+        region: str = None,
+        use_robocloud_vault: bool = False,
     ):
         """Initialize AWS Comprehend client
 
         :param aws_key_id: access key ID
         :param aws_key: secret access key
         :param region: AWS region
+        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
-        self._init_client("comprehend", aws_key_id, aws_key, region)
+        self._init_client(
+            "comprehend", aws_key_id, aws_key, region, use_robocloud_vault
+        )
 
     @aws_dependency_required
     def detect_sentiment(self, text: str = None, lang="en") -> dict:
@@ -514,14 +559,17 @@ class ServiceSQS(AWSBase):
         aws_key: str = None,
         region: str = None,
         queue_url: str = None,
+        use_robocloud_vault: bool = False,
     ):
         """Initialize AWS SQS client
 
         :param aws_key_id: access key ID
         :param aws_key: secret access key
         :param region: AWS region
+        :param queue_url: SQS queue url
+        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
-        self._init_client("sqs", aws_key_id, aws_key, region)
+        self._init_client("sqs", aws_key_id, aws_key, region, use_robocloud_vault)
         self.queue_url = queue_url
 
     @aws_dependency_required
@@ -607,7 +655,8 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
 
     """
 
-    def __init__(self, region: str = DEFAULT_REGION):
+    def __init__(self, region: str = DEFAULT_REGION, robocloud_vault_name: str = None):
+        self.set_robocloud_vault(robocloud_vault_name)
         self.logger = logging.getLogger(__name__)
         ServiceS3.__init__(self)
         ServiceTextract.__init__(self)
