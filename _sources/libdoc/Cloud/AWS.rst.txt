@@ -100,25 +100,25 @@ Keywords
 
 
 :Init Comprehend Client:
-  :Arguments: aws_key_id: str=None, aws_key: str=None, region: str=None
+  :Arguments: aws_key_id: str=None, aws_key: str=None, region: str=None, use_robocloud_vault: bool=False
 
   Initialize AWS Comprehend client
 
 
 :Init S3 Client:
-  :Arguments: aws_key_id: str=None, aws_key: str=None, region: str=None
+  :Arguments: aws_key_id: str=None, aws_key: str=None, region: str=None, use_robocloud_vault: bool=False
 
   Initialize AWS S3 client
 
 
 :Init Sqs Client:
-  :Arguments: aws_key_id: str=None, aws_key: str=None, region: str=None, queue_url: str=None
+  :Arguments: aws_key_id: str=None, aws_key: str=None, region: str=None, queue_url: str=None, use_robocloud_vault: bool=False
 
   Initialize AWS SQS client
 
 
 :Init Textract Client:
-  :Arguments: aws_key_id: str=None, aws_key: str=None, region: str=None
+  :Arguments: aws_key_id: str=None, aws_key: str=None, region: str=None, use_robocloud_vault: bool=False
 
   Initialize AWS Textract client
 
@@ -141,6 +141,12 @@ Keywords
   :Arguments: message: str=None, message_attributes: dict=None
 
   Send message to the queue
+
+
+:Set Robocloud Vault:
+  :Arguments: vault_name
+
+  Set Robocloud Vault name
 
 
 :Upload File:

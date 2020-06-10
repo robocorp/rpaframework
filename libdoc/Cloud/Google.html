@@ -352,23 +352,23 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf</p>
 <dt class="field-even">Init Natural Language Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>service_credentials_file: str=None</p>
+<dd class="field-odd"><p>service_credentials_file: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
-<p>Initialize Google Natural Language client</p>
+<p>Initialize Google Cloud Natural Language client</p>
 </dd>
 <dt class="field-even">Init Speech To Text Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>service_credentials_file: str</p>
+<dd class="field-odd"><p>service_credentials_file: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
-<p>Initialize Google Speech To Text client</p>
+<p>Initialize Google Cloud Speech to Text client</p>
 </dd>
 <dt class="field-even">Init Storage Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>service_credentials_file: str=None</p>
+<dd class="field-odd"><p>service_credentials_file: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
 <p>Initialize Google Cloud Storage client</p>
@@ -376,34 +376,34 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf</p>
 <dt class="field-even">Init Text To Speech Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>service_credentials_file: str</p>
+<dd class="field-odd"><p>service_credentials_file: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
-<p>Initialize Google Text To Speech client</p>
+<p>Initialize Google Cloud Text to Speech client</p>
 </dd>
 <dt class="field-even">Init Translation Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>service_credentials_file: str, project_identifier: str</p>
+<dd class="field-odd"><p>service_credentials_file: str=None, project_identifier: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
-<p>Initialize Google Translation client</p>
+<p>Initialize Google Cloud Translation client</p>
 </dd>
 <dt class="field-even">Init Video Intelligence Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>service_credentials_file: str=None</p>
+<dd class="field-odd"><p>service_credentials_file: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
-<p>Initialize Google Video Intelligence client</p>
+<p>Initialize Google Cloud Video Intelligence client</p>
 </dd>
 <dt class="field-even">Init Vision Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>service_credentials_file: str=None</p>
+<dd class="field-odd"><p>service_credentials_file: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
-<p>Initialize Google Vision client</p>
+<p>Initialize Google Cloud Vision client</p>
 </dd>
 <dt class="field-even">List Buckets</dt>
 <dd class="field-even"><p>List Google Cloud Storage buckets</p>
@@ -431,6 +431,14 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf</p>
 </dd>
 </dl>
 <p>Recognize text in the audio file</p>
+</dd>
+<dt class="field-even">Set Robocloud Vault</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>vault_name, vault_secret_key</p>
+</dd>
+</dl>
+<p>Set Robocloud Vault name and secret key name</p>
 </dd>
 <dt class="field-even">Synthesize Speech</dt>
 <dd class="field-even"><dl class="field-list simple">

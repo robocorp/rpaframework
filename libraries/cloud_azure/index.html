@@ -213,13 +213,6 @@
 <div class="section" id="description">
 <h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p><cite>Azure</cite> is a library for operating with Microsoft Azure API endpoints.</p>
-<p>Authentication to Azure API is handled by <cite>service subcription key</cite> which
-can set for all services using environment variable <cite>AZURE_SUBSCRIPTION_KEY</cite>.</p>
-<p>If there are service specific subscription keys, these can be set using
-environment variable <cite>AZURE_SERVICENAME_KEY</cite>. Replace <cite>SERVICENAME</cite> with service
-name.</p>
-<p>List of supported language locales - <a class="reference external" href="https://docs.microsoft.com/en-gb/azure/cognitive-services/speech-service/language-support#speech-to-text">Azure locale list</a></p>
-<p>List of supported region identifiers - <a class="reference external" href="https://docs.microsoft.com/en-gb/azure/cognitive-services/speech-service/regions#speech-to-text-text-to-speech-and-translation">Azure region list</a></p>
 <p>List of supported service names:</p>
 <blockquote>
 <div><ul class="simple">
@@ -229,6 +222,74 @@ name.</p>
 <li><p>textanalytics (<a class="reference external" href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/">Azure Text Analytics API</a>)</p></li>
 </ul>
 </div></blockquote>
+<div class="section" id="azure-authentication">
+<h3>Azure authentication<a class="headerlink" href="#azure-authentication" title="Permalink to this headline">¶</a></h3>
+<p>Authentication for Azure is set with <cite>service subscription key</cite> which can be given to the library
+in two different ways.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Method 1 as environment variables, either service specific environment variable
+for example <code class="docutils literal notranslate"><span class="pre">AZURE_TEXTANALYTICS_KEY</span></code> or with common key <code class="docutils literal notranslate"><span class="pre">AZURE_SUBSCRIPTION_KEY</span></code> which
+will be used for all the services.</p></li>
+<li><p>Method 2 as Robocloud vault secret. The vault name needs to be given in library init or
+with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code>. Secret keys are expected to match environment variable
+names.</p></li>
+</ul>
+</div></blockquote>
+<p>Method 1. subscription key using environment variable</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Azure</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Azure services</span><span class="p"></span>
+<span class="p">    </span><span class="c"># NO parameters for client, expecting to get subscription key</span>
+<span class="p">    </span><span class="c"># with AZURE_TEXTANALYTICS_KEY or AZURE_SUBSCRIPTION_KEY environment variable</span>
+<span class="p">    </span><span class="nf">Init Text Analytics Service</span><span class="p"></span>
+</pre></div>
+</td></tr></table></div>
+<p>Method 2. setting Robocloud Vault in the library init</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Azure</span><span class="p">  </span><span class="s">robocloud_vault_name=azure</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Azure services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Text Analytics Service</span><span class="p">  </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>Method 2. setting Robocloud Vault with keyword</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Azure</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Azure services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Robocloud Vault</span><span class="p">          </span><span class="s">vault_name=googlecloud</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Text Analytics Service</span><span class="p">  </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="references">
+<h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<p>List of supported language locales - <a class="reference external" href="https://docs.microsoft.com/en-gb/azure/cognitive-services/speech-service/language-support#speech-to-text">Azure locale list</a></p>
+<p>List of supported region identifiers - <a class="reference external" href="https://docs.microsoft.com/en-gb/azure/cognitive-services/speech-service/regions#speech-to-text-text-to-speech-and-translation">Azure region list</a></p>
+</div>
 </div>
 <div class="section" id="examples">
 <h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>

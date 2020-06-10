@@ -208,7 +208,7 @@
 <span id="azure"></span><h2>Azure<a class="headerlink" href="#module-RPA.Cloud.Azure" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="RPA.Cloud.Azure.Azure">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Azure.</code><code class="sig-name descname">Azure</code><span class="sig-paren">(</span><em class="sig-param">region: str = 'northeurope'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.Azure" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Azure.</code><code class="sig-name descname">Azure</code><span class="sig-paren">(</span><em class="sig-param">region: str = 'northeurope'</em>, <em class="sig-param">robocloud_vault_name: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.Azure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Azure.ServiceTextAnalytics" title="RPA.Cloud.Azure.ServiceTextAnalytics"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Azure.ServiceTextAnalytics</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Azure.ServiceFace" title="RPA.Cloud.Azure.ServiceFace"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Azure.ServiceFace</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Azure.ServiceComputerVision" title="RPA.Cloud.Azure.ServiceComputerVision"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Azure.ServiceComputerVision</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Azure.ServiceSpeech" title="RPA.Cloud.Azure.ServiceSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Azure.ServiceSpeech</span></code></a></p>
 <p>Library for interacting with Azure services</p>
 <p>Authentication to Azure API is handled by <cite>service subcription key</cite> which
@@ -246,9 +246,25 @@ is set to 9.5 minutes = 570.0 seconds</p>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="RPA.Cloud.Azure.AzureBase.services">
-<code class="sig-name descname">services</code><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.services" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Cloud.Azure.AzureBase.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Azure.AzureBase.services">
+<code class="sig-name descname">services</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Azure.AzureBase.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.AzureBase.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="RPA.Cloud.Azure.AzureBase.token">
@@ -269,11 +285,14 @@ is set to 9.5 minutes = 570.0 seconds</p>
 <p>Class for Azure Computer Vision service</p>
 <dl class="method">
 <dt id="RPA.Cloud.Azure.ServiceComputerVision.init_computer_vision_service">
-<code class="sig-name descname">init_computer_vision_service</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Azure.ServiceComputerVision.init_computer_vision_service" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_computer_vision_service</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Azure.ServiceComputerVision.init_computer_vision_service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize Azure Computer Vision</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>region</strong> – identifier for service region</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> – identifier for service region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -417,11 +436,14 @@ are “recognition_01” or “recognition_02”, default is “recognition_02�
 
 <dl class="method">
 <dt id="RPA.Cloud.Azure.ServiceFace.init_face_service">
-<code class="sig-name descname">init_face_service</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Azure.ServiceFace.init_face_service" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_face_service</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Azure.ServiceFace.init_face_service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize Azure Face</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>region</strong> – identifier for service region</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> – identifier for service region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -440,11 +462,14 @@ are “recognition_01” or “recognition_02”, default is “recognition_02�
 
 <dl class="method">
 <dt id="RPA.Cloud.Azure.ServiceSpeech.init_speech_service">
-<code class="sig-name descname">init_speech_service</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Azure.ServiceSpeech.init_speech_service" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_speech_service</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Azure.ServiceSpeech.init_speech_service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize Azure Speech</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>region</strong> – identifier for service region</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> – identifier for service region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -539,11 +564,14 @@ defaults to “synthesized.mp3”</p></li>
 
 <dl class="method">
 <dt id="RPA.Cloud.Azure.ServiceTextAnalytics.init_text_analytics_service">
-<code class="sig-name descname">init_text_analytics_service</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceTextAnalytics.init_text_analytics_service" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_text_analytics_service</code><span class="sig-paren">(</span><em class="sig-param">region: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceTextAnalytics.init_text_analytics_service" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize Azure Text Analyticts</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>region</strong> – identifier for service region</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> – identifier for service region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

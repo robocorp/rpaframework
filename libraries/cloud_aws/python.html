@@ -208,7 +208,7 @@
 <span id="aws"></span><h2>AWS<a class="headerlink" href="#module-RPA.Cloud.AWS" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="RPA.Cloud.AWS.AWS">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">AWS</code><span class="sig-paren">(</span><em class="sig-param">region: str = 'eu-west-1'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">AWS</code><span class="sig-paren">(</span><em class="sig-param">region: str = 'eu-west-1'</em>, <em class="sig-param">robocloud_vault_name: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.AWS.ServiceS3" title="RPA.Cloud.AWS.ServiceS3"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceS3</span></code></a>, <a class="reference internal" href="#RPA.Cloud.AWS.ServiceTextract" title="RPA.Cloud.AWS.ServiceTextract"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceTextract</span></code></a>, <a class="reference internal" href="#RPA.Cloud.AWS.ServiceComprehend" title="RPA.Cloud.AWS.ServiceComprehend"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceComprehend</span></code></a>, <a class="reference internal" href="#RPA.Cloud.AWS.ServiceSQS" title="RPA.Cloud.AWS.ServiceSQS"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceSQS</span></code></a></p>
 <p>Library for interacting with AWS services</p>
 <p>Supported services:</p>
@@ -432,7 +432,7 @@ current directory</p></li>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.init_comprehend_client">
-<code class="sig-name descname">init_comprehend_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_comprehend_client" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_comprehend_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_comprehend_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize AWS Comprehend client</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -440,6 +440,7 @@ current directory</p></li>
 <li><p><strong>aws_key_id</strong> – access key ID</p></li>
 <li><p><strong>aws_key</strong> – secret access key</p></li>
 <li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -447,7 +448,7 @@ current directory</p></li>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.init_s3_client">
-<code class="sig-name descname">init_s3_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_s3_client" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_s3_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_s3_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize AWS S3 client</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -455,6 +456,7 @@ current directory</p></li>
 <li><p><strong>aws_key_id</strong> – access key ID</p></li>
 <li><p><strong>aws_key</strong> – secret access key</p></li>
 <li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -462,7 +464,7 @@ current directory</p></li>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.init_sqs_client">
-<code class="sig-name descname">init_sqs_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em>, <em class="sig-param">queue_url: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_sqs_client" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_sqs_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em>, <em class="sig-param">queue_url: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_sqs_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize AWS SQS client</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -470,6 +472,8 @@ current directory</p></li>
 <li><p><strong>aws_key_id</strong> – access key ID</p></li>
 <li><p><strong>aws_key</strong> – secret access key</p></li>
 <li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>queue_url</strong> – SQS queue url</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -477,7 +481,7 @@ current directory</p></li>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.init_textract_client">
-<code class="sig-name descname">init_textract_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_textract_client" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_textract_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.init_textract_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize AWS Textract client</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -485,6 +489,7 @@ current directory</p></li>
 <li><p><strong>aws_key_id</strong> – access key ID</p></li>
 <li><p><strong>aws_key</strong> – secret access key</p></li>
 <li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -536,6 +541,11 @@ current directory</p></li>
 <code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.region" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWS.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.send_message">
 <code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">message_attributes: dict = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.send_message" title="Permalink to this definition">¶</a></dt>
@@ -557,6 +567,17 @@ current directory</p></li>
 <dt id="RPA.Cloud.AWS.AWS.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.upload_file">
@@ -625,9 +646,25 @@ used as <cite>object_name</cite>.</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.AWS.AWSBase.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.AWSBase.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.AWS.AWSBase.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.AWSBase.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWSBase.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWSBase.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -673,7 +710,7 @@ that 5,000 bytes of UTF-8 encoded characters</p></li>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceComprehend.init_comprehend_client">
-<code class="sig-name descname">init_comprehend_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.init_comprehend_client" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_comprehend_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.init_comprehend_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize AWS Comprehend client</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -681,6 +718,7 @@ that 5,000 bytes of UTF-8 encoded characters</p></li>
 <li><p><strong>aws_key_id</strong> – access key ID</p></li>
 <li><p><strong>aws_key</strong> – secret access key</p></li>
 <li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -697,9 +735,25 @@ that 5,000 bytes of UTF-8 encoded characters</p></li>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.AWS.ServiceComprehend.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceComprehend.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceComprehend.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -779,7 +833,7 @@ current directory</p></li>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceS3.init_s3_client">
-<code class="sig-name descname">init_s3_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.init_s3_client" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_s3_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.init_s3_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize AWS S3 client</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -787,6 +841,7 @@ current directory</p></li>
 <li><p><strong>aws_key_id</strong> – access key ID</p></li>
 <li><p><strong>aws_key</strong> – secret access key</p></li>
 <li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -828,9 +883,25 @@ current directory</p></li>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceS3.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.AWS.ServiceS3.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceS3.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceS3.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceS3.upload_file">
@@ -932,7 +1003,7 @@ used as <cite>object_name</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceSQS.init_sqs_client">
-<code class="sig-name descname">init_sqs_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em>, <em class="sig-param">queue_url: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.init_sqs_client" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_sqs_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em>, <em class="sig-param">queue_url: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.init_sqs_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize AWS SQS client</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -940,6 +1011,8 @@ used as <cite>object_name</cite>.</p>
 <li><p><strong>aws_key_id</strong> – access key ID</p></li>
 <li><p><strong>aws_key</strong> – secret access key</p></li>
 <li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>queue_url</strong> – SQS queue url</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -966,6 +1039,11 @@ used as <cite>object_name</cite>.</p>
 <code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.region" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceSQS.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceSQS.send_message">
 <code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">message_attributes: dict = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.send_message" title="Permalink to this definition">¶</a></dt>
@@ -987,6 +1065,17 @@ used as <cite>object_name</cite>.</p>
 <dt id="RPA.Cloud.AWS.ServiceSQS.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceSQS.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceSQS.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -1071,7 +1160,7 @@ used as <cite>object_name</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceTextract.init_textract_client">
-<code class="sig-name descname">init_textract_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.init_textract_client" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_textract_client</code><span class="sig-paren">(</span><em class="sig-param">aws_key_id: str = None</em>, <em class="sig-param">aws_key: str = None</em>, <em class="sig-param">region: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.init_textract_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize AWS Textract client</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1079,6 +1168,7 @@ used as <cite>object_name</cite>.</p>
 <li><p><strong>aws_key_id</strong> – access key ID</p></li>
 <li><p><strong>aws_key</strong> – secret access key</p></li>
 <li><p><strong>region</strong> – AWS region</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -1095,9 +1185,25 @@ used as <cite>object_name</cite>.</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.AWS.ServiceTextract.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.AWS.ServiceTextract.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

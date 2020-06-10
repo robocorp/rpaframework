@@ -58,25 +58,25 @@ Keywords
 
 
 :Init Computer Vision Service:
-  :Arguments: region: str=None
+  :Arguments: region: str=None, use_robocloud_vault: bool=False
 
   Initialize Azure Computer Vision
 
 
 :Init Face Service:
-  :Arguments: region: str=None
+  :Arguments: region: str=None, use_robocloud_vault: bool=False
 
   Initialize Azure Face
 
 
 :Init Speech Service:
-  :Arguments: region: str=None
+  :Arguments: region: str=None, use_robocloud_vault: bool=False
 
   Initialize Azure Speech
 
 
 :Init Text Analytics Service:
-  :Arguments: region: str=None
+  :Arguments: region: str=None, use_robocloud_vault: bool=False
 
   Initialize Azure Text Analyticts
 
@@ -99,6 +99,12 @@ Keywords
   :Arguments: text: str, language: str=None, json_file: str=None
 
   Analyze sentiments in the given text
+
+
+:Set Robocloud Vault:
+  :Arguments: vault_name
+
+  Set Robocloud Vault name
 
 
 :Text To Speech:

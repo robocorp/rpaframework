@@ -12,23 +12,71 @@ Description
 
 `Azure` is a library for operating with Microsoft Azure API endpoints.
 
-Authentication to Azure API is handled by `service subcription key` which
-can set for all services using environment variable `AZURE_SUBSCRIPTION_KEY`.
-
-If there are service specific subscription keys, these can be set using
-environment variable `AZURE_SERVICENAME_KEY`. Replace `SERVICENAME` with service
-name.
-
-List of supported language locales - `Azure locale list`_
-
-List of supported region identifiers - `Azure region list`_
-
 List of supported service names:
 
    - computervision (`Azure Computer Vision API`_)
    - face (`Azure Face API`_)
    - speech (`Azure Speech Services API`_)
    - textanalytics (`Azure Text Analytics API`_)
+
+Azure authentication
+======================
+
+Authentication for Azure is set with `service subscription key` which can be given to the library
+in two different ways.
+
+    - Method 1 as environment variables, either service specific environment variable
+      for example ``AZURE_TEXTANALYTICS_KEY`` or with common key ``AZURE_SUBSCRIPTION_KEY`` which
+      will be used for all the services.
+    - Method 2 as Robocloud vault secret. The vault name needs to be given in library init or
+      with keyword ``Set Robocloud Vault``. Secret keys are expected to match environment variable
+      names.
+
+Method 1. subscription key using environment variable
+
+.. code-block:: robotframework
+    :linenos:
+
+    *** Settings ***
+    Library   RPA.Cloud.Azure
+
+    *** Tasks ***
+    Init Azure services
+        # NO parameters for client, expecting to get subscription key
+        # with AZURE_TEXTANALYTICS_KEY or AZURE_SUBSCRIPTION_KEY environment variable
+        Init Text Analytics Service
+
+Method 2. setting Robocloud Vault in the library init
+
+.. code-block:: robotframework
+    :linenos:
+
+    *** Settings ***
+    Library   RPA.Cloud.Azure  robocloud_vault_name=azure
+
+    *** Tasks ***
+    Init Azure services
+        Init Text Analytics Service  use_robocloud_vault=${TRUE}
+
+Method 2. setting Robocloud Vault with keyword
+
+.. code-block:: robotframework
+    :linenos:
+
+    *** Settings ***
+    Library   RPA.Cloud.Azure
+
+    *** Tasks ***
+    Init Azure services
+        Set Robocloud Vault          vault_name=googlecloud
+        Init Text Analytics Service  use_robocloud_vault=${TRUE}
+
+References
+==========
+
+List of supported language locales - `Azure locale list`_
+
+List of supported region identifiers - `Azure region list`_
 
 .. _Azure Computer Vision API: https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/
 .. _Azure Face API: https://docs.microsoft.com/en-us/azure/cognitive-services/face/

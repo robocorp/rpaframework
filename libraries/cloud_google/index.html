@@ -225,6 +225,92 @@ can use it</p></li>
 </ul>
 </div></blockquote>
 </div></blockquote>
+<div class="section" id="google-authentication">
+<h3>Google authentication<a class="headerlink" href="#google-authentication" title="Permalink to this headline">¶</a></h3>
+<p>Authentication for Google is set with <cite>service credentials JSON file</cite> which can be given to the library
+in three different ways.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Method 1 as environment variables, <code class="docutils literal notranslate"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> with path to JSON file.</p></li>
+<li><p>Method 2 as keyword parameter to <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Storage</span> <span class="pre">Client</span></code> for example.</p></li>
+<li><p>Method 3 as Robocloud vault secret. The vault name and secret key name needs to be given in library init
+or with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code>. Secret value should contain JSON file contents.</p></li>
+</ul>
+</div></blockquote>
+<p>Method 1. service credentials using environment variable</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google services</span><span class="p"></span>
+<span class="p">    </span><span class="c"># NO parameters for Vision Client, expecting to get JSON</span>
+<span class="p">    </span><span class="c"># with GOOGLE_APPLICATION_CREDENTIALS environment variable</span>
+<span class="p">    </span><span class="nf">Init Vision Client</span><span class="p"></span>
+</pre></div>
+</td></tr></table></div>
+<p>Method 2. service credentials with keyword parameter</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Speech To Text Client</span><span class="p">  </span><span class="s">/path/to/service_credentials.json</span><span class="p"></span>
+</pre></div>
+</td></tr></table></div>
+<p>Method 3. setting Robocloud Vault in the library init</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+<span class="p">...       </span><span class="s">robocloud_vault_name=googlecloud</span><span class="p"></span>
+<span class="p">...       </span><span class="s">robocloud_vault_secret_key=servicecreds</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Storage Client</span><span class="p">   </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>Method 3. setting Robocloud Vault with keyword</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Robocloud Vault</span><span class="p">   </span><span class="s">vault_name=googlecloud</span><span class="p">  </span><span class="s">vault_secret_key=servicecreds</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Storage Client</span><span class="p">   </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
+<p>Due to number of dependencies related to Google Cloud services this library has been set as
+an optional package for <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>.</p>
+<p>This can be installed by opting in to the <cite>google</cite> dependency:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpaframework[google]</span></code></p>
+</div>
 </div>
 <div class="section" id="examples">
 <h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>

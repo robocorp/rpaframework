@@ -127,39 +127,46 @@ Keywords
 
 
 :Init Natural Language Client:
-  :Arguments: service_credentials_file: str=None
+  :Arguments: service_credentials_file: str=None, use_robocloud_vault: bool=False
 
-  Initialize Google Natural Language client
+  Initialize Google Cloud Natural Language client
+
 
 :Init Speech To Text Client:
-  :Arguments: service_credentials_file: str
+  :Arguments: service_credentials_file: str=None, use_robocloud_vault: bool=False
 
-  Initialize Google Speech To Text client
+  Initialize Google Cloud Speech to Text client
+
 
 :Init Storage Client:
-  :Arguments: service_credentials_file: str=None
+  :Arguments: service_credentials_file: str=None, use_robocloud_vault: bool=False
 
   Initialize Google Cloud Storage client
 
-:Init Text To Speech Client:
-  :Arguments: service_credentials_file: str
 
-  Initialize Google Text To Speech client
+:Init Text To Speech Client:
+  :Arguments: service_credentials_file: str=None, use_robocloud_vault: bool=False
+
+  Initialize Google Cloud Text to Speech client
+
 
 :Init Translation Client:
-  :Arguments: service_credentials_file: str, project_identifier: str
+  :Arguments: service_credentials_file: str=None, project_identifier: str=None, use_robocloud_vault: bool=False
 
-  Initialize Google Translation client
+  Initialize Google Cloud Translation client
+
 
 :Init Video Intelligence Client:
-  :Arguments: service_credentials_file: str=None
+  :Arguments: service_credentials_file: str=None, use_robocloud_vault: bool=False
 
-  Initialize Google Video Intelligence client
+  Initialize Google Cloud Video Intelligence client
+
 
 :Init Vision Client:
-  :Arguments: service_credentials_file: str=None
+  :Arguments: service_credentials_file: str=None, use_robocloud_vault: bool=False
 
-  Initialize Google Vision client
+  Initialize Google Cloud Vision client
+
 
 :List Buckets:
   List Google Cloud Storage buckets
@@ -181,6 +188,12 @@ Keywords
   :Arguments: audio_file_uri, encoding: str=FLAC, language_code: str=en_US, audio_channel_count=2
 
   Recognize text in the audio file
+
+
+:Set Robocloud Vault:
+  :Arguments: vault_name, vault_secret_key
+
+  Set Robocloud Vault name and secret key name
 
 
 :Synthesize Speech:

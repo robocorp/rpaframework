@@ -324,7 +324,7 @@
 <dt class="field-odd">Init Comprehend Client</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>aws_key_id: str=None, aws_key: str=None, region: str=None</p>
+<dd class="field-odd"><p>aws_key_id: str=None, aws_key: str=None, region: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
 <p>Initialize AWS Comprehend client</p>
@@ -332,7 +332,7 @@
 <dt class="field-even">Init S3 Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>aws_key_id: str=None, aws_key: str=None, region: str=None</p>
+<dd class="field-odd"><p>aws_key_id: str=None, aws_key: str=None, region: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
 <p>Initialize AWS S3 client</p>
@@ -340,7 +340,7 @@
 <dt class="field-even">Init Sqs Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>aws_key_id: str=None, aws_key: str=None, region: str=None, queue_url: str=None</p>
+<dd class="field-odd"><p>aws_key_id: str=None, aws_key: str=None, region: str=None, queue_url: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
 <p>Initialize AWS SQS client</p>
@@ -348,7 +348,7 @@
 <dt class="field-even">Init Textract Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>aws_key_id: str=None, aws_key: str=None, region: str=None</p>
+<dd class="field-odd"><p>aws_key_id: str=None, aws_key: str=None, region: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
 <p>Initialize AWS Textract client</p>
@@ -374,6 +374,14 @@
 </dd>
 </dl>
 <p>Send message to the queue</p>
+</dd>
+<dt class="field-even">Set Robocloud Vault</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>vault_name</p>
+</dd>
+</dl>
+<p>Set Robocloud Vault name</p>
 </dd>
 <dt class="field-even">Upload File</dt>
 <dd class="field-even"><dl class="field-list simple">

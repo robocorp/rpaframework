@@ -265,7 +265,7 @@ name.</p>
 <dt class="field-even">Init Computer Vision Service</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>region: str=None</p>
+<dd class="field-odd"><p>region: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
 <p>Initialize Azure Computer Vision</p>
@@ -273,7 +273,7 @@ name.</p>
 <dt class="field-even">Init Face Service</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>region: str=None</p>
+<dd class="field-odd"><p>region: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
 <p>Initialize Azure Face</p>
@@ -281,7 +281,7 @@ name.</p>
 <dt class="field-even">Init Speech Service</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>region: str=None</p>
+<dd class="field-odd"><p>region: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
 <p>Initialize Azure Speech</p>
@@ -289,7 +289,7 @@ name.</p>
 <dt class="field-even">Init Text Analytics Service</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>region: str=None</p>
+<dd class="field-odd"><p>region: str=None, use_robocloud_vault: bool=False</p>
 </dd>
 </dl>
 <p>Initialize Azure Text Analyticts</p>
@@ -318,6 +318,14 @@ name.</p>
 </dd>
 </dl>
 <p>Analyze sentiments in the given text</p>
+</dd>
+<dt class="field-even">Set Robocloud Vault</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>vault_name</p>
+</dd>
+</dl>
+<p>Set Robocloud Vault name</p>
 </dd>
 <dt class="field-even">Text To Speech</dt>
 <dd class="field-even"><dl class="field-list simple">

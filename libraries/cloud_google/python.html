@@ -208,7 +208,7 @@
 <span id="google"></span><h2>Google<a class="headerlink" href="#module-RPA.Cloud.Google" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="RPA.Cloud.Google.Google">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">Google</code><a class="headerlink" href="#RPA.Cloud.Google.Google" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">Google</code><span class="sig-paren">(</span><em class="sig-param">robocloud_vault_name: str = None</em>, <em class="sig-param">robocloud_vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Google.ServiceVision" title="RPA.Cloud.Google.ServiceVision"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceVision</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceNaturalLanguage" title="RPA.Cloud.Google.ServiceNaturalLanguage"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceNaturalLanguage</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceVideoIntelligence" title="RPA.Cloud.Google.ServiceVideoIntelligence"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceVideoIntelligence</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceTranslation" title="RPA.Cloud.Google.ServiceTranslation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceTranslation</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceTextToSpeech" title="RPA.Cloud.Google.ServiceTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceTextToSpeech</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceSpeechToText" title="RPA.Cloud.Google.ServiceSpeechToText"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceSpeechToText</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceStorage" title="RPA.Cloud.Google.ServiceStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceStorage</span></code></a></p>
 <p>Library for interacting with Google services</p>
 <p>Google Storage URI:</p>
@@ -466,44 +466,101 @@ True if all were downloaded</p>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.Google.init_natural_language_client">
-<code class="sig-name descname">init_natural_language_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_natural_language_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize Google Natural Language client</p>
+<code class="sig-name descname">init_natural_language_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_natural_language_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Cloud Natural Language client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.Google.init_speech_to_text_client">
-<code class="sig-name descname">init_speech_to_text_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_speech_to_text_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize Google Speech To Text client</p>
+<code class="sig-name descname">init_speech_to_text_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_speech_to_text_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Cloud Speech to Text client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.Google.init_storage_client">
-<code class="sig-name descname">init_storage_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_storage_client" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_storage_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_storage_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize Google Cloud Storage client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.Google.init_text_to_speech_client">
-<code class="sig-name descname">init_text_to_speech_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_text_to_speech_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize Google Text To Speech client</p>
+<code class="sig-name descname">init_text_to_speech_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_text_to_speech_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Cloud Text to Speech client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.Google.init_translation_client">
-<code class="sig-name descname">init_translation_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str</em>, <em class="sig-param">project_identifier: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_translation_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize Google Translation client</p>
+<code class="sig-name descname">init_translation_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">project_identifier: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_translation_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Cloud Translation client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>project_identifier</strong> – identifier for Translation project</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.Google.init_video_intelligence_client">
-<code class="sig-name descname">init_video_intelligence_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_video_intelligence_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize Google Video Intelligence client</p>
+<code class="sig-name descname">init_video_intelligence_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_video_intelligence_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Cloud Video Intelligence client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.Google.init_vision_client">
-<code class="sig-name descname">init_vision_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_vision_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize Google Vision client</p>
+<code class="sig-name descname">init_vision_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_vision_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Cloud Vision client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -570,9 +627,33 @@ True if all were downloaded</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.Google.Google.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.Google.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.Google.robocloud_vault_secret_key">
+<code class="sig-name descname">robocloud_vault_secret_key</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.Google.robocloud_vault_secret_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.Google.Google.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.Google.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name and secret key name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vault_name</strong> – Robocloud Vault name</p></li>
+<li><p><strong>vault_secret_key</strong> – Rococloud Vault secret key name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.Google.synthesize_speech">
@@ -668,9 +749,33 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.Google.GoogleBase.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.GoogleBase.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.GoogleBase.robocloud_vault_secret_key">
+<code class="sig-name descname">robocloud_vault_secret_key</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.GoogleBase.robocloud_vault_secret_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.Google.GoogleBase.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.GoogleBase.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.GoogleBase.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.GoogleBase.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name and secret key name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vault_name</strong> – Robocloud Vault name</p></li>
+<li><p><strong>vault_secret_key</strong> – Rococloud Vault secret key name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -723,8 +828,16 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceNaturalLanguage.init_natural_language_client">
-<code class="sig-name descname">init_natural_language_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.init_natural_language_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize Google Natural Language client</p>
+<code class="sig-name descname">init_natural_language_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.init_natural_language_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Cloud Natural Language client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -738,9 +851,33 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceNaturalLanguage.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceNaturalLanguage.robocloud_vault_secret_key">
+<code class="sig-name descname">robocloud_vault_secret_key</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.robocloud_vault_secret_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.Google.ServiceNaturalLanguage.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceNaturalLanguage.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name and secret key name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vault_name</strong> – Robocloud Vault name</p></li>
+<li><p><strong>vault_secret_key</strong> – Rococloud Vault secret key name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -770,8 +907,16 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceSpeechToText.init_speech_to_text_client">
-<code class="sig-name descname">init_speech_to_text_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.init_speech_to_text_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize Google Speech To Text client</p>
+<code class="sig-name descname">init_speech_to_text_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.init_speech_to_text_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Cloud Speech to Text client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -799,9 +944,33 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSpeechToText.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSpeechToText.robocloud_vault_secret_key">
+<code class="sig-name descname">robocloud_vault_secret_key</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.robocloud_vault_secret_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.Google.ServiceSpeechToText.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceSpeechToText.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name and secret key name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vault_name</strong> – Robocloud Vault name</p></li>
+<li><p><strong>vault_secret_key</strong> – Rococloud Vault secret key name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -906,8 +1075,16 @@ True if all were downloaded</p>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceStorage.init_storage_client">
-<code class="sig-name descname">init_storage_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.init_storage_client" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_storage_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.init_storage_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize Google Cloud Storage client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -946,9 +1123,33 @@ True if all were downloaded</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceStorage.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceStorage.robocloud_vault_secret_key">
+<code class="sig-name descname">robocloud_vault_secret_key</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.robocloud_vault_secret_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.Google.ServiceStorage.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceStorage.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name and secret key name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vault_name</strong> – Robocloud Vault name</p></li>
+<li><p><strong>vault_secret_key</strong> – Rococloud Vault secret key name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceStorage.upload_file">
@@ -996,8 +1197,16 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceTextToSpeech.init_text_to_speech_client">
-<code class="sig-name descname">init_text_to_speech_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.init_text_to_speech_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize Google Text To Speech client</p>
+<code class="sig-name descname">init_text_to_speech_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.init_text_to_speech_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Cloud Text to Speech client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -1025,9 +1234,33 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTextToSpeech.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTextToSpeech.robocloud_vault_secret_key">
+<code class="sig-name descname">robocloud_vault_secret_key</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.robocloud_vault_secret_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.Google.ServiceTextToSpeech.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceTextToSpeech.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name and secret key name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vault_name</strong> – Robocloud Vault name</p></li>
+<li><p><strong>vault_secret_key</strong> – Rococloud Vault secret key name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceTextToSpeech.synthesize_speech">
@@ -1066,8 +1299,17 @@ defaults to “synthesized.mp3”</p></li>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceTranslation.init_translation_client">
-<code class="sig-name descname">init_translation_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str</em>, <em class="sig-param">project_identifier: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.init_translation_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize Google Translation client</p>
+<code class="sig-name descname">init_translation_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">project_identifier: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.init_translation_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Cloud Translation client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>project_identifier</strong> – identifier for Translation project</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -1081,9 +1323,33 @@ defaults to “synthesized.mp3”</p></li>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTranslation.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTranslation.robocloud_vault_secret_key">
+<code class="sig-name descname">robocloud_vault_secret_key</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.robocloud_vault_secret_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.Google.ServiceTranslation.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceTranslation.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name and secret key name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vault_name</strong> – Robocloud Vault name</p></li>
+<li><p><strong>vault_secret_key</strong> – Rococloud Vault secret key name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceTranslation.translate">
@@ -1149,8 +1415,16 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceVideoIntelligence.init_video_intelligence_client">
-<code class="sig-name descname">init_video_intelligence_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.init_video_intelligence_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize Google Video Intelligence client</p>
+<code class="sig-name descname">init_video_intelligence_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.init_video_intelligence_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Cloud Video Intelligence client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -1164,9 +1438,33 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVideoIntelligence.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVideoIntelligence.robocloud_vault_secret_key">
+<code class="sig-name descname">robocloud_vault_secret_key</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.robocloud_vault_secret_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.Google.ServiceVideoIntelligence.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceVideoIntelligence.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name and secret key name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vault_name</strong> – Robocloud Vault name</p></li>
+<li><p><strong>vault_secret_key</strong> – Rococloud Vault secret key name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -1268,8 +1566,16 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceVision.init_vision_client">
-<code class="sig-name descname">init_vision_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.init_vision_client" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize Google Vision client</p>
+<code class="sig-name descname">init_vision_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.init_vision_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Cloud Vision client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -1283,9 +1589,33 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVision.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVision.robocloud_vault_secret_key">
+<code class="sig-name descname">robocloud_vault_secret_key</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.robocloud_vault_secret_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.Google.ServiceVision.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceVision.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name and secret key name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vault_name</strong> – Robocloud Vault name</p></li>
+<li><p><strong>vault_secret_key</strong> – Rococloud Vault secret key name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

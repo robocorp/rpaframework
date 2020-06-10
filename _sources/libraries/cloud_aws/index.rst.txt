@@ -10,19 +10,78 @@ Cloud.AWS
 Description
 ***********
 
-`AWS` is a library for operating with Amazon AWS services.
+`AWS` is a library for operating with Amazon AWS services S3, SQS, Textract and Comprehend.
 
-Service initialization can be given as parameters for ``init_s3_service`` keyword,
-or the keyword can read them in as environment variables:
+Services are initialized with keywords like ``Init S3 Client`` for S3.
 
-    - `AWS_KEY_ID`
-    - `AWS_KEY`
+AWS authentication
+======================
+
+Authentication for AWS is set with `key id` and `access key` which can be given to the library
+in three different ways.
+
+    - Method 1 as environment variables, ``AWS_KEY_ID`` and ``AWS_KEY``.
+    - Method 2 as keyword parameters to ``Init Textract Client`` for example.
+    - Method 3 as Robocloud vault secret. The vault name needs to be given in library init or
+      with keyword ``Set Robocloud Vault``. Secret keys are expected to match environment variable
+      names.
+
+Method 1. credentials using environment variable
+
+.. code-block:: robotframework
+    :linenos:
+
+    *** Settings ***
+    Library   RPA.Cloud.AWS
+
+    *** Tasks ***
+    Init AWS services
+        # NO parameters for client, expecting to get credentials
+        # with AWS_KEY and AWS_KEY_ID environment variable
+        Init S3 Client
+
+Method 2. credentials with keyword parameter
+
+.. code-block:: robotframework
+    :linenos:
+
+    *** Settings ***
+    Library   RPA.Cloud.AWS
+
+    *** Tasks ***
+    Init AWS services
+        Init S3 Client  aws_key_id=${AWS_KEY_ID}  aws_key=${AWS_KEY}
+
+Method 3. setting Robocloud Vault in the library init
+
+.. code-block:: robotframework
+    :linenos:
+
+    *** Settings ***
+    Library   RPA.Cloud.AWS  robocloud_vault_name=aws
+
+    *** Tasks ***
+    Init AWS services
+        Init S3 Client  use_robocloud_vault=${TRUE}
+
+Method 3. setting Robocloud Vault with keyword
+
+.. code-block:: robotframework
+    :linenos:
+
+    *** Settings ***
+    Library   RPA.Cloud.AWS
+
+    *** Tasks ***
+    Init Azure services
+        Set Robocloud Vault         vault_name=aws
+        Init Textract Client  use_robocloud_vault=${TRUE}
 
 Requirements
 ============
 
 The default installation depends on `boto3`_ library. Due to the size of the
-dependency, this has been set as an optional package for ``rpaframework``.
+dependency, this library has been set as an optional package for ``rpaframework``.
 
 This can be installed by opting in to the `aws` dependency:
 
