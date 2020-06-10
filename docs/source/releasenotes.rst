@@ -10,6 +10,8 @@ Upcoming release
   - ``Cloud.Azure```
   - ``Cloud.Google``
 
+- Images: Automatically convert points/regions from strings
+
 1.1.0
 -----
 

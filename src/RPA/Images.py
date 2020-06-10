@@ -42,26 +42,27 @@ def chunks(obj, size, start=0):
 
 def to_image(obj):
     """Convert `obj` to instance of Pillow's Image class."""
-    if obj is not None and not isinstance(obj, Image.Image):
-        return Image.open(obj)
-    else:
+    if obj is None or isinstance(obj, Image.Image):
         return obj
+    return Image.open(obj)
 
 
 def to_point(obj):
     """Convert `obj` to instance of Point."""
-    if obj is not None and not isinstance(obj, Point):
-        return Point(*obj)
-    else:
+    if obj is None or isinstance(obj, Point):
         return obj
+    if isinstance(obj, str):
+        obj = obj.split(",")
+    return Point(*(int(i) for i in obj))
 
 
 def to_region(obj):
     """Convert `obj` to instance of Region."""
-    if obj is not None and not isinstance(obj, Region):
-        return Region(*obj)
-    else:
+    if obj is None or isinstance(obj, Region):
         return obj
+    if isinstance(obj, str):
+        obj = obj.split(",")
+    return Region(*(int(i) for i in obj))
 
 
 @dataclass
