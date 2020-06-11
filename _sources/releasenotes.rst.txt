@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+1.2.1
+-----
+
+- Cloud libraries. Fix ``use_robocloud_vault`` to support also ``FileSecrets``
+
 1.2.0
 -----
 
