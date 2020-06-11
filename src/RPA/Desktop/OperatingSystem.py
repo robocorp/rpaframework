@@ -6,6 +6,8 @@ import os
 import platform
 import socket
 
+from RPA.core.utils import operating_system_required
+
 if platform.system() == "Windows":
     import psutil
     from psutil._common import bytes2human
@@ -22,6 +24,7 @@ class OperatingSystem:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 
+    @operating_system_required("Windows")
     def get_boot_time(self, as_datetime=False, datetime_format="%Y-%m-%d %H:%M:%S"):
         """Get computer boot time in seconds from Epoch or in datetime string.
 
@@ -35,6 +38,7 @@ class OperatingSystem:
             return datetime.datetime.fromtimestamp(btime).strftime(datetime_format)
         return btime
 
+    @operating_system_required("Windows")
     def boot_time_in_seconds_from_epoch(self):
         """Get machine boot time
 
@@ -56,12 +60,14 @@ class OperatingSystem:
         """
         return getpass.getuser()
 
+    @operating_system_required("Darwin", "Linux")
     def put_system_to_sleep(self):
         if platform.system() == "Darwin":
             os.system("pmset sleepnow")
         if platform.system() == "Linux":
             os.system("systemctl suspend")
 
+    @operating_system_required("Windows")
     def process_exists(self, process_name):
         """Check if process exists by its name
 
@@ -74,6 +80,7 @@ class OperatingSystem:
                 return p
         return False
 
+    @operating_system_required("Windows")
     def kill_process(self, process_name):
         """Kill process by name
 
@@ -86,6 +93,7 @@ class OperatingSystem:
             return True
         return False
 
+    @operating_system_required("Windows")
     def get_memory_stats(self, humanized=True):
         """Get computer memory stats and return those in bytes
         or in humanized memory format.

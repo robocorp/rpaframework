@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+- DperatingSystem. Improve error messages on keywords restricted to specific
+  operating systems
+
 1.2.1
 -----
 
