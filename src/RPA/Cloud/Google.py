@@ -25,7 +25,7 @@ try:
 except ImportError:
     HAS_GOOGLECLOUD = False
 
-from RPA.Robocloud.Secrets import RobocloudVault
+from RPA.Robocloud.Secrets import Secrets
 
 
 def google_dependency_required(f):
@@ -81,7 +81,7 @@ class GoogleBase:
                 "are required to access Robocloud Vault. Set them in library "
                 "init or with `set_robocloud_vault` keyword."
             )
-        vault = RobocloudVault()
+        vault = Secrets()
         try:
             vault_items = vault.get_secret(self.robocloud_vault_name)
             secret = json.loads(vault_items[self.robocloud_vault_secret_key].strip())

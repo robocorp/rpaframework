@@ -5,7 +5,7 @@ import time
 from typing import Any
 import requests
 
-from RPA.Robocloud.Secrets import RobocloudVault
+from RPA.Robocloud.Secrets import Secrets
 
 DEFAULT_REGION = "northeurope"
 
@@ -98,7 +98,7 @@ class AzureBase:
         service_key = f"AZURE_{service_name.upper()}_KEY"
         sub_key = None
         if use_robocloud_vault:
-            vault = RobocloudVault()
+            vault = Secrets()
             vault_items = vault.get_secret(self.robocloud_vault_name)
             vault_items = {k.upper(): v for (k, v) in vault_items.items()}
             if service_key in vault_items and vault_items[service_key].strip() != "":

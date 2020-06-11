@@ -17,7 +17,7 @@ from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.RobotLogListener import RobotLogListener
 from RPA.core.utils import required_param, required_env
 from RPA.Tables import Tables
-from RPA.Robocloud.Secrets import RobocloudVault
+from RPA.Robocloud.Secrets import Secrets
 
 try:
     BuiltIn().import_library("RPA.RobotLogListener")
@@ -76,7 +76,7 @@ class AWSBase:
         if region is None:
             region = self.region
         if use_robocloud_vault:
-            vault = RobocloudVault()
+            vault = Secrets()
             vault_items = vault.get_secret(self.robocloud_vault_name)
             vault_items = {k.upper(): v for (k, v) in vault_items.items()}
             aws_key_id = vault_items["AWS_KEY_ID"]
