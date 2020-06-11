@@ -14,7 +14,10 @@ from pathlib import Path
 
 from SeleniumLibrary import SeleniumLibrary
 from SeleniumLibrary.base import keyword
+from SeleniumLibrary.keywords import BrowserManagementKeywords
+
 from selenium.common.exceptions import WebDriverException
+
 
 from webdrivermanager import AVAILABLE_DRIVERS
 
@@ -49,6 +52,21 @@ class Browser(SeleniumLibrary):
 
     def __init__(self, *args, **kwargs) -> None:
         self.logger = logging.getLogger(__name__)
+        disable_testability = (
+            bool(kwargs["disable_testability"])
+            if "disable_testability" in kwargs.keys()
+            else False
+        )
+        kwargs.pop("disable_testability", None)
+        if "plugins" in kwargs.keys() and "SeleniumTestability" in kwargs["plugins"]:
+            # SeleniumTestability already included as plugin
+            pass
+        elif not disable_testability and "plugins" in kwargs.keys():
+            # Adding SeleniumTestability as SeleniumLibrary plugin
+            kwargs["plugins"] += ",SeleniumTestability"
+        elif not disable_testability:
+            # Setting SeleniumTestability as SeleniumLibrary plugin
+            kwargs["plugins"] = "SeleniumTestability"
         SeleniumLibrary.__init__(self, *args, **kwargs)
         self.drivers = []
 
@@ -192,12 +210,13 @@ class Browser(SeleniumLibrary):
         executable = self.webdriver_init(browser, download)
         try:
             browser = browser.lower().capitalize()
+            browser_management = BrowserManagementKeywords(self)
             if executable:
-                index = self.create_webdriver(
+                index = browser_management.create_webdriver(
                     browser, **options, executable_path=executable
                 )
             else:
-                index = self.create_webdriver(browser, **options)
+                index = browser_management.create_webdriver(browser, **options)
             return index
         except WebDriverException as err:
             self.logger.info("Could not open driver: %s", err)
@@ -221,6 +240,7 @@ class Browser(SeleniumLibrary):
             )
         return preferable_browser_order
 
+    @keyword
     def detect_chrome_version(self) -> str:
         """Detect Chrome browser version (if possible) on different
         platforms using different commands for each platform.
@@ -629,3 +649,455 @@ class Browser(SeleniumLibrary):
     def location(self) -> str:
         """Return browser location."""
         return self.get_location()
+
+    @keyword
+    def click_element_if_visible(self, locator: str) -> None:
+        """Click element if it is visible
+
+        ``locator`` element locator
+        """
+        visible = self.is_element_visible(locator)
+        if visible:
+            self.click_element(locator)
+
+    @keyword
+    def is_element_enabled(self, locator: str) -> bool:
+        """Is element enabled
+
+        ``locator`` element locator
+        """
+        return self._run_should_keyword_and_return_status(
+            self.element_should_be_enabled, locator
+        )
+
+    @keyword
+    def is_element_visible(self, locator: str) -> bool:
+        """Is element visible
+
+        ``locator`` element locator
+        """
+        return self._run_should_keyword_and_return_status(
+            self.element_should_be_visible, locator
+        )
+
+    @keyword
+    def is_element_disabled(self, locator: str) -> bool:
+        """Is element disabled
+
+        ``locator`` element locator
+        """
+        return self._run_should_keyword_and_return_status(
+            self.element_should_be_disabled, locator
+        )
+
+    @keyword
+    def is_element_focused(self, locator: str) -> bool:
+        """Is element focused
+
+        ``locator`` element locator
+        """
+        return self._run_should_keyword_and_return_status(
+            self.element_should_be_focused, locator
+        )
+
+    @keyword
+    def is_element_attribute_equal_to(
+        self, locator: str, attribute: str, expected: str
+    ) -> bool:
+        """Is element attribute equal to expected value
+
+        ``locator`` element locator
+
+        ``attribute`` element attribute to check for
+
+        ``expected`` is attribute value equal to this
+        """
+        return self._run_should_keyword_and_return_status(
+            self.element_attribute_value_should_be, locator, attribute, expected
+        )
+
+    @keyword
+    def is_alert_present(self, text: str = None, action: str = "ACCEPT") -> bool:
+        """Is alert box present, which can be identified with text
+        and action can also be done which by default is ACCEPT.
+
+        Other possible actions are DISMISS and LEAVE.
+
+        ``text`` check if alert text is matching to this, if `None`
+        will check if alert is present at all
+
+        ``action`` possible action if alert is present
+        """
+        return self._run_should_keyword_and_return_status(
+            self.alert_should_be_present, text, action
+        )
+
+    @keyword
+    def is_checkbox_selected(self, locator: str) -> bool:
+        """Is checkbox selected
+
+        ``locator`` element locator
+        """
+        return self._run_should_keyword_and_return_status(
+            self.checkbox_should_be_selected, locator
+        )
+
+    @keyword
+    def does_frame_contain(self, locator: str, text: str) -> bool:
+        """Does frame contain expected text
+
+        ``locator`` locator of the frame to check
+
+        ``text`` does frame contain this text
+        """
+        return self._run_should_keyword_and_return_status(
+            self.frame_should_contain, locator, text
+        )
+
+    @keyword
+    def does_element_contain(
+        self, locator: str, expected: str, ignore_case: bool = False
+    ) -> bool:
+        """Does element contain expected text
+
+        ``locator`` element locator
+
+        ``expected`` expected element text
+
+        ``ignore_case`` should check be case insensitive, default `False`
+        """
+        return self._run_should_keyword_and_return_status(
+            self.element_should_contain,
+            locator=locator,
+            expected=expected,
+            ignore_case=ignore_case,
+        )
+
+    @keyword
+    def is_element_text(
+        self, locator: str, expected: str, ignore_case: bool = False
+    ) -> bool:
+        """Is element text expected
+
+        ``locator`` element locator
+
+        ``expected`` expected element text
+
+        ``ignore_case`` should check be case insensitive, default `False`
+        """
+        return self._run_should_keyword_and_return_status(
+            self.element_text_should_be,
+            locator=locator,
+            expected=expected,
+            ignore_case=ignore_case,
+        )
+
+    @keyword
+    def is_list_selection(self, locator: str, *expected: str) -> bool:
+        """Is list selected with expected values
+
+        ``locator`` element locator
+
+        ``expected`` expected selected options
+        """
+        return self._run_should_keyword_and_return_status(
+            self.list_selection_should_be, locator, *expected
+        )
+
+    @keyword
+    def is_list_selected(self, locator: str) -> bool:
+        """Is any option selected in the
+
+        ``locator`` element locator
+        """
+        return not self._run_should_keyword_and_return_status(
+            self.list_should_have_no_selections, locator
+        )
+
+    @keyword
+    def is_location(self, url: str) -> bool:
+        """Is current URL expected url
+
+        ``url`` expected current URL
+        """
+        return self._run_should_keyword_and_return_status(self.location_should_be, url)
+
+    @keyword
+    def does_page_contain(self, text: str) -> bool:
+        """Does page contain expected text
+
+        ``text`` page should contain this
+        """
+        return self._run_should_keyword_and_return_status(
+            self.page_should_contain, text
+        )
+
+    @keyword
+    def does_page_contain_button(self, locator: str) -> bool:
+        """Does page contain expected button
+
+        ``locator`` element locator
+        """
+        return self._run_should_keyword_and_return_status(
+            self.page_should_contain_button, locator
+        )
+
+    @keyword
+    def does_page_contain_checkbox(self, locator: str) -> bool:
+        """Does page contain expected checkbox
+
+        ``locator`` element locator
+        """
+        return self._run_should_keyword_and_return_status(
+            self.page_should_contain_checkbox, locator
+        )
+
+    @keyword
+    def does_page_contain_element(self, locator: str, count: int = None) -> bool:
+        """Does page contain expected element
+
+        ``locator`` element locator
+
+        ``count`` how many times element is expected to appear on page
+        by default one or more
+        """
+        return self._run_should_keyword_and_return_status(
+            self.page_should_contain_element, locator=locator, limit=count
+        )
+
+    @keyword
+    def does_page_contain_image(self, locator: str) -> bool:
+        """Does page contain expected image
+
+        ``locator`` element locator
+        """
+        return self._run_should_keyword_and_return_status(
+            self.page_should_contain_image, locator
+        )
+
+    @keyword
+    def does_page_contain_link(self, locator: str) -> bool:
+        """Does page contain expected link
+
+        ``locator`` element locator
+        """
+        return self._run_should_keyword_and_return_status(
+            self.page_should_contain_link, locator
+        )
+
+    @keyword
+    def does_page_contain_list(self, locator: str) -> bool:
+        """Does page contain expected list
+
+        ``locator`` element locator
+        """
+        return self._run_should_keyword_and_return_status(
+            self.page_should_contain_list, locator
+        )
+
+    @keyword
+    def does_page_contain_radio_button(self, locator: str) -> bool:
+        """Does page contain expected radio button
+
+        ``locator`` element locator
+        """
+        return self._run_should_keyword_and_return_status(
+            self.page_should_contain_radio_button, locator
+        )
+
+    @keyword
+    def does_page_contain_textfield(self, locator: str) -> bool:
+        """Does page contain expected textfield
+
+        ``locator`` element locator
+        """
+        return self._run_should_keyword_and_return_status(
+            self.page_should_contain_textfield, locator
+        )
+
+    @keyword
+    def is_radio_button_set_to(self, group_name: str, value: str) -> bool:
+        """Is radio button group set to expected value
+
+        ``group_name`` radio button group name
+
+        ``value`` expected value
+        """
+        return self._run_should_keyword_and_return_status(
+            self.radio_button_should_be_set_to, group_name, value
+        )
+
+    @keyword
+    def is_radio_button_selected(self, group_name: str) -> bool:
+        """Is any radio button selected in the button group
+
+        ``group_name`` radio button group name
+        """
+        return not self._run_should_keyword_and_return_status(
+            self.radio_button_should_not_be_selected, group_name
+        )
+
+    @keyword
+    def does_table_cell_contain(
+        self, locator: str, row: int, column: int, expected: str
+    ) -> bool:
+        """Does table cell contain expected text
+
+        ``locator`` element locator for the table
+
+        ``row`` row index starting from 1 (beginning) or -1 (from the end)
+
+        ``column`` column index starting from 1 (beginning) or -1 (from the end)
+
+        ``expected`` expected text in table row
+        """
+        return self._run_should_keyword_and_return_status(
+            self.table_row_should_contain, locator, row, column, expected
+        )
+
+    @keyword
+    def does_table_column_contain(
+        self, locator: str, column: int, expected: str
+    ) -> bool:
+        """Does table column contain expected text
+
+        ``locator`` element locator for the table
+
+        ``column`` column index starting from 1 (beginning) or -1 (from the end)
+
+        ``expected`` expected text in table column
+        """
+        return self._run_should_keyword_and_return_status(
+            self.table_row_should_contain, locator, column, expected
+        )
+
+    @keyword
+    def does_table_row_contain(self, locator: str, row: int, expected: str) -> bool:
+        """Does table row contain expected text
+
+        ``locator`` element locator for the table
+
+        ``row`` row index starting from 1 (beginning) or -1 (from the end)
+
+        ``expected`` expected text in table row
+        """
+        return self._run_should_keyword_and_return_status(
+            self.table_row_should_contain, locator, row, expected
+        )
+
+    @keyword
+    def does_table_footer_contain(self, locator: str, expected: str) -> bool:
+        """Does table footer contain expected text
+
+        ``locator`` element locator for the table
+
+        ``expected`` expected text in table footer
+        """
+        return self._run_should_keyword_and_return_status(
+            self.table_footer_should_contain, locator, expected
+        )
+
+    @keyword
+    def does_table_header_contain(self, locator: str, expected: str) -> bool:
+        """Does table header contain expected text
+
+        ``locator`` element locator for the table
+
+        ``expected`` expected text in table header
+        """
+        return self._run_should_keyword_and_return_status(
+            self.table_header_should_contain, locator, expected
+        )
+
+    @keyword
+    def does_table_contain(self, locator: str, expected: str) -> bool:
+        """Does table contain expected text
+
+        ``locator`` element locator
+
+        ``expected`` expected text in table
+        """
+        return self._run_should_keyword_and_return_status(
+            self.table_should_contain, locator, expected
+        )
+
+    @keyword
+    def is_textarea_value(self, locator: str, expected: str) -> bool:
+        """Is textarea matching expected value
+
+        ``locator`` element locator
+
+        ``expected`` expected textarea value
+        """
+        return self._run_should_keyword_and_return_status(
+            self.textarea_value_should_be, locator, expected
+        )
+
+    @keyword
+    def does_textarea_contain(self, locator: str, expected: str) -> bool:
+        """Does textarea contain expected text
+
+        ``locator`` element locator
+
+        ``expected`` expected text in textarea
+        """
+        return self._run_should_keyword_and_return_status(
+            self.textarea_should_contain, locator, expected
+        )
+
+    @keyword
+    def does_textfield_contain(self, locator: str, expected: str) -> bool:
+        """Does textfield contain expected text
+
+        ``locator`` element locator
+
+        ``expected`` expected text in textfield
+        """
+        return self._run_should_keyword_and_return_status(
+            self.textfield_should_contain, locator, expected
+        )
+
+    @keyword
+    def is_textfield_value(self, locator: str, expected: str) -> bool:
+        """Is textfield value expected
+
+        ``locator`` element locator
+
+        ``expected`` expected textfield value
+        """
+        return self._run_should_keyword_and_return_status(
+            self.textfield_value_should_be, locator, expected
+        )
+
+    @keyword
+    def is_title(self, title: str) -> bool:
+        """Is page title expected
+
+        ``title`` expected title value
+        """
+        return self._run_should_keyword_and_return_status(self.title_should_be, title)
+
+    def _run_should_keyword_and_return_status(self, runnable_keyword, *args, **kwargs):
+        try:
+            runnable_keyword(*args, **kwargs)
+            return True
+        except AssertionError:
+            return False
+
+    @keyword
+    def get_element_status(self, locator: str) -> dict:
+        """Return dictionary containing element status of:
+
+            - visible
+            - enabled
+            - disabled
+            - focused
+
+        ``locator`` element locator
+        """
+        status_object = dict()
+        status_object["visible"] = self.is_element_visible(locator)
+        status_object["enabled"] = self.is_element_enabled(locator)
+        status_object["disabled"] = self.is_element_disabled(locator)
+        status_object["focused"] = self.is_element_focused(locator)
+        return status_object
