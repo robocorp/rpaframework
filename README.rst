@@ -53,9 +53,6 @@ Links
    :target: http://www.apache.org/licenses/LICENSE-2.0.html
    :alt: License
 
-.. note::
-   RPA Framework is in Early Access phase and expected 1.0
-   release will happen during summer 2020.
 
 Libraries
 ---------
