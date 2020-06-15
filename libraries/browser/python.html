@@ -220,7 +220,7 @@
 
 <dl class="attribute">
 <dt id="RPA.Browser.Browser.AVAILABLE_OPTIONS">
-<code class="sig-name descname">AVAILABLE_OPTIONS</code><em class="property"> = {'chrome': 'ChromeOptions'}</em><a class="headerlink" href="#RPA.Browser.Browser.AVAILABLE_OPTIONS" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">AVAILABLE_OPTIONS</code><em class="property"> = {'chrome': 'ChromeOptions', 'firefox': 'FirefoxOptions'}</em><a class="headerlink" href="#RPA.Browser.Browser.AVAILABLE_OPTIONS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -249,6 +249,13 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Browser.Browser.click_element_if_visible">
+<code class="sig-name descname">click_element_if_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.click_element_if_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Click element if it is visible</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Browser.Browser.create_rpa_webdriver">
 <code class="sig-name descname">create_rpa_webdriver</code><span class="sig-paren">(</span><em class="sig-param">browser: str</em>, <em class="sig-param">options: dict</em>, <em class="sig-param">download: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Browser.Browser.create_rpa_webdriver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a webdriver instance for the given browser.</p>
@@ -267,6 +274,163 @@ was not initialized.</p>
 platforms using different commands for each platform.</p>
 <p>Returns corresponding chromedriver version, if possible.</p>
 <p>Supported Chrome major versions are 81, 80 and 79.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_element_contain">
+<code class="sig-name descname">does_element_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em>, <em class="sig-param">ignore_case: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_element_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does element contain expected text</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected element text</p>
+<p><code class="docutils literal notranslate"><span class="pre">ignore_case</span></code> should check be case insensitive, default <cite>False</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_frame_contain">
+<code class="sig-name descname">does_frame_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_frame_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does frame contain expected text</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> locator of the frame to check</p>
+<p><code class="docutils literal notranslate"><span class="pre">text</span></code> does frame contain this text</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_location_contain">
+<code class="sig-name descname">does_location_contain</code><span class="sig-paren">(</span><em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_location_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does current URL contain expected</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> URL should contain this</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_page_contain">
+<code class="sig-name descname">does_page_contain</code><span class="sig-paren">(</span><em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does page contain expected text</p>
+<p><code class="docutils literal notranslate"><span class="pre">text</span></code> page should contain this</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_page_contain_button">
+<code class="sig-name descname">does_page_contain_button</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does page contain expected button</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_page_contain_checkbox">
+<code class="sig-name descname">does_page_contain_checkbox</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_checkbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does page contain expected checkbox</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_page_contain_element">
+<code class="sig-name descname">does_page_contain_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">count: int = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does page contain expected element</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">count</span></code> how many times element is expected to appear on page
+by default one or more</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_page_contain_image">
+<code class="sig-name descname">does_page_contain_image</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does page contain expected image</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_page_contain_link">
+<code class="sig-name descname">does_page_contain_link</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does page contain expected link</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_page_contain_list">
+<code class="sig-name descname">does_page_contain_list</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does page contain expected list</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_page_contain_radio_button">
+<code class="sig-name descname">does_page_contain_radio_button</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_radio_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does page contain expected radio button</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_page_contain_textfield">
+<code class="sig-name descname">does_page_contain_textfield</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_textfield" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does page contain expected textfield</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_table_cell_contain">
+<code class="sig-name descname">does_table_cell_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">row: int</em>, <em class="sig-param">column: int</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_table_cell_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does table cell contain expected text</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
+<p><code class="docutils literal notranslate"><span class="pre">row</span></code> row index starting from 1 (beginning) or -1 (from the end)</p>
+<p><code class="docutils literal notranslate"><span class="pre">column</span></code> column index starting from 1 (beginning) or -1 (from the end)</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table row</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_table_column_contain">
+<code class="sig-name descname">does_table_column_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">column: int</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_table_column_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does table column contain expected text</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
+<p><code class="docutils literal notranslate"><span class="pre">column</span></code> column index starting from 1 (beginning) or -1 (from the end)</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table column</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_table_contain">
+<code class="sig-name descname">does_table_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_table_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does table contain expected text</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_table_footer_contain">
+<code class="sig-name descname">does_table_footer_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_table_footer_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does table footer contain expected text</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table footer</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_table_header_contain">
+<code class="sig-name descname">does_table_header_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_table_header_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does table header contain expected text</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table header</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_table_row_contain">
+<code class="sig-name descname">does_table_row_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">row: int</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_table_row_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does table row contain expected text</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
+<p><code class="docutils literal notranslate"><span class="pre">row</span></code> row index starting from 1 (beginning) or -1 (from the end)</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table row</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_textarea_contain">
+<code class="sig-name descname">does_textarea_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_textarea_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does textarea contain expected text</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in textarea</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_textfield_contain">
+<code class="sig-name descname">does_textfield_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_textfield_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does textfield contain expected text</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in textfield</p>
 </dd></dl>
 
 <dl class="method">
@@ -362,6 +526,21 @@ keywords. Will be one or many.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Browser.Browser.get_element_status">
+<code class="sig-name descname">get_element_status</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Browser.Browser.get_element_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return dictionary containing element status of:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>visible</p></li>
+<li><p>enabled</p></li>
+<li><p>disabled</p></li>
+<li><p>focused</p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Browser.Browser.get_installed_chromedriver_version">
 <code class="sig-name descname">get_installed_chromedriver_version</code><span class="sig-paren">(</span><em class="sig-param">driver_executable_path: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Browser.get_installed_chromedriver_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the full version number for a stable chromedriver.</p>
@@ -407,11 +586,141 @@ of the chromedriver.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Browser.Browser.get_testability_status">
+<code class="sig-name descname">get_testability_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.get_testability_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SeleniumTestability plugin status</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Browser.Browser.input_text_when_element_is_visible">
 <code class="sig-name descname">input_text_when_element_is_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.input_text_when_element_is_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Input text into locator after it has become visible.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> insert text to locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_alert_present">
+<code class="sig-name descname">is_alert_present</code><span class="sig-paren">(</span><em class="sig-param">text: str = None</em>, <em class="sig-param">action: str = 'ACCEPT'</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_alert_present" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is alert box present, which can be identified with text
+and action can also be done which by default is ACCEPT.</p>
+<p>Other possible actions are DISMISS and LEAVE.</p>
+<p><code class="docutils literal notranslate"><span class="pre">text</span></code> check if alert text is matching to this, if <cite>None</cite>
+will check if alert is present at all</p>
+<p><code class="docutils literal notranslate"><span class="pre">action</span></code> possible action if alert is present</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_checkbox_selected">
+<code class="sig-name descname">is_checkbox_selected</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_checkbox_selected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is checkbox selected</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_element_attribute_equal_to">
+<code class="sig-name descname">is_element_attribute_equal_to</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">attribute: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_attribute_equal_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is element attribute equal to expected value</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">attribute</span></code> element attribute to check for</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> is attribute value equal to this</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_element_disabled">
+<code class="sig-name descname">is_element_disabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_disabled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is element disabled</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_element_enabled">
+<code class="sig-name descname">is_element_enabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_enabled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is element enabled</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_element_focused">
+<code class="sig-name descname">is_element_focused</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_focused" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is element focused</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_element_text">
+<code class="sig-name descname">is_element_text</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em>, <em class="sig-param">ignore_case: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is element text expected</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected element text</p>
+<p><code class="docutils literal notranslate"><span class="pre">ignore_case</span></code> should check be case insensitive, default <cite>False</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_element_visible">
+<code class="sig-name descname">is_element_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is element visible</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_list_selected">
+<code class="sig-name descname">is_list_selected</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_list_selected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is any option selected in the</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_list_selection">
+<code class="sig-name descname">is_list_selection</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">*expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_list_selection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is list selected with expected values</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected selected options</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_location">
+<code class="sig-name descname">is_location</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is current URL expected url</p>
+<p><code class="docutils literal notranslate"><span class="pre">url</span></code> expected current URL</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_radio_button_selected">
+<code class="sig-name descname">is_radio_button_selected</code><span class="sig-paren">(</span><em class="sig-param">group_name: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_radio_button_selected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is any radio button selected in the button group</p>
+<p><code class="docutils literal notranslate"><span class="pre">group_name</span></code> radio button group name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_radio_button_set_to">
+<code class="sig-name descname">is_radio_button_set_to</code><span class="sig-paren">(</span><em class="sig-param">group_name: str</em>, <em class="sig-param">value: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_radio_button_set_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is radio button group set to expected value</p>
+<p><code class="docutils literal notranslate"><span class="pre">group_name</span></code> radio button group name</p>
+<p><code class="docutils literal notranslate"><span class="pre">value</span></code> expected value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_textarea_value">
+<code class="sig-name descname">is_textarea_value</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_textarea_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is textarea matching expected value</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected textarea value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_textfield_value">
+<code class="sig-name descname">is_textfield_value</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_textfield_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is textfield value expected</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected textfield value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.is_title">
+<code class="sig-name descname">is_title</code><span class="sig-paren">(</span><em class="sig-param">title: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is page title expected</p>
+<p><code class="docutils literal notranslate"><span class="pre">title</span></code> expected title value</p>
 </dd></dl>
 
 <dl class="method">

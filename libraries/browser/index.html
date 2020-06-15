@@ -214,6 +214,14 @@
 <h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p><cite>Browser</cite> is a library for interfacing with web browsers like Chrome,
 Firefox, Safari, Edge, and Opera. The library extends <a class="reference external" href="https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html">SeleniumLibrary</a>.</p>
+<p>Headless mode can be set by environment variable <code class="docutils literal notranslate"><span class="pre">RPA_HEADLESS_MODE=1</span></code></p>
+<p>Supports now also usage of <a class="reference external" href="https://github.com/rasjani/robotframework-seleniumtestability">SeleniumTestability</a> plugin, which can be taken
+into use by iniatializing library with:</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Browser</span><span class="p">  </span><span class="s">use_testability</span><span class="p"></span>
+</pre></div>
+</td></tr></table></div>
 </div>
 <div class="section" id="examples">
 <h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>

@@ -501,6 +501,14 @@
 <p>Click the element <code>locator</code> at <code>xoffset/yoffset</code>.</p>
 <p>The Cursor is moved and the center of the element and x/y coordinates are calculated from that point.</p>
 <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<dt class="field-even">Click Element If Visible</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Click element if it is visible</p>
+<p><code>locator</code> element locator</p></dd>
 <dt class="field-even">Click Image</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -622,6 +630,186 @@
 </dl>
 <p>Deletes the cookie matching <code>name</code>.</p>
 <p>If the cookie is not found, nothing happens.</p></dd>
+<dt class="field-even">Detect Chrome Version</dt>
+<dd class="field-even"><p>Detect Chrome browser version (if possible) on different platforms using different commands for each platform.</p>
+<p>Returns corresponding chromedriver version, if possible.</p>
+<p>Supported Chrome major versions are 81, 80 and 79.</p></dd>
+<dt class="field-odd">Does Element Contain</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, expected: str, ignore_case: bool=False</p>
+</dd>
+</dl>
+<p>Does element contain expected text</p>
+<p><code>locator</code> element locator</p>
+<p><code>expected</code> expected element text</p>
+<p><code>ignore_case</code> should check be case insensitive, default <span class="name">False</span></p></dd>
+<dt class="field-even">Does Frame Contain</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, text: str</p>
+</dd>
+</dl>
+<p>Does frame contain expected text</p>
+<p><code>locator</code> locator of the frame to check</p>
+<p><code>text</code> does frame contain this text</p></dd>
+<dt class="field-even">Does Location Contain</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>expected: str</p>
+</dd>
+</dl>
+<p>Does current URL contain expected</p>
+<p><code>expected</code> URL should contain this</p></dd>
+<dt class="field-even">Does Page Contain</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text: str</p>
+</dd>
+</dl>
+<p>Does page contain expected text</p>
+<p><code>text</code> page should contain this</p></dd>
+<dt class="field-even">Does Page Contain Button</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Does page contain expected button</p>
+<p><code>locator</code> element locator</p></dd>
+<dt class="field-even">Does Page Contain Checkbox</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Does page contain expected checkbox</p>
+<p><code>locator</code> element locator</p></dd>
+<dt class="field-even">Does Page Contain Element</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, count: typing.Union[int, NoneType]=None</p>
+</dd>
+</dl>
+<p>Does page contain expected element</p>
+<p><code>locator</code> element locator</p>
+<p><code>count</code> how many times element is expected to appear on page by default one or more</p></dd>
+<dt class="field-even">Does Page Contain Image</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Does page contain expected image</p>
+<p><code>locator</code> element locator</p></dd>
+<dt class="field-even">Does Page Contain Link</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Does page contain expected link</p>
+<p><code>locator</code> element locator</p></dd>
+<dt class="field-even">Does Page Contain List</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Does page contain expected list</p>
+<p><code>locator</code> element locator</p></dd>
+<dt class="field-even">Does Page Contain Radio Button</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Does page contain expected radio button</p>
+<p><code>locator</code> element locator</p></dd>
+<dt class="field-even">Does Page Contain Textfield</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Does page contain expected textfield</p>
+<p><code>locator</code> element locator</p></dd>
+<dt class="field-even">Does Table Cell Contain</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, row: int, column: int, expected: str</p>
+</dd>
+</dl>
+<p>Does table cell contain expected text</p>
+<p><code>locator</code> element locator for the table</p>
+<p><code>row</code> row index starting from 1 (beginning) or -1 (from the end)</p>
+<p><code>column</code> column index starting from 1 (beginning) or -1 (from the end)</p>
+<p><code>expected</code> expected text in table row</p></dd>
+<dt class="field-even">Does Table Column Contain</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, column: int, expected: str</p>
+</dd>
+</dl>
+<p>Does table column contain expected text</p>
+<p><code>locator</code> element locator for the table</p>
+<p><code>column</code> column index starting from 1 (beginning) or -1 (from the end)</p>
+<p><code>expected</code> expected text in table column</p></dd>
+<dt class="field-even">Does Table Contain</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, expected: str</p>
+</dd>
+</dl>
+<p>Does table contain expected text</p>
+<p><code>locator</code> element locator</p>
+<p><code>expected</code> expected text in table</p></dd>
+<dt class="field-even">Does Table Footer Contain</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, expected: str</p>
+</dd>
+</dl>
+<p>Does table footer contain expected text</p>
+<p><code>locator</code> element locator for the table</p>
+<p><code>expected</code> expected text in table footer</p></dd>
+<dt class="field-even">Does Table Header Contain</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, expected: str</p>
+</dd>
+</dl>
+<p>Does table header contain expected text</p>
+<p><code>locator</code> element locator for the table</p>
+<p><code>expected</code> expected text in table header</p></dd>
+<dt class="field-even">Does Table Row Contain</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, row: int, expected: str</p>
+</dd>
+</dl>
+<p>Does table row contain expected text</p>
+<p><code>locator</code> element locator for the table</p>
+<p><code>row</code> row index starting from 1 (beginning) or -1 (from the end)</p>
+<p><code>expected</code> expected text in table row</p></dd>
+<dt class="field-even">Does Textarea Contain</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, expected: str</p>
+</dd>
+</dl>
+<p>Does textarea contain expected text</p>
+<p><code>locator</code> element locator</p>
+<p><code>expected</code> expected text in textarea</p></dd>
+<dt class="field-even">Does Textfield Contain</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, expected: str</p>
+</dd>
+</dl>
+<p>Does textfield contain expected text</p>
+<p><code>locator</code> element locator</p>
+<p><code>expected</code> expected text in textfield</p></dd>
 <dt class="field-even">Double Click Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1099,6 +1287,20 @@
 <td>css:div#container</td>
 </tr>
 </table></dd>
+<dt class="field-even">Get Element Status</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Return dictionary containing element status of:</p>
+<ul>
+<li>visible</li>
+<li>enabled</li>
+<li>disabled</li>
+<li>focused</li>
+</ul>
+<p><code>locator</code> element locator</p></dd>
 <dt class="field-even">Get Horizontal Position</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1218,8 +1420,10 @@
 <p>Both row and column indexes start from 1, and header and footer rows are included in the count. It is possible to refer to rows and columns from the end by using negative indexes so that -1 is the last row/column, -2 is the second last, and so on.</p>
 <p>All <code>&lt;th&gt;</code> and <code>&lt;td&gt;</code> elements anywhere in the table are considered to be cells.</p>
 <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about the <code>loglevel</code> argument.</p></dd>
-<dt class="field-even">Get Text</dt>
-<dd class="field-even"><dl class="field-list simple">
+<dt class="field-even">Get Testability Status</dt>
+<dd class="field-even"><p>Get SeleniumTestability plugin status</p></dd>
+<dt class="field-odd">Get Text</dt>
+<dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>locator</p>
 </dd>
@@ -1451,6 +1655,144 @@
 <p>Input text into locator after it has become visible.</p>
 <p><code>locator</code> element locator</p>
 <p><code>text</code> insert text to locator</p></dd>
+<dt class="field-even">Is Alert Present</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text: typing.Union[str, NoneType]=None, action: str=ACCEPT</p>
+</dd>
+</dl>
+<p>Is alert box present, which can be identified with text and action can also be done which by default is ACCEPT.</p>
+<p>Other possible actions are DISMISS and LEAVE.</p>
+<p><code>text</code> check if alert text is matching to this, if <span class="name">None</span> will check if alert is present at all</p>
+<p><code>action</code> possible action if alert is present</p></dd>
+<dt class="field-even">Is Checkbox Selected</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Is checkbox selected</p>
+<p><code>locator</code> element locator</p></dd>
+<dt class="field-even">Is Element Attribute Equal To</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, attribute: str, expected: str</p>
+</dd>
+</dl>
+<p>Is element attribute equal to expected value</p>
+<p><code>locator</code> element locator</p>
+<p><code>attribute</code> element attribute to check for</p>
+<p><code>expected</code> is attribute value equal to this</p></dd>
+<dt class="field-even">Is Element Disabled</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Is element disabled</p>
+<p><code>locator</code> element locator</p></dd>
+<dt class="field-even">Is Element Enabled</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Is element enabled</p>
+<p><code>locator</code> element locator</p></dd>
+<dt class="field-even">Is Element Focused</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Is element focused</p>
+<p><code>locator</code> element locator</p></dd>
+<dt class="field-even">Is Element Text</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, expected: str, ignore_case: bool=False</p>
+</dd>
+</dl>
+<p>Is element text expected</p>
+<p><code>locator</code> element locator</p>
+<p><code>expected</code> expected element text</p>
+<p><code>ignore_case</code> should check be case insensitive, default <span class="name">False</span></p></dd>
+<dt class="field-even">Is Element Visible</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Is element visible</p>
+<p><code>locator</code> element locator</p></dd>
+<dt class="field-even">Is List Selected</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Is any option selected in the</p>
+<p><code>locator</code> element locator</p></dd>
+<dt class="field-even">Is List Selection</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, *expected: str</p>
+</dd>
+</dl>
+<p>Is list selected with expected values</p>
+<p><code>locator</code> element locator</p>
+<p><code>expected</code> expected selected options</p></dd>
+<dt class="field-even">Is Location</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>url: str</p>
+</dd>
+</dl>
+<p>Is current URL expected url</p>
+<p><code>url</code> expected current URL</p></dd>
+<dt class="field-even">Is Radio Button Selected</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>group_name: str</p>
+</dd>
+</dl>
+<p>Is any radio button selected in the button group</p>
+<p><code>group_name</code> radio button group name</p></dd>
+<dt class="field-even">Is Radio Button Set To</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>group_name: str, value: str</p>
+</dd>
+</dl>
+<p>Is radio button group set to expected value</p>
+<p><code>group_name</code> radio button group name</p>
+<p><code>value</code> expected value</p></dd>
+<dt class="field-even">Is Textarea Value</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, expected: str</p>
+</dd>
+</dl>
+<p>Is textarea matching expected value</p>
+<p><code>locator</code> element locator</p>
+<p><code>expected</code> expected textarea value</p></dd>
+<dt class="field-even">Is Textfield Value</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, expected: str</p>
+</dd>
+</dl>
+<p>Is textfield value expected</p>
+<p><code>locator</code> element locator</p>
+<p><code>expected</code> expected textfield value</p></dd>
+<dt class="field-even">Is Title</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>title: str</p>
+</dd>
+</dl>
+<p>Is page title expected</p>
+<p><code>title</code> expected title value</p></dd>
 <dt class="field-even">List Selection Should Be</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
