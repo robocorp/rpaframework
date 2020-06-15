@@ -4,69 +4,76 @@ Release notes
 Upcoming release
 ----------------
 
-- New boolean keywords for the ``Browser`` library
-- Add plugin ``SeleniumTestability``for the ``Browser`` library
-- OperatingSystem. Improve error messages on keywords restricted to specific
+- New features for **Browser** library
+
+  - Set headless with environment variable ``RPA_HEADLESS_MODE=1``
+  - New boolean keywords, for example ``Is Element Visible``, ``Does Page Contain``
+    and ``Get Element Status``
+  - Added plugin ``SeleniumTestability`` which can be enabled
+    with ``Library  RPA.Browser  use_testability``
+  - In total 40 new keywords
+
+- **OperatingSystem**: Improve error messages on keywords restricted to specific
   operating systems
 
 1.2.1
 -----
 
-- Cloud libraries. Fix ``use_robocloud_vault`` to support also ``FileSecrets``
+- Cloud libraries: Fix ``use_robocloud_vault`` to support also ``FileSecrets``
 
 1.2.0
 -----
 
 - Add support for Robocloud Vault for the following libraries:
 
-  - ``Cloud.AWS``
-  - ``Cloud.Azure``
-  - ``Cloud.Google``
+  - **Cloud.AWS**
+  - **Cloud.Azure**
+  - **Cloud.Google**
 
-- Images: Automatically convert points/regions from strings
-- Outlook.Application: Add keyword ``Wait For Message``
+- **Images**: Automatically convert points/regions from strings
+- **Outlook.Application**: Add keyword ``Wait For Message``
 
 1.1.0
 -----
 
-- New ``Tasks`` library, which allows using flow control between tasks
-- New ``Cloud.Azure`` library, which supports following Azure APIs:
+- New **Tasks** library, which allows using flow control between tasks
+- New **Cloud.Azure** library, which supports following Azure APIs:
 
   - ``Text Analytics``
   - ``Face``
   - ``Computer Vision``
   - ``Speech``
 
-- Cloud.AWS. Fix parameters and return options for keywords
+- **Cloud.AWS**: Fix parameters and return options for keywords
   ``Detect Document Text`` and ``Analyze Document``
 
 1.0.4
 -----
 
-- Excel: Files: Add keyword for setting cell values
-- Excel: Files: Mitigate compatibility issues with file extensions
+- **Excel.Files**: Add keyword for setting cell values
+- **Excel.Files**: Mitigate compatibility issues with file extensions
 
 1.0.3
 -----
 
-- Excel: Files: Fixed double close issue with workbooks
-- Excel: Files: Ignoring columns with empty header
-- Tables: Improved handling of non-string columns
+- **Excel.Files**: Fixed double close issue with workbooks
+- **Excel.Files**: Ignoring columns with empty header
+- **Tables**: Improved handling of non-string columns
 
 1.0.2
 -----
 
-- msoffice: Fix. Call `close document` only on Word documents
-- Browser: Fix Geckodriver downloading version based on Chrome version
+- **msoffice**: Fix. Call `close document` only on Word documents
+- **Browser**: Fix Geckodriver downloading version based on Chrome version
 
-Thank you https://github.com/mdp for providing fix for the ``msoffice``
+Thank you https://github.com/mdp for providing fix for the **msoffice**
 
 1.0.1
 -----
 
-- Tables: Added keywords ``Get table slice`` and ``Rename table columns``
-- Excel: Files: Fixed various issues with appending data to empty worksheet
-- Outlook: Fix attachment handling
+- **Tables**: Added keywords ``Get table slice`` and ``Rename table columns``
+- **Excel.Files**: Fixed various issues with appending data to empty worksheet
+- **Outlook**: Fix attachment handling
 
 1.0.0
 -----
@@ -78,7 +85,7 @@ Thank you https://github.com/mdp for providing fix for the ``msoffice``
 0.11.0
 ------
 
-- Cloud.Google: Added as optional package, needs to be installed
+- **Cloud.Google**: Added as optional package, needs to be installed
   with ``pip install rpa-framework[google]``
 
   Support for services:
@@ -91,33 +98,33 @@ Thank you https://github.com/mdp for providing fix for the ``msoffice``
     - ``Google Cloud Video Intelligence``
     - ``Google Cloud Vision``
 
-- Excel.Files: Minor documentation update
+- **Excel.Files**: Minor documentation update
 
 0.10.1
 ------
 
-- Email.Exchange: Fix parameter handling for kw ``send_message``
+- **Email.Exchange**: Fix parameter handling for kw ``send_message``
 
 0.10.0
 ------
 
-- Email.Exchange: Add support for ``HTML`` content, ``attachments``, and inline ``images``
-- Email.ImapSmtp: Allow sending inline images - parameter ``images`` for kw ``Send Message``
-- HTTP: Return response of ``Download`` keyword (including content)
-- Cloud.AWS: Due to ``boto3`` dependency size, library requires ``pip install rpa-framework[aws]`` to use
+- **Email.Exchange**: Add support for ``HTML`` content, ``attachments``, and inline ``images``
+- **Email.ImapSmtp**: Allow sending inline images - parameter ``images`` for kw ``Send Message``
+- **HTTP**: Return response of ``Download`` keyword (including content)
+- **Cloud.AWS**: Due to ``boto3`` dependency size, library requires ``pip install rpa-framework[aws]`` to use
 
 0.9.3
 -----
 
-- New library: Cloud.AWS, supporting following services:
+- New library: **Cloud.AWS**, supporting following services:
 
   - ``Comprehend``
   - ``S3``
   - ``SQS``
   - ``Textract``
 
-- Tables: Add keyword ``Get table dimensions``, allow setting arbitrary cell value
-- New library: Twitter
+- **Tables**: Add keyword ``Get table dimensions``, allow setting arbitrary cell value
+- New library: **Twitter**
 
 0.9.2
 -----
@@ -127,9 +134,9 @@ Thank you https://github.com/mdp for providing fix for the ``msoffice``
 0.9.1
 -----
 
-- Email.ImapStmp: Fix attachment handling for kw ``Send Message``
-- Excel Application library: Add keyword ``Run Macro``
-- PDF: Add keywords:
+- **Email.ImapStmp**: Fix attachment handling for kw ``Send Message``
+- **Excel.Application**: Add keyword ``Run Macro``
+- **PDF**: Add keywords:
 
   - ``Parse PDF``
   - ``Get input fields``
@@ -144,7 +151,7 @@ Thank you https://github.com/mdp for providing fix for the ``msoffice``
 0.9.0
 -----
 
-- Tables:
+- **Tables**:
 
   - **Note**: This change is backwards incompatible
   - Removed limitation of column names being valid Python identifiers
@@ -154,30 +161,30 @@ Thank you https://github.com/mdp for providing fix for the ``msoffice``
   - Table head/tail keywords changed to return new Table instance
   - Added keyword for trimming extra whitespace from column names
 
-- Excel files library: Trim column names in addition to rows
+- **Excel.Files**: Trim column names in addition to rows
 
 0.8.7
 -----
 
-- OperatingSystem: psutils dependency marked as Windows only because
+- **OperatingSystem**: psutils dependency marked as Windows only because
   it has wheel files only for Windows
 
 0.8.6
 -----
 
-- HTTP:
+- **HTTP**:
 
   - Add keyword ``Download``
   - Add ``overwrite`` option to ``HTTP Get``
 
-- FileSystem:
+- **FileSystem**:
 
   - Fix string interpolation in error messages
   - Add ``force`` option for file removal keywords
   - Add ``overwrite`` option for file create keywords
 
-- Tables: Add keyword ``Trim empty rows``
-- Excel files library:
+- **Tables**: Add keyword ``Trim empty rows``
+- **Excel.Files**:
 
   - Add keyword ``Read worksheet as table``
   - Auto-convert integer values in .xls worksheets
@@ -185,59 +192,59 @@ Thank you https://github.com/mdp for providing fix for the ``msoffice``
 0.8.5
 -----
 
-- PDF: Add ``Encrypt PDF`` and ``Add Pages To Source PDF`` keywords.
-- Windows: Add aliases for element locators,
+- **PDF**: Add ``Encrypt PDF`` and ``Add Pages To Source PDF`` keywords.
+- **Windows**: Add aliases for element locators,
   for better Robocode Lab compatibility
-- HTTP: Add keyword ``HTTP Get``
-- Tables: Fix missing cell values for sanitized columns
+- **HTTP**: Add keyword ``HTTP Get``
+- **Tables**: Fix missing cell values for sanitized columns
 
 0.8.4
 -----
 
-- Fix: PDF ``Template HTML to PDF`` keyword
+- Fix: **PDF** ``Template HTML to PDF`` keyword
 
 0.8.3
 -----
 
-- Fix: Windows ``drag_and_drop`` keyword
-- New library: Netsuite
-- PDF: add new keywords
+- Fix: **Windows** ``drag_and_drop`` keyword
+- New library: **Netsuite**
+- **PDF**: add new keywords
 
 0.8.2
 -----
 
-- Windows: Add keyword for clicking image templates
-- Windows: Add keyword for drag and drop
+- **Windows**: Add keyword for clicking image templates
+- **Windows**: Add keyword for drag and drop
 
 0.8.1
 -----
 
-- Browser: Fix ``Open Available Browser`` kw parameter bug
+- **Browser**: Fix ``Open Available Browser`` kw parameter bug
 
 0.8.0
 -----
 
-- New library: Salesforce
-- New library: Database
+- New library: **Salesforce**
+- New library: **Database**
 
 0.7.5
 -----
 
-- ImapSmtp: Separate how IMAP and SMTP are handled in the library
-- Windows: Improve documentation for keys
-- Browser: Manage webdrivermanager download error
+- **Email.ImapSmtp**: Separate how IMAP and SMTP are handled in the library
+- **Windows**: Improve documentation for keys
+- **Browser**: Manage webdrivermanager download error
 
 0.7.4
 -----
 
-- Browser: Restructure how driver downloads and logging are handled
+- **Browser**: Restructure how driver downloads and logging are handled
 
 0.7.3
 -----
 
-- Browser: Detect Chrome and chromedriver versions. Download driver if they differ
-- Images: Don't template match same region multiple times
-- Tables:
+- **Browser**: Detect Chrome and chromedriver versions. Download driver if they differ
+- **Images**: Don't template match same region multiple times
+- **Tables**:
 
   - Added new keywords: ``Set table row``, ``Set table column``, ``Set table cell``
   - Renamed keyword ``Get cell value`` to ``Get table cell``
@@ -245,7 +252,7 @@ Thank you https://github.com/mdp for providing fix for the ``msoffice``
 0.7.2
 -----
 
-- Browser: Store webdrivers in temporary directory
+- **Browser**: Store webdrivers in temporary directory
 
 0.7.1
 -----
