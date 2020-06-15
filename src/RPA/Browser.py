@@ -52,19 +52,17 @@ class Browser(SeleniumLibrary):
 
     def __init__(self, *args, **kwargs) -> None:
         self.logger = logging.getLogger(__name__)
-        disable_testability = (
-            bool(kwargs["disable_testability"])
-            if "disable_testability" in kwargs.keys()
-            else False
-        )
-        kwargs.pop("disable_testability", None)
+        self.using_testability = False
+        if "use_testability" in args:
+            self.using_testability = True
+            args = filter(lambda x: x != "use_testability", args)
         if "plugins" in kwargs.keys() and "SeleniumTestability" in kwargs["plugins"]:
             # SeleniumTestability already included as plugin
-            pass
-        elif not disable_testability and "plugins" in kwargs.keys():
+            self.using_testability = True
+        elif self.using_testability and "plugins" in kwargs.keys():
             # Adding SeleniumTestability as SeleniumLibrary plugin
             kwargs["plugins"] += ",SeleniumTestability"
-        elif not disable_testability:
+        elif self.using_testability:
             # Setting SeleniumTestability as SeleniumLibrary plugin
             kwargs["plugins"] = "SeleniumTestability"
         SeleniumLibrary.__init__(self, *args, **kwargs)
@@ -366,8 +364,7 @@ class Browser(SeleniumLibrary):
         driver_executable = dm.get_driver_filename()
         default_executable_path = Path(dm.link_path) / driver_executable
 
-        tempdir = os.getenv("TEMPDIR") or tempfile.gettempdir()
-        driver_tempdir = Path(tempdir) / "drivers"
+        driver_tempdir = Path(tempfile.gettempdir()) / "drivers"
         temp_executable_path = Path(driver_tempdir) / driver_executable
 
         if temp_executable_path.exists() or download:
@@ -810,6 +807,7 @@ class Browser(SeleniumLibrary):
 
         ``locator`` element locator
         """
+        self.logger.info("Will return if anything is selected on the list")
         return not self._run_should_keyword_and_return_status(
             self.list_should_have_no_selections, locator
         )
@@ -821,6 +819,16 @@ class Browser(SeleniumLibrary):
         ``url`` expected current URL
         """
         return self._run_should_keyword_and_return_status(self.location_should_be, url)
+
+    @keyword
+    def does_location_contain(self, expected: str) -> bool:
+        """Does current URL contain expected
+
+        ``expected`` URL should contain this
+        """
+        return self._run_should_keyword_and_return_status(
+            self.location_should_contain, expected
+        )
 
     @keyword
     def does_page_contain(self, text: str) -> bool:
@@ -933,6 +941,9 @@ class Browser(SeleniumLibrary):
 
         ``group_name`` radio button group name
         """
+        self.logger.info(
+            "Will return if anything is selected on the radio button group"
+        )
         return not self._run_should_keyword_and_return_status(
             self.radio_button_should_not_be_selected, group_name
         )
@@ -952,7 +963,7 @@ class Browser(SeleniumLibrary):
         ``expected`` expected text in table row
         """
         return self._run_should_keyword_and_return_status(
-            self.table_row_should_contain, locator, row, column, expected
+            self.table_cell_should_contain, locator, row, column, expected
         )
 
     @keyword
@@ -968,7 +979,7 @@ class Browser(SeleniumLibrary):
         ``expected`` expected text in table column
         """
         return self._run_should_keyword_and_return_status(
-            self.table_row_should_contain, locator, column, expected
+            self.table_column_should_contain, locator, column, expected
         )
 
     @keyword
@@ -1101,3 +1112,8 @@ class Browser(SeleniumLibrary):
         status_object["disabled"] = self.is_element_disabled(locator)
         status_object["focused"] = self.is_element_focused(locator)
         return status_object
+
+    @keyword
+    def get_testability_status(self) -> bool:
+        """Get SeleniumTestability plugin status"""
+        return self.using_testability
