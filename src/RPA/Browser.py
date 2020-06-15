@@ -38,7 +38,7 @@ class Browser(SeleniumLibrary):
 
     AVAILABLE_OPTIONS = {
         "chrome": "ChromeOptions",
-        # "firefox": "FirefoxOptions",
+        "firefox": "FirefoxOptions",
         # "safari": "WebKitGTKOptions",
         # "ie": "IeOptions",
     }
@@ -360,7 +360,10 @@ class Browser(SeleniumLibrary):
     def _set_driver_paths(self, dm_class: str, download: bool) -> Any:
         driver_executable_path = None
 
-        dm = dm_class()
+        if platform != "Windows":
+            dm = dm_class(link_path="/usr/bin")
+        else:
+            dm = dm_class()
         driver_executable = dm.get_driver_filename()
         default_executable_path = Path(dm.link_path) / driver_executable
 
@@ -460,6 +463,7 @@ class Browser(SeleniumLibrary):
 
         ``maximized`` if the browser should be run maximized, default ``False``
         """
+        rpa_headless_mode = os.getenv("RPA_HEADLESS_MODE", None)
         browser_options = None
         driver_options = {}
         browser = browser.lower()
@@ -476,7 +480,7 @@ class Browser(SeleniumLibrary):
             class_ = getattr(module, browser_option_class)
             browser_options = class_()
 
-        if headless:
+        if headless or bool(rpa_headless_mode):
             self.set_headless_options(browser, browser_options)
 
         if browser_options and maximized:
