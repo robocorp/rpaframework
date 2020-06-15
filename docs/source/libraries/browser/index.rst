@@ -13,8 +13,21 @@ Description
 `Browser` is a library for interfacing with web browsers like Chrome,
 Firefox, Safari, Edge, and Opera. The library extends `SeleniumLibrary`_.
 
+Supports now also usage of `SeleniumTestability`_ plugin, which can be taken
+into use by iniatializing library with:
+
+.. code-block:: robotframework
+    :linenos:
+
+    *** Settings ***
+    Library   RPA.Browser  use_testability
+
+
 .. _SeleniumLibrary:
     https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html
+
+.. _SeleniumTestability:
+    https://github.com/rasjani/robotframework-seleniumtestability
 
 ********
 Examples

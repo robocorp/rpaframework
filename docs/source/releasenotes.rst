@@ -4,7 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
-- DperatingSystem. Improve error messages on keywords restricted to specific
+- New boolean keywords for the ``Browser`` library
+- Add plugin ``SeleniumTestability``for the ``Browser`` library
+- OperatingSystem. Improve error messages on keywords restricted to specific
   operating systems
 
 1.2.1
