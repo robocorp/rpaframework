@@ -4,11 +4,14 @@ Release notes
 Upcoming release
 ----------------
 
+1.3.0
+-----
+
 - New features for **Browser** library
 
-  - Set headless with environment variable ``RPA_HEADLESS_MODE=1``
-  - New boolean keywords, for example ``Is Element Visible``, ``Does Page Contain``
-    and ``Get Element Status``
+  - Set headless mode with environment variable ``RPA_HEADLESS_MODE=1``
+  - New boolean returning keywords like ``Is Element Visible`` and ``Does Page Contain``
+  - New keyword ``Get Element Status`` to get 4 different element states in a dictionary
   - Added plugin ``SeleniumTestability`` which can be enabled
     with ``Library  RPA.Browser  use_testability``
   - In total 40 new keywords
