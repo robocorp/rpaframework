@@ -13,7 +13,8 @@ Description
 `Browser` is a library for interfacing with web browsers like Chrome,
 Firefox, Safari, Edge, and Opera. The library extends `SeleniumLibrary`_.
 
-Headless mode can be set by environment variable ``RPA_HEADLESS_MODE=1``
+Headless mode can be set by environment variable ``RPA_HEADLESS_MODE=1``. This
+setting is used with ``Open Available Browser`` keyword.
 
 Supports now also usage of `SeleniumTestability`_ plugin, which can be taken
 into use by iniatializing library with:
@@ -38,7 +39,7 @@ Examples
 Robot Framework
 ===============
 
-The library provides a special keyword `Open Available Browser`.
+The library provides a special keyword ``Open Available Browser``.
 
 The keyword opens the first available webdriver in the running environment.
 For example, for `Windows`, the browser list in preference order
