@@ -171,7 +171,7 @@ class WorkItem:
 class Items:
     """A library for interacting with RPA work items.
 
-    `WorkItems` is a collection of keywords for handling data
+    `Items` is a collection of keywords for handling data
     that is moved between different processes and Robot Framework
     tasks. It allows storing and restoring values to/from cloud or file based
     storage, and manipulating their contents.
@@ -230,7 +230,7 @@ class Items:
         """
         workspace_id = required_env("RC_WORKSPACE_ID")
         item_id = required_env("RC_WORKITEM_ID")
-        self.load_work_item(workspace_id, item_id)
+        return self.load_work_item(workspace_id, item_id)
 
     def load_work_item(self, workspace_id, item_id):
         """Load work item for reading/writing.
@@ -255,9 +255,13 @@ class Items:
         assert self.current, "No active work item"
         self.current.data = {}
 
+    def list_work_item_variables(self):
+        """List the variable names for the current work item."""
+        return list(self.get_work_item_variables().keys())
+
     def get_work_item_variables(self):
         """Read all variables from the current work item and
-        return them as a dictionary.
+        return their names and values as a dictionary.
         """
         assert self.current, "No active work item"
         return self.current.data.setdefault("variables", {})
@@ -295,6 +299,20 @@ class Items:
         variables = self.get_work_item_variables()
         logging.info("%s = %s", name, value)
         variables[name] = value
+
+    def delete_work_item_variables(self, *names, force=True):
+        """Delete variable(s) from the current work item.
+
+        :param names:  names of variables to remove
+        :param force:  ignore variables that don't exist in work item
+        """
+        variables = self.get_work_item_variables()
+        for name in names:
+            if name in variables:
+                del variables[name]
+                logging.info("Deleted variable: %s", name)
+            elif not force:
+                raise KeyError(f"No such variable: {name}")
 
     def set_task_variables_from_work_item(self):
         """Convert all variables in the current work item to

@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- **Robocloud.Items**: Add keywords for listing and deleting variables
+
 1.3.0
 -----
 
