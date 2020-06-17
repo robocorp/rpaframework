@@ -467,18 +467,13 @@ class Browser(SeleniumLibrary):
         browser_options = None
         driver_options = {}
         browser = browser.lower()
-        browser_option_class = (
-            self.AVAILABLE_OPTIONS[browser]
-            if browser in self.AVAILABLE_OPTIONS.keys()
-            else None
-        )
-        if browser_option_class is None:
-            return driver_options
 
         if browser in self.AVAILABLE_OPTIONS.keys():
             module = importlib.import_module("selenium.webdriver")
-            class_ = getattr(module, browser_option_class)
+            class_ = getattr(module, self.AVAILABLE_OPTIONS[browser])
             browser_options = class_()
+        else:
+            return driver_options
 
         if headless or bool(rpa_headless_mode):
             self.set_headless_options(browser, browser_options)
@@ -490,6 +485,9 @@ class Browser(SeleniumLibrary):
         if browser_options and use_profile:
             self.set_user_profile(browser_options)
 
+        self.logger.info(
+            "Using driver %s: %s", (browser_options, browser_options.to_capabilities())
+        )
         if browser_options and browser != "chrome":
             driver_options["options"] = browser_options
         elif browser_options and browser == "chrome":
