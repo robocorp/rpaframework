@@ -10,7 +10,7 @@ Description
 
 A library for interacting with RPA work items.
 
-`WorkItems` is a collection of keywords for handling data
+`Items` is a collection of keywords for handling data
 that is moved between different processes and Robot Framework
 tasks. It allows storing and restoring values to/from cloud or file based
 storage, and manipulating their contents.
@@ -29,6 +29,12 @@ Keywords
 :Clear Work Item:
   Remove all data in the current work item.
 
+:Delete Work Item Variables:
+  :Arguments: \*names, force=True
+
+  Delete variable(s) from the current work item.
+
+
 :Get Work Item Variable:
   :Arguments: name, default=None
 
@@ -39,7 +45,10 @@ Keywords
 
 :Get Work Item Variables:
   Read all variables from the current work item and
-  return them as a dictionary.
+  return their names and values as a dictionary.
+
+:List Work Item Variables:
+  List the variable names for the current work item.
 
 :Load Work Item:
   :Arguments: workspace_id, item_id

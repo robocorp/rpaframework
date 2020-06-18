@@ -252,7 +252,7 @@
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Items.</code><code class="sig-name descname">Items</code><span class="sig-paren">(</span><em class="sig-param">load_env=True</em>, <em class="sig-param">default_adapter=&lt;class 'RPA.Robocloud.Items.RobocloudAdapter'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A library for interacting with RPA work items.</p>
-<p><cite>WorkItems</cite> is a collection of keywords for handling data
+<p><cite>Items</cite> is a collection of keywords for handling data
 that is moved between different processes and Robot Framework
 tasks. It allows storing and restoring values to/from cloud or file based
 storage, and manipulating their contents.</p>
@@ -299,6 +299,20 @@ storage, and manipulating their contents.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Robocloud.Items.Items.delete_work_item_variables">
+<code class="sig-name descname">delete_work_item_variables</code><span class="sig-paren">(</span><em class="sig-param">*names</em>, <em class="sig-param">force=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.delete_work_item_variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete variable(s) from the current work item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>names</strong> – names of variables to remove</p></li>
+<li><p><strong>force</strong> – ignore variables that don’t exist in work item</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Robocloud.Items.Items.get_work_item_variable">
 <code class="sig-name descname">get_work_item_variable</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">default=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.get_work_item_variable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a single variable value from the work item,
@@ -318,7 +332,13 @@ If key does not exist and default is not defined, raises <cite>KeyError</cite>.<
 <dt id="RPA.Robocloud.Items.Items.get_work_item_variables">
 <code class="sig-name descname">get_work_item_variables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.get_work_item_variables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read all variables from the current work item and
-return them as a dictionary.</p>
+return their names and values as a dictionary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.Items.list_work_item_variables">
+<code class="sig-name descname">list_work_item_variables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.list_work_item_variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>List the variable names for the current work item.</p>
 </dd></dl>
 
 <dl class="method">

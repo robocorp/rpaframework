@@ -212,7 +212,7 @@
 </dd>
 </dl>
 <p>A library for interacting with RPA work items.</p>
-<p><cite>WorkItems</cite> is a collection of keywords for handling data
+<p><cite>Items</cite> is a collection of keywords for handling data
 that is moved between different processes and Robot Framework
 tasks. It allows storing and restoring values to/from cloud or file based
 storage, and manipulating their contents.</p>
@@ -229,6 +229,14 @@ storage, and manipulating their contents.</p>
 <dt class="field-odd">Clear Work Item</dt>
 <dd class="field-odd"><p>Remove all data in the current work item.</p>
 </dd>
+<dt class="field-even">Delete Work Item Variables</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>*names, force=True</p>
+</dd>
+</dl>
+<p>Delete variable(s) from the current work item.</p>
+</dd>
 <dt class="field-even">Get Work Item Variable</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -241,10 +249,13 @@ If key does not exist and default is not defined, raises <cite>KeyError</cite>.<
 </dd>
 <dt class="field-even">Get Work Item Variables</dt>
 <dd class="field-even"><p>Read all variables from the current work item and
-return them as a dictionary.</p>
+return their names and values as a dictionary.</p>
 </dd>
-<dt class="field-odd">Load Work Item</dt>
-<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">List Work Item Variables</dt>
+<dd class="field-odd"><p>List the variable names for the current work item.</p>
+</dd>
+<dt class="field-even">Load Work Item</dt>
+<dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>workspace_id, item_id</p>
 </dd>
