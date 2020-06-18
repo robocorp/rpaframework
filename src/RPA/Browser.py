@@ -486,7 +486,7 @@ class Browser(SeleniumLibrary):
             self.set_user_profile(browser_options)
 
         self.logger.info(
-            "Using driver %s: %s", (browser_options, browser_options.to_capabilities())
+            "Using driver %s: %s", browser_options, browser_options.to_capabilities()
         )
         if browser_options and browser != "chrome":
             driver_options["options"] = browser_options
