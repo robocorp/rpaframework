@@ -268,7 +268,7 @@
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.connect_by_handle">
-<code class="sig-name descname">connect_by_handle</code><span class="sig-paren">(</span><em class="sig-param">handle: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_handle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">connect_by_handle</code><span class="sig-paren">(</span><em class="sig-param">handle: str</em>, <em class="sig-param">windowtitle: str = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_handle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to application by its handle</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -279,7 +279,7 @@
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.connect_by_pid">
-<code class="sig-name descname">connect_by_pid</code><span class="sig-paren">(</span><em class="sig-param">app_pid: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_pid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">connect_by_pid</code><span class="sig-paren">(</span><em class="sig-param">app_pid: str</em>, <em class="sig-param">windowtitle: str = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_pid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to application by its pid</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -483,6 +483,25 @@ and their descendants.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>all controls and all elements</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.get_window_list">
+<code class="sig-name descname">get_window_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_window_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of open windows</p>
+<p>window dictionaries contains:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>title</p></li>
+<li><p>pid</p></li>
+<li><p>handle</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of window dictionaries</p>
 </dd>
 </dl>
 </dd></dl>
@@ -696,7 +715,7 @@ center coordinates.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_dialog">
-<code class="sig-name descname">open_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">highlight: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_dialog" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">highlight: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open window by its title.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

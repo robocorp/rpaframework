@@ -5,6 +5,9 @@ Upcoming release
 ----------------
 
 - **Robocloud.Items**: Add keywords for listing and deleting variables
+- **Windows**: Add keyword ``get_window_list``
+- **Windows**: Fix keywords ``connect_by_pid`` and ``connect_by_handle``
+
 
 1.3.0
 -----

@@ -38,13 +38,13 @@ Keywords
   Close all applications
 
 :Connect By Handle:
-  :Arguments: handle: str
+  :Arguments: handle: str, windowtitle: str=None
 
   Connect to application by its handle
 
 
 :Connect By Pid:
-  :Arguments: app_pid: str
+  :Arguments: app_pid: str, windowtitle: str=None
 
   Connect to application by its pid
 
@@ -132,6 +132,16 @@ Keywords
 
   Get element information about all window dialog controls
   and their descendants.
+
+
+:Get Window List:
+  Get list of open windows
+
+  window dictionaries contains:
+
+      - title
+      - pid
+      - handle
 
 
 :Is Element Enabled:
