@@ -252,7 +252,7 @@ class Windows(OperatingSystem):
         self.dlg = pywinauto.Desktop(backend="uia")[windowtitle]
         self.dlg.restore()
 
-    def open_dialog(self, windowtitle: str = None, highlight: bool = False) -> None:
+    def open_dialog(self, windowtitle: str = None, highlight: bool = False) -> Any:
         """Open window by its title.
 
         :param windowtitle: name of the window, defaults to active window if None
@@ -263,35 +263,50 @@ class Windows(OperatingSystem):
             self.windowtitle = windowtitle
         else:
             windowtitle = self.windowtitle
-        self.dlg = pywinauto.Desktop(backend="uia")[windowtitle]
-        self._apps[self._active_app_instance]["dlg"] = self.dlg
-        if self._apps[self._active_app_instance]["app"] is None:
-            self.connect_by_handle(self.dlg.handle)
-        # self.logger.info(self.dlg.print_control_identifiers())
+
+        window_list = self.get_window_list()
+        app_instance = None
+        for win in window_list:
+            if win["title"] == windowtitle:
+                app_instance = self.connect_by_handle(win["handle"])
+
         if highlight:
             self.dlg.draw_outline()
+        return app_instance
 
-    def connect_by_pid(self, app_pid: str) -> None:
+    def connect_by_pid(self, app_pid: str, windowtitle: str = None) -> Any:
         """Connect to application by its pid
 
         :param app_pid: process id of the application
         """
         self.logger.info("Connect to application pid: %s", app_pid)
-        app = pywinauto.Application(backend="uia").connect(
-            process=app_pid, visible_only=False
-        )
-        self.logger.debug(app)
+        window_list = self.get_window_list()
+        for win in window_list:
+            if win["pid"] == app_pid:
+                if windowtitle is None or (windowtitle and windowtitle in win["title"]):
+                    self.logger.info(
+                        "PID:%s matched window title:%s", win["pid"], win["title"]
+                    )
+                    return self.connect_by_handle(win["handle"], windowtitle)
+        return None
 
-    def connect_by_handle(self, handle: str) -> None:
+    def connect_by_handle(self, handle: str, windowtitle: str = None) -> Any:
         """Connect to application by its handle
 
         :param handle: handle of the application
         """
         self.logger.info("Connect to application handle: %s", handle)
-        self.app = pywinauto.Application(backend="uia").connect(
+        app = pywinauto.Application(backend="uia").connect(
             handle=handle, visible_only=False
         )
-        self._apps[self._active_app_instance]["app"] = self.app
+        self.dlg = app.window(handle=handle)
+        self.dlg.restore()
+        params = None
+        if windowtitle is not None:
+            params = {}
+            params["windowtitle"] = windowtitle
+        app_instance = self._add_app_instance(app=app, params=params, dialog=False)
+        return app_instance
 
     def close_all_applications(self) -> None:
         """Close all applications
@@ -1027,3 +1042,22 @@ class Windows(OperatingSystem):
         x = int((right - left) / 2) + left
         y = int((bottom - top) / 2) + top
         return x, y
+
+    def get_window_list(self):
+        """Get list of open windows
+
+        window dictionaries contains:
+
+            - title
+            - pid
+            - handle
+
+        :return: list of window dictionaries
+        """
+        windows = pywinauto.Desktop(backend="uia").windows()
+        window_list = []
+        for w in windows:
+            window_list.append(
+                {"title": w.window_text(), "pid": w.process_id(), "handle": w.handle}
+            )
+        return window_list
