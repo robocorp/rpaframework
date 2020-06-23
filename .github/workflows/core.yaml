@@ -1,15 +1,15 @@
-name: rpaframework
+name: rpaframework-core
 
 on:
   push:
     branches:
       - master
     paths:
-      - 'packages/main/**'
+      - 'packages/core/**'
 
 defaults:
   run:
-    working-directory: './packages/main'
+    working-directory: './packages/core'
 
 jobs:
   test:
@@ -74,8 +74,8 @@ jobs:
     - uses: actions/upload-artifact@v1
       if: success() || failure()
       with:
-          name: ${{ matrix.os }}-py${{ matrix.python }}-test-reports
-          path: tests/results
+        name: ${{ matrix.os }}-py${{ matrix.python }}-test-reports
+        path: tests/results
 
   publish:
     needs: test

@@ -2,46 +2,30 @@
 __pycache__/
 *.py[cod]
 
-# Packaging
-dist/
-sdist/
+# Packages
 *.egg-info/
 *.egg
-
-# Exports
-requirements.txt
-requirements-dev.txt
-setup.py
+*.whl
 
 # Documentation
 docs/build/
 docs/source/libdoc/
 docs/source/prebuild/
 
-# Unittests
-.pytest_cache/
+# Virtualenv
+*venv/
 
-# Robot Framework
-tests/results
-tests/*.html
-tests/*.xml
+# Poetry
+poetry.toml
 
-# IDE
+# VS Code
 .vscode/
 
 # MacOS
 .DS_Store
-
-# Virtualenv
-*venv/
 
 # Jupyter
 *.ipynb_checkpoints
 
 # LibreOffice
 **/.~lock*
-
-# Webdriver/browser output
-# TODO: Fix somehow
-*.log
-temp

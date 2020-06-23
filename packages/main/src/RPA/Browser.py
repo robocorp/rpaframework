@@ -2,12 +2,6 @@ import importlib
 import logging
 import os
 import platform
-import re
-import stat
-import subprocess
-
-# import selenium
-import tempfile
 import time
 from typing import Any
 from pathlib import Path
@@ -15,11 +9,9 @@ from pathlib import Path
 from SeleniumLibrary import SeleniumLibrary
 from SeleniumLibrary.base import keyword
 from SeleniumLibrary.keywords import BrowserManagementKeywords
-
 from selenium.common.exceptions import WebDriverException
 
-
-from webdrivermanager import AVAILABLE_DRIVERS
+from RPA.core import webdriver
 
 
 class BrowserNotFoundError(Exception):
@@ -42,13 +34,6 @@ class Browser(SeleniumLibrary):
         # "safari": "WebKitGTKOptions",
         # "ie": "IeOptions",
     }
-
-    CHROMEDRIVER_VERSIONS = {
-        "81": "81.0.4044.69",
-        "80": "80.0.3987.106",
-        "79": "79.0.3945.36",
-    }
-    CHROME_VERSION_PATTERN = r"(\d+)(\.\d+\.\d+.\d+)"
 
     def __init__(self, *args, **kwargs) -> None:
         self.logger = logging.getLogger(__name__)
@@ -142,7 +127,7 @@ class Browser(SeleniumLibrary):
             # First try: Without any actions
             self.logger.info("Initializing webdriver with default options (method 1)")
             index = self.create_rpa_webdriver(browser, options)
-            if index is not False:
+            if index is not None:
                 selected_browser = (browser, 1)
                 break
 
@@ -151,7 +136,7 @@ class Browser(SeleniumLibrary):
             # Second try: Install driver (if there is a manager for driver)
             self.logger.info("Initializing webdriver with downloaded driver (method 2)")
             index = self.create_rpa_webdriver(browser, options, download=True)
-            if index is not False:
+            if index is not None:
                 selected_browser = (browser, 2)
                 break
 
@@ -167,7 +152,7 @@ class Browser(SeleniumLibrary):
                 )
                 self.logger.info("Initializing webdriver in headless mode (method 3)")
                 index = self.create_rpa_webdriver(browser, options, download=True)
-                if index is not False:
+                if index is not None:
                     selected_browser = (browser, 3)
                     break
 
@@ -200,12 +185,12 @@ class Browser(SeleniumLibrary):
 
         ``download`` if the driver should be download, default ``False``
 
-        Returns an index of the webdriver session, ``False`` if webdriver
+        Returns an index of the webdriver session, ``None`` if webdriver
         was not initialized.
         """
-        executable = False
         self.logger.debug("Driver options for create_rpa_webdriver: %s", options)
-        executable = self.webdriver_init(browser, download)
+        executable = webdriver.initialize(browser, download)
+
         try:
             browser = browser.lower().capitalize()
             browser_management = BrowserManagementKeywords(self)
@@ -215,11 +200,12 @@ class Browser(SeleniumLibrary):
                 )
             else:
                 index = browser_management.create_webdriver(browser, **options)
+
             return index
         except WebDriverException as err:
             self.logger.info("Could not open driver: %s", err)
-            return False
-        return False
+
+        return None
 
     def get_browser_order(self, browser_selection: Any) -> list:
         """Get a list of browsers that will be used for open browser
@@ -237,208 +223,6 @@ class Browser(SeleniumLibrary):
                 else [browser_selection]
             )
         return preferable_browser_order
-
-    @keyword
-    def detect_chrome_version(self) -> str:
-        """Detect Chrome browser version (if possible) on different
-        platforms using different commands for each platform.
-
-        Returns corresponding chromedriver version, if possible.
-
-        Supported Chrome major versions are 81, 80 and 79.
-        """
-        # pylint: disable=line-too-long
-        OS_CMDS = {
-            "Windows": [
-                r'reg query "HKEY_CURRENT_USER\Software\Google\Chrome\BLBeacon" /v version',  # noqa
-                r'reg query "HKEY_CURRENT_USER\Software\Chromium\BLBeacon" /v version',  # noqa
-            ],
-            "Linux": [
-                "chromium --version",
-                "chromium-browser --version",
-                "google-chrome --version",
-            ],
-            "Darwin": [
-                r"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version",  # noqa
-                r"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version",  # noqa
-                r"/Applications/Chromium.app/Contents/MacOS/Chromium --version",
-            ],
-        }
-        CMDS = OS_CMDS[platform.system()]
-        for cmd in CMDS:
-            output = self._run_command_return_output(cmd)
-            if output:
-                version = re.search(self.CHROME_VERSION_PATTERN, output)
-                if version:
-                    major = version.group(1)
-                    detailed = version.group(0)
-                    self.logger.info("Detected Chrome major version is: %s", detailed)
-                    return (
-                        self.CHROMEDRIVER_VERSIONS[major]
-                        if (major in self.CHROMEDRIVER_VERSIONS.keys())
-                        else None
-                    )
-        return None
-
-    def _run_command_return_output(self, command: str) -> str:
-        try:
-            process = subprocess.Popen(
-                command,
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                shell=True,
-            )
-            output, _ = process.communicate()
-            return str(output).strip()
-        except FileNotFoundError:
-            self.logger.debug('Command "%s" not found', command)
-            return None
-
-    def get_installed_chromedriver_version(self, driver_executable_path: str) -> str:
-        """Returns the full version number for a stable chromedriver.
-
-        The stable version is defined internally based on the major version
-        of the chromedriver.
-
-        ``driver_executable_path`` path to chromedriver
-        """
-        output = self._run_command_return_output(driver_executable_path)
-        if output:
-            version = re.search(self.CHROME_VERSION_PATTERN, output)
-            if version:
-                major = version.group(1)
-                detailed = version.group(0)
-                self.logger.info("Detected chromedriver major version is: %s", detailed)
-                return (
-                    self.CHROMEDRIVER_VERSIONS[major]
-                    if (major in self.CHROMEDRIVER_VERSIONS.keys())
-                    else None
-                )
-        return None
-
-    def download_driver(
-        self, dm_class: str, download_dir: str, version: str = None
-    ) -> None:
-        """ Download the driver to a given directory. By default, downloads
-        the latest version for the given webdriver type. This can be
-        overridden by giving the ``version`` parameter.
-
-        ``dm_class`` driver manager class
-
-        ``download_dir`` directory to download driver into
-
-        ``version`` download specific version, by default downloads the latest version
-        """
-        self.logger.info("Downloading driver into: %s", str(download_dir))
-        dm = dm_class(download_root=download_dir, link_path=download_dir)
-        try:
-            dm_result = None
-            if version:
-                dm_result = dm.download_and_install(version)
-            else:
-                dm_result = dm.download_and_install()
-            if platform.system() == "Darwin" and dm_result:
-                self._set_executable_permissions(dm_result[0])
-            self.logger.debug(
-                "%s downloaded into %s", dm.get_driver_filename(), str(download_dir)
-            )
-        except RuntimeError:
-            pass
-
-    def _set_executable_permissions(self, chromedriver_filepath: str = None) -> None:
-        if chromedriver_filepath:
-            self.logger.debug(
-                "Set Executable Permissions for file: %s", chromedriver_filepath
-            )
-            st = os.stat(chromedriver_filepath)
-            os.chmod(
-                chromedriver_filepath,
-                st.st_mode | stat.S_IXOTH | stat.S_IXGRP | stat.S_IEXEC,
-            )
-
-    def _set_driver_paths(self, dm_class: str, download: bool) -> Any:
-        driver_executable_path = None
-
-        if platform != "Windows":
-            dm = dm_class(link_path="/usr/bin")
-        else:
-            dm = dm_class()
-        driver_executable = dm.get_driver_filename()
-        default_executable_path = Path(dm.link_path) / driver_executable
-
-        driver_tempdir = Path(tempfile.gettempdir()) / "drivers"
-        temp_executable_path = Path(driver_tempdir) / driver_executable
-
-        if temp_executable_path.exists() or download:
-            driver_executable_path = temp_executable_path
-        else:
-            driver_executable_path = default_executable_path
-        return driver_executable_path, driver_tempdir
-
-    def _check_chrome_and_driver_versions(
-        self, driver_ex_path: str, browser_version: str
-    ) -> bool:
-        download_driver = False
-        chromedriver_version = self.get_installed_chromedriver_version(
-            str(driver_ex_path / " --version")
-        )
-        if chromedriver_version is False:
-            self.logger.info("Could not detect chromedriver version.")
-            download_driver = True
-        elif chromedriver_version != browser_version:
-            self.logger.info("Chrome and chromedriver versions are different.")
-            download_driver = True
-        return download_driver
-
-    def webdriver_init(self, browser: str, download: bool = False) -> str:
-        """Webdriver initialization with default driver
-        paths or with downloaded drivers.
-
-        ``browser`` use drivers for this browser
-
-        ``download`` if drivers should be downloaded, default ``False``
-        """
-        browser = browser.lower()
-        self.logger.debug(
-            "Webdriver initialization for browser: '%s'. Download set to: %s",
-            browser,
-            download,
-        )
-        if browser == "chrome":
-            browser_version = self.detect_chrome_version()
-        else:
-            browser_version = None
-        dm_class = (
-            AVAILABLE_DRIVERS[browser] if browser in AVAILABLE_DRIVERS.keys() else None
-        )
-        if dm_class:
-            self.logger.debug("Driver manager class: %s", dm_class)
-            driver_ex_path, driver_tempdir = self._set_driver_paths(dm_class, download)
-            if download:
-                if not driver_ex_path.exists():
-                    self.download_driver(dm_class, driver_tempdir, browser_version)
-                else:
-                    if browser == "chrome":
-                        force_download = self._check_chrome_and_driver_versions(
-                            driver_ex_path, browser_version
-                        )
-                        if force_download:
-                            self.download_driver(
-                                dm_class, driver_tempdir, browser_version
-                            )
-                    else:
-                        self.logger.info(
-                            "Driver download skipped, because it already "
-                            "existed at %s",
-                            driver_ex_path,
-                        )
-            else:
-                self.logger.info("Using already existing driver at: %s", driver_ex_path)
-
-            return r"%s" % str(driver_ex_path)
-        else:
-            return None
 
     def set_driver_options(
         self,

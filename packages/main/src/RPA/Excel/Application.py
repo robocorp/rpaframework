@@ -1,18 +1,56 @@
 import logging
+import platform
 from pathlib import Path
 from typing import Any
-from RPA.core.msoffice import OfficeApplication
 
 
-class Application(OfficeApplication):
+if platform.system() == "Windows":
+    import win32com.client
+
+
+class Application:
     """Library for manipulating Excel application."""
 
     def __init__(self) -> None:
-        OfficeApplication.__init__(self, application_name="Excel")
         self.logger = logging.getLogger(__name__)
+        self.app = None
         self.workbook = None
         self.workbook_name = None
         self.active_worksheet = None
+
+        if platform.system() != "Windows":
+            self.logger.warning(
+                "Excel application library requires Windows dependencies to work."
+            )
+
+    def open_application(
+        self, visible: bool = False, display_alerts: bool = False
+    ) -> None:
+        """Open the Excel application.
+
+        :param visible: show window after opening
+        :param display_alerts: show alert popups
+        """
+        self.app = win32com.client.DispatchEx("Excel.Application")
+
+        if hasattr(self.app, "Visible"):
+            self.app.Visible = visible
+
+        # show eg. file overwrite warning or not
+        if hasattr(self.app, "DisplayAlerts"):
+            self.app.DisplayAlerts = display_alerts
+
+    def close_document(self, save_changes: bool = False) -> None:
+        """Close the active document (if open)."""
+        if self.app is not None:
+            self.app.ActiveDocument.Close(save_changes)
+
+    def quit_application(self, save_changes: bool = False) -> None:
+        """Quit the application."""
+        if self.app is not None:
+            self.close_document(save_changes)
+            self.app.Quit()
+            self.app = None
 
     def add_new_workbook(self) -> None:
         """Adds new workbook for Excel application

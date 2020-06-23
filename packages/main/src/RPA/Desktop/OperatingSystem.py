@@ -6,7 +6,7 @@ import os
 import platform
 import socket
 
-from RPA.core.utils import operating_system_required
+from RPA.core.decorators import operating_system_required
 
 if platform.system() == "Windows":
     import psutil

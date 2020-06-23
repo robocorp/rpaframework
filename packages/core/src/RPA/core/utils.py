@@ -1,50 +1,53 @@
-from functools import wraps
 import importlib
 import logging
 import os
-import platform
 import string
 import time
-from typing import Any
 import unicodedata
+from typing import Any
 
 # Sentinel value for undefined argument
 UNDEFINED = object()
 
 
-def delay(sleeptime: int = 0):
-    """delay execution for given seconds
+def delay(sleeptime: float = 0.0):
+    """Delay execution for given amount of seconds.
 
     :param sleeptime: seconds as integer, defaults to 0
     """
+    sleeptime = float(sleeptime)
+
     if sleeptime > 0:
-        logging.debug("sleeping for %d second(s)", sleeptime)
+        logging.debug("Sleeping for %f second(s)", sleeptime)
         time.sleep(sleeptime)
 
 
 def clean_filename(filename: str, replace: str = " ") -> str:
-    """clean filename to valid format which can be used file operations
+    """Clean filename to valid format which can be used file operations.
 
     :param filename: name to be cleaned
     :param replace: characters to replace with underscore, defaults to " "
     :return: valid filename
     """
-    valid_filename_chars = "-_.()%s%s" % (string.ascii_letters, string.digits)
-    # replace spaces
-    for r in replace:
-        filename = filename.replace(r, "_")
+    valid_characters = "-_.()" + string.ascii_letters + string.digits
 
-    # keep only valid ascii chars
-    cleaned_filename = (
-        unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore").decode()
-    )
-    # keep only whitelisted chars
-    cleaned_filename = "".join(c for c in cleaned_filename if c in valid_filename_chars)
-    return cleaned_filename
+    for char in replace:
+        filename = filename.replace(char, "_")
+
+    clean = unicodedata.normalize("NFKD", filename)
+    clean = clean.encode("ASCII", "ignore").decode()
+    clean = "".join(char for char in filename if char in valid_characters)
+
+    return clean
 
 
 def required_env(name: str, default: Any = UNDEFINED) -> str:
-    """Load required environment variable."""
+    """Load required environment variable.
+
+    :param name: Name of environment variable
+    :param default: Value to use if variable is undefined.
+                    If not given and variable is undefined, raises KeyError.
+    """
     val = os.getenv(name, default)
     if val is UNDEFINED:
         raise KeyError(f"Missing required environment variable: {name}")
@@ -90,27 +93,3 @@ def import_by_name(name: str, caller: str = None) -> Any:
             pass
 
     raise ValueError(f"No module/attribute with name: {name}")
-
-
-def operating_system_required(*systems):
-    """Decorator to restrict method for specified operating system
-
-    :param systems: operating systems in string format
-        e.g. "Linux,Darwin", default 'Windows'
-    """
-    systems = systems or ["Windows"]
-
-    def _decorator(f):
-        @wraps(f)
-        def wrapper(*args, **kwargs):
-            if platform.system() not in systems:
-                raise NotImplementedError(
-                    "Keyword '%s' works only with %s operating system(s)"
-                    % (f.__name__, " or ".join(systems))
-                )
-            else:
-                return f(*args, **kwargs)
-
-        return wrapper
-
-    return _decorator

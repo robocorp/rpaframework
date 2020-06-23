@@ -2,7 +2,6 @@
 Library         RPA.Browser
 Suite Teardown  Close All Browsers
 Default Tags    RPA.Browser
-Force tags      skip
 
 *** Tasks ***
 Basic browser open and usage
