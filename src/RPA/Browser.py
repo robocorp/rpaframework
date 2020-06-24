@@ -494,7 +494,7 @@ class Browser(SeleniumLibrary):
             self.set_default_options(browser_options)
             prefs = {"safebrowsing.enabled": "true"}
             browser_options.add_experimental_option(
-                "excludeSwitches", ["enable-logging"]
+                "excludeSwitches", ["enable-logging", "enable-automation"]
             )
             browser_options.add_experimental_option("prefs", prefs)
             if self.logger.isEnabledFor(logging.DEBUG):

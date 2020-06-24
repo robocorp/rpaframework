@@ -4,6 +4,10 @@ Release notes
 Upcoming release
 ----------------
 
+- **Browser**: Upgrade ``SeleniumTestability`` plugin to 1.1.0 version
+- **Browser**: Remove "..controlled by automated.." infobar by default when using Chrome
+- **Email.ImapSmtp**: Add keywords for folder management and marking messages
+  as read/unread and flag/unflag.
 
 1.4.0
 -----

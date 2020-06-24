@@ -1,7 +1,10 @@
+from functools import wraps
+
 from io import StringIO
 import logging
 import mimetypes
 import os
+import re
 import time
 from email import encoders, message_from_bytes
 from email.charset import add_charset, QP
@@ -24,11 +27,34 @@ from RPA.RobotLogListener import RobotLogListener
 
 
 IMAGE_FORMATS = ["jpg", "jpeg", "bmp", "png", "gif"]
+FLAG_DELETED = "\\Deleted"
+FLAG_SEEN = "\\Seen"
+FLAG_FLAGGED = "\\Flagged"
 
 try:
     BuiltIn().import_library("RPA.RobotLogListener")
 except RobotNotRunningError:
     pass
+
+
+def imap_connection(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if args[0].imap_conn is None:
+            raise ValueError("Requires authorized IMAP connection")
+        return f(*args, **kwargs)
+
+    return wrapper
+
+
+def smtp_connection(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if args[0].smtp_conn is None:
+            raise ValueError("Requires authorized SMTP connection")
+        return f(*args, **kwargs)
+
+    return wrapper
 
 
 class ImapSmtp:
@@ -41,8 +67,9 @@ class ImapSmtp:
     def __init__(
         self,
         smtp_server: str = None,
-        port: int = 587,
+        smtp_port: int = 587,
         imap_server: str = None,
+        imap_port: int = 993,
         account: str = None,
         password: str = None,
     ) -> None:
@@ -54,7 +81,8 @@ class ImapSmtp:
         self.logger = logging.getLogger(__name__)
         self.smtp_server = smtp_server
         self.imap_server = imap_server
-        self.port = int(port)
+        self.smtp_port = int(smtp_port)
+        self.imap_port = int(imap_port)
         self.set_credentials(account, password)
         self.smtp_conn = None
         self.imap_conn = None
@@ -69,6 +97,7 @@ class ImapSmtp:
                 self.smtp_conn = None
 
         if self.imap_conn:
+            self.select_folder()
             self.imap_conn.close()
             self.imap_conn.logout()
             self.imap_conn = None
@@ -108,7 +137,7 @@ class ImapSmtp:
         if smtp_server is None:
             smtp_server = self.smtp_server
         if smtp_port is None:
-            smtp_port = self.port
+            smtp_port = self.smtp_port
         else:
             smtp_port = int(smtp_port)
         if smtp_server and account and password:
@@ -132,7 +161,11 @@ class ImapSmtp:
             self.logger.warning("Not able to establish SMTP connection")
 
     def authorize_imap(
-        self, account: str = None, password: str = None, imap_server: str = None
+        self,
+        account: str = None,
+        password: str = None,
+        imap_server: str = None,
+        imap_port: int = None,
     ) -> None:
         """Authorize to IMAP server.
 
@@ -149,10 +182,14 @@ class ImapSmtp:
             password = self.password
         if imap_server is None:
             imap_server = self.imap_server
+        if imap_port is None:
+            imap_port = self.imap_port
+        else:
+            imap_port = int(imap_port)
         if imap_server and account and password:
             self.imap_conn = IMAP4_SSL(imap_server)
             self.imap_conn.login(account, password)
-            self.imap_conn.select("inbox")
+            self.imap_conn.select("INBOX")
         else:
             self.logger.warning(
                 "Server address, account and password are needed for "
@@ -178,6 +215,7 @@ class ImapSmtp:
         self.authorize_smtp(account, password, smtp_server)
         self.authorize_imap(account, password, imap_server)
 
+    @smtp_connection
     def send_smtp_hello(self) -> None:
         """Send hello message to SMTP server.
 
@@ -186,6 +224,7 @@ class ImapSmtp:
         if self.smtp_conn:
             self.smtp_conn.ehlo()
 
+    @smtp_connection
     def send_message(
         self,
         sender: str,
@@ -210,8 +249,6 @@ class ImapSmtp:
         :param html: if message content is in HTML, default `False`
         :param images: list of filepaths for inline use, defaults to []
         """
-        if self.smtp_conn is None:
-            raise ValueError("Requires authorized SMTP connection")
         add_charset("utf-8", QP, QP, "utf-8")
         recipients, attachments, images = self._handle_message_parameters(
             recipients, attachments, images
@@ -300,6 +337,7 @@ class ImapSmtp:
                     )
                     msg.attach(part)
 
+    @imap_connection
     def _fetch_messages(self, mail_ids: list) -> list:
         messages = []
         for mail_id in mail_ids:
@@ -308,14 +346,41 @@ class ImapSmtp:
             messages.append(message)
         return messages
 
+    @imap_connection
     def _search_message(self, criterion: str) -> list:
         return self.imap_conn.search(None, "(" + criterion + ")")
 
-    def _delete_message(self, mail_ids: list) -> None:
+    def _search_and_return_mail_ids(self, criterion: str) -> list:
+        _, data = self._search_message(criterion)
+        mail_ids = bytes.decode(data[0])
+        return mail_ids.split() if len(mail_ids) > 1 else []
+
+    @imap_connection
+    def _set_message_flag(
+        self, mail_id: str = None, flag: str = None, unset: bool = False
+    ):
+        flag_type = "-FLAGS" if unset else "+FLAGS"
+        # self.imap_conn.uid("STORE", mail_id, flag_type, f"({flag})")
+        mail_uid = self._fetch_uid(mail_id)
+        status_code, data = self.imap_conn.uid("STORE", mail_uid, flag_type, flag)
+        data_message = data[0]
+        self.logger.debug("Set message flag: %s, %s", status_code, data)
+        if status_code != "OK":
+            self.logger.debug(
+                "Message flag '%s' failed for mail_id: %s, mail_uid: %s",
+                flag,
+                mail_id,
+                mail_uid,
+            )
+        return status_code == "OK" and data_message is not None
+
+    @imap_connection
+    def _delete_messages(self, mail_ids: list) -> None:
         for mail_id in mail_ids:
-            self.imap_conn.store(mail_id, "+FLAGS", "\\Deleted")
+            self._set_message_flag(mail_id, FLAG_DELETED)
         self.imap_conn.expunge()
 
+    @imap_connection
     def delete_message(self, criterion: str = "") -> bool:
         """Delete single message from server based on criterion.
 
@@ -324,13 +389,7 @@ class ImapSmtp:
         :param criterion: filter messages based on this, defaults to ""
         :return: True if success, False if not
         """
-        if self.imap_conn is None:
-            raise ValueError("Requires authorized IMAP connection")
-        if len(criterion) < 1:
-            self.logger.warning(
-                "Delete message requires criteria which message is affected."
-            )
-            return False
+        self._validate_criterion(criterion)
         _, data = self._search_message(criterion)
         mail_ids = data[0].split()
         if len(mail_ids) != 1:
@@ -340,27 +399,22 @@ class ImapSmtp:
             )
             return False
         else:
-            self._delete_message(mail_ids)
+            self._delete_messages(mail_ids)
             return True
 
+    @imap_connection
     def delete_messages(self, criterion: str = "") -> bool:
         """Delete messages from server based on criterion.
 
         :param criterion: filter messages based on this, defaults to ""
         :return: True if success, False if not
         """
-        if self.imap_conn is None:
-            raise ValueError("Requires authorized IMAP connection")
-        if len(criterion) < 1:
-            self.logger.warning(
-                "Delete messages requires criteria which messages are affected."
-            )
-            return False
-        _, data = self._search_message(criterion)
-        mail_ids = data[0].split()
-        self._delete_message(mail_ids)
+        self._validate_criterion(criterion)
+        mail_ids = self._search_and_return_mail_ids(criterion)
+        self._delete_messages(mail_ids)
         return True
 
+    @imap_connection
     def save_messages(self, criterion: str = "", target_folder: str = None) -> bool:
         """Save messages based on criteria and store them to target folder
         with attachment files.
@@ -371,13 +425,7 @@ class ImapSmtp:
         :param target_folder: path to folder where message are saved, defaults to None
         :return: True if success, False if not
         """
-        if self.imap_conn is None:
-            raise ValueError("Requires authorized IMAP connection")
-        if len(criterion) < 1:
-            self.logger.warning(
-                "Save messages requires criteria for which messages to store locally."
-            )
-            return False
+        self._validate_criterion(criterion)
         if target_folder is None:
             target_folder = os.path.expanduser("~")
         _, data = self._search_message(criterion)
@@ -389,19 +437,19 @@ class ImapSmtp:
                 f.write(data[0][1])
         return True
 
+    @imap_connection
     def list_messages(self, criterion: str = "") -> Any:
         """Return list of messages matching criterion.
 
         :param criterion: list emails matching this, defaults to ""
         :return: list of messages or False
         """
-        if self.imap_conn is None:
-            raise ValueError("Requires authorized IMAP connection")
         self.logger.info("List messages: %s", criterion)
         _, data = self._search_message(criterion)
         mail_ids = data[0].split()
         return self._fetch_messages(mail_ids)
 
+    @imap_connection
     def save_attachments(
         self, criterion: str = "", target_folder: str = None, overwrite: bool = False
     ) -> Any:
@@ -413,8 +461,6 @@ class ImapSmtp:
         :param overwrite: overwrite existing file is True, defaults to False
         :return: list of saved attachments or False
         """
-        if self.imap_conn is None:
-            raise ValueError("Requires authorized IMAP connection")
         attachments_saved = []
         if target_folder is None:
             target_folder = os.path.expanduser("~")
@@ -434,6 +480,7 @@ class ImapSmtp:
                                 attachments_saved.append(filepath)
         return attachments_saved if len(attachments_saved) > 0 else False
 
+    @imap_connection
     def wait_for_message(
         self, criterion: str = "", timeout: float = 5.0, interval: float = 1.0
     ) -> Any:
@@ -447,13 +494,7 @@ class ImapSmtp:
         :param interval: time in seconds for new check, defaults to 1.0
         :return: list of messages or False
         """
-        if self.imap_conn is None:
-            raise ValueError("Requires authorized IMAP connection")
-        if len(criterion) < 1:
-            self.logger.warning(
-                "Wait for message requires criteria for which message to wait for."
-            )
-            return False
+        self._validate_criterion(criterion)
         end_time = time.time() + float(timeout)
         while time.time() < end_time:
             self.imap_conn.select("inbox")
@@ -466,3 +507,192 @@ class ImapSmtp:
                 return self._fetch_messages(mail_ids)
             time.sleep(interval)
         return False
+
+    def _parse_folders(self, folders):
+        parsed_folders = []
+        folder_regex = r'\((?P<flags>.*)\)."(?P<delimiter>.*)"."(?P<name>.*)".*'
+        for f in folders:
+            flags, delimiter, name = re.search(folder_regex, bytes.decode(f)).groups()
+
+            parsed_folders.append(
+                {"name": name, "flags": flags, "delimiter": delimiter}
+            )
+        return parsed_folders
+
+    @imap_connection
+    def get_folder_list(self, subdirectory: str = None, pattern: str = None) -> list:
+        """Get list of folders on the server
+
+        :param subdirectory: list subdirectories for this folder
+        :param pattern: list folders matching this pattern
+        :return: list of folders
+        """
+        self.logger.info("Get folder list")
+        kwparams = {}
+        if subdirectory:
+            kwparams["directory"] = subdirectory
+        if pattern:
+            kwparams["pattern"] = pattern
+
+        status_code, folders = self.imap_conn.list(**kwparams)
+        if status_code == "OK":
+            return self._parse_folders(folders)
+        else:
+            return []
+
+    @imap_connection
+    def select_folder(self, folder_name: str = "INBOX") -> int:
+        """Select folder by name
+
+        Returns number of messages in the folder or
+        exception if folder does not exist on the server.
+
+        :param folder_name: name of the folder to select
+        :return: message count in the selected folder
+        """
+        self.logger.info("Select folder: %s", folder_name)
+        status_code, data = self.imap_conn.select(mailbox=folder_name, readonly=False)
+        if status_code == "OK":
+            message_count = bytes.decode(data[0])
+            return int(message_count)
+        else:
+            raise ValueError("Folder '%s' does not exist on the server" % folder_name)
+
+    @imap_connection
+    def rename_folder(
+        self, oldname: str = None, newname: str = None, suppress_error: bool = False
+    ) -> bool:
+        """Rename email folder
+
+        :param oldname: current folder name
+        :param newname: new name for the folder
+        :param suppress_error: to silence warning message, defaults to False
+        :return: True if operation was successful, False if not
+        """
+        if oldname is None or newname is None:
+            raise KeyError(
+                "Both 'oldname' and 'newname' and required for rename folder"
+            )
+        self.logger.info("Rename folder '%s' to '%s'", oldname, newname)
+        status_code, data = self.imap_conn.rename(oldname, newname)
+
+        if status_code == "OK":
+            return True
+        else:
+            if suppress_error is False:
+                self.logger.warning(
+                    "Folder rename failed with message: '%s'", bytes.decode(data[0]),
+                )
+            return False
+
+    @imap_connection
+    def delete_folder(self, folder_name: str = None) -> bool:
+        """Delete email folder
+
+        :param folder_name: current folder name
+        :return: True if operation was successful, False if not
+        """
+        if folder_name is None:
+            raise KeyError("'folder_name' is required for delete folder")
+        self.logger.info("Delete folder '%s'", folder_name)
+        status_code, data = self.imap_conn.delete(folder_name)
+        if status_code == "OK":
+            return True
+        else:
+            self.logger.warning(
+                "Delete folder '%s' response status: '%s %s'",
+                folder_name,
+                status_code,
+                bytes.decode(data[0]),
+            )
+            return False
+
+    @imap_connection
+    def create_folder(self, folder_name: str = None) -> bool:
+        """Create email folder
+
+        :param folder_name: name for the new folder
+        :return: True if operation was successful, False if not
+        """
+        if folder_name is None:
+            raise KeyError("'folder_name' is required for create folder")
+        self.logger.info("Create folder '%s'", folder_name)
+        status_code, data = self.imap_conn.create(folder_name)
+        if status_code == "OK":
+            return True
+        else:
+            self.logger.warning(
+                "Create folder '%s' response status: '%s %s'",
+                folder_name,
+                status_code,
+                bytes.decode(data[0]),
+            )
+            return False
+
+    @imap_connection
+    def flag_messages(self, criterion: str = None, unflag: bool = False) -> Any:
+        """Mark messages as `flagged`
+
+        :param criterion: mark messages matching criterion
+        :param unflag: to mark messages as not `flagged`
+        :return: successful operations (int), matching messages (int)
+        """
+        self._validate_criterion(criterion)
+        if unflag:
+            self.logger.info("Unflag messages: '%s'", criterion)
+        else:
+            self.logger.info("Flag messages: '%s'", criterion)
+        mail_ids = self._search_and_return_mail_ids(criterion)
+        success_count = 0
+        for mail_id in mail_ids:
+            status = self._set_message_flag(mail_id, FLAG_FLAGGED, unflag)
+            success_count += 1 if status else 0
+        return success_count, len(mail_ids)
+
+    @imap_connection
+    def unflag_messages(self, criterion: str = None) -> Any:
+        """Mark messages as not `flagged`
+
+        :param criterion: mark messages matching criterion
+        :return: successful operations (int), matching messages (int)
+        """
+        return self.flag_messages(criterion, unflag=True)
+
+    @imap_connection
+    def mark_as_read(self, criterion: str = None, unread: bool = False) -> Any:
+        """Mark messages as `read`
+
+        :param criterion: mark messages matching criterion
+        :param unread: to mark messages as not `read`
+        :return: successful operations (int), matching messages (int)
+        """
+        self._validate_criterion(criterion)
+        if unread:
+            self.logger.info("Mark messages as unread: '%s'", criterion)
+        else:
+            self.logger.info("Mark messages as read: '%s'", criterion)
+        mail_ids = self._search_and_return_mail_ids(criterion)
+        success_count = 0
+        for mail_id in mail_ids:
+            status = self._set_message_flag(mail_id, FLAG_SEEN, unread)
+            success_count += 1 if status else 0
+        return success_count, len(mail_ids)
+
+    @imap_connection
+    def mark_as_unread(self, criterion: str = None) -> Any:
+        """Mark messages as not `read`
+
+        :param criterion: mark messages matching criterion
+        :return: successful operations (int), matching messages (int)
+        """
+        return self.mark_as_read(criterion, unread=True)
+
+    def _validate_criterion(self, criterion: str) -> bool:
+        if criterion is None or len(criterion) < 1:
+            raise KeyError("Criterion is required parameter")
+
+    def _fetch_uid(self, mail_id):
+        _, data = self.imap_conn.fetch(mail_id, "(UID)")
+        pattern_uid = re.compile(r"\d+ \(UID (?P<uid>\d+)\)")
+        match = pattern_uid.match(bytes.decode(data[0]))
+        return match.group("uid")
