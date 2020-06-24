@@ -229,7 +229,7 @@ specified mail server.</p>
 <dt class="field-even">Authorize Imap</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>account: str=None, password: str=None, imap_server: str=None</p>
+<dd class="field-odd"><p>account: str=None, password: str=None, imap_server: str=None, imap_port: int=None</p>
 </dd>
 </dl>
 <p>Authorize to IMAP server.</p>
@@ -248,6 +248,22 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 has been initialized with necessary information and/or
 keyword <code class="docutils literal notranslate"><span class="pre">set_credentials</span></code> has been used.</p>
 </dd>
+<dt class="field-even">Create Folder</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>folder_name: str=None</p>
+</dd>
+</dl>
+<p>Create email folder</p>
+</dd>
+<dt class="field-even">Delete Folder</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>folder_name: str=None</p>
+</dd>
+</dl>
+<p>Delete email folder</p>
+</dd>
 <dt class="field-even">Delete Message</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -265,6 +281,22 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dl>
 <p>Delete messages from server based on criterion.</p>
 </dd>
+<dt class="field-even">Flag Messages</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>criterion: str=None, unflag: bool=False</p>
+</dd>
+</dl>
+<p>Mark messages as <cite>flagged</cite></p>
+</dd>
+<dt class="field-even">Get Folder List</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>subdirectory: str=None, pattern: str=None</p>
+</dd>
+</dl>
+<p>Get list of folders on the server</p>
+</dd>
 <dt class="field-even">List Messages</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -272,6 +304,30 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd>
 </dl>
 <p>Return list of messages matching criterion.</p>
+</dd>
+<dt class="field-even">Mark As Read</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>criterion: str=None, unread: bool=False</p>
+</dd>
+</dl>
+<p>Mark messages as <cite>read</cite></p>
+</dd>
+<dt class="field-even">Mark As Unread</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>criterion: str=None</p>
+</dd>
+</dl>
+<p>Mark messages as not <cite>read</cite></p>
+</dd>
+<dt class="field-even">Rename Folder</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>oldname: str=None, newname: str=None, suppress_error: bool=False</p>
+</dd>
+</dl>
+<p>Rename email folder</p>
 </dd>
 <dt class="field-even">Save Attachments</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -290,6 +346,16 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <p>Save messages based on criteria and store them to target folder
 with attachment files.</p>
 <p>Does not save message if <cite>target_folder</cite> is not given.</p>
+</dd>
+<dt class="field-even">Select Folder</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>folder_name: str=INBOX</p>
+</dd>
+</dl>
+<p>Select folder by name</p>
+<p>Returns number of messages in the folder or
+exception if folder does not exist on the server.</p>
 </dd>
 <dt class="field-even">Send Message</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -317,6 +383,14 @@ with attachment files.</p>
 </dd>
 </dl>
 <p>Set credentials</p>
+</dd>
+<dt class="field-even">Unflag Messages</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>criterion: str=None</p>
+</dd>
+</dl>
+<p>Mark messages as not <cite>flagged</cite></p>
 </dd>
 <dt class="field-even">Wait For Message</dt>
 <dd class="field-even"><dl class="field-list simple">

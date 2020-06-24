@@ -26,7 +26,7 @@ Keywords
 
 
 :Authorize Imap:
-  :Arguments: account: str=None, password: str=None, imap_server: str=None
+  :Arguments: account: str=None, password: str=None, imap_server: str=None, imap_port: int=None
 
   Authorize to IMAP server.
 
@@ -45,6 +45,18 @@ Keywords
   keyword ``set_credentials`` has been used.
 
 
+:Create Folder:
+  :Arguments: folder_name: str=None
+
+  Create email folder
+
+
+:Delete Folder:
+  :Arguments: folder_name: str=None
+
+  Delete email folder
+
+
 :Delete Message:
   :Arguments: criterion: str=
 
@@ -59,10 +71,40 @@ Keywords
   Delete messages from server based on criterion.
 
 
+:Flag Messages:
+  :Arguments: criterion: str=None, unflag: bool=False
+
+  Mark messages as `flagged`
+
+
+:Get Folder List:
+  :Arguments: subdirectory: str=None, pattern: str=None
+
+  Get list of folders on the server
+
+
 :List Messages:
   :Arguments: criterion: str=
 
   Return list of messages matching criterion.
+
+
+:Mark As Read:
+  :Arguments: criterion: str=None, unread: bool=False
+
+  Mark messages as `read`
+
+
+:Mark As Unread:
+  :Arguments: criterion: str=None
+
+  Mark messages as not `read`
+
+
+:Rename Folder:
+  :Arguments: oldname: str=None, newname: str=None, suppress_error: bool=False
+
+  Rename email folder
 
 
 :Save Attachments:
@@ -78,6 +120,15 @@ Keywords
   with attachment files.
 
   Does not save message if `target_folder` is not given.
+
+
+:Select Folder:
+  :Arguments: folder_name: str=INBOX
+
+  Select folder by name
+
+  Returns number of messages in the folder or
+  exception if folder does not exist on the server.
 
 
 :Send Message:
@@ -99,6 +150,12 @@ Keywords
   :Arguments: account: str=None, password: str=None
 
   Set credentials
+
+
+:Unflag Messages:
+  :Arguments: criterion: str=None
+
+  Mark messages as not `flagged`
 
 
 :Wait For Message:

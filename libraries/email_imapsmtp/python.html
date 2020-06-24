@@ -208,7 +208,7 @@
 <span id="imapsmtp"></span><h2>ImapSmtp<a class="headerlink" href="#module-RPA.Email.ImapSmtp" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">ImapSmtp</code><span class="sig-paren">(</span><em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">port: int = 587</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">ImapSmtp</code><span class="sig-paren">(</span><em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">smtp_port: int = 587</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">imap_port: int = 993</em>, <em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>RPA Framework library providing SMTP and IMAP operations for
 specified mail server.</p>
@@ -230,7 +230,7 @@ specified mail server.</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize_imap">
-<code class="sig-name descname">authorize_imap</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">imap_server: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_imap" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">authorize_imap</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">imap_port: int = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_imap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorize to IMAP server.</p>
 <p>Can be called without giving any parameters if library
 has been initialized with necessary information and/or
@@ -266,6 +266,34 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.create_folder">
+<code class="sig-name descname">create_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.create_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create email folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>folder_name</strong> – name for the new folder</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if operation was successful, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.delete_folder">
+<code class="sig-name descname">delete_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.delete_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete email folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>folder_name</strong> – current folder name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if operation was successful, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.delete_message">
 <code class="sig-name descname">delete_message</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.delete_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete single message from server based on criterion.</p>
@@ -295,6 +323,40 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.flag_messages">
+<code class="sig-name descname">flag_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = None</em>, <em class="sig-param">unflag: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.flag_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark messages as <cite>flagged</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>criterion</strong> – mark messages matching criterion</p></li>
+<li><p><strong>unflag</strong> – to mark messages as not <cite>flagged</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>successful operations (int), matching messages (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.get_folder_list">
+<code class="sig-name descname">get_folder_list</code><span class="sig-paren">(</span><em class="sig-param">subdirectory: str = None</em>, <em class="sig-param">pattern: str = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.get_folder_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of folders on the server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>subdirectory</strong> – list subdirectories for this folder</p></li>
+<li><p><strong>pattern</strong> – list folders matching this pattern</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of folders</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.list_messages">
 <code class="sig-name descname">list_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.list_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return list of messages matching criterion.</p>
@@ -304,6 +366,55 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>list of messages or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.mark_as_read">
+<code class="sig-name descname">mark_as_read</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = None</em>, <em class="sig-param">unread: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.mark_as_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark messages as <cite>read</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>criterion</strong> – mark messages matching criterion</p></li>
+<li><p><strong>unread</strong> – to mark messages as not <cite>read</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>successful operations (int), matching messages (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.mark_as_unread">
+<code class="sig-name descname">mark_as_unread</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.mark_as_unread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark messages as not <cite>read</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>criterion</strong> – mark messages matching criterion</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>successful operations (int), matching messages (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.rename_folder">
+<code class="sig-name descname">rename_folder</code><span class="sig-paren">(</span><em class="sig-param">oldname: str = None</em>, <em class="sig-param">newname: str = None</em>, <em class="sig-param">suppress_error: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.rename_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename email folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>oldname</strong> – current folder name</p></li>
+<li><p><strong>newname</strong> – new name for the folder</p></li>
+<li><p><strong>suppress_error</strong> – to silence warning message, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if operation was successful, False if not</p>
 </dd>
 </dl>
 </dd></dl>
@@ -342,6 +453,22 @@ with attachment files.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>True if success, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.select_folder">
+<code class="sig-name descname">select_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = 'INBOX'</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.select_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select folder by name</p>
+<p>Returns number of messages in the folder or
+exception if folder does not exist on the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>folder_name</strong> – name of the folder to select</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>message count in the selected folder</p>
 </dd>
 </dl>
 </dd></dl>
@@ -394,6 +521,20 @@ with attachment files.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.unflag_messages">
+<code class="sig-name descname">unflag_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.unflag_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark messages as not <cite>flagged</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>criterion</strong> – mark messages matching criterion</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>successful operations (int), matching messages (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.wait_for_message">
 <code class="sig-name descname">wait_for_message</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">timeout: float = 5.0</em>, <em class="sig-param">interval: float = 1.0</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.wait_for_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait for email matching <cite>criterion</cite> to arrive into mailbox.</p>
@@ -418,6 +559,16 @@ with attachment files.</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="function">
+<dt id="RPA.Email.ImapSmtp.imap_connection">
+<code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">imap_connection</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.imap_connection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="RPA.Email.ImapSmtp.smtp_connection">
+<code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">smtp_connection</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.smtp_connection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 </div>
