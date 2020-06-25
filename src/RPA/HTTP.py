@@ -9,7 +9,7 @@ from RPA.FileSystem import FileSystem
 class HTTP(RequestsLibrary):
     """RPA Framework HTTP library that extends functionality of RequestsLibrary,
     for more information see
-    https://github.com/robotframework/SeleniumLibrary
+    https://github.com/MarketSquare/robotframework-requests
     """
 
     def __init__(self, *args, **kwargs) -> None:
