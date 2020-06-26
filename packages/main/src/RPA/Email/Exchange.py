@@ -1,6 +1,5 @@
 import logging
 from pathlib import Path
-from typing import Any
 
 from exchangelib import (
     Account,
@@ -56,7 +55,7 @@ class Exchange:
         return messages
 
     def _get_all_items_in_folder(self, folder_name=None, parent_folder=None) -> list:
-        if parent_folder is None or parent_folder == self.account.inbox:
+        if parent_folder is None or parent_folder is self.account.inbox:
             target_folder = self.account.inbox / folder_name
         else:
             target_folder = self.account.inbox / parent_folder / folder_name
@@ -183,7 +182,7 @@ class Exchange:
         """
         if folder_name is None:
             raise KeyError("'folder_name' is required for create folder")
-        if parent_folder is None or parent_folder == self.account.inbox:
+        if parent_folder is None or parent_folder is self.account.inbox:
             parent = self.account.inbox
         else:
             parent = self.account.inbox / parent_folder / folder_name
@@ -202,7 +201,7 @@ class Exchange:
         """
         if folder_name is None:
             raise KeyError("'folder_name' is required for delete folder")
-        if parent_folder is None or parent_folder == self.account.inbox:
+        if parent_folder is None or parent_folder is self.account.inbox:
             folder_to_delete = self.account.inbox / folder_name
         else:
             folder_to_delete = self.account.inbox / parent_folder / folder_name
@@ -223,14 +222,13 @@ class Exchange:
         """
         if oldname is None or newname is None:
             raise KeyError("'oldname' and 'newname' are required for rename folder")
-        if parent_folder is None or parent_folder == self.account.inbox:
+        if parent_folder is None or parent_folder is self.account.inbox:
             parent = self.account.inbox
         else:
             parent = self.account.inbox / parent_folder
         self.logger.info(
             "Rename folder '%s' to '%s'", oldname, newname,
         )
-        self.account.inbox.refresh()
         items = self._get_all_items_in_folder(oldname, parent_folder)
         old_folder = Folder(parent=parent, name=oldname)
         old_folder.name = newname
@@ -253,7 +251,7 @@ class Exchange:
         """
         if folder_name is None:
             raise KeyError("'folder_name' is required for empty folder")
-        if parent_folder is None or parent_folder == self.account.inbox:
+        if parent_folder is None or parent_folder is self.account.inbox:
             empty_folder = self.account.inbox / folder_name
         else:
             empty_folder = self.account.inbox / parent_folder / folder_name
