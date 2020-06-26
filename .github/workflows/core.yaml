@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - 'packages/core/**'
+      - '.github/workflows/core.yaml'
 
 defaults:
   run:
