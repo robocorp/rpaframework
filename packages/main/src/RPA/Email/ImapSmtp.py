@@ -6,14 +6,17 @@ import mimetypes
 import os
 import re
 import time
-from email import encoders, message_from_bytes
-from email.charset import add_charset, QP
-from email.generator import Generator
-from email.header import Header
-from email.mime.base import MIMEBase
-from email.mime.image import MIMEImage
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+
+# email package declares these properties in the __all__ definition but
+# pylint ignores that
+from email import encoders, message_from_bytes  # pylint: disable=E0611
+from email.charset import add_charset, QP  # pylint: disable=E0611
+from email.generator import Generator  # pylint: disable=E0611
+from email.header import Header  # pylint: disable=E0611
+from email.mime.base import MIMEBase  # pylint: disable=E0611
+from email.mime.image import MIMEImage  # pylint: disable=E0611
+from email.mime.multipart import MIMEMultipart  # pylint: disable=E0611
+from email.mime.text import MIMEText  # pylint: disable=E0611
 
 from pathlib import Path
 from imaplib import IMAP4_SSL
