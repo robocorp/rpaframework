@@ -75,7 +75,7 @@ jobs:
       if: success() || failure()
       with:
           name: ${{ matrix.os }}-py${{ matrix.python }}-test-reports
-          path: tests/results
+          path: packages/main/tests/results
 
   publish:
     needs: test
