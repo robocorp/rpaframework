@@ -71,11 +71,6 @@ jobs:
       run: make install
     - name: Test
       run: make test
-    - uses: actions/upload-artifact@v1
-      if: success() || failure()
-      with:
-        name: ${{ matrix.os }}-py${{ matrix.python }}-test-reports
-        path: tests/results
 
   publish:
     needs: test
