@@ -757,7 +757,7 @@ description = "A collection of tools and libraries for RPA"
 name = "rpaframework"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "1.3.0"
+version = "1.4.0"
 
 [package.dependencies]
 clipboard = ">=0.0.4,<0.0.5"
@@ -1206,7 +1206,7 @@ tornado = ["tornado (>=4.0.2,<5)"]
 xmlsec = ["xmlsec (>=0.6.1)"]
 
 [metadata]
-content-hash = "5fafa809d572ec57482d775a2c25cd5785ae3a54982f26b82ff77804fada244d"
+content-hash = "61b147834dae85211524a9e205f23191daec1d4cb7a724eae6960ae56ca32d62"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1659,8 +1659,8 @@ robotframeworklexer = [
     {file = "robotframeworklexer-1.1.tar.gz", hash = "sha256:ddd3ea50b54b47aee86a83c400534a61e2588dec875a3c10f04822280e834b8f"},
 ]
 rpaframework = [
-    {file = "rpaframework-1.3.0-py3-none-any.whl", hash = "sha256:6aff3c227c710c40be3f8be06afeb5256c09b036ff6c8c4d15b36aebdbc4b7ca"},
-    {file = "rpaframework-1.3.0.tar.gz", hash = "sha256:4e9e4627d23d7e2a4357d96d74cece41687bd3896b3cd14e75b956a181fd70ad"},
+    {file = "rpaframework-1.4.0-py3-none-any.whl", hash = "sha256:dd65ce6e558afed7de516dc25503efac051f367a33b40eb2da37acdb5234c216"},
+    {file = "rpaframework-1.4.0.tar.gz", hash = "sha256:3725670f80121a215bb9819975f2df77b186742f56a0880dc1ef652211d86ce7"},
 ]
 selenium = [
     {file = "selenium-3.141.0-py2.py3-none-any.whl", hash = "sha256:2d7131d7bc5a5b99a2d9b04aaf2612c411b03b8ca1b1ee8d3de5845a9be2cb3c"},
