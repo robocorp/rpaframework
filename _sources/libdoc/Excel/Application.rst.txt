@@ -29,7 +29,7 @@ Keywords
 :Close Document:
   :Arguments: save_changes: bool=False
 
-
+  Close the active document (if open).
 
 :Find First Available Row:
   :Arguments: worksheet: typing.Any=None, row: int=1, column: int=1
@@ -40,7 +40,7 @@ Keywords
 :Open Application:
   :Arguments: visible: bool=False, display_alerts: bool=False
 
-  Open Microsoft application.
+  Open the Excel application.
 
 
 :Open Workbook:
@@ -52,7 +52,7 @@ Keywords
 :Quit Application:
   :Arguments: save_changes: bool=False
 
-
+  Quit the application.
 
 :Run Macro:
   :Arguments: macro_name: str=None

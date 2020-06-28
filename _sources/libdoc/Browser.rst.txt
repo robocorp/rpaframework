@@ -443,13 +443,6 @@ Keywords
      <p>Deletes the cookie matching <code>name</code>.</p>
      <p>If the cookie is not found, nothing happens.</p>
 
-:Detect Chrome Version:
-  .. raw:: html
-
-     <p>Detect Chrome browser version (if possible) on different platforms using different commands for each platform.</p>
-     <p>Returns corresponding chromedriver version, if possible.</p>
-     <p>Supported Chrome major versions are 81, 80 and 79.</p>
-
 :Does Element Contain:
   :Arguments: locator: str, expected: str, ignore_case: bool=False
 

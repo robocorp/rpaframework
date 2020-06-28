@@ -17,7 +17,7 @@ Keywords
 :Close Document:
   :Arguments: save_changes: bool=False
 
-
+  Close the active document (if open).
 
 :Create New Document:
   Create new document for Word application
@@ -35,7 +35,7 @@ Keywords
 :Open Application:
   :Arguments: visible: bool=False, display_alerts: bool=False
 
-  Open Microsoft application.
+  Open the Word application.
 
 
 :Open File:
@@ -47,7 +47,7 @@ Keywords
 :Quit Application:
   :Arguments: save_changes: bool=False
 
-
+  Quit the application.
 
 :Replace Text:
   :Arguments: find: str, replace: str

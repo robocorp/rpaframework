@@ -19,18 +19,18 @@ Keywords
 :Close Document:
   :Arguments: save_changes: bool=False
 
-
+  Close the active document (if open).
 
 :Open Application:
   :Arguments: visible: bool=False, display_alerts: bool=False
 
-  Open Microsoft application.
+  Open the Outlook application.
 
 
 :Quit Application:
   :Arguments: save_changes: bool=False
 
-
+  Quit the application.
 
 :Send Message:
   :Arguments: recipients: typing.Any, subject: str, body: str, html_body: bool=False, attachments: typing.Any=None

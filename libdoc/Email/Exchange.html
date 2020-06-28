@@ -223,14 +223,46 @@
 </dl>
 <p>Connect to Exchange account</p>
 </dd>
+<dt class="field-even">Create Folder</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>folder_name: str=None, parent_folder: str=None</p>
+</dd>
+</dl>
+<p>Create email folder</p>
+</dd>
+<dt class="field-even">Delete Folder</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>folder_name: str=None, parent_folder: str=None</p>
+</dd>
+</dl>
+<p>Delete email folder</p>
+</dd>
+<dt class="field-even">Empty Folder</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>folder_name: str=None, parent_folder: str=None, delete_sub_folders: bool=False</p>
+</dd>
+</dl>
+<p>Empty email folder of all items</p>
+</dd>
 <dt class="field-even">List Messages</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>count: int=100</p>
+<dd class="field-odd"><p>count: int=100, folder_name: str=None</p>
 </dd>
 </dl>
 <p>List messages in the account inbox. Order by descending
 received time.</p>
+</dd>
+<dt class="field-even">Rename Folder</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>oldname: str=None, newname: str=None, parent_folder: str=None</p>
+</dd>
+</dl>
+<p>Rename email folder</p>
 </dd>
 <dt class="field-even">Send Message</dt>
 <dd class="field-even"><dl class="field-list simple">

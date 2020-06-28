@@ -21,11 +21,35 @@ Keywords
   Connect to Exchange account
 
 
+:Create Folder:
+  :Arguments: folder_name: str=None, parent_folder: str=None
+
+  Create email folder
+
+
+:Delete Folder:
+  :Arguments: folder_name: str=None, parent_folder: str=None
+
+  Delete email folder
+
+
+:Empty Folder:
+  :Arguments: folder_name: str=None, parent_folder: str=None, delete_sub_folders: bool=False
+
+  Empty email folder of all items
+
+
 :List Messages:
-  :Arguments: count: int=100
+  :Arguments: count: int=100, folder_name: str=None
 
   List messages in the account inbox. Order by descending
   received time.
+
+
+:Rename Folder:
+  :Arguments: oldname: str=None, newname: str=None, parent_folder: str=None
+
+  Rename email folder
 
 
 :Send Message:
