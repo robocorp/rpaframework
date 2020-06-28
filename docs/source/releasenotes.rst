@@ -4,6 +4,7 @@ Release notes
 Upcoming release
 ----------------
 
+- Core functionality separated into rpaframework-core package
 - **Browser**: Upgrade ``SeleniumTestability`` plugin to 1.1.0 version
 - **Browser**: Remove "..controlled by automated.." infobar by default when using Chrome
 - **Email.ImapSmtp**: Add keywords for folder management and marking messages
