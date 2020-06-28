@@ -378,10 +378,6 @@ requests = ">=2.18.0,<3.0.0dev"
 setuptools = ">=34.0.0"
 six = ">=1.10.0"
 
-[package.dependencies.grpcio]
-optional = true
-version = ">=1.29.0,<2.0dev"
-
 [package.extras]
 grpc = ["grpcio (>=1.29.0,<2.0dev)"]
 grpcgcp = ["grpcio-gcp (>=0.2.2)"]

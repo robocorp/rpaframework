@@ -46,8 +46,7 @@ def main():
             continue
 
         if current != version:
-            print(f"ERROR: {name} is out of date: {current} != {version}")
-            is_error = True
+            print(f"WARN: {name} is out of date: {current} != {version}")
 
     if is_error:
         sys.exit(1)

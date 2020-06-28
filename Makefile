@@ -15,9 +15,11 @@ export print_help
 
 ifeq ($(OS),Windows_NT)
 rm = -rmdir /s /q
+mkdir = mkdir
 sync = @cd .
 else
 rm = rm -fr
+mkdir = mkdir -p
 sync = @sync
 endif
 
@@ -44,6 +46,7 @@ install: .venv/flag ## Install development environment
 	@poetry config -n --local virtualenvs.in-project true
 	$(sync)
 	poetry install
+	$(mkdir) .venv
 	@touch $@
 
 poetry.lock: pyproject.toml
@@ -58,6 +61,17 @@ docs: check docs-each ## Generate documentation using Sphinx
 
 docs-each: packages/*
 	$(call make_each, "docs-libdoc")
+
+docs-hub: check docs-hub-each ## Generate distributable documentation for Robohub
+	$(call title,"Building Markdown documentation")
+	poetry run $(MAKE) -C docs clean
+	poetry run $(MAKE) -C docs jekyll
+	mkdir -p dist/hub/json
+	find docs/build/jekyll/libraries/ -name "index.md"\
+	 -exec sh -c 'cp {} dist/hub/markdown/$$(basename $$(dirname {})).md' cp {} \;
+
+docs-hub-each: packages/*
+	$(call make_each, "docs-hub")
 
 changelog: ## Print changes in latest release
 	poetry run python ./tools/changelog.py

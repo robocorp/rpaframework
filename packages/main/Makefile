@@ -18,6 +18,7 @@ export print_help
 # Constants
 
 configs = ../../config
+dist = ../../dist
 docs = ../../docs
 tools = ../../tools
 
@@ -66,6 +67,7 @@ install: .venv/flag ## Install development environment
 	@poetry config -n --local virtualenvs.in-project true
 	$(sync)
 	poetry install
+	$(mkdir) .venv
 	@touch $@
 
 poetry.lock: pyproject.toml
@@ -117,16 +119,9 @@ docs-libdoc: install ## Prebuild libdoc files
 	 --output $(docs)/source/libdoc/\
 	 src/
 
-docs-hub: docs-libdoc ## Generate documentation for Robohub
-	mkdir -p dist/hub/markdown
-
-	$(call title,"Building Markdown documentation")
-	poetry run $(MAKE) -C docs clean
-	poetry run $(MAKE) -C docs jekyll
-	find docs/build/jekyll/libraries/ -name "index.md"\
-	 -exec sh -c 'cp {} dist/hub/markdown/$$(basename $$(dirname {})).md' cp {} \;
-
+docs-hub: install ## Generate documentation for Robohub
 	$(call title,"Building JSON documentation")
+	mkdir -p $(dist)/hub/json
 	poetry run python\
 	 $(tools)/libdocext.py\
 	 --rpa\
@@ -136,7 +131,7 @@ docs-hub: docs-libdoc ## Generate documentation for Robohub
 	 --override-docstring src/RPA/HTTP.py=robot\
 	 --override-docstring src/RPA/Database.py=robot\
 	 --ignore src/RPA/core\
-	 --output dist/hub/json\
+	 --output $(dist)/hub/json\
 	 --collapse\
 	 src/
 
