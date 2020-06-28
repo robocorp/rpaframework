@@ -5,6 +5,9 @@ on:
     branches:
       - master
     paths:
+      - 'pyproject.toml'
+      - 'poetry.lock'
+      - 'Makefile'
       - 'docs/**'
       - '.github/workflows/docs.yaml'
 
