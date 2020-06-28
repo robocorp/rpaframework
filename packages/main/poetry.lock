@@ -147,7 +147,7 @@ description = "Extensible memoizing collections and decorators"
 name = "cachetools"
 optional = true
 python-versions = "~=3.5"
-version = "4.1.0"
+version = "4.1.1"
 
 [[package]]
 category = "main"
@@ -1179,7 +1179,7 @@ description = "Core utilities used by RPA Framework"
 name = "rpaframework-core"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "0.2.0"
+version = "0.3.0"
 
 [package.dependencies]
 selenium = ">=3.141.0,<4.0.0"
@@ -1429,7 +1429,7 @@ cv = ["opencv-python", "numpy"]
 google = ["grpcio", "google-cloud-vision", "google-cloud-language", "google-cloud-videointelligence", "google-cloud-translate", "google-cloud-texttospeech", "google-cloud-speech", "google-cloud-storage"]
 
 [metadata]
-content-hash = "b846617cd1abc77e904b217787f858507ebc33ef0156e6ec0834f2d5f6e2f6b5"
+content-hash = "da4bedfc2bc364eccc4a6795f839a20860e57205070168b598a3aff7ada1d8e0"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1479,8 +1479,8 @@ cached-property = [
     {file = "cached_property-1.5.1-py2.py3-none-any.whl", hash = "sha256:3a026f1a54135677e7da5ce819b0c690f156f37976f3e30c5430740725203d7f"},
 ]
 cachetools = [
-    {file = "cachetools-4.1.0-py3-none-any.whl", hash = "sha256:de5d88f87781602201cde465d3afe837546663b168e8b39df67411b0bf10cefc"},
-    {file = "cachetools-4.1.0.tar.gz", hash = "sha256:1d057645db16ca7fe1f3bd953558897603d6f0b9c51ed9d11eb4d071ec4e2aab"},
+    {file = "cachetools-4.1.1-py3-none-any.whl", hash = "sha256:513d4ff98dd27f85743a8dc0e92f55ddb1b49e060c2d5961512855cda2c01a98"},
+    {file = "cachetools-4.1.1.tar.gz", hash = "sha256:bbaa39c3dede00175df2dc2b03d0cf18dd2d32a7de7beb68072d13043c9edb20"},
 ]
 certifi = [
     {file = "certifi-2020.6.20-py2.py3-none-any.whl", hash = "sha256:8fc0819f1f30ba15bdb34cceffb9ef04d99f420f68eb75d901e9560b8749fc41"},
@@ -2114,8 +2114,8 @@ robotframework-seleniumtestability = [
     {file = "robotframework-seleniumtestability-1.1.0.tar.gz", hash = "sha256:18810869a0c0010cc623aea4bb382afdc9aa6fe8404c35fa58452766d0322735"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-0.2.0.tar.gz", hash = "sha256:b2bded3f8154ea98167c56dc61d0531ad05fc6e08777741352a91dff1e7a03b7"},
-    {file = "rpaframework_core-0.2.0-py3-none-any.whl", hash = "sha256:f25d0e9514f2c657f2953820f0a56a8c7d70a6b2d8757112dd57238c17551a31"},
+    {file = "rpaframework-core-0.3.0.tar.gz", hash = "sha256:af29f56f8fde307267538f0579389b821012616e8463516fb52d19df14a2d38d"},
+    {file = "rpaframework_core-0.3.0-py3-none-any.whl", hash = "sha256:cf00fc66c65589fe20a64e988f6376ea8ba9feb84607b4fa6994757c0dfd32da"},
 ]
 rsa = [
     {file = "rsa-4.6-py3-none-any.whl", hash = "sha256:6166864e23d6b5195a5cfed6cd9fed0fe774e226d8f854fcb23b7bbef0350233"},

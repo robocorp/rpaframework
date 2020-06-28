@@ -11,7 +11,7 @@ from SeleniumLibrary.base import keyword
 from SeleniumLibrary.keywords import BrowserManagementKeywords
 from selenium.common.exceptions import WebDriverException
 
-from RPA.core import webdriver
+from RPA.core import locators, webdriver
 
 
 class BrowserNotFoundError(Exception):
@@ -37,6 +37,7 @@ class Browser(SeleniumLibrary):
 
     def __init__(self, *args, **kwargs) -> None:
         self.logger = logging.getLogger(__name__)
+
         self.using_testability = False
         if "use_testability" in args:
             self.using_testability = True
@@ -50,21 +51,42 @@ class Browser(SeleniumLibrary):
         elif self.using_testability:
             # Setting SeleniumTestability as SeleniumLibrary plugin
             kwargs["plugins"] = "SeleniumTestability"
+
+        locators_path = kwargs.pop("locators_path", locators.DEFAULT_DATABASE)
+
         SeleniumLibrary.__init__(self, *args, **kwargs)
         self.drivers = []
+        self.locators = locators.LocatorsDatabase(locators_path)
+        self._element_finder.register("alias", self._find_by_alias, persist=True)
+
+    def _find_by_alias(self, parent, criteria, tag, constraints):
+        """Custom 'alias' locator that uses locators database."""
+        del constraints
+
+        self.locators.load()
+        if self.locators.error:
+            error_msg, error_args = self.locators.error
+            raise ValueError(error_msg % error_args)
+
+        entry = self.locators.find_by_name(criteria)
+        if not entry:
+            raise ValueError(f"Unknown locator alias: {criteria}")
+
+        if entry["type"] != "browser":
+            raise ValueError(f"Not a browser locator: {criteria}")
+
+        locator = "{prefix}:{criteria}".format(
+            prefix=entry["strategy"], criteria=entry["value"]
+        )
+
+        self.logger.info("%s is an alias for: %s", criteria, locator)
+        return self._element_finder.find(locator, tag, parent)
 
     def get_preferable_browser_order(self) -> list:
         """Return a list of RPA Framework preferred browsers by OS."""
-        preferable_browser_order = ["Chrome"]
-        if platform.system() == "Windows":
-            preferable_browser_order.extend(["Firefox", "Edge", "IE", "Opera"])
-        elif platform.system() == "Linux":
-            preferable_browser_order.extend(["Firefox", "Opera"])
-        elif platform.system() == "Darwin":
-            preferable_browser_order.extend(["Safari", "Firefox", "Opera"])
-        else:
-            preferable_browser_order.extend(["Firefox"])
-        return preferable_browser_order
+        return webdriver.DRIVER_PREFERENCE.get(
+            platform.system(), webdriver.DRIVER_PREFERENCE["default"]
+        )
 
     @keyword
     def open_available_browser(
@@ -189,7 +211,7 @@ class Browser(SeleniumLibrary):
         was not initialized.
         """
         self.logger.debug("Driver options for create_rpa_webdriver: %s", options)
-        executable = webdriver.initialize(browser, download)
+        executable = webdriver.executable(browser, download)
 
         try:
             browser = browser.lower().capitalize()

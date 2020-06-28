@@ -4,6 +4,7 @@ Release notes
 Upcoming release
 ----------------
 
+- **Browser**: Added support for locator aliases
 - **Browser**: Upgrade ``SeleniumTestability`` plugin to 1.1.0 version
 - **Browser**: Remove "..controlled by automated.." infobar by default when using Chrome
 - **Email.ImapSmtp**: Add keywords for folder management and marking messages
