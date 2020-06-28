@@ -66,8 +66,7 @@ install: .venv/flag ## Install development environment
 	@poetry config -n --local virtualenvs.in-project true
 	$(sync)
 	poetry install
-	$(mkdir) .venv
-	@touch $@
+	-touch $@
 
 poetry.lock: pyproject.toml
 	poetry lock

@@ -67,8 +67,7 @@ install: .venv/flag ## Install development environment
 	@poetry config -n --local virtualenvs.in-project true
 	$(sync)
 	poetry install
-	$(mkdir) .venv
-	@touch $@
+	-touch $@
 
 poetry.lock: pyproject.toml
 	poetry lock
@@ -121,7 +120,7 @@ docs-libdoc: install ## Prebuild libdoc files
 
 docs-hub: install ## Generate documentation for Robohub
 	$(call title,"Building JSON documentation")
-	mkdir -p $(dist)/hub/json
+	$(mkdir) $(dist)/hub/json
 	poetry run python\
 	 $(tools)/libdocext.py\
 	 --rpa\

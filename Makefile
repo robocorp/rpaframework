@@ -46,8 +46,7 @@ install: .venv/flag ## Install development environment
 	@poetry config -n --local virtualenvs.in-project true
 	$(sync)
 	poetry install
-	$(mkdir) .venv
-	@touch $@
+	-touch $@
 
 poetry.lock: pyproject.toml
 	poetry lock
@@ -66,7 +65,7 @@ docs-hub: check docs-hub-each ## Generate distributable documentation for Robohu
 	$(call title,"Building Markdown documentation")
 	poetry run $(MAKE) -C docs clean
 	poetry run $(MAKE) -C docs jekyll
-	mkdir -p dist/hub/json
+	$(mkdir) dist/hub/json
 	find docs/build/jekyll/libraries/ -name "index.md"\
 	 -exec sh -c 'cp {} dist/hub/markdown/$$(basename $$(dirname {})).md' cp {} \;
 
