@@ -65,7 +65,7 @@ docs-hub: check docs-hub-each ## Generate distributable documentation for Robohu
 	$(call title,"Building Markdown documentation")
 	poetry run $(MAKE) -C docs clean
 	poetry run $(MAKE) -C docs jekyll
-	$(mkdir) dist/hub/json
+	$(mkdir) dist/hub/markdown
 	find docs/build/jekyll/libraries/ -name "index.md"\
 	 -exec sh -c 'cp {} dist/hub/markdown/$$(basename $$(dirname {})).md' cp {} \;
 
