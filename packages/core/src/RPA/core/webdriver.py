@@ -7,11 +7,19 @@ import subprocess
 import tempfile
 from pathlib import Path
 from typing import Any, List
+
+from selenium import webdriver
 from webdrivermanager import AVAILABLE_DRIVERS
 
 LOGGER = logging.getLogger(__name__)
 
 DRIVER_DIR = Path(tempfile.gettempdir()) / "drivers"
+DRIVER_PREFERENCE = {
+    "Windows": ["Chrome", "Firefox", "Edge", "IE", "Opera"],
+    "Linux": ["Chrome", "Firefox", "Opera"],
+    "Darwin": ["Chrome", "Safari", "Firefox", "Opera"],
+    "default": ["Chrome", "Firefox"],
+}
 
 CHROMEDRIVER_VERSIONS = {
     "81": "81.0.4044.69",
@@ -50,9 +58,8 @@ CHROME_VERSION_COMMANDS = {
 }
 
 
-def initialize(browser: str, download: bool = False) -> str:
-    """Webdriver initialization with default driver
-    paths or with downloaded drivers.
+def executable(browser: str, download: bool = False) -> str:
+    """Get path to webdriver executable, and download it if requested.
 
     :param browser: name of browser to get webdriver for
     :param download: download driver binaries if they don't exist
@@ -83,6 +90,18 @@ def initialize(browser: str, download: bool = False) -> str:
         LOGGER.info("Driver download skipped, because it exists at '%s'", driver_path)
 
     return str(driver_path)
+
+
+def start(name: str, **options):
+    """Start a Selenium webdriver."""
+    name = name.strip()
+    try:
+        factory = getattr(webdriver, name)
+    except AttributeError:
+        raise RuntimeError(f"'{name}' is not a valid driver name")
+
+    driver = factory(**options)
+    return driver
 
 
 def _driver_path(factory: Any, download: bool) -> Any:
