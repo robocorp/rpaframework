@@ -40,10 +40,22 @@ Keywords
 
 
 :List Messages:
-  :Arguments: count: int=100, folder_name: str=None
+  :Arguments: folder_name: str=None, count: int=100
 
   List messages in the account inbox. Order by descending
   received time.
+
+
+:Move Messages:
+  :Arguments: criterion: str=, source: str=None, target: str=None, contains: bool=False
+
+  Move message(s) from source folder to target folder
+
+  Criterion examples:
+
+      - subject:my message subject
+      - body:something in body
+      - sender:sender@domain.com
 
 
 :Rename Folder:
@@ -61,4 +73,10 @@ Keywords
   account address.
 
   Recipients is ``required`` parameter.
+
+
+:Wait For Message:
+  :Arguments: criterion: str=, timeout: float=5.0, interval: float=1.0, contains: bool=False
+
+  Wait for email matching `criterion` to arrive into INBOX.
 
