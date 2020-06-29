@@ -13,7 +13,7 @@ backwards compatibility breaking changes.
 - **Browser**: Added support for locator aliases
 - **Browser**: Upgrade ``SeleniumTestability`` plugin to 1.1.0 version
 - **Browser**: Remove "..controlled by automated.." infobar by default when using Chrome
-- **ImapSmtp** library initialization parameter `port` split to `smtp_port` and
+- **Email.ImapSmtp** library initialization parameter `port` split to `smtp_port` and
   `imap_port` (_breaks backwards compability_)
 - **Email.ImapSmtp**: Add keywords for folder management and marking messages
   as read/unread and flag/unflag
