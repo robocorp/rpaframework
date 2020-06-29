@@ -227,13 +227,111 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Email.Exchange.Exchange.create_folder">
+<code class="sig-name descname">create_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = None</em>, <em class="sig-param">parent_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.create_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create email folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_name</strong> – name for the new folder</p></li>
+<li><p><strong>parent_folder</strong> – name for the parent folder, by default INBOX</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if operation was successful, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.Exchange.Exchange.delete_folder">
+<code class="sig-name descname">delete_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = None</em>, <em class="sig-param">parent_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.delete_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete email folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_name</strong> – current folder name</p></li>
+<li><p><strong>parent_folder</strong> – name for the parent folder, by default INBOX</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if operation was successful, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.Exchange.Exchange.empty_folder">
+<code class="sig-name descname">empty_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = None</em>, <em class="sig-param">parent_folder: str = None</em>, <em class="sig-param">delete_sub_folders: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.empty_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Empty email folder of all items</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_name</strong> – current folder name</p></li>
+<li><p><strong>parent_folder</strong> – name for the parent folder, by default INBOX</p></li>
+<li><p><strong>delete_sub_folders</strong> – delete sub folders or not, by default False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if operation was successful, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.list_messages">
-<code class="sig-name descname">list_messages</code><span class="sig-paren">(</span><em class="sig-param">count: int = 100</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.list_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_messages</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = None</em>, <em class="sig-param">count: int = 100</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.list_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>List messages in the account inbox. Order by descending
 received time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>count</strong> – number of messages to list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.Exchange.Exchange.move_messages">
+<code class="sig-name descname">move_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">source: str = None</em>, <em class="sig-param">target: str = None</em>, <em class="sig-param">contains: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.move_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move message(s) from source folder to target folder</p>
+<p>Criterion examples:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>subject:my message subject</p></li>
+<li><p>body:something in body</p></li>
+<li><p>sender:sender&#64;domain.com</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>criterion</strong> – move messages matching this criterion</p></li>
+<li><p><strong>source</strong> – source folder</p></li>
+<li><p><strong>target</strong> – target folder</p></li>
+<li><p><strong>contains</strong> – if matching should be done using <cite>contains</cite> matching
+and not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>equals</cite> matching</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean result of operation, True if 1+ items were moved else False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.Exchange.Exchange.rename_folder">
+<code class="sig-name descname">rename_folder</code><span class="sig-paren">(</span><em class="sig-param">oldname: str = None</em>, <em class="sig-param">newname: str = None</em>, <em class="sig-param">parent_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.rename_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename email folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>oldname</strong> – current folder name</p></li>
+<li><p><strong>newname</strong> – new name for the folder</p></li>
+<li><p><strong>parent_folder</strong> – name for the parent folder, by default INBOX</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if operation was successful, False if not</p>
 </dd>
 </dl>
 </dd></dl>
@@ -259,6 +357,26 @@ account address.</p>
 <li><p><strong>save</strong> – is sent message saved to Sent messages folder or not,
 defaults to False</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.Exchange.Exchange.wait_for_message">
+<code class="sig-name descname">wait_for_message</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">timeout: float = 5.0</em>, <em class="sig-param">interval: float = 1.0</em>, <em class="sig-param">contains: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.Exchange.Exchange.wait_for_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for email matching <cite>criterion</cite> to arrive into INBOX.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>criterion</strong> – wait for message matching criterion</p></li>
+<li><p><strong>timeout</strong> – total time in seconds to wait for email, defaults to 5.0</p></li>
+<li><p><strong>interval</strong> – time in seconds for new check, defaults to 1.0</p></li>
+<li><p><strong>contains</strong> – if matching should be done using <cite>contains</cite> matching
+and not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>equals</cite> matching</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of messages</p>
 </dd>
 </dl>
 </dd></dl>

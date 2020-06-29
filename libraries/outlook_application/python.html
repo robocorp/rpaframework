@@ -209,23 +209,24 @@
 <dl class="class">
 <dt id="RPA.Outlook.Application.Application">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Outlook.Application.</code><code class="sig-name descname">Application</code><a class="headerlink" href="#RPA.Outlook.Application.Application" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.core.msoffice.OfficeApplication</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Library for manipulating Outlook application.</p>
 <p>For more information: <a class="reference external" href="https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2007/bb219950(v=office.12">https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2007/bb219950(v=office.12</a>) # noqa: E501</p>
 <dl class="method">
 <dt id="RPA.Outlook.Application.Application.close_document">
 <code class="sig-name descname">close_document</code><span class="sig-paren">(</span><em class="sig-param">save_changes: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Outlook.Application.Application.close_document" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Close the active document (if open).</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Outlook.Application.Application.open_application">
 <code class="sig-name descname">open_application</code><span class="sig-paren">(</span><em class="sig-param">visible: bool = False</em>, <em class="sig-param">display_alerts: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Outlook.Application.Application.open_application" title="Permalink to this definition">¶</a></dt>
-<dd><p>Open Microsoft application.</p>
+<dd><p>Open the Outlook application.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>visible</strong> – show Word window if True, defaults to False</p></li>
-<li><p><strong>display_alerts</strong> – show alert popups if True, defaults to False</p></li>
+<li><p><strong>visible</strong> – show window after opening</p></li>
+<li><p><strong>display_alerts</strong> – show alert popups</p></li>
 </ul>
 </dd>
 </dl>
@@ -234,7 +235,8 @@
 <dl class="method">
 <dt id="RPA.Outlook.Application.Application.quit_application">
 <code class="sig-name descname">quit_application</code><span class="sig-paren">(</span><em class="sig-param">save_changes: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Outlook.Application.Application.quit_application" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Quit the application.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Outlook.Application.Application.send_message">

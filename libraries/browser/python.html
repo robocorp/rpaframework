@@ -224,16 +224,6 @@
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="RPA.Browser.Browser.CHROMEDRIVER_VERSIONS">
-<code class="sig-name descname">CHROMEDRIVER_VERSIONS</code><em class="property"> = {'79': '79.0.3945.36', '80': '80.0.3987.106', '81': '81.0.4044.69'}</em><a class="headerlink" href="#RPA.Browser.Browser.CHROMEDRIVER_VERSIONS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="RPA.Browser.Browser.CHROME_VERSION_PATTERN">
-<code class="sig-name descname">CHROME_VERSION_PATTERN</code><em class="property"> = '(\\d+)(\\.\\d+\\.\\d+.\\d+)'</em><a class="headerlink" href="#RPA.Browser.Browser.CHROME_VERSION_PATTERN" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
 <dt id="RPA.Browser.Browser.ROBOT_LIBRARY_SCOPE">
 <code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Browser.Browser.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -263,17 +253,8 @@
 <p><code class="docutils literal notranslate"><span class="pre">browser</span></code> name of the browser</p>
 <p><code class="docutils literal notranslate"><span class="pre">options</span></code> options for webdriver</p>
 <p><code class="docutils literal notranslate"><span class="pre">download</span></code> if the driver should be download, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
-<p>Returns an index of the webdriver session, <code class="docutils literal notranslate"><span class="pre">False</span></code> if webdriver
+<p>Returns an index of the webdriver session, <code class="docutils literal notranslate"><span class="pre">None</span></code> if webdriver
 was not initialized.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Browser.Browser.detect_chrome_version">
-<code class="sig-name descname">detect_chrome_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Browser.detect_chrome_version" title="Permalink to this definition">¶</a></dt>
-<dd><p>Detect Chrome browser version (if possible) on different
-platforms using different commands for each platform.</p>
-<p>Returns corresponding chromedriver version, if possible.</p>
-<p>Supported Chrome major versions are 81, 80 and 79.</p>
 </dd></dl>
 
 <dl class="method">
@@ -434,17 +415,6 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Browser.download_driver">
-<code class="sig-name descname">download_driver</code><span class="sig-paren">(</span><em class="sig-param">dm_class: str</em>, <em class="sig-param">download_dir: str</em>, <em class="sig-param">version: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.download_driver" title="Permalink to this definition">¶</a></dt>
-<dd><p>Download the driver to a given directory. By default, downloads
-the latest version for the given webdriver type. This can be
-overridden by giving the <code class="docutils literal notranslate"><span class="pre">version</span></code> parameter.</p>
-<p><code class="docutils literal notranslate"><span class="pre">dm_class</span></code> driver manager class</p>
-<p><code class="docutils literal notranslate"><span class="pre">download_dir</span></code> directory to download driver into</p>
-<p><code class="docutils literal notranslate"><span class="pre">version</span></code> download specific version, by default downloads the latest version</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="RPA.Browser.Browser.driver">
 <em class="property">property </em><code class="sig-name descname">driver</code><a class="headerlink" href="#RPA.Browser.Browser.driver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Current active driver.</p>
@@ -538,15 +508,6 @@ keywords. Will be one or many.</p>
 </ul>
 </div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Browser.Browser.get_installed_chromedriver_version">
-<code class="sig-name descname">get_installed_chromedriver_version</code><span class="sig-paren">(</span><em class="sig-param">driver_executable_path: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Browser.get_installed_chromedriver_version" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the full version number for a stable chromedriver.</p>
-<p>The stable version is defined internally based on the major version
-of the chromedriver.</p>
-<p><code class="docutils literal notranslate"><span class="pre">driver_executable_path</span></code> path to chromedriver</p>
 </dd></dl>
 
 <dl class="method">
@@ -858,15 +819,6 @@ to point into user profile directory.</p>
 <code class="sig-name descname">wait_and_click_button</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.wait_and_click_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click button once it becomes visible.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Browser.Browser.webdriver_init">
-<code class="sig-name descname">webdriver_init</code><span class="sig-paren">(</span><em class="sig-param">browser: str</em>, <em class="sig-param">download: bool = False</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Browser.webdriver_init" title="Permalink to this definition">¶</a></dt>
-<dd><p>Webdriver initialization with default driver
-paths or with downloaded drivers.</p>
-<p><code class="docutils literal notranslate"><span class="pre">browser</span></code> use drivers for this browser</p>
-<p><code class="docutils literal notranslate"><span class="pre">download</span></code> if drivers should be downloaded, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd></dl>
 
 </dd></dl>
