@@ -4,13 +4,23 @@ Release notes
 Upcoming release
 ----------------
 
+2.0.0
+-----
+
+**MAJOR version change** Changes to **Email.ImapSmtp** and **Email.Exchange** are
+backwards compatibility breaking changes.
+
 - **Browser**: Added support for locator aliases
 - **Browser**: Upgrade ``SeleniumTestability`` plugin to 1.1.0 version
 - **Browser**: Remove "..controlled by automated.." infobar by default when using Chrome
+- **ImapSmtp** library initialization parameter `port` split to `smtp_port` and
+  `imap_port` (_breaks backwards compability_)
 - **Email.ImapSmtp**: Add keywords for folder management and marking messages
   as read/unread and flag/unflag
+- **Email.Exchange** library keyword ``list_messages`` parameter order changed -
+  new order `folder_name`, `count` (_breaks backwards compability_)
 - **Email.Exchange**: Add keywords for folder management
-- **Email.Exchange**: Add keywords ``Wait For Message``and ``Move Messages``
+- **Email.Exchange**: Add keywords ``Wait For Message`` and ``Move Messages``
 - Core functionality separated into ``rpaframework-core`` package
 
 
