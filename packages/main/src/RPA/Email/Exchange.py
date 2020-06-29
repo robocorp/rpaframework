@@ -1,9 +1,13 @@
 import logging
 from pathlib import Path
+import time
+from typing import Any
 
 from exchangelib import (
     Account,
     Credentials,
+    EWSDateTime,
+    EWSTimeZone,
     FileAttachment,
     Folder,
     HTMLBody,
@@ -35,7 +39,7 @@ class Exchange:
             username, credentials=self.credentials, autodiscover=autodiscover
         )
 
-    def list_messages(self, count: int = 100, folder_name: str = None) -> list:
+    def list_messages(self, folder_name: str = None, count: int = 100) -> list:
         """List messages in the account inbox. Order by descending
         received time.
 
@@ -43,8 +47,8 @@ class Exchange:
         """
         # pylint: disable=no-member
         messages = []
-        items = self._get_all_items_in_folder(folder_name)
-        for item in items.order_by("-datetime_received")[:count]:
+        source_folder = self._get_folder_object(folder_name)
+        for item in source_folder.all().order_by("-datetime_received")[:count]:
             messages.append(
                 {
                     "subject": item.subject,
@@ -257,3 +261,98 @@ class Exchange:
             empty_folder = self.account.inbox / parent_folder / folder_name
         self.logger.info("Empty folder '%s'", folder_name)
         empty_folder.empty(delete_sub_folders=delete_sub_folders)
+
+    def move_messages(self, criterion, source, target, contains=False):
+        """Move message(s) from source folder to target folder
+
+        Criterion examples:
+
+            - subject:my message subject
+            - body:something in body
+            - sender:sender@domain.com
+
+        :param criterion: move messages matching this criterion
+        :param source: source folder
+        :param target: target folder
+        :param contains: if matching should be done using `contains` matching
+             and not `equals` matching, default `False` is means `equals` matching
+        """
+        source_folder = self._get_folder_object(source)
+        target_folder = self._get_folder_object(target)
+        if source_folder == target_folder:
+            raise KeyError("Source folder is same as target folder")
+        self.logger.info("Move messages")
+        filter_dict = self._get_filter_key_value(criterion, contains)
+        items = source_folder.filter(**filter_dict)
+        if items and items.count() > 0:
+            items.move(to_folder=target_folder)
+        else:
+            self.logger.warning("No items match criterion '%s'", criterion)
+
+    def _get_folder_object(self, folder_name):
+        if folder_name is None or folder_name == "INBOX":
+            folder_object = self.account.inbox
+        elif "INBOX" in folder_name:
+            folder_object = self.account.inbox / folder_name.replace(
+                "INBOX/", ""
+            ).replace("INBOX /", "")
+        else:
+            folder_object = self.account.inbox / folder_name
+        return folder_object
+
+    def _get_filter_key_value(self, criterion, contains):
+        if criterion.startswith("subject:"):
+            search_key = "subject"
+        elif criterion.startswith("body:"):
+            search_key = "body"
+        elif criterion.startswith("sender:"):
+            search_key = "sender"
+        else:
+            raise KeyError("Unknown criterion for filtering items '%s'" % criterion)
+        if contains:
+            search_key += "__contains"
+        _, search_val = criterion.split(":", 1)
+        return {search_key: search_val}
+
+    def wait_for_message(
+        self,
+        criterion: str = "",
+        timeout: float = 5.0,
+        interval: float = 1.0,
+        contains: bool = False,
+    ) -> Any:
+        """Wait for email matching `criterion` to arrive into INBOX.
+
+        :param criterion: wait for message matching criterion
+        :param timeout: total time in seconds to wait for email, defaults to 5.0
+        :param interval: time in seconds for new check, defaults to 1.0
+        :param contains: if matching should be done using `contains` matching
+             and not `equals` matching, default `False` is means `equals` matching
+        :return: list of messages
+        """
+        self.logger.info("Wait for messages")
+        end_time = time.time() + float(timeout)
+        filter_dict = self._get_filter_key_value(criterion, contains)
+        items = None
+        tz = EWSTimeZone.localzone()
+        right_now = tz.localize(EWSDateTime.now())  # pylint: disable=E1101
+        while time.time() < end_time:
+            items = self.account.inbox.filter(  # pylint: disable=E1101
+                **filter_dict, datetime_received__gte=right_now
+            )
+            if items.count() > 0:
+                break
+            time.sleep(interval)
+        messages = []
+        for item in items:
+            messages.append(
+                {
+                    "subject": item.subject,
+                    "sender": item.sender,
+                    "datetime_received": item.datetime_received,
+                    "body": item.body,
+                }
+            )
+        if len(messages) == 0:
+            self.logger.info("Did not receive any matching items")
+        return messages

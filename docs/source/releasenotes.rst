@@ -10,7 +10,9 @@ Upcoming release
 - **Email.ImapSmtp**: Add keywords for folder management and marking messages
   as read/unread and flag/unflag
 - **Email.Exchange**: Add keywords for folder management
+- **Email.Exchange**: Add keywords ``Wait For Message``and ``Move Messages``
 - Core functionality separated into ``rpaframework-core`` package
+
 
 1.4.0
 -----
