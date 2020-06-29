@@ -54,6 +54,7 @@ class Exchange:
                     "subject": item.subject,
                     "sender": item.sender,
                     "datetime_received": item.datetime_received,
+                    "body": item.body,
                 }
             )
         return messages
@@ -262,7 +263,13 @@ class Exchange:
         self.logger.info("Empty folder '%s'", folder_name)
         empty_folder.empty(delete_sub_folders=delete_sub_folders)
 
-    def move_messages(self, criterion, source, target, contains=False):
+    def move_messages(
+        self,
+        criterion: str = "",
+        source: str = None,
+        target: str = None,
+        contains: bool = False,
+    ) -> bool:
         """Move message(s) from source folder to target folder
 
         Criterion examples:
@@ -276,6 +283,7 @@ class Exchange:
         :param target: target folder
         :param contains: if matching should be done using `contains` matching
              and not `equals` matching, default `False` is means `equals` matching
+        :return: boolean result of operation, True if 1+ items were moved else False
         """
         source_folder = self._get_folder_object(source)
         target_folder = self._get_folder_object(target)
@@ -286,8 +294,10 @@ class Exchange:
         items = source_folder.filter(**filter_dict)
         if items and items.count() > 0:
             items.move(to_folder=target_folder)
+            return True
         else:
             self.logger.warning("No items match criterion '%s'", criterion)
+            return False
 
     def _get_folder_object(self, folder_name):
         if folder_name is None or folder_name == "INBOX":
