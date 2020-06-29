@@ -79,6 +79,7 @@ class LocatorsDatabase:
 
     def find_by_id(self, locator_id):
         """Find locator entry by id."""
+        locator_id = int(locator_id)
         for locator in self._locators:
             if locator["id"] == locator_id:
                 return locator
@@ -86,6 +87,7 @@ class LocatorsDatabase:
 
     def find_by_name(self, name):
         """Find locator entry by name."""
+        name = str(name)
         for locator in self._locators:
             if locator["name"] == name:
                 return locator
@@ -113,11 +115,13 @@ class LocatorsDatabase:
         if "id" not in locator or locator["id"] != locator_id:
             raise ValidationError("Locator id does not match content")
 
-        index, _ = self.find_by_id(locator_id)
-        if index is None:
+        for index, entry in enumerate(self._locators):
+            if entry["id"] == locator_id:
+                self._locators[index] = locator
+                break
+        else:
             raise ValidationError(f"Unknown locator ID: {locator_id}")
 
-        self._locators[index] = locator
         self.save()
 
     def delete(self, locator_id):
