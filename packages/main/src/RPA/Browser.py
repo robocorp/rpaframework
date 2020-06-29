@@ -63,6 +63,9 @@ class Browser(SeleniumLibrary):
         """Custom 'alias' locator that uses locators database."""
         del constraints
 
+        if not Path(self.locators.path).exists():
+            self.logger.warning("File does not exist: %s", self.locators.path)
+
         self.locators.load()
         if self.locators.error:
             error_msg, error_args = self.locators.error
@@ -79,7 +82,7 @@ class Browser(SeleniumLibrary):
             prefix=entry["strategy"], criteria=entry["value"]
         )
 
-        self.logger.info("%s is an alias for: %s", criteria, locator)
+        self.logger.info("%s is an alias for %s", criteria, locator)
         return self._element_finder.find(locator, tag, parent)
 
     def get_preferable_browser_order(self) -> list:

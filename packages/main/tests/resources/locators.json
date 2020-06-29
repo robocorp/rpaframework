@@ -1,0 +1,26 @@
+[
+    {
+        "id": 0,
+        "name": "RobotSpareBin.Username",
+        "type": "browser",
+        "strategy": "id",
+        "value": "username",
+        "source": "https://robotsparebinindustries.com/"
+    },
+    {
+        "id": 1,
+        "name": "RobotSpareBin.Password",
+        "type": "browser",
+        "strategy": "id",
+        "value": "password",
+        "source": "https://robotsparebinindustries.com/"
+    },
+    {
+        "id": 2,
+        "name": "RobotSpareBin.Login",
+        "type": "browser",
+        "strategy": "class",
+        "value": "btn-primary",
+        "source": "https://robotsparebinindustries.com/"
+    }
+]
