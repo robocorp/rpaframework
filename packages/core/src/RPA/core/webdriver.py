@@ -78,7 +78,7 @@ def executable(browser: str, download: bool = False) -> str:
         chrome_version = _chrome_version()
         driver_version = _chromedriver_version(driver_path)
         if chrome_version != driver_version:
-            _download_driver(factory, chrome_version)
+            _download_driver(factory)
     else:
         LOGGER.info("Driver download skipped, because it exists at '%s'", driver_path)
 
