@@ -1,6 +1,6 @@
 import pytest
 from collections import OrderedDict
-from RPA.core import inspect
+from RPA.core import types
 
 
 dicts = (
@@ -16,4 +16,4 @@ dicts = (
 
 @pytest.mark.parametrize("obj,result", dicts)
 def test_is_dict_like(obj, result):
-    assert inspect.is_dict_like(obj) == result
+    assert types.is_dict_like(obj) == result
