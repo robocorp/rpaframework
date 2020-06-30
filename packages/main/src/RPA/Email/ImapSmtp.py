@@ -83,7 +83,7 @@ class ImapSmtp:
 
         self.logger = logging.getLogger(__name__)
         self.smtp_server = smtp_server
-        self.imap_server = imap_server
+        self.imap_server = imap_server if imap_server else smtp_server
         self.smtp_port = int(smtp_port)
         self.imap_port = int(imap_port)
         self.set_credentials(account, password)
