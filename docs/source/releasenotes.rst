@@ -4,12 +4,16 @@ Release notes
 Upcoming release
 ----------------
 
-- **Email.ImapSmtp** Fix how IMAP server is initialized
+2.0.1
+-----
+- **Browser**: Fix for regression in Chrome's Webdriver version handling
+- **Email.ImapSmtp**: Fix how IMAP server is initialized
+- Fix for issue with missing files when upgrading from version 1.x
 
 2.0.0
 -----
 
-**MAJOR version change** Changes to **Email.ImapSmtp** and **Email.Exchange** are
+**NOTE:** Changes to **Email.ImapSmtp** and **Email.Exchange** are
 backwards compatibility breaking changes.
 
 - **Browser**: Added support for locator aliases
