@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- **Email.ImapSmtp** Fix how IMAP server is initialized
+
 2.0.0
 -----
 
