@@ -52,7 +52,6 @@ CHROME_VERSION_COMMANDS = {
     ],
     "Darwin": [
         ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "--version"],
-        ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "--version"],
         ["/Applications/Chromium.app/Contents/MacOS/Chromium", "--version"],
     ],
 }
