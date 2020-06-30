@@ -80,7 +80,7 @@ lint: install ## Verify code formatting and conventions
 	poetry run flake8 --config $(configs)/flake8 src/RPA
 
 	$(call title,"Verifying pylint")
-	poetry run pylint --rcfile $(configs)/pylint src/RPA
+	poetry run pylint -j1 --rcfile $(configs)/pylint src/RPA
 
 test: test-python test-robot ## Run all acceptance tests
 
