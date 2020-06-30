@@ -4,6 +4,15 @@ from pathlib import Path
 from RPA.core import webdriver
 
 
+VERSION_STRINGS = (
+    (None, None),
+    ("not-a-version", None),
+    ("22.0.1", None),
+    ("79.29.1.0", "79.29.1"),
+    ("81.22.122.03", "81.22.122"),
+)
+
+
 def as_factory(func):
     return lambda *args, **kwargs: func
 
@@ -27,16 +36,7 @@ def test_driver_path_download(manager_mock):
 
 
 @pytest.mark.parametrize("system", ["Windows", "Linux", "Darwin"])
-@pytest.mark.parametrize(
-    "output,expected",
-    (
-        (None, None),
-        ("not-a-version", None),
-        ("22.0.1.0", None),
-        ("79.29.1.0", webdriver.CHROMEDRIVER_VERSIONS["79"]),
-        ("81.22.122.03", webdriver.CHROMEDRIVER_VERSIONS["81"]),
-    ),
-)
+@pytest.mark.parametrize("output,expected", VERSION_STRINGS)
 @mock.patch("RPA.core.webdriver._run_command")
 @mock.patch("RPA.core.webdriver.platform")
 def test_chrome_version(mock_platform, mock_run, system, output, expected):
@@ -55,16 +55,7 @@ def test_chrome_version_unknown_system(mock_platform, mock_run):
     assert result == None
 
 
-@pytest.mark.parametrize(
-    "output,expected",
-    (
-        (None, None),
-        ("not-a-version", None),
-        ("22.0.1.0", None),
-        ("79.29.1.0", webdriver.CHROMEDRIVER_VERSIONS["79"]),
-        ("81.22.122.03", webdriver.CHROMEDRIVER_VERSIONS["81"]),
-    ),
-)
+@pytest.mark.parametrize("output,expected", VERSION_STRINGS)
 @mock.patch("RPA.core.webdriver._run_command")
 def test_chromedriver_version(mock_run, output, expected):
     mock_run.return_value = output

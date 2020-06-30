@@ -21,13 +21,7 @@ DRIVER_PREFERENCE = {
     "default": ["Chrome", "Firefox"],
 }
 
-CHROMEDRIVER_VERSIONS = {
-    "81": "81.0.4044.69",
-    "80": "80.0.3987.106",
-    "79": "79.0.3945.36",
-}
-
-CHROME_VERSION_PATTERN = r"(\d+)(\.\d+\.\d+.\d+)"
+CHROME_VERSION_PATTERN = r"(\d+\.\d+.\d+)(\.\d+)"
 CHROME_VERSION_COMMANDS = {
     "Windows": [
         [
@@ -125,7 +119,7 @@ def _chrome_version() -> str:
     commands = CHROME_VERSION_COMMANDS.get(system)
 
     if not commands:
-        LOGGER.error("Unsupported system: %s", system)
+        LOGGER.warning("Unsupported system: %s", system)
         return None
 
     for cmd in commands:
@@ -137,8 +131,7 @@ def _chrome_version() -> str:
         if not version:
             continue
 
-        major = version.group(1)
-        return CHROMEDRIVER_VERSIONS.get(major)
+        return version.group(1)
 
     return None
 
@@ -152,8 +145,7 @@ def _chromedriver_version(path: Path) -> str:
     if not version:
         return None
 
-    major = version.group(1)
-    return CHROMEDRIVER_VERSIONS.get(major)
+    return version.group(1)
 
 
 def _download_driver(factory: Any, version: str = None) -> None:
@@ -188,15 +180,8 @@ def _set_executable_permissions(path: str) -> None:
 
 def _run_command(args: List[str]) -> str:
     try:
-        process = subprocess.Popen(
-            args,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            shell=True,
-        )
-        output, _ = process.communicate()
-        return str(output).strip()
-    except FileNotFoundError:
-        LOGGER.debug('Command "%s" not found', args[0])
+        output = subprocess.check_output(args)
+        return output.decode().strip()
+    except (FileNotFoundError, subprocess.CalledProcessError) as err:
+        LOGGER.debug("Command failed: %s", err)
         return None
