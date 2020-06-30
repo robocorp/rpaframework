@@ -188,7 +188,15 @@ def _set_executable_permissions(path: str) -> None:
 
 def _run_command(args: List[str]) -> str:
     try:
-        return subprocess.check_output(args, stderr=subprocess.STDOUT, shell=True)
+        process = subprocess.Popen(
+            args,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            shell=True,
+        )
+        output, _ = process.communicate()
+        return str(output).strip()
     except FileNotFoundError:
         LOGGER.debug('Command "%s" not found', args[0])
         return None
