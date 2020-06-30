@@ -126,8 +126,9 @@ def _chrome_version() -> str:
 
     if not commands:
         LOGGER.error("Unsupported system: %s", system)
+        return None
 
-    for cmd in CHROME_VERSION_COMMANDS:
+    for cmd in commands:
         output = _run_command(cmd)
         if not output:
             continue
