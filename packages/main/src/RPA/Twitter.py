@@ -7,7 +7,8 @@ from robot.libraries.BuiltIn import (
 )
 import tweepy
 from tweepy.error import TweepError
-from RPA.core.utils import required_env, required_param
+
+from RPA.core.helpers import required_env, required_param
 from RPA.RobotLogListener import RobotLogListener
 
 

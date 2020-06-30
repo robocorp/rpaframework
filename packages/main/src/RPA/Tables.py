@@ -10,7 +10,7 @@ from itertools import groupby, zip_longest
 from numbers import Number
 from operator import itemgetter
 
-from RPA.core.inspect import is_dict_like, is_list_like, is_namedtuple
+from RPA.core.types import is_dict_like, is_list_like, is_namedtuple
 
 
 def to_list(obj, size=1):

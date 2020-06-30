@@ -12,7 +12,7 @@ import requests
 from requests.exceptions import HTTPError
 from robot.libraries.BuiltIn import BuiltIn
 
-from RPA.core.utils import import_by_name, required_env
+from RPA.core.helpers import import_by_name, required_env
 
 
 def json_dump_safe(data, **kwargs):

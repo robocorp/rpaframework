@@ -1,6 +1,6 @@
-from functools import wraps
 import json
 import logging
+from functools import wraps
 from pathlib import Path
 from typing import Any
 
@@ -14,10 +14,12 @@ except ImportError:
     HAS_BOTO3 = False
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
-from RPA.RobotLogListener import RobotLogListener
-from RPA.core.utils import required_param, required_env
-from RPA.Tables import Tables
+
 from RPA.Robocloud.Secrets import Secrets
+from RPA.RobotLogListener import RobotLogListener
+from RPA.Tables import Tables
+from RPA.core.helpers import required_param, required_env
+
 
 try:
     BuiltIn().import_library("RPA.RobotLogListener")

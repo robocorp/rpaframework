@@ -6,7 +6,8 @@ from netsuitesdk import NetSuiteConnection
 from netsuitesdk.internal.client import NetSuiteClient
 from netsuitesdk.internal.utils import PaginatedSearch
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
-from RPA.core.utils import required_env
+
+from RPA.core.helpers import required_env
 from RPA.RobotLogListener import RobotLogListener
 
 

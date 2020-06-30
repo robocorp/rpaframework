@@ -1,7 +1,8 @@
 import logging
 from typing import Any
 from robot.libraries.BuiltIn import BuiltIn
-from RPA.core.utils import required_param
+
+from RPA.core.helpers import required_param
 
 
 class RobotLogListener:
