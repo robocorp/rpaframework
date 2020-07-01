@@ -1,5 +1,6 @@
 """Files and filesystems library for Robot Framework"""
 import logging
+import os
 import shutil
 import time
 from pathlib import Path
@@ -451,13 +452,21 @@ class FileSystem:
         parts = [str(part) for part in parts]
         return str(Path(*parts))
 
-    def normalize_path(self, path):
-        """Converts to absolute path and resolves any symlinks.
+    def absolute_path(self, path):
+        """Returns the absolute path to a file, and resolves symlinks.
 
-        :param path:    path that will be normalized
+        :param path:    path that will be resolved
         :return:        absolute path to file
         """
         return str(Path(path).resolve())
+
+    def normalize_path(self, path):
+        """Removes redundant separators or up-level references from path.
+
+        :param path:    path that will be normalized
+        :return:        path to file
+        """
+        return str(os.path.normpath(Path(path)))
 
     def get_file_name(self, path):
         """Returns only the filename portion of a path.

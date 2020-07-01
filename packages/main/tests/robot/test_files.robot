@@ -206,9 +206,17 @@ Test Join Path
     Verify equal    ${/}home${/}user${/}folder${/}test${/}file.ext
     ...    Join path    ${/}    home  user  folder  test  file.ext
 
-Test Normalize Path
+Test Absolute Path
     Verify equal    ${MOCK_WORKSPACE}${/}subfolder${/}first${/}stuff.ext
-    ...    Normalize path    subfolder/first/stuff.ext
+    ...    Absolute path    subfolder/first/stuff.ext
+
+Test Normalize Path
+    Verify equal    subfolder${/}stuff.ext
+    ...    Normalize path    subfolder/first/../second/../third/fourth/../../stuff.ext
+    Verify equal    stuff.ext
+    ...    Normalize path    stuff.ext
+    Verify equal    ${/}home${/}user${/}stuff${/}filename
+    ...    Normalize path    ${/}home${/}user${/}stuff${/}.${/}filename
 
 Test Get File Name
     Verify equal    stuff.ext
