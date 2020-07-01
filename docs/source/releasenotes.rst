@@ -4,8 +4,13 @@ Release notes
 Upcoming release
 ----------------
 
+- **FileSystem**: Fix keyword ``Normalize Path`` to match built-in library,
+  and add new keyword ``Absolute Path`` for previous functionality.
+
+
 2.0.1
 -----
+
 - **Browser**: Fix for regression in Chrome's Webdriver version handling
 - **Email.ImapSmtp**: Fix how IMAP server is initialized
 - Fix for issue with missing files when upgrading from version 1.x
