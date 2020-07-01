@@ -216,8 +216,16 @@ files on a local filesystem.</p>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list">
-<dt class="field-odd">Append To Binary File</dt>
+<dt class="field-odd">Absolute Path</dt>
 <dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>path</p>
+</dd>
+</dl>
+<p>Returns the absolute path to a file, and resolves symlinks.</p>
+</dd>
+<dt class="field-even">Append To Binary File</dt>
+<dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>path, content</p>
 </dd>
@@ -472,7 +480,7 @@ optionally overwriting the destination.</p>
 <dd class="field-odd"><p>path</p>
 </dd>
 </dl>
-<p>Converts to absolute path and resolves any symlinks.</p>
+<p>Removes redundant separators or up-level references from path.</p>
 </dd>
 <dt class="field-even">Read Binary File</dt>
 <dd class="field-even"><dl class="field-list simple">

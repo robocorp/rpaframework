@@ -15,6 +15,12 @@ files on a local filesystem.
 Keywords
 ********
 
+:Absolute Path:
+  :Arguments: path
+
+  Returns the absolute path to a file, and resolves symlinks.
+
+
 :Append To Binary File:
   :Arguments: path, content
 
@@ -206,7 +212,7 @@ Keywords
 :Normalize Path:
   :Arguments: path
 
-  Converts to absolute path and resolves any symlinks.
+  Removes redundant separators or up-level references from path.
 
 
 :Read Binary File:
