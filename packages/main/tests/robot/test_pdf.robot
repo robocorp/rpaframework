@@ -5,6 +5,7 @@ Force Tags        pdf
 Task Teardown     Close all PDF Documents
 
 *** Variables ***
+${CONTENT}          <h1>Order confirmation</h1><p>Thank you for the order {{name}}</p>
 ${TEMPLATE}         ${CURDIR}${/}..${/}resources${/}order.template
 ${NORMAL_PDF}       ${CURDIR}${/}..${/}resources${/}generated.pdf
 ${INVOICE_PDF}      ${CURDIR}${/}..${/}resources${/}invoice.pdf
@@ -19,10 +20,27 @@ ${PDF}              ${OUTPUT_DIR}${/}result.pdf
 ${PASSWORD}         mysecretpassword
 
 *** Tasks ***
+Create PDF from HTML content
+    HTML to PDF     ${CONTENT}    ${PDF}    ${VARS}
+    ${exists}=               Does File Exist   ${PDF}
+    Should Be True           ${exists}
+    Remove File   ${PDF}
+
 Create PDF from HTML template
     Template HTML to PDF     ${TEMPLATE}    ${PDF}    ${VARS}
     ${exists}=               Does File Exist   ${PDF}
     Should Be True           ${exists}
+    Remove File   ${PDF}
+
+Missing parameters from HTML to PDF
+    Run Keyword And Expect Error   KeyError: 'Required parameter(s) missing for kw: html_to_pdf'  HTML to PDF     content=${CONTENT}
+    Run Keyword And Expect Error   KeyError: 'Required parameter(s) missing for kw: html_to_pdf'  HTML to PDF     filename=${PDF}
+    Run Keyword And Expect Error   KeyError: 'Required parameter(s) missing for kw: html_to_pdf'  HTML to PDF
+
+Missing parameters from Template HTML to PDF
+    Run Keyword And Expect Error   KeyError: 'Required parameter(s) missing for kw: template_html_to_pdf'  Template HTML to PDF     template=${TEMPLATE}
+    Run Keyword And Expect Error   KeyError: 'Required parameter(s) missing for kw: template_html_to_pdf'  Template HTML to PDF     filename=${PDF}
+    Run Keyword And Expect Error   KeyError: 'Required parameter(s) missing for kw: template_html_to_pdf'  Template HTML to PDF
 
 Get text from one page
     &{text}=    Get Text From PDF    ${VERO_PDF}    1

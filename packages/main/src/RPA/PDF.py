@@ -42,6 +42,7 @@ import PyPDF2
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.RobotLogListener import RobotLogListener
+from RPA.core.helpers import required_param
 
 try:
     BuiltIn().import_library("RPA.RobotLogListener")
@@ -537,7 +538,7 @@ class PDF(FPDF, HTMLMixin):
             writer.write(f)
 
     def template_html_to_pdf(
-        self, template: str, filename: str, variables: dict = None
+        self, template: str = None, filename: str = None, variables: dict = None
     ) -> None:
         """Use HTML template file to generate PDF file.
 
@@ -545,17 +546,41 @@ class PDF(FPDF, HTMLMixin):
         :param filename: filepath where to save PDF document
         :param variables: dictionary of variables to fill into template, defaults to {}
         """
+        required_param([template, filename], "template_html_to_pdf")
         variables = variables or {}
 
-        html = ""
-        self.add_pages(1)
         with open(template, "r") as templatefile:
             html = templatefile.read()
-            for key, value in variables.items():
-                html = html.replace("{{" + key + "}}", str(value))
+        for key, value in variables.items():
+            html = html.replace("{{" + key + "}}", str(value))
 
+        self._write_html_to_pdf(html, self.output_directory / filename)
+
+    def html_to_pdf(
+        self, content: str = None, filename: str = None, variables: dict = None,
+    ) -> None:
+        """Use HTML content to generate PDF file.
+
+        :param content: HTML content
+        :param filename: filepath where to save PDF document
+        :param variables: dictionary of variables to fill into template, defaults to {}
+        """
+        required_param([content, filename], "html_to_pdf")
+        variables = variables or {}
+
+        html = content.encode("utf-8").decode("latin-1")
+
+        for key, value in variables.items():
+            html = html.replace("{{" + key + "}}", str(value))
+
+        self._write_html_to_pdf(html, self.output_directory / filename)
+
+    def _write_html_to_pdf(self, html, output_path):
+        self.add_pages(1)
         self.write_html(html)
-        self.output(self.output_directory / filename)
+        pdf_content = self.output(dest="S").encode("latin-1")
+        with open(output_path, "wb") as outfile:
+            outfile.write(pdf_content)
         self.__init__()
 
     def get_info(self, source_pdf: str = None) -> dict:
