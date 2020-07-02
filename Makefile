@@ -64,10 +64,12 @@ docs-each: packages/*
 docs-hub: check docs-hub-each ## Generate distributable documentation for Robohub
 	$(call title,"Building Markdown documentation")
 	poetry run $(MAKE) -C docs clean
-	poetry run $(MAKE) -C docs jekyll
-	$(mkdir) dist/hub/markdown
-	find docs/build/jekyll/libraries/ -name "index.md"\
-	 -exec sh -c 'cp {} dist/hub/markdown/$$(basename $$(dirname {})).md' cp {} \;
+	poetry run $(MAKE) -C docs markdown
+	$(mkdir) dist/hub/markdown/
+	poetry run python ./tools/hub.py \
+		docs/source/libraries/ \
+		docs/build/markdown/libraries/ \
+		dist/hub/markdown/
 
 docs-hub-each: packages/*
 	$(call make_each, "docs-hub")

@@ -334,9 +334,12 @@ class LibdocExt:
 
         path_rel = path_in.with_suffix(converter.EXTENSION).relative_to(root)
         if self.config.get("collapse", False):
-            path_rel = Path("_".join(part.lower() for part in path_rel.parts))
+            path_out = Path(dir_out) / Path(
+                "_".join(part.lower() for part in path_rel.parts)
+            )
+        else:
+            path_out = Path(dir_out) / path_rel
 
-        path_out = Path(dir_out) / path_rel
         path_out.parent.mkdir(parents=True, exist_ok=True)
 
         self.logger.debug("Converting '%s' to '%s'", path_in, path_out)
@@ -347,8 +350,11 @@ class LibdocExt:
             libdoc.name = self.config["title"]
         # Create module path for library, e.g. RPA.Excel.Files
         elif path_rel.parent != Path("."):
+            namespace = str(path_rel.parent).replace(os.sep, ".")
+            if self.config.get("namespace"):
+                namespace = self.config["namespace"] + "." + namespace
             libdoc.name = "{namespace}.{name}".format(
-                namespace=str(path_rel.parent).replace(os.sep, "."), name=libdoc.name,
+                namespace=namespace, name=libdoc.name,
             )
 
         # Convert library scope to RPA format
@@ -457,6 +463,7 @@ def main():
     parser.add_argument(
         "--ignore-errors", help="Ignore all conversion errors", action="store_true"
     )
+    parser.add_argument("--namespace", help="Add custom namespace for library names")
     parser.add_argument(
         "--collapse",
         help="Convert subdirectories to path prefixes",
@@ -483,6 +490,7 @@ def main():
             "ignore": args.ignore,
             "override_docstring": args.override_docstring,
             "override_format": args.override_format,
+            "namespace": args.namespace,
             "collapse": args.collapse,
         }
     )

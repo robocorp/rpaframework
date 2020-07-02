@@ -14,8 +14,8 @@ rpaframework = "2.0.1"
 robotframeworklexer = "^1.1"
 sphinx = "^2.3.1"
 sphinx_rtd_theme = "^0.4.3"
-sphinx-jekyll-builder = "^0.3.0"
 toml = "^0.10.1"
+sphinx-markdown-builder = "^0.5.4"
 
 [build-system]
 requires = ["poetry>=0.12"]

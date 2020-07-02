@@ -124,6 +124,7 @@ docs-hub: install ## Generate documentation for Robohub
 	poetry run python\
 	 $(tools)/libdocext.py\
 	 --rpa\
+	 --namespace "RPA"\
 	 --docstring rest\
 	 --format json-html\
 	 --override-docstring src/RPA/Browser.py=robot\
