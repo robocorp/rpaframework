@@ -434,8 +434,16 @@ parsing PDF again.</p>
 <dt class="field-even">Header</dt>
 <dd class="field-even"><p>Header to be implemented in your own inherited class</p>
 </dd>
-<dt class="field-odd">Image</dt>
+<dt class="field-odd">Html To Pdf</dt>
 <dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>content: str=None, filename: str=None, variables: dict=None</p>
+</dd>
+</dl>
+<p>Use HTML content to generate PDF file.</p>
+</dd>
+<dt class="field-even">Image</dt>
+<dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>name, x=None, y=None, w=0, h=0, type=, link=</p>
 </dd>
@@ -817,7 +825,7 @@ file to activate</p>
 <dt class="field-even">Template Html To Pdf</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>template: str, filename: str, variables: dict=None</p>
+<dd class="field-odd"><p>template: str=None, filename: str=None, variables: dict=None</p>
 </dd>
 </dl>
 <p>Use HTML template file to generate PDF file.</p>

@@ -6,7 +6,9 @@ Upcoming release
 
 - **FileSystem**: Fix keyword ``Normalize Path`` to match built-in library,
   and add new keyword ``Absolute Path`` for previous functionality.
-
+- **PDF**: Fix keyword ``Template HTML To PDF`` to handle HTML content from
+  non-English Chrome browser.
+- **PDF**: Add keyword ``HTML To PDF`` which takes HTML content as string parameter.
 
 2.0.1
 -----

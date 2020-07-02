@@ -182,6 +182,12 @@ Keywords
 :Header:
   Header to be implemented in your own inherited class
 
+:Html To Pdf:
+  :Arguments: content: str=None, filename: str=None, variables: dict=None
+
+  Use HTML content to generate PDF file.
+
+
 :Image:
   :Arguments: name, x=None, y=None, w=0, h=0, type=, link=
 
@@ -437,7 +443,7 @@ Keywords
       file to activate
 
 :Template Html To Pdf:
-  :Arguments: template: str, filename: str, variables: dict=None
+  :Arguments: template: str=None, filename: str=None, variables: dict=None
 
   Use HTML template file to generate PDF file.
 
