@@ -10,9 +10,8 @@ Email.ImapSmtp
 Description
 ***********
 
-`ImapSmtp` is a library for sending, reading, and
-deleting emails. `ImapSmtp` is interfacing with SMTP and IMAP
-protocols.
+`ImapSmtp` is a library for sending, reading, and deleting emails.
+`ImapSmtp` is interfacing with SMTP and IMAP protocols.
 
 ***************
 Troubleshooting

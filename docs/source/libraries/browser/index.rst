@@ -46,10 +46,10 @@ For example, for `Windows`, the browser list in preference order
 is Chrome, Firefox, Edge, IE, and Opera. The opening is tried in three
 different ways for each webdriver type.
 
-    1. Try to open the webdriver "normally"
-    2. Download the driver if the browser has driver available and try to open the webdriver again
-    3. Try to open the webdriver in "headless" mode if that was not the original intention
-    4. Move to the next webdriver type if steps 1-3 fail
+1. Try to open the webdriver "normally"
+2. Download the driver if the browser has driver available and try to open the webdriver again
+3. Try to open the webdriver in "headless" mode if that was not the original intention
+4. Move to the next webdriver type if steps 1-3 fail
 
 
 .. code-block:: robotframework

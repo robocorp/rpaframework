@@ -14,10 +14,10 @@ Description
 
 List of supported service names:
 
-   - computervision (`Azure Computer Vision API`_)
-   - face (`Azure Face API`_)
-   - speech (`Azure Speech Services API`_)
-   - textanalytics (`Azure Text Analytics API`_)
+- computervision (`Azure Computer Vision API`_)
+- face (`Azure Face API`_)
+- speech (`Azure Speech Services API`_)
+- textanalytics (`Azure Text Analytics API`_)
 
 Azure authentication
 ======================
@@ -25,12 +25,12 @@ Azure authentication
 Authentication for Azure is set with `service subscription key` which can be given to the library
 in two different ways.
 
-    - Method 1 as environment variables, either service specific environment variable
-      for example ``AZURE_TEXTANALYTICS_KEY`` or with common key ``AZURE_SUBSCRIPTION_KEY`` which
-      will be used for all the services.
-    - Method 2 as Robocloud vault secret. The vault name needs to be given in library init or
-      with keyword ``Set Robocloud Vault``. Secret keys are expected to match environment variable
-      names.
+- Method 1 as environment variables, either service specific environment variable
+  for example ``AZURE_TEXTANALYTICS_KEY`` or with common key ``AZURE_SUBSCRIPTION_KEY`` which
+  will be used for all the services.
+- Method 2 as Robocloud vault secret. The vault name needs to be given in library init or
+  with keyword ``Set Robocloud Vault``. Secret keys are expected to match environment variable
+  names.
 
 Method 1. subscription key using environment variable
 
