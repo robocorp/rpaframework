@@ -113,6 +113,14 @@ version = "3.0.4"
 
 [[package]]
 category = "main"
+description = "Composable command line interface toolkit"
+name = "click"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "7.1.2"
+
+[[package]]
+category = "main"
 description = "A cross platform clipboard operation library of Python. Works for Windows, Mac and Linux."
 name = "clipboard"
 optional = false
@@ -310,6 +318,22 @@ version = "1.2.0"
 
 [[package]]
 category = "main"
+description = "Read metadata from Python packages"
+marker = "python_version < \"3.8\""
+name = "importlib-metadata"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
+version = "1.7.0"
+
+[package.dependencies]
+zipp = ">=0.5"
+
+[package.extras]
+docs = ["sphinx", "rst.linker"]
+testing = ["packaging", "pep517", "importlib-resources (>=1.3)"]
+
+[[package]]
+category = "main"
 description = "An ISO 8601 date/time/duration parser and formatter"
 name = "isodate"
 optional = false
@@ -343,6 +367,28 @@ i18n = ["Babel (>=0.8)"]
 
 [[package]]
 category = "main"
+description = "An implementation of JSON Schema validation for Python"
+name = "jsonschema"
+optional = false
+python-versions = "*"
+version = "3.2.0"
+
+[package.dependencies]
+attrs = ">=17.4.0"
+pyrsistent = ">=0.14.0"
+setuptools = "*"
+six = ">=1.11.0"
+
+[package.dependencies.importlib-metadata]
+python = "<3.8"
+version = "*"
+
+[package.extras]
+format = ["idna", "jsonpointer (>1.13)", "rfc3987", "strict-rfc3339", "webcolors"]
+format_nongpl = ["idna", "jsonpointer (>1.13)", "webcolors", "rfc3986-validator (>0.1.0)", "rfc3339-validator"]
+
+[[package]]
+category = "main"
 description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
 name = "lxml"
 optional = false
@@ -373,6 +419,23 @@ version = "1.4.0"
 
 [package.dependencies]
 zeep = "*"
+
+[[package]]
+category = "main"
+description = "The easy way to send notifications"
+name = "notifiers"
+optional = false
+python-versions = ">=3.6"
+version = "1.2.1"
+
+[package.dependencies]
+click = ">=7.0"
+jsonschema = ">=3.0.0"
+requests = ">=2.21.0"
+rfc3987 = ">=1.3.8"
+
+[package.extras]
+dev = ["alabaster (0.7.11)", "aspy.yaml (1.1.1)", "atomicwrites (1.1.5)", "attrs (18.1.0)", "babel (2.6.0)", "bumpversion (0.5.3)", "certifi (2018.4.16)", "cfgv (2.0.0)", "chardet (3.0.4)", "click (6.7)", "codecov (2.0.15)", "coverage (4.5.1)", "docutils (0.14)", "hypothesis (4.32.3)", "identify (1.1.4)", "idna (2.7)", "imagesize (1.0.0)", "importlib-metadata (0.18)", "jinja2 (2.10.1)", "markupsafe (1.0)", "more-itertools (4.2.0)", "nodeenv (1.3.2)", "packaging (17.1)", "pip-tools (4.0.0)", "pluggy (0.12.0)", "pre-commit (1.18.2)", "py (1.5.4)", "pygments (2.2.0)", "pyparsing (2.2.0)", "pytest-cov (2.7.1)", "pytest (5.0.1)", "pytz (2018.5)", "pyyaml (5.1)", "requests (2.22.0)", "six (1.11.0)", "snowballstemmer (1.2.1)", "sphinx-autodoc-annotation (1.0.post1)", "sphinx-rtd-theme (0.4.3)", "sphinx (2.2.0)", "sphinxcontrib-applehelp (1.0.1)", "sphinxcontrib-devhelp (1.0.1)", "sphinxcontrib-htmlhelp (1.0.2)", "sphinxcontrib-jsmath (1.0.1)", "sphinxcontrib-qthelp (1.0.2)", "sphinxcontrib-serializinghtml (1.1.3)", "toml (0.9.4)", "urllib3 (1.24.2)", "virtualenv (16.0.0)", "wcwidth (0.1.7)", "zipp (0.5.1)"]
 
 [[package]]
 category = "main"
@@ -534,6 +597,17 @@ version = "1.8.0"
 
 [[package]]
 category = "main"
+description = "Persistent/Functional/Immutable data structures"
+name = "pyrsistent"
+optional = false
+python-versions = "*"
+version = "0.16.0"
+
+[package.dependencies]
+six = "*"
+
+[[package]]
+category = "main"
 description = "python screenshot"
 name = "pyscreenshot"
 optional = false
@@ -650,6 +724,14 @@ version = "0.9.1"
 
 [package.dependencies]
 requests = ">=2.0.1,<3.0.0"
+
+[[package]]
+category = "main"
+description = "Parsing and validation of URIs (RFC 3986) and IRIs (RFC 3987)"
+name = "rfc3987"
+optional = false
+python-versions = "*"
+version = "1.3.8"
 
 [[package]]
 category = "main"
@@ -1139,8 +1221,21 @@ test = ["freezegun (0.3.8)", "mock (2.0.0)", "pretend (1.0.8)", "pytest-cov (2.5
 tornado = ["tornado (>=4.0.2,<5)"]
 xmlsec = ["xmlsec (>=0.6.1)"]
 
+[[package]]
+category = "main"
+description = "Backport of pathlib-compatible object wrapper for zip files"
+marker = "python_version < \"3.8\""
+name = "zipp"
+optional = false
+python-versions = ">=3.6"
+version = "3.1.0"
+
+[package.extras]
+docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
+testing = ["jaraco.itertools", "func-timeout"]
+
 [metadata]
-content-hash = "445d7191857a8b0517ebd0803bc907da9734c9afe82d36e322cb0ac7b80637ec"
+content-hash = "422b108a2ebd848bba4235c9534da8be8c34c6108609ccb144c9d2a025536895"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1214,6 +1309,10 @@ cffi = [
 chardet = [
     {file = "chardet-3.0.4-py2.py3-none-any.whl", hash = "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"},
     {file = "chardet-3.0.4.tar.gz", hash = "sha256:84ab92ed1c4d4f16916e05906b6b75a6c0fb5db821cc65e70cbd64a3e2a5eaae"},
+]
+click = [
+    {file = "click-7.1.2-py2.py3-none-any.whl", hash = "sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc"},
+    {file = "click-7.1.2.tar.gz", hash = "sha256:d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a"},
 ]
 clipboard = [
     {file = "clipboard-0.0.4.tar.gz", hash = "sha256:a72a78e9c9bf68da1c3f29ee022417d13ec9e3824b511559fd2b702b1dd5b817"},
@@ -1302,6 +1401,10 @@ imagesize = [
     {file = "imagesize-1.2.0-py2.py3-none-any.whl", hash = "sha256:6965f19a6a2039c7d48bca7dba2473069ff854c36ae6f19d2cde309d998228a1"},
     {file = "imagesize-1.2.0.tar.gz", hash = "sha256:b1f6b5a4eab1f73479a50fb79fcf729514a900c341d8503d62a62dbc4127a2b1"},
 ]
+importlib-metadata = [
+    {file = "importlib_metadata-1.7.0-py2.py3-none-any.whl", hash = "sha256:dc15b2969b4ce36305c51eebe62d418ac7791e9a157911d58bfb1f9ccd8e2070"},
+    {file = "importlib_metadata-1.7.0.tar.gz", hash = "sha256:90bb658cdbbf6d1735b6341ce708fc7024a3e14e99ffdc5783edea9f9b077f83"},
+]
 isodate = [
     {file = "isodate-0.6.0-py2.py3-none-any.whl", hash = "sha256:aa4d33c06640f5352aca96e4b81afd8ab3b47337cc12089822d6f322ac772c81"},
     {file = "isodate-0.6.0.tar.gz", hash = "sha256:2e364a3d5759479cdb2d37cce6b9376ea504db2ff90252a2e5b7cc89cc9ff2d8"},
@@ -1313,6 +1416,10 @@ jdcal = [
 jinja2 = [
     {file = "Jinja2-2.11.2-py2.py3-none-any.whl", hash = "sha256:f0a4641d3cf955324a89c04f3d94663aa4d638abe8f733ecd3582848e1c37035"},
     {file = "Jinja2-2.11.2.tar.gz", hash = "sha256:89aab215427ef59c34ad58735269eb58b1a5808103067f7bb9d5836c651b3bb0"},
+]
+jsonschema = [
+    {file = "jsonschema-3.2.0-py2.py3-none-any.whl", hash = "sha256:4e5b3cf8216f577bee9ce139cbe72eca3ea4f292ec60928ff24758ce626cd163"},
+    {file = "jsonschema-3.2.0.tar.gz", hash = "sha256:c8a85b28d377cc7737e46e2d9f2b4f44ee3c0e1deac6bf46ddefc7187d30797a"},
 ]
 lxml = [
     {file = "lxml-4.5.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:ee2be8b8f72a2772e72ab926a3bccebf47bb727bda41ae070dc91d1fb759b726"},
@@ -1381,6 +1488,10 @@ markupsafe = [
 netsuitesdk = [
     {file = "netsuitesdk-1.4.0-py3-none-any.whl", hash = "sha256:3ea92824f7b45be77a3394d94980bc274cd0cd26b971ea7802d0c268aa18ca5d"},
     {file = "netsuitesdk-1.4.0.tar.gz", hash = "sha256:9e00dc7f46a5e296412e203f3efd701b6963965982f9e543d28ffe6bc9272152"},
+]
+notifiers = [
+    {file = "notifiers-1.2.1-py3-none-any.whl", hash = "sha256:171ae79215fcf119e34992ad7e1f95f0709f93997203b3fc6f115b5cedd780a6"},
+    {file = "notifiers-1.2.1.tar.gz", hash = "sha256:34625af405f4aa19293eaaefe145ccc92c6018ae9798f53a03a7fcc996e541aa"},
 ]
 ntlm-auth = [
     {file = "ntlm-auth-1.5.0.tar.gz", hash = "sha256:c9667d361dc09f6b3750283d503c689070ff7d89f2f6ff0d38088d5436ff8543"},
@@ -1500,6 +1611,9 @@ pypdf2 = [
 pyperclip = [
     {file = "pyperclip-1.8.0.tar.gz", hash = "sha256:b75b975160428d84608c26edba2dec146e7799566aea42c1fe1b32e72b6028f2"},
 ]
+pyrsistent = [
+    {file = "pyrsistent-0.16.0.tar.gz", hash = "sha256:28669905fe725965daa16184933676547c5bb40a5153055a8dee2a4bd7933ad3"},
+]
 pyscreenshot = [
     {file = "pyscreenshot-1.0-py2.py3-none-any.whl", hash = "sha256:638a7f846ecec78039c3ccc9049cf5f487574a0b151c02569fe81f5664570707"},
     {file = "pyscreenshot-1.0.tar.gz", hash = "sha256:b74468c4d146c1723aca2cb0734a312eb813c527fcb279c855b3163bfe6bebab"},
@@ -1551,6 +1665,10 @@ requests-oauthlib = [
 requests-toolbelt = [
     {file = "requests-toolbelt-0.9.1.tar.gz", hash = "sha256:968089d4584ad4ad7c171454f0a5c6dac23971e9472521ea3b6d49d610aa6fc0"},
     {file = "requests_toolbelt-0.9.1-py2.py3-none-any.whl", hash = "sha256:380606e1d10dc85c3bd47bf5a6095f815ec007be7a8b69c878507068df059e6f"},
+]
+rfc3987 = [
+    {file = "rfc3987-1.3.8-py2.py3-none-any.whl", hash = "sha256:10702b1e51e5658843460b189b185c0366d2cf4cff716f13111b0ea9fd2dce53"},
+    {file = "rfc3987-1.3.8.tar.gz", hash = "sha256:d3c4d257a560d544e9826b38bc81db676890c79ab9d7ac92b39c7a253d5ca733"},
 ]
 robotframework = [
     {file = "robotframework-3.2.1-py2.py3-none-any.whl", hash = "sha256:34923415afd9491141630ad1d7146b638ee869f1c7f97c450c0da5ce79e1ac23"},
@@ -1698,4 +1816,8 @@ yapf = [
 zeep = [
     {file = "zeep-3.4.0-py2.py3-none-any.whl", hash = "sha256:59a4068ab3817b589ee21c6c34166c35baa8f2be7ad69f045d005076a29911c1"},
     {file = "zeep-3.4.0.tar.gz", hash = "sha256:0e98669cfeb60756231ae185498f9ae21b30b2681786b8de58ed34c3b93e41dd"},
+]
+zipp = [
+    {file = "zipp-3.1.0-py3-none-any.whl", hash = "sha256:aa36550ff0c0b7ef7fa639055d797116ee891440eac1a56f378e2d3179e0320b"},
+    {file = "zipp-3.1.0.tar.gz", hash = "sha256:c599e4d75c98f6798c509911d08a22e6c021d074469042177c8c86fb92eefd96"},
 ]

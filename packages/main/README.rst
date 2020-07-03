@@ -90,6 +90,8 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `Images`_                  | Manipulate images                            |
 +----------------------------+----------------------------------------------+
+| `Notifier`_                | Notify messages using different services     |
++----------------------------+----------------------------------------------+
 | `Outlook.Application`_     | Control the Outlook desktop application      |
 +----------------------------+----------------------------------------------+
 | `PDF`_                     | Read and create PDF documents                |
@@ -128,6 +130,7 @@ The RPA Framework project currently includes the following libraries:
 .. _FileSystem: https://rpaframework.org/libraries/filesystem/
 .. _HTTP: https://rpaframework.org/libraries/http/
 .. _Images: https://rpaframework.org/libraries/images/
+.. _Notifier: https://rpaframework.org/libraries/notifier/
 .. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
 .. _PDF: https://rpaframework.org/libraries/pdf/
 .. _Robocloud.Items: https://rpaframework.org/libraries/robocloud_items/

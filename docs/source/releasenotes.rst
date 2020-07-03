@@ -11,6 +11,7 @@ Upcoming release
 - **PDF**: Add keyword ``HTML To PDF`` which takes HTML content as string parameter.
 - **Email.Exchange**: Fix ``Authorize`` when autodiscover is set to False. Add missing parameters
   to keyword.
+- New **Notifier** library, which allows using notification services like Slack, Gmail, Pushover etc.
 
 2.0.1
 -----
