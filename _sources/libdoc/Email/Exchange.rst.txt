@@ -16,7 +16,7 @@ Keywords
 ********
 
 :Authorize:
-  :Arguments: username: str, password: str, autodiscover: bool=True
+  :Arguments: username: str, password: str, autodiscover: bool=True, access_type: str=DELEGATE, server: str=None, primary_smtp_address: str=None
 
   Connect to Exchange account
 
