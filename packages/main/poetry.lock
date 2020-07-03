@@ -109,10 +109,10 @@ description = "The AWS SDK for Python"
 name = "boto3"
 optional = true
 python-versions = "*"
-version = "1.14.13"
+version = "1.14.16"
 
 [package.dependencies]
-botocore = ">=1.17.13,<1.18.0"
+botocore = ">=1.17.16,<1.18.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
@@ -122,7 +122,7 @@ description = "Low-level, data-driven core of boto 3."
 name = "botocore"
 optional = true
 python-versions = "*"
-version = "1.17.13"
+version = "1.17.16"
 
 [package.dependencies]
 docutils = ">=0.10,<0.16"
@@ -177,7 +177,7 @@ python-versions = "*"
 version = "3.0.4"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Composable command line interface toolkit"
 name = "click"
 optional = false
@@ -378,10 +378,6 @@ requests = ">=2.18.0,<3.0.0dev"
 setuptools = ">=34.0.0"
 six = ">=1.10.0"
 
-[package.dependencies.grpcio]
-optional = true
-version = ">=1.29.0,<2.0dev"
-
 [package.extras]
 grpc = ["grpcio (>=1.29.0,<2.0dev)"]
 grpcgcp = ["grpcio-gcp (>=0.2.2)"]
@@ -573,7 +569,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "2.10"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Read metadata from Python packages"
 marker = "python_version < \"3.8\""
 name = "importlib-metadata"
@@ -628,6 +624,28 @@ name = "jmespath"
 optional = true
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 version = "0.10.0"
+
+[[package]]
+category = "main"
+description = "An implementation of JSON Schema validation for Python"
+name = "jsonschema"
+optional = false
+python-versions = "*"
+version = "3.2.0"
+
+[package.dependencies]
+attrs = ">=17.4.0"
+pyrsistent = ">=0.14.0"
+setuptools = "*"
+six = ">=1.11.0"
+
+[package.dependencies.importlib-metadata]
+python = "<3.8"
+version = "*"
+
+[package.extras]
+format = ["idna", "jsonpointer (>1.13)", "rfc3987", "strict-rfc3339", "webcolors"]
+format_nongpl = ["idna", "jsonpointer (>1.13)", "webcolors", "rfc3986-validator (>0.1.0)", "rfc3339-validator"]
 
 [[package]]
 category = "dev"
@@ -690,6 +708,23 @@ version = "1.4.0"
 
 [package.dependencies]
 zeep = "*"
+
+[[package]]
+category = "main"
+description = "The easy way to send notifications"
+name = "notifiers"
+optional = false
+python-versions = ">=3.6"
+version = "1.2.1"
+
+[package.dependencies]
+click = ">=7.0"
+jsonschema = ">=3.0.0"
+requests = ">=2.21.0"
+rfc3987 = ">=1.3.8"
+
+[package.extras]
+dev = ["alabaster (0.7.11)", "aspy.yaml (1.1.1)", "atomicwrites (1.1.5)", "attrs (18.1.0)", "babel (2.6.0)", "bumpversion (0.5.3)", "certifi (2018.4.16)", "cfgv (2.0.0)", "chardet (3.0.4)", "click (6.7)", "codecov (2.0.15)", "coverage (4.5.1)", "docutils (0.14)", "hypothesis (4.32.3)", "identify (1.1.4)", "idna (2.7)", "imagesize (1.0.0)", "importlib-metadata (0.18)", "jinja2 (2.10.1)", "markupsafe (1.0)", "more-itertools (4.2.0)", "nodeenv (1.3.2)", "packaging (17.1)", "pip-tools (4.0.0)", "pluggy (0.12.0)", "pre-commit (1.18.2)", "py (1.5.4)", "pygments (2.2.0)", "pyparsing (2.2.0)", "pytest-cov (2.7.1)", "pytest (5.0.1)", "pytz (2018.5)", "pyyaml (5.1)", "requests (2.22.0)", "six (1.11.0)", "snowballstemmer (1.2.1)", "sphinx-autodoc-annotation (1.0.post1)", "sphinx-rtd-theme (0.4.3)", "sphinx (2.2.0)", "sphinxcontrib-applehelp (1.0.1)", "sphinxcontrib-devhelp (1.0.1)", "sphinxcontrib-htmlhelp (1.0.2)", "sphinxcontrib-jsmath (1.0.1)", "sphinxcontrib-qthelp (1.0.2)", "sphinxcontrib-serializinghtml (1.1.3)", "toml (0.9.4)", "urllib3 (1.24.2)", "virtualenv (16.0.0)", "wcwidth (0.1.7)", "zipp (0.5.1)"]
 
 [[package]]
 category = "main"
@@ -953,6 +988,17 @@ version = "1.8.0"
 
 [[package]]
 category = "main"
+description = "Persistent/Functional/Immutable data structures"
+name = "pyrsistent"
+optional = false
+python-versions = "*"
+version = "0.16.0"
+
+[package.dependencies]
+six = "*"
+
+[[package]]
+category = "main"
 description = "python screenshot"
 name = "pyscreenshot"
 optional = false
@@ -1103,6 +1149,14 @@ version = "0.9.1"
 
 [package.dependencies]
 requests = ">=2.0.1,<3.0.0"
+
+[[package]]
+category = "main"
+description = "Parsing and validation of URIs (RFC 3986) and IRIs (RFC 3987)"
+name = "rfc3987"
+optional = false
+python-versions = "*"
+version = "1.3.8"
 
 [[package]]
 category = "main"
@@ -1411,7 +1465,7 @@ tornado = ["tornado (>=4.0.2,<5)"]
 xmlsec = ["xmlsec (>=0.6.1)"]
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 marker = "python_version < \"3.8\""
 name = "zipp"
@@ -1429,7 +1483,7 @@ cv = ["opencv-python", "numpy"]
 google = ["grpcio", "google-cloud-vision", "google-cloud-language", "google-cloud-videointelligence", "google-cloud-translate", "google-cloud-texttospeech", "google-cloud-speech", "google-cloud-storage"]
 
 [metadata]
-content-hash = "236d369025683d294193b84eec342dffb1a0dc47c6fd3b17fb5000cd995aed4c"
+content-hash = "519836475aa5d1e7587461b99e5a253f2239092340814c8507befd0eed4dc048"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1467,12 +1521,12 @@ black = [
     {file = "black-19.10b0.tar.gz", hash = "sha256:c2edb73a08e9e0e6f65a0e6af18b059b8b1cdd5bef997d7a0b181df93dc81539"},
 ]
 boto3 = [
-    {file = "boto3-1.14.13-py2.py3-none-any.whl", hash = "sha256:77d926c16ab2ab2bfe68811f3bc987e7d79c97f3e2adebf9265c587cdb1fc47b"},
-    {file = "boto3-1.14.13.tar.gz", hash = "sha256:7f558165eaa608a5d0e05227ee820f4b3cc74533a52c9dde7eb488eba091d50d"},
+    {file = "boto3-1.14.16-py2.py3-none-any.whl", hash = "sha256:c2a223f4b48782e8b160b2130265e2a66081df111f630a5a384d6909e29a5aa9"},
+    {file = "boto3-1.14.16.tar.gz", hash = "sha256:ce5a4ab6af9e993d1864209cbbb6f4812f65fbc57ad6b95e5967d8bf38b1dcfb"},
 ]
 botocore = [
-    {file = "botocore-1.17.13-py2.py3-none-any.whl", hash = "sha256:5ac9b53a75852fe4282be8741c8136e6948714fef6eff1bd9babb861f8647ba3"},
-    {file = "botocore-1.17.13.tar.gz", hash = "sha256:37b65cc48c99b7dd4d5606e56f76ecd88eb7be392ea8a166df734a6b3035301c"},
+    {file = "botocore-1.17.16-py2.py3-none-any.whl", hash = "sha256:99d995ef99cf77458a661f3fc64e0c3a4ce77ca30facfdf0472f44b2953dd856"},
+    {file = "botocore-1.17.16.tar.gz", hash = "sha256:fe0c4f7cd6b67eff3b7cb8dff6709a65d6fca10b7b7449a493b2036915e98b4c"},
 ]
 cached-property = [
     {file = "cached-property-1.5.1.tar.gz", hash = "sha256:9217a59f14a5682da7c4b8829deadbfc194ac22e9908ccf7c8820234e80a1504"},
@@ -1709,6 +1763,10 @@ jmespath = [
     {file = "jmespath-0.10.0-py2.py3-none-any.whl", hash = "sha256:cdf6525904cc597730141d61b36f2e4b8ecc257c420fa2f4549bac2c2d0cb72f"},
     {file = "jmespath-0.10.0.tar.gz", hash = "sha256:b85d0567b8666149a93172712e68920734333c0ce7e89b78b3e987f71e5ed4f9"},
 ]
+jsonschema = [
+    {file = "jsonschema-3.2.0-py2.py3-none-any.whl", hash = "sha256:4e5b3cf8216f577bee9ce139cbe72eca3ea4f292ec60928ff24758ce626cd163"},
+    {file = "jsonschema-3.2.0.tar.gz", hash = "sha256:c8a85b28d377cc7737e46e2d9f2b4f44ee3c0e1deac6bf46ddefc7187d30797a"},
+]
 lazy-object-proxy = [
     {file = "lazy-object-proxy-1.4.3.tar.gz", hash = "sha256:f3900e8a5de27447acbf900b4750b0ddfd7ec1ea7fbaf11dfa911141bc522af0"},
     {file = "lazy_object_proxy-1.4.3-cp27-cp27m-macosx_10_13_x86_64.whl", hash = "sha256:a2238e9d1bb71a56cd710611a1614d1194dc10a175c1e08d75e1a7bcc250d442"},
@@ -1777,6 +1835,10 @@ netsuitesdk = [
     {file = "netsuitesdk-1.4.0-py3-none-any.whl", hash = "sha256:3ea92824f7b45be77a3394d94980bc274cd0cd26b971ea7802d0c268aa18ca5d"},
     {file = "netsuitesdk-1.4.0.tar.gz", hash = "sha256:9e00dc7f46a5e296412e203f3efd701b6963965982f9e543d28ffe6bc9272152"},
 ]
+notifiers = [
+    {file = "notifiers-1.2.1-py3-none-any.whl", hash = "sha256:171ae79215fcf119e34992ad7e1f95f0709f93997203b3fc6f115b5cedd780a6"},
+    {file = "notifiers-1.2.1.tar.gz", hash = "sha256:34625af405f4aa19293eaaefe145ccc92c6018ae9798f53a03a7fcc996e541aa"},
+]
 ntlm-auth = [
     {file = "ntlm-auth-1.5.0.tar.gz", hash = "sha256:c9667d361dc09f6b3750283d503c689070ff7d89f2f6ff0d38088d5436ff8543"},
     {file = "ntlm_auth-1.5.0-py2.py3-none-any.whl", hash = "sha256:f1527c581dbf149349134fc2d789d50af2a400e193206956fa0ab456ccc5a8ba"},
@@ -1817,23 +1879,15 @@ opencv-python = [
     {file = "opencv_python-4.2.0.34-cp35-cp35m-macosx_10_9_x86_64.whl", hash = "sha256:e3c57d6579e5bf85f564d6d48d8ee89868b92879a9232b9975d072c346625e92"},
     {file = "opencv_python-4.2.0.34-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:aa3ca1f54054e1c6439fdf1edafa2a2b940a9eaac04a7b422a1cba9b2d7b9690"},
     {file = "opencv_python-4.2.0.34-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:31d634dea1b47c231b88d384f90605c598214d0c596443c9bb808e11761829f5"},
-    {file = "opencv_python-4.2.0.34-cp35-cp35m-win32.whl", hash = "sha256:78cc89ebc808886eb190626ee71ab65e47f374121975f86e4d5f7c0e3ce6bed9"},
-    {file = "opencv_python-4.2.0.34-cp35-cp35m-win_amd64.whl", hash = "sha256:7c7ba11720d01cb572b4b6945d115cb103462c0a28996b44d4e540d06e6a90fd"},
     {file = "opencv_python-4.2.0.34-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:6fa8fac14dd5af4819d475f74af12d65fbbfa391d3110c3a972934a5e6507c24"},
     {file = "opencv_python-4.2.0.34-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:a37ee82f1b8ed4b4645619c504311e71ce845b78f40055e78d71add5fab7da82"},
     {file = "opencv_python-4.2.0.34-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:dcb8da8c5ebaa6360c8555547a4c7beb6cd983dd95ba895bb78b86cc8cf3de2b"},
-    {file = "opencv_python-4.2.0.34-cp36-cp36m-win32.whl", hash = "sha256:ef89cbf332b9a735d8a82e9ff79cc743eeeb775ad1cd7100bc2aa2429b496f07"},
-    {file = "opencv_python-4.2.0.34-cp36-cp36m-win_amd64.whl", hash = "sha256:f45c1c3cdda1857bedd4dfe0bbd49c9419af0cc57f33490341edeae97d18f037"},
     {file = "opencv_python-4.2.0.34-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:c0087b428cef9a32d977390656d91b02245e0e91f909870492df7e39202645dd"},
     {file = "opencv_python-4.2.0.34-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:fb3c855347310788e4286b867997be354c55535597966ed5dac876d9166013a4"},
     {file = "opencv_python-4.2.0.34-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:d87e506ab205799727f0efa34b3888949bf029a3ada5eb000ff632606370ca6e"},
-    {file = "opencv_python-4.2.0.34-cp37-cp37m-win32.whl", hash = "sha256:b9de3dd956574662712da8e285f0f54327959a4e95b96a2847d3c3f5ee7b96e2"},
-    {file = "opencv_python-4.2.0.34-cp37-cp37m-win_amd64.whl", hash = "sha256:d8a55585631f9c9eca4b1a996e9732ae023169cf2f46f69e4518d67d96198226"},
     {file = "opencv_python-4.2.0.34-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:5fdfc0bed37315f27d30ae5ae9bad47ec0a0a28c323739d39c8177b7e0929238"},
     {file = "opencv_python-4.2.0.34-cp38-cp38-manylinux1_i686.whl", hash = "sha256:068928b9907b3d3acd53b129062557d6b0b8b324bfade77f028dbe4dfe482bf2"},
     {file = "opencv_python-4.2.0.34-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:0e7c91718351449877c2d4141abd64eee1f9c8701bcfaf4e8627bd023e303368"},
-    {file = "opencv_python-4.2.0.34-cp38-cp38-win32.whl", hash = "sha256:1ab92d807427641ec45d28d5907426aa06b4ffd19c5b794729c74d91cd95090e"},
-    {file = "opencv_python-4.2.0.34-cp38-cp38-win_amd64.whl", hash = "sha256:e2206bb8c17c0f212f1f356d82d72dd090ff4651994034416da9bf0c29732825"},
 ]
 openpyxl = [
     {file = "openpyxl-3.0.4-py2.py3-none-any.whl", hash = "sha256:6e62f058d19b09b95d20ebfbfb04857ad08d0833190516c1660675f699c6186f"},
@@ -2015,6 +2069,9 @@ pypdf2 = [
 pyperclip = [
     {file = "pyperclip-1.8.0.tar.gz", hash = "sha256:b75b975160428d84608c26edba2dec146e7799566aea42c1fe1b32e72b6028f2"},
 ]
+pyrsistent = [
+    {file = "pyrsistent-0.16.0.tar.gz", hash = "sha256:28669905fe725965daa16184933676547c5bb40a5153055a8dee2a4bd7933ad3"},
+]
 pyscreenshot = [
     {file = "pyscreenshot-1.0-py2.py3-none-any.whl", hash = "sha256:638a7f846ecec78039c3ccc9049cf5f487574a0b151c02569fe81f5664570707"},
     {file = "pyscreenshot-1.0.tar.gz", hash = "sha256:b74468c4d146c1723aca2cb0734a312eb813c527fcb279c855b3163bfe6bebab"},
@@ -2093,6 +2150,10 @@ requests-oauthlib = [
 requests-toolbelt = [
     {file = "requests-toolbelt-0.9.1.tar.gz", hash = "sha256:968089d4584ad4ad7c171454f0a5c6dac23971e9472521ea3b6d49d610aa6fc0"},
     {file = "requests_toolbelt-0.9.1-py2.py3-none-any.whl", hash = "sha256:380606e1d10dc85c3bd47bf5a6095f815ec007be7a8b69c878507068df059e6f"},
+]
+rfc3987 = [
+    {file = "rfc3987-1.3.8-py2.py3-none-any.whl", hash = "sha256:10702b1e51e5658843460b189b185c0366d2cf4cff716f13111b0ea9fd2dce53"},
+    {file = "rfc3987-1.3.8.tar.gz", hash = "sha256:d3c4d257a560d544e9826b38bc81db676890c79ab9d7ac92b39c7a253d5ca733"},
 ]
 robotframework = [
     {file = "robotframework-3.2.1-py2.py3-none-any.whl", hash = "sha256:34923415afd9491141630ad1d7146b638ee869f1c7f97c450c0da5ce79e1ac23"},

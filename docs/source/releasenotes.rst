@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+2.1.0
+-----
+
 - **FileSystem**: Fix keyword ``Normalize Path`` to match built-in library,
   and add new keyword ``Absolute Path`` for previous functionality.
 - **PDF**: Fix keyword ``Template HTML To PDF`` to handle HTML content from
