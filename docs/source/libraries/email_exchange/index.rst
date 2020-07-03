@@ -14,6 +14,9 @@ Description
 deleting emails. `Exchange` is interfacing with
 Exchange Web Services (EWS).
 
+For more information about server settings, see
+https://support.microsoft.com/en-us/office/server-settings-you-ll-need-from-your-email-provider-c82de912-adcc-4787-8283-45a1161f3cc3
+
 
 ********
 Examples

@@ -5,12 +5,15 @@ from typing import Any
 
 from exchangelib import (
     Account,
+    Configuration,
     Credentials,
+    DELEGATE,
     EWSDateTime,
     EWSTimeZone,
     FileAttachment,
     Folder,
     HTMLBody,
+    IMPERSONATION,
     Mailbox,
     Message,
 )
@@ -23,21 +26,44 @@ class Exchange:
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
         self.credentials = None
+        self.config = None
         self.account = None
 
     def authorize(
-        self, username: str, password: str, autodiscover: bool = True
+        self,
+        username: str,
+        password: str,
+        autodiscover: bool = True,
+        access_type: str = "DELEGATE",
+        server: str = None,
+        primary_smtp_address: str = None,
     ) -> None:
         """Connect to Exchange account
 
         :param username: account username
         :param password: account password
-        :param autodiscover: use autodiscover or not
+        :param autodiscover: use autodiscover or set it off
+        :param accesstype: default "DELEGATE", other option "IMPERSONATION"
+        :param server: required for configuration options
+        :param primary_smtp_address: by default set to username, but can be
+            set to be different than username
         """
-        self.credentials = Credentials(username, password)
-        self.account = Account(
-            username, credentials=self.credentials, autodiscover=autodiscover
+        kwargs = {}
+        kwargs["autodiscover"] = autodiscover
+        kwargs["access_type"] = (
+            DELEGATE if access_type.upper() == "DELEGATE" else IMPERSONATION
         )
+        kwargs["primary_smtp_address"] = (
+            primary_smtp_address if primary_smtp_address else username
+        )
+        self.credentials = Credentials(username, password)
+        if server:
+            self.config = Configuration(server=server, credentials=self.credentials)
+            kwargs["config"] = self.config
+        else:
+            kwargs["credentials"] = self.credentials
+
+        self.account = Account(**kwargs)
 
     def list_messages(self, folder_name: str = None, count: int = 100) -> list:
         """List messages in the account inbox. Order by descending
