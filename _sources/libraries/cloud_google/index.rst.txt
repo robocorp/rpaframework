@@ -12,13 +12,13 @@ Description
 
 `Google` is a library for operating with Google API endpoints.
 
-    Usage requires the following steps:
+Usage requires the following steps:
 
-        - Create a GCP project
-        - Create a service account key file (JSON) and save it to a place the robot
-          can use it
-        - Enable APIs
-        - Install rpaframework[google]
+- Create a GCP project
+- Create a service account key file (JSON) and save it to a place the robot
+  can use it
+- Enable APIs
+- Install rpaframework[google]
 
 Google authentication
 ======================
@@ -26,10 +26,10 @@ Google authentication
 Authentication for Google is set with `service credentials JSON file` which can be given to the library
 in three different ways.
 
-    - Method 1 as environment variables, ``GOOGLE_APPLICATION_CREDENTIALS`` with path to JSON file.
-    - Method 2 as keyword parameter to ``Init Storage Client`` for example.
-    - Method 3 as Robocloud vault secret. The vault name and secret key name needs to be given in library init
-      or with keyword ``Set Robocloud Vault``. Secret value should contain JSON file contents.
+- Method 1 as environment variables, ``GOOGLE_APPLICATION_CREDENTIALS`` with path to JSON file.
+- Method 2 as keyword parameter to ``Init Storage Client`` for example.
+- Method 3 as Robocloud vault secret. The vault name and secret key name needs to be given in library init
+  or with keyword ``Set Robocloud Vault``. Secret value should contain JSON file contents.
 
 Method 1. service credentials using environment variable
 

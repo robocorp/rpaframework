@@ -18,15 +18,14 @@ Robocloud Vault works together with Robocloud Worker or Robocode CLI.
 Following three environment variables need to exist (these are set by
 Robocloud Worker automatically and can be set manually with Robocode CLI).
 
-    - RC_API_SECRET_HOST : URL to Robocloud Secrets API
-    - RC_API_SECRET_TOKEN : API Token for Robocloud Secrets API
-    - RC_WORKSPACE_ID : Robocloud Workspace ID
+- RC_API_SECRET_HOST : URL to Robocloud Secrets API
+- RC_API_SECRET_TOKEN : API Token for Robocloud Secrets API
+- RC_WORKSPACE_ID : Robocloud Workspace ID
 
 File based secrets can be set by defining two environment variables.
 
-    - RPA_SECRET_MANAGER : 'RPA.Robocloud.Secrets.FileSecrets'
-    - RPA_SECRET_FILE : Absolute path to the secrets JSON file.
-
+- RPA_SECRET_MANAGER : 'RPA.Robocloud.Secrets.FileSecrets'
+- RPA_SECRET_FILE : Absolute path to the secrets JSON file.
 
 .. code-block:: json
     :caption: Example secret json file

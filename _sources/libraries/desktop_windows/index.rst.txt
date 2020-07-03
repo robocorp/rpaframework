@@ -20,11 +20,11 @@ Running Windows applications
 Windows applications can be started in several ways. The library supports
 the following keywords:
 
-    - Open Application (dispatch Office applications)
-    - Open File (open the file as process which opens the associated application)
-    - Open Executable (uses pywinauto start)
-    - Open Using Run Dialog (uses Windows run dialog)
-    - Open From Search (uses Windows search dialog)
+- Open Application (dispatch Office applications)
+- Open File (open the file as process which opens the associated application)
+- Open Executable (uses pywinauto start)
+- Open Using Run Dialog (uses Windows run dialog)
+- Open From Search (uses Windows search dialog)
 
 Locators
 ========
@@ -42,11 +42,12 @@ The element needs to be identified by a unique method, for example, "Three" for 
 in the Calculator application. It can be given either as `Three` or `name:Three`.
 
 Possible search criterias:
-    - name
-    - class (class_name)
-    - type (control_type)
-    - id (automation_id)
-    - any if none was defined
+
+- name
+- class (class_name)
+- type (control_type)
+- id (automation_id)
+- any if none was defined
 
 The current method of inspecting elements on Windows is `inspect.exe` which is part
 of `Windows SDK <https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects>`_.

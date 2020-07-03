@@ -20,11 +20,11 @@ AWS authentication
 Authentication for AWS is set with `key id` and `access key` which can be given to the library
 in three different ways.
 
-    - Method 1 as environment variables, ``AWS_KEY_ID`` and ``AWS_KEY``.
-    - Method 2 as keyword parameters to ``Init Textract Client`` for example.
-    - Method 3 as Robocloud vault secret. The vault name needs to be given in library init or
-      with keyword ``Set Robocloud Vault``. Secret keys are expected to match environment variable
-      names.
+- Method 1 as environment variables, ``AWS_KEY_ID`` and ``AWS_KEY``.
+- Method 2 as keyword parameters to ``Init Textract Client`` for example.
+- Method 3 as Robocloud vault secret. The vault name needs to be given in library init or
+  with keyword ``Set Robocloud Vault``. Secret keys are expected to match environment variable
+  names.
 
 Method 1. credentials using environment variable
 

@@ -214,20 +214,17 @@
 <h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p><cite>Azure</cite> is a library for operating with Microsoft Azure API endpoints.</p>
 <p>List of supported service names:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>computervision (<a class="reference external" href="https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/">Azure Computer Vision API</a>)</p></li>
 <li><p>face (<a class="reference external" href="https://docs.microsoft.com/en-us/azure/cognitive-services/face/">Azure Face API</a>)</p></li>
 <li><p>speech (<a class="reference external" href="https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/">Azure Speech Services API</a>)</p></li>
 <li><p>textanalytics (<a class="reference external" href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/">Azure Text Analytics API</a>)</p></li>
 </ul>
-</div></blockquote>
 <div class="section" id="azure-authentication">
 <h3>Azure authentication<a class="headerlink" href="#azure-authentication" title="Permalink to this headline">¶</a></h3>
 <p>Authentication for Azure is set with <cite>service subscription key</cite> which can be given to the library
 in two different ways.</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>Method 1 as environment variables, either service specific environment variable
 for example <code class="docutils literal notranslate"><span class="pre">AZURE_TEXTANALYTICS_KEY</span></code> or with common key <code class="docutils literal notranslate"><span class="pre">AZURE_SUBSCRIPTION_KEY</span></code> which
 will be used for all the services.</p></li>
@@ -235,7 +232,6 @@ will be used for all the services.</p></li>
 with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code>. Secret keys are expected to match environment variable
 names.</p></li>
 </ul>
-</div></blockquote>
 <p>Method 1. subscription key using environment variable</p>
 <div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2

@@ -218,15 +218,13 @@
 <h3>AWS authentication<a class="headerlink" href="#aws-authentication" title="Permalink to this headline">¶</a></h3>
 <p>Authentication for AWS is set with <cite>key id</cite> and <cite>access key</cite> which can be given to the library
 in three different ways.</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>Method 1 as environment variables, <code class="docutils literal notranslate"><span class="pre">AWS_KEY_ID</span></code> and <code class="docutils literal notranslate"><span class="pre">AWS_KEY</span></code>.</p></li>
 <li><p>Method 2 as keyword parameters to <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Textract</span> <span class="pre">Client</span></code> for example.</p></li>
 <li><p>Method 3 as Robocloud vault secret. The vault name needs to be given in library init or
 with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code>. Secret keys are expected to match environment variable
 names.</p></li>
 </ul>
-</div></blockquote>
 <p>Method 1. credentials using environment variable</p>
 <div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2

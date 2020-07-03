@@ -16,10 +16,10 @@ The library extends `tweepy`_ library.
 Authorization credentials can be given as parameters for ``authorize`` keyword
 or keyword can read them in as environment variables:
 
-    - `TWITTER_CONSUMER_KEY`
-    - `TWITTER_CONSUMER_SECRET`
-    - `TWITTER_ACCESS_TOKEN`
-    - `TWITTER_ACCESS_TOKEN_SECRET`
+- `TWITTER_CONSUMER_KEY`
+- `TWITTER_CONSUMER_SECRET`
+- `TWITTER_ACCESS_TOKEN`
+- `TWITTER_ACCESS_TOKEN_SECRET`
 
 Library usage requires Twitter developer credentials. Those can be requested from `Twitter developer site`_
 

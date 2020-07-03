@@ -218,15 +218,13 @@
 <h3>Running Windows applications<a class="headerlink" href="#running-windows-applications" title="Permalink to this headline">¶</a></h3>
 <p>Windows applications can be started in several ways. The library supports
 the following keywords:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>Open Application (dispatch Office applications)</p></li>
 <li><p>Open File (open the file as process which opens the associated application)</p></li>
 <li><p>Open Executable (uses pywinauto start)</p></li>
 <li><p>Open Using Run Dialog (uses Windows run dialog)</p></li>
 <li><p>Open From Search (uses Windows search dialog)</p></li>
 </ul>
-</div></blockquote>
 </div>
 <div class="section" id="locators">
 <h3>Locators<a class="headerlink" href="#locators" title="Permalink to this headline">¶</a></h3>
@@ -239,16 +237,14 @@ and <cite>screenshot</cite> of the element into an image file.</p>
 <h3>Identifying locator<a class="headerlink" href="#identifying-locator" title="Permalink to this headline">¶</a></h3>
 <p>The element needs to be identified by a unique method, for example, “Three” for button 3
 in the Calculator application. It can be given either as <cite>Three</cite> or <cite>name:Three</cite>.</p>
-<dl class="simple">
-<dt>Possible search criterias:</dt><dd><ul class="simple">
+<p>Possible search criterias:</p>
+<ul class="simple">
 <li><p>name</p></li>
 <li><p>class (class_name)</p></li>
 <li><p>type (control_type)</p></li>
 <li><p>id (automation_id)</p></li>
 <li><p>any if none was defined</p></li>
 </ul>
-</dd>
-</dl>
 <p>The current method of inspecting elements on Windows is <cite>inspect.exe</cite> which is part
 of <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects">Windows SDK</a>.</p>
 </div>

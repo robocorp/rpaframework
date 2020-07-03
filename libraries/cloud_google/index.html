@@ -213,30 +213,24 @@
 <div class="section" id="description">
 <h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p><cite>Google</cite> is a library for operating with Google API endpoints.</p>
-<blockquote>
-<div><p>Usage requires the following steps:</p>
-<blockquote>
-<div><ul class="simple">
+<p>Usage requires the following steps:</p>
+<ul class="simple">
 <li><p>Create a GCP project</p></li>
 <li><p>Create a service account key file (JSON) and save it to a place the robot
 can use it</p></li>
 <li><p>Enable APIs</p></li>
 <li><p>Install rpaframework[google]</p></li>
 </ul>
-</div></blockquote>
-</div></blockquote>
 <div class="section" id="google-authentication">
 <h3>Google authentication<a class="headerlink" href="#google-authentication" title="Permalink to this headline">¶</a></h3>
 <p>Authentication for Google is set with <cite>service credentials JSON file</cite> which can be given to the library
 in three different ways.</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>Method 1 as environment variables, <code class="docutils literal notranslate"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> with path to JSON file.</p></li>
 <li><p>Method 2 as keyword parameter to <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Storage</span> <span class="pre">Client</span></code> for example.</p></li>
 <li><p>Method 3 as Robocloud vault secret. The vault name and secret key name needs to be given in library init
 or with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code>. Secret value should contain JSON file contents.</p></li>
 </ul>
-</div></blockquote>
 <p>Method 1. service credentials using environment variable</p>
 <div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
