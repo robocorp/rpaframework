@@ -9,7 +9,7 @@ Upcoming release
 - **PDF**: Fix keyword ``Template HTML To PDF`` to handle HTML content from
   non-English Chrome browser.
 - **PDF**: Add keyword ``HTML To PDF`` which takes HTML content as string parameter.
-- **Exchange**: Fix ``Authorize`` when autodiscover is set to False. Add missing parameters
+- **Email.Exchange**: Fix ``Authorize`` when autodiscover is set to False. Add missing parameters
   to keyword.
 
 2.0.1
