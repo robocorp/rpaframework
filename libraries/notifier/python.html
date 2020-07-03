@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>HTTP &mdash; RPA Framework  documentation</title>
+  <title>Python module API &mdash; RPA Framework  documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Robot Framework API" href="../../libdoc/HTTP.html" />
-    <link rel="prev" title="Python module API" href="../filesystem/python.html" />
+    <link rel="next" title="Outlook.Application" href="../outlook_application/index.html" />
+    <link rel="prev" title="Robot Framework API" href="../../libdoc/Notifier.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -112,14 +112,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">HTTP</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../libdoc/HTTP.html">Robot Framework API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="python.html">Python module API</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notifier/index.html">Notifier</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Notifier</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Notifier.html">Robot Framework API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
@@ -182,13 +182,15 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-      <li>HTTP</li>
+          <li><a href="index.html">Notifier</a> &raquo;</li>
+        
+      <li>Python module API</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/libraries/http/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/libraries/notifier/python.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -201,71 +203,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="http">
-<h1>HTTP<a class="headerlink" href="#http" title="Permalink to this headline">¶</a></h1>
-<div class="contents local topic" id="table-of-contents">
-<p class="topic-title">Table of Contents</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#description" id="id1">Description</a></p></li>
-<li><p><a class="reference internal" href="#examples" id="id2">Examples</a></p></li>
-<li><p><a class="reference internal" href="#api-documentation" id="id3">API Documentation</a></p></li>
-</ul>
-</div>
-<div class="section" id="description">
-<h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p><cite>HTTP</cite> library can be used to make HTTP requests.</p>
-<p>The library extends Robot Framework <a class="reference external" href="https://github.com/MarketSquare/robotframework-requests">RequestsLibrary</a> functionality with
-RPA-oriented keywords.</p>
-</div>
-<div class="section" id="examples">
-<h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="robot-framework">
-<h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.HTTP</span><span class="p"></span>
-
-<span class="gh">*** Variables ***</span><span class="p"></span>
-<span class="p">${</span><span class="nv">URL</span><span class="p">}       </span><span class="s">https://ec.europa.eu/energy/sites/ener/files/documents/EnergyDailyPricesReport-EUROPA_0.pdf</span><span class="p"></span>
-<span class="p">${</span><span class="nv">PDF_FILE</span><span class="p">}  </span><span class="s">prices.pdf</span><span class="p"></span>
-
-<span class="gh">*** Tasks ***</span><span class="p"></span>
-<span class="gu">Get Energy Prices</span><span class="p"></span>
-<span class="p">    </span><span class="nf">HTTP GET</span><span class="p">   ${</span><span class="nv">URL</span><span class="p">}  ${</span><span class="nv">PDF_FILE</span><span class="p">}</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-<div class="section" id="python">
-<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.HTTP</span> <span class="kn">import</span> <span class="n">HTTP</span>
-
-<span class="n">library</span> <span class="o">=</span> <span class="n">HTTP</span><span class="p">()</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://ec.europa.eu/energy/sites/ener/files/documents/EnergyDailyPricesReport-EUROPA_0.pdf&quot;</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">http_get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="s2">&quot;prices.pdf&quot;</span><span class="p">)</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-</div>
-<div class="section" id="api-documentation">
-<h2><a class="toc-backref" href="#id3">API Documentation</a><a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../libdoc/HTTP.html">Robot Framework API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="python.html">Python module API</a></li>
-</ul>
-</div>
+  <div class="section" id="python-module-api">
+<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="notifier">
+<h2>Notifier<a class="headerlink" href="#notifier" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -277,10 +218,10 @@ RPA-oriented keywords.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../libdoc/HTTP.html" class="btn btn-neutral float-right" title="Robot Framework API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../outlook_application/index.html" class="btn btn-neutral float-right" title="Outlook.Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../filesystem/python.html" class="btn btn-neutral float-left" title="Python module API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../../libdoc/Notifier.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

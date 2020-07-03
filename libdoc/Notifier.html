@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Python module API" href="../libraries/images/python.html" />
-    <link rel="prev" title="Images" href="../libraries/images/index.html" />
+    <link rel="next" title="Python module API" href="../libraries/notifier/python.html" />
+    <link rel="prev" title="Notifier" href="../libraries/notifier/index.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -113,13 +113,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../libraries/excel_files/index.html">Excel.Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/filesystem/index.html">FileSystem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/http/index.html">HTTP</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../libraries/images/index.html">Images</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../libraries/images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../libraries/notifier/index.html">Notifier</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Robot Framework API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../libraries/images/python.html">Python module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/notifier/python.html">Python module API</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../libraries/netsuite/index.html">Netsuite</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../libraries/notifier/index.html">Notifier</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/outlook_application/index.html">Outlook.Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/pdf/index.html">PDF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/robocloud_items/index.html">Robocloud.Items</a></li>
@@ -182,7 +182,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../libraries/images/index.html">Images</a> &raquo;</li>
+          <li><a href="../libraries/notifier/index.html">Notifier</a> &raquo;</li>
         
       <li>Robot Framework API</li>
     
@@ -190,7 +190,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/libdoc/Images.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/libdoc/Notifier.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -211,90 +211,60 @@
 <dt class="field-odd">Library scope</dt>
 <dd class="field-odd"><p></p></dd>
 </dl>
-<p>Library for taking screenshots, matching templates, and
-manipulating images.</p>
+<p>Library for using different notification services.</p>
+<p>All keywords take keyword arguments (<a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs) to allow giving
+additional arguments for the notifications.</p>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list">
-<dt class="field-odd">Crop Image</dt>
+<dt class="field-odd">Notify Email</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>image, region, filename=None, save_format=PNG</p>
+<dd class="field-odd"><p>message: str=None, to: str=None, username: str=None, password: str=None, **kwargs: dict</p>
 </dd>
 </dl>
-<p>Take a screenshot of the current desktop.</p>
+<p>Notify using email service</p>
 </dd>
-<dt class="field-even">Find Template In Image</dt>
+<dt class="field-even">Notify Gmail</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>image, template, region=None, limit=None, tolerance=None</p>
+<dd class="field-odd"><p>message: str=None, to: str=None, username: str=None, password: str=None, **kwargs: dict</p>
 </dd>
 </dl>
-<p>Attempt to find the template from the given image.</p>
-<dl class="field-list simple">
-<dt class="field-odd">raises ImageNotFoundError</dt>
-<dd class="field-odd"><p>No match was found</p>
+<p>Notify using Gmail service</p>
 </dd>
-</dl>
-</dd>
-<dt class="field-even">Find Template On Screen</dt>
+<dt class="field-even">Notify Pushover</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>template, **kwargs</p>
+<dd class="field-odd"><p>message: str=None, user: str=None, token: str=None, **kwargs: dict</p>
 </dd>
 </dl>
-<p>Attempt to find the template image from the current desktop.
-For argument descriptions, see <code class="docutils literal notranslate"><span class="pre">find_template_in_image()</span></code></p>
+<p>Notify using Pushover service</p>
 </dd>
-<dt class="field-even">Get Pixel Color In Image</dt>
+<dt class="field-even">Notify Slack</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>image, point</p>
+<dd class="field-odd"><p>message: str=None, channel: str=None, webhook_url: str=None, **kwargs: dict</p>
 </dd>
 </dl>
-<p>Get the RGB value of a pixel in the image.</p>
+<p>Notify using Slack service</p>
 </dd>
-<dt class="field-even">Get Pixel Color On Screen</dt>
+<dt class="field-even">Notify Telegram</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>point</p>
+<dd class="field-odd"><p>message: str=None, chat_id: str=None, token: str=None, **kwargs: dict</p>
 </dd>
 </dl>
-<p>Get the RGB value of a pixel currently on screen.</p>
+<p>Notify using Telegram service</p>
 </dd>
-<dt class="field-even">Show Region In Image</dt>
+<dt class="field-even">Notify Twilio</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>image, region, color=red, width=5</p>
+<dd class="field-odd"><p>message: str=None, number_from: str=None, number_to: str=None, account_sid: str=None, token: str=None, **kwargs: dict</p>
 </dd>
 </dl>
-<p>Draw a rectangle onto the image around the given region.</p>
-</dd>
-<dt class="field-even">Show Region On Screen</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>region, color=red, width=5</p>
-</dd>
-</dl>
-<p>Draw a rectangle around the given region on the current desktop.</p>
-</dd>
-<dt class="field-even">Take Screenshot</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>filename=None, region=None, save_format=PNG</p>
-</dd>
-</dl>
-<p>Take a screenshot of the current desktop.</p>
-</dd>
-<dt class="field-even">Wait Template On Screen</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>template, timeout=5, **kwargs</p>
-</dd>
-</dl>
-<p>Wait for template image to appear on current desktop.
-For further argument descriptions, see <code class="docutils literal notranslate"><span class="pre">find_template_in_image()</span></code></p>
+<p>Notify using Twilio service</p>
 </dd>
 </dl>
 </div>
@@ -308,10 +278,10 @@ For further argument descriptions, see <code class="docutils literal notranslate
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../libraries/images/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../libraries/notifier/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../libraries/images/index.html" class="btn btn-neutral float-left" title="Images" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../libraries/notifier/index.html" class="btn btn-neutral float-left" title="Notifier" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

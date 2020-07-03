@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+2.1.0
+-----
+
 - **FileSystem**: Fix keyword ``Normalize Path`` to match built-in library,
   and add new keyword ``Absolute Path`` for previous functionality.
 - **PDF**: Fix keyword ``Template HTML To PDF`` to handle HTML content from
@@ -11,6 +14,7 @@ Upcoming release
 - **PDF**: Add keyword ``HTML To PDF`` which takes HTML content as string parameter.
 - **Email.Exchange**: Fix ``Authorize`` when autodiscover is set to False. Add missing parameters
   to keyword.
+- New **Notifier** library, which allows using notification services like Slack, Gmail, Pushover etc.
 
 2.0.1
 -----
