@@ -283,13 +283,14 @@ class FileSystem:
         with open(path, "ab") as fd:
             fd.write(content)
 
-    def create_directory(self, path, parents=False):
+    def create_directory(self, path, parents=False, exists_ok=True):
         """Creates a directory and (optionally) non-existing parent directories.
 
         :param path:        path to new directory
         :param parents:     create missing parent directories
+        :param exists_ok:   FileExistsError is ignored if path is an existing directory
         """
-        Path(path).mkdir(parents=parents)
+        Path(path).mkdir(parents=parents, exist_ok=exists_ok)
 
     def remove_file(self, path, force=False):
         """Removes the given file.
