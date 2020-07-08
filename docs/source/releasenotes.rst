@@ -208,6 +208,7 @@ Upcoming release
 2.2.0
 -----
 
+- **FileSystem**: Replace ``force`` arguments with ``missing_ok`` to match python API
 - **Robocloud.Secrets**: Add support for Robocloud end-to-end encryption
 - **FileSystem**: Add ``exist_ok`` argument for ``Create directory`` keyword
 - **Tasks**: Fix support for FAIL status in schema actions
