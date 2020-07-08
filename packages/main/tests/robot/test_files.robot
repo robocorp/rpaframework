@@ -118,8 +118,8 @@ Test Remove File
     Verify true    Does file not exist    wont_be_missed
 
 Test Remove Unknown File
-    Run keyword and expect error    *FileNotFoundError*    Remove file    not-a-file
-    Remove file    not-a-file    force=${TRUE}
+    Run keyword and expect error    *FileNotFoundError*    Remove file    not-a-file    missing_ok=${FALSE}
+    Remove file    not-a-file
 
 Test Remove Files
     Touch file    one.tmp
