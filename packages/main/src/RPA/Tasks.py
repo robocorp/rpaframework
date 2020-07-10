@@ -1,3 +1,4 @@
+import base64
 import copy
 import json
 import logging
@@ -5,6 +6,7 @@ import re
 import string
 import sys
 from functools import partial
+from pathlib import Path
 
 import graphviz
 from graphviz import ExecutableNotFound
@@ -99,7 +101,7 @@ class Graph:
                 return label
             position -= 1
 
-    def render(self, filename=None, dirname=None, strip=True):
+    def _create_graph(self, strip=True):
         """Create graphviz graph from current execution state."""
         graph = graphviz.Digraph(
             name=self.suite.name,
@@ -126,7 +128,18 @@ class Graph:
             dst = dst if dst == "End" else self.tasks[dst]["label"]
             graph.edge(src, dst)
 
-        return graph.render(filename=filename, directory=dirname)
+        return graph
+
+    def render_to_file(self, path, strip=True):
+        """Render graphviz graph to given file."""
+        path = Path(path)
+        graph = self._create_graph(strip)
+        return graph.render(filename=path.name, directory=path.parent)
+
+    def render_to_bytes(self, strip=True):
+        """Render graphviz graph to in-memory bytes object."""
+        graph = self._create_graph(strip)
+        return graph.pipe()
 
     def set_next(self, task):
         """Add transition between previous and next task."""
@@ -323,12 +336,20 @@ class Tasks:
     If ``Graphviz`` is available, it will also create a directed graph
     to visualize connected tasks, which is visible in the suite documentation
     field of the test log.
+
+    :param execution_limit: Maximum number of tasks to run in suite,
+                            used to prevent infinite loops
+    :param schema:          Path to optional schema file
+    :param graph:           Render execution result as graph using graphviz
+    :param graph_inline:    Inline graph into log, instead of saving as file
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LISTENER_API_VERSION = 3
 
-    def __init__(self, execution_limit=1024, schema=None, graph=True):
+    def __init__(
+        self, execution_limit=1024, schema=None, graph=True, graph_inline=True
+    ):
         self.ROBOT_LIBRARY_LISTENER = self
 
         #: Current task execution count
@@ -348,7 +369,7 @@ class Tasks:
         self.schema_path = schema
         #: Task execution graph
         self.graph = None
-        self.render = graph
+        self.graph_options = {"enabled": graph, "inline": graph_inline}
 
     def _load_schema(self):
         """Load schema from file, if defined."""
@@ -437,15 +458,25 @@ class Tasks:
         """Render graph of suite execution to the documentation field."""
         del result
 
-        if not self.render:
+        if not self.graph_options.get("enabled", True):
             return
 
-        filename = "graph_{}".format(data.name.lower().replace(" ", "_"))
-        dirname = BuiltIn().get_variable_value("${OUTPUT_DIR}")
-
         try:
-            path = self.graph.render(filename, dirname)
-            BuiltIn().set_suite_documentation(f"[{path}|Graph]", append=True)
+            if self.graph_options.get("inline", True):
+                # Render as inline data URI
+                data = self.graph.render_to_bytes()
+                src = "data:image/svg+xml;base64,{}".format(
+                    base64.b64encode(data).decode("utf-8")
+                )
+            else:
+                # Render to file
+                dirname = BuiltIn().get_variable_value("${OUTPUT_DIR}")
+                filename = "graph_{}".format(data.name.lower().replace(" ", "_"))
+
+                path = Path(dirname, filename)
+                src = self.graph.render_to_file(str(path))
+
+            BuiltIn().set_suite_documentation(f"[{src}|Graph]", append=True)
         except ExecutableNotFound as err:
             logging.warning("Graphviz executable not found: %s", err)
 
