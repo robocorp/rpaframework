@@ -282,7 +282,7 @@ class Schema:
 
     def _action_status(self, status, result):
         """Schema action: compare test result to expected."""
-        if result.status != status.upper():
+        if result.status.upper() != status.upper():
             return False
 
         result.message = f"Transition: status == {status}"
@@ -347,6 +347,8 @@ class Tasks:
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LISTENER_API_VERSION = 3
 
+    TAG_NONCRITICAL = "tasks-schema-noncritical"
+
     def __init__(
         self, execution_limit=1024, schema=None, graph=True, graph_inline=True
     ):
@@ -402,6 +404,7 @@ class Tasks:
             elif self.schema:
                 task = self.schema.evaluate_actions(self.current.name, result)
                 task = self._task_by_name(task) if task else None
+                result.tags.add(self.TAG_NONCRITICAL)  # Schema overrides status
 
             if self.schema:
                 name = task.name if task else "end"
@@ -433,8 +436,6 @@ class Tasks:
         """Robot listener method, called on suite start.
         Copies original tasks to be used as source for scheduling.
         """
-        del result
-
         self.count = 0
         self.next = None
         self.suite = data
@@ -453,6 +454,13 @@ class Tasks:
             self._append_task(self._task_by_name(self.schema.start))
         else:
             self._append_task(self.tasks[0])
+
+        # Set a unique non-critical tag to be used when
+        # execution should continue after a FAIL status
+        root = result
+        while root.parent:
+            root = root.parent
+        root.set_criticality(non_critical_tags=[self.TAG_NONCRITICAL])
 
     def _end_suite(self, data, result):
         """Render graph of suite execution to the documentation field."""
@@ -489,9 +497,10 @@ class Tasks:
 
         task, result = self._find_next_task(result)
 
-        if not result.passed and result.critical:
+        if not result.passed:
             self.graph.set_result("fail")
-            return
+            if result.critical:
+                return
         else:
             self.graph.set_result("pass")
 
