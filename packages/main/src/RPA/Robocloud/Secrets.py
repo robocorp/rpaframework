@@ -98,7 +98,7 @@ class FileSecrets(BaseSecretManager):
     def __init__(self, secret_file="secrets.json"):
         self.logger = logging.getLogger(__name__)
         self.path = required_env("RPA_SECRET_FILE", secret_file)
-        self._data = self.load(self.path)
+        self.data = self.load(self.path)
 
     def load(self, path):
         """Load secrets file."""
@@ -121,7 +121,7 @@ class FileSecrets(BaseSecretManager):
         :returns:           Secret object
         :raises KeyError:   No secret with given name
         """
-        values = self._data.get(secret_name)
+        values = self.data.get(secret_name)
         if values is None:
             raise KeyError(f"Undefined secret: {secret_name}")
 

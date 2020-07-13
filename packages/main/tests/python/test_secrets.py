@@ -184,7 +184,8 @@ def test_adapter_filesecrets_invalid_file(monkeypatch):
     monkeypatch.setenv("RPA_SECRET_FILE", str(RESOURCES / "not-a-file.json"))
 
     # Should not raise
-    _ = FileSecrets()
+    adapter = FileSecrets()
+    assert adapter.data == {}
 
 
 def test_adapter_filesecrets_unknown_secret(monkeypatch):
