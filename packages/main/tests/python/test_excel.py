@@ -43,6 +43,24 @@ def test_create_without_close(fmt):
     library.create_workbook(fmt=fmt)
 
 
+@pytest.mark.parametrize("filename", ["not-a-file.xlsx", "not-a-file.xls"])
+def test_open_missing(filename):
+    with pytest.raises(FileNotFoundError):
+        lib = Files()
+        lib.open_workbook(filename)
+
+
+@pytest.mark.parametrize(
+    "filename",
+    [r"tests/resources/wrong_extension.xlsx", r"tests/resources/wrong_extension.xls"],
+)
+def test_wrong_extension_fallback(filename):
+    library = Files()
+    library.open_workbook(filename)
+    assert library.workbook is not None
+    library.close_workbook()
+
+
 def test_extension_property(library):
     assert library.workbook.extension == Path(library.workbook.path).suffix
 

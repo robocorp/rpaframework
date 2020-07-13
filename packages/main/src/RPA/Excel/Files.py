@@ -68,13 +68,14 @@ class Files:
         self.workbook = None
 
     def _load_workbook(self, path):
-        path = pathlib.Path(path).resolve()
+        # pylint: disable=broad-except
+        path = pathlib.Path(path).resolve(strict=True)
 
         try:
             book = XlsxWorkbook(path)
             book.open()
             return book
-        except openpyxl.utils.exceptions.InvalidFileException as err:
+        except Exception as err:
             self.logger.debug(err)
 
         self.logger.info(
@@ -86,7 +87,7 @@ class Files:
             book = XlsWorkbook(path)
             book.open()
             return book
-        except xlrd.biffh.XLRDError as err:
+        except Exception as err:
             self.logger.debug(err)
 
         raise ValueError(f"Not a valid Excel file: {path}")
