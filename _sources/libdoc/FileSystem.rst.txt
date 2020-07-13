@@ -64,7 +64,7 @@ Keywords
 
 
 :Create Directory:
-  :Arguments: path, parents=False
+  :Arguments: path, parents=False, exist_ok=True
 
   Creates a directory and (optionally) non-existing parent directories.
 

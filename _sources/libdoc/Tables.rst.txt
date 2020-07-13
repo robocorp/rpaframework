@@ -114,9 +114,22 @@ Keywords
 
 
 :Read Table From Csv:
-  :Arguments: path, header=None, columns=None, dialect=None
+  :Arguments: path, header=None, columns=None, dialect=None, delimiters=None
 
   Read a CSV file as a table.
+
+  By default attempts to deduce the CSV format and headers
+  from a sample of the input file. If it's unable to determine
+  the format automatically, the dialect and header will
+  have to be defined manually.
+
+  Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``,
+  and ``header`` is boolean argument (``True``/``False``). Optionally a
+  set of valid ``delimiters`` can be given as a string.
+
+  The ``columns`` argument can be used to override the names of columns
+  in the resulting table. The amount of columns must match the input
+  data.
 
 
 :Rename Table Columns:
@@ -186,7 +199,9 @@ Keywords
 
 
 :Write Table To Csv:
-  :Arguments: table, path
+  :Arguments: table, path, header=True, dialect=excel
 
   Write a table as a CSV file.
+
+  Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``.
 

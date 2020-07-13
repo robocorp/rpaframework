@@ -4,6 +4,13 @@ Release notes
 Upcoming release
 ----------------
 
+- **Robocloud.Secrets**: Add support for Robocloud end-to-end encryption
+- **FileSystem**: Add ``exist_ok`` argument for ``Create directory`` keyword
+- **Tasks**: Fix support for FAIL status in schema actions
+- **Tasks**: Allow inlining execution graph in log (enabled by default)
+- **Excel.Files**: Always fallback to legacy mode on error
+- **Tables**: Fix manual override for CSV dialect, document arguments
+
 2.1.0
 -----
 
