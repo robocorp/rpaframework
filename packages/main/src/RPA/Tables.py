@@ -1207,7 +1207,7 @@ class Tables:
             sample = fd.read(1024)
 
         if dialect is None:
-            dialect = sniffer.sniff(sample)
+            dialect = sniffer.sniff(sample, delimiters)
         if header is None:
             header = sniffer.has_header(sample)
 
