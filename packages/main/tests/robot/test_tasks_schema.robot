@@ -19,6 +19,9 @@ Increment current number
     Log    Number is now ${CURRENT}
 
 Target reached
+    Fail   Not a critical error
+
+The final task
     Log    Those are some good numbers!
 
 *** Keywords ***

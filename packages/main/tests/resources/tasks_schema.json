@@ -33,6 +33,19 @@
         "Target reached": {
             "alias": "target",
             "end": true,
+            "next": [
+                "final"
+            ],
+            "actions": [
+                {
+                    "status": "FAIL",
+                    "task": "final"
+                }
+            ]
+        },
+        "The final task": {
+            "alias": "final",
+            "end": true,
             "next": []
         }
     }
