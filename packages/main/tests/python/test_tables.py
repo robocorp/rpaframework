@@ -1,7 +1,13 @@
-import pytest
+import os
+import tempfile
 from collections import namedtuple, OrderedDict
+from pathlib import Path
+
+import pytest
 from RPA.Tables import Table, Tables
 
+
+RESOURCES = Path(__file__).parent / ".." / "resources"
 
 DATA_COLUMNS = ["one", "two", "three", "four"]
 
@@ -327,14 +333,68 @@ def test_keyword_trim_empty_rows(library, table):
     assert table[-2] == [None, None, None, None]
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_keyword_read_table_from_csv(library, table):
-    library.read_table_from_csv(path, header=None, columns=None, dialect=None)
+def test_keyword_read_table_from_csv_automatic(library):
+    table = library.read_table_from_csv(RESOURCES / "easy.csv")
+    assert len(table) == 3
+    assert table.columns == ["first", "second", "third"]
+    assert table[0] == ["1", "2", "3"]
 
 
-@pytest.mark.skip(reason="Not implemented")
+def test_keyword_read_table_from_csv_manual(library):
+    table = library.read_table_from_csv(
+        RESOURCES / "hard.csv", dialect="excel", header=True
+    )
+    assert len(table) == 100
+    assert table.columns == [
+        "Region",
+        "Country",
+        "Item Type",
+        "Sales Channel",
+        "Order Priority",
+        "Order Date",
+        "Order ID",
+        "Ship Date",
+        "Units Sold",
+        "Unit Price",
+        "Unit Cost",
+        "Total Revenue",
+        "Total Cost",
+        "Total Profit",
+    ]
+    assert table[-1] == [
+        "Sub-Saharan Africa",
+        "Mozambique",
+        "Household",
+        "Offline",
+        "L",
+        "2/10/2012",
+        "665095412",
+        "2/15/2012",
+        "5367",
+        "668.27",
+        "502.54",
+        "3586605.09",
+        "2697132.18",
+        "889472.91",
+    ]
+
+
 def test_keyword_write_table_to_csv(library, table):
-    library.write_table_to_csv(path, table)
+    path = None
+    data = None
+
+    with tempfile.NamedTemporaryFile() as fd:
+        path = fd.name
+
+    try:
+        library.write_table_to_csv(table, path)
+        with open(path) as fd:
+            data = fd.readlines()
+    finally:
+        os.unlink(path)
+
+    assert len(data) == 7
+    assert data[0] == "one,two,three,four\n"
 
 
 def test_import_with_integer_keys():

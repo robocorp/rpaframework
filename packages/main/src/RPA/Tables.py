@@ -1178,19 +1178,38 @@ class Tables:
             for column in table.columns
         ]
 
-    def read_table_from_csv(self, path, header=None, columns=None, dialect=None):
+    def read_table_from_csv(
+        self, path, header=None, columns=None, dialect=None, delimiters=None
+    ):
         """Read a CSV file as a table.
 
-        :param path:    path to CSV file
-        :param header:  CSV file includes header
-        :param columns: names of columns in resulting table
-        :param dialect: format of CSV file
+        By default attempts to deduce the CSV format and headers
+        from a sample of the input file. If it's unable to determine
+        the format automatically, the dialect and header will
+        have to be defined manually.
+
+        Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``,
+        and ``header`` is boolean argument (``True``/``False``). Optionally a
+        set of valid ``delimiters`` can be given as a string.
+
+        The ``columns`` argument can be used to override the names of columns
+        in the resulting table. The amount of columns must match the input
+        data.
+
+        :param path:        path to CSV file
+        :param header:      CSV file includes header
+        :param columns:     names of columns in resulting table
+        :param dialect:     format of CSV file
+        :param delimiters:  string of possible delimiters
         """
         sniffer = csv.Sniffer()
         with open(path, newline="") as fd:
             sample = fd.read(1024)
-            dialect = if_none(dialect, sniffer.sniff(sample))
-            header = if_none(header, sniffer.has_header(sample))
+
+        if dialect is None:
+            dialect = sniffer.sniff(sample)
+        if header is None:
+            header = sniffer.has_header(sample)
 
         with open(path, newline="") as fd:
             if header:
@@ -1201,17 +1220,23 @@ class Tables:
 
         return Table(rows, columns)
 
-    def write_table_to_csv(self, table, path):
+    def write_table_to_csv(self, table, path, header=True, dialect="excel"):
         """Write a table as a CSV file.
+
+        Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``.
 
         :param path:    path to write to
         :param table:   table to write
+        :param header:  write columns as header to CSV file
+        :param dialect: the format of output CSV
         """
         self.requires_table(table)
 
         with open(path, mode="w", newline="") as fd:
-            writer = csv.DictWriter(fd, fieldnames=table.columns)
-            writer.writeheader()
+            writer = csv.DictWriter(fd, fieldnames=table.columns, dialect=dialect)
+
+            if header:
+                writer.writeheader()
 
             for row in table.iter_dicts(with_index=False):
                 writer.writerow(row)
