@@ -1,4 +1,5 @@
 import base64
+import binascii
 import collections
 import copy
 import json
@@ -7,6 +8,7 @@ import traceback
 from abc import abstractmethod, ABCMeta
 
 import requests
+from cryptography.exceptions import InvalidTag
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding, rsa
@@ -160,7 +162,7 @@ class RobocloudVault(BaseSecretManager):
     def params(self):
         """Default request parameters."""
         return {
-            "encryptionSchema": self.ENCRYPTION_SCHEME,
+            "encryptionScheme": self.ENCRYPTION_SCHEME,
             "publicKey": self._public_bytes,
         }
 
@@ -208,6 +210,9 @@ class RobocloudVault(BaseSecretManager):
 
             payload = response.json()
             payload = self._decrypt_payload(payload)
+        except InvalidTag:
+            self.logger.debug(traceback.format_exc())
+            raise RobocloudVaultError("Failed to decrypt secret")
         except Exception as exc:
             self.logger.debug(traceback.format_exc())
             raise RobocloudVaultError(exc)
@@ -221,13 +226,13 @@ class RobocloudVault(BaseSecretManager):
         if fields is None:
             raise KeyError("Missing encryption fields from response")
 
-        scheme = fields["encryptionSchema"]
+        scheme = fields["encryptionScheme"]
         if scheme != self.ENCRYPTION_SCHEME:
             raise ValueError(f"Unexpected encryption scheme: {scheme}")
 
         aes_enc = base64.b64decode(fields["encryptedAES"])
         aes_tag = base64.b64decode(fields["authTag"])
-        aes_iv = fields["iv"].encode("utf-8")  # NOTE: This might change
+        aes_iv = base64.b64decode(fields["iv"])
 
         # Decrypt AES key using our private key
         aes_key = self._private_key.decrypt(
@@ -241,7 +246,7 @@ class RobocloudVault(BaseSecretManager):
 
         # Decrypt actual value using decrypted AES key
         ciphertext = base64.b64decode(payload.pop("value")) + aes_tag
-        data = AESGCM(aes_key).decrypt(aes_iv, ciphertext, b"")
+        data = AESGCM(aes_key).decrypt(binascii.hexlify(aes_iv), ciphertext, b"")
         payload["values"] = json.loads(data)
 
         return payload

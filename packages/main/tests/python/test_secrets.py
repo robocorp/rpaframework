@@ -223,7 +223,7 @@ def test_adapter_vault_request(mock_requests, mock_env_default, mock_env_vault):
         "mock-url/secrets-v1/workspaces/mock-workspace/secrets/mock-name",
         headers={"Authorization": "Bearer mock-token"},
         params={
-            "encryptionSchema": "robocloud-vault-transit-v2",
+            "encryptionScheme": "robocloud-vault-transit-v2",
             "publicKey": adapter._public_bytes,
         },
     )
@@ -244,8 +244,8 @@ def test_adapter_vault_encryption(mock_env_vault):
     # Cloud encrypts secret with symmetric encryption
     key = AESGCM.generate_key(bit_length=128)
     aesgcm = AESGCM(key)
-    nonce = binascii.hexlify(os.urandom(12))
-    ct_data = aesgcm.encrypt(nonce, data, b"")
+    nonce = os.urandom(12)
+    ct_data = aesgcm.encrypt(binascii.hexlify(nonce), data, b"")
 
     # Cloud uses client-supplied public key to encrypt symmetric key
     adapter = RobocloudVault()
@@ -270,10 +270,10 @@ def test_adapter_vault_encryption(mock_env_vault):
         "description": "mock-desc",
         "value": base64.b64encode(ct_data).decode("utf-8"),
         "encryption": {
-            "encryptionSchema": adapter.ENCRYPTION_SCHEME,
+            "encryptionScheme": adapter.ENCRYPTION_SCHEME,
             "encryptedAES": base64.b64encode(ct_key).decode("utf-8"),
             "authTag": base64.b64encode(auth_tag).decode("utf-8"),
-            "iv": nonce.decode("utf-8"),
+            "iv": base64.b64encode(nonce).decode("utf-8"),
         },
     }
 
