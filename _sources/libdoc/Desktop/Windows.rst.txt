@@ -137,11 +137,11 @@ Keywords
 :Get Window List:
   Get list of open windows
 
-  window dictionaries contains:
+  Window dictionaries contain:
 
-      - title
-      - pid
-      - handle
+  - title
+  - pid
+  - handle
 
 
 :Is Element Enabled:
@@ -199,9 +199,10 @@ Keywords
   center coordinates.
 
   Click types are:
-      - `click` normal left button mouse click
-      - `double`
-      - `right`
+
+  - `click` normal left button mouse click
+  - `double`
+  - `right`
 
 
 :Mouse Click Coords:
@@ -231,7 +232,7 @@ Keywords
 
 
 :Open Dialog:
-  :Arguments: windowtitle: str=None, highlight: bool=False
+  :Arguments: windowtitle: str=None, highlight: bool=False, timeout: int=10
 
   Open window by its title.
 

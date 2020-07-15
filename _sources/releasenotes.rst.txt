@@ -10,6 +10,7 @@ Upcoming release
 - **Tasks**: Allow inlining execution graph in log (enabled by default)
 - **Excel.Files**: Always fallback to legacy mode on error
 - **Tables**: Fix manual override for CSV dialect, document arguments
+- **Desktop.Windows**: Attach to windows more reliably, and show helpful message on error
 
 2.1.0
 -----
