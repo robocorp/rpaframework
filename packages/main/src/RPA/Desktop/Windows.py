@@ -86,7 +86,7 @@ class Windows(OperatingSystem):
         if dialog:
             self.open_dialog(self._apps[self._app_instance_id].get("windowtitle", None))
 
-        self.logger.info(self._apps)
+        self.logger.debug(self._apps)
         return self._active_app_instance
 
     def switch_to_application(self, app_id: int) -> None:
@@ -124,7 +124,7 @@ class Windows(OperatingSystem):
         :param application: name of the application as `str`
         :return: application instance id
         """
-        self.logger.info("open_application: %s", application)
+        self.logger.info("Open application: %s", application)
         app = win32com.client.gencache.EnsureDispatch(f"{application}.Application")
         app.Visible = True
         # show eg. file overwrite warning or not
@@ -139,7 +139,7 @@ class Windows(OperatingSystem):
         :param filename: path to file
         :return: True if application is opened, False if not
         """
-        self.logger.info("open_file: %s", filename)
+        self.logger.info("Open file: %s", filename)
         if platform.system() == "Windows":
             # pylint: disable=no-member
             os.startfile(filename)
@@ -241,7 +241,7 @@ class Windows(OperatingSystem):
 
         :param windowtitle: name of the window
         """
-        self.logger.info("minimize_dialog: %s", windowtitle)
+        self.logger.info("Minimize dialog: %s", windowtitle)
         self.dlg = pywinauto.Desktop(backend="uia")[windowtitle]
         self.dlg.minimize()
 
@@ -250,7 +250,7 @@ class Windows(OperatingSystem):
 
         :param windowtitle: name of the window
         """
-        self.logger.info("restore_dialog: %s", windowtitle)
+        self.logger.info("Restore dialog: %s", windowtitle)
         self.dlg = pywinauto.Desktop(backend="uia")[windowtitle]
         self.dlg.restore()
 
@@ -263,7 +263,7 @@ class Windows(OperatingSystem):
         :param highlight: draw outline for window if True, defaults to False
         :param timeout: time to wait for dialog to appear
         """
-        self.logger.info("open_dialog: '%s', '%s'", windowtitle, highlight)
+        self.logger.info("Open dialog: '%s', '%s'", windowtitle, highlight)
 
         if windowtitle:
             self.windowtitle = windowtitle
@@ -336,7 +336,7 @@ class Windows(OperatingSystem):
         """
         app = self.get_app(app_id)
         app_id_to_quit = app["id"]
-        self.logger.info("quit application: %s", app_id_to_quit)
+        self.logger.info("Quit application: %s", app_id_to_quit)
         if send_keys:
             self.switch_to_application(app_id)
             self.send_keys("%{F4}")
@@ -353,7 +353,7 @@ class Windows(OperatingSystem):
 
         :param keys: list of keys to type
         """
-        self.logger.info("type keys: %s", keys)
+        self.logger.info("Type keys: %s", keys)
         if self.dlg is None:
             raise ValueError("No dialog open")
         self.dlg.type_keys(keys)
@@ -363,7 +363,7 @@ class Windows(OperatingSystem):
 
         :param keys: list of keys to send
         """
-        self.logger.info("send keys: %s", keys)
+        self.logger.info("Send keys: %s", keys)
         pywinauto.keyboard.send_keys(keys)
 
     def mouse_click(
@@ -399,7 +399,7 @@ class Windows(OperatingSystem):
         :param method: one of the available methods to mouse click, default "locator"
         :param ctype: type of mouse click
         """
-        self.logger.info("mouse click: %s", locator)
+        self.logger.info("Mouse click: %s", locator)
 
         if method == "locator":
             element, _ = self.find_element(locator)
@@ -465,7 +465,7 @@ class Windows(OperatingSystem):
         :param screenshot: takes element screenshot if True, defaults to False
         :return: element if element was identified, else False
         """
-        self.logger.info("get element: %s", locator)
+        self.logger.info("Get element: %s", locator)
         # self.connect_by_handle(self.dlg.handle)
         # TODO. move dlg wait into "open_dialog" ?
         self.open_dialog(self.windowtitle)
@@ -481,7 +481,7 @@ class Windows(OperatingSystem):
 
         if len(matching_elements) == 0:
             self.logger.info(
-                "locator '%s' using search criteria '%s' not found in '%s'.\n"
+                "Locator '%s' using search criteria '%s' not found in '%s'.\n"
                 "Maybe one of these would be better?\n%s\n",
                 locator,
                 search_criteria,
@@ -499,7 +499,7 @@ class Windows(OperatingSystem):
             # TODO. return more valuable information about what should
             # be matching element ?
             self.logger.info(
-                "locator '%s' matched multiple elements in '%s'. "
+                "Locator '%s' matched multiple elements in '%s'. "
                 "Maybe one of these would be better?\n%s\n",
                 locator,
                 self.windowtitle,
@@ -570,7 +570,7 @@ class Windows(OperatingSystem):
 
         :param menuitem: name of the menu item
         """
-        self.logger.info("menu select: %s", menuitem)
+        self.logger.info("Menu select: %s", menuitem)
         app = self.get_app()
         app["dlg"].menu_select(menuitem)
         # self.logger.warning(f"Window '{app['windowtitle']}'
@@ -587,7 +587,7 @@ class Windows(OperatingSystem):
         if search_criteria is None:
             search_criteria, search_locator = self._determine_search_criteria(locator)
         self.logger.info(
-            "find element: (locator: %s, criteria: %s)", locator, search_criteria,
+            "Find element: (locator: %s, criteria: %s)", locator, search_criteria,
         )
         locators = []
         matching_elements = []
@@ -709,7 +709,7 @@ class Windows(OperatingSystem):
         :param click_type: "click", "right" or "double", defaults to "click"
         :raises ValueError: if coordinates are not valid
         """
-        self.logger.info("click type '%s' at (%s, %s)", click_type, x, y)
+        self.logger.info("Click type '%s' at (%s, %s)", click_type, x, y)
         if (x is None and y is None) or (x < 0 or y < 0):
             raise ValueError(f"Can't click on given coordinates: ({x}, {y})")
         if click_type == "click":
