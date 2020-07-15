@@ -67,21 +67,24 @@ class Windows(OperatingSystem):
     def _add_app_instance(
         self, app: Any = None, dialog: bool = True, params: dict = None,
     ) -> int:
+        params = params or {}
         self._app_instance_id += 1
+
         if app:
             self.app = app
+
         default_params = {
             "app": app,
             "id": self._app_instance_id,
             "dispatched": False,
         }
-        if params:
-            self._apps[self._app_instance_id] = {**default_params, **params}
-        else:
-            self._apps[self._app_instance_id] = default_params
+
+        self._apps[self._app_instance_id] = {**default_params, **params}
         self._active_app_instance = self._app_instance_id
+
         if dialog:
             self.open_dialog(self._apps[self._app_instance_id].get("windowtitle", None))
+
         self.logger.info(self._apps)
         return self._active_app_instance
 
@@ -257,19 +260,22 @@ class Windows(OperatingSystem):
         :param highlight: draw outline for window if True, defaults to False
         """
         self.logger.info("open_dialog: '%s', '%s'", windowtitle, highlight)
+
         if windowtitle:
             self.windowtitle = windowtitle
-        else:
-            windowtitle = self.windowtitle
 
         window_list = self.get_window_list()
         app_instance = None
         for win in window_list:
-            if win["title"] == windowtitle:
+            if win["title"] == self.windowtitle:
                 app_instance = self.connect_by_handle(win["handle"])
+
+        if self.dlg is None:
+            raise ValueError("No window with title '{}'".format(self.windowtitle))
 
         if highlight:
             self.dlg.draw_outline()
+
         return app_instance
 
     def connect_by_pid(self, app_pid: str, windowtitle: str = None) -> Any:
@@ -342,6 +348,8 @@ class Windows(OperatingSystem):
         :param keys: list of keys to type
         """
         self.logger.info("type keys: %s", keys)
+        if self.dlg is None:
+            raise ValueError("No dialog open")
         self.dlg.type_keys(keys)
 
     def send_keys(self, keys: str) -> None:
@@ -370,9 +378,10 @@ class Windows(OperatingSystem):
         center coordinates.
 
         Click types are:
-            - `click` normal left button mouse click
-            - `double`
-            - `right`
+
+        - `click` normal left button mouse click
+        - `double`
+        - `right`
 
         :param locator: element locator on active window
         :param x: coordinate x on desktop
@@ -453,8 +462,9 @@ class Windows(OperatingSystem):
         self.logger.info("get element: %s", locator)
         # self.connect_by_handle(self.dlg.handle)
         # TODO. move dlg wait into "open_dialog" ?
-        self.dlg.wait("exists enabled visible ready")
         self.open_dialog(self.windowtitle)
+        self.dlg.wait("exists enabled visible ready")
+
         search_criteria, locator = self._determine_search_criteria(locator)
         matching_elements, locators = self.find_element(locator, search_criteria)
 
@@ -666,8 +676,11 @@ class Windows(OperatingSystem):
         """
         if ctrl:
             rect = ctrl.element_info.rectangle
-        else:
+        elif self.dlg:
             rect = self.dlg.element_info.rectangle
+        else:
+            raise ValueError("No dialog open")
+
         return rect.left, rect.top, rect.right, rect.bottom
 
     def get_element_center(self, element: dict) -> Any:
@@ -714,7 +727,9 @@ class Windows(OperatingSystem):
         :param outline: highlight elements if True, defaults to False
         :return: all controls and all elements
         """
-        self.logger.debug("get window elements")
+        if self.dlg is None:
+            raise ValueError("No dialog open")
+
         # Create a list of this control and all its descendants
         all_ctrls = [self.dlg]
         if hasattr(self.dlg, "descendants"):
@@ -1044,11 +1059,11 @@ class Windows(OperatingSystem):
     def get_window_list(self):
         """Get list of open windows
 
-        window dictionaries contains:
+        Window dictionaries contain:
 
-            - title
-            - pid
-            - handle
+        - title
+        - pid
+        - handle
 
         :return: list of window dictionaries
         """
