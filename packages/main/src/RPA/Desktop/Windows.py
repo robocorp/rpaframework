@@ -4,6 +4,7 @@ import os
 import platform
 import re
 import subprocess
+import time
 from pathlib import Path
 from typing import Any
 
@@ -253,22 +254,27 @@ class Windows(OperatingSystem):
         self.dlg = pywinauto.Desktop(backend="uia")[windowtitle]
         self.dlg.restore()
 
-    def open_dialog(self, windowtitle: str = None, highlight: bool = False) -> Any:
+    def open_dialog(
+        self, windowtitle: str = None, highlight: bool = False, timeout: int = 10
+    ) -> Any:
         """Open window by its title.
 
         :param windowtitle: name of the window, defaults to active window if None
         :param highlight: draw outline for window if True, defaults to False
+        :param timeout: time to wait for dialog to appear
         """
         self.logger.info("open_dialog: '%s', '%s'", windowtitle, highlight)
 
         if windowtitle:
             self.windowtitle = windowtitle
 
-        window_list = self.get_window_list()
         app_instance = None
-        for win in window_list:
-            if win["title"] == self.windowtitle:
-                app_instance = self.connect_by_handle(win["handle"])
+        end_time = time.time() + float(timeout)
+        while time.time() < end_time and app_instance is None:
+            for window in self.get_window_list():
+                if window["title"] == self.windowtitle:
+                    app_instance = self.connect_by_handle(window["handle"])
+            time.sleep(0.1)
 
         if self.dlg is None:
             raise ValueError("No window with title '{}'".format(self.windowtitle))
