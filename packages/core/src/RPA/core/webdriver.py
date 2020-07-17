@@ -57,7 +57,6 @@ def executable(browser: str, download: bool = False) -> str:
     :param browser: name of browser to get webdriver for
     :param download: download driver binaries if they don't exist
     """
-
     LOGGER.debug(
         "Webdriver initialization for '%s' (download: %s)", browser, download,
     )
@@ -71,7 +70,7 @@ def executable(browser: str, download: bool = False) -> str:
     driver_path = _driver_path(factory, download)
 
     if not download:
-        LOGGER.info("Using already existing driver at: %s", driver_path)
+        LOGGER.debug("Attempting to use driver: %s", driver_path)
     elif not driver_path.exists():
         _download_driver(factory)
     elif browser == "chrome":
@@ -80,7 +79,7 @@ def executable(browser: str, download: bool = False) -> str:
         if chrome_version != driver_version:
             _download_driver(factory)
     else:
-        LOGGER.info("Driver download skipped, because it exists at '%s'", driver_path)
+        LOGGER.debug("Driver download skipped, because it exists at '%s'", driver_path)
 
     return str(driver_path)
 
@@ -150,15 +149,13 @@ def _chromedriver_version(path: Path) -> str:
 
 def _download_driver(factory: Any, version: str = None) -> None:
     path = str(DRIVER_DIR)
-
-    LOGGER.info("Downloading webdriver to: %s", path)
     manager = factory(download_root=path, link_path=path)
 
     try:
         if version:
-            bin_path, _ = manager.download_and_install(version)
+            bin_path, _ = manager.download_and_install(version, show_progress_bar=False)
         else:
-            bin_path, _ = manager.download_and_install()
+            bin_path, _ = manager.download_and_install(show_progress_bar=False)
 
         if platform.system() == "Darwin" and bin_path:
             # TODO: Required for linux also?
