@@ -40,7 +40,6 @@ class Secret(collections.Mapping):
         self._name = name
         self._desc = description
         self._dict = collections.OrderedDict(**values)
-        self._hash = None
 
     @property
     def name(self):
