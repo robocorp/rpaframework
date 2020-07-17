@@ -6,7 +6,7 @@ import time
 from typing import Any
 from pathlib import Path
 
-from SeleniumLibrary import SeleniumLibrary
+from SeleniumLibrary import SeleniumLibrary, EMBED
 from SeleniumLibrary.base import keyword
 from SeleniumLibrary.keywords import BrowserManagementKeywords
 from selenium.common.exceptions import WebDriverException
@@ -36,19 +36,17 @@ class Browser(SeleniumLibrary):
     }
 
     def __init__(self, *args, **kwargs) -> None:
-        self.logger = logging.getLogger(__name__)
-
-        self.using_testability = False
+        is_testability = False
         if "use_testability" in args:
-            self.using_testability = True
+            is_testability = True
             args = filter(lambda x: x != "use_testability", args)
         if "plugins" in kwargs.keys() and "SeleniumTestability" in kwargs["plugins"]:
             # SeleniumTestability already included as plugin
-            self.using_testability = True
-        elif self.using_testability and "plugins" in kwargs.keys():
+            is_testability = True
+        elif is_testability and "plugins" in kwargs.keys():
             # Adding SeleniumTestability as SeleniumLibrary plugin
             kwargs["plugins"] += ",SeleniumTestability"
-        elif self.using_testability:
+        elif is_testability:
             # Setting SeleniumTestability as SeleniumLibrary plugin
             kwargs["plugins"] = "SeleniumTestability"
 
@@ -56,8 +54,11 @@ class Browser(SeleniumLibrary):
 
         SeleniumLibrary.__init__(self, *args, **kwargs)
         self.drivers = []
+        self.logger = logging.getLogger(__name__)
+        self.using_testability = is_testability
         self.locators = locators.LocatorsDatabase(locators_path)
         self._element_finder.register("alias", self._find_by_alias, persist=True)
+        self.set_screenshot_directory(EMBED)
 
     def _find_by_alias(self, parent, criteria, tag, constraints):
         """Custom 'alias' locator that uses locators database."""
