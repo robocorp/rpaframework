@@ -1,5 +1,6 @@
 from importlib import util
 import inspect
+import os
 from typing import Any
 
 
@@ -14,6 +15,10 @@ def notebook_print(**kwargs) -> Any:
     :param link: path to the link
     :param table: `RPA.Table` object to print
     """
+    output = None
+    output_level = os.getenv("RPA_NOTEBOOK_OUTPUT_LEVEL", "1")
+    if output_level == "0":
+        return output
     curframe = inspect.currentframe()
     calframe = inspect.getouterframes(curframe, 2)
     keyword_name = calframe[1][3]
