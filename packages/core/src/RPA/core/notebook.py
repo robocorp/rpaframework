@@ -1,8 +1,9 @@
 from importlib import util
 import inspect
+from typing import Any
 
 
-def notebook_print(**kwargs) -> None:
+def notebook_print(**kwargs) -> Any:
     """Print Markdown formatted strings into IPython notebook
     if IPython is available.
 
@@ -18,21 +19,19 @@ def notebook_print(**kwargs) -> None:
     keyword_name = calframe[1][3]
 
     output = _get_markdown(**kwargs)
-    if output == "":
-        return
-    else:
-        output += "<br>"
-    if not keyword_name.startswith("<module>"):
-        output = f"**KW** {keyword_name}: " + output
+    if output is not None:
+        if not keyword_name.startswith("<module>"):
+            output = f"**KW** {keyword_name}: " + output
 
-    ipython_module = util.find_spec("IPython")
-    if ipython_module is None:
-        return output
-    # pylint: disable=C0415
-    from IPython.display import Markdown, display  # noqa
+        ipython_module = util.find_spec("IPython")
+        if ipython_module:
+            # pylint: disable=C0415
+            from IPython.display import Markdown, display  # noqa
 
-    output += "<hr><br>"
-    display(Markdown(output))
+            output += "<hr><br>"
+            display(Markdown(output))
+            output = None
+    return output
 
 
 def _get_table_output(table):
@@ -54,7 +53,7 @@ def _get_table_output(table):
                 for _, cell in row.items():
                     output += f"<td>{cell}</td>"
                 output += "</tr>"
-            output += "</table>"
+            output += "</table><br>"
     except ImportError:
         pass
     return output
@@ -64,12 +63,12 @@ def _get_markdown(**kwargs):
     output = ""
     for key, val in kwargs.items():
         if key == "text":
-            output += val
+            output += f"{val}<br>"
         if key == "image":
-            output += f"<img src='{val}'>"
+            output += f"<img src='{val}'><br>"
         if key == "link":
             link_text = (val[:75] + "..") if len(val) > 75 else val
-            output += f"<a href='{val}'>{link_text}</a>"
+            output += f"<a href='{val}'>{link_text}</a><br>"
         if key == "table":
             output += _get_table_output(val)
-    return output
+    return None if output == "" else output
