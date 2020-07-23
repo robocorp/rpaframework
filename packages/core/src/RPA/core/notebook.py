@@ -20,7 +20,7 @@ def notebook_print(**kwargs) -> Any:
 
     output = _get_markdown(**kwargs)
     if output:
-        if not keyword_name.startswith("<module>"):
+        if keyword_name not in ["<module>", "<lambda>"]:
             output = f"**KW** {keyword_name}: " + output
 
         ipython_module = util.find_spec("IPython")
