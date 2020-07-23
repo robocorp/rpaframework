@@ -19,7 +19,7 @@ def notebook_print(**kwargs) -> Any:
     keyword_name = calframe[1][3]
 
     output = _get_markdown(**kwargs)
-    if output is not None:
+    if output:
         if not keyword_name.startswith("<module>"):
             output = f"**KW** {keyword_name}: " + output
 
@@ -41,7 +41,7 @@ def _get_table_output(table):
         from RPA.Tables import Tables, Table  # noqa
 
         if isinstance(table, Table):
-            output = "<table>"
+            output = "<table class='rpafw-notebook-table'>"
             header = Tables().table_head(table, count=1)
             for row in header:
                 output += "<tr>"
@@ -63,12 +63,12 @@ def _get_markdown(**kwargs):
     output = ""
     for key, val in kwargs.items():
         if key == "text":
-            output += f"{val}<br>"
+            output += f"<span class='rpafw-notebook-text'>{val}</span><br>"
         if key == "image":
-            output += f"<img src='{val}'><br>"
+            output += f"<img class='rpafw-notebook-image' src='{val}'><br>"
         if key == "link":
             link_text = (val[:75] + "..") if len(val) > 75 else val
-            output += f"<a href='{val}'>{link_text}</a><br>"
+            output += f"<a class='rpafw-notebook-link' href='{val}'>{link_text}</a><br>"
         if key == "table":
             output += _get_table_output(val)
     return None if output == "" else output

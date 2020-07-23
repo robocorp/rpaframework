@@ -19,12 +19,20 @@ link_basic = "https://www.google.fi"
 link_long = "https://www.google.com/search?tbm=isch&sxsrf=ALeKk02_OGiFL5hWwtZGIUoo0-15K7uoDg%3A1595496361599&source=hp&biw=1605&bih=870&ei=qVcZX--gIuvGrgTh_LjwCw&q=cat+pictures&oq=cat+pictures&gs_lcp=CgNpbWcQAzICCAAyBAgAEB4yBAgAEB4yBAgAEB4yBAgAEB4yBAgAEB4yBAgAEB4yBAgAEB4yBAgAEB4yBAgAEB46BAgjECc6BQgAELEDUKIhWOswYOkxaABwAHgAgAFeiAGGCJIBAjEymAEAoAEBqgELZ3dzLXdpei1pbWc&sclient=img&ved=0ahUKEwivmfyOh-PqAhVro4sKHWE-Dr4Q4dUDCAc&uact=5"
 link_long_expected = link_long[:75] + ".."
 imagename = "test.png"
+el_class = "rpafw-notebook"
+
+expected_text = f"<span class='{el_class}-text'>my test</span><br>"
+expected_link = f"<a class='{el_class}-link' href='{link_basic}'>{link_basic}</a><br>"
+expected_long_link = (
+    f"<a class='{el_class}-link' href='{link_long}'>{link_long_expected}</a><br>"
+)
+expected_image = f"<img class='{el_class}-image' src='{imagename}'><br>"
 
 prints = (
-    (dict(text="my test"), "my test<br>"),
-    (dict(link=link_basic), f"<a href='{link_basic}'>{link_basic}</a><br>"),
-    (dict(link=link_long), f"<a href='{link_long}'>{link_long_expected}</a><br>"),
-    (dict(image=imagename), f"<img src='{imagename}'><br>"),
+    (dict(text="my test"), expected_text),
+    (dict(link=link_basic), expected_link),
+    (dict(link=link_long), expected_long_link),
+    (dict(image=imagename), expected_image),
     (dict(xyz=""), False),
     (dict(), False),
 )
