@@ -14,7 +14,7 @@ class FTPException(Exception):
     """Raised on general FTP error"""
 
 
-def command(f):
+def ftpcommand(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
         if args[0].instance is None:
@@ -88,7 +88,8 @@ class FTP:
         """Send QUIT command to the server and close connection"""
         try:
             self.instance.quit()
-        except Exception:
+        except all_errors as e:
+            self.logger.debug(str(e))
             self.close()
         finally:
             self.instance = None
@@ -99,15 +100,15 @@ class FTP:
             self.instance.close()
             self.instance = None
 
-    @command
+    @ftpcommand
     def upload(self, localfile: str, remotefile: str) -> bool:
         """Upload file to FTP server
 
         :param localfile: path to file to upload
         :param remotefile: name of uploaded file in the server
         """
-        command = f"STOR {remotefile}"
-        self.instance.storbinary(command, open(localfile, "rb"))
+        cmd = f"STOR {remotefile}"
+        self.instance.storbinary(cmd, open(localfile, "rb"))
 
     def download(self, remotefile: str, localfile: str = None) -> bool:
         """Download file from FTP server
@@ -119,11 +120,11 @@ class FTP:
         if self.instance is None:
             raise FTPException("No FTP connection")
         try:
-            command = f"RETR {remotefile}"
+            cmd = f"RETR {remotefile}"
             if localfile is None:
                 localfile = remotefile
             with open(localfile, "wb") as filepath:
-                self.instance.retrbinary(command, filepath.write, 1024)
+                self.instance.retrbinary(cmd, filepath.write, 1024)
             return True
         except FileNotFoundError as e:
             self.logger.warning(str(e))
@@ -135,7 +136,7 @@ class FTP:
         except all_errors as e:
             raise FTPException(str(e))
 
-    @command
+    @ftpcommand
     def cwd(self, dirname: str) -> bool:
         """Change working directory on the server
 
@@ -143,12 +144,12 @@ class FTP:
         """
         self.instance.cwd(dirname)
 
-    @command
+    @ftpcommand
     def pwd(self) -> str:
         """Get current working directory on the server"""
         return self.instance.pwd()
 
-    @command
+    @ftpcommand
     def mkd(self, dirname: str) -> bool:
         """Create a new directory on the server
 
@@ -156,7 +157,7 @@ class FTP:
         """
         self.instance.mkd(dirname)
 
-    @command
+    @ftpcommand
     def rmd(self, dirname: str) -> bool:
         """Remove directory on the server
 
@@ -164,7 +165,7 @@ class FTP:
         """
         self.instance.rmd(dirname)
 
-    @command
+    @ftpcommand
     def list_files(self, dirname: str = None) -> dict:
         """List files on the server directory
 
@@ -177,7 +178,7 @@ class FTP:
             files = self.instance.nlst()
             return files
 
-    @command
+    @ftpcommand
     def delete(self, filepath: str) -> bool:
         """Delete file on the server
 
@@ -185,7 +186,7 @@ class FTP:
         """
         self.instance.delete(filepath)
 
-    @command
+    @ftpcommand
     def rename(self, fromname: str, toname: str) -> bool:
         """Rename file on the server
 
@@ -194,7 +195,7 @@ class FTP:
         """
         self.instance.rename(fromname, toname)
 
-    @command
+    @ftpcommand
     def send_command(self, command: str) -> bool:
         """Execute command on the server
 
@@ -206,7 +207,7 @@ class FTP:
         """
         return self.instance.sendcmd(command)
 
-    @command
+    @ftpcommand
     def file_size(self, filepath: str) -> int:
         """Return byte size of the file on the server
 
@@ -215,12 +216,12 @@ class FTP:
         self.set_binary_mode()
         return self.instance.size(filepath)
 
-    @command
+    @ftpcommand
     def abort(self) -> bool:
         """Abort a file transfer in progress"""
         self.instance.abort()
 
-    @command
+    @ftpcommand
     def get_welcome_message(self) -> str:
         """Get server welcome message
 
@@ -228,7 +229,7 @@ class FTP:
         """
         return self.instance.getwelcome()
 
-    @command
+    @ftpcommand
     def set_debug_level(self, level: int = 0) -> bool:
         """Set debug level for the library
 
