@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- New **FTP** library, which also interaction with FTP servers
+
 2.2.0
 -----
 
