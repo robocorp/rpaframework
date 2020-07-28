@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Python module API &mdash; RPA Framework  documentation</title>
+  <title>FTP &mdash; RPA Framework  documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Desktop.Windows" href="../desktop_windows/index.html" />
-    <link rel="prev" title="Robot Framework API" href="../../libdoc/Desktop/OperatingSystem.html" />
+    <link rel="next" title="Robot Framework API" href="../../libdoc/FTP.html" />
+    <link rel="prev" title="Python module API" href="../filesystem/python.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -105,18 +105,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../cloud_google/index.html">Cloud.Google</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Desktop.OperatingSystem</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Desktop/OperatingSystem.html">Robot Framework API</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ftp/index.html">FTP</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">FTP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/FTP.html">Robot Framework API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">Python module API</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
@@ -183,15 +183,13 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">Desktop.OperatingSystem</a> &raquo;</li>
-        
-      <li>Python module API</li>
+      <li>FTP</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/libraries/desktop_operatingsystem/python.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/libraries/ftp/index.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -204,117 +202,86 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="python-module-api">
-<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-RPA.Desktop.OperatingSystem">
-<span id="operatingsystem"></span><h2>OperatingSystem<a class="headerlink" href="#module-RPA.Desktop.OperatingSystem" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="RPA.Desktop.OperatingSystem.OperatingSystem">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Desktop.OperatingSystem.</code><code class="sig-name descname">OperatingSystem</code><a class="headerlink" href="#RPA.Desktop.OperatingSystem.OperatingSystem" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>RPA Framework library containing cross platform keywords for managing
-computer properties and actions.</p>
-<dl class="method">
-<dt id="RPA.Desktop.OperatingSystem.OperatingSystem.boot_time_in_seconds_from_epoch">
-<code class="sig-name descname">boot_time_in_seconds_from_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.OperatingSystem.OperatingSystem.boot_time_in_seconds_from_epoch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get machine boot time</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>boot time in seconds from Epoch</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Desktop.OperatingSystem.OperatingSystem.get_boot_time">
-<code class="sig-name descname">get_boot_time</code><span class="sig-paren">(</span><em class="sig-param">as_datetime=False</em>, <em class="sig-param">datetime_format='%Y-%m-%d %H:%M:%S'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.OperatingSystem.OperatingSystem.get_boot_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get computer boot time in seconds from Epoch or in datetime string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>as_datetime</strong> – if True returns datetime string, otherwise seconds,
-defaults to False</p></li>
-<li><p><strong>datetime_format</strong> – datetime string format, defaults to “%Y-%m-%d %H:%M:%S”</p></li>
+  <div class="section" id="ftp">
+<h1>FTP<a class="headerlink" href="#ftp" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#description" id="id1">Description</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id2">Examples</a></p></li>
+<li><p><a class="reference internal" href="#api-documentation" id="id3">API Documentation</a></p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>seconds from Epoch or datetime string</p>
-</dd>
-</dl>
-</dd></dl>
+</div>
+<div class="section" id="description">
+<h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><cite>FTP</cite> library can be used to access FTP server.</p>
+<p>The library is based Python <a class="reference external" href="https://docs.python.org/3/library/ftplib.html">ftplib</a> functionality.</p>
+</div>
+<div class="section" id="examples">
+<h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="robot-framework">
+<h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.FTP</span><span class="p"></span>
 
-<dl class="method">
-<dt id="RPA.Desktop.OperatingSystem.OperatingSystem.get_machine_name">
-<code class="sig-name descname">get_machine_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.OperatingSystem.OperatingSystem.get_machine_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get machine name</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>machine name as string</p>
-</dd>
-</dl>
-</dd></dl>
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">HOST</span><span class="p">}       </span><span class="s">127.0.0.1</span><span class="p"></span>
+<span class="p">${</span><span class="nv">PORT</span><span class="p">}       </span><span class="s">27345</span><span class="p"></span>
+<span class="p">${</span><span class="nv">USER</span><span class="p">}       </span><span class="s">user</span><span class="p"></span>
+<span class="p">${</span><span class="nv">PASS</span><span class="p">}       </span><span class="s">12345</span><span class="p"></span>
 
-<dl class="method">
-<dt id="RPA.Desktop.OperatingSystem.OperatingSystem.get_memory_stats">
-<code class="sig-name descname">get_memory_stats</code><span class="sig-paren">(</span><em class="sig-param">humanized=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.OperatingSystem.OperatingSystem.get_memory_stats" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get computer memory stats and return those in bytes
-or in humanized memory format.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>humanized</strong> – if False returns memory information in bytes, defaults to True</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>memory information in dictionary format</p>
-</dd>
-</dl>
-</dd></dl>
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">List files on the server directory</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Connect</span><span class="p">   ${</span><span class="nv">HOST</span><span class="p">}  ${</span><span class="nv">PORT</span><span class="p">}  ${</span><span class="nv">USER</span><span class="p">}  ${</span><span class="nv">PASS</span><span class="p">}</span>
+<span class="p">    @{</span><span class="nv">files</span><span class="p">}  </span><span class="nf">List Files</span><span class="p"></span>
+<span class="p">    FOR  ${</span><span class="nv">file</span><span class="p">}  IN  @{</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log</span><span class="p">  ${</span><span class="nv">file</span><span class="p">}</span>
+<span class="p">    END</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="python">
+<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.FTP</span> <span class="kn">import</span> <span class="n">FTP</span>
 
-<dl class="method">
-<dt id="RPA.Desktop.OperatingSystem.OperatingSystem.get_username">
-<code class="sig-name descname">get_username</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.OperatingSystem.OperatingSystem.get_username" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get username of logged in user</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>username as string</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Desktop.OperatingSystem.OperatingSystem.kill_process">
-<code class="sig-name descname">kill_process</code><span class="sig-paren">(</span><em class="sig-param">process_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.OperatingSystem.OperatingSystem.kill_process" title="Permalink to this definition">¶</a></dt>
-<dd><p>Kill process by name</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>process_name</strong> – </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if succeeds False if not</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Desktop.OperatingSystem.OperatingSystem.process_exists">
-<code class="sig-name descname">process_exists</code><span class="sig-paren">(</span><em class="sig-param">process_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.OperatingSystem.OperatingSystem.process_exists" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check if process exists by its name</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>process_name</strong> – search for this process</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>process instance or False</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Desktop.OperatingSystem.OperatingSystem.put_system_to_sleep">
-<code class="sig-name descname">put_system_to_sleep</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.OperatingSystem.OperatingSystem.put_system_to_sleep" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<span class="n">library</span> <span class="o">=</span> <span class="n">FTP</span><span class="p">()</span>
+<span class="n">library</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">27345</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;12345&#39;</span><span class="p">)</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">list_files</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+<div class="section" id="api-documentation">
+<h2><a class="toc-backref" href="#id3">API Documentation</a><a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../libdoc/FTP.html">Robot Framework API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python.html">Python module API</a></li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -326,10 +293,10 @@ or in humanized memory format.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../desktop_windows/index.html" class="btn btn-neutral float-right" title="Desktop.Windows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../libdoc/FTP.html" class="btn btn-neutral float-right" title="Robot Framework API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../../libdoc/Desktop/OperatingSystem.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../filesystem/python.html" class="btn btn-neutral float-left" title="Python module API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

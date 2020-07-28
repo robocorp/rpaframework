@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Python module API" href="../libraries/robotloglistener/python.html" />
-    <link rel="prev" title="RobotLogListener" href="../libraries/robotloglistener/index.html" />
+    <link rel="next" title="Python module API" href="../libraries/ftp/python.html" />
+    <link rel="prev" title="FTP" href="../libraries/ftp/index.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -112,7 +112,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../libraries/excel_application/index.html">Excel.Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/excel_files/index.html">Excel.Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/filesystem/index.html">FileSystem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../libraries/ftp/index.html">FTP</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../libraries/ftp/index.html">FTP</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Robot Framework API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/ftp/python.html">Python module API</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/http/index.html">HTTP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/images/index.html">Images</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/netsuite/index.html">Netsuite</a></li>
@@ -121,11 +125,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../libraries/pdf/index.html">PDF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/robocloud_items/index.html">Robocloud.Items</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/robocloud_secrets/index.html">Robocloud.Secrets</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../libraries/robotloglistener/index.html">RobotLogListener</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Robot Framework API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../libraries/robotloglistener/python.html">Python module API</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/robotloglistener/index.html">RobotLogListener</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/salesforce/index.html">Salesforce</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/sap/index.html">SAP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/slack/index.html">Slack</a></li>
@@ -183,7 +183,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../libraries/robotloglistener/index.html">RobotLogListener</a> &raquo;</li>
+          <li><a href="../libraries/ftp/index.html">FTP</a> &raquo;</li>
         
       <li>Robot Framework API</li>
     
@@ -191,7 +191,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/libdoc/RobotLogListener.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/libdoc/FTP.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -210,50 +210,139 @@
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list simple">
 <dt class="field-odd">Library scope</dt>
-<dd class="field-odd"><p>Global</p>
-</dd>
+<dd class="field-odd"><p></p></dd>
 </dl>
-<p>RPA Framework library which implements Robot Framework Listener v2 interface.</p>
-<p>Is used to filter out logging for specified parts of the task execution.</p>
+<p>RPA Framework library for FTP operations</p>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list">
-<dt class="field-odd">End Keyword</dt>
+<dt class="field-odd">Abort</dt>
+<dd class="field-odd"><p>Abort a file transfer in progress</p>
+</dd>
+<dt class="field-even">Close</dt>
+<dd class="field-even"><p>Close connection to the server unilaterally</p>
+</dd>
+<dt class="field-odd">Connect</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>name, attributes</p>
+<dd class="field-odd"><p>host: str, port: int=21, user: str=None, password: str=None, tls: bool=False, transfer: str=passive</p>
 </dd>
 </dl>
-<p>Listener method for keyword end.</p>
-<p>If <cite>name</cite> exists in the protected keywords list then log level is
-restored back to level it was before settings to NONE.</p>
+<p>Connect to FTP server</p>
+<dl class="field-list simple">
+<dt class="field-odd">raises AuthenticationException</dt>
+<dd class="field-odd"><p>on authentication error with the server</p>
 </dd>
-<dt class="field-even">Only Info Level</dt>
+</dl>
+</dd>
+<dt class="field-even">Cwd</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>names: typing.Any=None</p>
+<dd class="field-odd"><p>dirname: str</p>
 </dd>
 </dl>
-<p>Register keywords that are allowed only INFO level logging</p>
+<p>Change working directory on the server</p>
 </dd>
-<dt class="field-even">Register Protected Keywords</dt>
+<dt class="field-even">Delete</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>names: typing.Any=None</p>
+<dd class="field-odd"><p>filepath: str</p>
 </dd>
 </dl>
-<p>Register keywords that are not going to be logged into Robot Framework logs.</p>
+<p>Delete file on the server</p>
 </dd>
-<dt class="field-even">Start Keyword</dt>
+<dt class="field-even">Download</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>name, attributes</p>
+<dd class="field-odd"><p>remotefile: str, localfile: str=None</p>
 </dd>
 </dl>
-<p>Listener method for keyword start.</p>
-<p>If <cite>name</cite> exists in the protected keywords list then log level is
-temporarily set to NONE.</p>
+<p>Download file from FTP server</p>
+</dd>
+<dt class="field-even">File Size</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>filepath: str</p>
+</dd>
+</dl>
+<p>Return byte size of the file on the server</p>
+</dd>
+<dt class="field-even">Get Welcome Message</dt>
+<dd class="field-even"><p>Get server welcome message</p>
+</dd>
+<dt class="field-odd">List Files</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>dirname: str=None</p>
+</dd>
+</dl>
+<p>List files on the server directory</p>
+</dd>
+<dt class="field-even">Mkd</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>dirname: str</p>
+</dd>
+</dl>
+<p>Create a new directory on the server</p>
+</dd>
+<dt class="field-even">Pwd</dt>
+<dd class="field-even"><p>Get current working directory on the server</p>
+</dd>
+<dt class="field-odd">Quit</dt>
+<dd class="field-odd"><p>Send QUIT command to the server and close connection</p>
+</dd>
+<dt class="field-even">Rename</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>fromname: str, toname: str</p>
+</dd>
+</dl>
+<p>Rename file on the server</p>
+</dd>
+<dt class="field-even">Rmd</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>dirname: str</p>
+</dd>
+</dl>
+<p>Remove directory on the server</p>
+</dd>
+<dt class="field-even">Send Command</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>command: str</p>
+</dd>
+</dl>
+<p>Execute command on the server</p>
+<p>List of FTP commands</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/List_of_FTP_commands">https://en.wikipedia.org/wiki/List_of_FTP_commands</a></p>
+</dd>
+<dt class="field-even">Set Ascii Mode</dt>
+<dd class="field-even"><p>Set transfer mode to ASCII</p>
+</dd>
+<dt class="field-odd">Set Binary Mode</dt>
+<dd class="field-odd"><p>Set transfer mode to BINARY</p>
+</dd>
+<dt class="field-even">Set Debug Level</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>level: int=0</p>
+</dd>
+</dl>
+<p>Set debug level for the library</p>
+<p>0 - no debugging output
+1 - moderate amount of debugging
+2+ - higher amount of debugging</p>
+</dd>
+<dt class="field-even">Upload</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>localfile: str, remotefile: str</p>
+</dd>
+</dl>
+<p>Upload file to FTP server</p>
 </dd>
 </dl>
 </div>
@@ -267,10 +356,10 @@ temporarily set to NONE.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../libraries/robotloglistener/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../libraries/ftp/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../libraries/robotloglistener/index.html" class="btn btn-neutral float-left" title="RobotLogListener" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../libraries/ftp/index.html" class="btn btn-neutral float-left" title="FTP" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

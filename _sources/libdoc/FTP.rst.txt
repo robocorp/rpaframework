@@ -1,0 +1,119 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: 
+
+RPA Framework library for FTP operations
+
+
+********
+Keywords
+********
+
+:Abort:
+  Abort a file transfer in progress
+
+:Close:
+  Close connection to the server unilaterally
+
+:Connect:
+  :Arguments: host: str, port: int=21, user: str=None, password: str=None, tls: bool=False, transfer: str=passive
+
+  Connect to FTP server
+
+  :raises AuthenticationException: on authentication error with the server
+
+:Cwd:
+  :Arguments: dirname: str
+
+  Change working directory on the server
+
+
+:Delete:
+  :Arguments: filepath: str
+
+  Delete file on the server
+
+
+:Download:
+  :Arguments: remotefile: str, localfile: str=None
+
+  Download file from FTP server
+
+
+:File Size:
+  :Arguments: filepath: str
+
+  Return byte size of the file on the server
+
+
+:Get Welcome Message:
+  Get server welcome message
+
+
+:List Files:
+  :Arguments: dirname: str=None
+
+  List files on the server directory
+
+
+:Mkd:
+  :Arguments: dirname: str
+
+  Create a new directory on the server
+
+
+:Pwd:
+  Get current working directory on the server
+
+:Quit:
+  Send QUIT command to the server and close connection
+
+:Rename:
+  :Arguments: fromname: str, toname: str
+
+  Rename file on the server
+
+
+:Rmd:
+  :Arguments: dirname: str
+
+  Remove directory on the server
+
+
+:Send Command:
+  :Arguments: command: str
+
+  Execute command on the server
+
+  List of FTP commands
+
+  https://en.wikipedia.org/wiki/List_of_FTP_commands
+
+
+:Set Ascii Mode:
+  Set transfer mode to ASCII
+
+:Set Binary Mode:
+  Set transfer mode to BINARY
+
+:Set Debug Level:
+  :Arguments: level: int=0
+
+  Set debug level for the library
+
+  0 - no debugging output
+  1 - moderate amount of debugging
+  2+ - higher amount of debugging
+
+
+:Upload:
+  :Arguments: localfile: str, remotefile: str
+
+  Upload file to FTP server
+
