@@ -1,0 +1,252 @@
+from ftplib import FTP as FTPconn
+from ftplib import FTP_TLS as TLSconn
+from ftplib import all_errors, error_perm
+from functools import wraps
+import logging
+import os
+
+
+class AuthenticationException(Exception):
+    """Raised when server authentication fails"""
+
+
+class FTPException(Exception):
+    """Raised on general FTP error"""
+
+
+def command(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if args[0].instance is None:
+            raise FTPException("No FTP connection")
+        try:
+            ret = f(*args, **kwargs)
+            return ret if ret else True
+        except FileNotFoundError as e:
+            args[0].logger.warning(str(e))
+            return False
+        except error_perm as e:
+            args[0].logger.warning(str(e))
+            return False
+        except all_errors as e:
+            raise FTPException(str(e))
+
+    return wrapper
+
+
+class FTP:
+    """RPA Framework library for FTP operations
+    """
+
+    def __init__(self):
+        self.instance = None
+        self.logger = logging.getLogger(__name__)
+
+    def __del__(self):
+        self.quit()
+
+    def connect(
+        self,
+        host: str,
+        port: int = 21,
+        user: str = None,
+        password: str = None,
+        tls: bool = False,
+        transfer: str = "passive",
+    ):
+        """Connect to FTP server
+
+        :param host: address of the server
+        :param port: port of the server, defaults to 21
+        :param user: login name, defaults to None
+        :param password: login password, defaults to None
+        :param tls: connect using TLS support, defaults to False
+        :param transfer: mode of the transfer, defaults to "passive"
+        :raises AuthenticationException: on authentication error with the server
+        """
+        try:
+            if tls:
+                self.instance = TLSconn()
+            else:
+                self.instance = FTPconn()
+            self.instance.connect(host, port)
+            if user and password:
+                self.instance.login(user=user, passwd=password)
+            else:
+                self.instance.login()
+            if transfer != "passive":
+                self.instance.set_pasv(False)
+        except error_perm as e:
+            raise AuthenticationException(str(e))
+        except all_errors as e:
+            raise FTPException(str(e))
+
+        self.logger.info("FTP connection successful")
+        return True
+
+    def quit(self):
+        """Send QUIT command to the server and close connection"""
+        try:
+            self.instance.quit()
+        except Exception:
+            self.close()
+        finally:
+            self.instance = None
+
+    def close(self):
+        """Close connection to the server unilaterally"""
+        if self.instance:
+            self.instance.close()
+            self.instance = None
+
+    @command
+    def upload(self, localfile: str, remotefile: str) -> bool:
+        """Upload file to FTP server
+
+        :param localfile: path to file to upload
+        :param remotefile: name of uploaded file in the server
+        """
+        command = f"STOR {remotefile}"
+        self.instance.storbinary(command, open(localfile, "rb"))
+
+    def download(self, remotefile: str, localfile: str = None) -> bool:
+        """Download file from FTP server
+
+        :param remotefile: path to remote file on the server
+        :param localfile: name of the downloaded file on the local filesystem,
+            if `None` will have same name as remote file
+        """
+        if self.instance is None:
+            raise FTPException("No FTP connection")
+        try:
+            command = f"RETR {remotefile}"
+            if localfile is None:
+                localfile = remotefile
+            with open(localfile, "wb") as filepath:
+                self.instance.retrbinary(command, filepath.write, 1024)
+            return True
+        except FileNotFoundError as e:
+            self.logger.warning(str(e))
+            return False
+        except error_perm as e:
+            self.logger.warning(str(e))
+            os.unlink(localfile)
+            return False
+        except all_errors as e:
+            raise FTPException(str(e))
+
+    @command
+    def cwd(self, dirname: str) -> bool:
+        """Change working directory on the server
+
+        :param dirname: name of the directory
+        """
+        self.instance.cwd(dirname)
+
+    @command
+    def pwd(self) -> str:
+        """Get current working directory on the server"""
+        return self.instance.pwd()
+
+    @command
+    def mkd(self, dirname: str) -> bool:
+        """Create a new directory on the server
+
+        :param dirname: name of the directory
+        """
+        self.instance.mkd(dirname)
+
+    @command
+    def rmd(self, dirname: str) -> bool:
+        """Remove directory on the server
+
+        :param dirname: name of the directory
+        """
+        self.instance.rmd(dirname)
+
+    @command
+    def list_files(self, dirname: str = None) -> dict:
+        """List files on the server directory
+
+        :param dirname: name of the directory
+        """
+        try:
+            files = list(self.instance.mlsd(path=dirname))
+            return files
+        except all_errors:
+            files = self.instance.nlst()
+            return files
+
+    @command
+    def delete(self, filepath: str) -> bool:
+        """Delete file on the server
+
+        :param filepath: path to server file
+        """
+        self.instance.delete(filepath)
+
+    @command
+    def rename(self, fromname: str, toname: str) -> bool:
+        """Rename file on the server
+
+        :param fromname: current name of the file
+        :param toname: new name for the file
+        """
+        self.instance.rename(fromname, toname)
+
+    @command
+    def send_command(self, command: str) -> bool:
+        """Execute command on the server
+
+        List of FTP commands
+
+        https://en.wikipedia.org/wiki/List_of_FTP_commands
+
+        :param command: name of the command to send
+        """
+        return self.instance.sendcmd(command)
+
+    @command
+    def file_size(self, filepath: str) -> int:
+        """Return byte size of the file on the server
+
+        :param filepath: path to server file
+        """
+        self.set_binary_mode()
+        return self.instance.size(filepath)
+
+    @command
+    def abort(self) -> bool:
+        """Abort a file transfer in progress"""
+        self.instance.abort()
+
+    @command
+    def get_welcome_message(self) -> str:
+        """Get server welcome message
+
+        :return: welcome message
+        """
+        return self.instance.getwelcome()
+
+    @command
+    def set_debug_level(self, level: int = 0) -> bool:
+        """Set debug level for the library
+
+        0 - no debugging output
+        1 - moderate amount of debugging
+        2+ - higher amount of debugging
+
+        :param level: integer value of debug level, defaults to 0
+        """
+        if level >= 0:
+            self.instance.set_debuglevel(level)
+        else:
+            self.logger.warning("Valid debug levels are 0, 1 or 2+")
+
+    def set_ascii_mode(self):
+        """Set transfer mode to ASCII"""
+        self.send_command("TYPE a")
+
+    def set_binary_mode(self):
+        """Set transfer mode to BINARY"""
+        self.send_command("TYPE i")

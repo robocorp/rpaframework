@@ -86,6 +86,8 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `FileSystem`_              | Read and manipulate files and paths          |
 +----------------------------+----------------------------------------------+
+| `FTP`_                     | Interact with FTP server                     |
++----------------------------+----------------------------------------------+
 | `HTTP`_                    | Interact directly with web APIs              |
 +----------------------------+----------------------------------------------+
 | `Images`_                  | Manipulate images                            |
@@ -128,6 +130,7 @@ The RPA Framework project currently includes the following libraries:
 .. _Excel.Application: https://rpaframework.org/libraries/excel_application/
 .. _Excel.Files: https://rpaframework.org/libraries/excel_files/
 .. _FileSystem: https://rpaframework.org/libraries/filesystem/
+.. _FTP: https://rpaframework.org/libraries/ftp/
 .. _HTTP: https://rpaframework.org/libraries/http/
 .. _Images: https://rpaframework.org/libraries/images/
 .. _Notifier: https://rpaframework.org/libraries/notifier/
