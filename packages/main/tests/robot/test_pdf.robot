@@ -13,6 +13,7 @@ ${VERO_PDF}         ${CURDIR}${/}..${/}resources${/}vero.pdf
 ${ENCRYPTED_PDF}    ${CURDIR}${/}..${/}resources${/}encrypted.pdf
 ${IMAGES_PDF}       ${CURDIR}${/}..${/}resources${/}imagesandtext.pdf
 ${PDF}              ${OUTPUT_DIR}${/}result.pdf
+${UNICODE_PDF}      ${OUTPUT_DIR}${/}öåä.pdf
 &{VARS}             name=Robot Generated
 ...                 email=robot@domain.com
 ...                 zip=00100
@@ -21,16 +22,22 @@ ${PASSWORD}         mysecretpassword
 
 *** Tasks ***
 Create PDF from HTML content
+    [Tags]   html2pdf
     HTML to PDF     ${CONTENT}    ${PDF}    ${VARS}
     ${exists}=               Does File Exist   ${PDF}
     Should Be True           ${exists}
-    Remove File   ${PDF}
 
 Create PDF from HTML template
+    [Tags]   html2pdf
     Template HTML to PDF     ${TEMPLATE}    ${PDF}    ${VARS}
     ${exists}=               Does File Exist   ${PDF}
     Should Be True           ${exists}
-    Remove File   ${PDF}
+
+Unicode HTML text to PDF
+    [Tags]   html2pdf
+    HTML To PDF   Hyvää yötä ja nÄkemiin   ${UNICODE_PDF}
+    ${exists}=               Does File Exist   ${UNICODE_PDF}
+    Should Be True           ${exists}
 
 Missing parameters from HTML to PDF
     Run Keyword And Expect Error   KeyError: 'Required parameter(s) missing for kw: html_to_pdf'  HTML to PDF     content=${CONTENT}
