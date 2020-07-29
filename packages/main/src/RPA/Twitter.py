@@ -9,6 +9,7 @@ import tweepy
 from tweepy.error import TweepError
 
 from RPA.core.helpers import required_env, required_param
+from RPA.core.notebook import notebook_json
 from RPA.RobotLogListener import RobotLogListener
 
 
@@ -101,7 +102,9 @@ class Twitter:
 
         :return: user profile as dictionary or `None`
         """
-        return self._me._json if self._me else None  # pylint: disable=W0212
+        data = self._me._json if self._me else None  # pylint: disable=W0212
+        notebook_json(data)
+        return data
 
     def get_user_tweets(self, username: str = None, count: int = 100) -> list:
         """Get user tweets
@@ -213,7 +216,9 @@ class Twitter:
         required_param(username, "get_user_profile")
         try:
             profile = self.api.get_user(username)
-            return profile._json  # pylint: disable=W0212
+            data = profile._json  # pylint: disable=W0212
+            notebook_json(data)
+            return data
         except TweepError:
             return None
 

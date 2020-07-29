@@ -11,6 +11,7 @@ from numbers import Number
 from operator import itemgetter
 
 from RPA.core.types import is_dict_like, is_list_like, is_namedtuple
+from RPA.core.notebook import notebook_table, notebook_print
 
 
 def to_list(obj, size=1):
@@ -876,6 +877,7 @@ class Tables:
         """
         table = Table(data)
         self.logger.info("Created table: %s", table)
+        notebook_table(table)
         return table
 
     def export_table(self, table, with_index=False, as_list=True):
@@ -913,6 +915,7 @@ class Tables:
         :param table:    table to inspect
         """
         self.requires_table(table)
+        notebook_print(text=table.dimensions)
         return table.dimensions
 
     def rename_table_columns(self, table, columns, strict=False):
@@ -969,7 +972,9 @@ class Tables:
         :param as_list: return list instead of dictionary
         """
         self.requires_table(table)
-        return table.get_row(index, as_list=as_list)
+        row = table.get_row(index, as_list=as_list)
+        notebook_print(text=row)
+        return row
 
     def get_table_column(self, table, column, as_list=False):
         """Get all column values from table.
@@ -979,7 +984,9 @@ class Tables:
         :param as_list: return list instead of dictionary
         """
         self.requires_table(table)
-        return table.get_column(column, as_list=as_list)
+        col = table.get_column(column, as_list=as_list)
+        notebook_print(text=col)
+        return col
 
     def set_table_row(self, table, row, values):
         """Assign values to a row in the table.
@@ -1218,7 +1225,9 @@ class Tables:
                 reader = csv.reader(fd, dialect=dialect)
             rows = list(reader)
 
-        return Table(rows, columns)
+        table = Table(rows, columns)
+        notebook_table(table)
+        return table
 
     def write_table_to_csv(self, table, path, header=True, dialect="excel"):
         """Write a table as a CSV file.

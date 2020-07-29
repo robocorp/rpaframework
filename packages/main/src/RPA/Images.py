@@ -18,6 +18,7 @@ except AttributeError:
     pass
 
 import pyscreenshot as ImageGrab
+from RPA.core.notebook import notebook_image
 
 try:
     # Check if opencv is available,
@@ -179,6 +180,7 @@ class Images:
         if filename is not None:
             filename = Path(filename).with_suffix(f".{save_format.lower()}")
             image.save(filename, save_format)
+            notebook_image(filename)
             self.logger.info("Saved screenshot as '%s'", filename)
 
         return image
@@ -199,6 +201,7 @@ class Images:
 
         if filename:
             image.save(filename, save_format)
+            notebook_image(filename)
 
     def find_template_in_image(
         self, image, template, region=None, limit=None, tolerance=None

@@ -4,6 +4,7 @@ from typing import Any
 
 from RequestsLibrary import RequestsLibrary
 from RPA.FileSystem import FileSystem
+from RPA.core.notebook import notebook_file
 
 
 class HTTP(RequestsLibrary):
@@ -66,6 +67,7 @@ class HTTP(RequestsLibrary):
             self._create_or_overwrite_target_file(
                 target_file, response.content, binary, overwrite
             )
+            notebook_file(target_file)
         return response
 
     def _create_or_overwrite_target_file(
@@ -124,4 +126,5 @@ class HTTP(RequestsLibrary):
             self._create_or_overwrite_target_file(
                 target, response.content, binary, overwrite
             )
+            notebook_file(target)
         return response

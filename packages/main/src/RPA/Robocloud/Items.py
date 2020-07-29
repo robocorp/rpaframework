@@ -13,6 +13,7 @@ from requests.exceptions import HTTPError
 from robot.libraries.BuiltIn import BuiltIn
 
 from RPA.core.helpers import import_by_name, required_env
+from RPA.core.notebook import notebook_print
 
 
 def json_dump_safe(data, **kwargs):
@@ -278,6 +279,7 @@ class Items:
         value = variables.get(name, default)
         if value is None:
             raise KeyError(f"Undefined variable: {name}")
+        notebook_print(text=f"**{name}** = **{value}**")
         return value
 
     def set_work_item_variables(self, **kwargs):

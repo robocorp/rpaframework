@@ -4,6 +4,7 @@ from ftplib import all_errors, error_perm
 from functools import wraps
 import logging
 import os
+from RPA.core.notebook import notebook_file
 
 
 class AuthenticationException(Exception):
@@ -125,6 +126,7 @@ class FTP:
                 localfile = remotefile
             with open(localfile, "wb") as filepath:
                 self.instance.retrbinary(cmd, filepath.write, 1024)
+            notebook_file(localfile)
             return True
         except FileNotFoundError as e:
             self.logger.warning(str(e))

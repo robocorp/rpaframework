@@ -11,7 +11,7 @@ from SeleniumLibrary.base import keyword
 from SeleniumLibrary.keywords import BrowserManagementKeywords
 from selenium.common.exceptions import WebDriverException
 
-from RPA.core import locators, webdriver
+from RPA.core import locators, notebook, webdriver
 
 
 class BrowserNotFoundError(Exception):
@@ -922,6 +922,7 @@ class Browser(SeleniumLibrary):
         status_object["enabled"] = self.is_element_enabled(locator)
         status_object["disabled"] = self.is_element_disabled(locator)
         status_object["focused"] = self.is_element_focused(locator)
+        notebook.notebook_json(status_object)
         return status_object
 
     @keyword

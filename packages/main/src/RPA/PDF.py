@@ -43,6 +43,7 @@ import PyPDF2
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.RobotLogListener import RobotLogListener
 from RPA.core.helpers import required_param
+from RPA.core.notebook import notebook_print
 
 try:
     BuiltIn().import_library("RPA.RobotLogListener")
@@ -554,7 +555,9 @@ class PDF(FPDF, HTMLMixin):
         for key, value in variables.items():
             html = html.replace("{{" + key + "}}", str(value))
 
-        self._write_html_to_pdf(html, self.output_directory / filename)
+        target_path = self.output_directory / filename
+        notebook_print(link=str(target_path))
+        self._write_html_to_pdf(html, target_path)
 
     def html_to_pdf(
         self, content: str = None, filename: str = None, variables: dict = None,
@@ -573,7 +576,9 @@ class PDF(FPDF, HTMLMixin):
         for key, value in variables.items():
             html = html.replace("{{" + key + "}}", str(value))
 
-        self._write_html_to_pdf(html, self.output_directory / filename)
+        target_path = self.output_directory / filename
+        notebook_print(link=str(target_path))
+        self._write_html_to_pdf(html, target_path)
 
     def _write_html_to_pdf(self, html, output_path):
         self.add_pages(1)
