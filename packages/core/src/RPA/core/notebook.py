@@ -1,12 +1,58 @@
+from functools import wraps
 from importlib import util
 import inspect
 import os
 from typing import Any
 
+IPYTHON_AVAILABLE = False
+ipython_module = util.find_spec("IPython")
+if ipython_module:
+    # pylint: disable=C0415
+    from IPython.display import (  # noqa
+        Audio,
+        display,
+        FileLink,
+        FileLinks,
+        Image,
+        JSON,
+        Markdown,
+        Video,
+    )
 
+    IPYTHON_AVAILABLE = True
+
+
+def _get_caller_prefix(calframe):
+    keyword_name = (
+        calframe[1][3] if calframe[1][3] not in ["<module>", "<lambda>"] else None
+    )
+    if keyword_name:
+        keyword_name = keyword_name.replace("_", " ").title()
+        return f"Output from **{keyword_name}**"
+    return ""
+
+
+def print_precheck(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if not IPYTHON_AVAILABLE:
+            return None
+        output_level = os.getenv("RPA_NOTEBOOK_OUTPUT_LEVEL", "1")
+        if output_level == "0":
+            return None
+        curframe = inspect.currentframe()
+        calframe = inspect.getouterframes(curframe, 2)
+        prefix = _get_caller_prefix(calframe)
+        if prefix != "":
+            display(Markdown(prefix))
+        return f(*args, **kwargs)
+
+    return wrapper
+
+
+@print_precheck
 def notebook_print(**kwargs) -> Any:
-    """Print Markdown formatted strings into IPython notebook
-    if IPython is available.
+    """Display IPython Markdown object in the notebook
 
     Valid parameters are `text`, `image`, `link` or `table`.
 
@@ -15,28 +61,81 @@ def notebook_print(**kwargs) -> Any:
     :param link: path to the link
     :param table: `RPA.Table` object to print
     """
-    output = None
-    output_level = os.getenv("RPA_NOTEBOOK_OUTPUT_LEVEL", "1")
-    if output_level == "0":
-        return output
-    curframe = inspect.currentframe()
-    calframe = inspect.getouterframes(curframe, 2)
-    keyword_name = calframe[1][3]
-
     output = _get_markdown(**kwargs)
     if output:
-        if keyword_name not in ["<module>", "<lambda>"]:
-            output = f"**KW** {keyword_name}: " + output
+        display(Markdown(output))
 
-        ipython_module = util.find_spec("IPython")
-        if ipython_module:
-            # pylint: disable=C0415
-            from IPython.display import Markdown, display  # noqa
 
-            output += "<hr><br>"
-            display(Markdown(output))
-            output = None
-    return output
+@print_precheck
+def notebook_file(filepath):
+    """Display IPython FileLink object in the notebook
+
+    :param filepath: location of the file
+    """
+    if filepath:
+        display(FileLink(filepath))
+
+
+@print_precheck
+def notebook_dir(directory, recursive=False):
+    """Display IPython FileLinks object in the notebook
+
+    :param directory: location of the directory
+    :param recursive: if all subdirectories should be shown also, defaults to False
+    """
+    if directory:
+        display(FileLinks(directory, recursive=recursive))
+
+
+@print_precheck
+def notebook_table(table):
+    """Display RPA.Table as IPython Markdown object in the notebook
+
+    :param table: `RPA.Table` object to print
+    """
+    output = _get_table_output(table)
+    if output:
+        display(Markdown(output))
+
+
+@print_precheck
+def notebook_image(image):
+    """Display IPython Image object in the notebook
+
+    :param image: path to the image file
+    """
+    if image:
+        display(Image(image))
+
+
+@print_precheck
+def notebook_video(video):
+    """Display IPython Video object in the notebook
+
+    :param video: path to the video file
+    """
+    if video:
+        display(Video(video))
+
+
+@print_precheck
+def notebook_audio(audio):
+    """Display IPython Audio object in the notebook
+
+    :param audio: path to the audio file
+    """
+    if audio:
+        display(Audio(filename=audio))
+
+
+@print_precheck
+def notebook_json(json_object):
+    """Display IPython JSON object in the notebook
+
+    :param json_object: item to show
+    """
+    if json_object:
+        display(JSON(json_object))
 
 
 def _get_table_output(table):
@@ -61,7 +160,7 @@ def _get_table_output(table):
             output += "</table><br>"
     except ImportError:
         pass
-    return output
+    return None if output == "" else output
 
 
 def _get_markdown(**kwargs):
