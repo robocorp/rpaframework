@@ -4,11 +4,17 @@ Release notes
 Upcoming release
 ----------------
 
+2.3.0
+-----
+
 - New **FTP** library, which also interaction with FTP servers
 - Use **RPA.core.notebook* library to output data into Jupyter Notebook
   (in Robocode Lab especially). Support added to keywords in the following
   libraries: **Browser**, **FTP**, **HTTP**, **Images**, **PDF**, **Twitter**,
   **Tables** and **Robocloud.Items**
+- **Browser** sets default screenshot directory to EMBED which means that when
+using keywords ``Capture Page Screenshot`` or ``Capture Element Screenshot`` without
+`filename` argument the image is embedded into `log.html` as Base64 image
 
 2.2.0
 -----
