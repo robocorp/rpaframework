@@ -5,6 +5,10 @@ Upcoming release
 ----------------
 
 - New **FTP** library, which also interaction with FTP servers
+- Use **RPA.core.notebook* library to output data into Jupyter Notebook
+  (in Robocode Lab especially). Support added to keywords in the following
+  libraries: **Browser**, **FTP**, **HTTP**, **Images**, **PDF**, **Twitter**,
+  **Tables** and **Robocloud.Items**
 
 2.2.0
 -----

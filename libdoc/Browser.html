@@ -221,7 +221,7 @@
 <dt class="field-odd">Add Cookie</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>name, value, path: NoneType=None, domain: NoneType=None, secure: NoneType=None, expiry: NoneType=None</p>
+<dd class="field-odd"><p>name, value, path=None, domain=None, secure=None, expiry=None</p>
 </dd>
 </dl>
 <p>Adds a cookie to your current session.</p>
@@ -261,7 +261,7 @@
 <dt class="field-even">Add Location Strategy</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>strategy_name, strategy_keyword, persist: bool=False</p>
+<dd class="field-odd"><p>strategy_name, strategy_keyword, persist=False</p>
 </dd>
 </dl>
 <p>Adds a custom location strategy.</p>
@@ -270,7 +270,7 @@
 <dt class="field-even">Alert Should Be Present</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>text=, action=ACCEPT, timeout: NoneType=None</p>
+<dd class="field-odd"><p>text=, action=ACCEPT, timeout=None</p>
 </dd>
 </dl>
 <p>Verifies that an alert is present and by default, accepts it.</p>
@@ -449,7 +449,7 @@
 <dt class="field-even">Click Button</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, modifier: bool=False</p>
+<dd class="field-odd"><p>locator, modifier=False</p>
 </dd>
 </dl>
 <p>Clicks the button identified by <code>locator</code>.</p>
@@ -459,7 +459,7 @@
 <dt class="field-even">Click Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, modifier: bool=False, action_chain: bool=False</p>
+<dd class="field-odd"><p>locator, modifier=False, action_chain=False</p>
 </dd>
 </dl>
 <p>Click the element identified by <code>locator</code>.</p>
@@ -514,7 +514,7 @@
 <dt class="field-even">Click Image</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, modifier: bool=False</p>
+<dd class="field-odd"><p>locator, modifier=False</p>
 </dd>
 </dl>
 <p>Clicks an image identified by <code>locator</code>.</p>
@@ -524,7 +524,7 @@
 <dt class="field-even">Click Link</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, modifier: bool=False</p>
+<dd class="field-odd"><p>locator, modifier=False</p>
 </dd>
 </dl>
 <p>Clicks a link identified by <code>locator</code>.</p>
@@ -552,7 +552,7 @@
 <dt class="field-even">Create Webdriver</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>driver_name, alias: NoneType=None, kwargs={}, **init_kwargs</p>
+<dd class="field-odd"><p>driver_name, alias=None, kwargs={}, **init_kwargs</p>
 </dd>
 </dl>
 <p>Creates an instance of Selenium WebDriver.</p>
@@ -686,7 +686,7 @@
 <dt class="field-even">Does Page Contain Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator: str, count: typing.Union[int, NoneType]=None</p>
+<dd class="field-odd"><p>locator: str, count: int=None</p>
 </dd>
 </dl>
 <p>Does page contain expected element</p>
@@ -854,7 +854,7 @@
 <dt class="field-even">Element Attribute Value Should Be</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, attribute, expected, message: NoneType=None</p>
+<dd class="field-odd"><p>locator, attribute, expected, message=None</p>
 </dd>
 </dl>
 <p>Verifies element identified by <code>locator</code> contains expected attribute value.</p>
@@ -891,7 +891,7 @@
 <dt class="field-even">Element Should Be Visible</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None</p>
+<dd class="field-odd"><p>locator, message=None</p>
 </dd>
 </dl>
 <p>Verifies that the element identified by <code>locator</code> is visible.</p>
@@ -901,7 +901,7 @@
 <dt class="field-even">Element Should Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, expected, message: NoneType=None, ignore_case: bool=False</p>
+<dd class="field-odd"><p>locator, expected, message=None, ignore_case=False</p>
 </dd>
 </dl>
 <p>Verifies that element <code>locator</code> contains text <code>expected</code>.</p>
@@ -913,7 +913,7 @@
 <dt class="field-even">Element Should Not Be Visible</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None</p>
+<dd class="field-odd"><p>locator, message=None</p>
 </dd>
 </dl>
 <p>Verifies that the element identified by <code>locator</code> is NOT visible.</p>
@@ -921,7 +921,7 @@
 <dt class="field-even">Element Should Not Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, expected, message: NoneType=None, ignore_case: bool=False</p>
+<dd class="field-odd"><p>locator, expected, message=None, ignore_case=False</p>
 </dd>
 </dl>
 <p>Verifies that element <code>locator</code> does not contain text <code>expected</code>.</p>
@@ -932,7 +932,7 @@
 <dt class="field-even">Element Text Should Be</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, expected, message: NoneType=None, ignore_case: bool=False</p>
+<dd class="field-odd"><p>locator, expected, message=None, ignore_case=False</p>
 </dd>
 </dl>
 <p>Verifies that element <code>locator</code> contains exact the text <code>expected</code>.</p>
@@ -944,7 +944,7 @@
 <dt class="field-even">Element Text Should Not Be</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, not_expected, message: NoneType=None, ignore_case: bool=False</p>
+<dd class="field-odd"><p>locator, not_expected, message=None, ignore_case=False</p>
 </dd>
 </dl>
 <p>Verifies that element <code>locator</code> does not contain exact the text <code>not_expected</code>.</p>
@@ -1221,7 +1221,7 @@
 <dt class="field-even">Get Cookies</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>as_dict: bool=False</p>
+<dd class="field-odd"><p>as_dict=False</p>
 </dd>
 </dl>
 <p>Returns all cookies of the current page.</p>
@@ -1312,7 +1312,7 @@
 <dt class="field-even">Get List Items</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, values: bool=False</p>
+<dd class="field-odd"><p>locator, values=False</p>
 </dd>
 </dl>
 <p>Returns all labels or values of selection list <code>locator</code>.</p>
@@ -1505,7 +1505,7 @@
 <dt class="field-odd">Get Window Size</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>inner: bool=False</p>
+<dd class="field-odd"><p>inner=False</p>
 </dd>
 </dl>
 <p>Returns current window width and height as integers.</p>
@@ -1546,7 +1546,7 @@
 <dt class="field-even">Handle Alert</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>action=ACCEPT, timeout: NoneType=None</p>
+<dd class="field-odd"><p>action=ACCEPT, timeout=None</p>
 </dd>
 </dl>
 <p>Handles the current alert and returns its message.</p>
@@ -1600,7 +1600,7 @@
 <dt class="field-even">Input Password</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, password, clear: bool=True</p>
+<dd class="field-odd"><p>locator, password, clear=True</p>
 </dd>
 </dl>
 <p>Types the given password into the text field identified by <code>locator</code>.</p>
@@ -1626,7 +1626,7 @@
 <dt class="field-even">Input Text</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, text, clear: bool=True</p>
+<dd class="field-odd"><p>locator, text, clear=True</p>
 </dd>
 </dl>
 <p>Types the given <code>text</code> into the text field identified by <code>locator</code>.</p>
@@ -1637,7 +1637,7 @@
 <dt class="field-even">Input Text Into Alert</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>text, action=ACCEPT, timeout: NoneType=None</p>
+<dd class="field-odd"><p>text, action=ACCEPT, timeout=None</p>
 </dd>
 </dl>
 <p>Types the given <code>text</code> into an input field in an alert.</p>
@@ -1656,7 +1656,7 @@
 <dt class="field-even">Is Alert Present</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>text: typing.Union[str, NoneType]=None, action: str=ACCEPT</p>
+<dd class="field-odd"><p>text: str=None, action: str=ACCEPT</p>
 </dd>
 </dl>
 <p>Is alert box present, which can be identified with text and action can also be done which by default is ACCEPT.</p>
@@ -1827,7 +1827,7 @@
 <dt class="field-even">Location Should Be</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>url, message: NoneType=None</p>
+<dd class="field-odd"><p>url, message=None</p>
 </dd>
 </dl>
 <p>Verifies that the current URL is exactly <code>url</code>.</p>
@@ -1837,7 +1837,7 @@
 <dt class="field-even">Location Should Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>expected, message: NoneType=None</p>
+<dd class="field-odd"><p>expected, message=None</p>
 </dd>
 </dl>
 <p>Verifies that the current URL contains <code>expected</code>.</p>
@@ -1847,7 +1847,7 @@
 <dt class="field-even">Locator Should Match X Times</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, x, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, x, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p><b>DEPRECATED in SeleniumLibrary 4.0.</b>, use <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> with <code>limit</code> argument instead.</p></dd>
@@ -1941,7 +1941,7 @@
 <dt class="field-even">Open Browser</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>url: NoneType=None, browser=firefox, alias: NoneType=None, remote_url: bool=False, desired_capabilities: NoneType=None, ff_profile_dir: NoneType=None, options: NoneType=None, service_log_path: NoneType=None, executable_path: NoneType=None</p>
+<dd class="field-odd"><p>url=None, browser=firefox, alias=None, remote_url=False, desired_capabilities=None, ff_profile_dir=None, options=None, service_log_path=None, executable_path=None</p>
 </dd>
 </dl>
 <p>Opens a new browser instance to the optional <code>url</code>.</p>
@@ -2221,7 +2221,7 @@ return options
 <dt class="field-even">Page Should Contain Button</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p>Verifies button <code>locator</code> is found from current page.</p>
@@ -2230,7 +2230,7 @@ return options
 <dt class="field-even">Page Should Contain Checkbox</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p>Verifies checkbox <code>locator</code> is found from the current page.</p>
@@ -2239,7 +2239,7 @@ return options
 <dt class="field-even">Page Should Contain Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE, limit: NoneType=None</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE, limit=None</p>
 </dd>
 </dl>
 <p>Verifies that element <code>locator</code> is found on the current page.</p>
@@ -2278,7 +2278,7 @@ return options
 <dt class="field-even">Page Should Contain Image</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p>Verifies image identified by <code>locator</code> is found from current page.</p>
@@ -2287,7 +2287,7 @@ return options
 <dt class="field-even">Page Should Contain Link</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p>Verifies link identified by <code>locator</code> is found from current page.</p>
@@ -2296,7 +2296,7 @@ return options
 <dt class="field-even">Page Should Contain List</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p>Verifies selection list <code>locator</code> is found from current page.</p>
@@ -2305,7 +2305,7 @@ return options
 <dt class="field-even">Page Should Contain Radio Button</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p>Verifies radio button <code>locator</code> is found from current page.</p>
@@ -2314,7 +2314,7 @@ return options
 <dt class="field-even">Page Should Contain Textfield</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p>Verifies text field <code>locator</code> is found from current page.</p>
@@ -2331,7 +2331,7 @@ return options
 <dt class="field-even">Page Should Not Contain Button</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p>Verifies button <code>locator</code> is not found from current page.</p>
@@ -2340,7 +2340,7 @@ return options
 <dt class="field-even">Page Should Not Contain Checkbox</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p>Verifies checkbox <code>locator</code> is not found from the current page.</p>
@@ -2349,25 +2349,25 @@ return options
 <dt class="field-even">Page Should Not Contain Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
-<p>Verifies that element <code>locator</code> is found on the current page.</p>
+<p>Verifies that element <code>locator</code> is not found on the current page.</p>
 <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p></dd>
 <dt class="field-even">Page Should Not Contain Image</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
-<p>Verifies image identified by <code>locator</code> is found from current page.</p>
+<p>Verifies image identified by <code>locator</code> is not found from current page.</p>
 <p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, images are searched using <code>id</code>, <code>name</code>, <code>src</code> and <code>alt</code>.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p></dd>
 <dt class="field-even">Page Should Not Contain Link</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p>Verifies link identified by <code>locator</code> is not found from current page.</p>
@@ -2376,7 +2376,7 @@ return options
 <dt class="field-even">Page Should Not Contain List</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p>Verifies selection list <code>locator</code> is not found from current page.</p>
@@ -2385,7 +2385,7 @@ return options
 <dt class="field-even">Page Should Not Contain Radio Button</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p>Verifies radio button <code>locator</code> is not found from current page.</p>
@@ -2394,7 +2394,7 @@ return options
 <dt class="field-even">Page Should Not Contain Textfield</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, message: NoneType=None, loglevel=TRACE</p>
+<dd class="field-odd"><p>locator, message=None, loglevel=TRACE</p>
 </dd>
 </dl>
 <p>Verifies text field <code>locator</code> is not found from current page.</p>
@@ -2410,7 +2410,7 @@ return options
 <dt class="field-even">Press Keys</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator: NoneType=None, *keys</p>
+<dd class="field-odd"><p>locator=None, *keys</p>
 </dd>
 </dl>
 <p>Simulates the user pressing key(s) to an element or on the active browser.</p>
@@ -2548,7 +2548,7 @@ return options
 <dt class="field-even">Screenshot</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>page: bool=True, locator: typing.Union[str, NoneType]=None, filename_prefix: str=screenshot</p>
+<dd class="field-odd"><p>page: bool=True, locator: str=None, filename_prefix: str=screenshot</p>
 </dd>
 </dl>
 <p>Capture page and/or element screenshot.</p>
@@ -2669,7 +2669,7 @@ return options
 <dt class="field-even">Select Window</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator=MAIN, timeout: NoneType=None</p>
+<dd class="field-odd"><p>locator=MAIN, timeout=None</p>
 </dd>
 </dl>
 <p>DEPRECATED in SeleniumLibrary 4.0. , use <a href="#Switch%20Window" class="name">Switch Window</a> instead.</p></dd>
@@ -2792,7 +2792,7 @@ return options
 <dt class="field-even">Set Window Size</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>width, height, inner: bool=False</p>
+<dd class="field-odd"><p>width, height, inner=False</p>
 </dd>
 </dl>
 <p>Sets current windows size to given <code>width</code> and <code>height</code>.</p>
@@ -2829,7 +2829,7 @@ return options
 <dt class="field-even">Submit Form</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator: NoneType=None</p>
+<dd class="field-odd"><p>locator=None</p>
 </dd>
 </dl>
 <p>Submits a form identified by <code>locator</code>.</p>
@@ -2921,7 +2921,7 @@ return options
 <dt class="field-even">Switch Window</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator=MAIN, timeout: NoneType=None, browser=CURRENT</p>
+<dd class="field-odd"><p>locator=MAIN, timeout=None, browser=CURRENT</p>
 </dd>
 </dl>
 <p>Switches to browser window matching <code>locator</code>.</p>
@@ -3106,7 +3106,7 @@ return options
 <dt class="field-even">Textarea Should Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, expected, message: NoneType=None</p>
+<dd class="field-odd"><p>locator, expected, message=None</p>
 </dd>
 </dl>
 <p>Verifies text area <code>locator</code> contains text <code>expected</code>.</p>
@@ -3115,7 +3115,7 @@ return options
 <dt class="field-even">Textarea Value Should Be</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, expected, message: NoneType=None</p>
+<dd class="field-odd"><p>locator, expected, message=None</p>
 </dd>
 </dl>
 <p>Verifies text area <code>locator</code> has exactly text <code>expected</code>.</p>
@@ -3124,7 +3124,7 @@ return options
 <dt class="field-even">Textfield Should Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, expected, message: NoneType=None</p>
+<dd class="field-odd"><p>locator, expected, message=None</p>
 </dd>
 </dl>
 <p>Verifies text field <code>locator</code> contains text <code>expected</code>.</p>
@@ -3133,7 +3133,7 @@ return options
 <dt class="field-even">Textfield Value Should Be</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, expected, message: NoneType=None</p>
+<dd class="field-odd"><p>locator, expected, message=None</p>
 </dd>
 </dl>
 <p>Verifies text field <code>locator</code> has exactly text <code>expected</code>.</p>
@@ -3142,7 +3142,7 @@ return options
 <dt class="field-even">Title Should Be</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>title, message: NoneType=None</p>
+<dd class="field-odd"><p>title, message=None</p>
 </dd>
 </dl>
 <p>Verifies that the current page title equals <code>title</code>.</p>
@@ -3207,7 +3207,7 @@ return options
 <dt class="field-even">Wait For Condition</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>condition, timeout: NoneType=None, error: NoneType=None</p>
+<dd class="field-odd"><p>condition, timeout=None, error=None</p>
 </dd>
 </dl>
 <p>Waits until <code>condition</code> is true or <code>timeout</code> expires.</p>
@@ -3232,7 +3232,7 @@ return options
 <dt class="field-even">Wait Until Element Contains</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, text, timeout: NoneType=None, error: NoneType=None</p>
+<dd class="field-odd"><p>locator, text, timeout=None, error=None</p>
 </dd>
 </dl>
 <p>Waits until the element <code>locator</code> contains <code>text</code>.</p>
@@ -3241,7 +3241,7 @@ return options
 <dt class="field-even">Wait Until Element Does Not Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, text, timeout: NoneType=None, error: NoneType=None</p>
+<dd class="field-odd"><p>locator, text, timeout=None, error=None</p>
 </dd>
 </dl>
 <p>Waits until the element <code>locator</code> does not contain <code>text</code>.</p>
@@ -3250,7 +3250,7 @@ return options
 <dt class="field-even">Wait Until Element Is Enabled</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, timeout: NoneType=None, error: NoneType=None</p>
+<dd class="field-odd"><p>locator, timeout=None, error=None</p>
 </dd>
 </dl>
 <p>Waits until the element <code>locator</code> is enabled.</p>
@@ -3261,7 +3261,7 @@ return options
 <dt class="field-even">Wait Until Element Is Not Visible</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, timeout: NoneType=None, error: NoneType=None</p>
+<dd class="field-odd"><p>locator, timeout=None, error=None</p>
 </dd>
 </dl>
 <p>Waits until the element <code>locator</code> is not visible.</p>
@@ -3270,7 +3270,7 @@ return options
 <dt class="field-even">Wait Until Element Is Visible</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, timeout: NoneType=None, error: NoneType=None</p>
+<dd class="field-odd"><p>locator, timeout=None, error=None</p>
 </dd>
 </dl>
 <p>Waits until the element <code>locator</code> is visible.</p>
@@ -3279,7 +3279,7 @@ return options
 <dt class="field-even">Wait Until Location Contains</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>expected, timeout: NoneType=None, message: NoneType=None</p>
+<dd class="field-odd"><p>expected, timeout=None, message=None</p>
 </dd>
 </dl>
 <p>Waits until the current URL contains <code>expected</code>.</p>
@@ -3290,7 +3290,7 @@ return options
 <dt class="field-even">Wait Until Location Does Not Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>location, timeout: NoneType=None, message: NoneType=None</p>
+<dd class="field-odd"><p>location, timeout=None, message=None</p>
 </dd>
 </dl>
 <p>Waits until the current URL does not contains <code>location</code>.</p>
@@ -3301,7 +3301,7 @@ return options
 <dt class="field-even">Wait Until Location Is</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>expected, timeout: NoneType=None, message: NoneType=None</p>
+<dd class="field-odd"><p>expected, timeout=None, message=None</p>
 </dd>
 </dl>
 <p>Waits until the current URL is <code>expected</code>.</p>
@@ -3312,7 +3312,7 @@ return options
 <dt class="field-even">Wait Until Location Is Not</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>location, timeout: NoneType=None, message: NoneType=None</p>
+<dd class="field-odd"><p>location, timeout=None, message=None</p>
 </dd>
 </dl>
 <p>Waits until the current URL is not <code>location</code>.</p>
@@ -3323,7 +3323,7 @@ return options
 <dt class="field-even">Wait Until Page Contains</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>text, timeout: NoneType=None, error: NoneType=None</p>
+<dd class="field-odd"><p>text, timeout=None, error=None</p>
 </dd>
 </dl>
 <p>Waits until <code>text</code> appears on the current page.</p>
@@ -3332,7 +3332,7 @@ return options
 <dt class="field-even">Wait Until Page Contains Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, timeout: NoneType=None, error: NoneType=None, limit: NoneType=None</p>
+<dd class="field-odd"><p>locator, timeout=None, error=None, limit=None</p>
 </dd>
 </dl>
 <p>Waits until the element <code>locator</code> appears on the current page.</p>
@@ -3343,7 +3343,7 @@ return options
 <dt class="field-even">Wait Until Page Does Not Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>text, timeout: NoneType=None, error: NoneType=None</p>
+<dd class="field-odd"><p>text, timeout=None, error=None</p>
 </dd>
 </dl>
 <p>Waits until <code>text</code> disappears from the current page.</p>
@@ -3352,7 +3352,7 @@ return options
 <dt class="field-even">Wait Until Page Does Not Contain Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator, timeout: NoneType=None, error: NoneType=None, limit: NoneType=None</p>
+<dd class="field-odd"><p>locator, timeout=None, error=None, limit=None</p>
 </dd>
 </dl>
 <p>Waits until the element <code>locator</code> disappears from the current page.</p>
