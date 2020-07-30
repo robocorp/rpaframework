@@ -51,7 +51,7 @@ def print_precheck(f):
 
 
 @print_precheck
-def notebook_print(**kwargs) -> Any:
+def notebook_print(arg, **kwargs) -> Any:
     """Display IPython Markdown object in the notebook
 
     Valid parameters are `text`, `image`, `link` or `table`.
@@ -61,7 +61,12 @@ def notebook_print(**kwargs) -> Any:
     :param link: path to the link
     :param table: `RPA.Table` object to print
     """
+    if arg and "text" in kwargs.keys():
+        kwargs["text"] = f"{arg} {kwargs['text']}"
+    else:
+        kwargs["text"] = arg
     output = _get_markdown(**kwargs)
+
     if output:
         display(Markdown(output))
 
