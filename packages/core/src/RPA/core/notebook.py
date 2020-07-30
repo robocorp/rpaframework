@@ -51,7 +51,7 @@ def print_precheck(f):
 
 
 @print_precheck
-def notebook_print(arg, **kwargs) -> Any:
+def notebook_print(arg=None, **kwargs) -> Any:
     """Display IPython Markdown object in the notebook
 
     Valid parameters are `text`, `image`, `link` or `table`.
@@ -63,7 +63,7 @@ def notebook_print(arg, **kwargs) -> Any:
     """
     if arg and "text" in kwargs.keys():
         kwargs["text"] = f"{arg} {kwargs['text']}"
-    else:
+    elif arg:
         kwargs["text"] = arg
     output = _get_markdown(**kwargs)
 
