@@ -13,8 +13,8 @@ Upcoming release
   libraries: **Browser**, **FTP**, **HTTP**, **Images**, **PDF**, **Twitter**,
   **Tables** and **Robocloud.Items**
 - **Browser** sets default screenshot directory to EMBED which means that when
-using keywords ``Capture Page Screenshot`` or ``Capture Element Screenshot`` without
-`filename` argument the image is embedded into `log.html` as Base64 image
+  using keywords ``Capture Page Screenshot`` or ``Capture Element Screenshot``
+  without `filename` argument the image is embedded into `log.html` as Base64 image
 
 2.2.0
 -----
