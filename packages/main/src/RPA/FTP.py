@@ -43,9 +43,6 @@ class FTP:
         self.instance = None
         self.logger = logging.getLogger(__name__)
 
-    def __del__(self):
-        self.quit()
-
     def connect(
         self,
         host: str,
