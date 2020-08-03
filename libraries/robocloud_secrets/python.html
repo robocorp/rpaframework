@@ -232,15 +232,17 @@ plaintext secrets, and should be used mainly for debugging.</p>
 environment variable <code class="docutils literal notranslate"><span class="pre">RPA_SECRET_FILE</span></code>, or as
 an argument to the library.</p>
 <p>The format of the secrets file should be the following:</p>
-<dl class="simple">
-<dt><a href="#id1"><span class="problematic" id="id2">``</span></a>{</dt><dd><dl class="simple">
-<dt>name1: {</dt><dd><p>key1: value1,
-key2: value2</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p>}``</p>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name1&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;key1&quot;</span><span class="p">:</span> <span class="s2">&quot;value1&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;key2&quot;</span><span class="p">:</span> <span class="s2">&quot;value2&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;name2&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;key1&quot;</span><span class="p">:</span> <span class="s2">&quot;value1&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="RPA.Robocloud.Secrets.FileSecrets.get_secret">
 <code class="sig-name descname">get_secret</code><span class="sig-paren">(</span><em class="sig-param">secret_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.FileSecrets.get_secret" title="Permalink to this definition">¶</a></dt>

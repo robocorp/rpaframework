@@ -4,8 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+2.4.0
+-----
+
 - **Browser**: Add alias support for ``Open Available Browser``
-- **Browser**: Fix indexing issues with multiple ``chromdriver`` instances
+- **Browser**: Fix indexing issues with multiple ``chromedriver`` instances
 - **Browser**: Reduce superfluous logging from keywords
 - **Robocloud.Items**: Add keywords for reading and writing full payloads
 

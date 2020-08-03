@@ -248,18 +248,6 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Browser.create_rpa_webdriver">
-<code class="sig-name descname">create_rpa_webdriver</code><span class="sig-paren">(</span><em class="sig-param">browser: str</em>, <em class="sig-param">options: dict</em>, <em class="sig-param">download: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Browser.Browser.create_rpa_webdriver" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a webdriver instance for the given browser.</p>
-<p>The driver will be downloaded if it does not exist when <code class="docutils literal notranslate"><span class="pre">download</span></code> is True.</p>
-<p><code class="docutils literal notranslate"><span class="pre">browser</span></code> name of the browser</p>
-<p><code class="docutils literal notranslate"><span class="pre">options</span></code> options for webdriver</p>
-<p><code class="docutils literal notranslate"><span class="pre">download</span></code> if the driver should be download, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
-<p>Returns an index of the webdriver session, <code class="docutils literal notranslate"><span class="pre">None</span></code> if webdriver
-was not initialized.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="RPA.Browser.Browser.does_element_contain">
 <code class="sig-name descname">does_element_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em>, <em class="sig-param">ignore_case: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_element_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does element contain expected text</p>
@@ -501,14 +489,12 @@ keywords. Will be one or many.</p>
 <dt id="RPA.Browser.Browser.get_element_status">
 <code class="sig-name descname">get_element_status</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Browser.Browser.get_element_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return dictionary containing element status of:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>visible</p></li>
 <li><p>enabled</p></li>
 <li><p>disabled</p></li>
 <li><p>focused</p></li>
 </ul>
-</div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 </dd></dl>
 
@@ -694,7 +680,7 @@ will check if alert is present at all</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.open_available_browser">
-<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: bool = False</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.open_available_browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: Optional[bool] = None</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em>, <em class="sig-param">alias: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.open_available_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Opens the first available browser in the system in preferred order, or the
 given browser (<code class="docutils literal notranslate"><span class="pre">browser_selection</span></code>).</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open</p>
@@ -828,7 +814,7 @@ to point into user profile directory.</p>
 <dl class="exception">
 <dt id="RPA.Browser.BrowserNotFoundError">
 <em class="property">exception </em><code class="sig-prename descclassname">RPA.Browser.</code><code class="sig-name descname">BrowserNotFoundError</code><a class="headerlink" href="#RPA.Browser.BrowserNotFoundError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
 <p>Raised when browser can’t be initialized.</p>
 <dl class="attribute">
 <dt id="RPA.Browser.BrowserNotFoundError.args">
@@ -842,6 +828,12 @@ to point into user profile directory.</p>
 set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Browser.html_table">
+<code class="sig-prename descclassname">RPA.Browser.</code><code class="sig-name descname">html_table</code><span class="sig-paren">(</span><em class="sig-param">header</em>, <em class="sig-param">rows</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.html_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create HTML table that can be used for logging.</p>
 </dd></dl>
 
 </div>

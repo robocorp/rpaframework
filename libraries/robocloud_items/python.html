@@ -315,6 +315,13 @@ storage, and manipulating their contents.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Robocloud.Items.Items.get_work_item_payload">
+<code class="sig-name descname">get_work_item_payload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.get_work_item_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the full JSON payload for a work item.</p>
+<p>NOTE: Most use cases should prefer higher-level keywords.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Robocloud.Items.Items.get_work_item_variable">
 <code class="sig-name descname">get_work_item_variable</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">default=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.get_work_item_variable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a single variable value from the work item,
@@ -380,6 +387,18 @@ all changes are discarded when the library goes out of scope.</p>
 <code class="sig-name descname">set_task_variables_from_work_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.set_task_variables_from_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert all variables in the current work item to
 Robot Framework task variables.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Items.Items.set_work_item_payload">
+<code class="sig-name descname">set_work_item_payload</code><span class="sig-paren">(</span><em class="sig-param">payload</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.set_work_item_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the full JSON payload for a work item.</p>
+<p>NOTE: Most use cases should prefer higher-level keywords.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>payload</strong> – Content of payload, must be JSON-serializable</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -454,7 +473,7 @@ Robot Framework task variables.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>workspade_id</strong> – Workspace ID which contains item</p></li>
+<li><p><strong>workspace_id</strong> – Workspace ID which contains item</p></li>
 <li><p><strong>item_id</strong> – Workitem ID</p></li>
 <li><p><strong>adapter</strong> – Adapter for storage backend</p></li>
 </ul>
