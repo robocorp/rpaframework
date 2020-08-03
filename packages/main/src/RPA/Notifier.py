@@ -6,7 +6,7 @@ class Notifier:
     """
     Library for using different notification services.
 
-    All keywords take keyword arguments (\*\*kwargs) to allow giving
+    All keywords take keyword arguments (**kwargs) to allow giving
     additional arguments for the notifications.
     """
 
