@@ -4,7 +4,10 @@ Release notes
 Upcoming release
 ----------------
 
-- **Robocloud.Items**: Add keywords for reading and writing raw payloads
+- **Browser**: Add alias support for ``Open Available Browser``
+- **Browser**: Fix indexing issues with multiple ``chromdriver`` instances
+- **Browser**: Reduce superfluous logging from keywords
+- **Robocloud.Items**: Add keywords for reading and writing full payloads
 
 2.3.0
 -----
