@@ -9,6 +9,7 @@ VARIABLES_SECOND = {"username": "another", "address": "dude@company.com"}
 VALID_DATABASE = {
     ("workspace-id", "workitem-id-first"): {"variables": VARIABLES_FIRST},
     ("workspace-id", "workitem-id-second"): {"variables": VARIABLES_SECOND},
+    ("workspace-id", "workitem-id-custom"): {"input": 0xCAFE},
 }
 
 
@@ -29,7 +30,7 @@ class MockAdapter(BaseAdapter):
 
 
 @pytest.fixture
-def valid_adapter(monkeypatch):
+def adapter(monkeypatch):
     monkeypatch.setenv("RC_WORKSPACE_ID", "workspace-id")
     monkeypatch.setenv("RC_WORKITEM_ID", "workitem-id-first")
     MockAdapter.DATABASE = copy.deepcopy(VALID_DATABASE)
@@ -39,128 +40,136 @@ def valid_adapter(monkeypatch):
         MockAdapter.DATABASE = {}
 
 
+@pytest.fixture
+def library(adapter):
+    yield Items(default_adapter=adapter)
+
+
 def test_no_env(monkeypatch):
     monkeypatch.delenv("RC_WORKSPACE_ID", raising=False)
     monkeypatch.delenv("RC_WORKITEM_ID", raising=False)
 
-    lib = Items(default_adapter=MockAdapter)
-    assert lib.current is None
+    library = Items(default_adapter=MockAdapter)
+    assert library.current is None
 
 
-def test_load_env(valid_adapter):
-    lib = Items(default_adapter=valid_adapter)
-
+def test_load_env(library):
     # Called by Robot Framework listener
-    lib._start_suite(None, None)
+    library._start_suite(None, None)
 
     # Work item loaded using env variables
-    env = lib.current
+    env = library.current
     assert env is not None
     assert env.data["variables"] == VARIABLES_FIRST
 
 
-def test_load_env_disable(valid_adapter):
-    lib = Items(load_env=False, default_adapter=valid_adapter)
+def test_load_env_disable(adapter):
+    library = Items(default_adapter=adapter, load_env=False)
 
     # Called by Robot Framework listener
-    lib._start_suite(None, None)
-    assert lib.current is None
+    library._start_suite(None, None)
+    assert library.current is None
 
 
-def test_keyword_load_work_item(valid_adapter):
-    lib = Items(default_adapter=valid_adapter)
-
-    item = lib.load_work_item("workspace-id", "workitem-id-second")
+def test_keyword_load_work_item(library):
+    item = library.load_work_item("workspace-id", "workitem-id-second")
+    assert item.workspace_id == "workspace-id"
+    assert item.item_id == "workitem-id-second"
     assert item.data["variables"] == VARIABLES_SECOND
-    assert item == lib.current
+    assert item == library.current
 
 
-def test_keyword_save_work_item(valid_adapter):
-    lib = Items(default_adapter=valid_adapter)
-    item = lib.load_work_item("workspace-id", "workitem-id-second")
+def test_keyword_save_work_item(library):
+    item = library.load_work_item("workspace-id", "workitem-id-second")
     MockAdapter.validate(item, "variables", VARIABLES_SECOND)
 
     modified = {"username": "changed", "address": "dude@company.com"}
     item.data["variables"] = modified
 
-    lib.save_work_item()
+    library.save_work_item()
     MockAdapter.validate(item, "variables", modified)
 
 
 def test_no_active_item():
-    lib = Items(default_adapter=MockAdapter)
-    assert lib.current is None
+    library = Items(default_adapter=MockAdapter)
+    assert library.current is None
 
     with pytest.raises(AssertionError) as err:
-        lib.save_work_item()
+        library.save_work_item()
 
     assert str(err.value) == "No active work item"
 
 
-def test_list_variables(valid_adapter):
-    lib = Items(default_adapter=valid_adapter)
-    lib.load_work_item("workspace-id", "workitem-id-second")
+def test_list_variables(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
 
-    names = lib.list_work_item_variables()
+    names = library.list_work_item_variables()
 
     assert len(names) == 2
     assert "username" in names
     assert "address" in names
 
 
-def test_delete_variables(valid_adapter):
-    lib = Items(default_adapter=valid_adapter)
-    lib.load_work_item("workspace-id", "workitem-id-second")
+def test_delete_variables(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+    assert "username" in library.list_work_item_variables()
 
-    assert "username" in lib.list_work_item_variables()
-    lib.delete_work_item_variables("username")
-    assert "username" not in lib.list_work_item_variables()
+    library.delete_work_item_variables("username")
+    assert "username" not in library.list_work_item_variables()
 
-    lib.delete_work_item_variables("doesntexist")
+    library.delete_work_item_variables("doesntexist")
 
     with pytest.raises(KeyError):
-        lib.delete_work_item_variables("doesntexist", force=False)
+        library.delete_work_item_variables("doesntexist", force=False)
 
 
-def test_delete_variables_multiple(valid_adapter):
-    lib = Items(default_adapter=valid_adapter)
-    lib.load_work_item("workspace-id", "workitem-id-second")
+def test_delete_variables_multiple(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
 
-    assert "username" in lib.list_work_item_variables()
-    assert len(lib.current["variables"]) == 2
+    assert "username" in library.list_work_item_variables()
+    assert len(library.current["variables"]) == 2
 
-    lib.delete_work_item_variables("username")
+    library.delete_work_item_variables("username")
 
-    assert "username" not in lib.list_work_item_variables()
-    assert len(lib.current["variables"]) == 1
+    assert "username" not in library.list_work_item_variables()
+    assert len(library.current["variables"]) == 1
 
 
-def test_delete_variables_multiple(valid_adapter):
-    lib = Items(default_adapter=valid_adapter)
-    lib.load_work_item("workspace-id", "workitem-id-second")
+def test_delete_variables_multiple(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
 
-    names = lib.list_work_item_variables()
+    names = library.list_work_item_variables()
     assert "username" in names
     assert "address" in names
     assert len(names) == 2
 
-    lib.delete_work_item_variables("username", "address")
+    library.delete_work_item_variables("username", "address")
 
-    names = lib.list_work_item_variables()
+    names = library.list_work_item_variables()
     assert "username" not in names
     assert "username" not in names
     assert len(names) == 0
 
 
-def test_delete_variables_unknown(valid_adapter):
-    lib = Items(default_adapter=valid_adapter)
-    lib.load_work_item("workspace-id", "workitem-id-second")
+def test_delete_variables_unknown(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+    assert len(library.list_work_item_variables()) == 2
 
-    assert len(lib.list_work_item_variables()) == 2
-
-    lib.delete_work_item_variables("unknown-variable")
-    assert len(lib.list_work_item_variables()) == 2
+    library.delete_work_item_variables("unknown-variable")
+    assert len(library.list_work_item_variables()) == 2
 
     with pytest.raises(KeyError):
-        lib.delete_work_item_variables("unknown-variable", force=False)
-    assert len(lib.list_work_item_variables()) == 2
+        library.delete_work_item_variables("unknown-variable", force=False)
+    assert len(library.list_work_item_variables()) == 2
+
+
+def test_raw_payload(library):
+    item = library.load_work_item("workspace-id", "workitem-id-custom")
+    MockAdapter.validate(item, "input", 0xCAFE)
+
+    payload = library.get_work_item_payload()
+    assert payload == {"input": 0xCAFE}
+
+    library.set_work_item_payload({"output": 0xBEEF})
+    library.save_work_item()
+    MockAdapter.validate(item, "output", 0xBEEF)

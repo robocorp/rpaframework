@@ -134,7 +134,7 @@ class FileAdapter(BaseAdapter):
 class WorkItem:
     """Container for a single work item.
 
-    :param workspade_id:    Workspace ID which contains item
+    :param workspace_id:    Workspace ID which contains item
     :param item_id:         Workitem ID
     :param adapter:         Adapter for storage backend
     """
@@ -255,6 +255,24 @@ class Items:
         """Remove all data in the current work item."""
         assert self.current, "No active work item"
         self.current.data = {}
+
+    def get_work_item_payload(self):
+        """Get the full JSON payload for a work item.
+
+        NOTE: Most use cases should prefer higher-level keywords.
+        """
+        assert self.current, "No active work item"
+        return self.current.data
+
+    def set_work_item_payload(self, payload):
+        """Set the full JSON payload for a work item.
+
+        NOTE: Most use cases should prefer higher-level keywords.
+
+        :param payload: Content of payload, must be JSON-serializable
+        """
+        assert self.current, "No active work item"
+        self.current.data = payload
 
     def list_work_item_variables(self):
         """List the variable names for the current work item."""

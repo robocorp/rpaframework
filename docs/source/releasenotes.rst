@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- **Robocloud.Items**: Add keywords for reading and writing raw payloads
+
 2.3.0
 -----
 
