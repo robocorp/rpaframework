@@ -8,7 +8,7 @@ authors = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
-rpaframework = "2.0.1"
+rpaframework = "2.3.0"
 
 [tool.poetry.dev-dependencies]
 robotframeworklexer = "^1.1"
