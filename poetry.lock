@@ -820,7 +820,7 @@ description = "A collection of tools and libraries for RPA"
 name = "rpaframework"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "2.3.0"
+version = "2.4.0"
 
 [package.dependencies]
 clipboard = ">=0.0.4,<0.0.5"
@@ -842,7 +842,7 @@ robotframework-requests = ">=0.6.5,<0.7.0"
 robotframework-sapguilibrary = ">=1.1,<2.0"
 robotframework-seleniumlibrary = ">=4.5.0,<5.0.0"
 robotframework-seleniumtestability = ">=1.1.0,<2.0.0"
-rpaframework-core = ">=1.4.2,<2.0.0"
+rpaframework-core = ">=1.4.3,<2.0.0"
 simple_salesforce = ">=1.0.0,<2.0.0"
 tweepy = ">=3.8.0,<4.0.0"
 xlrd = ">=1.2.0,<2.0.0"
@@ -872,7 +872,7 @@ description = "Core utilities used by RPA Framework"
 name = "rpaframework-core"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "1.4.2"
+version = "1.4.3"
 
 [package.dependencies]
 selenium = ">=3.141.0,<4.0.0"
@@ -1247,7 +1247,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "91cc4d999f30a4f64b40b1845517d1b7aa20164af76a9cbdfcdb980b725b176b"
+content-hash = "76f8b968cf0c9c147f9eb8f8509f7d13cc7724c2ada4baaf77f562d28bea14e3"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1709,12 +1709,12 @@ robotframeworklexer = [
     {file = "robotframeworklexer-1.1.tar.gz", hash = "sha256:ddd3ea50b54b47aee86a83c400534a61e2588dec875a3c10f04822280e834b8f"},
 ]
 rpaframework = [
-    {file = "rpaframework-2.3.0-py3-none-any.whl", hash = "sha256:191fd600d71d3da485d3a1a1cba61336eab7b3f3c43cd51b3205d2586ab44a39"},
-    {file = "rpaframework-2.3.0.tar.gz", hash = "sha256:bdf5967175dde9eb275fdae8121042dd0d357ee8183ed82d4c663077a24d75d8"},
+    {file = "rpaframework-2.4.0-py3-none-any.whl", hash = "sha256:7675820c2bbc99b7d808eb8bae10c7ce1e6b7ece40ac1956a685338ca0e488ee"},
+    {file = "rpaframework-2.4.0.tar.gz", hash = "sha256:b44a0b5da0fa49d280c1752c4852f92a065c2a55d81f7bdbdc13759d6122f8e4"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-1.4.2.tar.gz", hash = "sha256:d2933437185350366735ac4e710d8f4a9ea1d2881cacc0a36e47a94833e4160f"},
-    {file = "rpaframework_core-1.4.2-py3-none-any.whl", hash = "sha256:09b0544dabf6c878f8d7b30f77abef7c9223f2f0b283fd11b518ac469297977b"},
+    {file = "rpaframework-core-1.4.3.tar.gz", hash = "sha256:6816478b614492442552b7314fd2eb4e95158ed1ce06d1991cf2acf356ccad94"},
+    {file = "rpaframework_core-1.4.3-py3-none-any.whl", hash = "sha256:b28b317a1390765c8858cb3233bbdfecb76614069566e84b514286561d9bd15a"},
 ]
 selenium = [
     {file = "selenium-3.141.0-py2.py3-none-any.whl", hash = "sha256:2d7131d7bc5a5b99a2d9b04aaf2612c411b03b8ca1b1ee8d3de5845a9be2cb3c"},
