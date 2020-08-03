@@ -239,8 +239,12 @@ storage, and manipulating their contents.</p>
 </dl>
 <p>Delete variable(s) from the current work item.</p>
 </dd>
-<dt class="field-even">Get Work Item Variable</dt>
-<dd class="field-even"><dl class="field-list simple">
+<dt class="field-even">Get Work Item Payload</dt>
+<dd class="field-even"><p>Get the full JSON payload for a work item.</p>
+<p>NOTE: Most use cases should prefer higher-level keywords.</p>
+</dd>
+<dt class="field-odd">Get Work Item Variable</dt>
+<dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>name, default=None</p>
 </dd>
@@ -280,8 +284,17 @@ all changes are discarded when the library goes out of scope.</p>
 <dd class="field-even"><p>Convert all variables in the current work item to
 Robot Framework task variables.</p>
 </dd>
-<dt class="field-odd">Set Work Item Variable</dt>
+<dt class="field-odd">Set Work Item Payload</dt>
 <dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>payload</p>
+</dd>
+</dl>
+<p>Set the full JSON payload for a work item.</p>
+<p>NOTE: Most use cases should prefer higher-level keywords.</p>
+</dd>
+<dt class="field-even">Set Work Item Variable</dt>
+<dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>name, value</p>
 </dd>

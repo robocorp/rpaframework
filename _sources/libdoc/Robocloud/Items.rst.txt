@@ -35,6 +35,11 @@ Keywords
   Delete variable(s) from the current work item.
 
 
+:Get Work Item Payload:
+  Get the full JSON payload for a work item.
+
+  NOTE: Most use cases should prefer higher-level keywords.
+
 :Get Work Item Variable:
   :Arguments: name, default=None
 
@@ -71,6 +76,14 @@ Keywords
 :Set Task Variables From Work Item:
   Convert all variables in the current work item to
   Robot Framework task variables.
+
+:Set Work Item Payload:
+  :Arguments: payload
+
+  Set the full JSON payload for a work item.
+
+  NOTE: Most use cases should prefer higher-level keywords.
+
 
 :Set Work Item Variable:
   :Arguments: name, value

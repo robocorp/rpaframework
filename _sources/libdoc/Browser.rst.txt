@@ -1775,7 +1775,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Open Available Browser:
-  :Arguments: url: str, use_profile: bool=False, headless: bool=False, maximized: bool=False, browser_selection: typing.Any=AUTO
+  :Arguments: url: str, use_profile: bool=False, headless: bool=None, maximized: bool=False, browser_selection: typing.Any=AUTO, alias: str=None
 
   .. raw:: html
 
