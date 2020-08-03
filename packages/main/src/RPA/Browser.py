@@ -337,7 +337,6 @@ class Browser(SeleniumLibrary):
         """
         options.add_argument("--disable-web-security")
         options.add_argument("--allow-running-insecure-content")
-        options.add_argument("--remote-debugging-port=12922")
         options.add_argument("--no-sandbox")
 
     def set_headless_options(self, browser: str, options: dict) -> None:
