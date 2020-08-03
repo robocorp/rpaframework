@@ -113,6 +113,7 @@ class Browser(SeleniumLibrary):
         headless: Optional[bool] = None,
         maximized: bool = False,
         browser_selection: Any = AUTOMATIC_BROWSER_SELECTION,
+        alias: Optional[str] = None,
     ) -> int:
         """Opens the first available browser in the system in preferred order, or the
         given browser (``browser_selection``).
@@ -156,14 +157,14 @@ class Browser(SeleniumLibrary):
         download_options = [False, True]
 
         # Try a combination of all options until a browser starts
-        index = None
+        index_or_alias = None
         options = []
         for browser, headless, download in product(
             browser_options, headless_options, download_options
         ):
             try:
-                index = self._create_webdriver(
-                    browser, headless, download, use_profile, maximized
+                index_or_alias = self._create_webdriver(
+                    browser, headless, download, use_profile, maximized, alias
                 )
                 options.append((browser, headless, download, ""))
                 break
@@ -181,7 +182,7 @@ class Browser(SeleniumLibrary):
             pass
 
         # No webdriver was started
-        if index is None:
+        if index_or_alias is None:
             raise BrowserNotFoundError(
                 "No valid browser found from: {}".format(
                     ", ".join(browser for browser in browser_options)
@@ -189,19 +190,15 @@ class Browser(SeleniumLibrary):
             )
 
         self.go_to(url)
-        return index
+        return index_or_alias
 
-    def _create_webdriver(self, browser, headless, download, use_profile, maximized):
+    def _create_webdriver(
+        self, browser, headless, download, use_profile, maximized, alias
+    ):
         """Create a webdriver instance for the given browser.
 
-        The driver will be downloaded if it does not exist when ``download`` is True.
-
-        ``browser`` name of the browser
-        ``options`` options for webdriver
-        ``download`` if the driver should be download, default ``False``
-
-        Returns an index of the webdriver session, ``None`` if webdriver
-        was not initialized.
+        Returns an index or alias of the webdriver session,
+        or ``None`` if a webdriver was not initialized.
         """
         self.logger.debug(
             "Creating webdriver for '%s' (headless: %s, download: %s)",
@@ -219,7 +216,7 @@ class Browser(SeleniumLibrary):
         library = BrowserManagementKeywords(self)
         browser = browser.lower().capitalize()
 
-        return library.create_webdriver(browser, **options)
+        return library.create_webdriver(browser, alias, **options)
 
     def get_browser_order(self, browser_selection: Any) -> list:
         """Get a list of browsers that will be used for open browser
