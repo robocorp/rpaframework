@@ -3,9 +3,11 @@ import logging
 import os
 import platform
 import time
-from typing import Any
+from itertools import product
+from typing import Any, Optional
 from pathlib import Path
 
+from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from SeleniumLibrary import SeleniumLibrary, EMBED
 from SeleniumLibrary.base import keyword
 from SeleniumLibrary.keywords import BrowserManagementKeywords
@@ -14,7 +16,17 @@ from selenium.common.exceptions import WebDriverException
 from RPA.core import locators, notebook, webdriver
 
 
-class BrowserNotFoundError(Exception):
+def html_table(header, rows):
+    """Create HTML table that can be used for logging."""
+    output = '<div class="doc"><table>'
+    output += "<tr>" + "".join(f"<th>{name}</th>" for name in header) + "</tr>"
+    for row in rows:
+        output += "<tr>" + "".join(f"<td>{name}</td>" for name in row) + "</tr>"
+    output += "</table></div>"
+    return output
+
+
+class BrowserNotFoundError(ValueError):
     """Raised when browser can't be initialized."""
 
 
@@ -36,28 +48,29 @@ class Browser(SeleniumLibrary):
     }
 
     def __init__(self, *args, **kwargs) -> None:
-        is_testability = False
-        if "use_testability" in args:
-            is_testability = True
-            args = filter(lambda x: x != "use_testability", args)
-        if "plugins" in kwargs.keys() and "SeleniumTestability" in kwargs["plugins"]:
-            # SeleniumTestability already included as plugin
-            is_testability = True
-        elif is_testability and "plugins" in kwargs.keys():
-            # Adding SeleniumTestability as SeleniumLibrary plugin
-            kwargs["plugins"] += ",SeleniumTestability"
-        elif is_testability:
-            # Setting SeleniumTestability as SeleniumLibrary plugin
-            kwargs["plugins"] = "SeleniumTestability"
-
         locators_path = kwargs.pop("locators_path", locators.DEFAULT_DATABASE)
 
+        # Parse user-given plugins
+        plugins = kwargs.get("plugins", "")
+        plugins = set(p for p in plugins.split(",") if p)
+
+        # Add testability if requested
+        if "use_testability" in args:
+            args = [arg for arg in args if arg != "use_testability"]
+            plugins.add("SeleniumTestability")
+
+        # Refresh plugins list
+        kwargs["plugins"] = ",".join(plugins)
+
         SeleniumLibrary.__init__(self, *args, **kwargs)
-        self.drivers = []
         self.logger = logging.getLogger(__name__)
-        self.using_testability = is_testability
+        self.using_testability = bool("SeleniumTestability" in plugins)
+
+        # Add support for locator aliases
         self.locators = locators.LocatorsDatabase(locators_path)
         self._element_finder.register("alias", self._find_by_alias, persist=True)
+
+        # Embed screenshots in logs by default
         self.set_screenshot_directory(EMBED)
 
     def _find_by_alias(self, parent, criteria, tag, constraints):
@@ -97,9 +110,10 @@ class Browser(SeleniumLibrary):
         self,
         url: str,
         use_profile: bool = False,
-        headless: bool = False,
+        headless: Optional[bool] = None,
         maximized: bool = False,
         browser_selection: Any = AUTOMATIC_BROWSER_SELECTION,
+        alias: Optional[str] = None,
     ) -> int:
         """Opens the first available browser in the system in preferred order, or the
         given browser (``browser_selection``).
@@ -137,101 +151,72 @@ class Browser(SeleniumLibrary):
         For information about Safari webdriver setup, see
         https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari
         """
-        index = -1
-        preferable_browser_order = self.get_browser_order(browser_selection)
-        selected_browser = None
+        # pylint: disable=redefined-argument-from-local
+        browser_options = self.get_browser_order(browser_selection)
+        headless_options = [headless] if headless is not None else [False, True]
+        download_options = [False, True]
 
-        self.logger.info(
-            "Open Available Browser preferable browser selection order is: %s",
-            ", ".join(preferable_browser_order),
-        )
-        for browser in preferable_browser_order:
-            options = self.set_driver_options(
-                browser, use_profile=use_profile, headless=headless, maximized=maximized
-            )
-
-            # First try: Without any actions
-            self.logger.info("Initializing webdriver with default options (method 1)")
-            index = self.create_rpa_webdriver(browser, options)
-            if index is not None:
-                selected_browser = (browser, 1)
-                break
-
-            self.logger.info("Could not init webdriver using method 1. ")
-
-            # Second try: Install driver (if there is a manager for driver)
-            self.logger.info("Initializing webdriver with downloaded driver (method 2)")
-            index = self.create_rpa_webdriver(browser, options, download=True)
-            if index is not None:
-                selected_browser = (browser, 2)
-                break
-
-            self.logger.info("Could not init webdriver using method 2.")
-
-            # Third try: Headless
-            if headless is False:
-                options = self.set_driver_options(
-                    browser,
-                    use_profile=use_profile,
-                    headless=True,
-                    maximized=maximized,
+        # Try a combination of all options until a browser starts
+        index_or_alias = None
+        options = []
+        for browser, headless, download in product(
+            browser_options, headless_options, download_options
+        ):
+            try:
+                index_or_alias = self._create_webdriver(
+                    browser, headless, download, use_profile, maximized, alias
                 )
-                self.logger.info("Initializing webdriver in headless mode (method 3)")
-                index = self.create_rpa_webdriver(browser, options, download=True)
-                if index is not None:
-                    selected_browser = (browser, 3)
-                    break
+                options.append((browser, headless, download, ""))
+                break
+            except WebDriverException as error:
+                options.append((browser, headless, download, error))
+                self.logger.debug(error)
 
-        if selected_browser:
-            self.logger.info(
-                "Selected browser (method: %s) is: %s, index: %d",
-                selected_browser[1],
-                selected_browser[0],
-                index,
+        # Log table of all attempted combinations
+        try:
+            table = html_table(
+                header=["Browser", "Headless", "Download", "Error"], rows=options
             )
-            self.go_to(url)
-            return index
-        else:
-            self.logger.error(
-                "Unable to initialize webdriver (%s)",
-                ", ".join(preferable_browser_order),
-            )
-            raise BrowserNotFoundError
+            BuiltIn().log("<p>Attempted combinations:</p>" + table, html=True)
+        except RobotNotRunningError:
+            pass
 
-    def create_rpa_webdriver(
-        self, browser: str, options: dict, download: bool = False
-    ) -> Any:
+        # No webdriver was started
+        if index_or_alias is None:
+            raise BrowserNotFoundError(
+                "No valid browser found from: {}".format(
+                    ", ".join(browser for browser in browser_options)
+                )
+            )
+
+        self.go_to(url)
+        return index_or_alias
+
+    def _create_webdriver(
+        self, browser, headless, download, use_profile, maximized, alias
+    ):
         """Create a webdriver instance for the given browser.
 
-        The driver will be downloaded if it does not exist when ``download`` is True.
-
-        ``browser`` name of the browser
-
-        ``options`` options for webdriver
-
-        ``download`` if the driver should be download, default ``False``
-
-        Returns an index of the webdriver session, ``None`` if webdriver
-        was not initialized.
+        Returns an index of the webdriver session,
+        or ``None`` if a webdriver was not initialized.
         """
-        self.logger.debug("Driver options for create_rpa_webdriver: %s", options)
+        self.logger.debug(
+            "Creating webdriver for '%s' (headless: %s, download: %s)",
+            browser,
+            headless,
+            download,
+        )
+
+        options = self.set_driver_options(browser, use_profile, headless, maximized)
+
         executable = webdriver.executable(browser, download)
+        if executable:
+            options.setdefault("executable_path", executable)
 
-        try:
-            browser = browser.lower().capitalize()
-            browser_management = BrowserManagementKeywords(self)
-            if executable:
-                index = browser_management.create_webdriver(
-                    browser, **options, executable_path=executable
-                )
-            else:
-                index = browser_management.create_webdriver(browser, **options)
+        library = BrowserManagementKeywords(self)
+        browser = browser.lower().capitalize()
 
-            return index
-        except WebDriverException as err:
-            self.logger.info("Could not open driver: %s", err)
-
-        return None
+        return library.create_webdriver(browser, alias, **options)
 
     def get_browser_order(self, browser_selection: Any) -> list:
         """Get a list of browsers that will be used for open browser
@@ -273,43 +258,42 @@ class Browser(SeleniumLibrary):
 
         ``maximized`` if the browser should be run maximized, default ``False``
         """
-        rpa_headless_mode = os.getenv("RPA_HEADLESS_MODE", None)
-        browser_options = None
-        driver_options = {}
         browser = browser.lower()
+        headless = headless or bool(int(os.getenv("RPA_HEADLESS_MODE", "0")))
 
-        if browser in self.AVAILABLE_OPTIONS.keys():
-            module = importlib.import_module("selenium.webdriver")
-            class_ = getattr(module, self.AVAILABLE_OPTIONS[browser])
-            browser_options = class_()
-        else:
+        driver_options = {}
+
+        if browser not in self.AVAILABLE_OPTIONS:
             return driver_options
 
-        if headless or bool(rpa_headless_mode):
+        module = importlib.import_module("selenium.webdriver")
+        factory = getattr(module, self.AVAILABLE_OPTIONS[browser])
+        browser_options = factory()
+
+        if headless:
             self.set_headless_options(browser, browser_options)
 
-        if browser_options and maximized:
-            self.logger.info("Setting maximized mode")
+        if maximized:
             browser_options.add_argument("--start-maximized")
 
-        if browser_options and use_profile:
+        if use_profile:
             self.set_user_profile(browser_options)
 
-        self.logger.info(
-            "Using driver %s: %s", browser_options, browser_options.to_capabilities()
-        )
-        if browser_options and browser != "chrome":
+        if browser != "chrome":
             driver_options["options"] = browser_options
-        elif browser_options and browser == "chrome":
+        else:
             self.set_default_options(browser_options)
-            prefs = {"safebrowsing.enabled": "true"}
+            browser_options.add_experimental_option(
+                "prefs", {"safebrowsing.enabled": "true"}
+            )
             browser_options.add_experimental_option(
                 "excludeSwitches", ["enable-logging", "enable-automation"]
             )
-            browser_options.add_experimental_option("prefs", prefs)
+
             if self.logger.isEnabledFor(logging.DEBUG):
                 driver_options["service_log_path"] = "chromedriver.log"
                 driver_options["service_args"] = ["--verbose"]
+
             driver_options["chrome_options"] = browser_options
 
         return driver_options
@@ -350,7 +334,6 @@ class Browser(SeleniumLibrary):
         """
         options.add_argument("--disable-web-security")
         options.add_argument("--allow-running-insecure-content")
-        options.add_argument("--remote-debugging-port=12922")
         options.add_argument("--no-sandbox")
 
     def set_headless_options(self, browser: str, options: dict) -> None:
@@ -366,11 +349,10 @@ class Browser(SeleniumLibrary):
                 "https://github.com/SeleniumHQ/selenium/issues/5985"
             )
             return
-        if options:
-            self.logger.info("Setting headless mode")
-            options.add_argument("--headless")
-            options.add_argument("--disable-gpu")
-            options.add_argument("--disable-dev-shm-usage")
+
+        options.add_argument("--headless")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--disable-dev-shm-usage")
 
     def set_user_profile(self, options: dict) -> None:
         """Set user profile configuration into browser options
@@ -383,10 +365,11 @@ class Browser(SeleniumLibrary):
         user_profile_dir = os.getenv("RPA_CHROME_USER_PROFILE_DIR", None)
         if user_profile_dir is None:
             self.logger.warning(
-                'environment variable "RPA_CHROME_USER_PROFILE_DIR" '
+                'Environment variable "RPA_CHROME_USER_PROFILE_DIR" '
                 "has not been set, cannot set user profile"
             )
             return
+
         options.add_argument(f"--user-data-dir='{user_profile_dir}'")
         options.add_argument("--enable-local-sync-backend")
         options.add_argument(f"--local-sync-backend-dir='{user_profile_dir}'")
@@ -397,8 +380,7 @@ class Browser(SeleniumLibrary):
 
         ``url`` URL to open
         """
-        index = self.open_chrome_browser(url, headless=True)
-        return index
+        return self.open_chrome_browser(url, headless=True)
 
     @keyword
     def screenshot(
@@ -911,10 +893,10 @@ class Browser(SeleniumLibrary):
     def get_element_status(self, locator: str) -> dict:
         """Return dictionary containing element status of:
 
-            - visible
-            - enabled
-            - disabled
-            - focused
+        - visible
+        - enabled
+        - disabled
+        - focused
 
         ``locator`` element locator
         """
