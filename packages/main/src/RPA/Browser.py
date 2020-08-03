@@ -197,7 +197,7 @@ class Browser(SeleniumLibrary):
     ):
         """Create a webdriver instance for the given browser.
 
-        Returns an index or alias of the webdriver session,
+        Returns an index of the webdriver session,
         or ``None`` if a webdriver was not initialized.
         """
         self.logger.debug(
@@ -207,7 +207,7 @@ class Browser(SeleniumLibrary):
             download,
         )
 
-        options = self.set_driver_options(browser, use_profile, maximized, headless)
+        options = self.set_driver_options(browser, use_profile, headless, maximized)
 
         executable = webdriver.executable(browser, download)
         if executable:
@@ -259,7 +259,7 @@ class Browser(SeleniumLibrary):
         ``maximized`` if the browser should be run maximized, default ``False``
         """
         browser = browser.lower()
-        headless = headless or os.getenv("RPA_HEADLESS_MODE", False)
+        headless = headless or bool(int(os.getenv("RPA_HEADLESS_MODE", "0")))
 
         driver_options = {}
 
