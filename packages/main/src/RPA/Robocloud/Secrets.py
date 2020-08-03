@@ -87,13 +87,17 @@ class FileSecrets(BaseSecretManager):
 
     The format of the secrets file should be the following:
 
-    ``{
-      name1: {
-        key1: value1,
-        key2: value2
-      },
-      ...
-    }``
+    .. code-block:: JSON
+
+      {
+        "name1": {
+          "key1": "value1",
+          "key2": "value2"
+        },
+        "name2": {
+          "key1": "value1"
+        }
+      }
     """
 
     def __init__(self, secret_file="secrets.json"):
