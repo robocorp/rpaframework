@@ -493,14 +493,12 @@ and their descendants.</p>
 <dt id="RPA.Desktop.Windows.Windows.get_window_list">
 <code class="sig-name descname">get_window_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_window_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of open windows</p>
-<p>window dictionaries contains:</p>
-<blockquote>
-<div><ul class="simple">
+<p>Window dictionaries contain:</p>
+<ul class="simple">
 <li><p>title</p></li>
 <li><p>pid</p></li>
 <li><p>handle</p></li>
 </ul>
-</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>list of window dictionaries</p>
@@ -622,14 +620,12 @@ or <cite>criteria</cite> field in the window items.</p>
 <dd><p>Mouse click <cite>locator</cite>, <cite>coordinates</cite>, <cite>image</cite> or <cite>ocr</cite>.</p>
 <p>When using method <cite>locator</cite>,`image` or <cite>ocr</cite> mouse is clicked by default at
 center coordinates.</p>
-<dl class="simple">
-<dt>Click types are:</dt><dd><ul class="simple">
+<p>Click types are:</p>
+<ul class="simple">
 <li><p><cite>click</cite> normal left button mouse click</p></li>
 <li><p><cite>double</cite></p></li>
 <li><p><cite>right</cite></p></li>
 </ul>
-</dd>
-</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -717,13 +713,14 @@ center coordinates.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_dialog">
-<code class="sig-name descname">open_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">highlight: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_dialog" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">highlight: bool = False</em>, <em class="sig-param">timeout: int = 10</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open window by its title.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>windowtitle</strong> – name of the window, defaults to active window if None</p></li>
 <li><p><strong>highlight</strong> – draw outline for window if True, defaults to False</p></li>
+<li><p><strong>timeout</strong> – time to wait for dialog to appear</p></li>
 </ul>
 </dd>
 </dl>

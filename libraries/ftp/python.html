@@ -206,8 +206,262 @@
             
   <div class="section" id="python-module-api">
 <h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="ftp">
-<h2>FTP<a class="headerlink" href="#ftp" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-RPA.FTP">
+<span id="ftp"></span><h2>FTP<a class="headerlink" href="#module-RPA.FTP" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="RPA.FTP.AuthenticationException">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.FTP.</code><code class="sig-name descname">AuthenticationException</code><a class="headerlink" href="#RPA.FTP.AuthenticationException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when server authentication fails</p>
+<dl class="attribute">
+<dt id="RPA.FTP.AuthenticationException.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.FTP.AuthenticationException.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.AuthenticationException.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.AuthenticationException.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.FTP.FTP">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.FTP.</code><code class="sig-name descname">FTP</code><a class="headerlink" href="#RPA.FTP.FTP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>RPA Framework library for FTP operations</p>
+<dl class="method">
+<dt id="RPA.FTP.FTP.abort">
+<code class="sig-name descname">abort</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.FTP.FTP.abort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abort a file transfer in progress</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.FTP.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close connection to the server unilaterally</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.connect">
+<code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param">host: str</em>, <em class="sig-param">port: int = 21</em>, <em class="sig-param">user: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">tls: bool = False</em>, <em class="sig-param">transfer: str = 'passive'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.FTP.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to FTP server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>host</strong> – address of the server</p></li>
+<li><p><strong>port</strong> – port of the server, defaults to 21</p></li>
+<li><p><strong>user</strong> – login name, defaults to None</p></li>
+<li><p><strong>password</strong> – login password, defaults to None</p></li>
+<li><p><strong>tls</strong> – connect using TLS support, defaults to False</p></li>
+<li><p><strong>transfer</strong> – mode of the transfer, defaults to “passive”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#RPA.FTP.AuthenticationException" title="RPA.FTP.AuthenticationException"><strong>AuthenticationException</strong></a> – on authentication error with the server</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.cwd">
+<code class="sig-name descname">cwd</code><span class="sig-paren">(</span><em class="sig-param">dirname: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.FTP.FTP.cwd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change working directory on the server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dirname</strong> – name of the directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.delete">
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">filepath: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.FTP.FTP.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete file on the server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> – path to server file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.download">
+<code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param">remotefile: str</em>, <em class="sig-param">localfile: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.FTP.FTP.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download file from FTP server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>remotefile</strong> – path to remote file on the server</p></li>
+<li><p><strong>localfile</strong> – name of the downloaded file on the local filesystem,
+if <cite>None</cite> will have same name as remote file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.file_size">
+<code class="sig-name descname">file_size</code><span class="sig-paren">(</span><em class="sig-param">filepath: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.FTP.FTP.file_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return byte size of the file on the server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> – path to server file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.get_welcome_message">
+<code class="sig-name descname">get_welcome_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.FTP.FTP.get_welcome_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get server welcome message</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>welcome message</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.list_files">
+<code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">dirname: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.FTP.FTP.list_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>List files on the server directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dirname</strong> – name of the directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.mkd">
+<code class="sig-name descname">mkd</code><span class="sig-paren">(</span><em class="sig-param">dirname: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.FTP.FTP.mkd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new directory on the server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dirname</strong> – name of the directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.pwd">
+<code class="sig-name descname">pwd</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.FTP.FTP.pwd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get current working directory on the server</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.quit">
+<code class="sig-name descname">quit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.FTP.quit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send QUIT command to the server and close connection</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.rename">
+<code class="sig-name descname">rename</code><span class="sig-paren">(</span><em class="sig-param">fromname: str</em>, <em class="sig-param">toname: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.FTP.FTP.rename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rename file on the server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fromname</strong> – current name of the file</p></li>
+<li><p><strong>toname</strong> – new name for the file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.rmd">
+<code class="sig-name descname">rmd</code><span class="sig-paren">(</span><em class="sig-param">dirname: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.FTP.FTP.rmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove directory on the server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dirname</strong> – name of the directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.send_command">
+<code class="sig-name descname">send_command</code><span class="sig-paren">(</span><em class="sig-param">command: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.FTP.FTP.send_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute command on the server</p>
+<p>List of FTP commands</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/List_of_FTP_commands">https://en.wikipedia.org/wiki/List_of_FTP_commands</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> – name of the command to send</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.set_ascii_mode">
+<code class="sig-name descname">set_ascii_mode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.FTP.set_ascii_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set transfer mode to ASCII</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.set_binary_mode">
+<code class="sig-name descname">set_binary_mode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.FTP.set_binary_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set transfer mode to BINARY</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.set_debug_level">
+<code class="sig-name descname">set_debug_level</code><span class="sig-paren">(</span><em class="sig-param">level: int = 0</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.FTP.FTP.set_debug_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set debug level for the library</p>
+<p>0 - no debugging output
+1 - moderate amount of debugging
+2+ - higher amount of debugging</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>level</strong> – integer value of debug level, defaults to 0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTP.upload">
+<code class="sig-name descname">upload</code><span class="sig-paren">(</span><em class="sig-param">localfile: str</em>, <em class="sig-param">remotefile: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.FTP.FTP.upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload file to FTP server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>localfile</strong> – path to file to upload</p></li>
+<li><p><strong>remotefile</strong> – name of uploaded file in the server</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.FTP.FTPException">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.FTP.</code><code class="sig-name descname">FTPException</code><a class="headerlink" href="#RPA.FTP.FTPException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised on general FTP error</p>
+<dl class="attribute">
+<dt id="RPA.FTP.FTPException.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.FTP.FTPException.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.FTP.FTPException.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.FTPException.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.FTP.ftpcommand">
+<code class="sig-prename descclassname">RPA.FTP.</code><code class="sig-name descname">ftpcommand</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FTP.ftpcommand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 </div>
 

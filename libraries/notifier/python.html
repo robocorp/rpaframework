@@ -206,8 +206,129 @@
             
   <div class="section" id="python-module-api">
 <h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="notifier">
-<h2>Notifier<a class="headerlink" href="#notifier" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-RPA.Notifier">
+<span id="notifier"></span><h2>Notifier<a class="headerlink" href="#module-RPA.Notifier" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Notifier.Notifier">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Notifier.</code><code class="sig-name descname">Notifier</code><a class="headerlink" href="#RPA.Notifier.Notifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Library for using different notification services.</p>
+<p>All keywords take keyword arguments (<a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs) to allow giving
+additional arguments for the notifications.</p>
+<dl class="method">
+<dt id="RPA.Notifier.Notifier.notify_email">
+<code class="sig-name descname">notify_email</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">to: str = None</em>, <em class="sig-param">username: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify using email service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – notification message</p></li>
+<li><p><strong>to</strong> – target of email message</p></li>
+<li><p><strong>username</strong> – email service username</p></li>
+<li><p><strong>password</strong> – email service password</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True is notification was success, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Notifier.Notifier.notify_gmail">
+<code class="sig-name descname">notify_gmail</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">to: str = None</em>, <em class="sig-param">username: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_gmail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify using Gmail service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – notification message</p></li>
+<li><p><strong>to</strong> – target of email message</p></li>
+<li><p><strong>username</strong> – GMail service username</p></li>
+<li><p><strong>password</strong> – GMail service password</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True is notification was success, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Notifier.Notifier.notify_pushover">
+<code class="sig-name descname">notify_pushover</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">user: str = None</em>, <em class="sig-param">token: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_pushover" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify using Pushover service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – notification message</p></li>
+<li><p><strong>user</strong> – target user for the notification</p></li>
+<li><p><strong>token</strong> – service token</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True is notification was success, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Notifier.Notifier.notify_slack">
+<code class="sig-name descname">notify_slack</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">channel: str = None</em>, <em class="sig-param">webhook_url: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_slack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify using Slack service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – notification message</p></li>
+<li><p><strong>channel</strong> – target channel for the notification</p></li>
+<li><p><strong>webhook_url</strong> – Slack webhook url</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True is notification was success, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Notifier.Notifier.notify_telegram">
+<code class="sig-name descname">notify_telegram</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">chat_id: str = None</em>, <em class="sig-param">token: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_telegram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify using Telegram service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – notification message</p></li>
+<li><p><strong>chat_id</strong> – target chat id for the notification</p></li>
+<li><p><strong>token</strong> – service token</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True is notification was success, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Notifier.Notifier.notify_twilio">
+<code class="sig-name descname">notify_twilio</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">number_from: str = None</em>, <em class="sig-param">number_to: str = None</em>, <em class="sig-param">account_sid: str = None</em>, <em class="sig-param">token: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_twilio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify using Twilio service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – notification message</p></li>
+<li><p><strong>number_from</strong> – number where the message comes from</p></li>
+<li><p><strong>number_to</strong> – number where the messages goes to</p></li>
+<li><p><strong>account_sid</strong> – Twilio account SID</p></li>
+<li><p><strong>token</strong> – Twilio account token</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True is notification was success, False if not</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 

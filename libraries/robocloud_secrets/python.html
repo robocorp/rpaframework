@@ -212,12 +212,13 @@
 <dt id="RPA.Robocloud.Secrets.BaseSecretManager">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">BaseSecretManager</code><a class="headerlink" href="#RPA.Robocloud.Secrets.BaseSecretManager" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Abstract class for Secret management which should be used as a
-base class for any Secrets implementation class.</p>
+<p>Abstract class for secrets management. Should be used as a
+base-class for any adapter implementation.</p>
 <dl class="method">
 <dt id="RPA.Robocloud.Secrets.BaseSecretManager.get_secret">
 <em class="property">abstract </em><code class="sig-name descname">get_secret</code><span class="sig-paren">(</span><em class="sig-param">secret_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.BaseSecretManager.get_secret" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">Secret</span></code> object with given name.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -225,58 +226,95 @@ base class for any Secrets implementation class.</p>
 <dt id="RPA.Robocloud.Secrets.FileSecrets">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">FileSecrets</code><span class="sig-paren">(</span><em class="sig-param">secret_file='secrets.json'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.FileSecrets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Robocloud.Secrets.BaseSecretManager" title="RPA.Robocloud.Secrets.BaseSecretManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Robocloud.Secrets.BaseSecretManager</span></code></a></p>
-<p>Handler for secrets stored into a file.</p>
-<p>Following environment variables should exist:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>RPA_SECRET_FILE : filepath to JSON secrets file</p></li>
-</ul>
-</div></blockquote>
+<p>Adapter for secrets stored in a JSON file. Supports only
+plaintext secrets, and should be used mainly for debugging.</p>
+<p>The path to the secrets file can be set with the
+environment variable <code class="docutils literal notranslate"><span class="pre">RPA_SECRET_FILE</span></code>, or as
+an argument to the library.</p>
+<p>The format of the secrets file should be the following:</p>
+<dl class="simple">
+<dt><a href="#id1"><span class="problematic" id="id2">``</span></a>{</dt><dd><dl class="simple">
+<dt>name1: {</dt><dd><p>key1: value1,
+key2: value2</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>}``</p>
 <dl class="method">
 <dt id="RPA.Robocloud.Secrets.FileSecrets.get_secret">
 <code class="sig-name descname">get_secret</code><span class="sig-paren">(</span><em class="sig-param">secret_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.FileSecrets.get_secret" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get secret defined with key <cite>secret_name</cite> and return
-value of the key.</p>
-<p>If key does not exist raises <cite>KeyError</cite>.</p>
+<dd><p>Get secret defined with given name from file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>secret_name</strong> – secret to fetch</p>
+<dd class="field-odd"><p><strong>secret_name</strong> – Name of secret to fetch</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>value of the <cite>secret_name</cite> key or <cite>None</cite></p>
+<dd class="field-even"><p>Secret object</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>KeyError</strong> – No secret with given name</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Secrets.FileSecrets.load">
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.FileSecrets.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load secrets file.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="RPA.Robocloud.Secrets.RobocloudVault">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">RobocloudVault</code><span class="sig-paren">(</span><em class="sig-param">*_</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">RobocloudVault</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Robocloud.Secrets.BaseSecretManager" title="RPA.Robocloud.Secrets.BaseSecretManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Robocloud.Secrets.BaseSecretManager</span></code></a></p>
-<p>Handler for secrets stored into Robocloud SecretsManager.</p>
-<p>Following environment variables should exist:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>RC_API_SECRET_HOST : URL to Robocloud Secrets API</p></li>
-<li><p>RC_API_SECRET_TOKEN : API Token for Robocloud Secrets API</p></li>
-<li><p>RC_WORKSPACE_ID : Robocloud Workspace ID</p></li>
+<p>Adapter for secrets stored in Robocloud Vault.</p>
+<p>The following environment variables should exist:</p>
+<ul class="simple">
+<li><p>RC_API_SECRET_HOST:   URL to Robocloud Vault API</p></li>
+<li><p>RC_API_SECRET_TOKEN:  API token with access to Robocloud Vault API</p></li>
+<li><p>RC_WORKSPACE_ID:      Robocloud Workspace ID</p></li>
 </ul>
-</div></blockquote>
+<dl class="attribute">
+<dt id="RPA.Robocloud.Secrets.RobocloudVault.ENCRYPTION_SCHEME">
+<code class="sig-name descname">ENCRYPTION_SCHEME</code><em class="property"> = 'robocloud-vault-transit-v2'</em><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault.ENCRYPTION_SCHEME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Secrets.RobocloudVault.create_url">
+<code class="sig-name descname">create_url</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault.create_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a URL for a specific secret.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="RPA.Robocloud.Secrets.RobocloudVault.get_secret">
 <code class="sig-name descname">get_secret</code><span class="sig-paren">(</span><em class="sig-param">secret_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault.get_secret" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get secret defined with key <cite>secret_name</cite> and return
-value of the key.</p>
-<p>If key does not exist raises <cite>KeyError</cite>.</p>
+<dd><p>Get secret defined with given name from Robocloud Vault.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>secret_name</strong> – secret to fetch</p>
+<dd class="field-odd"><p><strong>secret_name</strong> – Name of secret to fetch</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>value of the <cite>secret_name</cite> key or <cite>None</cite></p>
+<dd class="field-even"><p>Secret object</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#RPA.Robocloud.Secrets.RobocloudVaultError" title="RPA.Robocloud.Secrets.RobocloudVaultError"><strong>RobocloudVaultError</strong></a> – Error with API request or response payload</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Secrets.RobocloudVault.headers">
+<em class="property">property </em><code class="sig-name descname">headers</code><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default request headers.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Secrets.RobocloudVault.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default request parameters.</p>
 </dd></dl>
 
 </dd></dl>
@@ -285,7 +323,7 @@ value of the key.</p>
 <dt id="RPA.Robocloud.Secrets.RobocloudVaultError">
 <em class="property">exception </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">RobocloudVaultError</code><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVaultError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Raised when there is problem with Robocloud Vault secrets</p>
+<p>Raised when there’s problem with reading from Robocloud Vault.</p>
 <dl class="attribute">
 <dt id="RPA.Robocloud.Secrets.RobocloudVaultError.args">
 <code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVaultError.args" title="Permalink to this definition">¶</a></dt>
@@ -301,27 +339,93 @@ set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="RPA.Robocloud.Secrets.Secrets">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">Secrets</code><span class="sig-paren">(</span><em class="sig-param">*args</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.Secrets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Handler for SecretManager. Decides which SecretManager to use based on
-environment variable <cite>RPA_SECRET_MANAGER</cite>. If environment variable is not
-defined then <cite>RobocloudSecrets</cite> is used as default SecretManager.</p>
+<dt id="RPA.Robocloud.Secrets.Secret">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">Secret</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">description</em>, <em class="sig-param">values</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.Secret" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Mapping</span></code></p>
+<p>Container for a secret with name, description, and
+multiple key-value pairs. Immutable and avoids logging
+internal values when possible.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Exception</strong> – if configured SecretManager does not implement
-<cite>BaseSecretManager</cite> class</p></li>
-<li><p><strong>Exception</strong> – if configured SecretManager does not exist in the namespace</p></li>
+<li><p><strong>name</strong> – Name of secret</p></li>
+<li><p><strong>description</strong> – Human-friendly description for secret</p></li>
+<li><p><strong>values</strong> – Dictionary of key-value pairs stored in secret</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="method">
-<dt id="RPA.Robocloud.Secrets.Secrets.get_keyword_names">
-<code class="sig-name descname">get_keyword_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.Secrets.get_keyword_names" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Robocloud.Secrets.Secret.description">
+<em class="property">property </em><code class="sig-name descname">description</code><a class="headerlink" href="#RPA.Robocloud.Secrets.Secret.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Secrets.Secret.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">k</em><span class="optional">[</span>, <em class="sig-param">d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; D[k] if k in D, else d.  d defaults to None.<a class="headerlink" href="#RPA.Robocloud.Secrets.Secret.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Secrets.Secret.items">
+<code class="sig-name descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's items<a class="headerlink" href="#RPA.Robocloud.Secrets.Secret.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Secrets.Secret.keys">
+<code class="sig-name descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's keys<a class="headerlink" href="#RPA.Robocloud.Secrets.Secret.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Secrets.Secret.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#RPA.Robocloud.Secrets.Secret.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Secrets.Secret.values">
+<code class="sig-name descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#RPA.Robocloud.Secrets.Secret.values" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
+
+<dl class="class">
+<dt id="RPA.Robocloud.Secrets.Secrets">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">Secrets</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.Secrets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A library for reading secrets, e.g. passwords or tokens, that can
+be used during a task execution.</p>
+<p>Primarily used with Robocloud Vault, but supports custom adapters
+for storing secrets in other databases or local files.</p>
+<p>The selected adapter can be set with the environment
+variable <code class="docutils literal notranslate"><span class="pre">RPA_SECRET_MANAGER</span></code>, or the keyword argument <code class="docutils literal notranslate"><span class="pre">default_adapter</span></code>.
+Defaults to Robocloud Vault if not defined.</p>
+<p>All other library arguments are passed to the adapter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>default_adapter</strong> – Override default secret adapter</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="RPA.Robocloud.Secrets.Secrets.adapter">
+<em class="property">property </em><code class="sig-name descname">adapter</code><a class="headerlink" href="#RPA.Robocloud.Secrets.Secrets.adapter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocloud.Secrets.Secrets.get_secret">
+<code class="sig-name descname">get_secret</code><span class="sig-paren">(</span><em class="sig-param">secret_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.Secrets.get_secret" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a secret from the configured source, e.g. Robocloud Vault,
+and return it as a <code class="docutils literal notranslate"><span class="pre">Secret</span></code> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>secret_name</strong> – Name of secret</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Robocloud.Secrets.url_join">
+<code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">url_join</code><span class="sig-paren">(</span><em class="sig-param">*parts</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.url_join" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 </div>

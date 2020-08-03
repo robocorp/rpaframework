@@ -547,6 +547,21 @@ used when direction is ‘top’ or ‘bottom’, default <cite>False</cite></p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.PDF.PDF.html_to_pdf">
+<code class="sig-name descname">html_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">content: str = None</em>, <em class="sig-param">filename: str = None</em>, <em class="sig-param">variables: dict = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.html_to_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use HTML content to generate PDF file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>content</strong> – HTML content</p></li>
+<li><p><strong>filename</strong> – filepath where to save PDF document</p></li>
+<li><p><strong>variables</strong> – dictionary of variables to fill into template, defaults to {}</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.PDF.PDF.image">
 <code class="sig-name descname">image</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">x=None</em>, <em class="sig-param">y=None</em>, <em class="sig-param">w=0</em>, <em class="sig-param">h=0</em>, <em class="sig-param">type=''</em>, <em class="sig-param">link=''</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Put an image on the page</p>
@@ -955,7 +970,7 @@ file to activate</p>
 
 <dl class="method">
 <dt id="RPA.PDF.PDF.template_html_to_pdf">
-<code class="sig-name descname">template_html_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">template: str</em>, <em class="sig-param">filename: str</em>, <em class="sig-param">variables: dict = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.template_html_to_pdf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">template_html_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">template: str = None</em>, <em class="sig-param">filename: str = None</em>, <em class="sig-param">variables: dict = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.template_html_to_pdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use HTML template file to generate PDF file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

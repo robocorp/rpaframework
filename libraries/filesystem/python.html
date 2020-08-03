@@ -304,6 +304,20 @@
 <p><cite>FileSystem</cite> is a library for finding, creating, and modifying
 files on a local filesystem.</p>
 <dl class="method">
+<dt id="RPA.FileSystem.FileSystem.absolute_path">
+<code class="sig-name descname">absolute_path</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.absolute_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the absolute path to a file, and resolves symlinks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – path that will be resolved</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>absolute path to file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.FileSystem.FileSystem.append_to_binary_file">
 <code class="sig-name descname">append_to_binary_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">content</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.append_to_binary_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Appends binary content to the given file.</p>
@@ -405,13 +419,14 @@ files on a local filesystem.</p>
 
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.create_directory">
-<code class="sig-name descname">create_directory</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parents=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.create_directory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_directory</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">parents=False</em>, <em class="sig-param">exist_ok=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.create_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a directory and (optionally) non-existing parent directories.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> – path to new directory</p></li>
 <li><p><strong>parents</strong> – create missing parent directories</p></li>
+<li><p><strong>exist_ok</strong> – continue without errors if directory already exists</p></li>
 </ul>
 </dd>
 </dl>
@@ -700,13 +715,13 @@ optionally overwriting the destination.</p>
 <dl class="method">
 <dt id="RPA.FileSystem.FileSystem.normalize_path">
 <code class="sig-name descname">normalize_path</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.normalize_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts to absolute path and resolves any symlinks.</p>
+<dd><p>Removes redundant separators or up-level references from path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> – path that will be normalized</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>absolute path to file</p>
+<dd class="field-even"><p>path to file</p>
 </dd>
 </dl>
 </dd></dl>
