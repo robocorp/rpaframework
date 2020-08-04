@@ -73,6 +73,7 @@ class Application:
         :param attachments: list of filepaths to include in the email, defaults to []
         :return: `True` if there were no errors
         """
+        # pylint: disable=no-member
         attachments = attachments or []
         if not isinstance(recipients, list):
             recipients = recipients.split(",")
