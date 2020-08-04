@@ -1,3 +1,4 @@
+# pylint: disable=c-extension-no-member
 import logging
 import platform
 
