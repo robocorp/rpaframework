@@ -150,7 +150,7 @@ class ImapSmtp:
                 try:
                     self.smtp_conn.starttls()
                 except SMTPNotSupportedError:
-                    self.logger.warning("SMTP not supported by the server")
+                    self.logger.warning("TLS not supported by the server")
             except SMTPConnectError:
                 context = ssl.create_default_context()
                 self.smtp_conn = SMTP_SSL(smtp_server, smtp_port, context=context)
