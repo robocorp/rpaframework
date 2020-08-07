@@ -3,6 +3,7 @@ import logging
 import os
 import platform
 import time
+import traceback
 from itertools import product
 from typing import Any, Optional
 from pathlib import Path
@@ -11,7 +12,6 @@ from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from SeleniumLibrary import SeleniumLibrary, EMBED
 from SeleniumLibrary.base import keyword
 from SeleniumLibrary.keywords import BrowserManagementKeywords
-from selenium.common.exceptions import WebDriverException
 
 from RPA.core import locators, notebook, webdriver
 
@@ -168,9 +168,9 @@ class Browser(SeleniumLibrary):
                 )
                 options.append((browser, headless, download, ""))
                 break
-            except WebDriverException as error:
+            except Exception as error:  # pylint: disable=broad-except
                 options.append((browser, headless, download, error))
-                self.logger.debug(error)
+                self.logger.debug(traceback.format_exc())
 
         # Log table of all attempted combinations
         try:
@@ -246,9 +246,9 @@ class Browser(SeleniumLibrary):
 
         Supported at the moment:
 
-            - ChromeOptions
-            - FirefoxOptions
-            - IeOptions
+        - ChromeOptions
+        - FirefoxOptions
+        - IeOptions
 
         ``browser`` to set options for
 
