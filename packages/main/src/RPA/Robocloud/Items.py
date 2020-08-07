@@ -24,7 +24,10 @@ def json_dump_safe(data, **kwargs):
         logging.warning("Failed to serialize: %s", name)
         return f"<non-serializable: {name}>"
 
-    return json.dumps(data or {}, default=invalid, **kwargs)
+    if data is None:
+        data = {}
+
+    return json.dumps(data, default=invalid, **kwargs)
 
 
 class BaseAdapter(ABC):
