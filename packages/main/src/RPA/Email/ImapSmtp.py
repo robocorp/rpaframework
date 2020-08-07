@@ -190,7 +190,7 @@ class ImapSmtp:
         else:
             imap_port = int(imap_port)
         if imap_server and account and password:
-            self.imap_conn = IMAP4_SSL(imap_server)
+            self.imap_conn = IMAP4_SSL(imap_server, imap_port)
             self.imap_conn.login(account, password)
             self.imap_conn.select("INBOX")
         else:
