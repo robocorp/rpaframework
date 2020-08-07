@@ -207,16 +207,23 @@ class Browser(SeleniumLibrary):
             download,
         )
 
-        options = self.set_driver_options(browser, use_profile, headless, maximized)
+        kwargs, arguments = self.get_driver_args(
+            browser, use_profile, headless, maximized
+        )
 
         executable = webdriver.executable(browser, download)
         if executable:
-            options.setdefault("executable_path", executable)
+            kwargs.setdefault("executable_path", executable)
 
         library = BrowserManagementKeywords(self)
         browser = browser.lower().capitalize()
 
-        return library.create_webdriver(browser, alias, **options)
+        driver = library.create_webdriver(browser, alias, **kwargs)
+        self.logger.info(
+            "Created %s browser with arguments: %s", browser, " ".join(arguments)
+        )
+
+        return driver
 
     def get_browser_order(self, browser_selection: Any) -> list:
         """Get a list of browsers that will be used for open browser
@@ -235,7 +242,7 @@ class Browser(SeleniumLibrary):
             )
         return preferable_browser_order
 
-    def set_driver_options(
+    def get_driver_args(
         self,
         browser: str,
         use_profile: bool = False,
@@ -261,42 +268,49 @@ class Browser(SeleniumLibrary):
         browser = browser.lower()
         headless = headless or bool(int(os.getenv("RPA_HEADLESS_MODE", "0")))
 
-        driver_options = {}
+        kwargs = {}
 
         if browser not in self.AVAILABLE_OPTIONS:
-            return driver_options
+            return kwargs, []
 
         module = importlib.import_module("selenium.webdriver")
         factory = getattr(module, self.AVAILABLE_OPTIONS[browser])
-        browser_options = factory()
+        options = factory()
 
         if headless:
-            self.set_headless_options(browser, browser_options)
+            self.set_headless_options(browser, options)
 
         if maximized:
-            browser_options.add_argument("--start-maximized")
+            options.add_argument("--start-maximized")
 
         if use_profile:
-            self.set_user_profile(browser_options)
+            self.set_user_profile(options)
 
         if browser != "chrome":
-            driver_options["options"] = browser_options
+            kwargs["options"] = options
         else:
-            self.set_default_options(browser_options)
-            browser_options.add_experimental_option(
-                "prefs", {"safebrowsing.enabled": "true"}
+            options.add_argument("--disable-web-security")
+            options.add_argument("--allow-running-insecure-content")
+            options.add_argument("--no-sandbox")
+            options.add_experimental_option(
+                "prefs",
+                {
+                    "safebrowsing.enabled": True,
+                    "credentials_enable_service": False,
+                    "profile.password_manager_enabled": False,
+                },
             )
-            browser_options.add_experimental_option(
+            options.add_experimental_option(
                 "excludeSwitches", ["enable-logging", "enable-automation"]
             )
 
             if self.logger.isEnabledFor(logging.DEBUG):
-                driver_options["service_log_path"] = "chromedriver.log"
-                driver_options["service_args"] = ["--verbose"]
+                kwargs["service_log_path"] = "chromedriver.log"
+                kwargs["service_args"] = ["--verbose"]
 
-            driver_options["chrome_options"] = browser_options
+            kwargs["chrome_options"] = options
 
-        return driver_options
+        return kwargs, options.arguments
 
     @keyword
     def open_chrome_browser(
@@ -326,15 +340,6 @@ class Browser(SeleniumLibrary):
             browser_selection="Chrome",
         )
         return index
-
-    def set_default_options(self, options: dict) -> None:
-        """Set default browser options
-
-        ``options`` browser options
-        """
-        options.add_argument("--disable-web-security")
-        options.add_argument("--allow-running-insecure-content")
-        options.add_argument("--no-sandbox")
 
     def set_headless_options(self, browser: str, options: dict) -> None:
         """Set headless mode for the browser, if possible.
