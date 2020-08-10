@@ -73,6 +73,11 @@ class Browser(SeleniumLibrary):
         # Embed screenshots in logs by default
         self.set_screenshot_directory(EMBED)
 
+    @property
+    def location(self) -> str:
+        """Return browser location."""
+        return self.get_location()
+
     def _find_by_alias(self, parent, criteria, tag, constraints):
         """Custom 'alias' locator that uses locators database."""
         del constraints
@@ -99,12 +104,6 @@ class Browser(SeleniumLibrary):
         self.logger.info("%s is an alias for %s", criteria, locator)
         return self._element_finder.find(locator, tag, parent)
 
-    def get_preferable_browser_order(self) -> list:
-        """Return a list of RPA Framework preferred browsers by OS."""
-        return webdriver.DRIVER_PREFERENCE.get(
-            platform.system(), webdriver.DRIVER_PREFERENCE["default"]
-        )
-
     @keyword
     def open_available_browser(
         self,
@@ -114,17 +113,25 @@ class Browser(SeleniumLibrary):
         maximized: bool = False,
         browser_selection: Any = AUTOMATIC_BROWSER_SELECTION,
         alias: Optional[str] = None,
+        profile_name: Optional[str] = None,
+        profile_path: Optional[str] = None,
     ) -> int:
         """Opens the first available browser in the system in preferred order, or the
         given browser (``browser_selection``).
 
         ``url`` URL to open
 
-        ``use_profile`` set browser profile, default ``False``
+        ``alias`` Custom name for browser
 
-        ``headless`` run in headless mode, default ``False``
+        ``headless`` Run in headless mode, default ``False``
 
-        ``maximized`` run window maximized, default ``False``
+        ``maximized`` Run window maximized, default ``False``
+
+        ``use_profile`` Set browser profile, default ``False`` (Chrome/Chromium only)
+
+        ``profile_name`` Name of profile (if profile enabled)
+
+        ``profile_path`` Path to profiles (if profile enabled)
 
         ``browser_selection`` browser name, default ``AUTOMATIC_BROWSER_SELECTION``
 
@@ -146,13 +153,15 @@ class Browser(SeleniumLibrary):
 
         3. Open the URL
 
+        Returns index or custom alias for the browser instance.
+
         Raises ``BrowserNotFoundError`` if unable to open the browser.
 
         For information about Safari webdriver setup, see
         https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari
         """
         # pylint: disable=redefined-argument-from-local
-        browser_options = self.get_browser_order(browser_selection)
+        browser_options = self._get_browser_order(browser_selection)
         headless_options = [headless] if headless is not None else [False, True]
         download_options = [False, True]
 
@@ -163,10 +172,29 @@ class Browser(SeleniumLibrary):
             browser_options, headless_options, download_options
         ):
             try:
+                self.logger.debug(
+                    "Creating webdriver for '%s' (headless: %s, download: %s)",
+                    browser,
+                    headless,
+                    download,
+                )
+                kwargs, arguments = self._get_driver_args(
+                    browser,
+                    headless,
+                    maximized,
+                    use_profile,
+                    profile_name,
+                    profile_path,
+                )
                 index_or_alias = self._create_webdriver(
-                    browser, headless, download, use_profile, maximized, alias
+                    browser, alias, download, **kwargs
                 )
                 options.append((browser, headless, download, ""))
+                self.logger.info(
+                    "Created %s browser with arguments: %s",
+                    browser,
+                    " ".join(arguments),
+                )
                 break
             except Exception as error:  # pylint: disable=broad-except
                 options.append((browser, headless, download, error))
@@ -192,40 +220,7 @@ class Browser(SeleniumLibrary):
         self.go_to(url)
         return index_or_alias
 
-    def _create_webdriver(
-        self, browser, headless, download, use_profile, maximized, alias
-    ):
-        """Create a webdriver instance for the given browser.
-
-        Returns an index of the webdriver session,
-        or ``None`` if a webdriver was not initialized.
-        """
-        self.logger.debug(
-            "Creating webdriver for '%s' (headless: %s, download: %s)",
-            browser,
-            headless,
-            download,
-        )
-
-        kwargs, arguments = self.get_driver_args(
-            browser, use_profile, headless, maximized
-        )
-
-        executable = webdriver.executable(browser, download)
-        if executable:
-            kwargs.setdefault("executable_path", executable)
-
-        library = BrowserManagementKeywords(self)
-        browser = browser.lower().capitalize()
-
-        driver = library.create_webdriver(browser, alias, **kwargs)
-        self.logger.info(
-            "Created %s browser with arguments: %s", browser, " ".join(arguments)
-        )
-
-        return driver
-
-    def get_browser_order(self, browser_selection: Any) -> list:
+    def _get_browser_order(self, browser_selection: Any) -> list:
         """Get a list of browsers that will be used for open browser
         keywords. Will be one or many.
 
@@ -233,7 +228,9 @@ class Browser(SeleniumLibrary):
             or one named browser, eg. "Chrome"
         """
         if browser_selection == self.AUTOMATIC_BROWSER_SELECTION:
-            preferable_browser_order = self.get_preferable_browser_order()
+            preferable_browser_order = webdriver.DRIVER_PREFERENCE.get(
+                platform.system(), webdriver.DRIVER_PREFERENCE["default"]
+            )
         else:
             preferable_browser_order = (
                 browser_selection
@@ -242,29 +239,16 @@ class Browser(SeleniumLibrary):
             )
         return preferable_browser_order
 
-    def get_driver_args(
+    def _get_driver_args(
         self,
         browser: str,
-        use_profile: bool = False,
         headless: bool = False,
         maximized: bool = False,
+        use_profile: bool = False,
+        profile_name: Optional[str] = None,
+        profile_path: Optional[str] = None,
     ) -> dict:
-        """Set options for the given browser.
-
-        Supported at the moment:
-
-        - ChromeOptions
-        - FirefoxOptions
-        - IeOptions
-
-        ``browser`` to set options for
-
-        ``use_profile`` if a browser user profile is used, default ``False``
-
-        ``headless`` if headless mode should be set, default ``False``
-
-        ``maximized`` if the browser should be run maximized, default ``False``
-        """
+        """Get browser and webdriver arguments for given options."""
         browser = browser.lower()
         headless = headless or bool(int(os.getenv("RPA_HEADLESS_MODE", "0")))
 
@@ -278,16 +262,16 @@ class Browser(SeleniumLibrary):
         options = factory()
 
         if headless:
-            self.set_headless_options(browser, options)
+            self._set_headless_options(browser, options)
 
         if maximized:
             options.add_argument("--start-maximized")
 
-        if use_profile:
-            self.set_user_profile(options)
-
         if browser != "chrome":
             kwargs["options"] = options
+            if use_profile:
+                self.logger.warning("Profiles are supported only with Chrome")
+
         else:
             options.add_argument("--disable-web-security")
             options.add_argument("--allow-running-insecure-content")
@@ -304,6 +288,9 @@ class Browser(SeleniumLibrary):
                 "excludeSwitches", ["enable-logging", "enable-automation"]
             )
 
+            if use_profile:
+                self._set_user_profile(options, profile_path, profile_name)
+
             if self.logger.isEnabledFor(logging.DEBUG):
                 kwargs["service_log_path"] = "chromedriver.log"
                 kwargs["service_args"] = ["--verbose"]
@@ -312,36 +299,7 @@ class Browser(SeleniumLibrary):
 
         return kwargs, options.arguments
 
-    @keyword
-    def open_chrome_browser(
-        self,
-        url: str,
-        use_profile: bool = False,
-        headless: bool = False,
-        maximized: bool = False,
-    ) -> int:
-        """Open Chrome browser.
-
-        ``url`` URL to open
-
-        ``use_profile`` if a browser user profile is used, default ``False``
-
-        ``headless`` if headless mode should be set, default ``False``
-
-        ``maximized`` if the browser should be run maximized, default ``False``
-        """
-        # webdrivermanager
-        # https://stackoverflow.com/questions/41084124/chrome-options-in-robot-framework
-        index = self.open_available_browser(
-            url,
-            use_profile=use_profile,
-            headless=headless,
-            maximized=maximized,
-            browser_selection="Chrome",
-        )
-        return index
-
-    def set_headless_options(self, browser: str, options: dict) -> None:
+    def _set_headless_options(self, browser: str, options: dict) -> None:
         """Set headless mode for the browser, if possible.
 
         ``browser`` string name of the browser
@@ -349,9 +307,9 @@ class Browser(SeleniumLibrary):
         ``options`` browser options class instance
         """
         if browser.lower() == "safari":
-            self.logger.info(
+            self.logger.warning(
                 "Safari does not support headless mode. "
-                "https://github.com/SeleniumHQ/selenium/issues/5985"
+                "(https://github.com/SeleniumHQ/selenium/issues/5985)"
             )
             return
 
@@ -359,7 +317,12 @@ class Browser(SeleniumLibrary):
         options.add_argument("--disable-gpu")
         options.add_argument("--disable-dev-shm-usage")
 
-    def set_user_profile(self, options: dict) -> None:
+    def _set_user_profile(
+        self,
+        options: dict,
+        profile_path: Optional[str] = None,
+        profile_name: Optional[str] = None,
+    ) -> None:
         """Set user profile configuration into browser options
 
         Requires environment variable ``RPA_CHROME_USER_PROFILE_DIR``
@@ -367,17 +330,72 @@ class Browser(SeleniumLibrary):
 
         ``options`` dictionary of browser options
         """
-        user_profile_dir = os.getenv("RPA_CHROME_USER_PROFILE_DIR", None)
-        if user_profile_dir is None:
-            self.logger.warning(
-                'Environment variable "RPA_CHROME_USER_PROFILE_DIR" '
-                "has not been set, cannot set user profile"
-            )
+        data_dir = profile_path or os.getenv("RPA_CHROME_USER_PROFILE_DIR")
+
+        system = platform.system()
+        home = Path.home()
+
+        if data_dir is not None:
+            pass
+        elif system == "Windows":
+            data_dir = home / "AppData" / "Local" / "Google" / "Chrome" / "User Data"
+        elif system == "Linux":
+            data_dir = home / ".config" / "google-chrome"
+        elif system == "Darwin":
+            data_dir = home / "Library" / "Application Support" / "Google" / "Chrome"
+        else:
+            self.logger.warning("Unable to resolve profile directory for: %s", system)
             return
 
-        options.add_argument(f"--user-data-dir='{user_profile_dir}'")
+        if not Path(data_dir).exists():
+            self.logger.warning("Given profile directory does not exist: %s", data_dir)
+
         options.add_argument("--enable-local-sync-backend")
-        options.add_argument(f"--local-sync-backend-dir='{user_profile_dir}'")
+        options.add_argument(f"--local-sync-backend-dir={data_dir}")
+        options.add_argument(f"--user-data-dir={data_dir}")
+
+        if profile_name is not None:
+            options.add_argument(f"--profile-directory={profile_name}")
+
+    def _create_webdriver(self, browser, alias, download, **kwargs):
+        """Create a webdriver instance for the given browser.
+
+        Returns an index/alias of the webdriver session,
+        or ``None`` if a webdriver was not initialized.
+        """
+        executable = webdriver.executable(browser, download)
+        if executable:
+            kwargs.setdefault("executable_path", executable)
+
+        library = BrowserManagementKeywords(self)
+        browser = browser.lower().capitalize()
+
+        return library.create_webdriver(browser, alias, **kwargs)
+
+    @keyword
+    def open_chrome_browser(
+        self,
+        url: str,
+        use_profile: bool = False,
+        headless: bool = False,
+        maximized: bool = False,
+        alias: Optional[str] = None,
+        profile_name: Optional[str] = None,
+        profile_path: Optional[str] = None,
+    ) -> int:
+        """Open Chrome browser. See ``Open Available Browser`` for
+        descriptions of arguments.
+        """
+        return self.open_available_browser(
+            url,
+            alias=alias,
+            headless=headless,
+            maximized=maximized,
+            use_profile=use_profile,
+            browser_selection="Chrome",
+            profile_name=profile_name,
+            profile_path=profile_path,
+        )
 
     @keyword
     def open_headless_chrome_browser(self, url: str) -> int:
