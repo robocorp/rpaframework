@@ -440,29 +440,33 @@ class Browser(SeleniumLibrary):
             )
 
     @keyword
-    def input_text_when_element_is_visible(self, locator: str, text: str) -> None:
-        """Input text into locator after it has become visible.
+    def click_element_when_visible(
+        self, locator: str, modifier: Optional[str] = None, action_chain: bool = False
+    ) -> None:
+        """Click element identified by ``locator``, once it becomes visible.
 
         ``locator`` element locator
 
-        ``text`` insert text to locator
+        ``modifier`` press given keys while clicking the element, e.g. CTRL
+
+        ``action_chain`` store action in Selenium ActionChain queue
         """
         self.wait_until_element_is_visible(locator)
-        self.input_text(locator, text)
+        self.click_element(locator, modifier, action_chain)
 
     @keyword
-    def wait_and_click_button(self, locator: str) -> None:
-        """Click button once it becomes visible.
+    def click_button_when_visible(self, locator: str, modifier: Optional[str]) -> None:
+        """Click button identified by ``locator``, once it becomes visible.
 
         ``locator`` element locator
+
+        ``modifier`` press given keys while clicking the element, e.g. CTRL
         """
         self.wait_until_element_is_visible(locator)
-        self.click_button(locator)
+        self.click_button(locator, modifier)
 
-    @property
-    def location(self) -> str:
-        """Return browser location."""
-        return self.get_location()
+    # Alias for backwards compatibility
+    wait_and_click_button = click_button_when_visible
 
     @keyword
     def click_element_if_visible(self, locator: str) -> None:
@@ -473,6 +477,17 @@ class Browser(SeleniumLibrary):
         visible = self.is_element_visible(locator)
         if visible:
             self.click_element(locator)
+
+    @keyword
+    def input_text_when_element_is_visible(self, locator: str, text: str) -> None:
+        """Input text into locator after it has become visible.
+
+        ``locator`` element locator
+
+        ``text`` insert text to locator
+        """
+        self.wait_until_element_is_visible(locator)
+        self.input_text(locator, text)
 
     @keyword
     def is_element_enabled(self, locator: str) -> bool:
