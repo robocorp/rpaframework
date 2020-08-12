@@ -115,25 +115,28 @@ class Browser(SeleniumLibrary):
         alias: Optional[str] = None,
         profile_name: Optional[str] = None,
         profile_path: Optional[str] = None,
+        preferences: Optional[dict] = None,
     ) -> int:
         """Opens the first available browser in the system in preferred order, or the
         given browser (``browser_selection``).
 
         ``url`` URL to open
 
-        ``alias`` Custom name for browser
+        ``use_profile`` Set browser profile, default ``False`` (Chrome/Chromium only)
 
         ``headless`` Run in headless mode, default ``False``
 
         ``maximized`` Run window maximized, default ``False``
 
-        ``use_profile`` Set browser profile, default ``False`` (Chrome/Chromium only)
+        ``browser_selection`` browser name, default ``AUTOMATIC_BROWSER_SELECTION``
+
+        ``alias`` Custom name for browser
 
         ``profile_name`` Name of profile (if profile enabled)
 
         ``profile_path`` Path to profiles (if profile enabled)
 
-        ``browser_selection`` browser name, default ``AUTOMATIC_BROWSER_SELECTION``
+        ``preferences`` Profile preferences (Chrome/Chromium only)
 
         Returns an index of the webdriver session.
 
@@ -185,6 +188,7 @@ class Browser(SeleniumLibrary):
                     use_profile,
                     profile_name,
                     profile_path,
+                    preferences,
                 )
                 index_or_alias = self._create_webdriver(
                     browser, alias, download, **kwargs
@@ -247,11 +251,12 @@ class Browser(SeleniumLibrary):
         use_profile: bool = False,
         profile_name: Optional[str] = None,
         profile_path: Optional[str] = None,
+        preferences: Optional[dict] = None,
     ) -> dict:
         """Get browser and webdriver arguments for given options."""
+        preferences = preferences or {}
         browser = browser.lower()
         headless = headless or bool(int(os.getenv("RPA_HEADLESS_MODE", "0")))
-
         kwargs = {}
 
         if browser not in self.AVAILABLE_OPTIONS:
@@ -273,16 +278,17 @@ class Browser(SeleniumLibrary):
                 self.logger.warning("Profiles are supported only with Chrome")
 
         else:
+            default_preferences = {
+                "safebrowsing.enabled": True,
+                "credentials_enable_service": False,
+                "profile.password_manager_enabled": False,
+            }
+
             options.add_argument("--disable-web-security")
             options.add_argument("--allow-running-insecure-content")
             options.add_argument("--no-sandbox")
             options.add_experimental_option(
-                "prefs",
-                {
-                    "safebrowsing.enabled": True,
-                    "credentials_enable_service": False,
-                    "profile.password_manager_enabled": False,
-                },
+                "prefs", {**default_preferences, **preferences}
             )
             options.add_experimental_option(
                 "excludeSwitches", ["enable-logging", "enable-automation"]
@@ -382,6 +388,7 @@ class Browser(SeleniumLibrary):
         alias: Optional[str] = None,
         profile_name: Optional[str] = None,
         profile_path: Optional[str] = None,
+        preferences: Optional[dict] = None,
     ) -> int:
         """Open Chrome browser. See ``Open Available Browser`` for
         descriptions of arguments.
@@ -395,6 +402,7 @@ class Browser(SeleniumLibrary):
             browser_selection="Chrome",
             profile_name=profile_name,
             profile_path=profile_path,
+            preferences=preferences,
         )
 
     @keyword
