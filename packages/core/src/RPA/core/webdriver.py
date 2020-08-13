@@ -69,19 +69,27 @@ def executable(browser: str, download: bool = False) -> str:
 
     driver_path = _driver_path(factory, download)
 
-    if not download:
-        LOGGER.debug("Attempting to use driver: %s", driver_path)
-    elif not driver_path.exists():
+    if driver_path.exists() and not download:
+        LOGGER.debug("Attempting to use existing driver: %s", driver_path)
+        return str(driver_path)
+    elif driver_path.exists() and download:
+        # TODO: Implement version check for all browsers
+        if browser == "chrome":
+            chrome_version = _chrome_version()
+            driver_version = _chromedriver_version(driver_path)
+            if chrome_version != driver_version:
+                _download_driver(factory)
+        else:
+            LOGGER.debug(
+                "Driver download skipped, because it exists at '%s'", driver_path
+            )
+        return str(driver_path)
+    elif not driver_path.exists() and download:
         _download_driver(factory)
-    elif browser == "chrome":
-        chrome_version = _chrome_version()
-        driver_version = _chromedriver_version(driver_path)
-        if chrome_version != driver_version:
-            _download_driver(factory)
+        return str(driver_path)
     else:
-        LOGGER.debug("Driver download skipped, because it exists at '%s'", driver_path)
-
-    return str(driver_path)
+        LOGGER.debug("Attempting to use driver from PATH")
+        return None
 
 
 def start(name: str, **options):
