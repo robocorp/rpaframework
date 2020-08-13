@@ -375,11 +375,10 @@ class Windows(OperatingSystem):
         off_x: int = 0,
         off_y: int = 0,
         image: str = None,
-        ocr: str = None,
         method: str = "locator",
         ctype: str = "click",
     ) -> None:
-        """Mouse click `locator`, `coordinates`, `image` or `ocr`.
+        """Mouse click `locator`, `coordinates`, or `image`
 
         When using method `locator`,`image` or `ocr` mouse is clicked by default at
         center coordinates.
@@ -396,7 +395,6 @@ class Windows(OperatingSystem):
         :param off_x: offset x (used for locator and image clicks)
         :param off_y: offset y (used for locator and image clicks)
         :param image: image to click on desktop
-        :param ocr: text to click on desktop
         :param method: one of the available methods to mouse click, default "locator"
         :param ctype: type of mouse click
         """
@@ -413,8 +411,6 @@ class Windows(OperatingSystem):
             self.mouse_click_coords(x, y, ctype)
         elif method == "image":
             self.mouse_click_image(image, off_x, off_y, ctype)
-        elif method == "ocr":
-            self.mouse_click_ocr(ocr, off_x, off_y, ctype)
 
     def mouse_click_image(
         self, template: str, off_x: int = 0, off_y: int = 0, ctype: str = "click"
