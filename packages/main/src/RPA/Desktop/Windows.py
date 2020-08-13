@@ -416,17 +416,6 @@ class Windows(OperatingSystem):
         elif method == "ocr":
             self.mouse_click_ocr(ocr, off_x, off_y, ctype)
 
-    def mouse_click_ocr(self, ocr, off_x=0, off_y=0, ctype="click"):
-        """Click at ocr text on desktop
-
-        :param ocr: [description]
-        :param off_x: [description], defaults to 0
-        :param off_y: [description], defaults to 0
-        :param ctype: [description], defaults to "click"
-        :raises NotImplementedError: [description]
-        """
-        raise NotImplementedError
-
     def mouse_click_image(
         self, template: str, off_x: int = 0, off_y: int = 0, ctype: str = "click"
     ) -> None:
@@ -436,7 +425,6 @@ class Windows(OperatingSystem):
         :param off_x: [description], defaults to 0
         :param off_y: [description], defaults to 0
         :param ctype: [description], defaults to "click"
-        :raises NotImplementedError: [description]
         """
         matches = Images().find_template_on_screen(template, limit=1)
 
@@ -885,9 +873,6 @@ class Windows(OperatingSystem):
             else:
                 self.logger.warning("did not have attr %s", attr)
         return element_dict
-
-    def window_exists(self):
-        raise NotImplementedError
 
     def put_system_to_sleep(self) -> None:
         """Put Windows into sleep mode
