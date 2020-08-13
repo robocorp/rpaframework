@@ -255,6 +255,15 @@ Keywords
      <p>See the <a href="#Click%20Element" class="name">Click Element</a> keyword for details about the <code>modifier</code> argument.</p>
      <p>The <code>modifier</code> argument is new in SeleniumLibrary 3.3</p>
 
+:Click Button When Visible:
+  :Arguments: locator: str, modifier: typing.Union[str, NoneType]
+
+  .. raw:: html
+
+     <p>Click button identified by <code>locator</code>, once it becomes visible.</p>
+     <p><code>locator</code> element locator</p>
+     <p><code>modifier</code> press given keys while clicking the element, e.g. CTRL</p>
+
 :Click Element:
   :Arguments: locator, modifier=False, action_chain=False
 
@@ -309,6 +318,16 @@ Keywords
 
      <p>Click element if it is visible</p>
      <p><code>locator</code> element locator</p>
+
+:Click Element When Visible:
+  :Arguments: locator: str, modifier: str=None, action_chain: bool=False
+
+  .. raw:: html
+
+     <p>Click element identified by <code>locator</code>, once it becomes visible.</p>
+     <p><code>locator</code> element locator</p>
+     <p><code>modifier</code> press given keys while clicking the element, e.g. CTRL</p>
+     <p><code>action_chain</code> store action in Selenium ActionChain queue</p>
 
 :Click Image:
   :Arguments: locator, modifier=False
@@ -1775,16 +1794,20 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Open Available Browser:
-  :Arguments: url: str, use_profile: bool=False, headless: bool=None, maximized: bool=False, browser_selection: typing.Any=AUTO, alias: str=None
+  :Arguments: url: str, use_profile: bool=False, headless: bool=None, maximized: bool=False, browser_selection: typing.Any=AUTO, alias: str=None, profile_name: str=None, profile_path: str=None, preferences: dict=None
 
   .. raw:: html
 
      <p>Opens the first available browser in the system in preferred order, or the given browser (<code>browser_selection</code>).</p>
      <p><code>url</code> URL to open</p>
-     <p><code>use_profile</code> set browser profile, default <code>False</code></p>
-     <p><code>headless</code> run in headless mode, default <code>False</code></p>
-     <p><code>maximized</code> run window maximized, default <code>False</code></p>
+     <p><code>use_profile</code> Set browser profile, default <code>False</code> (Chrome/Chromium only)</p>
+     <p><code>headless</code> Run in headless mode, default <code>False</code></p>
+     <p><code>maximized</code> Run window maximized, default <code>False</code></p>
      <p><code>browser_selection</code> browser name, default <code>AUTOMATIC_BROWSER_SELECTION</code></p>
+     <p><code>alias</code> Custom name for browser</p>
+     <p><code>profile_name</code> Name of profile (if profile enabled)</p>
+     <p><code>profile_path</code> Path to profiles (if profile enabled)</p>
+     <p><code>preferences</code> Profile preferences (Chrome/Chromium only)</p>
      <p>Returns an index of the webdriver session.</p>
      <h4>Process of opening a browser</h4>
      <p>1. Get the order of browsers</p>
@@ -1794,6 +1817,7 @@ Keywords
      <p>c. (If step b. failed) Download and install webdriver, try again</p>
      <p>d. (If step c. failed) Try starting webdriver in headless mode</p>
      <p>3. Open the URL</p>
+     <p>Returns index or custom alias for the browser instance.</p>
      <p>Raises <code>BrowserNotFoundError</code> if unable to open the browser.</p>
      <p>For information about Safari webdriver setup, see <a href="https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p>
 
@@ -2044,15 +2068,11 @@ Keywords
      <p>The <code>executable_path</code> argument is new in SeleniumLibrary 4.2.</p>
 
 :Open Chrome Browser:
-  :Arguments: url: str, use_profile: bool=False, headless: bool=False, maximized: bool=False
+  :Arguments: url: str, use_profile: bool=False, headless: bool=False, maximized: bool=False, alias: str=None, profile_name: str=None, profile_path: str=None, preferences: dict=None
 
   .. raw:: html
 
-     <p>Open Chrome browser.</p>
-     <p><code>url</code> URL to open</p>
-     <p><code>use_profile</code> if a browser user profile is used, default <code>False</code></p>
-     <p><code>headless</code> if headless mode should be set, default <code>False</code></p>
-     <p><code>maximized</code> if the browser should be run maximized, default <code>False</code></p>
+     <p>Open Chrome browser. See <code>Open Available Browser</code> for descriptions of arguments.</p>
 
 :Open Context Menu:
   :Arguments: locator
@@ -3062,12 +3082,13 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Wait And Click Button:
-  :Arguments: locator: str
+  :Arguments: locator: str, modifier: typing.Union[str, NoneType]
 
   .. raw:: html
 
-     <p>Click button once it becomes visible.</p>
+     <p>Click button identified by <code>locator</code>, once it becomes visible.</p>
      <p><code>locator</code> element locator</p>
+     <p><code>modifier</code> press given keys while clicking the element, e.g. CTRL</p>
 
 :Wait For Condition:
   :Arguments: condition, timeout=None, error=None

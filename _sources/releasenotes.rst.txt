@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- **Browser**: Use fallback browser if webdriver download fails
+
 2.4.0
 -----
 
