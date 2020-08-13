@@ -4,6 +4,7 @@ import os
 import platform
 import time
 import traceback
+from functools import partial
 from itertools import product
 from typing import Any, Optional
 from pathlib import Path
@@ -12,6 +13,7 @@ from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from SeleniumLibrary import SeleniumLibrary, EMBED
 from SeleniumLibrary.base import keyword
 from SeleniumLibrary.keywords import BrowserManagementKeywords
+from selenium.webdriver import ChromeOptions
 
 from RPA.core import locators, notebook, webdriver
 
@@ -404,6 +406,28 @@ class Browser(SeleniumLibrary):
             profile_path=profile_path,
             preferences=preferences,
         )
+
+    @keyword
+    def attach_chrome_browser(self, port: int, alias: Optional[str] = None):
+        """Attach to an existing instance of Chrome or Chromium.
+
+        Requires that the browser was started with the command line
+        option ``--remote-debugging-port=<port>``, where port is any
+        4-digit number not being used by other applications.
+
+        That port can then be used to connect using this keyword.
+        """
+        options = ChromeOptions()
+        options.add_experimental_option("debuggerAddress", f"localhost:{port:d}")
+        create = partial(
+            self._create_webdriver, "Chrome", alias, chrome_options=options
+        )
+
+        try:
+            return create(download=False)
+        except Exception:  # pylint: disable=broad-except
+            self.logger.debug(traceback.format_exc())
+        return create(download=True)
 
     @keyword
     def open_headless_chrome_browser(self, url: str) -> int:
