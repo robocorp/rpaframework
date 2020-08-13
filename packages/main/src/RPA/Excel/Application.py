@@ -31,7 +31,7 @@ class Application:
         :param visible: show window after opening
         :param display_alerts: show alert popups
         """
-        self.app = win32com.client.DispatchEx("Excel.Application")
+        self.app = win32com.client.gencache.EnsureDispatch("Excel.Application")
 
         if hasattr(self.app, "Visible"):
             self.app.Visible = visible
