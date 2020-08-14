@@ -232,9 +232,15 @@ def test_keyword_set_table_column(library, table):
         assert row["one"] == "NaN"
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_keyword_pop_table_row(library, table):
-    library.pop_table_row(table, index=None)
+    assert len(table) == 6
+    assert table[0] == [1, 2, 3, None]
+
+    row = library.pop_table_row(table, index=0, as_list=True)
+
+    assert len(table) == 5
+    assert table[0] == ["a", "b", "c", None]
+    assert row == [1, 2, 3, None]
 
 
 @pytest.mark.skip(reason="Not implemented")
@@ -259,9 +265,10 @@ def test_keyword_get_table_slice(library, table):
         library.get_table_slice(table, start=3, end=2)
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_keyword_set_column_as_index(library, table):
-    library.set_column_as_index(table, column=None)
+    # Should raise because of duplicate indexes
+    with pytest.raises(ValueError):
+        library.set_column_as_index(table, "two")
 
 
 def test_keyword_table_head(library, table):

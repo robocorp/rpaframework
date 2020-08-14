@@ -1018,7 +1018,7 @@ class Tables:
         self.requires_table(table)
         index = if_none(index, table.index[0])
 
-        values = table.get_row(table, index, as_list)
+        values = table.get_row(index, as_list=as_list)
         table.delete_rows(index)
         return values
 
@@ -1052,7 +1052,7 @@ class Tables:
         :param table:   table to modify
         :param column:  column to convert to index
         """
-        values = self.pop_table_column(column)
+        values = self.pop_table_column(table, column, as_list=True)
         table.index = values
 
     def table_head(self, table, count=5, as_list=False):
