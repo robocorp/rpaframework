@@ -367,7 +367,8 @@ class Windows(OperatingSystem):
         """
         elements, _ = self.find_element(locator)
         if elements and len(elements) == 1:
-            elements[0].type_keys(keys)
+            ctrl = elements[0]["control"]
+            ctrl.type_keys(keys)
         else:
             raise ValueError(f"Could not find unique element for '{locator}'")
 
@@ -578,24 +579,27 @@ class Windows(OperatingSystem):
 
         :param locator: name of locator
         :param search_criteria: criteria by which element is matched
-        :return: list of matching elements and locators that where found on the window
+        :return: list of matching elements and locators that were found on the window
         """
         search_locator = locator
         if search_criteria is None:
             search_criteria, search_locator = self._determine_search_criteria(locator)
+
+        controls, elements = self.get_window_elements()
         self.logger.info(
             "Find element: (locator: %s, criteria: %s)", locator, search_criteria,
         )
-        locators = []
-        matching_elements = []
-        _, elements = self.get_window_elements()
-        for element in elements:
+
+        matching_elements, locators = [], []
+        for ctrl, element in zip(controls, elements):
             if self.is_element_matching(element, search_locator, search_criteria):
+                element["control"] = ctrl
                 matching_elements.append(element)
             if search_criteria == "any" and "name" in element:
                 locators.append(element["name"])
             elif search_criteria and search_criteria in element:
                 locators.append(element[search_criteria])
+
         return matching_elements, locators
 
     def _determine_search_criteria(self, locator: str) -> Any:
@@ -733,34 +737,39 @@ class Windows(OperatingSystem):
         if self.dlg is None:
             raise ValueError("No dialog open")
 
-        # Create a list of this control and all its descendants
-        all_ctrls = [self.dlg]
+        ctrls = [self.dlg]
         if hasattr(self.dlg, "descendants"):
-            all_ctrls += self.dlg.descendants()
-        # self.logger.debug(type(self.dlg))
-        # self.logger.debug(dir(self.dlg))
-        all_elements = []
-        for _, ctrl in enumerate(all_ctrls):
-            if hasattr(ctrl, "element_info"):
-                cleaned_filename = clean_filename(
-                    f"locator_{self.windowtitle}_ctrl_{ctrl.element_info.name}"
-                )
-                if screenshot and len(ctrl.element_info.name) > 0:
-                    self.screenshot(cleaned_filename, ctrl=ctrl)
-                if outline:
-                    ctrl.draw_outline(colour="red", thickness=4)
-                    delay(0.2)
-                    ctrl.draw_outline(colour=0x000000, thickness=4)
-                element = self._parse_element_attributes(element=ctrl)
-                if element_json:
-                    write_element_info_as_json(element, cleaned_filename)
-                all_elements.append(element)
+            ctrls += self.dlg.descendants()
+
+        elements, controls = [], []
+        for _, ctrl in enumerate(ctrls):
+            if not hasattr(ctrl, "element_info"):
+                continue
+
+            filename = clean_filename(
+                f"locator_{self.windowtitle}_ctrl_{ctrl.element_info.name}"
+            )
+
+            if screenshot and len(ctrl.element_info.name) > 0:
+                self.screenshot(filename, ctrl=ctrl)
+            if outline:
+                ctrl.draw_outline(colour="red", thickness=4)
+                delay(0.2)
+                ctrl.draw_outline(colour=0x000000, thickness=4)
+
+            element = self._parse_element_attributes(element=ctrl)
+            if element_json:
+                write_element_info_as_json(element, filename)
+
+            controls.append(ctrl)
+            elements.append(element)
+
         if element_json:
             write_element_info_as_json(
-                all_elements, clean_filename(f"locator_{self.windowtitle}_all_elements")
+                elements, clean_filename(f"locator_{self.windowtitle}_all_elements")
             )
-        # self.logger.info(self.dlg.print_control_identifiers())
-        return all_ctrls, all_elements
+
+        return controls, elements
 
     def _get_element_coordinates(self, rectangle: Any) -> Any:
         """Get element coordinates from pywinauto object.
