@@ -487,7 +487,9 @@ class Browser(SeleniumLibrary):
         self.click_element(locator, modifier, action_chain)
 
     @keyword
-    def click_button_when_visible(self, locator: str, modifier: Optional[str]) -> None:
+    def click_button_when_visible(
+        self, locator: str, modifier: Optional[str] = None
+    ) -> None:
         """Click button identified by ``locator``, once it becomes visible.
 
         ``locator`` element locator

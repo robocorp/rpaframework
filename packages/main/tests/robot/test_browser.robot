@@ -28,4 +28,4 @@ Locator aliases
     Input Text      alias:RobotSpareBin.Username    maria
     Input Text      alias:RobotSpareBin.Password    thoushallnotpass
     Submit Form
-    Wait Until Page Contains Element    id:logout
+    Click button when visible   id:logout
