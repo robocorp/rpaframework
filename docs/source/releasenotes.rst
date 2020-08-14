@@ -4,7 +4,31 @@ Release notes
 Upcoming release
 ----------------
 
-- **Browser**: Use fallback browser if webdriver download fails
+2.5.0
+-----
+
+- **Browser**:
+
+  - Attempt fallback browser if webdriver unpacking fails
+  - Attempt to use webdriver from PATH
+  - Add option to define Chrome profile path and name
+  - Add option to define Chrome profile preferences
+  - Add keyword to attach to existing Chrome instance
+  - Add keyword for waiting and clicking elements
+  - Disable Chrome's password manager prompts
+
+- **Robocloud.Items**: Allow empty list (or otherwise falsy value) as raw payload
+- **Desktop.Windows**:
+
+  - Add keyword ``Type Into``
+  - Remove confusing placeholder keyword(s)
+
+- **Excel/Word/Outlook.Application**: Use early binding to ensure constants exist
+- **Tables**: Fix issues with invalid internal method calls
+- **Email.ImapSmtp**:
+
+  - Use given IMAP port
+  - Fix confusing error message if TLS not supported
 
 2.4.0
 -----
