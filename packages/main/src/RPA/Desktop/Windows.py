@@ -359,6 +359,18 @@ class Windows(OperatingSystem):
             raise ValueError("No dialog open")
         self.dlg.type_keys(keys)
 
+    def type_into(self, locator: str, keys: str) -> None:
+        """Type keys into element matched by given locator.
+
+        :param locator: element locator
+        :param keys:    list of keys to type
+        """
+        element, _ = self.find_element(locator)
+        if element and len(element) == 1:
+            element.type_keys(keys)
+        else:
+            raise ValueError(f"Could not find unique element for '{locator}'")
+
     def send_keys(self, keys: str) -> None:
         """Send keys into active windows.
 
@@ -406,7 +418,7 @@ class Windows(OperatingSystem):
                 x, y = self.get_element_center(element[0])
                 self.click_type(x + off_x, y + off_y, ctype)
             else:
-                self.logger.warning("Did not find element to click")
+                raise ValueError(f"Could not find unique element for '{locator}'")
         elif method == "coordinates":
             self.mouse_click_coords(x, y, ctype)
         elif method == "image":
