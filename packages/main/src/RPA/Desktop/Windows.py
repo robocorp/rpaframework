@@ -365,9 +365,9 @@ class Windows(OperatingSystem):
         :param locator: element locator
         :param keys:    list of keys to type
         """
-        element, _ = self.find_element(locator)
-        if element and len(element) == 1:
-            element.type_keys(keys)
+        elements, _ = self.find_element(locator)
+        if elements and len(elements) == 1:
+            elements[0].type_keys(keys)
         else:
             raise ValueError(f"Could not find unique element for '{locator}'")
 
