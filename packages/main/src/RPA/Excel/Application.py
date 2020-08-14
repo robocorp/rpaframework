@@ -157,6 +157,28 @@ class Application:
         if formula:
             worksheet.Cells(row, column).Formula = formula
 
+    def read_from_cells(
+        self,
+        worksheet: Any = None,
+        row: int = None,
+        column: int = None,
+    ) -> None:
+        """Read value from cell.
+
+        :param worksheet: worksheet to handle, defaults to active worksheet if None
+        :param row: target row, defaults to None
+        :param column: target row, defaults to None
+        :raises ValueError: if cell is not given
+        """
+        worksheet = worksheet if worksheet else self.active_worksheet
+        if row is None and column is None:
+            raise ValueError("No cell was given")
+        else:
+            row = int(row)
+            column = int(column)
+            cell_value = worksheet.Cells(row, column).Value
+            return (cell_value)
+    
     def save_excel(self) -> None:
         """Saves Excel file
         """
