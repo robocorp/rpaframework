@@ -191,9 +191,9 @@ Keywords
 
 
 :Mouse Click:
-  :Arguments: locator: str=None, x: int=0, y: int=0, off_x: int=0, off_y: int=0, image: str=None, ocr: str=None, method: str=locator, ctype: str=click
+  :Arguments: locator: str=None, x: int=0, y: int=0, off_x: int=0, off_y: int=0, image: str=None, method: str=locator, ctype: str=click
 
-  Mouse click `locator`, `coordinates`, `image` or `ocr`.
+  Mouse click `locator`, `coordinates`, or `image`
 
   When using method `locator`,`image` or `ocr` mouse is clicked by default at
   center coordinates.
@@ -216,14 +216,6 @@ Keywords
 
   Click at template image on desktop
 
-  :raises NotImplementedError: [description]
-
-:Mouse Click Ocr:
-  :Arguments: ocr, off_x=0, off_y=0, ctype=click
-
-  Click at ocr text on desktop
-
-  :raises NotImplementedError: [description]
 
 :Open Application:
   :Arguments: application: str
@@ -314,11 +306,14 @@ Keywords
 
   :raises ValueError: if application is not found by given id
 
+:Type Into:
+  :Arguments: locator: str, keys: str
+
+  Type keys into element matched by given locator.
+
+
 :Type Keys:
   :Arguments: keys: str
 
   Type keys into active window element.
-
-
-:Window Exists:
 

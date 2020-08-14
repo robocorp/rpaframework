@@ -440,10 +440,10 @@ or <cite>criteria</cite> field in the window items.</p>
 <dt class="field-even">Mouse Click</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator: str=None, x: int=0, y: int=0, off_x: int=0, off_y: int=0, image: str=None, ocr: str=None, method: str=locator, ctype: str=click</p>
+<dd class="field-odd"><p>locator: str=None, x: int=0, y: int=0, off_x: int=0, off_y: int=0, image: str=None, method: str=locator, ctype: str=click</p>
 </dd>
 </dl>
-<p>Mouse click <cite>locator</cite>, <cite>coordinates</cite>, <cite>image</cite> or <cite>ocr</cite>.</p>
+<p>Mouse click <cite>locator</cite>, <cite>coordinates</cite>, or <cite>image</cite></p>
 <p>When using method <cite>locator</cite>,`image` or <cite>ocr</cite> mouse is clicked by default at
 center coordinates.</p>
 <p>Click types are:</p>
@@ -468,24 +468,6 @@ center coordinates.</p>
 </dd>
 </dl>
 <p>Click at template image on desktop</p>
-<dl class="field-list simple">
-<dt class="field-odd">raises NotImplementedError</dt>
-<dd class="field-odd"><p>[description]</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Mouse Click Ocr</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>ocr, off_x=0, off_y=0, ctype=click</p>
-</dd>
-</dl>
-<p>Click at ocr text on desktop</p>
-<dl class="field-list simple">
-<dt class="field-odd">raises NotImplementedError</dt>
-<dd class="field-odd"><p>[description]</p>
-</dd>
-</dl>
 </dd>
 <dt class="field-even">Open Application</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -605,6 +587,14 @@ At the end of ENTER there is by default 3.5 second delay.</p>
 </dd>
 </dl>
 </dd>
+<dt class="field-even">Type Into</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, keys: str</p>
+</dd>
+</dl>
+<p>Type keys into element matched by given locator.</p>
+</dd>
 <dt class="field-even">Type Keys</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -613,8 +603,6 @@ At the end of ENTER there is by default 3.5 second delay.</p>
 </dl>
 <p>Type keys into active window element.</p>
 </dd>
-<dt class="field-even">Window Exists</dt>
-<dd class="field-even"><p></p></dd>
 </dl>
 </div>
 </div>

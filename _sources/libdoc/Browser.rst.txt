@@ -108,6 +108,15 @@ Keywords
      </tr>
      </table>
 
+:Attach Chrome Browser:
+  :Arguments: port: int, alias: str=None
+
+  .. raw:: html
+
+     <p>Attach to an existing instance of Chrome or Chromium.</p>
+     <p>Requires that the browser was started with the command line option <code>--remote-debugging-port=&lt;port&gt;</code>, where port is any 4-digit number not being used by other applications.</p>
+     <p>That port can then be used to connect using this keyword.</p>
+
 :Capture Element Screenshot:
   :Arguments: locator, filename=selenium-element-screenshot-{index}.png
 
