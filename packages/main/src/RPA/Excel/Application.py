@@ -158,11 +158,8 @@ class Application:
             worksheet.Cells(row, column).Formula = formula
 
     def read_from_cells(
-        self,
-        worksheet: Any = None,
-        row: int = None,
-        column: int = None,
-    ) -> None:
+        self, worksheet: Any = None, row: int = None, column: int = None,
+    ) -> str:
         """Read value from cell.
 
         :param worksheet: worksheet to handle, defaults to active worksheet if None
@@ -177,8 +174,8 @@ class Application:
             row = int(row)
             column = int(column)
             cell_value = worksheet.Cells(row, column).Value
-            return (cell_value)
-    
+            return cell_value
+
     def save_excel(self) -> None:
         """Saves Excel file
         """
