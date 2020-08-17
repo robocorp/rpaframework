@@ -265,7 +265,7 @@ Keywords
      <p>The <code>modifier</code> argument is new in SeleniumLibrary 3.3</p>
 
 :Click Button When Visible:
-  :Arguments: locator: str, modifier: typing.Union[str, NoneType]
+  :Arguments: locator: str, modifier: str=None
 
   .. raw:: html
 
@@ -3091,7 +3091,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Wait And Click Button:
-  :Arguments: locator: str, modifier: typing.Union[str, NoneType]
+  :Arguments: locator: str, modifier: str=None
 
   .. raw:: html
 

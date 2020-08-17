@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+2.5.1
+-----
+
+- **Browser**: Fix missing default argument
+
 2.5.0
 -----
 
