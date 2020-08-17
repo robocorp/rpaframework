@@ -327,7 +327,7 @@ default 2.0</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of matching elements and locators that where found on the window</p>
+<dd class="field-even"><p>list of matching elements and locators that were found on the window</p>
 </dd>
 </dl>
 </dd></dl>
@@ -616,8 +616,8 @@ or <cite>criteria</cite> field in the window items.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.mouse_click">
-<code class="sig-name descname">mouse_click</code><span class="sig-paren">(</span><em class="sig-param">locator: str = None</em>, <em class="sig-param">x: int = 0</em>, <em class="sig-param">y: int = 0</em>, <em class="sig-param">off_x: int = 0</em>, <em class="sig-param">off_y: int = 0</em>, <em class="sig-param">image: str = None</em>, <em class="sig-param">ocr: str = None</em>, <em class="sig-param">method: str = 'locator'</em>, <em class="sig-param">ctype: str = 'click'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mouse click <cite>locator</cite>, <cite>coordinates</cite>, <cite>image</cite> or <cite>ocr</cite>.</p>
+<code class="sig-name descname">mouse_click</code><span class="sig-paren">(</span><em class="sig-param">locator: str = None</em>, <em class="sig-param">x: int = 0</em>, <em class="sig-param">y: int = 0</em>, <em class="sig-param">off_x: int = 0</em>, <em class="sig-param">off_y: int = 0</em>, <em class="sig-param">image: str = None</em>, <em class="sig-param">method: str = 'locator'</em>, <em class="sig-param">ctype: str = 'click'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mouse click <cite>locator</cite>, <cite>coordinates</cite>, or <cite>image</cite></p>
 <p>When using method <cite>locator</cite>,`image` or <cite>ocr</cite> mouse is clicked by default at
 center coordinates.</p>
 <p>Click types are:</p>
@@ -635,7 +635,6 @@ center coordinates.</p>
 <li><p><strong>off_x</strong> – offset x (used for locator and image clicks)</p></li>
 <li><p><strong>off_y</strong> – offset y (used for locator and image clicks)</p></li>
 <li><p><strong>image</strong> – image to click on desktop</p></li>
-<li><p><strong>ocr</strong> – text to click on desktop</p></li>
 <li><p><strong>method</strong> – one of the available methods to mouse click, default “locator”</p></li>
 <li><p><strong>ctype</strong> – type of mouse click</p></li>
 </ul>
@@ -671,28 +670,6 @@ center coordinates.</p>
 <li><p><strong>off_y</strong> – [description], defaults to 0</p></li>
 <li><p><strong>ctype</strong> – [description], defaults to “click”</p></li>
 </ul>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>NotImplementedError</strong> – [description]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Desktop.Windows.Windows.mouse_click_ocr">
-<code class="sig-name descname">mouse_click_ocr</code><span class="sig-paren">(</span><em class="sig-param">ocr</em>, <em class="sig-param">off_x=0</em>, <em class="sig-param">off_y=0</em>, <em class="sig-param">ctype='click'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_ocr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Click at ocr text on desktop</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ocr</strong> – [description]</p></li>
-<li><p><strong>off_x</strong> – [description], defaults to 0</p></li>
-<li><p><strong>off_y</strong> – [description], defaults to 0</p></li>
-<li><p><strong>ctype</strong> – [description], defaults to “click”</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>NotImplementedError</strong> – [description]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -898,6 +875,20 @@ At the end of ENTER there is by default 3.5 second delay.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.type_into">
+<code class="sig-name descname">type_into</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">keys: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.type_into" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type keys into element matched by given locator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – element locator</p></li>
+<li><p><strong>keys</strong> – list of keys to type</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.type_keys">
 <code class="sig-name descname">type_keys</code><span class="sig-paren">(</span><em class="sig-param">keys: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.type_keys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Type keys into active window element.</p>
@@ -907,11 +898,6 @@ At the end of ENTER there is by default 3.5 second delay.</p>
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="method">
-<dt id="RPA.Desktop.Windows.Windows.window_exists">
-<code class="sig-name descname">window_exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.window_exists" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 

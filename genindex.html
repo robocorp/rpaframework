@@ -313,10 +313,10 @@
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.append_rows">append_rows() (RPA.Tables.Table method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.append_rows_to_worksheet">append_rows_to_worksheet() (RPA.Excel.Files.Files method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.append_table">append_table() (RPA.Tables.Table method)</a>
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.append_to_binary_file">append_to_binary_file() (RPA.FileSystem.FileSystem method)</a>
@@ -367,6 +367,8 @@
         <li><a href="libraries/images/python.html#RPA.Images.Region.as_tuple">(RPA.Images.Region method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/browser/python.html#RPA.Browser.Browser.attach_chrome_browser">attach_chrome_browser() (RPA.Browser.Browser method)</a>
+</li>
       <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.ServiceSpeech.audio_formats">audio_formats (RPA.Cloud.Azure.ServiceSpeech attribute)</a>
 </li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.auth_with_token">auth_with_token() (RPA.Salesforce.Salesforce method)</a>
@@ -479,7 +481,11 @@
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.clear_work_item">clear_work_item() (RPA.Robocloud.Items.Items method)</a>
 </li>
+      <li><a href="libraries/browser/python.html#RPA.Browser.Browser.click_button_when_visible">click_button_when_visible() (RPA.Browser.Browser method)</a>
+</li>
       <li><a href="libraries/browser/python.html#RPA.Browser.Browser.click_element_if_visible">click_element_if_visible() (RPA.Browser.Browser method)</a>
+</li>
+      <li><a href="libraries/browser/python.html#RPA.Browser.Browser.click_element_when_visible">click_element_when_visible() (RPA.Browser.Browser method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.click_type">click_type() (RPA.Desktop.Windows.Windows method)</a>
 </li>
@@ -549,10 +555,10 @@
 </li>
       <li><a href="libraries/cloud_azure/python.html#RPA.Cloud.Azure.AzureBase.COGNITIVE_API">COGNITIVE_API (RPA.Cloud.Azure.AzureBase attribute)</a>
 </li>
-      <li><a href="libraries/tables/python.html#RPA.Tables.Table.column_location">column_location() (RPA.Tables.Table method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.column_location">column_location() (RPA.Tables.Table method)</a>
+</li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.columns">columns() (RPA.Tables.Table property)</a>
 </li>
       <li><a href="libraries/ftp/python.html#RPA.FTP.FTP.connect">connect() (RPA.FTP.FTP method)</a>
@@ -1043,8 +1049,6 @@
         <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.get_boot_time">(RPA.Desktop.Windows.Windows method)</a>
 </li>
       </ul></li>
-      <li><a href="libraries/browser/python.html#RPA.Browser.Browser.get_browser_order">get_browser_order() (RPA.Browser.Browser method)</a>
-</li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.Google.get_bucket">get_bucket() (RPA.Cloud.Google.Google method)</a>
 
       <ul>
@@ -1152,8 +1156,6 @@
       <li><a href="libraries/images/python.html#RPA.Images.Images.get_pixel_color_in_image">get_pixel_color_in_image() (RPA.Images.Images method)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.get_pixel_color_on_screen">get_pixel_color_on_screen() (RPA.Images.Images method)</a>
-</li>
-      <li><a href="libraries/browser/python.html#RPA.Browser.Browser.get_preferable_browser_order">get_preferable_browser_order() (RPA.Browser.Browser method)</a>
 </li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.get_pricebook_entries">get_pricebook_entries() (RPA.Salesforce.Salesforce method)</a>
 </li>
@@ -1665,13 +1667,11 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.mouse_click">mouse_click() (RPA.Desktop.Windows.Windows method)</a>
 </li>
-      <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.mouse_click_coords">mouse_click_coords() (RPA.Desktop.Windows.Windows method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.mouse_click_image">mouse_click_image() (RPA.Desktop.Windows.Windows method)</a>
+      <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.mouse_click_coords">mouse_click_coords() (RPA.Desktop.Windows.Windows method)</a>
 </li>
-      <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.mouse_click_ocr">mouse_click_ocr() (RPA.Desktop.Windows.Windows method)</a>
+      <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.mouse_click_image">mouse_click_image() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Region.move">move() (RPA.Images.Region method)</a>
 </li>
@@ -2385,12 +2385,12 @@
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.set_auto_page_break">set_auto_page_break() (RPA.PDF.PDF method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/ftp/python.html#RPA.FTP.FTP.set_binary_mode">set_binary_mode() (RPA.FTP.FTP method)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.set_cell">set_cell() (RPA.Tables.Table method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.set_cell_value">set_cell_value() (RPA.Excel.Files.XlsWorkbook method)</a>
 
       <ul>
@@ -2411,13 +2411,9 @@
 </li>
       <li><a href="libraries/ftp/python.html#RPA.FTP.FTP.set_debug_level">set_debug_level() (RPA.FTP.FTP method)</a>
 </li>
-      <li><a href="libraries/browser/python.html#RPA.Browser.Browser.set_default_options">set_default_options() (RPA.Browser.Browser method)</a>
-</li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.set_display_mode">set_display_mode() (RPA.PDF.PDF method)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.set_draw_color">set_draw_color() (RPA.PDF.PDF method)</a>
-</li>
-      <li><a href="libraries/browser/python.html#RPA.Browser.Browser.set_driver_options">set_driver_options() (RPA.Browser.Browser method)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.set_field_value">set_field_value() (RPA.PDF.PDF method)</a>
 </li>
@@ -2430,8 +2426,6 @@
       <li><a href="libraries/word_application/python.html#RPA.Word.Application.Application.set_footer">set_footer() (RPA.Word.Application.Application method)</a>
 </li>
       <li><a href="libraries/word_application/python.html#RPA.Word.Application.Application.set_header">set_header() (RPA.Word.Application.Application method)</a>
-</li>
-      <li><a href="libraries/browser/python.html#RPA.Browser.Browser.set_headless_options">set_headless_options() (RPA.Browser.Browser method)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaFigure.set_item">set_item() (RPA.PDF.RpaFigure method)</a>
 
@@ -2506,8 +2500,6 @@
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.set_title">set_title() (RPA.PDF.PDF method)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.set_top_margin">set_top_margin() (RPA.PDF.PDF method)</a>
-</li>
-      <li><a href="libraries/browser/python.html#RPA.Browser.Browser.set_user_profile">set_user_profile() (RPA.Browser.Browser method)</a>
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.set_work_item_payload">set_work_item_payload() (RPA.Robocloud.Items.Items method)</a>
 </li>
@@ -2659,6 +2651,8 @@
 </li>
       <li><a href="libraries/twitter/python.html#RPA.Twitter.Twitter">Twitter (class in RPA.Twitter)</a>
 </li>
+      <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.type_into">type_into() (RPA.Desktop.Windows.Windows method)</a>
+</li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.type_keys">type_keys() (RPA.Desktop.Windows.Windows method)</a>
 </li>
   </ul></td>
@@ -2752,8 +2746,6 @@
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.wait_until_removed">wait_until_removed() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Region.width">width() (RPA.Images.Region property)</a>
-</li>
-      <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.window_exists">window_exists() (RPA.Desktop.Windows.Windows method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows">Windows (class in RPA.Desktop.Windows)</a>
 </li>
