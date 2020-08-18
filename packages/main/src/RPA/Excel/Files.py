@@ -220,13 +220,7 @@ class Files:
         """
         tables = Tables()
         sheet = self.read_worksheet(name, header, start)
-
-        table = tables.create_table(sheet)
-        if trim:
-            tables.trim_empty_rows(table)
-            tables.trim_column_names(table)
-
-        return table
+        return tables.create_table(sheet, trim)
 
     def append_rows_to_worksheet(self, content, name=None, header=False, start=None):
         """Append values to the end of the worksheet.
