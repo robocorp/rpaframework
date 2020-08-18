@@ -867,17 +867,22 @@ class Tables:
         if not isinstance(obj, Table):
             raise TypeError("Keyword requires Table object")
 
-    def create_table(self, data=None):
+    def create_table(self, data=None, trim=False):
         """Create Table object from data.
 
         Data can be a combination of various iterable containers, e.g.
         list of lists, list of dicts, dict of lists.
 
         :param data:    source data for table
+        :param trim:    remove all empty rows from the end of the worksheet,
+                        default `False`
         """
         table = Table(data)
         self.logger.info("Created table: %s", table)
-        notebook_table(table)
+        if trim:
+            self.trim_empty_rows(table)
+            self.trim_column_names(table)
+        notebook_table(self.table_head(table, 10))
         return table
 
     def export_table(self, table, with_index=False, as_list=True):
