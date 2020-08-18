@@ -2,7 +2,6 @@ from functools import wraps
 
 from io import StringIO
 import logging
-import mimetypes
 import os
 import re
 import time
@@ -320,14 +319,10 @@ class ImapSmtp:
                 self.logger.debug("Adding attachment: %s", filename)
                 with open(filename, "rb") as attachment:
                     _, ext = filename.lower().rsplit(".", 1)
-                    ctype, _ = mimetypes.guess_type(filename)
-                    _, subtype = ctype.split("/", 1)
                     if ext in IMAGE_FORMATS:
                         # image attachment
                         part = MIMEImage(
-                            attachment.read(),
-                            name=Path(filename).name,
-                            _subtype=subtype,
+                            attachment.read(), name=Path(filename).name, _subtype=ext,
                         )
                     else:
                         # attach other filetypes
