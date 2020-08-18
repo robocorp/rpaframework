@@ -73,7 +73,7 @@ class RobotLogListener:
 
         :param keywords: list of keywords to mute
         :param optional_keyword_to_run: name of the keyword to execute
-        if keyword defined by `keywords` fail
+                                        if keyword defined by `keywords` fail
         """
         required_param(keywords, "mute_run_on_failure")
         if not isinstance(keywords, list):
