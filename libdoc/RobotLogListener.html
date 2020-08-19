@@ -229,6 +229,25 @@
 <p>If <cite>name</cite> exists in the protected keywords list then log level is
 restored back to level it was before settings to NONE.</p>
 </dd>
+<dt class="field-even">Mute Run On Failure</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>keywords: typing.Any=None, optional_keyword_to_run: str=None</p>
+</dd>
+</dl>
+<p>Set keywords which should not execute <cite>SeleniumLibrary</cite>
+default behaviour of running keyword on failure.</p>
+<p>Keyword names do not need to be full names of keywords, ie. all keywords
+matching even partially will be affected. <cite>Run Keyword</cite> would match all
+<cite>BuiltIn</cite> library keywords (17 keywords in RF 3.2.1) and of course all
+<cite>Run Keyword</cite> named keywords in any resource and/or library file which
+are imported would be matched also.</p>
+<p>By default <cite>SeleniumLibrary</cite> executes <cite>Capture Page Screenshot</cite>
+on failure.</p>
+<p>If <cite>optional_keyword_to_run</cite> is not given then nothing is done
+on failure, but this can be set to override <cite>SeleniumLibrary</cite>
+default behaviour for a set of keywords.</p>
+</dd>
 <dt class="field-even">Only Info Level</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>

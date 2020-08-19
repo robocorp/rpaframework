@@ -39,7 +39,7 @@ Keywords
 
 
 :Create Table:
-  :Arguments: data=None
+  :Arguments: data=None, trim=False
 
   Create Table object from data.
 

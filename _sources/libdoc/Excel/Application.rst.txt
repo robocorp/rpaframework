@@ -54,6 +54,13 @@ Keywords
 
   Quit the application.
 
+:Read From Cells:
+  :Arguments: worksheet: typing.Any=None, row: int=None, column: int=None
+
+  Read value from cell.
+
+  :raises ValueError: if cell is not given
+
 :Run Macro:
   :Arguments: macro_name: str=None
 

@@ -25,6 +25,26 @@ Keywords
   restored back to level it was before settings to NONE.
 
 
+:Mute Run On Failure:
+  :Arguments: keywords: typing.Any=None, optional_keyword_to_run: str=None
+
+  Set keywords which should not execute `SeleniumLibrary`
+  default behaviour of running keyword on failure.
+
+  Keyword names do not need to be full names of keywords, ie. all keywords
+  matching even partially will be affected. `Run Keyword` would match all
+  `BuiltIn` library keywords (17 keywords in RF 3.2.1) and of course all
+  `Run Keyword` named keywords in any resource and/or library file which
+  are imported would be matched also.
+
+  By default `SeleniumLibrary` executes `Capture Page Screenshot`
+  on failure.
+
+  If `optional_keyword_to_run` is not given then nothing is done
+  on failure, but this can be set to override `SeleniumLibrary`
+  default behaviour for a set of keywords.
+
+
 :Only Info Level:
   :Arguments: names: typing.Any=None
 
