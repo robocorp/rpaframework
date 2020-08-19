@@ -1,9 +1,21 @@
+import os
 import io
 import json
 import logging
 from contextlib import contextmanager
 
-DEFAULT_DATABASE = "locators.json"
+
+def default_locators_path():
+    """Return default path for locators database file"""
+    DEFAULT_DATABASE_NAME = "locators.json"
+    PROJECT_PATH_ENV = "RLAB_PROJECT_PATH"
+
+    if PROJECT_PATH_ENV in os.environ:
+        # locators.json is found at root of project, use environment var
+        # if available
+        return os.path.join(os.environ[PROJECT_PATH_ENV], DEFAULT_DATABASE_NAME)
+    else:
+        return DEFAULT_DATABASE_NAME
 
 
 @contextmanager
@@ -29,7 +41,7 @@ class LocatorsDatabase:
     and serializing/deserializing database file.
     """
 
-    def __init__(self, path=DEFAULT_DATABASE):
+    def __init__(self, path=default_locators_path()):
         self.logger = logging.getLogger(__name__)
         self.path = path
         self._locators = []
