@@ -212,6 +212,7 @@ class Images:
         :param template:    Path to image or Image instance, used to search with
         :param limit:       Limit returned results to maximum of `limit`.
         :param region:      Area to search from. Can speed up search significantly.
+        :param tolerance:   Tolerance for matching, value between 0.1 and 1.0
         :return:            List of matching regions
         :raises ImageNotFoundError: No match was found
         """
