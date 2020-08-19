@@ -50,7 +50,7 @@ class Browser(SeleniumLibrary):
     }
 
     def __init__(self, *args, **kwargs) -> None:
-        locators_path = kwargs.pop("locators_path", locators.DEFAULT_DATABASE)
+        locators_path = kwargs.pop("locators_path", locators.default_locators_path())
 
         # Parse user-given plugins
         plugins = kwargs.get("plugins", "")
