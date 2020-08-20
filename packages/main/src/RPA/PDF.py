@@ -777,7 +777,7 @@ class PDF(FPDF, HTMLMixin):
             else:
                 return False
             self.modified_reader = reader
-            self.save_pdf(None, target_pdf, reader)
+            self.save_pdf(None, target_pdf, True)
             return True
 
         except NotImplementedError:
@@ -1234,7 +1234,9 @@ class PDF(FPDF, HTMLMixin):
         :param use_modified_reader: needs to be set to `True` if
             using modified PDF reader
         """
-        self.get_input_fields(source)
+        if not use_modified_reader:
+            self.get_input_fields(source)
+
         if self.active_fields:
             self.logger.info("Saving PDF with input fields")
             self.update_field_values(source, target, self.active_fields)
