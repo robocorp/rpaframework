@@ -829,23 +829,23 @@ class PDF(FPDF, HTMLMixin):
         # See 12.7.2 and 7.7.2 for more information:
         # http://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf
         try:
-            catalog = writer._root_object
+            catalog = writer._root_object  # pylint: disable=W0212
             # get the AcroForm tree
             if "/AcroForm" not in catalog:
-                writer._root_object.update(
+                catalog.update(
                     {
                         NameObject("/AcroForm"): IndirectObject(
-                            len(writer._objects), 0, writer
+                            len(writer._objects), 0, writer  # pylint: disable=W0212
                         )
                     }
                 )
 
             need_appearances = NameObject("/NeedAppearances")
-            writer._root_object["/AcroForm"][need_appearances] = BooleanObject(True)
+            catalog["/AcroForm"][need_appearances] = BooleanObject(True)
             # del writer._root_object["/AcroForm"]['NeedAppearances']
             return writer
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             print("set_need_appearances_writer() catch : ", repr(e))
             return writer
 
@@ -1135,16 +1135,17 @@ class PDF(FPDF, HTMLMixin):
                 raise ValueError("Document does not have input fields")
 
         if field_name in self.active_fields.keys():
-            self.active_fields[field_name]["value"] = value
+            self.active_fields[field_name]["value"] = value  # pylint: disable=E1136
         else:
             label_matches = 0
             field_key = None
-            for k, v in self.active_fields.items():
+            for k, _ in self.active_fields.items():
+                # pylint: disable=E1136
                 if self.active_fields[k]["label"] == field_name:
                     label_matches += 1
                     field_key = k
             if label_matches == 1:
-                self.active_fields[field_key]["value"] = value
+                self.active_fields[field_key]["value"] = value  # pylint: disable=E1136
             elif label_matches > 1:
                 raise ValueError(
                     "Unable to set field value - field name: '%s' matched %d fields"
