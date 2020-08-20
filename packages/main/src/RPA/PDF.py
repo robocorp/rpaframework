@@ -1126,6 +1126,11 @@ class PDF(FPDF, HTMLMixin):
     def set_field_value(self, field_name: str, value: Any, save: bool = False):
         """Set value for field with given name.
 
+        Tries to match on field identifier and its label.
+
+        Exception is thrown if field can't be found or more than 1 field matches
+        the given `field_name`.
+
         :param field_name: field to update
         :param value: new value for the field
         """
