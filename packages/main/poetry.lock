@@ -1259,7 +1259,7 @@ description = "Core utilities used by RPA Framework"
 name = "rpaframework-core"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "1.6.0"
+version = "1.6.1"
 
 [package.dependencies]
 selenium = ">=3.141.0,<4.0.0"
@@ -1515,7 +1515,7 @@ cv = ["opencv-python", "numpy"]
 google = ["grpcio", "google-cloud-vision", "google-cloud-language", "google-cloud-videointelligence", "google-cloud-translate", "google-cloud-texttospeech", "google-cloud-speech", "google-cloud-storage"]
 
 [metadata]
-content-hash = "f31922bcc1ebf6cfd2971af6464887f366bf7f12846ee84131614bf5bc2d2816"
+content-hash = "51bafb9be948e80ceb3b2abb4ebec3ab51f01440cd39c0c07971a372ca6049ce"
 lock-version = "1.0"
 python-versions = "^3.6"
 
@@ -2252,8 +2252,8 @@ robotframework-seleniumtestability = [
     {file = "robotframework-seleniumtestability-1.1.0.tar.gz", hash = "sha256:18810869a0c0010cc623aea4bb382afdc9aa6fe8404c35fa58452766d0322735"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-1.6.0.tar.gz", hash = "sha256:7073f3a930f0be2d42f8acf233432c48f739097428c80f75ff704f2e09409618"},
-    {file = "rpaframework_core-1.6.0-py3-none-any.whl", hash = "sha256:29442d827000a55d4a60a28404bd08165c3b00bd5b92fa488139dd53709d462d"},
+    {file = "rpaframework-core-1.6.1.tar.gz", hash = "sha256:db673a715a66194725929142ceae044efb16a55496c5e7374f24fae284c5bce0"},
+    {file = "rpaframework_core-1.6.1-py3-none-any.whl", hash = "sha256:2643beb7283f6a893109cbf641ecce7b1212644158ffe0262edb88ba03b45438"},
 ]
 rsa = [
     {file = "rsa-4.6-py3-none-any.whl", hash = "sha256:6166864e23d6b5195a5cfed6cd9fed0fe774e226d8f854fcb23b7bbef0350233"},
