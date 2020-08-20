@@ -4,6 +4,8 @@ import json
 import logging
 from contextlib import contextmanager
 
+DEFAULT_DATABASE = "locators.json"
+
 
 def default_locators_path():
     """Return default path for locators database file"""
