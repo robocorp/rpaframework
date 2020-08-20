@@ -37,7 +37,7 @@ from pdfminer.utils import enc, bbox2str
 from pdfminer.converter import PDFConverter
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
-from PyPDF2.generic import NameObject, BooleanObject
+from PyPDF2.generic import NameObject, BooleanObject, IndirectObject
 import PyPDF2
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
@@ -500,6 +500,7 @@ class PDF(FPDF, HTMLMixin):
             source_pdf is not None
             and self.active_fileobject != self.fileobjects[source_pdf]
         ):
+            self.logger.debug("Switching to another open document")
             self.active_pdf = str(source_pdf)
             self.active_fileobject = self.fileobjects[str(source_pdf)]
             self.active_fields = None
@@ -824,6 +825,30 @@ class PDF(FPDF, HTMLMixin):
             interpreter.process_page(page)
         self.rpa_pdf_document = device.close()
 
+    def _set_need_appearances_writer(self, writer: PdfFileWriter):
+        # See 12.7.2 and 7.7.2 for more information:
+        # http://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf
+        try:
+            catalog = writer._root_object
+            # get the AcroForm tree
+            if "/AcroForm" not in catalog:
+                writer._root_object.update(
+                    {
+                        NameObject("/AcroForm"): IndirectObject(
+                            len(writer._objects), 0, writer
+                        )
+                    }
+                )
+
+            need_appearances = NameObject("/NeedAppearances")
+            writer._root_object["/AcroForm"][need_appearances] = BooleanObject(True)
+            # del writer._root_object["/AcroForm"]['NeedAppearances']
+            return writer
+
+        except Exception as e:
+            print("set_need_appearances_writer() catch : ", repr(e))
+            return writer
+
     def update_field_values(
         self, source_pdf: str = None, target_pdf: str = None, newvals: dict = None
     ) -> None:
@@ -840,24 +865,25 @@ class PDF(FPDF, HTMLMixin):
                 {NameObject("/NeedAppearances"): BooleanObject(True)}
             )
         writer = PdfFileWriter()
-        writer.cloneDocumentFromReader(reader)
+
+        self._set_need_appearances_writer(writer)
 
         for i in range(reader.getNumPages()):
             page = reader.getPage(i)
             try:
                 if newvals:
                     self.logger.debug("Updating form field values for page %s", i)
-                    writer.updatePageFormFieldValues(page, newvals)
-                else:
-                    writer.updatePageFormFieldValues(
-                        page,
-                        {
-                            k: f"#{i} {k}={v}"
-                            for i, (k, v) in enumerate(
-                                reader.getFormTextFields().items()
-                            )
-                        },
-                    )
+                    updatedFields = {
+                        k: v["value"] if v["value"] else ""
+                        for (k, v) in newvals.items()
+                    }
+                    writer.updatePageFormFieldValues(page, fields=updatedFields)
+                elif self.active_fields:
+                    updatedFields = {
+                        k: v["value"] if v["value"] else ""
+                        for (k, v) in self.active_fields.items()
+                    }
+                    writer.updatePageFormFieldValues(page, fields=updatedFields)
                 writer.addPage(page)
             except Exception as e:  # pylint: disable=W0703
                 self.logger.warning(repr(e))
@@ -901,25 +927,34 @@ class PDF(FPDF, HTMLMixin):
             field = resolve1(i)
             if field is None:
                 continue
-            name, value, rect = field.get("T"), field.get("V"), field.get("Rect")
+            name, value, rect, label = (
+                field.get("T"),
+                field.get("V"),
+                field.get("Rect"),
+                field.get("TU"),
+            )
             if value is None and replace_none_value:
                 record_fields[name.decode("iso-8859-1")] = {
                     "value": name.decode("iso-8859-1"),
                     "rect": iterable_items_to_int(rect),
+                    "label": label.decode("iso-8859-1") if label else None,
                 }
             else:
                 try:
                     record_fields[name.decode("iso-8859-1")] = {
-                        "value": value.decode("iso-8859-1"),
+                        "value": value.decode("iso-8859-1") if value else "",
                         "rect": iterable_items_to_int(rect),
+                        "label": label.decode("iso-8859-1") if label else None,
                     }
                 except AttributeError:
+                    self.logger.debug("Attribute error")
                     record_fields[name.decode("iso-8859-1")] = {
                         "value": value,
                         "rect": iterable_items_to_int(rect),
+                        "label": label.decode("iso-8859-1") if label else None,
                     }
 
-        self.active_fields = record_fields
+        self.active_fields = record_fields if record_fields else None
         return record_fields
 
     def set_anchor_to_element(self, locator: str) -> bool:
@@ -1071,9 +1106,8 @@ class PDF(FPDF, HTMLMixin):
             if calc_distance < distance:
                 distance = calc_distance
                 closest = p
-        if closest:
-            return closest
-        return None
+
+        return closest
 
     def get_all_figures(self) -> dict:
         """Return all figures in the PDF document.
@@ -1097,7 +1131,30 @@ class PDF(FPDF, HTMLMixin):
         """
         if not self.active_fields:
             self.get_input_fields()
-        self.active_fields[field_name]["value"] = value
+            if not self.active_fields:
+                raise ValueError("Document does not have input fields")
+
+        if field_name in self.active_fields.keys():
+            self.active_fields[field_name]["value"] = value
+        else:
+            label_matches = 0
+            field_key = None
+            for k, v in self.active_fields.items():
+                if self.active_fields[k]["label"] == field_name:
+                    label_matches += 1
+                    field_key = k
+            if label_matches == 1:
+                self.active_fields[field_key]["value"] = value
+            elif label_matches > 1:
+                raise ValueError(
+                    "Unable to set field value - field name: '%s' matched %d fields"
+                    % (field_name, label_matches)
+                )
+            else:
+                raise ValueError(
+                    "Unable to set field value - field name: '%s' "
+                    "not found in the document" % field_name
+                )
         if save:
             self.update_field_values(None, None, self.active_fields)
 
@@ -1176,19 +1233,31 @@ class PDF(FPDF, HTMLMixin):
         :param use_modified_reader: needs to be set to `True` if
             using modified PDF reader
         """
-        if source is not None:
-            self.switch_to_pdf_document(source)
-        if target is None:
-            target = self.active_pdf
-        self.logger.info("Saving: %s", target)
-        if use_modified_reader:
-            reader = self.modified_reader
+        self.get_input_fields(source)
+        if self.active_fields:
+            self.logger.info("Saving PDF with input fields")
+            self.update_field_values(source, target, self.active_fields)
         else:
-            reader = PdfFileReader(str(self.active_pdf))
-        writer = PdfFileWriter()
-        writer.cloneDocumentFromReader(reader)
-        with open(target, "wb") as f:
-            writer.write(f)
+            self.logger.info("Saving PDF")
+            self.switch_to_pdf_document(source)
+            if use_modified_reader:
+                reader = self.modified_reader
+            else:
+                reader = PyPDF2.PdfFileReader(self.active_fileobject, strict=False)
+            writer = PdfFileWriter()
+
+            for i in range(reader.getNumPages()):
+                page = reader.getPage(i)
+                try:
+                    writer.addPage(page)
+                except Exception as e:  # pylint: disable=W0703
+                    self.logger.warning(repr(e))
+                    writer.addPage(page)
+
+            if target is None:
+                target = self.active_pdf
+            with open(target, "wb") as f:
+                writer.write(f)
 
     def dump_pdf_as_xml(self, source_pdf: str = None):
         """Get PDFMiner format XML dump of the PDF
