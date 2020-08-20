@@ -7,12 +7,14 @@ Upcoming release
 2.6.0
 -----
 
-- **Browser**: Do not EMBED screenshots when in notebook run mode
-- **Excel.Application**: Add keyword to read cell values
-- **RobotLogListener**: Add keyword to mute SeleniumLibrary ``run_on_failure`` behaviour
+- **Browser**: Do not `EMBED` screenshots when in notebook run mode
+- **Excel.Application**: Add keyword ``Read From Cells``
+- **RobotLogListener**: Add keyword ``Mute Run On Failure`` to mute
+  SeleniumLibrary's ``run_on_failure`` behaviour
 - **Email.ImapSmtp**: Fix filetype issue when adding attachments to emails
-- **Tables** and **Excel.Files**: Move table trimming actions to Tables library
-  from Excel.Files library
+- **Tables** and **Excel.Files**: Move table trimming actions from `Excel.Files`
+  library to `Tables` library. Added parameter ``trim`` to `Tables` keyword
+  ``Create Table`` which is by default `False`
 - **PDF**: Fix input field setting and saving to PDF
 
 2.5.1
