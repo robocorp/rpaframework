@@ -73,7 +73,8 @@ class Browser(SeleniumLibrary):
         self._element_finder.register("alias", self._find_by_alias, persist=True)
 
         # Embed screenshots in logs by default
-        self.set_screenshot_directory(EMBED)
+        if not notebook.IPYTHON_AVAILABLE:
+            self.set_screenshot_directory(EMBED)
 
     @property
     def location(self) -> str:
