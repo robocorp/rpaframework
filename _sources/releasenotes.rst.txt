@@ -4,6 +4,17 @@ Release notes
 Upcoming release
 ----------------
 
+2.6.0
+-----
+
+- **Browser**: Do not EMBED screenshots when in notebook run mode
+- **Excel.Application**: Add keyword to read cell values
+- **RobotLogListener**: Add keyword to mute SeleniumLibrary ``run_on_failure`` behaviour
+- **Email.ImapSmtp**: Fix filetype issue when adding attachments to emails
+- **Tables** and **Excel.Files**: Move table trimming actions to Tables library
+  from Excel.Files library
+- **PDF**: Fix input field setting and saving to PDF
+
 2.5.1
 -----
 

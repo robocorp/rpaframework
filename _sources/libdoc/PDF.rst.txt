@@ -346,6 +346,11 @@ Keywords
 
   Set value for field with given name.
 
+  Tries to match on field identifier and its label.
+
+  Exception is thrown if field can't be found or more than 1 field matches
+  the given `field_name`.
+
 
 :Set Fill Color:
   :Arguments: r, g=-1, b=-1
