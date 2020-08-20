@@ -34,7 +34,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.6"
 dataclasses = {version = "^0.7", python=">=3.6,<3.7"}
-rpaframework-core = "^1.5.0"
+rpaframework-core = "^1.6.0"
 robotframework = "^3.2.1"
 robotframework-databaselibrary = "^1.2.4"
 robotframework-sapguilibrary = {version = "^1.1", platform = "win32"}
