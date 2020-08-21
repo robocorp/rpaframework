@@ -835,6 +835,9 @@ using modified PDF reader</p></li>
 <dt id="RPA.PDF.PDF.set_field_value">
 <code class="sig-name descname">set_field_value</code><span class="sig-paren">(</span><em class="sig-param">field_name: str</em>, <em class="sig-param">value: Any</em>, <em class="sig-param">save: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_field_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set value for field with given name.</p>
+<p>Tries to match on field identifier and its label.</p>
+<p>Exception is thrown if field can’t be found or more than 1 field matches
+the given <cite>field_name</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

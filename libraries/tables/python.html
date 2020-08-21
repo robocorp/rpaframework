@@ -566,13 +566,17 @@ If either index or column is missing, they are created.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.create_table">
-<code class="sig-name descname">create_table</code><span class="sig-paren">(</span><em class="sig-param">data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.create_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_table</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">trim=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.create_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Table object from data.</p>
 <p>Data can be a combination of various iterable containers, e.g.
 list of lists, list of dicts, dict of lists.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> – source data for table</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – source data for table</p></li>
+<li><p><strong>trim</strong> – remove all empty rows from the end of the worksheet,
+default <cite>False</cite></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

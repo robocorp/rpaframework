@@ -295,6 +295,24 @@ it does not exist.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Excel.Application.Application.read_from_cells">
+<code class="sig-name descname">read_from_cells</code><span class="sig-paren">(</span><em class="sig-param">worksheet: Any = None</em>, <em class="sig-param">row: int = None</em>, <em class="sig-param">column: int = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Excel.Application.Application.read_from_cells" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read value from cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worksheet</strong> – worksheet to handle, defaults to active worksheet if None</p></li>
+<li><p><strong>row</strong> – target row, defaults to None</p></li>
+<li><p><strong>column</strong> – target row, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if cell is not given</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Excel.Application.Application.run_macro">
 <code class="sig-name descname">run_macro</code><span class="sig-paren">(</span><em class="sig-param">macro_name: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.run_macro" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run Excel macro with given name</p>
