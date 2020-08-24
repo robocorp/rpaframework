@@ -175,7 +175,7 @@ class Windows(OperatingSystem):
         app = pywinauto.Application(backend=backend).start(
             cmd_line=executable, work_dir=work_dir
         )
-        return self._add_app_instance(app, dialog=True, params=params)
+        return self._add_app_instance(app, dialog=False, params=params)
 
     def open_using_run_dialog(self, executable: str, windowtitle: str) -> int:
         """Open application using Windows run dialog.
