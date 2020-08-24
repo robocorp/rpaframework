@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+- **Desktop.Windows** Fix dialog handling in `Open Executable`
+- New **Archive** library for ZIP and TAR operations
+
 2.6.0
 -----
 
