@@ -12,19 +12,7 @@ Description
 
 `SAP` is a library that wraps `SapGuiLibrary` functionality.
 
-********
-Examples
-********
-
-Robot Framework
-===============
-
-TODO
-
-Python
-======
-
-TODO
+Keyword documentation: https://frankvanderkuur.github.io/SapGuiLibrary.html
 
 *****************
 API Documentation
