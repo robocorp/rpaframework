@@ -106,8 +106,6 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `SAP`_                     | Control SAP GUI desktop client               |
 +----------------------------+----------------------------------------------+
-| `Slack`_                   | Send notifications to Slack channels         |
-+----------------------------+----------------------------------------------+
 | `Tables`_                  | Manipulate, sort, and filter tabular data    |
 +----------------------------+----------------------------------------------+
 | `Tasks`_                   | Control task execution                       |
