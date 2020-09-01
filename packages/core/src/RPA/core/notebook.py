@@ -5,6 +5,7 @@ import os
 from typing import Any
 
 IPYTHON_AVAILABLE = False
+TABLES_AVAILABLE = False
 ipython_module = util.find_spec("IPython")
 if ipython_module:
     # pylint: disable=C0415
@@ -19,8 +20,12 @@ if ipython_module:
         Video,
     )
 
-    # pylint: disable=C0415
-    from RPA.Tables import Tables, Table  # noqa
+    tables_module = util.find_spec("RPA.Tables")
+    if tables_module:
+        # pylint: disable=C0415,E0611
+        from RPA.Tables import Tables, Table  # noqa
+
+        TABLES_AVAILABLE = True
 
     IPYTHON_AVAILABLE = True
 
@@ -101,6 +106,11 @@ def notebook_table(table, count: int = 20):
 
     :param table: `RPA.Table` object to print
     """
+    if not TABLES_AVAILABLE:
+        raise AttributeError(
+            "No `RPA.Tables` in the namespace. "
+            "Make sure that `rpaframework` is installed."
+        )
     if count:
         table = Tables().table_head(table, count=count)
     output = _get_table_output(table)
