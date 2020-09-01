@@ -93,11 +93,15 @@ def notebook_dir(directory, recursive=False):
 
 
 @print_precheck
-def notebook_table(table):
+def notebook_table(table, count: int = 20):
     """Display RPA.Table as IPython Markdown object in the notebook
 
     :param table: `RPA.Table` object to print
     """
+    from RPA.Tables import Tables
+
+    if count:
+        table = Tables().table_head(table, count=count)
     output = _get_table_output(table)
     if output:
         display(Markdown(output))
