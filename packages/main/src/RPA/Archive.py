@@ -56,7 +56,6 @@ class Archive:
         include: str = None,
         exclude: str = None,
         compression: str = "stored",
-        compression_level: int = 1,
     ) -> None:
         # pylint: disable=C0301
         """Create a zip archive of a folder
@@ -79,7 +78,6 @@ class Archive:
         :param include: define file pattern to include in the package, defaults to None (means all files)
         :param exclude: define file pattern to exclude from the package, defaults is None
         :param compression: type of package compression method, defaults to "stored"
-        :param compression_level: used when `compression` is set to `deflated` (values 0-9) or `bzip2` (values 1-9), default is 1
 
         Example:
 
@@ -90,7 +88,7 @@ class Archive:
             Archive Folder With Zip  ${CURDIR}${/}tasks      no_dotfiles.zip  exclude=/.*
             Archive Folder With Zip  ${CURDIR}${/}documents  documents.zip    recursive=True
             Archive Folder With Zip  ${CURDIR}               packagelzma.zip  compression=lzma
-            Archive Folder With Zip  ${CURDIR}               bzipped.zip      compression=bzip2  compression_level=7
+            Archive Folder With Zip  ${CURDIR}               bzipped.zip      compression=bzip2
 
         """  # noqa: E501
         if compression == "stored":
@@ -111,7 +109,6 @@ class Archive:
             file=archive_name,
             mode="w",
             compression=comp_method,
-            compresslevel=compression_level,
         )
         for archive_absolute, archive_relative in filelist:
             zip_archive.write(archive_absolute, arcname=archive_relative)
