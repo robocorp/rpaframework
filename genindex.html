@@ -98,6 +98,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Libraries</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="libraries/archive/index.html">Archive</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/browser/index.html">Browser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/cloud_aws/index.html">Cloud.AWS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/cloud_azure/index.html">Cloud.Azure</a></li>
@@ -278,6 +279,8 @@
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Tables.add_table_row">add_table_row() (RPA.Tables.Tables method)</a>
 </li>
+      <li><a href="libraries/archive/python.html#RPA.Archive.Archive.add_to_archive">add_to_archive() (RPA.Archive.Archive method)</a>
+</li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.alias_nb_pages">alias_nb_pages() (RPA.PDF.PDF method)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.analyze_document">analyze_document() (RPA.Cloud.AWS.AWS method)</a>
@@ -314,10 +317,10 @@
 </li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.Files.append_rows_to_worksheet">append_rows_to_worksheet() (RPA.Excel.Files.Files method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.append_table">append_table() (RPA.Tables.Table method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.append_to_binary_file">append_to_binary_file() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.append_to_file">append_to_file() (RPA.FileSystem.FileSystem method)</a>
@@ -338,6 +341,14 @@
         <li><a href="libraries/word_application/python.html#RPA.Word.Application.Application">(class in RPA.Word.Application)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/archive/python.html#RPA.Archive.Archive">Archive (class in RPA.Archive)</a>
+</li>
+      <li><a href="libraries/archive/python.html#RPA.Archive.Archive.archive_folder_with_tar">archive_folder_with_tar() (RPA.Archive.Archive method)</a>
+</li>
+      <li><a href="libraries/archive/python.html#RPA.Archive.Archive.archive_folder_with_tar_and_gzip">archive_folder_with_tar_and_gzip() (RPA.Archive.Archive method)</a>
+</li>
+      <li><a href="libraries/archive/python.html#RPA.Archive.Archive.archive_folder_with_zip">archive_folder_with_zip() (RPA.Archive.Archive method)</a>
+</li>
       <li><a href="libraries/images/python.html#RPA.Images.Region.area">area() (RPA.Images.Region property)</a>
 </li>
       <li><a href="libraries/browser/python.html#RPA.Browser.BrowserNotFoundError.args">args (RPA.Browser.BrowserNotFoundError attribute)</a>
@@ -724,6 +735,8 @@
         <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.delete_folder">(RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/archive/python.html#RPA.Archive.Archive.delete_from_archive">delete_from_archive() (RPA.Archive.Archive method)</a>
+</li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.delete_message">delete_message() (RPA.Cloud.AWS.AWS method)</a>
 
       <ul>
@@ -906,10 +919,10 @@
 </li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.ensure_unique">ensure_unique() (in module RPA.Excel.Files)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.error">error() (RPA.PDF.PDF method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.Exchange">Exchange (class in RPA.Email.Exchange)</a>
 </li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.execute_dataloader_insert">execute_dataloader_insert() (RPA.Salesforce.Salesforce method)</a>
@@ -928,6 +941,10 @@
         <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsxWorkbook.extension">(RPA.Excel.Files.XlsxWorkbook property)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/archive/python.html#RPA.Archive.Archive.extract_archive">extract_archive() (RPA.Archive.Archive method)</a>
+</li>
+      <li><a href="libraries/archive/python.html#RPA.Archive.Archive.extract_file_from_archive">extract_file_from_archive() (RPA.Archive.Archive method)</a>
+</li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.extract_pages_from_pdf">extract_pages_from_pdf() (RPA.PDF.PDF method)</a>
 </li>
   </ul></td>
@@ -1041,6 +1058,8 @@
       <li><a href="libraries/word_application/python.html#RPA.Word.Application.Application.get_all_texts">get_all_texts() (RPA.Word.Application.Application method)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.get_app">get_app() (RPA.Desktop.Windows.Windows method)</a>
+</li>
+      <li><a href="libraries/archive/python.html#RPA.Archive.Archive.get_archive_info">get_archive_info() (RPA.Archive.Archive method)</a>
 </li>
       <li><a href="libraries/desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem.get_boot_time">get_boot_time() (RPA.Desktop.OperatingSystem.OperatingSystem method)</a>
 
@@ -1535,6 +1554,8 @@
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.line">line() (RPA.PDF.PDF method)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.link">link() (RPA.PDF.PDF method)</a>
+</li>
+      <li><a href="libraries/archive/python.html#RPA.Archive.Archive.list_archive">list_archive() (RPA.Archive.Archive method)</a>
 </li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.list_buckets">list_buckets() (RPA.Cloud.AWS.AWS method)</a>
 
@@ -2139,6 +2160,8 @@
       <li><a href="libraries/database/python.html#RPA.Database.Database.row_count_is_greater_than_x">row_count_is_greater_than_x() (RPA.Database.Database method)</a>
 </li>
       <li><a href="libraries/database/python.html#RPA.Database.Database.row_count_is_less_than_x">row_count_is_less_than_x() (RPA.Database.Database method)</a>
+</li>
+      <li><a href="libraries/archive/python.html#module-RPA.Archive">RPA.Archive (module)</a>
 </li>
       <li><a href="libraries/browser/python.html#module-RPA.Browser">RPA.Browser (module)</a>
 </li>

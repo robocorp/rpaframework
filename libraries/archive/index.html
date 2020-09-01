@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Python module API &mdash; RPA Framework  documentation</title>
+  <title>Archive &mdash; RPA Framework  documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Desktop.OperatingSystem" href="../desktop_operatingsystem/index.html" />
-    <link rel="prev" title="Robot Framework API" href="../../libdoc/Desktop/Clipboard.html" />
+    <link rel="next" title="Robot Framework API" href="../../libdoc/Archive.html" />
+    <link rel="prev" title="Release notes" href="../../releasenotes.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -99,17 +99,17 @@
 </ul>
 <p class="caption"><span class="caption-text">Libraries</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../archive/index.html">Archive</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Archive</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Archive.html">Robot Framework API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">Python module API</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cloud_azure/index.html">Cloud.Azure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cloud_google/index.html">Cloud.Google</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Desktop.Clipboard</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Desktop/Clipboard.html">Robot Framework API</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
@@ -183,15 +183,13 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">Desktop.Clipboard</a> &raquo;</li>
-        
-      <li>Python module API</li>
+      <li>Archive</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/libraries/desktop_clipboard/python.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/libraries/archive/index.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -204,46 +202,53 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="python-module-api">
-<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-RPA.Desktop.Clipboard">
-<span id="clipboard"></span><h2>Clipboard<a class="headerlink" href="#module-RPA.Desktop.Clipboard" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="RPA.Desktop.Clipboard.Clipboard">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Desktop.Clipboard.</code><code class="sig-name descname">Clipboard</code><a class="headerlink" href="#RPA.Desktop.Clipboard.Clipboard" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>RPA Framework library for cross platform clipboard management.</p>
-<p>Will use <cite>win32</cite> package on Windows and <cite>clipboard</cite> package on Linux and Mac.</p>
-<dl class="method">
-<dt id="RPA.Desktop.Clipboard.Clipboard.clear_clipboard">
-<code class="sig-name descname">clear_clipboard</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Clipboard.Clipboard.clear_clipboard" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clear clipboard contents</p>
-</dd></dl>
+  <div class="section" id="archive">
+<h1>Archive<a class="headerlink" href="#archive" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#description" id="id1">Description</a></p></li>
+<li><p><a class="reference internal" href="#api-documentation" id="id2">API Documentation</a></p></li>
+</ul>
+</div>
+<div class="section" id="description">
+<h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><cite>Archive</cite> is a library for operating with ZIP and TAR
+packages.</p>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">  </span><span class="nn">RPA.Archive</span><span class="p"></span>
 
-<dl class="method">
-<dt id="RPA.Desktop.Clipboard.Clipboard.copy_to_clipboard">
-<code class="sig-name descname">copy_to_clipboard</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Clipboard.Clipboard.copy_to_clipboard" title="Permalink to this definition">¶</a></dt>
-<dd><p>Copy text to clipboard</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> – to copy</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Desktop.Clipboard.Clipboard.paste_from_clipboard">
-<code class="sig-name descname">paste_from_clipboard</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Clipboard.Clipboard.paste_from_clipboard" title="Permalink to this definition">¶</a></dt>
-<dd><p>Paste text from clipboard</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>text</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Creating a ZIP archive</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Archive Folder With ZIP</span><span class="p">   ${</span><span class="nv">CURDIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">tasks</span><span class="p">  </span><span class="s">tasks.zip</span><span class="p">   </span><span class="s">recursive=True</span><span class="p">  </span><span class="s">include=*.robot</span><span class="p">  </span><span class="s">exclude=/.*</span><span class="p"></span>
+<span class="p">   @{</span><span class="nv">files</span><span class="p">}                  </span><span class="nf">List Archive</span><span class="p">             </span><span class="s">tasks.zip</span><span class="p"></span>
+<span class="p">   FOR  ${</span><span class="nv">file</span><span class="p">}  IN  ${</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">      </span><span class="nf">Log</span><span class="p">  ${</span><span class="nv">file</span><span class="p">}</span>
+<span class="p">   END</span>
+<span class="p">   </span><span class="nf">Add To Archive</span><span class="p">            </span><span class="s">.</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">..</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">missing.robot</span><span class="p">  </span><span class="s">tasks.zip</span><span class="p"></span>
+<span class="p">   &amp;{</span><span class="nv">info</span><span class="p">}                   </span><span class="nf">Get Archive Info</span><span class="p"></span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="api-documentation">
+<h2><a class="toc-backref" href="#id2">API Documentation</a><a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../libdoc/Archive.html">Robot Framework API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python.html">Python module API</a></li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -255,10 +260,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../desktop_operatingsystem/index.html" class="btn btn-neutral float-right" title="Desktop.OperatingSystem" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../libdoc/Archive.html" class="btn btn-neutral float-right" title="Robot Framework API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../../libdoc/Desktop/Clipboard.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../../releasenotes.html" class="btn btn-neutral float-left" title="Release notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
