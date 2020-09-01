@@ -990,7 +990,6 @@ class Tables:
         """
         self.requires_table(table)
         col = table.get_column(column, as_list=as_list)
-        notebook_print(text=col)
         return col
 
     def set_table_row(self, table, row, values):
@@ -1231,7 +1230,7 @@ class Tables:
             rows = list(reader)
 
         table = Table(rows, columns)
-        notebook_table(table)
+        notebook_table(self.table_head(table, 10))
         return table
 
     def write_table_to_csv(self, table, path, header=True, dialect="excel"):
