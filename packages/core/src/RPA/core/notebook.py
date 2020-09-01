@@ -98,6 +98,7 @@ def notebook_table(table, count: int = 20):
 
     :param table: `RPA.Table` object to print
     """
+    # pylint: disable=C0415
     from RPA.Tables import Tables
 
     if count:

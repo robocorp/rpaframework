@@ -99,8 +99,8 @@ def start(name: str, **options):
     name = name.strip()
     try:
         factory = getattr(webdriver, name)
-    except AttributeError:
-        raise RuntimeError(f"'{name}' is not a valid driver name")
+    except AttributeError as e:
+        raise RuntimeError(f"'{name}' is not a valid driver name") from e
 
     driver = factory(**options)
     return driver
