@@ -29,6 +29,19 @@ packages.
       Add To Archive            .${/}..${/}missing.robot  tasks.zip
       &{info}                   Get Archive Info
 
+
+.. code-block:: python
+    :linenos:
+
+    from RPA.Archive import Archive
+
+    lib = Archive()
+    lib.archive_folder_with_tar('./tasks', 'tasks.tar', recursive=True)
+    files = lib.list_archive('tasks.tar')
+    for file in files:
+       print(file)
+
+
 *****************
 API Documentation
 *****************
