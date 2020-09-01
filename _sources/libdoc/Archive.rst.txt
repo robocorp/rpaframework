@@ -23,6 +23,8 @@ Keywords
   can be added to archive structure with relative path using argument `folder`.
 
 
+  Examples.
+
   .. code-block:: robotframework
 
       Add To Archive  extrafile.txt  myfiles.zip
@@ -43,7 +45,7 @@ Keywords
   Similarly to exclude certain file, like dotfiles, the argument `exclude` can be used.
 
 
-  Example:
+  Examples.
 
   .. code-block:: robotframework
 
@@ -53,7 +55,7 @@ Keywords
       Archive Folder With TAR  ${CURDIR}${/}documents  documents.tar  recursive=True
 
 :Archive Folder With Zip:
-  :Arguments: folder: str, archive_name: str, recursive: bool=False, include: str=None, exclude: str=None, compression: str=stored, compression_level: int=1
+  :Arguments: folder: str, archive_name: str, recursive: bool=False, include: str=None, exclude: str=None, compression: str=stored
 
   Create a zip archive of a folder
 
@@ -70,7 +72,7 @@ Keywords
       - lzma
 
 
-  Example:
+  Examples.
 
   .. code-block:: robotframework
 
@@ -79,7 +81,7 @@ Keywords
       Archive Folder With Zip  ${CURDIR}${/}tasks      no_dotfiles.zip  exclude=/.*
       Archive Folder With Zip  ${CURDIR}${/}documents  documents.zip    recursive=True
       Archive Folder With Zip  ${CURDIR}               packagelzma.zip  compression=lzma
-      Archive Folder With Zip  ${CURDIR}               bzipped.zip      compression=bzip2  compression_level=7
+      Archive Folder With Zip  ${CURDIR}               bzipped.zip      compression=bzip2
 
 :Extract Archive:
   :Arguments: archive_name: str, path: str=None, members: typing.Any=None
@@ -92,7 +94,7 @@ Keywords
   can be set to define extraction path.
 
 
-  Example.
+  Examples.
 
   .. code-block:: robotframework
 
@@ -111,7 +113,7 @@ Keywords
   to define extraction path.
 
 
-  Example.
+  Examples.
 
   .. code-block:: robotframework
 
@@ -152,7 +154,7 @@ Keywords
       - last modification time in format `%d.%m.%Y %H:%M:%S`
 
 
-  Example.
+  Examples.
 
   .. code-block:: robotframework
 

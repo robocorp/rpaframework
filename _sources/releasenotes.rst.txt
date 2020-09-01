@@ -4,7 +4,10 @@ Release notes
 Upcoming release
 ----------------
 
-- **Desktop.Windows**: Fix dialog handling in ``Open Executable`` keyword
+2.7.0
+-----
+
+- **Desktop.Windows**: Fix window dialog handling in ``Open Executable`` keyword
 - New **Archive** library for ZIP and TAR operations
 - **core.notebook**: Add parameter `count` to control row output from keyword ``Notebook Table``
 
