@@ -5,43 +5,44 @@ on:
     branches:
       - master
     paths:
-      - 'pyproject.toml'
-      - 'poetry.lock'
-      - 'Makefile'
-      - 'docs/**'
-      - '.github/workflows/docs.yaml'
+      - "pyproject.toml"
+      - "poetry.lock"
+      - "Makefile"
+      - "docs/source/releasenotes.rst"
+      - ".github/workflows/docs.yaml"
+      - "packages/main/README.rst"
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v1
-      with:
-        python-version: '3.7'
-    - name: Upgrade pip
-      run: python -m pip install --upgrade pip
-    - name: Install poetry
-      run: pip install poetry
-    - name: Install dependencies
-      run: make install
-    - name: Build HTML documentation
-      run: make docs
-    - name: Publish HTML documentation
-      if: success()
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        publish_branch: gh-pages
-        publish_dir: docs/build/html/
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        cname: rpaframework.org
-    - name: Build Robohub documentation
-      run: make docs-hub
-    - name: Publish Robohub documentation
-      if: success()
-      uses: actions/upload-artifact@v1
-      with:
-        name: robohub-docs
-        path: dist/hub/
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.7"
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+      - name: Install poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: make install
+      - name: Build HTML documentation
+        run: make docs
+      - name: Publish HTML documentation
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_branch: gh-pages
+          publish_dir: docs/build/html/
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          cname: rpaframework.org
+      - name: Build Robohub documentation
+        run: make docs-hub
+      - name: Publish Robohub documentation
+        if: success()
+        uses: actions/upload-artifact@v1
+        with:
+          name: robohub-docs
+          path: dist/hub/
