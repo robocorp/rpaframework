@@ -13,6 +13,13 @@ Description
 `Archive` is a library for operating with ZIP and TAR
 packages.
 
+See `API documentation` for detailed examples how to use
+library.
+
+********
+Examples
+********
+
 .. code-block:: robotframework
    :linenos:
 
