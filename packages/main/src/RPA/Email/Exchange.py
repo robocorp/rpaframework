@@ -20,8 +20,7 @@ from exchangelib import (
 
 
 class Exchange:
-    """Library for interfacing with Microsoft Exchange Web Services (EWS).
-    """
+    """Library for interfacing with Microsoft Exchange Web Services (EWS)."""
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
@@ -218,7 +217,8 @@ class Exchange:
         else:
             parent = self.account.inbox / parent_folder / folder_name
         self.logger.info(
-            "Create folder '%s'", folder_name,
+            "Create folder '%s'",
+            folder_name,
         )
         new_folder = Folder(parent=parent, name=folder_name)
         new_folder.save()
@@ -237,7 +237,8 @@ class Exchange:
         else:
             folder_to_delete = self.account.inbox / parent_folder / folder_name
         self.logger.info(
-            "Delete folder  '%s'", folder_name,
+            "Delete folder  '%s'",
+            folder_name,
         )
         folder_to_delete.delete()
 
@@ -258,7 +259,9 @@ class Exchange:
         else:
             parent = self.account.inbox / parent_folder
         self.logger.info(
-            "Rename folder '%s' to '%s'", oldname, newname,
+            "Rename folder '%s' to '%s'",
+            oldname,
+            newname,
         )
         items = self._get_all_items_in_folder(oldname, parent_folder)
         old_folder = Folder(parent=parent, name=oldname)

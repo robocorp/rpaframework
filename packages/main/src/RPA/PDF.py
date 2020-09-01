@@ -389,8 +389,7 @@ class PageGenerator:
 
 
 class PDF(FPDF, HTMLMixin):
-    """RPA Framework library for PDF management.
-    """
+    """RPA Framework library for PDF management."""
 
     anchor_element: dict
     active_fileobject: object
@@ -421,8 +420,7 @@ class PDF(FPDF, HTMLMixin):
         self.close_all_pdf_documents()
 
     def close_all_pdf_documents(self) -> None:
-        """Close all opened PDF file descriptors.
-        """
+        """Close all opened PDF file descriptors."""
         for filename, fileobject in self.fileobjects.items():
             fileobject.close()
             self.logger.debug('PDF "%s" closed', filename)
@@ -561,7 +559,10 @@ class PDF(FPDF, HTMLMixin):
         self._write_html_to_pdf(html, target_path)
 
     def html_to_pdf(
-        self, content: str = None, filename: str = None, variables: dict = None,
+        self,
+        content: str = None,
+        filename: str = None,
+        variables: dict = None,
     ) -> None:
         """Use HTML content to generate PDF file.
 
@@ -780,10 +781,10 @@ class PDF(FPDF, HTMLMixin):
             self.save_pdf(None, target_pdf, True)
             return True
 
-        except NotImplementedError:
+        except NotImplementedError as e:
             raise ValueError(
                 f"Document {source_pdf} uses an unsupported encryption method."
-            )
+            ) from e
         except KeyError:
             self.logger.info("PDF is not encrypted")
             return False
@@ -816,7 +817,10 @@ class PDF(FPDF, HTMLMixin):
         source_document = PDFDocument(source_parser)
         source_pages = PDFPage.create_pages(source_document)
         rsrcmgr = PDFResourceManager()
-        laparams = LAParams(detect_vertical=True, all_texts=True,)
+        laparams = LAParams(
+            detect_vertical=True,
+            all_texts=True,
+        )
         device = RPAConverter(rsrcmgr, laparams=laparams)
         interpreter = PDFPageInterpreter(rsrcmgr, device)
 

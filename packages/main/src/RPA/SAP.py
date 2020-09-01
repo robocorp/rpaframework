@@ -8,8 +8,7 @@ else:
 
 
 class SAP(SapGuiLibrary):
-    """RPA Framework library which is wrapping `SapGuiLibrary` functionality.
-    """
+    """RPA Framework library which is wrapping `SapGuiLibrary` functionality."""
 
     def __init__(self, *args, **kwargs):
         self.logger = logging.getLogger(__name__)

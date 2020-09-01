@@ -20,8 +20,7 @@ class SalesforceDataNotAnDictionary(Exception):
 
 
 class Salesforce:
-    """Library for accessing Salesforce using REST API.
-    """
+    """Library for accessing Salesforce using REST API."""
 
     account = {"Name": None, "Id": None}
 

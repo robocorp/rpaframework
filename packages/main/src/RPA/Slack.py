@@ -4,9 +4,7 @@ import requests
 
 
 class Slack:
-    """RPA Framework library for Slack operations.
-
-    """
+    """RPA Framework library for Slack operations."""
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)

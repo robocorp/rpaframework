@@ -213,12 +213,12 @@ class RobocloudVault(BaseSecretManager):
 
             payload = response.json()
             payload = self._decrypt_payload(payload)
-        except InvalidTag:
+        except InvalidTag as e:
             self.logger.debug(traceback.format_exc())
-            raise RobocloudVaultError("Failed to validate authentication tag")
+            raise RobocloudVaultError("Failed to validate authentication tag") from e
         except Exception as exc:
             self.logger.debug(traceback.format_exc())
-            raise RobocloudVaultError(exc)
+            raise RobocloudVaultError from exc
 
         return Secret(payload["name"], payload["description"], payload["values"])
 

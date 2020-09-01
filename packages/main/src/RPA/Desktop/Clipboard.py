@@ -49,8 +49,7 @@ class Clipboard:
             return clipboard.paste()
 
     def clear_clipboard(self):
-        """Clear clipboard contents
-        """
+        """Clear clipboard contents"""
         self.logger.debug("clear_clipboard")
         if platform.system() == "Windows":
             win32clipboard.OpenClipboard()

@@ -32,8 +32,7 @@ class NetsuiteAuthenticationError(Exception):
 
 
 class Netsuite:
-    """Library for accessing Netsuite.
-    """
+    """Library for accessing Netsuite."""
 
     def __init__(self) -> None:
         self.client = None
@@ -52,7 +51,7 @@ class Netsuite:
         token_key: str = None,
         token_secret: str = None,
     ) -> None:
-        """ Connect to Netsuite with credentials from environment
+        """Connect to Netsuite with credentials from environment
         variables.
 
         Parameters are not logged into Robot Framework log.
@@ -110,7 +109,10 @@ class Netsuite:
         if self.client is None:
             self.client = NetSuiteClient(account=account)
         self.client.login(
-            email=NS_EMAIL, password=NS_PASSWORD, role=NS_ROLE, application_id=NS_APPID,
+            email=NS_EMAIL,
+            password=NS_PASSWORD,
+            role=NS_ROLE,
+            application_id=NS_APPID,
         )
 
     @ns_instance_required

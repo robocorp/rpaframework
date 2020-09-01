@@ -57,7 +57,8 @@ class Archive:
         exclude: str = None,
         compression: str = "stored",
         compression_level: int = 1,
-    ) -> None:  # pylint: disable=C0301
+    ) -> None:
+        # pylint: disable=C0301
         """Create a zip archive of a folder
 
         This keyword creates an ZIP archive of a local folder. By default subdirectories are not
@@ -123,7 +124,8 @@ class Archive:
         recursive: bool = False,
         include: str = None,
         exclude: str = None,
-    ) -> None:  # pylint: disable=C0301
+    ) -> None:
+        # pylint: disable=C0301
         """Create a tar/tar.gz archive of a folder
 
         This keyword creates an TAR or TAR.GZ archive of a local folder. Type of archive
@@ -299,7 +301,8 @@ class Archive:
 
     def extract_archive(
         self, archive_name: str, path: str = None, members: Any = None
-    ) -> None:  # pylint: disable=C0301
+    ) -> None:
+        # pylint: disable=C0301
         """Extract files from archive into local directory
 
         This keyword supports extracting files from zip, tar and tar.gz archives.

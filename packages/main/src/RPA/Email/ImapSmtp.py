@@ -283,7 +283,8 @@ class ImapSmtp:
                 with open(im, "rb") as f:
                     img = MIMEImage(f.read())
                     msg.add_header(
-                        "Content-Disposition", f"inline; filename= {imname}",
+                        "Content-Disposition",
+                        f"inline; filename= {imname}",
                     )
                     msg.attach(img)
 
@@ -295,7 +296,7 @@ class ImapSmtp:
         try:
             self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
         except Exception as err:
-            raise ValueError(f"Send Message failed: {err}")
+            raise ValueError(f"Send Message failed: {err}") from err
         return True
 
     def _handle_message_parameters(self, recipients, attachments, images):
@@ -322,7 +323,9 @@ class ImapSmtp:
                     if ext in IMAGE_FORMATS:
                         # image attachment
                         part = MIMEImage(
-                            attachment.read(), name=Path(filename).name, _subtype=ext,
+                            attachment.read(),
+                            name=Path(filename).name,
+                            _subtype=ext,
                         )
                     else:
                         # attach other filetypes
@@ -579,7 +582,8 @@ class ImapSmtp:
         else:
             if suppress_error is False:
                 self.logger.warning(
-                    "Folder rename failed with message: '%s'", bytes.decode(data[0]),
+                    "Folder rename failed with message: '%s'",
+                    bytes.decode(data[0]),
                 )
             return False
 

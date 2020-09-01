@@ -133,7 +133,9 @@ class ServiceVision(GoogleBase):
 
     @google_dependency_required
     def init_vision_client(
-        self, service_credentials_file: str = None, use_robocloud_vault: bool = False,
+        self,
+        service_credentials_file: str = None,
+        use_robocloud_vault: bool = False,
     ) -> None:
         """Initialize Google Cloud Vision client
 
@@ -331,7 +333,9 @@ class ServiceVideoIntelligence(GoogleBase):
 
     @google_dependency_required
     def init_video_intelligence_client(
-        self, service_credentials_file: str = None, use_robocloud_vault: bool = False,
+        self,
+        service_credentials_file: str = None,
+        use_robocloud_vault: bool = False,
     ) -> None:
         """Initialize Google Cloud Video Intelligence client
 
@@ -572,7 +576,9 @@ class ServiceSpeechToText(GoogleBase):
 
     @google_dependency_required
     def init_speech_to_text_client(
-        self, service_credentials_file: str = None, use_robocloud_vault: bool = False,
+        self,
+        service_credentials_file: str = None,
+        use_robocloud_vault: bool = False,
     ) -> None:
         """Initialize Google Cloud Speech to Text client
 
@@ -638,7 +644,9 @@ class ServiceStorage(GoogleBase):
 
     @google_dependency_required
     def init_storage_client(
-        self, service_credentials_file: str = None, use_robocloud_vault: bool = False,
+        self,
+        service_credentials_file: str = None,
+        use_robocloud_vault: bool = False,
     ) -> None:
         """Initialize Google Cloud Storage client
 
@@ -674,8 +682,8 @@ class ServiceStorage(GoogleBase):
         bucket = self.get_bucket(bucket_name)
         try:
             bucket.delete()
-        except Exception:
-            raise ValueError("The bucket you tried to delete was not empty")
+        except Exception as e:
+            raise ValueError("The bucket you tried to delete was not empty") from e
 
     @google_dependency_required
     def get_bucket(self, bucket_name: str):

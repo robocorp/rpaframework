@@ -95,7 +95,7 @@ class Twitter:
             self._me = self.api.me()
         except TweepError as e:
             self.logger.error("Error during Twitter authentication: %s", str(e))
-            raise TweepError(e)
+            raise TweepError from e
 
     def get_me(self) -> dict:
         """Get Twitter profile of authenticated user
@@ -242,7 +242,9 @@ class Twitter:
             return True
         except TweepError:
             self.logger.warning(
-                'Could not like tweet "%s" by user "%s"', tweet.text, tweet.screen_name,
+                'Could not like tweet "%s" by user "%s"',
+                tweet.text,
+                tweet.screen_name,
             )
             return False
 

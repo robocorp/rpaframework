@@ -71,7 +71,11 @@ class HTTP(RequestsLibrary):
         return response
 
     def _create_or_overwrite_target_file(
-        self, target_file: str, content: Any, binary: bool, overwrite: bool,
+        self,
+        target_file: str,
+        content: Any,
+        binary: bool,
+        overwrite: bool,
     ) -> None:
         if binary:
             self.fs.create_binary_file(target_file, content, overwrite)

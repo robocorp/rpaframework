@@ -75,8 +75,7 @@ class Application:
             self.logger.warning("Filename was not given.")
 
     def create_new_document(self) -> None:
-        """Create new document for Word application
-        """
+        """Create new document for Word application"""
         if self.app:
             self.app.Documents.Add()
 
@@ -129,8 +128,7 @@ class Application:
                 footer.Range.Text = text
 
     def save_document(self) -> None:
-        """Save active document
-        """
+        """Save active document"""
         # Accept all revisions
         self.app.ActiveDocument.Revisions.AcceptAll()
         # Delete all comments

@@ -30,14 +30,13 @@ def ftpcommand(f):
             args[0].logger.warning(str(e))
             return False
         except all_errors as e:
-            raise FTPException(str(e))
+            raise FTPException from e
 
     return wrapper
 
 
 class FTP:
-    """RPA Framework library for FTP operations
-    """
+    """RPA Framework library for FTP operations"""
 
     def __init__(self):
         self.instance = None
@@ -75,9 +74,9 @@ class FTP:
             if transfer != "passive":
                 self.instance.set_pasv(False)
         except error_perm as e:
-            raise AuthenticationException(str(e))
+            raise AuthenticationException from e
         except all_errors as e:
-            raise FTPException(str(e))
+            raise FTPException from e
 
         self.logger.info("FTP connection successful")
         return True
@@ -133,7 +132,7 @@ class FTP:
             os.unlink(localfile)
             return False
         except all_errors as e:
-            raise FTPException(str(e))
+            raise FTPException from e
 
     @ftpcommand
     def cwd(self, dirname: str) -> bool:

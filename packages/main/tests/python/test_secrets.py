@@ -92,7 +92,11 @@ def test_secrets_adapter_invalid_baseclass(mock_env_default):
 
 
 def test_secret_properties():
-    secret = Secret(name="name-value", description="description-value", values={},)
+    secret = Secret(
+        name="name-value",
+        description="description-value",
+        values={},
+    )
 
     assert secret.name == "name-value"
     assert secret.description == "description-value"
@@ -148,7 +152,11 @@ def test_secret_print():
 
 
 def test_secret_immutable():
-    secret = Secret(name="name", description="desc", values={"key": "value"},)
+    secret = Secret(
+        name="name",
+        description="desc",
+        values={"key": "value"},
+    )
 
     with pytest.raises(AttributeError):
         secret.name = "test"

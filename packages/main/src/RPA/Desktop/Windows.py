@@ -40,8 +40,7 @@ def write_element_info_as_json(
 
 
 class Windows(OperatingSystem):
-    """Windows methods extending OperatingSystem class.
-    """
+    """Windows methods extending OperatingSystem class."""
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
 
@@ -67,7 +66,10 @@ class Windows(OperatingSystem):
 
     # TODO. add possibility to define alias for application
     def _add_app_instance(
-        self, app: Any = None, dialog: bool = True, params: dict = None,
+        self,
+        app: Any = None,
+        dialog: bool = True,
+        params: dict = None,
     ) -> int:
         params = params or {}
         self._app_instance_id += 1
@@ -320,8 +322,7 @@ class Windows(OperatingSystem):
         return app_instance
 
     def close_all_applications(self) -> None:
-        """Close all applications
-        """
+        """Close all applications"""
         self.logger.info("Closing all applications")
         application_ids = self._apps.keys()
         self.logger.debug("Applications in memory: %d", len(self._apps))
@@ -587,7 +588,9 @@ class Windows(OperatingSystem):
 
         controls, elements = self.get_window_elements()
         self.logger.info(
-            "Find element: (locator: %s, criteria: %s)", locator, search_criteria,
+            "Find element: (locator: %s, criteria: %s)",
+            locator,
+            search_criteria,
         )
 
         matching_elements, locators = [], []
@@ -892,8 +895,7 @@ class Windows(OperatingSystem):
         return element_dict
 
     def put_system_to_sleep(self) -> None:
-        """Put Windows into sleep mode
-        """
+        """Put Windows into sleep mode"""
         access = win32security.TOKEN_ADJUST_PRIVILEGES | win32security.TOKEN_QUERY
         htoken = win32security.OpenProcessToken(win32api.GetCurrentProcess(), access)
         if htoken:
@@ -907,8 +909,7 @@ class Windows(OperatingSystem):
             win32api.CloseHandle(htoken)
 
     def lock_screen(self) -> None:
-        """Put windows into lock mode
-        """
+        """Put windows into lock mode"""
         ctypes.windll.User32.LockWorkStation()
 
     def log_in(self, username: str, password: str, domain: str = ".") -> str:

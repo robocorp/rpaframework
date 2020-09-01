@@ -53,8 +53,7 @@ class Application:
             self.app = None
 
     def add_new_workbook(self) -> None:
-        """Adds new workbook for Excel application
-        """
+        """Adds new workbook for Excel application"""
         self.workbook = self.app.Workbooks.Add()
 
     def open_workbook(self, filename: str) -> None:
@@ -158,7 +157,10 @@ class Application:
             worksheet.Cells(row, column).Formula = formula
 
     def read_from_cells(
-        self, worksheet: Any = None, row: int = None, column: int = None,
+        self,
+        worksheet: Any = None,
+        row: int = None,
+        column: int = None,
     ) -> str:
         """Read value from cell.
 
@@ -177,8 +179,7 @@ class Application:
             return cell_value
 
     def save_excel(self) -> None:
-        """Saves Excel file
-        """
+        """Saves Excel file"""
         self.workbook.Save()
 
     def save_excel_as(self, filename: str, autofit: bool = False) -> None:

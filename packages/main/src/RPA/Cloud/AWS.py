@@ -482,7 +482,9 @@ class ServiceTextract(AWSBase):
             )
         else:
             with open(image_file, "rb") as img:
-                response = client.detect_document_text(Document={"Bytes": img.read()},)
+                response = client.detect_document_text(
+                    Document={"Bytes": img.read()},
+                )
         self._parse_response_blocks(response)
         if json_file:
             with open(json_file, "w") as f:
@@ -603,7 +605,9 @@ class ServiceSQS(AWSBase):
         :return: message as dict
         """
         client = self._get_client_for_service("sqs")
-        response = client.receive_message(QueueUrl=self.queue_url,)
+        response = client.receive_message(
+            QueueUrl=self.queue_url,
+        )
         return response["Messages"][0] if "Messages" in response else None
 
     @aws_dependency_required

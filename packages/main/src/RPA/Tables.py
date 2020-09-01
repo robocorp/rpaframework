@@ -333,8 +333,8 @@ class Table:
         else:
             try:
                 location = container.index(value)
-            except ValueError:
-                raise ValueError(f"Unknown {name} name: {value}")
+            except ValueError as e:
+                raise ValueError(f"Unknown {name} name: {value}") from e
 
         return location
 
@@ -384,16 +384,16 @@ class Table:
         else:
             try:
                 start = self.index_location(slicer.start)
-            except ValueError:
-                raise IndexError("Start of slice not in index")
+            except ValueError as e:
+                raise IndexError("Start of slice not in index") from e
 
         if slicer.stop is None:
             end = len(self._index)
         else:
             try:
                 end = self.index_location(slicer.stop)
-            except ValueError:
-                raise IndexError("End of slice not in index")
+            except ValueError as e:
+                raise IndexError("End of slice not in index") from e
 
         if start > end:
             raise IndexError("Start of slice after end of slice")
