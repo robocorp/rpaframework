@@ -60,6 +60,8 @@ Libraries
 The RPA Framework project currently includes the following libraries:
 
 +----------------------------+----------------------------------------------+
+| `Archive`_                 | Archiving TAR and ZIP files                  |
++----------------------------+----------------------------------------------+
 | `Browser`_                 | Control browsers and automate the web        |
 +----------------------------+----------------------------------------------+
 | `Cloud.AWS`_               | Use Amazon AWS services                      |
@@ -115,6 +117,7 @@ The RPA Framework project currently includes the following libraries:
 | `Word.Application`_        | Control the Word desktop application         |
 +----------------------------+----------------------------------------------+
 
+.. _Archive: https://rpaframework.org/libraries/archive/
 .. _Browser: https://rpaframework.org/libraries/browser/
 .. _Cloud.AWS: https://rpaframework.org/libraries/cloud_aws/
 .. _Cloud.Azure: https://rpaframework.org/libraries/cloud_azure/
