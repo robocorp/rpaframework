@@ -10,7 +10,6 @@ Description
 
 RPA Framework library which is wrapping `SapGuiLibrary` functionality.
 
-
 ********
 Keywords
 ********

@@ -10,7 +10,6 @@ Description
 
 Library for interfacing with Microsoft Exchange Web Services (EWS).
 
-
 ********
 Keywords
 ********

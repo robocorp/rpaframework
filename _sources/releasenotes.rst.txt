@@ -4,8 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
-- **Desktop.Windows** Fix dialog handling in `Open Executable`
+- **Desktop.Windows**: Fix dialog handling in ``Open Executable`` keyword
 - New **Archive** library for ZIP and TAR operations
+- **core.notebook**: Add parameter `count` to control row output from keyword ``Notebook Table``
 
 2.6.0
 -----
@@ -62,7 +63,7 @@ Upcoming release
 2.3.0
 -----
 
-- New **FTP** library, which also interaction with FTP servers
+- New **FTP** library, which interacts with FTP servers
 - Use **RPA.core.notebook* library to output data into Jupyter Notebook
   (in Robocode Lab especially). Support added to keywords in the following
   libraries: **Browser**, **FTP**, **HTTP**, **Images**, **PDF**, **Twitter**,

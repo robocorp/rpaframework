@@ -10,8 +10,6 @@ Description
 
 RPA Framework library for Slack operations.
 
-
-
 ********
 Keywords
 ********

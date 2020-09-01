@@ -10,7 +10,6 @@ Description
 
 Windows methods extending OperatingSystem class.
 
-
 ********
 Keywords
 ********
