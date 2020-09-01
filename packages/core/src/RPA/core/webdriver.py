@@ -58,7 +58,9 @@ def executable(browser: str, download: bool = False) -> str:
     :param download: download driver binaries if they don't exist
     """
     LOGGER.debug(
-        "Webdriver initialization for '%s' (download: %s)", browser, download,
+        "Webdriver initialization for '%s' (download: %s)",
+        browser,
+        download,
     )
 
     browser = browser.lower().strip()
@@ -170,7 +172,9 @@ def _download_driver(factory: Any, version: str = None) -> None:
             _set_executable_permissions(bin_path)
 
         LOGGER.debug(
-            "%s downloaded to %s", manager.get_driver_filename(), bin_path,
+            "%s downloaded to %s",
+            manager.get_driver_filename(),
+            bin_path,
         )
     except RuntimeError:
         pass
@@ -179,7 +183,8 @@ def _download_driver(factory: Any, version: str = None) -> None:
 def _set_executable_permissions(path: str) -> None:
     st = os.stat(path)
     os.chmod(
-        path, st.st_mode | stat.S_IXOTH | stat.S_IXGRP | stat.S_IEXEC,
+        path,
+        st.st_mode | stat.S_IXOTH | stat.S_IXGRP | stat.S_IEXEC,
     )
 
 
