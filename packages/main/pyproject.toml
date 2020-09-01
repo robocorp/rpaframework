@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "2.6.0"
+version = "2.7.0"
 description = "A collection of tools and libraries for RPA"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -34,7 +34,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.6"
 dataclasses = {version = "^0.7", python=">=3.6,<3.7"}
-rpaframework-core = "1.6.1"
+rpaframework-core = "^1.7.1"
 robotframework = "^3.2.1"
 robotframework-databaselibrary = "^1.2.4"
 robotframework-sapguilibrary = {version = "^1.1", platform = "win32"}
