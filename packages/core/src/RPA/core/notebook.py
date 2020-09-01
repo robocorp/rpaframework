@@ -19,6 +19,9 @@ if ipython_module:
         Video,
     )
 
+    # pylint: disable=C0415
+    from RPA.Tables import Tables, Table  # noqa
+
     IPYTHON_AVAILABLE = True
 
 
@@ -98,9 +101,6 @@ def notebook_table(table, count: int = 20):
 
     :param table: `RPA.Table` object to print
     """
-    # pylint: disable=C0415
-    from RPA.Tables import Tables
-
     if count:
         table = Tables().table_head(table, count=count)
     output = _get_table_output(table)
@@ -151,9 +151,6 @@ def notebook_json(json_object):
 def _get_table_output(table):
     output = ""
     try:
-        # pylint: disable=C0415
-        from RPA.Tables import Tables, Table  # noqa
-
         if isinstance(table, Table):
             output = "<table class='rpafw-notebook-table'>"
             header = Tables().table_head(table, count=1)
