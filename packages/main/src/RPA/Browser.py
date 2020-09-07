@@ -119,6 +119,7 @@ class Browser(SeleniumLibrary):
         profile_name: Optional[str] = None,
         profile_path: Optional[str] = None,
         preferences: Optional[dict] = None,
+        proxy: str = None,
     ) -> int:
         """Opens the first available browser in the system in preferred order, or the
         given browser (``browser_selection``).
@@ -140,6 +141,8 @@ class Browser(SeleniumLibrary):
         ``profile_path`` Path to profiles (if profile enabled)
 
         ``preferences`` Profile preferences (Chrome/Chromium only)
+
+        ``proxy`` Proxy server address (Chrome only)
 
         Returns an index of the webdriver session.
 
@@ -192,6 +195,7 @@ class Browser(SeleniumLibrary):
                     profile_name,
                     profile_path,
                     preferences,
+                    proxy,
                 )
                 index_or_alias = self._create_webdriver(
                     browser, alias, download, **kwargs
@@ -242,7 +246,7 @@ class Browser(SeleniumLibrary):
             preferable_browser_order = (
                 browser_selection
                 if isinstance(browser_selection, list)
-                else [browser_selection]
+                else browser_selection.split(",")
             )
         return preferable_browser_order
 
@@ -255,6 +259,7 @@ class Browser(SeleniumLibrary):
         profile_name: Optional[str] = None,
         profile_path: Optional[str] = None,
         preferences: Optional[dict] = None,
+        proxy: str = None,
     ) -> dict:
         """Get browser and webdriver arguments for given options."""
         preferences = preferences or {}
@@ -286,7 +291,8 @@ class Browser(SeleniumLibrary):
                 "credentials_enable_service": False,
                 "profile.password_manager_enabled": False,
             }
-
+            if proxy:
+                options.add_argument("--proxy-server=%s" % proxy)
             options.add_argument("--disable-web-security")
             options.add_argument("--allow-running-insecure-content")
             options.add_argument("--no-sandbox")
@@ -392,6 +398,7 @@ class Browser(SeleniumLibrary):
         profile_name: Optional[str] = None,
         profile_path: Optional[str] = None,
         preferences: Optional[dict] = None,
+        proxy: str = None,
     ) -> int:
         """Open Chrome browser. See ``Open Available Browser`` for
         descriptions of arguments.
@@ -406,6 +413,7 @@ class Browser(SeleniumLibrary):
             profile_name=profile_name,
             profile_path=profile_path,
             preferences=preferences,
+            proxy=proxy,
         )
 
     @keyword
