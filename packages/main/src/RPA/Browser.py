@@ -121,6 +121,7 @@ class Browser(SeleniumLibrary):
         preferences: Optional[dict] = None,
         proxy: str = None,
     ) -> int:
+        # pylint: disable=C0301
         """Opens the first available browser in the system in preferred order, or the
         given browser (``browser_selection``).
 
@@ -168,7 +169,12 @@ class Browser(SeleniumLibrary):
 
         For information about Safari webdriver setup, see
         https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari
-        """
+
+        Example:
+            | ${idx1} | Open Available Browser | https://www.robocorp.com |
+            | ${idx2} | Open Available Browser | ${URL} | browser_selection=opera,firefox |
+            | Open Available Browser | ${URL} | headless=True | proxy=localhost:8899 |
+        """  # noqa: E501
         # pylint: disable=redefined-argument-from-local
         browser_options = self._get_browser_order(browser_selection)
         headless_options = [headless] if headless is not None else [False, True]
@@ -425,6 +431,9 @@ class Browser(SeleniumLibrary):
         4-digit number not being used by other applications.
 
         That port can then be used to connect using this keyword.
+
+        Example:
+            | Attach Chrome Browser | port=9222 |
         """
         options = ChromeOptions()
         options.add_experimental_option("debuggerAddress", f"localhost:{port:d}")
@@ -443,6 +452,9 @@ class Browser(SeleniumLibrary):
         """Open Chrome browser in headless mode.
 
         ``url`` URL to open
+
+        Example:
+            | ${idx} | Open Headless Chrome Browser | https://www.google.com |
         """
         return self.open_chrome_browser(url, headless=True)
 
@@ -460,6 +472,11 @@ class Browser(SeleniumLibrary):
         ``locator`` if defined, take element screenshot, default ``None``
 
         ``filename_prefix`` prefix for screenshot files, default "screenshot"
+
+        Example:
+            | Open Available Browser | https://www.robocorp.com | headless=True |
+            | Screenshot | page=False | locator=//a[@aria-label="Home"] |
+            | Screenshot | filename_prefix=task_screenshots |
         """
         if page:
             filename = os.path.join(
@@ -491,6 +508,11 @@ class Browser(SeleniumLibrary):
         ``modifier`` press given keys while clicking the element, e.g. CTRL
 
         ``action_chain`` store action in Selenium ActionChain queue
+
+        Example:
+            | Click Element When Visible | q |
+            | Click Element When Visible | id:button | CTRL+ALT |
+            | Click Element When Visible | action_chain=True |
         """
         self.wait_until_element_is_visible(locator)
         self.click_element(locator, modifier, action_chain)
@@ -504,6 +526,9 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         ``modifier`` press given keys while clicking the element, e.g. CTRL
+
+        Example:
+            | Click Button When Visible  | //button[@class="mybutton"] |
         """
         self.wait_until_element_is_visible(locator)
         self.click_button(locator, modifier)
@@ -516,6 +541,9 @@ class Browser(SeleniumLibrary):
         """Click element if it is visible
 
         ``locator`` element locator
+
+        Example:
+            | Click Element If Visible | //button[@class="mybutton"] |
         """
         visible = self.is_element_visible(locator)
         if visible:
@@ -523,12 +551,16 @@ class Browser(SeleniumLibrary):
 
     @keyword
     def input_text_when_element_is_visible(self, locator: str, text: str) -> None:
+        # pylint: disable=C0301
         """Input text into locator after it has become visible.
 
         ``locator`` element locator
 
         ``text`` insert text to locator
-        """
+
+        Example:
+            | Input Text When Element Is Visible | //input[@id="freetext"]  | my feedback |
+        """  # noqa: E501
         self.wait_until_element_is_visible(locator)
         self.input_text(locator, text)
 
@@ -537,6 +569,9 @@ class Browser(SeleniumLibrary):
         """Is element enabled
 
         ``locator`` element locator
+
+        Example:
+            | ${res} | Is Element Enabled | input.field1 |
         """
         return self._run_should_keyword_and_return_status(
             self.element_should_be_enabled, locator
@@ -547,6 +582,9 @@ class Browser(SeleniumLibrary):
         """Is element visible
 
         ``locator`` element locator
+
+        Example:
+            | ${res} | Is Element Visible | id:confirmation |
         """
         return self._run_should_keyword_and_return_status(
             self.element_should_be_visible, locator
@@ -557,6 +595,9 @@ class Browser(SeleniumLibrary):
         """Is element disabled
 
         ``locator`` element locator
+
+        Example:
+            | ${res} | Is Element Disabled | //input[@type="submit"] |
         """
         return self._run_should_keyword_and_return_status(
             self.element_should_be_disabled, locator
@@ -567,6 +608,9 @@ class Browser(SeleniumLibrary):
         """Is element focused
 
         ``locator`` element locator
+
+        Example:
+            | ${res} | Is Element Focused | //input[@id="freetext"] |
         """
         return self._run_should_keyword_and_return_status(
             self.element_should_be_focused, locator
@@ -583,6 +627,9 @@ class Browser(SeleniumLibrary):
         ``attribute`` element attribute to check for
 
         ``expected`` is attribute value equal to this
+
+        Example:
+            | ${res} | Is Element Attribute Equal To | h1 | id | main |
         """
         return self._run_should_keyword_and_return_status(
             self.element_attribute_value_should_be, locator, attribute, expected
@@ -598,7 +645,10 @@ class Browser(SeleniumLibrary):
         ``text`` check if alert text is matching to this, if `None`
         will check if alert is present at all
 
-        ``action`` possible action if alert is present
+        ``action`` possible action if alert is present, default ACCEPT
+
+        Example:
+            | ${res} | Is Alert Present | id:cookies |
         """
         return self._run_should_keyword_and_return_status(
             self.alert_should_be_present, text, action
@@ -609,6 +659,9 @@ class Browser(SeleniumLibrary):
         """Is checkbox selected
 
         ``locator`` element locator
+
+        Example:
+            | ${res} |  Is Checkbox Selected  | id:taxes-paid |
         """
         return self._run_should_keyword_and_return_status(
             self.checkbox_should_be_selected, locator
@@ -621,6 +674,9 @@ class Browser(SeleniumLibrary):
         ``locator`` locator of the frame to check
 
         ``text`` does frame contain this text
+
+        Example:
+            | ${res} | Does Frame Contain | id:myframe | secret |
         """
         return self._run_should_keyword_and_return_status(
             self.frame_should_contain, locator, text
@@ -630,6 +686,7 @@ class Browser(SeleniumLibrary):
     def does_element_contain(
         self, locator: str, expected: str, ignore_case: bool = False
     ) -> bool:
+        # pylint: disable=C0301
         """Does element contain expected text
 
         ``locator`` element locator
@@ -637,7 +694,10 @@ class Browser(SeleniumLibrary):
         ``expected`` expected element text
 
         ``ignore_case`` should check be case insensitive, default `False`
-        """
+
+        Example:
+            | ${res} | Does Element Contain | id:spec | specification complete | ignore_case=True |
+        """  # noqa: E501
         return self._run_should_keyword_and_return_status(
             self.element_should_contain,
             locator=locator,
@@ -656,6 +716,10 @@ class Browser(SeleniumLibrary):
         ``expected`` expected element text
 
         ``ignore_case`` should check be case insensitive, default `False`
+
+        Example:
+            | ${res} | Is Element Text | id:name | john doe |
+            | ${res} | Is Element Text | id:name | john doe | ignore_case=True |
         """
         return self._run_should_keyword_and_return_status(
             self.element_text_should_be,
@@ -671,6 +735,9 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         ``expected`` expected selected options
+
+        Example:
+            | ${res} | Is List Selection | id:cars | Ford |
         """
         return self._run_should_keyword_and_return_status(
             self.list_selection_should_be, locator, *expected
@@ -681,6 +748,9 @@ class Browser(SeleniumLibrary):
         """Is any option selected in the
 
         ``locator`` element locator
+
+        Example:
+            | ${res} | Is List Selected | id:cars |
         """
         self.logger.info("Will return if anything is selected on the list")
         return not self._run_should_keyword_and_return_status(
@@ -692,6 +762,10 @@ class Browser(SeleniumLibrary):
         """Is current URL expected url
 
         ``url`` expected current URL
+
+        Example:
+            | Open Available Browser | https://www.robocorp.com |
+            | ${res} | Is Location | https://www.robocorp.com |
         """
         return self._run_should_keyword_and_return_status(self.location_should_be, url)
 
@@ -700,6 +774,10 @@ class Browser(SeleniumLibrary):
         """Does current URL contain expected
 
         ``expected`` URL should contain this
+
+        Example:
+            | Open Available Browser | https://robocorp.com |
+            | ${res} | Does Location Contain | robocorp |
         """
         return self._run_should_keyword_and_return_status(
             self.location_should_contain, expected
@@ -710,6 +788,10 @@ class Browser(SeleniumLibrary):
         """Does page contain expected text
 
         ``text`` page should contain this
+
+        Example:
+            | Open Available Browser | https://google.com |
+            | ${res} | Does Page Contain | Gmail |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain, text
@@ -720,6 +802,9 @@ class Browser(SeleniumLibrary):
         """Does page contain expected button
 
         ``locator`` element locator
+
+        Example:
+            | ${res} | Does Page Contain Button | search-button |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_button, locator
@@ -730,6 +815,9 @@ class Browser(SeleniumLibrary):
         """Does page contain expected checkbox
 
         ``locator`` element locator
+
+        Example:
+            | ${res} | Does Page Contain Checkbox | random-selection |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_checkbox, locator
@@ -743,6 +831,10 @@ class Browser(SeleniumLibrary):
 
         ``count`` how many times element is expected to appear on page
         by default one or more
+
+        Example:
+            | ${res} | Does Page Contain Element | textarea |
+            | ${res} | Does Page Contain Element | button | count=4 |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_element, locator=locator, limit=count
@@ -753,6 +845,10 @@ class Browser(SeleniumLibrary):
         """Does page contain expected image
 
         ``locator`` element locator
+
+        Example:
+            | Open Available Browser | https://google.com |
+            | ${res} | Does Page Contain Image | Google |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_image, locator
@@ -763,6 +859,9 @@ class Browser(SeleniumLibrary):
         """Does page contain expected link
 
         ``locator`` element locator
+
+        Example:
+            | ${res} | Does Page Contain Link | id:submit |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_link, locator
@@ -773,6 +872,9 @@ class Browser(SeleniumLibrary):
         """Does page contain expected list
 
         ``locator`` element locator
+
+        Example:
+            | ${res} | Does Page Contain List | class:selections |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_list, locator
@@ -783,6 +885,9 @@ class Browser(SeleniumLibrary):
         """Does page contain expected radio button
 
         ``locator`` element locator
+
+        Example:
+            | ${res} | Does Page Contain Radio Button | male |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_radio_button, locator
@@ -793,6 +898,9 @@ class Browser(SeleniumLibrary):
         """Does page contain expected textfield
 
         ``locator`` element locator
+
+        Example:
+            | ${res} | Does Page Contain Textfield | id:address |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_textfield, locator
@@ -805,6 +913,9 @@ class Browser(SeleniumLibrary):
         ``group_name`` radio button group name
 
         ``value`` expected value
+
+        Example:
+            | ${res} | Is Radio Button Set To | group_name=gender | value=female |
         """
         return self._run_should_keyword_and_return_status(
             self.radio_button_should_be_set_to, group_name, value
@@ -815,6 +926,9 @@ class Browser(SeleniumLibrary):
         """Is any radio button selected in the button group
 
         ``group_name`` radio button group name
+
+        Example:
+            | ${res} | Is Radio Button Selected | group_name=gender |
         """
         self.logger.info(
             "Will return if anything is selected on the radio button group"
@@ -836,6 +950,9 @@ class Browser(SeleniumLibrary):
         ``column`` column index starting from 1 (beginning) or -1 (from the end)
 
         ``expected`` expected text in table row
+
+        Example:
+            | ${res} | Does Table Cell Contain | //table | 1 | 1 | Company |
         """
         return self._run_should_keyword_and_return_status(
             self.table_cell_should_contain, locator, row, column, expected
@@ -852,6 +969,9 @@ class Browser(SeleniumLibrary):
         ``column`` column index starting from 1 (beginning) or -1 (from the end)
 
         ``expected`` expected text in table column
+
+        Example:
+            | ${res} | Does Table Column Contain | //table | 1 | Nokia |
         """
         return self._run_should_keyword_and_return_status(
             self.table_column_should_contain, locator, column, expected
@@ -866,6 +986,9 @@ class Browser(SeleniumLibrary):
         ``row`` row index starting from 1 (beginning) or -1 (from the end)
 
         ``expected`` expected text in table row
+
+        Example:
+            | ${res} | Does Table Row Contain | //table | 1 | Company |
         """
         return self._run_should_keyword_and_return_status(
             self.table_row_should_contain, locator, row, expected
@@ -878,6 +1001,9 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator for the table
 
         ``expected`` expected text in table footer
+
+        Example:
+            | ${res} | Does Table Footer Contain | //table | Sum |
         """
         return self._run_should_keyword_and_return_status(
             self.table_footer_should_contain, locator, expected
@@ -890,6 +1016,9 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator for the table
 
         ``expected`` expected text in table header
+
+        Example:
+            | ${res} | Does Table Header Contain | //table | Month |
         """
         return self._run_should_keyword_and_return_status(
             self.table_header_should_contain, locator, expected
@@ -902,6 +1031,9 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         ``expected`` expected text in table
+
+        Example:
+            | ${res} | Does Table Contain | //table | February |
         """
         return self._run_should_keyword_and_return_status(
             self.table_should_contain, locator, expected
@@ -914,6 +1046,9 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         ``expected`` expected textarea value
+
+        Example:
+            | ${res} | Is Textarea Value | //textarea | Yours sincerely |
         """
         return self._run_should_keyword_and_return_status(
             self.textarea_value_should_be, locator, expected
@@ -926,6 +1061,9 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         ``expected`` expected text in textarea
+
+        Example:
+            | ${res} | Does Textarea Contain | //textarea | sincerely |
         """
         return self._run_should_keyword_and_return_status(
             self.textarea_should_contain, locator, expected
@@ -938,6 +1076,9 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         ``expected`` expected text in textfield
+
+        Example:
+            | ${res} | Does Textfield Contain | id:lname | Last |
         """
         return self._run_should_keyword_and_return_status(
             self.textfield_should_contain, locator, expected
@@ -950,6 +1091,9 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         ``expected`` expected textfield value
+
+        Example:
+            | ${res} | Is Textfield Value | id:lname | Lastname |
         """
         return self._run_should_keyword_and_return_status(
             self.textfield_value_should_be, locator, expected
@@ -960,6 +1104,9 @@ class Browser(SeleniumLibrary):
         """Is page title expected
 
         ``title`` expected title value
+
+        Example:
+            | ${res} | Is Title | Webpage title text |
         """
         return self._run_should_keyword_and_return_status(self.title_should_be, title)
 
@@ -974,12 +1121,19 @@ class Browser(SeleniumLibrary):
     def get_element_status(self, locator: str) -> dict:
         """Return dictionary containing element status of:
 
-        - visible
-        - enabled
-        - disabled
-        - focused
+            - visible
+            - enabled
+            - disabled
+            - focused
 
         ``locator`` element locator
+
+        Example:
+            | &{res}  | Get Element Status | class:special |
+            | Log     | ${res.visible} |
+            | Log     | ${res.enabled} |
+            | Log     | ${res.disabled} |
+            | Log     | ${res.focused} |
         """
         status_object = dict()
         status_object["visible"] = self.is_element_visible(locator)
