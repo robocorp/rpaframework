@@ -4,6 +4,37 @@ Release notes
 Upcoming release
 ----------------
 
+- **Email.ImapSmtp**:
+
+  - Add keyword examples for each keyword
+  - Change ``List Messages`` to return list of dictionaries containing
+    message attributes. In addition there is attribute `Has-Attachments`
+    if message contains attachments
+  - Add keyword ``Save Attachment`` which can be used save attachments
+    from a message. Can be used when looping through messages received
+    by ``List Messages``
+
+- **Desktop.Windows**:
+
+  - Add keyword examples for each keyword
+  - Add keyword ``Get Text``. Returns dictionary of possible values
+    due to many implementation methods
+  - Add parameter `empty_field` to keyword ```Type Into``` which will
+    empty field before typing into a field
+  - Add keyword ``Find Element`` which we search for element with timeout
+
+- **Desktop.OperatingSystem**:
+
+  - Add keyword ``Kill Process By PID`` to terminate process using its
+    identifier.
+
+- **Browser**:
+
+  - Add keyword examples for each keyword
+  - Add `proxy` parameter for keywords ``Open Available Browser``
+    and ``Open Chrome Browser``. Works only for Chrome at the moment.
+
+
 2.7.0
 -----
 
