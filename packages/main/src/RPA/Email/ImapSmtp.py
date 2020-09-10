@@ -11,7 +11,7 @@ import time
 from email import encoders, message_from_bytes  # pylint: disable=E0611
 from email.charset import add_charset, QP  # pylint: disable=E0611
 from email.generator import Generator  # pylint: disable=E0611
-from email.header import Header  # pylint: disable=E0611
+from email.header import Header, decode_header, make_header  # pylint: disable=E0611
 from email.mime.base import MIMEBase  # pylint: disable=E0611
 from email.mime.image import MIMEImage  # pylint: disable=E0611
 from email.mime.multipart import MIMEMultipart  # pylint: disable=E0611
@@ -344,8 +344,71 @@ class ImapSmtp:
         for mail_id in mail_ids:
             _, data = self.imap_conn.fetch(mail_id, "(RFC822)")
             message = message_from_bytes(data[0][1])
-            messages.append(message)
+            message_dict = {"Mail-Id": mail_id, "Message": message}
+            for k, v in message.items():
+                msg_item = decode_header(v)
+                message_dict[k] = make_header(msg_item)
+            message_dict["Body"], has_attachments = self._get_decoded_email_body(
+                message
+            )
+            message_dict["Has-Attachments"] = has_attachments
+            messages.append(message_dict)
         return messages
+
+    def _get_decoded_email_body(self, message):
+        """Decode email body.
+
+        Detect character set if the header is not set.
+        We try to get text/plain, but if there is not one then fallback to text/html.
+
+        :param message_body: Raw 7-bit message body input e.g. from imaplib. Double
+         encoded in quoted-printable and latin-1
+        :return: Message body as unicode string and information if message has
+         attachments
+        """
+        text = ""
+        has_attachments = False
+        if message.is_multipart():
+            html = None
+
+            for part in message.walk():
+                # content_maintype = part.get_content_maintype()
+                content_disposition = part.get("Content-Disposition")
+                if content_disposition and "attachment" in content_disposition:
+                    has_attachments = True
+                    continue
+                if part.get_content_charset() is None:
+                    # We cannot know the character set, so return decoded "something"
+                    text = part.get_payload(decode=True)
+                    continue
+
+                charset = part.get_content_charset()
+
+                if part.get_content_type() == "text/plain":
+                    text = str(
+                        part.get_payload(decode=True), str(charset), "ignore"
+                    ).encode("utf8", "replace")
+
+                if part.get_content_type() == "text/html":
+                    html = str(
+                        part.get_payload(decode=True), str(charset), "ignore"
+                    ).encode("utf8", "replace")
+
+            if text:
+                return (
+                    (text.strip(), has_attachments) if text else ("", has_attachments)
+                )
+            else:
+                return (
+                    (html.strip(), has_attachments) if html else ("", has_attachments)
+                )
+        else:
+            text = str(
+                message.get_payload(decode=True),
+                message.get_content_charset(),
+                "ignore",
+            ).encode("utf8", "replace")
+            return text.strip(), has_attachments
 
     @imap_connection
     def _search_message(self, criterion: str) -> list:
@@ -463,23 +526,36 @@ class ImapSmtp:
         :return: list of saved attachments or False
         """
         attachments_saved = []
-        if target_folder is None:
-            target_folder = os.path.expanduser("~")
         messages = self.list_messages(criterion)
         for msg in messages:
-            for part in msg.walk():
-                content_maintype = part.get_content_maintype()
-                content_disposition = part.get("Content-Disposition")
-                if content_maintype != "multipart" and content_disposition is not None:
-                    filename = part.get_filename()
-                    self.logger.info("%s %s", filename, content_maintype)
-                    if bool(filename):
-                        filepath = Path(target_folder) / filename
-                        if not filepath.exists() or overwrite:
-                            with open(filepath, "wb") as f:
-                                f.write(part.get_payload(decode=True))
-                                attachments_saved.append(filepath)
+            attachments_saved.append(
+                self.save_attachment(msg, target_folder, overwrite)
+            )
         return attachments_saved if len(attachments_saved) > 0 else False
+
+    def save_attachment(self, message, target_folder, overwrite):
+        """[summary]
+
+        :param message: [description]
+        :param target_folder: [description]
+        :param overwrite: [description]
+        """
+        if target_folder is None:
+            target_folder = os.path.expanduser("~")
+        msg = message["Message"] if isinstance(message, dict) else message
+        attachments_saved = []
+        for part in msg.walk():
+            content_maintype = part.get_content_maintype()
+            content_disposition = part.get("Content-Disposition")
+            if content_maintype != "multipart" and content_disposition is not None:
+                filename = part.get_filename()
+                self.logger.info("%s %s", filename, content_maintype)
+                if bool(filename):
+                    filepath = Path(target_folder) / filename
+                    if not filepath.exists() or overwrite:
+                        with open(filepath, "wb") as f:
+                            f.write(part.get_payload(decode=True))
+                            attachments_saved.append(filepath)
 
     @imap_connection
     def wait_for_message(
