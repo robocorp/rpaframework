@@ -79,7 +79,7 @@ class Archive:
         :param exclude: define file pattern to exclude from the package, defaults is None
         :param compression: type of package compression method, defaults to "stored"
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -138,7 +138,7 @@ class Archive:
         :param include: define file pattern to include in the package, defaults to None (means all files)
         :param exclude: define file pattern to exclude from the package, defaults is None
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -171,7 +171,7 @@ class Archive:
         :param archive_name: filename of the archive
         :param folder: name of the folder for added file (relative path in the archive)
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -217,7 +217,7 @@ class Archive:
 
         :param archive_name: filename of the archive
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -269,7 +269,7 @@ class Archive:
 
         :param archive_name: filename of the archive
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -313,7 +313,7 @@ class Archive:
         :param path: filepath to extract file into, default is current working directory
         :param members: list of files to extract from, default is None (all files in archive are extracted)
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -353,7 +353,7 @@ class Archive:
         :param archive_name: filename of the archive
         :param path: filepath to extract file into, default is current working directory
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
