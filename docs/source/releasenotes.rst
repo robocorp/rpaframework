@@ -19,7 +19,7 @@ Upcoming release
   - Add keyword examples for each keyword
   - Add keyword ``Get Text``. Returns dictionary of possible values
     due to many implementation methods
-  - Add parameter `empty_field` to keyword ```Type Into``` which will
+  - Add parameter `empty_field` to keyword ``Type Into`` which will
     empty field before typing into a field
   - Add keyword ``Find Element`` which we search for element with timeout
 
@@ -33,7 +33,6 @@ Upcoming release
   - Add keyword examples for each keyword
   - Add `proxy` parameter for keywords ``Open Available Browser``
     and ``Open Chrome Browser``. Works only for Chrome at the moment.
-
 
 2.7.0
 -----
