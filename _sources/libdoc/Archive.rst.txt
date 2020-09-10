@@ -23,7 +23,7 @@ Keywords
   can be added to archive structure with relative path using argument `folder`.
 
 
-  Examples.
+  Example:
 
   .. code-block:: robotframework
 
@@ -45,7 +45,7 @@ Keywords
   Similarly to exclude certain file, like dotfiles, the argument `exclude` can be used.
 
 
-  Examples.
+  Example:
 
   .. code-block:: robotframework
 
@@ -72,7 +72,7 @@ Keywords
       - lzma
 
 
-  Examples.
+  Example:
 
   .. code-block:: robotframework
 
@@ -94,7 +94,7 @@ Keywords
   can be set to define extraction path.
 
 
-  Examples.
+  Example:
 
   .. code-block:: robotframework
 
@@ -113,7 +113,7 @@ Keywords
   to define extraction path.
 
 
-  Examples.
+  Example:
 
   .. code-block:: robotframework
 
@@ -134,7 +134,7 @@ Keywords
       - last modification time in format `%d.%m.%Y %H:%M:%S`
 
 
-  Example.
+  Example:
 
   .. code-block:: robotframework
 
@@ -154,7 +154,7 @@ Keywords
       - last modification time in format `%d.%m.%Y %H:%M:%S`
 
 
-  Examples.
+  Example:
 
   .. code-block:: robotframework
 

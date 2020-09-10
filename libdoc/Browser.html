@@ -317,7 +317,14 @@
 </dl>
 <p>Attach to an existing instance of Chrome or Chromium.</p>
 <p>Requires that the browser was started with the command line option <code>--remote-debugging-port=&lt;port&gt;</code>, where port is any 4-digit number not being used by other applications.</p>
-<p>That port can then be used to connect using this keyword.</p></dd>
+<p>That port can then be used to connect using this keyword.</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>Attach Chrome Browser</td>
+<td>port=9222</td>
+</tr>
+</table></dd>
 <dt class="field-even">Capture Element Screenshot</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -473,7 +480,14 @@
 </dl>
 <p>Click button identified by <code>locator</code>, once it becomes visible.</p>
 <p><code>locator</code> element locator</p>
-<p><code>modifier</code> press given keys while clicking the element, e.g. CTRL</p></dd>
+<p><code>modifier</code> press given keys while clicking the element, e.g. CTRL</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>Click Button When Visible</td>
+<td>//button[@class="mybutton"]</td>
+</tr>
+</table></dd>
 <dt class="field-even">Click Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -528,7 +542,14 @@
 </dd>
 </dl>
 <p>Click element if it is visible</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>Click Element If Visible</td>
+<td>//button[@class="mybutton"]</td>
+</tr>
+</table></dd>
 <dt class="field-even">Click Element When Visible</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -538,7 +559,25 @@
 <p>Click element identified by <code>locator</code>, once it becomes visible.</p>
 <p><code>locator</code> element locator</p>
 <p><code>modifier</code> press given keys while clicking the element, e.g. CTRL</p>
-<p><code>action_chain</code> store action in Selenium ActionChain queue</p></dd>
+<p><code>action_chain</code> store action in Selenium ActionChain queue</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>Click Element When Visible</td>
+<td>q</td>
+<td></td>
+</tr>
+<tr>
+<td>Click Element When Visible</td>
+<td>id:button</td>
+<td>CTRL+ALT</td>
+</tr>
+<tr>
+<td>Click Element When Visible</td>
+<td>action_chain=True</td>
+<td></td>
+</tr>
+</table></dd>
 <dt class="field-even">Click Image</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -669,7 +708,17 @@
 <p>Does element contain expected text</p>
 <p><code>locator</code> element locator</p>
 <p><code>expected</code> expected element text</p>
-<p><code>ignore_case</code> should check be case insensitive, default <span class="name">False</span></p></dd>
+<p><code>ignore_case</code> should check be case insensitive, default <span class="name">False</span></p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Element Contain</td>
+<td>id:spec</td>
+<td>specification complete</td>
+<td>ignore_case=True</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Frame Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -678,7 +727,16 @@
 </dl>
 <p>Does frame contain expected text</p>
 <p><code>locator</code> locator of the frame to check</p>
-<p><code>text</code> does frame contain this text</p></dd>
+<p><code>text</code> does frame contain this text</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Frame Contain</td>
+<td>id:myframe</td>
+<td>secret</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Location Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -686,7 +744,20 @@
 </dd>
 </dl>
 <p>Does current URL contain expected</p>
-<p><code>expected</code> URL should contain this</p></dd>
+<p><code>expected</code> URL should contain this</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>Open Available Browser</td>
+<td><a href="https://robocorp.com">https://robocorp.com</a></td>
+<td></td>
+</tr>
+<tr>
+<td>${res}</td>
+<td>Does Location Contain</td>
+<td>robocorp</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Page Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -694,7 +765,20 @@
 </dd>
 </dl>
 <p>Does page contain expected text</p>
-<p><code>text</code> page should contain this</p></dd>
+<p><code>text</code> page should contain this</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>Open Available Browser</td>
+<td><a href="https://google.com">https://google.com</a></td>
+<td></td>
+</tr>
+<tr>
+<td>${res}</td>
+<td>Does Page Contain</td>
+<td>Gmail</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Page Contain Button</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -702,7 +786,15 @@
 </dd>
 </dl>
 <p>Does page contain expected button</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Page Contain Button</td>
+<td>search-button</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Page Contain Checkbox</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -710,7 +802,15 @@
 </dd>
 </dl>
 <p>Does page contain expected checkbox</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Page Contain Checkbox</td>
+<td>random-selection</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Page Contain Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -719,7 +819,22 @@
 </dl>
 <p>Does page contain expected element</p>
 <p><code>locator</code> element locator</p>
-<p><code>count</code> how many times element is expected to appear on page by default one or more</p></dd>
+<p><code>count</code> how many times element is expected to appear on page by default one or more</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Page Contain Element</td>
+<td>textarea</td>
+<td></td>
+</tr>
+<tr>
+<td>${res}</td>
+<td>Does Page Contain Element</td>
+<td>button</td>
+<td>count=4</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Page Contain Image</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -727,7 +842,20 @@
 </dd>
 </dl>
 <p>Does page contain expected image</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>Open Available Browser</td>
+<td><a href="https://google.com">https://google.com</a></td>
+<td></td>
+</tr>
+<tr>
+<td>${res}</td>
+<td>Does Page Contain Image</td>
+<td>Google</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Page Contain Link</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -735,7 +863,15 @@
 </dd>
 </dl>
 <p>Does page contain expected link</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Page Contain Link</td>
+<td>id:submit</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Page Contain List</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -743,7 +879,15 @@
 </dd>
 </dl>
 <p>Does page contain expected list</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Page Contain List</td>
+<td>class:selections</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Page Contain Radio Button</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -751,7 +895,15 @@
 </dd>
 </dl>
 <p>Does page contain expected radio button</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Page Contain Radio Button</td>
+<td>male</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Page Contain Textfield</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -759,7 +911,15 @@
 </dd>
 </dl>
 <p>Does page contain expected textfield</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Page Contain Textfield</td>
+<td>id:address</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Table Cell Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -770,7 +930,18 @@
 <p><code>locator</code> element locator for the table</p>
 <p><code>row</code> row index starting from 1 (beginning) or -1 (from the end)</p>
 <p><code>column</code> column index starting from 1 (beginning) or -1 (from the end)</p>
-<p><code>expected</code> expected text in table row</p></dd>
+<p><code>expected</code> expected text in table row</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Table Cell Contain</td>
+<td>//table</td>
+<td>1</td>
+<td>1</td>
+<td>Company</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Table Column Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -780,7 +951,17 @@
 <p>Does table column contain expected text</p>
 <p><code>locator</code> element locator for the table</p>
 <p><code>column</code> column index starting from 1 (beginning) or -1 (from the end)</p>
-<p><code>expected</code> expected text in table column</p></dd>
+<p><code>expected</code> expected text in table column</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Table Column Contain</td>
+<td>//table</td>
+<td>1</td>
+<td>Nokia</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Table Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -789,7 +970,16 @@
 </dl>
 <p>Does table contain expected text</p>
 <p><code>locator</code> element locator</p>
-<p><code>expected</code> expected text in table</p></dd>
+<p><code>expected</code> expected text in table</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Table Contain</td>
+<td>//table</td>
+<td>February</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Table Footer Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -798,7 +988,16 @@
 </dl>
 <p>Does table footer contain expected text</p>
 <p><code>locator</code> element locator for the table</p>
-<p><code>expected</code> expected text in table footer</p></dd>
+<p><code>expected</code> expected text in table footer</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Table Footer Contain</td>
+<td>//table</td>
+<td>Sum</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Table Header Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -807,7 +1006,16 @@
 </dl>
 <p>Does table header contain expected text</p>
 <p><code>locator</code> element locator for the table</p>
-<p><code>expected</code> expected text in table header</p></dd>
+<p><code>expected</code> expected text in table header</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Table Header Contain</td>
+<td>//table</td>
+<td>Month</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Table Row Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -817,7 +1025,17 @@
 <p>Does table row contain expected text</p>
 <p><code>locator</code> element locator for the table</p>
 <p><code>row</code> row index starting from 1 (beginning) or -1 (from the end)</p>
-<p><code>expected</code> expected text in table row</p></dd>
+<p><code>expected</code> expected text in table row</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Table Row Contain</td>
+<td>//table</td>
+<td>1</td>
+<td>Company</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Textarea Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -826,7 +1044,16 @@
 </dl>
 <p>Does textarea contain expected text</p>
 <p><code>locator</code> element locator</p>
-<p><code>expected</code> expected text in textarea</p></dd>
+<p><code>expected</code> expected text in textarea</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Textarea Contain</td>
+<td>//textarea</td>
+<td>sincerely</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Textfield Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -835,7 +1062,16 @@
 </dl>
 <p>Does textfield contain expected text</p>
 <p><code>locator</code> element locator</p>
-<p><code>expected</code> expected text in textfield</p></dd>
+<p><code>expected</code> expected text in textfield</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Textfield Contain</td>
+<td>id:lname</td>
+<td>Last</td>
+</tr>
+</table></dd>
 <dt class="field-even">Double Click Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1326,7 +1562,35 @@
 <li>disabled</li>
 <li>focused</li>
 </ul>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>&amp;{res}</td>
+<td>Get Element Status</td>
+<td>class:special</td>
+</tr>
+<tr>
+<td>Log</td>
+<td>${res.visible}</td>
+<td></td>
+</tr>
+<tr>
+<td>Log</td>
+<td>${res.enabled}</td>
+<td></td>
+</tr>
+<tr>
+<td>Log</td>
+<td>${res.disabled}</td>
+<td></td>
+</tr>
+<tr>
+<td>Log</td>
+<td>${res.focused}</td>
+<td></td>
+</tr>
+</table></dd>
 <dt class="field-even">Get Horizontal Position</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1680,7 +1944,15 @@
 </dl>
 <p>Input text into locator after it has become visible.</p>
 <p><code>locator</code> element locator</p>
-<p><code>text</code> insert text to locator</p></dd>
+<p><code>text</code> insert text to locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>Input Text When Element Is Visible</td>
+<td>//input[@id="freetext"]</td>
+<td>my feedback</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Alert Present</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1690,7 +1962,15 @@
 <p>Is alert box present, which can be identified with text and action can also be done which by default is ACCEPT.</p>
 <p>Other possible actions are DISMISS and LEAVE.</p>
 <p><code>text</code> check if alert text is matching to this, if <span class="name">None</span> will check if alert is present at all</p>
-<p><code>action</code> possible action if alert is present</p></dd>
+<p><code>action</code> possible action if alert is present, default ACCEPT</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is Alert Present</td>
+<td>id:cookies</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Checkbox Selected</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1698,7 +1978,15 @@
 </dd>
 </dl>
 <p>Is checkbox selected</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is Checkbox Selected</td>
+<td>id:taxes-paid</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Element Attribute Equal To</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1708,7 +1996,17 @@
 <p>Is element attribute equal to expected value</p>
 <p><code>locator</code> element locator</p>
 <p><code>attribute</code> element attribute to check for</p>
-<p><code>expected</code> is attribute value equal to this</p></dd>
+<p><code>expected</code> is attribute value equal to this</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is Element Attribute Equal To</td>
+<td>h1</td>
+<td>id</td>
+<td>main</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Element Disabled</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1716,7 +2014,15 @@
 </dd>
 </dl>
 <p>Is element disabled</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is Element Disabled</td>
+<td>//input[@type="submit"]</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Element Enabled</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1724,7 +2030,15 @@
 </dd>
 </dl>
 <p>Is element enabled</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is Element Enabled</td>
+<td>input.field1</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Element Focused</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1732,7 +2046,15 @@
 </dd>
 </dl>
 <p>Is element focused</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is Element Focused</td>
+<td>//input[@id="freetext"]</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Element Text</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1742,7 +2064,24 @@
 <p>Is element text expected</p>
 <p><code>locator</code> element locator</p>
 <p><code>expected</code> expected element text</p>
-<p><code>ignore_case</code> should check be case insensitive, default <span class="name">False</span></p></dd>
+<p><code>ignore_case</code> should check be case insensitive, default <span class="name">False</span></p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is Element Text</td>
+<td>id:name</td>
+<td>john doe</td>
+<td></td>
+</tr>
+<tr>
+<td>${res}</td>
+<td>Is Element Text</td>
+<td>id:name</td>
+<td>john doe</td>
+<td>ignore_case=True</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Element Visible</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1750,7 +2089,15 @@
 </dd>
 </dl>
 <p>Is element visible</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is Element Visible</td>
+<td>id:confirmation</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is List Selected</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1758,7 +2105,15 @@
 </dd>
 </dl>
 <p>Is any option selected in the</p>
-<p><code>locator</code> element locator</p></dd>
+<p><code>locator</code> element locator</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is List Selected</td>
+<td>id:cars</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is List Selection</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1767,7 +2122,16 @@
 </dl>
 <p>Is list selected with expected values</p>
 <p><code>locator</code> element locator</p>
-<p><code>expected</code> expected selected options</p></dd>
+<p><code>expected</code> expected selected options</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is List Selection</td>
+<td>id:cars</td>
+<td>Ford</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Location</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1775,7 +2139,20 @@
 </dd>
 </dl>
 <p>Is current URL expected url</p>
-<p><code>url</code> expected current URL</p></dd>
+<p><code>url</code> expected current URL</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>Open Available Browser</td>
+<td><a href="https://www.robocorp.com">https://www.robocorp.com</a></td>
+<td></td>
+</tr>
+<tr>
+<td>${res}</td>
+<td>Is Location</td>
+<td><a href="https://www.robocorp.com">https://www.robocorp.com</a></td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Radio Button Selected</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1783,7 +2160,15 @@
 </dd>
 </dl>
 <p>Is any radio button selected in the button group</p>
-<p><code>group_name</code> radio button group name</p></dd>
+<p><code>group_name</code> radio button group name</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is Radio Button Selected</td>
+<td>group_name=gender</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Radio Button Set To</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1792,7 +2177,16 @@
 </dl>
 <p>Is radio button group set to expected value</p>
 <p><code>group_name</code> radio button group name</p>
-<p><code>value</code> expected value</p></dd>
+<p><code>value</code> expected value</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is Radio Button Set To</td>
+<td>group_name=gender</td>
+<td>value=female</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Textarea Value</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1801,7 +2195,16 @@
 </dl>
 <p>Is textarea matching expected value</p>
 <p><code>locator</code> element locator</p>
-<p><code>expected</code> expected textarea value</p></dd>
+<p><code>expected</code> expected textarea value</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is Textarea Value</td>
+<td>//textarea</td>
+<td>Yours sincerely</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Textfield Value</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1810,7 +2213,16 @@
 </dl>
 <p>Is textfield value expected</p>
 <p><code>locator</code> element locator</p>
-<p><code>expected</code> expected textfield value</p></dd>
+<p><code>expected</code> expected textfield value</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is Textfield Value</td>
+<td>id:lname</td>
+<td>Lastname</td>
+</tr>
+</table></dd>
 <dt class="field-even">Is Title</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1818,7 +2230,15 @@
 </dd>
 </dl>
 <p>Is page title expected</p>
-<p><code>title</code> expected title value</p></dd>
+<p><code>title</code> expected title value</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Is Title</td>
+<td>Webpage title text</td>
+</tr>
+</table></dd>
 <dt class="field-even">List Selection Should Be</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1946,7 +2366,7 @@
 <dt class="field-even">Open Available Browser</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>url: str, use_profile: bool=False, headless: bool=None, maximized: bool=False, browser_selection: typing.Any=AUTO, alias: str=None, profile_name: str=None, profile_path: str=None, preferences: dict=None</p>
+<dd class="field-odd"><p>url: str, use_profile: bool=False, headless: bool=None, maximized: bool=False, browser_selection: typing.Any=AUTO, alias: str=None, profile_name: str=None, profile_path: str=None, preferences: dict=None, proxy: str=None</p>
 </dd>
 </dl>
 <p>Opens the first available browser in the system in preferred order, or the given browser (<code>browser_selection</code>).</p>
@@ -1959,6 +2379,7 @@
 <p><code>profile_name</code> Name of profile (if profile enabled)</p>
 <p><code>profile_path</code> Path to profiles (if profile enabled)</p>
 <p><code>preferences</code> Profile preferences (Chrome/Chromium only)</p>
+<p><code>proxy</code> Proxy server address (Chrome only)</p>
 <p>Returns an index of the webdriver session.</p>
 <h4>Process of opening a browser</h4>
 <p>1. Get the order of browsers</p>
@@ -1970,7 +2391,28 @@
 <p>3. Open the URL</p>
 <p>Returns index or custom alias for the browser instance.</p>
 <p>Raises <code>BrowserNotFoundError</code> if unable to open the browser.</p>
-<p>For information about Safari webdriver setup, see <a href="https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p></dd>
+<p>For information about Safari webdriver setup, see <a href="https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${idx1}</td>
+<td>Open Available Browser</td>
+<td><a href="https://www.robocorp.com">https://www.robocorp.com</a></td>
+<td></td>
+</tr>
+<tr>
+<td>${idx2}</td>
+<td>Open Available Browser</td>
+<td>${URL}</td>
+<td>browser_selection=opera,firefox</td>
+</tr>
+<tr>
+<td>Open Available Browser</td>
+<td>${URL}</td>
+<td>headless=True</td>
+<td>proxy=localhost:8899</td>
+</tr>
+</table></dd>
 <dt class="field-even">Open Browser</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2220,7 +2662,7 @@ return options
 <dt class="field-even">Open Chrome Browser</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>url: str, use_profile: bool=False, headless: bool=False, maximized: bool=False, alias: str=None, profile_name: str=None, profile_path: str=None, preferences: dict=None</p>
+<dd class="field-odd"><p>url: str, use_profile: bool=False, headless: bool=False, maximized: bool=False, alias: str=None, profile_name: str=None, profile_path: str=None, preferences: dict=None, proxy: str=None</p>
 </dd>
 </dl>
 <p>Open Chrome browser. See <code>Open Available Browser</code> for descriptions of arguments.</p></dd>
@@ -2238,7 +2680,15 @@ return options
 </dd>
 </dl>
 <p>Open Chrome browser in headless mode.</p>
-<p><code>url</code> URL to open</p></dd>
+<p><code>url</code> URL to open</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${idx}</td>
+<td>Open Headless Chrome Browser</td>
+<td><a href="https://www.google.com">https://www.google.com</a></td>
+</tr>
+</table></dd>
 <dt class="field-even">Page Should Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2583,7 +3033,25 @@ return options
 <p>Capture page and/or element screenshot.</p>
 <p><code>page</code> capture a page screenshot, default <code>True</code></p>
 <p><code>locator</code> if defined, take element screenshot, default <code>None</code></p>
-<p><code>filename_prefix</code> prefix for screenshot files, default "screenshot"</p></dd>
+<p><code>filename_prefix</code> prefix for screenshot files, default "screenshot"</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>Open Available Browser</td>
+<td><a href="https://www.robocorp.com">https://www.robocorp.com</a></td>
+<td>headless=True</td>
+</tr>
+<tr>
+<td>Screenshot</td>
+<td>page=False</td>
+<td>locator=//a[@aria-label="Home"]</td>
+</tr>
+<tr>
+<td>Screenshot</td>
+<td>filename_prefix=task_screenshots</td>
+<td></td>
+</tr>
+</table></dd>
 <dt class="field-even">Scroll Element Into View</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3233,7 +3701,14 @@ return options
 </dl>
 <p>Click button identified by <code>locator</code>, once it becomes visible.</p>
 <p><code>locator</code> element locator</p>
-<p><code>modifier</code> press given keys while clicking the element, e.g. CTRL</p></dd>
+<p><code>modifier</code> press given keys while clicking the element, e.g. CTRL</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>Click Button When Visible</td>
+<td>//button[@class="mybutton"]</td>
+</tr>
+</table></dd>
 <dt class="field-even">Wait For Condition</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>

@@ -245,6 +245,42 @@
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="upcoming-release">
 <h2>Upcoming release<a class="headerlink" href="#upcoming-release" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Email.ImapSmtp</strong>:</p>
+<ul>
+<li><p>Add keyword examples for each keyword</p></li>
+<li><p>Change <code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Messages</span></code> to return list of dictionaries containing
+message attributes. In addition there is attribute <cite>Has-Attachments</cite>
+if message contains attachments</p></li>
+<li><p>Add keyword <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Attachment</span></code> which can be used save attachments
+from a message. Can be used when looping through messages received
+by <code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Messages</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Desktop.Windows</strong>:</p>
+<ul>
+<li><p>Add keyword examples for each keyword</p></li>
+<li><p>Add keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Text</span></code>. Returns dictionary of possible values
+due to many implementation methods</p></li>
+<li><p>Add parameter <cite>empty_field</cite> to keyword <code class="docutils literal notranslate"><span class="pre">Type</span> <span class="pre">Into</span></code> which will
+empty field before typing into a field</p></li>
+<li><p>Add keyword <code class="docutils literal notranslate"><span class="pre">Find</span> <span class="pre">Element</span></code> which we search for element with timeout</p></li>
+</ul>
+</li>
+<li><p><strong>Desktop.OperatingSystem</strong>:</p>
+<ul>
+<li><p>Add keyword <code class="docutils literal notranslate"><span class="pre">Kill</span> <span class="pre">Process</span> <span class="pre">By</span> <span class="pre">PID</span></code> to terminate process using its
+identifier.</p></li>
+</ul>
+</li>
+<li><p><strong>Browser</strong>:</p>
+<ul>
+<li><p>Add keyword examples for each keyword</p></li>
+<li><p>Add <cite>proxy</cite> parameter for keywords <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Available</span> <span class="pre">Browser</span></code>
+and <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Chrome</span> <span class="pre">Browser</span></code>. Works only for Chrome at the moment.</p></li>
+</ul>
+</li>
+</ul>
 </div>
 <div class="section" id="id1">
 <h2>2.7.0<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>

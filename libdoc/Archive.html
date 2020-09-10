@@ -226,7 +226,7 @@
 <p>Add file(s) to the archive</p>
 <p>This keyword adds file or list of files into existing archive. Files
 can be added to archive structure with relative path using argument <cite>folder</cite>.</p>
-<p>Examples.</p>
+<p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add To Archive</span><span class="p">  </span><span class="c">extrafile.txt</span><span class="p">  </span><span class="c">myfiles.zip</span><span class="p"></span>
 <span class="c">Add To Archive</span><span class="p">  </span><span class="c">stat.png</span><span class="p">       </span><span class="c">archive.tar.gz</span><span class="p">  </span><span class="c">images</span><span class="p"></span>
 <span class="c">@{files}</span><span class="p">        </span><span class="c">Create List</span><span class="p">    </span><span class="c">filename1.txt</span><span class="p">   </span><span class="c">filename2.txt</span><span class="p"></span>
@@ -246,7 +246,7 @@ is determined by the file extension. By default subdirectories are not
 included, but they can included using <cite>recursive</cite> argument.</p>
 <p>To include only certain files, like TXT files, the argument <cite>include</cite> can be used.
 Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</cite> can be used.</p>
-<p>Examples.</p>
+<p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Archive Folder With TAR</span><span class="p">  </span><span class="c">${CURDIR}${/}documents</span><span class="p">  </span><span class="c">documents.tar</span><span class="p"></span>
 <span class="c">Archive Folder With TAR</span><span class="p">  </span><span class="c">${CURDIR}${/}tasks</span><span class="p">      </span><span class="c">tasks.tar.gz</span><span class="p">   </span><span class="c">include=*.robot</span><span class="p"></span>
 <span class="c">Archive Folder With TAR</span><span class="p">  </span><span class="c">${CURDIR}${/}tasks</span><span class="p">      </span><span class="c">tasks.tar</span><span class="p">      </span><span class="c">exclude=/.*</span><span class="p"></span>
@@ -274,7 +274,7 @@ Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</ci
 </ul>
 </dd>
 </dl>
-<p>Examples.</p>
+<p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Archive Folder With Zip</span><span class="p">  </span><span class="c">${CURDIR}${/}documents</span><span class="p">  </span><span class="c">mydocs.zip</span><span class="p"></span>
 <span class="c">Archive Folder With Zip</span><span class="p">  </span><span class="c">${CURDIR}${/}tasks</span><span class="p">      </span><span class="c">robottasks.zip</span><span class="p">   </span><span class="c">include=*.robot</span><span class="p"></span>
 <span class="c">Archive Folder With Zip</span><span class="p">  </span><span class="c">${CURDIR}${/}tasks</span><span class="p">      </span><span class="c">no_dotfiles.zip</span><span class="p">  </span><span class="c">exclude=/.*</span><span class="p"></span>
@@ -294,7 +294,7 @@ Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</ci
 <p>This keyword supports extracting files from zip, tar and tar.gz archives.</p>
 <p>By default file is extracted into current working directory, but <cite>path</cite> argument
 can be set to define extraction path.</p>
-<p>Examples.</p>
+<p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Extract Archive</span><span class="p">    </span><span class="c">myfiles.zip</span><span class="p">   </span><span class="c">${CURDIR}${/}extracted</span><span class="p"></span>
 <span class="c">@{files}</span><span class="p">           </span><span class="c">Create List</span><span class="p">   </span><span class="c">filename1.txt</span><span class="p">    </span><span class="c">filename2.txt</span><span class="p"></span>
 <span class="c">Extract Archive</span><span class="p">    </span><span class="c">archive.tar</span><span class="p">   </span><span class="c">C:${/}myfiles${/}</span><span class="p">  </span><span class="c">${files}</span><span class="p"></span>
@@ -311,7 +311,7 @@ can be set to define extraction path.</p>
 <p>This keyword supports extracting a file from zip, tar and tar.gz archives.</p>
 <p>By default file is extracted into current working directory, but <cite>path</cite> argument can be set
 to define extraction path.</p>
-<p>Examples.</p>
+<p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Extract File From Archive</span><span class="p">    </span><span class="c">extrafile.txt</span><span class="p">   </span><span class="c">myfiles.zip</span><span class="p"></span>
 <span class="c">Extract File From Archive</span><span class="p">    </span><span class="c">background.png</span><span class="p">  </span><span class="c">images.tar.gz</span><span class="p">  </span><span class="c">${CURDIR}${/}extracted</span><span class="p"></span>
 </pre></div>
@@ -334,7 +334,7 @@ to define extraction path.</p>
 <li><p>last modification time in format <cite>%d.%m.%Y %H:%M:%S</cite></p></li>
 </ul>
 </div></blockquote>
-<p>Example.</p>
+<p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{archiveinfo}</span><span class="p">   </span><span class="c">Get Archive Info</span><span class="p">    </span><span class="c">myfiles.zip</span><span class="p"></span>
 </pre></div>
 </div>
@@ -356,7 +356,7 @@ with following attributes:</p>
 <li><p>last modification time in format <cite>%d.%m.%Y %H:%M:%S</cite></p></li>
 </ul>
 </div></blockquote>
-<p>Examples.</p>
+<p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{files}</span><span class="p">   </span><span class="c">List Archive</span><span class="p">    </span><span class="c">myfiles.zip</span><span class="p"></span>
 <span class="c">FOR</span><span class="p">  </span><span class="c">${file}</span><span class="p">  </span><span class="c">IN</span><span class="p">   </span><span class="c">${files}</span><span class="p"></span>
 <span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${file}[filename]</span><span class="p"></span>

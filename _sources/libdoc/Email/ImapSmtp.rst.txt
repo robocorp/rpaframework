@@ -107,6 +107,12 @@ Keywords
   Rename email folder
 
 
+:Save Attachment:
+  :Arguments: message, target_folder, overwrite
+
+  [summary]
+
+
 :Save Attachments:
   :Arguments: criterion: str=, target_folder: str=None, overwrite: bool=False
 
