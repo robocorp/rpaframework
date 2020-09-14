@@ -229,7 +229,7 @@
 <dt class="field-odd">Analyze Document</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>image_file: str=None, json_file: str=None, bucket_name: str=None</p>
+<dd class="field-odd"><p>image_file: str = None, json_file: str = None, bucket_name: str = None</p>
 </dd>
 </dl>
 <p>Analyzes an input document for relationships between detected items</p>
@@ -237,7 +237,7 @@
 <dt class="field-even">Create Bucket</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>bucket_name: str=None</p>
+<dd class="field-odd"><p>bucket_name: str = None</p>
 </dd>
 </dl>
 <p>Create S3 bucket with name</p>
@@ -245,7 +245,7 @@
 <dt class="field-even">Create Queue</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>queue_name: str=None</p>
+<dd class="field-odd"><p>queue_name: str = None</p>
 </dd>
 </dl>
 <p>Create queue with name</p>
@@ -253,7 +253,7 @@
 <dt class="field-even">Delete Bucket</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>bucket_name: str=None</p>
+<dd class="field-odd"><p>bucket_name: str = None</p>
 </dd>
 </dl>
 <p>Delete S3 bucket with name</p>
@@ -261,7 +261,7 @@
 <dt class="field-even">Delete Files</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>bucket_name: str=None, files: list=None</p>
+<dd class="field-odd"><p>bucket_name: str = None, files: list = None</p>
 </dd>
 </dl>
 <p>Delete files in the bucket</p>
@@ -269,7 +269,7 @@
 <dt class="field-even">Delete Message</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>receipt_handle: str=None</p>
+<dd class="field-odd"><p>receipt_handle: str = None</p>
 </dd>
 </dl>
 <p>Delete message in the queue</p>
@@ -277,7 +277,7 @@
 <dt class="field-even">Delete Queue</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>queue_name: str=None</p>
+<dd class="field-odd"><p>queue_name: str = None</p>
 </dd>
 </dl>
 <p>Delete queue with name</p>
@@ -285,7 +285,7 @@
 <dt class="field-even">Detect Document Text</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>image_file: str=None, json_file: str=None, bucket_name: str=None</p>
+<dd class="field-odd"><p>image_file: str = None, json_file: str = None, bucket_name: str = None</p>
 </dd>
 </dl>
 <p>Detects text in the input document.</p>
@@ -293,7 +293,7 @@
 <dt class="field-even">Detect Entities</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>text: str=None, lang=en</p>
+<dd class="field-odd"><p>text: str = None, lang=en</p>
 </dd>
 </dl>
 <p>Inspects text for named entities, and returns information about them</p>
@@ -301,7 +301,7 @@
 <dt class="field-even">Detect Sentiment</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>text: str=None, lang=en</p>
+<dd class="field-odd"><p>text: str = None, lang=en</p>
 </dd>
 </dl>
 <p>Inspects text and returns an inference of the prevailing sentiment</p>
@@ -309,7 +309,7 @@
 <dt class="field-even">Download Files</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>bucket_name: str=None, files: list=None, target_directory: str=None</p>
+<dd class="field-odd"><p>bucket_name: str = None, files: list = None, target_directory: str = None</p>
 </dd>
 </dl>
 <p>Download files from bucket to local filesystem</p>
@@ -326,7 +326,7 @@
 <dt class="field-odd">Init Comprehend Client</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>aws_key_id: str=None, aws_key: str=None, region: str=None, use_robocloud_vault: bool=False</p>
+<dd class="field-odd"><p>aws_key_id: str = None, aws_key: str = None, region: str = None, use_robocloud_vault: bool = False</p>
 </dd>
 </dl>
 <p>Initialize AWS Comprehend client</p>
@@ -334,7 +334,7 @@
 <dt class="field-even">Init S3 Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>aws_key_id: str=None, aws_key: str=None, region: str=None, use_robocloud_vault: bool=False</p>
+<dd class="field-odd"><p>aws_key_id: str = None, aws_key: str = None, region: str = None, use_robocloud_vault: bool = False</p>
 </dd>
 </dl>
 <p>Initialize AWS S3 client</p>
@@ -342,7 +342,7 @@
 <dt class="field-even">Init Sqs Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>aws_key_id: str=None, aws_key: str=None, region: str=None, queue_url: str=None, use_robocloud_vault: bool=False</p>
+<dd class="field-odd"><p>aws_key_id: str = None, aws_key: str = None, region: str = None, queue_url: str = None, use_robocloud_vault: bool = False</p>
 </dd>
 </dl>
 <p>Initialize AWS SQS client</p>
@@ -350,7 +350,7 @@
 <dt class="field-even">Init Textract Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>aws_key_id: str=None, aws_key: str=None, region: str=None, use_robocloud_vault: bool=False</p>
+<dd class="field-odd"><p>aws_key_id: str = None, aws_key: str = None, region: str = None, use_robocloud_vault: bool = False</p>
 </dd>
 </dl>
 <p>Initialize AWS Textract client</p>
@@ -372,7 +372,7 @@
 <dt class="field-odd">Send Message</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>message: str=None, message_attributes: dict=None</p>
+<dd class="field-odd"><p>message: str = None, message_attributes: dict = None</p>
 </dd>
 </dl>
 <p>Send message to the queue</p>
@@ -388,7 +388,7 @@
 <dt class="field-even">Upload File</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>bucket_name: str=None, filename: str=None, object_name: str=None</p>
+<dd class="field-odd"><p>bucket_name: str = None, filename: str = None, object_name: str = None</p>
 </dd>
 </dl>
 <p>Upload single file into bucket</p>
@@ -398,7 +398,7 @@ used as <cite>object_name</cite>.</p>
 <dt class="field-even">Upload Files</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>bucket_name: str=None, files: list=None</p>
+<dd class="field-odd"><p>bucket_name: str = None, files: list = None</p>
 </dd>
 </dl>
 <p>Upload multiple files into bucket</p>

@@ -15,7 +15,7 @@ Keywords
 ********
 
 :Connect:
-  :Arguments: account: str=None, consumer_key: str=None, consumer_secret: str=None, token_key: str=None, token_secret: str=None
+  :Arguments: account: str = None, consumer_key: str = None, consumer_secret: str = None, token_key: str = None, token_secret: str = None
 
   Connect to Netsuite with credentials from environment
   variables.
@@ -24,7 +24,7 @@ Keywords
 
 
 :Get Accounts:
-  :Arguments: count: int=100, account_type: str=None
+  :Arguments: count: int = 100, account_type: str = None
 
   Get Accounts of any type or specified type.
 
@@ -52,19 +52,19 @@ Keywords
 
 
 :Get Vendor Bills:
-  :Arguments: count: int=10
+  :Arguments: count: int = 10
 
   Get list of vendor bills
 
 
 :Get Vendors:
-  :Arguments: count: int=10
+  :Arguments: count: int = 10
 
   Get list of vendors
 
 
 :Login:
-  :Arguments: account: str=None, email: str=None, password: str=None, role: str=None, appid: str=None
+  :Arguments: account: str = None, email: str = None, password: str = None, role: str = None, appid: str = None
 
   Login to Netsuite with credentials from environment variables
 
@@ -72,7 +72,7 @@ Keywords
 
 
 :Netsuite Get:
-  :Arguments: record_type: str=None, internal_id: str=None, external_id: str=None
+  :Arguments: record_type: str = None, internal_id: str = None, external_id: str = None
 
   Get all records of given type and internalId and/or externalId.
 
@@ -86,14 +86,14 @@ Keywords
   :raises ValueError: if record_type is not given
 
 :Netsuite Search:
-  :Arguments: type_name: str, search_value: str, operator: str=contains, page_size: int=5
+  :Arguments: type_name: str, search_value: str, operator: str = contains, page_size: int = 5
 
   Search Netsuite for value from a type. Default operator is
   `contains`.
 
 
 :Netsuite Search All:
-  :Arguments: type_name: str, page_size: int=20
+  :Arguments: type_name: str, page_size: int = 20
 
   Search Netsuite for a type results.
 

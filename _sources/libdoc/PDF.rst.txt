@@ -41,13 +41,13 @@ Keywords
   Start a new page
 
 :Add Pages:
-  :Arguments: pages: int=1
+  :Arguments: pages: int = 1
 
   Adds pages into PDF documents.
 
 
 :Add Pages To Document:
-  :Arguments: pages: int=1, source_pdf: str=None, target_pdf: str=None
+  :Arguments: pages: int = 1, source_pdf: str = None, target_pdf: str = None
 
   Add empty pages into current source document
 
@@ -72,7 +72,7 @@ Keywords
   Close all opened PDF file descriptors.
 
 :Close Pdf Document:
-  :Arguments: source_pdf: str=None
+  :Arguments: source_pdf: str = None
 
   Close PDF file descriptor for certain file.
 
@@ -91,7 +91,7 @@ Keywords
   - space_length: Length of the space between dashes
 
 :Dump Pdf As Xml:
-  :Arguments: source_pdf: str=None
+  :Arguments: source_pdf: str = None
 
   Get PDFMiner format XML dump of the PDF
 
@@ -107,7 +107,7 @@ Keywords
   Fatal error
 
 :Extract Pages From Pdf:
-  :Arguments: source_pdf: str=None, target_pdf: str=None, pages: typing.Any=None
+  :Arguments: source_pdf: str = None, target_pdf: str = None, pages: typing.Any = None
 
   Extract pages from source PDF and save to target PDF document.
 
@@ -124,13 +124,13 @@ Keywords
 
 
 :Get Info:
-  :Arguments: source_pdf: str=None
+  :Arguments: source_pdf: str = None
 
   Get information from PDF document.
 
 
 :Get Input Fields:
-  :Arguments: source_pdf: str=None, replace_none_value: bool=False
+  :Arguments: source_pdf: str = None, replace_none_value: bool = False
 
   Get input fields in the PDF.
 
@@ -141,7 +141,7 @@ Keywords
 
 
 :Get Number Of Pages:
-  :Arguments: source_pdf: str=None
+  :Arguments: source_pdf: str = None
 
   Get number of pages in the document.
 
@@ -157,7 +157,7 @@ Keywords
   Get width of a string in the current font
 
 :Get Text From Pdf:
-  :Arguments: source_pdf: str=None, pages: typing.Any=None
+  :Arguments: source_pdf: str = None, pages: typing.Any = None
 
   Get text from set of pages in source PDF document.
 
@@ -165,7 +165,7 @@ Keywords
 
 
 :Get Value From Anchor:
-  :Arguments: locator: str, pagenum: int=1, direction: str=right, strict: bool=False, regexp: str=None
+  :Arguments: locator: str, pagenum: int = 1, direction: str = right, strict: bool = False, regexp: str = None
 
   Get closest text (value) to anchor element.
 
@@ -182,7 +182,7 @@ Keywords
   Header to be implemented in your own inherited class
 
 :Html To Pdf:
-  :Arguments: content: str=None, filename: str=None, variables: dict=None
+  :Arguments: content: str = None, filename: str = None, variables: dict = None
 
   Use HTML content to generate PDF file.
 
@@ -198,7 +198,7 @@ Keywords
   Barcode I2of5 (numeric), adds a 0 if odd lenght
 
 :Is Pdf Encrypted:
-  :Arguments: source_pdf: str=None
+  :Arguments: source_pdf: str = None
 
   Check if PDF is encrypted.
 
@@ -234,7 +234,7 @@ Keywords
   Begin document
 
 :Open Pdf Document:
-  :Arguments: source_pdf: str=None
+  :Arguments: source_pdf: str = None
 
   Open PDF document.
 
@@ -251,27 +251,27 @@ Keywords
   Get current page number
 
 :Page Rotate:
-  :Arguments: pages: int, source_pdf: str=None, target_pdf: str=None, clockwise: bool=True, angle: int=90
+  :Arguments: pages: int, source_pdf: str = None, target_pdf: str = None, clockwise: bool = True, angle: int = 90
 
   Rotate pages in source PDF document and save to target PDF document.
 
 
 :Parse Pdf:
-  :Arguments: source_pdf: str=None
+  :Arguments: source_pdf: str = None
 
   Parse source PDF into entities which can be
   used for text searches for example.
 
 
 :Pdf Decrypt:
-  :Arguments: source_pdf: str=None, target_pdf: str=None, password: str=None
+  :Arguments: source_pdf: str = None, target_pdf: str = None, password: str = None
 
   Decrypt PDF with password.
 
   :raises ValueError: on decryption errors
 
 :Pdf Encrypt:
-  :Arguments: source_pdf: str=None, target_pdf: str=None, user_pwd: str=, owner_pwd: str=None, use_128bit: bool=True
+  :Arguments: source_pdf: str = None, target_pdf: str = None, user_pwd: str = , owner_pwd: str = None, use_128bit: bool = True
 
   Encrypt PDF document.
 
@@ -294,7 +294,7 @@ Keywords
 
 
 :Save Pdf:
-  :Arguments: source: str=None, target: str=None, use_modified_reader: bool=False
+  :Arguments: source: str = None, target: str = None, use_modified_reader: bool = False
 
   Save current over itself or to `target_pdf`
 
@@ -341,7 +341,7 @@ Keywords
   Set color for all stroking operations
 
 :Set Field Value:
-  :Arguments: field_name: str, value: typing.Any, save: bool=False
+  :Arguments: field_name: str, value: typing.Any, save: bool = False
 
   Set value for field with given name.
 
@@ -392,7 +392,7 @@ Keywords
   Set left, top and right margins
 
 :Set Output Directory:
-  :Arguments: outdir: str=.
+  :Arguments: outdir: str = .
 
   Set output directory where target files are saved to.
 
@@ -438,7 +438,7 @@ Keywords
   Set y position and reset x
 
 :Switch To Pdf Document:
-  :Arguments: source_pdf: str=None
+  :Arguments: source_pdf: str = None
 
   Switch library's current fileobject to already open file
   or open file if not opened.
@@ -447,7 +447,7 @@ Keywords
       file to activate
 
 :Template Html To Pdf:
-  :Arguments: template: str=None, filename: str=None, variables: dict=None
+  :Arguments: template: str = None, filename: str = None, variables: dict = None
 
   Use HTML template file to generate PDF file.
 
@@ -458,7 +458,7 @@ Keywords
   Output a string
 
 :Update Field Values:
-  :Arguments: source_pdf: str=None, target_pdf: str=None, newvals: dict=None
+  :Arguments: source_pdf: str = None, target_pdf: str = None, newvals: dict = None
 
   Update field values in PDF if it has fields.
 

@@ -15,7 +15,7 @@ Keywords
 ********
 
 :Close Document:
-  :Arguments: save_changes: bool=False
+  :Arguments: save_changes: bool = False
 
   Close the active document (if open).
 
@@ -33,19 +33,19 @@ Keywords
 
 
 :Open Application:
-  :Arguments: visible: bool=False, display_alerts: bool=False
+  :Arguments: visible: bool = False, display_alerts: bool = False
 
   Open the Word application.
 
 
 :Open File:
-  :Arguments: filename: str=None
+  :Arguments: filename: str = None
 
   Open Word document with filename.
 
 
 :Quit Application:
-  :Arguments: save_changes: bool=False
+  :Arguments: save_changes: bool = False
 
   Quit the application.
 
@@ -59,7 +59,7 @@ Keywords
   Save active document
 
 :Save Document As:
-  :Arguments: filename: str, fileformat: str=None
+  :Arguments: filename: str, fileformat: str = None
 
   Save document with filename and optionally with given fileformat
 
@@ -77,7 +77,7 @@ Keywords
 
 
 :Write Text:
-  :Arguments: text: str, newline: bool=True
+  :Arguments: text: str, newline: bool = True
 
   Writes given text at the end of the document
 

@@ -17,29 +17,29 @@ Keywords
 ********
 
 :Close Document:
-  :Arguments: save_changes: bool=False
+  :Arguments: save_changes: bool = False
 
   Close the active document (if open).
 
 :Open Application:
-  :Arguments: visible: bool=False, display_alerts: bool=False
+  :Arguments: visible: bool = False, display_alerts: bool = False
 
   Open the Outlook application.
 
 
 :Quit Application:
-  :Arguments: save_changes: bool=False
+  :Arguments: save_changes: bool = False
 
   Quit the application.
 
 :Send Message:
-  :Arguments: recipients: typing.Any, subject: str, body: str, html_body: bool=False, attachments: typing.Any=None
+  :Arguments: recipients: typing.Any, subject: str, body: str, html_body: bool = False, attachments: typing.Any = None
 
   Send message with Outlook
 
 
 :Wait For Message:
-  :Arguments: criterion: str=None, timeout: float=5.0, interval: float=1.0
+  :Arguments: criterion: str = None, timeout: float = 5.0, interval: float = 1.0
 
   Wait for email matching `criterion` to arrive into mailbox.
 

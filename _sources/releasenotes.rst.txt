@@ -4,33 +4,36 @@ Release notes
 Upcoming release
 ----------------
 
+- Upgrade ``Robot Framework`` to 3.2.2
+- Upgrade ``pyscreenshot`` to 2.2
 - **Email.ImapSmtp**:
 
-  - Add keyword examples for each keyword
+  - Add keyword examples (documentation)
   - Change ``List Messages`` to return list of dictionaries containing
     message attributes. In addition there is attribute `Has-Attachments`
-    if message contains attachments
+    for each message
   - Add keyword ``Save Attachment`` which can be used save attachments
     from a message. Can be used when looping through messages received
     by ``List Messages``
 
 - **Desktop.Windows**:
 
-  - Add keyword examples for each keyword
+  - Add keyword examples (documentation)
   - Add keyword ``Get Text``. Returns dictionary of possible values
     due to many implementation methods
   - Add parameter `empty_field` to keyword ``Type Into`` which will
     empty field before typing into a field
-  - Add keyword ``Find Element`` which we search for element with timeout
+  - Add keyword ``Wait For Element`` which will search for element with timeout
 
 - **Desktop.OperatingSystem**:
 
+  - Add keyword examples (documentation)
   - Add keyword ``Kill Process By PID`` to terminate process using its
     identifier.
 
 - **Browser**:
 
-  - Add keyword examples for each keyword
+  - Add keyword examples (documentation)
   - Add `proxy` parameter for keywords ``Open Available Browser``
     and ``Open Chrome Browser``. Works only for Chrome at the moment.
 

@@ -18,7 +18,7 @@ Keywords
 ********
 
 :Authorize:
-  :Arguments: account: str=None, password: str=None, smtp_server: str=None, imap_server: str=None
+  :Arguments: account: str = None, password: str = None, smtp_server: str = None, imap_server: str = None
 
   Authorize user to SMTP and IMAP servers.
 
@@ -26,7 +26,7 @@ Keywords
 
 
 :Authorize Imap:
-  :Arguments: account: str=None, password: str=None, imap_server: str=None, imap_port: int=None
+  :Arguments: account: str = None, password: str = None, imap_server: str = None, imap_port: int = None
 
   Authorize to IMAP server.
 
@@ -36,7 +36,7 @@ Keywords
 
 
 :Authorize Smtp:
-  :Arguments: account: str=None, password: str=None, smtp_server: str=None, smtp_port: int=None
+  :Arguments: account: str = None, password: str = None, smtp_server: str = None, smtp_port: int = None
 
   Authorize to SMTP server.
 
@@ -46,19 +46,19 @@ Keywords
 
 
 :Create Folder:
-  :Arguments: folder_name: str=None
+  :Arguments: folder_name: str = None
 
   Create email folder
 
 
 :Delete Folder:
-  :Arguments: folder_name: str=None
+  :Arguments: folder_name: str = None
 
   Delete email folder
 
 
 :Delete Message:
-  :Arguments: criterion: str=
+  :Arguments: criterion: str = 
 
   Delete single message from server based on criterion.
 
@@ -66,43 +66,43 @@ Keywords
 
 
 :Delete Messages:
-  :Arguments: criterion: str=
+  :Arguments: criterion: str = 
 
   Delete messages from server based on criterion.
 
 
 :Flag Messages:
-  :Arguments: criterion: str=None, unflag: bool=False
+  :Arguments: criterion: str = None, unflag: bool = False
 
   Mark messages as `flagged`
 
 
 :Get Folder List:
-  :Arguments: subdirectory: str=None, pattern: str=None
+  :Arguments: subdirectory: str = None, pattern: str = None
 
   Get list of folders on the server
 
 
 :List Messages:
-  :Arguments: criterion: str=
+  :Arguments: criterion: str = 
 
   Return list of messages matching criterion.
 
 
 :Mark As Read:
-  :Arguments: criterion: str=None, unread: bool=False
+  :Arguments: criterion: str = None, unread: bool = False
 
   Mark messages as `read`
 
 
 :Mark As Unread:
-  :Arguments: criterion: str=None
+  :Arguments: criterion: str = None
 
   Mark messages as not `read`
 
 
 :Rename Folder:
-  :Arguments: oldname: str=None, newname: str=None, suppress_error: bool=False
+  :Arguments: oldname: str = None, newname: str = None, suppress_error: bool = False
 
   Rename email folder
 
@@ -114,13 +114,13 @@ Keywords
 
 
 :Save Attachments:
-  :Arguments: criterion: str=, target_folder: str=None, overwrite: bool=False
+  :Arguments: criterion: str = , target_folder: str = None, overwrite: bool = False
 
   Save mail attachments into local folder.
 
 
 :Save Messages:
-  :Arguments: criterion: str=, target_folder: str=None
+  :Arguments: criterion: str = , target_folder: str = None
 
   Save messages based on criteria and store them to target folder
   with attachment files.
@@ -129,7 +129,7 @@ Keywords
 
 
 :Select Folder:
-  :Arguments: folder_name: str=INBOX
+  :Arguments: folder_name: str = INBOX
 
   Select folder by name
 
@@ -138,7 +138,7 @@ Keywords
 
 
 :Send Message:
-  :Arguments: sender: str, recipients: str, subject: str=, body: str=, attachments: str=None, html: bool=False, images: str=None
+  :Arguments: sender: str, recipients: str, subject: str = , body: str = , attachments: str = None, html: bool = False, images: str = None
 
   Send SMTP email
 
@@ -153,19 +153,19 @@ Keywords
   Required step when creating SMTP connection.
 
 :Set Credentials:
-  :Arguments: account: str=None, password: str=None
+  :Arguments: account: str = None, password: str = None
 
   Set credentials
 
 
 :Unflag Messages:
-  :Arguments: criterion: str=None
+  :Arguments: criterion: str = None
 
   Mark messages as not `flagged`
 
 
 :Wait For Message:
-  :Arguments: criterion: str=, timeout: float=5.0, interval: float=1.0
+  :Arguments: criterion: str = , timeout: float = 5.0, interval: float = 1.0
 
   Wait for email matching `criterion` to arrive into mailbox.
 

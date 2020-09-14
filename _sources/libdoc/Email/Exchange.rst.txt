@@ -15,38 +15,38 @@ Keywords
 ********
 
 :Authorize:
-  :Arguments: username: str, password: str, autodiscover: bool=True, access_type: str=DELEGATE, server: str=None, primary_smtp_address: str=None
+  :Arguments: username: str, password: str, autodiscover: bool = True, access_type: str = DELEGATE, server: str = None, primary_smtp_address: str = None
 
   Connect to Exchange account
 
 
 :Create Folder:
-  :Arguments: folder_name: str=None, parent_folder: str=None
+  :Arguments: folder_name: str = None, parent_folder: str = None
 
   Create email folder
 
 
 :Delete Folder:
-  :Arguments: folder_name: str=None, parent_folder: str=None
+  :Arguments: folder_name: str = None, parent_folder: str = None
 
   Delete email folder
 
 
 :Empty Folder:
-  :Arguments: folder_name: str=None, parent_folder: str=None, delete_sub_folders: bool=False
+  :Arguments: folder_name: str = None, parent_folder: str = None, delete_sub_folders: bool = False
 
   Empty email folder of all items
 
 
 :List Messages:
-  :Arguments: folder_name: str=None, count: int=100
+  :Arguments: folder_name: str = None, count: int = 100
 
   List messages in the account inbox. Order by descending
   received time.
 
 
 :Move Messages:
-  :Arguments: criterion: str=, source: str=None, target: str=None, contains: bool=False
+  :Arguments: criterion: str = , source: str = None, target: str = None, contains: bool = False
 
   Move message(s) from source folder to target folder
 
@@ -58,13 +58,13 @@ Keywords
 
 
 :Rename Folder:
-  :Arguments: oldname: str=None, newname: str=None, parent_folder: str=None
+  :Arguments: oldname: str = None, newname: str = None, parent_folder: str = None
 
   Rename email folder
 
 
 :Send Message:
-  :Arguments: recipients: str, subject: str=, body: str=, attachments: str=None, html: bool=False, images: str=None, cc: str=None, bcc: str=None, save: bool=False
+  :Arguments: recipients: str, subject: str = , body: str = , attachments: str = None, html: bool = False, images: str = None, cc: str = None, bcc: str = None, save: bool = False
 
   Keyword for sending message through connected Exchange account.
 
@@ -75,7 +75,7 @@ Keywords
 
 
 :Wait For Message:
-  :Arguments: criterion: str=, timeout: float=5.0, interval: float=1.0, contains: bool=False
+  :Arguments: criterion: str = , timeout: float = 5.0, interval: float = 1.0, contains: bool = False
 
   Wait for email matching `criterion` to arrive into INBOX.
 

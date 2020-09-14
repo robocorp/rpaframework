@@ -220,7 +220,7 @@
 <dt class="field-odd">Authorize</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>username: str, password: str, autodiscover: bool=True, access_type: str=DELEGATE, server: str=None, primary_smtp_address: str=None</p>
+<dd class="field-odd"><p>username: str, password: str, autodiscover: bool = True, access_type: str = DELEGATE, server: str = None, primary_smtp_address: str = None</p>
 </dd>
 </dl>
 <p>Connect to Exchange account</p>
@@ -228,7 +228,7 @@
 <dt class="field-even">Create Folder</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>folder_name: str=None, parent_folder: str=None</p>
+<dd class="field-odd"><p>folder_name: str = None, parent_folder: str = None</p>
 </dd>
 </dl>
 <p>Create email folder</p>
@@ -236,7 +236,7 @@
 <dt class="field-even">Delete Folder</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>folder_name: str=None, parent_folder: str=None</p>
+<dd class="field-odd"><p>folder_name: str = None, parent_folder: str = None</p>
 </dd>
 </dl>
 <p>Delete email folder</p>
@@ -244,7 +244,7 @@
 <dt class="field-even">Empty Folder</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>folder_name: str=None, parent_folder: str=None, delete_sub_folders: bool=False</p>
+<dd class="field-odd"><p>folder_name: str = None, parent_folder: str = None, delete_sub_folders: bool = False</p>
 </dd>
 </dl>
 <p>Empty email folder of all items</p>
@@ -252,7 +252,7 @@
 <dt class="field-even">List Messages</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>folder_name: str=None, count: int=100</p>
+<dd class="field-odd"><p>folder_name: str = None, count: int = 100</p>
 </dd>
 </dl>
 <p>List messages in the account inbox. Order by descending
@@ -261,7 +261,7 @@ received time.</p>
 <dt class="field-even">Move Messages</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>criterion: str=, source: str=None, target: str=None, contains: bool=False</p>
+<dd class="field-odd"><p>criterion: str = , source: str = None, target: str = None, contains: bool = False</p>
 </dd>
 </dl>
 <p>Move message(s) from source folder to target folder</p>
@@ -277,7 +277,7 @@ received time.</p>
 <dt class="field-even">Rename Folder</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>oldname: str=None, newname: str=None, parent_folder: str=None</p>
+<dd class="field-odd"><p>oldname: str = None, newname: str = None, parent_folder: str = None</p>
 </dd>
 </dl>
 <p>Rename email folder</p>
@@ -285,7 +285,7 @@ received time.</p>
 <dt class="field-even">Send Message</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>recipients: str, subject: str=, body: str=, attachments: str=None, html: bool=False, images: str=None, cc: str=None, bcc: str=None, save: bool=False</p>
+<dd class="field-odd"><p>recipients: str, subject: str = , body: str = , attachments: str = None, html: bool = False, images: str = None, cc: str = None, bcc: str = None, save: bool = False</p>
 </dd>
 </dl>
 <p>Keyword for sending message through connected Exchange account.</p>
@@ -296,7 +296,7 @@ account address.</p>
 <dt class="field-even">Wait For Message</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>criterion: str=, timeout: float=5.0, interval: float=1.0, contains: bool=False</p>
+<dd class="field-odd"><p>criterion: str = , timeout: float = 5.0, interval: float = 1.0, contains: bool = False</p>
 </dd>
 </dl>
 <p>Wait for email matching <cite>criterion</cite> to arrive into INBOX.</p>

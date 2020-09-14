@@ -15,7 +15,7 @@ Keywords
 ********
 
 :Add Product Into Opportunity:
-  :Arguments: product_name: str, quantity: int, opportunity_id: str=None, pricebook_name: str=None, custom_total_price: float=None
+  :Arguments: product_name: str, quantity: int, opportunity_id: str = None, pricebook_name: str = None, custom_total_price: float = None
 
   Add Salesforce Product into Opportunity.
 
@@ -28,7 +28,7 @@ Keywords
 
 
 :Create New Opportunity:
-  :Arguments: close_date: str, opportunity_name: str, stage_name: str=Closed Won, account_name: str=None
+  :Arguments: close_date: str, opportunity_name: str, stage_name: str = Closed Won, account_name: str = None
 
   Create Salesforce Opportunity object.
 
@@ -130,7 +130,7 @@ Keywords
 
 
 :Set Account:
-  :Arguments: account_name: str=, account_id: str=
+  :Arguments: account_name: str = , account_id: str = 
 
   Set account name and id by giving either parameter.
 

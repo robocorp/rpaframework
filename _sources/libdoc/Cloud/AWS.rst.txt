@@ -22,67 +22,67 @@ Keywords
 ********
 
 :Analyze Document:
-  :Arguments: image_file: str=None, json_file: str=None, bucket_name: str=None
+  :Arguments: image_file: str = None, json_file: str = None, bucket_name: str = None
 
   Analyzes an input document for relationships between detected items
 
 
 :Create Bucket:
-  :Arguments: bucket_name: str=None
+  :Arguments: bucket_name: str = None
 
   Create S3 bucket with name
 
 
 :Create Queue:
-  :Arguments: queue_name: str=None
+  :Arguments: queue_name: str = None
 
   Create queue with name
 
 
 :Delete Bucket:
-  :Arguments: bucket_name: str=None
+  :Arguments: bucket_name: str = None
 
   Delete S3 bucket with name
 
 
 :Delete Files:
-  :Arguments: bucket_name: str=None, files: list=None
+  :Arguments: bucket_name: str = None, files: list = None
 
   Delete files in the bucket
 
 
 :Delete Message:
-  :Arguments: receipt_handle: str=None
+  :Arguments: receipt_handle: str = None
 
   Delete message in the queue
 
 
 :Delete Queue:
-  :Arguments: queue_name: str=None
+  :Arguments: queue_name: str = None
 
   Delete queue with name
 
 
 :Detect Document Text:
-  :Arguments: image_file: str=None, json_file: str=None, bucket_name: str=None
+  :Arguments: image_file: str = None, json_file: str = None, bucket_name: str = None
 
   Detects text in the input document.
 
 
 :Detect Entities:
-  :Arguments: text: str=None, lang=en
+  :Arguments: text: str = None, lang=en
 
   Inspects text for named entities, and returns information about them
 
 
 :Detect Sentiment:
-  :Arguments: text: str=None, lang=en
+  :Arguments: text: str = None, lang=en
 
   Inspects text and returns an inference of the prevailing sentiment
 
 
 :Download Files:
-  :Arguments: bucket_name: str=None, files: list=None, target_directory: str=None
+  :Arguments: bucket_name: str = None, files: list = None, target_directory: str = None
 
   Download files from bucket to local filesystem
 
@@ -100,25 +100,25 @@ Keywords
 
 
 :Init Comprehend Client:
-  :Arguments: aws_key_id: str=None, aws_key: str=None, region: str=None, use_robocloud_vault: bool=False
+  :Arguments: aws_key_id: str = None, aws_key: str = None, region: str = None, use_robocloud_vault: bool = False
 
   Initialize AWS Comprehend client
 
 
 :Init S3 Client:
-  :Arguments: aws_key_id: str=None, aws_key: str=None, region: str=None, use_robocloud_vault: bool=False
+  :Arguments: aws_key_id: str = None, aws_key: str = None, region: str = None, use_robocloud_vault: bool = False
 
   Initialize AWS S3 client
 
 
 :Init Sqs Client:
-  :Arguments: aws_key_id: str=None, aws_key: str=None, region: str=None, queue_url: str=None, use_robocloud_vault: bool=False
+  :Arguments: aws_key_id: str = None, aws_key: str = None, region: str = None, queue_url: str = None, use_robocloud_vault: bool = False
 
   Initialize AWS SQS client
 
 
 :Init Textract Client:
-  :Arguments: aws_key_id: str=None, aws_key: str=None, region: str=None, use_robocloud_vault: bool=False
+  :Arguments: aws_key_id: str = None, aws_key: str = None, region: str = None, use_robocloud_vault: bool = False
 
   Initialize AWS Textract client
 
@@ -138,7 +138,7 @@ Keywords
 
 
 :Send Message:
-  :Arguments: message: str=None, message_attributes: dict=None
+  :Arguments: message: str = None, message_attributes: dict = None
 
   Send message to the queue
 
@@ -150,7 +150,7 @@ Keywords
 
 
 :Upload File:
-  :Arguments: bucket_name: str=None, filename: str=None, object_name: str=None
+  :Arguments: bucket_name: str = None, filename: str = None, object_name: str = None
 
   Upload single file into bucket
 
@@ -159,7 +159,7 @@ Keywords
 
 
 :Upload Files:
-  :Arguments: bucket_name: str=None, files: list=None
+  :Arguments: bucket_name: str = None, files: list = None
 
   Upload multiple files into bucket
 

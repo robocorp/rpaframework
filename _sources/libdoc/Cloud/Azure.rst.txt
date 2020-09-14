@@ -22,7 +22,7 @@ Keywords
 ********
 
 :Detect Face:
-  :Arguments: image_file: str=None, image_url: str=None, face_attributes: str=None, face_landmarks: bool=False, recognition_model: str=recognition_02, json_file: str=None
+  :Arguments: image_file: str = None, image_url: str = None, face_attributes: str = None, face_landmarks: bool = False, recognition_model: str = recognition_02, json_file: str = None
 
   Detect facial attributes in the image
 
@@ -46,49 +46,49 @@ Keywords
   .. _Face detection explained: https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection  # noqa: E501
 
 :Detect Language:
-  :Arguments: text: str, json_file: str=None
+  :Arguments: text: str, json_file: str = None
 
   Detect languages in the given text
 
 
 :Find Entities:
-  :Arguments: text: str, language: str=None, json_file=None
+  :Arguments: text: str, language: str = None, json_file=None
 
   Detect entities in the given text
 
 
 :Init Computer Vision Service:
-  :Arguments: region: str=None, use_robocloud_vault: bool=False
+  :Arguments: region: str = None, use_robocloud_vault: bool = False
 
   Initialize Azure Computer Vision
 
 
 :Init Face Service:
-  :Arguments: region: str=None, use_robocloud_vault: bool=False
+  :Arguments: region: str = None, use_robocloud_vault: bool = False
 
   Initialize Azure Face
 
 
 :Init Speech Service:
-  :Arguments: region: str=None, use_robocloud_vault: bool=False
+  :Arguments: region: str = None, use_robocloud_vault: bool = False
 
   Initialize Azure Speech
 
 
 :Init Text Analytics Service:
-  :Arguments: region: str=None, use_robocloud_vault: bool=False
+  :Arguments: region: str = None, use_robocloud_vault: bool = False
 
   Initialize Azure Text Analyticts
 
 
 :Key Phrases:
-  :Arguments: text: str, language: str=None, json_file: str=None
+  :Arguments: text: str, language: str = None, json_file: str = None
 
   Detect key phrases in the given text
 
 
 :List Supported Voices:
-  :Arguments: locale: str=None, neural_only: bool=False, json_file: str=None
+  :Arguments: locale: str = None, neural_only: bool = False, json_file: str = None
 
   List supported voices for Azure API Speech Services.
 
@@ -96,7 +96,7 @@ Keywords
 
 
 :Sentiment Analyze:
-  :Arguments: text: str, language: str=None, json_file: str=None
+  :Arguments: text: str, language: str = None, json_file: str = None
 
   Analyze sentiments in the given text
 
@@ -108,7 +108,7 @@ Keywords
 
 
 :Text To Speech:
-  :Arguments: text: str, language: str=en-US, name: str=en-US-AriaRUS, gender: str=FEMALE, encoding: str=MP3, neural_voice_style: typing.Any=None, target_file: str=synthesized.mp3
+  :Arguments: text: str, language: str = en-US, name: str = en-US-AriaRUS, gender: str = FEMALE, encoding: str = MP3, neural_voice_style: typing.Any = None, target_file: str = synthesized.mp3
 
   Synthesize speech synchronously
 
@@ -117,7 +117,7 @@ Keywords
 
 
 :Vision Analyze:
-  :Arguments: image_file: str=None, image_url: str=None, visual_features: str=None, json_file: str=None
+  :Arguments: image_file: str = None, image_url: str = None, visual_features: str = None, json_file: str = None
 
   Identify features in the image
 
@@ -137,19 +137,19 @@ Keywords
   .. _Computer Vision API: https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga  # noqa: E501
 
 :Vision Describe:
-  :Arguments: image_file: str=None, image_url: str=None, json_file: str=None
+  :Arguments: image_file: str = None, image_url: str = None, json_file: str = None
 
   Describe image with tags and captions
 
 
 :Vision Detect Objects:
-  :Arguments: image_file: str=None, image_url: str=None, json_file: str=None
+  :Arguments: image_file: str = None, image_url: str = None, json_file: str = None
 
   Detect objects in the image
 
 
 :Vision Ocr:
-  :Arguments: image_file: str=None, image_url: str=None, json_file: str=None
+  :Arguments: image_file: str = None, image_url: str = None, json_file: str = None
 
   Optical Character Recognition (OCR) detects text in an image
 

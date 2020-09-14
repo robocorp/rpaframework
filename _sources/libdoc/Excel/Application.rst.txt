@@ -15,7 +15,7 @@ Keywords
 ********
 
 :Add New Sheet:
-  :Arguments: sheetname: str, tabname: str=None, create_workbook: bool=True
+  :Arguments: sheetname: str, tabname: str = None, create_workbook: bool = True
 
   Add new worksheet to workbook. Workbook is created by default if
   it does not exist.
@@ -27,18 +27,18 @@ Keywords
   Adds new workbook for Excel application
 
 :Close Document:
-  :Arguments: save_changes: bool=False
+  :Arguments: save_changes: bool = False
 
   Close the active document (if open).
 
 :Find First Available Row:
-  :Arguments: worksheet: typing.Any=None, row: int=1, column: int=1
+  :Arguments: worksheet: typing.Any = None, row: int = 1, column: int = 1
 
   Find first available free row and cell
 
 
 :Open Application:
-  :Arguments: visible: bool=False, display_alerts: bool=False
+  :Arguments: visible: bool = False, display_alerts: bool = False
 
   Open the Excel application.
 
@@ -50,19 +50,19 @@ Keywords
 
 
 :Quit Application:
-  :Arguments: save_changes: bool=False
+  :Arguments: save_changes: bool = False
 
   Quit the application.
 
 :Read From Cells:
-  :Arguments: worksheet: typing.Any=None, row: int=None, column: int=None
+  :Arguments: worksheet: typing.Any = None, row: int = None, column: int = None
 
   Read value from cell.
 
   :raises ValueError: if cell is not given
 
 :Run Macro:
-  :Arguments: macro_name: str=None
+  :Arguments: macro_name: str = None
 
   Run Excel macro with given name
 
@@ -71,19 +71,19 @@ Keywords
   Saves Excel file
 
 :Save Excel As:
-  :Arguments: filename: str, autofit: bool=False
+  :Arguments: filename: str, autofit: bool = False
 
   Save Excel with name if workbook is open
 
 
 :Set Active Worksheet:
-  :Arguments: sheetname: str=None, sheetnumber: int=None
+  :Arguments: sheetname: str = None, sheetnumber: int = None
 
   Set active worksheet by either its sheet number or name
 
 
 :Write To Cells:
-  :Arguments: worksheet: typing.Any=None, row: int=None, column: int=None, value: str=None, number_format: str=None, formula: str=None
+  :Arguments: worksheet: typing.Any = None, row: int = None, column: int = None, value: str = None, number_format: str = None, formula: str = None
 
   Write value, number_format and/or formula into cell.
 

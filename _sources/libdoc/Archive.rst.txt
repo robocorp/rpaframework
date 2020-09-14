@@ -15,7 +15,7 @@ Keywords
 ********
 
 :Add To Archive:
-  :Arguments: files: typing.Any, archive_name: str, folder: str=None
+  :Arguments: files: typing.Any, archive_name: str, folder: str = None
 
   Add file(s) to the archive
 
@@ -33,7 +33,7 @@ Keywords
       Add To Archive  ${files}       files.tar
 
 :Archive Folder With Tar:
-  :Arguments: folder: str, archive_name: str, recursive: bool=False, include: str=None, exclude: str=None
+  :Arguments: folder: str, archive_name: str, recursive: bool = False, include: str = None, exclude: str = None
 
   Create a tar/tar.gz archive of a folder
 
@@ -55,7 +55,7 @@ Keywords
       Archive Folder With TAR  ${CURDIR}${/}documents  documents.tar  recursive=True
 
 :Archive Folder With Zip:
-  :Arguments: folder: str, archive_name: str, recursive: bool=False, include: str=None, exclude: str=None, compression: str=stored
+  :Arguments: folder: str, archive_name: str, recursive: bool = False, include: str = None, exclude: str = None, compression: str = stored
 
   Create a zip archive of a folder
 
@@ -84,7 +84,7 @@ Keywords
       Archive Folder With Zip  ${CURDIR}               bzipped.zip      compression=bzip2
 
 :Extract Archive:
-  :Arguments: archive_name: str, path: str=None, members: typing.Any=None
+  :Arguments: archive_name: str, path: str = None, members: typing.Any = None
 
   Extract files from archive into local directory
 
@@ -103,7 +103,7 @@ Keywords
       Extract Archive    archive.tar   C:${/}myfiles${/}  ${files}
 
 :Extract File From Archive:
-  :Arguments: filename: str, archive_name: str, path: str=None
+  :Arguments: filename: str, archive_name: str, path: str = None
 
   Extract a file from archive into local directory
 

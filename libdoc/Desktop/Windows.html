@@ -232,7 +232,7 @@
 <dt class="field-even">Click Type</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>x: int=None, y: int=None, click_type: str=click</p>
+<dd class="field-odd"><p>x: int = None, y: int = None, click_type: str = click</p>
 </dd>
 </dl>
 <p>Mouse click on coordinates x and y.</p>
@@ -249,7 +249,7 @@
 <dt class="field-odd">Connect By Handle</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>handle: str, windowtitle: str=None</p>
+<dd class="field-odd"><p>handle: str, windowtitle: str = None</p>
 </dd>
 </dl>
 <p>Connect to application by its handle</p>
@@ -257,7 +257,7 @@
 <dt class="field-even">Connect By Pid</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>app_pid: str, windowtitle: str=None</p>
+<dd class="field-odd"><p>app_pid: str, windowtitle: str = None</p>
 </dd>
 </dl>
 <p>Connect to application by its pid</p>
@@ -265,7 +265,7 @@
 <dt class="field-even">Drag And Drop</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>src: typing.Any, target: typing.Any, src_locator: str, target_locator: str=None, handle_ctrl_key: bool=False, drop_delay: float=2.0</p>
+<dd class="field-odd"><p>src: typing.Any, target: typing.Any, src_locator: str, target_locator: str = None, handle_ctrl_key: bool = False, drop_delay: float = 2.0</p>
 </dd>
 </dl>
 <p>Drag elements from source and drop them on target.</p>
@@ -281,7 +281,7 @@ operation is MOVE operation, on CTRL down the operation is COPY operation.</p>
 <dt class="field-even">Find Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator: str, search_criteria: str=None</p>
+<dd class="field-odd"><p>locator: str, search_criteria: str = None</p>
 </dd>
 </dl>
 <p>Find element from window by locator and criteria.</p>
@@ -289,7 +289,7 @@ operation is MOVE operation, on CTRL down the operation is COPY operation.</p>
 <dt class="field-even">Get App</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>app_id: int=None</p>
+<dd class="field-odd"><p>app_id: int = None</p>
 </dd>
 </dl>
 <p>Get application object by id</p>
@@ -306,7 +306,7 @@ operation is MOVE operation, on CTRL down the operation is COPY operation.</p>
 <dt class="field-even">Get Dialog Rectangle</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>ctrl: typing.Any=None</p>
+<dd class="field-odd"><p>ctrl: typing.Any = None</p>
 </dd>
 </dl>
 <p>Get element rectangle coordinates</p>
@@ -315,7 +315,7 @@ operation is MOVE operation, on CTRL down the operation is COPY operation.</p>
 <dt class="field-even">Get Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator: str, screenshot: bool=False</p>
+<dd class="field-odd"><p>locator: str, screenshot: bool = False</p>
 </dd>
 </dl>
 <p>Get element by locator.</p>
@@ -362,7 +362,7 @@ or in humanized memory format.</p>
 <dt class="field-odd">Get Window Elements</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>screenshot: bool=False, element_json: bool=False, outline: bool=False</p>
+<dd class="field-odd"><p>screenshot: bool = False, element_json: bool = False, outline: bool = False</p>
 </dd>
 </dl>
 <p>Get element information about all window dialog controls
@@ -388,7 +388,7 @@ and their descendants.</p>
 <dt class="field-even">Is Element Matching</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>itemdict: dict, locator: str, criteria: str, wildcard: bool=False</p>
+<dd class="field-odd"><p>itemdict: dict, locator: str, criteria: str, wildcard: bool = False</p>
 </dd>
 </dl>
 <p>Is element matching. Check if locator is found in <cite>any</cite> field
@@ -416,7 +416,7 @@ or <cite>criteria</cite> field in the window items.</p>
 <dt class="field-odd">Log In</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>username: str, password: str, domain: str=.</p>
+<dd class="field-odd"><p>username: str, password: str, domain: str = .</p>
 </dd>
 </dl>
 <p>Log into Windows <cite>domain</cite> with <cite>username</cite> and <cite>password</cite>.</p>
@@ -440,7 +440,7 @@ or <cite>criteria</cite> field in the window items.</p>
 <dt class="field-even">Mouse Click</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locator: str=None, x: int=0, y: int=0, off_x: int=0, off_y: int=0, image: str=None, method: str=locator, ctype: str=click</p>
+<dd class="field-odd"><p>locator: str = None, x: int = 0, y: int = 0, off_x: int = 0, off_y: int = 0, image: str = None, method: str = locator, ctype: str = click</p>
 </dd>
 </dl>
 <p>Mouse click <cite>locator</cite>, <cite>coordinates</cite>, or <cite>image</cite></p>
@@ -456,7 +456,7 @@ center coordinates.</p>
 <dt class="field-even">Mouse Click Coords</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>x: int, y: int, ctype: str=click, delay_time: float=None</p>
+<dd class="field-odd"><p>x: int, y: int, ctype: str = click, delay_time: float = None</p>
 </dd>
 </dl>
 <p>Click at coordinates on desktop</p>
@@ -464,7 +464,7 @@ center coordinates.</p>
 <dt class="field-even">Mouse Click Image</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>template: str, off_x: int=0, off_y: int=0, ctype: str=click</p>
+<dd class="field-odd"><p>template: str, off_x: int = 0, off_y: int = 0, ctype: str = click</p>
 </dd>
 </dl>
 <p>Click at template image on desktop</p>
@@ -480,7 +480,7 @@ center coordinates.</p>
 <dt class="field-even">Open Dialog</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>windowtitle: str=None, highlight: bool=False, timeout: int=10</p>
+<dd class="field-odd"><p>windowtitle: str = None, highlight: bool = False, timeout: int = 10</p>
 </dd>
 </dl>
 <p>Open window by its title.</p>
@@ -488,7 +488,7 @@ center coordinates.</p>
 <dt class="field-even">Open Executable</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>executable: str, windowtitle: str, backend: str=uia, work_dir: str=None</p>
+<dd class="field-odd"><p>executable: str, windowtitle: str, backend: str = uia, work_dir: str = None</p>
 </dd>
 </dl>
 <p>Open Windows executable. Window title name is required
@@ -534,7 +534,7 @@ Window title name is required to get handle on the application.</p>
 <dt class="field-odd">Quit Application</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>app_id: str=None, send_keys: bool=False</p>
+<dd class="field-odd"><p>app_id: str = None, send_keys: bool = False</p>
 </dd>
 </dl>
 <p>Quit an application by application id or
@@ -551,7 +551,7 @@ active application if <cite>app_id</cite> is None.</p>
 <dt class="field-even">Screenshot</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>filename: str, element: dict=None, ctrl: typing.Any=None, desktop: bool=False</p>
+<dd class="field-odd"><p>filename: str, element: dict = None, ctrl: typing.Any = None, desktop: bool = False</p>
 </dd>
 </dl>
 <p>Save screenshot into filename.</p>
@@ -567,7 +567,7 @@ active application if <cite>app_id</cite> is None.</p>
 <dt class="field-even">Send Keys To Input</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>keys_to_type: str, with_enter: bool=True, send_delay: float=0.5, enter_delay: float=1.5</p>
+<dd class="field-odd"><p>keys_to_type: str, with_enter: bool = True, send_delay: float = 0.5, enter_delay: float = 1.5</p>
 </dd>
 </dl>
 <p>Send keys to windows and add ENTER if <cite>with_enter</cite> is True</p>

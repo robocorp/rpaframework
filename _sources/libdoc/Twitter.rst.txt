@@ -18,13 +18,13 @@ Keywords
 ********
 
 :Authorize:
-  :Arguments: consumer_key: str=None, consumer_secret: str=None, access_token: str=None, access_token_secret: str=None
+  :Arguments: consumer_key: str = None, consumer_secret: str = None, access_token: str = None, access_token_secret: str = None
 
   Authorize to Twitter API
 
 
 :Follow:
-  :Arguments: user: str=None
+  :Arguments: user: str = None
 
   Follow Twitter user
 
@@ -34,25 +34,25 @@ Keywords
 
 
 :Get User Profile:
-  :Arguments: username: str=None
+  :Arguments: username: str = None
 
   Get user's Twitter profile
 
 
 :Get User Tweets:
-  :Arguments: username: str=None, count: int=100
+  :Arguments: username: str = None, count: int = 100
 
   Get user tweets
 
 
 :Like:
-  :Arguments: tweet: Tweet=None
+  :Arguments: tweet: Tweet = None
 
   Like a tweet
 
 
 :Text Search Tweets:
-  :Arguments: query: str=None, count: int=100, geocode: str=None, lang: str=None, locale: str=None, result_type: str=mixed, until: str=None, since_id: str=None, max_id: str=None
+  :Arguments: query: str = None, count: int = 100, geocode: str = None, lang: str = None, locale: str = None, result_type: str = mixed, until: str = None, since_id: str = None, max_id: str = None
 
   Search tweets defined by search query
 
@@ -63,19 +63,19 @@ Keywords
 
 
 :Tweet:
-  :Arguments: content: str=None
+  :Arguments: content: str = None
 
   Make a tweet with content
 
 
 :Unfollow:
-  :Arguments: user: str=None
+  :Arguments: user: str = None
 
   Unfollow Twitter user
 
 
 :Unlike:
-  :Arguments: tweet: Tweet=None
+  :Arguments: tweet: Tweet = None
 
   Unlike a tweet
 

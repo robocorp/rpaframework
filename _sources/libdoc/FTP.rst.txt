@@ -21,7 +21,7 @@ Keywords
   Close connection to the server unilaterally
 
 :Connect:
-  :Arguments: host: str, port: int=21, user: str=None, password: str=None, tls: bool=False, transfer: str=passive
+  :Arguments: host: str, port: int = 21, user: str = None, password: str = None, tls: bool = False, transfer: str = passive
 
   Connect to FTP server
 
@@ -40,7 +40,7 @@ Keywords
 
 
 :Download:
-  :Arguments: remotefile: str, localfile: str=None
+  :Arguments: remotefile: str, localfile: str = None
 
   Download file from FTP server
 
@@ -56,7 +56,7 @@ Keywords
 
 
 :List Files:
-  :Arguments: dirname: str=None
+  :Arguments: dirname: str = None
 
   List files on the server directory
 
@@ -102,7 +102,7 @@ Keywords
   Set transfer mode to BINARY
 
 :Set Debug Level:
-  :Arguments: level: int=0
+  :Arguments: level: int = 0
 
   Set debug level for the library
 

@@ -109,7 +109,7 @@ Keywords
      </table>
 
 :Attach Chrome Browser:
-  :Arguments: port: int, alias: str=None
+  :Arguments: port: int, alias: str = None
 
   .. raw:: html
 
@@ -272,7 +272,7 @@ Keywords
      <p>The <code>modifier</code> argument is new in SeleniumLibrary 3.3</p>
 
 :Click Button When Visible:
-  :Arguments: locator: str, modifier: str=None
+  :Arguments: locator: str, modifier: str = None
 
   .. raw:: html
 
@@ -350,7 +350,7 @@ Keywords
      </table>
 
 :Click Element When Visible:
-  :Arguments: locator: str, modifier: str=None, action_chain: bool=False
+  :Arguments: locator: str, modifier: str = None, action_chain: bool = False
 
   .. raw:: html
 
@@ -511,7 +511,7 @@ Keywords
      <p>If the cookie is not found, nothing happens.</p>
 
 :Does Element Contain:
-  :Arguments: locator: str, expected: str, ignore_case: bool=False
+  :Arguments: locator: str, expected: str, ignore_case: bool = False
 
   .. raw:: html
 
@@ -623,7 +623,7 @@ Keywords
      </table>
 
 :Does Page Contain Element:
-  :Arguments: locator: str, count: int=None
+  :Arguments: locator: str, count: int = None
 
   .. raw:: html
 
@@ -1804,7 +1804,7 @@ Keywords
      </table>
 
 :Is Alert Present:
-  :Arguments: text: str=None, action: str=ACCEPT
+  :Arguments: text: str = None, action: str = ACCEPT
 
   .. raw:: html
 
@@ -1906,7 +1906,7 @@ Keywords
      </table>
 
 :Is Element Text:
-  :Arguments: locator: str, expected: str, ignore_case: bool=False
+  :Arguments: locator: str, expected: str, ignore_case: bool = False
 
   .. raw:: html
 
@@ -2223,7 +2223,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Open Available Browser:
-  :Arguments: url: str, use_profile: bool=False, headless: bool=None, maximized: bool=False, browser_selection: typing.Any=AUTO, alias: str=None, profile_name: str=None, profile_path: str=None, preferences: dict=None, proxy: str=None
+  :Arguments: url: str, use_profile: bool = False, headless: bool = None, maximized: bool = False, browser_selection: typing.Any = AUTO, alias: str = None, profile_name: str = None, profile_path: str = None, preferences: dict = None, proxy: str = None
 
   .. raw:: html
 
@@ -2519,7 +2519,7 @@ Keywords
      <p>The <code>executable_path</code> argument is new in SeleniumLibrary 4.2.</p>
 
 :Open Chrome Browser:
-  :Arguments: url: str, use_profile: bool=False, headless: bool=False, maximized: bool=False, alias: str=None, profile_name: str=None, profile_path: str=None, preferences: dict=None, proxy: str=None
+  :Arguments: url: str, use_profile: bool = False, headless: bool = False, maximized: bool = False, alias: str = None, profile_name: str = None, profile_path: str = None, preferences: dict = None, proxy: str = None
 
   .. raw:: html
 
@@ -2887,7 +2887,7 @@ Keywords
      <p>See <span class="name">Custom locators</span> for information on how to create and use custom strategies.</p>
 
 :Screenshot:
-  :Arguments: page: bool=True, locator: str=None, filename_prefix: str=screenshot
+  :Arguments: page: bool = True, locator: str = None, filename_prefix: str = screenshot
 
   .. raw:: html
 
@@ -3559,7 +3559,7 @@ Keywords
      <p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
 
 :Wait And Click Button:
-  :Arguments: locator: str, modifier: str=None
+  :Arguments: locator: str, modifier: str = None
 
   .. raw:: html
 

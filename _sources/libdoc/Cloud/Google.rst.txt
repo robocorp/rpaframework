@@ -30,19 +30,19 @@ Keywords
 ********
 
 :Analyze Sentiment:
-  :Arguments: text_file: str, file_type: str=text, json_file: str=None, lang=None
+  :Arguments: text_file: str, file_type: str = text, json_file: str = None, lang=None
 
   Analyze sentiment in a text file
 
 
 :Annotate Image:
-  :Arguments: image_uri: str, json_file: str=None
+  :Arguments: image_uri: str, json_file: str = None
 
   Annotate image
 
 
 :Annotate Video:
-  :Arguments: video_uri: str=None, video_file: str=None, json_file: str=None, features: list=None
+  :Arguments: video_uri: str = None, video_file: str = None, json_file: str = None, features: list = None
 
   Annotate video
 
@@ -88,19 +88,19 @@ Keywords
 
 
 :Detect Document:
-  :Arguments: image_file: str, json_file: str=None
+  :Arguments: image_file: str, json_file: str = None
 
   Detect document
 
 
 :Detect Labels:
-  :Arguments: image_file: str, json_file: str=None
+  :Arguments: image_file: str, json_file: str = None
 
   Detect labels in the image
 
 
 :Detect Text:
-  :Arguments: image_file: str, json_file: str=None
+  :Arguments: image_file: str, json_file: str = None
 
   Detect text in the image
 
@@ -115,7 +115,7 @@ Keywords
 
 
 :Face Detection:
-  :Arguments: image_uri: str, json_file: str=None
+  :Arguments: image_uri: str, json_file: str = None
 
   Detect faces
 
@@ -127,43 +127,43 @@ Keywords
 
 
 :Init Natural Language Client:
-  :Arguments: service_credentials_file: str=None, use_robocloud_vault: bool=False
+  :Arguments: service_credentials_file: str = None, use_robocloud_vault: bool = False
 
   Initialize Google Cloud Natural Language client
 
 
 :Init Speech To Text Client:
-  :Arguments: service_credentials_file: str=None, use_robocloud_vault: bool=False
+  :Arguments: service_credentials_file: str = None, use_robocloud_vault: bool = False
 
   Initialize Google Cloud Speech to Text client
 
 
 :Init Storage Client:
-  :Arguments: service_credentials_file: str=None, use_robocloud_vault: bool=False
+  :Arguments: service_credentials_file: str = None, use_robocloud_vault: bool = False
 
   Initialize Google Cloud Storage client
 
 
 :Init Text To Speech Client:
-  :Arguments: service_credentials_file: str=None, use_robocloud_vault: bool=False
+  :Arguments: service_credentials_file: str = None, use_robocloud_vault: bool = False
 
   Initialize Google Cloud Text to Speech client
 
 
 :Init Translation Client:
-  :Arguments: service_credentials_file: str=None, project_identifier: str=None, use_robocloud_vault: bool=False
+  :Arguments: service_credentials_file: str = None, project_identifier: str = None, use_robocloud_vault: bool = False
 
   Initialize Google Cloud Translation client
 
 
 :Init Video Intelligence Client:
-  :Arguments: service_credentials_file: str=None, use_robocloud_vault: bool=False
+  :Arguments: service_credentials_file: str = None, use_robocloud_vault: bool = False
 
   Initialize Google Cloud Video Intelligence client
 
 
 :Init Vision Client:
-  :Arguments: service_credentials_file: str=None, use_robocloud_vault: bool=False
+  :Arguments: service_credentials_file: str = None, use_robocloud_vault: bool = False
 
   Initialize Google Cloud Vision client
 
@@ -179,13 +179,13 @@ Keywords
 
 
 :List Supported Voices:
-  :Arguments: language_code: str=None
+  :Arguments: language_code: str = None
 
   List supported voices for the speech
 
 
 :Recognize:
-  :Arguments: audio_file_uri, encoding: str=FLAC, language_code: str=en_US, audio_channel_count=2
+  :Arguments: audio_file_uri, encoding: str = FLAC, language_code: str = en_US, audio_channel_count=2
 
   Recognize text in the audio file
 
@@ -203,7 +203,7 @@ Keywords
 
 
 :Translate:
-  :Arguments: text: typing.Any, source_language: str=None, target_language: str=None
+  :Arguments: text: typing.Any, source_language: str = None, target_language: str = None
 
   Translate text
 

@@ -18,37 +18,37 @@ Keywords
 ********
 
 :Notify Email:
-  :Arguments: message: str=None, to: str=None, username: str=None, password: str=None, \*\*kwargs: dict
+  :Arguments: message: str = None, to: str = None, username: str = None, password: str = None, \*\*kwargs: dict
 
   Notify using email service
 
 
 :Notify Gmail:
-  :Arguments: message: str=None, to: str=None, username: str=None, password: str=None, \*\*kwargs: dict
+  :Arguments: message: str = None, to: str = None, username: str = None, password: str = None, \*\*kwargs: dict
 
   Notify using Gmail service
 
 
 :Notify Pushover:
-  :Arguments: message: str=None, user: str=None, token: str=None, \*\*kwargs: dict
+  :Arguments: message: str = None, user: str = None, token: str = None, \*\*kwargs: dict
 
   Notify using Pushover service
 
 
 :Notify Slack:
-  :Arguments: message: str=None, channel: str=None, webhook_url: str=None, \*\*kwargs: dict
+  :Arguments: message: str = None, channel: str = None, webhook_url: str = None, \*\*kwargs: dict
 
   Notify using Slack service
 
 
 :Notify Telegram:
-  :Arguments: message: str=None, chat_id: str=None, token: str=None, \*\*kwargs: dict
+  :Arguments: message: str = None, chat_id: str = None, token: str = None, \*\*kwargs: dict
 
   Notify using Telegram service
 
 
 :Notify Twilio:
-  :Arguments: message: str=None, number_from: str=None, number_to: str=None, account_sid: str=None, token: str=None, \*\*kwargs: dict
+  :Arguments: message: str = None, number_from: str = None, number_to: str = None, account_sid: str = None, token: str = None, \*\*kwargs: dict
 
   Notify using Twilio service
 

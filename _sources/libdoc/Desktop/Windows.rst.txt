@@ -25,7 +25,7 @@ Keywords
 
 
 :Click Type:
-  :Arguments: x: int=None, y: int=None, click_type: str=click
+  :Arguments: x: int = None, y: int = None, click_type: str = click
 
   Mouse click on coordinates x and y.
 
@@ -37,19 +37,19 @@ Keywords
   Close all applications
 
 :Connect By Handle:
-  :Arguments: handle: str, windowtitle: str=None
+  :Arguments: handle: str, windowtitle: str = None
 
   Connect to application by its handle
 
 
 :Connect By Pid:
-  :Arguments: app_pid: str, windowtitle: str=None
+  :Arguments: app_pid: str, windowtitle: str = None
 
   Connect to application by its pid
 
 
 :Drag And Drop:
-  :Arguments: src: typing.Any, target: typing.Any, src_locator: str, target_locator: str=None, handle_ctrl_key: bool=False, drop_delay: float=2.0
+  :Arguments: src: typing.Any, target: typing.Any, src_locator: str, target_locator: str = None, handle_ctrl_key: bool = False, drop_delay: float = 2.0
 
   Drag elements from source and drop them on target.
 
@@ -61,13 +61,13 @@ Keywords
   :raises ValueError: on validation errors
 
 :Find Element:
-  :Arguments: locator: str, search_criteria: str=None
+  :Arguments: locator: str, search_criteria: str = None
 
   Find element from window by locator and criteria.
 
 
 :Get App:
-  :Arguments: app_id: int=None
+  :Arguments: app_id: int = None
 
   Get application object by id
 
@@ -81,14 +81,14 @@ Keywords
 
 
 :Get Dialog Rectangle:
-  :Arguments: ctrl: typing.Any=None
+  :Arguments: ctrl: typing.Any = None
 
   Get element rectangle coordinates
 
   If `ctrl` is None then get coordinates from `dialog`
 
 :Get Element:
-  :Arguments: locator: str, screenshot: bool=False
+  :Arguments: locator: str, screenshot: bool = False
 
   Get element by locator.
 
@@ -127,7 +127,7 @@ Keywords
 
 
 :Get Window Elements:
-  :Arguments: screenshot: bool=False, element_json: bool=False, outline: bool=False
+  :Arguments: screenshot: bool = False, element_json: bool = False, outline: bool = False
 
   Get element information about all window dialog controls
   and their descendants.
@@ -150,7 +150,7 @@ Keywords
 
 
 :Is Element Matching:
-  :Arguments: itemdict: dict, locator: str, criteria: str, wildcard: bool=False
+  :Arguments: itemdict: dict, locator: str, criteria: str, wildcard: bool = False
 
   Is element matching. Check if locator is found in `any` field
   or `criteria` field in the window items.
@@ -172,7 +172,7 @@ Keywords
   Put windows into lock mode
 
 :Log In:
-  :Arguments: username: str, password: str, domain: str=.
+  :Arguments: username: str, password: str, domain: str = .
 
   Log into Windows `domain` with `username` and `password`.
 
@@ -190,7 +190,7 @@ Keywords
 
 
 :Mouse Click:
-  :Arguments: locator: str=None, x: int=0, y: int=0, off_x: int=0, off_y: int=0, image: str=None, method: str=locator, ctype: str=click
+  :Arguments: locator: str = None, x: int = 0, y: int = 0, off_x: int = 0, off_y: int = 0, image: str = None, method: str = locator, ctype: str = click
 
   Mouse click `locator`, `coordinates`, or `image`
 
@@ -205,13 +205,13 @@ Keywords
 
 
 :Mouse Click Coords:
-  :Arguments: x: int, y: int, ctype: str=click, delay_time: float=None
+  :Arguments: x: int, y: int, ctype: str = click, delay_time: float = None
 
   Click at coordinates on desktop
 
 
 :Mouse Click Image:
-  :Arguments: template: str, off_x: int=0, off_y: int=0, ctype: str=click
+  :Arguments: template: str, off_x: int = 0, off_y: int = 0, ctype: str = click
 
   Click at template image on desktop
 
@@ -223,13 +223,13 @@ Keywords
 
 
 :Open Dialog:
-  :Arguments: windowtitle: str=None, highlight: bool=False, timeout: int=10
+  :Arguments: windowtitle: str = None, highlight: bool = False, timeout: int = 10
 
   Open window by its title.
 
 
 :Open Executable:
-  :Arguments: executable: str, windowtitle: str, backend: str=uia, work_dir: str=None
+  :Arguments: executable: str, windowtitle: str, backend: str = uia, work_dir: str = None
 
   Open Windows executable. Window title name is required
   to get handle on the application.
@@ -265,7 +265,7 @@ Keywords
   Put Windows into sleep mode
 
 :Quit Application:
-  :Arguments: app_id: str=None, send_keys: bool=False
+  :Arguments: app_id: str = None, send_keys: bool = False
 
   Quit an application by application id or
   active application if `app_id` is None.
@@ -278,7 +278,7 @@ Keywords
 
 
 :Screenshot:
-  :Arguments: filename: str, element: dict=None, ctrl: typing.Any=None, desktop: bool=False
+  :Arguments: filename: str, element: dict = None, ctrl: typing.Any = None, desktop: bool = False
 
   Save screenshot into filename.
 
@@ -290,7 +290,7 @@ Keywords
 
 
 :Send Keys To Input:
-  :Arguments: keys_to_type: str, with_enter: bool=True, send_delay: float=0.5, enter_delay: float=1.5
+  :Arguments: keys_to_type: str, with_enter: bool = True, send_delay: float = 0.5, enter_delay: float = 1.5
 
   Send keys to windows and add ENTER if `with_enter` is True
 

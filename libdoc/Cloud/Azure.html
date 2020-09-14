@@ -225,7 +225,7 @@ name.</p>
 <dt class="field-odd">Detect Face</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>image_file: str=None, image_url: str=None, face_attributes: str=None, face_landmarks: bool=False, recognition_model: str=recognition_02, json_file: str=None</p>
+<dd class="field-odd"><p>image_file: str = None, image_url: str = None, face_attributes: str = None, face_landmarks: bool = False, recognition_model: str = recognition_02, json_file: str = None</p>
 </dd>
 </dl>
 <p>Detect facial attributes in the image</p>
@@ -251,7 +251,7 @@ name.</p>
 <dt class="field-even">Detect Language</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>text: str, json_file: str=None</p>
+<dd class="field-odd"><p>text: str, json_file: str = None</p>
 </dd>
 </dl>
 <p>Detect languages in the given text</p>
@@ -259,7 +259,7 @@ name.</p>
 <dt class="field-even">Find Entities</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>text: str, language: str=None, json_file=None</p>
+<dd class="field-odd"><p>text: str, language: str = None, json_file=None</p>
 </dd>
 </dl>
 <p>Detect entities in the given text</p>
@@ -267,7 +267,7 @@ name.</p>
 <dt class="field-even">Init Computer Vision Service</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>region: str=None, use_robocloud_vault: bool=False</p>
+<dd class="field-odd"><p>region: str = None, use_robocloud_vault: bool = False</p>
 </dd>
 </dl>
 <p>Initialize Azure Computer Vision</p>
@@ -275,7 +275,7 @@ name.</p>
 <dt class="field-even">Init Face Service</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>region: str=None, use_robocloud_vault: bool=False</p>
+<dd class="field-odd"><p>region: str = None, use_robocloud_vault: bool = False</p>
 </dd>
 </dl>
 <p>Initialize Azure Face</p>
@@ -283,7 +283,7 @@ name.</p>
 <dt class="field-even">Init Speech Service</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>region: str=None, use_robocloud_vault: bool=False</p>
+<dd class="field-odd"><p>region: str = None, use_robocloud_vault: bool = False</p>
 </dd>
 </dl>
 <p>Initialize Azure Speech</p>
@@ -291,7 +291,7 @@ name.</p>
 <dt class="field-even">Init Text Analytics Service</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>region: str=None, use_robocloud_vault: bool=False</p>
+<dd class="field-odd"><p>region: str = None, use_robocloud_vault: bool = False</p>
 </dd>
 </dl>
 <p>Initialize Azure Text Analyticts</p>
@@ -299,7 +299,7 @@ name.</p>
 <dt class="field-even">Key Phrases</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>text: str, language: str=None, json_file: str=None</p>
+<dd class="field-odd"><p>text: str, language: str = None, json_file: str = None</p>
 </dd>
 </dl>
 <p>Detect key phrases in the given text</p>
@@ -307,7 +307,7 @@ name.</p>
 <dt class="field-even">List Supported Voices</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>locale: str=None, neural_only: bool=False, json_file: str=None</p>
+<dd class="field-odd"><p>locale: str = None, neural_only: bool = False, json_file: str = None</p>
 </dd>
 </dl>
 <p>List supported voices for Azure API Speech Services.</p>
@@ -316,7 +316,7 @@ name.</p>
 <dt class="field-even">Sentiment Analyze</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>text: str, language: str=None, json_file: str=None</p>
+<dd class="field-odd"><p>text: str, language: str = None, json_file: str = None</p>
 </dd>
 </dl>
 <p>Analyze sentiments in the given text</p>
@@ -332,7 +332,7 @@ name.</p>
 <dt class="field-even">Text To Speech</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>text: str, language: str=en-US, name: str=en-US-AriaRUS, gender: str=FEMALE, encoding: str=MP3, neural_voice_style: typing.Any=None, target_file: str=synthesized.mp3</p>
+<dd class="field-odd"><p>text: str, language: str = en-US, name: str = en-US-AriaRUS, gender: str = FEMALE, encoding: str = MP3, neural_voice_style: typing.Any = None, target_file: str = synthesized.mp3</p>
 </dd>
 </dl>
 <p>Synthesize speech synchronously</p>
@@ -342,7 +342,7 @@ East US, South East Asia, and West Europe regions.</p>
 <dt class="field-even">Vision Analyze</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>image_file: str=None, image_url: str=None, visual_features: str=None, json_file: str=None</p>
+<dd class="field-odd"><p>image_file: str = None, image_url: str = None, visual_features: str = None, json_file: str = None</p>
 </dd>
 </dl>
 <p>Identify features in the image</p>
@@ -364,7 +364,7 @@ East US, South East Asia, and West Europe regions.</p>
 <dt class="field-even">Vision Describe</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>image_file: str=None, image_url: str=None, json_file: str=None</p>
+<dd class="field-odd"><p>image_file: str = None, image_url: str = None, json_file: str = None</p>
 </dd>
 </dl>
 <p>Describe image with tags and captions</p>
@@ -372,7 +372,7 @@ East US, South East Asia, and West Europe regions.</p>
 <dt class="field-even">Vision Detect Objects</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>image_file: str=None, image_url: str=None, json_file: str=None</p>
+<dd class="field-odd"><p>image_file: str = None, image_url: str = None, json_file: str = None</p>
 </dd>
 </dl>
 <p>Detect objects in the image</p>
@@ -380,7 +380,7 @@ East US, South East Asia, and West Europe regions.</p>
 <dt class="field-even">Vision Ocr</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>image_file: str=None, image_url: str=None, json_file: str=None</p>
+<dd class="field-odd"><p>image_file: str = None, image_url: str = None, json_file: str = None</p>
 </dd>
 </dl>
 <p>Optical Character Recognition (OCR) detects text in an image</p>

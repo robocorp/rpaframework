@@ -15,7 +15,7 @@ Keywords
 ********
 
 :Slack Message Using Webhook:
-  :Arguments: webhook_url: str, channel: str, sender: str, text: str, icon_emoji: str=None
+  :Arguments: webhook_url: str, channel: str, sender: str, text: str, icon_emoji: str = None
 
   Send message to Slack channel using webhook.
 
