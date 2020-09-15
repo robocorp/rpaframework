@@ -569,6 +569,7 @@ class Windows(OperatingSystem):
                 app["app"].Quit()
             else:
                 if "process" in app and app["process"] > 0:
+                    # pylint: disable=E1101
                     self.kill_process_by_pid(app["process"])
                 else:
                     app["app"].kill()
@@ -1558,7 +1559,7 @@ class Windows(OperatingSystem):
         if isinstance(target, int):
             target = self.get_app(target)
 
-        single_application = True if src["app"] == target["app"] else False
+        single_application = src["app"] == target["app"]
         selections, source_x, source_y = self._select_elements_for_drag(
             src, src_locator
         )
