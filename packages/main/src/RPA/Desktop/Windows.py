@@ -16,6 +16,7 @@ from RPA.Desktop.OperatingSystem import OperatingSystem
 from RPA.Images import Images
 from RPA.core.helpers import delay, clean_filename
 
+
 if platform.system() == "Windows":
     import ctypes
     import win32api
@@ -23,6 +24,7 @@ if platform.system() == "Windows":
     import win32con
     import win32security
     import pywinauto
+    import win32gui
 
 
 def write_element_info_as_json(
@@ -35,8 +37,18 @@ def write_element_info_as_json(
     :param path: output directory, defaults to "output/json"
     """
     elements = elements if isinstance(elements, list) else [elements]
-    with open(Path(f"{path}/{filename}.json"), "w") as outfile:
+    filename = Path(f"{path}/{filename}.json")
+    os.makedirs(filename.parent, exist_ok=True)
+    with open(filename, "w") as outfile:
         json.dump(elements, outfile, indent=4, sort_keys=True)
+
+
+class ElementNotFoundError(Exception):
+    """Raised when expected element is not found"""
+
+
+class MenuItemNotFoundError(Exception):
+    """Raised when expected menu item is not found"""
 
 
 class Windows(OperatingSystem):
@@ -64,7 +76,6 @@ class Windows(OperatingSystem):
         except RuntimeError as err:
             self.logger.debug("Failed to clear clipboard: %s", err)
 
-    # TODO. add possibility to define alias for application
     def _add_app_instance(
         self,
         app: Any = None,
@@ -73,23 +84,31 @@ class Windows(OperatingSystem):
     ) -> int:
         params = params or {}
         self._app_instance_id += 1
-
+        process_id = None
+        handle = None
         if app:
             self.app = app
+            if hasattr(app, "process"):
+                process_id = app.process
+            handle = win32gui.GetForegroundWindow()
 
         default_params = {
             "app": app,
             "id": self._app_instance_id,
+            "dialog": dialog,
+            "process_id": process_id,
+            "handle": handle,
             "dispatched": False,
         }
 
         self._apps[self._app_instance_id] = {**default_params, **params}
+
+        self.logger.debug(
+            "Added app instance %s: %s",
+            self._app_instance_id,
+            self._apps[self._app_instance_id],
+        )
         self._active_app_instance = self._app_instance_id
-
-        if dialog:
-            self.open_dialog(self._apps[self._app_instance_id].get("windowtitle", None))
-
-        self.logger.debug(self._apps)
         return self._active_app_instance
 
     def switch_to_application(self, app_id: int) -> None:
@@ -97,16 +116,43 @@ class Windows(OperatingSystem):
 
         :param app_id: application's id
         :raises ValueError: if application is not found by given id
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${app1}    Open Application   Excel
+            ${app2}    Open Application   Word
+            Switch To Application   ${app1}
+
         """
         if app_id and app_id in self._apps.keys():
             app = self.get_app(app_id)
             self._active_app_instance = app_id
             self.app = app["app"]
-            self.open_dialog(app["windowtitle"])
-            delay(0.5)
-            self.restore_dialog(app["windowtitle"])
+            if "windowtitle" in app:
+                self.open_dialog(app["windowtitle"], existing_app=True)
+                delay(0.5)
+                self.restore_dialog(app["windowtitle"])
         else:
             raise ValueError(f"No open application with id '{app_id}'")
+
+    def get_open_applications(self):
+        """Get list of all open applications
+
+        Returns a dictionary
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${app1}    Open Application   Excel
+            ${app2}    Open Executable    calc.exe  Calculator
+            ${app3}    Open File          /path/to/myfile.txt
+            &{apps}    Get Open Applications
+
+        """
+        return self._apps
 
     def get_app(self, app_id: int = None) -> Any:
         """Get application object by id
@@ -115,6 +161,14 @@ class Windows(OperatingSystem):
 
         :param app_id: id of the application to get, defaults to None
         :return: application object
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${app1}        Open Application   Excel
+            &{appdetails}  Get App   ${app1}
+
         """
         if app_id is None and self._active_app_instance != -1:
             return self._apps[self._active_app_instance]
@@ -124,8 +178,19 @@ class Windows(OperatingSystem):
     def open_application(self, application: str) -> int:
         """Open application by dispatch method
 
+        This keyword is used to launch Microsoft applications like
+        Excel, Word, Outlook and Powerpoint.
+
         :param application: name of the application as `str`
         :return: application instance id
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${app1}    Open Application   Excel
+            ${app2}    Open Application   Word
+
         """
         self.logger.info("Open application: %s", application)
         app = win32com.client.gencache.EnsureDispatch(f"{application}.Application")
@@ -133,7 +198,11 @@ class Windows(OperatingSystem):
         # show eg. file overwrite warning or not
         if hasattr(self.app, "DisplayAlerts"):
             app.DisplayAlerts = False
-        return self._add_app_instance(app, dialog=False, params={"dispatched": True})
+        params = {
+            "dispatched": True,
+            "startkeyword": "Open Application",
+        }
+        return self._add_app_instance(app, dialog=False, params=params)
 
     # TODO. How to manage app launched by open_file
     def open_file(self, filename: str) -> bool:
@@ -141,6 +210,13 @@ class Windows(OperatingSystem):
 
         :param filename: path to file
         :return: True if application is opened, False if not
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${app1}    Open File   /path/to/myfile.txt
+
         """
         self.logger.info("Open file: %s", filename)
         if platform.system() == "Windows":
@@ -170,13 +246,25 @@ class Windows(OperatingSystem):
         :param windowtitle: name of the window
         :param work_dir: path to working directory, default None
         :return: application instance id
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${app1}    Open Executable   calc.exe  Calculator
+
         """
         self.logger.info("Opening executable: %s - window: %s", executable, windowtitle)
-        params = {"executable": executable, "windowtitle": windowtitle}
+        params = {
+            "executable": executable,
+            "windowtitle": windowtitle,
+            "startkeyword": "Open Executable",
+        }
         self.windowtitle = windowtitle
         app = pywinauto.Application(backend=backend).start(
             cmd_line=executable, work_dir=work_dir
         )
+
         return self._add_app_instance(app, dialog=False, params=params)
 
     def open_using_run_dialog(self, executable: str, windowtitle: str) -> int:
@@ -186,14 +274,24 @@ class Windows(OperatingSystem):
         :param executable: name of the executable
         :param windowtitle: name of the window
         :return: application instance id
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${app1}    Open Using Run Dialog  notepad  Untitled - Notepad
+
         """
         self.send_keys("{VK_LWIN down}r{VK_LWIN up}")
         delay(1)
 
-        self.send_keys_to_input(executable)
+        self.send_keys_to_input(executable, send_delay=0.2, enter_delay=0.5)
 
-        params = {"windowtitle": windowtitle, "executable": executable}
-        return self._add_app_instance(params=params, dialog=True)
+        app_instance = self.open_dialog(windowtitle)
+        self._apps[app_instance]["windowtitle"] = windowtitle
+        self._apps[app_instance]["executable"] = executable
+        self._apps[app_instance]["startkeyword"] = "Open Using Run Dialog"
+        return app_instance
 
     def open_from_search(self, executable: str, windowtitle: str) -> int:
         """Open application using Windows search dialog.
@@ -202,6 +300,13 @@ class Windows(OperatingSystem):
         :param executable: name of the executable
         :param windowtitle: name of the window
         :return: application instance id
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${app1}    Open From Search  calculator  Calculator
+
         """
         self.logger.info("Run from start menu: %s", executable)
         self.send_keys("{LWIN}")
@@ -209,8 +314,27 @@ class Windows(OperatingSystem):
 
         self.send_keys_to_input(executable)
 
-        params = {"windowtitle": windowtitle, "executable": executable}
-        return self._add_app_instance(params=params, dialog=True)
+        app_instance = self.open_dialog(windowtitle)
+        self._apps[app_instance]["windowtitle"] = windowtitle
+        self._apps[app_instance]["executable"] = executable
+        self._apps[app_instance]["startkeyword"] = "Open From Search"
+        return app_instance
+
+    def get_spaced_string(self, text):
+        """Replace spaces in a text with `pywinauto.keyboard`
+        space characters `{VK_SPACE}`
+
+        :param text: replace spaces in this string
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${txt}    Get Spaced String   My name is Bond
+            # ${txt} = My{VK_SPACE}name{VK_SPACE}is{VK_SPACE}Bond
+
+        """
+        return text.replace(" ", "{VK_SPACE}")
 
     def send_keys_to_input(
         self,
@@ -221,13 +345,23 @@ class Windows(OperatingSystem):
     ) -> None:
         """Send keys to windows and add ENTER if `with_enter` is True
 
-        At the end of send_keys there is by default 1.0 second delay.
-        At the end of ENTER there is by default 3.5 second delay.
+        At the end of send_keys there is by default 0.5 second delay.
+        At the end of ENTER there is by default 1.5 second delay.
 
         :param keys_to_type: keys to type into Windows
         :param with_enter: send ENTER if `with_enter` is True
         :param send_delay: delay after send_keys
         :param enter_delay: delay after ENTER
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${txt}    Get Spaced String   My name is Bond, James Bond
+            Send Keys To Input  ${txt}    with_enter=False
+            Send Keys To Input  {ENTER}THE   send_delay=5.0  with_enter=False
+            Send Keys To Input  {VK_SPACE}-{VK_SPACE}END   enter_delay=5.0
+
         """
         # Set keyboard layout for Windows platform
         if platform.system() == "Windows":
@@ -239,32 +373,83 @@ class Windows(OperatingSystem):
             self.send_keys("{ENTER}")
             delay(enter_delay)
 
-    def minimize_dialog(self, windowtitle: str) -> None:
+    def minimize_dialog(self, windowtitle: str = None) -> None:
         """Minimize window by its title
 
-        :param windowtitle: name of the window
+        :param windowtitle: name of the window, default `None` means that
+         active window is going to be minimized
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Open Using Run Dialog  calc     Calculator
+            Open Using Run Dialog  notepad  Untitled - Notepad
+            Minimize Dialog    # Current window (Notepad)
+            Minimize Dialog    Calculator
+
         """
+        windowtitle = (
+            windowtitle or self._apps[self._active_app_instance]["windowtitle"]
+        )
         self.logger.info("Minimize dialog: %s", windowtitle)
         self.dlg = pywinauto.Desktop(backend="uia")[windowtitle]
         self.dlg.minimize()
 
-    def restore_dialog(self, windowtitle: str) -> None:
+    def restore_dialog(self, windowtitle: str = None) -> None:
         """Restore window by its title
 
-        :param windowtitle: name of the window
+        :param windowtitle: name of the window, default `None` means that
+         active window is going to be restored
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Open Using Run Dialog  notepad  Untitled - Notepad
+            Minimize Dialog
+            Sleep             1s
+            Restore Dialog
+            Sleep             1s
+            Restore Dialog    Untitled - Notepad
+
         """
+        windowtitle = (
+            windowtitle or self._apps[self._active_app_instance]["windowtitle"]
+        )
         self.logger.info("Restore dialog: %s", windowtitle)
-        self.dlg = pywinauto.Desktop(backend="uia")[windowtitle]
-        self.dlg.restore()
+        app = pywinauto.Application().connect(title_re=".*%s" % windowtitle)
+        try:
+            app.window().restore()
+        except pywinauto.findwindows.ElementAmbiguousError as e:
+            self.logger.info("Could not restore dialog, %s", str(e))
+        finally:
+            if "handle" in self._apps[self._active_app_instance]:
+                app = pywinauto.Application().connect(
+                    handle=self._apps[self._active_app_instance]["handle"]
+                )
+                app.window().restore()
 
     def open_dialog(
-        self, windowtitle: str = None, highlight: bool = False, timeout: int = 10
+        self,
+        windowtitle: str = None,
+        highlight: bool = False,
+        timeout: int = 10,
+        existing_app: bool = False,
     ) -> Any:
         """Open window by its title.
 
         :param windowtitle: name of the window, defaults to active window if None
         :param highlight: draw outline for window if True, defaults to False
         :param timeout: time to wait for dialog to appear
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Open Dialog       Untitled - Notepad
+            Open Dialog       Untitled - Notepad   highlight=True   timeout=5
+
         """
         self.logger.info("Open dialog: '%s', '%s'", windowtitle, highlight)
 
@@ -276,7 +461,9 @@ class Windows(OperatingSystem):
         while time.time() < end_time and app_instance is None:
             for window in self.get_window_list():
                 if window["title"] == self.windowtitle:
-                    app_instance = self.connect_by_handle(window["handle"])
+                    app_instance = self.connect_by_handle(
+                        window["handle"], existing_app=existing_app
+                    )
             time.sleep(0.1)
 
         if self.dlg is None:
@@ -291,6 +478,13 @@ class Windows(OperatingSystem):
         """Connect to application by its pid
 
         :param app_pid: process id of the application
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${appid}  Connect By PID  3231
+
         """
         self.logger.info("Connect to application pid: %s", app_pid)
         window_list = self.get_window_list()
@@ -303,42 +497,70 @@ class Windows(OperatingSystem):
                     return self.connect_by_handle(win["handle"], windowtitle)
         return None
 
-    def connect_by_handle(self, handle: str, windowtitle: str = None) -> Any:
+    def connect_by_handle(
+        self, handle: str, windowtitle: str = None, existing_app: bool = False
+    ) -> Any:
         """Connect to application by its handle
 
         :param handle: handle of the application
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${appid}  Connect By Handle  88112
+
         """
         self.logger.info("Connect to application handle: %s", handle)
+        app_instance = None
         app = pywinauto.Application(backend="uia").connect(
             handle=handle, visible_only=False
         )
         self.dlg = app.window(handle=handle)
         self.dlg.restore()
         params = None
-        if windowtitle is not None:
-            params = {}
-            params["windowtitle"] = windowtitle
-        app_instance = self._add_app_instance(app=app, params=params, dialog=False)
+        if not existing_app:
+            if windowtitle is not None:
+                params = {"windowtitle": windowtitle}
+            app_instance = self._add_app_instance(app=app, params=params, dialog=False)
         return app_instance
 
     def close_all_applications(self) -> None:
-        """Close all applications"""
+        """Close all applications
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Open Application   Excel
+            Open Application   Word
+            Open Executable    notepad.exe   Untitled - Notepad
+            Close All Applications
+
+        """
         self.logger.info("Closing all applications")
-        application_ids = self._apps.keys()
         self.logger.debug("Applications in memory: %d", len(self._apps))
-        for aid in application_ids:
-            self.logger.debug("Closing application ID: %s", aid)
+        for aid in list(self._apps):
             self.quit_application(aid)
+            del self._apps[aid]
 
     def quit_application(self, app_id: str = None, send_keys: bool = False) -> None:
         """Quit an application by application id or
         active application if `app_id` is None.
 
         :param app_id: application_id, defaults to None
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${app1}   Open Application   Excel
+            ${app2}   Open Application   Word
+            Quit Application  ${app1}
+
         """
         app = self.get_app(app_id)
-        app_id_to_quit = app["id"]
-        self.logger.info("Quit application: %s", app_id_to_quit)
+        self.logger.info("Quit application: %s (%s)", app_id, app)
         if send_keys:
             self.switch_to_application(app_id)
             self.send_keys("%{F4}")
@@ -346,29 +568,50 @@ class Windows(OperatingSystem):
             if app["dispatched"]:
                 app["app"].Quit()
             else:
-                app["app"].kill()
-        self._apps[app_id_to_quit]["app"] = None
+                if "process" in app and app["process"] > 0:
+                    self.kill_process_by_pid(app["process"])
+                else:
+                    app["app"].kill()
         self._active_app_instance = -1
 
     def type_keys(self, keys: str) -> None:
         """Type keys into active window element.
 
         :param keys: list of keys to type
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Open Executable  notepad.exe  Untitled - Notepad
+            Type Keys   My text
+
         """
         self.logger.info("Type keys: %s", keys)
         if self.dlg is None:
             raise ValueError("No dialog open")
         self.dlg.type_keys(keys)
 
-    def type_into(self, locator: str, keys: str) -> None:
+    def type_into(self, locator: str, keys: str, empty_field: bool = False) -> None:
         """Type keys into element matched by given locator.
 
         :param locator: element locator
         :param keys:    list of keys to type
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Open Executable  calc.exe  Calculator
+            Type Into        CalculatorResults  11
+            Type Into        CalculatorResults  22  empty_field=True
+
         """
         elements, _ = self.find_element(locator)
         if elements and len(elements) == 1:
             ctrl = elements[0]["control"]
+            if empty_field:
+                ctrl.type_keys("{VK_LBUTTON down}{VK_CLEAR}{VK_LBUTTON up}")
             ctrl.type_keys(keys)
         else:
             raise ValueError(f"Could not find unique element for '{locator}'")
@@ -377,9 +620,51 @@ class Windows(OperatingSystem):
         """Send keys into active windows.
 
         :param keys: list of keys to send
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Open Executable  calc.exe  Calculator
+            Send Keys        2{+}3=
+
         """
         self.logger.info("Send keys: %s", keys)
         pywinauto.keyboard.send_keys(keys)
+
+    def get_text(self, locator: str) -> dict:
+        """Get text from element
+
+        :param locator: element locator
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Open Using Run Dialog  calc     Calculator
+            Type Into    CalculatorResults   11
+            Type Into    CalculatorResults   55
+            &{val}       Get Text   CalculatorResults
+
+        """
+        elements, _ = self.find_element(locator)
+        element_text = {}
+        if elements and len(elements) == 1:
+            ctrl = elements[0]["control"]
+            element_text["value"] = (
+                str(ctrl.get_value()) if hasattr(ctrl, "get_value") else None
+            )
+            element_text["children_texts"] = (
+                "".join(ctrl.children_texts())
+                if hasattr(ctrl, "children_texts")
+                else None
+            )
+            legacy = (
+                ctrl.legacy_properties() if hasattr(ctrl, "legacy_properties") else None
+            )
+            element_text["legacy_value"] = str(legacy["Value"]) if legacy else None
+            element_text["legacy_name"] = str(legacy["Name"]) if legacy else None
+        return element_text
 
     def mouse_click(
         self,
@@ -391,7 +676,9 @@ class Windows(OperatingSystem):
         image: str = None,
         method: str = "locator",
         ctype: str = "click",
+        **kwargs,
     ) -> None:
+        # pylint: disable=C0301
         """Mouse click `locator`, `coordinates`, or `image`
 
         When using method `locator`,`image` or `ocr` mouse is clicked by default at
@@ -411,7 +698,21 @@ class Windows(OperatingSystem):
         :param image: image to click on desktop
         :param method: one of the available methods to mouse click, default "locator"
         :param ctype: type of mouse click
-        """
+        :param **kwargs: these keyword arguments can be used to pass arguments
+         to underlying `Images` library to finetune image template matching,
+         for example. `tolerance=0.5` would adjust image tolerance for the image
+         matching
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Mouse Click  method=coordinates  100   100
+            Mouse Click  CalculatorResults
+            Mouse Click  method=image  image=myimage.png  off_x=10  off_y=10  ctype=right
+            Mouse Click  method=image  image=myimage.png  tolerance=0.8
+
+        """  # noqa: E501
         self.logger.info("Mouse click: %s", locator)
 
         if method == "locator":
@@ -424,19 +725,36 @@ class Windows(OperatingSystem):
         elif method == "coordinates":
             self.mouse_click_coords(x, y, ctype)
         elif method == "image":
-            self.mouse_click_image(image, off_x, off_y, ctype)
+            self.mouse_click_image(image, off_x, off_y, ctype, **kwargs)
 
     def mouse_click_image(
-        self, template: str, off_x: int = 0, off_y: int = 0, ctype: str = "click"
+        self,
+        template: str,
+        off_x: int = 0,
+        off_y: int = 0,
+        ctype: str = "click",
+        **kwargs,
     ) -> None:
         """Click at template image on desktop
 
-        :param image: [description]
-        :param off_x: [description], defaults to 0
-        :param off_y: [description], defaults to 0
-        :param ctype: [description], defaults to "click"
+        :param image: image to click on desktop
+        :param off_x: horizontal offset from top left corner to click on
+        :param off_y: vertical offset from top left corner to click on
+        :param ctype: type of mouse click
+        :param **kwargs: these keyword arguments can be used to pass arguments
+         to underlying `Images` library to finetune image template matching,
+         for example. `tolerance=0.5` would adjust image tolerance for the image
+         matching
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Mouse Click  image=myimage.png  off_x=10  off_y=10  ctype=right
+            Mouse Click  image=myimage.png  tolerance=0.8
+
         """
-        matches = Images().find_template_on_screen(template, limit=1)
+        matches = Images().find_template_on_screen(template, limit=1, **kwargs)
 
         center_x = matches[0].center.x + int(off_x)
         center_y = matches[0].center.y + int(off_y)
@@ -452,6 +770,15 @@ class Windows(OperatingSystem):
         :param y: vertical coordinate on the windows to click
         :param ctype: click type "click", "right" or "double", defaults to "click"
         :param delay: delay in seconds after, default is no delay
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Mouse Click Coords  x=450  y=100
+            Mouse Click Coords  x=300  y=300  ctype=right
+            Mouse Click Coords  x=450  y=100  delay=5.0
+
         """
         self.click_type(x, y, ctype)
         if delay_time:
@@ -463,6 +790,14 @@ class Windows(OperatingSystem):
         :param locator: name of the locator
         :param screenshot: takes element screenshot if True, defaults to False
         :return: element if element was identified, else False
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${element}  Get Element  CalculatorResults
+            ${element}  Get Element  Result      screenshot=True
+
         """
         self.logger.info("Get element: %s", locator)
         # self.connect_by_handle(self.dlg.handle)
@@ -511,6 +846,13 @@ class Windows(OperatingSystem):
 
         :param locator: element locator
         :return: `rich_text` value if found, else False
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${text}  Get Element Rich Text  CalculatorResults
+
         """
         element = self.get_element(locator)
         if element is not False and "rich_text" in element:
@@ -524,14 +866,28 @@ class Windows(OperatingSystem):
             )
             return False
 
-    def get_element_rectangle(self, locator: str) -> Any:
+    def get_element_rectangle(self, locator: str, as_dict: bool = False) -> Any:
+        # pylint: disable=C0301
         """Get value of element `rectangle` attribute.
 
         :param locator: element locator
+        :param as_dict: return values in a dictionary, default `False`
         :return: (left, top, right, bottom) values if found, else False
-        """
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${left}  ${top}  ${right}  ${bottom}=  Get Element Rectangle  CalculatorResults
+            &{coords}  Get Element Rectangle  CalculatorResults  as_dict=True
+            Log  top=${coords.top} left=${coords.left}
+
+        """  # noqa: E501
         rectangle = self._get_element_attribute(locator, "rectangle")
-        return self._get_element_coordinates(rectangle)
+        left, top, right, bottom = self._get_element_coordinates(rectangle)
+        if as_dict:
+            return {"left": left, "top": top, "right": right, "bottom": bottom}
+        return left, top, right, bottom
 
     def _get_element_attribute(self, locator: str, attribute: str) -> Any:
         element = self.get_element(locator)
@@ -551,6 +907,13 @@ class Windows(OperatingSystem):
 
         :param locator: element locator
         :return: True if visible, else False
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${res}=   Is Element Visible  CalculatorResults
+
         """
         visible = self._get_element_attribute(locator, "visible")
         return bool(visible)
@@ -560,6 +923,13 @@ class Windows(OperatingSystem):
 
         :param locator: element locator
         :return: True if enabled, else False
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${res}=   Is Element Enabled  CalculatorResults
+
         """
         enabled = self._get_element_attribute(locator, "enabled")
         return bool(enabled)
@@ -568,19 +938,87 @@ class Windows(OperatingSystem):
         """Select item from menu
 
         :param menuitem: name of the menu item
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Open Using Run Dialog   notepad     Untitled - Notepad
+            Menu Select             File->Print
+
         """
         self.logger.info("Menu select: %s", menuitem)
-        app = self.get_app()
-        app["dlg"].menu_select(menuitem)
-        # self.logger.warning(f"Window '{app['windowtitle']}'
-        # does not have menu_select")
+        if self.dlg is None:
+            raise ValueError("No dialog open")
+        try:
+            self.dlg.menu_select(menuitem)
+        except AttributeError as e:
+            raise MenuItemNotFoundError(
+                "Unable to access menu item '%s'" % menuitem
+            ) from e
+
+    def wait_for_element(
+        self,
+        locator: str,
+        search_criteria: str = None,
+        timeout: float = 30.0,
+        interval: float = 2.0,
+    ) -> Any:
+        """Wait for element to appear into the window.
+
+        Can return 1 or more elements matching locator, or raises
+        `ElementNotFoundError` if element is not found within timeout.
+
+        :param locator: name of the locator
+        :param search_criteria: criteria by which element is matched
+        :param timeout: defines how long to wait for element to appear,
+         defaults to 30.0 seconds
+        :param interval: how often to poll for element,
+         defaults to 2.0 seconds (minimum is 0.5 seconds)
+
+        Example:
+
+        .. code-block:: robotframework
+
+            @{elements}  Wait For Element  CalculatorResults
+            @{elements}  Wait For Element  Results   timeout=10  interval=1.5
+
+        """
+        end_time = time.time() + float(timeout)
+        interval = max([0.5, interval])
+        elements = None
+        while time.time() < end_time:
+            elements, _ = self.find_element(locator, search_criteria)
+            if len(elements) > 1:
+                break
+            if interval >= timeout:
+                self.logger.info(
+                    "Wait For Element: interval has been set longer than timeout - "
+                    "executing one cycle."
+                )
+                break
+            if time.time() >= end_time:
+                break
+            time.sleep(interval)
+        if elements:
+            return elements
+        raise ElementNotFoundError
 
     def find_element(self, locator: str, search_criteria: str = None) -> Any:
         """Find element from window by locator and criteria.
 
-        :param locator: name of locator
+        :param locator: name of the locator
         :param search_criteria: criteria by which element is matched
         :return: list of matching elements and locators that were found on the window
+
+        Example:
+
+        .. code-block:: robotframework
+
+            @{elements}   Find Element   CalculatorResults
+            Log Many  ${elements[0]}     # list of matching elements
+            Log Many  ${elements[1]}     # list of all available locators
+
         """
         search_locator = locator
         if search_criteria is None:
@@ -643,18 +1081,9 @@ class Windows(OperatingSystem):
         return search_criteria, locator
 
     # TODO. supporting multiple search criterias at same time to identify ONE element
-    def is_element_matching(
+    def _is_element_matching(
         self, itemdict: dict, locator: str, criteria: str, wildcard: bool = False
     ) -> bool:
-        """Is element matching. Check if locator is found in `any` field
-        or `criteria` field in the window items.
-
-        :param itemDict: dictionary of element items
-        :param locator: name of the locator
-        :param criteria: criteria on which to match element
-        :param wildcard: whether to do reg exp match or not, default False
-        :return: True if element is matching locator and criteria, False if not
-        """
         if criteria == "regexp":
             name_search = re.search(locator, itemdict["name"])
             class_search = re.search(locator, itemdict["class_name"])
@@ -677,12 +1106,36 @@ class Windows(OperatingSystem):
             return self.is_element_matching(itemdict, locator, "name", True)
         return False
 
-    def get_dialog_rectangle(self, ctrl: Any = None) -> Any:
-        """Get element rectangle coordinates
+    # TODO. supporting multiple search criterias at same time to identify ONE element
+    def is_element_matching(
+        self, itemdict: dict, locator: str, criteria: str, wildcard: bool = False
+    ) -> bool:
+        """Is element matching. Check if locator is found in `any` field
+        or `criteria` field in the window items.
+
+        :param itemDict: dictionary of element items
+        :param locator: name of the locator
+        :param criteria: criteria on which to match element
+        :param wildcard: whether to do reg exp match or not, default False
+        :return: True if element is matching locator and criteria, False if not
+        """
+        return self._is_element_matching(itemdict, locator, criteria, wildcard)
+
+    def get_dialog_rectangle(self, ctrl: Any = None, as_dict: bool = False) -> Any:
+        """Get dialog rectangle coordinates
 
         If `ctrl` is None then get coordinates from `dialog`
         :param ctrl: name of the window control object, defaults to None
         :return: coordinates: left, top, right, bottom
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${left}  ${top}  ${right}  ${bottom}=  Get Dialog Rectangle
+            &{coords}  Get Dialog Rectangle  as_dict=True
+            Log  top=${coords.top} left=${coords.left}
+
         """
         if ctrl:
             rect = ctrl.element_info.rectangle
@@ -691,13 +1144,29 @@ class Windows(OperatingSystem):
         else:
             raise ValueError("No dialog open")
 
-        return rect.left, rect.top, rect.right, rect.bottom
+        if as_dict:
+            return {
+                "left": rect.left,
+                "top": rect.top,
+                "right": rect.right,
+                "bottom": rect.bottom,
+            }
+        else:
+            return rect.left, rect.top, rect.right, rect.bottom
 
     def get_element_center(self, element: dict) -> Any:
         """Get element center coordinates
 
         :param element: dictionary of element items
         :return: coordinates, x and y
+
+        Example:
+
+        .. code-block:: robotframework
+
+            @{element}   Find Element  CalculatorResults
+            ${x}  ${y}=  Get Element Center  ${elements[0][0]}
+
         """
         return self.calculate_rectangle_center(element["rectangle"])
 
@@ -712,6 +1181,15 @@ class Windows(OperatingSystem):
         :param y: vertical coordinate for click, defaults to None
         :param click_type: "click", "right" or "double", defaults to "click"
         :raises ValueError: if coordinates are not valid
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Click Type  x=450  y=100
+            Click Type  x=450  y=100  click_type=right
+            Click Type  x=450  y=100  click_type=double
+
         """
         self.logger.info("Click type '%s' at (%s, %s)", click_type, x, y)
         if (x is None and y is None) or (x < 0 or y < 0):
@@ -729,6 +1207,7 @@ class Windows(OperatingSystem):
         element_json: bool = False,
         outline: bool = False,
     ) -> Any:
+        # pylint: disable=C0301
         """Get element information about all window dialog controls
         and their descendants.
 
@@ -736,7 +1215,17 @@ class Windows(OperatingSystem):
         :param element_json: save element json if True, defaults to False
         :param outline: highlight elements if True, defaults to False
         :return: all controls and all elements
-        """
+
+        Example:
+
+        .. code-block:: robotframework
+
+            @{elements}   Get Window Elements
+            Log Many      ${elements[0]}     # list of all available locators
+            Log Many      ${elements[1]}     # list of matching elements
+            @{elements}   Get Window Elements  screenshot=True  element_json=True  outline=True
+
+        """  # noqa: E501
         if self.dlg is None:
             raise ValueError("No dialog open")
 
@@ -754,7 +1243,7 @@ class Windows(OperatingSystem):
             )
 
             if screenshot and len(ctrl.element_info.name) > 0:
-                self.screenshot(filename, ctrl=ctrl)
+                self.screenshot(filename, ctrl=ctrl, overwrite=True)
             if outline:
                 ctrl.draw_outline(colour="red", thickness=4)
                 delay(0.2)
@@ -794,6 +1283,11 @@ class Windows(OperatingSystem):
             top = rectangle.top
             right = rectangle.right
             bottom = rectangle.bottom
+        elif isinstance(rectangle, dict):
+            left = rectangle.left
+            top = rectangle.top
+            right = rectangle.right
+            bottom = rectangle.bottom
         else:
             left, top, right, bottom = map(
                 int,
@@ -809,13 +1303,25 @@ class Windows(OperatingSystem):
         element: dict = None,
         ctrl: Any = None,
         desktop: bool = False,
+        overwrite: bool = False,
     ) -> None:
         """Save screenshot into filename.
 
         :param filename: name of the file
-        :param element: take element screenshot if True, defaults to None
-        :param ctrl: take control screenshot if True, defaults to None
+        :param element: take element screenshot, defaults to None
+        :param ctrl: take control screenshot, defaults to None
         :param desktop: take desktop screenshot if True, defaults to False
+        :param overwrite: file is overwritten if True, defaults to False
+
+        Example:
+
+        .. code-block:: robotframework
+
+            @{element}   Find Element  CalculatorResults
+            Screenshot   element.png   ${elements[0][0]}
+            Screenshot   desktop.png   desktop=True
+            Screenshot   desktop.png   desktop=True  overwrite=True
+
         """
         if desktop:
             region = None
@@ -826,13 +1332,20 @@ class Windows(OperatingSystem):
         else:
             region = self.get_dialog_rectangle()
 
+        if region:
+            left, top, right, bottom = region
+            if right - left == 0 or bottom - top == 0:
+                self.logger.info(
+                    "Unable to take screenshot, because regions was: %s", region
+                )
+                return
         try:
             output_dir = BuiltIn().get_variable_value("${OUTPUT_DIR}")
         except (ModuleNotFoundError, RobotNotRunningError):
             output_dir = Path.cwd()
 
         filename = Path(output_dir, "images", clean_filename(filename))
-        os.makedirs(filename.parent)
+        os.makedirs(filename.parent, exist_ok=overwrite)
         Images().take_screenshot(filename=filename, region=region)
 
         self.logger.info("Saved screenshot as '%s'", filename)
@@ -895,7 +1408,15 @@ class Windows(OperatingSystem):
         return element_dict
 
     def put_system_to_sleep(self) -> None:
-        """Put Windows into sleep mode"""
+        """Put Windows into sleep mode
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Put System To Sleep
+
+        """
         access = win32security.TOKEN_ADJUST_PRIVILEGES | win32security.TOKEN_QUERY
         htoken = win32security.OpenProcessToken(win32api.GetCurrentProcess(), access)
         if htoken:
@@ -909,7 +1430,14 @@ class Windows(OperatingSystem):
             win32api.CloseHandle(htoken)
 
     def lock_screen(self) -> None:
-        """Put windows into lock mode"""
+        """Put windows into lock mode
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Lock Screen
+        """
         ctypes.windll.User32.LockWorkStation()
 
     def log_in(self, username: str, password: str, domain: str = ".") -> str:
@@ -919,6 +1447,12 @@ class Windows(OperatingSystem):
         :param password: password of the user
         :param domain: windows domain for the user, defaults to "."
         :return: handle
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Log In  username=myname  password=mypassword  domain=company
         """
         return win32security.LogonUser(
             username,
@@ -993,6 +1527,7 @@ class Windows(OperatingSystem):
         handle_ctrl_key: bool = False,
         drop_delay: float = 2.0,
     ) -> None:
+        # pylint: disable=C0301
         """Drag elements from source and drop them on target.
 
         Please note that if CTRL is not pressed down during drag and drop then
@@ -1002,18 +1537,28 @@ class Windows(OperatingSystem):
 
         :param src: application object or instance id
         :param target: application object or instance id
-        :param ssrc_locator: elements to move
-        :param target_locator: target element to drop source elements into
+        :param src_locator: elements to move
         :param handle_ctrl_key: True if keyword should press CTRL down dragging
         :param drop_delay: how many seconds to wait until releasing mouse drop,
-            default 2.0
+         default 2.0
         :raises ValueError: on validation errors
-        """
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${app1}=        Open Using Run Dialog    explorer.exe{VK_SPACE}C:\\workfiles\\movethese   movethese
+            ${app2}=        Open Using Run Dialog    wordpad.exe   Document - WordPad
+            Drag And Drop   ${app1}   ${app2}   regexp:testfile_\\d.txt  name:Rich Text Window   handle_ctrl_key=${True}
+            Drag And Drop   ${app1}   ${app1}   regexp:testfile_\\d.txt  name:subdir  handle_ctrl_key=${True}
+
+        """  # noqa : E501
         if isinstance(src, int):
             src = self.get_app(src)
         if isinstance(target, int):
             target = self.get_app(target)
 
+        single_application = True if src["app"] == target["app"] else False
         selections, source_x, source_y = self._select_elements_for_drag(
             src, src_locator
         )
@@ -1028,38 +1573,57 @@ class Windows(OperatingSystem):
             target_y,
         )
 
-        if handle_ctrl_key:
-            self.send_keys("{VK_LCONTROL down}")
+        try:
+            if handle_ctrl_key:
+                self.send_keys("{VK_LCONTROL down}")
+                delay(0.2)
+
+            # Select elements by mouse clicking
+            if not single_application:
+                self.restore_dialog(src["windowtitle"])
+            for idx, selection in enumerate(selections):
+                self.logger.debug("Selecting item %d by mouse_click", idx)
+                self.logger.debug(selection)
+                # pywinauto.mouse.click(coords=(selection[0]+5, selection[1]+5))
+                self.mouse_click_coords(selection[0] + 5, selection[1] + 5)
+
+            # Start drag from the last item
+            pywinauto.mouse.press(coords=(source_x, source_y))
             delay(0.5)
-        # Select elements by mouse clicking
+            if not single_application:
+                self.restore_dialog(target["windowtitle"])
+            pywinauto.mouse.move(coords=(target_x, target_y))
 
-        for idx, selection in enumerate(selections):
-            self.logger.debug("Selecting item %d by mouse_click", idx)
-            pywinauto.mouse.click(coords=(selection[0], selection[1]))
+            self.logger.debug("Cursor position: %s", win32api.GetCursorPos())
+            delay(drop_delay)
+            self.mouse_click_coords(target_x, target_y)
+            pywinauto.mouse.click(coords=(target_x, target_y))
 
-        # Start drag from the last item
-        pywinauto.mouse.press(coords=(source_x, source_y))
-        delay(1)
-        pywinauto.mouse.move(coords=(target_x, target_y))
-
-        self.logger.debug("Cursor position: %s", win32api.GetCursorPos())
-        delay(drop_delay)
-        pywinauto.mouse.click(coords=(target_x, target_y))
-        pywinauto.mouse.release(coords=(target_x, target_y))
-
-        if handle_ctrl_key:
+            # if action_required:
+            self.send_keys("{ENTER}")
+            if handle_ctrl_key:
+                self.send_keys("{VK_LCONTROL up}")
+                delay(0.5)
+            # Deselect elements by mouse clicking
+            for selection in selections:
+                self.logger.debug("Deselecting item by mouse_click")
+                self.mouse_click_coords(selection[0] + 5, selection[1] + 5)
+        finally:
             self.send_keys("{VK_LCONTROL up}")
-            delay(0.5)
-        # Deselect elements by mouse clicking
-        for selection in selections:
-            self.logger.debug("Deselecting item by mouse_click")
-            self.mouse_click_coords(selection[0], selection[1])
 
     def calculate_rectangle_center(self, rectangle: Any) -> Any:
         """Calculate x and y center coordinates from rectangle.
 
         :param rectangle: element rectangle coordinates
         :return: x and y coordinates of rectangle center
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Open Using Run Dialog   calc  Calculator
+            &{rect}=        Get Element Rectangle    CalculatorResults
+            ${x}  ${y}=     Calculate Rectangle Center   ${rect}
         """
         left, top, right, bottom = self._get_element_coordinates(rectangle)
         x = int((right - left) / 2) + left
@@ -1076,6 +1640,15 @@ class Windows(OperatingSystem):
         - handle
 
         :return: list of window dictionaries
+
+        Example:
+
+        .. code-block:: robotframework
+
+            @{windows}    Get Window List
+            FOR  ${window}  IN  @{windows}
+                Log Many  ${window}
+            END
         """
         windows = pywinauto.Desktop(backend="uia").windows()
         window_list = []
