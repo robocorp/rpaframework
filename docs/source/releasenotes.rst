@@ -9,7 +9,7 @@ Upcoming release
 
 - Upgrade ``Robot Framework`` to 3.2.2
 - Upgrade ``pyscreenshot`` to 2.2
-- **Email.ImapSmtp**:
+- Library **Email.ImapSmtp**:
 
   - Add keyword examples (documentation)
   - Change ``List Messages`` to return list of dictionaries containing
@@ -19,7 +19,7 @@ Upcoming release
     from a message. Can be used when looping through messages received
     by ``List Messages``
 
-- **Desktop.Windows**:
+- Library **Desktop.Windows**:
 
   - Add keyword examples (documentation)
   - Add keyword ``Get Text``. Returns dictionary of possible values
@@ -29,13 +29,13 @@ Upcoming release
   - Add keyword ``Wait For Element`` which will search for element with timeout
   - Add more information about started app instances into application list
 
-- **Desktop.OperatingSystem**:
+- Library **Desktop.OperatingSystem**:
 
   - Add keyword examples (documentation)
   - Add keyword ``Kill Process By PID`` to terminate process using its
     identifier
 
-- **Browser**:
+- Library **Browser**:
 
   - Add keyword examples (documentation)
   - Add `proxy` parameter for keywords ``Open Available Browser``
