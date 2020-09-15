@@ -61,6 +61,16 @@ The keyword `send_keys` can be used to send keys to the active window. The keywo
 Special key codes are documented on `pywinauto <https://pywinauto.readthedocs.io/en/latest/code/pywinauto.keyboard.html#>`_
 documentation page.
 
+
+***
+FAQ
+***
+
+Q. I see error message `AttributeError: module 'win32com.gen_py.00020813-0000-0000-C000-000000000046x0x1x9' has no attribute 'CLSIDToClassMap'`
+
+A. From PowerShell run this command: `Remove-Item -path $env:LOCALAPPDATA\Temp\gen_py -recurse`
+
+
 ********
 Examples
 ********
