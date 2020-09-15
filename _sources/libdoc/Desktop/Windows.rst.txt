@@ -18,11 +18,25 @@ Keywords
   Get machine boot time
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${epoch}  Boot Time In Seconds From Epoch
+
 :Calculate Rectangle Center:
   :Arguments: rectangle: typing.Any
 
   Calculate x and y center coordinates from rectangle.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Open Using Run Dialog   calc  Calculator
+      &{rect}=        Get Element Rectangle    CalculatorResults
+      ${x}  ${y}=     Calculate Rectangle Center   ${rect}
 
 :Click Type:
   :Arguments: x: int = None, y: int = None, click_type: str = click
@@ -33,20 +47,49 @@ Keywords
 
   :raises ValueError: if coordinates are not valid
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Click Type  x=450  y=100
+      Click Type  x=450  y=100  click_type=right
+      Click Type  x=450  y=100  click_type=double
+
 :Close All Applications:
   Close all applications
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Open Application   Excel
+      Open Application   Word
+      Open Executable    notepad.exe   Untitled - Notepad
+      Close All Applications
+
 :Connect By Handle:
-  :Arguments: handle: str, windowtitle: str = None
+  :Arguments: handle: str, windowtitle: str = None, existing_app: bool = False
 
   Connect to application by its handle
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${appid}  Connect By Handle  88112
 
 :Connect By Pid:
   :Arguments: app_pid: str, windowtitle: str = None
 
   Connect to application by its pid
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${appid}  Connect By PID  3231
 
 :Drag And Drop:
   :Arguments: src: typing.Any, target: typing.Any, src_locator: str, target_locator: str = None, handle_ctrl_key: bool = False, drop_delay: float = 2.0
@@ -60,11 +103,28 @@ Keywords
 
   :raises ValueError: on validation errors
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${app1}=        Open Using Run Dialog    explorer.exe{VK_SPACE}C:\workfiles\movethese   movethese
+      ${app2}=        Open Using Run Dialog    wordpad.exe   Document - WordPad
+      Drag And Drop   ${app1}   ${app2}   regexp:testfile_\d.txt  name:Rich Text Window   handle_ctrl_key=${True}
+      Drag And Drop   ${app1}   ${app1}   regexp:testfile_\d.txt  name:subdir  handle_ctrl_key=${True}
+
 :Find Element:
   :Arguments: locator: str, search_criteria: str = None
 
   Find element from window by locator and criteria.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      @{elements}   Find Element   CalculatorResults
+      Log Many  ${elements[0]}     # list of matching elements
+      Log Many  ${elements[1]}     # list of all available locators
 
 :Get App:
   :Arguments: app_id: int = None
@@ -74,18 +134,41 @@ Keywords
   By default returns active_application application object.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${app1}        Open Application   Excel
+      &{appdetails}  Get App   ${app1}
+
 :Get Boot Time:
-  :Arguments: as_datetime=False, datetime_format=%Y-%m-%d %H:%M:%S
+  :Arguments: as_datetime: bool = False, datetime_format: str = %Y-%m-%d %H:%M:%S
 
   Get computer boot time in seconds from Epoch or in datetime string.
 
 
-:Get Dialog Rectangle:
-  :Arguments: ctrl: typing.Any = None
+  Example:
 
-  Get element rectangle coordinates
+  .. code-block:: robotframework
+
+      ${boottime}  Get Boot Time
+      ${boottime}  Get Boot Time   as_datetime=True
+      ${boottime}  Get Boot Time   as_datetime=True  datetime_format=%d.%m.%Y
+
+:Get Dialog Rectangle:
+  :Arguments: ctrl: typing.Any = None, as_dict: bool = False
+
+  Get dialog rectangle coordinates
 
   If `ctrl` is None then get coordinates from `dialog`
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${left}  ${top}  ${right}  ${bottom}=  Get Dialog Rectangle
+      &{coords}  Get Dialog Rectangle  as_dict=True
+      Log  top=${coords.top} left=${coords.left}
 
 :Get Element:
   :Arguments: locator: str, screenshot: bool = False
@@ -93,17 +176,39 @@ Keywords
   Get element by locator.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${element}  Get Element  CalculatorResults
+      ${element}  Get Element  Result      screenshot=True
+
 :Get Element Center:
   :Arguments: element: dict
 
   Get element center coordinates
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      @{element}   Find Element  CalculatorResults
+      ${x}  ${y}=  Get Element Center  ${elements[0][0]}
+
 :Get Element Rectangle:
-  :Arguments: locator: str
+  :Arguments: locator: str, as_dict: bool = False
 
   Get value of element `rectangle` attribute.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${left}  ${top}  ${right}  ${bottom}=  Get Element Rectangle  CalculatorResults
+      &{coords}  Get Element Rectangle  CalculatorResults  as_dict=True
+      Log  top=${coords.top} left=${coords.left}
 
 :Get Element Rich Text:
   :Arguments: locator: str
@@ -111,20 +216,88 @@ Keywords
   Get value of element `rich text` attribute.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${text}  Get Element Rich Text  CalculatorResults
+
 :Get Machine Name:
   Get machine name
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${machine}  Get Machine Name
+
 :Get Memory Stats:
-  :Arguments: humanized=True
+  :Arguments: humanized: bool = True
 
   Get computer memory stats and return those in bytes
   or in humanized memory format.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      &{mem}     Get Memory Stats
+      &{mem}     Get Memory Stats   humanized=False
+
+:Get Open Applications:
+  Get list of all open applications
+
+  Returns a dictionary
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${app1}    Open Application   Excel
+      ${app2}    Open Executable    calc.exe  Calculator
+      ${app3}    Open File          /path/to/myfile.txt
+      &{apps}    Get Open Applications
+
+:Get Spaced String:
+  :Arguments: text
+
+  Replace spaces in a text with `pywinauto.keyboard`
+  space characters `{VK_SPACE}`
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${txt}    Get Spaced String   My name is Bond
+      # ${txt} = My{VK_SPACE}name{VK_SPACE}is{VK_SPACE}Bond
+
+:Get Text:
+  :Arguments: locator: str
+
+  Get text from element
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Open Using Run Dialog  calc     Calculator
+      Type Into    CalculatorResults   11
+      Type Into    CalculatorResults   55
+      &{val}       Get Text   CalculatorResults
+
 :Get Username:
   Get username of logged in user
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${user}  Get Username
 
 :Get Window Elements:
   :Arguments: screenshot: bool = False, element_json: bool = False, outline: bool = False
@@ -132,6 +305,15 @@ Keywords
   Get element information about all window dialog controls
   and their descendants.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      @{elements}   Get Window Elements
+      Log Many      ${elements[0]}     # list of all available locators
+      Log Many      ${elements[1]}     # list of matching elements
+      @{elements}   Get Window Elements  screenshot=True  element_json=True  outline=True
 
 :Get Window List:
   Get list of open windows
@@ -143,11 +325,26 @@ Keywords
   - handle
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      @{windows}    Get Window List
+      FOR  ${window}  IN  @{windows}
+          Log Many  ${window}
+      END
+
 :Is Element Enabled:
   :Arguments: locator: str
 
   Is element enabled.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${res}=   Is Element Enabled  CalculatorResults
 
 :Is Element Matching:
   :Arguments: itemdict: dict, locator: str, criteria: str, wildcard: bool = False
@@ -162,14 +359,46 @@ Keywords
   Is element visible.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${res}=   Is Element Visible  CalculatorResults
+
 :Kill Process:
-  :Arguments: process_name
+  :Arguments: process_name: str
 
   Kill process by name
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${process}  Process Exists  calc  strict=False
+      ${status}   Kill Process    ${process.name()}
+
+:Kill Process By Pid:
+  :Arguments: pid: int
+
+  Kill process by pid
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${process}  Process Exists  calc  strict=False
+      ${status}   Kill Process    ${process.pid}
+
 :Lock Screen:
   Put windows into lock mode
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Lock Screen
 
 :Log In:
   :Arguments: username: str, password: str, domain: str = .
@@ -177,20 +406,42 @@ Keywords
   Log into Windows `domain` with `username` and `password`.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Log In  username=myname  password=mypassword  domain=company
+
 :Menu Select:
   :Arguments: menuitem: str
 
   Select item from menu
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Open Using Run Dialog   notepad     Untitled - Notepad
+      Menu Select             File->Print
+
 :Minimize Dialog:
-  :Arguments: windowtitle: str
+  :Arguments: windowtitle: str = None
 
   Minimize window by its title
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Open Using Run Dialog  calc     Calculator
+      Open Using Run Dialog  notepad  Untitled - Notepad
+      Minimize Dialog    # Current window (Notepad)
+      Minimize Dialog    Calculator
+
 :Mouse Click:
-  :Arguments: locator: str = None, x: int = 0, y: int = 0, off_x: int = 0, off_y: int = 0, image: str = None, method: str = locator, ctype: str = click
+  :Arguments: locator: str = None, x: int = 0, y: int = 0, off_x: int = 0, off_y: int = 0, image: str = None, method: str = locator, ctype: str = click, \*\*kwargs
 
   Mouse click `locator`, `coordinates`, or `image`
 
@@ -204,29 +455,70 @@ Keywords
   - `right`
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Mouse Click  method=coordinates  100   100
+      Mouse Click  CalculatorResults
+      Mouse Click  method=image  image=myimage.png  off_x=10  off_y=10  ctype=right
+      Mouse Click  method=image  image=myimage.png  tolerance=0.8
+
 :Mouse Click Coords:
   :Arguments: x: int, y: int, ctype: str = click, delay_time: float = None
 
   Click at coordinates on desktop
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Mouse Click Coords  x=450  y=100
+      Mouse Click Coords  x=300  y=300  ctype=right
+      Mouse Click Coords  x=450  y=100  delay=5.0
+
 :Mouse Click Image:
-  :Arguments: template: str, off_x: int = 0, off_y: int = 0, ctype: str = click
+  :Arguments: template: str, off_x: int = 0, off_y: int = 0, ctype: str = click, \*\*kwargs
 
   Click at template image on desktop
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Mouse Click  image=myimage.png  off_x=10  off_y=10  ctype=right
+      Mouse Click  image=myimage.png  tolerance=0.8
 
 :Open Application:
   :Arguments: application: str
 
   Open application by dispatch method
 
+  This keyword is used to launch Microsoft applications like
+  Excel, Word, Outlook and Powerpoint.
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${app1}    Open Application   Excel
+      ${app2}    Open Application   Word
 
 :Open Dialog:
-  :Arguments: windowtitle: str = None, highlight: bool = False, timeout: int = 10
+  :Arguments: windowtitle: str = None, highlight: bool = False, timeout: int = 10, existing_app: bool = False
 
   Open window by its title.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Open Dialog       Untitled - Notepad
+      Open Dialog       Untitled - Notepad   highlight=True   timeout=5
 
 :Open Executable:
   :Arguments: executable: str, windowtitle: str, backend: str = uia, work_dir: str = None
@@ -235,11 +527,23 @@ Keywords
   to get handle on the application.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${app1}    Open Executable   calc.exe  Calculator
+
 :Open File:
   :Arguments: filename: str
 
   Open associated application when opening file
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${app1}    Open File   /path/to/myfile.txt
 
 :Open From Search:
   :Arguments: executable: str, windowtitle: str
@@ -248,6 +552,12 @@ Keywords
   Window title name is required to get handle on the application.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${app1}    Open From Search  calculator  Calculator
+
 :Open Using Run Dialog:
   :Arguments: executable: str, windowtitle: str
 
@@ -255,14 +565,33 @@ Keywords
   Window title name is required to get handle on the application.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${app1}    Open Using Run Dialog  notepad  Untitled - Notepad
+
 :Process Exists:
-  :Arguments: process_name
+  :Arguments: process_name: str, strict: bool = True
 
   Check if process exists by its name
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${process}  Process Exists  calc
+      ${process}  Process Exists  calc  strict=False
+
 :Put System To Sleep:
   Put Windows into sleep mode
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Put System To Sleep
 
 :Quit Application:
   :Arguments: app_id: str = None, send_keys: bool = False
@@ -271,17 +600,45 @@ Keywords
   active application if `app_id` is None.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${app1}   Open Application   Excel
+      ${app2}   Open Application   Word
+      Quit Application  ${app1}
+
 :Restore Dialog:
-  :Arguments: windowtitle: str
+  :Arguments: windowtitle: str = None
 
   Restore window by its title
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Open Using Run Dialog  notepad  Untitled - Notepad
+      Minimize Dialog
+      Sleep             1s
+      Restore Dialog
+      Sleep             1s
+      Restore Dialog    Untitled - Notepad
+
 :Screenshot:
-  :Arguments: filename: str, element: dict = None, ctrl: typing.Any = None, desktop: bool = False
+  :Arguments: filename: str, element: dict = None, ctrl: typing.Any = None, desktop: bool = False, overwrite: bool = False
 
   Save screenshot into filename.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      @{element}   Find Element  CalculatorResults
+      Screenshot   element.png   ${elements[0][0]}
+      Screenshot   desktop.png   desktop=True
+      Screenshot   desktop.png   desktop=True  overwrite=True
 
 :Send Keys:
   :Arguments: keys: str
@@ -289,14 +646,30 @@ Keywords
   Send keys into active windows.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Open Executable  calc.exe  Calculator
+      Send Keys        2{+}3=
+
 :Send Keys To Input:
   :Arguments: keys_to_type: str, with_enter: bool = True, send_delay: float = 0.5, enter_delay: float = 1.5
 
   Send keys to windows and add ENTER if `with_enter` is True
 
-  At the end of send_keys there is by default 1.0 second delay.
-  At the end of ENTER there is by default 3.5 second delay.
+  At the end of send_keys there is by default 0.5 second delay.
+  At the end of ENTER there is by default 1.5 second delay.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${txt}    Get Spaced String   My name is Bond, James Bond
+      Send Keys To Input  ${txt}    with_enter=False
+      Send Keys To Input  {ENTER}THE   send_delay=5.0  with_enter=False
+      Send Keys To Input  {VK_SPACE}-{VK_SPACE}END   enter_delay=5.0
 
 :Switch To Application:
   :Arguments: app_id: int
@@ -305,14 +678,53 @@ Keywords
 
   :raises ValueError: if application is not found by given id
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${app1}    Open Application   Excel
+      ${app2}    Open Application   Word
+      Switch To Application   ${app1}
+
 :Type Into:
-  :Arguments: locator: str, keys: str
+  :Arguments: locator: str, keys: str, empty_field: bool = False
 
   Type keys into element matched by given locator.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Open Executable  calc.exe  Calculator
+      Type Into        CalculatorResults  11
+      Type Into        CalculatorResults  22  empty_field=True
 
 :Type Keys:
   :Arguments: keys: str
 
   Type keys into active window element.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Open Executable  notepad.exe  Untitled - Notepad
+      Type Keys   My text
+
+:Wait For Element:
+  :Arguments: locator: str, search_criteria: str = None, timeout: float = 30.0, interval: float = 2.0
+
+  Wait for element to appear into the window.
+
+  Can return 1 or more elements matching locator, or raises
+  `ElementNotFoundError` if element is not found within timeout.
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      @{elements}  Wait For Element  CalculatorResults
+      @{elements}  Wait For Element  Results   timeout=10  interval=1.5
