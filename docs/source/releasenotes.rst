@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+3.0.0
+-----
+
 - Upgrade ``Robot Framework`` to 3.2.2
 - Upgrade ``pyscreenshot`` to 2.2
 - **Email.ImapSmtp**:
@@ -24,18 +27,19 @@ Upcoming release
   - Add parameter `empty_field` to keyword ``Type Into`` which will
     empty field before typing into a field
   - Add keyword ``Wait For Element`` which will search for element with timeout
+  - Add more information about started app instances into application list
 
 - **Desktop.OperatingSystem**:
 
   - Add keyword examples (documentation)
   - Add keyword ``Kill Process By PID`` to terminate process using its
-    identifier.
+    identifier
 
 - **Browser**:
 
   - Add keyword examples (documentation)
   - Add `proxy` parameter for keywords ``Open Available Browser``
-    and ``Open Chrome Browser``. Works only for Chrome at the moment.
+    and ``Open Chrome Browser``. Works only for Chrome at the moment
 
 2.7.0
 -----
