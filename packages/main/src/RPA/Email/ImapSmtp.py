@@ -109,6 +109,14 @@ class ImapSmtp:
 
         :param account: user account as string, defaults to None
         :param password: user password as string, defaults to None
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Set Credentials   ${username}   ${password}
+            Authorize
+
         """
         if account:
             self.account = account
@@ -132,6 +140,13 @@ class ImapSmtp:
         :param password: SMTP account password, defaults to None
         :param smtp_server: SMTP server address, defaults to None
         :param smtp_port: SMTP server port, defaults to None (587 for SMTP)
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Authorize SMTP    ${username}   ${password}  smtp.gmail.com  587
+
         """
         if account is None and password is None:
             account = self.account
@@ -177,7 +192,15 @@ class ImapSmtp:
 
         :param account: IMAP account name, defaults to None
         :param password: IMAP account password, defaults to None
-        :param smtp_server: IMAP server address, defaults to None
+        :param imap_server: IMAP server address, defaults to None
+        :param imap_port: IMAP server port, defaults to None
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Authorize IMAP    ${username}   ${password}  imap.gmail.com  993
+
         """
         if account is None and password is None:
             account = self.account
@@ -206,22 +229,41 @@ class ImapSmtp:
         password: str = None,
         smtp_server: str = None,
         imap_server: str = None,
+        smtp_port: int = None,
+        imap_port: int = None,
     ) -> None:
+        # pylint: disable=C0301
         """Authorize user to SMTP and IMAP servers.
 
         Will use separately set credentials or those given in keyword call.
 
         :param account: user account as string, defaults to None
         :param password: user password as string, defaults to None
-        """
-        self.authorize_smtp(account, password, smtp_server)
-        self.authorize_imap(account, password, imap_server)
+        :param smtp_server: SMTP server address, defaults to None
+        :param imap_server: IMAP server address, defaults to None
+        :param smtp_port: SMTP server port, defaults to None (587 for SMTP)
+        :param imap_port: IMAP server port, defaults to None
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Authorize    ${username}   ${password}  smtp_server=smtp.gmail.com  smtp_port=587
+
+        """  # noqa: E501
+        self.authorize_smtp(account, password, smtp_server, smtp_port)
+        self.authorize_imap(account, password, imap_server, imap_port)
 
     @smtp_connection
     def send_smtp_hello(self) -> None:
         """Send hello message to SMTP server.
 
         Required step when creating SMTP connection.
+
+        .. code-block:: robotframework
+
+            Send SMTP Hello
+
         """
         if self.smtp_conn:
             self.smtp_conn.ehlo()
@@ -250,6 +292,16 @@ class ImapSmtp:
         :param attachments: list of filepaths to attach, defaults to []
         :param html: if message content is in HTML, default `False`
         :param images: list of filepaths for inline use, defaults to []
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Send Message  sender@domain.com  recipient@domain.com
+            ...           subject=Greetings Software Robot Developer
+            ...           body=${email_body}
+            ...           attachments:${CURDIR}${/}report.pdf
+
         """
         add_charset("utf-8", QP, QP, "utf-8")
         recipients, attachments, images = self._handle_message_parameters(
@@ -452,6 +504,13 @@ class ImapSmtp:
 
         :param criterion: filter messages based on this, defaults to ""
         :return: True if success, False if not
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Delete Message  SUBJECT \"Greetings RPA developer\"
+
         """
         self._validate_criterion(criterion)
         _, data = self._search_message(criterion)
@@ -472,6 +531,13 @@ class ImapSmtp:
 
         :param criterion: filter messages based on this, defaults to ""
         :return: True if success, False if not
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Delete Messages  SUBJECT Greetings
+
         """
         self._validate_criterion(criterion)
         mail_ids = self._search_and_return_mail_ids(criterion)
@@ -480,6 +546,7 @@ class ImapSmtp:
 
     @imap_connection
     def save_messages(self, criterion: str = "", target_folder: str = None) -> bool:
+        # pylint: disable=C0301
         """Save messages based on criteria and store them to target folder
         with attachment files.
 
@@ -488,7 +555,14 @@ class ImapSmtp:
         :param criterion: filter messages based on this, defaults to ""
         :param target_folder: path to folder where message are saved, defaults to None
         :return: True if success, False if not
-        """
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Save Messages  SUBJECT Important message  target_folder=${USERDIR}${/}messages
+
+        """  # noqa: E501
         self._validate_criterion(criterion)
         if target_folder is None:
             target_folder = os.path.expanduser("~")
@@ -507,6 +581,21 @@ class ImapSmtp:
 
         :param criterion: list emails matching this, defaults to ""
         :return: list of messages or False
+
+        Example:
+
+        .. code-block:: robotframework
+
+            @{emails}  List Messages  SUBJECT \"rpa task\"
+            FOR  ${email}  IN  @{EMAILS}
+                Log  ${email}[Subject]
+                Log  ${email}[From]
+                Log  ${email}[Date]
+                Log  ${email}[Delivered-To]
+                Log  ${email}[Received]
+                Log  ${email}[Has-Attachments]
+            END
+
         """
         self.logger.info("List messages: %s", criterion)
         _, data = self._search_message(criterion)
@@ -517,6 +606,7 @@ class ImapSmtp:
     def save_attachments(
         self, criterion: str = "", target_folder: str = None, overwrite: bool = False
     ) -> Any:
+        # pylint: disable=C0301
         """Save mail attachments into local folder.
 
         :param criterion: attachments are saved for mails matching this, defaults to ""
@@ -524,7 +614,15 @@ class ImapSmtp:
             defaults to user's home directory if None
         :param overwrite: overwrite existing file is True, defaults to False
         :return: list of saved attachments or False
-        """
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${numsaved}  Save Attachments   SUBJECT \"rpa task\"
+            ...          target_folder=${CURDIR}${/}messages  overwrite=True
+
+        """  # noqa: E501
         attachments_saved = []
         messages = self.list_messages(criterion)
         for msg in messages:
@@ -534,12 +632,25 @@ class ImapSmtp:
         return attachments_saved if len(attachments_saved) > 0 else False
 
     def save_attachment(self, message, target_folder, overwrite):
-        """[summary]
+        # pylint: disable=C0301
+        """Save mail attachment into local folder
 
-        :param message: [description]
-        :param target_folder: [description]
-        :param overwrite: [description]
-        """
+        :param message: message item
+        :param target_folder: local folder for saving attachments to (needs to exist),
+            defaults to user's home directory if None
+        :param overwrite: overwrite existing file is True, defaults to False
+
+        Example:
+
+        .. code-block:: robotframework
+
+            @{emails}  List Messages  SUBJECT \"rpa task\"
+            FOR  ${email}  IN  @{EMAILS}
+                Run Keyword If   ${email}[Has-Attachments] == True
+                ...              Save Attachment  target_folder=${CURDIR}  overwrite = True
+            END
+
+        """  # noqa: E501
         if target_folder is None:
             target_folder = os.path.expanduser("~")
         msg = message["Message"] if isinstance(message, dict) else message
@@ -570,6 +681,13 @@ class ImapSmtp:
         :param timeout: total time in seconds to wait for email, defaults to 5.0
         :param interval: time in seconds for new check, defaults to 1.0
         :return: list of messages or False
+
+        Example:
+
+        .. code-block:: robotframework
+
+            @{emails}  Wait For Message  SUBJECT \"rpa task\"  timeout=300  interval=10
+
         """
         self._validate_criterion(criterion)
         end_time = time.time() + float(timeout)
@@ -603,6 +721,15 @@ class ImapSmtp:
         :param subdirectory: list subdirectories for this folder
         :param pattern: list folders matching this pattern
         :return: list of folders
+
+        Example:
+
+        .. code-block:: robotframework
+
+            @{folders}  Get Folder List
+            @{folders}  Get Folder List  pattern=important
+            @{folders}  Get Folder List  subdirectory=sub
+
         """
         self.logger.info("Get folder list")
         kwparams = {}
@@ -626,6 +753,13 @@ class ImapSmtp:
 
         :param folder_name: name of the folder to select
         :return: message count in the selected folder
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Select Folder   subfolder
+
         """
         self.logger.info("Select folder: %s", folder_name)
         status_code, data = self.imap_conn.select(mailbox=folder_name, readonly=False)
@@ -645,6 +779,13 @@ class ImapSmtp:
         :param newname: new name for the folder
         :param suppress_error: to silence warning message, defaults to False
         :return: True if operation was successful, False if not
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Rename Folder   subfolder   filtered
+
         """
         if oldname is None or newname is None:
             raise KeyError(
@@ -669,6 +810,13 @@ class ImapSmtp:
 
         :param folder_name: current folder name
         :return: True if operation was successful, False if not
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Delete Folder   filtered
+
         """
         if folder_name is None:
             raise KeyError("'folder_name' is required for delete folder")
@@ -691,6 +839,13 @@ class ImapSmtp:
 
         :param folder_name: name for the new folder
         :return: True if operation was successful, False if not
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Create Folder   filtered
+
         """
         if folder_name is None:
             raise KeyError("'folder_name' is required for create folder")
@@ -714,6 +869,14 @@ class ImapSmtp:
         :param criterion: mark messages matching criterion
         :param unflag: to mark messages as not `flagged`
         :return: successful operations (int), matching messages (int)
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${flagged}  ${oftotal}    Flag Messages   SUBJECT rpa
+            ${unflagged}  ${oftotal}  Flag Messages   SUBJECT rpa  unflag=True
+
         """
         self._validate_criterion(criterion)
         if unflag:
@@ -733,6 +896,13 @@ class ImapSmtp:
 
         :param criterion: mark messages matching criterion
         :return: successful operations (int), matching messages (int)
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${unflagged}  ${oftotal}  Unflag Messages   SUBJECT rpa
+
         """
         return self.flag_messages(criterion, unflag=True)
 
@@ -743,6 +913,13 @@ class ImapSmtp:
         :param criterion: mark messages matching criterion
         :param unread: to mark messages as not `read`
         :return: successful operations (int), matching messages (int)
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${read}  ${oftotal}  Mark As Read   SUBJECT rpa
+
         """
         self._validate_criterion(criterion)
         if unread:
@@ -762,6 +939,13 @@ class ImapSmtp:
 
         :param criterion: mark messages matching criterion
         :return: successful operations (int), matching messages (int)
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${unread}  ${oftotal}  Mark As Unread   SUBJECT rpa
+
         """
         return self.mark_as_read(criterion, unread=True)
 
