@@ -248,6 +248,12 @@
 option <code class="docutils literal notranslate"><span class="pre">--remote-debugging-port=&lt;port&gt;</span></code>, where port is any
 4-digit number not being used by other applications.</p>
 <p>That port can then be used to connect using this keyword.</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">Attach Chrome Browser | port=9222 |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -256,6 +262,12 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 <dd><p>Click button identified by <code class="docutils literal notranslate"><span class="pre">locator</span></code>, once it becomes visible.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">modifier</span></code> press given keys while clicking the element, e.g. CTRL</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">Click Button When Visible  | //button[&#64;class=”mybutton”] |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -263,6 +275,12 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 <code class="sig-name descname">click_element_if_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.click_element_if_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click element if it is visible</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">Click Element If Visible | //button[&#64;class=”mybutton”] |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -272,6 +290,14 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">modifier</span></code> press given keys while clicking the element, e.g. CTRL</p>
 <p><code class="docutils literal notranslate"><span class="pre">action_chain</span></code> store action in Selenium ActionChain queue</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">Click Element When Visible | q |</div>
+<div class="line">Click Element When Visible | id:button | CTRL+ALT |</div>
+<div class="line">Click Element When Visible | action_chain=True |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -281,6 +307,12 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected element text</p>
 <p><code class="docutils literal notranslate"><span class="pre">ignore_case</span></code> should check be case insensitive, default <cite>False</cite></p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Element Contain | id:spec | specification complete | ignore_case=True |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -289,6 +321,12 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 <dd><p>Does frame contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> locator of the frame to check</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> does frame contain this text</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Frame Contain | id:myframe | secret |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -296,6 +334,13 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 <code class="sig-name descname">does_location_contain</code><span class="sig-paren">(</span><em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_location_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does current URL contain expected</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> URL should contain this</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">Open Available Browser | <a class="reference external" href="https://robocorp.com">https://robocorp.com</a> |</div>
+<div class="line">${res} | Does Location Contain | robocorp |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -303,6 +348,13 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 <code class="sig-name descname">does_page_contain</code><span class="sig-paren">(</span><em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> page should contain this</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">Open Available Browser | <a class="reference external" href="https://google.com">https://google.com</a> |</div>
+<div class="line">${res} | Does Page Contain | Gmail |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -310,6 +362,12 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 <code class="sig-name descname">does_page_contain_button</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected button</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Page Contain Button | search-button |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -317,6 +375,12 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 <code class="sig-name descname">does_page_contain_checkbox</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_checkbox" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected checkbox</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Page Contain Checkbox | random-selection |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -326,6 +390,13 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">count</span></code> how many times element is expected to appear on page
 by default one or more</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Page Contain Element | textarea |</div>
+<div class="line">${res} | Does Page Contain Element | button | count=4 |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -333,6 +404,13 @@ by default one or more</p>
 <code class="sig-name descname">does_page_contain_image</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected image</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">Open Available Browser | <a class="reference external" href="https://google.com">https://google.com</a> |</div>
+<div class="line">${res} | Does Page Contain Image | Google |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -340,6 +418,12 @@ by default one or more</p>
 <code class="sig-name descname">does_page_contain_link</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected link</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Page Contain Link | id:submit |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -347,6 +431,12 @@ by default one or more</p>
 <code class="sig-name descname">does_page_contain_list</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected list</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Page Contain List | class:selections |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -354,6 +444,12 @@ by default one or more</p>
 <code class="sig-name descname">does_page_contain_radio_button</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_radio_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected radio button</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Page Contain Radio Button | male |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -361,6 +457,12 @@ by default one or more</p>
 <code class="sig-name descname">does_page_contain_textfield</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_page_contain_textfield" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected textfield</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Page Contain Textfield | id:address |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -371,6 +473,12 @@ by default one or more</p>
 <p><code class="docutils literal notranslate"><span class="pre">row</span></code> row index starting from 1 (beginning) or -1 (from the end)</p>
 <p><code class="docutils literal notranslate"><span class="pre">column</span></code> column index starting from 1 (beginning) or -1 (from the end)</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table row</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Table Cell Contain | //table | 1 | 1 | Company |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -380,6 +488,12 @@ by default one or more</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">column</span></code> column index starting from 1 (beginning) or -1 (from the end)</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table column</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Table Column Contain | //table | 1 | Nokia |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -388,6 +502,12 @@ by default one or more</p>
 <dd><p>Does table contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Table Contain | //table | February |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -396,6 +516,12 @@ by default one or more</p>
 <dd><p>Does table footer contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table footer</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Table Footer Contain | //table | Sum |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -404,6 +530,12 @@ by default one or more</p>
 <dd><p>Does table header contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table header</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Table Header Contain | //table | Month |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -413,6 +545,12 @@ by default one or more</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">row</span></code> row index starting from 1 (beginning) or -1 (from the end)</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table row</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Table Row Contain | //table | 1 | Company |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -421,6 +559,12 @@ by default one or more</p>
 <dd><p>Does textarea contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in textarea</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Textarea Contain | //textarea | sincerely |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -429,6 +573,12 @@ by default one or more</p>
 <dd><p>Does textfield contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in textfield</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Textfield Contain | id:lname | Last |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -505,13 +655,25 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 <dt id="RPA.Browser.Browser.get_element_status">
 <code class="sig-name descname">get_element_status</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Browser.Browser.get_element_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return dictionary containing element status of:</p>
-<ul class="simple">
+<blockquote>
+<div><ul class="simple">
 <li><p>visible</p></li>
 <li><p>enabled</p></li>
 <li><p>disabled</p></li>
 <li><p>focused</p></li>
 </ul>
+</div></blockquote>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">&amp;{res}  | Get Element Status | class:special |</div>
+<div class="line">Log     | ${res.visible} |</div>
+<div class="line">Log     | ${res.enabled} |</div>
+<div class="line">Log     | ${res.disabled} |</div>
+<div class="line">Log     | ${res.focused} |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -556,6 +718,12 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 <dd><p>Input text into locator after it has become visible.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> insert text to locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">Input Text When Element Is Visible | //input[&#64;id=”freetext”]  | my feedback |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -566,7 +734,13 @@ and action can also be done which by default is ACCEPT.</p>
 <p>Other possible actions are DISMISS and LEAVE.</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> check if alert text is matching to this, if <cite>None</cite>
 will check if alert is present at all</p>
-<p><code class="docutils literal notranslate"><span class="pre">action</span></code> possible action if alert is present</p>
+<p><code class="docutils literal notranslate"><span class="pre">action</span></code> possible action if alert is present, default ACCEPT</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is Alert Present | id:cookies |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -574,6 +748,12 @@ will check if alert is present at all</p>
 <code class="sig-name descname">is_checkbox_selected</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_checkbox_selected" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is checkbox selected</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} |  Is Checkbox Selected  | id:taxes-paid |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -583,6 +763,12 @@ will check if alert is present at all</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">attribute</span></code> element attribute to check for</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> is attribute value equal to this</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is Element Attribute Equal To | h1 | id | main |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -590,6 +776,12 @@ will check if alert is present at all</p>
 <code class="sig-name descname">is_element_disabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_disabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element disabled</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is Element Disabled | //input[&#64;type=”submit”] |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -597,6 +789,12 @@ will check if alert is present at all</p>
 <code class="sig-name descname">is_element_enabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_enabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element enabled</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is Element Enabled | input.field1 |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -604,6 +802,12 @@ will check if alert is present at all</p>
 <code class="sig-name descname">is_element_focused</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_focused" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element focused</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is Element Focused | //input[&#64;id=”freetext”] |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -613,6 +817,13 @@ will check if alert is present at all</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected element text</p>
 <p><code class="docutils literal notranslate"><span class="pre">ignore_case</span></code> should check be case insensitive, default <cite>False</cite></p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is Element Text | id:name | john doe |</div>
+<div class="line">${res} | Is Element Text | id:name | john doe | ignore_case=True |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -620,6 +831,12 @@ will check if alert is present at all</p>
 <code class="sig-name descname">is_element_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element visible</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is Element Visible | id:confirmation |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -627,6 +844,12 @@ will check if alert is present at all</p>
 <code class="sig-name descname">is_list_selected</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_list_selected" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is any option selected in the</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is List Selected | id:cars |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -635,6 +858,12 @@ will check if alert is present at all</p>
 <dd><p>Is list selected with expected values</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected selected options</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is List Selection | id:cars | Ford |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -642,6 +871,13 @@ will check if alert is present at all</p>
 <code class="sig-name descname">is_location</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is current URL expected url</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> expected current URL</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> |</div>
+<div class="line">${res} | Is Location | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -649,6 +885,12 @@ will check if alert is present at all</p>
 <code class="sig-name descname">is_radio_button_selected</code><span class="sig-paren">(</span><em class="sig-param">group_name: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_radio_button_selected" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is any radio button selected in the button group</p>
 <p><code class="docutils literal notranslate"><span class="pre">group_name</span></code> radio button group name</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is Radio Button Selected | group_name=gender |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -657,6 +899,12 @@ will check if alert is present at all</p>
 <dd><p>Is radio button group set to expected value</p>
 <p><code class="docutils literal notranslate"><span class="pre">group_name</span></code> radio button group name</p>
 <p><code class="docutils literal notranslate"><span class="pre">value</span></code> expected value</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is Radio Button Set To | group_name=gender | value=female |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -665,6 +913,12 @@ will check if alert is present at all</p>
 <dd><p>Is textarea matching expected value</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected textarea value</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is Textarea Value | //textarea | Yours sincerely |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -673,6 +927,12 @@ will check if alert is present at all</p>
 <dd><p>Is textfield value expected</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected textfield value</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is Textfield Value | id:lname | Lastname |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -680,6 +940,12 @@ will check if alert is present at all</p>
 <code class="sig-name descname">is_title</code><span class="sig-paren">(</span><em class="sig-param">title: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_title" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is page title expected</p>
 <p><code class="docutils literal notranslate"><span class="pre">title</span></code> expected title value</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Is Title | Webpage title text |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -690,7 +956,7 @@ will check if alert is present at all</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.open_available_browser">
-<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: Optional[bool] = None</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.open_available_browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: Optional[bool] = None</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.open_available_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Opens the first available browser in the system in preferred order, or the
 given browser (<code class="docutils literal notranslate"><span class="pre">browser_selection</span></code>).</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open</p>
@@ -702,6 +968,7 @@ given browser (<code class="docutils literal notranslate"><span class="pre">brow
 <p><code class="docutils literal notranslate"><span class="pre">profile_name</span></code> Name of profile (if profile enabled)</p>
 <p><code class="docutils literal notranslate"><span class="pre">profile_path</span></code> Path to profiles (if profile enabled)</p>
 <p><code class="docutils literal notranslate"><span class="pre">preferences</span></code> Profile preferences (Chrome/Chromium only)</p>
+<p><code class="docutils literal notranslate"><span class="pre">proxy</span></code> Proxy server address (Chrome only)</p>
 <p>Returns an index of the webdriver session.</p>
 <p>=== Process of opening a browser ===</p>
 <ol class="arabic">
@@ -722,11 +989,19 @@ given browser (<code class="docutils literal notranslate"><span class="pre">brow
 <p>Raises <code class="docutils literal notranslate"><span class="pre">BrowserNotFoundError</span></code> if unable to open the browser.</p>
 <p>For information about Safari webdriver setup, see
 <a class="reference external" href="https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${idx1} | Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> |</div>
+<div class="line">${idx2} | Open Available Browser | ${URL} | browser_selection=opera,firefox |</div>
+<div class="line">Open Available Browser | ${URL} | headless=True | proxy=localhost:8899 |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.open_chrome_browser">
-<code class="sig-name descname">open_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: bool = False</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.open_chrome_browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: bool = False</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.open_chrome_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Chrome browser. See <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Available</span> <span class="pre">Browser</span></code> for
 descriptions of arguments.</p>
 </dd></dl>
@@ -736,6 +1011,12 @@ descriptions of arguments.</p>
 <code class="sig-name descname">open_headless_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Browser.open_headless_chrome_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Chrome browser in headless mode.</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${idx} | Open Headless Chrome Browser | <a class="reference external" href="https://www.google.com">https://www.google.com</a> |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -770,6 +1051,14 @@ descriptions of arguments.</p>
 <p><code class="docutils literal notranslate"><span class="pre">page</span></code> capture a page screenshot, default <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> if defined, take element screenshot, default <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">filename_prefix</span></code> prefix for screenshot files, default “screenshot”</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> | headless=True |</div>
+<div class="line">Screenshot | page=False | locator=//a[&#64;aria-label=”Home”] |</div>
+<div class="line">Screenshot | filename_prefix=task_screenshots |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -778,6 +1067,12 @@ descriptions of arguments.</p>
 <dd><p>Click button identified by <code class="docutils literal notranslate"><span class="pre">locator</span></code>, once it becomes visible.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">modifier</span></code> press given keys while clicking the element, e.g. CTRL</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">Click Button When Visible  | //button[&#64;class=”mybutton”] |</div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

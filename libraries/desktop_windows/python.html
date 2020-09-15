@@ -208,6 +208,44 @@
 <h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-RPA.Desktop.Windows">
 <span id="windows"></span><h2>Windows<a class="headerlink" href="#module-RPA.Desktop.Windows" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="RPA.Desktop.Windows.ElementNotFoundError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">ElementNotFoundError</code><a class="headerlink" href="#RPA.Desktop.Windows.ElementNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when expected element is not found</p>
+<dl class="attribute">
+<dt id="RPA.Desktop.Windows.ElementNotFoundError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Desktop.Windows.ElementNotFoundError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.ElementNotFoundError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.ElementNotFoundError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.Desktop.Windows.MenuItemNotFoundError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">MenuItemNotFoundError</code><a class="headerlink" href="#RPA.Desktop.Windows.MenuItemNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when expected menu item is not found</p>
+<dl class="attribute">
+<dt id="RPA.Desktop.Windows.MenuItemNotFoundError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Desktop.Windows.MenuItemNotFoundError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.MenuItemNotFoundError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.MenuItemNotFoundError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="RPA.Desktop.Windows.Windows">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">Windows</code><span class="sig-paren">(</span><em class="sig-param">backend: str = 'uia'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows" title="Permalink to this definition">¶</a></dt>
@@ -220,13 +258,17 @@
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.boot_time_in_seconds_from_epoch">
-<code class="sig-name descname">boot_time_in_seconds_from_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.boot_time_in_seconds_from_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">boot_time_in_seconds_from_epoch</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Desktop.Windows.Windows.boot_time_in_seconds_from_epoch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get machine boot time</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>boot time in seconds from Epoch</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${epoch}</span><span class="p">  </span><span class="c">Boot Time In Seconds From Epoch</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -241,6 +283,12 @@
 <dd class="field-even"><p>x and y coordinates of rectangle center</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Using Run Dialog</span><span class="p">   </span><span class="c">calc</span><span class="p">  </span><span class="c">Calculator</span><span class="p"></span>
+<span class="c">&amp;{rect}=</span><span class="p">        </span><span class="c">Get Element Rectangle</span><span class="p">    </span><span class="c">CalculatorResults</span><span class="p"></span>
+<span class="c">${x}</span><span class="p">  </span><span class="c">${y}=</span><span class="p">     </span><span class="c">Calculate Rectangle Center</span><span class="p">   </span><span class="c">${rect}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -260,23 +308,40 @@
 <dd class="field-even"><p><strong>ValueError</strong> – if coordinates are not valid</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Click Type</span><span class="p">  </span><span class="c">x=450</span><span class="p">  </span><span class="c">y=100</span><span class="p"></span>
+<span class="c">Click Type</span><span class="p">  </span><span class="c">x=450</span><span class="p">  </span><span class="c">y=100</span><span class="p">  </span><span class="c">click_type=right</span><span class="p"></span>
+<span class="c">Click Type</span><span class="p">  </span><span class="c">x=450</span><span class="p">  </span><span class="c">y=100</span><span class="p">  </span><span class="c">click_type=double</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.close_all_applications">
 <code class="sig-name descname">close_all_applications</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.close_all_applications" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close all applications</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Application</span><span class="p">   </span><span class="c">Excel</span><span class="p"></span>
+<span class="c">Open Application</span><span class="p">   </span><span class="c">Word</span><span class="p"></span>
+<span class="c">Open Executable</span><span class="p">    </span><span class="c">notepad.exe</span><span class="p">   </span><span class="c">Untitled - Notepad</span><span class="p"></span>
+<span class="c">Close All Applications</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.connect_by_handle">
-<code class="sig-name descname">connect_by_handle</code><span class="sig-paren">(</span><em class="sig-param">handle: str</em>, <em class="sig-param">windowtitle: str = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_handle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">connect_by_handle</code><span class="sig-paren">(</span><em class="sig-param">handle: str</em>, <em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">existing_app: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_handle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to application by its handle</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>handle</strong> – handle of the application</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${appid}</span><span class="p">  </span><span class="c">Connect By Handle</span><span class="p">  </span><span class="c">88112</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -288,6 +353,10 @@
 <dd class="field-odd"><p><strong>app_pid</strong> – process id of the application</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${appid}</span><span class="p">  </span><span class="c">Connect By PID</span><span class="p">  </span><span class="c">3231</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -302,8 +371,7 @@ operation is MOVE operation, on CTRL down the operation is COPY operation.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>src</strong> – application object or instance id</p></li>
 <li><p><strong>target</strong> – application object or instance id</p></li>
-<li><p><strong>ssrc_locator</strong> – elements to move</p></li>
-<li><p><strong>target_locator</strong> – target element to drop source elements into</p></li>
+<li><p><strong>src_locator</strong> – elements to move</p></li>
 <li><p><strong>handle_ctrl_key</strong> – True if keyword should press CTRL down dragging</p></li>
 <li><p><strong>drop_delay</strong> – how many seconds to wait until releasing mouse drop,
 default 2.0</p></li>
@@ -313,6 +381,13 @@ default 2.0</p></li>
 <dd class="field-even"><p><strong>ValueError</strong> – on validation errors</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${app1}=</span><span class="p">        </span><span class="c">Open Using Run Dialog</span><span class="p">    </span><span class="c">explorer.exe{VK_SPACE}C:\workfiles\movethese</span><span class="p">   </span><span class="c">movethese</span><span class="p"></span>
+<span class="c">${app2}=</span><span class="p">        </span><span class="c">Open Using Run Dialog</span><span class="p">    </span><span class="c">wordpad.exe</span><span class="p">   </span><span class="c">Document - WordPad</span><span class="p"></span>
+<span class="c">Drag And Drop</span><span class="p">   </span><span class="c">${app1}</span><span class="p">   </span><span class="c">${app2}</span><span class="p">   </span><span class="c">regexp:testfile_\d.txt</span><span class="p">  </span><span class="c">name:Rich Text Window</span><span class="p">   </span><span class="c">handle_ctrl_key=${True}</span><span class="p"></span>
+<span class="c">Drag And Drop</span><span class="p">   </span><span class="c">${app1}</span><span class="p">   </span><span class="c">${app1}</span><span class="p">   </span><span class="c">regexp:testfile_\d.txt</span><span class="p">  </span><span class="c">name:subdir</span><span class="p">  </span><span class="c">handle_ctrl_key=${True}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -322,7 +397,7 @@ default 2.0</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>locator</strong> – name of locator</p></li>
+<li><p><strong>locator</strong> – name of the locator</p></li>
 <li><p><strong>search_criteria</strong> – criteria by which element is matched</p></li>
 </ul>
 </dd>
@@ -330,6 +405,12 @@ default 2.0</p></li>
 <dd class="field-even"><p>list of matching elements and locators that were found on the window</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{elements}</span><span class="p">   </span><span class="c">Find Element</span><span class="p">   </span><span class="c">CalculatorResults</span><span class="p"></span>
+<span class="c">Log Many</span><span class="p">  </span><span class="c">${elements[0]}</span><span class="p">     </span><span class="c"># list of matching elements</span>
+<span class="c">Log Many</span><span class="p">  </span><span class="c">${elements[1]}</span><span class="p">     </span><span class="c"># list of all available locators</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -345,11 +426,16 @@ default 2.0</p></li>
 <dd class="field-even"><p>application object</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${app1}</span><span class="p">        </span><span class="c">Open Application</span><span class="p">   </span><span class="c">Excel</span><span class="p"></span>
+<span class="c">&amp;{appdetails}</span><span class="p">  </span><span class="c">Get App</span><span class="p">   </span><span class="c">${app1}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_boot_time">
-<code class="sig-name descname">get_boot_time</code><span class="sig-paren">(</span><em class="sig-param">as_datetime=False</em>, <em class="sig-param">datetime_format='%Y-%m-%d %H:%M:%S'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_boot_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_boot_time</code><span class="sig-paren">(</span><em class="sig-param">as_datetime: bool = False</em>, <em class="sig-param">datetime_format: str = '%Y-%m-%d %H:%M:%S'</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_boot_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get computer boot time in seconds from Epoch or in datetime string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -363,15 +449,27 @@ defaults to False</p></li>
 <dd class="field-even"><p>seconds from Epoch or datetime string</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${boottime}</span><span class="p">  </span><span class="c">Get Boot Time</span><span class="p"></span>
+<span class="c">${boottime}</span><span class="p">  </span><span class="c">Get Boot Time</span><span class="p">   </span><span class="c">as_datetime=True</span><span class="p"></span>
+<span class="c">${boottime}</span><span class="p">  </span><span class="c">Get Boot Time</span><span class="p">   </span><span class="c">as_datetime=True</span><span class="p">  </span><span class="c">datetime_format=%d.%m.%Y</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_dialog_rectangle">
-<code class="sig-name descname">get_dialog_rectangle</code><span class="sig-paren">(</span><em class="sig-param">ctrl: Any = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_dialog_rectangle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get element rectangle coordinates</p>
+<code class="sig-name descname">get_dialog_rectangle</code><span class="sig-paren">(</span><em class="sig-param">ctrl: Any = None</em>, <em class="sig-param">as_dict: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_dialog_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get dialog rectangle coordinates</p>
 <p>If <cite>ctrl</cite> is None then get coordinates from <cite>dialog</cite>
 :param ctrl: name of the window control object, defaults to None
 :return: coordinates: left, top, right, bottom</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${left}</span><span class="p">  </span><span class="c">${top}</span><span class="p">  </span><span class="c">${right}</span><span class="p">  </span><span class="c">${bottom}=</span><span class="p">  </span><span class="c">Get Dialog Rectangle</span><span class="p"></span>
+<span class="c">&amp;{coords}</span><span class="p">  </span><span class="c">Get Dialog Rectangle</span><span class="p">  </span><span class="c">as_dict=True</span><span class="p"></span>
+<span class="c">Log</span><span class="p">  </span><span class="c">top=${coords.top} left=${coords.left}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -389,6 +487,11 @@ defaults to False</p></li>
 <dd class="field-even"><p>element if element was identified, else False</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${element}</span><span class="p">  </span><span class="c">Get Element</span><span class="p">  </span><span class="c">CalculatorResults</span><span class="p"></span>
+<span class="c">${element}</span><span class="p">  </span><span class="c">Get Element</span><span class="p">  </span><span class="c">Result</span><span class="p">      </span><span class="c">screenshot=True</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -403,20 +506,34 @@ defaults to False</p></li>
 <dd class="field-even"><p>coordinates, x and y</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{element}</span><span class="p">   </span><span class="c">Find Element</span><span class="p">  </span><span class="c">CalculatorResults</span><span class="p"></span>
+<span class="c">${x}</span><span class="p">  </span><span class="c">${y}=</span><span class="p">  </span><span class="c">Get Element Center</span><span class="p">  </span><span class="c">${elements[0][0]}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_element_rectangle">
-<code class="sig-name descname">get_element_rectangle</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_rectangle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_element_rectangle</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">as_dict: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element_rectangle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get value of element <cite>rectangle</cite> attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>locator</strong> – element locator</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – element locator</p></li>
+<li><p><strong>as_dict</strong> – return values in a dictionary, default <cite>False</cite></p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>(left, top, right, bottom) values if found, else False</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${left}</span><span class="p">  </span><span class="c">${top}</span><span class="p">  </span><span class="c">${right}</span><span class="p">  </span><span class="c">${bottom}=</span><span class="p">  </span><span class="c">Get Element Rectangle</span><span class="p">  </span><span class="c">CalculatorResults</span><span class="p"></span>
+<span class="c">&amp;{coords}</span><span class="p">  </span><span class="c">Get Element Rectangle</span><span class="p">  </span><span class="c">CalculatorResults</span><span class="p">  </span><span class="c">as_dict=True</span><span class="p"></span>
+<span class="c">Log</span><span class="p">  </span><span class="c">top=${coords.top} left=${coords.left}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -431,22 +548,30 @@ defaults to False</p></li>
 <dd class="field-even"><p><cite>rich_text</cite> value if found, else False</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${text}</span><span class="p">  </span><span class="c">Get Element Rich Text</span><span class="p">  </span><span class="c">CalculatorResults</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_machine_name">
-<code class="sig-name descname">get_machine_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_machine_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_machine_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_machine_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get machine name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>machine name as string</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${machine}</span><span class="p">  </span><span class="c">Get Machine Name</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_memory_stats">
-<code class="sig-name descname">get_memory_stats</code><span class="sig-paren">(</span><em class="sig-param">humanized=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_memory_stats" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_memory_stats</code><span class="sig-paren">(</span><em class="sig-param">humanized: bool = True</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_memory_stats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get computer memory stats and return those in bytes
 or in humanized memory format.</p>
 <dl class="field-list simple">
@@ -457,17 +582,75 @@ or in humanized memory format.</p>
 <dd class="field-even"><p>memory information in dictionary format</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{mem}</span><span class="p">     </span><span class="c">Get Memory Stats</span><span class="p"></span>
+<span class="c">&amp;{mem}</span><span class="p">     </span><span class="c">Get Memory Stats</span><span class="p">   </span><span class="c">humanized=False</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.get_open_applications">
+<code class="sig-name descname">get_open_applications</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_open_applications" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of all open applications</p>
+<p>Returns a dictionary</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${app1}</span><span class="p">    </span><span class="c">Open Application</span><span class="p">   </span><span class="c">Excel</span><span class="p"></span>
+<span class="c">${app2}</span><span class="p">    </span><span class="c">Open Executable</span><span class="p">    </span><span class="c">calc.exe</span><span class="p">  </span><span class="c">Calculator</span><span class="p"></span>
+<span class="c">${app3}</span><span class="p">    </span><span class="c">Open File</span><span class="p">          </span><span class="c">/path/to/myfile.txt</span><span class="p"></span>
+<span class="c">&amp;{apps}</span><span class="p">    </span><span class="c">Get Open Applications</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.get_spaced_string">
+<code class="sig-name descname">get_spaced_string</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_spaced_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace spaces in a text with <cite>pywinauto.keyboard</cite>
+space characters <cite>{VK_SPACE}</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> – replace spaces in this string</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${txt}</span><span class="p">    </span><span class="c">Get Spaced String</span><span class="p">   </span><span class="c">My name is Bond</span><span class="p"></span>
+<span class="c"># ${txt} = My{VK_SPACE}name{VK_SPACE}is{VK_SPACE}Bond</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.get_text">
+<code class="sig-name descname">get_text</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get text from element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>locator</strong> – element locator</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Using Run Dialog</span><span class="p">  </span><span class="c">calc</span><span class="p">     </span><span class="c">Calculator</span><span class="p"></span>
+<span class="c">Type Into</span><span class="p">    </span><span class="c">CalculatorResults</span><span class="p">   </span><span class="c">11</span><span class="p"></span>
+<span class="c">Type Into</span><span class="p">    </span><span class="c">CalculatorResults</span><span class="p">   </span><span class="c">55</span><span class="p"></span>
+<span class="c">&amp;{val}</span><span class="p">       </span><span class="c">Get Text</span><span class="p">   </span><span class="c">CalculatorResults</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_username">
-<code class="sig-name descname">get_username</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_username" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_username</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_username" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get username of logged in user</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>username as string</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${user}</span><span class="p">  </span><span class="c">Get Username</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -487,6 +670,13 @@ and their descendants.</p>
 <dd class="field-even"><p>all controls and all elements</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{elements}</span><span class="p">   </span><span class="c">Get Window Elements</span><span class="p"></span>
+<span class="c">Log Many</span><span class="p">      </span><span class="c">${elements[0]}</span><span class="p">     </span><span class="c"># list of all available locators</span>
+<span class="c">Log Many</span><span class="p">      </span><span class="c">${elements[1]}</span><span class="p">     </span><span class="c"># list of matching elements</span>
+<span class="c">@{elements}</span><span class="p">   </span><span class="c">Get Window Elements</span><span class="p">  </span><span class="c">screenshot=True</span><span class="p">  </span><span class="c">element_json=True</span><span class="p">  </span><span class="c">outline=True</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -504,6 +694,13 @@ and their descendants.</p>
 <dd class="field-odd"><p>list of window dictionaries</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{windows}</span><span class="p">    </span><span class="c">Get Window List</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${window}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{windows}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log Many</span><span class="p">  </span><span class="c">${window}</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -518,6 +715,10 @@ and their descendants.</p>
 <dd class="field-even"><p>True if enabled, else False</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${res}=</span><span class="p">   </span><span class="c">Is Element Enabled</span><span class="p">  </span><span class="c">CalculatorResults</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -552,26 +753,55 @@ or <cite>criteria</cite> field in the window items.</p>
 <dd class="field-even"><p>True if visible, else False</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${res}=</span><span class="p">   </span><span class="c">Is Element Visible</span><span class="p">  </span><span class="c">CalculatorResults</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.kill_process">
-<code class="sig-name descname">kill_process</code><span class="sig-paren">(</span><em class="sig-param">process_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.kill_process" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">kill_process</code><span class="sig-paren">(</span><em class="sig-param">process_name: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Desktop.Windows.Windows.kill_process" title="Permalink to this definition">¶</a></dt>
 <dd><p>Kill process by name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>process_name</strong> – </p>
+<dd class="field-odd"><p><strong>process_name</strong> – name of the process</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>True if succeeds False if not</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${process}</span><span class="p">  </span><span class="c">Process Exists</span><span class="p">  </span><span class="c">calc</span><span class="p">  </span><span class="c">strict=False</span><span class="p"></span>
+<span class="c">${status}</span><span class="p">   </span><span class="c">Kill Process</span><span class="p">    </span><span class="c">${process.name()}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.kill_process_by_pid">
+<code class="sig-name descname">kill_process_by_pid</code><span class="sig-paren">(</span><em class="sig-param">pid: int</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.kill_process_by_pid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kill process by pid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pid</strong> – process identifier</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${process}</span><span class="p">  </span><span class="c">Process Exists</span><span class="p">  </span><span class="c">calc</span><span class="p">  </span><span class="c">strict=False</span><span class="p"></span>
+<span class="c">${status}</span><span class="p">   </span><span class="c">Kill Process</span><span class="p">    </span><span class="c">${process.pid}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.lock_screen">
 <code class="sig-name descname">lock_screen</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.lock_screen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Put windows into lock mode</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Lock Screen</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -590,6 +820,10 @@ or <cite>criteria</cite> field in the window items.</p>
 <dd class="field-even"><p>handle</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Log In</span><span class="p">  </span><span class="c">username=myname</span><span class="p">  </span><span class="c">password=mypassword</span><span class="p">  </span><span class="c">domain=company</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -601,22 +835,35 @@ or <cite>criteria</cite> field in the window items.</p>
 <dd class="field-odd"><p><strong>menuitem</strong> – name of the menu item</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Using Run Dialog</span><span class="p">   </span><span class="c">notepad</span><span class="p">     </span><span class="c">Untitled - Notepad</span><span class="p"></span>
+<span class="c">Menu Select</span><span class="p">             </span><span class="c">File-&gt;Print</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.minimize_dialog">
-<code class="sig-name descname">minimize_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.minimize_dialog" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">minimize_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.minimize_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimize window by its title</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>windowtitle</strong> – name of the window</p>
+<dd class="field-odd"><p><strong>windowtitle</strong> – name of the window, default <cite>None</cite> means that
+active window is going to be minimized</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Using Run Dialog</span><span class="p">  </span><span class="c">calc</span><span class="p">     </span><span class="c">Calculator</span><span class="p"></span>
+<span class="c">Open Using Run Dialog</span><span class="p">  </span><span class="c">notepad</span><span class="p">  </span><span class="c">Untitled - Notepad</span><span class="p"></span>
+<span class="c">Minimize Dialog</span><span class="p">    </span><span class="c"># Current window (Notepad)</span>
+<span class="c">Minimize Dialog</span><span class="p">    </span><span class="c">Calculator</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.mouse_click">
-<code class="sig-name descname">mouse_click</code><span class="sig-paren">(</span><em class="sig-param">locator: str = None</em>, <em class="sig-param">x: int = 0</em>, <em class="sig-param">y: int = 0</em>, <em class="sig-param">off_x: int = 0</em>, <em class="sig-param">off_y: int = 0</em>, <em class="sig-param">image: str = None</em>, <em class="sig-param">method: str = 'locator'</em>, <em class="sig-param">ctype: str = 'click'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mouse_click</code><span class="sig-paren">(</span><em class="sig-param">locator: str = None</em>, <em class="sig-param">x: int = 0</em>, <em class="sig-param">y: int = 0</em>, <em class="sig-param">off_x: int = 0</em>, <em class="sig-param">off_y: int = 0</em>, <em class="sig-param">image: str = None</em>, <em class="sig-param">method: str = 'locator'</em>, <em class="sig-param">ctype: str = 'click'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mouse click <cite>locator</cite>, <cite>coordinates</cite>, or <cite>image</cite></p>
 <p>When using method <cite>locator</cite>,`image` or <cite>ocr</cite> mouse is clicked by default at
 center coordinates.</p>
@@ -637,9 +884,21 @@ center coordinates.</p>
 <li><p><strong>image</strong> – image to click on desktop</p></li>
 <li><p><strong>method</strong> – one of the available methods to mouse click, default “locator”</p></li>
 <li><p><strong>ctype</strong> – type of mouse click</p></li>
+<li><p><strong>**kwargs</strong> – <p>these keyword arguments can be used to pass arguments
+to underlying <cite>Images</cite> library to finetune image template matching,
+for example. <cite>tolerance=0.5</cite> would adjust image tolerance for the image
+matching</p>
+</p></li>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Mouse Click</span><span class="p">  </span><span class="c">method=coordinates</span><span class="p">  </span><span class="c">100</span><span class="p">   </span><span class="c">100</span><span class="p"></span>
+<span class="c">Mouse Click</span><span class="p">  </span><span class="c">CalculatorResults</span><span class="p"></span>
+<span class="c">Mouse Click</span><span class="p">  </span><span class="c">method=image</span><span class="p">  </span><span class="c">image=myimage.png</span><span class="p">  </span><span class="c">off_x=10</span><span class="p">  </span><span class="c">off_y=10</span><span class="p">  </span><span class="c">ctype=right</span><span class="p"></span>
+<span class="c">Mouse Click</span><span class="p">  </span><span class="c">method=image</span><span class="p">  </span><span class="c">image=myimage.png</span><span class="p">  </span><span class="c">tolerance=0.8</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -656,28 +915,46 @@ center coordinates.</p>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Mouse Click Coords</span><span class="p">  </span><span class="c">x=450</span><span class="p">  </span><span class="c">y=100</span><span class="p"></span>
+<span class="c">Mouse Click Coords</span><span class="p">  </span><span class="c">x=300</span><span class="p">  </span><span class="c">y=300</span><span class="p">  </span><span class="c">ctype=right</span><span class="p"></span>
+<span class="c">Mouse Click Coords</span><span class="p">  </span><span class="c">x=450</span><span class="p">  </span><span class="c">y=100</span><span class="p">  </span><span class="c">delay=5.0</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.mouse_click_image">
-<code class="sig-name descname">mouse_click_image</code><span class="sig-paren">(</span><em class="sig-param">template: str</em>, <em class="sig-param">off_x: int = 0</em>, <em class="sig-param">off_y: int = 0</em>, <em class="sig-param">ctype: str = 'click'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_image" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mouse_click_image</code><span class="sig-paren">(</span><em class="sig-param">template: str</em>, <em class="sig-param">off_x: int = 0</em>, <em class="sig-param">off_y: int = 0</em>, <em class="sig-param">ctype: str = 'click'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click at template image on desktop</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>image</strong> – [description]</p></li>
-<li><p><strong>off_x</strong> – [description], defaults to 0</p></li>
-<li><p><strong>off_y</strong> – [description], defaults to 0</p></li>
-<li><p><strong>ctype</strong> – [description], defaults to “click”</p></li>
+<li><p><strong>image</strong> – image to click on desktop</p></li>
+<li><p><strong>off_x</strong> – horizontal offset from top left corner to click on</p></li>
+<li><p><strong>off_y</strong> – vertical offset from top left corner to click on</p></li>
+<li><p><strong>ctype</strong> – type of mouse click</p></li>
+<li><p><strong>**kwargs</strong> – <p>these keyword arguments can be used to pass arguments
+to underlying <cite>Images</cite> library to finetune image template matching,
+for example. <cite>tolerance=0.5</cite> would adjust image tolerance for the image
+matching</p>
+</p></li>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Mouse Click</span><span class="p">  </span><span class="c">image=myimage.png</span><span class="p">  </span><span class="c">off_x=10</span><span class="p">  </span><span class="c">off_y=10</span><span class="p">  </span><span class="c">ctype=right</span><span class="p"></span>
+<span class="c">Mouse Click</span><span class="p">  </span><span class="c">image=myimage.png</span><span class="p">  </span><span class="c">tolerance=0.8</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_application">
 <code class="sig-name descname">open_application</code><span class="sig-paren">(</span><em class="sig-param">application: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_application" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open application by dispatch method</p>
+<p>This keyword is used to launch Microsoft applications like
+Excel, Word, Outlook and Powerpoint.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>application</strong> – name of the application as <cite>str</cite></p>
@@ -686,11 +963,16 @@ center coordinates.</p>
 <dd class="field-even"><p>application instance id</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${app1}</span><span class="p">    </span><span class="c">Open Application</span><span class="p">   </span><span class="c">Excel</span><span class="p"></span>
+<span class="c">${app2}</span><span class="p">    </span><span class="c">Open Application</span><span class="p">   </span><span class="c">Word</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_dialog">
-<code class="sig-name descname">open_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">highlight: bool = False</em>, <em class="sig-param">timeout: int = 10</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_dialog" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">highlight: bool = False</em>, <em class="sig-param">timeout: int = 10</em>, <em class="sig-param">existing_app: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open window by its title.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -701,6 +983,11 @@ center coordinates.</p>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Dialog</span><span class="p">       </span><span class="c">Untitled - Notepad</span><span class="p"></span>
+<span class="c">Open Dialog</span><span class="p">       </span><span class="c">Untitled - Notepad</span><span class="p">   </span><span class="c">highlight=True</span><span class="p">   </span><span class="c">timeout=5</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -720,6 +1007,10 @@ to get handle on the application.</p>
 <dd class="field-even"><p>application instance id</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${app1}</span><span class="p">    </span><span class="c">Open Executable</span><span class="p">   </span><span class="c">calc.exe</span><span class="p">  </span><span class="c">Calculator</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -734,6 +1025,10 @@ to get handle on the application.</p>
 <dd class="field-even"><p>True if application is opened, False if not</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${app1}</span><span class="p">    </span><span class="c">Open File</span><span class="p">   </span><span class="c">/path/to/myfile.txt</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -752,6 +1047,10 @@ Window title name is required to get handle on the application.</p>
 <dd class="field-even"><p>application instance id</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${app1}</span><span class="p">    </span><span class="c">Open From Search</span><span class="p">  </span><span class="c">calculator</span><span class="p">  </span><span class="c">Calculator</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -770,26 +1069,44 @@ Window title name is required to get handle on the application.</p>
 <dd class="field-even"><p>application instance id</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${app1}</span><span class="p">    </span><span class="c">Open Using Run Dialog</span><span class="p">  </span><span class="c">notepad</span><span class="p">  </span><span class="c">Untitled - Notepad</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.process_exists">
-<code class="sig-name descname">process_exists</code><span class="sig-paren">(</span><em class="sig-param">process_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.process_exists" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">process_exists</code><span class="sig-paren">(</span><em class="sig-param">process_name: str</em>, <em class="sig-param">strict: bool = True</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.process_exists" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if process exists by its name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>process_name</strong> – search for this process</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process_name</strong> – search for this process</p></li>
+<li><p><strong>strict</strong> – defines how match is made, default <cite>True</cite>
+which means that process name needs to be exact match
+and <cite>False</cite> does inclusive matching</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>process instance or False</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${process}</span><span class="p">  </span><span class="c">Process Exists</span><span class="p">  </span><span class="c">calc</span><span class="p"></span>
+<span class="c">${process}</span><span class="p">  </span><span class="c">Process Exists</span><span class="p">  </span><span class="c">calc</span><span class="p">  </span><span class="c">strict=False</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.put_system_to_sleep">
 <code class="sig-name descname">put_system_to_sleep</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.put_system_to_sleep" title="Permalink to this definition">¶</a></dt>
 <dd><p>Put Windows into sleep mode</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Put System To Sleep</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -802,33 +1119,57 @@ active application if <cite>app_id</cite> is None.</p>
 <dd class="field-odd"><p><strong>app_id</strong> – application_id, defaults to None</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${app1}</span><span class="p">   </span><span class="c">Open Application</span><span class="p">   </span><span class="c">Excel</span><span class="p"></span>
+<span class="c">${app2}</span><span class="p">   </span><span class="c">Open Application</span><span class="p">   </span><span class="c">Word</span><span class="p"></span>
+<span class="c">Quit Application</span><span class="p">  </span><span class="c">${app1}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.restore_dialog">
-<code class="sig-name descname">restore_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.restore_dialog" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">restore_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.restore_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Restore window by its title</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>windowtitle</strong> – name of the window</p>
+<dd class="field-odd"><p><strong>windowtitle</strong> – name of the window, default <cite>None</cite> means that
+active window is going to be restored</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Using Run Dialog</span><span class="p">  </span><span class="c">notepad</span><span class="p">  </span><span class="c">Untitled - Notepad</span><span class="p"></span>
+<span class="c">Minimize Dialog</span><span class="p"></span>
+<span class="c">Sleep</span><span class="p">             </span><span class="c">1s</span><span class="p"></span>
+<span class="c">Restore Dialog</span><span class="p"></span>
+<span class="c">Sleep</span><span class="p">             </span><span class="c">1s</span><span class="p"></span>
+<span class="c">Restore Dialog</span><span class="p">    </span><span class="c">Untitled - Notepad</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.screenshot">
-<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">element: dict = None</em>, <em class="sig-param">ctrl: Any = None</em>, <em class="sig-param">desktop: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.screenshot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">element: dict = None</em>, <em class="sig-param">ctrl: Any = None</em>, <em class="sig-param">desktop: bool = False</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.screenshot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save screenshot into filename.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename</strong> – name of the file</p></li>
-<li><p><strong>element</strong> – take element screenshot if True, defaults to None</p></li>
-<li><p><strong>ctrl</strong> – take control screenshot if True, defaults to None</p></li>
+<li><p><strong>element</strong> – take element screenshot, defaults to None</p></li>
+<li><p><strong>ctrl</strong> – take control screenshot, defaults to None</p></li>
 <li><p><strong>desktop</strong> – take desktop screenshot if True, defaults to False</p></li>
+<li><p><strong>overwrite</strong> – file is overwritten if True, defaults to False</p></li>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{element}</span><span class="p">   </span><span class="c">Find Element</span><span class="p">  </span><span class="c">CalculatorResults</span><span class="p"></span>
+<span class="c">Screenshot</span><span class="p">   </span><span class="c">element.png</span><span class="p">   </span><span class="c">${elements[0][0]}</span><span class="p"></span>
+<span class="c">Screenshot</span><span class="p">   </span><span class="c">desktop.png</span><span class="p">   </span><span class="c">desktop=True</span><span class="p"></span>
+<span class="c">Screenshot</span><span class="p">   </span><span class="c">desktop.png</span><span class="p">   </span><span class="c">desktop=True</span><span class="p">  </span><span class="c">overwrite=True</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -840,14 +1181,19 @@ active application if <cite>app_id</cite> is None.</p>
 <dd class="field-odd"><p><strong>keys</strong> – list of keys to send</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Executable</span><span class="p">  </span><span class="c">calc.exe</span><span class="p">  </span><span class="c">Calculator</span><span class="p"></span>
+<span class="c">Send Keys</span><span class="p">        </span><span class="c">2{+}3=</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.send_keys_to_input">
 <code class="sig-name descname">send_keys_to_input</code><span class="sig-paren">(</span><em class="sig-param">keys_to_type: str</em>, <em class="sig-param">with_enter: bool = True</em>, <em class="sig-param">send_delay: float = 0.5</em>, <em class="sig-param">enter_delay: float = 1.5</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.send_keys_to_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send keys to windows and add ENTER if <cite>with_enter</cite> is True</p>
-<p>At the end of send_keys there is by default 1.0 second delay.
-At the end of ENTER there is by default 3.5 second delay.</p>
+<p>At the end of send_keys there is by default 0.5 second delay.
+At the end of ENTER there is by default 1.5 second delay.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -858,6 +1204,13 @@ At the end of ENTER there is by default 3.5 second delay.</p>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${txt}</span><span class="p">    </span><span class="c">Get Spaced String</span><span class="p">   </span><span class="c">My name is Bond, James Bond</span><span class="p"></span>
+<span class="c">Send Keys To Input</span><span class="p">  </span><span class="c">${txt}</span><span class="p">    </span><span class="c">with_enter=False</span><span class="p"></span>
+<span class="c">Send Keys To Input</span><span class="p">  </span><span class="c">{ENTER}THE</span><span class="p">   </span><span class="c">send_delay=5.0</span><span class="p">  </span><span class="c">with_enter=False</span><span class="p"></span>
+<span class="c">Send Keys To Input</span><span class="p">  </span><span class="c">{VK_SPACE}-{VK_SPACE}END</span><span class="p">   </span><span class="c">enter_delay=5.0</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -872,11 +1225,17 @@ At the end of ENTER there is by default 3.5 second delay.</p>
 <dd class="field-even"><p><strong>ValueError</strong> – if application is not found by given id</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${app1}</span><span class="p">    </span><span class="c">Open Application</span><span class="p">   </span><span class="c">Excel</span><span class="p"></span>
+<span class="c">${app2}</span><span class="p">    </span><span class="c">Open Application</span><span class="p">   </span><span class="c">Word</span><span class="p"></span>
+<span class="c">Switch To Application</span><span class="p">   </span><span class="c">${app1}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.type_into">
-<code class="sig-name descname">type_into</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">keys: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.type_into" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">type_into</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">keys: str</em>, <em class="sig-param">empty_field: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.type_into" title="Permalink to this definition">¶</a></dt>
 <dd><p>Type keys into element matched by given locator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -886,6 +1245,12 @@ At the end of ENTER there is by default 3.5 second delay.</p>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Executable</span><span class="p">  </span><span class="c">calc.exe</span><span class="p">  </span><span class="c">Calculator</span><span class="p"></span>
+<span class="c">Type Into</span><span class="p">        </span><span class="c">CalculatorResults</span><span class="p">  </span><span class="c">11</span><span class="p"></span>
+<span class="c">Type Into</span><span class="p">        </span><span class="c">CalculatorResults</span><span class="p">  </span><span class="c">22</span><span class="p">  </span><span class="c">empty_field=True</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -897,6 +1262,36 @@ At the end of ENTER there is by default 3.5 second delay.</p>
 <dd class="field-odd"><p><strong>keys</strong> – list of keys to type</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Executable</span><span class="p">  </span><span class="c">notepad.exe</span><span class="p">  </span><span class="c">Untitled - Notepad</span><span class="p"></span>
+<span class="c">Type Keys</span><span class="p">   </span><span class="c">My text</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.wait_for_element">
+<code class="sig-name descname">wait_for_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">search_criteria: str = None</em>, <em class="sig-param">timeout: float = 30.0</em>, <em class="sig-param">interval: float = 2.0</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.wait_for_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for element to appear into the window.</p>
+<p>Can return 1 or more elements matching locator, or raises
+<cite>ElementNotFoundError</cite> if element is not found within timeout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – name of the locator</p></li>
+<li><p><strong>search_criteria</strong> – criteria by which element is matched</p></li>
+<li><p><strong>timeout</strong> – defines how long to wait for element to appear,
+defaults to 30.0 seconds</p></li>
+<li><p><strong>interval</strong> – how often to poll for element,
+defaults to 2.0 seconds (minimum is 0.5 seconds)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{elements}</span><span class="p">  </span><span class="c">Wait For Element</span><span class="p">  </span><span class="c">CalculatorResults</span><span class="p"></span>
+<span class="c">@{elements}</span><span class="p">  </span><span class="c">Wait For Element</span><span class="p">  </span><span class="c">Results</span><span class="p">   </span><span class="c">timeout=10</span><span class="p">  </span><span class="c">interval=1.5</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
