@@ -18,12 +18,18 @@ Keywords
 ********
 
 :Authorize:
-  :Arguments: account: str = None, password: str = None, smtp_server: str = None, imap_server: str = None
+  :Arguments: account: str = None, password: str = None, smtp_server: str = None, imap_server: str = None, smtp_port: int = None, imap_port: int = None
 
   Authorize user to SMTP and IMAP servers.
 
   Will use separately set credentials or those given in keyword call.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Authorize    ${username}   ${password}  smtp_server=smtp.gmail.com  smtp_port=587
 
 :Authorize Imap:
   :Arguments: account: str = None, password: str = None, imap_server: str = None, imap_port: int = None
@@ -35,6 +41,12 @@ Keywords
   keyword ``set_credentials`` has been used.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Authorize IMAP    ${username}   ${password}  imap.gmail.com  993
+
 :Authorize Smtp:
   :Arguments: account: str = None, password: str = None, smtp_server: str = None, smtp_port: int = None
 
@@ -45,17 +57,35 @@ Keywords
   keyword ``set_credentials`` has been used.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Authorize SMTP    ${username}   ${password}  smtp.gmail.com  587
+
 :Create Folder:
   :Arguments: folder_name: str = None
 
   Create email folder
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Create Folder   filtered
+
 :Delete Folder:
   :Arguments: folder_name: str = None
 
   Delete email folder
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Delete Folder   filtered
 
 :Delete Message:
   :Arguments: criterion: str = 
@@ -65,11 +95,23 @@ Keywords
   If criterion does not return exactly 1 message then delete is not done.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Delete Message  SUBJECT "Greetings RPA developer"
+
 :Delete Messages:
   :Arguments: criterion: str = 
 
   Delete messages from server based on criterion.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Delete Messages  SUBJECT Greetings
 
 :Flag Messages:
   :Arguments: criterion: str = None, unflag: bool = False
@@ -77,11 +119,26 @@ Keywords
   Mark messages as `flagged`
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${flagged}  ${oftotal}    Flag Messages   SUBJECT rpa
+      ${unflagged}  ${oftotal}  Flag Messages   SUBJECT rpa  unflag=True
+
 :Get Folder List:
   :Arguments: subdirectory: str = None, pattern: str = None
 
   Get list of folders on the server
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      @{folders}  Get Folder List
+      @{folders}  Get Folder List  pattern=important
+      @{folders}  Get Folder List  subdirectory=sub
 
 :List Messages:
   :Arguments: criterion: str = 
@@ -89,11 +146,31 @@ Keywords
   Return list of messages matching criterion.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      @{emails}  List Messages  SUBJECT "rpa task"
+      FOR  ${email}  IN  @{EMAILS}
+          Log  ${email}[Subject]
+          Log  ${email}[From]
+          Log  ${email}[Date]
+          Log  ${email}[Delivered-To]
+          Log  ${email}[Received]
+          Log  ${email}[Has-Attachments]
+      END
+
 :Mark As Read:
   :Arguments: criterion: str = None, unread: bool = False
 
   Mark messages as `read`
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${read}  ${oftotal}  Mark As Read   SUBJECT rpa
 
 :Mark As Unread:
   :Arguments: criterion: str = None
@@ -101,23 +178,52 @@ Keywords
   Mark messages as not `read`
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${unread}  ${oftotal}  Mark As Unread   SUBJECT rpa
+
 :Rename Folder:
   :Arguments: oldname: str = None, newname: str = None, suppress_error: bool = False
 
   Rename email folder
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Rename Folder   subfolder   filtered
+
 :Save Attachment:
   :Arguments: message, target_folder, overwrite
 
-  [summary]
+  Save mail attachment into local folder
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      @{emails}  List Messages  SUBJECT "rpa task"
+      FOR  ${email}  IN  @{EMAILS}
+          Run Keyword If   ${email}[Has-Attachments] == True
+          ...              Save Attachment  target_folder=${CURDIR}  overwrite = True
+      END
 
 :Save Attachments:
   :Arguments: criterion: str = , target_folder: str = None, overwrite: bool = False
 
   Save mail attachments into local folder.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${numsaved}  Save Attachments   SUBJECT "rpa task"
+      ...          target_folder=${CURDIR}${/}messages  overwrite=True
 
 :Save Messages:
   :Arguments: criterion: str = , target_folder: str = None
@@ -128,6 +234,12 @@ Keywords
   Does not save message if `target_folder` is not given.
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Save Messages  SUBJECT Important message  target_folder=${USERDIR}${/}messages
+
 :Select Folder:
   :Arguments: folder_name: str = INBOX
 
@@ -136,6 +248,12 @@ Keywords
   Returns number of messages in the folder or
   exception if folder does not exist on the server.
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Select Folder   subfolder
 
 :Send Message:
   :Arguments: sender: str, recipients: str, subject: str = , body: str = , attachments: str = None, html: bool = False, images: str = None
@@ -147,10 +265,23 @@ Keywords
       - address@domain
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Send Message  sender@domain.com  recipient@domain.com
+      ...           subject=Greetings Software Robot Developer
+      ...           body=${email_body}
+      ...           attachments:${CURDIR}${/}report.pdf
+
 :Send Smtp Hello:
   Send hello message to SMTP server.
 
   Required step when creating SMTP connection.
+
+  .. code-block:: robotframework
+
+      Send SMTP Hello
 
 :Set Credentials:
   :Arguments: account: str = None, password: str = None
@@ -158,11 +289,24 @@ Keywords
   Set credentials
 
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Set Credentials   ${username}   ${password}
+      Authorize
+
 :Unflag Messages:
   :Arguments: criterion: str = None
 
   Mark messages as not `flagged`
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${unflagged}  ${oftotal}  Unflag Messages   SUBJECT rpa
 
 :Wait For Message:
   :Arguments: criterion: str = , timeout: float = 5.0, interval: float = 1.0
@@ -172,3 +316,9 @@ Keywords
   Examples:
       - wait_for_message('SUBJECT "rpa task calling"', timeout=300, interval=10)
 
+
+  Example:
+
+  .. code-block:: robotframework
+
+      @{emails}  Wait For Message  SUBJECT "rpa task"  timeout=300  interval=10

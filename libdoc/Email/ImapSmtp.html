@@ -222,11 +222,15 @@ specified mail server.</p>
 <dt class="field-odd">Authorize</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>account: str = None, password: str = None, smtp_server: str = None, imap_server: str = None</p>
+<dd class="field-odd"><p>account: str = None, password: str = None, smtp_server: str = None, imap_server: str = None, smtp_port: int = None, imap_port: int = None</p>
 </dd>
 </dl>
 <p>Authorize user to SMTP and IMAP servers.</p>
 <p>Will use separately set credentials or those given in keyword call.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Authorize</span><span class="p">    </span><span class="c">${username}</span><span class="p">   </span><span class="c">${password}</span><span class="p">  </span><span class="c">smtp_server=smtp.gmail.com</span><span class="p">  </span><span class="c">smtp_port=587</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Authorize Imap</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -238,6 +242,10 @@ specified mail server.</p>
 <p>Can be called without giving any parameters if library
 has been initialized with necessary information and/or
 keyword <code class="docutils literal notranslate"><span class="pre">set_credentials</span></code> has been used.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Authorize IMAP</span><span class="p">    </span><span class="c">${username}</span><span class="p">   </span><span class="c">${password}</span><span class="p">  </span><span class="c">imap.gmail.com</span><span class="p">  </span><span class="c">993</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Authorize Smtp</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -249,6 +257,10 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <p>Can be called without giving any parameters if library
 has been initialized with necessary information and/or
 keyword <code class="docutils literal notranslate"><span class="pre">set_credentials</span></code> has been used.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Authorize SMTP</span><span class="p">    </span><span class="c">${username}</span><span class="p">   </span><span class="c">${password}</span><span class="p">  </span><span class="c">smtp.gmail.com</span><span class="p">  </span><span class="c">587</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Create Folder</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -257,6 +269,10 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd>
 </dl>
 <p>Create email folder</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Folder</span><span class="p">   </span><span class="c">filtered</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Delete Folder</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -265,6 +281,10 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd>
 </dl>
 <p>Delete email folder</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Delete Folder</span><span class="p">   </span><span class="c">filtered</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Delete Message</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -274,6 +294,10 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dl>
 <p>Delete single message from server based on criterion.</p>
 <p>If criterion does not return exactly 1 message then delete is not done.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Delete Message</span><span class="p">  </span><span class="c">SUBJECT &quot;Greetings RPA developer&quot;</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Delete Messages</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -282,6 +306,10 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd>
 </dl>
 <p>Delete messages from server based on criterion.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Delete Messages</span><span class="p">  </span><span class="c">SUBJECT Greetings</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Flag Messages</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -290,6 +318,11 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd>
 </dl>
 <p>Mark messages as <cite>flagged</cite></p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${flagged}</span><span class="p">  </span><span class="c">${oftotal}</span><span class="p">    </span><span class="c">Flag Messages</span><span class="p">   </span><span class="c">SUBJECT rpa</span><span class="p"></span>
+<span class="c">${unflagged}</span><span class="p">  </span><span class="c">${oftotal}</span><span class="p">  </span><span class="c">Flag Messages</span><span class="p">   </span><span class="c">SUBJECT rpa</span><span class="p">  </span><span class="c">unflag=True</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Get Folder List</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -298,6 +331,12 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd>
 </dl>
 <p>Get list of folders on the server</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{folders}</span><span class="p">  </span><span class="c">Get Folder List</span><span class="p"></span>
+<span class="c">@{folders}</span><span class="p">  </span><span class="c">Get Folder List</span><span class="p">  </span><span class="c">pattern=important</span><span class="p"></span>
+<span class="c">@{folders}</span><span class="p">  </span><span class="c">Get Folder List</span><span class="p">  </span><span class="c">subdirectory=sub</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">List Messages</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -306,6 +345,18 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd>
 </dl>
 <p>Return list of messages matching criterion.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{emails}</span><span class="p">  </span><span class="c">List Messages</span><span class="p">  </span><span class="c">SUBJECT &quot;rpa task&quot;</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${email}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{EMAILS}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${email}[Subject]</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${email}[From]</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${email}[Date]</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${email}[Delivered-To]</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${email}[Received]</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${email}[Has-Attachments]</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Mark As Read</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -314,6 +365,10 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd>
 </dl>
 <p>Mark messages as <cite>read</cite></p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${read}</span><span class="p">  </span><span class="c">${oftotal}</span><span class="p">  </span><span class="c">Mark As Read</span><span class="p">   </span><span class="c">SUBJECT rpa</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Mark As Unread</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -322,6 +377,10 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd>
 </dl>
 <p>Mark messages as not <cite>read</cite></p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${unread}</span><span class="p">  </span><span class="c">${oftotal}</span><span class="p">  </span><span class="c">Mark As Unread</span><span class="p">   </span><span class="c">SUBJECT rpa</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Rename Folder</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -330,6 +389,10 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd>
 </dl>
 <p>Rename email folder</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Rename Folder</span><span class="p">   </span><span class="c">subfolder</span><span class="p">   </span><span class="c">filtered</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Save Attachment</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -337,7 +400,15 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <dd class="field-odd"><p>message, target_folder, overwrite</p>
 </dd>
 </dl>
-<p>[summary]</p>
+<p>Save mail attachment into local folder</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{emails}</span><span class="p">  </span><span class="c">List Messages</span><span class="p">  </span><span class="c">SUBJECT &quot;rpa task&quot;</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${email}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{EMAILS}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Run Keyword If</span><span class="p">   </span><span class="c">${email}[Has-Attachments] == True</span><span class="p"></span>
+<span class="p">    </span><span class="c">...</span><span class="p">              </span><span class="c">Save Attachment</span><span class="p">  </span><span class="c">target_folder=${CURDIR}</span><span class="p">  </span><span class="c">overwrite = True</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Save Attachments</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -346,6 +417,11 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </dd>
 </dl>
 <p>Save mail attachments into local folder.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${numsaved}</span><span class="p">  </span><span class="c">Save Attachments</span><span class="p">   </span><span class="c">SUBJECT &quot;rpa task&quot;</span><span class="p"></span>
+<span class="c">...</span><span class="p">          </span><span class="c">target_folder=${CURDIR}${/}messages</span><span class="p">  </span><span class="c">overwrite=True</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Save Messages</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -356,6 +432,10 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <p>Save messages based on criteria and store them to target folder
 with attachment files.</p>
 <p>Does not save message if <cite>target_folder</cite> is not given.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Save Messages</span><span class="p">  </span><span class="c">SUBJECT Important message</span><span class="p">  </span><span class="c">target_folder=${USERDIR}${/}messages</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Select Folder</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -366,6 +446,10 @@ with attachment files.</p>
 <p>Select folder by name</p>
 <p>Returns number of messages in the folder or
 exception if folder does not exist on the server.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Select Folder</span><span class="p">   </span><span class="c">subfolder</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Send Message</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -381,10 +465,20 @@ exception if folder does not exist on the server.</p>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Send Message</span><span class="p">  </span><span class="c">sender@domain.com</span><span class="p">  </span><span class="c">recipient@domain.com</span><span class="p"></span>
+<span class="c">...</span><span class="p">           </span><span class="c">subject=Greetings Software Robot Developer</span><span class="p"></span>
+<span class="c">...</span><span class="p">           </span><span class="c">body=${email_body}</span><span class="p"></span>
+<span class="c">...</span><span class="p">           </span><span class="c">attachments:${CURDIR}${/}report.pdf</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Send Smtp Hello</dt>
 <dd class="field-even"><p>Send hello message to SMTP server.</p>
 <p>Required step when creating SMTP connection.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Send SMTP Hello</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-odd">Set Credentials</dt>
 <dd class="field-odd"><dl class="field-list simple">
@@ -393,6 +487,11 @@ exception if folder does not exist on the server.</p>
 </dd>
 </dl>
 <p>Set credentials</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set Credentials</span><span class="p">   </span><span class="c">${username}</span><span class="p">   </span><span class="c">${password}</span><span class="p"></span>
+<span class="c">Authorize</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Unflag Messages</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -401,6 +500,10 @@ exception if folder does not exist on the server.</p>
 </dd>
 </dl>
 <p>Mark messages as not <cite>flagged</cite></p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${unflagged}</span><span class="p">  </span><span class="c">${oftotal}</span><span class="p">  </span><span class="c">Unflag Messages</span><span class="p">   </span><span class="c">SUBJECT rpa</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Wait For Message</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -415,6 +518,10 @@ exception if folder does not exist on the server.</p>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{emails}</span><span class="p">  </span><span class="c">Wait For Message</span><span class="p">  </span><span class="c">SUBJECT &quot;rpa task&quot;</span><span class="p">  </span><span class="c">timeout=300</span><span class="p">  </span><span class="c">interval=10</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </div>
