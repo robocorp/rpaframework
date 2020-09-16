@@ -83,7 +83,24 @@ class Windows(OperatingSystem):
             self.logger.debug("Failed to clear clipboard: %s", err)
 
     def set_windows_backend(self, backend: str) -> None:
-        if backend.lower() in SUPPORTED_BACKENDS:
+        """Set Windows backend which is used to interact with Windows
+        applications
+
+        Allowed values defined by `SUPPORTED_BACKENDS`
+
+        :param backend: name of the backend to use
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Set Windows Backend   uia
+            Open Executable   calc.exe  Calculator
+            Set Windows Backend   win32
+            Open Executable   calc.exe  Calculator
+
+        """
+        if backend and backend.lower() in SUPPORTED_BACKENDS:
             self._backend = backend.lower()
         else:
             raise UnknownWindowsBackendError(
