@@ -647,7 +647,7 @@ class ImapSmtp:
             @{emails}  List Messages  SUBJECT \"rpa task\"
             FOR  ${email}  IN  @{EMAILS}
                 Run Keyword If   ${email}[Has-Attachments] == True
-                ...              Save Attachment  target_folder=${CURDIR}  overwrite = True
+                ...              Save Attachment  ${email}  target_folder=${CURDIR}  overwrite = True
             END
 
         """  # noqa: E501
