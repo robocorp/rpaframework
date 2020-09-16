@@ -51,6 +51,13 @@ class MenuItemNotFoundError(Exception):
     """Raised when expected menu item is not found"""
 
 
+class UnknownWindowsBackendError(Exception):
+    """Raised when unknown Windows backend is set"""
+
+
+SUPPORTED_BACKENDS = ["uia", "win32"]
+
+
 class Windows(OperatingSystem):
     """Windows methods extending OperatingSystem class."""
 
@@ -61,8 +68,7 @@ class Windows(OperatingSystem):
         self._apps = {}
         self._app_instance_id = 0
         self._active_app_instance = -1
-        # uia or win32
-        self._backend = backend
+        self.set_windows_backend(backend)
         self.app = None
         self.dlg = None
         self.windowtitle = None
@@ -75,6 +81,31 @@ class Windows(OperatingSystem):
             self.clipboard.clear_clipboard()
         except RuntimeError as err:
             self.logger.debug("Failed to clear clipboard: %s", err)
+
+    def set_windows_backend(self, backend: str) -> None:
+        """Set Windows backend which is used to interact with Windows
+        applications
+
+        Allowed values defined by `SUPPORTED_BACKENDS`
+
+        :param backend: name of the backend to use
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Set Windows Backend   uia
+            Open Executable   calc.exe  Calculator
+            Set Windows Backend   win32
+            Open Executable   calc.exe  Calculator
+
+        """
+        if backend and backend.lower() in SUPPORTED_BACKENDS:
+            self._backend = backend.lower()
+        else:
+            raise UnknownWindowsBackendError(
+                "Unsupported Windows backend: %s" % backend
+            )
 
     def _add_app_instance(
         self,
@@ -236,7 +267,7 @@ class Windows(OperatingSystem):
         self,
         executable: str,
         windowtitle: str,
-        backend: str = "uia",
+        backend: str = None,
         work_dir: str = None,
     ) -> int:
         """Open Windows executable. Window title name is required
@@ -244,6 +275,8 @@ class Windows(OperatingSystem):
 
         :param executable: name of the executable
         :param windowtitle: name of the window
+        :param backend: set Windows backend, default None means using
+         library default value
         :param work_dir: path to working directory, default None
         :return: application instance id
 
@@ -255,13 +288,15 @@ class Windows(OperatingSystem):
 
         """
         self.logger.info("Opening executable: %s - window: %s", executable, windowtitle)
+        if backend:
+            self.set_windows_backend(backend)
         params = {
             "executable": executable,
             "windowtitle": windowtitle,
             "startkeyword": "Open Executable",
         }
         self.windowtitle = windowtitle
-        app = pywinauto.Application(backend=backend).start(
+        app = pywinauto.Application(backend=self._backend).start(
             cmd_line=executable, work_dir=work_dir
         )
 
@@ -393,7 +428,7 @@ class Windows(OperatingSystem):
             windowtitle or self._apps[self._active_app_instance]["windowtitle"]
         )
         self.logger.info("Minimize dialog: %s", windowtitle)
-        self.dlg = pywinauto.Desktop(backend="uia")[windowtitle]
+        self.dlg = pywinauto.Desktop(backend=self._backend)[windowtitle]
         self.dlg.minimize()
 
     def restore_dialog(self, windowtitle: str = None) -> None:
@@ -513,7 +548,7 @@ class Windows(OperatingSystem):
         """
         self.logger.info("Connect to application handle: %s", handle)
         app_instance = None
-        app = pywinauto.Application(backend="uia").connect(
+        app = pywinauto.Application(backend=self._backend).connect(
             handle=handle, visible_only=False
         )
         self.dlg = app.window(handle=handle)
@@ -801,8 +836,6 @@ class Windows(OperatingSystem):
 
         """
         self.logger.info("Get element: %s", locator)
-        # self.connect_by_handle(self.dlg.handle)
-        # TODO. move dlg wait into "open_dialog" ?
         self.open_dialog(self.windowtitle)
         self.dlg.wait("exists enabled visible ready")
 
@@ -1651,7 +1684,7 @@ class Windows(OperatingSystem):
                 Log Many  ${window}
             END
         """
-        windows = pywinauto.Desktop(backend="uia").windows()
+        windows = pywinauto.Desktop(backend=self._backend).windows()
         window_list = []
         for w in windows:
             window_list.append(
