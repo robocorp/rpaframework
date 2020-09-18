@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+4.0.0
+-----
+
 - Library **Browser**: Change keyword ``Screenshot`` to embed Base64 image
   string into log and save same Base 64 string to a file as png image
   (*NOTE. backwards compatibility breaking change*)
