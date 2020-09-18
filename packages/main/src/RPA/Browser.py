@@ -1177,4 +1177,5 @@ class Browser(SeleniumLibrary):
             | Open User Browser  | https://www.google.com?q=rpa |
             | Open User Browser  | https://www.google.com?q=rpa | tab=False |
         """
-        webbrowser.open_new_tab(url) if tab else webbrowser.open_new(url)
+        browser_method = webbrowser.open_new_tab if tab else webbrowser.open_new
+        browser_method(url)
