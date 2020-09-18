@@ -1,3 +1,4 @@
+import base64
 import importlib
 import logging
 import os
@@ -12,7 +13,7 @@ from pathlib import Path
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from SeleniumLibrary import SeleniumLibrary, EMBED
 from SeleniumLibrary.base import keyword
-from SeleniumLibrary.keywords import BrowserManagementKeywords
+from SeleniumLibrary.keywords import BrowserManagementKeywords, ScreenshotKeywords
 from selenium.webdriver import ChromeOptions
 
 from RPA.core import locators, notebook, webdriver
@@ -72,9 +73,12 @@ class Browser(SeleniumLibrary):
         self.locators = locators.LocatorsDatabase(locators_path)
         self._element_finder.register("alias", self._find_by_alias, persist=True)
 
+        self._embedding_screenshots = False
+        self._previous_screenshot_directory = None
         # Embed screenshots in logs by default
         if not notebook.IPYTHON_AVAILABLE:
-            self.set_screenshot_directory(EMBED)
+            self._embedding_screenshots = True
+            self._previous_screenshot_directory = self.set_screenshot_directory(EMBED)
 
     @property
     def location(self) -> str:
@@ -461,41 +465,53 @@ class Browser(SeleniumLibrary):
     @keyword
     def screenshot(
         self,
-        page: bool = True,
         locator: str = None,
-        filename_prefix: str = "screenshot",
+        filename: str = "",
     ) -> None:
+        # pylint: disable=C0301, W0212
         """Capture page and/or element screenshot.
 
-        ``page`` capture a page screenshot, default ``True``
+        ``locator`` if defined, take element screenshot, if not takes page screenshot
 
-        ``locator`` if defined, take element screenshot, default ``None``
-
-        ``filename_prefix`` prefix for screenshot files, default "screenshot"
+        ``filename`` filename for the screenshot, by default creates file `screenshot-timestamp-element/page.png`
+        if set to `None` then file is not saved at all
 
         Example:
-            | Open Available Browser | https://www.robocorp.com | headless=True |
-            | Screenshot | page=False | locator=//a[@aria-label="Home"] |
-            | Screenshot | filename_prefix=task_screenshots |
-        """
-        if page:
-            filename = os.path.join(
-                os.curdir, f"{filename_prefix}-{int(time.time())}-page.png"
-            )
-            capture_location = self.capture_page_screenshot(filename)
-            self.logger.info(
-                "Page screenshot saved to %s", Path(capture_location).resolve()
-            )
+            | Screenshot | locator=//img[@alt="Google"] | filename=locator.png |             # element screenshot, defined filename
+            | Screenshot | filename=page.png            |                                    # page screenshot, defined filename
+            | Screenshot | filename=${NONE}             |                                    # page screenshot, NO file will be created
+            | Screenshot |                              |                                    # page screenshot, default filename
+            | Screenshot | locator=//img[@alt="Google"] |                                    # element screenshot, default filename
+            | Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing
+        """  # noqa: E501
+        screenshot_keywords = ScreenshotKeywords(self)
+        default_filename_prefix = f"screenshot-{int(time.time())}"
+
+        def __save_base64_screenshot_to_file(base64_string, filename):
+            path = screenshot_keywords._get_screenshot_path(filename)
+            screenshot_keywords._create_directory(path)
+            with open(filename, "wb") as fh:
+                fh.write(base64.b64decode(base64_string))
+                self.logger.info("Screenshot saved to file: %s", filename)
+
         if locator:
-            filename = os.path.join(
-                os.curdir, f"{filename_prefix}-{int(time.time())}-element.png"
+            element = screenshot_keywords.find_element(locator)
+            screenshot_keywords._embed_to_log_as_base64(
+                element.screenshot_as_base64, 400
             )
-            capture_location = self.capture_element_screenshot(
-                locator, filename=filename
-            )
-            self.logger.info(
-                "Element screenshot saved to %s", Path(capture_location).resolve()
-            )
+            if filename is not None:
+                filename = filename or os.path.join(
+                    os.curdir, f"{default_filename_prefix}-element.png"
+                )
+                __save_base64_screenshot_to_file(element.screenshot_as_base64, filename)
+        else:
+            screenshot_as_base64 = self.driver.get_screenshot_as_base64()
+            screenshot_keywords._embed_to_log_as_base64(screenshot_as_base64, 800)
+            if filename is not None:
+                filename = filename or os.path.join(
+                    os.curdir, f"{default_filename_prefix}-page.png"
+                )
+                __save_base64_screenshot_to_file(screenshot_as_base64, filename)
 
     @keyword
     def click_element_when_visible(
