@@ -9,6 +9,7 @@ from functools import partial
 from itertools import product
 from typing import Any, Optional
 from pathlib import Path
+import webbrowser
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from SeleniumLibrary import SeleniumLibrary, EMBED
@@ -1163,3 +1164,17 @@ class Browser(SeleniumLibrary):
     def get_testability_status(self) -> bool:
         """Get SeleniumTestability plugin status"""
         return self.using_testability
+
+    @keyword
+    def open_user_browser(self, url: str, tab=True) -> None:
+        """Open URL with user's default browser
+
+        :param url: URL to open
+        :param tab: defines is url is opened in a tab (default `True`) or
+         in new window (`False`)
+
+        Example:
+            | Open User Browser  | https://www.google.com?q=rpa |
+            | Open User Browser  | https://www.google.com?q=rpa | tab=False |
+        """
+        webbrowser.open_new_tab(url) if tab else webbrowser.open_new(url)
