@@ -4,6 +4,14 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Browser**: Change keyword ``Screenshot`` to embed Base64 image
+  string into log and save same Base 64 string to a file as png image
+  (*NOTE. backwards compatibility breaking change*)
+- Library **Desktop.Windows**:
+
+  - Fix Windows backend handling to be consistent within a library
+  - New keyword ``Set Windows Backend``
+
 3.0.0
 -----
 
@@ -14,7 +22,7 @@ Upcoming release
   - Add keyword examples (documentation)
   - Change ``List Messages`` to return list of dictionaries containing
     message attributes. In addition there is attribute `Has-Attachments`
-    for each message
+    for each message (*NOTE. backwards compatibility breaking change*)
   - Add keyword ``Save Attachment`` which can be used save attachments
     from a message. Can be used when looping through messages received
     by ``List Messages``
