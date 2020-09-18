@@ -209,7 +209,7 @@ Keywords
       @{emails}  List Messages  SUBJECT "rpa task"
       FOR  ${email}  IN  @{EMAILS}
           Run Keyword If   ${email}[Has-Attachments] == True
-          ...              Save Attachment  target_folder=${CURDIR}  overwrite = True
+          ...              Save Attachment  ${email}  target_folder=${CURDIR}  overwrite = True
       END
 
 :Save Attachments:
@@ -312,9 +312,6 @@ Keywords
   :Arguments: criterion: str = , timeout: float = 5.0, interval: float = 1.0
 
   Wait for email matching `criterion` to arrive into mailbox.
-
-  Examples:
-      - wait_for_message('SUBJECT "rpa task calling"', timeout=300, interval=10)
 
 
   Example:

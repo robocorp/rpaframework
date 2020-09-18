@@ -521,7 +521,7 @@ Keywords
       Open Dialog       Untitled - Notepad   highlight=True   timeout=5
 
 :Open Executable:
-  :Arguments: executable: str, windowtitle: str, backend: str = uia, work_dir: str = None
+  :Arguments: executable: str, windowtitle: str, backend: str = None, work_dir: str = None
 
   Open Windows executable. Window title name is required
   to get handle on the application.
@@ -670,6 +670,24 @@ Keywords
       Send Keys To Input  ${txt}    with_enter=False
       Send Keys To Input  {ENTER}THE   send_delay=5.0  with_enter=False
       Send Keys To Input  {VK_SPACE}-{VK_SPACE}END   enter_delay=5.0
+
+:Set Windows Backend:
+  :Arguments: backend: str
+
+  Set Windows backend which is used to interact with Windows
+  applications
+
+  Allowed values defined by `SUPPORTED_BACKENDS`
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Set Windows Backend   uia
+      Open Executable   calc.exe  Calculator
+      Set Windows Backend   win32
+      Open Executable   calc.exe  Calculator
 
 :Switch To Application:
   :Arguments: app_id: int

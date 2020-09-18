@@ -405,7 +405,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{emails}</span><span class="p">  </span><span class="c">List Messages</span><span class="p">  </span><span class="c">SUBJECT &quot;rpa task&quot;</span><span class="p"></span>
 <span class="c">FOR</span><span class="p">  </span><span class="c">${email}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{EMAILS}</span><span class="p"></span>
 <span class="p">    </span><span class="c">Run Keyword If</span><span class="p">   </span><span class="c">${email}[Has-Attachments] == True</span><span class="p"></span>
-<span class="p">    </span><span class="c">...</span><span class="p">              </span><span class="c">Save Attachment</span><span class="p">  </span><span class="c">target_folder=${CURDIR}</span><span class="p">  </span><span class="c">overwrite = True</span><span class="p"></span>
+<span class="p">    </span><span class="c">...</span><span class="p">              </span><span class="c">Save Attachment</span><span class="p">  </span><span class="c">${email}</span><span class="p">  </span><span class="c">target_folder=${CURDIR}</span><span class="p">  </span><span class="c">overwrite = True</span><span class="p"></span>
 <span class="c">END</span><span class="p"></span>
 </pre></div>
 </div>
@@ -512,12 +512,6 @@ exception if folder does not exist on the server.</p>
 </dd>
 </dl>
 <p>Wait for email matching <cite>criterion</cite> to arrive into mailbox.</p>
-<dl class="simple">
-<dt>Examples:</dt><dd><ul class="simple">
-<li><p>wait_for_message(‘SUBJECT “rpa task calling”’, timeout=300, interval=10)</p></li>
-</ul>
-</dd>
-</dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{emails}</span><span class="p">  </span><span class="c">Wait For Message</span><span class="p">  </span><span class="c">SUBJECT &quot;rpa task&quot;</span><span class="p">  </span><span class="c">timeout=300</span><span class="p">  </span><span class="c">interval=10</span><span class="p"></span>
 </pre></div>

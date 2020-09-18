@@ -712,7 +712,7 @@ Excel, Word, Outlook and Powerpoint.</p>
 <dt class="field-even">Open Executable</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>executable: str, windowtitle: str, backend: str = uia, work_dir: str = None</p>
+<dd class="field-odd"><p>executable: str, windowtitle: str, backend: str = None, work_dir: str = None</p>
 </dd>
 </dl>
 <p>Open Windows executable. Window title name is required
@@ -854,6 +854,23 @@ At the end of ENTER there is by default 1.5 second delay.</p>
 <span class="c">Send Keys To Input</span><span class="p">  </span><span class="c">${txt}</span><span class="p">    </span><span class="c">with_enter=False</span><span class="p"></span>
 <span class="c">Send Keys To Input</span><span class="p">  </span><span class="c">{ENTER}THE</span><span class="p">   </span><span class="c">send_delay=5.0</span><span class="p">  </span><span class="c">with_enter=False</span><span class="p"></span>
 <span class="c">Send Keys To Input</span><span class="p">  </span><span class="c">{VK_SPACE}-{VK_SPACE}END</span><span class="p">   </span><span class="c">enter_delay=5.0</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Set Windows Backend</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>backend: str</p>
+</dd>
+</dl>
+<p>Set Windows backend which is used to interact with Windows
+applications</p>
+<p>Allowed values defined by <cite>SUPPORTED_BACKENDS</cite></p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set Windows Backend</span><span class="p">   </span><span class="c">uia</span><span class="p"></span>
+<span class="c">Open Executable</span><span class="p">   </span><span class="c">calc.exe</span><span class="p">  </span><span class="c">Calculator</span><span class="p"></span>
+<span class="c">Set Windows Backend</span><span class="p">   </span><span class="c">win32</span><span class="p"></span>
+<span class="c">Open Executable</span><span class="p">   </span><span class="c">calc.exe</span><span class="p">  </span><span class="c">Calculator</span><span class="p"></span>
 </pre></div>
 </div>
 </dd>

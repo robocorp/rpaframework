@@ -2887,32 +2887,22 @@ Keywords
      <p>See <span class="name">Custom locators</span> for information on how to create and use custom strategies.</p>
 
 :Screenshot:
-  :Arguments: page: bool = True, locator: str = None, filename_prefix: str = screenshot
+  :Arguments: locator: str = None, filename: str = 
 
   .. raw:: html
 
      <p>Capture page and/or element screenshot.</p>
-     <p><code>page</code> capture a page screenshot, default <code>True</code></p>
-     <p><code>locator</code> if defined, take element screenshot, default <code>None</code></p>
-     <p><code>filename_prefix</code> prefix for screenshot files, default "screenshot"</p>
+     <p><code>locator</code> if defined, take element screenshot, if not takes page screenshot</p>
+     <p><code>filename</code> filename for the screenshot, by default creates file <span class="name">screenshot-timestamp-element/page.png</span> if set to <span class="name">None</span> then file is not saved at all</p>
      <p>Example:</p>
-     <table border="1">
-     <tr>
-     <td>Open Available Browser</td>
-     <td><a href="https://www.robocorp.com">https://www.robocorp.com</a></td>
-     <td>headless=True</td>
-     </tr>
-     <tr>
-     <td>Screenshot</td>
-     <td>page=False</td>
-     <td>locator=//a[@aria-label="Home"]</td>
-     </tr>
-     <tr>
-     <td>Screenshot</td>
-     <td>filename_prefix=task_screenshots</td>
-     <td></td>
-     </tr>
-     </table>
+     <pre>
+     Screenshot | locator=//img[@alt="Google"] | filename=locator.png |             # element screenshot, defined filename
+     Screenshot | filename=page.png            |                                    # page screenshot, defined filename
+     Screenshot | filename=${NONE}             |                                    # page screenshot, NO file will be created
+     Screenshot |                              |                                    # page screenshot, default filename
+     Screenshot | locator=//img[@alt="Google"] |                                    # element screenshot, default filename
+     Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing
+     </pre>
 
 :Scroll Element Into View:
   :Arguments: locator

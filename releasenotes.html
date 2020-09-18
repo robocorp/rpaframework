@@ -246,6 +246,17 @@
 <h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="upcoming-release">
 <h2>Upcoming release<a class="headerlink" href="#upcoming-release" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Library <strong>Browser</strong>: Change keyword <code class="docutils literal notranslate"><span class="pre">Screenshot</span></code> to embed Base64 image
+string into log and save same Base 64 string to a file as png image
+(<em>NOTE. backwards compatibility breaking change</em>)</p></li>
+<li><p>Library <strong>Desktop.Windows</strong>:</p>
+<ul>
+<li><p>Fix Windows backend handling to be consistent within a library</p></li>
+<li><p>New keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Windows</span> <span class="pre">Backend</span></code></p></li>
+</ul>
+</li>
+</ul>
 </div>
 <div class="section" id="id1">
 <h2>3.0.0<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
@@ -257,7 +268,7 @@
 <li><p>Add keyword examples (documentation)</p></li>
 <li><p>Change <code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Messages</span></code> to return list of dictionaries containing
 message attributes. In addition there is attribute <cite>Has-Attachments</cite>
-for each message</p></li>
+for each message (<em>NOTE. backwards compatibility breaking change</em>)</p></li>
 <li><p>Add keyword <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Attachment</span></code> which can be used save attachments
 from a message. Can be used when looping through messages received
 by <code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Messages</span></code></p></li>
