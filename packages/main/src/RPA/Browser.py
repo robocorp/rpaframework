@@ -468,7 +468,7 @@ class Browser(SeleniumLibrary):
         locator: str = None,
         filename: str = "",
     ) -> None:
-        # pylint: disable=C0301
+        # pylint: disable=C0301, W0212
         """Capture page and/or element screenshot.
 
         ``locator`` if defined, take element screenshot, if not takes page screenshot
