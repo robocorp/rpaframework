@@ -1020,6 +1020,28 @@ descriptions of arguments.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Browser.Browser.open_user_browser">
+<code class="sig-name descname">open_user_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">tab=True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.open_user_browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open URL with user’s default browser</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – URL to open</p></li>
+<li><p><strong>tab</strong> – defines is url is opened in a tab (default <cite>True</cite>) or
+in new window (<cite>False</cite>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">Open User Browser  | <a class="reference external" href="https://www.google.com?q=rpa">https://www.google.com?q=rpa</a> |</div>
+<div class="line">Open User Browser  | <a class="reference external" href="https://www.google.com?q=rpa">https://www.google.com?q=rpa</a> | tab=False |</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Browser.Browser.register_driver">
 <code class="sig-name descname">register_driver</code><span class="sig-paren">(</span><em class="sig-param">driver</em>, <em class="sig-param">alias</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.register_driver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add’s a <cite>driver</cite> to the library WebDriverCache.</p>
@@ -1046,16 +1068,19 @@ descriptions of arguments.</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.screenshot">
-<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">page: bool = True</em>, <em class="sig-param">locator: str = None</em>, <em class="sig-param">filename_prefix: str = 'screenshot'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.screenshot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">locator: str = None</em>, <em class="sig-param">filename: str = ''</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.screenshot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Capture page and/or element screenshot.</p>
-<p><code class="docutils literal notranslate"><span class="pre">page</span></code> capture a page screenshot, default <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> if defined, take element screenshot, default <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">filename_prefix</span></code> prefix for screenshot files, default “screenshot”</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> if defined, take element screenshot, if not takes page screenshot</p>
+<p><code class="docutils literal notranslate"><span class="pre">filename</span></code> filename for the screenshot, by default creates file <cite>screenshot-timestamp-element/page.png</cite>
+if set to <cite>None</cite> then file is not saved at all</p>
 <dl>
 <dt>Example:</dt><dd><div class="line-block">
-<div class="line">Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> | headless=True |</div>
-<div class="line">Screenshot | page=False | locator=//a[&#64;aria-label=”Home”] |</div>
-<div class="line">Screenshot | filename_prefix=task_screenshots |</div>
+<div class="line">Screenshot | locator=//img[&#64;alt=”Google”] | filename=locator.png |             # element screenshot, defined filename</div>
+<div class="line">Screenshot | filename=page.png            |                                    # page screenshot, defined filename</div>
+<div class="line">Screenshot | filename=${NONE}             |                                    # page screenshot, NO file will be created</div>
+<div class="line">Screenshot |                              |                                    # page screenshot, default filename</div>
+<div class="line">Screenshot | locator=//img[&#64;alt=”Google”] |                                    # element screenshot, default filename</div>
+<div class="line">Screenshot | locator=//img[&#64;alt=”Google”] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing</div>
 </div>
 </dd>
 </dl>

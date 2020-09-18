@@ -246,6 +246,25 @@ set self.__traceback__ to tb and return self.</p>
 
 </dd></dl>
 
+<dl class="exception">
+<dt id="RPA.Desktop.Windows.UnknownWindowsBackendError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">UnknownWindowsBackendError</code><a class="headerlink" href="#RPA.Desktop.Windows.UnknownWindowsBackendError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when unknown Windows backend is set</p>
+<dl class="attribute">
+<dt id="RPA.Desktop.Windows.UnknownWindowsBackendError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Desktop.Windows.UnknownWindowsBackendError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.UnknownWindowsBackendError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.UnknownWindowsBackendError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="RPA.Desktop.Windows.Windows">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">Windows</code><span class="sig-paren">(</span><em class="sig-param">backend: str = 'uia'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows" title="Permalink to this definition">¶</a></dt>
@@ -992,7 +1011,7 @@ Excel, Word, Outlook and Powerpoint.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_executable">
-<code class="sig-name descname">open_executable</code><span class="sig-paren">(</span><em class="sig-param">executable: str</em>, <em class="sig-param">windowtitle: str</em>, <em class="sig-param">backend: str = 'uia'</em>, <em class="sig-param">work_dir: str = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_executable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_executable</code><span class="sig-paren">(</span><em class="sig-param">executable: str</em>, <em class="sig-param">windowtitle: str</em>, <em class="sig-param">backend: str = None</em>, <em class="sig-param">work_dir: str = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_executable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Windows executable. Window title name is required
 to get handle on the application.</p>
 <dl class="field-list simple">
@@ -1000,6 +1019,8 @@ to get handle on the application.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>executable</strong> – name of the executable</p></li>
 <li><p><strong>windowtitle</strong> – name of the window</p></li>
+<li><p><strong>backend</strong> – set Windows backend, default None means using
+library default value</p></li>
 <li><p><strong>work_dir</strong> – path to working directory, default None</p></li>
 </ul>
 </dd>
@@ -1209,6 +1230,26 @@ At the end of ENTER there is by default 1.5 second delay.</p>
 <span class="c">Send Keys To Input</span><span class="p">  </span><span class="c">${txt}</span><span class="p">    </span><span class="c">with_enter=False</span><span class="p"></span>
 <span class="c">Send Keys To Input</span><span class="p">  </span><span class="c">{ENTER}THE</span><span class="p">   </span><span class="c">send_delay=5.0</span><span class="p">  </span><span class="c">with_enter=False</span><span class="p"></span>
 <span class="c">Send Keys To Input</span><span class="p">  </span><span class="c">{VK_SPACE}-{VK_SPACE}END</span><span class="p">   </span><span class="c">enter_delay=5.0</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.set_windows_backend">
+<code class="sig-name descname">set_windows_backend</code><span class="sig-paren">(</span><em class="sig-param">backend: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.set_windows_backend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Windows backend which is used to interact with Windows
+applications</p>
+<p>Allowed values defined by <cite>SUPPORTED_BACKENDS</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>backend</strong> – name of the backend to use</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set Windows Backend</span><span class="p">   </span><span class="c">uia</span><span class="p"></span>
+<span class="c">Open Executable</span><span class="p">   </span><span class="c">calc.exe</span><span class="p">  </span><span class="c">Calculator</span><span class="p"></span>
+<span class="c">Set Windows Backend</span><span class="p">   </span><span class="c">win32</span><span class="p"></span>
+<span class="c">Open Executable</span><span class="p">   </span><span class="c">calc.exe</span><span class="p">  </span><span class="c">Calculator</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
