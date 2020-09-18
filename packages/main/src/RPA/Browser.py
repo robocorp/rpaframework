@@ -49,8 +49,6 @@ class Browser(SeleniumLibrary):
         # "safari": "WebKitGTKOptions",
         # "ie": "IeOptions",
     }
-    _embedding_screenshots = False
-    _previous_screenshot_directory = None
 
     def __init__(self, *args, **kwargs) -> None:
         locators_path = kwargs.pop("locators_path", locators.default_locators_path())
@@ -75,6 +73,8 @@ class Browser(SeleniumLibrary):
         self.locators = locators.LocatorsDatabase(locators_path)
         self._element_finder.register("alias", self._find_by_alias, persist=True)
 
+        self._embedding_screenshots = False
+        self._previous_screenshot_directory = None
         # Embed screenshots in logs by default
         if not notebook.IPYTHON_AVAILABLE:
             self._embedding_screenshots = True
@@ -484,19 +484,19 @@ class Browser(SeleniumLibrary):
             | Screenshot | locator=//img[@alt="Google"] |                                    # element screenshot, default filename
             | Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing
         """  # noqa: E501
-        screenshotKeywords = ScreenshotKeywords(self)
+        screenshot_keywords = ScreenshotKeywords(self)
         default_filename_prefix = f"screenshot-{int(time.time())}"
 
         def __save_base64_screenshot_to_file(base64_string, filename):
-            path = screenshotKeywords._get_screenshot_path(filename)
-            screenshotKeywords._create_directory(path)
+            path = screenshot_keywords._get_screenshot_path(filename)
+            screenshot_keywords._create_directory(path)
             with open(filename, "wb") as fh:
                 fh.write(base64.b64decode(base64_string))
                 self.logger.info("Screenshot saved to file: %s", filename)
 
         if locator:
-            element = screenshotKeywords.find_element(locator)
-            screenshotKeywords._embed_to_log_as_base64(
+            element = screenshot_keywords.find_element(locator)
+            screenshot_keywords._embed_to_log_as_base64(
                 element.screenshot_as_base64, 400
             )
             if filename is not None:
@@ -506,7 +506,7 @@ class Browser(SeleniumLibrary):
                 __save_base64_screenshot_to_file(element.screenshot_as_base64, filename)
         else:
             screenshot_as_base64 = self.driver.get_screenshot_as_base64()
-            screenshotKeywords._embed_to_log_as_base64(screenshot_as_base64, 800)
+            screenshot_keywords._embed_to_log_as_base64(screenshot_as_base64, 800)
             if filename is not None:
                 filename = filename or os.path.join(
                     os.curdir, f"{default_filename_prefix}-page.png"
