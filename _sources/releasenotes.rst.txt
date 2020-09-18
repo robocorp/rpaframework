@@ -4,6 +4,14 @@ Release notes
 Upcoming release
 ----------------
 
+4.1.0
+-----
+
+- Library **Browser**: Add keyword ``Open User Browser`` which opens URL
+  with user's default browser. Allows using browser's existing cache. To
+  control this browser see keyword ``Attach Chrome Browser`` or use
+  ``Desktop.Windows`` library to control the browser
+
 4.0.0
 -----
 
