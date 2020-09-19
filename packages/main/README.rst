@@ -15,22 +15,22 @@ Robotic Process Automation (RPA), and it is designed to be used with both
 `Robot Framework`_ and Python_. The goal is to offer well-documented and
 actively maintained core libraries for Software Robot Developers.
 
-Learn more about RPA at Robohub_.
+Learn more about RPA at `Robocorp Documentation`_.
 
 **The project is:**
 
 - 100% Open Source
 - Sponsored by Robocorp_
-- Optimized for Robocloud_ and Robocode_
+- Optimized for `Robocorp Cloud`_ and `Robocorp Lab`_
 - Accepting external contributions
 
 .. _Robot Framework: https://robotframework.org
 .. _Robot Framework Foundation: https://robotframework.org/foundation/
 .. _Python: https://python.org
-.. _Robohub: https://hub.robocorp.com
 .. _Robocorp: https://robocorp.com
-.. _Robocloud: https://hub.robocorp.com/introduction/robocorp-suite/robocloud/
-.. _Robocode: https://hub.robocorp.com/introduction/robocorp-suite/robocode-lab/
+.. _Robocorp Documentation: https://robocorp.com/docs/
+.. _Robocorp Cloud: https://robocorp.com/docs/product-manuals/robocorp-cloud/robocorp-cloud
+.. _Robocorp Lab: https://robocorp.com/docs/product-manuals/robocorp-lab/robocorp-lab-overview
 
 Links
 ^^^^^
