@@ -194,8 +194,13 @@ Support and contact
 - `Robocorp Documentation`_ for guides and tutorials
 - **#rpaframework** channel in `Robot Framework Slack`_ if you
   have open questions or want to contribute
+- `Robocorp Forum`_ for discussions about RPA
+- Communicate with your fellow Software Robot Developers and Robocorp experts
+  at `Robocorp Developers Slack`_
 
 .. _Robot Framework Slack: https://robotframework-slack-invite.herokuapp.com/
+.. _Robocorp Forum: https://forum.robocorp.com
+.. _Robocorp Developers Slack: https://robocorp-developers.slack.com
 
 Contributing
 ------------
