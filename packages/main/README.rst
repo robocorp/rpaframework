@@ -191,7 +191,7 @@ Support and contact
 -------------------
 
 - `rpaframework.org <https://rpaframework.org/>`_ for library documentation
-- Robohub_ for guides and tutorials
+- `Robocorp Documentation`_ for guides and tutorials
 - **#rpaframework** channel in `Robot Framework Slack`_ if you
   have open questions or want to contribute
 
