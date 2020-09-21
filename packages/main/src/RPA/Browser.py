@@ -14,7 +14,11 @@ import webbrowser
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from SeleniumLibrary import SeleniumLibrary, EMBED
 from SeleniumLibrary.base import keyword
-from SeleniumLibrary.keywords import BrowserManagementKeywords, ScreenshotKeywords
+from SeleniumLibrary.keywords import (
+    BrowserManagementKeywords,
+    ScreenshotKeywords,
+    AlertKeywords,
+)
 from selenium.webdriver import ChromeOptions
 
 from RPA.core import locators, notebook, webdriver
@@ -665,11 +669,48 @@ class Browser(SeleniumLibrary):
         ``action`` possible action if alert is present, default ACCEPT
 
         Example:
-            | ${res} | Is Alert Present | id:cookies |
+            | ${res} | Is Alert Present | alert message |
         """
         return self._run_should_keyword_and_return_status(
             self.alert_should_be_present, text, action
         )
+
+    @keyword
+    def does_alert_contain(self, text: str = None, timeout: float = None) -> bool:
+        # pylint: disable=W0212
+        """Does alert contain text.
+
+        ``text`` check if alert includes text, will raise ValueError is text
+        does not exist
+
+        Example:
+            | ${res} | Does Alert Contain | alert message |
+        """
+        alert_keywords = AlertKeywords(self)
+        alert = alert_keywords._wait_alert(timeout)
+        if text in alert.text:
+            return True
+        else:
+            raise ValueError('Alert did not contain text "%s"' % text)
+
+    @keyword
+    def does_alert_not_contain(self, text: str = None, timeout: float = None) -> bool:
+        # pylint: disable=W0212
+        """Does alert not contain text.
+
+        ``text`` check that alert does not include text, will raise ValueError if text
+        does exist
+
+        Example:
+            | ${res} | Does Alert Not Contain | unexpected message |
+        """
+        alert_keywords = AlertKeywords(self)
+        alert = alert_keywords._wait_alert(timeout)
+
+        if alert and text not in alert.text:
+            return True
+        else:
+            raise ValueError('Alert did contain text "%s"' % text)
 
     @keyword
     def is_checkbox_selected(self, locator: str) -> bool:

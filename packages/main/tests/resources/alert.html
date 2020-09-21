@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <title>Click link to show an alert</title>
+  </head>
+  <body>
+    <p><a href="javascript:alert('ALERT!')">Click Me!</a></p>
+    <p><a href="javascript:alert('MULTILINE\nALERT!')">Click Me Too!</a></p>
+    <p>
+      <button
+        onclick="setTimeout(function(){ alert('Alert after 500ms!'); }, 500)"
+      >
+        Slow alert
+      </button>
+    </p>
+  </body>
+</html>
