@@ -699,6 +699,38 @@
 </dl>
 <p>Deletes the cookie matching <code>name</code>.</p>
 <p>If the cookie is not found, nothing happens.</p></dd>
+<dt class="field-even">Does Alert Contain</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text: str = None, timeout: float = None</p>
+</dd>
+</dl>
+<p>Does alert contain text.</p>
+<p><code>text</code> check if alert includes text, will raise ValueError is text does not exist</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Alert Contain</td>
+<td>alert message</td>
+</tr>
+</table></dd>
+<dt class="field-even">Does Alert Not Contain</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text: str = None, timeout: float = None</p>
+</dd>
+</dl>
+<p>Does alert not contain text.</p>
+<p><code>text</code> check that alert does not include text, will raise ValueError if text does exist</p>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td>${res}</td>
+<td>Does Alert Not Contain</td>
+<td>unexpected message</td>
+</tr>
+</table></dd>
 <dt class="field-even">Does Element Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -1968,7 +2000,7 @@
 <tr>
 <td>${res}</td>
 <td>Is Alert Present</td>
-<td>id:cookies</td>
+<td>alert message</td>
 </tr>
 </table></dd>
 <dt class="field-even">Is Checkbox Selected</dt>

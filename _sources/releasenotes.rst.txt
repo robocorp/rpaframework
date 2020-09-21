@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Browser**: Add keywords ``Does Alert Contain`` and
+  ``Does Alert Not Contain``
+
 4.1.0
 -----
 

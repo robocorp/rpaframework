@@ -510,6 +510,38 @@ Keywords
      <p>Deletes the cookie matching <code>name</code>.</p>
      <p>If the cookie is not found, nothing happens.</p>
 
+:Does Alert Contain:
+  :Arguments: text: str = None, timeout: float = None
+
+  .. raw:: html
+
+     <p>Does alert contain text.</p>
+     <p><code>text</code> check if alert includes text, will raise ValueError is text does not exist</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td>${res}</td>
+     <td>Does Alert Contain</td>
+     <td>alert message</td>
+     </tr>
+     </table>
+
+:Does Alert Not Contain:
+  :Arguments: text: str = None, timeout: float = None
+
+  .. raw:: html
+
+     <p>Does alert not contain text.</p>
+     <p><code>text</code> check that alert does not include text, will raise ValueError if text does exist</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td>${res}</td>
+     <td>Does Alert Not Contain</td>
+     <td>unexpected message</td>
+     </tr>
+     </table>
+
 :Does Element Contain:
   :Arguments: locator: str, expected: str, ignore_case: bool = False
 
@@ -1817,7 +1849,7 @@ Keywords
      <tr>
      <td>${res}</td>
      <td>Is Alert Present</td>
-     <td>id:cookies</td>
+     <td>alert message</td>
      </tr>
      </table>
 
