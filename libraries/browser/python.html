@@ -301,6 +301,34 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Browser.Browser.does_alert_contain">
+<code class="sig-name descname">does_alert_contain</code><span class="sig-paren">(</span><em class="sig-param">text: str = None</em>, <em class="sig-param">timeout: float = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_alert_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does alert contain text.</p>
+<p><code class="docutils literal notranslate"><span class="pre">text</span></code> check if alert includes text, will raise ValueError is text
+does not exist</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Alert Contain | alert message |</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.does_alert_not_contain">
+<code class="sig-name descname">does_alert_not_contain</code><span class="sig-paren">(</span><em class="sig-param">text: str = None</em>, <em class="sig-param">timeout: float = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_alert_not_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does alert not contain text.</p>
+<p><code class="docutils literal notranslate"><span class="pre">text</span></code> check that alert does not include text, will raise ValueError if text
+does exist</p>
+<dl>
+<dt>Example:</dt><dd><div class="line-block">
+<div class="line">${res} | Does Alert Not Contain | unexpected message |</div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Browser.Browser.does_element_contain">
 <code class="sig-name descname">does_element_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em>, <em class="sig-param">ignore_case: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.does_element_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does element contain expected text</p>
@@ -737,7 +765,7 @@ will check if alert is present at all</p>
 <p><code class="docutils literal notranslate"><span class="pre">action</span></code> possible action if alert is present, default ACCEPT</p>
 <dl>
 <dt>Example:</dt><dd><div class="line-block">
-<div class="line">${res} | Is Alert Present | id:cookies |</div>
+<div class="line">${res} | Is Alert Present | alert message |</div>
 </div>
 </dd>
 </dl>
