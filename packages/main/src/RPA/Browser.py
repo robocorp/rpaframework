@@ -509,6 +509,7 @@ class Browser(SeleniumLibrary):
                     os.curdir, f"{default_filename_prefix}-element.png"
                 )
                 __save_base64_screenshot_to_file(element.screenshot_as_base64, filename)
+                notebook.notebook_image(filename)
         else:
             screenshot_as_base64 = self.driver.get_screenshot_as_base64()
             screenshot_keywords._embed_to_log_as_base64(screenshot_as_base64, 800)
@@ -517,6 +518,7 @@ class Browser(SeleniumLibrary):
                     os.curdir, f"{default_filename_prefix}-page.png"
                 )
                 __save_base64_screenshot_to_file(screenshot_as_base64, filename)
+                notebook.notebook_image(filename)
 
     @keyword
     def click_element_when_visible(

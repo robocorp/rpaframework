@@ -4,8 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
-- Library **Browser**: Add keywords ``Does Alert Contain`` and
-  ``Does Alert Not Contain``
+- Library **Browser**:
+
+  - Add keywords ``Does Alert Contain`` and ``Does Alert Not Contain``
+  - Fix ``Screenshot`` to explicitly  call ``Notebook Image`` to insert
+    images into notebook when that is available
 
 4.1.0
 -----
