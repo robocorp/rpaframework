@@ -15,6 +15,9 @@ from robot.libraries.BuiltIn import BuiltIn
 from RPA.core.helpers import import_by_name, required_env
 from RPA.core.notebook import notebook_print
 
+# Undefined default value
+UNDEFINED = object()
+
 
 def json_dump_safe(data, **kwargs):
     """Convert data to JSON string, and skip invalid values."""
@@ -288,7 +291,7 @@ class Items:
         assert self.current, "No active work item"
         return self.current.data.setdefault("variables", {})
 
-    def get_work_item_variable(self, name, default=None):
+    def get_work_item_variable(self, name, default=UNDEFINED):
         """Return a single variable value from the work item,
         or default value if defined and key does not exist.
         If key does not exist and default is not defined, raises `KeyError`.
@@ -298,7 +301,7 @@ class Items:
         """
         variables = self.get_work_item_variables()
         value = variables.get(name, default)
-        if value is None:
+        if value is UNDEFINED:
             raise KeyError(f"Undefined variable: {name}")
         notebook_print(text=f"**{name}** = **{value}**")
         return value

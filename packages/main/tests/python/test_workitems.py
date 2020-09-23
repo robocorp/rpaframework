@@ -110,6 +110,26 @@ def test_list_variables(library):
     assert "address" in names
 
 
+def test_get_variables(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    value = library.get_work_item_variable("username")
+    assert value == "another"
+
+    with pytest.raises(KeyError):
+        library.get_work_item_variable("notexist")
+
+
+def test_get_variables_default(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    value = library.get_work_item_variable("username", default="doesntmatter")
+    assert value == "another"
+
+    value = library.get_work_item_variable("notexist", default="doesmatter")
+    assert value == "doesmatter"
+
+
 def test_delete_variables(library):
     library.load_work_item("workspace-id", "workitem-id-second")
     assert "username" in library.list_work_item_variables()
