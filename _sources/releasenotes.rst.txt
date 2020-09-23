@@ -4,13 +4,16 @@ Release notes
 Upcoming release
 ----------------
 
+4.2.0
+-----
+
 - Library **Browser**:
 
   - Add keywords ``Does Alert Contain`` and ``Does Alert Not Contain``
-  - Fix ``Screenshot`` to explicitly  call ``Notebook Image`` to insert
+  - Fix ``Screenshot`` to explicitly call ``Notebook Image`` to insert
     images into notebook when that is available
 
-- Robocloud: Items: Allow NoneType as default for variables
+- Library **Robocloud.Items**: Allow NoneType as default for variables
 
 4.1.0
 -----
