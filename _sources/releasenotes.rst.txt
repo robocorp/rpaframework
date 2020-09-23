@@ -10,6 +10,8 @@ Upcoming release
   - Fix ``Screenshot`` to explicitly  call ``Notebook Image`` to insert
     images into notebook when that is available
 
+- Robocloud: Items: Allow NoneType as default for variables
+
 4.1.0
 -----
 

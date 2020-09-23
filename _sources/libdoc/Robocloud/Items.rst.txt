@@ -41,7 +41,7 @@ Keywords
   NOTE: Most use cases should prefer higher-level keywords.
 
 :Get Work Item Variable:
-  :Arguments: name, default=None
+  :Arguments: name, default=<object object at 0x7fd394f367f0>
 
   Return a single variable value from the work item,
   or default value if defined and key does not exist.
