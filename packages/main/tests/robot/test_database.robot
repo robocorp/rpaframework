@@ -1,18 +1,25 @@
 *** Settings ***
 Library          RPA.Database
+Library          OperatingSystem
 Force Tags       database  database-sqlite3
 Suite Setup      Initialize sqlite3 database
-Suite Teardown   Disconnect From Database
+Suite Teardown   Disconnect from sqlite3 database
 
 *** Variables ***
 ${RESOURCE_DIR}   ${CURDIR}${/}..${/}resources${/}
 ${SQLITE_FILE}    ${RESOURCE_DIR}orders.db
+${SQLITE_TESTDB}  ${CURDIR}${/}sqlitetest.db
 ${SQLITE_INIT}    ${RESOURCE_DIR}sqllite3_init.sql
 
 *** Keywords ***
 Initialize sqlite3 database
-    Connect to Database  sqlite3  database=${SQLITE_FILE}
+    Copy File     ${SQLITE_FILE}   ${SQLITE_TESTDB}
+    Connect to Database  sqlite3  database=${SQLITE_TESTDB}
     Execute SQL Script   ${SQLITE_INIT}
+
+Disconnect from sqlite3 database
+    Disconnect From Database
+    Remove File   ${SQLITE_TESTDB}
 
 *** Tasks ***
 Select data from sqlite3 database
