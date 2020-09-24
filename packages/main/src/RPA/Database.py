@@ -10,13 +10,98 @@ except ImportError:
     import configparser as ConfigParser
 
 
+class Configuration:
+    def __init__(self):
+        self.configuration = {}
+        self.module_name = None
+
+    def parse_arguments(
+        self,
+        module_name,
+        database,
+        username,
+        password,
+        host,
+        port,
+        charset,
+        config_file: str,
+    ):
+        config = ConfigParser.ConfigParser()
+        config.read([config_file])
+
+        self.configuration = {}
+        self.module_name = module_name or (
+            config.get("default", "module_name")
+            if config.has_option("default", "module_name")
+            else None
+        )
+        self.configuration["database"] = database or (
+            config.get("default", "database")
+            if config.has_option("default", "database")
+            else None
+        )
+        self.configuration["username"] = username or (
+            config.get("default", "username")
+            if config.has_option("default", "username")
+            else None
+        )
+        self.configuration["password"] = password or (
+            config.get("default", "password")
+            if config.has_option("default", "password")
+            else None
+        )
+        self.configuration["host"] = host or (
+            config.get("default", "host")
+            if config.has_option("default", "host")
+            else None
+        )
+        self.configuration["port"] = port or (
+            int(config.get("default", "port"))
+            if config.has_option("default", "host")
+            else None
+        )
+        return self.module_name, self.configuration
+
+    def get(self, param, default=None):
+        return (
+            self.configuration[param] if param in self.configuration.keys() else default
+        )
+
+    def set_val(self, param, value):
+        self.configuration[param] = value
+
+    def all_but_empty(self):
+        new_dict = {}
+        for key, value in dict(self.configuration).items():
+            if value is not None:
+                new_dict[key] = value
+        return new_dict
+
+    def set_default_port(self, port):
+        if (
+            "port" not in self.configuration.keys()
+            or self.configuration["port"] is None
+        ):
+            self.configuration["port"] = int(port)
+
+    def get_connection_parameters_as_string(self, conf=None):
+        configuration = conf or self.configuration
+        parameters = ",".join(
+            "{}={}".format(str(k), str(v)) for k, v in configuration.items()
+        )
+        return "Connecting using : %s.connect(%s)" % (self.module_name, parameters)
+
+
 class Database:
     """Library handling different database operations."""
+
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
         self._dbconnection = None
         self.db_api_module_name = None
+        self.config = Configuration()
 
     # pylint: disable=R0915
     def connect_to_database(  # noqa: C901
@@ -50,182 +135,126 @@ class Database:
             Connect To Database  ${CURDIR}${/}resources${/}dbconfig.cfg
 
         """
-        config = ConfigParser.ConfigParser()
-        configfile = config.read([config_file])
-
-        if configfile:
-            module_name = module_name or config.get("default", "module_name")
-            database = database or config.get("default", "database")
-            username = username or config.get("default", "username")
-            password = (
-                password if password is not None else config.get("default", "password")
-            )
-            host = host or config.get("default", "host") or "localhost"
-            port = int(port or config.get("default", "port"))
-
-        if module_name in ("excel", "excelrw"):
+        self.config.parse_arguments(
+            module_name, database, username, password, host, port, charset, config_file
+        )
+        if self.config.module_name in ("excel", "excelrw"):
             self.db_api_module_name = "pyodbc"
             dbmodule = importlib.import_module("pyodbc")
         else:
-            self.db_api_module_name = module_name
-            dbmodule = importlib.import_module(module_name)
+            self.db_api_module_name = self.config.module_name
+            dbmodule = importlib.import_module(self.config.module_name)
         if module_name in ["MySQLdb", "pymysql"]:
-            port = port or 3306
-            self.logger.info(
-                "Connecting using : %s.connect(db=%s, user=%s, passwd=%s, host=%s"
-                ", port=%s, charset=%s) ",
-                module_name,
-                database,
-                username,
-                password,
-                host,
-                port,
-                charset,
-            )
+            self.config.set_default_port(3306)
+            self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = dbmodule.connect(
-                db=database,
-                user=username,
-                passwd=password,
-                host=host,
-                port=port,
-                charset=charset,
+                db=self.config.get("database"),
+                user=self.config.get("username"),
+                passwd=self.config.get("password"),
+                host=self.config.get("host"),
+                port=self.config.get("port"),
+                charset=self.config.get("charset"),
             )
         elif module_name == "psycopg2":
-            port = port or 5432
-            self.logger.info(
-                "Connecting using : %s.connect(database=%s, user=%s, password=%s, "
-                "host=%s, port=%s) ",
-                module_name,
-                database,
-                username,
-                password,
-                host,
-                port,
-            )
+            self.config.set_default_port(5432)
+            self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = dbmodule.connect(
-                database=database,
-                user=username,
-                password=password,
-                host=host,
-                port=port,
+                database=self.config.get("database"),
+                user=self.config.get("username"),
+                password=self.config.get("password"),
+                host=self.config.get("host"),
+                port=self.config.get("port"),
             )
         elif module_name in ("pyodbc", "pypyodbc"):
-            port = port or 1433
-            self.logger.info(
-                "Connecting using : %s.connect(DRIVER={SQL Server};SERVER=%s,%s;"
-                "DATABASE=%s;UID=%s;PWD=%s)",
-                module_name,
-                host,
-                port,
-                database,
-                username,
-                password,
-            )
-            self._dbconnection = dbmodule.connect(
+            self.config.set_default_port(1433)
+            self.config.set_val(
                 "DRIVER={SQL Server};SERVER=%s,%s;DATABASE=%s;UID=%s;PWD=%s"
-                % (host, port, database, username, password)
+                % (
+                    self.config.get("host"),
+                    self.config.get("port"),
+                    self.config.get("database"),
+                    self.config.get("username"),
+                    self.config.get("password"),
+                ),
             )
+            self.logger.info(self.config.get_connection_parameters_as_string())
+            self._dbconnection = dbmodule.connect(self.config.get("connect_string"))
         elif module_name == "excel":
-            self.logger.info(
-                "Connecting using : %s.connect(DRIVER={Microsoft Excel Driver (*.xls, "
-                "*.xlsx, *.xlsm, *.xlsb)};DBQ=%s;ReadOnly=1;Extended Properties="
-                '"Excel 8.0;HDR=YES";)',
-                module_name,
-                database,
-            )
-            self._dbconnection = dbmodule.connect(
+            self.config.set_val(
+                "connect_string",
                 "DRIVER={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};"
                 'DBQ=%s;ReadOnly=1;Extended Properties="Excel 8.0;HDR=YES";)'
-                % (database),
+                % self.config.get("database"),
+            )
+            self.logger.info(self.config.get_connection_parameters_as_string())
+            self._dbconnection = dbmodule.connect(
+                self.config.get("connect_string"),
                 autocommit=True,
             )
         elif module_name == "excelrw":
-            self.logger.info(
-                "Connecting using : %s.connect(DRIVER={Microsoft Excel Driver (*.xls,"
-                "*.xlsx, *.xlsm, *.xlsb)};DBQ=%s;ReadOnly=0;Extended Properties="
-                '"Excel 8.0;HDR=YES";)',
-                module_name,
-                database,
-            )
-            self._dbconnection = dbmodule.connect(
+            self.config.set_val(
+                "connect_string",
                 "DRIVER={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};"
                 'DBQ=%s;ReadOnly=0;Extended Properties="Excel 8.0;HDR=YES";)'
-                % (database),
+                % self.config.get("database"),
+            )
+            self.logger.info(self.config.get_connection_parameters_as_string())
+            self._dbconnection = dbmodule.connect(
+                self.config.get("connect_string"),
                 autocommit=True,
             )
         elif module_name in ("ibm_db", "ibm_db_dbi"):
-            port = port or 50000
-            self.logger.info(
-                "Connecting using : %s.connect(DATABASE=%s;HOSTNAME=%s;PORT=%s;"
-                "PROTOCOL=TCPIP;UID=%s;PWD=%s;) ",
-                module_name,
-                database,
-                host,
-                port,
-                username,
-                password,
-            )
-            self._dbconnection = dbmodule.connect(
+            self.config.set_default_port(50000)
+            self.config.set_val(
+                "connect_string",
                 "DATABASE=%s;HOSTNAME=%s;PORT=%s;PROTOCOL=TCPIP;UID=%s;PWD=%s;"
-                % (database, host, port, username, password),
+                % (
+                    self.config.get("database"),
+                    self.config.get("host"),
+                    self.config.get("port"),
+                    self.config.get("usernamme"),
+                    self.config.get("password"),
+                ),
+            )
+            self.logger.info(self.config.get_connection_parameters_as_string())
+            self._dbconnection = dbmodule.connect(
+                self.config.get("connect_string"),
                 "",
                 "",
             )
         elif module_name == "cx_Oracle":
-            port = port or 1521
-            oracle_dsn = dbmodule.makedsn(host=host, port=port, service_name=database)
-            self.logger.info(
-                "Connecting using: %s.connect(user=%s, password=%s, dsn=%s) ",
-                module_name,
-                username,
-                password,
-                oracle_dsn,
+            self.config.set_default_port(1521)
+            oracle_dsn = dbmodule.makedsn(
+                host=self.config.get("host"),
+                port=self.config.get("port"),
+                service_name=self.config.get("database"),
             )
+            self.config.set_val("oracle_dsn", oracle_dsn)
+            self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = dbmodule.connect(
-                user=username, password=password, dsn=oracle_dsn
+                user=self.config.get("username"),
+                password=self.config.get("password"),
+                dsn=self.config.get("oracle_dsn"),
             )
         elif module_name == "teradata":
-            port = port or 1025
+            self.config.set_default_port(1025)
             teradata_udaExec = dbmodule.UdaExec(
                 appName="RobotFramework", version="1.0", logConsole=False
             )
-            self.logger.info(
-                "Connecting using : %s.connect(database=%s, user=%s, password=%s, "
-                "host=%s, port=%s) ",
-                module_name,
-                database,
-                username,
-                password,
-                host,
-                port,
-            )
+            self.logger.info(self.config.get_connection_parameters_as_string())
             self._dbconnection = teradata_udaExec.connect(
                 method="odbc",
-                system=host,
-                database=database,
-                username=username,
-                password=password,
-                host=host,
-                port=port,
+                system=self.config.get("host"),
+                database=self.config.get("database"),
+                username=self.config.get("username"),
+                password=self.config.get("password"),
+                host=self.config.get("host"),
+                port=self.config.get("port"),
             )
         else:
-            self.logger.info(
-                "Connecting using : %s.connect(database=%s, user=%s, password=%s, "
-                "host=%s, port=%s) ",
-                module_name,
-                database,
-                username,
-                password,
-                host,
-                port,
-            )
-            self._dbconnection = dbmodule.connect(
-                database=database,
-                user=username,
-                password=password,
-                host=host,
-                port=port,
-            )
+            conf = self.config.all_but_empty()
+            self.logger.info(self.config.get_connection_parameters_as_string(conf))
+            self._dbconnection = dbmodule.connect(**conf)
 
     def call_stored_procedure(self, name, params=None, sanstran=False):
         """Call stored procedure with name and params.
@@ -279,7 +308,13 @@ class Database:
             ${db_description}      Description  mytable
 
         """
-        result = self.query("DESCRIBE %s" % table, as_table=True)
+        try:
+            result = self.query("DESCRIBE %s" % table, as_table=True)
+        except Exception as e:
+            raise AssertionError(
+                "Operation not supported for '%s' type database"
+                % self.db_api_module_name
+            ) from e
         return result.to_list()
 
     def disconnect_from_database(self):
@@ -294,7 +329,8 @@ class Database:
             Disconnect From Database
 
         """
-        self._dbconnection.close()
+        if self._dbconnection:
+            self._dbconnection.close()
 
     # pylint: disable=R0912
     def execute_sql_script(self, filename, sanstran=False):  # noqa: C901
@@ -391,7 +427,6 @@ class Database:
                     available_locals = {
                         "row_count": row_count,
                         "columns": columns,
-                        "result": result,
                     }
                     # pylint: disable=W0123
                     valid = eval(assertion, {"__builtins__": None}, available_locals)
