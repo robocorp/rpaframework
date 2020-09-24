@@ -60,6 +60,11 @@ class Configuration:
             if config.has_option("default", "host")
             else None
         )
+        self.configuration["charset"] = port or (
+            config.get("default", "charset")
+            if config.has_option("default", "charset")
+            else None
+        )
         return self.module_name, self.configuration
 
     def get(self, param, default=None):
@@ -168,6 +173,7 @@ class Database:
         elif module_name in ("pyodbc", "pypyodbc"):
             self.config.set_default_port(1433)
             self.config.set_val(
+                "connect_string",
                 "DRIVER={SQL Server};SERVER=%s,%s;DATABASE=%s;UID=%s;PWD=%s"
                 % (
                     self.config.get("host"),
