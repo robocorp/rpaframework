@@ -12,6 +12,15 @@ Description
 
 `Database` is a library for handling different database operations.
 
+This can allow you to query your database after an action has been made to verify the results.
+
+Library is compatible with any Database API Specification 2.0 module.
+
+References:
+    + Database API Specification 2.0 - http://www.python.org/dev/peps/pep-0249/
+    + Lists of DB API 2.0 - http://wiki.python.org/moin/DatabaseInterfaces
+    + Python Database Programming - http://wiki.python.org/moin/DatabaseProgramming/
+
 ********
 Examples
 ********
