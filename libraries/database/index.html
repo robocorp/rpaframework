@@ -215,29 +215,40 @@
 <div class="section" id="description">
 <h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p><cite>Database</cite> is a library for handling different database operations.</p>
-<p>The library extends <a class="reference external" href="http://franz-see.github.io/Robotframework-Database-Library/api/1.2.2/DatabaseLibrary.html">robotframework-databaselibrary</a>.</p>
+<p>This can allow you to query your database after an action has been made to verify the results.</p>
+<p>Library is compatible with any Database API Specification 2.0 module.</p>
+<dl class="simple">
+<dt>References:</dt><dd><ul class="simple">
+<li><p>Database API Specification 2.0 - <a class="reference external" href="http://www.python.org/dev/peps/pep-0249/">http://www.python.org/dev/peps/pep-0249/</a></p></li>
+<li><p>Lists of DB API 2.0 - <a class="reference external" href="http://wiki.python.org/moin/DatabaseInterfaces">http://wiki.python.org/moin/DatabaseInterfaces</a></p></li>
+<li><p>Python Database Programming - <a class="reference external" href="http://wiki.python.org/moin/DatabaseProgramming/">http://wiki.python.org/moin/DatabaseProgramming/</a></p></li>
+</ul>
+</dd>
+</dl>
 </div>
 <div class="section" id="examples">
 <h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="robot-framework">
 <h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">             </span><span class="nn">RPA.Database</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">             </span><span class="nn">RPA.Robocloud.Secrets.FileSecrets</span><span class="p">  </span><span class="s">secrets.json</span><span class="p"></span>
 
 <span class="gh">*** Tasks ***</span><span class="p"></span>
 <span class="gu">Get Orders From Database</span><span class="p"></span>
-<span class="p">    ${</span><span class="nv">secrets</span><span class="p">}=     </span><span class="nf">Get Secret</span><span class="p">   </span><span class="s">ordersecrets</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Connect To Database Using Custom Params</span><span class="p">    </span><span class="s">sqlite3</span><span class="p">    </span><span class="s">database=&quot;</span><span class="p">${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">DATABASE</span><span class="p">]</span><span class="s">&quot;</span><span class="p"></span>
-<span class="p">    ${</span><span class="nv">orders</span><span class="p">}=   </span><span class="nf">Database Query Result As Table</span><span class="p">  </span><span class="s">SELECT * FROM incoming_orders</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Connect To Database</span><span class="p">  </span><span class="s">pymysql</span><span class="p">  </span><span class="s">tester</span><span class="p">  </span><span class="s">user</span><span class="p">  </span><span class="s">password</span><span class="p">  </span><span class="s">127.0.0.1</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">orders</span><span class="p">}            </span><span class="nf">Query</span><span class="p">    </span><span class="s">Select * FROM incoming_orders</span><span class="p"></span>
+<span class="p">    FOR   ${</span><span class="nv">order</span><span class="p">}  IN  @{</span><span class="nv">orders</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Handle Order</span><span class="p">  ${</span><span class="nv">order</span><span class="p">}</span>
+<span class="p">    END</span>
 </pre></div>
 </td></tr></table></div>
 </div>
@@ -258,20 +269,20 @@
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>
-<span class="kn">from</span> <span class="nn">RPA.Database</span> <span class="kn">import</span> <span class="n">Database</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Database</span> <span class="kn">import</span> <span class="n">Database</span>
 <span class="kn">from</span> <span class="nn">RPA.Robocloud.Secrets</span> <span class="kn">import</span> <span class="n">FileSecrets</span>
 
-<span class="n">pp</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">filesecrets</span> <span class="o">=</span> <span class="n">FileSecrets</span><span class="p">(</span><span class="s2">&quot;secrets.json&quot;</span><span class="p">)</span>
 <span class="n">secrets</span> <span class="o">=</span> <span class="n">filesecrets</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;databasesecrets&quot;</span><span class="p">)</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">Database</span><span class="p">()</span>
-<span class="n">database_file</span> <span class="o">=</span> <span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;DATABASE_FILE&quot;</span><span class="p">]</span>
-<span class="n">db</span><span class="o">.</span><span class="n">connect_to_database_using_custom_params</span><span class="p">(</span>
-    <span class="s2">&quot;sqlite3&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">database_file</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">orders</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">database_query_result_as_table</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM incoming_orders&quot;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">connect_to_database</span><span class="p">(</span><span class="s1">&#39;pymysql&#39;</span><span class="p">,</span>
+                    <span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;DATABASE&quot;</span><span class="p">],</span>
+                    <span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;USERNAME&quot;</span><span class="p">],</span>
+                    <span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;PASSWORD&quot;</span><span class="p">],</span>
+                    <span class="s1">&#39;127.0.0.1&#39;</span>
+                    <span class="p">)</span>
+<span class="n">orders</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM incoming_orders&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
 </pre></div>

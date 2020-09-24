@@ -214,878 +214,127 @@
 </dd>
 </dl>
 <p>Library handling different database operations.</p>
-<p>Extends functionality of DatabaseLibrary, for more information see <a href="https://github.com/franz-see/Robotframework-Database-Library">https://github.com/franz-see/Robotframework-Database-Library</a></p></div>
+</div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list">
 <dt class="field-odd">Call Stored Procedure</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>spName, spParams=None, sansTran=False</p>
+<dd class="field-odd"><p>name, params=None, sanstran=False</p>
 </dd>
 </dl>
-<p>Uses the inputs of <span class="name">spName</span> and 'spParams' to call a stored procedure. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback.</p>
-<p>spName should be the stored procedure name itself spParams [Optional] should be a List of the parameters being sent in.  The list can be one or multiple items.</p>
-<p>The return from this keyword will always be a list.</p>
+<p>Call stored procedure with name and params.</p>
 <p>Example:</p>
-<table border="1">
-<tr>
-<td>@{ParamList} =</td>
-<td>Create List</td>
-<td>FirstParam</td>
-<td>SecondParam</td>
-<td>ThirdParam</td>
-</tr>
-<tr>
-<td>@{QueryResults} =</td>
-<td>Call Stored Procedure</td>
-<td>DBName.SchemaName.StoredProcName</td>
-<td>List of Parameters</td>
-<td></td>
-</tr>
-</table>
-<p>Example:</p>
-<table border="1">
-<tr>
-<td>@{ParamList} =</td>
-<td>Create List</td>
-<td>Testing</td>
-<td>LastName</td>
-</tr>
-<tr>
-<td>Set Test Variable</td>
-<td>${SPName} =</td>
-<td>DBTest.DBSchema.MyStoredProc</td>
-<td></td>
-</tr>
-<tr>
-<td>@{QueryResults} =</td>
-<td>Call Stored Procedure</td>
-<td>${SPName}</td>
-<td>${ParamList}</td>
-</tr>
-<tr>
-<td>Log List</td>
-<td>@{QueryResults}</td>
-<td></td>
-<td></td>
-</tr>
-</table>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>@{QueryResults} =</td>
-<td>Call Stored Procedure</td>
-<td>DBName.SchemaName.StoredProcName</td>
-<td>List of Parameters</td>
-<td>True</td>
-</tr>
-</table></dd>
-<dt class="field-even">Check If Exists In Database</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>selectStatement, sansTran=False</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{params}</span><span class="p">     </span><span class="c">Create List</span><span class="p">   </span><span class="c">FirstParam</span><span class="p">   </span><span class="c">SecondParam</span><span class="p">   </span><span class="c">ThirdParam</span><span class="p"></span>
+<span class="c">@{results}</span><span class="p">    </span><span class="c">Call Stored Procedure</span><span class="p">   </span><span class="c">mystpr</span><span class="p">  </span><span class="c">${params}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
-</dl>
-<p>Check if any row would be returned by given the input <span class="name">selectStatement</span>. If there are no results, then this will throw an AssertionError. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback.</p>
-<p>For example, given we have a table <span class="name">person</span> with the following data:</p>
-<table border="1">
-<tr>
-<td>id</td>
-<td>first_name</td>
-<td>last_name</td>
-</tr>
-<tr>
-<td>1</td>
-<td>Franz Allan</td>
-<td>See</td>
-</tr>
-</table>
-<p>When you have the following assertions in your robot</p>
-<table border="1">
-<tr>
-<td>Check If Exists In Database</td>
-<td>SELECT id FROM person WHERE first_name = 'Franz Allan'</td>
-</tr>
-<tr>
-<td>Check If Exists In Database</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-</tr>
-</table>
-<p>Then you will get the following:</p>
-<table border="1">
-<tr>
-<td>Check If Exists In Database</td>
-<td>SELECT id FROM person WHERE first_name = 'Franz Allan'</td>
-<td># PASS</td>
-</tr>
-<tr>
-<td>Check If Exists In Database</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-<td># FAIL</td>
-</tr>
-</table>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>Check If Exists In Database</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-<td>True</td>
-</tr>
-</table></dd>
-<dt class="field-even">Check If Not Exists In Database</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>selectStatement, sansTran=False</p>
-</dd>
-</dl>
-<p>This is the negation of <span class="name">check_if_exists_in_database</span>.</p>
-<p>Check if no rows would be returned by given the input <span class="name">selectStatement</span>. If there are any results, then this will throw an AssertionError. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback.</p>
-<p>For example, given we have a table <span class="name">person</span> with the following data:</p>
-<table border="1">
-<tr>
-<td>id</td>
-<td>first_name</td>
-<td>last_name</td>
-</tr>
-<tr>
-<td>1</td>
-<td>Franz Allan</td>
-<td>See</td>
-</tr>
-</table>
-<p>When you have the following assertions in your robot</p>
-<table border="1">
-<tr>
-<td>Check If Not Exists In Database</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-</tr>
-<tr>
-<td>Check If Not Exists In Database</td>
-<td>SELECT id FROM person WHERE first_name = 'Franz Allan'</td>
-</tr>
-</table>
-<p>Then you will get the following:</p>
-<table border="1">
-<tr>
-<td>Check If Not Exists In Database</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-<td># PASS</td>
-</tr>
-<tr>
-<td>Check If Not Exists In Database</td>
-<td>SELECT id FROM person WHERE first_name = 'Franz Allan'</td>
-<td># FAIL</td>
-</tr>
-</table>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>Check If Not Exists In Database</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-<td>True</td>
-</tr>
-</table></dd>
 <dt class="field-even">Connect To Database</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>dbapiModuleName=None, dbName=None, dbUsername=None, dbPassword=None, dbHost=None, dbPort=None, dbCharset=None, dbConfigFile=./resources/db.cfg</p>
+<dd class="field-odd"><p>module_name=None, database=None, username=None, password=None, host=None, port=None, charset=None, config_file=db.cfg</p>
 </dd>
 </dl>
-<p>Loads the DB API 2.0 module given <span class="name">dbapiModuleName</span> then uses it to connect to the database using <span class="name">dbName</span>, <span class="name">dbUsername</span>, and <span class="name">dbPassword</span>.</p>
-<p>Optionally, you can specify a <span class="name">dbConfigFile</span> wherein it will load the default property values for <span class="name">dbapiModuleName</span>, <span class="name">dbName</span> <span class="name">dbUsername</span> and <span class="name">dbPassword</span> (note: specifying <span class="name">dbapiModuleName</span>, <span class="name">dbName</span> <span class="name">dbUsername</span> or <span class="name">dbPassword</span> directly will override the properties of the same key in <span class="name">dbConfigFile</span>). If no <span class="name">dbConfigFile</span> is specified, it defaults to <span class="name">./resources/db.cfg</span>.</p>
-<p>The <span class="name">dbConfigFile</span> is useful if you don't want to check into your SCM your database credentials.</p>
-<p>Example db.cfg file</p>
-<pre>
-[default]
-dbapiModuleName=pymysqlforexample
-dbName=yourdbname
-dbUsername=yourusername
-dbPassword=yourpassword
-dbHost=yourhost
-dbPort=yourport
-</pre>
-<p>Example usage:</p>
-<table border="1">
-<tr>
-<td># explicitly specifies all db property values</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Connect To Database</td>
-<td>psycopg2</td>
-<td>my_db</td>
-<td>postgres</td>
-<td>s3cr3t</td>
-<td>tiger.foobar.com</td>
-<td>5432</td>
-</tr>
-</table>
-<table border="1">
-<tr>
-<td># loads all property values from default.cfg</td>
-<td></td>
-</tr>
-<tr>
-<td>Connect To Database</td>
-<td>dbConfigFile=default.cfg</td>
-</tr>
-</table>
-<table border="1">
-<tr>
-<td># loads all property values from ./resources/db.cfg</td>
-</tr>
-<tr>
-<td>Connect To Database</td>
-</tr>
-</table>
-<table border="1">
-<tr>
-<td># uses explicit <span class="name">dbapiModuleName</span> and <span class="name">dbName</span> but uses the <span class="name">dbUsername</span> and <span class="name">dbPassword</span> in 'default.cfg'</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Connect To Database</td>
-<td>psycopg2</td>
-<td>my_db_test</td>
-<td>dbConfigFile=default.cfg</td>
-</tr>
-</table>
-<table border="1">
-<tr>
-<td># uses explicit <span class="name">dbapiModuleName</span> and <span class="name">dbName</span> but uses the <span class="name">dbUsername</span> and <span class="name">dbPassword</span> in './resources/db.cfg'</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Connect To Database</td>
-<td>psycopg2</td>
-<td>my_db_test</td>
-</tr>
-</table></dd>
-<dt class="field-even">Connect To Database Using Custom Params</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>dbapiModuleName=None, db_connect_string=</p>
+<p>Connect to database using DB API 2.0 module.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Connect To Database</span><span class="p">  </span><span class="c">pymysql</span><span class="p">  </span><span class="c">database</span><span class="p">  </span><span class="c">username</span><span class="p">  </span><span class="c">password</span><span class="p">  </span><span class="c">host</span><span class="p">  </span><span class="c">port</span><span class="p"></span>
+<span class="c">Connect To Database</span><span class="p">  </span><span class="c">${CURDIR}${/}resources${/}dbconfig.cfg</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
-</dl>
-<p>Loads the DB API 2.0 module given <span class="name">dbapiModuleName</span> then uses it to connect to the database using the map string <span class="name">db_custom_param_string</span>.</p>
-<p>Example usage:</p>
-<table border="1">
-<tr>
-<td># for psycopg2</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Connect To Database Using Custom Params</td>
-<td>psycopg2</td>
-<td>database='my_db_test', user='postgres', password='s3cr3t', host='tiger.foobar.com', port=5432</td>
-</tr>
-</table>
-<table border="1">
-<tr>
-<td># for JayDeBeApi</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Connect To Database Using Custom Params</td>
-<td>JayDeBeApi</td>
-<td>'oracle.jdbc.driver.OracleDriver', 'my_db_test', 'system', 's3cr3t'</td>
-</tr>
-</table></dd>
-<dt class="field-even">Database Query Result As Table</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>query_string: str</p>
-</dd>
-</dl>
-<p>Make database query and return result as <span class="name">RPA.Table</span>.</p>
-<p><code>query_string</code> SQL query string</p></dd>
-<dt class="field-even">Delete All Rows From Table</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>tableName, sansTran=False</p>
-</dd>
-</dl>
-<p>Delete all the rows within a given table. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback.</p>
-<p>For example, given we have a table <span class="name">person</span> in a database</p>
-<p>When you do the following:</p>
-<table border="1">
-<tr>
-<td>Delete All Rows From Table</td>
-<td>person</td>
-</tr>
-</table>
-<p>If all the rows can be successfully deleted, then you will get:</p>
-<table border="1">
-<tr>
-<td>Delete All Rows From Table</td>
-<td>person</td>
-<td># PASS</td>
-</tr>
-</table>
-<p>If the table doesn't exist or all the data can't be deleted, then you will get:</p>
-<table border="1">
-<tr>
-<td>Delete All Rows From Table</td>
-<td>first_name</td>
-<td># FAIL</td>
-</tr>
-</table>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>Delete All Rows From Table</td>
-<td>person</td>
-<td>True</td>
-</tr>
-</table></dd>
 <dt class="field-even">Description</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>selectStatement, sansTran=False</p>
+<dd class="field-odd"><p>table</p>
 </dd>
 </dl>
-<p>Uses the input <span class="name">selectStatement</span> to query a table in the db which will be used to determine the description. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback.</p>
-<p>For example, given we have a table <span class="name">person</span> with the following data:</p>
-<table border="1">
-<tr>
-<td>id</td>
-<td>first_name</td>
-<td>last_name</td>
-</tr>
-<tr>
-<td>1</td>
-<td>Franz Allan</td>
-<td>See</td>
-</tr>
-</table>
-<p>When you do the following:</p>
-<table border="1">
-<tr>
-<td>@{queryResults}</td>
-<td>Description</td>
-<td>SELECT * FROM person</td>
-</tr>
-<tr>
-<td>Log Many</td>
-<td>@{queryResults}</td>
-<td></td>
-</tr>
-</table>
-<p>You will get the following: [Column(name='id', type_code=1043, display_size=None, internal_size=255, precision=None, scale=None, null_ok=None)] [Column(name='first_name', type_code=1043, display_size=None, internal_size=255, precision=None, scale=None, null_ok=None)] [Column(name='last_name', type_code=1043, display_size=None, internal_size=255, precision=None, scale=None, null_ok=None)]</p>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>@{queryResults}</td>
-<td>Description</td>
-<td>SELECT * FROM person</td>
-<td>True</td>
-</tr>
-</table></dd>
+<p>Get description of the SQL table</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Connect To Database</span><span class="p">    </span><span class="c">pymysql</span><span class="p">  </span><span class="c">mydb</span><span class="p">  </span><span class="c">user</span><span class="p">  </span><span class="c">pass</span><span class="p">  </span><span class="c">127.0.0.1</span><span class="p"></span>
+<span class="c">${db_description}</span><span class="p">      </span><span class="c">Description</span><span class="p">  </span><span class="c">mytable</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
 <dt class="field-even">Disconnect From Database</dt>
-<dd class="field-even"><p>Disconnects from the database.</p>
-<p>For example:</p>
-<table border="1">
-<tr>
-<td>Disconnect From Database</td>
-<td># disconnects from current connection to the database</td>
-</tr>
-</table></dd>
+<dd class="field-even"><p>Close connection to SQL database</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Connect To Database</span><span class="p">    </span><span class="c">pymysql</span><span class="p">  </span><span class="c">mydb</span><span class="p">  </span><span class="c">user</span><span class="p">  </span><span class="c">pass</span><span class="p">  </span><span class="c">127.0.0.1</span><span class="p"></span>
+<span class="c">${result}</span><span class="p">              </span><span class="c">Query</span><span class="p">   </span><span class="c">Select firstname, lastname FROM table</span><span class="p"></span>
+<span class="c">Disconnect From Database</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
 <dt class="field-odd">Execute Sql Script</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>sqlScriptFileName, sansTran=False</p>
+<dd class="field-odd"><p>filename, sanstran=False</p>
 </dd>
 </dl>
-<p>Executes the content of the <span class="name">sqlScriptFileName</span> as SQL commands. Useful for setting the database to a known state before running your tests, or clearing out your test data after running each a test. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback.</p>
-<p>Sample usage :</p>
-<table border="1">
-<tr>
-<td>Execute Sql Script</td>
-<td>${EXECDIR}${/}resources${/}DDL-setup.sql</td>
-</tr>
-<tr>
-<td>Execute Sql Script</td>
-<td>${EXECDIR}${/}resources${/}DML-setup.sql</td>
-</tr>
-<tr>
-<td>#interesting stuff here</td>
-<td></td>
-</tr>
-<tr>
-<td>Execute Sql Script</td>
-<td>${EXECDIR}${/}resources${/}DML-teardown.sql</td>
-</tr>
-<tr>
-<td>Execute Sql Script</td>
-<td>${EXECDIR}${/}resources${/}DDL-teardown.sql</td>
-</tr>
-</table>
-<p>SQL commands are expected to be delimited by a semi-colon (';').</p>
-<p>For example: DELETE FROM person_employee_table; DELETE FROM person_table; DELETE FROM employee_table;</p>
-<p>Also, the last SQL command can optionally omit its trailing semi-colon.</p>
-<p>For example: DELETE FROM person_employee_table; DELETE FROM person_table; DELETE FROM employee_table</p>
-<p>Given this, that means you can create spread your SQL commands in several lines.</p>
-<p>For example: DELETE FROM person_employee_table; DELETE FROM person_table; DELETE FROM employee_table</p>
-<p>However, lines that starts with a number sign (<span class="name">#</span>) are treated as a commented line. Thus, none of the contents of that line will be executed.</p>
-<p>For example: # Delete the bridging table first... DELETE FROM person_employee_table; # ...and then the bridged tables. DELETE FROM person_table; DELETE FROM employee_table</p>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>Execute Sql Script</td>
-<td>${EXECDIR}${/}resources${/}DDL-setup.sql</td>
-<td>True</td>
-</tr>
-</table></dd>
-<dt class="field-even">Execute Sql String</dt>
+<p>Execute content of SQL script as SQL commands.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Execute SQL Script</span><span class="p">   </span><span class="c">script.sql</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Get Number Of Rows</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>sqlString, sansTran=False</p>
+<dd class="field-odd"><p>table, conditions=None</p>
 </dd>
 </dl>
-<p>Executes the sqlString as SQL commands. Useful to pass arguments to your sql. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback.</p>
-<p>SQL commands are expected to be delimited by a semi-colon (';').</p>
-<p>For example:</p>
-<table border="1">
-<tr>
-<td>Execute Sql String</td>
-<td>DELETE FROM person_employee_table; DELETE FROM person_table</td>
-</tr>
-</table>
-<p>For example with an argument:</p>
-<table border="1">
-<tr>
-<td>Execute Sql String</td>
-<td>SELECT * FROM person WHERE first_name = ${FIRSTNAME}</td>
-</tr>
-</table>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>Execute Sql String</td>
-<td>DELETE FROM person_employee_table; DELETE FROM person_table</td>
-<td>True</td>
-</tr>
-</table></dd>
+<p>Get number of rows in a table. Conditions can be given
+as arguments for WHERE clause.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${count}</span><span class="p">   </span><span class="c">Get Number Of Rows</span><span class="p">  </span><span class="c">tablename</span><span class="p"></span>
+<span class="c">${count}</span><span class="p">   </span><span class="c">Get Number Of Rows</span><span class="p">  </span><span class="c">tablename</span><span class="p">  </span><span class="c">column1=5 and column2=&#39;x&#39;</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Get Rows</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, columns=None, conditions=None, as_table=True</p>
+</dd>
+</dl>
+<p>Get rows from table. Columns and conditions can be
+set to filter result.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{res}</span><span class="p">   </span><span class="c">Get Rows</span><span class="p">  </span><span class="c">tablename</span><span class="p">  </span><span class="c">arvo</span><span class="p"></span>
+<span class="c">@{res}</span><span class="p">   </span><span class="c">Get Rows</span><span class="p">  </span><span class="c">tablename</span><span class="p">  </span><span class="c">arvo</span><span class="p">  </span><span class="c">columns=id,name</span><span class="p"></span>
+<span class="c">@{res}</span><span class="p">   </span><span class="c">Get Rows</span><span class="p">  </span><span class="c">tablename</span><span class="p">  </span><span class="c">columns=id</span><span class="p">  </span><span class="c">conditions=column1=&#39;newvalue&#39;</span><span class="p"></span>
+<span class="c">@{res}</span><span class="p">   </span><span class="c">Get Rows</span><span class="p">  </span><span class="c">tablename</span><span class="p">  </span><span class="c">conditions=column2=&#39;updatedvalue&#39;</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
 <dt class="field-even">Query</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>selectStatement, sansTran=False, returnAsDict=False</p>
+<dd class="field-odd"><p>statement, assertion=None, sanstran=False, as_table=True</p>
 </dd>
 </dl>
-<p>Uses the input <span class="name">selectStatement</span> to query for the values that will be returned as a list of tuples. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback. Set optional input <span class="name">returnAsDict</span> to True to return values as a list of dictionaries.</p>
-<p>Tip: Unless you want to log all column values of the specified rows, try specifying the column names in your select statements as much as possible to prevent any unnecessary surprises with schema changes and to easily see what your [] indexing is trying to retrieve (i.e. instead of <span class="name">"select * from my_table"</span>, try <span class="name">"select id, col_1, col_2 from my_table"</span>).</p>
-<p>For example, given we have a table <span class="name">person</span> with the following data:</p>
-<table border="1">
-<tr>
-<td>id</td>
-<td>first_name</td>
-<td>last_name</td>
-</tr>
-<tr>
-<td>1</td>
-<td>Franz Allan</td>
-<td>See</td>
-</tr>
-</table>
-<p>When you do the following:</p>
-<table border="1">
-<tr>
-<td>@{queryResults}</td>
-<td>Query</td>
-<td>SELECT * FROM person</td>
-</tr>
-<tr>
-<td>Log Many</td>
-<td>@{queryResults}</td>
-<td></td>
-</tr>
-</table>
-<p>You will get the following: [1, 'Franz Allan', 'See']</p>
-<p>Also, you can do something like this:</p>
-<table border="1">
-<tr>
-<td>${queryResults}</td>
-<td>Query</td>
-<td>SELECT first_name, last_name FROM person</td>
-</tr>
-<tr>
-<td>Log</td>
-<td>${queryResults[0][1]}, ${queryResults[0][0]}</td>
-<td></td>
-</tr>
-</table>
-<p>And get the following See, Franz Allan</p>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>@{queryResults}</td>
-<td>Query</td>
-<td>SELECT * FROM person</td>
-<td>True</td>
-</tr>
-</table></dd>
-<dt class="field-even">Row Count</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>selectStatement, sansTran=False</p>
+<p>Make a SQL query.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{res}</span><span class="p">   </span><span class="c">Query</span><span class="p">  </span><span class="c">Select * FROM table</span><span class="p">  </span><span class="c">row_count &gt; ${EXPECTED}</span><span class="p"></span>
+<span class="c">@{res}</span><span class="p">   </span><span class="c">Query</span><span class="p">  </span><span class="c">Select * FROM table</span><span class="p">  </span><span class="c">&#39;arvo&#39; in columns</span><span class="p"></span>
+<span class="c">@{res}</span><span class="p">   </span><span class="c">Query</span><span class="p">  </span><span class="c">Select * FROM table</span><span class="p">  </span><span class="c">columns == [&#39;id&#39;, &#39;arvo&#39;]</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
-</dl>
-<p>Uses the input <span class="name">selectStatement</span> to query the database and returns the number of rows from the query. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback.</p>
-<p>For example, given we have a table <span class="name">person</span> with the following data:</p>
-<table border="1">
-<tr>
-<td>id</td>
-<td>first_name</td>
-<td>last_name</td>
-</tr>
-<tr>
-<td>1</td>
-<td>Franz Allan</td>
-<td>See</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Jerry</td>
-<td>Schneider</td>
-</tr>
-</table>
-<p>When you do the following:</p>
-<table border="1">
-<tr>
-<td>${rowCount}</td>
-<td>Row Count</td>
-<td>SELECT * FROM person</td>
-</tr>
-<tr>
-<td>Log</td>
-<td>${rowCount}</td>
-<td></td>
-</tr>
-</table>
-<p>You will get the following: 2</p>
-<p>Also, you can do something like this:</p>
-<table border="1">
-<tr>
-<td>${rowCount}</td>
-<td>Row Count</td>
-<td>SELECT * FROM person WHERE id = 2</td>
-</tr>
-<tr>
-<td>Log</td>
-<td>${rowCount}</td>
-<td></td>
-</tr>
-</table>
-<p>And get the following 1</p>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>${rowCount}</td>
-<td>Row Count</td>
-<td>SELECT * FROM person</td>
-<td>True</td>
-</tr>
-</table></dd>
-<dt class="field-even">Row Count Is 0</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>selectStatement, sansTran=False</p>
-</dd>
-</dl>
-<p>Check if any rows are returned from the submitted <span class="name">selectStatement</span>. If there are, then this will throw an AssertionError. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback.</p>
-<p>For example, given we have a table <span class="name">person</span> with the following data:</p>
-<table border="1">
-<tr>
-<td>id</td>
-<td>first_name</td>
-<td>last_name</td>
-</tr>
-<tr>
-<td>1</td>
-<td>Franz Allan</td>
-<td>See</td>
-</tr>
-</table>
-<p>When you have the following assertions in your robot</p>
-<table border="1">
-<tr>
-<td>Row Count is 0</td>
-<td>SELECT id FROM person WHERE first_name = 'Franz Allan'</td>
-</tr>
-<tr>
-<td>Row Count is 0</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-</tr>
-</table>
-<p>Then you will get the following:</p>
-<table border="1">
-<tr>
-<td>Row Count is 0</td>
-<td>SELECT id FROM person WHERE first_name = 'Franz Allan'</td>
-<td># FAIL</td>
-</tr>
-<tr>
-<td>Row Count is 0</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-<td># PASS</td>
-</tr>
-</table>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>Row Count is 0</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-<td>True</td>
-</tr>
-</table></dd>
-<dt class="field-even">Row Count Is Equal To X</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>selectStatement, numRows, sansTran=False</p>
-</dd>
-</dl>
-<p>Check if the number of rows returned from <span class="name">selectStatement</span> is equal to the value submitted. If not, then this will throw an AssertionError. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback.</p>
-<p>For example, given we have a table <span class="name">person</span> with the following data:</p>
-<table border="1">
-<tr>
-<td>id</td>
-<td>first_name</td>
-<td>last_name</td>
-</tr>
-<tr>
-<td>1</td>
-<td>Franz Allan</td>
-<td>See</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Jerry</td>
-<td>Schneider</td>
-</tr>
-</table>
-<p>When you have the following assertions in your robot</p>
-<table border="1">
-<tr>
-<td>Row Count Is Equal To X</td>
-<td>SELECT id FROM person</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Row Count Is Equal To X</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-<td>0</td>
-</tr>
-</table>
-<p>Then you will get the following:</p>
-<table border="1">
-<tr>
-<td>Row Count Is Equal To X</td>
-<td>SELECT id FROM person</td>
-<td>1</td>
-<td># FAIL</td>
-</tr>
-<tr>
-<td>Row Count Is Equal To X</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-<td>0</td>
-<td># PASS</td>
-</tr>
-</table>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>Row Count Is Equal To X</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-<td>0</td>
-<td>True</td>
-</tr>
-</table></dd>
-<dt class="field-even">Row Count Is Greater Than X</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>selectStatement, numRows, sansTran=False</p>
-</dd>
-</dl>
-<p>Check if the number of rows returned from <span class="name">selectStatement</span> is greater than the value submitted. If not, then this will throw an AssertionError. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback.</p>
-<p>For example, given we have a table <span class="name">person</span> with the following data:</p>
-<table border="1">
-<tr>
-<td>id</td>
-<td>first_name</td>
-<td>last_name</td>
-</tr>
-<tr>
-<td>1</td>
-<td>Franz Allan</td>
-<td>See</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Jerry</td>
-<td>Schneider</td>
-</tr>
-</table>
-<p>When you have the following assertions in your robot</p>
-<table border="1">
-<tr>
-<td>Row Count Is Greater Than X</td>
-<td>SELECT id FROM person</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Row Count Is Greater Than X</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-<td>0</td>
-</tr>
-</table>
-<p>Then you will get the following:</p>
-<table border="1">
-<tr>
-<td>Row Count Is Greater Than X</td>
-<td>SELECT id FROM person</td>
-<td>1</td>
-<td># PASS</td>
-</tr>
-<tr>
-<td>Row Count Is Greater Than X</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-<td>0</td>
-<td># FAIL</td>
-</tr>
-</table>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>Row Count Is Greater Than X</td>
-<td>SELECT id FROM person</td>
-<td>1</td>
-<td>True</td>
-</tr>
-</table></dd>
-<dt class="field-even">Row Count Is Less Than X</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>selectStatement, numRows, sansTran=False</p>
-</dd>
-</dl>
-<p>Check if the number of rows returned from <span class="name">selectStatement</span> is less than the value submitted. If not, then this will throw an AssertionError. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback.</p>
-<p>For example, given we have a table <span class="name">person</span> with the following data:</p>
-<table border="1">
-<tr>
-<td>id</td>
-<td>first_name</td>
-<td>last_name</td>
-</tr>
-<tr>
-<td>1</td>
-<td>Franz Allan</td>
-<td>See</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Jerry</td>
-<td>Schneider</td>
-</tr>
-</table>
-<p>When you have the following assertions in your robot</p>
-<table border="1">
-<tr>
-<td>Row Count Is Less Than X</td>
-<td>SELECT id FROM person</td>
-<td>3</td>
-</tr>
-<tr>
-<td>Row Count Is Less Than X</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-<td>1</td>
-</tr>
-</table>
-<p>Then you will get the following:</p>
-<table border="1">
-<tr>
-<td>Row Count Is Less Than X</td>
-<td>SELECT id FROM person</td>
-<td>3</td>
-<td># PASS</td>
-</tr>
-<tr>
-<td>Row Count Is Less Than X</td>
-<td>SELECT id FROM person WHERE first_name = 'John'</td>
-<td>1</td>
-<td># FAIL</td>
-</tr>
-</table>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>Row Count Is Less Than X</td>
-<td>SELECT id FROM person</td>
-<td>3</td>
-<td>True</td>
-</tr>
-</table></dd>
 <dt class="field-even">Set Auto Commit</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>autoCommit=True</p>
+<dd class="field-odd"><p>autocommit=True</p>
 </dd>
 </dl>
-<p>Turn the autocommit on the database connection ON or OFF.</p>
-<p>The default behaviour on a newly created database connection is to automatically start a transaction, which means that database actions that won't work if there is an active transaction will fail. Common examples of these actions are creating or deleting a database or database snapshot. By turning on auto commit on the database connection these actions can be performed.</p>
+<p>Set database auto commit mode.</p>
 <p>Example:</p>
-<pre>
-# Default behaviour, sets auto commit to true
-Set Auto Commit
-# Explicitly set the desired state
-Set Auto Commit | False
-</pre></dd>
-<dt class="field-even">Table Must Exist</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>tableName, sansTran=False</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set Auto Commit</span><span class="p">             </span><span class="c"># auto commit is set on</span>
+<span class="c">Set Auto Commit</span><span class="p">   </span><span class="c">False</span><span class="p">     </span><span class="c"># auto commit is turned off</span>
+</pre></div>
+</div>
 </dd>
-</dl>
-<p>Check if the table given exists in the database. Set optional input <span class="name">sansTran</span> to True to run command without an explicit transaction commit or rollback.</p>
-<p>For example, given we have a table <span class="name">person</span> in a database</p>
-<p>When you do the following:</p>
-<table border="1">
-<tr>
-<td>Table Must Exist</td>
-<td>person</td>
-</tr>
-</table>
-<p>Then you will get the following:</p>
-<table border="1">
-<tr>
-<td>Table Must Exist</td>
-<td>person</td>
-<td># PASS</td>
-</tr>
-<tr>
-<td>Table Must Exist</td>
-<td>first_name</td>
-<td># FAIL</td>
-</tr>
-</table>
-<p>Using optional <span class="name">sansTran</span> to run command without an explicit transaction commit or rollback:</p>
-<table border="1">
-<tr>
-<td>Table Must Exist</td>
-<td>person</td>
-<td>True</td>
-</tr>
-</table></dd>
 </dl>
 </div>
 </div>
