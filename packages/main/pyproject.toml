@@ -72,6 +72,7 @@ grpcio = {version = "^1.29.0", optional = true}
 graphviz = "^0.13.2"
 notifiers = "^1.2.1"
 cryptography = "^2.9.2"
+mss = "^6.0.0"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }

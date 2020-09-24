@@ -16,8 +16,9 @@ try:
     ctypes.windll.user32.SetProcessDPIAware()
 except AttributeError:
     pass
+# TODO: figure out if DPI awareness is necessary with mss
+import mss
 
-import pyscreenshot as ImageGrab
 from RPA.core.notebook import notebook_image
 
 try:
@@ -39,7 +40,6 @@ def clamp(minimum, value, maximum):
 def chunks(obj, size, start=0):
     """Convert `obj` container to list of chunks of `size`."""
     return [obj[i : i + size] for i in range(start, len(obj), size)]
-
 
 def to_image(obj):
     """Convert `obj` to instance of Pillow's Image class."""
@@ -163,30 +163,34 @@ class Images:
         self.logger = logging.getLogger(__name__)
         self.matcher = TemplateMatcher(opencv=HAS_OPENCV)
 
-    def take_screenshot(self, filename=None, region=None, save_format="PNG"):
+    def take_screenshot(self, filename=None, region=None) -> Image:
         """Take a screenshot of the current desktop.
 
         :param filename:    Save screenshot to filename
         :param region:      Region to crop screenshot to
-        :param save_format: File format to save the screenshot in
         """
+        # :param save_format: File format to save the screenshot in
         region = to_region(region)
 
-        if region is not None:
-            image = ImageGrab.grab(bbox=region.as_tuple())
-        else:
-            image = ImageGrab.grab()
+        with mss.mss() as sct:
+            if region is not None:
+                image = sct.grab(region.as_tuple())
+            else:
+                # mss uses the first monitor on the array as an alias for a combined virtual monitor
+                image = sct.grab(sct.monitors[0])
 
         if filename is not None:
-            filename = Path(filename).with_suffix(f".{save_format.lower()}")
-            image.save(filename, save_format)
+            filename = Path(filename).with_suffix(".png")
+            mss.tools.to_png(image.rgb, image.size, output=filename)
             notebook_image(filename)
             self.logger.info("Saved screenshot as '%s'", filename)
 
-        return image
+        # Convert raw mss screenshot to Pillow Image. Might be a bit slow
+        pillow_image = Image.frombytes("RGB", image.size, image.bgra, "raw", "BGRX")
+        return pillow_image
 
     def crop_image(self, image, region, filename=None, save_format="PNG"):
-        """Take a screenshot of the current desktop.
+        """Crop an existing image.
 
         :param image:       Image to crop
         :param region:      Region to crop image to
@@ -243,7 +247,7 @@ class Images:
         if not matches:
             raise ImageNotFoundError("No matches for given template")
 
-        # Convert region coördinates back to full-size coördinates
+        # Convert region coordinates back to full-size coördinates
         if region is not None:
             for match in matches:
                 match.move(region.left, region.top)
