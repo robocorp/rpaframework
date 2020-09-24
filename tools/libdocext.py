@@ -349,13 +349,16 @@ class LibdocExt:
         if self.config.get("title"):
             libdoc.name = self.config["title"]
         # Create module path for library, e.g. RPA.Excel.Files
-        elif path_rel.parent != Path("."):
-            namespace = str(path_rel.parent).replace(os.sep, ".")
+        else:
+            namespace = []
             if self.config.get("namespace"):
-                namespace = self.config["namespace"] + "." + namespace
-            libdoc.name = "{namespace}.{name}".format(
-                namespace=namespace, name=libdoc.name,
-            )
+                namespace.append(self.config["namespace"])
+            if path_rel.parent != Path("."):
+                namespace.append(str(path_rel.parent).replace(os.sep, "."))
+            if namespace:
+                libdoc.name = "{namespace}.{name}".format(
+                    namespace=".".join(namespace), name=libdoc.name,
+                )
 
         # Convert library scope to RPA format
         if self.config.get("rpa", False):
