@@ -12,10 +12,14 @@ Description
 
 `Database` is a library for handling different database operations.
 
-The library extends `robotframework-databaselibrary`_.
+This can allow you to query your database after an action has been made to verify the results.
 
-.. _robotframework-databaselibrary:
-    http://franz-see.github.io/Robotframework-Database-Library/api/1.2.2/DatabaseLibrary.html
+Library is compatible with any Database API Specification 2.0 module.
+
+References:
+    + Database API Specification 2.0 - http://www.python.org/dev/peps/pep-0249/
+    + Lists of DB API 2.0 - http://wiki.python.org/moin/DatabaseInterfaces
+    + Python Database Programming - http://wiki.python.org/moin/DatabaseProgramming/
 
 ********
 Examples
@@ -29,13 +33,14 @@ Robot Framework
 
     *** Settings ***
     Library   		RPA.Database
-    Library   		RPA.Robocloud.Secrets.FileSecrets  secrets.json
 
     *** Tasks ***
     Get Orders From Database
-        ${secrets}=     Get Secret   ordersecrets
-        Connect To Database Using Custom Params    sqlite3    database="${secrets}[DATABASE]"
-        ${orders}=   Database Query Result As Table  SELECT * FROM incoming_orders
+        Connect To Database  pymysql  tester  user  password  127.0.0.1
+        @{orders}            Query    Select * FROM incoming_orders
+        FOR   ${order}  IN  @{orders}
+            Handle Order  ${order}
+        END
 
 Python
 ======
@@ -43,20 +48,21 @@ Python
 .. code-block:: python
     :linenos:
 
-    import pprint
+
     from RPA.Database import Database
     from RPA.Robocloud.Secrets import FileSecrets
 
-    pp = pprint.PrettyPrinter(indent=4)
     filesecrets = FileSecrets("secrets.json")
     secrets = filesecrets.get_secret("databasesecrets")
 
     db = Database()
-    database_file = secrets["DATABASE_FILE"]
-    db.connect_to_database_using_custom_params(
-        "sqlite3", f"'{database_file}'",
-    )
-    orders = db.database_query_result_as_table("SELECT * FROM incoming_orders")
+    db.connect_to_database('pymysql',
+                        secrets["DATABASE"],
+                        secrets["USERNAME"],
+                        secrets["PASSWORD"],
+                        '127.0.0.1'
+                        )
+    orders = db.query("SELECT * FROM incoming_orders")
     for order in orders:
         print(order)
 

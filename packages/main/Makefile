@@ -109,11 +109,9 @@ docs-libdoc: install ## Prebuild libdoc files
 	 --docstring rest\
 	 --override-docstring src/RPA/Browser.py=robot\
 	 --override-docstring src/RPA/HTTP.py=robot\
-	 --override-docstring src/RPA/Database.py=robot\
 	 --format rest\
 	 --override-format src/RPA/Browser.py=rest-html\
 	 --override-format src/RPA/HTTP.py=rest-html\
-	 --override-format src/RPA/Database.py=rest-html\
 	 --ignore src/RPA/core\
 	 --output $(docs)/source/libdoc/\
 	 src/
@@ -129,7 +127,6 @@ docs-hub: install ## Generate documentation for Robohub
 	 --format json-html\
 	 --override-docstring src/RPA/Browser.py=robot\
 	 --override-docstring src/RPA/HTTP.py=robot\
-	 --override-docstring src/RPA/Database.py=robot\
 	 --ignore src/RPA/core\
 	 --output $(dist)/hub/json\
 	 --collapse\

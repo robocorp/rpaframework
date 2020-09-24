@@ -4,6 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Database**:
+
+  - Drop dependency robotframework-databaselibrary
+  - Some of the old keywords do not exist anymore and some new keywords
+  have been added (*NOTE. backwards compatibility breaking change*)
+
 4.2.0
 -----
 
