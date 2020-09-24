@@ -11,6 +11,9 @@ except ImportError:
 
 
 class Configuration:
+    """Class to handle configuration from config files
+    and class init"""
+
     def __init__(self):
         self.configuration = {}
         self.module_name = None
@@ -60,7 +63,7 @@ class Configuration:
             if config.has_option("default", "host")
             else None
         )
-        self.configuration["charset"] = port or (
+        self.configuration["charset"] = charset or (
             config.get("default", "charset")
             if config.has_option("default", "charset")
             else None
