@@ -25,6 +25,14 @@ def manager_mock():
     return manager
 
 
+@pytest.fixture
+def multiname_manager_mock():
+    manager = mock.Mock()
+    manager.link_path = "mock/link/path"
+    manager.get_driver_filename.return_value = ["first.bin", "second.bin"]
+    return manager
+
+
 def test_driver_path_no_download(manager_mock):
     path = webdriver._driver_path(as_factory(manager_mock), download=False)
     assert path == Path("mock/link/path", "mockdriver.bin")
@@ -33,6 +41,14 @@ def test_driver_path_no_download(manager_mock):
 def test_driver_path_download(manager_mock):
     path = webdriver._driver_path(as_factory(manager_mock), download=True)
     assert path == Path(webdriver.DRIVER_DIR, "mockdriver.bin")
+
+
+def test_driver_path_multiple(multiname_manager_mock):
+    path = webdriver._driver_path(as_factory(multiname_manager_mock), download=False)
+    assert path == Path("mock/link/path", "first.bin")
+
+    path = webdriver._driver_path(as_factory(multiname_manager_mock), download=True)
+    assert path == Path(webdriver.DRIVER_DIR, "first.bin")
 
 
 @pytest.mark.parametrize("system", ["Windows", "Linux", "Darwin"])
