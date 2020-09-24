@@ -6,10 +6,13 @@ import stat
 import subprocess
 import tempfile
 from pathlib import Path
-from typing import Any, Optional, List
+from typing import Any, List, Optional
 
 from selenium import webdriver
 from webdrivermanager import AVAILABLE_DRIVERS
+
+from RPA.core.types import is_list_like
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -65,11 +68,13 @@ def executable(browser: str, download: bool = False) -> Optional[str]:
 
     browser = browser.lower().strip()
     factory = AVAILABLE_DRIVERS.get(browser)
-
     if not factory:
         return None
 
     driver_path = _driver_path(factory, download)
+    if driver_path is None:
+        LOGGER.debug("Failed to get driver path for %s", browser)
+        return None
 
     if driver_path.exists() and not download:
         LOGGER.debug("Attempting to use existing driver: %s", driver_path)
@@ -106,21 +111,34 @@ def start(name: str, **options):
     return driver
 
 
-def _driver_path(factory: Any, download: bool) -> Path:
+def _driver_path(factory: Any, download: bool) -> Optional[Path]:
     if platform.system() != "Windows":
         manager = factory(link_path="/usr/bin")
     else:
         manager = factory()
 
-    filename = manager.get_driver_filename()
+    driver_names = manager.get_driver_filename()
 
-    temp_path = Path(DRIVER_DIR) / filename
-    link_path = Path(manager.link_path) / filename
+    if driver_names is None:
+        return None
 
-    if temp_path.exists() or download:
-        return temp_path
-    else:
-        return link_path
+    if not is_list_like(driver_names):
+        driver_names = [driver_names]
+
+    primary_path = Path(DRIVER_DIR) / driver_names[0]
+    if download or primary_path.exists():
+        return primary_path
+
+    for name in driver_names:
+        temp_path = Path(DRIVER_DIR) / name
+        if temp_path.exists():
+            return temp_path
+
+        link_path = Path(manager.link_path) / name
+        if link_path.exists():
+            return link_path
+
+    return Path(manager.link_path) / driver_names[0]
 
 
 def _chrome_version() -> Optional[str]:
@@ -176,8 +194,8 @@ def _download_driver(factory: Any, version: str = None) -> None:
             manager.get_driver_filename(),
             bin_path,
         )
-    except RuntimeError:
-        pass
+    except Exception as exc:
+        raise RuntimeError(f"Failed to download wedriver: {exc}") from exc
 
 
 def _set_executable_permissions(path: str) -> None:
