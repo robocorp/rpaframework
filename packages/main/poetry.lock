@@ -386,10 +386,6 @@ requests = ">=2.18.0,<3.0.0dev"
 setuptools = ">=34.0.0"
 six = ">=1.10.0"
 
-[package.dependencies.grpcio]
-optional = true
-version = ">=1.29.0,<2.0dev"
-
 [package.extras]
 grpc = ["grpcio (>=1.29.0,<2.0dev)"]
 grpcgcp = ["grpcio-gcp (>=0.2.2)"]
@@ -1225,14 +1221,6 @@ version = "3.2.2"
 
 [[package]]
 category = "main"
-description = "Database utility library for Robot Framework"
-name = "robotframework-databaselibrary"
-optional = false
-python-versions = "*"
-version = "1.2.4"
-
-[[package]]
-category = "main"
 description = "Tools to ease creating larger test libraries for Robot Framework using Python."
 name = "robotframework-pythonlibcore"
 optional = false
@@ -1563,7 +1551,7 @@ cv = ["opencv-python", "numpy"]
 google = ["grpcio", "google-cloud-vision", "google-cloud-language", "google-cloud-videointelligence", "google-cloud-translate", "google-cloud-texttospeech", "google-cloud-speech", "google-cloud-storage"]
 
 [metadata]
-content-hash = "2eafb286653eb4dc49aefdee1442663c51d0b2d4a2083e444b482b04497353b2"
+content-hash = "4e9a18372bcfffa49f4b62eaf989db2c776b2e2a190164cfb4e0facd5e7d4ae0"
 lock-version = "1.0"
 python-versions = "^3.6"
 
@@ -2292,10 +2280,6 @@ rfc3987 = [
 robotframework = [
     {file = "robotframework-3.2.2-py2.py3-none-any.whl", hash = "sha256:a0c325e79dc6dcdaba0398db8c3afefc337799b7b36b336f04b07be4fe4a9dd2"},
     {file = "robotframework-3.2.2.zip", hash = "sha256:a0786a916d0572bd9d6afe26e95c6021e3df5dcafa0ece6b302e36366e58c24e"},
-]
-robotframework-databaselibrary = [
-    {file = "robotframework-databaselibrary-1.2.4.tar.gz", hash = "sha256:627d872b3dda6a308a650ac9e676dadedf9c294e4ef70ad207cbb86b78eb8847"},
-    {file = "robotframework_databaselibrary-1.2.4-py3-none-any.whl", hash = "sha256:150ca765fff85c5fcf74e4b4d0f33fe5e73fe754fa224a905596468f74e69dd7"},
 ]
 robotframework-pythonlibcore = [
     {file = "robotframework-pythonlibcore-2.1.0.tar.gz", hash = "sha256:8b210bf29cbb78069b41a3d0b90e4cc8dd23f509ea2daf450e3ef4a6ee758949"},
