@@ -249,7 +249,7 @@ class Images:
         if not matches:
             raise ImageNotFoundError("No matches for given template")
 
-        # Convert region coördinates back to full-size coordinates
+        # Convert region coördinates back to full-size coördinates
         if region is not None:
             for match in matches:
                 match.move(region.left, region.top)
