@@ -169,7 +169,7 @@ class Images:
         :param filename:    Save screenshot to filename
         :param region:      Region to crop screenshot to
         """
-        # :param save_format: File format to save the screenshot in
+
         region = to_region(region)
 
         with mss.mss() as sct:
@@ -189,13 +189,12 @@ class Images:
         pillow_image = Image.frombytes("RGB", image.size, image.bgra, "raw", "BGRX")
         return pillow_image
 
-    def crop_image(self, image, region, filename=None, save_format="PNG"):
+    def crop_image(self, image, region, filename=None):
         """Crop an existing image.
 
         :param image:       Image to crop
         :param region:      Region to crop image to
         :param filename:    Save cropped image to filename
-        :param save_format: File format to save the image in
         """
         region = to_region(region)
         image = to_image(image)
@@ -204,7 +203,8 @@ class Images:
         image.load()
 
         if filename:
-            image.save(filename, save_format)
+            # Suffix isn't created automatically here
+            image.save(filename + ".png", "PNG")
             notebook_image(filename)
 
     def find_template_in_image(
