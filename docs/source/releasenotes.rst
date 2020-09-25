@@ -4,6 +4,23 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Database**:
+
+  - Drop dependency robotframework-databaselibrary
+  - Some of the old keywords do not exist anymore and some new keywords
+  have been added (*NOTE. backwards compatibility breaking change*)
+
+4.2.0
+-----
+
+- Library **Browser**:
+
+  - Add keywords ``Does Alert Contain`` and ``Does Alert Not Contain``
+  - Fix ``Screenshot`` to explicitly call ``Notebook Image`` to insert
+    images into notebook when that is available
+
+- Library **Robocloud.Items**: Allow NoneType as default for variables
+
 4.1.0
 -----
 

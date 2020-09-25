@@ -1118,14 +1118,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "robotframework-databaselibrary"
-version = "1.2.4"
-description = "Database utility library for Robot Framework"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "robotframework-pythonlibcore"
 version = "2.1.0"
 description = "Tools to ease creating larger test libraries for Robot Framework using Python."
@@ -1453,7 +1445,7 @@ google = ["grpcio", "google-cloud-vision", "google-cloud-language", "google-clou
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "e9d277780fa269db48b0c2f4e639e538f0db31882165869d08bd4e810bce17a6"
+content-hash = "ab7b5bd2ca6aa74cb1f692892226a4094d63bbaf965a3edd75691579ba27ecce"
 
 [metadata.files]
 appdirs = [
@@ -2170,10 +2162,6 @@ rfc3987 = [
 robotframework = [
     {file = "robotframework-3.2.2-py2.py3-none-any.whl", hash = "sha256:a0c325e79dc6dcdaba0398db8c3afefc337799b7b36b336f04b07be4fe4a9dd2"},
     {file = "robotframework-3.2.2.zip", hash = "sha256:a0786a916d0572bd9d6afe26e95c6021e3df5dcafa0ece6b302e36366e58c24e"},
-]
-robotframework-databaselibrary = [
-    {file = "robotframework-databaselibrary-1.2.4.tar.gz", hash = "sha256:627d872b3dda6a308a650ac9e676dadedf9c294e4ef70ad207cbb86b78eb8847"},
-    {file = "robotframework_databaselibrary-1.2.4-py3-none-any.whl", hash = "sha256:150ca765fff85c5fcf74e4b4d0f33fe5e73fe754fa224a905596468f74e69dd7"},
 ]
 robotframework-pythonlibcore = [
     {file = "robotframework-pythonlibcore-2.1.0.tar.gz", hash = "sha256:8b210bf29cbb78069b41a3d0b90e4cc8dd23f509ea2daf450e3ef4a6ee758949"},
