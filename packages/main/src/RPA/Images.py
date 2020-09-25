@@ -41,6 +41,7 @@ def chunks(obj, size, start=0):
     """Convert `obj` container to list of chunks of `size`."""
     return [obj[i : i + size] for i in range(start, len(obj), size)]
 
+
 def to_image(obj):
     """Convert `obj` to instance of Pillow's Image class."""
     if obj is None or isinstance(obj, Image.Image):
@@ -176,7 +177,8 @@ class Images:
             if region is not None:
                 image = sct.grab(region.as_tuple())
             else:
-                # mss uses the first monitor on the array as an alias for a combined virtual monitor
+                # mss uses the first monitor on the array as an
+                # alias for a combined virtual monitor
                 image = sct.grab(sct.monitors[0])
 
         if filename is not None:
@@ -204,7 +206,7 @@ class Images:
 
         if filename:
             # Suffix isn't created automatically here
-            image.save(filename + ".png", "PNG")
+            image.save(Path(filename).with_suffix(".png"), "PNG")
             notebook_image(filename)
 
     def find_template_in_image(
@@ -247,7 +249,7 @@ class Images:
         if not matches:
             raise ImageNotFoundError("No matches for given template")
 
-        # Convert region coordinates back to full-size coordinates
+        # Convert region coördinates back to full-size coordinates
         if region is not None:
             for match in matches:
                 match.move(region.left, region.top)

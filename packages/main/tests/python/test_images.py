@@ -78,7 +78,10 @@ def test_find_template(region_and_template):
     match = matches[0]
     assert match.center == region.center
 
-@pytest.mark.skip(reason="this currently fails because the found template has some offset, at least on multi-monitor setups")
+
+@pytest.mark.skip(
+    reason="this currently fails because the found template has some offset, at least on multi-monitor setups"
+)
 def test_screenshot_region_and_find_it():
     library = Images()
     region = Region(0, 0, 100, 100)
