@@ -538,13 +538,21 @@ class PDF(FPDF, HTMLMixin):
             writer.write(f)
 
     def template_html_to_pdf(
-        self, template: str = None, filename: str = None, variables: dict = None
+        self,
+        template: str = None,
+        filename: str = None,
+        variables: dict = None,
+        create_dirs: bool = True,
+        exists_ok: bool = True,
     ) -> None:
         """Use HTML template file to generate PDF file.
 
         :param template: filepath to HTML template
         :param filename: filepath where to save PDF document
         :param variables: dictionary of variables to fill into template, defaults to {}
+        :param create_dirs: directory structure is created if it is missing,
+         default `True`
+        :param exists_ok: file is overwritten if it exists, default `True`
         """
         required_param([template, filename], "template_html_to_pdf")
         variables = variables or {}
@@ -555,20 +563,24 @@ class PDF(FPDF, HTMLMixin):
             html = html.replace("{{" + key + "}}", str(value))
 
         target_path = self.output_directory / filename
-        notebook_print(link=str(target_path))
-        self._write_html_to_pdf(html, target_path)
+        self._write_html_to_pdf(html, target_path, create_dirs, exists_ok)
 
     def html_to_pdf(
         self,
         content: str = None,
         filename: str = None,
         variables: dict = None,
+        create_dirs: bool = True,
+        exists_ok: bool = True,
     ) -> None:
         """Use HTML content to generate PDF file.
 
         :param content: HTML content
         :param filename: filepath where to save PDF document
         :param variables: dictionary of variables to fill into template, defaults to {}
+        :param create_dirs: directory structure is created if it is missing,
+         default `True`
+        :param exists_ok: file is overwritten if it exists, default `True`
         """
         required_param([content, filename], "html_to_pdf")
         variables = variables or {}
@@ -579,10 +591,14 @@ class PDF(FPDF, HTMLMixin):
             html = html.replace("{{" + key + "}}", str(value))
 
         target_path = self.output_directory / filename
-        notebook_print(link=str(target_path))
-        self._write_html_to_pdf(html, target_path)
+        self._write_html_to_pdf(html, target_path, create_dirs, exists_ok)
 
-    def _write_html_to_pdf(self, html, output_path):
+    def _write_html_to_pdf(self, html, output_path, create_dirs, exists_ok):
+        if create_dirs:
+            Path(output_path).resolve().parent.mkdir(parents=True, exist_ok=True)
+        if not exists_ok and Path(output_path).exists():
+            raise FileExistsError(output_path)
+        notebook_print(link=str(output_path))
         self.add_pages(1)
         self.write_html(html)
         pdf_content = self.output(dest="S").encode("latin-1")

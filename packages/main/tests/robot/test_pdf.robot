@@ -3,8 +3,11 @@ Library           RPA.PDF
 Library           RPA.FileSystem
 Force Tags        pdf
 Task Teardown     Close all PDF Documents
+Suite Setup
+Suite Teardown    Empty Directory  ${WORK_DIR}
 
 *** Variables ***
+${WORK_DIR}         ${OUTPUT_DIR}${/}pdftests
 ${CONTENT}          <h1>Order confirmation</h1><p>Thank you for the order {{name}}</p>
 ${TEMPLATE}         ${CURDIR}${/}..${/}resources${/}order.template
 ${NORMAL_PDF}       ${CURDIR}${/}..${/}resources${/}generated.pdf
@@ -12,8 +15,8 @@ ${INVOICE_PDF}      ${CURDIR}${/}..${/}resources${/}invoice.pdf
 ${VERO_PDF}         ${CURDIR}${/}..${/}resources${/}vero.pdf
 ${ENCRYPTED_PDF}    ${CURDIR}${/}..${/}resources${/}encrypted.pdf
 ${IMAGES_PDF}       ${CURDIR}${/}..${/}resources${/}imagesandtext.pdf
-${PDF}              ${OUTPUT_DIR}${/}result.pdf
-${UNICODE_PDF}      ${OUTPUT_DIR}${/}öåä.pdf
+${PDF}              ${WORK_DIR}${/}result.pdf
+${UNICODE_PDF}      ${WORK_DIR}${/}öåä.pdf
 &{VARS}             name=Robot Generated
 ...                 email=robot@domain.com
 ...                 zip=00100
@@ -78,12 +81,12 @@ Get number of pages
 PDF decrypt
     ${isdecrypted}=    Is PDF encrypted    ${NORMAL_PDF}
     Should Not Be True    ${isdecrypted}
-    ${result}=    PDF Decrypt    ${ENCRYPTED_PDF}   ${OUTPUT_DIR}${/}now_decrypted.pdf   password=${PASSWORD}
+    ${result}=    PDF Decrypt    ${ENCRYPTED_PDF}   ${WORKDIR}${/}now_decrypted.pdf   password=${PASSWORD}
     Should Be True    ${result}
 
 PDF encrypt
-    PDF encrypt    ${NORMAL_PDF}    ${OUTPUT_DIR}${/}encrypted.pdf    ${PASSWORD}
-    ${is_encrypted}=    Is PDF encrypted    ${OUTPUT_DIR}${/}encrypted.pdf
+    PDF encrypt    ${NORMAL_PDF}    ${WORKDIR}${/}encrypted.pdf    ${PASSWORD}
+    ${is_encrypted}=    Is PDF encrypted    ${WORKDIR}${/}encrypted.pdf
     Should Be True    ${is_encrypted}
 
 Get information from PDF
@@ -92,10 +95,10 @@ Get information from PDF
     Should Be Equal   ${info}[Title]    EnergyDailyPricesReport-EUROPA
 
 Extract pages from PDF
-    Extract pages from pdf    ${VERO_PDF}   ${OUTPUT_DIR}${/}extract.pdf  2
-    ${pages}=                        Get number of pages    ${OUTPUT_DIR}${/}extract.pdf
+    Extract pages from pdf    ${VERO_PDF}   ${WORKDIR}${/}extract.pdf  2
+    ${pages}=                        Get number of pages    ${WORKDIR}${/}extract.pdf
     Should Be Equal As Integers      ${pages}    1
-    &{item}=    Get Text From PDF    ${OUTPUT_DIR}${/}extract.pdf
+    &{item}=    Get Text From PDF    ${WORKDIR}${/}extract.pdf
     RPA Should Contain   ${item}[${1}]    4.5 Omaisuuden hankkimisesta aiheutuneet menot
 
 Get text closest to element on the right (default)
@@ -155,6 +158,16 @@ Add image to PDF
     [Tags]   skip
     # invoice.pdf / add image at some coordinates
     Fail
+
+Creating file with create_dirs false causes error
+    Run Keyword And Expect Error  FileNotFoundError*  Html To Pdf   ${CONTENT}   ${WORK_DIR}${/}newdir${/}out.pdf  create_dirs=${FALSE}
+    Run Keyword And Expect Error  FileNotFoundError*  Template Html To Pdf   ${TEMPLATE}   ${WORK_DIR}${/}newdir${/}out.pdf  create_dirs=${FALSE}
+
+Overwriting file with exists_ok false causes error
+    Html To Pdf   ${CONTENT}   ${WORK_DIR}${/}test_unique.pdf  exists_ok=${FALSE}
+    Run Keyword And Expect Error   FileExistsError*   Html To Pdf   ${CONTENT}   ${WORK_DIR}${/}test_unique.pdf  exists_ok=${FALSE}
+    Template Html To Pdf   ${TEMPLATE}   ${WORK_DIR}${/}newdir${/}fromtemplate.pdf  exists_ok=${FALSE}
+    Run Keyword And Expect Error   FileExistsError*   Template Html To Pdf   ${TEMPLATE}   ${WORK_DIR}${/}newdir${/}fromtemplate.pdf  exists_ok=${FALSE}
 
 *** Keywords ***
 RPA Should Contain

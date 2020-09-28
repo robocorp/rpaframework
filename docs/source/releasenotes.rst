@@ -10,6 +10,9 @@ Upcoming release
   - Some of the old keywords do not exist anymore and some new keywords
   have been added (*NOTE. backwards compatibility breaking change*)
 
+- Library **PDF**: Keywords ``Template HTML To PDF`` and ``HTML To PDF`` will now
+  create directory structure and overwrite existing file by default.
+
 4.2.0
 -----
 
