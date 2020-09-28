@@ -12,7 +12,8 @@ Description
 
 `Database` is a library for handling different database operations.
 
-This can allow you to query your database after an action has been made to verify the results.
+All database operations are supported. Keywords `Query` and `Get Rows`
+return values by default in `RPA.Table` format.
 
 Library is compatible with any Database API Specification 2.0 module.
 

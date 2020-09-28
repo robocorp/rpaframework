@@ -410,6 +410,10 @@ class Database:
 
         .. code-block:: robotframework
 
+            @{res}   Query   Select firstname, lastname FROM table
+            FOR  ${row}  IN  @{RES}
+                Log   ${row}
+            END
             @{res}   Query  Select * FROM table  row_count > ${EXPECTED}
             @{res}   Query  Select * FROM table  'arvo' in columns
             @{res}   Query  Select * FROM table  columns == ['id', 'arvo']
