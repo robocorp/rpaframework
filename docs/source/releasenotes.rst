@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+5.0.0
+-----
+
 - Library **Database**:
 
   - Drop dependency robotframework-databaselibrary
@@ -13,7 +16,7 @@ Upcoming release
 - Library **PDF**: Keywords ``Template HTML To PDF`` and ``HTML To PDF`` will now
   create directory structure and overwrite existing file by default.
 
-- Library **Images**: Remove ``Save Format`` option from ``Take Screenshot`` 
+- Library **Images**: Remove ``Save Format`` option from ``Take Screenshot``
   and ``Crop Image`` keywords. Change screenshotting library from ``pyscreenshot``
   to ``mss``.
 
