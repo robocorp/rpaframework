@@ -16,9 +16,9 @@ Keywords
 ********
 
 :Crop Image:
-  :Arguments: image, region, filename=None, save_format=PNG
+  :Arguments: image, region, filename=None
 
-  Take a screenshot of the current desktop.
+  Crop an existing image.
 
 
 :Find Template In Image:
@@ -59,7 +59,7 @@ Keywords
 
 
 :Take Screenshot:
-  :Arguments: filename=None, region=None, save_format=PNG
+  :Arguments: filename=None, region=None
 
   Take a screenshot of the current desktop.
 
