@@ -30,6 +30,7 @@ classifiers = [
 packages = [
 	{ include = "RPA", from = "src" }
 ]
+include = ["includes/dialog_styles.css"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
