@@ -13,6 +13,10 @@ Upcoming release
 - Library **PDF**: Keywords ``Template HTML To PDF`` and ``HTML To PDF`` will now
   create directory structure and overwrite existing file by default.
 
+- Library **Images**: Remove ``Save Format`` option from ``Take Screenshot`` 
+  and ``Crop Image`` keywords. Change screenshotting library from ``pyscreenshot``
+  to ``mss``.
+
 4.2.0
 -----
 
