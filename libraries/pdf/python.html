@@ -548,7 +548,7 @@ used when direction is ‘top’ or ‘bottom’, default <cite>False</cite></p>
 
 <dl class="method">
 <dt id="RPA.PDF.PDF.html_to_pdf">
-<code class="sig-name descname">html_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">content: str = None</em>, <em class="sig-param">filename: str = None</em>, <em class="sig-param">variables: dict = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.html_to_pdf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">html_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">content: str = None</em>, <em class="sig-param">filename: str = None</em>, <em class="sig-param">variables: dict = None</em>, <em class="sig-param">create_dirs: bool = True</em>, <em class="sig-param">exists_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.html_to_pdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use HTML content to generate PDF file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -556,6 +556,9 @@ used when direction is ‘top’ or ‘bottom’, default <cite>False</cite></p>
 <li><p><strong>content</strong> – HTML content</p></li>
 <li><p><strong>filename</strong> – filepath where to save PDF document</p></li>
 <li><p><strong>variables</strong> – dictionary of variables to fill into template, defaults to {}</p></li>
+<li><p><strong>create_dirs</strong> – directory structure is created if it is missing,
+default <cite>True</cite></p></li>
+<li><p><strong>exists_ok</strong> – file is overwritten if it exists, default <cite>True</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -973,7 +976,7 @@ file to activate</p>
 
 <dl class="method">
 <dt id="RPA.PDF.PDF.template_html_to_pdf">
-<code class="sig-name descname">template_html_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">template: str = None</em>, <em class="sig-param">filename: str = None</em>, <em class="sig-param">variables: dict = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.template_html_to_pdf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">template_html_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">template: str = None</em>, <em class="sig-param">filename: str = None</em>, <em class="sig-param">variables: dict = None</em>, <em class="sig-param">create_dirs: bool = True</em>, <em class="sig-param">exists_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.template_html_to_pdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use HTML template file to generate PDF file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -981,6 +984,9 @@ file to activate</p>
 <li><p><strong>template</strong> – filepath to HTML template</p></li>
 <li><p><strong>filename</strong> – filepath where to save PDF document</p></li>
 <li><p><strong>variables</strong> – dictionary of variables to fill into template, defaults to {}</p></li>
+<li><p><strong>create_dirs</strong> – directory structure is created if it is missing,
+default <cite>True</cite></p></li>
+<li><p><strong>exists_ok</strong> – file is overwritten if it exists, default <cite>True</cite></p></li>
 </ul>
 </dd>
 </dl>

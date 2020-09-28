@@ -316,7 +316,11 @@ set to filter result.</p>
 </dl>
 <p>Make a SQL query.</p>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{res}</span><span class="p">   </span><span class="c">Query</span><span class="p">  </span><span class="c">Select * FROM table</span><span class="p">  </span><span class="c">row_count &gt; ${EXPECTED}</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{res}</span><span class="p">   </span><span class="c">Query</span><span class="p">   </span><span class="c">Select firstname, lastname FROM table</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${row}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{RES}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">   </span><span class="c">${row}</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+<span class="c">@{res}</span><span class="p">   </span><span class="c">Query</span><span class="p">  </span><span class="c">Select * FROM table</span><span class="p">  </span><span class="c">row_count &gt; ${EXPECTED}</span><span class="p"></span>
 <span class="c">@{res}</span><span class="p">   </span><span class="c">Query</span><span class="p">  </span><span class="c">Select * FROM table</span><span class="p">  </span><span class="c">&#39;arvo&#39; in columns</span><span class="p"></span>
 <span class="c">@{res}</span><span class="p">   </span><span class="c">Query</span><span class="p">  </span><span class="c">Select * FROM table</span><span class="p">  </span><span class="c">columns == [&#39;id&#39;, &#39;arvo&#39;]</span><span class="p"></span>
 </pre></div>
