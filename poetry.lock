@@ -16,14 +16,6 @@ version = "1.4.4"
 
 [[package]]
 category = "main"
-description = "Python command-line parsing library"
-name = "argparse"
-optional = false
-python-versions = "*"
-version = "1.4.0"
-
-[[package]]
-category = "main"
 description = "Classes Without Boilerplate"
 name = "attrs"
 optional = false
@@ -67,10 +59,12 @@ description = "Screen-scraping library"
 name = "beautifulsoup4"
 optional = false
 python-versions = "*"
-version = "4.9.1"
+version = "4.9.2"
 
 [package.dependencies]
-soupsieve = [">1.2", "<2.0"]
+[package.dependencies.soupsieve]
+python = ">=3.0"
+version = ">1.2"
 
 [package.extras]
 html5lib = ["html5lib"]
@@ -209,25 +203,6 @@ version = "0.16"
 
 [[package]]
 category = "main"
-description = "Easy to use Python subprocess interface."
-name = "easyprocess"
-optional = false
-python-versions = "*"
-version = "0.3"
-
-[[package]]
-category = "main"
-description = "easy to use command-line interface for python modules"
-name = "entrypoint2"
-optional = false
-python-versions = "*"
-version = "0.2.1"
-
-[package.dependencies]
-argparse = "*"
-
-[[package]]
-category = "main"
 description = "An implementation of lxml.xmlfile for the standard library"
 name = "et-xmlfile"
 optional = false
@@ -355,18 +330,6 @@ python-versions = "*"
 version = "1.4.1"
 
 [[package]]
-category = "main"
-description = "Low-level, pure Python DBus protocol wrapper."
-marker = "python_version > \"3.4\" and platform_system == \"Linux\""
-name = "jeepney"
-optional = false
-python-versions = ">=3.5"
-version = "0.4.3"
-
-[package.extras]
-dev = ["testpath"]
-
-[[package]]
 category = "dev"
 description = "A very fast and expressive template engine."
 name = "jinja2"
@@ -427,7 +390,6 @@ version = "1.1.1"
 [[package]]
 category = "main"
 description = "An ultra fast cross-platform multiple screenshots module in pure python using ctypes."
-marker = "python_version > \"3.4\""
 name = "mss"
 optional = false
 python-versions = ">=3.5"
@@ -629,26 +591,6 @@ version = "0.17.3"
 
 [[package]]
 category = "main"
-description = "python screenshot"
-name = "pyscreenshot"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "2.2"
-
-[package.dependencies]
-EasyProcess = "*"
-entrypoint2 = "*"
-
-[package.dependencies.jeepney]
-python = ">=3.5"
-version = "*"
-
-[package.dependencies.mss]
-python = ">=3.5"
-version = "*"
-
-[[package]]
-category = "main"
 description = "Extensions to the standard Python datetime module"
 name = "python-dateutil"
 optional = false
@@ -764,14 +706,6 @@ version = "3.2.2"
 
 [[package]]
 category = "main"
-description = "Database utility library for Robot Framework"
-name = "robotframework-databaselibrary"
-optional = false
-python-versions = "*"
-version = "1.2.4"
-
-[[package]]
-category = "main"
 description = "Tools to ease creating larger test libraries for Robot Framework using Python."
 name = "robotframework-pythonlibcore"
 optional = false
@@ -846,7 +780,7 @@ description = "A collection of tools and libraries for RPA"
 name = "rpaframework"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "4.2.0"
+version = "5.0.0"
 
 [package.dependencies]
 clipboard = ">=0.0.4,<0.0.5"
@@ -854,6 +788,7 @@ cryptography = ">=2.9.2,<3.0.0"
 exchangelib = ">=3.1.1,<4.0.0"
 fpdf = ">=1.7.2,<2.0.0"
 graphviz = ">=0.13.2,<0.14.0"
+mss = ">=6.0.0,<7.0.0"
 netsuitesdk = ">=1.1.0,<2.0.0"
 notifiers = ">=1.2.1,<2.0.0"
 openpyxl = ">=3.0.3,<4.0.0"
@@ -861,9 +796,7 @@ openpyxl = ">=3.0.3,<4.0.0"
 pillow = ">=7.0.0,<8.0.0"
 psutil = ">=5.7.0,<6.0.0"
 pypdf2 = ">=1.26.0,<2.0.0"
-pyscreenshot = ">=2.2,<3.0"
 robotframework = ">=3.2.2,<4.0.0"
-robotframework-databaselibrary = ">=1.2.4,<2.0.0"
 robotframework-requests = ">=0.6.5,<0.7.0"
 robotframework-sapguilibrary = ">=1.1,<2.0"
 robotframework-seleniumlibrary = ">=4.5.0,<5.0.0"
@@ -954,10 +887,11 @@ version = "2.2.2"
 [[package]]
 category = "main"
 description = "A modern CSS selector implementation for Beautiful Soup."
+marker = "python_version >= \"3.0\""
 name = "soupsieve"
 optional = false
-python-versions = "*"
-version = "1.9.6"
+python-versions = ">=3.5"
+version = "2.0.1"
 
 [[package]]
 category = "dev"
@@ -1101,7 +1035,7 @@ description = "Fast, Extensible Progress Meter"
 name = "tqdm"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*"
-version = "4.49.0"
+version = "4.50.0"
 
 [package.extras]
 dev = ["py-make (>=0.1.0)", "twine", "argopt", "pydoc-markdown"]
@@ -1273,7 +1207,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pytest-cov", "jaraco.test (>=3.2.0)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
 [metadata]
-content-hash = "2b1a7504c05cdf7ae8214fc8a60b3c87fed6bebe8580f1e6d908cd4b2542729a"
+content-hash = "fd363c342c15642de815dcaa2464346f2a42da9a5a5c033b328e5502e853e6f9"
 lock-version = "1.0"
 python-versions = "^3.6"
 
@@ -1285,10 +1219,6 @@ alabaster = [
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
     {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
-]
-argparse = [
-    {file = "argparse-1.4.0-py2.py3-none-any.whl", hash = "sha256:c31647edb69fd3d465a847ea3157d37bed1f95f19760b11a47aa91c04b666314"},
-    {file = "argparse-1.4.0.tar.gz", hash = "sha256:62b089a55be1d8949cd2bc7e0df0bddb9e028faefc8c32038cc84862aefdd6e4"},
 ]
 attrs = [
     {file = "attrs-20.2.0-py2.py3-none-any.whl", hash = "sha256:fce7fc47dfc976152e82d53ff92fa0407700c21acd20886a13777a0d20e655dc"},
@@ -1303,9 +1233,9 @@ babel = [
     {file = "Babel-2.8.0.tar.gz", hash = "sha256:1aac2ae2d0d8ea368fa90906567f5c08463d98ade155c0c4bfedd6a0f7160e38"},
 ]
 beautifulsoup4 = [
-    {file = "beautifulsoup4-4.9.1-py2-none-any.whl", hash = "sha256:e718f2342e2e099b640a34ab782407b7b676f47ee272d6739e60b8ea23829f2c"},
-    {file = "beautifulsoup4-4.9.1-py3-none-any.whl", hash = "sha256:a6237df3c32ccfaee4fd201c8f5f9d9df619b93121d01353a64a73ce8c6ef9a8"},
-    {file = "beautifulsoup4-4.9.1.tar.gz", hash = "sha256:73cc4d115b96f79c7d77c1c7f7a0a8d4c57860d1041df407dd1aae7f07a77fd7"},
+    {file = "beautifulsoup4-4.9.2-py2-none-any.whl", hash = "sha256:645d833a828722357038299b7f6879940c11dddd95b900fe5387c258b72bb883"},
+    {file = "beautifulsoup4-4.9.2-py3-none-any.whl", hash = "sha256:5dfe44f8fddc89ac5453f02659d3ab1668f2c0d9684839f0785037e8c6d9ac8d"},
+    {file = "beautifulsoup4-4.9.2.tar.gz", hash = "sha256:1edf5e39f3a5bc6e38b235b369128416c7239b34f692acccececb040233032a1"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -1408,14 +1338,6 @@ docutils = [
     {file = "docutils-0.16-py2.py3-none-any.whl", hash = "sha256:0c5b78adfbf7762415433f5515cd5c9e762339e23369dbe8000d84a4bf4ab3af"},
     {file = "docutils-0.16.tar.gz", hash = "sha256:c2de3a60e9e7d07be26b7f2b00ca0309c207e06c100f9cc2a94931fc75a478fc"},
 ]
-easyprocess = [
-    {file = "EasyProcess-0.3-py2.py3-none-any.whl", hash = "sha256:fca26794d3ced044d0471bd4ed767d5c287391d8a1c5e9d106fc59478b732543"},
-    {file = "EasyProcess-0.3.tar.gz", hash = "sha256:fb948daac01f64c1e49750752711253614846c6fc7e5692a718a7408f2ffb984"},
-]
-entrypoint2 = [
-    {file = "entrypoint2-0.2.1-py2.py3-none-any.whl", hash = "sha256:acbc0bf0b4e3236110f957d4ae267a568da1afb98704664cbe4c555d71f7376f"},
-    {file = "entrypoint2-0.2.1.tar.gz", hash = "sha256:5b6131c779dba9f4fda645dcc15a820f4fc8d493e163df24ae5911840850be95"},
-]
 et-xmlfile = [
     {file = "et_xmlfile-1.0.1.tar.gz", hash = "sha256:614d9722d572f6246302c4491846d2c393c199cfa4edc9af593437691683335b"},
 ]
@@ -1459,10 +1381,6 @@ isodate = [
 jdcal = [
     {file = "jdcal-1.4.1-py2.py3-none-any.whl", hash = "sha256:1abf1305fce18b4e8aa248cf8fe0c56ce2032392bc64bbd61b5dff2a19ec8bba"},
     {file = "jdcal-1.4.1.tar.gz", hash = "sha256:472872e096eb8df219c23f2689fc336668bdb43d194094b5cc1707e1640acfc8"},
-]
-jeepney = [
-    {file = "jeepney-0.4.3-py3-none-any.whl", hash = "sha256:d6c6b49683446d2407d2fe3acb7a368a77ff063f9182fe427da15d622adc24cf"},
-    {file = "jeepney-0.4.3.tar.gz", hash = "sha256:3479b861cc2b6407de5188695fa1a8d57e5072d7059322469b62628869b8e36e"},
 ]
 jinja2 = [
     {file = "Jinja2-2.11.2-py2.py3-none-any.whl", hash = "sha256:f0a4641d3cf955324a89c04f3d94663aa4d638abe8f733ecd3582848e1c37035"},
@@ -1676,10 +1594,6 @@ pyperclip = [
 pyrsistent = [
     {file = "pyrsistent-0.17.3.tar.gz", hash = "sha256:2e636185d9eb976a18a8a8e96efce62f2905fea90041958d8cc2a189756ebf3e"},
 ]
-pyscreenshot = [
-    {file = "pyscreenshot-2.2-py2.py3-none-any.whl", hash = "sha256:1f1a7abaa126e7b15ac0c7343a63c0c426b0bfbef14785602a4fcda6e099bca7"},
-    {file = "pyscreenshot-2.2.tar.gz", hash = "sha256:dec8517cb18faf4f983dd2ee6636924e472a5644da1480ae871786dfcac244e9"},
-]
 python-dateutil = [
     {file = "python-dateutil-2.8.1.tar.gz", hash = "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"},
     {file = "python_dateutil-2.8.1-py2.py3-none-any.whl", hash = "sha256:75bb3f31ea686f1197762692a9ee6a7550b59fc6ca3a1f4b5d7e32fb98e2da2a"},
@@ -1731,10 +1645,6 @@ robotframework = [
     {file = "robotframework-3.2.2-py2.py3-none-any.whl", hash = "sha256:a0c325e79dc6dcdaba0398db8c3afefc337799b7b36b336f04b07be4fe4a9dd2"},
     {file = "robotframework-3.2.2.zip", hash = "sha256:a0786a916d0572bd9d6afe26e95c6021e3df5dcafa0ece6b302e36366e58c24e"},
 ]
-robotframework-databaselibrary = [
-    {file = "robotframework-databaselibrary-1.2.4.tar.gz", hash = "sha256:627d872b3dda6a308a650ac9e676dadedf9c294e4ef70ad207cbb86b78eb8847"},
-    {file = "robotframework_databaselibrary-1.2.4-py3-none-any.whl", hash = "sha256:150ca765fff85c5fcf74e4b4d0f33fe5e73fe754fa224a905596468f74e69dd7"},
-]
 robotframework-pythonlibcore = [
     {file = "robotframework-pythonlibcore-2.1.0.tar.gz", hash = "sha256:8b210bf29cbb78069b41a3d0b90e4cc8dd23f509ea2daf450e3ef4a6ee758949"},
     {file = "robotframework_pythonlibcore-2.1.0-py2.py3-none-any.whl", hash = "sha256:5dda5be2daa98495dc76e48be7a2f3f95a65465d1696b46238c926582a880a10"},
@@ -1759,8 +1669,8 @@ robotframeworklexer = [
     {file = "robotframeworklexer-1.1.tar.gz", hash = "sha256:ddd3ea50b54b47aee86a83c400534a61e2588dec875a3c10f04822280e834b8f"},
 ]
 rpaframework = [
-    {file = "rpaframework-4.2.0-py3-none-any.whl", hash = "sha256:21481ad1ee234b2b57f6ef5df96a3589d52bbf1ec44f0a6e3f9fbe66f7bdb07d"},
-    {file = "rpaframework-4.2.0.tar.gz", hash = "sha256:45b81c993f4c29be6d5fc71e0b42a823bcd8969f04a532ea20d84323348aaa43"},
+    {file = "rpaframework-5.0.0-py3-none-any.whl", hash = "sha256:1033c2dae19fa4f031aaa74dd8e44f9403b65729f0b4d49e1df21e6b5819abe1"},
+    {file = "rpaframework-5.0.0.tar.gz", hash = "sha256:833a746f9ca093dc92eb4db9429168f0dea71b99221781ac153d91f4fe7c5526"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-1.7.1.tar.gz", hash = "sha256:e067a7ee47000795bd515a58f8d57ba96363d908fe61bfd9e8c451b123d1eb51"},
@@ -1787,8 +1697,8 @@ sortedcontainers = [
     {file = "sortedcontainers-2.2.2.tar.gz", hash = "sha256:4e73a757831fc3ca4de2859c422564239a31d8213d09a2a666e375807034d2ba"},
 ]
 soupsieve = [
-    {file = "soupsieve-1.9.6-py2.py3-none-any.whl", hash = "sha256:feb1e937fa26a69e08436aad4a9037cd7e1d4c7212909502ba30701247ff8abd"},
-    {file = "soupsieve-1.9.6.tar.gz", hash = "sha256:7985bacc98c34923a439967c1a602dc4f1e15f923b6fcf02344184f86cc7efaa"},
+    {file = "soupsieve-2.0.1-py3-none-any.whl", hash = "sha256:1634eea42ab371d3d346309b93df7870a88610f0725d47528be902a0d95ecc55"},
+    {file = "soupsieve-2.0.1.tar.gz", hash = "sha256:a59dc181727e95d25f781f0eb4fd1825ff45590ec8ff49eadfd7f1a537cc0232"},
 ]
 sphinx = [
     {file = "Sphinx-2.4.4-py3-none-any.whl", hash = "sha256:fc312670b56cb54920d6cc2ced455a22a547910de10b3142276495ced49231cb"},
@@ -1831,8 +1741,8 @@ toml = [
     {file = "toml-0.10.1.tar.gz", hash = "sha256:926b612be1e5ce0634a2ca03470f95169cf16f939018233a670519cb4ac58b0f"},
 ]
 tqdm = [
-    {file = "tqdm-4.49.0-py2.py3-none-any.whl", hash = "sha256:8f3c5815e3b5e20bc40463fa6b42a352178859692a68ffaa469706e6d38342a5"},
-    {file = "tqdm-4.49.0.tar.gz", hash = "sha256:faf9c671bd3fad5ebaeee366949d969dca2b2be32c872a7092a1e1a9048d105b"},
+    {file = "tqdm-4.50.0-py2.py3-none-any.whl", hash = "sha256:2dd75fdb764f673b8187643496fcfbeac38348015b665878e582b152f3391cdb"},
+    {file = "tqdm-4.50.0.tar.gz", hash = "sha256:93b7a6a9129fce904f6df4cf3ae7ff431d779be681a95c3344c26f3e6c09abfa"},
 ]
 tweepy = [
     {file = "tweepy-3.9.0-py2.py3-none-any.whl", hash = "sha256:3b3780df00eaa937bbd5427d2011e4b3bcb6a29a87bb4cbb4addfc47850e46a5"},
