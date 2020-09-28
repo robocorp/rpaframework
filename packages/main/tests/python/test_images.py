@@ -77,3 +77,14 @@ def test_find_template(region_and_template):
     assert len(matches) == 1
     match = matches[0]
     assert match.center == region.center
+
+
+@pytest.mark.skip(
+    reason="this currently fails because the found template has some offset, at least on multi-monitor setups"
+)
+def test_screenshot_region_and_find_it():
+    library = Images()
+    region = Region(0, 0, 100, 100)
+    first_capture = library.take_screenshot(region=region)
+    find_result = library.find_template_on_screen(first_capture)
+    assert region == find_result[0]
