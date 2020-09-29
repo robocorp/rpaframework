@@ -5,18 +5,20 @@ from RPA.core.helpers import delay
 from RPA.Images import Images
 
 if platform.system() == "Windows":
-    from RPA.Desktop import Windows
+    from RPA.Desktop.Windows import Windows
 
 
 class Mouse:
-    """Mouse interaction keywords"""
+    """Mouse interaction keywords."""
+
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 
     def find_element(self, *args, **kwargs):
         if platform.system() == "Windows":
-            Windows().find_element(*args, **kwargs)
+            return Windows().find_element(*args, **kwargs)
         else:
             raise NotImplementedError(
                 "Find element not yet implmented for non-windows OS"
@@ -24,7 +26,7 @@ class Mouse:
 
     def get_element_center(self, *args, **kwargs):
         if platform.system() == "Windows":
-            Windows().get_element_center(*args, **kwargs)
+            return Windows().get_element_center(*args, **kwargs)
         else:
             raise NotImplementedError(
                 "Get Element Center not yet implmented for non-windows OS"
