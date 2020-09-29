@@ -36,10 +36,14 @@ overriden manually while developing an activity.
 Item structure
 ==============
 
-A work item's payload is JSON and allows storing anything that is
+A work item's data payload is JSON and allows storing anything that is
 serializable. This library creates an object with the key 'variables'
 that contains key-value pairs of a variable name and its contents.
 These variables can be exposed to the Robot Framework task to be used directly.
+
+In addition to the data section, a work item can also contain files,
+which are stored by default in Robocorp's cloud. Adding and using
+files with work items requires no additional setup from the user.
 
 Workflow
 ========
@@ -67,9 +71,25 @@ Examples
 Robot Framework
 ===============
 
-The library allows injecting the work item variables into the current
-task execution. Also note how the work item is loaded implicitly when
+In the following example the work item is modified locally and then saved
+back to Robocloud. Also note how the work item is loaded implicitly when
 the suite starts.
+
+.. code-block:: robotframework
+    :linenos:
+
+    *** Settings ***
+    Library    RPA.Robocloud.Items
+
+    *** Tasks ***
+    Save variables to Robocloud
+        Add work item file    orders.xlsx
+        Set work item variables    user=Dude    mail=address@company.com
+        Save work item
+
+Later in the process inside a different robot, we can use previously saved
+work item variables and files. The library also allows injecting the variables
+directly into the current task execution.
 
 .. code-block:: robotframework
     :linenos:
@@ -80,22 +100,9 @@ the suite starts.
     *** Tasks ***
     Use variables from Robocloud
         Set task variables from work item
-        Log   Using variables from workspace ${workspace} for user ${user_id}
-
-
-In the following example the work item is modified locally and then saved
-back to Robocloud.
-
-.. code-block:: robotframework
-    :linenos:
-
-    *** Settings ***
-    Library    RPA.Robocloud.Items
-
-    *** Tasks ***
-    Save variables to Robocloud
-        Set work item variables    user=Dude    mail=address@company.com
-        Save work item
+        Log    Variables are now available: ${user}, ${mail}
+        ${path}=    Get work item file    orders.xlsx
+        Log    Files are also stored to disk: ${path}
 
 Python
 ======
