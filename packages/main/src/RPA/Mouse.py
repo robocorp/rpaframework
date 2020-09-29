@@ -6,6 +6,7 @@ from RPA.Images import Images
 
 if platform.system() == "Windows":
     from RPA.Desktop.Windows import Windows
+    import pywinauto
 
 
 class Mouse:
@@ -175,6 +176,17 @@ class Mouse:
         if (x is None or y is None) or (x < 0 or y < 0):
             raise ValueError(f"Can't click on given coordinates: ({x}, {y})")
         if platform.system() == "Windows":
-            Windows().windows_click_type(x, y, click_type)
+            self.windows_click_type(x, y, click_type)
         else:
             raise NotImplementedError
+
+    def windows_click_type(
+        self, x: int = None, y: int = None, click_type: str = "click"
+    ) -> None:
+        """ Windows only low-level click type implementation """
+        if click_type == "click":
+            pywinauto.mouse.click(coords=(x, y))
+        elif click_type == "double":
+            pywinauto.mouse.double_click(coords=(x, y))
+        elif click_type == "right":
+            pywinauto.mouse.right_click(coords=(x, y))
