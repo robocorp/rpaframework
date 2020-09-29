@@ -1,5 +1,8 @@
 import copy
+import os
 import pytest
+import tempfile
+from contextlib import contextmanager
 from RPA.Robocloud.Items import BaseAdapter, Items
 
 
@@ -12,9 +15,29 @@ VALID_DATABASE = {
     ("workspace-id", "workitem-id-custom"): {"input": 0xCAFE},
 }
 
+VALID_FILES = {"file1.txt": b"data1", "file2.txt": b"data2", "file3.png": b"data3"}
+
+
+@contextmanager
+def temp_filename(content=None):
+    """Create temporary file and return filename, delete file afterwards.
+    Needs to close file handle, since Windows won't allow multiple
+    open handles to the same file.
+    """
+    with tempfile.NamedTemporaryFile(delete=False) as fd:
+        path = fd.name
+        if content:
+            fd.write(content)
+
+    try:
+        yield path
+    finally:
+        os.unlink(path)
+
 
 class MockAdapter(BaseAdapter):
     DATABASE = {}
+    FILES = {}
 
     @classmethod
     def validate(cls, item, key, val):
@@ -22,11 +45,25 @@ class MockAdapter(BaseAdapter):
         assert data is not None
         assert data[key] == val
 
-    def save(self, workspace_id, item_id, data):
-        self.DATABASE[(workspace_id, item_id)] = data
+    def load_data(self):
+        return self.DATABASE.get((self.workspace_id, self.item_id), {})
 
-    def load(self, workspace_id, item_id):
-        return self.DATABASE.get((workspace_id, item_id), {})
+    def save_data(self, data):
+        self.DATABASE[(self.workspace_id, self.item_id)] = data
+
+    def list_files(self):
+        return list(self.FILES.keys())
+
+    def add_file(self, name, content):
+        self.FILES[name] = content
+
+    def get_file(self, name):
+        assert name in self.FILES
+        return self.FILES[name]
+
+    def remove_file(self, name):
+        assert name in self.FILES
+        del self.FILES[name]
 
 
 @pytest.fixture
@@ -34,10 +71,12 @@ def adapter(monkeypatch):
     monkeypatch.setenv("RC_WORKSPACE_ID", "workspace-id")
     monkeypatch.setenv("RC_WORKITEM_ID", "workitem-id-first")
     MockAdapter.DATABASE = copy.deepcopy(VALID_DATABASE)
+    MockAdapter.FILES = copy.deepcopy(VALID_FILES)
     try:
         yield MockAdapter
     finally:
         MockAdapter.DATABASE = {}
+        MockAdapter.FILES = {}
 
 
 @pytest.fixture
@@ -193,3 +232,111 @@ def test_raw_payload(library):
     library.set_work_item_payload({"output": 0xBEEF})
     library.save_work_item()
     MockAdapter.validate(item, "output", 0xBEEF)
+
+
+def test_list_files(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    files = library.list_work_item_files()
+    assert files == ["file1.txt", "file2.txt", "file3.png"]
+
+
+def test_get_file(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    with temp_filename() as path:
+        result = library.get_work_item_file("file2.txt", path)
+        with open(result) as fd:
+            data = fd.read()
+
+    assert result == path
+    assert data == "data2"
+
+
+def test_get_file_notexist(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    with pytest.raises(FileNotFoundError):
+        library.get_work_item_file("file5.txt")
+
+
+def test_add_file(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    with temp_filename(b"some-input-content") as path:
+        library.add_work_item_file(path, "file4.txt")
+
+        files = library.list_work_item_files()
+        assert files == ["file1.txt", "file2.txt", "file3.png", "file4.txt"]
+        assert "file4.txt" not in MockAdapter.FILES
+
+        library.save_work_item()
+        assert MockAdapter.FILES["file4.txt"] == b"some-input-content"
+
+
+def test_add_file_notexist(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    with pytest.raises(FileNotFoundError):
+        library.add_work_item_file("file5.txt", "doesnt-matter")
+
+
+def test_remove_file(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    library.remove_work_item_file("file2.txt")
+
+    files = library.list_work_item_files()
+    assert files == ["file1.txt", "file3.png"]
+    assert "file2.txt" in MockAdapter.FILES
+
+    library.save_work_item()
+    assert "file2.txt" not in MockAdapter.FILES
+
+
+def test_remove_file_notexist(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    library.remove_work_item_file("file5.txt")
+
+    with pytest.raises(FileNotFoundError):
+        library.remove_work_item_file("file5.txt", missing_ok=False)
+
+
+def test_get_file_pattern(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    with tempfile.TemporaryDirectory() as outdir:
+        file1 = os.path.join(outdir, "file1.txt")
+        file2 = os.path.join(outdir, "file2.txt")
+
+        paths = library.get_work_item_files("*.txt", outdir)
+        assert paths == [file1, file2]
+        assert os.path.exists(file1)
+        assert os.path.exists(file2)
+
+
+def test_remove_file_pattern(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    library.remove_work_item_files("*.txt")
+
+    files = library.list_work_item_files()
+    assert files == ["file3.png"]
+    assert list(MockAdapter.FILES) == ["file1.txt", "file2.txt", "file3.png"]
+
+    library.save_work_item()
+
+    files = library.list_work_item_files()
+    assert files == ["file3.png"]
+    assert list(MockAdapter.FILES) == ["file3.png"]
+
+
+def test_clear_work_item(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    library.clear_work_item()
+    library.save_work_item()
+
+    assert library.get_work_item_payload() == {}
+    assert library.list_work_item_files() == []
