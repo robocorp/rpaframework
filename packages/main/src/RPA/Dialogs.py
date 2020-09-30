@@ -44,7 +44,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def create_form(self, message):
         has_submit = False
-        formhtml = self.import_styles()
+        formhtml = "<head>"
+        formhtml += self.import_styles()
+        formhtml += "</head>"
         formhtml += '<form action="formresponsehandling">'
         for item in message["form"]:
             if item["type"] == "textinput":
@@ -92,6 +94,12 @@ class Handler(BaseHTTPRequestHandler):
                     formhtml += f"<input type=\"submit\" name=\"{item['name']}\" value=\"{button}\">"
                 formhtml += "<br>"
                 has_submit = True
+            elif item["type"] == "fileinput":
+                formhtml += (
+                    f"<label for=\"{item['name']}\">{item['label']}</label><br>"
+                    f"<input type=\"file\" id=\"{item['id']}\" "
+                    f"name=\"{item['name']}\" accept=\"{item['filetypes']}\"><br>"
+                )
         if not has_submit:
             formhtml += "<input type='submit' value='Submit'>"
         formhtml += "</form></body>"
@@ -167,7 +175,7 @@ def start_server_cmd(directory, port=8000):
     server.serve_forever()
 
 
-class Dialog:
+class Dialogs:
     """[summary]"""
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -238,8 +246,10 @@ class Dialog:
             headers=headers,
         )
         br = Browser()
-        # br.open_available_browser(f"{self.server_address}/form.html")
-        br.open_chrome_as_app(f"{self.server_address}/form.html")
+        br.open_available_browser(f"{self.server_address}/form.html")
+
+        # TODO. br.open_user_browser(f"{self.server_address}/form.html")
+        # br.open_chrome_as_app(f"{self.server_address}/form.html")
         br.set_window_size(600, 1000)
 
         headers = {"Prefer": "wait=120"}

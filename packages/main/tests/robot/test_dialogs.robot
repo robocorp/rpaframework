@@ -1,10 +1,10 @@
 *** Settings ***
-Library          RPA.Dialog
+Library          RPA.Dialogs
 Force Tags       dialog
 
 *** Variables ***
 ${RESOURCE_DIR}   ${CURDIR}${/}..${/}resources${/}
-${FORM_JSON}      ${RESOURCE_DIR}questionform.json
+${FORM_JSON}      ${RESOURCE_DIR}questionform_files.json
 
 *** Keywords ***
 Request By Form Constructed With Keywords
