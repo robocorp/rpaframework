@@ -26,7 +26,7 @@ class RobocloudVaultError(Exception):
     """Raised when there's problem with reading from Robocloud Vault."""
 
 
-class Secret(collections.Mapping):
+class Secret(collections.abc.Mapping):
     """Container for a secret with name, description, and
     multiple key-value pairs. Immutable and avoids logging
     internal values when possible.
