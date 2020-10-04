@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Browser**: Add keyword ``Get Browser Capabilities``.
+
 5.0.0
 -----
 

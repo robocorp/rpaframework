@@ -1222,3 +1222,13 @@ class Browser(SeleniumLibrary):
         """
         browser_method = webbrowser.open_new_tab if tab else webbrowser.open_new
         browser_method(url)
+
+    @keyword
+    def get_browser_capabilities(self) -> dict:
+        """Get dictionary of browser properties
+
+        Example:
+            | ${caps}= | Get Browser Capabilities |
+        """
+        capabilities = self.driver.capabilities
+        return dict(capabilities)
