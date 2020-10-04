@@ -1217,6 +1217,18 @@ Keywords
      <p>See <a href="#Switch%20Browser" class="name">Switch Browser</a> for more information and examples.</p>
      <p>New in SeleniumLibrary 4.0</p>
 
+:Get Browser Capabilities:
+  .. raw:: html
+
+     <p>Get dictionary of browser properties</p>
+     <p>Example:</p>
+     <table border="1">
+     <tr>
+     <td>${caps}=</td>
+     <td>Get Browser Capabilities</td>
+     </tr>
+     </table>
+
 :Get Browser Ids:
   .. raw:: html
 
