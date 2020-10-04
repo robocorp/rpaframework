@@ -6,6 +6,7 @@ import tempfile
 from typing import Any
 
 try:
+    from apiclient import discovery
     from google.cloud import vision
     from google.cloud import language_v1
     from google.cloud.language_v1 import enums
@@ -20,6 +21,7 @@ try:
         SynthesisInput,
     )
     from google.cloud import speech
+    from google.oauth2 import service_account
 
     HAS_GOOGLECLOUD = True
 except ImportError:
@@ -72,8 +74,7 @@ class GoogleBase:
             with open(json_file, "w") as f:
                 f.write(MessageToJson(response))
 
-    @google_dependency_required
-    def _init_with_robocloud(self, client_object, service_name):
+    def _get_service_account_from_robocloud(self):
         temp_filedesc = None
         if self.robocloud_vault_name is None or self.robocloud_vault_secret_key is None:
             raise KeyError(
@@ -82,16 +83,23 @@ class GoogleBase:
                 "init or with `set_robocloud_vault` keyword."
             )
         vault = Secrets()
+
+        vault_items = vault.get_secret(self.robocloud_vault_name)
+        secret = json.loads(vault_items[self.robocloud_vault_secret_key].strip())
+        with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_filedesc:
+            json.dump(secret, temp_filedesc, ensure_ascii=False)
+
+        return temp_filedesc.name
+
+    @google_dependency_required
+    def _init_with_robocloud(self, client_object, service_name):
+        temp_filedesc = self._get_service_account_from_robocloud()
         try:
-            vault_items = vault.get_secret(self.robocloud_vault_name)
-            secret = json.loads(vault_items[self.robocloud_vault_secret_key].strip())
-            with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_filedesc:
-                json.dump(secret, temp_filedesc, ensure_ascii=False)
-            client = client_object.from_service_account_json(temp_filedesc.name)
+            client = client_object.from_service_account_json(temp_filedesc)
             self._set_service(service_name, client)
         finally:
             if temp_filedesc:
-                os.remove(temp_filedesc.name)
+                os.remove(temp_filedesc)
 
     def _init_service(
         self, client_object, service_name, service_credentials_file, use_robocloud_vault
@@ -831,6 +839,158 @@ class ServiceStorage(GoogleBase):
         return notfound if len(notfound) > 0 else True
 
 
+class ServiceSheets(GoogleBase):
+    """Class for Google Sheets API
+
+    You will have to grant the appropriate permissions to the
+    service account you are using to authenticate with
+    Google Sheets API. The IAM page in the console is here:
+    https://console.cloud.google.com/iam-admin/iam/project
+
+    For more information about Google Sheets API link_.
+
+    .. _link: https://developers.google.com/sheets/api/quickstart/python
+    """
+
+    __service_name = "sheets"
+
+    def __init__(self) -> None:
+        self.services.append(self.__service_name)
+        self.logger.debug("ServiceSheets init")
+        self.scopes = [
+            "https://www.googleapis.com/auth/drive",
+            "https://www.googleapis.com/auth/drive.file",
+            "https://www.googleapis.com/auth/spreadsheets",
+        ]
+
+    @google_dependency_required
+    def init_sheets_client(
+        self,
+        service_credentials_file: str = None,
+        use_robocloud_vault: bool = False,
+    ) -> None:
+        """Initialize Google Sheets client
+
+        :param service_credentials_file: filepath to credentials JSON
+        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        """
+        service_account_file = None
+        client = None
+        if use_robocloud_vault:
+            service_account_file = self._get_service_account_from_robocloud()
+        elif service_credentials_file:
+            service_account_file = service_credentials_file
+        try:
+            credentials = service_account.Credentials.from_service_account_file(
+                service_account_file, scopes=self.scopes
+            )
+            client = discovery.build("sheets", "v4", credentials=credentials)
+        except OSError as e:
+            raise AssertionError from e
+        finally:
+            if use_robocloud_vault:
+                os.remove(service_account_file)
+
+        self._set_service(self.__service_name, client)
+
+    @google_dependency_required
+    def create_sheet(self, title: str) -> str:
+        """Create empty sheet with a title
+
+        :param title: name as string
+        :return: created `sheet_id`
+        """
+        if not title:
+            raise KeyError("title is required for kw: create_sheet")
+
+        client = self._get_client_for_service(self.__service_name)
+        data = {"properties": {"title": title}}
+        spreadsheet = (
+            client.spreadsheets().create(body=data, fields="spreadsheetId").execute()
+        )
+        return spreadsheet.get("spreadsheetId")
+
+    @google_dependency_required
+    def insert_values(
+        self,
+        sheet_id: str,
+        sheet_range: str,
+        values: list,
+        major_dimension: str = "COLUMNS",
+        value_input_option: str = "USER_ENTERED",
+    ) -> None:
+        """Insert values into sheet cells
+
+        :param sheet_id: target sheet
+        :param sheet_range: target sheet range
+        :param values: list of values to insert into sheet
+        :param major_dimension: major dimension of the values, default `COLUMNS`
+        :param value_input_option: controls whether input strings are parsed or not,
+         default `USER_ENTERED`
+        """
+        if not sheet_id or not sheet_range:
+            raise KeyError(
+                "sheet_id and sheet_range are required for kw: insert_values"
+            )
+        if not values:
+            raise ValueError("Please provide list of values to insert into sheet")
+
+        client = self._get_client_for_service(self.__service_name)
+
+        datavalues = []
+        for val in values:
+            datavalues.append([val])
+        resource = {"majorDimension": major_dimension, "values": datavalues}
+        client.spreadsheets().values().append(
+            spreadsheetId=sheet_id,
+            range=sheet_range,
+            body=resource,
+            valueInputOption=value_input_option,
+        ).execute()
+
+    def get_values(
+        self,
+        sheet_id: str,
+        sheet_range: str,
+        value_render_option: str = "UNFORMATTED_VALUE",
+        datetime_render_option: str = "FORMATTED_STRING",
+    ) -> list:
+        """Get values from the range in the sheet
+
+        :param sheet_id: target sheet
+        :param sheet_range: target sheet range
+        :param value_render_option: how values should be represented
+         in the output defaults to "UNFORMATTED_VALUE"
+        :param datetime_render_option: ow dates, times, and durations should
+         be represented in the outpu, defaults to "FORMATTED_STRING"
+        """
+        client = self._get_client_for_service(self.__service_name)
+        values = (
+            client.spreadsheets()
+            .values()
+            .get(
+                spreadsheetId=sheet_id,
+                range=sheet_range,
+                valueRenderOption=value_render_option,
+                dateTimeRenderOption=datetime_render_option,
+            )
+            .execute()
+        )
+        return values
+
+    def clear_values(self, sheet_id: str, sheet_range: str) -> None:
+        """Clear cell values for range of cells within a sheet
+
+        :param sheet_id: target sheet
+        :param sheet_range: target sheet range
+        """
+        client = self._get_client_for_service(self.__service_name)
+        client.spreadsheets().values().clear(
+            spreadsheetId=sheet_id,
+            range=sheet_range,
+        ).execute()
+
+
 class Google(  # pylint: disable=R0901
     ServiceVision,
     ServiceNaturalLanguage,
@@ -839,6 +999,7 @@ class Google(  # pylint: disable=R0901
     ServiceTextToSpeech,
     ServiceSpeechToText,
     ServiceStorage,
+    ServiceSheets,
 ):
     """Library for interacting with Google services
 
@@ -870,4 +1031,5 @@ class Google(  # pylint: disable=R0901
         ServiceTextToSpeech.__init__(self)
         ServiceSpeechToText.__init__(self)
         ServiceStorage.__init__(self)
+        ServiceSheets.__init__(self)
         self.logger.info("Google library initialized")
