@@ -65,10 +65,22 @@ Keywords
   Classify text
 
 
+:Clear Values:
+  :Arguments: sheet_id: str, sheet_range: str
+
+  Clear cell values for range of cells within a sheet
+
+
 :Create Bucket:
   :Arguments: bucket_name: str
 
   Create Google Cloud Storage bucket
+
+
+:Create Sheet:
+  :Arguments: title: str
+
+  Create empty sheet with a title
 
 
 :Delete Bucket:
@@ -126,10 +138,22 @@ Keywords
   Get Google Cloud Storage bucket
 
 
+:Get Values:
+  :Arguments: sheet_id: str, sheet_range: str, value_render_option: str = UNFORMATTED_VALUE, datetime_render_option: str = FORMATTED_STRING
+
+  Get values from the range in the sheet
+
+
 :Init Natural Language Client:
   :Arguments: service_credentials_file: str = None, use_robocloud_vault: bool = False
 
   Initialize Google Cloud Natural Language client
+
+
+:Init Sheets Client:
+  :Arguments: service_credentials_file: str = None, use_robocloud_vault: bool = False
+
+  Initialize Google Sheets client
 
 
 :Init Speech To Text Client:
@@ -166,6 +190,12 @@ Keywords
   :Arguments: service_credentials_file: str = None, use_robocloud_vault: bool = False
 
   Initialize Google Cloud Vision client
+
+
+:Insert Values:
+  :Arguments: sheet_id: str, sheet_range: str, values: list, major_dimension: str = COLUMNS, value_input_option: str = USER_ENTERED
+
+  Insert values into sheet cells
 
 
 :List Buckets:

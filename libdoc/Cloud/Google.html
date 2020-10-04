@@ -275,6 +275,14 @@ which take as parameter an <code class="docutils literal notranslate"><span clas
 </dl>
 <p>Classify text</p>
 </dd>
+<dt class="field-even">Clear Values</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>sheet_id: str, sheet_range: str</p>
+</dd>
+</dl>
+<p>Clear cell values for range of cells within a sheet</p>
+</dd>
 <dt class="field-even">Create Bucket</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -282,6 +290,14 @@ which take as parameter an <code class="docutils literal notranslate"><span clas
 </dd>
 </dl>
 <p>Create Google Cloud Storage bucket</p>
+</dd>
+<dt class="field-even">Create Sheet</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>title: str</p>
+</dd>
+</dl>
+<p>Create empty sheet with a title</p>
 </dd>
 <dt class="field-even">Delete Bucket</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -351,6 +367,14 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf</p>
 </dl>
 <p>Get Google Cloud Storage bucket</p>
 </dd>
+<dt class="field-even">Get Values</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>sheet_id: str, sheet_range: str, value_render_option: str = UNFORMATTED_VALUE, datetime_render_option: str = FORMATTED_STRING</p>
+</dd>
+</dl>
+<p>Get values from the range in the sheet</p>
+</dd>
 <dt class="field-even">Init Natural Language Client</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -358,6 +382,14 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf</p>
 </dd>
 </dl>
 <p>Initialize Google Cloud Natural Language client</p>
+</dd>
+<dt class="field-even">Init Sheets Client</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>service_credentials_file: str = None, use_robocloud_vault: bool = False</p>
+</dd>
+</dl>
+<p>Initialize Google Sheets client</p>
 </dd>
 <dt class="field-even">Init Speech To Text Client</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -406,6 +438,14 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf</p>
 </dd>
 </dl>
 <p>Initialize Google Cloud Vision client</p>
+</dd>
+<dt class="field-even">Insert Values</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>sheet_id: str, sheet_range: str, values: list, major_dimension: str = COLUMNS, value_input_option: str = USER_ENTERED</p>
+</dd>
+</dl>
+<p>Insert values into sheet cells</p>
 </dd>
 <dt class="field-even">List Buckets</dt>
 <dd class="field-even"><p>List Google Cloud Storage buckets</p>
