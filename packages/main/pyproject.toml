@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "5.0.0"
+version = "5.1.0"
 description = "A collection of tools and libraries for RPA"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -71,6 +71,9 @@ graphviz = "^0.13.2"
 notifiers = "^1.2.1"
 cryptography = "^2.9.2"
 mss = "^6.0.0"
+google-api-python-client = {version = "^1.12.3", optional = true}
+google-auth-httplib2 = {version = "^0.0.4", optional = true}
+google-auth-oauthlib = {version = "^0.4.1", optional = true}
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }
@@ -91,7 +94,10 @@ google = [
 	"google-cloud-translate",
 	"google-cloud-texttospeech",
 	"google-cloud-speech",
-	"google-cloud-storage"
+	"google-cloud-storage",
+	"google-api-python-client",
+	"google-auth-httplib2",
+	"google-auth-oauthlib"
 ]
 
 [tool.black]
