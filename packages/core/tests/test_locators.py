@@ -73,7 +73,7 @@ def test_load_malformed():
 
 def test_find_by_name_or_error_missing():
     with pytest.raises(ValueError):
-        locators.find_by_name_or_error("/not/a/valid/path", "nonexistent locator name")
+        locators.load_by_name("/not/a/valid/path", "nonexistent locator name")
 
 
 def test_load_missing():
