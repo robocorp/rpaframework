@@ -56,8 +56,6 @@ class Browser(SeleniumLibrary):
     }
 
     def __init__(self, *args, **kwargs) -> None:
-        locators_path = kwargs.pop("locators_path", locators.default_locators_path())
-
         # Parse user-given plugins
         plugins = kwargs.get("plugins", "")
         plugins = set(p for p in plugins.split(",") if p)
@@ -75,7 +73,9 @@ class Browser(SeleniumLibrary):
         self.using_testability = bool("SeleniumTestability" in plugins)
 
         # Add support for locator aliases
-        self.locators = locators.LocatorsDatabase(locators_path)
+        self.locators_path = kwargs.pop(
+            "locators_path", locators.default_locators_path()
+        )
         self._element_finder.register("alias", self._find_by_alias, persist=True)
 
         self._embedding_screenshots = False
@@ -94,7 +94,7 @@ class Browser(SeleniumLibrary):
         """Custom 'alias' locator that uses locators database."""
         del constraints
 
-        locator = self.locators.find_or_error(criteria)
+        locator = locators.find_by_name_or_error(self.locators_path, criteria)
         return self._element_finder.find(locator, tag, parent)
 
     @keyword

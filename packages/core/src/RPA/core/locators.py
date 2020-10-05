@@ -35,6 +35,31 @@ def open_stream(obj, *args, **kwargs):
             obj.close()
 
 
+def find_by_name_or_error(path, criteria):
+    db = LocatorsDatabase(path)
+    if not Path(db.path).exists():
+        db.logger.warning("File does not exist: %s", db.path)
+
+    db.load()
+    if db.error:
+        error_msg, error_args = db.error
+        raise ValueError(error_msg % error_args)
+
+    entry = db.find_by_name(criteria)
+    if not entry:
+        raise ValueError(f"Unknown locator alias: {criteria}")
+
+    if entry["type"] != "browser":
+        raise ValidationError(f"Not a browser locator: {criteria}")
+
+    locator = "{prefix}:{criteria}".format(
+        prefix=entry["strategy"], criteria=entry["value"]
+    )
+
+    db.logger.info("%s is an alias for %s", criteria, locator)
+    return locator
+
+
 class ValidationError(ValueError):
     """Validation error from malformed database or locator entry."""
 
@@ -85,29 +110,6 @@ class LocatorsDatabase:
         except Exception as err:  # pylint: disable=broad-except
             self._locators = []
             self.set_error("Could not read database: %s", str(err))
-
-    def find_or_error(self, criteria):
-        if not Path(self.path).exists():
-            self.logger.warning("File does not exist: %s", self.path)
-
-        self.load()
-        if self.error:
-            error_msg, error_args = self.error
-            raise ValueError(error_msg % error_args)
-
-        entry = self.find_by_name(criteria)
-        if not entry:
-            raise ValueError(f"Unknown locator alias: {criteria}")
-
-        if entry["type"] != "browser":
-            raise ValueError(f"Not a browser locator: {criteria}")
-
-        locator = "{prefix}:{criteria}".format(
-            prefix=entry["strategy"], criteria=entry["value"]
-        )
-
-        self.logger.info("%s is an alias for %s", criteria, locator)
-        return locator
 
     def save(self):
         """Serialize database into file."""
