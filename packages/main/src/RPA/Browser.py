@@ -56,8 +56,10 @@ class Browser(SeleniumLibrary):
     }
 
     def __init__(self, *args, **kwargs) -> None:
-        locators_path = kwargs.pop("locators_path", locators.default_locators_path())
-
+        # we need to pop this from kwargs before passing kwargs to SeleniumLibrary
+        self.locators_path = kwargs.pop(
+            "locators_path", locators.default_locators_path()
+        )
         # Parse user-given plugins
         plugins = kwargs.get("plugins", "")
         plugins = set(p for p in plugins.split(",") if p)
@@ -75,7 +77,6 @@ class Browser(SeleniumLibrary):
         self.using_testability = bool("SeleniumTestability" in plugins)
 
         # Add support for locator aliases
-        self.locators = locators.LocatorsDatabase(locators_path)
         self._element_finder.register("alias", self._find_by_alias, persist=True)
 
         self._embedding_screenshots = False
@@ -94,26 +95,10 @@ class Browser(SeleniumLibrary):
         """Custom 'alias' locator that uses locators database."""
         del constraints
 
-        if not Path(self.locators.path).exists():
-            self.logger.warning("File does not exist: %s", self.locators.path)
-
-        self.locators.load()
-        if self.locators.error:
-            error_msg, error_args = self.locators.error
-            raise ValueError(error_msg % error_args)
-
-        entry = self.locators.find_by_name(criteria)
-        if not entry:
-            raise ValueError(f"Unknown locator alias: {criteria}")
-
-        if entry["type"] != "browser":
+        locator, locator_data = locators.load_by_name(self.locators_path, criteria)
+        if locator_data["type"] != "browser":
             raise ValueError(f"Not a browser locator: {criteria}")
 
-        locator = "{prefix}:{criteria}".format(
-            prefix=entry["strategy"], criteria=entry["value"]
-        )
-
-        self.logger.info("%s is an alias for %s", criteria, locator)
         return self._element_finder.find(locator, tag, parent)
 
     @keyword
