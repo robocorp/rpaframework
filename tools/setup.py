@@ -5,7 +5,10 @@ import sys
 poetry_path = os.path.expanduser('~/.poetry/lib')
 sys.path.append(os.path.realpath(poetry_path))
 
-from poetry.masonry.builders.sdist import SdistBuilder
+try:
+	from poetry.core.masonry.builders.sdist import SdistBuilder
+except ImportError:
+	from poetry.masonry.builders.sdist import SdistBuilder
 from poetry.factory import Factory
 
 poetry = Factory().create_poetry(os.getcwd())
