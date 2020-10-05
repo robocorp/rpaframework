@@ -34,6 +34,31 @@ def open_stream(obj, *args, **kwargs):
             obj.close()
 
 
+def find_by_name_or_error(path, criteria):
+    db = LocatorsDatabase(path)
+    if not os.path.exists(db.path):
+        db.logger.warning("File does not exist: %s", db.path)
+
+    db.load()
+    if db.error:
+        error_msg, error_args = db.error
+        raise ValueError(error_msg % error_args)
+
+    entry = db.find_by_name(criteria)
+    if not entry:
+        raise ValueError(f"Unknown locator alias: {criteria}")
+
+    if entry["type"] != "browser":
+        raise ValidationError(f"Not a browser locator: {criteria}")
+
+    locator = "{prefix}:{criteria}".format(
+        prefix=entry["strategy"], criteria=entry["value"]
+    )
+
+    db.logger.info("%s is an alias for %s", criteria, locator)
+    return locator
+
+
 class ValidationError(ValueError):
     """Validation error from malformed database or locator entry."""
 
