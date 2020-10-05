@@ -71,6 +71,11 @@ def test_load_malformed():
     assert len(database.locators) == 0
 
 
+def test_find_by_name_or_error_missing():
+    with pytest.raises(ValueError):
+        locators.find_by_name_or_error("/not/a/valid/path", "nonexistent locator name")
+
+
 def test_load_missing():
     database = locators.LocatorsDatabase("not/a/valid/path")
     database.load()
