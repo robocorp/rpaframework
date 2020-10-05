@@ -3,6 +3,7 @@ import io
 import json
 import logging
 from contextlib import contextmanager
+from typing import Tuple
 
 DEFAULT_DATABASE = "locators.json"
 
@@ -34,7 +35,7 @@ def open_stream(obj, *args, **kwargs):
             obj.close()
 
 
-def load_by_name(path, criteria):
+def load_by_name(path, name) -> Tuple[str, dict]:
     db = LocatorsDatabase(path)
     if not os.path.exists(db.path):
         db.logger.warning("File does not exist: %s", db.path)
@@ -44,16 +45,14 @@ def load_by_name(path, criteria):
         error_msg, error_args = db.error
         raise ValidationError(error_msg % error_args)
 
-    entry = db.find_by_name(criteria)
+    entry = db.find_by_name(name)
     if not entry:
-        raise ValueError(f"Unknown locator alias: {criteria}")
+        raise ValueError(f"Unknown locator alias: {name}")
 
-    locator = "{prefix}:{criteria}".format(
-        prefix=entry["strategy"], criteria=entry["value"]
-    )
+    locator = "{prefix}:{name}".format(prefix=entry["strategy"], name=entry["value"])
 
-    db.logger.info("%s is an alias for %s", criteria, locator)
-    return locator
+    db.logger.info("%s is an alias for %s", name, locator)
+    return locator, entry
 
 
 class ValidationError(ValueError):
