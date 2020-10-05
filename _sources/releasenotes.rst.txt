@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+5.1.0
+-----
+
 - Library **Browser**: Add keyword ``Get Browser Capabilities``
 - Library **Cloud.Google**: Add Google Sheets service support
 
