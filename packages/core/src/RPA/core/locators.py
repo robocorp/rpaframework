@@ -34,7 +34,7 @@ def open_stream(obj, *args, **kwargs):
             obj.close()
 
 
-def find_by_name_or_error(path, criteria):
+def load_by_name(path, criteria):
     db = LocatorsDatabase(path)
     if not os.path.exists(db.path):
         db.logger.warning("File does not exist: %s", db.path)
@@ -42,14 +42,11 @@ def find_by_name_or_error(path, criteria):
     db.load()
     if db.error:
         error_msg, error_args = db.error
-        raise ValueError(error_msg % error_args)
+        raise ValidationError(error_msg % error_args)
 
     entry = db.find_by_name(criteria)
     if not entry:
         raise ValueError(f"Unknown locator alias: {criteria}")
-
-    if entry["type"] != "browser":
-        raise ValidationError(f"Not a browser locator: {criteria}")
 
     locator = "{prefix}:{criteria}".format(
         prefix=entry["strategy"], criteria=entry["value"]
