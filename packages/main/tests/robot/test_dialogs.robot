@@ -1,6 +1,6 @@
 *** Settings ***
 Library          RPA.Dialogs
-Force Tags       dialog
+Force Tags       dialog  skip
 
 *** Variables ***
 ${RESOURCE_DIR}   ${CURDIR}${/}..${/}resources${/}
@@ -22,11 +22,8 @@ Request By Form Defined With JSON
     Log Many            ${response}
 
 *** Tasks ***
-# Server
-#     Start Attended Server
-#     Sleep  60s
-#     Stop Attended Server
-
-Attending
+Dialog built with keywords
     Request By Form Constructed With Keywords
+
+Dialog built with JSON
     Request By Form Defined With JSON

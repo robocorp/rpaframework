@@ -1,30 +1,37 @@
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from collections import OrderedDict
+
+# pylint: disable=no-name-in-module
+from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from json import JSONDecodeError
 import logging
 import os
 from pathlib import Path
-import requests
+
 from socketserver import ThreadingMixIn
 import shutil
 import tempfile
 import threading
 import time
-
-from json import JSONDecodeError
 from urllib.parse import urlparse
+import requests
+
 
 from RPA.Browser import Browser
-from collections import OrderedDict
 
 
 LOGGER = logging.getLogger(__name__)
 
 
 class Handler(BaseHTTPRequestHandler):
-    def log_message(self, format, *args):
-        pass
+    """Server request handler class"""
 
-    def log_request(self, code):
+    # pylint: disable=unused-argument, signature-differs
+    def log_message(self, *args, **kwargs):
+        return
+
+    # pylint: disable=unused-argument, signature-differs
+    def log_request(self, *args, **kwargs):
         pass
 
     def _set_headers(self, headertype="json"):
@@ -42,6 +49,75 @@ class Handler(BaseHTTPRequestHandler):
         inline_styles += "</style></head>"
         return inline_styles
 
+    def get_radiobutton(self, item):
+        formhtml = ""
+        if "label" in item:
+            formhtml += f"<p>{item['label']}</p>"
+        for option in item["options"]:
+            checkedvalue = ""
+            if "default" in item and item["default"] == option:
+                checkedvalue = " checked"
+            formhtml += f"""<input type=\"radio\" id=\"{option}\" name=\"{item['id']}\"
+                            value="{option}"{checkedvalue}>
+                            <label for=\"{option}\">{option}</label><br>"""
+        return formhtml
+
+    def get_checkbox(self, item):
+        formhtml = ""
+        if "label" in item:
+            formhtml += f"<p>{item['label']}</p>"
+        idx = 1
+        for option in item["options"]:
+            formhtml += f"""<input type=\"checkbox\" id=\"{item['id']}{idx}\"
+                                name=\"{item['id']}{idx}\" value="{option}">
+                                <label for=\"{item['id']}{idx}\">{option}</label><br>"""
+            idx += 1
+        return formhtml
+
+    def get_dropdown(self, item):
+        formhtml = (
+            f"<label for=\"{item['id']}\">{item['label']}</label><br>"
+            f"<select name=\"{item['id']}\" name=\"{item['id']}\"><br>"
+        )
+        for option in item["options"]:
+            selected = ""
+            if "default" in item and item["default"] == option:
+                selected = " selected"
+            formhtml += f'<option name="{option}"{selected}>{option}</option>'
+        formhtml += "</select><br>"
+        return formhtml
+
+    def get_submit(self, item):
+        formhtml = ""
+        for button in item["buttons"]:
+            formhtml += f"""<input type=\"submit\" name=\"{item['name']}\"
+                        value=\"{button}\">"""
+        return formhtml + "<br>"
+
+    def get_textarea(self, item):
+        defaulttext = item["default"] if "default" in item else ""
+        return f"""<textarea name=\"{item['name']}\" rows=\"{item['rows']}\"
+                    cols=\"{item['cols']}\">{defaulttext}</textarea><br>"""
+
+    def get_textinput(self, item):
+        return (
+            f"<label for=\"{item['name']}\">{item['label']}</label><br>"
+            f"<input type=\"text\" name=\"{item['name']}\"><br>"
+        )
+
+    def get_fileinput(self, item):
+        return (
+            f"<label for=\"{item['name']}\">{item['label']}</label><br>"
+            f"<input type=\"file\" id=\"{item['id']}\" "
+            f"name=\"{item['name']}\" accept=\"{item['filetypes']}\"><br>"
+        )
+
+    def get_title(self, item):
+        return f"<h3>{item['value']}</h3>"
+
+    def get_text(self, item):
+        return f"<p>{item['value']}</p>"
+
     def create_form(self, message):
         has_submit = False
         formhtml = "<head>"
@@ -49,57 +125,10 @@ class Handler(BaseHTTPRequestHandler):
         formhtml += "</head>"
         formhtml += '<form action="formresponsehandling">'
         for item in message["form"]:
-            if item["type"] == "textinput":
-                formhtml += (
-                    f"<label for=\"{item['name']}\">{item['label']}</label><br>"
-                    f"<input type=\"text\" name=\"{item['name']}\"><br>"
-                )
-            elif item["type"] == "radiobutton":
-                if "label" in item:
-                    formhtml += f"<p>{item['label']}</p>"
-                for option in item["options"]:
-                    checkedvalue = ""
-                    if "default" in item and item["default"] == option:
-                        checkedvalue = " checked"
-                    formhtml += f"""<input type=\"radio\" id=\"{option}\" name=\"{item['id']}\" value="{option}"{checkedvalue}>
-                                        <label for=\"{option}\">{option}</label><br>"""
-            elif item["type"] == "checkbox":
-                if "label" in item:
-                    formhtml += f"<p>{item['label']}</p>"
-                idx = 1
-                for option in item["options"]:
-                    formhtml += f"""<input type=\"checkbox\" id=\"{item['id']}{idx}\" name=\"{item['id']}{idx}\" value="{option}">
-                                        <label for=\"{item['id']}{idx}\">{option}</label><br>"""
-                    idx += 1
-            elif item["type"] == "title":
-                formhtml += f"<h3>{item['value']}</h3>"
-            elif item["type"] == "text":
-                formhtml += f"<p>{item['value']}</p>"
-            elif item["type"] == "textarea":
-                defaulttext = item["default"] if "default" in item else ""
-                formhtml += f"<textarea name=\"{item['name']}\" rows=\"{item['rows']}\" cols=\"{item['cols']}\">{defaulttext}</textarea><br>"
-            elif item["type"] == "dropdown":
-                formhtml += (
-                    f"<label for=\"{item['id']}\">{item['label']}</label><br>"
-                    f"<select name=\"{item['id']}\" name=\"{item['id']}\"><br>"
-                )
-                for option in item["options"]:
-                    selected = ""
-                    if "default" in item and item["default"] == option:
-                        selected = " selected"
-                    formhtml += f'<option name="{option}"{selected}>{option}</option>'
-                formhtml += "</select><br>"
-            elif item["type"] == "submit":
-                for button in item["buttons"]:
-                    formhtml += f"<input type=\"submit\" name=\"{item['name']}\" value=\"{button}\">"
-                formhtml += "<br>"
+            dom_func = getattr(self, f"get_{item['type']}", "")
+            formhtml += dom_func(item)
+            if item["type"] == "submit":
                 has_submit = True
-            elif item["type"] == "fileinput":
-                formhtml += (
-                    f"<label for=\"{item['name']}\">{item['label']}</label><br>"
-                    f"<input type=\"file\" id=\"{item['id']}\" "
-                    f"name=\"{item['name']}\" accept=\"{item['filetypes']}\"><br>"
-                )
         if not has_submit:
             formhtml += "<input type='submit' value='Submit'>"
         formhtml += "</form></body>"
@@ -168,11 +197,11 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 
 def start_server_cmd(directory, port=8000):
-    LOGGER.info("starting server at port=%s" % port)
-    server = HTTPServer(("", port), Handler)
-    server.formresponse = None
-    server.workdir = directory
-    server.serve_forever()
+    LOGGER.info("starting server at port=%s", port)
+    formserver = HTTPServer(("", port), Handler)
+    formserver.formresponse = None
+    formserver.workdir = directory
+    formserver.serve_forever()
 
 
 class Dialogs:
@@ -185,6 +214,7 @@ class Dialogs:
         self.server_address = None
         self.server = None
         self.workdir = None
+        self.custom_form = None
 
     def start_attended_server(self, port=8105):
         if self.server is None:
@@ -219,10 +249,15 @@ class Dialogs:
         element = {"type": "textinput", "label": label, "name": name}
         self.custom_form["form"].append(element)
 
-    def add_dropdown(self, label, id, options, default=None):
+    def add_dropdown(self, label, element_id, options, default=None):
         if not isinstance(options, list):
             options = options.split(",")
-        element = {"type": "dropdown", "label": label, "id": id, "options": options}
+        element = {
+            "type": "dropdown",
+            "label": label,
+            "id": element_id,
+            "options": options,
+        }
         if default:
             element["default"] = default
         self.custom_form["form"].append(element)
@@ -245,35 +280,36 @@ class Dialogs:
             data=formdata,
             headers=headers,
         )
-        br = Browser()
-        br.open_available_browser(f"{self.server_address}/form.html")
 
-        # TODO. br.open_user_browser(f"{self.server_address}/form.html")
-        # br.open_chrome_as_app(f"{self.server_address}/form.html")
-        br.set_window_size(600, 1000)
+        try:
+            br = Browser()
+            br.open_available_browser(f"{self.server_address}/form.html")
 
-        headers = {"Prefer": "wait=120"}
-        response_json = None
-        # etag = None
-        while True:
-            # if etag:
-            #    headers['If-None-Match'] = etag
-            headers["If-None-Match"] = "2434432243"
-            response = requests.get(
-                f"{self.server_address}/requestresponse", headers=headers
-            )
-            # etag = response.headers.get("ETag")
-            if response.status_code == 200:
-                try:
-                    response_json = response.json()
-                    break
-                except JSONDecodeError:
-                    pass
-            elif response.status_code != 304:
-                # back off if the server is throwing errors
-                time.sleep(60)
-                continue
-            time.sleep(1)
+            br.set_window_size(600, 1000)
 
-        br.close_browser()
+            headers = {"Prefer": "wait=120"}
+            response_json = None
+            # etag = None
+            while True:
+                # if etag:
+                #    headers['If-None-Match'] = etag
+                headers["If-None-Match"] = "2434432243"
+                response = requests.get(
+                    f"{self.server_address}/requestresponse", headers=headers
+                )
+                # etag = response.headers.get("ETag")
+                if response.status_code == 200:
+                    try:
+                        response_json = response.json()
+                        break
+                    except JSONDecodeError:
+                        pass
+                elif response.status_code != 304:
+                    # back off if the server is throwing errors
+                    time.sleep(60)
+                    continue
+                time.sleep(1)
+
+        finally:
+            br.close_browser()
         return response_json
