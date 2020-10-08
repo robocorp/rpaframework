@@ -4,7 +4,7 @@ Force Tags       dialog  skip
 
 *** Variables ***
 ${RESOURCE_DIR}   ${CURDIR}${/}..${/}resources${/}
-${FORM_JSON}      ${RESOURCE_DIR}questionform_files.json
+${FORM_JSON}      ${RESOURCE_DIR}questionform.json
 
 *** Keywords ***
 Request By Form Constructed With Keywords
@@ -27,3 +27,10 @@ Dialog built with keywords
 
 Dialog built with JSON
     Request By Form Defined With JSON
+
+Dialog including fileinput
+    Create Form         My custom form
+    Add Text Input      What is your name   name
+    Add File Input      Upload a file  fileupload  fileupload  image/png
+    &{response}         Request Response
+    Log Many            ${response}

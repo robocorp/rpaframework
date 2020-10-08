@@ -1,3 +1,4 @@
+import cgi
 from collections import OrderedDict
 
 # pylint: disable=no-name-in-module
@@ -13,12 +14,19 @@ import shutil
 import tempfile
 import threading
 import time
-from urllib.parse import urlparse
+from urllib.parse import unquote_plus
 import requests
-
+from typing import Any
 
 from RPA.Browser import Browser
+from RPA.core.helpers import required_param
 
+try:
+    import importlib.resources as pkg_resources
+except ImportError:
+    # Try backported to PY<37 `importlib_resources`.
+    import importlib_resources as pkg_resources
+from . import includes
 
 LOGGER = logging.getLogger(__name__)
 
@@ -44,7 +52,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def import_styles(self):
         inline_styles = "<head><style>"
-        with open("styles.css", "r") as styles:
+        stylesheet_filepath = Path(self.server.workdir) / "styles.css"
+        with open(stylesheet_filepath, "r") as styles:
             inline_styles += styles.read()
         inline_styles += "</style></head>"
         return inline_styles
@@ -106,11 +115,20 @@ class Handler(BaseHTTPRequestHandler):
         )
 
     def get_fileinput(self, item):
-        return (
+        accept_filetypes = (
+            "accept=\"{item['filetypes']}\"" if "filetypes" in item.keys() else ""
+        )
+        formhtml = (
             f"<label for=\"{item['name']}\">{item['label']}</label><br>"
             f"<input type=\"file\" id=\"{item['id']}\" "
-            f"name=\"{item['name']}\" accept=\"{item['filetypes']}\"><br>"
+            f"name=\"{item['name']}\" {accept_filetypes} multiple><br>"
         )
+        if "target_directory" in item.keys():
+            formhtml += (
+                f"<input type='hidden' name='target_directory'"
+                f" value=\"{item['target_directory']}\">"
+            )
+        return formhtml
 
     def get_title(self, item):
         return f"<h3>{item['value']}</h3>"
@@ -123,7 +141,8 @@ class Handler(BaseHTTPRequestHandler):
         formhtml = "<head>"
         formhtml += self.import_styles()
         formhtml += "</head>"
-        formhtml += '<form action="formresponsehandling">'
+        formhtml += '<form action="formresponsehandling" method="post"'
+        formhtml += ' enctype="multipart/form-data">'
         for item in message["form"]:
             dom_func = getattr(self, f"get_{item['type']}", "")
             formhtml += dom_func(item)
@@ -145,7 +164,40 @@ class Handler(BaseHTTPRequestHandler):
             # read the message and convert it into a python dictionary
             length = int(self.headers.get("content-length"))
             message = json.loads(self.rfile.read(length), object_pairs_hook=OrderedDict)
+            self.server.formresponse = None
             self.create_form(message)
+            self._set_headers()
+            return
+        elif "formresponsehandling" in self.path:
+            length = int(self.headers.get("Content-length", 0))
+            form = cgi.FieldStorage(
+                fp=self.rfile,
+                headers=self.headers,
+                environ={
+                    "REQUEST_METHOD": "POST",
+                    "CONTENT_TYPE": self.headers["Content-Type"],
+                },
+            )
+            files = []
+            target_directory = os.getenv("ROBOT_ROOT", str(Path.cwd()))
+
+            response = {}
+            for field in form.list or ():
+                if field.filename:
+                    files.append(field)
+                    response[str(field.name)] = str(field.filename)
+                else:
+                    response[str(field.name)] = unquote_plus(str(field.value))
+                if field.name == "target_directory":
+                    target_directory = Path(field.value).resolve()
+
+            for f in files:
+                os.makedirs(target_directory, exist_ok=True)
+                filepath = target_directory / Path(f.filename)
+                with open(str(filepath), "wb") as fw:
+                    fw.write(f.file.read())
+            response["target_directory"] = str(target_directory)
+            self.server.formresponse = response
             self._set_headers()
             return
         else:
@@ -156,14 +208,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path.endswith("favicon.ico"):
             return
-        if "formresponsehandling" in self.path:
-            query = urlparse(self.path).query
-            self.server.formresponse = (
-                dict(qc.split("=") for qc in query.split("&")) if query else None
-            )
-            self._set_headers("html")
-            return
-        elif self.path.endswith("requestresponse"):
+        if self.path.endswith("requestresponse"):
             if self.server.formresponse:
                 self._set_headers("json")
                 self.wfile.write(
@@ -196,7 +241,7 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     """Handle requests in a separate thread."""
 
 
-def start_server_cmd(directory, port=8000):
+def start_server_cmd(directory, port=8105):
     LOGGER.info("starting server at port=%s", port)
     formserver = HTTPServer(("", port), Handler)
     formserver.formresponse = None
@@ -205,7 +250,10 @@ def start_server_cmd(directory, port=8000):
 
 
 class Dialogs:
-    """[summary]"""
+    """Library provides features for building form to request for user input.
+
+    Form elements can be built with library keywords or form can be defined
+    in a JSON file."""
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
 
@@ -217,39 +265,89 @@ class Dialogs:
         self.custom_form = None
 
     def start_attended_server(self, port=8105):
+        """Start a server which will server form html and
+        handles form post.
+
+        :param port: server port number, defaults to 8105
+        """
         if self.server is None:
             self.workdir = tempfile.mkdtemp(suffix="_dialog_server_workdir")
-            shutil.copyfile(
-                "includes/dialog_styles.css", Path(self.workdir) / "styles.css"
-            )
-            os.chdir(self.workdir)
+
+            path_default_styles = None
+            with pkg_resources.path(includes, "dialog_styles.css") as p:
+                path_default_styles = p
+
+            shutil.copyfile(path_default_styles, Path(self.workdir) / "styles.css")
+            # os.chdir(self.workdir)
             self.server_address = f"http://localhost:{port}"
             self.server = threading.Thread(
-                name="daemon_server", target=start_server_cmd, args=(self.workdir, port)
+                name="daemon_server",
+                target=start_server_cmd,
+                args=(self.workdir, port),
             )
             self.server.setDaemon(True)
             self.server.start()
 
     def stop_attended_server(self):
-
+        """Stop server"""
         if self.server is not None and self.workdir:
             shutil.rmtree(self.workdir)
 
     def create_form(self, title: str = None):
+        """Create new form
+
+        :param title: form title, defaults to None
+        """
         self.custom_form = OrderedDict()
         self.custom_form["form"] = list()
         if title:
             self.add_title(title)
 
     def add_title(self, title):
+        """Add h3 element into form
+
+        :param title: text for the element
+        """
+        required_param(title, "Add Title")
         element = {"type": "title", "value": title}
         self.custom_form["form"].append(element)
 
     def add_text_input(self, label, name):
+        """Add text input element
+
+        :param label: input element label
+        :param name: input element name attribute
+        """
         element = {"type": "textinput", "label": label, "name": name}
         self.custom_form["form"].append(element)
 
-    def add_dropdown(self, label, element_id, options, default=None):
+    def add_file_input(self, label, element_id, name, filetypes, target_directory=None):
+        """Add text input element
+
+        :param label: input element label
+        :param name: input element name attribute
+        """
+        element = {
+            "type": "fileinput",
+            "label": label,
+            "name": name,
+            "id": element_id,
+            "filetypes": filetypes,
+        }
+        if target_directory:
+            element["target_directory"] = target_directory
+        self.custom_form["form"].append(element)
+
+    def add_dropdown(
+        self, label: str, element_id: str, options: Any, default: str = None
+    ):
+        """Add dropdown element
+
+        :param label: dropdown element name attribute
+        :param element_id: dropdown element id attribute
+        :param options: values for the dropdown
+        :param default: dropdown selected value, defaults to None
+        """
         if not isinstance(options, list):
             options = options.split(",")
         element = {
@@ -263,12 +361,26 @@ class Dialogs:
         self.custom_form["form"].append(element)
 
     def add_submit(self, name, buttons):
+        """Add submit element
+
+        :param name: element name attribute
+        :param buttons: list of buttons
+        """
         if not isinstance(buttons, list):
             buttons = buttons.split(",")
         element = {"type": "submit", "name": name, "buttons": buttons}
         self.custom_form["form"].append(element)
 
-    def request_response(self, formspec=None):
+    def request_response(
+        self, formspec: str = None, window_width: int = 600, window_height: int = 1000
+    ):
+        """Start server and show form. Waits for user response.
+
+        :param formspec: form json specification file, defaults to None
+        :param window_width: window width in pixels, defaults to 600
+        :param window_height: window height in pixels, defaults to 1000
+        :return: form response
+        """
         self.start_attended_server()
         if formspec:
             formdata = open(formspec, "rb")
@@ -284,8 +396,7 @@ class Dialogs:
         try:
             br = Browser()
             br.open_available_browser(f"{self.server_address}/form.html")
-
-            br.set_window_size(600, 1000)
+            br.set_window_size(window_width, window_height)
 
             headers = {"Prefer": "wait=120"}
             response_json = None
@@ -297,6 +408,7 @@ class Dialogs:
                 response = requests.get(
                     f"{self.server_address}/requestresponse", headers=headers
                 )
+                self.logger.info(response)
                 # etag = response.headers.get("ETag")
                 if response.status_code == 200:
                     try:
