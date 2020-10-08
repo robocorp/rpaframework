@@ -14,9 +14,10 @@ import shutil
 import tempfile
 import threading
 import time
+from typing import Any
 from urllib.parse import unquote_plus
 import requests
-from typing import Any
+
 
 from RPA.Browser import Browser
 from RPA.core.helpers import required_param
