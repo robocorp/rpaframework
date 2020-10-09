@@ -1,6 +1,7 @@
 {
   "form": [
     { "type": "title", "value": "Give some additional information" },
+    { "type": "textinput", "label": "What is your name ?", "name": "username"},
     { "type": "text", "value": "What is your gender" },
     {
       "type": "radiobutton",
@@ -9,14 +10,12 @@
       "default": "male"
     },
     {
-      "type": "textinput",
-      "label": "First name ?",
-      "name": "fname"
-    },
-    {
-      "type": "textinput",
-      "label": "Last name ?",
-      "name": "lname"
+      "type": "fileinput",
+      "id": "myfileinput",
+      "label": "Give file inputs",
+      "name": "fname",
+      "filetypes": "image/png, image/jpeg",
+      "target_directory": "output"
     },
     {
       "type": "checkbox",
@@ -37,6 +36,11 @@
       "id": "job",
       "options": ["engineer", "nurse", "teacher"],
       "default": "teacher"
+    },
+    {
+      "type": "submit",
+      "name": "submitbutton",
+      "buttons": ["yes", "no"]
     }
   ]
 }

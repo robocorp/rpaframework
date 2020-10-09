@@ -43,12 +43,13 @@ class Handler(BaseHTTPRequestHandler):
     def log_request(self, *args, **kwargs):
         pass
 
-    def _set_headers(self, headertype="json"):
-        self.send_response(200)
+    def _set_response(self, response_code=200, headertype="json"):
+        self.send_response(response_code)
         if headertype == "json":
             self.send_header("Content-type", "application/json")
-        elif headertype == "html":
+        else:
             self.send_header("Content-type", "text/html")
+        self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
 
     def import_styles(self):
@@ -117,7 +118,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def get_fileinput(self, item):
         accept_filetypes = (
-            "accept=\"{item['filetypes']}\"" if "filetypes" in item.keys() else ""
+            f"accept=\"{item['filetypes']}\"" if "filetypes" in item.keys() else ""
         )
         formhtml = (
             f"<label for=\"{item['name']}\">{item['label']}</label><br>"
@@ -167,7 +168,7 @@ class Handler(BaseHTTPRequestHandler):
             message = json.loads(self.rfile.read(length), object_pairs_hook=OrderedDict)
             self.server.formresponse = None
             self.create_form(message)
-            self._set_headers()
+            self._set_response()
             return
         elif "formresponsehandling" in self.path:
             length = int(self.headers.get("Content-length", 0))
@@ -186,55 +187,53 @@ class Handler(BaseHTTPRequestHandler):
             for field in form.list or ():
                 if field.filename:
                     files.append(field)
-                    response[str(field.name)] = str(field.filename)
+                elif field.name == "target_directory":
+                    target_directory = Path(field.value).resolve()
                 else:
                     response[str(field.name)] = unquote_plus(str(field.value))
-                if field.name == "target_directory":
-                    target_directory = Path(field.value).resolve()
 
             for f in files:
+                field_name = str(f.name)
                 os.makedirs(target_directory, exist_ok=True)
-                filepath = target_directory / Path(f.filename)
-                with open(str(filepath), "wb") as fw:
+                filepath = str(target_directory / Path(f.filename))
+                with open(filepath, "wb") as fw:
                     fw.write(f.file.read())
-            response["target_directory"] = str(target_directory)
+                if field_name in response.keys():
+                    response[field_name].append(filepath)
+                else:
+                    response[field_name] = [filepath]
             self.server.formresponse = response
-            self._set_headers()
+            self._set_response()
             return
         else:
-            self.send_response(404)
-            self.end_headers()
+            self._set_response(404)
             return
 
     def do_GET(self):
         if self.path.endswith("favicon.ico"):
             return
         if self.path.endswith("requestresponse"):
-            if self.server.formresponse:
-                self._set_headers("json")
-                self.wfile.write(
-                    json.dumps(self.server.formresponse).encode(encoding="utf-8")
-                )
+            if self.server.formresponse is not None:
+                self._set_response(200, "json")
+                self.wfile.write(json.dumps(self.server.formresponse).encode("utf-8"))
                 self.server.formresponse = None
                 return
             else:
-                self.send_response(304)
-                self.end_headers()
+                self._set_response(304, "json")
                 return
         elif self.path.endswith(".html"):
+            self._set_response(200, "html")
             if self.path == "/":
                 filename = "./index.html"
             else:
                 filename = "./" + self.path
-            self._set_headers("html")
             with open(filename, "rb") as fh:
                 html = fh.read()
                 # html = bytes(html, 'utf8')
                 self.wfile.write(html)
             return
         else:
-            self.send_response(404)
-            self.end_headers()
+            self._set_response(404, "html")
             return
 
 
@@ -344,7 +343,7 @@ class Dialogs:
     ):
         """Add dropdown element
 
-        :param label: dropdown element name attribute
+        :param label: dropdown element label
         :param element_id: dropdown element id attribute
         :param options: values for the dropdown
         :param default: dropdown selected value, defaults to None
@@ -361,7 +360,7 @@ class Dialogs:
             element["default"] = default
         self.custom_form["form"].append(element)
 
-    def add_submit(self, name, buttons):
+    def add_buttons(self, name, buttons):
         """Add submit element
 
         :param name: element name attribute
@@ -370,6 +369,72 @@ class Dialogs:
         if not isinstance(buttons, list):
             buttons = buttons.split(",")
         element = {"type": "submit", "name": name, "buttons": buttons}
+        self.custom_form["form"].append(element)
+
+    def add_radio_buttons(self, element_id, options, default: str = None):
+        """Add radio button element
+
+        :param element_id: radio button element identifier
+        :param options: values for the radio button
+        :param default: radio button selected value, defaults to None
+        """
+        if not isinstance(options, list):
+            options = options.split(",")
+        element = {
+            "type": "radiobutton",
+            "id": element_id,
+            "options": options,
+        }
+        if default is not None:
+            element["default"] = default
+        self.custom_form["form"].append(element)
+
+    def add_checkbox(self, label, element_id, options):
+        """Add checkbox element
+
+        :param label: check box element label
+        :param element_id: check box element identifier
+        :param options: values for the check box
+        """
+        if not isinstance(options, list):
+            options = options.split(",")
+        element = {
+            "type": "checkbox",
+            "label": label,
+            "id": element_id,
+            "options": options,
+        }
+        self.custom_form["form"].append(element)
+
+    def add_textarea(
+        self, name: str, rows: int = 5, cols: int = 40, default: str = None
+    ):
+        """Add textarea element
+
+        :param name: textarea element name
+        :param rows: number of rows for the area, defaults to 5
+        :param cols: numnber of columns for the area, defaults to 40
+        :param default: prefilled text for the area, defaults to None
+        """
+        element = {
+            "type": "textarea",
+            "name": name,
+            "rows": rows,
+            "cols": cols,
+        }
+        if default is not None:
+            element["default"] = default
+        self.custom_form["form"].append(element)
+
+    def add_text(self, value: str):
+        """Add text paragraph element
+
+        :param value: text for the element
+        """
+        element = {
+            "type": "text",
+            "value": value,
+        }
         self.custom_form["form"].append(element)
 
     def request_response(
@@ -383,6 +448,8 @@ class Dialogs:
         :return: form response
         """
         self.start_attended_server()
+        if self.custom_form is None:
+            self.create_form("Requesting response")
         if formspec:
             formdata = open(formspec, "rb")
         else:
@@ -400,7 +467,7 @@ class Dialogs:
             br.set_window_size(window_width, window_height)
 
             headers = {"Prefer": "wait=120"}
-            response_json = None
+            response_json = {}
             # etag = None
             while True:
                 # if etag:
@@ -409,14 +476,13 @@ class Dialogs:
                 response = requests.get(
                     f"{self.server_address}/requestresponse", headers=headers
                 )
-                self.logger.info(response)
                 # etag = response.headers.get("ETag")
                 if response.status_code == 200:
                     try:
                         response_json = response.json()
                         break
                     except JSONDecodeError:
-                        pass
+                        break
                 elif response.status_code != 304:
                     # back off if the server is throwing errors
                     time.sleep(60)
@@ -425,4 +491,5 @@ class Dialogs:
 
         finally:
             br.close_browser()
+            self.stop_attended_server()
         return response_json

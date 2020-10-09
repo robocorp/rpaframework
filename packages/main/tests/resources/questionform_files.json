@@ -1,39 +1,13 @@
 {
   "form": [
-    { "type": "title", "value": "Give some additional information" },
-    { "type": "text", "value": "What is your gender" },
-    {
-      "type": "radiobutton",
-      "id": "question",
-      "options": ["male", "female"],
-      "default": "male"
-    },
+    { "type": "title", "value": "Submit PNG and/or JPEG files" },
     {
       "type": "fileinput",
       "id": "myfileinput",
       "label": "Give file inputs",
       "name": "fname",
-      "filetypes": "image/png, image/jpeg"
-    },
-    {
-      "type": "checkbox",
-      "label": "Select your weapons",
-      "id": "checking",
-      "options": ["guns", "swords", "shields"]
-    },
-    {
-      "type": "textarea",
-      "name": "freeword",
-      "default": "free word",
-      "rows": 5,
-      "cols": 40
-    },
-    {
-      "type": "dropdown",
-      "label": "Select job",
-      "id": "job",
-      "options": ["engineer", "nurse", "teacher"],
-      "default": "teacher"
+      "filetypes": "image/png, image/jpeg",
+      "target_directory": "output"
     }
   ]
 }
