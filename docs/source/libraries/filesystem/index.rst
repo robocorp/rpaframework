@@ -53,7 +53,7 @@ The library can also be used inside Python.
 .. code-block:: python
     :linenos:
 
-    from RPA.FileSystem
+    from RPA.FileSystem import FileSystem
 
     def move_to_archive():
         lib = FileSystem()
