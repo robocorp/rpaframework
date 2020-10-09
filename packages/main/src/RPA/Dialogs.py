@@ -79,9 +79,12 @@ class Handler(BaseHTTPRequestHandler):
             formhtml += f"<p>{item['label']}</p>"
         idx = 1
         for option in item["options"]:
+            checkedvalue = ""
+            if "default" in item and item["default"] == option:
+                checkedvalue = " checked"
             formhtml += f"""<input type=\"checkbox\" id=\"{item['id']}{idx}\"
-                                name=\"{item['id']}{idx}\" value="{option}">
-                                <label for=\"{item['id']}{idx}\">{option}</label><br>"""
+                            name=\"{item['id']}{idx}\" value="{option}" {checkedvalue}>
+                            <label for=\"{item['id']}{idx}\">{option}</label><br>"""
             idx += 1
         return formhtml
 
@@ -264,7 +267,7 @@ class Dialogs:
         self.workdir = None
         self.custom_form = None
 
-    def start_attended_server(self, port=8105):
+    def _start_attended_server(self, port=8105):
         """Start a server which will server form html and
         handles form post.
 
@@ -278,7 +281,6 @@ class Dialogs:
                 path_default_styles = p
 
             shutil.copyfile(path_default_styles, Path(self.workdir) / "styles.css")
-            # os.chdir(self.workdir)
             self.server_address = f"http://localhost:{port}"
             self.server = threading.Thread(
                 name="daemon_server",
@@ -288,7 +290,7 @@ class Dialogs:
             self.server.setDaemon(True)
             self.server.start()
 
-    def stop_attended_server(self):
+    def _stop_attended_server(self):
         """Stop server"""
         if self.server is not None and self.workdir:
             shutil.rmtree(self.workdir)
@@ -389,12 +391,13 @@ class Dialogs:
             element["default"] = default
         self.custom_form["form"].append(element)
 
-    def add_checkbox(self, label, element_id, options):
+    def add_checkbox(self, label, element_id, options, default):
         """Add checkbox element
 
         :param label: check box element label
         :param element_id: check box element identifier
         :param options: values for the check box
+        :param default: check box selected value, defaults to None
         """
         if not isinstance(options, list):
             options = options.split(",")
@@ -404,6 +407,8 @@ class Dialogs:
             "id": element_id,
             "options": options,
         }
+        if default is not None:
+            element["default"] = default
         self.custom_form["form"].append(element)
 
     def add_textarea(
@@ -447,7 +452,7 @@ class Dialogs:
         :param window_height: window height in pixels, defaults to 1000
         :return: form response
         """
-        self.start_attended_server()
+        self._start_attended_server()
         if self.custom_form is None:
             self.create_form("Requesting response")
         if formspec:
@@ -485,11 +490,10 @@ class Dialogs:
                         break
                 elif response.status_code != 304:
                     # back off if the server is throwing errors
-                    time.sleep(60)
+                    time.sleep(10)
                     continue
                 time.sleep(1)
-
         finally:
             br.close_browser()
-            self.stop_attended_server()
+            self._stop_attended_server()
         return response_json
