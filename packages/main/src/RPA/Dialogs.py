@@ -1,5 +1,6 @@
 import cgi
 from collections import OrderedDict
+from datetime import datetime
 
 # pylint: disable=no-name-in-module
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -20,14 +21,13 @@ import requests
 
 
 from RPA.Browser import Browser
-from RPA.core.helpers import required_param
 
 try:
+    from importlib import import_module
     import importlib.resources as pkg_resources
 except ImportError:
     # Try backported to PY<37 `importlib_resources`.
     import importlib_resources as pkg_resources
-from . import includes
 
 LOGGER = logging.getLogger(__name__)
 
@@ -117,6 +117,12 @@ class Handler(BaseHTTPRequestHandler):
         return (
             f"<label for=\"{item['name']}\">{item['label']}</label><br>"
             f"<input type=\"text\" name=\"{item['name']}\"><br>"
+        )
+
+    def get_hiddeninput(self, item):
+        return (
+            f"<input type=\"hidden\" name=\"{item['name']}\""
+            f"value=\"{item['value']}\"><br>"
         )
 
     def get_fileinput(self, item):
@@ -277,6 +283,7 @@ class Dialogs:
             self.workdir = tempfile.mkdtemp(suffix="_dialog_server_workdir")
 
             path_default_styles = None
+            includes = import_module("RPA.includes")
             with pkg_resources.path(includes, "dialog_styles.css") as p:
                 path_default_styles = p
 
@@ -304,13 +311,16 @@ class Dialogs:
         self.custom_form["form"] = list()
         if title:
             self.add_title(title)
+        self.add_hidden_input(
+            name="creation_date",
+            value=datetime.now(),
+        )
 
     def add_title(self, title):
         """Add h3 element into form
 
         :param title: text for the element
         """
-        required_param(title, "Add Title")
         element = {"type": "title", "value": title}
         self.custom_form["form"].append(element)
 
@@ -323,11 +333,27 @@ class Dialogs:
         element = {"type": "textinput", "label": label, "name": name}
         self.custom_form["form"].append(element)
 
+    def add_hidden_input(self, name, value):
+        """Add hidden input element
+
+        :param name: input element name attribute
+        :param value: input element value attribute
+        """
+        element = {
+            "type": "hiddeninput",
+            "name": name,
+            "value": str(value),
+        }
+        self.custom_form["form"].append(element)
+
     def add_file_input(self, label, element_id, name, filetypes, target_directory=None):
         """Add text input element
 
         :param label: input element label
+        :param element_id: hidden element id attribute
         :param name: input element name attribute
+        :param filetypes: accepted filetypes for the file upload
+        :param target_directory: where to save uploaded files to
         """
         element = {
             "type": "fileinput",
@@ -362,7 +388,7 @@ class Dialogs:
             element["default"] = default
         self.custom_form["form"].append(element)
 
-    def add_buttons(self, name, buttons):
+    def add_submit(self, name, buttons):
         """Add submit element
 
         :param name: element name attribute

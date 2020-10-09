@@ -21,11 +21,11 @@ Main keyword of the library is ``Request Response`` working in following steps:
 
     1. starts HTTP server on the background
     2. creates HTML form either according to JSON or to
-     one built with keywords
+       one built with keywords
     3. opens browser and the created form for the user (browser is opened with
-     ``Open Available Browser`` keyword from ``RPA.Browser`` library)
+       ``Open Available Browser`` keyword from ``RPA.Browser`` library)
     4. once form is submitted the server will process the post
-     and returns response which will be returned by the keyword
+       and returns response which will be returned by the keyword
     5. at the end the browser is closed and HTTP server is stopped
 
 
@@ -44,7 +44,13 @@ keyword is called.
     - textarea (HTML <textarea>)
     - textinput (HTML <input type='text'>)
     - fileinput (HTML <input type='file'>)
+    - hiddeninput (HTML <input type='hidden'>)
     - submit (HTML <input type='submit'>)
+
+Example JSON file which contains all possible form elements and their attributes.
+
+.. literalinclude:: /attachments/questionform.json
+  :language: JSON
 
 ********
 Examples
@@ -63,7 +69,10 @@ The library allows, for instance, iterating over files and inspecting them.
 
     *** Keywords ***
     Ask Question From User
-        No Operation
+        Create Form     questions
+        Add Text Input  label=What is your name?  name=username
+        &{response}=    Request Response
+        Log             Username is "${response}[username]"
 
 Python
 ======
@@ -75,8 +84,16 @@ The library can also be used inside Python.
 
     from RPA.Dialogs import Dialogs
 
-    def ask_question_from_user():
-        pass
+    def ask_question_from_user(question, attribute):
+        d = Dialogs()
+        d.create_form('questions')
+        d.add_text_input(label=question, name=attribute)
+        response = request_response()
+        return response
+
+    response = ask_question_from_user('What is your name ?', 'username')
+    print(f"Username is '{response['username']}'")
+
 
 
 *****************

@@ -78,6 +78,8 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `Desktop.Windows`_         | Automate Windows desktop applications        |
 +----------------------------+----------------------------------------------+
+| `Dialogs`_                 | For requesting user input in a HTML form     |
++----------------------------+----------------------------------------------+
 | `Email.Exchange`_          | E-Mail operations (Exchange protocol)        |
 +----------------------------+----------------------------------------------+
 | `Email.ImapSmtp`_          | E-Mail operations (IMAP & SMTP)              |
@@ -126,6 +128,7 @@ The RPA Framework project currently includes the following libraries:
 .. _Desktop.Clipboard: https://rpaframework.org/libraries/desktop_clipboard/
 .. _Desktop.Operatingsystem: https://rpaframework.org/libraries/desktop_operatingsystem/
 .. _Desktop.Windows: https://rpaframework.org/libraries/desktop_windows/
+.. _Dialogs: https://rpaframework.org/libraries/dialogs/
 .. _Email.Exchange: https://rpaframework.org/libraries/email_exchange/
 .. _Email.ImapSmtp: https://rpaframework.org/libraries/email_imapsmtp/
 .. _Excel.Application: https://rpaframework.org/libraries/excel_application/
@@ -156,7 +159,12 @@ you can use:
 
 ``pip install rpaframework``
 
+To install all extra packages, you can use:
+
+``pip install rpaframework[aws,cv,google]``
+
 .. note:: Python 3.6 or higher is required
+
 
 Example
 -------
