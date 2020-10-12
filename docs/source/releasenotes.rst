@@ -17,7 +17,7 @@ Upcoming release
 
   - Drop dependency robotframework-databaselibrary
   - Some of the old keywords do not exist anymore and some new keywords
-  have been added (*NOTE. backwards compatibility breaking change*)
+    have been added (*NOTE. backwards compatibility breaking change*)
 
 - Library **PDF**: Keywords ``Template HTML To PDF`` and ``HTML To PDF`` will now
   create directory structure and overwrite existing file by default.
