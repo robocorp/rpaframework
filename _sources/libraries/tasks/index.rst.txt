@@ -138,7 +138,7 @@ After the execution is finished, it will create a
 and render it as an image. This image will automatically be appended
 to the suite's documentation field.
 
-.. image:: /images/graph.png
+.. image:: /attachments/graph.png
 
 The above graph is a visualization of the tasks defined in the previous
 :ref:`execution-example`.

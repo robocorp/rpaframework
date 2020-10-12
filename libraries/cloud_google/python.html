@@ -211,7 +211,7 @@
 <dl class="class">
 <dt id="RPA.Cloud.Google.Google">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">Google</code><span class="sig-paren">(</span><em class="sig-param">robocloud_vault_name: str = None</em>, <em class="sig-param">robocloud_vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Google.ServiceVision" title="RPA.Cloud.Google.ServiceVision"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceVision</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceNaturalLanguage" title="RPA.Cloud.Google.ServiceNaturalLanguage"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceNaturalLanguage</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceVideoIntelligence" title="RPA.Cloud.Google.ServiceVideoIntelligence"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceVideoIntelligence</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceTranslation" title="RPA.Cloud.Google.ServiceTranslation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceTranslation</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceTextToSpeech" title="RPA.Cloud.Google.ServiceTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceTextToSpeech</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceSpeechToText" title="RPA.Cloud.Google.ServiceSpeechToText"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceSpeechToText</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceStorage" title="RPA.Cloud.Google.ServiceStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceStorage</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Google.ServiceVision" title="RPA.Cloud.Google.ServiceVision"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceVision</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceNaturalLanguage" title="RPA.Cloud.Google.ServiceNaturalLanguage"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceNaturalLanguage</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceVideoIntelligence" title="RPA.Cloud.Google.ServiceVideoIntelligence"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceVideoIntelligence</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceTranslation" title="RPA.Cloud.Google.ServiceTranslation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceTranslation</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceTextToSpeech" title="RPA.Cloud.Google.ServiceTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceTextToSpeech</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceSpeechToText" title="RPA.Cloud.Google.ServiceSpeechToText"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceSpeechToText</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceStorage" title="RPA.Cloud.Google.ServiceStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceStorage</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceSheets" title="RPA.Cloud.Google.ServiceSheets"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceSheets</span></code></a></p>
 <p>Library for interacting with Google services</p>
 <p>Google Storage URI:</p>
 <blockquote>
@@ -312,6 +312,20 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.clear_values">
+<code class="sig-name descname">clear_values</code><span class="sig-paren">(</span><em class="sig-param">sheet_id: str</em>, <em class="sig-param">sheet_range: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.clear_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear cell values for range of cells within a sheet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_id</strong> – target sheet</p></li>
+<li><p><strong>sheet_range</strong> – target sheet range</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="RPA.Cloud.Google.Google.clients">
 <code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.Google.clients" title="Permalink to this definition">¶</a></dt>
@@ -327,6 +341,20 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>bucket</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.create_sheet">
+<code class="sig-name descname">create_sheet</code><span class="sig-paren">(</span><em class="sig-param">title: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Cloud.Google.Google.create_sheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create empty sheet with a title</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>title</strong> – name as string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>created <cite>sheet_id</cite></p>
 </dd>
 </dl>
 </dd></dl>
@@ -467,9 +495,41 @@ True if all were downloaded</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.Google.get_values">
+<code class="sig-name descname">get_values</code><span class="sig-paren">(</span><em class="sig-param">sheet_id: str</em>, <em class="sig-param">sheet_range: str</em>, <em class="sig-param">value_render_option: str = 'UNFORMATTED_VALUE'</em>, <em class="sig-param">datetime_render_option: str = 'FORMATTED_STRING'</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.Google.Google.get_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get values from the range in the sheet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_id</strong> – target sheet</p></li>
+<li><p><strong>sheet_range</strong> – target sheet range</p></li>
+<li><p><strong>value_render_option</strong> – how values should be represented
+in the output defaults to “UNFORMATTED_VALUE”</p></li>
+<li><p><strong>datetime_render_option</strong> – ow dates, times, and durations should
+be represented in the outpu, defaults to “FORMATTED_STRING”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.Google.init_natural_language_client">
 <code class="sig-name descname">init_natural_language_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_natural_language_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize Google Cloud Natural Language client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.init_sheets_client">
+<code class="sig-name descname">init_sheets_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_sheets_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Sheets client</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -560,6 +620,24 @@ True if all were downloaded</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
 <li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.insert_values">
+<code class="sig-name descname">insert_values</code><span class="sig-paren">(</span><em class="sig-param">sheet_id: str</em>, <em class="sig-param">sheet_range: str</em>, <em class="sig-param">values: list</em>, <em class="sig-param">major_dimension: str = 'COLUMNS'</em>, <em class="sig-param">value_input_option: str = 'USER_ENTERED'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.insert_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert values into sheet cells</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_id</strong> – target sheet</p></li>
+<li><p><strong>sheet_range</strong> – target sheet range</p></li>
+<li><p><strong>values</strong> – list of values to insert into sheet</p></li>
+<li><p><strong>major_dimension</strong> – major dimension of the values, default <cite>COLUMNS</cite></p></li>
+<li><p><strong>value_input_option</strong> – controls whether input strings are parsed or not,
+default <cite>USER_ENTERED</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -870,6 +948,140 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceNaturalLanguage.set_robocloud_vault">
 <code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name and secret key name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vault_name</strong> – Robocloud Vault name</p></li>
+<li><p><strong>vault_secret_key</strong> – Rococloud Vault secret key name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.Google.ServiceSheets">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">ServiceSheets</code><a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Google.GoogleBase" title="RPA.Cloud.Google.GoogleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.GoogleBase</span></code></a></p>
+<p>Class for Google Sheets API</p>
+<p>You will have to grant the appropriate permissions to the
+service account you are using to authenticate with
+Google Sheets API. The IAM page in the console is here:
+<a class="reference external" href="https://console.cloud.google.com/iam-admin/iam/project">https://console.cloud.google.com/iam-admin/iam/project</a></p>
+<p>For more information about Google Sheets API <a class="reference external" href="https://developers.google.com/sheets/api/quickstart/python">link</a>.</p>
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceSheets.clear_values">
+<code class="sig-name descname">clear_values</code><span class="sig-paren">(</span><em class="sig-param">sheet_id: str</em>, <em class="sig-param">sheet_range: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.clear_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear cell values for range of cells within a sheet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_id</strong> – target sheet</p></li>
+<li><p><strong>sheet_range</strong> – target sheet range</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSheets.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceSheets.create_sheet">
+<code class="sig-name descname">create_sheet</code><span class="sig-paren">(</span><em class="sig-param">title: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.create_sheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create empty sheet with a title</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>title</strong> – name as string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>created <cite>sheet_id</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceSheets.get_values">
+<code class="sig-name descname">get_values</code><span class="sig-paren">(</span><em class="sig-param">sheet_id: str</em>, <em class="sig-param">sheet_range: str</em>, <em class="sig-param">value_render_option: str = 'UNFORMATTED_VALUE'</em>, <em class="sig-param">datetime_render_option: str = 'FORMATTED_STRING'</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.get_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get values from the range in the sheet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_id</strong> – target sheet</p></li>
+<li><p><strong>sheet_range</strong> – target sheet range</p></li>
+<li><p><strong>value_render_option</strong> – how values should be represented
+in the output defaults to “UNFORMATTED_VALUE”</p></li>
+<li><p><strong>datetime_render_option</strong> – ow dates, times, and durations should
+be represented in the outpu, defaults to “FORMATTED_STRING”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceSheets.init_sheets_client">
+<code class="sig-name descname">init_sheets_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.init_sheets_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Sheets client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceSheets.insert_values">
+<code class="sig-name descname">insert_values</code><span class="sig-paren">(</span><em class="sig-param">sheet_id: str</em>, <em class="sig-param">sheet_range: str</em>, <em class="sig-param">values: list</em>, <em class="sig-param">major_dimension: str = 'COLUMNS'</em>, <em class="sig-param">value_input_option: str = 'USER_ENTERED'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.insert_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert values into sheet cells</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_id</strong> – target sheet</p></li>
+<li><p><strong>sheet_range</strong> – target sheet range</p></li>
+<li><p><strong>values</strong> – list of values to insert into sheet</p></li>
+<li><p><strong>major_dimension</strong> – major dimension of the values, default <cite>COLUMNS</cite></p></li>
+<li><p><strong>value_input_option</strong> – controls whether input strings are parsed or not,
+default <cite>USER_ENTERED</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSheets.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSheets.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSheets.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSheets.robocloud_vault_secret_key">
+<code class="sig-name descname">robocloud_vault_secret_key</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.robocloud_vault_secret_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSheets.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceSheets.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Robocloud Vault name and secret key name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
