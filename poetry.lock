@@ -34,7 +34,7 @@ description = "The ultimate Python library in building OAuth and OpenID Connect 
 name = "authlib"
 optional = false
 python-versions = "*"
-version = "0.14.3"
+version = "0.15"
 
 [package.dependencies]
 cryptography = "*"
@@ -59,7 +59,7 @@ description = "Screen-scraping library"
 name = "beautifulsoup4"
 optional = false
 python-versions = "*"
-version = "4.9.2"
+version = "4.9.3"
 
 [package.dependencies]
 [package.dependencies.soupsieve]
@@ -401,7 +401,7 @@ description = "Python SDK for accessing the NetSuite SOAP webservice"
 name = "netsuitesdk"
 optional = false
 python-versions = "*"
-version = "1.7.0"
+version = "1.7.1"
 
 [package.dependencies]
 zeep = "*"
@@ -579,7 +579,7 @@ description = "A cross-platform clipboard module for Python. (Only handles plain
 name = "pyperclip"
 optional = false
 python-versions = "*"
-version = "1.8.0"
+version = "1.8.1"
 
 [[package]]
 category = "main"
@@ -780,7 +780,7 @@ description = "A collection of tools and libraries for RPA"
 name = "rpaframework"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "5.0.0"
+version = "5.1.0"
 
 [package.dependencies]
 clipboard = ">=0.0.4,<0.0.5"
@@ -823,7 +823,7 @@ version = ">=0.6.8,<0.7.0"
 [package.extras]
 aws = ["boto3 (>=1.13.4,<2.0.0)"]
 cv = ["opencv-python (>=4.2.0,<5.0.0)", "numpy (>=1.18.2,<2.0.0)"]
-google = ["google-cloud-vision (>=1.0.0,<2.0.0)", "google-cloud-language (>=1.3.0,<2.0.0)", "google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-cloud-translate (>=2.0.1,<3.0.0)", "google-cloud-texttospeech (>=1.0.1,<2.0.0)", "google-cloud-speech (>=1.3.2,<2.0.0)", "google-cloud-storage (>=1.28.1,<2.0.0)", "grpcio (>=1.29.0,<2.0.0)"]
+google = ["google-cloud-vision (>=1.0.0,<2.0.0)", "google-cloud-language (>=1.3.0,<2.0.0)", "google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-cloud-translate (>=2.0.1,<3.0.0)", "google-cloud-texttospeech (>=1.0.1,<2.0.0)", "google-cloud-speech (>=1.3.2,<2.0.0)", "google-cloud-storage (>=1.28.1,<2.0.0)", "grpcio (>=1.29.0,<2.0.0)", "google-api-python-client (>=1.12.3,<2.0.0)", "google-auth-httplib2 (>=0.0.4,<0.0.5)", "google-auth-oauthlib (>=0.4.1,<0.5.0)"]
 
 [[package]]
 category = "main"
@@ -831,7 +831,7 @@ description = "Core utilities used by RPA Framework"
 name = "rpaframework-core"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "1.7.1"
+version = "1.8.0"
 
 [package.dependencies]
 selenium = ">=3.141.0,<4.0.0"
@@ -1035,7 +1035,7 @@ description = "Fast, Extensible Progress Meter"
 name = "tqdm"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*"
-version = "4.50.0"
+version = "4.50.2"
 
 [package.extras]
 dev = ["py-make (>=0.1.0)", "twine", "argopt", "pydoc-markdown"]
@@ -1200,14 +1200,14 @@ marker = "python_version < \"3.8\""
 name = "zipp"
 optional = false
 python-versions = ">=3.6"
-version = "3.2.0"
+version = "3.3.0"
 
 [package.extras]
 docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pytest-cov", "jaraco.test (>=3.2.0)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
 [metadata]
-content-hash = "fd363c342c15642de815dcaa2464346f2a42da9a5a5c033b328e5502e853e6f9"
+content-hash = "caaa4629bcffe5e8d0c8c2c83bbab158fafde826459c893f40a4a14d52e51e50"
 lock-version = "1.0"
 python-versions = "^3.6"
 
@@ -1225,17 +1225,17 @@ attrs = [
     {file = "attrs-20.2.0.tar.gz", hash = "sha256:26b54ddbbb9ee1d34d5d3668dd37d6cf74990ab23c828c2888dccdceee395594"},
 ]
 authlib = [
-    {file = "Authlib-0.14.3-py2.py3-none-any.whl", hash = "sha256:270e778201590af8873cf7d5e8e8ca5b625a16f7afba6a4280b6fb4efdd791bf"},
-    {file = "Authlib-0.14.3.tar.gz", hash = "sha256:cc52908e9e996f3de2ac2f61bf1ee6c6f1c5ce8e67c89ff2ca473008fffc92f6"},
+    {file = "Authlib-0.15-py2.py3-none-any.whl", hash = "sha256:7b6b89287ce88a13ca35fd0de9841d17316ddb553661d044d8d576c0a77ee316"},
+    {file = "Authlib-0.15.tar.gz", hash = "sha256:f107574d718764b9a88528e1ce29de439dedea7307400adc4fefe960ec78d1f2"},
 ]
 babel = [
     {file = "Babel-2.8.0-py2.py3-none-any.whl", hash = "sha256:d670ea0b10f8b723672d3a6abeb87b565b244da220d76b4dba1b66269ec152d4"},
     {file = "Babel-2.8.0.tar.gz", hash = "sha256:1aac2ae2d0d8ea368fa90906567f5c08463d98ade155c0c4bfedd6a0f7160e38"},
 ]
 beautifulsoup4 = [
-    {file = "beautifulsoup4-4.9.2-py2-none-any.whl", hash = "sha256:645d833a828722357038299b7f6879940c11dddd95b900fe5387c258b72bb883"},
-    {file = "beautifulsoup4-4.9.2-py3-none-any.whl", hash = "sha256:5dfe44f8fddc89ac5453f02659d3ab1668f2c0d9684839f0785037e8c6d9ac8d"},
-    {file = "beautifulsoup4-4.9.2.tar.gz", hash = "sha256:1edf5e39f3a5bc6e38b235b369128416c7239b34f692acccececb040233032a1"},
+    {file = "beautifulsoup4-4.9.3-py2-none-any.whl", hash = "sha256:4c98143716ef1cb40bf7f39a8e3eec8f8b009509e74904ba3a7b315431577e35"},
+    {file = "beautifulsoup4-4.9.3-py3-none-any.whl", hash = "sha256:fff47e031e34ec82bf17e00da8f592fe7de69aeea38be00523c04623c04fb666"},
+    {file = "beautifulsoup4-4.9.3.tar.gz", hash = "sha256:84729e322ad1d5b4d25f805bfa05b902dd96450f43842c4e99067d5e1369eb25"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -1463,8 +1463,8 @@ mss = [
     {file = "mss-6.0.0.tar.gz", hash = "sha256:b42bcc170a138c1afbe05f532374d97486f52c2c69328ae1591dafa64ab92c36"},
 ]
 netsuitesdk = [
-    {file = "netsuitesdk-1.7.0-py3-none-any.whl", hash = "sha256:984fd079d034311a7224783873d89d71dcae5224e8046e2cfbc7dd3ea480ea0b"},
-    {file = "netsuitesdk-1.7.0.tar.gz", hash = "sha256:bc0c46cd08684a8ac6412279afd4154f79dded1d26398ae36d3ea048a1619a13"},
+    {file = "netsuitesdk-1.7.1-py3-none-any.whl", hash = "sha256:9c1b781fedd78534c3405cf4627ea41be9401825a88c11193db44bb17678dba3"},
+    {file = "netsuitesdk-1.7.1.tar.gz", hash = "sha256:8290656aa46495ef2237cc7035df64ab214cf801beb6c431c1befa4775f63070"},
 ]
 notifiers = [
     {file = "notifiers-1.2.1-py3-none-any.whl", hash = "sha256:171ae79215fcf119e34992ad7e1f95f0709f93997203b3fc6f115b5cedd780a6"},
@@ -1589,7 +1589,7 @@ pypdf2 = [
     {file = "PyPDF2-1.26.0.tar.gz", hash = "sha256:e28f902f2f0a1603ea95ebe21dff311ef09be3d0f0ef29a3e44a932729564385"},
 ]
 pyperclip = [
-    {file = "pyperclip-1.8.0.tar.gz", hash = "sha256:b75b975160428d84608c26edba2dec146e7799566aea42c1fe1b32e72b6028f2"},
+    {file = "pyperclip-1.8.1.tar.gz", hash = "sha256:9abef1e79ce635eb62309ecae02dfb5a3eb952fa7d6dce09c1aef063f81424d3"},
 ]
 pyrsistent = [
     {file = "pyrsistent-0.17.3.tar.gz", hash = "sha256:2e636185d9eb976a18a8a8e96efce62f2905fea90041958d8cc2a189756ebf3e"},
@@ -1669,12 +1669,12 @@ robotframeworklexer = [
     {file = "robotframeworklexer-1.1.tar.gz", hash = "sha256:ddd3ea50b54b47aee86a83c400534a61e2588dec875a3c10f04822280e834b8f"},
 ]
 rpaframework = [
-    {file = "rpaframework-5.0.0-py3-none-any.whl", hash = "sha256:1033c2dae19fa4f031aaa74dd8e44f9403b65729f0b4d49e1df21e6b5819abe1"},
-    {file = "rpaframework-5.0.0.tar.gz", hash = "sha256:833a746f9ca093dc92eb4db9429168f0dea71b99221781ac153d91f4fe7c5526"},
+    {file = "rpaframework-5.1.0-py3-none-any.whl", hash = "sha256:75815da068ff57590b6a42555647b74d00d5baef31ccc797affa56d4b4194e8d"},
+    {file = "rpaframework-5.1.0.tar.gz", hash = "sha256:e31d1a826d80b74ebbec468e75cdd1194d9f66a14390115947c4c31f6efcbfa6"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-1.7.1.tar.gz", hash = "sha256:e067a7ee47000795bd515a58f8d57ba96363d908fe61bfd9e8c451b123d1eb51"},
-    {file = "rpaframework_core-1.7.1-py3-none-any.whl", hash = "sha256:6d47d3b208c6d96bc8e2e8feb3a9d4ad405e959be7ce2457d97ac597c22cb931"},
+    {file = "rpaframework-core-1.8.0.tar.gz", hash = "sha256:8752050c4a460a6bd65961e478c09abb3b580f41b09b9aa8f823b6a2b1facd1e"},
+    {file = "rpaframework_core-1.8.0-py3-none-any.whl", hash = "sha256:f24882ca458749644792f534269e5208ad05346c010b07fa4c6119a8348d334b"},
 ]
 selenium = [
     {file = "selenium-3.141.0-py2.py3-none-any.whl", hash = "sha256:2d7131d7bc5a5b99a2d9b04aaf2612c411b03b8ca1b1ee8d3de5845a9be2cb3c"},
@@ -1741,8 +1741,8 @@ toml = [
     {file = "toml-0.10.1.tar.gz", hash = "sha256:926b612be1e5ce0634a2ca03470f95169cf16f939018233a670519cb4ac58b0f"},
 ]
 tqdm = [
-    {file = "tqdm-4.50.0-py2.py3-none-any.whl", hash = "sha256:2dd75fdb764f673b8187643496fcfbeac38348015b665878e582b152f3391cdb"},
-    {file = "tqdm-4.50.0.tar.gz", hash = "sha256:93b7a6a9129fce904f6df4cf3ae7ff431d779be681a95c3344c26f3e6c09abfa"},
+    {file = "tqdm-4.50.2-py2.py3-none-any.whl", hash = "sha256:43ca183da3367578ebf2f1c2e3111d51ea161ed1dc4e6345b86e27c2a93beff7"},
+    {file = "tqdm-4.50.2.tar.gz", hash = "sha256:69dfa6714dee976e2425a9aab84b622675b7b1742873041e3db8a8e86132a4af"},
 ]
 tweepy = [
     {file = "tweepy-3.9.0-py2.py3-none-any.whl", hash = "sha256:3b3780df00eaa937bbd5427d2011e4b3bcb6a29a87bb4cbb4addfc47850e46a5"},
@@ -1789,6 +1789,6 @@ zeep = [
     {file = "zeep-3.4.0.tar.gz", hash = "sha256:0e98669cfeb60756231ae185498f9ae21b30b2681786b8de58ed34c3b93e41dd"},
 ]
 zipp = [
-    {file = "zipp-3.2.0-py3-none-any.whl", hash = "sha256:43f4fa8d8bb313e65d8323a3952ef8756bf40f9a5c3ea7334be23ee4ec8278b6"},
-    {file = "zipp-3.2.0.tar.gz", hash = "sha256:b52f22895f4cfce194bc8172f3819ee8de7540aa6d873535a8668b730b8b411f"},
+    {file = "zipp-3.3.0-py3-none-any.whl", hash = "sha256:eed8ec0b8d1416b2ca33516a37a08892442f3954dee131e92cfd92d8fe3e7066"},
+    {file = "zipp-3.3.0.tar.gz", hash = "sha256:64ad89efee774d1897a58607895d80789c59778ea02185dd846ac38394a8642b"},
 ]
