@@ -312,7 +312,7 @@ class Dialogs:
         if title:
             self.add_title(title)
         self.add_hidden_input(
-            name="creation_date",
+            name="dialogs_form_creation_date",
             value=datetime.now(),
         )
 
@@ -492,13 +492,13 @@ class Dialogs:
             headers=headers,
         )
 
+        response_json = {}
         try:
             br = Browser()
             br.open_available_browser(f"{self.server_address}/form.html")
             br.set_window_size(window_width, window_height)
 
             headers = {"Prefer": "wait=120"}
-            response_json = {}
             # etag = None
             while True:
                 # if etag:
