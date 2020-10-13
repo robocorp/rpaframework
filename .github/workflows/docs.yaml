@@ -8,7 +8,7 @@ on:
       - "pyproject.toml"
       - "poetry.lock"
       - "Makefile"
-      - "docs/source/releasenotes.rst"
+      - "docs/source/**"
       - ".github/workflows/docs.yaml"
       - "packages/main/README.rst"
 
