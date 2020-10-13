@@ -80,13 +80,13 @@ The library allows, for instance, iterating over files and inspecting them.
     Library    RPA.Dialogs
 
     *** Keywords ***
-    Ask Question From User By Build a Form
+    Ask Question From User By Form Built With Keywords
         Create Form     questions
         Add Text Input  label=What is your name?  name=username
         &{response}=    Request Response
         Log             Username is "${response}[username]"
 
-    Ask Question From User By Form Specified by JSON
+    Ask Question From User By Form Specified With JSON
         &{response}=    Request Response  /path/to/myform.json
         Log             Username is "${response}[username]"
 
