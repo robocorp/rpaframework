@@ -233,6 +233,19 @@ and returns response which will be returned by the keyword</p></li>
 <li><p>at the end the browser is closed and HTTP server is stopped</p></li>
 </ol>
 </div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">Request</span> <span class="pre">Response</span></code> can be invoked in two ways:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Without any parameters. This means that form shown is the one created
+by other library keywords. If no form elements have been added with
+keywords then the form will contain just one submit button. Form building
+must be started with keyword <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Form</span></code>.</p></li>
+<li><p>Giving filepath to JSON (parameter <strong>formspec</strong>) which specifies the
+elements that form should include.</p></li>
+</ol>
+</div></blockquote>
+<p>Keyword has optional parameters to specify form window <strong>width</strong> and <strong>height</strong>,
+default size is 600px width and 1000px height.</p>
 </div>
 <div class="section" id="supported-element-types">
 <h3>Supported element types<a class="headerlink" href="#supported-element-types" title="Permalink to this headline">¶</a></h3>
@@ -311,22 +324,30 @@ keyword is called.</p>
 <div class="section" id="robot-framework">
 <h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
 <p>The library allows, for instance, iterating over files and inspecting them.</p>
-<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Dialogs</span><span class="p"></span>
 
 <span class="gh">*** Keywords ***</span><span class="p"></span>
-<span class="gu">Ask Question From User</span><span class="p"></span>
+<span class="gu">Ask Question From User By Form Built With Keywords</span><span class="p"></span>
 <span class="p">    </span><span class="nf">Create Form</span><span class="p">     </span><span class="s">questions</span><span class="p"></span>
 <span class="p">    </span><span class="nf">Add Text Input</span><span class="p">  </span><span class="s">label=What is your name?</span><span class="p">  </span><span class="s">name=username</span><span class="p"></span>
 <span class="p">    &amp;{</span><span class="nv">response</span><span class="p">}=    </span><span class="nf">Request Response</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">             </span><span class="s">Username is &quot;</span><span class="p">${</span><span class="nv">response</span><span class="p">}[</span><span class="nv">username</span><span class="p">]</span><span class="s">&quot;</span><span class="p"></span>
+
+<span class="gu">Ask Question From User By Form Specified With JSON</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">response</span><span class="p">}=    </span><span class="nf">Request Response</span><span class="p">  </span><span class="s">/path/to/myform.json</span><span class="p"></span>
 <span class="p">    </span><span class="nf">Log</span><span class="p">             </span><span class="s">Username is &quot;</span><span class="p">${</span><span class="nv">response</span><span class="p">}[</span><span class="nv">username</span><span class="p">]</span><span class="s">&quot;</span><span class="p"></span>
 </pre></div>
 </td></tr></table></div>
