@@ -207,8 +207,677 @@
             
   <div class="section" id="python-module-api">
 <h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="dialogs">
-<h2>Dialogs<a class="headerlink" href="#dialogs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-RPA.Dialogs">
+<span id="dialogs"></span><h2>Dialogs<a class="headerlink" href="#module-RPA.Dialogs" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Dialogs.Dialogs">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Dialogs.</code><code class="sig-name descname">Dialogs</code><a class="headerlink" href="#RPA.Dialogs.Dialogs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Library provides features for building form to request for user input.</p>
+<p>Form elements can be built with library keywords or form can be defined
+in a JSON file.</p>
+<dl class="attribute">
+<dt id="RPA.Dialogs.Dialogs.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Dialogs.Dialogs.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Dialogs.add_checkbox">
+<code class="sig-name descname">add_checkbox</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">element_id</em>, <em class="sig-param">options</em>, <em class="sig-param">default</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_checkbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add checkbox element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> – check box element label</p></li>
+<li><p><strong>element_id</strong> – check box element identifier</p></li>
+<li><p><strong>options</strong> – values for the check box</p></li>
+<li><p><strong>default</strong> – check box selected value, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Dialogs.add_dropdown">
+<code class="sig-name descname">add_dropdown</code><span class="sig-paren">(</span><em class="sig-param">label: str</em>, <em class="sig-param">element_id: str</em>, <em class="sig-param">options: Any</em>, <em class="sig-param">default: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_dropdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add dropdown element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> – dropdown element label</p></li>
+<li><p><strong>element_id</strong> – dropdown element id attribute</p></li>
+<li><p><strong>options</strong> – values for the dropdown</p></li>
+<li><p><strong>default</strong> – dropdown selected value, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Dialogs.add_file_input">
+<code class="sig-name descname">add_file_input</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">element_id</em>, <em class="sig-param">name</em>, <em class="sig-param">filetypes</em>, <em class="sig-param">target_directory=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_file_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add text input element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> – input element label</p></li>
+<li><p><strong>element_id</strong> – hidden element id attribute</p></li>
+<li><p><strong>name</strong> – input element name attribute</p></li>
+<li><p><strong>filetypes</strong> – accepted filetypes for the file upload</p></li>
+<li><p><strong>target_directory</strong> – where to save uploaded files to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Dialogs.add_hidden_input">
+<code class="sig-name descname">add_hidden_input</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_hidden_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add hidden input element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – input element name attribute</p></li>
+<li><p><strong>value</strong> – input element value attribute</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Dialogs.add_radio_buttons">
+<code class="sig-name descname">add_radio_buttons</code><span class="sig-paren">(</span><em class="sig-param">element_id</em>, <em class="sig-param">options</em>, <em class="sig-param">default: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_radio_buttons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add radio button element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>element_id</strong> – radio button element identifier</p></li>
+<li><p><strong>options</strong> – values for the radio button</p></li>
+<li><p><strong>default</strong> – radio button selected value, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Dialogs.add_submit">
+<code class="sig-name descname">add_submit</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">buttons</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_submit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add submit element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – element name attribute</p></li>
+<li><p><strong>buttons</strong> – list of buttons</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Dialogs.add_text">
+<code class="sig-name descname">add_text</code><span class="sig-paren">(</span><em class="sig-param">value: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add text paragraph element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> – text for the element</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Dialogs.add_text_input">
+<code class="sig-name descname">add_text_input</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_text_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add text input element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> – input element label</p></li>
+<li><p><strong>name</strong> – input element name attribute</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Dialogs.add_textarea">
+<code class="sig-name descname">add_textarea</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">rows: int = 5</em>, <em class="sig-param">cols: int = 40</em>, <em class="sig-param">default: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_textarea" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add textarea element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – textarea element name</p></li>
+<li><p><strong>rows</strong> – number of rows for the area, defaults to 5</p></li>
+<li><p><strong>cols</strong> – numnber of columns for the area, defaults to 40</p></li>
+<li><p><strong>default</strong> – prefilled text for the area, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Dialogs.add_title">
+<code class="sig-name descname">add_title</code><span class="sig-paren">(</span><em class="sig-param">title</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add h3 element into form</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>title</strong> – text for the element</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Dialogs.create_form">
+<code class="sig-name descname">create_form</code><span class="sig-paren">(</span><em class="sig-param">title: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.create_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new form</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>title</strong> – form title, defaults to None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Dialogs.request_response">
+<code class="sig-name descname">request_response</code><span class="sig-paren">(</span><em class="sig-param">formspec: str = None</em>, <em class="sig-param">window_width: int = 600</em>, <em class="sig-param">window_height: int = 1000</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.request_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start server and show form. Waits for user response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>formspec</strong> – form json specification file, defaults to None</p></li>
+<li><p><strong>window_width</strong> – window width in pixels, defaults to 600</p></li>
+<li><p><strong>window_height</strong> – window height in pixels, defaults to 1000</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>form response</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Dialogs.Handler">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Dialogs.</code><code class="sig-name descname">Handler</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">client_address</em>, <em class="sig-param">server</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">http.server.BaseHTTPRequestHandler</span></code></p>
+<p>Server request handler class</p>
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.MessageClass">
+<code class="sig-name descname">MessageClass</code><a class="headerlink" href="#RPA.Dialogs.Handler.MessageClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">http.client.HTTPMessage</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.address_string">
+<code class="sig-name descname">address_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.address_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the client address.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.create_form">
+<code class="sig-name descname">create_form</code><span class="sig-paren">(</span><em class="sig-param">message</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.create_form" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.date_time_string">
+<code class="sig-name descname">date_time_string</code><span class="sig-paren">(</span><em class="sig-param">timestamp=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.date_time_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current date and time formatted for a message header.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.default_request_version">
+<code class="sig-name descname">default_request_version</code><em class="property"> = 'HTTP/0.9'</em><a class="headerlink" href="#RPA.Dialogs.Handler.default_request_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.disable_nagle_algorithm">
+<code class="sig-name descname">disable_nagle_algorithm</code><em class="property"> = False</em><a class="headerlink" href="#RPA.Dialogs.Handler.disable_nagle_algorithm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.do_GET">
+<code class="sig-name descname">do_GET</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.do_GET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.do_HEAD">
+<code class="sig-name descname">do_HEAD</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.do_HEAD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.do_POST">
+<code class="sig-name descname">do_POST</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.do_POST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.end_headers">
+<code class="sig-name descname">end_headers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.end_headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send the blank line ending the MIME headers.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.error_content_type">
+<code class="sig-name descname">error_content_type</code><em class="property"> = 'text/html;charset=utf-8'</em><a class="headerlink" href="#RPA.Dialogs.Handler.error_content_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.error_message_format">
+<code class="sig-name descname">error_message_format</code><em class="property"> = '&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot;\n        &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&gt;\n&lt;html&gt;\n    &lt;head&gt;\n        &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;\n        &lt;title&gt;Error response&lt;/title&gt;\n    &lt;/head&gt;\n    &lt;body&gt;\n        &lt;h1&gt;Error response&lt;/h1&gt;\n        &lt;p&gt;Error code: %(code)d&lt;/p&gt;\n        &lt;p&gt;Message: %(message)s.&lt;/p&gt;\n        &lt;p&gt;Error code explanation: %(code)s - %(explain)s.&lt;/p&gt;\n    &lt;/body&gt;\n&lt;/html&gt;\n'</em><a class="headerlink" href="#RPA.Dialogs.Handler.error_message_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.finish">
+<code class="sig-name descname">finish</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.finish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.flush_headers">
+<code class="sig-name descname">flush_headers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.flush_headers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.get_checkbox">
+<code class="sig-name descname">get_checkbox</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.get_checkbox" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.get_dropdown">
+<code class="sig-name descname">get_dropdown</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.get_dropdown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.get_fileinput">
+<code class="sig-name descname">get_fileinput</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.get_fileinput" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.get_hiddeninput">
+<code class="sig-name descname">get_hiddeninput</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.get_hiddeninput" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.get_radiobutton">
+<code class="sig-name descname">get_radiobutton</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.get_radiobutton" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.get_submit">
+<code class="sig-name descname">get_submit</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.get_submit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.get_text">
+<code class="sig-name descname">get_text</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.get_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.get_textarea">
+<code class="sig-name descname">get_textarea</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.get_textarea" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.get_textinput">
+<code class="sig-name descname">get_textinput</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.get_textinput" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.get_title">
+<code class="sig-name descname">get_title</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.get_title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.handle">
+<code class="sig-name descname">handle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle multiple requests if necessary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.handle_expect_100">
+<code class="sig-name descname">handle_expect_100</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.handle_expect_100" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decide what to do with an “Expect: 100-continue” header.</p>
+<p>If the client is expecting a 100 Continue response, we must
+respond with either a 100 Continue or a final response before
+waiting for the request body. The default is to always respond
+with a 100 Continue. You can behave differently (for example,
+reject unauthorized requests) by overriding this method.</p>
+<p>This method should either return True (possibly after sending
+a 100 Continue response) or send an error response and return
+False.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.handle_one_request">
+<code class="sig-name descname">handle_one_request</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.handle_one_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle a single HTTP request.</p>
+<p>You normally don’t need to override this method; see the class
+__doc__ string for information on how to handle specific HTTP
+commands such as GET and POST.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.import_styles">
+<code class="sig-name descname">import_styles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.import_styles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.log_date_time_string">
+<code class="sig-name descname">log_date_time_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.log_date_time_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current time formatted for logging.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.log_error">
+<code class="sig-name descname">log_error</code><span class="sig-paren">(</span><em class="sig-param">format</em>, <em class="sig-param">*args</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.log_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log an error.</p>
+<p>This is called when a request cannot be fulfilled.  By
+default it passes the message on to log_message().</p>
+<p>Arguments are the same as for log_message().</p>
+<p>XXX This should go to the separate error log.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.log_message">
+<code class="sig-name descname">log_message</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.log_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log an arbitrary message.</p>
+<p>This is used by all other logging functions.  Override
+it if you have specific logging wishes.</p>
+<p>The first argument, FORMAT, is a format string for the
+message to be logged.  If the format string contains
+any % escapes requiring parameters, they should be
+specified as subsequent arguments (it’s just like
+printf!).</p>
+<p>The client ip and current date/time are prefixed to
+every message.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.log_request">
+<code class="sig-name descname">log_request</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.log_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log an accepted request.</p>
+<p>This is called by send_response().</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.monthname">
+<code class="sig-name descname">monthname</code><em class="property"> = [None, 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']</em><a class="headerlink" href="#RPA.Dialogs.Handler.monthname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.parse_request">
+<code class="sig-name descname">parse_request</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.parse_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a request (internal).</p>
+<p>The request should be stored in self.raw_requestline; the results
+are in self.command, self.path, self.request_version and
+self.headers.</p>
+<p>Return True for success, False for failure; on failure, any relevant
+error response has already been sent back.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.protocol_version">
+<code class="sig-name descname">protocol_version</code><em class="property"> = 'HTTP/1.0'</em><a class="headerlink" href="#RPA.Dialogs.Handler.protocol_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.rbufsize">
+<code class="sig-name descname">rbufsize</code><em class="property"> = -1</em><a class="headerlink" href="#RPA.Dialogs.Handler.rbufsize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.responses">
+<code class="sig-name descname">responses</code><em class="property"> = {&lt;HTTPStatus.CONTINUE: 100&gt;: ('Continue', 'Request received, please continue'), &lt;HTTPStatus.SWITCHING_PROTOCOLS: 101&gt;: ('Switching Protocols', 'Switching to new protocol; obey Upgrade header'), &lt;HTTPStatus.PROCESSING: 102&gt;: ('Processing', ''), &lt;HTTPStatus.OK: 200&gt;: ('OK', 'Request fulfilled, document follows'), &lt;HTTPStatus.CREATED: 201&gt;: ('Created', 'Document created, URL follows'), &lt;HTTPStatus.ACCEPTED: 202&gt;: ('Accepted', 'Request accepted, processing continues off-line'), &lt;HTTPStatus.NON_AUTHORITATIVE_INFORMATION: 203&gt;: ('Non-Authoritative Information', 'Request fulfilled from cache'), &lt;HTTPStatus.NO_CONTENT: 204&gt;: ('No Content', 'Request fulfilled, nothing follows'), &lt;HTTPStatus.RESET_CONTENT: 205&gt;: ('Reset Content', 'Clear input form for further input'), &lt;HTTPStatus.PARTIAL_CONTENT: 206&gt;: ('Partial Content', 'Partial content follows'), &lt;HTTPStatus.MULTI_STATUS: 207&gt;: ('Multi-Status', ''), &lt;HTTPStatus.ALREADY_REPORTED: 208&gt;: ('Already Reported', ''), &lt;HTTPStatus.IM_USED: 226&gt;: ('IM Used', ''), &lt;HTTPStatus.MULTIPLE_CHOICES: 300&gt;: ('Multiple Choices', 'Object has several resources -- see URI list'), &lt;HTTPStatus.MOVED_PERMANENTLY: 301&gt;: ('Moved Permanently', 'Object moved permanently -- see URI list'), &lt;HTTPStatus.FOUND: 302&gt;: ('Found', 'Object moved temporarily -- see URI list'), &lt;HTTPStatus.SEE_OTHER: 303&gt;: ('See Other', 'Object moved -- see Method and URL list'), &lt;HTTPStatus.NOT_MODIFIED: 304&gt;: ('Not Modified', 'Document has not changed since given time'), &lt;HTTPStatus.USE_PROXY: 305&gt;: ('Use Proxy', 'You must use proxy specified in Location to access this resource'), &lt;HTTPStatus.TEMPORARY_REDIRECT: 307&gt;: ('Temporary Redirect', 'Object moved temporarily -- see URI list'), &lt;HTTPStatus.PERMANENT_REDIRECT: 308&gt;: ('Permanent Redirect', 'Object moved permanently -- see URI list'), &lt;HTTPStatus.BAD_REQUEST: 400&gt;: ('Bad Request', 'Bad request syntax or unsupported method'), &lt;HTTPStatus.UNAUTHORIZED: 401&gt;: ('Unauthorized', 'No permission -- see authorization schemes'), &lt;HTTPStatus.PAYMENT_REQUIRED: 402&gt;: ('Payment Required', 'No payment -- see charging schemes'), &lt;HTTPStatus.FORBIDDEN: 403&gt;: ('Forbidden', 'Request forbidden -- authorization will not help'), &lt;HTTPStatus.NOT_FOUND: 404&gt;: ('Not Found', 'Nothing matches the given URI'), &lt;HTTPStatus.METHOD_NOT_ALLOWED: 405&gt;: ('Method Not Allowed', 'Specified method is invalid for this resource'), &lt;HTTPStatus.NOT_ACCEPTABLE: 406&gt;: ('Not Acceptable', 'URI not available in preferred format'), &lt;HTTPStatus.PROXY_AUTHENTICATION_REQUIRED: 407&gt;: ('Proxy Authentication Required', 'You must authenticate with this proxy before proceeding'), &lt;HTTPStatus.REQUEST_TIMEOUT: 408&gt;: ('Request Timeout', 'Request timed out; try again later'), &lt;HTTPStatus.CONFLICT: 409&gt;: ('Conflict', 'Request conflict'), &lt;HTTPStatus.GONE: 410&gt;: ('Gone', 'URI no longer exists and has been permanently removed'), &lt;HTTPStatus.LENGTH_REQUIRED: 411&gt;: ('Length Required', 'Client must specify Content-Length'), &lt;HTTPStatus.PRECONDITION_FAILED: 412&gt;: ('Precondition Failed', 'Precondition in headers is false'), &lt;HTTPStatus.REQUEST_ENTITY_TOO_LARGE: 413&gt;: ('Request Entity Too Large', 'Entity is too large'), &lt;HTTPStatus.REQUEST_URI_TOO_LONG: 414&gt;: ('Request-URI Too Long', 'URI is too long'), &lt;HTTPStatus.UNSUPPORTED_MEDIA_TYPE: 415&gt;: ('Unsupported Media Type', 'Entity body in unsupported format'), &lt;HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE: 416&gt;: ('Requested Range Not Satisfiable', 'Cannot satisfy request range'), &lt;HTTPStatus.EXPECTATION_FAILED: 417&gt;: ('Expectation Failed', 'Expect condition could not be satisfied'), &lt;HTTPStatus.MISDIRECTED_REQUEST: 421&gt;: ('Misdirected Request', 'Server is not able to produce a response'), &lt;HTTPStatus.UNPROCESSABLE_ENTITY: 422&gt;: ('Unprocessable Entity', ''), &lt;HTTPStatus.LOCKED: 423&gt;: ('Locked', ''), &lt;HTTPStatus.FAILED_DEPENDENCY: 424&gt;: ('Failed Dependency', ''), &lt;HTTPStatus.UPGRADE_REQUIRED: 426&gt;: ('Upgrade Required', ''), &lt;HTTPStatus.PRECONDITION_REQUIRED: 428&gt;: ('Precondition Required', 'The origin server requires the request to be conditional'), &lt;HTTPStatus.TOO_MANY_REQUESTS: 429&gt;: ('Too Many Requests', 'The user has sent too many requests in a given amount of time (&quot;rate limiting&quot;)'), &lt;HTTPStatus.REQUEST_HEADER_FIELDS_TOO_LARGE: 431&gt;: ('Request Header Fields Too Large', 'The server is unwilling to process the request because its header fields are too large'), &lt;HTTPStatus.INTERNAL_SERVER_ERROR: 500&gt;: ('Internal Server Error', 'Server got itself in trouble'), &lt;HTTPStatus.NOT_IMPLEMENTED: 501&gt;: ('Not Implemented', 'Server does not support this operation'), &lt;HTTPStatus.BAD_GATEWAY: 502&gt;: ('Bad Gateway', 'Invalid responses from another server/proxy'), &lt;HTTPStatus.SERVICE_UNAVAILABLE: 503&gt;: ('Service Unavailable', 'The server cannot process the request due to a high load'), &lt;HTTPStatus.GATEWAY_TIMEOUT: 504&gt;: ('Gateway Timeout', 'The gateway server did not receive a timely response'), &lt;HTTPStatus.HTTP_VERSION_NOT_SUPPORTED: 505&gt;: ('HTTP Version Not Supported', 'Cannot fulfill request'), &lt;HTTPStatus.VARIANT_ALSO_NEGOTIATES: 506&gt;: ('Variant Also Negotiates', ''), &lt;HTTPStatus.INSUFFICIENT_STORAGE: 507&gt;: ('Insufficient Storage', ''), &lt;HTTPStatus.LOOP_DETECTED: 508&gt;: ('Loop Detected', ''), &lt;HTTPStatus.NOT_EXTENDED: 510&gt;: ('Not Extended', ''), &lt;HTTPStatus.NETWORK_AUTHENTICATION_REQUIRED: 511&gt;: ('Network Authentication Required', 'The client needs to authenticate to gain network access')}</em><a class="headerlink" href="#RPA.Dialogs.Handler.responses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.send_error">
+<code class="sig-name descname">send_error</code><span class="sig-paren">(</span><em class="sig-param">code</em>, <em class="sig-param">message=None</em>, <em class="sig-param">explain=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.send_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send and log an error reply.</p>
+<p>Arguments are
+* code:    an HTTP error code</p>
+<blockquote>
+<div><p>3 digits</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>message: a simple optional 1 line reason phrase.</dt><dd><p><a href="#id1"><span class="problematic" id="id2">*</span></a>( HTAB / SP / VCHAR / %x80-FF )
+defaults to short entry matching the response code</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>explain: a detailed message defaults to the long entry</dt><dd><p>matching the response code.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>This sends an error response (so it must be called before any
+output has been generated), logs the error, and finally sends
+a piece of HTML explaining the error to the user.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.send_header">
+<code class="sig-name descname">send_header</code><span class="sig-paren">(</span><em class="sig-param">keyword</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.send_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a MIME header to the headers buffer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.send_response">
+<code class="sig-name descname">send_response</code><span class="sig-paren">(</span><em class="sig-param">code</em>, <em class="sig-param">message=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.send_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the response header to the headers buffer and log the
+response code.</p>
+<p>Also send two standard headers with the server software
+version and the current date.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.send_response_only">
+<code class="sig-name descname">send_response_only</code><span class="sig-paren">(</span><em class="sig-param">code</em>, <em class="sig-param">message=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.send_response_only" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send the response header only.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.server_version">
+<code class="sig-name descname">server_version</code><em class="property"> = 'BaseHTTP/0.6'</em><a class="headerlink" href="#RPA.Dialogs.Handler.server_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.setup">
+<code class="sig-name descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.sys_version">
+<code class="sig-name descname">sys_version</code><em class="property"> = 'Python/3.7.9'</em><a class="headerlink" href="#RPA.Dialogs.Handler.sys_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.timeout">
+<code class="sig-name descname">timeout</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Dialogs.Handler.timeout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.version_string">
+<code class="sig-name descname">version_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.version_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the server software version string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.wbufsize">
+<code class="sig-name descname">wbufsize</code><em class="property"> = 0</em><a class="headerlink" href="#RPA.Dialogs.Handler.wbufsize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.Handler.weekdayname">
+<code class="sig-name descname">weekdayname</code><em class="property"> = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']</em><a class="headerlink" href="#RPA.Dialogs.Handler.weekdayname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Dialogs.ThreadedHTTPServer">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Dialogs.</code><code class="sig-name descname">ThreadedHTTPServer</code><span class="sig-paren">(</span><em class="sig-param">server_address</em>, <em class="sig-param">RequestHandlerClass</em>, <em class="sig-param">bind_and_activate=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">socketserver.ThreadingMixIn</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">http.server.HTTPServer</span></code></p>
+<p>Handle requests in a separate thread.</p>
+<dl class="attribute">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.address_family">
+<code class="sig-name descname">address_family</code><em class="property"> = 2</em><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.address_family" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.allow_reuse_address">
+<code class="sig-name descname">allow_reuse_address</code><em class="property"> = 1</em><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.allow_reuse_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.block_on_close">
+<code class="sig-name descname">block_on_close</code><em class="property"> = True</em><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.block_on_close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.close_request">
+<code class="sig-name descname">close_request</code><span class="sig-paren">(</span><em class="sig-param">request</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.close_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called to clean up an individual request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.daemon_threads">
+<code class="sig-name descname">daemon_threads</code><em class="property"> = False</em><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.daemon_threads" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.fileno">
+<code class="sig-name descname">fileno</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.fileno" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return socket file number.</p>
+<p>Interface required by selector.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.finish_request">
+<code class="sig-name descname">finish_request</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">client_address</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.finish_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finish one request by instantiating RequestHandlerClass.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.get_request">
+<code class="sig-name descname">get_request</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.get_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the request and client address from the socket.</p>
+<p>May be overridden.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.handle_error">
+<code class="sig-name descname">handle_error</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">client_address</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.handle_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle an error gracefully.  May be overridden.</p>
+<p>The default is to print a traceback and continue.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.handle_request">
+<code class="sig-name descname">handle_request</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.handle_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle one request, possibly blocking.</p>
+<p>Respects self.timeout.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.handle_timeout">
+<code class="sig-name descname">handle_timeout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.handle_timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called if no new request arrives within self.timeout.</p>
+<p>Overridden by ForkingMixIn.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.process_request">
+<code class="sig-name descname">process_request</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">client_address</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.process_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start a new thread to process the request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.process_request_thread">
+<code class="sig-name descname">process_request_thread</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">client_address</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.process_request_thread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as in BaseServer but as a thread.</p>
+<p>In addition, exception handling is done here.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.request_queue_size">
+<code class="sig-name descname">request_queue_size</code><em class="property"> = 5</em><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.request_queue_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.serve_forever">
+<code class="sig-name descname">serve_forever</code><span class="sig-paren">(</span><em class="sig-param">poll_interval=0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.serve_forever" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle one request at a time until shutdown.</p>
+<p>Polls for shutdown every poll_interval seconds. Ignores
+self.timeout. If you need to do periodic tasks, do them in
+another thread.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.server_activate">
+<code class="sig-name descname">server_activate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.server_activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by constructor to activate the server.</p>
+<p>May be overridden.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.server_bind">
+<code class="sig-name descname">server_bind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.server_bind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override server_bind to store the server name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.server_close">
+<code class="sig-name descname">server_close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.server_close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.service_actions">
+<code class="sig-name descname">service_actions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.service_actions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by the serve_forever() loop.</p>
+<p>May be overridden by a subclass / Mixin to implement any code that
+needs to be run during the loop.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.shutdown">
+<code class="sig-name descname">shutdown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops the serve_forever loop.</p>
+<p>Blocks until the loop has finished. This must be called while
+serve_forever() is running in another thread, or it will
+deadlock.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.shutdown_request">
+<code class="sig-name descname">shutdown_request</code><span class="sig-paren">(</span><em class="sig-param">request</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.shutdown_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called to shutdown and close an individual request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.socket_type">
+<code class="sig-name descname">socket_type</code><em class="property"> = 1</em><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.socket_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.timeout">
+<code class="sig-name descname">timeout</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.timeout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.ThreadedHTTPServer.verify_request">
+<code class="sig-name descname">verify_request</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">client_address</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.ThreadedHTTPServer.verify_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify the request.  May be overridden.</p>
+<p>Return True if we should proceed with this request.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Dialogs.start_server_cmd">
+<code class="sig-prename descclassname">RPA.Dialogs.</code><code class="sig-name descname">start_server_cmd</code><span class="sig-paren">(</span><em class="sig-param">directory</em>, <em class="sig-param">port=8105</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.start_server_cmd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 </div>
 
