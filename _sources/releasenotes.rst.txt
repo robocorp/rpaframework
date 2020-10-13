@@ -4,6 +4,13 @@ Release notes
 Upcoming release
 ----------------
 
+5.2.0
+-----
+
+- new library **Dialogs** which will allow getting input from the user
+  via HTML form
+
+
 5.1.0
 -----
 
