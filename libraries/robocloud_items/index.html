@@ -237,10 +237,13 @@ overriden manually while developing an activity.</p>
 </div>
 <div class="section" id="item-structure">
 <h3>Item structure<a class="headerlink" href="#item-structure" title="Permalink to this headline">¶</a></h3>
-<p>A work item’s payload is JSON and allows storing anything that is
+<p>A work item’s data payload is JSON and allows storing anything that is
 serializable. This library creates an object with the key ‘variables’
 that contains key-value pairs of a variable name and its contents.
 These variables can be exposed to the Robot Framework task to be used directly.</p>
+<p>In addition to the data section, a work item can also contain files,
+which are stored by default in Robocorp’s cloud. Adding and using
+files with work items requires no additional setup from the user.</p>
 </div>
 <div class="section" id="workflow">
 <h3>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h3>
@@ -264,8 +267,8 @@ storing work items to disk.</p>
 <h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="robot-framework">
 <h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
-<p>The library allows injecting the work item variables into the current
-task execution. Also note how the work item is loaded implicitly when
+<p>In the following example the work item is modified locally and then saved
+back to Robocloud. Also note how the work item is loaded implicitly when
 the suite starts.</p>
 <div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
@@ -273,30 +276,37 @@ the suite starts.</p>
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocloud.Items</span><span class="p"></span>
 
 <span class="gh">*** Tasks ***</span><span class="p"></span>
-<span class="gu">Use variables from Robocloud</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Set task variables from work item</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Log</span><span class="p">   </span><span class="s">Using variables from workspace </span><span class="p">${</span><span class="nv">workspace</span><span class="p">}</span><span class="s"> for user </span><span class="p">${</span><span class="nv">user_id</span><span class="p">}</span>
+<span class="gu">Save variables to Robocloud</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Add work item file</span><span class="p">    </span><span class="s">orders.xlsx</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set work item variables</span><span class="p">    </span><span class="s">user=Dude</span><span class="p">    </span><span class="s">mail=address@company.com</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save work item</span><span class="p"></span>
 </pre></div>
 </td></tr></table></div>
-<p>In the following example the work item is modified locally and then saved
-back to Robocloud.</p>
+<p>Later in the process inside a different robot, we can use previously saved
+work item variables and files. The library also allows injecting the variables
+directly into the current task execution.</p>
 <div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocloud.Items</span><span class="p"></span>
 
 <span class="gh">*** Tasks ***</span><span class="p"></span>
-<span class="gu">Save variables to Robocloud</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Set work item variables</span><span class="p">    </span><span class="s">user=Dude</span><span class="p">    </span><span class="s">mail=address@company.com</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Save work item</span><span class="p"></span>
+<span class="gu">Use variables from Robocloud</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set task variables from work item</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Variables are now available: </span><span class="p">${</span><span class="nv">user</span><span class="p">}</span><span class="s">, </span><span class="p">${</span><span class="nv">mail</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">path</span><span class="p">}=    </span><span class="nf">Get work item file</span><span class="p">    </span><span class="s">orders.xlsx</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Files are also stored to disk: </span><span class="p">${</span><span class="nv">path</span><span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
 </div>

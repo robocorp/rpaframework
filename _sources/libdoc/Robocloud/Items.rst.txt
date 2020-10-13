@@ -26,13 +26,84 @@ Environment variables:
 Keywords
 ********
 
+:Add Work Item File:
+  :Arguments: path, name=None
+
+  Add given file to work item.
+
+  NOTE: Files are not uploaded before work item is saved
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Add work item file    output.xls
+      Save work item
+
+
+:Add Work Item Files:
+  :Arguments: pattern
+
+  Add all files that match given pattern to work item.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Add work item files    %{ROBOT_ROOT}/generated/*.csv
+      Save work item
+
+
 :Clear Work Item:
   Remove all data in the current work item.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Clear work item
+      Save work item
 
 :Delete Work Item Variables:
   :Arguments: \*names, force=True
 
   Delete variable(s) from the current work item.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Delete work item variables    username    email
+      Save work item
+
+
+:Get Work Item File:
+  :Arguments: name, path=None
+
+  Get attached file from work item to disk.
+  Returns the path to the created file.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${path}=    Get work item file    input.xls
+      Open workbook    ${path}
+
+
+:Get Work Item Files:
+  :Arguments: pattern, dirname=None
+
+  Get files attached to work item that match given pattern.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${paths}=    Get work item files    customer_*.xlsx
+      FOR  ${path}  IN  @{paths}
+          Handle customer file    ${path}
+      END
 
 
 :Get Work Item Payload:
@@ -40,25 +111,65 @@ Keywords
 
   NOTE: Most use cases should prefer higher-level keywords.
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${payload}=    Get work item payload
+      Log    Entire payload as dictionary: ${payload}
+
 :Get Work Item Variable:
-  :Arguments: name, default=<object object at 0x7efe04bad720>
+  :Arguments: name, default=<object object at 0x7fbf17e51d00>
 
   Return a single variable value from the work item,
   or default value if defined and key does not exist.
   If key does not exist and default is not defined, raises `KeyError`.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${username}=    Get work item variable    username    default=guest
 
 
 :Get Work Item Variables:
   Read all variables from the current work item and
   return their names and values as a dictionary.
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${variables}=    Get work item variables
+      Log    Username: ${variables}[username], Email: ${variables}[email]
+
+:List Work Item Files:
+  List the names of files attached to the current work item.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${names}=    List work item files
+      Log    Work item has files with names: ${names}
+
 :List Work Item Variables:
   List the variable names for the current work item.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${variables}=    List work item variables
+      Log    Available variables in work item: ${variables}
 
 :Load Work Item:
   :Arguments: workspace_id, item_id
 
   Load work item for reading/writing.
+
+  NOTE: Currently only one work item per execution is supported
+        by Robocorp Cloud, which should be loaded automatically.
 
 
 :Load Work Item From Environment:
@@ -69,6 +180,34 @@ Keywords
   * RC_WORKSPACE_ID
   * RC_WORKITEM_ID
 
+:Remove Work Item File:
+  :Arguments: name, missing_ok=True
+
+  Remove attached file from work item.
+
+  NOTE: Files are not deleted before work item is saved
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Remove work item file    input.xls
+      Save work item
+
+
+:Remove Work Item Files:
+  :Arguments: pattern, missing_ok=True
+
+  Removes files attached to work item that match given pattern.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Remove work item files    *.xlsx
+      Save work item
+
+
 :Save Work Item:
   Save the current data in the work item. If not saved,
   all changes are discarded when the library goes out of scope.
@@ -77,6 +216,14 @@ Keywords
   Convert all variables in the current work item to
   Robot Framework task variables.
 
+  Example:
+
+  .. code-block:: robotframework
+
+      # Work item has variable INPUT_URL
+      Set task variables from work item
+      Log    The variable is now available: ${INPUT_URL}
+
 :Set Work Item Payload:
   :Arguments: payload
 
@@ -84,15 +231,36 @@ Keywords
 
   NOTE: Most use cases should prefer higher-level keywords.
 
+  Example:
+
+  .. code-block:: robotframework
+
+      ${output}=    Create dictionary    url=example.com    username=Mark
+      Set work item payload    ${output}
+
 
 :Set Work Item Variable:
   :Arguments: name, value
 
   Set a single variable value in the current work item.
 
+  Example:
+
+  .. code-block:: robotframework
+
+      Set work item variable    username    MarkyMark
+      Save work item
+
 
 :Set Work Item Variables:
   :Arguments: \*\*kwargs
 
   Set multiple variables in the current work item.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Set work item variables    username=MarkyMark    email=mark@example.com
+      Save work item
 
