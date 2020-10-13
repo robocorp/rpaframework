@@ -1,0 +1,90 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: Global
+
+Library provides features for building form to request for user input.
+
+Form elements can be built with library keywords or form can be defined
+in a JSON file.
+
+********
+Keywords
+********
+
+:Add Checkbox:
+  :Arguments: label, element_id, options, default
+
+  Add checkbox element
+
+
+:Add Dropdown:
+  :Arguments: label: str, element_id: str, options: typing.Any, default: str = None
+
+  Add dropdown element
+
+
+:Add File Input:
+  :Arguments: label, element_id, name, filetypes, target_directory=None
+
+  Add text input element
+
+
+:Add Hidden Input:
+  :Arguments: name, value
+
+  Add hidden input element
+
+
+:Add Radio Buttons:
+  :Arguments: element_id, options, default: str = None
+
+  Add radio button element
+
+
+:Add Submit:
+  :Arguments: name, buttons
+
+  Add submit element
+
+
+:Add Text:
+  :Arguments: value: str
+
+  Add text paragraph element
+
+
+:Add Text Input:
+  :Arguments: label, name
+
+  Add text input element
+
+
+:Add Textarea:
+  :Arguments: name: str, rows: int = 5, cols: int = 40, default: str = None
+
+  Add textarea element
+
+
+:Add Title:
+  :Arguments: title
+
+  Add h3 element into form
+
+
+:Create Form:
+  :Arguments: title: str = None
+
+  Create new form
+
+
+:Request Response:
+  :Arguments: formspec: str = None, window_width: int = 600, window_height: int = 1000
+
+  Start server and show form. Waits for user response.
+
