@@ -1,0 +1,13 @@
+{
+  "form": [
+    { "type": "title", "value": "Submit PNG and/or JPEG files" },
+    {
+      "type": "fileinput",
+      "id": "myfileinput",
+      "label": "Give file inputs",
+      "name": "fname",
+      "filetypes": "image/png, image/jpeg",
+      "target_directory": "output"
+    }
+  ]
+}

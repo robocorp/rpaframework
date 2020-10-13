@@ -1,0 +1,48 @@
+{
+  "form": [
+    { "type": "title", "value": "Give some additional information" },
+    { "type": "textinput", "label": "What is your name ?", "name": "username"},
+    { "type": "hiddeninput", "name": "hiddendata", "value": "username"},
+    { "type": "text", "value": "What is your gender" },
+    {
+      "type": "radiobutton",
+      "id": "question",
+      "options": ["male", "female"],
+      "default": "male"
+    },
+    {
+      "type": "fileinput",
+      "id": "myfileinput",
+      "label": "Give file inputs",
+      "name": "myfileinput",
+      "filetypes": "image/png, image/jpeg",
+      "target_directory": "output"
+    },
+    {
+      "type": "checkbox",
+      "label": "Select your weapons",
+      "id": "checking",
+      "options": ["guns", "swords", "shields"],
+      "default": "swords"
+    },
+    {
+      "type": "textarea",
+      "name": "freeword",
+      "default": "free word",
+      "rows": 5,
+      "cols": 40
+    },
+    {
+      "type": "dropdown",
+      "label": "Select job",
+      "id": "job",
+      "options": ["engineer", "nurse", "teacher"],
+      "default": "teacher"
+    },
+    {
+      "type": "submit",
+      "name": "submitbutton",
+      "buttons": ["yes", "no"]
+    }
+  ]
+}
