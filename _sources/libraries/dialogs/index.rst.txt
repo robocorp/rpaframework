@@ -10,56 +10,57 @@ Dialogs
 Description
 ***********
 
-The `Dialogs` library provides features for building form to request for
-user input. Form elements can be built with library keywords or form can
-be defined in a JSON file.
+The `Dialogs` library provides a way to ask for user input during executions
+through HTML forms. Form elements can be built with library keywords or they can
+be defined in a static JSON file.
 
-How library works
-=================
+How the library works
+=====================
 
-Main keyword of the library is ``Request Response`` working in following steps:
+The main keyword of the library is ``Request Response`` which works as follows:
 
-    1. starts HTTP server on the background
-    2. creates HTML form either according to JSON or to
-       one built with keywords
-    3. opens browser and the created form for the user (browser is opened with
-       ``Open Available Browser`` keyword from ``RPA.Browser`` library)
-    4. once form is submitted the server will process the post
-       and returns response which will be returned by the keyword
-    5. at the end the browser is closed and HTTP server is stopped
+    1. It starts an HTTP server in the background
+    2. The HTML form is generated either according to a JSON file or the
+       keywords called during the task
+    3. It opens a browser and shows the created form (The browser is opened with
+       the ``Open Available Browser`` keyword from the ``RPA.Browser`` library)
+    4. Once the form is filled and submitted by the user, the server will process
+       the response and extract the field values, which in turn are returned by the keyword
+    5. In the end, the browser is closed and the HTTP server is stopped
 
 ``Request Response`` can be invoked in two ways:
 
     1. Without any parameters. This means that form shown is the one created
        by other library keywords. If no form elements have been added with
        keywords then the form will contain just one submit button. Form building
-       must be started with keyword ``Create Form``.
-    2. Giving filepath to JSON (parameter **formspec**) which specifies the
-       elements that form should include.
+       must be started with the keyword ``Create Form``.
+    2. Giving a path to a JSON file (using the parameter **formspec**) which
+       specifies the elements that form should include.
 
-Keyword has optional parameters to specify form window **width** and **height**,
-default size is 600px width and 1000px height.
-
+The keyword has optional parameters to specify form window **width** and **height**.
+The default size is 600px wide and 1000px high.
 
 Supported element types
 =======================
 
-As a bare minimum the form is displayed with a submit button, when ``Request Response``
-keyword is called.
+As a bare minimum, the form is displayed with a submit button when the
+``Request Response`` keyword is called.
 
-    - form (HTML <form>)
-    - title (HTML <h3>)
-    - text (HTML <p>)
-    - radiobutton  (HTML <input type='radio'>)
-    - checkbox (HTML <input type='checkbox'>)
-    - dropdown (HTML <select>)
-    - textarea (HTML <textarea>)
-    - textinput (HTML <input type='text'>)
-    - fileinput (HTML <input type='file'>)
-    - hiddeninput (HTML <input type='hidden'>)
-    - submit (HTML <input type='submit'>)
+The supported input elements and their corresponding HTML tags are:
 
-Example JSON file which contains all possible form elements and their attributes.
+    - form (``<form>``)
+    - title (``<h3>``)
+    - text (``<p>``)
+    - radiobutton  (``<input type='radio'>``)
+    - checkbox (``<input type='checkbox'>``)
+    - dropdown (``<select>``)
+    - textarea (``<textarea>``)
+    - textinput (``<input type='text'>``)
+    - fileinput (``<input type='file'>``)
+    - hiddeninput (``<input type='hidden'>``)
+    - submit (``<input type='submit'>``)
+
+An example JSON file which contains all possible form elements and their attributes:
 
 .. literalinclude:: /attachments/questionform.json
   :language: JSON
@@ -71,7 +72,7 @@ Examples
 Robot Framework
 ===============
 
-The library allows, for instance, iterating over files and inspecting them.
+Examples of creating forms through keywords and a JSON file:
 
 .. code-block:: robotframework
     :linenos:
@@ -93,7 +94,7 @@ The library allows, for instance, iterating over files and inspecting them.
 Python
 ======
 
-The library can also be used inside Python.
+The library can also be used inside Python:
 
 .. code-block:: python
     :linenos:
@@ -109,8 +110,6 @@ The library can also be used inside Python.
 
     response = ask_question_from_user('What is your name ?', 'username')
     print(f"Username is '{response['username']}'")
-
-
 
 *****************
 API Documentation
