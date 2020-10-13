@@ -28,6 +28,18 @@ Main keyword of the library is ``Request Response`` working in following steps:
        and returns response which will be returned by the keyword
     5. at the end the browser is closed and HTTP server is stopped
 
+``Request Response`` can be invoked in two ways:
+
+    1. Without any parameters. This means that form shown is the one created
+       by other library keywords. If no form elements have been added with
+       keywords then the form will contain just one submit button. Form building
+       must be started with keyword ``Create Form``.
+    2. Giving filepath to JSON (parameter **formspec**) which specifies the
+       elements that form should include.
+
+Keyword has optional parameters to specify form window **width** and **height**,
+default size is 600px width and 1000px height.
+
 
 Supported element types
 =======================
@@ -68,10 +80,14 @@ The library allows, for instance, iterating over files and inspecting them.
     Library    RPA.Dialogs
 
     *** Keywords ***
-    Ask Question From User
+    Ask Question From User By Build a Form
         Create Form     questions
         Add Text Input  label=What is your name?  name=username
         &{response}=    Request Response
+        Log             Username is "${response}[username]"
+
+    Ask Question From User By Form Specified by JSON
+        &{response}=    Request Response  /path/to/myform.json
         Log             Username is "${response}[username]"
 
 Python
