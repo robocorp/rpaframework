@@ -274,6 +274,7 @@ class Images:
                 return self.find_template_on_screen(template, **kwargs)
             except ImageNotFoundError:
                 time.sleep(0.1)
+        raise ImageNotFoundError("Couldn't find template on screen within timeout")
 
     def show_region_in_image(self, image, region, color="red", width=5):
         """Draw a rectangle onto the image around the given region.
