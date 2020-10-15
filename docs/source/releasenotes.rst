@@ -4,13 +4,18 @@ Release notes
 Upcoming release
 ----------------
 
+5.3.0
+-----
+
+- Library **Robocloud.Items**: Support for files in work items
 - Library **Dialogs**: Type hinting and documentation updates
+- Library **Images**: Raise error when timeout has been reached
 
 5.2.0
 -----
 
-- new library **Dialogs** which will allow getting input from the user
-  via HTML form
+- New library **Dialogs** which allows getting input from the user
+  via HTML forms
 
 
 5.1.0
