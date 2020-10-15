@@ -223,7 +223,7 @@ in a JSON file.</p>
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.add_checkbox">
-<code class="sig-name descname">add_checkbox</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">element_id</em>, <em class="sig-param">options</em>, <em class="sig-param">default</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_checkbox" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_checkbox</code><span class="sig-paren">(</span><em class="sig-param">label: str</em>, <em class="sig-param">element_id: str</em>, <em class="sig-param">options: str</em>, <em class="sig-param">default: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.add_checkbox" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add checkbox element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -235,11 +235,19 @@ in a JSON file.</p>
 </ul>
 </dd>
 </dl>
+<p>Example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Form</span><span class="p"></span>
+<span class="c">Add Checkbox</span><span class="p">    </span><span class="c">label=Select your colors</span><span class="p"></span>
+<span class="c">...</span><span class="p">             </span><span class="c">element_id=colors</span><span class="p"></span>
+<span class="c">...</span><span class="p">             </span><span class="c">options=green,red,blue,yellow</span><span class="p"></span>
+<span class="c">...</span><span class="p">             </span><span class="c">default=blue</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.add_dropdown">
-<code class="sig-name descname">add_dropdown</code><span class="sig-paren">(</span><em class="sig-param">label: str</em>, <em class="sig-param">element_id: str</em>, <em class="sig-param">options: Any</em>, <em class="sig-param">default: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_dropdown" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_dropdown</code><span class="sig-paren">(</span><em class="sig-param">label: str</em>, <em class="sig-param">element_id: str</em>, <em class="sig-param">options: Any</em>, <em class="sig-param">default: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.add_dropdown" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add dropdown element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -251,11 +259,19 @@ in a JSON file.</p>
 </ul>
 </dd>
 </dl>
+<p>Example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Form</span><span class="p"></span>
+<span class="c">Add Dropdown</span><span class="p">  </span><span class="c">label=Select task type</span><span class="p"></span>
+<span class="c">...</span><span class="p">           </span><span class="c">element_id=tasktype</span><span class="p"></span>
+<span class="c">...</span><span class="p">           </span><span class="c">options=buy,sell,rent</span><span class="p"></span>
+<span class="c">...</span><span class="p">           </span><span class="c">default=buy</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.add_file_input">
-<code class="sig-name descname">add_file_input</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">element_id</em>, <em class="sig-param">name</em>, <em class="sig-param">filetypes</em>, <em class="sig-param">target_directory=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_file_input" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_file_input</code><span class="sig-paren">(</span><em class="sig-param">label: str</em>, <em class="sig-param">element_id: str</em>, <em class="sig-param">name: str</em>, <em class="sig-param">filetypes: str</em>, <em class="sig-param">target_directory: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.add_file_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add text input element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -268,11 +284,27 @@ in a JSON file.</p>
 </ul>
 </dd>
 </dl>
+<p>Read more of the filetypes in the library documentation.</p>
+<p>Example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Form</span><span class="p"></span>
+<span class="c">Add File Input</span><span class="p">  </span><span class="c">label=Attachment</span><span class="p"></span>
+<span class="c">...</span><span class="p">             </span><span class="c">element_id=attachment</span><span class="p"></span>
+<span class="c">...</span><span class="p">             </span><span class="c">name=attachment</span><span class="p"></span>
+<span class="c">...</span><span class="p">             </span><span class="c">filetypes=${EMPTY}</span><span class="p">         </span><span class="c"># Accept all files</span>
+<span class="c">...</span><span class="p">             </span><span class="c">target_directory=${CURDIR}${/}output</span><span class="p"></span>
+
+<span class="c">Add File Input</span><span class="p">  </span><span class="c">label=Contract</span><span class="p"></span>
+<span class="c">...</span><span class="p">             </span><span class="c">element_id=contract</span><span class="p"></span>
+<span class="c">...</span><span class="p">             </span><span class="c">name=contract</span><span class="p"></span>
+<span class="c">...</span><span class="p">             </span><span class="c">filetypes=application/pdf</span><span class="p">  </span><span class="c"># Accept only PDFs</span>
+<span class="c">...</span><span class="p">             </span><span class="c">target_directory=${CURDIR}${/}output</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.add_hidden_input">
-<code class="sig-name descname">add_hidden_input</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_hidden_input" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_hidden_input</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">value: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.add_hidden_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add hidden input element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -282,11 +314,17 @@ in a JSON file.</p>
 </ul>
 </dd>
 </dl>
+<p>Example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Form</span><span class="p"></span>
+<span class="c">${uuid}</span><span class="p">   </span><span class="c">Evaluate</span><span class="p">  </span><span class="c">str(uuid.uuid4())</span><span class="p"></span>
+<span class="c">Add Hidden Input</span><span class="p">    </span><span class="c">form-id</span><span class="p">   </span><span class="c">${uuid}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.add_radio_buttons">
-<code class="sig-name descname">add_radio_buttons</code><span class="sig-paren">(</span><em class="sig-param">element_id</em>, <em class="sig-param">options</em>, <em class="sig-param">default: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_radio_buttons" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_radio_buttons</code><span class="sig-paren">(</span><em class="sig-param">element_id: str</em>, <em class="sig-param">options: str</em>, <em class="sig-param">default: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.add_radio_buttons" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add radio button element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -297,11 +335,16 @@ in a JSON file.</p>
 </ul>
 </dd>
 </dl>
+<p>Example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Form</span><span class="p"></span>
+<span class="c">Add Radio Button</span><span class="p">   </span><span class="c">element_id=drone</span><span class="p">  </span><span class="c">buttons=Jim,Robert</span><span class="p">  </span><span class="c">default=Robert</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.add_submit">
-<code class="sig-name descname">add_submit</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">buttons</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_submit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_submit</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">buttons: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.add_submit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add submit element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -311,22 +354,32 @@ in a JSON file.</p>
 </ul>
 </dd>
 </dl>
+<p>Example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Form</span><span class="p"></span>
+<span class="c">Add Submit</span><span class="p">    </span><span class="c">name=direction-to-go</span><span class="p">  </span><span class="c">buttons=left,right</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.add_text">
-<code class="sig-name descname">add_text</code><span class="sig-paren">(</span><em class="sig-param">value: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_text" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_text</code><span class="sig-paren">(</span><em class="sig-param">value: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.add_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add text paragraph element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>value</strong> – text for the element</p>
 </dd>
 </dl>
+<p>Example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Form</span><span class="p"></span>
+<span class="c">Add Text</span><span class="p">       </span><span class="c">${form_guidance_text}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.add_text_input">
-<code class="sig-name descname">add_text_input</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_text_input" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_text_input</code><span class="sig-paren">(</span><em class="sig-param">label: str</em>, <em class="sig-param">name: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.add_text_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add text input element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -336,11 +389,16 @@ in a JSON file.</p>
 </ul>
 </dd>
 </dl>
+<p>Example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Form</span><span class="p"></span>
+<span class="c">Add Text Input</span><span class="p">   </span><span class="c">what is your firstname ?</span><span class="p">  </span><span class="c">fname</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.add_textarea">
-<code class="sig-name descname">add_textarea</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">rows: int = 5</em>, <em class="sig-param">cols: int = 40</em>, <em class="sig-param">default: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_textarea" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_textarea</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">rows: int = 5</em>, <em class="sig-param">cols: int = 40</em>, <em class="sig-param">default: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.add_textarea" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add textarea element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -352,33 +410,49 @@ in a JSON file.</p>
 </ul>
 </dd>
 </dl>
+<p>Example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Form</span><span class="p"></span>
+<span class="c">Add Textarea</span><span class="p">       </span><span class="c">name=feedback</span><span class="p">  </span><span class="c">default=enter feedback here</span><span class="p"></span>
+<span class="c">Add Textarea</span><span class="p">       </span><span class="c">name=texts</span><span class="p">  </span><span class="c">rows=40</span><span class="p">   </span><span class="c">cols=80</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.add_title">
-<code class="sig-name descname">add_title</code><span class="sig-paren">(</span><em class="sig-param">title</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.add_title" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_title</code><span class="sig-paren">(</span><em class="sig-param">title: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.add_title" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add h3 element into form</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>title</strong> – text for the element</p>
 </dd>
 </dl>
+<p>Example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Form</span><span class="p">     </span><span class="c"># default form title will be &quot;Requesting response&quot;</span>
+<span class="c">Add Title</span><span class="p">       </span><span class="c">User Confirmation Form</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.create_form">
-<code class="sig-name descname">create_form</code><span class="sig-paren">(</span><em class="sig-param">title: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.create_form" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_form</code><span class="sig-paren">(</span><em class="sig-param">title: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.create_form" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create new form</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>title</strong> – form title, defaults to None</p>
 </dd>
 </dl>
+<p>Example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Form</span><span class="p">     </span><span class="c"># form title will be &quot;Requesting response&quot;</span>
+<span class="c">Create Form</span><span class="p">     </span><span class="c">title=User Confirmation Form</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.request_response">
-<code class="sig-name descname">request_response</code><span class="sig-paren">(</span><em class="sig-param">formspec: str = None</em>, <em class="sig-param">window_width: int = 600</em>, <em class="sig-param">window_height: int = 1000</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs.request_response" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">request_response</code><span class="sig-paren">(</span><em class="sig-param">formspec: str = None</em>, <em class="sig-param">window_width: int = 600</em>, <em class="sig-param">window_height: int = 1000</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Dialogs.Dialogs.request_response" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start server and show form. Waits for user response.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -392,6 +466,11 @@ in a JSON file.</p>
 <dd class="field-even"><p>form response</p>
 </dd>
 </dl>
+<p>Example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Form</span><span class="p">    </span><span class="c">${CURDIR}/${/}myform.json</span><span class="p"></span>
+<span class="c">&amp;{response}</span><span class="p">    </span><span class="c">Request Response</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
