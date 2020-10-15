@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Dialogs**: Type hinting and documentation updates
+
 5.2.0
 -----
 

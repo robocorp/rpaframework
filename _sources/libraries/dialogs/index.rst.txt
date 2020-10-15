@@ -65,6 +65,23 @@ An example JSON file which contains all possible form elements and their attribu
 .. literalinclude:: /attachments/questionform.json
   :language: JSON
 
+About file types
+================
+
+The ``Add File Input`` keyword has parameter ``filetypes``. Parameter sets filter
+for file types that can be uploaded via element. Parameter can be set to ``filetypes=${EMPTY}``
+to accept all files. Multiple types are separated with comma ``filetypes=image/jpeg,image/png``.
+
+Some common filetypes:
+
+- image/* (all image types)
+- audio/* (all audio types)
+- video/* (all video types)
+- application/pdf (PDFs)
+- application/vnd.ms-excel (.xls, .xlsx)
+
+The list of all possible `MIME-types <http://www.iana.org/assignments/media-types/media-types.xhtml>`_.
+
 ********
 Examples
 ********

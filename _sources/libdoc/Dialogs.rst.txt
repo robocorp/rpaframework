@@ -18,10 +18,20 @@ Keywords
 ********
 
 :Add Checkbox:
-  :Arguments: label, element_id, options, default
+  :Arguments: label: str, element_id: str, options: str, default: str = None
 
   Add checkbox element
 
+
+  Example.
+
+  .. code-block:: robotframework
+
+      Create Form
+      Add Checkbox    label=Select your colors
+      ...             element_id=colors
+      ...             options=green,red,blue,yellow
+      ...             default=blue
 
 :Add Dropdown:
   :Arguments: label: str, element_id: str, options: typing.Any, default: str = None
@@ -29,29 +39,80 @@ Keywords
   Add dropdown element
 
 
+  Example.
+
+  .. code-block:: robotframework
+
+      Create Form
+      Add Dropdown  label=Select task type
+      ...           element_id=tasktype
+      ...           options=buy,sell,rent
+      ...           default=buy
+
 :Add File Input:
-  :Arguments: label, element_id, name, filetypes, target_directory=None
+  :Arguments: label: str, element_id: str, name: str, filetypes: str, target_directory: str = None
 
   Add text input element
 
 
+  Read more of the filetypes in the library documentation.
+
+  Example.
+
+  .. code-block:: robotframework
+
+      Create Form
+      Add File Input  label=Attachment
+      ...             element_id=attachment
+      ...             name=attachment
+      ...             filetypes=${EMPTY}         # Accept all files
+      ...             target_directory=${CURDIR}${/}output
+
+      Add File Input  label=Contract
+      ...             element_id=contract
+      ...             name=contract
+      ...             filetypes=application/pdf  # Accept only PDFs
+      ...             target_directory=${CURDIR}${/}output
+
 :Add Hidden Input:
-  :Arguments: name, value
+  :Arguments: name: str, value: str
 
   Add hidden input element
 
 
+  Example.
+
+  .. code-block:: robotframework
+
+      Create Form
+      ${uuid}   Evaluate  str(uuid.uuid4())
+      Add Hidden Input    form-id   ${uuid}
+
 :Add Radio Buttons:
-  :Arguments: element_id, options, default: str = None
+  :Arguments: element_id: str, options: str, default: str = None
 
   Add radio button element
 
 
+  Example.
+
+  .. code-block:: robotframework
+
+      Create Form
+      Add Radio Button   element_id=drone  buttons=Jim,Robert  default=Robert
+
 :Add Submit:
-  :Arguments: name, buttons
+  :Arguments: name: str, buttons: str
 
   Add submit element
 
+
+  Example.
+
+  .. code-block:: robotframework
+
+      Create Form
+      Add Submit    name=direction-to-go  buttons=left,right
 
 :Add Text:
   :Arguments: value: str
@@ -59,11 +120,25 @@ Keywords
   Add text paragraph element
 
 
+  Example.
+
+  .. code-block:: robotframework
+
+      Create Form
+      Add Text       ${form_guidance_text}
+
 :Add Text Input:
-  :Arguments: label, name
+  :Arguments: label: str, name: str
 
   Add text input element
 
+
+  Example.
+
+  .. code-block:: robotframework
+
+      Create Form
+      Add Text Input   what is your firstname ?  fname
 
 :Add Textarea:
   :Arguments: name: str, rows: int = 5, cols: int = 40, default: str = None
@@ -71,11 +146,26 @@ Keywords
   Add textarea element
 
 
+  Example.
+
+  .. code-block:: robotframework
+
+      Create Form
+      Add Textarea       name=feedback  default=enter feedback here
+      Add Textarea       name=texts  rows=40   cols=80
+
 :Add Title:
-  :Arguments: title
+  :Arguments: title: str
 
   Add h3 element into form
 
+
+  Example.
+
+  .. code-block:: robotframework
+
+      Create Form     # default form title will be "Requesting response"
+      Add Title       User Confirmation Form
 
 :Create Form:
   :Arguments: title: str = None
@@ -83,8 +173,22 @@ Keywords
   Create new form
 
 
+  Example.
+
+  .. code-block:: robotframework
+
+      Create Form     # form title will be "Requesting response"
+      Create Form     title=User Confirmation Form
+
 :Request Response:
   :Arguments: formspec: str = None, window_width: int = 600, window_height: int = 1000
 
   Start server and show form. Waits for user response.
 
+
+  Example.
+
+  .. code-block:: robotframework
+
+      Create Form    ${CURDIR}/${/}myform.json
+      &{response}    Request Response
