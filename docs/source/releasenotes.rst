@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Database**: Fix ``Query`` keyword bug when SELECT result is empty
+
 5.3.0
 -----
 
