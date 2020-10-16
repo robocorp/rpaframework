@@ -809,7 +809,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "5.3.1"
+version = "5.3.2"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1235,7 +1235,7 @@ testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "ef99df0cc379e35f43b6ae706cb2dce0e46db40f7e9a3789af73324474e0d266"
+content-hash = "78eaf84c5fb7b0fbc2f1419704b255bb2c41856c15a5b5e0f10cc1aeba62ced3"
 
 [metadata.files]
 alabaster = [
@@ -1719,8 +1719,8 @@ robotframeworklexer = [
     {file = "robotframeworklexer-1.1.tar.gz", hash = "sha256:ddd3ea50b54b47aee86a83c400534a61e2588dec875a3c10f04822280e834b8f"},
 ]
 rpaframework = [
-    {file = "rpaframework-5.3.1-py3-none-any.whl", hash = "sha256:8200b5c0b998be8041b43781f1459f93b45f4747b156eed8f129a4e4ffd15f44"},
-    {file = "rpaframework-5.3.1.tar.gz", hash = "sha256:c6b6ff097d77d851e36919c370de20dd5493f10490077a5032433e74983de1b0"},
+    {file = "rpaframework-5.3.2-py3-none-any.whl", hash = "sha256:e2397ea3b48c2b96be1a81c678d22c54a1fff0d0955b256fe5514af34b1605df"},
+    {file = "rpaframework-5.3.2.tar.gz", hash = "sha256:b3cbcd4225383946a065b0852a8a639712f0bfa3c682731b9edc5f3237a87d63"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-1.8.1.tar.gz", hash = "sha256:f622b2ff5b0cefa2075fc72f9fcae308d87cf46f8fc341c16cc39811d2082852"},
