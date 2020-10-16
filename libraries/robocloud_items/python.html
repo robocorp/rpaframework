@@ -419,7 +419,7 @@ of local file is used.</p></li>
 <dt id="RPA.Robocloud.Items.Items.get_work_item_file">
 <code class="sig-name descname">get_work_item_file</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.get_work_item_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get attached file from work item to disk.
-Returns the path to the created file.</p>
+Returns the absolute path to the created file.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${path}=</span><span class="p">    </span><span class="c">Get work item file</span><span class="p">    </span><span class="c">input.xls</span><span class="p"></span>
 <span class="c">Open workbook</span><span class="p">    </span><span class="c">${path}</span><span class="p"></span>
@@ -439,7 +439,8 @@ working directory is used.</p></li>
 <dl class="method">
 <dt id="RPA.Robocloud.Items.Items.get_work_item_files">
 <code class="sig-name descname">get_work_item_files</code><span class="sig-paren">(</span><em class="sig-param">pattern</em>, <em class="sig-param">dirname=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.get_work_item_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get files attached to work item that match given pattern.</p>
+<dd><p>Get files attached to work item that match given pattern.
+Returns a list of absolute paths to the downloaded files.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${paths}=</span><span class="p">    </span><span class="c">Get work item files</span><span class="p">    </span><span class="c">customer_*.xlsx</span><span class="p"></span>
 <span class="c">FOR</span><span class="p">  </span><span class="c">${path}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{paths}</span><span class="p"></span>
