@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+5.3.1
+-----
+
 - Library **Robocloud.Items**: Fix accessing unsaved files from items
 - Library **Tables**: Fix creating empty table with predefined columns
 - Library **Database**: Fix ``Query`` keyword bug when SELECT result is empty
