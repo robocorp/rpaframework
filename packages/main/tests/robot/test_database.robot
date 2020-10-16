@@ -58,3 +58,7 @@ Get Number of Rows From Table
     Should Be Equal As Integers  ${count}   1
     ${count}   Get Number Of Rows   incoming_orders  asiakas='amazon'
     Should Be Equal As Integers  ${count}   0
+
+Query No Rows
+    ${rows}=    Get Rows  incoming_orders  conditions=asiakas='notexist'
+    Length Should Be    ${rows}   0

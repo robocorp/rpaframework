@@ -301,9 +301,10 @@ class Table:
         self._validate_columns(self._columns)
         self._validate_index(self._index)
 
-        head = self._data[0] if self._data else []
-        if len(head) != len(self._columns):
-            raise ValueError("Columns length does not match data")
+        if self._data:
+            head = self._data[0]
+            if len(head) != len(self._columns):
+                raise ValueError("Columns length does not match data")
 
         if len(self._data) != len(self._index):
             raise ValueError("Index length does not match data")

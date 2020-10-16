@@ -450,7 +450,7 @@ class Database:
                             % (assertion, available_locals)
                         )
                 if as_table:
-                    return Table(rows, columns) if len(rows) > 0 else Table()
+                    return Table(rows, columns)
                 return rows
             else:
                 if result is not None:

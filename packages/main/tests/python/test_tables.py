@@ -437,3 +437,25 @@ def test_create_table_1d_list():
     data = [1, 2, 3]
     table = Table(data)
     assert len(table) == 3
+
+
+def test_columns_without_data():
+    data = []
+    columns = ["one", "two", "three"]
+    table = Table(data, columns=columns)
+    assert table.dimensions == (0, 3)
+
+
+def test_index_without_data():
+    data = []
+    index = ["one", "two", "three"]
+    table = Table(data, index=index)
+    assert table.dimensions == (3, 0)
+
+
+def test_columns_and_index_without_data():
+    data = []
+    columns = ["one", "two", "three"]
+    index = ["one", "two", "three"]
+    table = Table(data, columns=columns, index=index)
+    assert table.dimensions == (3, 3)
