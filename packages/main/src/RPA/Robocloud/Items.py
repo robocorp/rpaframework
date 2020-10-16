@@ -424,7 +424,7 @@ class WorkItem:
 
         if name in self._files_to_add:
             local_path = self._files_to_add[name]
-            if local_path != path:
+            if Path(local_path).resolve() != Path(path).resolve():
                 copy2(local_path, path)
         else:
             data = self.adapter.get_file(name)
@@ -441,13 +441,15 @@ class WorkItem:
         :param name: Name of file in work item. If not given,
                      name of file on disk is used.
         """
+        path = Path(path).resolve()
+
         if path in self._files_to_add.values():
             logging.warning("File already added: %s", path)
 
-        if not Path(path).is_file():
+        if not path.is_file():
             raise FileNotFoundError("Not a valid file: {path}")
 
-        name = name or Path(path).name
+        name = name or path.name
         self._files_to_add[name] = path
 
         if name in self._files_to_remove:

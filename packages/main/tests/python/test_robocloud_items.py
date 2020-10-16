@@ -379,6 +379,29 @@ def test_get_file_unsaved_no_copy(library):
         assert os.path.getmtime(path) == mtime
 
 
+def test_get_file_unsaved_relative(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    with tempfile.TemporaryDirectory() as outdir:
+        curdir = os.getcwd()
+        try:
+            os.chdir(outdir)
+            with open("nomove.txt", "w") as fd:
+                fd.write("my content")
+
+            mtime = os.path.getmtime("nomove.txt")
+            library.add_work_item_file(os.path.join(outdir, "nomove.txt"))
+
+            files = library.list_work_item_files()
+            assert files == ["file1.txt", "file2.txt", "file3.png", "nomove.txt"]
+
+            paths = library.get_work_item_files("*.txt")
+            assert paths[-1] == "nomove.txt"
+            assert os.path.getmtime("nomove.txt") == mtime
+        finally:
+            os.chdir(curdir)
+
+
 def test_get_file_no_matches(library):
     library.load_work_item("workspace-id", "workitem-id-second")
 
