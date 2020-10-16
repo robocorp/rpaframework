@@ -5,6 +5,7 @@ Upcoming release
 ----------------
 
 - Library **Database**: Fix ``Query`` keyword bug when SELECT result is empty
+- Library **Robocloud.Items**: Fix accessing unsaved files from item
 
 5.3.0
 -----
