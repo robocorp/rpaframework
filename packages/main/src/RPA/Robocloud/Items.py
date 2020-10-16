@@ -421,7 +421,12 @@ class WorkItem:
             root = os.getenv("ROBOT_ROOT", "")
             path = os.path.join(root, name)
 
-        data = self.adapter.get_file(name)
+        if name in self._files_to_add:
+            with open(self._files_to_add[name], "rb") as fd:
+                data = fd.read()
+        else:
+            data = self.adapter.get_file(name)
+
         with open(path, "wb") as outfile:
             outfile.write(data)
 

@@ -340,3 +340,27 @@ def test_clear_work_item(library):
 
     assert library.get_work_item_payload() == {}
     assert library.list_work_item_files() == []
+
+
+def test_get_file_unsaved(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    with temp_filename(b"some-input-content") as path:
+        library.add_work_item_file(path, "file4.txt")
+
+        files = library.list_work_item_files()
+        assert files == ["file1.txt", "file2.txt", "file3.png", "file4.txt"]
+        assert "file4.txt" not in MockAdapter.FILES
+
+        with tempfile.TemporaryDirectory() as outdir:
+            names = ["file1.txt", "file2.txt", "file4.txt"]
+            paths = library.get_work_item_files("*.txt", outdir)
+            assert paths == [os.path.join(outdir, name) for name in names]
+
+
+def test_get_file_no_matches(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    with tempfile.TemporaryDirectory() as outdir:
+        paths = library.get_work_item_files("*.pdf", outdir)
+        assert len(paths) == 0
