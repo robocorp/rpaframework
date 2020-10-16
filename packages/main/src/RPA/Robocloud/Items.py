@@ -5,6 +5,7 @@ import logging
 import os
 from abc import ABC, abstractmethod
 from pathlib import Path
+from shutil import copy2
 
 import requests
 from requests.exceptions import HTTPError
@@ -422,13 +423,13 @@ class WorkItem:
             path = os.path.join(root, name)
 
         if name in self._files_to_add:
-            with open(self._files_to_add[name], "rb") as fd:
-                data = fd.read()
+            local_path = self._files_to_add[name]
+            if local_path != path:
+                copy2(local_path, path)
         else:
             data = self.adapter.get_file(name)
-
-        with open(path, "wb") as outfile:
-            outfile.write(data)
+            with open(path, "wb") as outfile:
+                outfile.write(data)
 
         return path
 

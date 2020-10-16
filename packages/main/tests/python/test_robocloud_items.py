@@ -356,6 +356,27 @@ def test_get_file_unsaved(library):
             names = ["file1.txt", "file2.txt", "file4.txt"]
             paths = library.get_work_item_files("*.txt", outdir)
             assert paths == [os.path.join(outdir, name) for name in names]
+            with open(paths[-1]) as fd:
+                assert fd.read() == "some-input-content"
+
+
+def test_get_file_unsaved_no_copy(library):
+    library.load_work_item("workspace-id", "workitem-id-second")
+
+    with tempfile.TemporaryDirectory() as outdir:
+        path = os.path.join(outdir, "nomove.txt")
+        with open(path, "w") as fd:
+            fd.write("my content")
+
+        mtime = os.path.getmtime(path)
+        library.add_work_item_file(path)
+
+        files = library.list_work_item_files()
+        assert files == ["file1.txt", "file2.txt", "file3.png", "nomove.txt"]
+
+        paths = library.get_work_item_files("*.txt", outdir)
+        assert paths[-1] == path
+        assert os.path.getmtime(path) == mtime
 
 
 def test_get_file_no_matches(library):
