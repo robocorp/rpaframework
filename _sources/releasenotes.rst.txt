@@ -7,7 +7,8 @@ Upcoming release
 5.3.2
 -----
 
-- Library **Robocloud.Items**: Fix relative path handling
+- Library **Robocloud.Items**: Fix relative path inputs,
+  always return absolute paths.
 
 5.3.1
 -----

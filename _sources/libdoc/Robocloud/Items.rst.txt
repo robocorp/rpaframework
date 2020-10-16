@@ -81,7 +81,7 @@ Keywords
   :Arguments: name, path=None
 
   Get attached file from work item to disk.
-  Returns the path to the created file.
+  Returns the absolute path to the created file.
 
   Example:
 
@@ -95,6 +95,7 @@ Keywords
   :Arguments: pattern, dirname=None
 
   Get files attached to work item that match given pattern.
+  Returns a list of absolute paths to the downloaded files.
 
   Example:
 
@@ -119,7 +120,7 @@ Keywords
       Log    Entire payload as dictionary: ${payload}
 
 :Get Work Item Variable:
-  :Arguments: name, default=<object object at 0x7fb58d074a40>
+  :Arguments: name, default=<object object at 0x7fc58649faf0>
 
   Return a single variable value from the work item,
   or default value if defined and key does not exist.

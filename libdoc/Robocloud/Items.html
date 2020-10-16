@@ -284,7 +284,7 @@ storage, and manipulating their contents.</p>
 </dd>
 </dl>
 <p>Get attached file from work item to disk.
-Returns the path to the created file.</p>
+Returns the absolute path to the created file.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${path}=</span><span class="p">    </span><span class="c">Get work item file</span><span class="p">    </span><span class="c">input.xls</span><span class="p"></span>
 <span class="c">Open workbook</span><span class="p">    </span><span class="c">${path}</span><span class="p"></span>
@@ -297,7 +297,8 @@ Returns the path to the created file.</p>
 <dd class="field-odd"><p>pattern, dirname=None</p>
 </dd>
 </dl>
-<p>Get files attached to work item that match given pattern.</p>
+<p>Get files attached to work item that match given pattern.
+Returns a list of absolute paths to the downloaded files.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${paths}=</span><span class="p">    </span><span class="c">Get work item files</span><span class="p">    </span><span class="c">customer_*.xlsx</span><span class="p"></span>
 <span class="c">FOR</span><span class="p">  </span><span class="c">${path}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{paths}</span><span class="p"></span>
@@ -318,7 +319,7 @@ Returns the path to the created file.</p>
 <dt class="field-odd">Get Work Item Variable</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>name, default=&lt;object object at 0x7fb58d074a40&gt;</p>
+<dd class="field-odd"><p>name, default=&lt;object object at 0x7fc58649faf0&gt;</p>
 </dd>
 </dl>
 <p>Return a single variable value from the work item,
