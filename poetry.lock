@@ -54,6 +54,20 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 pytz = ">=2015.7"
 
 [[package]]
+name = "backports.zoneinfo"
+version = "0.2.1"
+description = "Backport of the standard library zoneinfo module"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+importlib-resources = {version = "*", markers = "python_version < \"3.7\""}
+
+[package.extras]
+tzdata = ["tzdata"]
+
+[[package]]
 name = "beautifulsoup4"
 version = "4.9.3"
 description = "Screen-scraping library"
@@ -206,25 +220,26 @@ python-versions = "*"
 
 [[package]]
 name = "exchangelib"
-version = "3.2.1"
+version = "3.3.0"
 description = "Client for Microsoft Exchange Web Services (EWS)"
 category = "main"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.6"
 
 [package.dependencies]
+"backports.zoneinfo" = {version = "*", markers = "python_version < \"3.9\""}
 cached-property = "*"
 defusedxml = ">=0.6.0"
-dnspython = ">=1.14.0"
+dnspython = ">=2.0.0"
 isodate = "*"
 lxml = ">3.0"
 oauthlib = "*"
 pygments = "*"
 python-dateutil = "*"
-pytz = "*"
 requests = ">=2.7"
 requests-ntlm = ">=0.2.0"
 requests-oauthlib = "*"
+tzdata = "*"
 tzlocal = "*"
 
 [package.extras]
@@ -794,7 +809,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "5.3.0"
+version = "5.3.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1066,6 +1081,14 @@ dev = ["coveralls (>=1.8.2)", "tox (>=2.4.0)"]
 test = ["mock (>=1.0.1)", "nose (>=1.3.3)", "vcrpy (>=1.10.3)"]
 
 [[package]]
+name = "tzdata"
+version = "2020.2"
+description = "Provider of IANA time zone data"
+category = "main"
+optional = false
+python-versions = ">=2"
+
+[[package]]
 name = "tzlocal"
 version = "2.1"
 description = "tzinfo object for the local timezone"
@@ -1199,7 +1222,7 @@ xmlsec = ["xmlsec (>=0.6.1)"]
 
 [[package]]
 name = "zipp"
-version = "3.3.0"
+version = "3.3.1"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "main"
 optional = false
@@ -1212,7 +1235,7 @@ testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "3f0bcff837c8d697f0bb8dc84863f2546f4c2eb91ed068b88c2933a804ce0a97"
+content-hash = "ef99df0cc379e35f43b6ae706cb2dce0e46db40f7e9a3789af73324474e0d266"
 
 [metadata.files]
 alabaster = [
@@ -1234,6 +1257,24 @@ authlib = [
 babel = [
     {file = "Babel-2.8.0-py2.py3-none-any.whl", hash = "sha256:d670ea0b10f8b723672d3a6abeb87b565b244da220d76b4dba1b66269ec152d4"},
     {file = "Babel-2.8.0.tar.gz", hash = "sha256:1aac2ae2d0d8ea368fa90906567f5c08463d98ade155c0c4bfedd6a0f7160e38"},
+]
+"backports.zoneinfo" = [
+    {file = "backports.zoneinfo-0.2.1-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:da6013fd84a690242c310d77ddb8441a559e9cb3d3d59ebac9aca1a57b2e18bc"},
+    {file = "backports.zoneinfo-0.2.1-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:89a48c0d158a3cc3f654da4c2de1ceba85263fafb861b98b59040a5086259722"},
+    {file = "backports.zoneinfo-0.2.1-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:1c5742112073a563c81f786e77514969acb58649bcdf6cdf0b4ed31a348d4546"},
+    {file = "backports.zoneinfo-0.2.1-cp36-cp36m-win32.whl", hash = "sha256:e8236383a20872c0cdf5a62b554b27538db7fa1bbec52429d8d106effbaeca08"},
+    {file = "backports.zoneinfo-0.2.1-cp36-cp36m-win_amd64.whl", hash = "sha256:8439c030a11780786a2002261569bdf362264f605dfa4d65090b64b05c9f79a7"},
+    {file = "backports.zoneinfo-0.2.1-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:f04e857b59d9d1ccc39ce2da1021d196e47234873820cbeaad210724b1ee28ac"},
+    {file = "backports.zoneinfo-0.2.1-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:17746bd546106fa389c51dbea67c8b7c8f0d14b5526a579ca6ccf5ed72c526cf"},
+    {file = "backports.zoneinfo-0.2.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:5c144945a7752ca544b4b78c8c41544cdfaf9786f25fe5ffb10e838e19a27570"},
+    {file = "backports.zoneinfo-0.2.1-cp37-cp37m-win32.whl", hash = "sha256:e55b384612d93be96506932a786bbcde5a2db7a9e6a4bb4bffe8b733f5b9036b"},
+    {file = "backports.zoneinfo-0.2.1-cp37-cp37m-win_amd64.whl", hash = "sha256:a76b38c52400b762e48131494ba26be363491ac4f9a04c1b7e92483d169f6582"},
+    {file = "backports.zoneinfo-0.2.1-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:8961c0f32cd0336fb8e8ead11a1f8cd99ec07145ec2931122faaac1c8f7fd987"},
+    {file = "backports.zoneinfo-0.2.1-cp38-cp38-manylinux1_i686.whl", hash = "sha256:e81b76cace8eda1fca50e345242ba977f9be6ae3945af8d46326d776b4cf78d1"},
+    {file = "backports.zoneinfo-0.2.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:7b0a64cda4145548fed9efc10322770f929b944ce5cee6c0dfe0c87bf4c0c8c9"},
+    {file = "backports.zoneinfo-0.2.1-cp38-cp38-win32.whl", hash = "sha256:1b13e654a55cd45672cb54ed12148cd33628f672548f373963b0bff67b217328"},
+    {file = "backports.zoneinfo-0.2.1-cp38-cp38-win_amd64.whl", hash = "sha256:4a0f800587060bf8880f954dbef70de6c11bbe59c673c3d818921f042f9954a6"},
+    {file = "backports.zoneinfo-0.2.1.tar.gz", hash = "sha256:fadbfe37f74051d024037f223b8e001611eac868b5c5b06144ef4d8b799862f2"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.9.3-py2-none-any.whl", hash = "sha256:4c98143716ef1cb40bf7f39a8e3eec8f8b009509e74904ba3a7b315431577e35"},
@@ -1344,8 +1385,8 @@ et-xmlfile = [
     {file = "et_xmlfile-1.0.1.tar.gz", hash = "sha256:614d9722d572f6246302c4491846d2c393c199cfa4edc9af593437691683335b"},
 ]
 exchangelib = [
-    {file = "exchangelib-3.2.1-py2.py3-none-any.whl", hash = "sha256:4f99bd6eb005c80a4d681e702d9ed6235d12892a0993929365b65ea62c47a832"},
-    {file = "exchangelib-3.2.1.tar.gz", hash = "sha256:cf19a6264b65b9dc81c0626edb4a382e212e8e94bc93e65eedc8eb7a514e068b"},
+    {file = "exchangelib-3.3.0-py2.py3-none-any.whl", hash = "sha256:0319c7be747019cb24a264d2f92ec1775242ac6ba75d173a9681d4fb308c331a"},
+    {file = "exchangelib-3.3.0.tar.gz", hash = "sha256:b7e5e1c2ffdc0a2a1b5fb3f09e9fb16e2d5c6dd724237dbe895a772cf2695e5e"},
 ]
 fpdf = [
     {file = "fpdf-1.7.2.tar.gz", hash = "sha256:125840783289e7d12552b1e86ab692c37322e7a65b96a99e0ea86cca041b6779"},
@@ -1678,8 +1719,8 @@ robotframeworklexer = [
     {file = "robotframeworklexer-1.1.tar.gz", hash = "sha256:ddd3ea50b54b47aee86a83c400534a61e2588dec875a3c10f04822280e834b8f"},
 ]
 rpaframework = [
-    {file = "rpaframework-5.3.0-py3-none-any.whl", hash = "sha256:0dcb38a06cc06846183fc844caaaec04c72fd61961bcfda46349ebef58ceba05"},
-    {file = "rpaframework-5.3.0.tar.gz", hash = "sha256:d3d4880f802ddbca4aef1460cd733b171c1444012244e070c4dfb12aa1c75a5d"},
+    {file = "rpaframework-5.3.1-py3-none-any.whl", hash = "sha256:8200b5c0b998be8041b43781f1459f93b45f4747b156eed8f129a4e4ffd15f44"},
+    {file = "rpaframework-5.3.1.tar.gz", hash = "sha256:c6b6ff097d77d851e36919c370de20dd5493f10490077a5032433e74983de1b0"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-1.8.1.tar.gz", hash = "sha256:f622b2ff5b0cefa2075fc72f9fcae308d87cf46f8fc341c16cc39811d2082852"},
@@ -1757,6 +1798,10 @@ tweepy = [
     {file = "tweepy-3.9.0-py2.py3-none-any.whl", hash = "sha256:3b3780df00eaa937bbd5427d2011e4b3bcb6a29a87bb4cbb4addfc47850e46a5"},
     {file = "tweepy-3.9.0.tar.gz", hash = "sha256:bfd19a5c11f35f7f199c795f99d9cbf8a52eb33f0ecfb6c91ee10b601180f604"},
 ]
+tzdata = [
+    {file = "tzdata-2020.2-py2.py3-none-any.whl", hash = "sha256:7347783672e7a63495cbe4af4720216e58a83e95040e919c31d34927c3d79d86"},
+    {file = "tzdata-2020.2.tar.gz", hash = "sha256:4f1dc7e570bb0ad0a6a275e84a378ebf460a4d4802624cad8d8cfc8298fe872a"},
+]
 tzlocal = [
     {file = "tzlocal-2.1-py2.py3-none-any.whl", hash = "sha256:e2cb6c6b5b604af38597403e9852872d7f534962ae2954c7f35efcb1ccacf4a4"},
     {file = "tzlocal-2.1.tar.gz", hash = "sha256:643c97c5294aedc737780a49d9df30889321cbe1204eac2c2ec6134035a92e44"},
@@ -1798,6 +1843,6 @@ zeep = [
     {file = "zeep-4.0.0.tar.gz", hash = "sha256:98158e43db33739d41502a1a7e3629dcb62dfd0864ea28c9d43f560a091cfe3f"},
 ]
 zipp = [
-    {file = "zipp-3.3.0-py3-none-any.whl", hash = "sha256:eed8ec0b8d1416b2ca33516a37a08892442f3954dee131e92cfd92d8fe3e7066"},
-    {file = "zipp-3.3.0.tar.gz", hash = "sha256:64ad89efee774d1897a58607895d80789c59778ea02185dd846ac38394a8642b"},
+    {file = "zipp-3.3.1-py3-none-any.whl", hash = "sha256:16522f69653f0d67be90e8baa4a46d66389145b734345d68a257da53df670903"},
+    {file = "zipp-3.3.1.tar.gz", hash = "sha256:c1532a8030c32fd52ff6a288d855fe7adef5823ba1d26a29a68fd6314aa72baa"},
 ]
