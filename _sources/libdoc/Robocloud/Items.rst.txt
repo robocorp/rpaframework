@@ -119,7 +119,7 @@ Keywords
       Log    Entire payload as dictionary: ${payload}
 
 :Get Work Item Variable:
-  :Arguments: name, default=<object object at 0x7f1322c37660>
+  :Arguments: name, default=<object object at 0x7fb13b938cb0>
 
   Return a single variable value from the work item,
   or default value if defined and key does not exist.
