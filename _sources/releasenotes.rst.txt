@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+5.3.2
+-----
+
+- Library **Robocloud.Items**: Fix relative path handling
+
 5.3.1
 -----
 
