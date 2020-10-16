@@ -396,7 +396,7 @@ def test_get_file_unsaved_relative(library):
             assert files == ["file1.txt", "file2.txt", "file3.png", "nomove.txt"]
 
             paths = library.get_work_item_files("*.txt")
-            assert paths[-1] == "nomove.txt"
+            assert paths[-1] == os.path.join(outdir, "nomove.txt")
             assert os.path.getmtime("nomove.txt") == mtime
         finally:
             os.chdir(curdir)

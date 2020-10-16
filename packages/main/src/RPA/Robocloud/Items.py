@@ -431,7 +431,8 @@ class WorkItem:
             with open(path, "wb") as outfile:
                 outfile.write(data)
 
-        return path
+        # Always return absolute path
+        return str(Path(path).resolve())
 
     def add_file(self, path, name=None):
         """Add file to current work item. Does not upload
@@ -447,7 +448,7 @@ class WorkItem:
             logging.warning("File already added: %s", path)
 
         if not path.is_file():
-            raise FileNotFoundError("Not a valid file: {path}")
+            raise FileNotFoundError(f"Not a valid file: {path}")
 
         name = name or path.name
         self._files_to_add[name] = path
@@ -754,7 +755,7 @@ class Items:
 
     def get_work_item_file(self, name, path=None):
         """Get attached file from work item to disk.
-        Returns the path to the created file.
+        Returns the absolute path to the created file.
 
         Example:
 
@@ -813,6 +814,7 @@ class Items:
 
     def get_work_item_files(self, pattern, dirname=None):
         """Get files attached to work item that match given pattern.
+        Returns a list of absolute paths to the downloaded files.
 
         Example:
 
