@@ -21,7 +21,8 @@ from SeleniumLibrary.keywords import (
 )
 from selenium.webdriver import ChromeOptions
 
-from RPA.core import locators, notebook, webdriver
+from RPA.core import notebook, webdriver
+from RPA.core.locators import LocatorsDatabase, BrowserDOM
 
 
 def html_table(header, rows):
@@ -56,10 +57,9 @@ class Browser(SeleniumLibrary):
     }
 
     def __init__(self, *args, **kwargs) -> None:
-        # we need to pop this from kwargs before passing kwargs to SeleniumLibrary
-        self.locators_path = kwargs.pop(
-            "locators_path", locators.default_locators_path()
-        )
+        # We need to pop this from kwargs before passing kwargs to SeleniumLibrary
+        self.locators_path = kwargs.pop("locators_path", None)
+
         # Parse user-given plugins
         plugins = kwargs.get("plugins", "")
         plugins = set(p for p in plugins.split(",") if p)
@@ -94,12 +94,16 @@ class Browser(SeleniumLibrary):
     def _find_by_alias(self, parent, criteria, tag, constraints):
         """Custom 'alias' locator that uses locators database."""
         del constraints
+        locator = LocatorsDatabase.load_by_name(criteria, self.locators_path)
 
-        locator, locator_data = locators.load_by_name(self.locators_path, criteria)
-        if locator_data["type"] != "browser":
+        if not isinstance(locator, BrowserDOM):
             raise ValueError(f"Not a browser locator: {criteria}")
 
-        return self._element_finder.find(locator, tag, parent)
+        selector = "{strategy}:{value}".format(
+            strategy=locator.strategy, value=locator.value
+        )
+
+        return self._element_finder.find(selector, tag, parent)
 
     @keyword
     def open_available_browser(

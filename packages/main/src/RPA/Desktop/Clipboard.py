@@ -2,7 +2,7 @@
 import logging
 import platform
 
-import clipboard
+import pyperclip as clipboard
 
 if platform.system() == "Windows":
     import win32clipboard
