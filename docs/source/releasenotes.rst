@@ -4,6 +4,10 @@ Release notes
 Upcoming release
 ----------------
 
+5.3.3
+-----
+
+- Library **Images**: Fix duplicate region matches, timeout option
 - Library **Robocloud.Items**: Allow saving files with FileAdapter
 
 5.3.2
