@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Robocloud.Items**: Allow saving files with FileAdapter
+
 5.3.2
 -----
 

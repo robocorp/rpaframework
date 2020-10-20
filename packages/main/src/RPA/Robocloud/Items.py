@@ -288,19 +288,26 @@ class FileAdapter(BaseAdapter):
 
     def list_files(self):
         """List files in the same folder as database."""
+        files = []
+
         dirname = Path(self.path).parent
-        return [path for path in os.listdir(dirname) if os.path.isfile(path)]
+        for name in os.listdir(dirname):
+            path = dirname / name
+            if os.path.isfile(path) and path != Path(self.path):
+                files.append(name)
+
+        return files
 
     def get_file(self, name):
         """Read file from disk."""
         dirname = Path(self.path).parent
-        with open(os.path.join(dirname, name), "rb") as infile:
+        with open(dirname / name, "rb") as infile:
             return infile.read()
 
     def add_file(self, name, content):
         """Write file to disk."""
         dirname = Path(self.path).parent
-        with open(os.path.join(dirname, name), "rb") as outfile:
+        with open(dirname / name, "wb") as outfile:
             outfile.write(content)
 
     def remove_file(self, name):
