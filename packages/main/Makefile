@@ -138,7 +138,10 @@ exports: install ## Create setup.py and requirements.txt files
 	$(tools)/setup.py
 
 build: lint test ## Build distribution packages
-	poetry build -vv
+	# running these separately works around relative path problem
+	# https://github.com/python-poetry/poetry/issues/266#issuecomment-636627858
+	poetry build -vv -f sdist
+	poetry build -vv -f wheel
 
 publish: build ## Publish package to PyPI
 	poetry publish -v

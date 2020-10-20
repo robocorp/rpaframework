@@ -76,3 +76,6 @@ docs-hub-each: packages/*
 
 changelog: ## Print changes in latest release
 	poetry run python ./tools/changelog.py
+
+build-each: packages/*
+	$(call make_each, "build")

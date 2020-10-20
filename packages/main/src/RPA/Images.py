@@ -1,24 +1,15 @@
 import logging
-import sys
 import time
-from dataclasses import dataclass, astuple
+from dataclasses import dataclass
 from pathlib import Path
+from typing import List
 
+import mss
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageOps
 
-try:
-    # Attempt to enable DPI awareness, for platforms that support it.
-    # Needs to be enabled `before` pyscreenshot is imported.
-    import ctypes
-
-    ctypes.windll.user32.SetProcessDPIAware()
-except AttributeError:
-    pass
-# TODO: figure out if DPI awareness is necessary with mss
-import mss
-
+from RPA.core.geometry import Region, to_point, to_region
 from RPA.core.notebook import notebook_image
 
 try:
@@ -32,6 +23,13 @@ except ImportError:
     HAS_OPENCV = False
 
 
+def to_image(obj):
+    """Convert `obj` to instance of Pillow's Image class."""
+    if obj is None or isinstance(obj, Image.Image):
+        return obj
+    return Image.open(obj)
+
+
 def clamp(minimum, value, maximum):
     """Clamp value between given minimum and maximum."""
     return max(minimum, min(value, maximum))
@@ -40,90 +38,6 @@ def clamp(minimum, value, maximum):
 def chunks(obj, size, start=0):
     """Convert `obj` container to list of chunks of `size`."""
     return [obj[i : i + size] for i in range(start, len(obj), size)]
-
-
-def to_image(obj):
-    """Convert `obj` to instance of Pillow's Image class."""
-    if obj is None or isinstance(obj, Image.Image):
-        return obj
-    return Image.open(obj)
-
-
-def to_point(obj):
-    """Convert `obj` to instance of Point."""
-    if obj is None or isinstance(obj, Point):
-        return obj
-    if isinstance(obj, str):
-        obj = obj.split(",")
-    return Point(*(int(i) for i in obj))
-
-
-def to_region(obj):
-    """Convert `obj` to instance of Region."""
-    if obj is None or isinstance(obj, Region):
-        return obj
-    if isinstance(obj, str):
-        obj = obj.split(",")
-    return Region(*(int(i) for i in obj))
-
-
-@dataclass
-class Point:
-    """Container for a 2D point."""
-
-    x: int
-    y: int
-
-    def as_tuple(self):
-        return astuple(self)
-
-
-@dataclass
-class Region:
-    """Container for a 2D rectangular region."""
-
-    left: int
-    top: int
-    right: int
-    bottom: int
-
-    def __post_init__(self):
-        if self.left >= self.right:
-            raise ValueError("Invalid width")
-        if self.top >= self.bottom:
-            raise ValueError("Invalid height")
-
-    @classmethod
-    def from_size(cls, x, y, width, height):
-        return cls(x, y, x + width, y + height)
-
-    @property
-    def width(self):
-        return self.right - self.left
-
-    @property
-    def height(self):
-        return self.bottom - self.top
-
-    @property
-    def area(self):
-        return self.width * self.height
-
-    @property
-    def center(self):
-        return Point(
-            x=int((self.left + self.right) / 2), y=int((self.top + self.bottom) / 2)
-        )
-
-    def as_tuple(self):
-        return astuple(self)
-
-    def move(self, left, top):
-        width, height = self.width, self.height
-        self.left = clamp(0, self.left + left, sys.maxsize)
-        self.top = clamp(0, self.top + top, sys.maxsize)
-        self.right = self.left + width
-        self.bottom = self.top + height
 
 
 @dataclass
@@ -170,7 +84,6 @@ class Images:
         :param filename:    Save screenshot to filename
         :param region:      Region to crop screenshot to
         """
-
         region = to_region(region)
 
         with mss.mss() as sct:
@@ -184,6 +97,7 @@ class Images:
         if filename is not None:
             filename = Path(filename).with_suffix(".png")
             mss.tools.to_png(image.rgb, image.size, output=filename)
+
             notebook_image(filename)
             self.logger.info("Saved screenshot as '%s'", filename)
 
@@ -211,7 +125,7 @@ class Images:
 
     def find_template_in_image(
         self, image, template, region=None, limit=None, tolerance=None
-    ):
+    ) -> List[Region]:
         """Attempt to find the template from the given image.
 
         :param image:       Path to image or Image instance, used to search from
@@ -256,7 +170,7 @@ class Images:
 
         return matches
 
-    def find_template_on_screen(self, template, **kwargs):
+    def find_template_on_screen(self, template, **kwargs) -> List[Region]:
         """Attempt to find the template image from the current desktop.
         For argument descriptions, see ``find_template_in_image()``
         """
