@@ -93,14 +93,14 @@ class TestLibrary:
     def library(self, adapter):
         yield Items(default_adapter=adapter)
 
-    def test_no_env(sekf, monkeypatch):
+    def test_no_env(self, monkeypatch):
         monkeypatch.delenv("RC_WORKSPACE_ID", raising=False)
         monkeypatch.delenv("RC_WORKITEM_ID", raising=False)
 
         library = Items(default_adapter=MockAdapter)
         assert library.current is None
 
-    def test_load_env(sekf, library):
+    def test_load_env(self, library):
         # Called by Robot Framework listener
         library._start_suite(None, None)
 
@@ -109,21 +109,21 @@ class TestLibrary:
         assert env is not None
         assert env.data["variables"] == VARIABLES_FIRST
 
-    def test_load_env_disable(sekf, adapter):
+    def test_load_env_disable(self, adapter):
         library = Items(default_adapter=adapter, load_env=False)
 
         # Called by Robot Framework listener
         library._start_suite(None, None)
         assert library.current is None
 
-    def test_keyword_load_work_item(sekf, library):
+    def test_keyword_load_work_item(self, library):
         item = library.load_work_item("workspace-id", "workitem-id-second")
         assert item.workspace_id == "workspace-id"
         assert item.item_id == "workitem-id-second"
         assert item.data["variables"] == VARIABLES_SECOND
         assert item == library.current
 
-    def test_keyword_save_work_item(sekf, library):
+    def test_keyword_save_work_item(self, library):
         item = library.load_work_item("workspace-id", "workitem-id-second")
         MockAdapter.validate(item, "variables", VARIABLES_SECOND)
 
@@ -134,7 +134,7 @@ class TestLibrary:
         MockAdapter.validate(item, "variables", modified)
 
     def test_no_active_item(
-        sekf,
+        self,
     ):
         library = Items(default_adapter=MockAdapter)
         assert library.current is None
@@ -144,7 +144,7 @@ class TestLibrary:
 
         assert str(err.value) == "No active work item"
 
-    def test_list_variables(sekf, library):
+    def test_list_variables(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         names = library.list_work_item_variables()
@@ -153,7 +153,7 @@ class TestLibrary:
         assert "username" in names
         assert "address" in names
 
-    def test_get_variables(sekf, library):
+    def test_get_variables(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         value = library.get_work_item_variable("username")
@@ -162,7 +162,7 @@ class TestLibrary:
         with pytest.raises(KeyError):
             library.get_work_item_variable("notexist")
 
-    def test_get_variables_default(sekf, library):
+    def test_get_variables_default(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         value = library.get_work_item_variable("username", default="doesntmatter")
@@ -171,7 +171,7 @@ class TestLibrary:
         value = library.get_work_item_variable("notexist", default="doesmatter")
         assert value == "doesmatter"
 
-    def test_delete_variables(sekf, library):
+    def test_delete_variables(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
         assert "username" in library.list_work_item_variables()
 
@@ -183,7 +183,7 @@ class TestLibrary:
         with pytest.raises(KeyError):
             library.delete_work_item_variables("doesntexist", force=False)
 
-    def test_delete_variables_multiple(sekf, library):
+    def test_delete_variables_multiple(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         assert "username" in library.list_work_item_variables()
@@ -194,7 +194,7 @@ class TestLibrary:
         assert "username" not in library.list_work_item_variables()
         assert len(library.current["variables"]) == 1
 
-    def test_delete_variables_multiple(sekf, library):
+    def test_delete_variables_multiple(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         names = library.list_work_item_variables()
@@ -209,7 +209,7 @@ class TestLibrary:
         assert "username" not in names
         assert len(names) == 0
 
-    def test_delete_variables_unknown(sekf, library):
+    def test_delete_variables_unknown(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
         assert len(library.list_work_item_variables()) == 2
 
@@ -220,7 +220,7 @@ class TestLibrary:
             library.delete_work_item_variables("unknown-variable", force=False)
         assert len(library.list_work_item_variables()) == 2
 
-    def test_raw_payload(sekf, library):
+    def test_raw_payload(self, library):
         item = library.load_work_item("workspace-id", "workitem-id-custom")
         MockAdapter.validate(item, "input", 0xCAFE)
 
@@ -231,13 +231,13 @@ class TestLibrary:
         library.save_work_item()
         MockAdapter.validate(item, "output", 0xBEEF)
 
-    def test_list_files(sekf, library):
+    def test_list_files(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         files = library.list_work_item_files()
         assert files == ["file1.txt", "file2.txt", "file3.png"]
 
-    def test_get_file(sekf, library):
+    def test_get_file(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         with temp_filename() as path:
@@ -248,13 +248,13 @@ class TestLibrary:
             assert is_equal_files(result, path)
             assert data == "data2"
 
-    def test_get_file_notexist(sekf, library):
+    def test_get_file_notexist(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         with pytest.raises(FileNotFoundError):
             library.get_work_item_file("file5.txt")
 
-    def test_add_file(sekf, library):
+    def test_add_file(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         with temp_filename(b"some-input-content") as path:
@@ -267,13 +267,41 @@ class TestLibrary:
             library.save_work_item()
             assert MockAdapter.FILES["file4.txt"] == b"some-input-content"
 
-    def test_add_file_notexist(sekf, library):
+    def test_add_file_duplicate(self, library):
+        library.load_work_item("workspace-id", "workitem-id-second")
+
+        def verify_files():
+            files = library.list_work_item_files()
+            assert files == ["file1.txt", "file2.txt", "file3.png", "file4.txt"]
+
+        with temp_filename(b"some-input-content") as path:
+            library.add_work_item_file(path, "file4.txt")
+            assert "file4.txt" not in MockAdapter.FILES
+            verify_files()
+
+            # Add duplicate for unsaved item
+            library.add_work_item_file(path, "file4.txt")
+            assert "file4.txt" not in MockAdapter.FILES
+            verify_files()
+
+            library.save_work_item()
+            assert MockAdapter.FILES["file4.txt"] == b"some-input-content"
+            verify_files()
+
+            # Add duplicate for saved item
+            library.add_work_item_file(path, "file4.txt")
+            verify_files()
+
+            library.save_work_item()
+            verify_files()
+
+    def test_add_file_notexist(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         with pytest.raises(FileNotFoundError):
             library.add_work_item_file("file5.txt", "doesnt-matter")
 
-    def test_remove_file(sekf, library):
+    def test_remove_file(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         library.remove_work_item_file("file2.txt")
@@ -285,7 +313,7 @@ class TestLibrary:
         library.save_work_item()
         assert "file2.txt" not in MockAdapter.FILES
 
-    def test_remove_file_notexist(sekf, library):
+    def test_remove_file_notexist(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         library.remove_work_item_file("file5.txt")
@@ -293,7 +321,7 @@ class TestLibrary:
         with pytest.raises(FileNotFoundError):
             library.remove_work_item_file("file5.txt", missing_ok=False)
 
-    def test_get_file_pattern(sekf, library):
+    def test_get_file_pattern(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         with tempfile.TemporaryDirectory() as outdir:
@@ -306,7 +334,7 @@ class TestLibrary:
             assert os.path.exists(file1)
             assert os.path.exists(file2)
 
-    def test_remove_file_pattern(sekf, library):
+    def test_remove_file_pattern(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         library.remove_work_item_files("*.txt")
@@ -321,7 +349,7 @@ class TestLibrary:
         assert files == ["file3.png"]
         assert list(MockAdapter.FILES) == ["file3.png"]
 
-    def test_clear_work_item(sekf, library):
+    def test_clear_work_item(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         library.clear_work_item()
@@ -330,7 +358,7 @@ class TestLibrary:
         assert library.get_work_item_payload() == {}
         assert library.list_work_item_files() == []
 
-    def test_get_file_unsaved(sekf, library):
+    def test_get_file_unsaved(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         with temp_filename(b"some-input-content") as path:
@@ -349,7 +377,7 @@ class TestLibrary:
                 with open(result[-1]) as fd:
                     assert fd.read() == "some-input-content"
 
-    def test_get_file_unsaved_no_copy(sekf, library):
+    def test_get_file_unsaved_no_copy(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         with tempfile.TemporaryDirectory() as outdir:
@@ -367,7 +395,7 @@ class TestLibrary:
             assert is_equal_files(paths[-1], path)
             assert os.path.getmtime(path) == mtime
 
-    def test_get_file_unsaved_relative(sekf, library):
+    def test_get_file_unsaved_relative(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         with tempfile.TemporaryDirectory() as outdir:
@@ -389,7 +417,7 @@ class TestLibrary:
             finally:
                 os.chdir(curdir)
 
-    def test_get_file_no_matches(sekf, library):
+    def test_get_file_no_matches(self, library):
         library.load_work_item("workspace-id", "workitem-id-second")
 
         with tempfile.TemporaryDirectory() as outdir:

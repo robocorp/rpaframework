@@ -374,9 +374,7 @@ class WorkItem:
         """
         current = [item for item in self._files if item not in self._files_to_remove]
         current.extend(self._files_to_add)
-
-        assert len(set(current)) == len(current)
-        return current
+        return list(sorted(set(current)))
 
     @property
     def is_dirty(self):

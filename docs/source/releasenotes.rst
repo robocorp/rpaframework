@@ -3,6 +3,7 @@ Release notes
 
 Upcoming release
 ----------------
+- Library **Robocloud.Items**: Remove invalid assert on file overwrite
 
 5.3.3
 -----
