@@ -269,7 +269,7 @@ class Images:
         :param timeout: Time to wait for template (in seconds)
         """
         start_time = time.time()
-        while time.time() - start_time > timeout:
+        while time.time() - start_time < float(timeout):
             try:
                 return self.find_template_on_screen(template, **kwargs)
             except ImageNotFoundError:
@@ -383,8 +383,13 @@ class TemplateMatcher:
                 break
 
             coefficients[
-                match_y - template_height // 2 : match_y + template_height // 2,
-                match_x - template_width // 2 : match_x + template_width // 2,
+                match_x - template_width // 2: match_x + template_width // 2,
+                match_y - template_height // 2: match_y + template_height // 2,
+            ] = 0
+
+            coefficients[
+                match_y - template_height // 2: match_y + template_height // 2,
+                match_x - template_width // 2: match_x + template_width // 2,
             ] = 0
 
             yield Region.from_size(match_x, match_y, template_width, template_height)
