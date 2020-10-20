@@ -1,6 +1,6 @@
 import pytest
 from pathlib import Path
-from RPA.Images import Images, TemplateMatcher, Region, HAS_OPENCV
+from RPA.Images import Images, TemplateMatcher, Region, HAS_OPENCV, to_image
 
 IMAGES = Path(__file__).resolve().parent / ".." / "resources" / "images"
 
@@ -71,12 +71,23 @@ def test_find_template(region_and_template):
     library.matcher = TemplateMatcher(opencv=True)
 
     matches = library.find_template_in_image(
-        image=IMAGES / "source.png", template=IMAGES / template, limit=1
+        image=IMAGES / "source.png", template=IMAGES / template
     )
 
     assert len(matches) == 1
     match = matches[0]
     assert match.center == region.center
+
+
+@pytest.mark.skipif(not HAS_OPENCV, reason="Test requires opencv support")
+def test_wait_template(region_and_template):
+    _, template = region_and_template
+    library = Images()
+    library.take_screenshot = lambda: to_image(IMAGES / "source.png")
+
+    library.matcher = TemplateMatcher(opencv=True)
+    matches = library.wait_template_on_screen(IMAGES / template, timeout=0.52)
+    assert len(matches) == 1
 
 
 @pytest.mark.skip(

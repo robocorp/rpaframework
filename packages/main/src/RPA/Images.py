@@ -269,7 +269,7 @@ class Images:
         :param timeout: Time to wait for template (in seconds)
         """
         start_time = time.time()
-        while time.time() - start_time > timeout:
+        while time.time() - start_time < float(timeout):
             try:
                 return self.find_template_on_screen(template, **kwargs)
             except ImageNotFoundError:
@@ -323,6 +323,7 @@ class TemplateMatcher:
     """Container class for different template matching methods."""
 
     DEFAULT_TOLERANCE = 0.95  # Tolerance for correlation matching methods
+    LIMIT_FAILSAFE = 256  # Fail-safe limit of maximum match count
 
     def __init__(self, opencv=False):
         self.logger = logging.getLogger(__name__)
@@ -357,6 +358,11 @@ class TemplateMatcher:
             matches.append(match)
             if limit is not None and len(matches) >= int(limit):
                 break
+            elif len(matches) >= self.LIMIT_FAILSAFE:
+                self.logger.warning(
+                    "Reached maximum of %d matches", self.LIMIT_FAILSAFE
+                )
+                break
 
         return matches
 
@@ -375,17 +381,26 @@ class TemplateMatcher:
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         template = cv2.cvtColor(template, cv2.COLOR_RGB2BGR)
 
+        # Template matching result is a single channel array of shape:
+        # Width:  Image width  - template width  + 1
+        # Height: Image height - template height + 1
         coefficients = cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)
+        coeff_height, coeff_width = coefficients.shape
 
         while True:
+            # The point (match_x, match_y) is the top-left of the best match
             _, match_coeff, _, (match_x, match_y) = cv2.minMaxLoc(coefficients)
             if match_coeff < tolerance:
                 break
 
-            coefficients[
-                match_y - template_height // 2 : match_y + template_height // 2,
-                match_x - template_width // 2 : match_x + template_width // 2,
-            ] = 0
+            # Zero out values for a template-sized region around the best match
+            # to prevent duplicate matches for the same element.
+            left = clamp(0, match_x - template_width // 2, coeff_width)
+            top = clamp(0, match_y - template_height // 2, coeff_height)
+            right = clamp(0, match_x + template_width // 2, coeff_width)
+            bottom = clamp(0, match_y + template_height // 2, coeff_height)
+
+            coefficients[top:bottom, left:right] = 0
 
             yield Region.from_size(match_x, match_y, template_width, template_height)
 
