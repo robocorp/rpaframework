@@ -10,6 +10,7 @@ import os
 import re
 import sys
 import traceback
+from collections import defaultdict
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -147,17 +148,36 @@ class RestConverter(BaseConverter):
                 writer.raw(init.doc)
 
     def keywords(self, writer, libdoc):
+        groups = defaultdict(list)
+        for keyword in libdoc.keywords:
+            name = Path(keyword.source).stem
+            groups[name].append(keyword)
+
+        def _init_first(string):
+            return string == "__init__", string
+
         with writer.heading("Keywords"):
-            for kw in libdoc.keywords:
-                with writer.field(kw.name):
-                    fields = []
-                    if kw.args:
-                        args = (self.escape_string(arg) for arg in kw.args)
-                        fields.append(("Arguments", ", ".join(args)))
-                    if kw.tags:
-                        fields.append(("Tags", ", ".join(kw.tags)))
-                    writer.fieldlist(*fields)
-                    writer.raw(self.filter_docstring(kw.doc))
+            if len(groups) > 1:
+                for group, keywords in sorted(groups.items(), key=_init_first):
+                    group = "main" if group == "__init__" else group
+                    with writer.heading(group.title()):
+                        for keyword in keywords:
+                            self._keyword(writer, keyword)
+            else:
+                keywords = next(iter(groups.values())) if groups else []
+                for keyword in keywords:
+                    self._keyword(writer, keyword)
+
+    def _keyword(self, writer, keyword):
+        with writer.field(keyword.name):
+            fields = []
+            if keyword.args:
+                args = (self.escape_string(arg) for arg in keyword.args)
+                fields.append(("Arguments", ", ".join(args)))
+            if keyword.tags:
+                fields.append(("Tags", ", ".join(keyword.tags)))
+            writer.fieldlist(*fields)
+            writer.raw(self.filter_docstring(keyword.doc))
 
 
 class RestHtmlConverter(RestConverter):
