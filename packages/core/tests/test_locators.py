@@ -2,10 +2,16 @@ import copy
 import io
 import json
 import pytest
-from RPA.core import locators
+from RPA.core.locators import (
+    TYPES,
+    LocatorsDatabase,
+    Locator,
+    BrowserDOM,
+    ImageTemplate,
+)
 
 
-CONTENT = [
+LEGACY = [
     {
         "id": 0,
         "name": "RobotSpareBin.Username",
@@ -32,141 +38,171 @@ CONTENT = [
     },
 ]
 
+CURRENT = {
+    "RobotSpareBin.Username": {
+        "type": "browser",
+        "strategy": "id",
+        "value": "username",
+        "source": "https://robotsparebinindustries.com/",
+    },
+    "RobotSpareBin.Password": {
+        "type": "browser",
+        "strategy": "id",
+        "value": "password",
+        "source": "https://robotsparebinindustries.com/",
+    },
+    "RobotSpareBin.Login": {
+        "type": "browser",
+        "strategy": "class",
+        "value": "btn-primary",
+        "source": "https://robotsparebinindustries.com/",
+    },
+}
+
 
 def to_stream(data):
     return io.StringIO(json.dumps(data))
 
 
-@pytest.fixture
-def valid_database():
-    database = locators.LocatorsDatabase(to_stream(CONTENT))
-    database.load()
-    return database
+class TestLocators:
+    def test_types(self):
+        assert "browser" in TYPES
+        assert "image" in TYPES
+
+    def test_from_dict(self):
+        data = {
+            "type": "browser",
+            "strategy": "class",
+            "value": "btn-primary",
+            "source": "https://robotsparebinindustries.com/",
+        }
+
+        locator = Locator.from_dict(data)
+        assert isinstance(locator, BrowserDOM)
+        assert locator.strategy == "class"
+        assert locator.value == "btn-primary"
+        assert locator.source == "https://robotsparebinindustries.com/"
+
+    def test_from_dict_extras(self):
+        data = {
+            "type": "browser",
+            "strategy": "class",
+            "value": "btn-primary",
+            "source": "https://robotsparebinindustries.com/",
+            "notvalid": "somevalue",
+        }
+
+        locator = Locator.from_dict(data)
+        assert isinstance(locator, BrowserDOM)
+
+    def test_from_dict_optional(self):
+        data = {
+            "type": "browser",
+            "strategy": "class",
+            "value": "btn-primary",
+        }
+
+        locator = Locator.from_dict(data)
+        assert isinstance(locator, BrowserDOM)
+        assert locator.strategy == "class"
+        assert locator.value == "btn-primary"
+        assert locator.source == None
+
+    def test_from_dict_required(self):
+        data = {
+            "type": "browser",
+            "strategy": "class",
+        }
+
+        with pytest.raises(ValueError):
+            Locator.from_dict(data)
+
+    def test_from_dict_no_type(self):
+        data = {
+            "strategy": "class",
+            "value": "btn-primary",
+        }
+
+        with pytest.raises(ValueError):
+            Locator.from_dict(data)
+
+    def test_from_dict_image_template(self):
+        data = {
+            "type": "image",
+            "path": "images/TestTemplate.png",
+            "source": "images/TestSource.png",
+        }
+        locator = Locator.from_dict(data)
+        assert isinstance(locator, ImageTemplate)
+        assert locator.path == "images/TestTemplate.png"
+        assert locator.source == "images/TestSource.png"
 
 
-def test_load_ok():
-    database = locators.LocatorsDatabase(to_stream(CONTENT))
-    database.load()
+class TestDatabase:
+    @pytest.fixture
+    def legacy_database(self):
+        database = LocatorsDatabase(to_stream(LEGACY))
+        database.load()
+        return database
 
-    assert database.error is None
-    assert len(database.locators) == 3
+    @pytest.fixture
+    def current_database(self):
+        database = LocatorsDatabase(to_stream(CURRENT))
+        database.load()
+        return database
 
+    def test_load_legacy(self):
+        database = LocatorsDatabase(to_stream(LEGACY))
+        database.load()
 
-def test_load_empty():
-    database = locators.LocatorsDatabase(to_stream({}))
-    database.load()
+        assert database.error is None
+        assert len(database.locators) == 3
 
-    assert database.error is None
-    assert len(database.locators) == 0
+    def test_load_legacy_empty(self):
+        database = LocatorsDatabase(to_stream({}))
+        database.load()
 
+        assert database.error is None
+        assert len(database.locators) == 0
 
-def test_load_malformed():
-    stream = io.StringIO("not-a-json{]}\\''")
+    def test_legacy_missing_name(self):
+        content = copy.deepcopy(LEGACY)
+        del content[1]["name"]
 
-    database = locators.LocatorsDatabase(stream)
-    database.load()
+        database = LocatorsDatabase(to_stream(content))
+        database.load()
 
-    assert database.error is not None
-    assert len(database.error) == 2
-    assert len(database.locators) == 0
+        assert database.error is None
+        assert len(database.locators) == 2
 
+    def test_load_malformed(self):
+        stream = io.StringIO("not-a-json{]}\\''")
 
-def test_find_by_name_or_error_missing():
-    with pytest.raises(ValueError):
-        locator, locator_data = locators.load_by_name(
-            "/not/a/valid/path", "nonexistent locator name"
-        )
+        database = LocatorsDatabase(stream)
+        database.load()
 
+        assert database.error is not None
+        assert len(database.error) == 2
+        assert len(database.locators) == 0
 
-def test_load_missing():
-    database = locators.LocatorsDatabase("not/a/valid/path")
-    database.load()
+    def test_load_missing(self):
+        database = LocatorsDatabase("not/a/valid/path")
+        database.load()
 
-    assert database.error is None
-    assert len(database.locators) == 0
+        assert database.error is None
+        assert len(database.locators) == 0
 
+    def test_reset_error(self):
+        database = LocatorsDatabase()
 
-def test_duplicate_id():
-    content = copy.deepcopy(CONTENT)
-    content[0]["id"] = 2
+        database.path = io.StringIO("some-error")
+        database.load()
 
-    database = locators.LocatorsDatabase(to_stream(content))
-    database.load()
+        assert database.error is not None
+        assert len(database.locators) == 0
 
-    assert database.error is not None
-    assert len(database.locators) == 0
+        database.path = to_stream(CURRENT)
+        database.load()
 
-
-def test_duplicate_name():
-    content = copy.deepcopy(CONTENT)
-    content[0]["name"] = content[2]["name"]
-
-    database = locators.LocatorsDatabase(to_stream(content))
-    database.load()
-
-    assert database.error is not None
-    assert len(database.locators) == 0
-
-
-def test_missing_name():
-    content = copy.deepcopy(CONTENT)
-    del content[1]["name"]
-
-    database = locators.LocatorsDatabase(to_stream(content))
-    database.load()
-
-    assert database.error is not None
-    assert len(database.locators) == 0
-
-
-def test_find_by_id(valid_database):
-    locator = valid_database.find_by_id(1)
-    assert locator["id"] == 1
-    assert locator["name"] == "RobotSpareBin.Password"
-
-
-def test_find_by_name(valid_database):
-    locator = valid_database.find_by_name("RobotSpareBin.Password")
-    assert locator["id"] == 1
-    assert locator["name"] == "RobotSpareBin.Password"
-
-
-def test_reset_error():
-    database = locators.LocatorsDatabase()
-
-    database.path = io.StringIO("some-error")
-    database.load()
-
-    assert database.error is not None
-    assert len(database.locators) == 0
-
-    database.path = to_stream(CONTENT)
-    database.load()
-
-    assert database.error is None
-    assert len(database.locators) == 3
-
-
-def test_update(valid_database):
-    assert len(valid_database.locators) == 3
-    assert valid_database.locators[1]["id"] == 1
-    assert valid_database.locators[1]["name"] == "RobotSpareBin.Password"
-
-    valid_database.path = io.StringIO()
-    valid_database.update(
-        1, {"id": 1, "name": "OtherName", "type": "OtherType", "value": "OtherValue"}
-    )
-
-    assert len(valid_database.locators) == 3
-    assert valid_database.locators[1]["id"] == 1
-    assert valid_database.locators[1]["name"] == "OtherName"
-
-
-def test_update_missing(valid_database):
-    valid_database.path = io.StringIO()
-
-    with pytest.raises(locators.ValidationError):
-        valid_database.update(
-            4,
-            {"id": 4, "name": "OtherName", "type": "OtherType", "value": "OtherValue"},
-        )
+        assert database.error is None
+        assert len(database.locators) == 3

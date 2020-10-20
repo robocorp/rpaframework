@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-core"
-version = "1.8.1"
+version = "2.0.0"
 description = "Core utilities used by RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -35,6 +35,7 @@ packages = [
 python = "^3.6"
 selenium = "^3.141.0"
 webdrivermanager = ">=0.7.4"
+pillow = "^7.0.0"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }
