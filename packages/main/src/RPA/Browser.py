@@ -1159,6 +1159,7 @@ class Browser(SeleniumLibrary):
         try:
             runnable_keyword(*args, **kwargs)
             return True
+        # pylint: disable=broad-except
         except Exception as e:
             BuiltIn().log(
                 "Ran with keyword <b>%s</b> which returned error: <i>%s</i>"
