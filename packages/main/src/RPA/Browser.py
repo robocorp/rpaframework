@@ -1159,7 +1159,12 @@ class Browser(SeleniumLibrary):
         try:
             runnable_keyword(*args, **kwargs)
             return True
-        except AssertionError:
+        except Exception as e:
+            BuiltIn().log(
+                "Ran with keyword <b>%s</b> which returned error: <i>%s</i>"
+                % (runnable_keyword.__func__.__name__.replace("_", " ").title(), e),
+                html=True,
+            )
             return False
 
     @keyword
