@@ -4,6 +4,13 @@ Release notes
 Upcoming release
 ----------------
 - Library **Robocloud.Items**: Remove invalid assert on file overwrite
+- Library **Browser**:
+
+  - Fix keywords like ``Is Element Visible`` failing Robot runs although
+    they should only return boolean status
+  - Set Chrome argument ``disable-dev-shm-usage`` by default (previously it
+    was set only in headless mode)
+
 
 5.3.3
 -----
