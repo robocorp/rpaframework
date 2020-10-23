@@ -69,9 +69,13 @@ class Desktop(DynamicCore):
                     "rpaframework-recognition module"
                 )
             # TODO: Add built-in offset support
-            return templates.find(
+            regions = templates.find(
                 self.take_screenshot(), locator.path, confidence=locator.confidence
             )
+            left, top, _, _ = self.get_display_dimensions()
+            for reg in regions:
+                reg.move(left, top)
+            return regions
         else:
             raise NotImplementedError(f"Unsupported locator: {locator}")
 
