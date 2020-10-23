@@ -38,6 +38,11 @@ class Desktop(DynamicCore):
         self.logger = logging.getLogger(__name__)
         self.locators = None
 
+        if HAS_RECOGNITION:
+            self.confidence = templates.DEFAULT_CONFIDENCE
+        else:
+            self.confidence = None
+
         # Register keyword libraries to LibCore
         libraries = [
             ApplicationKeywords(self),
@@ -69,12 +74,15 @@ class Desktop(DynamicCore):
                     "rpaframework-recognition module"
                 )
             # TODO: Add built-in offset support
+            confidence = locator.confidence or self.confidence
             regions = templates.find(
-                self.take_screenshot(), locator.path, confidence=locator.confidence
+                self.take_screenshot(), locator.path, confidence=confidence
             )
+
             left, top, _, _ = self.get_display_dimensions()
-            for reg in regions:
-                reg.move(left, top)
+            for region in regions:
+                region.move(left, top)
+
             return regions
         else:
             raise NotImplementedError(f"Unsupported locator: {locator}")
@@ -160,3 +168,12 @@ class Desktop(DynamicCore):
                 time.sleep(interval)
 
         raise TimeoutException(f"No element found within timeout: {locator}")
+
+    def set_default_confidence(self, confidence: float):
+        """Set the default template matching confidence.
+
+        :param confidence: Value from 0 to 100
+        """
+        confidence = min(confidence, 100.0)
+        confidence = max(confidence, 0.0)
+        self.confidence = confidence
