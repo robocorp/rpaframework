@@ -10,7 +10,7 @@ from RPA.core import geometry
 from RPA.core.geometry import Region
 
 
-DEFAULT_CONFIDENCE = 0.95
+DEFAULT_CONFIDENCE = 95.0
 LIMIT_FAILSAFE = 256
 
 logger = logging.getLogger(__name__)
@@ -38,7 +38,7 @@ def find(
     :param template:    Path to image or Image instance, used to search with
     :param limit:       Limit returned results to maximum of `limit`.
     :param region:      Area to search from. Can speed up search significantly.
-    :param confidence:  Confidence for matching, value between 0.1 and 1.0
+    :param confidence:  Confidence for matching, value between 0 and 100
     :return:            List of matching regions
     :raises ImageNotFoundError: No match was found
     """
@@ -94,7 +94,7 @@ def _match_template(
     `image` to calculate correlation coefficients, and then
     filter with a confidence to find all relevant global maximums.
     """
-    confidence = max(0.01, min(confidence, 1.00))
+    confidence = max(0.0, min(float(confidence), 100.0)) / 100.0
     template_width, template_height = template.size
 
     if image.mode == "RGBA":
