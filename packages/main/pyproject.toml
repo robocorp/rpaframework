@@ -35,7 +35,7 @@ packages = [
 python = "^3.6"
 dataclasses = { version = "^0.7", python=">=3.6,<3.7" }
 rpaframework-core = "^2.0.0"
-rpaframework-recognition = { version = "^0.1.0", optional = true }
+rpaframework-recognition = { version = "^0.2.0", optional = true }
 robotframework = "^3.2.2"
 robotframework-sapguilibrary = { version = "^1.1", platform = "win32" }
 robotframework-seleniumlibrary = "^4.5.0"

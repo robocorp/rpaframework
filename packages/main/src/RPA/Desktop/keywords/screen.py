@@ -4,9 +4,7 @@ from typing import Optional
 
 import mss
 from PIL import Image
-from robot.libraries.BuiltIn import RobotNotRunningError, BuiltIn
 
-from RPA.core.helpers import clean_filename
 from RPA.core.geometry import Point, Region
 from RPA.Desktop import utils
 from RPA.Desktop.keywords import LibraryContext, keyword
@@ -46,13 +44,13 @@ class ScreenKeywords(LibraryContext):
     @keyword
     def take_screenshot(
         self,
-        filename: Optional[str] = None,
+        path: Optional[str] = None,
         locator: Optional[str] = None,
     ) -> None:
         """Take a screenshot of the whole screen, or an element
         identified by the given locator.
 
-        :param filename: Name of screenshot
+        :param path: Name of screenshot
         :param locator:  Element to crop screenshot to
         """
         with mss.mss() as sct:
@@ -64,15 +62,8 @@ class ScreenKeywords(LibraryContext):
                 # First monitor is combined virtual display of all monitors
                 image = sct.grab(sct.monitors[0])
 
-        if filename is not None:
-            try:
-                # TODO: Use artifacts directory when available
-                dirname = BuiltIn().get_variable_value("${OUTPUT_DIR}")
-            except (ModuleNotFoundError, RobotNotRunningError):
-                dirname = Path.cwd()
-
-            filename = clean_filename(filename)
-            path = dirname / Path(filename).with_suffix(".png")
+        if path is not None:
+            path = Path(path).with_suffix(".png")
 
             os.makedirs(path.parent, exist_ok=True)
             mss.tools.to_png(image.rgb, image.size, output=path)
