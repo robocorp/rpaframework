@@ -72,7 +72,7 @@ class ScreenKeywords(LibraryContext):
                 dirname = Path.cwd()
 
             filename = clean_filename(filename)
-            path = Path(dirname / filename).with_suffix(".png")
+            path = dirname / Path(filename).with_suffix(".png")
 
             os.makedirs(path.parent, exist_ok=True)
             mss.tools.to_png(image.rgb, image.size, output=path)
