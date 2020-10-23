@@ -75,13 +75,18 @@ class Desktop(DynamicCore):
                 )
             # TODO: Add built-in offset support
             confidence = locator.confidence or self.confidence
-            regions = templates.find(
-                self.take_screenshot(), locator.path, confidence=confidence
-            )
+            try:
+                regions = templates.find(
+                    image=self.take_screenshot(),
+                    template=locator.path,
+                    confidence=confidence,
+                )
 
-            left, top, _, _ = self.get_display_dimensions()
-            for region in regions:
-                region.move(left, top)
+                left, top, _, _ = self.get_display_dimensions()
+                for region in regions:
+                    region.move(left, top)
+            except templates.ImageNotFoundError:
+                return []
 
             return regions
         else:
