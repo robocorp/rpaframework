@@ -1,4 +1,5 @@
 import pyperclip
+from RPA.Desktop import utils
 from RPA.Desktop.keywords import LibraryContext, keyword
 
 
@@ -19,8 +20,12 @@ class ClipboardKeywords(LibraryContext):
         :param locator: Locator for element
         :returns:       Current clipboard value
         """
-        self.ctx.click(locator, "triple click")
-        self.ctx.press_keys("ctrl", "c")
+        if utils.is_macos():
+            self.ctx.click(locator, "triple click")
+            self.ctx.press_keys("cmd", "c")
+        else:
+            self.ctx.click(locator, "triple click")
+            self.ctx.press_keys("ctrl", "c")
         return self.get_clipboard_value()
 
     @keyword
@@ -39,7 +44,8 @@ class ClipboardKeywords(LibraryContext):
         match = self.find_element(locator)
         text = pyperclip.paste()
         self.ctx.click(match)
-        self.ctx.type_text(text)
+
+        self.ctx.type_text(str(text))
 
     @keyword
     def clear_clipboard(self):
@@ -71,4 +77,4 @@ class ClipboardKeywords(LibraryContext):
             Set clipboard value     This is some text.
             Paste from clipboard    coordinates:822,710
         """
-        pyperclip.copy(text)
+        pyperclip.copy(str(text))
