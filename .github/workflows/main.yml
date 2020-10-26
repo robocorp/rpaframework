@@ -72,6 +72,11 @@ jobs:
         python-version: ${{ matrix.python }}
     - name: Upgrade pip
       run: python -m pip install --upgrade pip
+    - name: Setup xvfb which graphical tests require on linux
+      if: matrix.os == 'linux'
+      run: | 
+        export DISPLAY=:99.0
+        Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 &
     - name: Install poetry
       run: pip install poetry
     - name: Install
