@@ -9,7 +9,9 @@ if platform.system() == "Windows":
 
 
 class Clipboard:
-    """RPA Framework library for cross platform clipboard management.
+    """*DEPRECATED!!* Use library RPA.Desktop's clipboard functionality instead.
+
+    RPA Framework library for cross platform clipboard management.
 
     Will use `win32` package on Windows and `clipboard` package on Linux and Mac.
     """
@@ -18,7 +20,9 @@ class Clipboard:
         self.logger = logging.getLogger(__name__)
 
     def copy_to_clipboard(self, text):
-        """Copy text to clipboard
+        """*DEPRECATED!!* Use `RPA.Desktop` library's `Copy to Clipboard` instead.
+
+        Copy text to clipboard
 
         :param text: to copy
         """
@@ -32,7 +36,7 @@ class Clipboard:
             clipboard.copy(text)
 
     def paste_from_clipboard(self):
-        """Paste text from clipboard
+        """*DEPRECATED!!* Use `RPA.Desktop` library's `Paste from Clipboard` instead.
 
         :return: text
         """
@@ -49,7 +53,8 @@ class Clipboard:
             return clipboard.paste()
 
     def clear_clipboard(self):
-        """Clear clipboard contents"""
+        """*DEPRECATED!!* Use `RPA.Desktop` library's `Clear Clipboard` instead.
+        Clear clipboard contents"""
         self.logger.debug("clear_clipboard")
         if platform.system() == "Windows":
             win32clipboard.OpenClipboard()
