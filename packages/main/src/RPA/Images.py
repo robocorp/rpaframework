@@ -70,7 +70,10 @@ class ImageNotFoundError(Exception):
 
 
 class Images:
-    """Library for taking screenshots, matching templates, and
+    """*DEPRECATED* Use library `RPA.Desktop` or `RPA.Recognition`
+    from package `rpaframework-recognition` instead
+
+    Library for taking screenshots, matching templates, and
     manipulating images.
     """
 
@@ -79,7 +82,8 @@ class Images:
         self.matcher = TemplateMatcher(opencv=HAS_OPENCV)
 
     def take_screenshot(self, filename=None, region=None) -> Image:
-        """Take a screenshot of the current desktop.
+        """*DEPRECATED* Use keyword `RPA.Desktop.Take Screenshot` instead
+        Take a screenshot of the current desktop.
 
         :param filename:    Save screenshot to filename
         :param region:      Region to crop screenshot to
@@ -126,7 +130,8 @@ class Images:
     def find_template_in_image(
         self, image, template, region=None, limit=None, tolerance=None
     ) -> List[Region]:
-        """Attempt to find the template from the given image.
+        """*DEPRECATED* Use keyword `Find` from library `RPA.Recognition` instead
+        Attempt to find the template from the given image.
 
         :param image:       Path to image or Image instance, used to search from
         :param template:    Path to image or Image instance, used to search with
@@ -171,13 +176,15 @@ class Images:
         return matches
 
     def find_template_on_screen(self, template, **kwargs) -> List[Region]:
-        """Attempt to find the template image from the current desktop.
+        """*DEPRECATED!!* use `RPA.Desktop.Find Element` instead
+        Attempt to find the template image from the current desktop.
         For argument descriptions, see ``find_template_in_image()``
         """
         return self.find_template_in_image(self.take_screenshot(), template, **kwargs)
 
     def wait_template_on_screen(self, template, timeout=5, **kwargs):
-        """Wait for template image to appear on current desktop.
+        """*DEPRECATED!!* use `RPA.Desktop.Wait For Element` instead
+        Wait for template image to appear on current desktop.
         For further argument descriptions, see ``find_template_in_image()``
 
         :param timeout: Time to wait for template (in seconds)
