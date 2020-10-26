@@ -7,7 +7,7 @@ class ClipboardKeywords(LibraryContext):
     """Keywords for interacting with the system clipboard."""
 
     @keyword
-    def copy_to_clipboard(self, locator):
+    def copy_to_clipboard(self, locator) -> str:
         """Read value to system clipboard from given input element.
 
         Example:
@@ -29,7 +29,7 @@ class ClipboardKeywords(LibraryContext):
         return self.get_clipboard_value()
 
     @keyword
-    def paste_from_clipboard(self, locator):
+    def paste_from_clipboard(self, locator) -> None:
         """Paste value from system clipboard into given element.
 
         Example:
@@ -48,12 +48,12 @@ class ClipboardKeywords(LibraryContext):
         self.ctx.type_text(str(text))
 
     @keyword
-    def clear_clipboard(self):
+    def clear_clipboard(self) -> None:
         """Clear the system clipboard."""
         pyperclip.copy("")
 
     @keyword
-    def get_clipboard_value(self):
+    def get_clipboard_value(self) -> str:
         """Read current value from system clipboard.
 
         Example:
@@ -67,7 +67,7 @@ class ClipboardKeywords(LibraryContext):
         return pyperclip.paste()
 
     @keyword
-    def set_clipboard_value(self, text):
+    def set_clipboard_value(self, text: str) -> None:
         """Write given value to system clipboard.
 
         Example:
@@ -77,4 +77,6 @@ class ClipboardKeywords(LibraryContext):
             Set clipboard value     This is some text.
             Paste from clipboard    coordinates:822,710
         """
+        if not isinstance(text, str):
+            self.logger.debug(f"Non-string input value {text} for clipboard")
         pyperclip.copy(str(text))
