@@ -91,8 +91,8 @@ jobs:
       run: | 
         export DISPLAY=:99.0
         export XDG_SESSION_TYPE=x11
-        Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 &
-        xvfb-run --auto-servernum make test
+        Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+        xvfb-run --server-num=99 make test
     - uses: actions/upload-artifact@v1
       if: success() || failure()
       with:
