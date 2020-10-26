@@ -84,6 +84,7 @@ class ScreenKeywords(LibraryContext):
                 disp["left"], disp["top"], disp["width"], disp["height"]
             )
 
+    @keyword
     def highlight_elements(self, locator: str):
         """Draw an outline around all matching elements."""
         if not utils.is_windows():
