@@ -72,19 +72,21 @@ jobs:
         python-version: ${{ matrix.python }}
     - name: Upgrade pip
       run: python -m pip install --upgrade pip
-    - name: Setup xvfb which graphical tests require on linux
-      if: matrix.os == 'ubuntu-latest'
-      run: | 
-        export DISPLAY=:99.0
-        Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 &
     - name: Install poetry
       run: pip install poetry
     - name: Install
       run: make install
     - name: Lint
       run: make lint
-    - name: Test
+    - name: Test on non-linux
+      if: matrix.os != 'ubuntu-latest'
       run: make test
+    - name: Test on linux
+      if: matrix.os == 'ubuntu-latest'
+      run: | 
+        export DISPLAY=:99.0
+        Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 &
+        xvfb-run --auto-servernum make test
     - uses: actions/upload-artifact@v1
       if: success() || failure()
       with:
