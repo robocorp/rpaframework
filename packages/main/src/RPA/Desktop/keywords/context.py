@@ -7,6 +7,3 @@ class LibraryContext:
     @property
     def logger(self):
         return self.ctx.logger
-
-    def find_element(self, *args, **kwargs):
-        return self.ctx.find_element(*args, **kwargs)

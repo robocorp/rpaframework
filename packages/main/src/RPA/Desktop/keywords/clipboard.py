@@ -41,7 +41,7 @@ class ClipboardKeywords(LibraryContext):
 
         :param locator: Locator for element
         """
-        match = self.find_element(locator)
+        match = self.ctx.find_element(locator)
         text = pyperclip.paste()
         self.ctx.click(match)
 

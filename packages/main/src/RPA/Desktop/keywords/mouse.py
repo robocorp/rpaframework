@@ -97,7 +97,7 @@ class MouseKeywords(LibraryContext):
         """
         action = to_action(action)
         if locator:
-            match = self.find_element(locator)
+            match = self.ctx.find_element(locator)
             self._click(action, match)
         else:
             self._click(action)
@@ -123,7 +123,7 @@ class MouseKeywords(LibraryContext):
         """
         action = to_action(action)
         if locator:
-            match = self.find_element(locator)
+            match = self.ctx.find_element(locator)
             match.offset(x, y)
             self._click(action, match)
         else:
@@ -153,7 +153,7 @@ class MouseKeywords(LibraryContext):
 
         :param locator: Locator for mouse position
         """
-        match = self.find_element(locator)
+        match = self.ctx.find_element(locator)
         self._move(match)
 
     @keyword
@@ -183,8 +183,8 @@ class MouseKeywords(LibraryContext):
         :param start_delay: Delay in seconds after pressing down mouse button
         :param end_delay:   Delay in seconds before releasing mouse button
         """
-        src = self.find_element(source)
-        dst = self.find_element(destination)
+        src = self.ctx.find_element(source)
+        dst = self.ctx.find_element(destination)
 
         self.logger.info("Dragging from (%d, %d) to (%d, %d)", *src, *dst)
 

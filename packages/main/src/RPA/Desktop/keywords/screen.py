@@ -56,7 +56,7 @@ class ScreenKeywords(LibraryContext):
         with mss.mss() as sct:
             if locator is not None:
                 # TODO: Use something else to get region instead of point
-                match = self.find_element(locator)
+                match = self.ctx.find_element(locator)
                 image = sct.grab(match.as_tuple())
             else:
                 # First monitor is combined virtual display of all monitors
