@@ -39,6 +39,7 @@ class FinderKeywords(LibraryContext):
             return [locator]
 
         locator = parse_locator(locator)
+        self.logger.info("Using locator: %s", locator)
 
         if isinstance(locator, Coordinates):
             position = Point(locator.x, locator.y)
@@ -55,6 +56,8 @@ class FinderKeywords(LibraryContext):
                 )
             # TODO: Add built-in offset support
             confidence = locator.confidence or self.confidence
+            self.logger.info("Matching with confidence of %.1f", confidence)
+
             try:
                 regions = templates.find(
                     image=self.ctx.take_screenshot(),
@@ -62,6 +65,7 @@ class FinderKeywords(LibraryContext):
                     confidence=confidence,
                 )
 
+                # Virtual screen top-left might not be (0,0)
                 left, top, _, _ = self.ctx.get_display_dimensions()
                 for region in regions:
                     region.move(left, top)

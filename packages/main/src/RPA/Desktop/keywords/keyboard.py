@@ -87,6 +87,7 @@ class KeyboardKeywords(LibraryContext):
         """
         if self._error:
             raise self._error
+
         keys = [to_key(key) for key in keys]
         self.logger.info("Pressing keys: %s", ", ".join(str(key) for key in keys))
 

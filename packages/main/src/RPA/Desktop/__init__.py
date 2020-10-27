@@ -14,6 +14,8 @@ from RPA.Desktop.keywords import (
 class Desktop(DynamicCore):
     """Cross-platform library for interacting with desktop environments."""
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 
