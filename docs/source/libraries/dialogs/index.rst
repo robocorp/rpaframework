@@ -46,7 +46,7 @@ Setting library arguments
 Library has arguments ``server_port`` and ``stylesheet``. The ``server_port`` argument
 takes integer value, which defines port where HTTP server will be run. By default port is 8105.
 The ``stylesheet`` can be used to point CSS file, which will be used to modify style of form,
-which is shown to the user. By default stylesheet is ``RPA.includes/dialog_styles.css``.
+which is shown to the user. Defaults to built-in Robocorp stylesheet.
 
 Supported element types
 =======================

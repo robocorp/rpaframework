@@ -267,6 +267,7 @@ class Dialogs:
 
     :param server_port: HTTP server port, defaults to 8105
     :param stylesheet: defaults to built-in Robocorp stylesheet
+
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
