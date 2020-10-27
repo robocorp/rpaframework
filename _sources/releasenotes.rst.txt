@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Desktop**:
+
+  - Library scope changed to global
+  - Obey default image locator confidence
+
 6.0.1
 -----
 

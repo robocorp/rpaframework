@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: 
+:Library scope: Global
 
 Cross-platform library for interacting with desktop environments.
 
