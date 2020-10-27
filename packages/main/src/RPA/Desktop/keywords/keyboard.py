@@ -1,10 +1,12 @@
-from typing import Union
-from pynput.keyboard import Controller, Key, KeyCode
+from typing import Any
 from RPA.Desktop.keywords import LibraryContext, keyword
 
 
-def to_key(key: str) -> Union[Key, KeyCode]:
+def to_key(key: str) -> Any:
     """Convert key string to correct enum value."""
+    # pylint: disable=C0415
+    from pynput.keyboard import Key, KeyCode
+
     if isinstance(key, (Key, KeyCode)):
         return key
 
@@ -31,7 +33,14 @@ class KeyboardKeywords(LibraryContext):
 
     def __init__(self, ctx):
         super().__init__(ctx)
-        self._keyboard = Controller()
+        try:
+            # pylint: disable=C0415
+            from pynput.keyboard import Controller
+
+            self._keyboard = Controller()
+            self._error = None
+        except ImportError as exc:
+            self._error = exc
 
     @keyword
     def type_text(self, text: str, *modifiers: str, enter: bool = False) -> None:
@@ -47,6 +56,9 @@ class KeyboardKeywords(LibraryContext):
         :param *modifiers: Modifier or functions keys held during typing
         :param enter:      Press Enter / Return key after typing text
         """
+        if self._error:
+            raise self._error
+
         keys = [to_key(key) for key in modifiers]
         self.logger.info("Typing text: %s", text)
 
@@ -73,6 +85,8 @@ class KeyboardKeywords(LibraryContext):
 
         :param *keys: Keys to press
         """
+        if self._error:
+            raise self._error
         keys = [to_key(key) for key in keys]
         self.logger.info("Pressing keys: %s", ", ".join(str(key) for key in keys))
 
@@ -100,6 +114,9 @@ class KeyboardKeywords(LibraryContext):
         :param clear:   Clear element before writing
         :param enter:      Press Enter / Return key after typing text
         """
+        if self._error:
+            raise self._error
+
         self.ctx.click(locator)
 
         if clear:
