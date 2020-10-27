@@ -159,6 +159,7 @@
 <li class="toctree-l1"><a class="reference internal" href="libraries/cloud_azure/index.html">Cloud.Azure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/cloud_google/index.html">Cloud.Google</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries/desktop/index.html">Desktop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/desktop_clipboard/index.html">Desktop.Clipboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/desktop_windows/index.html">Desktop.Windows</a></li>
@@ -258,13 +259,14 @@
 <div class="section" id="upcoming-release">
 <h2>Upcoming release<a class="headerlink" href="#upcoming-release" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li><p>Library <strong>Dialogs</strong>: Add library initialization arguments to change server port and form stylesheet</p></li>
+<li><p>Library <strong>Desktop</strong>: Initial release of new cross-platform desktop automation library</p></li>
+<li><p>Library <strong>FileSystem</strong>: Replace <code class="docutils literal notranslate"><span class="pre">force</span></code> arguments with <code class="docutils literal notranslate"><span class="pre">missing_ok</span></code> to match python API</p></li>
 <li><p>Library <strong>Robocloud.Items</strong>: Remove invalid assert on file overwrite</p></li>
 <li><p>Library <strong>Browser</strong>:</p>
 <ul>
-<li><p>Fix keywords like <code class="docutils literal notranslate"><span class="pre">Is</span> <span class="pre">Element</span> <span class="pre">Visible</span></code> failing Robot runs although
-they should only return boolean status</p></li>
-<li><p>Set Chrome argument <code class="docutils literal notranslate"><span class="pre">disable-dev-shm-usage</span></code> by default (previously it
-was set only in headless mode)</p></li>
+<li><p>Add new option to allow missing elements with status keywords such as <code class="docutils literal notranslate"><span class="pre">Is</span> <span class="pre">Element</span> <span class="pre">Visible</span></code></p></li>
+<li><p>Set Chrome argument <code class="docutils literal notranslate"><span class="pre">disable-dev-shm-usage</span></code> by default in all environments</p></li>
 </ul>
 </li>
 </ul>

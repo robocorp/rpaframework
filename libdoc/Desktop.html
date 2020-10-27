@@ -1,0 +1,586 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Robot Framework API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Desktop.Clipboard" href="../libraries/desktop_clipboard/index.html" />
+    <link rel="prev" title="Desktop" href="../libraries/desktop/index.html" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!-- PureCookie -->
+<link async rel="stylesheet" type="text/css" href="../_static/purecookie.css"/>
+<script async src="../_static/purecookie.js"></script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes.html">Release notes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../libraries/archive/index.html">Archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/cloud_azure/index.html">Cloud.Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/cloud_google/index.html">Cloud.Google</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/database/index.html">Database</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../libraries/desktop/index.html">Desktop</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Robot Framework API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/ftp/index.html">FTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/notifier/index.html">Notifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/twitter/index.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/conventions.html">Project conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../libraries/desktop/index.html">Desktop</a> &raquo;</li>
+        
+      <li>Robot Framework API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/libdoc/Desktop.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="robot-framework-api">
+<h1>Robot Framework API<a class="headerlink" href="#robot-framework-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Library scope</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>Cross-platform library for interacting with desktop environments.</p>
+</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="application">
+<h3>Application<a class="headerlink" href="#application" title="Permalink to this headline">¶</a></h3>
+<dl class="field-list">
+<dt class="field-odd">Close All Applications</dt>
+<dd class="field-odd"><p>Close all opened applications.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open file</span><span class="p">    </span><span class="c">order1.docx</span><span class="p"></span>
+<span class="c">Open file</span><span class="p">    </span><span class="c">order2.docx</span><span class="p"></span>
+<span class="c">Open file</span><span class="p">    </span><span class="c">order3.docx</span><span class="p"></span>
+<span class="c"># Do something with Word</span>
+<span class="c">Close all applications</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Close Application</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>app: Application</p>
+</dd>
+</dl>
+<p>Close given application. Needs to be started
+with this library.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${word}=</span><span class="p">    </span><span class="c">Open file</span><span class="p">    </span><span class="c">template.docx</span><span class="p"></span>
+<span class="c"># Do something with Word</span>
+<span class="c">Close application</span><span class="p">    </span><span class="c">${word}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Open Application</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>name_or_path: str, *args</p>
+</dd>
+</dl>
+<p>Start a given application by name (if in PATH),
+or by path to executable.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open application</span><span class="p">    </span><span class="c">notepad.exe</span><span class="p"></span>
+<span class="c">Open application</span><span class="p">    </span><span class="c">c:\path\to\program.exe</span><span class="p">    </span><span class="c">--example-argument</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Open File</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>path: str</p>
+</dd>
+</dl>
+<p>Open a file with the default application.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open file</span><span class="p">    </span><span class="c">orders.xlsx</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="clipboard">
+<h3>Clipboard<a class="headerlink" href="#clipboard" title="Permalink to this headline">¶</a></h3>
+<dl class="field-list">
+<dt class="field-odd">Clear Clipboard</dt>
+<dd class="field-odd"><p>Clear the system clipboard.</p>
+</dd>
+<dt class="field-even">Copy To Clipboard</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator</p>
+</dd>
+</dl>
+<p>Read value to system clipboard from given input element.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${value}=</span><span class="p">    </span><span class="c">Copy to clipboard</span><span class="p">    </span><span class="c">ResultPage.Counter</span><span class="p"></span>
+<span class="c">Log</span><span class="p">    </span><span class="c">Copied text: ${value}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Get Clipboard Value</dt>
+<dd class="field-even"><p>Read current value from system clipboard.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Copy to clipboard</span><span class="p">       </span><span class="c">coordinates:401,198</span><span class="p"></span>
+<span class="c">${text}=</span><span class="p">    </span><span class="c">Get clipboard value</span><span class="p"></span>
+<span class="c">Log</span><span class="p">    </span><span class="c">We just copied &#39;${text}&#39;</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-odd">Paste From Clipboard</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator</p>
+</dd>
+</dl>
+<p>Paste value from system clipboard into given element.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Copy to clipboard</span><span class="p">       </span><span class="c">coordinates:401,198</span><span class="p"></span>
+<span class="c">Paste from clipboard</span><span class="p">    </span><span class="c">coordinates:822,710</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Set Clipboard Value</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text: str</p>
+</dd>
+</dl>
+<p>Write given value to system clipboard.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set clipboard value</span><span class="p">     </span><span class="c">This is some text.</span><span class="p"></span>
+<span class="c">Paste from clipboard</span><span class="p">    </span><span class="c">coordinates:822,710</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="finder">
+<h3>Finder<a class="headerlink" href="#finder" title="Permalink to this headline">¶</a></h3>
+<dl class="field-list">
+<dt class="field-odd">Find Element</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Find an element defined by locator, and return its position.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${match}=</span><span class="p">    </span><span class="c">Find element</span><span class="p">    </span><span class="c">image:logo.png</span><span class="p"></span>
+<span class="c">Log</span><span class="p">    </span><span class="c">Found logo at ${match.x}, ${match.y}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Find Elements</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Find all elements defined by locator, and return their positions.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${matches}=</span><span class="p">    </span><span class="c">Find elements</span><span class="p">    </span><span class="c">image:icon.png</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${match}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{matches}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">    </span><span class="c">Found icon at ${match.x}, ${match.y}</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Set Default Confidence</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>confidence: float</p>
+</dd>
+</dl>
+<p>Set the default template matching confidence.</p>
+</dd>
+<dt class="field-even">Wait For Element</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, timeout: float = 10.0, interval: float = 0.5</p>
+</dd>
+</dl>
+<p>Wait for an element defined by locator to exist or
+until timeout is reached.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Wait for element</span><span class="p">    </span><span class="c">alias:CookieConsent</span><span class="p">    </span><span class="c">timeout=30</span><span class="p"></span>
+<span class="c">Click</span><span class="p">    </span><span class="c">image:%{ROBOT_ROOT}/accept.png</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="keyboard">
+<h3>Keyboard<a class="headerlink" href="#keyboard" title="Permalink to this headline">¶</a></h3>
+<dl class="field-list">
+<dt class="field-odd">Press Keys</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>*keys: str</p>
+</dd>
+</dl>
+<p>Press multiple keys down simultaneously.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Press keys</span><span class="p">    </span><span class="c">ctrl</span><span class="p">  </span><span class="c">alt</span><span class="p">  </span><span class="c">delete</span><span class="p"></span>
+
+<span class="c">Press keys</span><span class="p">    </span><span class="c">ctrl</span><span class="p">  </span><span class="c">a</span><span class="p"></span>
+<span class="c">Press keys</span><span class="p">    </span><span class="c">ctrl</span><span class="p">  </span><span class="c">c</span><span class="p"></span>
+<span class="c">${all_text}=</span><span class="p">  </span><span class="c">Get clipboard value</span><span class="p"></span>
+<span class="c">Log</span><span class="p">    </span><span class="c">Text box content was: ${all_text}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Type Text</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>text: str, *modifiers: str, enter: bool = False</p>
+</dd>
+</dl>
+<p>Type text one letter at a time.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Type text</span><span class="p">    </span><span class="c">this text will be uppercase</span><span class="p">    </span><span class="c">shift</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Type Text Into</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str, text: str, clear: bool = False, enter: bool = False</p>
+</dd>
+</dl>
+<p>Type text at the position indicated by given locator.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Type text into</span><span class="p">    </span><span class="c">LoginForm.Name</span><span class="p">      </span><span class="c">Marky Mark</span><span class="p"></span>
+<span class="c">Type text into</span><span class="p">    </span><span class="c">LoginForm.Password</span><span class="p">  </span><span class="c">${PASSWORD}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="mouse">
+<h3>Mouse<a class="headerlink" href="#mouse" title="Permalink to this headline">¶</a></h3>
+<dl class="field-list">
+<dt class="field-odd">Click</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str = None, action: Action { click | left_click | double_click | … } = Action.click</p>
+</dd>
+</dl>
+<p>Click at the element indicated by locator.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Click</span><span class="p"></span>
+<span class="c">Click</span><span class="p">    </span><span class="c">LoginForm.Button</span><span class="p"></span>
+<span class="c">Click</span><span class="p">    </span><span class="c">coordinates:500,200</span><span class="p">    </span><span class="c">triple click</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Click With Offset</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str = None, x: int = 0, y: int = 0, action: Action { click | left_click | double_click | … } = Action.click</p>
+</dd>
+</dl>
+<p>Click at a given pixel offset from the given locator.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Click with offset</span><span class="p">    </span><span class="c">Robocorp.Logo</span><span class="p">    </span><span class="c">y=400</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Drag And Drop</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>source: str, destination: str, start_delay: float = 2.0, end_delay: float = 0.5</p>
+</dd>
+</dl>
+<p>Drag mouse from source to destination while holding the left mouse button.</p>
+</dd>
+<dt class="field-even">Get Mouse Position</dt>
+<dd class="field-even"><p>Get current mouse position in pixel coordinates.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${position}=</span><span class="p">    </span><span class="c">Get mouse position</span><span class="p"></span>
+<span class="c">Log</span><span class="p">    </span><span class="c">Current mouse position is ${position.x}, ${position.y}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-odd">Move Mouse</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Move mouse to given coordinates.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Move mouse</span><span class="p">    </span><span class="c">Robocorp.Logo</span><span class="p"></span>
+<span class="c">Move mouse</span><span class="p">    </span><span class="c">offset:0,400</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Press Mouse Button</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>button: typing.Any = left</p>
+</dd>
+</dl>
+<p>Press down mouse button and keep it pressed.</p>
+</dd>
+<dt class="field-even">Release Mouse Button</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>button: typing.Any = left</p>
+</dd>
+</dl>
+<p>Release mouse button that was previously pressed.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="screen">
+<h3>Screen<a class="headerlink" href="#screen" title="Permalink to this headline">¶</a></h3>
+<dl class="field-list">
+<dt class="field-odd">Get Display Dimensions</dt>
+<dd class="field-odd"><p>Returns the dimensions of the current virtual display,
+which is the combined size of all physical monitors.</p>
+</dd>
+<dt class="field-even">Highlight Elements</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>locator: str</p>
+</dd>
+</dl>
+<p>Draw an outline around all matching elements.</p>
+</dd>
+<dt class="field-even">Take Screenshot</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>path: str = None, locator: str = None</p>
+</dd>
+</dl>
+<p>Take a screenshot of the whole screen, or an element
+identified by the given locator.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../libraries/desktop_clipboard/index.html" class="btn btn-neutral float-right" title="Desktop.Clipboard" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../libraries/desktop/index.html" class="btn btn-neutral float-left" title="Desktop" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

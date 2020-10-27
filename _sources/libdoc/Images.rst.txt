@@ -8,6 +8,9 @@ Description
 
 :Library scope: 
 
+*DEPRECATED* Use library `RPA.Desktop` or `RPA.Recognition`
+from package `rpaframework-recognition` instead
+
 Library for taking screenshots, matching templates, and
 manipulating images.
 
@@ -24,6 +27,7 @@ Keywords
 :Find Template In Image:
   :Arguments: image, template, region=None, limit=None, tolerance=None
 
+  *DEPRECATED* Use keyword `Find` from library `RPA.Recognition` instead
   Attempt to find the template from the given image.
 
   :raises ImageNotFoundError: No match was found
@@ -31,6 +35,7 @@ Keywords
 :Find Template On Screen:
   :Arguments: template, \*\*kwargs
 
+  *DEPRECATED!!* use `RPA.Desktop.Find Element` instead
   Attempt to find the template image from the current desktop.
   For argument descriptions, see ``find_template_in_image()``
 
@@ -61,12 +66,14 @@ Keywords
 :Take Screenshot:
   :Arguments: filename=None, region=None
 
+  *DEPRECATED* Use keyword `RPA.Desktop.Take Screenshot` instead
   Take a screenshot of the current desktop.
 
 
 :Wait Template On Screen:
   :Arguments: template, timeout=5, \*\*kwargs
 
+  *DEPRECATED!!* use `RPA.Desktop.Wait For Element` instead
   Wait for template image to appear on current desktop.
   For further argument descriptions, see ``find_template_in_image()``
 

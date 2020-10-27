@@ -235,13 +235,13 @@ Keywords
 
 
 :Remove File:
-  :Arguments: path, force=False
+  :Arguments: path, missing_ok=True
 
   Removes the given file.
 
 
 :Remove Files:
-  :Arguments: \*paths, force=False
+  :Arguments: \*paths, missing_ok=True
 
   Removes multiple files.
 

@@ -105,6 +105,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../libraries/cloud_azure/index.html">Cloud.Azure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/cloud_google/index.html">Cloud.Google</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/desktop/index.html">Desktop</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_clipboard/index.html">Desktop.Clipboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_windows/index.html">Desktop.Windows</a></li>
@@ -213,6 +214,8 @@
 <dt class="field-odd">Library scope</dt>
 <dd class="field-odd"><p></p></dd>
 </dl>
+<p><em>DEPRECATED</em> Use library <cite>RPA.Desktop</cite> or <cite>RPA.Recognition</cite>
+from package <cite>rpaframework-recognition</cite> instead</p>
 <p>Library for taking screenshots, matching templates, and
 manipulating images.</p>
 </div>
@@ -233,7 +236,8 @@ manipulating images.</p>
 <dd class="field-odd"><p>image, template, region=None, limit=None, tolerance=None</p>
 </dd>
 </dl>
-<p>Attempt to find the template from the given image.</p>
+<p><em>DEPRECATED</em> Use keyword <cite>Find</cite> from library <cite>RPA.Recognition</cite> instead
+Attempt to find the template from the given image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">raises ImageNotFoundError</dt>
 <dd class="field-odd"><p>No match was found</p>
@@ -246,7 +250,8 @@ manipulating images.</p>
 <dd class="field-odd"><p>template, **kwargs</p>
 </dd>
 </dl>
-<p>Attempt to find the template image from the current desktop.
+<p><em>DEPRECATED!!</em> use <cite>RPA.Desktop.Find Element</cite> instead
+Attempt to find the template image from the current desktop.
 For argument descriptions, see <code class="docutils literal notranslate"><span class="pre">find_template_in_image()</span></code></p>
 </dd>
 <dt class="field-even">Get Pixel Color In Image</dt>
@@ -287,7 +292,8 @@ For argument descriptions, see <code class="docutils literal notranslate"><span 
 <dd class="field-odd"><p>filename=None, region=None</p>
 </dd>
 </dl>
-<p>Take a screenshot of the current desktop.</p>
+<p><em>DEPRECATED</em> Use keyword <cite>RPA.Desktop.Take Screenshot</cite> instead
+Take a screenshot of the current desktop.</p>
 </dd>
 <dt class="field-even">Wait Template On Screen</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -295,7 +301,8 @@ For argument descriptions, see <code class="docutils literal notranslate"><span 
 <dd class="field-odd"><p>template, timeout=5, **kwargs</p>
 </dd>
 </dl>
-<p>Wait for template image to appear on current desktop.
+<p><em>DEPRECATED!!</em> use <cite>RPA.Desktop.Wait For Element</cite> instead
+Wait for template image to appear on current desktop.
 For further argument descriptions, see <code class="docutils literal notranslate"><span class="pre">find_template_in_image()</span></code></p>
 </dd>
 </dl>

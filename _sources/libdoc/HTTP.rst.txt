@@ -16,8 +16,49 @@ Description
 Keywords
 ********
 
+Http
+====
+
+:Download:
+  :Arguments: url: str, target_file: str = None, binary: bool = True, verify: bool = True, force_new_session: bool = False, overwrite: bool = False
+
+  .. raw:: html
+
+     <p>An alias for the <code>HTTP Get</code> keyword.</p>
+     <p>The difference in use is that the URL is always downloaded based on the URL path (even without <code>target_file</code>). If there is a filename in the path, then that is used as <code>target_file</code> to save to. By default, the filename will be "downloaded.html".</p>
+     <p><code>url</code> target URL for GET request</p>
+     <p><code>target_file</code> filepath to save request content, default <code>None</code></p>
+     <p><code>binary</code> if file is saved as binary, default <code>True</code></p>
+     <p><code>verify</code> if SSL verification should be done, default <code>True</code></p>
+     <p><code>force_new_session</code> if new HTTP session should be created, default <code>False</code></p>
+     <p><code>overwrite</code> used together with <code>target_file</code>, if <code>True</code> will overwrite the target file, default <code>False</code></p>
+
+:Get Current Session Alias:
+  .. raw:: html
+
+     <p>Get request session alias that was used with the <code>HTTP Get</code> keyword.</p>
+     <p>Return name of session alias.</p>
+
+:Http Get:
+  :Arguments: url: str, target_file: str = None, binary: bool = True, verify: bool = True, force_new_session: bool = False, overwrite: bool = False
+
+  .. raw:: html
+
+     <p>A helper method for <code>Get Request</code> that will create a session, perform GET request, and store the target file, if set by the <code>target_file</code> parameter.</p>
+     <p>The old session will be used if the URL scheme and the host are the same as previously, e.g., '<a href="https://www.google.fi">https://www.google.fi</a>' part of the URL.</p>
+     <p><code>url</code> target URL for GET request</p>
+     <p><code>target_file</code> filepath to save request content, default <code>None</code></p>
+     <p><code>binary</code> if file is saved as binary, default <code>True</code></p>
+     <p><code>verify</code> if SSL verification should be done, default <code>True</code></p>
+     <p><code>force_new_session</code> if new HTTP session should be created, default <code>False</code></p>
+     <p><code>overwrite</code> used together with <code>target_file</code>, if <code>True</code> will overwrite the target file, default <code>False</code></p>
+     <p>Returns request response.</p>
+
+Requestskeywords
+================
+
 :Create Client Cert Session:
-  :Arguments: alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'OPTIONS', 'HEAD', 'PUT', 'TRACE', 'GET']
+  :Arguments: alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'PUT', 'DELETE', 'HEAD', 'TRACE', 'GET']
 
   .. raw:: html
 
@@ -38,7 +79,7 @@ Keywords
      <p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>
 
 :Create Custom Session:
-  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'OPTIONS', 'HEAD', 'PUT', 'TRACE', 'GET']
+  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'PUT', 'DELETE', 'HEAD', 'TRACE', 'GET']
 
   .. raw:: html
 
@@ -59,7 +100,7 @@ Keywords
      <p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>
 
 :Create Digest Session:
-  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'OPTIONS', 'HEAD', 'PUT', 'TRACE', 'GET']
+  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'PUT', 'DELETE', 'HEAD', 'TRACE', 'GET']
 
   .. raw:: html
 
@@ -80,7 +121,7 @@ Keywords
      <p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>
 
 :Create Ntlm Session:
-  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'OPTIONS', 'HEAD', 'PUT', 'TRACE', 'GET']
+  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'PUT', 'DELETE', 'HEAD', 'TRACE', 'GET']
 
   .. raw:: html
 
@@ -101,7 +142,7 @@ Keywords
      <p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>
 
 :Create Session:
-  :Arguments: alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'OPTIONS', 'HEAD', 'PUT', 'TRACE', 'GET']
+  :Arguments: alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'PUT', 'DELETE', 'HEAD', 'TRACE', 'GET']
 
   .. raw:: html
 
@@ -139,26 +180,6 @@ Keywords
      <p><code>allow_redirects</code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>
      <p><code>timeout</code> connection timeout</p>
 
-:Download:
-  :Arguments: url: str, target_file: str = None, binary: bool = True, verify: bool = True, force_new_session: bool = False, overwrite: bool = False
-
-  .. raw:: html
-
-     <p>An alias for the <code>HTTP Get</code> keyword.</p>
-     <p>The difference in use is that the URL is always downloaded based on the URL path (even without <code>target_file</code>). If there is a filename in the path, then that is used as <code>target_file</code> to save to. By default, the filename will be "downloaded.html".</p>
-     <p><code>url</code> target URL for GET request</p>
-     <p><code>target_file</code> filepath to save request content, default <code>None</code></p>
-     <p><code>binary</code> if file is saved as binary, default <code>True</code></p>
-     <p><code>verify</code> if SSL verification should be done, default <code>True</code></p>
-     <p><code>force_new_session</code> if new HTTP session should be created, default <code>False</code></p>
-     <p><code>overwrite</code> used together with <code>target_file</code>, if <code>True</code> will overwrite the target file, default <code>False</code></p>
-
-:Get Current Session Alias:
-  .. raw:: html
-
-     <p>Get request session alias that was used with the <code>HTTP Get</code> keyword.</p>
-     <p>Return name of session alias.</p>
-
 :Get Request:
   :Arguments: alias, uri, headers=None, data=None, json=None, params=None, allow_redirects=None, timeout=None
 
@@ -185,21 +206,6 @@ Keywords
      <p><code>allow_redirects</code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>
      <p><code>headers</code> a dictionary of headers to use with the request</p>
      <p><code>timeout</code> connection timeout</p>
-
-:Http Get:
-  :Arguments: url: str, target_file: str = None, binary: bool = True, verify: bool = True, force_new_session: bool = False, overwrite: bool = False
-
-  .. raw:: html
-
-     <p>A helper method for <code>Get Request</code> that will create a session, perform GET request, and store the target file, if set by the <code>target_file</code> parameter.</p>
-     <p>The old session will be used if the URL scheme and the host are the same as previously, e.g., '<a href="https://www.google.fi">https://www.google.fi</a>' part of the URL.</p>
-     <p><code>url</code> target URL for GET request</p>
-     <p><code>target_file</code> filepath to save request content, default <code>None</code></p>
-     <p><code>binary</code> if file is saved as binary, default <code>True</code></p>
-     <p><code>verify</code> if SSL verification should be done, default <code>True</code></p>
-     <p><code>force_new_session</code> if new HTTP session should be created, default <code>False</code></p>
-     <p><code>overwrite</code> used together with <code>target_file</code>, if <code>True</code> will overwrite the target file, default <code>False</code></p>
-     <p>Returns request response.</p>
 
 :Options Request:
   :Arguments: alias, uri, headers=None, allow_redirects=None, timeout=None

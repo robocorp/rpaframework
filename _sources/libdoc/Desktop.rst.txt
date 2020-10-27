@@ -1,0 +1,304 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: 
+
+Cross-platform library for interacting with desktop environments.
+
+********
+Keywords
+********
+
+Application
+===========
+
+:Close All Applications:
+  Close all opened applications.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Open file    order1.docx
+      Open file    order2.docx
+      Open file    order3.docx
+      # Do something with Word
+      Close all applications
+
+:Close Application:
+  :Arguments: app: Application
+
+  Close given application. Needs to be started
+  with this library.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${word}=    Open file    template.docx
+      # Do something with Word
+      Close application    ${word}
+
+
+:Open Application:
+  :Arguments: name_or_path: str, \*args
+
+  Start a given application by name (if in PATH),
+  or by path to executable.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Open application    notepad.exe
+      Open application    c:\path\to\program.exe    --example-argument
+
+
+:Open File:
+  :Arguments: path: str
+
+  Open a file with the default application.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Open file    orders.xlsx
+
+
+Clipboard
+=========
+
+:Clear Clipboard:
+  Clear the system clipboard.
+
+:Copy To Clipboard:
+  :Arguments: locator
+
+  Read value to system clipboard from given input element.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${value}=    Copy to clipboard    ResultPage.Counter
+      Log    Copied text: ${value}
+
+
+:Get Clipboard Value:
+  Read current value from system clipboard.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Copy to clipboard       coordinates:401,198
+      ${text}=    Get clipboard value
+      Log    We just copied '${text}'
+
+:Paste From Clipboard:
+  :Arguments: locator
+
+  Paste value from system clipboard into given element.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Copy to clipboard       coordinates:401,198
+      Paste from clipboard    coordinates:822,710
+
+
+:Set Clipboard Value:
+  :Arguments: text: str
+
+  Write given value to system clipboard.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Set clipboard value     This is some text.
+      Paste from clipboard    coordinates:822,710
+
+Finder
+======
+
+:Find Element:
+  :Arguments: locator: str
+
+  Find an element defined by locator, and return its position.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${match}=    Find element    image:logo.png
+      Log    Found logo at ${match.x}, ${match.y}
+
+
+:Find Elements:
+  :Arguments: locator: str
+
+  Find all elements defined by locator, and return their positions.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${matches}=    Find elements    image:icon.png
+      FOR    ${match}  IN  @{matches}
+          Log    Found icon at ${match.x}, ${match.y}
+      END
+
+
+:Set Default Confidence:
+  :Arguments: confidence: float
+
+  Set the default template matching confidence.
+
+
+:Wait For Element:
+  :Arguments: locator: str, timeout: float = 10.0, interval: float = 0.5
+
+  Wait for an element defined by locator to exist or
+  until timeout is reached.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Wait for element    alias:CookieConsent    timeout=30
+      Click    image:%{ROBOT_ROOT}/accept.png
+
+
+Keyboard
+========
+
+:Press Keys:
+  :Arguments: \*keys: str
+
+  Press multiple keys down simultaneously.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Press keys    ctrl  alt  delete
+
+      Press keys    ctrl  a
+      Press keys    ctrl  c
+      ${all_text}=  Get clipboard value
+      Log    Text box content was: ${all_text}
+
+
+:Type Text:
+  :Arguments: text: str, \*modifiers: str, enter: bool = False
+
+  Type text one letter at a time.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Type text    this text will be uppercase    shift
+
+
+:Type Text Into:
+  :Arguments: locator: str, text: str, clear: bool = False, enter: bool = False
+
+  Type text at the position indicated by given locator.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Type text into    LoginForm.Name      Marky Mark
+      Type text into    LoginForm.Password  ${PASSWORD}
+
+
+Mouse
+=====
+
+:Click:
+  :Arguments: locator: str = None, action: Action { click | left_click | double_click | ... } = Action.click
+
+  Click at the element indicated by locator.
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Click
+      Click    LoginForm.Button
+      Click    coordinates:500,200    triple click
+
+
+:Click With Offset:
+  :Arguments: locator: str = None, x: int = 0, y: int = 0, action: Action { click | left_click | double_click | ... } = Action.click
+
+  Click at a given pixel offset from the given locator.
+
+  .. code-block:: robotframework
+
+      Click with offset    Robocorp.Logo    y=400
+
+
+:Drag And Drop:
+  :Arguments: source: str, destination: str, start_delay: float = 2.0, end_delay: float = 0.5
+
+  Drag mouse from source to destination while holding the left mouse button.
+
+
+:Get Mouse Position:
+  Get current mouse position in pixel coordinates.
+
+  .. code-block:: robotframework
+
+      ${position}=    Get mouse position
+      Log    Current mouse position is ${position.x}, ${position.y}
+
+:Move Mouse:
+  :Arguments: locator: str
+
+  Move mouse to given coordinates.
+
+  .. code-block:: robotframework
+
+      Move mouse    Robocorp.Logo
+      Move mouse    offset:0,400
+
+
+:Press Mouse Button:
+  :Arguments: button: typing.Any = left
+
+  Press down mouse button and keep it pressed.
+
+:Release Mouse Button:
+  :Arguments: button: typing.Any = left
+
+  Release mouse button that was previously pressed.
+
+Screen
+======
+
+:Get Display Dimensions:
+  Returns the dimensions of the current virtual display,
+  which is the combined size of all physical monitors.
+
+:Highlight Elements:
+  :Arguments: locator: str
+
+  Draw an outline around all matching elements.
+
+:Take Screenshot:
+  :Arguments: path: str = None, locator: str = None
+
+  Take a screenshot of the whole screen, or an element
+  identified by the given locator.
+
