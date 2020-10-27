@@ -3,13 +3,13 @@ Release notes
 
 Upcoming release
 ----------------
+- Library **Desktop**: Initial release of new cross-platform desktop automation library
+- Library **FileSystem**: Replace ``force`` arguments with ``missing_ok`` to match python API
 - Library **Robocloud.Items**: Remove invalid assert on file overwrite
 - Library **Browser**:
 
-  - Fix keywords like ``Is Element Visible`` failing Robot runs although
-    they should only return boolean status
-  - Set Chrome argument ``disable-dev-shm-usage`` by default (previously it
-    was set only in headless mode)
+  - Add new option to allow missing elements with status keywords such as ``Is Element Visible``
+  - Set Chrome argument ``disable-dev-shm-usage`` by default in all environments
 
 
 5.3.3
@@ -208,7 +208,6 @@ Upcoming release
 2.2.0
 -----
 
-- **FileSystem**: Replace ``force`` arguments with ``missing_ok`` to match python API
 - **Robocloud.Secrets**: Add support for Robocloud end-to-end encryption
 - **FileSystem**: Add ``exist_ok`` argument for ``Create directory`` keyword
 - **Tasks**: Fix support for FAIL status in schema actions
