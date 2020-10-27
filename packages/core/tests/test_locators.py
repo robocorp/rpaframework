@@ -2,13 +2,18 @@ import copy
 import io
 import json
 import pytest
+from pathlib import Path
+
 from RPA.core.locators import (
     TYPES,
     LocatorsDatabase,
     Locator,
+    Coordinates,
+    Offset,
     BrowserDOM,
     ImageTemplate,
     sanitize_name,
+    parse_locator,
 )
 
 
@@ -110,6 +115,32 @@ def test_sanitize_name(sanitized):
     assert sanitize_name(name) == result
 
 
+class TestParse:
+    def test_parse_image(self):
+        locator = parse_locator("image:path/to/file.png")
+        assert isinstance(locator, ImageTemplate)
+        assert locator.path == "path/to/file.png"
+        assert locator.confidence == None
+
+    def test_parse_image_args(self):
+        locator = parse_locator("image:path/to/file.png,80.0")
+        assert isinstance(locator, ImageTemplate)
+        assert locator.path == "path/to/file.png"
+        assert locator.confidence == 80.0
+
+    def test_parse_coordinates(self):
+        locator = parse_locator("coordinates:100,200")
+        assert isinstance(locator, Coordinates)
+        assert locator.x == 100
+        assert locator.y == 200
+
+    def test_parse_offset(self):
+        locator = parse_locator("offset:100,200")
+        assert isinstance(locator, Offset)
+        assert locator.x == 100
+        assert locator.y == 200
+
+
 class TestLocators:
     def test_types(self):
         assert "browser" in TYPES
@@ -182,6 +213,20 @@ class TestLocators:
         assert isinstance(locator, ImageTemplate)
         assert locator.path == "images/TestTemplate.png"
         assert locator.source == "images/TestSource.png"
+        assert locator.confidence == None
+
+    def test_from_dict_image_template_optional(self):
+        data = {
+            "type": "image",
+            "path": "images/TestTemplate.png",
+            "source": "images/TestSource.png",
+            "confidence": 90.0,
+        }
+        locator = Locator.from_dict(data)
+        assert isinstance(locator, ImageTemplate)
+        assert locator.path == "images/TestTemplate.png"
+        assert locator.source == "images/TestSource.png"
+        assert locator.confidence == 90.0
 
 
 class TestDatabase:

@@ -72,12 +72,16 @@ class ImageTemplate(Locator):
     """Image-based locator for template matching."""
 
     path: Path
+    confidence: Optional[float] = None
     source: Optional[Path] = None  # TODO: Remove when crop is implemented
-    confidence: float = 100.0
 
     @property
     def typename(self):
         return "image"
+
+    def __post_init__(self):
+        if self.confidence is not None:
+            self.confidence = float(self.confidence)
 
 
 @dataclass
@@ -105,6 +109,10 @@ class Coordinates(Locator):
     def typename(self):
         return "coordinates"
 
+    def __post_init__(self):
+        self.x = int(self.x)
+        self.y = int(self.y)
+
 
 @dataclass
 class Offset(Locator):
@@ -116,3 +124,7 @@ class Offset(Locator):
     @property
     def typename(self):
         return "offset"
+
+    def __post_init__(self):
+        self.x = int(self.x)
+        self.y = int(self.y)

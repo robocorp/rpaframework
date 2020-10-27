@@ -27,6 +27,4 @@ def parse_locator(locator: str) -> Locator:
             raise ValueError(f"Unknown locator type: {name}")
 
         args = value.split(",")
-        args = [field.type(value) for field, value in zip(fields(klass), args)]
-
         return klass(*args)
