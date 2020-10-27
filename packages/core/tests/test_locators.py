@@ -8,7 +8,12 @@ from RPA.core.locators import (
     Locator,
     BrowserDOM,
     ImageTemplate,
+    sanitize_name,
 )
+
+
+def to_stream(data):
+    return io.StringIO(json.dumps(data))
 
 
 LEGACY = [
@@ -59,9 +64,50 @@ CURRENT = {
     },
 }
 
+ERRORS = {
+    "MissingField": {
+        "type": "browser",
+        "strategy": "id",
+        "source": "https://robotsparebinindustries.com/",
+    },
+    "DuplicateSanitized?": {
+        "type": "browser",
+        "strategy": "id",
+        "value": "password",
+        "source": "https://robotsparebinindustries.com/",
+    },
+    "DuplicateSanitized!": {
+        "type": "browser",
+        "strategy": "class",
+        "value": "btn-primary",
+        "source": "https://robotsparebinindustries.com/",
+    },
+}
 
-def to_stream(data):
-    return io.StringIO(json.dumps(data))
+
+NAMES = [
+    ("Name", "name"),
+    ("name", "name"),
+    ("with space", "with-space"),
+    ("multiple   spaces", "multiple-spaces"),
+    ("     ", ""),
+    ("123123", "123123"),
+    ("what??", "what"),
+    ("!! !!", ""),
+    ("  strip  ", "strip"),
+    ("Google.Logo", "google-logo"),
+    (".Multiple..periods...again.", "multiple-periods-again"),
+]
+
+
+@pytest.fixture(params=NAMES, ids=lambda x: x[0])
+def sanitized(request):
+    yield request.param[0], request.param[1]
+
+
+def test_sanitize_name(sanitized):
+    name, result = sanitized
+    assert sanitize_name(name) == result
 
 
 class TestLocators:
@@ -206,3 +252,11 @@ class TestDatabase:
 
         assert database.error is None
         assert len(database.locators) == 3
+
+    def test_load_invalid(self):
+        database = LocatorsDatabase(to_stream(ERRORS))
+        database.load()
+
+        assert database.error is None
+        assert len(database.locators) == 1
+        assert len(database._invalid) == 2

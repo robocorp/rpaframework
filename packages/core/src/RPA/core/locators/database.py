@@ -3,8 +3,7 @@ import io
 import json
 import logging
 import os
-import random
-import string
+import re
 from contextlib import contextmanager
 from pathlib import Path
 from RPA.core.locators import Locator, BrowserDOM
@@ -25,6 +24,29 @@ def open_stream(obj, *args, **kwargs):
     finally:
         if is_open:
             obj.close()
+
+
+def sanitize_name(name):
+    """Sanitize locator name for use in filenames.
+    Sanitized name should be unique in database.
+
+    Examples:
+        Google.Logo -> google-logo
+        Cool Stuff -> cool-stuff
+        What?? -> what
+    """
+    # Convert everything to lowercase
+    name = str(name).lower()
+    # Replace period delimiters with single space
+    name = re.sub(r"\.+", " ", name)
+    # Strip non-word characters
+    name = re.sub(r"[^\w\s]", "", name)
+    # Strip leading/trailing whitespace
+    name = name.strip()
+    # Convert whitespace runs to single dash
+    name = re.sub(r"\s+", "-", name)
+
+    return name
 
 
 class ValidationError(ValueError):
@@ -89,7 +111,7 @@ class LocatorsDatabase:
                 data = json.load(fd)
 
             if isinstance(data, list):
-                locators, invalid = self._migrate_data(data)
+                locators, invalid = self._load_legacy(data)
             else:
                 locators, invalid = self._load(data)
 
@@ -125,8 +147,14 @@ class LocatorsDatabase:
         locators = {}
         invalid = {}
 
+        sanitized = []
         for name, fields in data.items():
             try:
+                sname = sanitize_name(name)
+                if sname in sanitized:
+                    raise ValueError(f"Duplicate sanitized name: {name} / {sname}")
+                sanitized.append(sname)
+
                 locators[name] = Locator.from_dict(fields)
             except Exception as exc:  # pylint: disable=broad-except
                 self.logger.warning('Failed to parse locator "%s": %s', name, exc)
@@ -134,21 +162,18 @@ class LocatorsDatabase:
 
         return locators, invalid
 
-    def _migrate_data(self, data):
+    def _load_legacy(self, data):
         """Attempt to load database in legacy format."""
         data = {fields["name"]: fields for fields in data if "name" in fields}
 
         locators, invalid = self._load(data)
 
-        for locator in locators.values():
-            self._convert_screenshot(locator)
-
-        self.save()
-        self.logger.warning("Migrated locators database from legacy format")
+        for name, locator in locators.items():
+            self._convert_screenshot(name, locator)
 
         return locators, invalid
 
-    def _convert_screenshot(self, locator):
+    def _convert_screenshot(self, name, locator):
         """Migrate base64 screenshot to file."""
         if not isinstance(locator, BrowserDOM):
             return
@@ -156,20 +181,18 @@ class LocatorsDatabase:
         if not locator.screenshot:
             return
 
+        root = (
+            Path(self.path).parent
+            if not isinstance(self.path, io.IOBase)
+            else Path(".")
+        )
+
+        images = root / ".images"
+        path = images / "{}-{}.png".format(sanitize_name(name), "screenshot")
         content = base64.b64decode(locator.screenshot)
 
-        images = Path(self.path).parent / ".images"
         os.makedirs(images, exist_ok=True)
-
-        # Brute-force unique name
-        path = None
-        while True:
-            name = "".join(random.choice(string.hexdigits) for _ in range(8))
-            path = (images / name).with_suffix(".png")
-            if not path.exists():
-                break
-
         with open(path, "wb") as fd:
             fd.write(content)
 
-        locator.screenshot = path
+        locator.screenshot = path.relative_to(root)
