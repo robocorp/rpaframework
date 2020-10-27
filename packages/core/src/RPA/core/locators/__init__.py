@@ -1,7 +1,7 @@
 # flake8: noqa
 from dataclasses import fields
 from .containers import TYPES, Locator, BrowserDOM, ImageTemplate, Coordinates, Offset
-from .database import LocatorsDatabase
+from .database import LocatorsDatabase, sanitize_name
 
 
 def parse_locator(locator: str) -> Locator:
