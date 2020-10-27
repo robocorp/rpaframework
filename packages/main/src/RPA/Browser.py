@@ -14,6 +14,7 @@ import webbrowser
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from SeleniumLibrary import SeleniumLibrary, EMBED
 from SeleniumLibrary.base import keyword
+from SeleniumLibrary.errors import ElementNotFound
 from SeleniumLibrary.keywords import (
     BrowserManagementKeywords,
     ScreenshotKeywords,
@@ -577,13 +578,11 @@ class Browser(SeleniumLibrary):
         self.input_text(locator, text)
 
     @keyword
-    def is_element_enabled(
-        self, locator: str, assert_element_exists: bool = False
-    ) -> bool:
+    def is_element_enabled(self, locator: str, missing_ok: bool = True) -> bool:
         """Is element enabled
 
         ``locator`` element locator
-        ``assert_element_exists`` default False, set to True if keyword should
+        ``missing_ok`` default True, set to False if keyword should
         Fail if element does not exist
 
         Example:
@@ -592,17 +591,15 @@ class Browser(SeleniumLibrary):
         return self._run_should_keyword_and_return_status(
             self.element_should_be_enabled,
             locator,
-            assert_element_exists=assert_element_exists,
+            missing_ok=missing_ok,
         )
 
     @keyword
-    def is_element_visible(
-        self, locator: str, assert_element_exists: bool = False
-    ) -> bool:
+    def is_element_visible(self, locator: str, missing_ok: bool = True) -> bool:
         """Is element visible
 
         ``locator`` element locator
-        ``assert_element_exists`` default False, set to True if keyword should
+        ``missing_ok`` default True, set to False if keyword should
         Fail if element does not exist
 
         Example:
@@ -611,17 +608,15 @@ class Browser(SeleniumLibrary):
         return self._run_should_keyword_and_return_status(
             self.element_should_be_visible,
             locator,
-            assert_element_exists=assert_element_exists,
+            missing_ok=missing_ok,
         )
 
     @keyword
-    def is_element_disabled(
-        self, locator: str, assert_element_exists: bool = False
-    ) -> bool:
+    def is_element_disabled(self, locator: str, missing_ok: bool = True) -> bool:
         """Is element disabled
 
         ``locator`` element locator
-        ``assert_element_exists`` default False, set to True if keyword should
+        ``missing_ok`` default True, set to False if keyword should
         Fail if element does not exist
 
         Example:
@@ -630,17 +625,15 @@ class Browser(SeleniumLibrary):
         return self._run_should_keyword_and_return_status(
             self.element_should_be_disabled,
             locator,
-            assert_element_exists=assert_element_exists,
+            missing_ok=missing_ok,
         )
 
     @keyword
-    def is_element_focused(
-        self, locator: str, assert_element_exists: bool = False
-    ) -> bool:
+    def is_element_focused(self, locator: str, missing_ok: bool = True) -> bool:
         """Is element focused
 
         ``locator`` element locator
-        ``assert_element_exists`` default False, set to True if keyword should
+        ``missing_ok`` default True, set to False if keyword should
         Fail if element does not exist
 
         Example:
@@ -649,7 +642,7 @@ class Browser(SeleniumLibrary):
         return self._run_should_keyword_and_return_status(
             self.element_should_be_focused,
             locator,
-            assert_element_exists=assert_element_exists,
+            missing_ok=missing_ok,
         )
 
     @keyword
@@ -1184,14 +1177,13 @@ class Browser(SeleniumLibrary):
         return self._run_should_keyword_and_return_status(self.title_should_be, title)
 
     def _run_should_keyword_and_return_status(self, runnable_keyword, *args, **kwargs):
-        assert_element_exists = kwargs.pop("assert_element_exists", True)
-        assert_error_to_check = AssertionError if assert_element_exists else Exception
+        missing_ok = kwargs.pop("missing_ok", False)
+        catches = (AssertionError, ElementNotFound) if missing_ok else (AssertionError)
 
         try:
             runnable_keyword(*args, **kwargs)
             return True
-        # pylint: disable=broad-except
-        except assert_error_to_check as e:
+        except catches as e:
             BuiltIn().log(
                 "Ran with keyword <b>%s</b> which returned error: <i>%s</i>"
                 % (runnable_keyword.__func__.__name__.replace("_", " ").title(), e),
