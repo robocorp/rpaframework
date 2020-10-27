@@ -878,7 +878,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "6.0.0"
+version = "6.0.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -910,7 +910,7 @@ robotframework-requests = ">=0.6.5,<0.7.0"
 robotframework-sapguilibrary = {version = ">=1.1,<2.0", markers = "sys_platform == \"win32\""}
 robotframework-seleniumlibrary = ">=4.5.0,<5.0.0"
 robotframework-seleniumtestability = ">=1.1.0,<2.0.0"
-rpaframework-core = ">=2.1.0,<3.0.0"
+rpaframework-core = ">=2.1.1,<3.0.0"
 simple_salesforce = ">=1.0.0,<2.0.0"
 tweepy = ">=3.8.0,<4.0.0"
 xlrd = ">=1.2.0,<2.0.0"
@@ -1322,7 +1322,7 @@ testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "a5169f47fda70420e40d85c1f3d00fd03dd94caf724283524f8b9902353a0feb"
+content-hash = "dbb39175d23a033dd8ff140ce130a1affea8e095550170db1cd69aaea2183fee"
 
 [metadata.files]
 alabaster = [
@@ -1898,8 +1898,8 @@ robotframeworklexer = [
     {file = "robotframeworklexer-1.1.tar.gz", hash = "sha256:ddd3ea50b54b47aee86a83c400534a61e2588dec875a3c10f04822280e834b8f"},
 ]
 rpaframework = [
-    {file = "rpaframework-6.0.0-py3-none-any.whl", hash = "sha256:548ea258913b0096591d25cc1c356c6747b311b5e58e7c7b3d03834598a2d264"},
-    {file = "rpaframework-6.0.0.tar.gz", hash = "sha256:392e71ff1f274176578893d6e8fd9088cd707fd0e285edf5a294b96c65fb9c50"},
+    {file = "rpaframework-6.0.1-py3-none-any.whl", hash = "sha256:e8090e44d8348eac778d53f66b73499fbeab29c1538255d9f4de14ebec46a13a"},
+    {file = "rpaframework-6.0.1.tar.gz", hash = "sha256:c959481360d6dc0ffe12e29b104e7e8f832c1d94849076d94f627b630ed32c1d"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-2.1.1.tar.gz", hash = "sha256:6817653c79a80786fd04f21ff1a6ec8e7d9960434dc3c267c04b31f0c185381a"},
