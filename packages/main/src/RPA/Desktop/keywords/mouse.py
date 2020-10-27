@@ -1,6 +1,5 @@
 from enum import Enum
-from typing import Optional
-from pynput.mouse import Button, Controller
+from typing import Optional, Any
 from RPA.core.helpers import delay
 from RPA.core.geometry import Point
 from RPA.Desktop.keywords import LibraryContext, keyword
@@ -30,6 +29,9 @@ def to_action(value):
 
 def to_button(value):
     """Convert value to Button enum."""
+    # pylint: disable=C0415
+    from pynput.mouse import Button
+
     if isinstance(value, Button):
         return value
 
@@ -45,7 +47,14 @@ class MouseKeywords(LibraryContext):
 
     def __init__(self, ctx):
         super().__init__(ctx)
-        self._mouse = Controller()
+        try:
+            # pylint: disable=C0415
+            from pynput.mouse import Controller
+
+            self._mouse = Controller()
+            self._error = None
+        except ImportError as exc:
+            self._error = exc
 
     def _move(self, point: Point) -> None:
         """Move mouse to given point."""
@@ -57,6 +66,9 @@ class MouseKeywords(LibraryContext):
         self, action: Action = Action.click, point: Optional[Point] = None
     ) -> None:
         """Perform defined mouse action, and optionally move to given point first."""
+        # pylint: disable=C0415
+        from pynput.mouse import Button
+
         action = to_action(action)
 
         if point:
@@ -95,6 +107,8 @@ class MouseKeywords(LibraryContext):
         :param locator: Locator for click position
         :param action:  Click action, e.g. right click
         """
+        if self._error:
+            raise self._error
         action = to_action(action)
         if locator:
             match = self.ctx.find_element(locator)
@@ -121,6 +135,8 @@ class MouseKeywords(LibraryContext):
         :param y:       Click vertical offset in pixels
         :param action:  Click action, e.g. right click
         """
+        if self._error:
+            raise self._error
         action = to_action(action)
         if locator:
             match = self.ctx.find_element(locator)
@@ -139,6 +155,8 @@ class MouseKeywords(LibraryContext):
             ${position}=    Get mouse position
             Log    Current mouse position is ${position.x}, ${position.y}
         """
+        if self._error:
+            raise self._error
         x, y = self._mouse.position
         return Point(x, y)
 
@@ -153,18 +171,24 @@ class MouseKeywords(LibraryContext):
 
         :param locator: Locator for mouse position
         """
+        if self._error:
+            raise self._error
         match = self.ctx.find_element(locator)
         self._move(match)
 
     @keyword
-    def press_mouse_button(self, button: Button = Button.left) -> None:
+    def press_mouse_button(self, button: Any = "left") -> None:
         """Press down mouse button and keep it pressed."""
+        if self._error:
+            raise self._error
         button = to_button(button)
         self._mouse.press(button)
 
     @keyword
-    def release_mouse_button(self, button: Button = Button.left) -> None:
+    def release_mouse_button(self, button: Any = "left") -> None:
         """Release mouse button that was previously pressed."""
+        if self._error:
+            raise self._error
         button = to_button(button)
         self._mouse.release(button)
 
@@ -183,6 +207,8 @@ class MouseKeywords(LibraryContext):
         :param start_delay: Delay in seconds after pressing down mouse button
         :param end_delay:   Delay in seconds before releasing mouse button
         """
+        if self._error:
+            raise self._error
         src = self.ctx.find_element(source)
         dst = self.ctx.find_element(destination)
 
