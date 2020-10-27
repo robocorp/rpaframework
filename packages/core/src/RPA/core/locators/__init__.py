@@ -11,7 +11,6 @@ def parse_locator(locator: str) -> Locator:
 
     try:
         name, _, value = str(locator).partition(":")
-        name = name.strip().lower()
     except ValueError as err:
         raise ValueError(f"Invalid locator format: {locator}") from err
 
@@ -19,6 +18,7 @@ def parse_locator(locator: str) -> Locator:
     if not value:
         name, value = "alias", name
 
+    name = name.strip().lower()
     if name == "alias":
         return LocatorsDatabase.load_by_name(value)
     else:
