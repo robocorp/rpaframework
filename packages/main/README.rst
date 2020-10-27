@@ -72,6 +72,8 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `Database`_                | Interact with databases                      |
 +----------------------------+----------------------------------------------+
+| `Desktop`_                 | Cross-platform desktop automation            |
++----------------------------+----------------------------------------------+
 | `Desktop.Clipboard`_       | Interact with the system clipboard           |
 +----------------------------+----------------------------------------------+
 | `Desktop.OperatingSystem`_ | Read OS information and manipulate processes |
@@ -125,6 +127,7 @@ The RPA Framework project currently includes the following libraries:
 .. _Cloud.Azure: https://rpaframework.org/libraries/cloud_azure/
 .. _Cloud.Google: https://rpaframework.org/libraries/cloud_google/
 .. _Database: https://rpaframework.org/libraries/database/
+.. _Desktop: https://rpaframework.org/libraries/desktop/
 .. _Desktop.Clipboard: https://rpaframework.org/libraries/desktop_clipboard/
 .. _Desktop.Operatingsystem: https://rpaframework.org/libraries/desktop_operatingsystem/
 .. _Desktop.Windows: https://rpaframework.org/libraries/desktop_windows/
