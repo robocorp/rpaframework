@@ -61,8 +61,18 @@ be omitted as its the default type.
     Move mouse    offset:200,0
     Click
 
+Named locators
+==============
 
-For more information on creating and managing locators, read this <linkhere>.
+The library supports storing locators in a database, which contains
+all of the required fields and various bits of metadata. This enables
+having one source of truth, which can be updated if a website's or applications's
+UI changes. Robot Framework scripts can then only contain a reference
+to a stored locator by name.
+
+The main way to create named locators is with `Robocorp Lab`_.
+
+.. _Robocorp Lab: https://robocorp.com/docs/product-manuals/robocorp-lab/robocorp-lab-overview
 
 ******************
 Keyboard and mouse
