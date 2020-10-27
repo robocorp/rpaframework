@@ -815,9 +815,11 @@ will check if alert is present at all</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.is_element_disabled">
-<code class="sig-name descname">is_element_disabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_disabled" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">is_element_disabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">missing_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_disabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element disabled</p>
-<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator
+<code class="docutils literal notranslate"><span class="pre">missing_ok</span></code> default True, set to False if keyword should
+Fail if element does not exist</p>
 <dl>
 <dt>Example:</dt><dd><div class="line-block">
 <div class="line">${res} | Is Element Disabled | //input[&#64;type=”submit”] |</div>
@@ -828,9 +830,11 @@ will check if alert is present at all</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.is_element_enabled">
-<code class="sig-name descname">is_element_enabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_enabled" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">is_element_enabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">missing_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_enabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element enabled</p>
-<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator
+<code class="docutils literal notranslate"><span class="pre">missing_ok</span></code> default True, set to False if keyword should
+Fail if element does not exist</p>
 <dl>
 <dt>Example:</dt><dd><div class="line-block">
 <div class="line">${res} | Is Element Enabled | input.field1 |</div>
@@ -841,9 +845,11 @@ will check if alert is present at all</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.is_element_focused">
-<code class="sig-name descname">is_element_focused</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_focused" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">is_element_focused</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">missing_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_focused" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element focused</p>
-<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator
+<code class="docutils literal notranslate"><span class="pre">missing_ok</span></code> default True, set to False if keyword should
+Fail if element does not exist</p>
 <dl>
 <dt>Example:</dt><dd><div class="line-block">
 <div class="line">${res} | Is Element Focused | //input[&#64;id=”freetext”] |</div>
@@ -870,9 +876,11 @@ will check if alert is present at all</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Browser.is_element_visible">
-<code class="sig-name descname">is_element_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_visible" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">is_element_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">missing_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Browser.is_element_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element visible</p>
-<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator
+<code class="docutils literal notranslate"><span class="pre">missing_ok</span></code> default True, set to False if keyword should
+Fail if element does not exist</p>
 <dl>
 <dt>Example:</dt><dd><div class="line-block">
 <div class="line">${res} | Is Element Visible | id:confirmation |</div>

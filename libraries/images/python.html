@@ -233,6 +233,8 @@ set self.__traceback__ to tb and return self.</p>
 <dt id="RPA.Images.Images">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Images.</code><code class="sig-name descname">Images</code><a class="headerlink" href="#RPA.Images.Images" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p><em>DEPRECATED</em> Use library <cite>RPA.Desktop</cite> or <cite>RPA.Recognition</cite>
+from package <cite>rpaframework-recognition</cite> instead</p>
 <p>Library for taking screenshots, matching templates, and
 manipulating images.</p>
 <dl class="method">
@@ -252,8 +254,9 @@ manipulating images.</p>
 
 <dl class="method">
 <dt id="RPA.Images.Images.find_template_in_image">
-<code class="sig-name descname">find_template_in_image</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">template</em>, <em class="sig-param">region=None</em>, <em class="sig-param">limit=None</em>, <em class="sig-param">tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Images.find_template_in_image" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attempt to find the template from the given image.</p>
+<code class="sig-name descname">find_template_in_image</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">template</em>, <em class="sig-param">region=None</em>, <em class="sig-param">limit=None</em>, <em class="sig-param">tolerance=None</em><span class="sig-paren">)</span> &#x2192; List[RPA.core.geometry.Region]<a class="headerlink" href="#RPA.Images.Images.find_template_in_image" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>DEPRECATED</em> Use keyword <cite>Find</cite> from library <cite>RPA.Recognition</cite> instead
+Attempt to find the template from the given image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -275,8 +278,9 @@ manipulating images.</p>
 
 <dl class="method">
 <dt id="RPA.Images.Images.find_template_on_screen">
-<code class="sig-name descname">find_template_on_screen</code><span class="sig-paren">(</span><em class="sig-param">template</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Images.find_template_on_screen" title="Permalink to this definition">¶</a></dt>
-<dd><p>Attempt to find the template image from the current desktop.
+<code class="sig-name descname">find_template_on_screen</code><span class="sig-paren">(</span><em class="sig-param">template</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; List[RPA.core.geometry.Region]<a class="headerlink" href="#RPA.Images.Images.find_template_on_screen" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>DEPRECATED!!</em> use <cite>RPA.Desktop.Find Element</cite> instead
+Attempt to find the template image from the current desktop.
 For argument descriptions, see <code class="docutils literal notranslate"><span class="pre">find_template_in_image()</span></code></p>
 </dd></dl>
 
@@ -339,7 +343,8 @@ For argument descriptions, see <code class="docutils literal notranslate"><span 
 <dl class="method">
 <dt id="RPA.Images.Images.take_screenshot">
 <code class="sig-name descname">take_screenshot</code><span class="sig-paren">(</span><em class="sig-param">filename=None</em>, <em class="sig-param">region=None</em><span class="sig-paren">)</span> &#x2192; &lt;module 'PIL.Image' from '/home/runner/work/rpaframework/rpaframework/.venv/lib/python3.7/site-packages/PIL/Image.py'&gt;<a class="headerlink" href="#RPA.Images.Images.take_screenshot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Take a screenshot of the current desktop.</p>
+<dd><p><em>DEPRECATED</em> Use keyword <cite>RPA.Desktop.Take Screenshot</cite> instead
+Take a screenshot of the current desktop.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -353,7 +358,8 @@ For argument descriptions, see <code class="docutils literal notranslate"><span 
 <dl class="method">
 <dt id="RPA.Images.Images.wait_template_on_screen">
 <code class="sig-name descname">wait_template_on_screen</code><span class="sig-paren">(</span><em class="sig-param">template</em>, <em class="sig-param">timeout=5</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Images.wait_template_on_screen" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wait for template image to appear on current desktop.
+<dd><p><em>DEPRECATED!!</em> use <cite>RPA.Desktop.Wait For Element</cite> instead
+Wait for template image to appear on current desktop.
 For further argument descriptions, see <code class="docutils literal notranslate"><span class="pre">find_template_in_image()</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -361,28 +367,6 @@ For further argument descriptions, see <code class="docutils literal notranslate
 </dd>
 </dl>
 </dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="RPA.Images.Point">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Images.</code><code class="sig-name descname">Point</code><span class="sig-paren">(</span><em class="sig-param">x: int</em>, <em class="sig-param">y: int</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Point" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Container for a 2D point.</p>
-<dl class="method">
-<dt id="RPA.Images.Point.as_tuple">
-<code class="sig-name descname">as_tuple</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Point.as_tuple" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="RPA.Images.Point.x">
-<code class="sig-name descname">x</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Images.Point.x" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="RPA.Images.Point.y">
-<code class="sig-name descname">y</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Images.Point.y" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -416,68 +400,6 @@ For further argument descriptions, see <code class="docutils literal notranslate
 <dl class="attribute">
 <dt id="RPA.Images.RGB.red">
 <code class="sig-name descname">red</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Images.RGB.red" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="RPA.Images.Region">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Images.</code><code class="sig-name descname">Region</code><span class="sig-paren">(</span><em class="sig-param">left: int</em>, <em class="sig-param">top: int</em>, <em class="sig-param">right: int</em>, <em class="sig-param">bottom: int</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Region" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Container for a 2D rectangular region.</p>
-<dl class="method">
-<dt id="RPA.Images.Region.area">
-<em class="property">property </em><code class="sig-name descname">area</code><a class="headerlink" href="#RPA.Images.Region.area" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Images.Region.as_tuple">
-<code class="sig-name descname">as_tuple</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Region.as_tuple" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="RPA.Images.Region.bottom">
-<code class="sig-name descname">bottom</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Images.Region.bottom" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Images.Region.center">
-<em class="property">property </em><code class="sig-name descname">center</code><a class="headerlink" href="#RPA.Images.Region.center" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Images.Region.from_size">
-<em class="property">classmethod </em><code class="sig-name descname">from_size</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">width</em>, <em class="sig-param">height</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Region.from_size" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Images.Region.height">
-<em class="property">property </em><code class="sig-name descname">height</code><a class="headerlink" href="#RPA.Images.Region.height" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="RPA.Images.Region.left">
-<code class="sig-name descname">left</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Images.Region.left" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Images.Region.move">
-<code class="sig-name descname">move</code><span class="sig-paren">(</span><em class="sig-param">left</em>, <em class="sig-param">top</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Region.move" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="RPA.Images.Region.right">
-<code class="sig-name descname">right</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Images.Region.right" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="RPA.Images.Region.top">
-<code class="sig-name descname">top</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Images.Region.top" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Images.Region.width">
-<em class="property">property </em><code class="sig-name descname">width</code><a class="headerlink" href="#RPA.Images.Region.width" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -539,18 +461,6 @@ For further argument descriptions, see <code class="docutils literal notranslate
 <dt id="RPA.Images.to_image">
 <code class="sig-prename descclassname">RPA.Images.</code><code class="sig-name descname">to_image</code><span class="sig-paren">(</span><em class="sig-param">obj</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.to_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert <cite>obj</cite> to instance of Pillow’s Image class.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="RPA.Images.to_point">
-<code class="sig-prename descclassname">RPA.Images.</code><code class="sig-name descname">to_point</code><span class="sig-paren">(</span><em class="sig-param">obj</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.to_point" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert <cite>obj</cite> to instance of Point.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="RPA.Images.to_region">
-<code class="sig-prename descclassname">RPA.Images.</code><code class="sig-name descname">to_region</code><span class="sig-paren">(</span><em class="sig-param">obj</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.to_region" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert <cite>obj</cite> to instance of Region.</p>
 </dd></dl>
 
 </div>

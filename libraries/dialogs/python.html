@@ -212,11 +212,19 @@
 <span id="dialogs"></span><h2>Dialogs<a class="headerlink" href="#module-RPA.Dialogs" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="RPA.Dialogs.Dialogs">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Dialogs.</code><code class="sig-name descname">Dialogs</code><a class="headerlink" href="#RPA.Dialogs.Dialogs" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Dialogs.</code><code class="sig-name descname">Dialogs</code><span class="sig-paren">(</span><em class="sig-param">server_port: int = 8105</em>, <em class="sig-param">stylesheet: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Dialogs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Library provides features for building form to request for user input.</p>
 <p>Form elements can be built with library keywords or form can be defined
 in a JSON file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server_port</strong> – HTTP server port, defaults to 8105</p></li>
+<li><p><strong>stylesheet</strong> – defaults to built-in Robocorp stylesheet</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="RPA.Dialogs.Dialogs.ROBOT_LIBRARY_SCOPE">
 <code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Dialogs.Dialogs.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
@@ -955,7 +963,7 @@ deadlock.</p>
 
 <dl class="function">
 <dt id="RPA.Dialogs.start_server_cmd">
-<code class="sig-prename descclassname">RPA.Dialogs.</code><code class="sig-name descname">start_server_cmd</code><span class="sig-paren">(</span><em class="sig-param">directory</em>, <em class="sig-param">port=8105</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.start_server_cmd" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">RPA.Dialogs.</code><code class="sig-name descname">start_server_cmd</code><span class="sig-paren">(</span><em class="sig-param">directory</em>, <em class="sig-param">stylepath</em>, <em class="sig-param">port=8105</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.start_server_cmd" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
