@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+6.0.1
+-----
+
+- Library **Desktop**: Fix case handling with default locator
+
 6.0.0
 -----
 
