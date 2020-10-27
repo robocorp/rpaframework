@@ -40,6 +40,14 @@ The main keyword of the library is ``Request Response`` which works as follows:
 The keyword has optional parameters to specify form window **width** and **height**.
 The default size is 600px wide and 1000px high.
 
+Setting library arguments
+=========================
+
+Library has arguments ``server_port`` and ``stylesheet``. The ``server_port`` argument
+takes integer value, which defines port where HTTP server will be run. By default port is 8105.
+The ``stylesheet`` can be used to point CSS file, which will be used to modify style of form,
+which is shown to the user. By default stylesheet is ``RPA.includes/dialog_styles.css``.
+
 Supported element types
 =======================
 

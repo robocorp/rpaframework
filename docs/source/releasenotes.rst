@@ -3,6 +3,8 @@ Release notes
 
 Upcoming release
 ----------------
+
+- Library **Dialogs**: Add library initialization arguments to change server port and form stylesheet
 - Library **Desktop**: Initial release of new cross-platform desktop automation library
 - Library **FileSystem**: Replace ``force`` arguments with ``missing_ok`` to match python API
 - Library **Robocloud.Items**: Remove invalid assert on file overwrite

@@ -54,7 +54,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def import_styles(self):
         inline_styles = "<head><style>"
-        stylesheet_filepath = Path(self.server.workdir) / "styles.css"
+        stylesheet_filepath = Path(self.server.stylepath)
         with open(stylesheet_filepath, "r") as styles:
             inline_styles += styles.read()
         inline_styles += "</style></head>"
@@ -250,11 +250,12 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     """Handle requests in a separate thread."""
 
 
-def start_server_cmd(directory, port=8105):
+def start_server_cmd(directory, stylepath, port=8105):
     LOGGER.info("starting server at port=%s", port)
     formserver = HTTPServer(("", port), Handler)
     formserver.formresponse = None
     formserver.workdir = directory
+    formserver.stylepath = stylepath
     formserver.serve_forever()
 
 
@@ -262,37 +263,38 @@ class Dialogs:
     """Library provides features for building form to request for user input.
 
     Form elements can be built with library keywords or form can be defined
-    in a JSON file."""
+    in a JSON file.
+
+    :param server_port: HTTP server port, defaults to 8105
+    :param stylesheet: defaults to built-in Robocorp stylesheet
+    """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
 
-    def __init__(self):
+    def __init__(self, server_port: int = 8105, stylesheet: str = None):
         self.logger = logging.getLogger(__name__)
         self.server_address = None
         self.server = None
         self.workdir = None
         self.custom_form = None
+        self.server_port = server_port
+        self.stylesheet = stylesheet
+        if self.stylesheet is None:
+            includes = import_module("RPA.includes")
+            with pkg_resources.path(includes, "dialog_styles.css") as p:
+                self.stylesheet = p
 
-    def _start_attended_server(self, port=8105):
+    def _start_attended_server(self):
         """Start a server which will server form html and
         handles form post.
-
-        :param port: server port number, defaults to 8105
         """
         if self.server is None:
             self.workdir = tempfile.mkdtemp(suffix="_dialog_server_workdir")
-
-            path_default_styles = None
-            includes = import_module("RPA.includes")
-            with pkg_resources.path(includes, "dialog_styles.css") as p:
-                path_default_styles = p
-
-            shutil.copyfile(path_default_styles, Path(self.workdir) / "styles.css")
-            self.server_address = f"http://localhost:{port}"
+            self.server_address = f"http://localhost:{self.server_port}"
             self.server = threading.Thread(
                 name="daemon_server",
                 target=start_server_cmd,
-                args=(self.workdir, port),
+                args=(self.workdir, self.stylesheet, self.server_port),
             )
             self.server.setDaemon(True)
             self.server.start()
@@ -300,7 +302,7 @@ class Dialogs:
     def _stop_attended_server(self):
         """Stop server"""
         if self.server is not None and self.workdir:
-            shutil.rmtree(self.workdir)
+            shutil.rmtree(self.workdir, ignore_errors=True)
 
     def create_form(self, title: str = None) -> None:
         """Create new form
