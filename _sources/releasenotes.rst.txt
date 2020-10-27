@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+6.0.2
+-----
+
 - Library **Desktop**:
 
   - Library scope changed to global
