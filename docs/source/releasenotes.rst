@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+6.1.0
+-----
+
 - New library **JSON** for manipulating JSON objects
 
 6.0.2
