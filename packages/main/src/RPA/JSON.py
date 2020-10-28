@@ -1,9 +1,11 @@
 import json
+import logging
+from typing import Any
+
 from jsonpath_ng import Index, Fields
 from jsonpath_ng.ext import parse
-import logging
+
 from robot.api.deco import keyword
-from typing import Any
 
 
 class JSON:
@@ -68,24 +70,13 @@ class JSON:
         :param value: list to append into json or dictionary to update into json
         :return: json as a dictionary object
         """
-        self.logger.info('Add to JSON with expression: "%s"' % expr)
+        self.logger.info('Add to JSON with expression: "%s"', expr)
         for match in parse(expr).find(doc):
-            if type(match.value) is dict:
+            if isinstance(match.value, dict):
                 match.value.update(value)
-            if type(match.value) is list:
+            if isinstance(match.value, list):
                 match.value.append(value)
         return doc
-
-    @keyword("Get from JSON")
-    def get_from_json(self, doc: Any, expr: str):
-        """Get items from a JSON object.
-
-        :param doc: json as a dictionary object or a string
-        :param expr: jsonpath expression
-        :return: list of matching items
-        """
-        self.logger.info('Get from JSON with expression: "%s"' % expr)
-        return [match for match in parse(expr).find(doc)]
 
     @keyword("Get value from JSON")
     def get_value_from_json(self, doc: Any, expr: str):
@@ -96,7 +87,7 @@ class JSON:
         :raises ValueError: if expression matches more than one item
         :return: matching item
         """
-        self.logger.info('Get value from JSON with expression: "%s"' % expr)
+        self.logger.info('Get value from JSON with expression: "%s"', expr)
         result = [match.value for match in parse(expr).find(doc)]
         if len(result) == 0:
             return None
@@ -112,7 +103,7 @@ class JSON:
         :param expr: jsonpath expression
         :return: list of matching values
         """
-        self.logger.info('Get values from JSON with expression: "%s"' % expr)
+        self.logger.info('Get values from JSON with expression: "%s"', expr)
         return [match.value for match in parse(expr).find(doc)]
 
     @keyword("Update value to JSON")
@@ -124,7 +115,7 @@ class JSON:
         :param value: new value for the matching item
         :return: json as a dictionary object
         """
-        self.logger.info('Update JSON with expression: "%s"' % expr)
+        self.logger.info('Update JSON with expression: "%s"', expr)
         for match in parse(expr).find(doc):
             path = match.path
             if isinstance(path, Index):
@@ -141,7 +132,7 @@ class JSON:
         :param expr: jsonpath expression
         :return: json as a dictionary object
         """
-        self.logger.info('Delete from JSON with expression: "%s"' % expr)
+        self.logger.info('Delete from JSON with expression: "%s"', expr)
         for match in parse(expr).find(doc):
             path = match.path
             if isinstance(path, Index):
