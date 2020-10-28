@@ -9,12 +9,11 @@ from robot.api.deco import keyword
 
 
 class JSON:
-    """`JSON` is a library for manipulating `JSON`_ Object. Object can be manipulated
-    using `_JSONPath`_.
+    """`JSON` is a library for manipulating `JSON`_ objects.
+    Locating specific elements in the structure is done using `JSONPath`_.
 
     .. _JSON: http://json.org/
     .. _JSONPath: http://goessner.net/articles/JsonPath/
-
     """
 
     def __init__(self):
@@ -80,7 +79,7 @@ class JSON:
 
     @keyword("Get value from JSON")
     def get_value_from_json(self, doc: Any, expr: str):
-        """Get a value from JSON object.
+        """Get a value from a JSON object.
 
         :param doc: json as a dictionary object or a string
         :param expr: jsonpath expression

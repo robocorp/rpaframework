@@ -10,8 +10,8 @@ JSON
 Description
 ***********
 
-`JSON` is a library for manipulating `JSON`_ Object. Object can be manipulated
-using `_JSONPath`_.
+`JSON` is a library for reading and writing `JSON`_ files and objects.
+Locating specific elements in the structure is done using `JSONPath`_.
 
 .. _JSON: http://json.org/
 .. _JSONPath: http://goessner.net/articles/JsonPath/
@@ -47,7 +47,6 @@ Examples
     customers = lib.load_json_from_file('customers.json')
     customers = lib.delete_from_json(customers, "$.customers[?(@.name='Tim Thompson')]")
     lib.save_json_to_file('customers.json')
-
 
 *****************
 API Documentation
