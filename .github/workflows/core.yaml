@@ -22,6 +22,7 @@ jobs:
         name: [
           "windows-py36",
           "windows-py37",
+          "windows-py38",
 
           "ubuntu-py36",
           "ubuntu-py37",
@@ -38,6 +39,9 @@ jobs:
             os: windows-latest
           - name: "windows-py37"
             python: "3.7"
+            os: windows-latest
+          - name: "windows-py38"
+            python: "3.8"
             os: windows-latest
           - name: "ubuntu-py36"
             python: "3.6"
