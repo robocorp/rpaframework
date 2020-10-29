@@ -302,12 +302,15 @@ class Windows(OperatingSystem):
 
         return self._add_app_instance(app, dialog=False, params=params)
 
-    def open_using_run_dialog(self, executable: str, windowtitle: str) -> int:
+    def open_using_run_dialog(
+        self, executable: str, windowtitle: str, timeout: int = 10
+    ) -> int:
         """Open application using Windows run dialog.
         Window title name is required to get handle on the application.
 
         :param executable: name of the executable
         :param windowtitle: name of the window
+        :param timeout: time to wait for dialog to appear
         :return: application instance id
 
         Example:
@@ -322,18 +325,21 @@ class Windows(OperatingSystem):
 
         self.send_keys_to_input(executable, send_delay=0.2, enter_delay=0.5)
 
-        app_instance = self.open_dialog(windowtitle)
+        app_instance = self.open_dialog(windowtitle, timeout=timeout)
         self._apps[app_instance]["windowtitle"] = windowtitle
         self._apps[app_instance]["executable"] = executable
         self._apps[app_instance]["startkeyword"] = "Open Using Run Dialog"
         return app_instance
 
-    def open_from_search(self, executable: str, windowtitle: str) -> int:
+    def open_from_search(
+        self, executable: str, windowtitle: str, timeout: int = 10
+    ) -> int:
         """Open application using Windows search dialog.
         Window title name is required to get handle on the application.
 
         :param executable: name of the executable
         :param windowtitle: name of the window
+        :param timeout: time to wait for dialog to appear
         :return: application instance id
 
         Example:
@@ -349,7 +355,7 @@ class Windows(OperatingSystem):
 
         self.send_keys_to_input(executable)
 
-        app_instance = self.open_dialog(windowtitle)
+        app_instance = self.open_dialog(windowtitle, timeout=timeout)
         self._apps[app_instance]["windowtitle"] = windowtitle
         self._apps[app_instance]["executable"] = executable
         self._apps[app_instance]["startkeyword"] = "Open From Search"
