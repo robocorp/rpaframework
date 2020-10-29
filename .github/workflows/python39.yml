@@ -1,11 +1,8 @@
 name: rpaframework-py39
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'packages/main/poetry.lock'
-      - '.github/workflows/python39.yaml'
+  schedule:
+    - cron: 0 0 * * mon
+      branches: [master]
 defaults:
   run:
     working-directory: './packages/main'
