@@ -51,14 +51,14 @@ install: .venv/flag ## Install development environment
 poetry.lock: pyproject.toml
 	poetry lock
 
-docs: check docs-each ## Generate documentation using Sphinx
+docs: docs-each ## Generate documentation using Sphinx
 	poetry run $(MAKE) -C docs clean
 	poetry run $(MAKE) -C docs html
 
 docs-each: packages/*
 	$(call make_each, "docs-libdoc")
 
-docs-hub: check docs-hub-each ## Generate distributable documentation for Robohub
+docs-hub: docs-hub-each ## Generate distributable documentation for Robohub
 	$(call title,"Building Markdown documentation")
 	poetry run $(MAKE) -C docs clean
 	poetry run $(MAKE) -C docs markdown
