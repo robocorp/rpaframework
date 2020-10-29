@@ -1056,7 +1056,7 @@ library default value</p></li>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_from_search">
-<code class="sig-name descname">open_from_search</code><span class="sig-paren">(</span><em class="sig-param">executable: str</em>, <em class="sig-param">windowtitle: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_from_search" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_from_search</code><span class="sig-paren">(</span><em class="sig-param">executable: str</em>, <em class="sig-param">windowtitle: str</em>, <em class="sig-param">timeout: int = 10</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_from_search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open application using Windows search dialog.
 Window title name is required to get handle on the application.</p>
 <dl class="field-list simple">
@@ -1064,6 +1064,7 @@ Window title name is required to get handle on the application.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>executable</strong> – name of the executable</p></li>
 <li><p><strong>windowtitle</strong> – name of the window</p></li>
+<li><p><strong>timeout</strong> – time to wait for dialog to appear</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1078,7 +1079,7 @@ Window title name is required to get handle on the application.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_using_run_dialog">
-<code class="sig-name descname">open_using_run_dialog</code><span class="sig-paren">(</span><em class="sig-param">executable: str</em>, <em class="sig-param">windowtitle: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_using_run_dialog" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_using_run_dialog</code><span class="sig-paren">(</span><em class="sig-param">executable: str</em>, <em class="sig-param">windowtitle: str</em>, <em class="sig-param">timeout: int = 10</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_using_run_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open application using Windows run dialog.
 Window title name is required to get handle on the application.</p>
 <dl class="field-list simple">
@@ -1086,6 +1087,7 @@ Window title name is required to get handle on the application.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>executable</strong> – name of the executable</p></li>
 <li><p><strong>windowtitle</strong> – name of the window</p></li>
+<li><p><strong>timeout</strong> – time to wait for dialog to appear</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
