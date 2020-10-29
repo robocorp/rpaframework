@@ -6,13 +6,13 @@ on:
       - master
     paths:
       - 'packages/main/**'
-      - '.github/workflows/core.yaml'
+      - '.github/workflows/main.yaml'
   pull_request:
     branches:
       - master
     paths:
       - 'packages/main/**'
-      - '.github/workflows/core.yaml'
+      - '.github/workflows/main.yaml'
 
 defaults:
   run:
@@ -28,6 +28,7 @@ jobs:
         name: [
           "windows-py36",
           "windows-py37",
+          "windows-py38",
 
           "ubuntu-py36",
           "ubuntu-py37",
@@ -44,6 +45,9 @@ jobs:
             os: windows-latest
           - name: "windows-py37"
             python: "3.7"
+            os: windows-latest
+          - name: "windows-py38"
+            python: "3.8"
             os: windows-latest
           - name: "ubuntu-py36"
             python: "3.6"
@@ -88,7 +92,7 @@ jobs:
       run: make test
     - name: Test on linux
       if: matrix.os == 'ubuntu-latest'
-      run: | 
+      run: |
         export XDG_SESSION_TYPE=x11
         xvfb-run --server-args="-screen 0 1280x720x24" make test
     - uses: actions/upload-artifact@v1
