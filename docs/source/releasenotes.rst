@@ -7,7 +7,7 @@ Upcoming release
 6.2.0
 -----
 
-- Library **Desktop.Windows**: Add timeout parameter for keywords ``Open From Search```
+- Library **Desktop.Windows**: Add timeout parameter for keywords ``Open From Search``
   and ``Open Using Run Dialog``
 
 6.1.0
