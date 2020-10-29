@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Outlook.Application" href="../outlook_application/index.html" />
-    <link rel="prev" title="Robot Framework API" href="../../libdoc/Notifier.html" />
+    <link rel="next" title="Netsuite" href="../netsuite/index.html" />
+    <link rel="prev" title="Robot Framework API" href="../../libdoc/JSON.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -118,13 +118,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../ftp/index.html">FTP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../json/index.html">JSON</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Notifier</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../libdoc/Notifier.html">Robot Framework API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">JSON</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../libdoc/JSON.html">Robot Framework API</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notifier/index.html">Notifier</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
@@ -186,7 +186,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">Notifier</a> &raquo;</li>
+          <li><a href="index.html">JSON</a> &raquo;</li>
         
       <li>Python module API</li>
     
@@ -194,7 +194,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/libraries/notifier/python.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/libraries/json/python.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -209,123 +209,156 @@
             
   <div class="section" id="python-module-api">
 <h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-RPA.Notifier">
-<span id="notifier"></span><h2>Notifier<a class="headerlink" href="#module-RPA.Notifier" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-RPA.JSON">
+<span id="json"></span><h2>JSON<a class="headerlink" href="#module-RPA.JSON" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="RPA.Notifier.Notifier">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Notifier.</code><code class="sig-name descname">Notifier</code><a class="headerlink" href="#RPA.Notifier.Notifier" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.JSON.JSON">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.JSON.</code><code class="sig-name descname">JSON</code><a class="headerlink" href="#RPA.JSON.JSON" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Library for using different notification services.</p>
-<p>All keywords take keyword arguments (<a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs) to allow giving
-additional arguments for the notifications.</p>
+<p><cite>JSON</cite> is a library for manipulating <a class="reference external" href="http://json.org/">JSON</a> objects.
+Locating specific elements in the structure is done using <a class="reference external" href="http://goessner.net/articles/JsonPath/">JSONPath</a>.</p>
 <dl class="method">
-<dt id="RPA.Notifier.Notifier.notify_email">
-<code class="sig-name descname">notify_email</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">to: str = None</em>, <em class="sig-param">username: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_email" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notify using email service</p>
+<dt id="RPA.JSON.JSON.add_to_json">
+<code class="sig-name descname">add_to_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Any</em>, <em class="sig-param">expr: str</em>, <em class="sig-param">value: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.JSON.add_to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add items into a JSON object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> – notification message</p></li>
-<li><p><strong>to</strong> – target of email message</p></li>
-<li><p><strong>username</strong> – email service username</p></li>
-<li><p><strong>password</strong> – email service password</p></li>
+<li><p><strong>doc</strong> – json as a dictionary object</p></li>
+<li><p><strong>expr</strong> – jsonpath expression</p></li>
+<li><p><strong>value</strong> – list to append into json or dictionary to update into json</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True is notification was success, False if not</p>
+<dd class="field-even"><p>json as a dictionary object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Notifier.Notifier.notify_gmail">
-<code class="sig-name descname">notify_gmail</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">to: str = None</em>, <em class="sig-param">username: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_gmail" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notify using Gmail service</p>
+<dt id="RPA.JSON.JSON.convert_json_to_string">
+<code class="sig-name descname">convert_json_to_string</code><span class="sig-paren">(</span><em class="sig-param">doc: Any</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.JSON.JSON.convert_json_to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert JSON object to a string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> – notification message</p></li>
-<li><p><strong>to</strong> – target of email message</p></li>
-<li><p><strong>username</strong> – GMail service username</p></li>
-<li><p><strong>password</strong> – GMail service password</p></li>
-</ul>
+<dd class="field-odd"><p><strong>doc</strong> – json as a dictionary object</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True is notification was success, False if not</p>
+<dd class="field-even"><p>json as a string</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Notifier.Notifier.notify_pushover">
-<code class="sig-name descname">notify_pushover</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">user: str = None</em>, <em class="sig-param">token: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_pushover" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notify using Pushover service</p>
+<dt id="RPA.JSON.JSON.convert_string_to_json">
+<code class="sig-name descname">convert_string_to_json</code><span class="sig-paren">(</span><em class="sig-param">doc: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.JSON.JSON.convert_string_to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a string to a JSON object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> – notification message</p></li>
-<li><p><strong>user</strong> – target user for the notification</p></li>
-<li><p><strong>token</strong> – service token</p></li>
-</ul>
+<dd class="field-odd"><p><strong>doc</strong> – json string</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True is notification was success, False if not</p>
+<dd class="field-even"><p>json as a dictionary object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Notifier.Notifier.notify_slack">
-<code class="sig-name descname">notify_slack</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">channel: str = None</em>, <em class="sig-param">webhook_url: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_slack" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notify using Slack service</p>
+<dt id="RPA.JSON.JSON.delete_from_json">
+<code class="sig-name descname">delete_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Any</em>, <em class="sig-param">expr: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.JSON.delete_from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete item from a JSON object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> – notification message</p></li>
-<li><p><strong>channel</strong> – target channel for the notification</p></li>
-<li><p><strong>webhook_url</strong> – Slack webhook url</p></li>
+<li><p><strong>doc</strong> – json as a dictionary object or a string</p></li>
+<li><p><strong>expr</strong> – jsonpath expression</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True is notification was success, False if not</p>
+<dd class="field-even"><p>json as a dictionary object</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Notifier.Notifier.notify_telegram">
-<code class="sig-name descname">notify_telegram</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">chat_id: str = None</em>, <em class="sig-param">token: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_telegram" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notify using Telegram service</p>
+<dt id="RPA.JSON.JSON.get_value_from_json">
+<code class="sig-name descname">get_value_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Any</em>, <em class="sig-param">expr: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.JSON.get_value_from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a value from a JSON object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> – notification message</p></li>
-<li><p><strong>chat_id</strong> – target chat id for the notification</p></li>
-<li><p><strong>token</strong> – service token</p></li>
+<li><p><strong>doc</strong> – json as a dictionary object or a string</p></li>
+<li><p><strong>expr</strong> – jsonpath expression</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True is notification was success, False if not</p>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if expression matches more than one item</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>matching item</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Notifier.Notifier.notify_twilio">
-<code class="sig-name descname">notify_twilio</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">number_from: str = None</em>, <em class="sig-param">number_to: str = None</em>, <em class="sig-param">account_sid: str = None</em>, <em class="sig-param">token: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_twilio" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notify using Twilio service</p>
+<dt id="RPA.JSON.JSON.get_values_from_json">
+<code class="sig-name descname">get_values_from_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Any</em>, <em class="sig-param">expr: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.JSON.get_values_from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get values from a JSON object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> – notification message</p></li>
-<li><p><strong>number_from</strong> – number where the message comes from</p></li>
-<li><p><strong>number_to</strong> – number where the messages goes to</p></li>
-<li><p><strong>account_sid</strong> – Twilio account SID</p></li>
-<li><p><strong>token</strong> – Twilio account token</p></li>
+<li><p><strong>doc</strong> – json as a dictionary object or a string</p></li>
+<li><p><strong>expr</strong> – jsonpath expression</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True is notification was success, False if not</p>
+<dd class="field-even"><p>list of matching values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.JSON.load_json_from_file">
+<code class="sig-name descname">load_json_from_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.JSON.JSON.load_json_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load JSON data from a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – path to file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json as a dictionary object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.JSON.save_json_to_file">
+<code class="sig-name descname">save_json_to_file</code><span class="sig-paren">(</span><em class="sig-param">doc: Any</em>, <em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.JSON.JSON.save_json_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save JSON object into a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc</strong> – json as a dictionary object or a string</p></li>
+<li><p><strong>filename</strong> – path to file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JSON.JSON.update_value_to_json">
+<code class="sig-name descname">update_value_to_json</code><span class="sig-paren">(</span><em class="sig-param">doc: Any</em>, <em class="sig-param">expr: str</em>, <em class="sig-param">value: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.JSON.update_value_to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update value in a JSON object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc</strong> – json as a dictionary object or a string</p></li>
+<li><p><strong>expr</strong> – jsonpath expression</p></li>
+<li><p><strong>value</strong> – new value for the matching item</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json as a dictionary object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -343,10 +376,10 @@ additional arguments for the notifications.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../outlook_application/index.html" class="btn btn-neutral float-right" title="Outlook.Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../netsuite/index.html" class="btn btn-neutral float-right" title="Netsuite" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../../libdoc/Notifier.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../../libdoc/JSON.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

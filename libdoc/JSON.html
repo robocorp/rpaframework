@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Python module API" href="../libraries/netsuite/python.html" />
-    <link rel="prev" title="Netsuite" href="../libraries/netsuite/index.html" />
+    <link rel="next" title="Python module API" href="../libraries/json/python.html" />
+    <link rel="prev" title="JSON" href="../libraries/json/index.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -118,12 +118,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../libraries/ftp/index.html">FTP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/http/index.html">HTTP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/images/index.html">Images</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../libraries/json/index.html">JSON</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../libraries/netsuite/index.html">Netsuite</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../libraries/json/index.html">JSON</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Robot Framework API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../libraries/netsuite/python.html">Python module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/json/python.html">Python module API</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/netsuite/index.html">Netsuite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/notifier/index.html">Notifier</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/outlook_application/index.html">Outlook.Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/pdf/index.html">PDF</a></li>
@@ -186,7 +186,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../libraries/netsuite/index.html">Netsuite</a> &raquo;</li>
+          <li><a href="../libraries/json/index.html">JSON</a> &raquo;</li>
         
       <li>Robot Framework API</li>
     
@@ -194,7 +194,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/libdoc/Netsuite.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/libdoc/JSON.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -215,116 +215,88 @@
 <dt class="field-odd">Library scope</dt>
 <dd class="field-odd"><p></p></dd>
 </dl>
-<p>Library for accessing Netsuite.</p>
+<p><cite>JSON</cite> is a library for manipulating <a class="reference external" href="http://json.org/">JSON</a> objects.
+Locating specific elements in the structure is done using <a class="reference external" href="http://goessner.net/articles/JsonPath/">JSONPath</a>.</p>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
 <dl class="field-list">
-<dt class="field-odd">Connect</dt>
+<dt class="field-odd">Add to JSON</dt>
 <dd class="field-odd"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>account: str = None, consumer_key: str = None, consumer_secret: str = None, token_key: str = None, token_secret: str = None</p>
+<dd class="field-odd"><p>doc: typing.Any, expr: str, value: str</p>
 </dd>
 </dl>
-<p>Connect to Netsuite with credentials from environment
-variables.</p>
-<p>Parameters are not logged into Robot Framework log.</p>
+<p>Add items into a JSON object.</p>
 </dd>
-<dt class="field-even">Get Accounts</dt>
+<dt class="field-even">Convert JSON to String</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>count: int = 100, account_type: str = None</p>
+<dd class="field-odd"><p>doc: typing.Any</p>
 </dd>
 </dl>
-<p>Get Accounts of any type or specified type.</p>
+<p>Convert JSON object to a string.</p>
 </dd>
-<dt class="field-even">Get Classifications</dt>
-<dd class="field-even"><p>Get all Netsuite Classifications</p>
-</dd>
-<dt class="field-odd">Get Currencies</dt>
-<dd class="field-odd"><p>Get all Netsuite Currencies</p>
-</dd>
-<dt class="field-even">Get Currency</dt>
+<dt class="field-even">Convert String to JSON</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>currency_id: str</p>
+<dd class="field-odd"><p>doc: str</p>
 </dd>
 </dl>
-<p>Get all a Netsuite Currency by its ID</p>
+<p>Convert a string to a JSON object.</p>
 </dd>
-<dt class="field-even">Get Departments</dt>
-<dd class="field-even"><p>Get all Netsuite Departments</p>
-</dd>
-<dt class="field-odd">Get Locations</dt>
-<dd class="field-odd"><p>Get all Netsuite Locations</p>
-</dd>
-<dt class="field-even">Get Vendor Bills</dt>
+<dt class="field-even">Delete from JSON</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>count: int = 10</p>
+<dd class="field-odd"><p>doc: typing.Any, expr: str</p>
 </dd>
 </dl>
-<p>Get list of vendor bills</p>
+<p>Delete item from a JSON object.</p>
 </dd>
-<dt class="field-even">Get Vendors</dt>
+<dt class="field-even">Get value from JSON</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>count: int = 10</p>
+<dd class="field-odd"><p>doc: typing.Any, expr: str</p>
 </dd>
 </dl>
-<p>Get list of vendors</p>
-</dd>
-<dt class="field-even">Login</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>account: str = None, email: str = None, password: str = None, role: str = None, appid: str = None</p>
-</dd>
-</dl>
-<p>Login to Netsuite with credentials from environment variables</p>
-<p>Parameters are not logged into Robot Framework log.</p>
-</dd>
-<dt class="field-even">Netsuite Get</dt>
-<dd class="field-even"><dl class="field-list simple">
-<dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>record_type: str = None, internal_id: str = None, external_id: str = None</p>
-</dd>
-</dl>
-<p>Get all records of given type and internalId and/or externalId.</p>
+<p>Get a value from a JSON object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">raises ValueError</dt>
-<dd class="field-odd"><p>if record_type is not given</p>
+<dd class="field-odd"><p>if expression matches more than one item</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Netsuite Get All</dt>
+<dt class="field-even">Get values from JSON</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>record_type: str</p>
+<dd class="field-odd"><p>doc: typing.Any, expr: str</p>
 </dd>
 </dl>
-<p>Get all records of given type.</p>
-<dl class="field-list simple">
-<dt class="field-odd">raises ValueError</dt>
-<dd class="field-odd"><p>if record_type is not given</p>
+<p>Get values from a JSON object.</p>
 </dd>
-</dl>
-</dd>
-<dt class="field-even">Netsuite Search</dt>
+<dt class="field-even">Load JSON from file</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>type_name: str, search_value: str, operator: str = contains, page_size: int = 5</p>
+<dd class="field-odd"><p>filename: str</p>
 </dd>
 </dl>
-<p>Search Netsuite for value from a type. Default operator is
-<cite>contains</cite>.</p>
+<p>Load JSON data from a file.</p>
 </dd>
-<dt class="field-even">Netsuite Search All</dt>
+<dt class="field-even">Save JSON to file</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>type_name: str, page_size: int = 20</p>
+<dd class="field-odd"><p>doc: typing.Any, filename: str</p>
 </dd>
 </dl>
-<p>Search Netsuite for a type results.</p>
+<p>Save JSON object into a file.</p>
+</dd>
+<dt class="field-even">Update value to JSON</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>doc: typing.Any, expr: str, value: str</p>
+</dd>
+</dl>
+<p>Update value in a JSON object.</p>
 </dd>
 </dl>
 </div>
@@ -338,10 +310,10 @@ variables.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../libraries/netsuite/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../libraries/json/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../libraries/netsuite/index.html" class="btn btn-neutral float-left" title="Netsuite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../libraries/json/index.html" class="btn btn-neutral float-left" title="JSON" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

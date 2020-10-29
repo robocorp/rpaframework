@@ -117,6 +117,7 @@
 <li class="toctree-l1"><a class="reference internal" href="libraries/ftp/index.html">FTP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/http/index.html">HTTP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries/json/index.html">JSON</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/netsuite/index.html">Netsuite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/notifier/index.html">Notifier</a></li>
 <li class="toctree-l1"><a class="reference internal" href="libraries/outlook_application/index.html">Outlook.Application</a></li>
@@ -311,6 +312,8 @@
       <li><a href="libraries/dialogs/python.html#RPA.Dialogs.Dialogs.add_title">add_title() (RPA.Dialogs.Dialogs method)</a>
 </li>
       <li><a href="libraries/archive/python.html#RPA.Archive.Archive.add_to_archive">add_to_archive() (RPA.Archive.Archive method)</a>
+</li>
+      <li><a href="libraries/json/python.html#RPA.JSON.JSON.add_to_json">add_to_json() (RPA.JSON.JSON method)</a>
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.add_work_item_file">add_work_item_file() (RPA.Robocloud.Items.Items method)</a>
 </li>
@@ -612,10 +615,10 @@
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.columns">columns() (RPA.Tables.Table property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/database/python.html#RPA.Database.Configuration">Configuration (class in RPA.Database)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/ftp/python.html#RPA.FTP.FTP.connect">connect() (RPA.FTP.FTP method)</a>
 
       <ul>
@@ -635,6 +638,10 @@
       <li><a href="libraries/pdf/python.html#RPA.PDF.RPAConverter.CONTROL">CONTROL (RPA.PDF.RPAConverter attribute)</a>
 </li>
       <li><a href="libraries/archive/python.html#RPA.Archive.convert_date">convert_date() (in module RPA.Archive)</a>
+</li>
+      <li><a href="libraries/json/python.html#RPA.JSON.JSON.convert_json_to_string">convert_json_to_string() (RPA.JSON.JSON method)</a>
+</li>
+      <li><a href="libraries/json/python.html#RPA.JSON.JSON.convert_string_to_json">convert_string_to_json() (RPA.JSON.JSON method)</a>
 </li>
       <li><a href="libraries/tables/python.html#RPA.Tables.Table.copy">copy() (RPA.Tables.Table method)</a>
 </li>
@@ -796,6 +803,8 @@
         <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.delete_folder">(RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/json/python.html#RPA.JSON.JSON.delete_from_json">delete_from_json() (RPA.JSON.JSON method)</a>
+</li>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.delete_message">delete_message() (RPA.Cloud.AWS.AWS method)</a>
 
       <ul>
@@ -1278,10 +1287,10 @@
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.get_open_applications">get_open_applications() (RPA.Desktop.Windows.Windows method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.get_opportunity_id">get_opportunity_id() (RPA.Salesforce.Salesforce method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.get_output_directory">get_output_directory() (RPA.PDF.PDF method)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaPdfDocument.get_page">get_page() (RPA.PDF.RpaPdfDocument method)</a>
@@ -1380,12 +1389,16 @@
       </ul></li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.get_value_from_anchor">get_value_from_anchor() (RPA.PDF.PDF method)</a>
 </li>
+      <li><a href="libraries/json/python.html#RPA.JSON.JSON.get_value_from_json">get_value_from_json() (RPA.JSON.JSON method)</a>
+</li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.Google.get_values">get_values() (RPA.Cloud.Google.Google method)</a>
 
       <ul>
         <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.ServiceSheets.get_values">(RPA.Cloud.Google.ServiceSheets method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/json/python.html#RPA.JSON.JSON.get_values_from_json">get_values_from_json() (RPA.JSON.JSON method)</a>
+</li>
       <li><a href="libraries/netsuite/python.html#RPA.Netsuite.Netsuite.get_vendor_bills">get_vendor_bills() (RPA.Netsuite.Netsuite method)</a>
 </li>
       <li><a href="libraries/netsuite/python.html#RPA.Netsuite.Netsuite.get_vendors">get_vendors() (RPA.Netsuite.Netsuite method)</a>
@@ -1696,6 +1709,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/json/python.html#RPA.JSON.JSON">JSON (class in RPA.JSON)</a>
+</li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.json_dump_safe">json_dump_safe() (in module RPA.Robocloud.Items)</a>
 </li>
   </ul></td>
@@ -1820,6 +1835,8 @@
         <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.RobocorpAdapter.load_data">(RPA.Robocloud.Items.RobocorpAdapter method)</a>
 </li>
       </ul></li>
+      <li><a href="libraries/json/python.html#RPA.JSON.JSON.load_json_from_file">load_json_from_file() (RPA.JSON.JSON method)</a>
+</li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.load_work_item">load_work_item() (RPA.Robocloud.Items.Items method)</a>
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.load_work_item_from_environment">load_work_item_from_environment() (RPA.Robocloud.Items.Items method)</a>
@@ -2442,6 +2459,8 @@
 </li>
       <li><a href="libraries/images/python.html#module-RPA.Images">RPA.Images (module)</a>
 </li>
+      <li><a href="libraries/json/python.html#module-RPA.JSON">RPA.JSON (module)</a>
+</li>
       <li><a href="libraries/netsuite/python.html#module-RPA.Netsuite">RPA.Netsuite (module)</a>
 </li>
       <li><a href="libraries/notifier/python.html#module-RPA.Notifier">RPA.Notifier (module)</a>
@@ -2529,6 +2548,8 @@
       <li><a href="libraries/excel_application/python.html#RPA.Excel.Application.Application.save_excel">save_excel() (RPA.Excel.Application.Application method)</a>
 </li>
       <li><a href="libraries/excel_application/python.html#RPA.Excel.Application.Application.save_excel_as">save_excel_as() (RPA.Excel.Application.Application method)</a>
+</li>
+      <li><a href="libraries/json/python.html#RPA.JSON.JSON.save_json_to_file">save_json_to_file() (RPA.JSON.JSON method)</a>
 </li>
       <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.save_messages">save_messages() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
@@ -2678,10 +2699,10 @@
       </ul></li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.set_anchor_to_element">set_anchor_to_element() (RPA.PDF.PDF method)</a>
 </li>
-      <li><a href="libraries/ftp/python.html#RPA.FTP.FTP.set_ascii_mode">set_ascii_mode() (RPA.FTP.FTP method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/ftp/python.html#RPA.FTP.FTP.set_ascii_mode">set_ascii_mode() (RPA.FTP.FTP method)</a>
+</li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.set_author">set_author() (RPA.PDF.PDF method)</a>
 </li>
       <li><a href="libraries/database/python.html#RPA.Database.Database.set_auto_commit">set_auto_commit() (RPA.Database.Database method)</a>
@@ -2989,6 +3010,8 @@
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.update_salesforce_object">update_salesforce_object() (RPA.Salesforce.Salesforce method)</a>
 </li>
       <li><a href="libraries/http/python.html#RPA.HTTP.HTTP.update_session">update_session() (RPA.HTTP.HTTP method)</a>
+</li>
+      <li><a href="libraries/json/python.html#RPA.JSON.JSON.update_value_to_json">update_value_to_json() (RPA.JSON.JSON method)</a>
 </li>
       <li><a href="libraries/ftp/python.html#RPA.FTP.FTP.upload">upload() (RPA.FTP.FTP method)</a>
 </li>
