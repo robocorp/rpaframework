@@ -118,20 +118,20 @@ d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
 
 [[package]]
 name = "boto3"
-version = "1.16.7"
+version = "1.16.8"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = "*"
 
 [package.dependencies]
-botocore = ">=1.19.7,<1.20.0"
+botocore = ">=1.19.8,<1.20.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
 [[package]]
 name = "botocore"
-version = "1.19.7"
+version = "1.19.8"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -394,7 +394,7 @@ uritemplate = ">=3.0.0,<4dev"
 
 [[package]]
 name = "google-auth"
-version = "1.22.1"
+version = "1.23.0"
 description = "Google Authentication Library"
 category = "main"
 optional = true
@@ -764,7 +764,7 @@ test = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "more-itertools"
-version = "8.5.0"
+version = "8.6.0"
 description = "More routines for operating on iterables, beyond itertools"
 category = "dev"
 optional = false
@@ -804,7 +804,7 @@ python-versions = "*"
 
 [[package]]
 name = "netsuitesdk"
-version = "1.9.0"
+version = "1.10.0"
 description = "Python SDK for accessing the NetSuite SOAP webservice"
 category = "main"
 optional = false
@@ -1722,12 +1722,12 @@ black = [
     {file = "black-20.8b1.tar.gz", hash = "sha256:1c02557aa099101b9d21496f8a914e9ed2222ef70336404eeeac8edba836fbea"},
 ]
 boto3 = [
-    {file = "boto3-1.16.7-py2.py3-none-any.whl", hash = "sha256:b378c28c2db3be96abc2ca460c2f08424da8960b87d5d430cb7d6b712ec255b2"},
-    {file = "boto3-1.16.7.tar.gz", hash = "sha256:2cabcdc217a128832d6c948cae22cbd3af03ae0736efcb59749f1f11f528be54"},
+    {file = "boto3-1.16.8-py2.py3-none-any.whl", hash = "sha256:207d129d808659b6d5668dc106918aa906373cf00652a53422131e7218df39cf"},
+    {file = "boto3-1.16.8.tar.gz", hash = "sha256:0f8f9ef5e902e05b32f4b7ae3bf948a47675613f5a99185f63d2ef4183225086"},
 ]
 botocore = [
-    {file = "botocore-1.19.7-py2.py3-none-any.whl", hash = "sha256:1481d6d3ccb77cb7cd97395110408238f3ab93b0d823156c7a2fb697604eb50d"},
-    {file = "botocore-1.19.7.tar.gz", hash = "sha256:ab59f842797cbd09ee7d9e3f353bb9546f428853d94db448977dd554320620b3"},
+    {file = "botocore-1.19.8-py2.py3-none-any.whl", hash = "sha256:da7ecc69b6e2ea42fb849928635c0689cae32a95cb38f82b21213d276e75a4a4"},
+    {file = "botocore-1.19.8.tar.gz", hash = "sha256:2e03401b4e0bc1f32fa11b7d1025975a2955f185dd2650fda6e33c70daeaba4c"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -1868,8 +1868,8 @@ google-api-python-client = [
     {file = "google_api_python_client-1.12.5-py2.py3-none-any.whl", hash = "sha256:203d5453660867136aae61922c5d849163fb9be478985fad84e09dee6f605c06"},
 ]
 google-auth = [
-    {file = "google-auth-1.22.1.tar.gz", hash = "sha256:9c0f71789438d703f77b94aad4ea545afaec9a65f10e6cc1bc8b89ce242244bb"},
-    {file = "google_auth-1.22.1-py2.py3-none-any.whl", hash = "sha256:712dd7d140a9a1ea218e5688c7fcb04af71b431a29ec9ce433e384c60e387b98"},
+    {file = "google-auth-1.23.0.tar.gz", hash = "sha256:5176db85f1e7e837a646cd9cede72c3c404ccf2e3373d9ee14b2db88febad440"},
+    {file = "google_auth-1.23.0-py2.py3-none-any.whl", hash = "sha256:b728625ff5dfce8f9e56a499c8a4eb51443a67f20f6d28b67d5774c310ec4b6b"},
 ]
 google-auth-httplib2 = [
     {file = "google-auth-httplib2-0.0.4.tar.gz", hash = "sha256:8d092cc60fb16517b12057ec0bba9185a96e3b7169d86ae12eae98e645b7bc39"},
@@ -2099,8 +2099,8 @@ mock = [
     {file = "mock-4.0.2.tar.gz", hash = "sha256:dd33eb70232b6118298d516bbcecd26704689c386594f0f3c4f13867b2c56f72"},
 ]
 more-itertools = [
-    {file = "more-itertools-8.5.0.tar.gz", hash = "sha256:6f83822ae94818eae2612063a5101a7311e68ae8002005b5e05f03fd74a86a20"},
-    {file = "more_itertools-8.5.0-py3-none-any.whl", hash = "sha256:9b30f12df9393f0d28af9210ff8efe48d10c94f73e5daf886f10c4b0b0b4f03c"},
+    {file = "more-itertools-8.6.0.tar.gz", hash = "sha256:b3a9005928e5bed54076e6e549c792b306fddfe72b2d1d22dd63d42d5d3899cf"},
+    {file = "more_itertools-8.6.0-py3-none-any.whl", hash = "sha256:8e1a2a43b2f2727425f2b5839587ae37093f19153dc26c0927d1048ff6557330"},
 ]
 mss = [
     {file = "mss-6.0.0-py3-none-any.whl", hash = "sha256:142b1f2228bf15c63bbe5de92e2cd43cb1ac754376d1e67fbfba20f3844bcfb6"},
@@ -2127,8 +2127,8 @@ mypy-extensions = [
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
 ]
 netsuitesdk = [
-    {file = "netsuitesdk-1.9.0-py3-none-any.whl", hash = "sha256:1fe8a93a87f24a969d785cc43a2d252bea3fc8555c9471bcf44724b5663ddf63"},
-    {file = "netsuitesdk-1.9.0.tar.gz", hash = "sha256:8b459b66b54190b684be3fe9e3affa5a757c4022cc3390100538e56763e19790"},
+    {file = "netsuitesdk-1.10.0-py3-none-any.whl", hash = "sha256:1eec94fcf38f81fa308d88f5638776987fa121827fe8cd8a7ed1a0122f45fe30"},
+    {file = "netsuitesdk-1.10.0.tar.gz", hash = "sha256:b21ac414637f1c6d8a1820b67d90dea1617a47f914d1e8cd434f5621c4856d78"},
 ]
 notifiers = [
     {file = "notifiers-1.2.1-py3-none-any.whl", hash = "sha256:171ae79215fcf119e34992ad7e1f95f0709f93997203b3fc6f115b5cedd780a6"},

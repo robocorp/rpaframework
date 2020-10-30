@@ -442,7 +442,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "netsuitesdk"
-version = "1.9.0"
+version = "1.10.0"
 description = "Python SDK for accessing the NetSuite SOAP webservice"
 category = "main"
 optional = false
@@ -899,7 +899,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "6.2.0"
+version = "6.3.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -941,9 +941,9 @@ xlutils = ">=2.0.0,<3.0.0"
 xlwt = ">=1.3.0,<2.0.0"
 
 [package.extras]
-google = ["google-cloud-translate (>=2.0.1,<3.0.0)", "google-cloud-speech (>=1.3.2,<2.0.0)", "google-auth-httplib2 (>=0.0.4,<0.0.5)", "google-api-python-client (>=1.12.3,<2.0.0)", "google-cloud-texttospeech (>=1.0.1,<2.0.0)", "grpcio (>=1.29.0,<2.0.0)", "google-auth-oauthlib (>=0.4.1,<0.5.0)", "google-cloud-storage (>=1.28.1,<2.0.0)", "google-cloud-language (>=1.3.0,<2.0.0)", "google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-cloud-vision (>=1.0.0,<2.0.0)"]
-cv = ["rpaframework-recognition (>=0.2.1,<0.3.0)"]
+google = ["google-auth-httplib2 (>=0.0.4,<0.0.5)", "google-cloud-language (>=1.3.0,<2.0.0)", "google-api-python-client (>=1.12.3,<2.0.0)", "google-cloud-vision (>=1.0.0,<2.0.0)", "google-cloud-translate (>=2.0.1,<3.0.0)", "google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-cloud-texttospeech (>=1.0.1,<2.0.0)", "google-cloud-storage (>=1.28.1,<2.0.0)", "grpcio (>=1.29.0,<2.0.0)", "google-auth-oauthlib (>=0.4.1,<0.5.0)", "google-cloud-speech (>=1.3.2,<2.0.0)"]
 aws = ["boto3 (>=1.13.4,<2.0.0)"]
+cv = ["rpaframework-recognition (>=0.2.1,<0.3.0)"]
 
 [package.source]
 type = "directory"
@@ -968,7 +968,7 @@ url = "packages/core"
 
 [[package]]
 name = "rpaframework-recognition"
-version = "0.2.1"
+version = "0.3.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -1650,8 +1650,8 @@ mss = [
     {file = "mss-6.0.0.tar.gz", hash = "sha256:b42bcc170a138c1afbe05f532374d97486f52c2c69328ae1591dafa64ab92c36"},
 ]
 netsuitesdk = [
-    {file = "netsuitesdk-1.9.0-py3-none-any.whl", hash = "sha256:1fe8a93a87f24a969d785cc43a2d252bea3fc8555c9471bcf44724b5663ddf63"},
-    {file = "netsuitesdk-1.9.0.tar.gz", hash = "sha256:8b459b66b54190b684be3fe9e3affa5a757c4022cc3390100538e56763e19790"},
+    {file = "netsuitesdk-1.10.0-py3-none-any.whl", hash = "sha256:1eec94fcf38f81fa308d88f5638776987fa121827fe8cd8a7ed1a0122f45fe30"},
+    {file = "netsuitesdk-1.10.0.tar.gz", hash = "sha256:b21ac414637f1c6d8a1820b67d90dea1617a47f914d1e8cd434f5621c4856d78"},
 ]
 notifiers = [
     {file = "notifiers-1.2.1-py3-none-any.whl", hash = "sha256:171ae79215fcf119e34992ad7e1f95f0709f93997203b3fc6f115b5cedd780a6"},

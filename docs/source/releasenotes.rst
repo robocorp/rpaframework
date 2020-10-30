@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+6.3.0
+-----
+
 - Library **Desktop**: Image template confidence changed to logarithmic scale
 - Library **HTTP**: Directory support for download target
 - Reduce logging in keyboard emulation keywords, e.g. ``Send Keys``, to prevent
