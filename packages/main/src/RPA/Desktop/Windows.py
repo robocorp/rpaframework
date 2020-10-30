@@ -824,11 +824,14 @@ class Windows(OperatingSystem):
         if delay_time:
             delay(delay_time)
 
-    def get_element(self, locator: str, screenshot: bool = False) -> Any:
+    def get_element(
+        self, locator: str, screenshot: bool = False, open_dialog: bool = True
+    ) -> Any:
         """Get element by locator.
 
         :param locator: name of the locator
         :param screenshot: takes element screenshot if True, defaults to False
+        :param open_dialog: True if dialog should be reopened, default to True
         :return: element if element was identified, else False
 
         Example:
@@ -840,7 +843,8 @@ class Windows(OperatingSystem):
 
         """
         self.logger.info("Get element: %s", locator)
-        self.open_dialog(self.windowtitle)
+        if open_dialog:
+            self.open_dialog(self.windowtitle)
         self.dlg.wait("exists enabled visible ready")
 
         search_criteria, locator = self._determine_search_criteria(locator)
