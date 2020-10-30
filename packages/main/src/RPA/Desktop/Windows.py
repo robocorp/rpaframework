@@ -629,7 +629,6 @@ class Windows(OperatingSystem):
             Type Keys   My text
 
         """
-        self.logger.info("Type keys: %s", keys)
         if self.dlg is None:
             raise ValueError("No dialog open")
         self.dlg.type_keys(keys)
@@ -671,7 +670,6 @@ class Windows(OperatingSystem):
             Send Keys        2{+}3=
 
         """
-        self.logger.info("Send keys: %s", keys)
         pywinauto.keyboard.send_keys(keys)
 
     def get_text(self, locator: str) -> dict:

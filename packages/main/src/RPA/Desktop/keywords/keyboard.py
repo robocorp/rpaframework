@@ -60,7 +60,6 @@ class KeyboardKeywords(LibraryContext):
             raise self._error
 
         keys = [to_key(key) for key in modifiers]
-        self.logger.info("Typing text: %s", text)
 
         with self._keyboard.pressed(*keys):
             self._keyboard.type(text)
