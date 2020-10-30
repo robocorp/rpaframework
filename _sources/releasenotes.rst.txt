@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Desktop**: Image template confidence changed to logarithmic scale
+
 6.2.0
 -----
 
