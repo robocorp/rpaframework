@@ -1,6 +1,7 @@
 import logging
 from urllib.parse import urlparse
 from typing import Any
+from pathlib import Path
 
 from RequestsLibrary import RequestsLibrary
 from RPA.FileSystem import FileSystem
@@ -56,31 +57,36 @@ class HTTP(RequestsLibrary):
         http_host = f"{uc.scheme}://{uc.netloc}"
         request_alias = f"{self.session_alias_prefix}{uc.scheme}{uc.netloc}"
         url_path = url.replace(http_host, "")
+
         if force_new_session or not self.session_exists(request_alias):
             self.logger.info("Creating a new HTTP session")
             self.create_session(request_alias, http_host, verify=verify)
         else:
             self.logger.info("Using already existing HTTP session")
+
         self.current_session_alias = request_alias
         response = self.get_request(request_alias, url_path)
+
         if target_file is not None:
             self._create_or_overwrite_target_file(
                 target_file, response.content, binary, overwrite
             )
-            notebook_file(target_file)
+
         return response
 
     def _create_or_overwrite_target_file(
         self,
-        target_file: str,
+        path: str,
         content: Any,
         binary: bool,
         overwrite: bool,
     ) -> None:
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
         if binary:
-            self.fs.create_binary_file(target_file, content, overwrite)
+            self.fs.create_binary_file(path, content, overwrite)
         else:
-            self.fs.create_file(target_file, content, overwrite)
+            self.fs.create_file(path, content, overwrite)
+        notebook_file(path)
 
     def get_current_session_alias(self) -> str:
         """Get request session alias that was used with the ``HTTP Get`` keyword.
@@ -119,16 +125,25 @@ class HTTP(RequestsLibrary):
         the target file, default ``False``
         """
         response = self.http_get(
-            url, target_file, binary, verify, force_new_session, overwrite
+            url, verify=verify, force_new_session=force_new_session
         )
-        if target_file is None:
-            uc = urlparse(url)
-            target = uc.path.rsplit("/", 1)[-1]
-            if not target:
-                target = "downloaded.html"
 
-            self._create_or_overwrite_target_file(
-                target, response.content, binary, overwrite
-            )
-            notebook_file(target)
+        dirname = Path()
+        filename = None
+
+        if target_file is not None:
+            target = Path(target_file)
+            if target.is_dir():
+                dirname = target
+            else:
+                dirname = target.parent
+                filename = target.name
+
+        if filename is None:
+            filename = urlparse(url).path.rsplit("/", 1)[-1] or "downloaded.html"
+
+        self._create_or_overwrite_target_file(
+            dirname / filename, response.content, binary, overwrite
+        )
+
         return response
