@@ -56,10 +56,8 @@ def find(
     image = _to_image(image)
     template = _to_image(template)
 
-    # Convert confidence from logarithmic to linear scale
-    confidence = float(confidence)
-    confidence = clamp(1, confidence, 100)
-    confidence = log2lin(1, confidence, 100)
+    # Convert confidence value to tolerance
+    tolerance = _to_tolerance(confidence)
 
     # Crop image if requested
     if region is not None:
@@ -74,7 +72,7 @@ def find(
     start = time.time()
 
     matches = []
-    for match in _match_template(image, template, confidence):
+    for match in _match_template(image, template, tolerance):
         matches.append(match)
         if limit is not None and len(matches) >= int(limit):
             break
@@ -102,14 +100,26 @@ def _to_image(obj: Any) -> Image.Image:
     return Image.open(obj)
 
 
+def _to_tolerance(confidence):
+    """Convert confidence value to tolerance.
+
+    Confidence is a logarithmic scale from 1 to 100,
+    tolerance is a linear scale from 0.01 to 1.00.
+    """
+    value = float(confidence)
+    value = clamp(1, value, 100)
+    value = log2lin(1, value, 100)
+    value = value / 100.0
+    return value
+
+
 def _match_template(
-    image: Image.Image, template: Image.Image, confidence: float = DEFAULT_CONFIDENCE
+    image: Image.Image, template: Image.Image, tolerance: float
 ) -> Iterator[Region]:
     """Use opencv's matchTemplate() to slide the `template` over
     `image` to calculate correlation coefficients, and then
-    filter with a confidence to find all relevant global maximums.
+    filter with a tolerance to find all relevant global maximums.
     """
-    confidence = max(0.0, min(float(confidence), 100.0)) / 100.0
     template_width, template_height = template.size
 
     if image.mode == "RGBA":
@@ -132,7 +142,7 @@ def _match_template(
     while True:
         # The point (match_x, match_y) is the top-left of the best match
         _, match_coeff, _, (match_x, match_y) = cv2.minMaxLoc(coefficients)
-        if match_coeff < confidence:
+        if match_coeff < tolerance:
             break
 
         # Zero out values for a template-sized region around the best match
