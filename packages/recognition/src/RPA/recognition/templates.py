@@ -1,5 +1,6 @@
 import logging
 import time
+import math
 from pathlib import Path
 from typing import Any, Iterator, List, Optional, Union
 
@@ -10,7 +11,7 @@ from RPA.core import geometry
 from RPA.core.geometry import Region
 
 
-DEFAULT_CONFIDENCE = 95.0
+DEFAULT_CONFIDENCE = 80.0
 LIMIT_FAILSAFE = 256
 
 logger = logging.getLogger(__name__)
@@ -19,6 +20,15 @@ logger = logging.getLogger(__name__)
 def clamp(minimum, value, maximum):
     """Clamp value between given minimum and maximum."""
     return max(minimum, min(value, maximum))
+
+
+def log2lin(minimum, value, maximum):
+    """Maps logarithmic scale to linear scale of same range."""
+    assert value >= minimum
+    assert value <= maximum
+    return (maximum - minimum) * (math.log(value) - math.log(minimum)) / (
+        math.log(maximum) - math.log(minimum)
+    ) + minimum
 
 
 class ImageNotFoundError(Exception):
@@ -38,13 +48,18 @@ def find(
     :param template:    Path to image or Image instance, used to search with
     :param limit:       Limit returned results to maximum of `limit`.
     :param region:      Area to search from. Can speed up search significantly.
-    :param confidence:  Confidence for matching, value between 0 and 100
+    :param confidence:  Confidence for matching, value between 1 and 100
     :return:            List of matching regions
     :raises ImageNotFoundError: No match was found
     """
     # Ensure images are in Pillow format
     image = _to_image(image)
     template = _to_image(template)
+
+    # Convert confidence from logarithmic to linear scale
+    confidence = float(confidence)
+    confidence = clamp(1, confidence, 100)
+    confidence = log2lin(1, confidence, 100)
 
     # Crop image if requested
     if region is not None:
