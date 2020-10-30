@@ -171,8 +171,9 @@ class FinderKeywords(LibraryContext):
     def set_default_confidence(self, confidence: float):
         """Set the default template matching confidence.
 
-        :param confidence: Value from 0 to 100
+        :param confidence: Value from 1 to 100
         """
+        confidence = float(confidence)
         confidence = min(confidence, 100.0)
-        confidence = max(confidence, 0.0)
+        confidence = max(confidence, 1.0)
         self.confidence = confidence
