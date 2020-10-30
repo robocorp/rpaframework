@@ -4,6 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+6.3.1
+-----
+
+- Library **Desktop.Windows**: Add parameter to ``Get Element`` to prevent
+  opening dialog.
+
 6.3.0
 -----
 

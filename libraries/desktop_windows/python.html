@@ -495,13 +495,14 @@ defaults to False</p></li>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.get_element">
-<code class="sig-name descname">get_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">screenshot: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">screenshot: bool = False</em>, <em class="sig-param">open_dialog: bool = True</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get element by locator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>locator</strong> – name of the locator</p></li>
 <li><p><strong>screenshot</strong> – takes element screenshot if True, defaults to False</p></li>
+<li><p><strong>open_dialog</strong> – True if dialog should be reopened, default to True</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

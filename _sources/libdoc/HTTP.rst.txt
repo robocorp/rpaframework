@@ -58,7 +58,7 @@ Requestskeywords
 ================
 
 :Create Client Cert Session:
-  :Arguments: alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'DELETE', 'HEAD', 'OPTIONS', 'GET', 'PUT']
+  :Arguments: alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'GET', 'HEAD', 'DELETE', 'TRACE', 'PUT']
 
   .. raw:: html
 
@@ -79,7 +79,7 @@ Requestskeywords
      <p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>
 
 :Create Custom Session:
-  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'DELETE', 'HEAD', 'OPTIONS', 'GET', 'PUT']
+  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'GET', 'HEAD', 'DELETE', 'TRACE', 'PUT']
 
   .. raw:: html
 
@@ -100,7 +100,7 @@ Requestskeywords
      <p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>
 
 :Create Digest Session:
-  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'DELETE', 'HEAD', 'OPTIONS', 'GET', 'PUT']
+  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'GET', 'HEAD', 'DELETE', 'TRACE', 'PUT']
 
   .. raw:: html
 
@@ -121,7 +121,7 @@ Requestskeywords
      <p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>
 
 :Create Ntlm Session:
-  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'DELETE', 'HEAD', 'OPTIONS', 'GET', 'PUT']
+  :Arguments: alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'GET', 'HEAD', 'DELETE', 'TRACE', 'PUT']
 
   .. raw:: html
 
@@ -142,7 +142,7 @@ Requestskeywords
      <p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>
 
 :Create Session:
-  :Arguments: alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'DELETE', 'HEAD', 'OPTIONS', 'GET', 'PUT']
+  :Arguments: alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['OPTIONS', 'GET', 'HEAD', 'DELETE', 'TRACE', 'PUT']
 
   .. raw:: html
 
