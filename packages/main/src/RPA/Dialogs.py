@@ -114,9 +114,10 @@ class Handler(BaseHTTPRequestHandler):
                     cols=\"{item['cols']}\">{defaulttext}</textarea><br>"""
 
     def get_textinput(self, item):
+        value = item["value"] if "value" in item else ""
         return (
             f"<label for=\"{item['name']}\">{item['label']}</label><br>"
-            f"<input type=\"text\" name=\"{item['name']}\"><br>"
+            f"<input type=\"text\" name=\"{item['name']}\" value=\"{value}\"><br>"
         )
 
     def get_hiddeninput(self, item):
@@ -343,21 +344,22 @@ class Dialogs:
         element = {"type": "title", "value": title}
         self.custom_form["form"].append(element)
 
-    def add_text_input(self, label: str, name: str) -> None:
+    def add_text_input(self, label: str, name: str, value: str = None) -> None:
         """Add text input element
 
         :param label: input element label
         :param name: input element name attribute
+        :param value: input element value attribute
 
         Example.
 
         .. code-block:: robotframework
 
             Create Form
-            Add Text Input   what is your firstname ?  fname
+            Add Text Input   what is your firstname ?  fname   value=Mika
 
         """
-        element = {"type": "textinput", "label": label, "name": name}
+        element = {"type": "textinput", "label": label, "name": name, "value": value}
         self.custom_form["form"].append(element)
 
     def add_hidden_input(self, name: str, value: str) -> None:
