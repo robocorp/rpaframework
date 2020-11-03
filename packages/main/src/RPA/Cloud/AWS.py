@@ -2,7 +2,7 @@ import json
 import logging
 from functools import wraps
 from pathlib import Path
-from typing import Any
+from typing import Any, OrderedDict
 
 try:
     import boto3
@@ -489,6 +489,181 @@ class ServiceTextract(AWSBase):
         if json_file:
             with open(json_file, "w") as f:
                 json.dump(response, f)
+        return response
+
+    @aws_dependency_required
+    def start_document_analysis(
+        self,
+        bucket_name_in: str = None,
+        object_name_in: str = None,
+        object_version_in: str = None,
+        bucket_name_out: str = None,
+        prefix_object_out: str = "textract_output",
+    ):
+        """Starts the asynchronous analysis of an input document
+        for relationships between detected items such as key-value pairs,
+        tables, and selection elements.
+
+        Input object can be in JPEG, PNG or PDF format. Documents should
+        be located in the Amazon S3 bucket.
+
+        By default Amazon Textract will save the analysis result internally
+        to be accessed by keyword ``Get Document Analysis``. This can
+        be overridden by giving parameter ``bucket_name_out``.
+
+        :param bucket_name_in: name of the S3 bucket for the input object,
+                               defaults to None
+        :param object_name_in: name of the input object, defaults to None
+        :param object_version_in: version of the input object, defaults to None
+        :param bucket_name_out: name of the S3 bucket where to save analysis result
+                                object, defaults to None
+        :param prefix_object_out: name of the S3 bucket for the analysis result object,
+        :return: job identifier
+        """
+        client = self._get_client_for_service("textract")
+        s3_object_dict = {"Bucket": bucket_name_in, "Name": object_name_in}
+
+        if object_version_in:
+            s3_object_dict["Version"] = object_version_in
+        method_arguments = {
+            "DocumentLocation": {"S3Object": s3_object_dict},
+            "FeatureTypes": ["TABLES", "FORMS"],
+        }
+        if bucket_name_out:
+            method_arguments["OutputConfig"] = {
+                "S3Bucket": bucket_name_out,
+                "S3Prefix": prefix_object_out,
+            }
+        response = client.start_document_analysis(**method_arguments)
+        return response["JobId"]
+
+    @aws_dependency_required
+    def get_document_analysis(
+        self, job_id: str = None, max_results: int = 1000, next_token: str = None
+    ) -> dict:
+        """Get the results of Textract asynchronous `Document Analysis` operation
+
+        Response dictionary has key `JobStatus` with value `SUCCEEDED` when analysis
+        has been completed.
+
+        :param job_id: job identifier, defaults to None
+        :param max_results: number of blocks to get at a time, defaults to 1000
+        :param next_token: pagination token for getting next set of results,
+               defaults to None
+        :return: dictionary
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Init Textract Client  %{AWS_KEY_ID}  %{AWS_KEY_SECRET}  %{AWS_REGION}
+            ${jobid}=    Start Document Analysis  s3bucket_name  invoice.pdf
+            FOR    ${i}    IN RANGE    50
+                ${response}    Get Document Analysis  ${jobid}
+                Exit For Loop If    "${response}[JobStatus]" == "SUCCEEDED"
+                Sleep    1s
+            END
+        """
+        client = self._get_client_for_service("textract")
+        method_arguments = {"JobId": job_id, "MaxResults": max_results}
+        if next_token:
+            method_arguments["NextToken"] = next_token
+
+        response = client.get_document_analysis(**method_arguments)
+        return response
+
+    def get_pages_and_text(self, textract_response: dict) -> OrderedDict:
+        """Get pages and text out of Textract response json
+
+        :param textract_response: JSON from Textract
+        :return: dictionary, page numbers as keys and value is a list
+                 of text lines
+        """
+        document = OrderedDict()
+        for item in textract_response["Blocks"]:
+            if item["BlockType"] == "LINE":
+                if item["Page"] in document.keys():
+                    document[item["Page"]].append(item["Text"])
+                else:
+                    document[item["Page"]] = [item["Text"]]
+        return document
+
+    @aws_dependency_required
+    def start_document_text_detection(
+        self,
+        bucket_name_in: str = None,
+        object_name_in: str = None,
+        object_version_in: str = None,
+        bucket_name_out: str = None,
+        prefix_object_out: str = "textract_output",
+    ):
+        """Starts the asynchronous detection of text in a document.
+        Amazon Textract can detect lines of text and the words that make up a
+        line of text.
+
+        Input object can be in JPEG, PNG or PDF format. Documents should
+        be located in the Amazon S3 bucket.
+
+        By default Amazon Textract will save the analysis result internally
+        to be accessed by keyword ``Get Document Text Detection``. This can
+        be overridden by giving parameter ``bucket_name_out``.
+
+        :param bucket_name_in: name of the S3 bucket for the input object,
+                               defaults to None
+        :param object_name_in: name of the input object, defaults to None
+        :param object_version_in: version of the input object, defaults to None
+        :param bucket_name_out: name of the S3 bucket where to save analysis result
+                                object, defaults to None
+        :param prefix_object_out: name of the S3 bucket for the analysis result object,
+        :return: job identifier
+        """
+        client = self._get_client_for_service("textract")
+        s3_object_dict = {"Bucket": bucket_name_in, "Name": object_name_in}
+        if object_version_in:
+            s3_object_dict["Version"] = object_version_in
+
+        method_arguments = {"DocumentLocation": {"S3Object": s3_object_dict}}
+        if bucket_name_out:
+            method_arguments["OutputConfig"] = {
+                "S3Bucket": bucket_name_out,
+                "S3Prefix": prefix_object_out,
+            }
+        response = client.start_document_text_detection(**method_arguments)
+        return response["JobId"]
+
+    @aws_dependency_required
+    def get_document_text_detection(
+        self, job_id: str = None, max_results: int = 1000, next_token: str = None
+    ) -> dict:
+        """Get the results of Textract asynchronous `Document Text Detection` operation
+
+        Response dictionary has key `JobStatus` with value `SUCCEEDED` when analysis
+        has been completed.
+
+        :param job_id: job identifier, defaults to None
+        :param max_results: number of blocks to get at a time, defaults to 1000
+        :param next_token: pagination token for getting next set of results,
+               defaults to None
+        :return: dictionary
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Init Textract Client  %{AWS_KEY_ID}  %{AWS_KEY_SECRET}  %{AWS_REGION}
+            ${jobid}=    Start Document Text Detection  s3bucket_name  invoice.pdf
+            FOR    ${i}    IN RANGE    50
+                ${response}    Get Document Text Detection    ${jobid}
+                Exit For Loop If    "${response}[JobStatus]" == "SUCCEEDED"
+                Sleep    1s
+            END
+        """
+        client = self._get_client_for_service("textract")
+        method_arguments = {"JobId": job_id, "MaxResults": max_results}
+        if next_token:
+            method_arguments["NextToken"] = next_token
+
+        response = client.get_document_text_detection(**method_arguments)
         return response
 
 
