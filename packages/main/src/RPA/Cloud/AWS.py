@@ -2,7 +2,7 @@ import json
 import logging
 from functools import wraps
 from pathlib import Path
-from typing import Any, OrderedDict
+from typing import Any
 
 try:
     import boto3
