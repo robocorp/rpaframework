@@ -320,14 +320,62 @@
 <dt class="field-even">Get Cells</dt>
 <dd class="field-even"><p>[summary]</p>
 </dd>
-<dt class="field-odd">Get Tables</dt>
-<dd class="field-odd"><p>[summary]</p>
+<dt class="field-odd">Get Document Analysis</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>job_id: str = None, max_results: int = 1000, next_token: str = None</p>
 </dd>
-<dt class="field-even">Get Words</dt>
+</dl>
+<p>Get the results of Textract asynchronous <cite>Document Analysis</cite> operation</p>
+<p>Response dictionary has key <cite>JobStatus</cite> with value <cite>SUCCEEDED</cite> when analysis
+has been completed.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Init Textract Client</span><span class="p">  </span><span class="c">%{AWS_KEY_ID}</span><span class="p">  </span><span class="c">%{AWS_KEY_SECRET}</span><span class="p">  </span><span class="c">%{AWS_REGION}</span><span class="p"></span>
+<span class="c">${jobid}=</span><span class="p">    </span><span class="c">Start Document Analysis</span><span class="p">  </span><span class="c">s3bucket_name</span><span class="p">  </span><span class="c">invoice.pdf</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${i}</span><span class="p">    </span><span class="c">IN RANGE</span><span class="p">    </span><span class="c">50</span><span class="p"></span>
+<span class="p">    </span><span class="c">${response}</span><span class="p">    </span><span class="c">Get Document Analysis</span><span class="p">  </span><span class="c">${jobid}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Exit For Loop If</span><span class="p">    </span><span class="c">&quot;${response}[JobStatus]&quot; == &quot;SUCCEEDED&quot;</span><span class="p"></span>
+<span class="p">    </span><span class="c">Sleep</span><span class="p">    </span><span class="c">1s</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Get Document Text Detection</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>job_id: str = None, max_results: int = 1000, next_token: str = None</p>
+</dd>
+</dl>
+<p>Get the results of Textract asynchronous <cite>Document Text Detection</cite> operation</p>
+<p>Response dictionary has key <cite>JobStatus</cite> with value <cite>SUCCEEDED</cite> when analysis
+has been completed.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Init Textract Client</span><span class="p">  </span><span class="c">%{AWS_KEY_ID}</span><span class="p">  </span><span class="c">%{AWS_KEY_SECRET}</span><span class="p">  </span><span class="c">%{AWS_REGION}</span><span class="p"></span>
+<span class="c">${jobid}=</span><span class="p">    </span><span class="c">Start Document Text Detection</span><span class="p">  </span><span class="c">s3bucket_name</span><span class="p">  </span><span class="c">invoice.pdf</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${i}</span><span class="p">    </span><span class="c">IN RANGE</span><span class="p">    </span><span class="c">50</span><span class="p"></span>
+<span class="p">    </span><span class="c">${response}</span><span class="p">    </span><span class="c">Get Document Text Detection</span><span class="p">    </span><span class="c">${jobid}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Exit For Loop If</span><span class="p">    </span><span class="c">&quot;${response}[JobStatus]&quot; == &quot;SUCCEEDED&quot;</span><span class="p"></span>
+<span class="p">    </span><span class="c">Sleep</span><span class="p">    </span><span class="c">1s</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Get Pages And Text</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>textract_response: dict</p>
+</dd>
+</dl>
+<p>Get pages and text out of Textract response json</p>
+</dd>
+<dt class="field-even">Get Tables</dt>
 <dd class="field-even"><p>[summary]</p>
 </dd>
-<dt class="field-odd">Init Comprehend Client</dt>
-<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Get Words</dt>
+<dd class="field-odd"><p>[summary]</p>
+</dd>
+<dt class="field-even">Init Comprehend Client</dt>
+<dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
 <dd class="field-odd"><p>aws_key_id: str = None, aws_key: str = None, region: str = None, use_robocloud_vault: bool = False</p>
 </dd>
@@ -387,6 +435,36 @@
 </dd>
 </dl>
 <p>Set Robocloud Vault name</p>
+</dd>
+<dt class="field-even">Start Document Analysis</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>bucket_name_in: str = None, object_name_in: str = None, object_version_in: str = None, bucket_name_out: str = None, prefix_object_out: str = textract_output</p>
+</dd>
+</dl>
+<p>Starts the asynchronous analysis of an input document
+for relationships between detected items such as key-value pairs,
+tables, and selection elements.</p>
+<p>Input object can be in JPEG, PNG or PDF format. Documents should
+be located in the Amazon S3 bucket.</p>
+<p>By default Amazon Textract will save the analysis result internally
+to be accessed by keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Document</span> <span class="pre">Analysis</span></code>. This can
+be overridden by giving parameter <code class="docutils literal notranslate"><span class="pre">bucket_name_out</span></code>.</p>
+</dd>
+<dt class="field-even">Start Document Text Detection</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>bucket_name_in: str = None, object_name_in: str = None, object_version_in: str = None, bucket_name_out: str = None, prefix_object_out: str = textract_output</p>
+</dd>
+</dl>
+<p>Starts the asynchronous detection of text in a document.
+Amazon Textract can detect lines of text and the words that make up a
+line of text.</p>
+<p>Input object can be in JPEG, PNG or PDF format. Documents should
+be located in the Amazon S3 bucket.</p>
+<p>By default Amazon Textract will save the analysis result internally
+to be accessed by keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Document</span> <span class="pre">Text</span> <span class="pre">Detection</span></code>. This can
+be overridden by giving parameter <code class="docutils literal notranslate"><span class="pre">bucket_name_out</span></code>.</p>
 </dd>
 <dt class="field-even">Upload File</dt>
 <dd class="field-even"><dl class="field-list simple">

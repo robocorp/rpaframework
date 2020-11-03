@@ -414,6 +414,83 @@ current directory</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.get_document_analysis">
+<code class="sig-name descname">get_document_analysis</code><span class="sig-paren">(</span><em class="sig-param">job_id: str = None</em>, <em class="sig-param">max_results: int = 1000</em>, <em class="sig-param">next_token: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_document_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the results of Textract asynchronous <cite>Document Analysis</cite> operation</p>
+<p>Response dictionary has key <cite>JobStatus</cite> with value <cite>SUCCEEDED</cite> when analysis
+has been completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_id</strong> – job identifier, defaults to None</p></li>
+<li><p><strong>max_results</strong> – number of blocks to get at a time, defaults to 1000</p></li>
+<li><p><strong>next_token</strong> – pagination token for getting next set of results,
+defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Init Textract Client</span><span class="p">  </span><span class="c">%{AWS_KEY_ID}</span><span class="p">  </span><span class="c">%{AWS_KEY_SECRET}</span><span class="p">  </span><span class="c">%{AWS_REGION}</span><span class="p"></span>
+<span class="c">${jobid}=</span><span class="p">    </span><span class="c">Start Document Analysis</span><span class="p">  </span><span class="c">s3bucket_name</span><span class="p">  </span><span class="c">invoice.pdf</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${i}</span><span class="p">    </span><span class="c">IN RANGE</span><span class="p">    </span><span class="c">50</span><span class="p"></span>
+<span class="p">    </span><span class="c">${response}</span><span class="p">    </span><span class="c">Get Document Analysis</span><span class="p">  </span><span class="c">${jobid}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Exit For Loop If</span><span class="p">    </span><span class="c">&quot;${response}[JobStatus]&quot; == &quot;SUCCEEDED&quot;</span><span class="p"></span>
+<span class="p">    </span><span class="c">Sleep</span><span class="p">    </span><span class="c">1s</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.get_document_text_detection">
+<code class="sig-name descname">get_document_text_detection</code><span class="sig-paren">(</span><em class="sig-param">job_id: str = None</em>, <em class="sig-param">max_results: int = 1000</em>, <em class="sig-param">next_token: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_document_text_detection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the results of Textract asynchronous <cite>Document Text Detection</cite> operation</p>
+<p>Response dictionary has key <cite>JobStatus</cite> with value <cite>SUCCEEDED</cite> when analysis
+has been completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_id</strong> – job identifier, defaults to None</p></li>
+<li><p><strong>max_results</strong> – number of blocks to get at a time, defaults to 1000</p></li>
+<li><p><strong>next_token</strong> – pagination token for getting next set of results,
+defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Init Textract Client</span><span class="p">  </span><span class="c">%{AWS_KEY_ID}</span><span class="p">  </span><span class="c">%{AWS_KEY_SECRET}</span><span class="p">  </span><span class="c">%{AWS_REGION}</span><span class="p"></span>
+<span class="c">${jobid}=</span><span class="p">    </span><span class="c">Start Document Text Detection</span><span class="p">  </span><span class="c">s3bucket_name</span><span class="p">  </span><span class="c">invoice.pdf</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${i}</span><span class="p">    </span><span class="c">IN RANGE</span><span class="p">    </span><span class="c">50</span><span class="p"></span>
+<span class="p">    </span><span class="c">${response}</span><span class="p">    </span><span class="c">Get Document Text Detection</span><span class="p">    </span><span class="c">${jobid}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Exit For Loop If</span><span class="p">    </span><span class="c">&quot;${response}[JobStatus]&quot; == &quot;SUCCEEDED&quot;</span><span class="p"></span>
+<span class="p">    </span><span class="c">Sleep</span><span class="p">    </span><span class="c">1s</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.get_pages_and_text">
+<code class="sig-name descname">get_pages_and_text</code><span class="sig-paren">(</span><em class="sig-param">textract_response: dict</em><span class="sig-paren">)</span> &#x2192; OrderedDict<a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_pages_and_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get pages and text out of Textract response json</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>textract_response</strong> – JSON from Textract</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary, page numbers as keys and value is a list
+of text lines</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.AWS.AWS.get_tables">
 <code class="sig-name descname">get_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.get_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>[summary]</p>
@@ -580,6 +657,64 @@ current directory</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.start_document_analysis">
+<code class="sig-name descname">start_document_analysis</code><span class="sig-paren">(</span><em class="sig-param">bucket_name_in: str = None</em>, <em class="sig-param">object_name_in: str = None</em>, <em class="sig-param">object_version_in: str = None</em>, <em class="sig-param">bucket_name_out: str = None</em>, <em class="sig-param">prefix_object_out: str = 'textract_output'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.start_document_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the asynchronous analysis of an input document
+for relationships between detected items such as key-value pairs,
+tables, and selection elements.</p>
+<p>Input object can be in JPEG, PNG or PDF format. Documents should
+be located in the Amazon S3 bucket.</p>
+<p>By default Amazon Textract will save the analysis result internally
+to be accessed by keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Document</span> <span class="pre">Analysis</span></code>. This can
+be overridden by giving parameter <code class="docutils literal notranslate"><span class="pre">bucket_name_out</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name_in</strong> – name of the S3 bucket for the input object,
+defaults to None</p></li>
+<li><p><strong>object_name_in</strong> – name of the input object, defaults to None</p></li>
+<li><p><strong>object_version_in</strong> – version of the input object, defaults to None</p></li>
+<li><p><strong>bucket_name_out</strong> – name of the S3 bucket where to save analysis result
+object, defaults to None</p></li>
+<li><p><strong>prefix_object_out</strong> – name of the S3 bucket for the analysis result object,</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>job identifier</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.AWS.start_document_text_detection">
+<code class="sig-name descname">start_document_text_detection</code><span class="sig-paren">(</span><em class="sig-param">bucket_name_in: str = None</em>, <em class="sig-param">object_name_in: str = None</em>, <em class="sig-param">object_version_in: str = None</em>, <em class="sig-param">bucket_name_out: str = None</em>, <em class="sig-param">prefix_object_out: str = 'textract_output'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS.start_document_text_detection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the asynchronous detection of text in a document.
+Amazon Textract can detect lines of text and the words that make up a
+line of text.</p>
+<p>Input object can be in JPEG, PNG or PDF format. Documents should
+be located in the Amazon S3 bucket.</p>
+<p>By default Amazon Textract will save the analysis result internally
+to be accessed by keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Document</span> <span class="pre">Text</span> <span class="pre">Detection</span></code>. This can
+be overridden by giving parameter <code class="docutils literal notranslate"><span class="pre">bucket_name_out</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name_in</strong> – name of the S3 bucket for the input object,
+defaults to None</p></li>
+<li><p><strong>object_name_in</strong> – name of the input object, defaults to None</p></li>
+<li><p><strong>object_version_in</strong> – version of the input object, defaults to None</p></li>
+<li><p><strong>bucket_name_out</strong> – name of the S3 bucket where to save analysis result
+object, defaults to None</p></li>
+<li><p><strong>prefix_object_out</strong> – name of the S3 bucket for the analysis result object,</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>job identifier</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1142,6 +1277,83 @@ used as <cite>object_name</cite>.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.get_document_analysis">
+<code class="sig-name descname">get_document_analysis</code><span class="sig-paren">(</span><em class="sig-param">job_id: str = None</em>, <em class="sig-param">max_results: int = 1000</em>, <em class="sig-param">next_token: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.get_document_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the results of Textract asynchronous <cite>Document Analysis</cite> operation</p>
+<p>Response dictionary has key <cite>JobStatus</cite> with value <cite>SUCCEEDED</cite> when analysis
+has been completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_id</strong> – job identifier, defaults to None</p></li>
+<li><p><strong>max_results</strong> – number of blocks to get at a time, defaults to 1000</p></li>
+<li><p><strong>next_token</strong> – pagination token for getting next set of results,
+defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Init Textract Client</span><span class="p">  </span><span class="c">%{AWS_KEY_ID}</span><span class="p">  </span><span class="c">%{AWS_KEY_SECRET}</span><span class="p">  </span><span class="c">%{AWS_REGION}</span><span class="p"></span>
+<span class="c">${jobid}=</span><span class="p">    </span><span class="c">Start Document Analysis</span><span class="p">  </span><span class="c">s3bucket_name</span><span class="p">  </span><span class="c">invoice.pdf</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${i}</span><span class="p">    </span><span class="c">IN RANGE</span><span class="p">    </span><span class="c">50</span><span class="p"></span>
+<span class="p">    </span><span class="c">${response}</span><span class="p">    </span><span class="c">Get Document Analysis</span><span class="p">  </span><span class="c">${jobid}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Exit For Loop If</span><span class="p">    </span><span class="c">&quot;${response}[JobStatus]&quot; == &quot;SUCCEEDED&quot;</span><span class="p"></span>
+<span class="p">    </span><span class="c">Sleep</span><span class="p">    </span><span class="c">1s</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.get_document_text_detection">
+<code class="sig-name descname">get_document_text_detection</code><span class="sig-paren">(</span><em class="sig-param">job_id: str = None</em>, <em class="sig-param">max_results: int = 1000</em>, <em class="sig-param">next_token: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.get_document_text_detection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the results of Textract asynchronous <cite>Document Text Detection</cite> operation</p>
+<p>Response dictionary has key <cite>JobStatus</cite> with value <cite>SUCCEEDED</cite> when analysis
+has been completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_id</strong> – job identifier, defaults to None</p></li>
+<li><p><strong>max_results</strong> – number of blocks to get at a time, defaults to 1000</p></li>
+<li><p><strong>next_token</strong> – pagination token for getting next set of results,
+defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Init Textract Client</span><span class="p">  </span><span class="c">%{AWS_KEY_ID}</span><span class="p">  </span><span class="c">%{AWS_KEY_SECRET}</span><span class="p">  </span><span class="c">%{AWS_REGION}</span><span class="p"></span>
+<span class="c">${jobid}=</span><span class="p">    </span><span class="c">Start Document Text Detection</span><span class="p">  </span><span class="c">s3bucket_name</span><span class="p">  </span><span class="c">invoice.pdf</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${i}</span><span class="p">    </span><span class="c">IN RANGE</span><span class="p">    </span><span class="c">50</span><span class="p"></span>
+<span class="p">    </span><span class="c">${response}</span><span class="p">    </span><span class="c">Get Document Text Detection</span><span class="p">    </span><span class="c">${jobid}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Exit For Loop If</span><span class="p">    </span><span class="c">&quot;${response}[JobStatus]&quot; == &quot;SUCCEEDED&quot;</span><span class="p"></span>
+<span class="p">    </span><span class="c">Sleep</span><span class="p">    </span><span class="c">1s</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.get_pages_and_text">
+<code class="sig-name descname">get_pages_and_text</code><span class="sig-paren">(</span><em class="sig-param">textract_response: dict</em><span class="sig-paren">)</span> &#x2192; OrderedDict<a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.get_pages_and_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get pages and text out of Textract response json</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>textract_response</strong> – JSON from Textract</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary, page numbers as keys and value is a list
+of text lines</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.AWS.ServiceTextract.get_tables">
 <code class="sig-name descname">get_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.get_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>[summary]</p>
@@ -1206,6 +1418,64 @@ used as <cite>object_name</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>vault_name</strong> – Robocloud Vault name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.start_document_analysis">
+<code class="sig-name descname">start_document_analysis</code><span class="sig-paren">(</span><em class="sig-param">bucket_name_in: str = None</em>, <em class="sig-param">object_name_in: str = None</em>, <em class="sig-param">object_version_in: str = None</em>, <em class="sig-param">bucket_name_out: str = None</em>, <em class="sig-param">prefix_object_out: str = 'textract_output'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.start_document_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the asynchronous analysis of an input document
+for relationships between detected items such as key-value pairs,
+tables, and selection elements.</p>
+<p>Input object can be in JPEG, PNG or PDF format. Documents should
+be located in the Amazon S3 bucket.</p>
+<p>By default Amazon Textract will save the analysis result internally
+to be accessed by keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Document</span> <span class="pre">Analysis</span></code>. This can
+be overridden by giving parameter <code class="docutils literal notranslate"><span class="pre">bucket_name_out</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name_in</strong> – name of the S3 bucket for the input object,
+defaults to None</p></li>
+<li><p><strong>object_name_in</strong> – name of the input object, defaults to None</p></li>
+<li><p><strong>object_version_in</strong> – version of the input object, defaults to None</p></li>
+<li><p><strong>bucket_name_out</strong> – name of the S3 bucket where to save analysis result
+object, defaults to None</p></li>
+<li><p><strong>prefix_object_out</strong> – name of the S3 bucket for the analysis result object,</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>job identifier</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.AWS.ServiceTextract.start_document_text_detection">
+<code class="sig-name descname">start_document_text_detection</code><span class="sig-paren">(</span><em class="sig-param">bucket_name_in: str = None</em>, <em class="sig-param">object_name_in: str = None</em>, <em class="sig-param">object_version_in: str = None</em>, <em class="sig-param">bucket_name_out: str = None</em>, <em class="sig-param">prefix_object_out: str = 'textract_output'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.ServiceTextract.start_document_text_detection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the asynchronous detection of text in a document.
+Amazon Textract can detect lines of text and the words that make up a
+line of text.</p>
+<p>Input object can be in JPEG, PNG or PDF format. Documents should
+be located in the Amazon S3 bucket.</p>
+<p>By default Amazon Textract will save the analysis result internally
+to be accessed by keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Document</span> <span class="pre">Text</span> <span class="pre">Detection</span></code>. This can
+be overridden by giving parameter <code class="docutils literal notranslate"><span class="pre">bucket_name_out</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name_in</strong> – name of the S3 bucket for the input object,
+defaults to None</p></li>
+<li><p><strong>object_name_in</strong> – name of the input object, defaults to None</p></li>
+<li><p><strong>object_version_in</strong> – version of the input object, defaults to None</p></li>
+<li><p><strong>bucket_name_out</strong> – name of the S3 bucket where to save analysis result
+object, defaults to None</p></li>
+<li><p><strong>prefix_object_out</strong> – name of the S3 bucket for the analysis result object,</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>job identifier</p>
 </dd>
 </dl>
 </dd></dl>

@@ -941,7 +941,7 @@ Browser
   .. raw:: html
 
      <p>Open URL with user's default browser</p>
-     <p>:param url: URL to open :param tab: defines is url is opened in a tab (default <span class="name">True</span>) or in new window (<span class="name">False</span>)</p>
+     <p><code>url</code> URL to open <code>tab</code> defines is url is opened in a tab (default <span class="name">True</span>) or in new window (<span class="name">False</span>)</p>
      <p>Example:</p>
      <table border="1">
      <tr>
@@ -973,6 +973,14 @@ Browser
      Screenshot | locator=//img[@alt="Google"] |                                    # element screenshot, default filename
      Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing
      </pre>
+
+:Set Download Directory:
+  :Arguments: directory: str = None, download_pdf: bool = True
+
+  .. raw:: html
+
+     <p>Set browser download directory</p>
+     <p><code>directory</code>    target directory for downloads, defaults to None which means that setting is removed <code>download_pdf</code> if <span class="name">True</span> then PDF is downloaded instead of shown with browser's internal viewer</p>
 
 :Wait And Click Button:
   :Arguments: locator: str, modifier: str = None

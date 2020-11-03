@@ -1074,15 +1074,11 @@ descriptions of arguments.</p>
 <dt id="RPA.Browser.Browser.open_user_browser">
 <code class="sig-name descname">open_user_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">tab=True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.open_user_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open URL with user’s default browser</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>url</strong> – URL to open</p></li>
-<li><p><strong>tab</strong> – defines is url is opened in a tab (default <cite>True</cite>) or
-in new window (<cite>False</cite>)</p></li>
-</ul>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open
+<code class="docutils literal notranslate"><span class="pre">tab</span></code> defines is url is opened in a tab (default <cite>True</cite>) or</p>
+<blockquote>
+<div><p>in new window (<cite>False</cite>)</p>
+</div></blockquote>
 <dl>
 <dt>Example:</dt><dd><div class="line-block">
 <div class="line">Open User Browser  | <a class="reference external" href="https://www.google.com?q=rpa">https://www.google.com?q=rpa</a> |</div>
@@ -1133,6 +1129,18 @@ if set to <cite>None</cite> then file is not saved at all</p>
 <div class="line">Screenshot | locator=//img[&#64;alt=”Google”] |                                    # element screenshot, default filename</div>
 <div class="line">Screenshot | locator=//img[&#64;alt=”Google”] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing</div>
 </div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.set_download_directory">
+<code class="sig-name descname">set_download_directory</code><span class="sig-paren">(</span><em class="sig-param">directory: str = None</em>, <em class="sig-param">download_pdf: bool = True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.set_download_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set browser download directory</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">directory</span></code>    target directory for downloads, defaults to None which means</dt><dd><p>that setting is removed</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">download_pdf</span></code> if <cite>True</cite> then PDF is downloaded instead of shown with</dt><dd><p>browser’s internal viewer</p>
 </dd>
 </dl>
 </dd></dl>

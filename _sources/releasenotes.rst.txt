@@ -4,6 +4,10 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Browser**: Add ``Set Download Directory`` keyword
+- Library **Cloud.AWS**: Add keywords for Textract asynchronous operations regarding
+  document analysis and text detection
+
 6.3.1
 -----
 

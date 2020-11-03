@@ -91,6 +91,54 @@ Keywords
   [summary]
 
 
+:Get Document Analysis:
+  :Arguments: job_id: str = None, max_results: int = 1000, next_token: str = None
+
+  Get the results of Textract asynchronous `Document Analysis` operation
+
+  Response dictionary has key `JobStatus` with value `SUCCEEDED` when analysis
+  has been completed.
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Init Textract Client  %{AWS_KEY_ID}  %{AWS_KEY_SECRET}  %{AWS_REGION}
+      ${jobid}=    Start Document Analysis  s3bucket_name  invoice.pdf
+      FOR    ${i}    IN RANGE    50
+          ${response}    Get Document Analysis  ${jobid}
+          Exit For Loop If    "${response}[JobStatus]" == "SUCCEEDED"
+          Sleep    1s
+      END
+
+:Get Document Text Detection:
+  :Arguments: job_id: str = None, max_results: int = 1000, next_token: str = None
+
+  Get the results of Textract asynchronous `Document Text Detection` operation
+
+  Response dictionary has key `JobStatus` with value `SUCCEEDED` when analysis
+  has been completed.
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Init Textract Client  %{AWS_KEY_ID}  %{AWS_KEY_SECRET}  %{AWS_REGION}
+      ${jobid}=    Start Document Text Detection  s3bucket_name  invoice.pdf
+      FOR    ${i}    IN RANGE    50
+          ${response}    Get Document Text Detection    ${jobid}
+          Exit For Loop If    "${response}[JobStatus]" == "SUCCEEDED"
+          Sleep    1s
+      END
+
+:Get Pages And Text:
+  :Arguments: textract_response: dict
+
+  Get pages and text out of Textract response json
+
+
 :Get Tables:
   [summary]
 
@@ -147,6 +195,36 @@ Keywords
   :Arguments: vault_name
 
   Set Robocloud Vault name
+
+
+:Start Document Analysis:
+  :Arguments: bucket_name_in: str = None, object_name_in: str = None, object_version_in: str = None, bucket_name_out: str = None, prefix_object_out: str = textract_output
+
+  Starts the asynchronous analysis of an input document
+  for relationships between detected items such as key-value pairs,
+  tables, and selection elements.
+
+  Input object can be in JPEG, PNG or PDF format. Documents should
+  be located in the Amazon S3 bucket.
+
+  By default Amazon Textract will save the analysis result internally
+  to be accessed by keyword ``Get Document Analysis``. This can
+  be overridden by giving parameter ``bucket_name_out``.
+
+
+:Start Document Text Detection:
+  :Arguments: bucket_name_in: str = None, object_name_in: str = None, object_version_in: str = None, bucket_name_out: str = None, prefix_object_out: str = textract_output
+
+  Starts the asynchronous detection of text in a document.
+  Amazon Textract can detect lines of text and the words that make up a
+  line of text.
+
+  Input object can be in JPEG, PNG or PDF format. Documents should
+  be located in the Amazon S3 bucket.
+
+  By default Amazon Textract will save the analysis result internally
+  to be accessed by keyword ``Get Document Text Detection``. This can
+  be overridden by giving parameter ``bucket_name_out``.
 
 
 :Upload File:
