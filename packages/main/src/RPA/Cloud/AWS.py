@@ -572,7 +572,7 @@ class ServiceTextract(AWSBase):
         response = client.get_document_analysis(**method_arguments)
         return response
 
-    def get_pages_and_text(self, textract_response: dict) -> OrderedDict:
+    def get_pages_and_text(self, textract_response: dict) -> dict:
         """Get pages and text out of Textract response json
 
         :param textract_response: JSON from Textract
