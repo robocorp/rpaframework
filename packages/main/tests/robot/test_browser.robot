@@ -1,5 +1,6 @@
 *** Settings ***
 Library         RPA.Browser    locators_path=${LOCATORS}  run_on_failure=${NONE}
+Library         OperatingSystem
 Suite Setup     Open Available Browser  about:blank  headless=${TRUE}
 Suite Teardown  Close All Browsers
 Default Tags    RPA.Browser
@@ -47,3 +48,10 @@ Locator aliases
     Input Text      alias:RobotSpareBin.Password    thoushallnotpass
     Submit Form
     Click button when visible   id:logout
+
+Set download directory
+    [Tags]  skip
+    Set Download Directory  ${OUTPUT_DIR}
+    Open Available Browser  https://cdn.robocorp.com/legal/Robocorp-EULA-v1.0.pdf  headless=${TRUE}
+    File Should Exist       ${OUTPUT_DIR}${/}Robocorp-EULA-v1.0.pdf
+    [Teardown]  Run Keyword And Ignore Error   Remove File  ${OUTPUT_DIR}${/}Robocorp-EULA-v1.0.pdf

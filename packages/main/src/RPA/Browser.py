@@ -86,6 +86,7 @@ class Browser(SeleniumLibrary):
         if not notebook.IPYTHON_AVAILABLE:
             self._embedding_screenshots = True
             self._previous_screenshot_directory = self.set_screenshot_directory(EMBED)
+        self.download_preferences = {}
 
     @property
     def location(self) -> str:
@@ -303,7 +304,8 @@ class Browser(SeleniumLibrary):
             options.add_argument("--allow-running-insecure-content")
             options.add_argument("--no-sandbox")
             options.add_experimental_option(
-                "prefs", {**default_preferences, **preferences}
+                "prefs",
+                {**default_preferences, **preferences, **self.download_preferences},
             )
             options.add_experimental_option(
                 "excludeSwitches", ["enable-logging", "enable-automation"]
@@ -1226,9 +1228,9 @@ class Browser(SeleniumLibrary):
     def open_user_browser(self, url: str, tab=True) -> None:
         """Open URL with user's default browser
 
-        :param url: URL to open
-        :param tab: defines is url is opened in a tab (default `True`) or
-         in new window (`False`)
+        ``url`` URL to open
+        ``tab`` defines is url is opened in a tab (default `True`) or
+                in new window (`False`)
 
         Example:
             | Open User Browser  | https://www.google.com?q=rpa |
@@ -1246,3 +1248,27 @@ class Browser(SeleniumLibrary):
         """
         capabilities = self.driver.capabilities
         return dict(capabilities)
+
+    @keyword
+    def set_download_directory(
+        self, directory: str = None, download_pdf: bool = True
+    ) -> None:
+        """Set browser download directory
+
+        ``directory``    target directory for downloads, defaults to None which means
+                         that setting is removed
+        ``download_pdf`` if `True` then PDF is downloaded instead of shown with
+                         browser's internal viewer
+        """
+        if directory is None:
+            self.logger.info("Download directory set back to browser default setting")
+            self.download_preferences = {}
+        else:
+            download_directory = str(Path(directory))
+            self.logger.info("Download directory set to: %s", download_directory)
+            self.download_preferences = {
+                "download.default_directory": download_directory,
+                "plugins.always_open_pdf_externally": download_pdf,
+                "download.directory_upgrade": True,
+                "download.prompt_for_download": False,
+            }
