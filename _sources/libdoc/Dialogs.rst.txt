@@ -129,7 +129,7 @@ Keywords
       Add Text       ${form_guidance_text}
 
 :Add Text Input:
-  :Arguments: label: str, name: str
+  :Arguments: label: str, name: str, value: str = None
 
   Add text input element
 
@@ -139,7 +139,7 @@ Keywords
   .. code-block:: robotframework
 
       Create Form
-      Add Text Input   what is your firstname ?  fname
+      Add Text Input   what is your firstname ?  fname   value=Mika
 
 :Add Textarea:
   :Arguments: name: str, rows: int = 5, cols: int = 40, default: str = None

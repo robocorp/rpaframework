@@ -389,19 +389,20 @@ in a JSON file.</p>
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.add_text_input">
-<code class="sig-name descname">add_text_input</code><span class="sig-paren">(</span><em class="sig-param">label: str</em>, <em class="sig-param">name: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.add_text_input" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_text_input</code><span class="sig-paren">(</span><em class="sig-param">label: str</em>, <em class="sig-param">name: str</em>, <em class="sig-param">value: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.add_text_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add text input element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> – input element label</p></li>
 <li><p><strong>name</strong> – input element name attribute</p></li>
+<li><p><strong>value</strong> – input element value attribute</p></li>
 </ul>
 </dd>
 </dl>
 <p>Example.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create Form</span><span class="p"></span>
-<span class="c">Add Text Input</span><span class="p">   </span><span class="c">what is your firstname ?</span><span class="p">  </span><span class="c">fname</span><span class="p"></span>
+<span class="c">Add Text Input</span><span class="p">   </span><span class="c">what is your firstname ?</span><span class="p">  </span><span class="c">fname</span><span class="p">   </span><span class="c">value=Mika</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>

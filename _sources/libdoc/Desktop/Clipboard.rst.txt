@@ -1,0 +1,35 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: 
+
+*DEPRECATED!!* Use library RPA.Desktop's clipboard functionality instead.
+
+RPA Framework library for cross platform clipboard management.
+
+Will use `win32` package on Windows and `clipboard` package on Linux and Mac.
+
+********
+Keywords
+********
+
+:Clear Clipboard:
+  *DEPRECATED!!* Use `RPA.Desktop` library's `Clear Clipboard` instead.
+  Clear clipboard contents
+
+:Copy To Clipboard:
+  :Arguments: text
+
+  *DEPRECATED!!* Use `RPA.Desktop` library's `Copy to Clipboard` instead.
+
+  Copy text to clipboard
+
+
+:Paste From Clipboard:
+  *DEPRECATED!!* Use `RPA.Desktop` library's `Paste from Clipboard` instead.
+

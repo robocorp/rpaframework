@@ -1,0 +1,122 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: 
+
+RPA Framework library containing cross platform keywords for managing
+computer properties and actions.
+
+********
+Keywords
+********
+
+:Boot Time In Seconds From Epoch:
+  Get machine boot time
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${epoch}  Boot Time In Seconds From Epoch
+
+:Get Boot Time:
+  :Arguments: as_datetime: bool = False, datetime_format: str = %Y-%m-%d %H:%M:%S
+
+  Get computer boot time in seconds from Epoch or in datetime string.
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${boottime}  Get Boot Time
+      ${boottime}  Get Boot Time   as_datetime=True
+      ${boottime}  Get Boot Time   as_datetime=True  datetime_format=%d.%m.%Y
+
+:Get Machine Name:
+  Get machine name
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${machine}  Get Machine Name
+
+:Get Memory Stats:
+  :Arguments: humanized: bool = True
+
+  Get computer memory stats and return those in bytes
+  or in humanized memory format.
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      &{mem}     Get Memory Stats
+      &{mem}     Get Memory Stats   humanized=False
+
+:Get Username:
+  Get username of logged in user
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${user}  Get Username
+
+:Kill Process:
+  :Arguments: process_name: str
+
+  Kill process by name
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${process}  Process Exists  calc  strict=False
+      ${status}   Kill Process    ${process.name()}
+
+:Kill Process By Pid:
+  :Arguments: pid: int
+
+  Kill process by pid
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${process}  Process Exists  calc  strict=False
+      ${status}   Kill Process    ${process.pid}
+
+:Process Exists:
+  :Arguments: process_name: str, strict: bool = True
+
+  Check if process exists by its name
+
+
+  Example:
+
+  .. code-block:: robotframework
+
+      ${process}  Process Exists  calc
+      ${process}  Process Exists  calc  strict=False
+
+:Put System To Sleep:
+  Puts system to sleep mode
+
+  Example:
+
+  .. code-block:: robotframework
+
+      Put System To Sleep

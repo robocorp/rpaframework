@@ -1,0 +1,24 @@
+###################
+Robot Framework API
+###################
+
+***********
+Description
+***********
+
+:Library scope: Global
+
+Documentation for library ``utils``.
+
+********
+Keywords
+********
+
+:Is Linux:
+
+
+:Is Macos:
+
+
+:Is Windows:
+
