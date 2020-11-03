@@ -7,12 +7,15 @@ Upcoming release
 - Library **Browser**: Add ``Set Download Directory`` keyword
 - Library **Cloud.AWS**: Add keywords for Textract asynchronous operations regarding
   document analysis and text detection
+- Library **Dialogs**: Default value support for input text element (pull request #70)
+- Library **Desktop.Windows**: ``Mouse Click`` keyword supports now also element dictionary
+  as target locator
 
 6.3.1
 -----
 
 - Library **Desktop.Windows**: Add parameter to ``Get Element`` to prevent
-  opening dialog.
+  opening dialog
 
 6.3.0
 -----
