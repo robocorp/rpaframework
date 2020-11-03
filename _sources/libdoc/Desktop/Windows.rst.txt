@@ -482,6 +482,10 @@ Windows
       Mouse Click  CalculatorResults
       Mouse Click  method=image  image=myimage.png  off_x=10  off_y=10  ctype=right
       Mouse Click  method=image  image=myimage.png  tolerance=0.8
+      ${elements}  ${other}=     Find Element  class:Button
+      FOR  ${element}  IN  @{elements}
+          Run Keyword If   ${element}[visible]   Mouse Click  ${element}
+      END
 
 :Mouse Click Coords:
   :Arguments: x: int, y: int, ctype: str = click, delay_time: float = None

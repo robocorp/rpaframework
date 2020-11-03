@@ -674,6 +674,10 @@ center coordinates.</p>
 <span class="c">Mouse Click</span><span class="p">  </span><span class="c">CalculatorResults</span><span class="p"></span>
 <span class="c">Mouse Click</span><span class="p">  </span><span class="c">method=image</span><span class="p">  </span><span class="c">image=myimage.png</span><span class="p">  </span><span class="c">off_x=10</span><span class="p">  </span><span class="c">off_y=10</span><span class="p">  </span><span class="c">ctype=right</span><span class="p"></span>
 <span class="c">Mouse Click</span><span class="p">  </span><span class="c">method=image</span><span class="p">  </span><span class="c">image=myimage.png</span><span class="p">  </span><span class="c">tolerance=0.8</span><span class="p"></span>
+<span class="c">${elements}</span><span class="p">  </span><span class="c">${other}=</span><span class="p">     </span><span class="c">Find Element</span><span class="p">  </span><span class="c">class:Button</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${element}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{elements}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Run Keyword If</span><span class="p">   </span><span class="c">${element}[visible]</span><span class="p">   </span><span class="c">Mouse Click</span><span class="p">  </span><span class="c">${element}</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
 </pre></div>
 </div>
 </dd>
