@@ -751,17 +751,28 @@ class Windows(OperatingSystem):
             Mouse Click  CalculatorResults
             Mouse Click  method=image  image=myimage.png  off_x=10  off_y=10  ctype=right
             Mouse Click  method=image  image=myimage.png  tolerance=0.8
+            ${elements}  ${other}=     Find Element  class:Button
+            FOR  ${element}  IN  @{elements}
+                Run Keyword If   ${element}[visible]   Mouse Click  ${element}
+            END
 
         """  # noqa: E501
         self.logger.info("Mouse click: %s", locator)
 
         if method == "locator":
-            element, _ = self.find_element(locator)
-            if element and len(element) == 1:
-                x, y = self.get_element_center(element[0])
-                self.click_type(x + off_x, y + off_y, ctype)
+            target_element = None
+            if isinstance(locator, dict):
+                target_element = locator
             else:
-                raise ValueError(f"Could not find unique element for '{locator}'")
+                element, _ = self.find_element(locator)
+                if element and len(element) == 1:
+                    target_element = element[0]
+                else:
+                    raise ValueError(f"Could not find unique element for '{locator}'")
+            if target_element is None:
+                raise ValueError("Could not find unique element to click")
+            x, y = self.get_element_center(target_element)
+            self.click_type(x + off_x, y + off_y, ctype)
         elif method == "coordinates":
             self.mouse_click_coords(x, y, ctype)
         elif method == "image":
@@ -1404,49 +1415,50 @@ class Windows(OperatingSystem):
             )
             return None
 
-        attributes = [
-            "automation_id",
-            # "children",
-            "class_name",
-            "control_id",
-            "control_type",
-            # "descendants",
-            # "dump_window",
-            # "element"
-            "enabled",
-            # "filter_with_depth",
-            # "framework_id",
-            # "from_point",
-            "handle",
-            # "has_depth",
-            # "iter_children",
-            # "iter_descendants",
-            "name",
-            # "parent",
-            "process_id",
-            "rectangle",
-            "rich_text",
-            "runtime_id",
-            # "set_cache_strategy",
-            # "top_from_point",
-            "visible",
+        attributes_to_remove = [
+            # "automation_id",
+            "children",
+            # "class_name",
+            # "control_id",
+            # "control_type",
+            "descendants",
+            "dump_window",
+            "element",
+            # "enabled",
+            "filter_with_depth",
+            "framework_id",
+            "from_point",
+            # "handle",
+            "has_depth",
+            "iter_children",
+            "iter_descendants",
+            # "name",
+            "parent",
+            # "process_id",
+            # "rectangle",
+            # "rich_text",
+            # "runtime_id",
+            "set_cache_strategy",
+            "top_from_point",
+            # "visible",
         ]
 
         element_dict = {}
-        # self.element_info = backend.registry.backends[_backend].element_info_class()
         element_info = element.element_info
-        # self.logger.debug(element_info)
-        for attr in attributes:
-            if hasattr(element_info, attr):
-                attr_value = getattr(element_info, attr)
-                try:
-                    element_dict[attr] = (
-                        attr_value() if callable(attr_value) else str(attr_value)
-                    )
-                except TypeError:
-                    pass
-            else:
-                self.logger.warning("did not have attr %s", attr)
+        element_attributes = [a for a in dir(element_info) if not a.startswith("_")]
+
+        for attr in element_attributes:
+            attr_value = getattr(element_info, attr)
+            try:
+                element_dict[attr] = (
+                    attr_value() if callable(attr_value) else str(attr_value)
+                )
+            except TypeError:
+                pass
+
+        for attr in attributes_to_remove:
+            element_dict.pop(attr, None)
+
         return element_dict
 
     def put_system_to_sleep(self) -> None:
