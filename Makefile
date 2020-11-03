@@ -51,7 +51,7 @@ install: .venv/flag ## Install development environment
 poetry.lock: pyproject.toml
 	poetry lock
 
-docs: docs-each ## Generate documentation using Sphinx
+docs: docs-each install ## Generate documentation using Sphinx
 	poetry run $(MAKE) -C docs clean
 	poetry run $(MAKE) -C docs html
 

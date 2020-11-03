@@ -320,15 +320,8 @@ class LibdocExt:
             if path.is_dir():
                 if self.is_module_library(path):
                     paths.add(path)
-                    # Check for RF resources files in module
-                    paths |= {
-                        file
-                        for file in path.glob("**/*")
-                        if self.is_resource_file(path)
-                    }
-                else:
-                    for child in path.iterdir():
-                        stack.append(child)
+                for child in path.iterdir():
+                    stack.append(child)
             elif self.is_keyword_file(path):
                 paths.add(path)
 
