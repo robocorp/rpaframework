@@ -83,6 +83,7 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 	$(rm) docs/build/html/json/RPA_core*
 	$(rm) docs/build/html/json/RPA_recognition*
 	$(rm) docs/build/html/json/RPA_Desktop_keywords*
+	poetry run python ./tools/latest.py docs/build/html/json/
 
 changelog: ## Print changes in latest release
 	poetry run python ./tools/changelog.py
