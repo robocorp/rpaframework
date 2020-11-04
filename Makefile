@@ -56,7 +56,7 @@ docs: docs-each install ## Generate documentation using Sphinx
 	poetry run $(MAKE) -C docs html
 
 docs-each: packages/*
-	$(call make_each, "docs-libdoc")
+	$(call make_each, "docs-sphinx")
 
 docs-hub: docs-hub-each ## Generate distributable documentation for Robohub
 	$(call title,"Building Markdown documentation")
@@ -70,6 +70,19 @@ docs-hub: docs-hub-each ## Generate distributable documentation for Robohub
 
 docs-hub-each: packages/*
 	$(call make_each, "docs-hub")
+
+docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
+	$(mkdir) docs/build/html/
+	poetry run docgen --format html --output docs/build/html/libdoc/ RPA.*
+	# TODO: Remove these when non-importables are _private
+	$(rm) docs/build/html/libdoc/RPA_core*
+	$(rm) docs/build/html/libdoc/RPA_recognition*
+	$(rm) docs/build/html/libdoc/RPA_Desktop_keywords*
+	poetry run docgen --format json-html --output docs/build/html/json/ RPA.*
+	# TODO: Remove these when non-importables are _private
+	$(rm) docs/build/html/json/RPA_core*
+	$(rm) docs/build/html/json/RPA_recognition*
+	$(rm) docs/build/html/json/RPA_Desktop_keywords*
 
 changelog: ## Print changes in latest release
 	poetry run python ./tools/changelog.py

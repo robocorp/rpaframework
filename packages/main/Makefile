@@ -101,7 +101,7 @@ test-robot: install ## Run Robot Framework tests
 todo: install ## Print all TODO/FIXME comments
 	poetry run pylint --disable=all --enable=fixme --exit-zero src/
 
-docs-libdoc: install ## Prebuild libdoc files
+docs-sphinx: install ## Prebuild sphinx keyword documentation
 	poetry run python\
 	 $(tools)/libdocext.py\
 	 --rpa\

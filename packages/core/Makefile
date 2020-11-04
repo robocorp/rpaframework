@@ -87,7 +87,7 @@ test: install ## Run all unittests
 todo: install ## Print all TODO/FIXME comments
 	poetry run pylint --disable=all --enable=fixme --exit-zero src/
 
-docs-libdoc:
+docs-sphinx:
 	# Empty target for compatibility reasons
 
 docs-hub:
