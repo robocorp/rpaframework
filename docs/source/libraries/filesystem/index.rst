@@ -68,6 +68,8 @@ The library can also be used inside Python.
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_FileSystem.html>`.
+
 .. toctree::
    :maxdepth: 1
 

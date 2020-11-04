@@ -51,9 +51,10 @@ install: .venv/flag ## Install development environment
 poetry.lock: pyproject.toml
 	poetry lock
 
-docs: docs-each install ## Generate documentation using Sphinx
+docs: docs-each docs-libdoc install ## Generate documentation using Sphinx
 	poetry run $(MAKE) -C docs clean
 	poetry run $(MAKE) -C docs html
+	poetry run python ./tools/merge.py docs/source/json/ docs/build/html/latest.json
 
 docs-each: packages/*
 	$(call make_each, "docs-sphinx")
@@ -72,18 +73,18 @@ docs-hub-each: packages/*
 	$(call make_each, "docs-hub")
 
 docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
-	$(mkdir) docs/build/html/
-	poetry run docgen --format html --output docs/build/html/libdoc/ RPA.*
+	poetry run docgen --format html --output docs/source/libdoc/ RPA.*
 	# TODO: Remove these when non-importables are _private
-	$(rm) docs/build/html/libdoc/RPA_core*
-	$(rm) docs/build/html/libdoc/RPA_recognition*
-	$(rm) docs/build/html/libdoc/RPA_Desktop_keywords*
-	poetry run docgen --format json-html --output docs/build/html/json/ RPA.*
+	$(rm) docs/source/libdoc/RPA_core*
+	$(rm) docs/source/libdoc/RPA_recognition*
+	$(rm) docs/source/libdoc/RPA_Desktop_keywords*
+	$(rm) docs/source/libdoc/RPA_Desktop_utils*
+	poetry run docgen --format json-html --output docs/source/json/ RPA.*
 	# TODO: Remove these when non-importables are _private
-	$(rm) docs/build/html/json/RPA_core*
-	$(rm) docs/build/html/json/RPA_recognition*
-	$(rm) docs/build/html/json/RPA_Desktop_keywords*
-	poetry run python ./tools/latest.py docs/build/html/json/
+	$(rm) docs/source/json/RPA_core*
+	$(rm) docs/source/json/RPA_recognition*
+	$(rm) docs/source/json/RPA_Desktop_keywords*
+	$(rm) docs/source/json/RPA_Desktop_utils*
 
 changelog: ## Print changes in latest release
 	poetry run python ./tools/changelog.py

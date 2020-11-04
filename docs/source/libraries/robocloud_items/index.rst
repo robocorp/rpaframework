@@ -129,6 +129,8 @@ load the work item for the current execution.
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_Robocloud_Items.html>`.
+
 .. toctree::
    :maxdepth: 1
 

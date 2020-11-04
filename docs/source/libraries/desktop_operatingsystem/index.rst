@@ -56,6 +56,8 @@ Python
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_Desktop_OperatingSystem.html>`.
+
 .. toctree::
    :maxdepth: 1
 

@@ -71,6 +71,8 @@ Python
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_Database.html>`.
+
 .. toctree::
    :maxdepth: 1
 

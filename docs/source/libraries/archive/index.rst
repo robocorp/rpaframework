@@ -53,6 +53,8 @@ Examples
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_Archive.html>`.
+
 .. toctree::
    :maxdepth: 1
 

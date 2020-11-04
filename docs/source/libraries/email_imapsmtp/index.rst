@@ -93,6 +93,8 @@ Python
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_Email_ImapSmtp.html>`.
+
 .. toctree::
    :maxdepth: 1
 

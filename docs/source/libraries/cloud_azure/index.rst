@@ -169,6 +169,8 @@ own Python modules.
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_Cloud_Azure.html>`.
+
 .. toctree::
    :maxdepth: 1
 

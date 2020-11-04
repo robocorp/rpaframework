@@ -121,7 +121,6 @@ Robot Framework
             Log  ${file}
         END
 
-
 Python
 ======
 
@@ -142,6 +141,8 @@ Python
 *****************
 API Documentation
 *****************
+
+See :download:`libdoc documentation <../../libdoc/RPA_Cloud_Google.html>`.
 
 .. toctree::
    :maxdepth: 1

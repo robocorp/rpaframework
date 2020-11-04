@@ -9,10 +9,11 @@ FILENAME = "latest.json"
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("dirname", help="Path to directory of JSONS")
+    parser.add_argument("source", help="Path to directory of JSONs")
+    parser.add_argument("destination", help="Path to destination JSON")
     args = parser.parse_args()
 
-    dirname = Path(args.dirname)
+    dirname = Path(args.source)
 
     output = {}
     for filename in sorted(os.listdir(dirname)):
@@ -23,7 +24,7 @@ def main():
             assert lib["name"] not in output, "Duplicate library"
             output[lib["name"]] = lib
 
-    with open(dirname / FILENAME, "w") as outfile:
+    with open(args.destination, "w") as outfile:
         json.dump(output, outfile, indent=4)
 
 

@@ -103,6 +103,8 @@ manipulation operations.
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_Tables.html>`.
+
 .. toctree::
    :maxdepth: 1
 
