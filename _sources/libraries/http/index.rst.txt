@@ -56,6 +56,8 @@ Python
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_HTTP.html>`.
+
 .. toctree::
    :maxdepth: 1
 

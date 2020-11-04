@@ -139,6 +139,8 @@ Python
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_RobotLogListener.html>`.
+
 .. toctree::
    :maxdepth: 1
 

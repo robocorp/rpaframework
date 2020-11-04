@@ -82,6 +82,8 @@ Python
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_Netsuite.html>`.
+
 .. toctree::
    :maxdepth: 1
 

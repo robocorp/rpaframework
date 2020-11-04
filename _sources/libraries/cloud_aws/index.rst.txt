@@ -151,6 +151,8 @@ Python
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_Cloud_AWS.html>`.
+
 .. toctree::
    :maxdepth: 1
 

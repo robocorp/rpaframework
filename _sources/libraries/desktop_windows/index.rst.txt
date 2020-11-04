@@ -98,7 +98,6 @@ Robot Framework
         ${result}=              Is Element Visible      CalculatorResults
         ${result}=              Is Element Enabled      partial name:Display is
 
-
 Python
 ======
 
@@ -129,14 +128,10 @@ Python
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_Desktop_Windows.html>`.
+
 .. toctree::
    :maxdepth: 1
 
    ../../robot/Desktop/Windows.rst
    python
-
-****
-Todo
-****
-
-- Inspector tool for identifying Windows locators

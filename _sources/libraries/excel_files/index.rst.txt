@@ -102,7 +102,6 @@ Creating a new Excel file with a list:
         Append Rows to Worksheet  ${rows}
         Save Workbook
 
-
 Python
 ======
 
@@ -124,6 +123,8 @@ The library can also be imported directly into Python.
 *****************
 API Documentation
 *****************
+
+See :download:`libdoc documentation <../../libdoc/RPA_Excel_Files.html>`.
 
 .. toctree::
    :maxdepth: 1

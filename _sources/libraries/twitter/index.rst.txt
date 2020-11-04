@@ -77,6 +77,8 @@ Python
 API Documentation
 *****************
 
+See :download:`libdoc documentation <../../libdoc/RPA_Twitter.html>`.
+
 .. toctree::
    :maxdepth: 1
 
