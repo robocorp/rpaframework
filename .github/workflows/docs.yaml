@@ -30,8 +30,6 @@ jobs:
         run: make install
       - name: Build HTML documentation
         run: make docs
-      - name: Build Libdoc documentation
-        run: make docs-libdoc
       - name: Publish HTML documentation
         if: success()
         uses: peaceiris/actions-gh-pages@v3
