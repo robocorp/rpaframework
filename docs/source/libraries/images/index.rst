@@ -99,7 +99,7 @@ Python
 API Documentation
 *****************
 
-See :download:`libdoc documentation <../../libdoc/RPA_Images.html>`.
+See `libdoc documentation <../../libdoc/RPA_Images.html>`_.
 
 .. toctree::
    :maxdepth: 1

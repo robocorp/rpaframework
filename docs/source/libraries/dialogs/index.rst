@@ -140,7 +140,7 @@ The library can also be used inside Python:
 API Documentation
 *****************
 
-See :download:`libdoc documentation <../../libdoc/RPA_Dialogs.html>`.
+See `libdoc documentation <../../libdoc/RPA_Dialogs.html>`_.
 
 .. toctree::
    :maxdepth: 1

@@ -86,7 +86,7 @@ Python
 API Documentation
 *****************
 
-See :download:`libdoc documentation <../../libdoc/RPA_Notifier.html>`.
+See `libdoc documentation <../../libdoc/RPA_Notifier.html>`_.
 
 .. toctree::
    :maxdepth: 1

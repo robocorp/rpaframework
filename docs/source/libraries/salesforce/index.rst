@@ -163,7 +163,7 @@ Python
 API Documentation
 *****************
 
-See :download:`libdoc documentation <../../libdoc/RPA_Salesforce.html>`.
+See `libdoc documentation <../../libdoc/RPA_Salesforce.html>`_.
 
 .. toctree::
    :maxdepth: 1

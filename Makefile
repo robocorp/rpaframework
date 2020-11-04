@@ -53,8 +53,8 @@ poetry.lock: pyproject.toml
 
 docs: docs-each docs-libdoc install ## Generate documentation using Sphinx
 	poetry run $(MAKE) -C docs clean
+	poetry run python ./tools/merge.py docs/source/json/ docs/source/include/latest.json
 	poetry run $(MAKE) -C docs html
-	poetry run python ./tools/merge.py docs/source/json/ docs/build/html/latest.json
 
 docs-each: packages/*
 	$(call make_each, "docs-sphinx")
@@ -73,12 +73,12 @@ docs-hub-each: packages/*
 	$(call make_each, "docs-hub")
 
 docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
-	poetry run docgen --format html --output docs/source/libdoc/ RPA.*
+	poetry run docgen --format html --output docs/source/include/libdoc/ RPA.*
 	# TODO: Remove these when non-importables are _private
-	$(rm) docs/source/libdoc/RPA_core*
-	$(rm) docs/source/libdoc/RPA_recognition*
-	$(rm) docs/source/libdoc/RPA_Desktop_keywords*
-	$(rm) docs/source/libdoc/RPA_Desktop_utils*
+	$(rm) docs/source/include/libdoc/RPA_core*
+	$(rm) docs/source/include/libdoc/RPA_recognition*
+	$(rm) docs/source/include/libdoc/RPA_Desktop_keywords*
+	$(rm) docs/source/include/libdoc/RPA_Desktop_utils*
 	poetry run docgen --format json-html --output docs/source/json/ RPA.*
 	# TODO: Remove these when non-importables are _private
 	$(rm) docs/source/json/RPA_core*

@@ -62,7 +62,7 @@ Python
 API Documentation
 *****************
 
-See :download:`libdoc documentation <../../libdoc/RPA_FTP.html>`.
+See `libdoc documentation <../../libdoc/RPA_FTP.html>`_.
 
 .. toctree::
    :maxdepth: 1

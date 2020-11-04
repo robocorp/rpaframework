@@ -50,7 +50,7 @@ Python
 API Documentation
 *****************
 
-See :download:`libdoc documentation <../../libdoc/RPA_Desktop_Clipboard.html>`.
+See `libdoc documentation <../../libdoc/RPA_Desktop_Clipboard.html>`_.
 
 .. toctree::
    :maxdepth: 1

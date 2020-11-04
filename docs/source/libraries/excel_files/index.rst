@@ -124,7 +124,7 @@ The library can also be imported directly into Python.
 API Documentation
 *****************
 
-See :download:`libdoc documentation <../../libdoc/RPA_Excel_Files.html>`.
+See `libdoc documentation <../../libdoc/RPA_Excel_Files.html>`_.
 
 .. toctree::
    :maxdepth: 1

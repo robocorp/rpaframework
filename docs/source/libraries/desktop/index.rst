@@ -143,7 +143,7 @@ The supported mouse button types are ``left``, ``right``, and ``middle``.
 Keyword documentation
 *********************
 
-See :download:`libdoc documentation <../../libdoc/RPA_Desktop.html>`.
+See `libdoc documentation <../../libdoc/RPA_Desktop.html>`_.
 
 .. toctree::
    :maxdepth: 1

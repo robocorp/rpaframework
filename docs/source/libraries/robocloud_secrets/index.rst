@@ -78,7 +78,7 @@ Python
 API Documentation
 *****************
 
-See :download:`libdoc documentation <../../libdoc/RPA_Robocloud_Secrets.html>`.
+See `libdoc documentation <../../libdoc/RPA_Robocloud_Secrets.html>`_.
 
 .. toctree::
    :maxdepth: 1
