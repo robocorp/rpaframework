@@ -128,7 +128,7 @@ Python
 API Documentation
 *****************
 
-See :download:`libdoc documentation <../../libdoc/RPA_Desktop_Windows.html>`.
+See `libdoc documentation <../../libdoc/RPA_Desktop_Windows.html>`_.
 
 .. toctree::
    :maxdepth: 1

@@ -296,7 +296,7 @@ Examples of actions:
 API Documentation
 *****************
 
-See :download:`libdoc documentation <../../libdoc/RPA_Tasks.html>`.
+See `libdoc documentation <../../libdoc/RPA_Tasks.html>`_.
 
 .. toctree::
    :maxdepth: 1

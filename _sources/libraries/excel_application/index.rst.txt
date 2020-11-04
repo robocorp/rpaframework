@@ -64,7 +64,7 @@ Python
 API Documentation
 *****************
 
-See :download:`libdoc documentation <../../libdoc/RPA_Excel_Application.html>`.
+See `libdoc documentation <../../libdoc/RPA_Excel_Application.html>`_.
 
 .. toctree::
    :maxdepth: 1

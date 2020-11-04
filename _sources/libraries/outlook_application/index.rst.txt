@@ -59,7 +59,7 @@ Python
 API Documentation
 *****************
 
-See :download:`libdoc documentation <../../libdoc/RPA_Outlook_Application.html>`.
+See `libdoc documentation <../../libdoc/RPA_Outlook_Application.html>`_.
 
 .. toctree::
    :maxdepth: 1
