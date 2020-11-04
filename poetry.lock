@@ -829,6 +829,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "robotframework-docgen"
+version = "0.3.0"
+description = "Robot Framework documentation finder and generator"
+category = "dev"
+optional = false
+python-versions = ">=3.6,<4.0"
+
+[package.dependencies]
+robotframework = ">=3.2.2,<4.0.0"
+
+[[package]]
 name = "robotframework-pythonlibcore"
 version = "2.1.0"
 description = "Tools to ease creating larger test libraries for Robot Framework using Python."
@@ -941,7 +952,7 @@ xlutils = ">=2.0.0,<3.0.0"
 xlwt = ">=1.3.0,<2.0.0"
 
 [package.extras]
-google = ["grpcio (>=1.29.0,<2.0.0)", "google-auth-oauthlib (>=0.4.1,<0.5.0)", "google-cloud-language (>=1.3.0,<2.0.0)", "google-cloud-vision (>=1.0.0,<2.0.0)", "google-cloud-storage (>=1.28.1,<2.0.0)", "google-cloud-texttospeech (>=1.0.1,<2.0.0)", "google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-cloud-translate (>=2.0.1,<3.0.0)", "google-cloud-speech (>=1.3.2,<2.0.0)", "google-api-python-client (>=1.12.3,<2.0.0)", "google-auth-httplib2 (>=0.0.4,<0.0.5)"]
+google = ["google-cloud-texttospeech (>=1.0.1,<2.0.0)", "grpcio (>=1.29.0,<2.0.0)", "google-cloud-language (>=1.3.0,<2.0.0)", "google-auth-oauthlib (>=0.4.1,<0.5.0)", "google-cloud-storage (>=1.28.1,<2.0.0)", "google-api-python-client (>=1.12.3,<2.0.0)", "google-cloud-translate (>=2.0.1,<3.0.0)", "google-auth-httplib2 (>=0.0.4,<0.0.5)", "google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-cloud-speech (>=1.3.2,<2.0.0)", "google-cloud-vision (>=1.0.0,<2.0.0)"]
 aws = ["boto3 (>=1.13.4,<2.0.0)"]
 cv = ["rpaframework-recognition (>=0.3.0,<0.4.0)"]
 
@@ -1358,7 +1369,7 @@ testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "29333342ee84ee63eb07bbd39410af66112cb3dcb7fc1b8ee9bb9e395aaa5e8c"
+content-hash = "24945f8bac825a4691586b9d1ea11e5ba07a083a3a28513e6904dd17f6411bb6"
 
 [metadata.files]
 alabaster = [
@@ -1897,6 +1908,10 @@ rfc3987 = [
 robotframework = [
     {file = "robotframework-3.2.2-py2.py3-none-any.whl", hash = "sha256:a0c325e79dc6dcdaba0398db8c3afefc337799b7b36b336f04b07be4fe4a9dd2"},
     {file = "robotframework-3.2.2.zip", hash = "sha256:a0786a916d0572bd9d6afe26e95c6021e3df5dcafa0ece6b302e36366e58c24e"},
+]
+robotframework-docgen = [
+    {file = "robotframework-docgen-0.3.0.tar.gz", hash = "sha256:bc0a7af267f8f12129cf0f0fa72caf6eaef9c42e229920b3097b1da419afdb09"},
+    {file = "robotframework_docgen-0.3.0-py3-none-any.whl", hash = "sha256:40e538cbb9185af8d96311c2dca514e5c0b50c0f013f819fa43b668704d953a4"},
 ]
 robotframework-pythonlibcore = [
     {file = "robotframework-pythonlibcore-2.1.0.tar.gz", hash = "sha256:8b210bf29cbb78069b41a3d0b90e4cc8dd23f509ea2daf450e3ef4a6ee758949"},
