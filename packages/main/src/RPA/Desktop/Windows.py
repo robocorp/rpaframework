@@ -62,6 +62,7 @@ class Windows(OperatingSystem):
     """Windows methods extending OperatingSystem class."""
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self, backend: str = "uia") -> None:
         OperatingSystem.__init__(self)

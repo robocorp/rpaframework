@@ -22,6 +22,9 @@ class SalesforceDataNotAnDictionary(Exception):
 class Salesforce:
     """Library for accessing Salesforce using REST API."""
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     account = {"Name": None, "Id": None}
 
     def __init__(self, sandbox: bool = False) -> None:

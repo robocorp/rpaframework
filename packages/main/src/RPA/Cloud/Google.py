@@ -1019,6 +1019,9 @@ class Google(  # pylint: disable=R0901
     which take as parameter an ``service_account`` JSON file.
     """
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(
         self, robocloud_vault_name: str = None, robocloud_vault_secret_key: str = None
     ):

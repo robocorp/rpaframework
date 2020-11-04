@@ -500,6 +500,7 @@ class Items:
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
     ROBOT_LISTENER_API_VERSION = 2
 
     def __init__(self, load_env=True, default_adapter=RobocorpAdapter):

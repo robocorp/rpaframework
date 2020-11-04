@@ -271,6 +271,9 @@ class Secrets:
     :param default_adapter: Override default secret adapter
     """
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self, *args, **kwargs):
         self.logger = logging.getLogger(__name__)
 

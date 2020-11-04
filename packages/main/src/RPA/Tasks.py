@@ -345,6 +345,7 @@ class Tasks:
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
     ROBOT_LISTENER_API_VERSION = 3
 
     TAG_NONCRITICAL = "tasks-schema-noncritical"

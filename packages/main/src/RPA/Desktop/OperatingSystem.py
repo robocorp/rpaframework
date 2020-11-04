@@ -23,6 +23,9 @@ class OperatingSystem:
     computer properties and actions.
     """
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 

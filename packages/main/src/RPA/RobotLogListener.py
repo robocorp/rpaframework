@@ -12,6 +12,7 @@ class RobotLogListener:
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
     ROBOT_LISTENER_API_VERSION = 2
 
     KEYWORDS_TO_PROTECT = ["rpa.robocloud.secrets."]

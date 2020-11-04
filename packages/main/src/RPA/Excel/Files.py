@@ -63,6 +63,9 @@ class Files:
     please use the Excel application library.
     """
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.workbook = None

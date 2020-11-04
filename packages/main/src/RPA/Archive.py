@@ -45,6 +45,9 @@ def list_files_in_directory(folder, recursive=False, include=None, exclude=None)
 class Archive:
     """Library for handling TAR and ZIP archives."""
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 

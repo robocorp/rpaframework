@@ -18,6 +18,9 @@ class Application:
     For more information: https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2007/bb219950(v=office.12) # noqa: E501
     """
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.app = None

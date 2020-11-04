@@ -272,6 +272,7 @@ class Dialogs:
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self, server_port: int = 8105, stylesheet: str = None):
         self.logger = logging.getLogger(__name__)

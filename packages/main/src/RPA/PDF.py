@@ -391,6 +391,9 @@ class PageGenerator:
 class PDF(FPDF, HTMLMixin):
     """RPA Framework library for PDF management."""
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     anchor_element: dict
     active_fileobject: object
     fileobjects: dict

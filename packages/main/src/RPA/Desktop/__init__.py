@@ -15,6 +15,7 @@ class Desktop(DynamicCore):
     """Cross-platform library for interacting with desktop environments."""
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)

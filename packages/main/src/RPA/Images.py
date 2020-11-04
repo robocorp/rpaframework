@@ -77,6 +77,9 @@ class Images:
     manipulating images.
     """
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.matcher = TemplateMatcher(opencv=HAS_OPENCV)

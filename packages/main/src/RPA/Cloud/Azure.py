@@ -599,6 +599,9 @@ class Azure(ServiceTextAnalytics, ServiceFace, ServiceComputerVision, ServiceSpe
     name.
     """
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self, region: str = DEFAULT_REGION, robocloud_vault_name: str = None):
         self.set_robocloud_vault(robocloud_vault_name)
         self.logger = logging.getLogger(__name__)

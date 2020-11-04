@@ -10,6 +10,9 @@ else:
 class SAP(SapGuiLibrary):
     """RPA Framework library which is wrapping `SapGuiLibrary` functionality."""
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self, *args, **kwargs):
         self.logger = logging.getLogger(__name__)
         if platform.system() != "Windows":

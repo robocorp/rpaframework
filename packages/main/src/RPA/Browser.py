@@ -48,8 +48,9 @@ class Browser(SeleniumLibrary):
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    AUTOMATIC_BROWSER_SELECTION = "AUTO"
+    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
 
+    AUTOMATIC_BROWSER_SELECTION = "AUTO"
     AVAILABLE_OPTIONS = {
         "chrome": "ChromeOptions",
         "firefox": "FirefoxOptions",

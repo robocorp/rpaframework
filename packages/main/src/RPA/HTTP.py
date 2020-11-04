@@ -14,6 +14,9 @@ class HTTP(RequestsLibrary):
     https://github.com/MarketSquare/robotframework-requests
     """
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
+
     def __init__(self, *args, **kwargs) -> None:
         RequestsLibrary.__init__(self, *args, **kwargs)
         self.logger = logging.getLogger(__name__)

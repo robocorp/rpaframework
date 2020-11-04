@@ -34,6 +34,9 @@ class NetsuiteAuthenticationError(Exception):
 class Netsuite:
     """Library for accessing Netsuite."""
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self) -> None:
         self.client = None
         self.account = None

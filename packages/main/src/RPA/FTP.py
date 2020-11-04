@@ -38,6 +38,9 @@ def ftpcommand(f):
 class FTP:
     """RPA Framework library for FTP operations"""
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self):
         self.instance = None
         self.logger = logging.getLogger(__name__)

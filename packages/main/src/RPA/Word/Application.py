@@ -20,6 +20,9 @@ FILEFORMATS = {
 class Application:
     """Library for manipulating Word application."""
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
         self.app = None

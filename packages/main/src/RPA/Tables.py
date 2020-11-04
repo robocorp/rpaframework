@@ -860,6 +860,9 @@ class Table:
 class Tables:
     """Robot Framework library for manipulating tabular data."""
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 

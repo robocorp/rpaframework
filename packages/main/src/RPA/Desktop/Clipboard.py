@@ -16,6 +16,9 @@ class Clipboard:
     Will use `win32` package on Windows and `clipboard` package on Linux and Mac.
     """
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 

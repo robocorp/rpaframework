@@ -66,6 +66,9 @@ class ImapSmtp:
     Proper initialization needs `smtp_server` and `imap_server` defined.
     """
 
+    ROBOT_LIBRARY_SCOPE = "GLOBAL"
+    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+
     def __init__(
         self,
         smtp_server: str = None,
