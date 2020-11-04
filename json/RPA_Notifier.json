@@ -1,0 +1,95 @@
+{
+    "name": "RPA.Notifier",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Library for using different notification services.</p>\n<p>All keywords take keyword arguments (<a href=\"#id1\"><span class=\"problematic\" id=\"id2\">**</span></a>kwargs) to allow giving\nadditional arguments for the notifications.</p>\n<div class=\"system-message\" id=\"id1\">\n<p class=\"system-message-title\">System Message: WARNING/2 (<tt class=\"docutils\">&lt;string&gt;</tt>, line 3); <em><a href=\"#id2\">backlink</a></em></p>\nInline strong start-string without end-string.</div>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-11-04 12:58:42",
+    "inits": [],
+    "keywords": [
+        {
+            "name": "Notify Email",
+            "args": [
+                "message: str = None",
+                "to: str = None",
+                "username: str = None",
+                "password: str = None",
+                "**kwargs: dict"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Notify using email service</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param message:</th><td class=\"field-body\">notification message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param to:</th><td class=\"field-body\">target of email message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param username:</th><td class=\"field-body\">email service username</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param password:</th><td class=\"field-body\">email service password</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True is notification was success, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Notify using email service",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Notify Gmail",
+            "args": [
+                "message: str = None",
+                "to: str = None",
+                "username: str = None",
+                "password: str = None",
+                "**kwargs: dict"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Notify using Gmail service</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param message:</th><td class=\"field-body\">notification message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param to:</th><td class=\"field-body\">target of email message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param username:</th><td class=\"field-body\">GMail service username</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param password:</th><td class=\"field-body\">GMail service password</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True is notification was success, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Notify using Gmail service",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Notify Pushover",
+            "args": [
+                "message: str = None",
+                "user: str = None",
+                "token: str = None",
+                "**kwargs: dict"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Notify using Pushover service</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param message:</th><td class=\"field-body\">notification message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param user:</th><td class=\"field-body\">target user for the notification</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param token:</th><td class=\"field-body\">service token</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True is notification was success, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Notify using Pushover service",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Notify Slack",
+            "args": [
+                "message: str = None",
+                "channel: str = None",
+                "webhook_url: str = None",
+                "**kwargs: dict"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Notify using Slack service</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param message:</th><td class=\"field-body\">notification message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param channel:</th><td class=\"field-body\">target channel for the notification</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param webhook_url:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Slack webhook url</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True is notification was success, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Notify using Slack service",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Notify Telegram",
+            "args": [
+                "message: str = None",
+                "chat_id: str = None",
+                "token: str = None",
+                "**kwargs: dict"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Notify using Telegram service</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param message:</th><td class=\"field-body\">notification message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param chat_id:</th><td class=\"field-body\">target chat id for the notification</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param token:</th><td class=\"field-body\">service token</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True is notification was success, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Notify using Telegram service",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Notify Twilio",
+            "args": [
+                "message: str = None",
+                "number_from: str = None",
+                "number_to: str = None",
+                "account_sid: str = None",
+                "token: str = None",
+                "**kwargs: dict"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Notify using Twilio service</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param message:</th><td class=\"field-body\">notification message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param number_from:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">number where the message comes from</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param number_to:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">number where the messages goes to</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param account_sid:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Twilio account SID</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param token:</th><td class=\"field-body\">Twilio account token</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True is notification was success, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Notify using Twilio service",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

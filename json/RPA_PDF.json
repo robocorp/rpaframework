@@ -1,0 +1,939 @@
+{
+    "name": "RPA.PDF",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>RPA Framework library for PDF management.</p>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-11-04 12:58:42",
+    "inits": [
+        {
+            "name": "Init",
+            "args": [
+                "outdir: str = ."
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Initialize self.  See help(type(self)) for accurate signature.</p>\n</div>\n</div>",
+            "shortdoc": "Initialize self.  See help(type(self)) for accurate signature.",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "keywords": [
+        {
+            "name": "Accept Page Break",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Accept automatic page break or not</p>\n</div>\n</div>",
+            "shortdoc": "Accept automatic page break or not",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Add Font",
+            "args": [
+                "family",
+                "style=",
+                "fname=",
+                "uni=False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Add a TrueType or Type1 font</p>\n</div>\n</div>",
+            "shortdoc": "Add a TrueType or Type1 font",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Add Image To Pdf",
+            "args": [
+                "imagefile",
+                "source=None",
+                "target=None",
+                "coverage=0.2"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Add image to PDF which can be new or existing PDF.</p>\n<p>Result will be always written to <cite>target_pdf</cite> so that needs\nto be given for the keyword.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param imagefile:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to image file to add into PDF</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param source:</th><td class=\"field-body\">filepath to source, if not given add image to currently\nactive PDF</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param target:</th><td class=\"field-body\">filepath of target PDF</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param coverage:</th><td class=\"field-body\">[description], defaults to 0.2</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises ValueError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">[description]</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Add image to PDF which can be new or existing PDF.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Add Link",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Create a new internal link</p>\n</div>\n</div>",
+            "shortdoc": "Create a new internal link",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Add Page",
+            "args": [
+                "orientation="
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Start a new page</p>\n</div>\n</div>",
+            "shortdoc": "Start a new page",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Add Pages",
+            "args": [
+                "pages: int = 1"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Adds pages into PDF documents.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param pages:</th><td class=\"field-body\">number of pages to add, defaults to 1</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Adds pages into PDF documents.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Add Pages To Document",
+            "args": [
+                "pages: int = 1",
+                "source_pdf: str = None",
+                "target_pdf: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Add empty pages into current source document</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param pages:</th><td class=\"field-body\">number of pages to add, defaults to 1</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to the source pdf</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param target_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filename to the target pdf, stored by default\nto <cite>output_directory</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Add empty pages into current source document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Alias Nb Pages",
+            "args": [
+                "alias={nb}"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Define an alias for total number of pages</p>\n</div>\n</div>",
+            "shortdoc": "Define an alias for total number of pages",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Cell",
+            "args": [
+                "w",
+                "h=0",
+                "txt=",
+                "border=0",
+                "ln=0",
+                "align=",
+                "fill=0",
+                "link="
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Output a cell</p>\n</div>\n</div>",
+            "shortdoc": "Output a cell",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Check Page",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Decorator to protect drawing methods</p>\n</div>\n</div>",
+            "shortdoc": "Decorator to protect drawing methods",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Close",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Terminate document</p>\n</div>\n</div>",
+            "shortdoc": "Terminate document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Close All Pdf Documents",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Close all opened PDF file descriptors.</p>\n</div>\n</div>",
+            "shortdoc": "Close all opened PDF file descriptors.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Close Pdf Document",
+            "args": [
+                "source_pdf: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Close PDF file descriptor for certain file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises ValueError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if file descriptor for the file is not found</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Close PDF file descriptor for certain file.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Code 39",
+            "args": [
+                "txt",
+                "x",
+                "y",
+                "w=1.5",
+                "h=5.0"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Barcode 3of9</p>\n</div>\n</div>",
+            "shortdoc": "Barcode 3of9",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Dashed Line",
+            "args": [
+                "x1",
+                "y1",
+                "x2",
+                "y2",
+                "dash_length=1",
+                "space_length=1"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Draw a dashed line. Same interface as line() except:\n- dash_length: Length of the dash\n- space_length: Length of the space between dashes</p>\n</div>\n</div>",
+            "shortdoc": "Draw a dashed line. Same interface as line() except: - dash_length: Length of the dash - space_length: Length of the space between dashes",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Dump Pdf As Xml",
+            "args": [
+                "source_pdf: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get PDFMiner format XML dump of the PDF</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">XML content</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get PDFMiner format XML dump of the PDF",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Ellipse",
+            "args": [
+                "x",
+                "y",
+                "w",
+                "h",
+                "style="
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Draw a ellipse</p>\n</div>\n</div>",
+            "shortdoc": "Draw a ellipse",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Error",
+            "args": [
+                "msg"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Fatal error</p>\n</div>\n</div>",
+            "shortdoc": "Fatal error",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Extract Pages From Pdf",
+            "args": [
+                "source_pdf: str = None",
+                "target_pdf: str = None",
+                "pages: typing.Any = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Extract pages from source PDF and save to target PDF document.</p>\n<p>Page numbers starting from 1.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to the source pdf</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param target_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filename to the target pdf, stored by default\nto <cite>output_directory</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param pages:</th><td class=\"field-body\">page numbers to extract from PDF (numbers start from 0)\nif None then extracts all pages</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Extract pages from source PDF and save to target PDF document.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Footer",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Footer to be implemented in your own inherited class</p>\n</div>\n</div>",
+            "shortdoc": "Footer to be implemented in your own inherited class",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get All Figures",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return all figures in the PDF document.</p>\n<p>PDF needs to be parsed before elements can be found.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">dictionary of figures divided into pages</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Return all figures in the PDF document.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Info",
+            "args": [
+                "source_pdf: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get information from PDF document.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to the source pdf</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">dictionary of PDF information</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get information from PDF document.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Input Fields",
+            "args": [
+                "source_pdf: str = None",
+                "replace_none_value: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get input fields in the PDF.</p>\n<p>Stores input fields internally so that they can be used without\nparsing PDF again.</p>\n<p>Parameter <cite>replace_none_value</cite> is for convience to visualize fields.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">source filepath, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param replace_none_value:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if value is None replace it with key name,\ndefaults to False</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">dictionary of input key values or <cite>None</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get input fields in the PDF.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Number Of Pages",
+            "args": [
+                "source_pdf: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get number of pages in the document.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to the source pdf</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises PdfReadError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if file is encrypted or other restrictions are in place</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get number of pages in the document.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Output Directory",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get output directory where target files are saved to.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">absolute filepath as string</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get output directory where target files are saved to.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get String Width",
+            "args": [
+                "s"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get width of a string in the current font</p>\n</div>\n</div>",
+            "shortdoc": "Get width of a string in the current font",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Text From Pdf",
+            "args": [
+                "source_pdf: str = None",
+                "pages: typing.Any = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get text from set of pages in source PDF document.</p>\n<p>PDF needs to be parsed before text can be read.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to the source pdf</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param pages:</th><td class=\"field-body\">page numbers to get text (numbers start from 0)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">dictionary of pages and their texts</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get text from set of pages in source PDF document.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Value From Anchor",
+            "args": [
+                "locator: str",
+                "pagenum: int = 1",
+                "direction: str = right",
+                "strict: bool = False",
+                "regexp: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get closest text (value) to anchor element.</p>\n<p>PDF needs to be parsed before elements can be found.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param locator:</th><td class=\"field-body\">element to set anchor to</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param pagenum:</th><td class=\"field-body\">page number where search if performed on, default 1 (first)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param direction:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">in which direction to search for text,\ndirections  'top', 'bottom', 'left' or 'right', defaults to 'right'</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param strict:</th><td class=\"field-body\">if element margins should be used for matching points,\nused when direction is 'top' or 'bottom', default <cite>False</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param regexp:</th><td class=\"field-body\">expected format of value to match, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">closest matching text or <cite>None</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get closest text (value) to anchor element.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get X",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get x position</p>\n</div>\n</div>",
+            "shortdoc": "Get x position",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Y",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get y position</p>\n</div>\n</div>",
+            "shortdoc": "Get y position",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Header",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Header to be implemented in your own inherited class</p>\n</div>\n</div>",
+            "shortdoc": "Header to be implemented in your own inherited class",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Html To Pdf",
+            "args": [
+                "content: str = None",
+                "filename: str = None",
+                "variables: dict = None",
+                "create_dirs: bool = True",
+                "exists_ok: bool = True"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Use HTML content to generate PDF file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param content:</th><td class=\"field-body\">HTML content</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">filepath where to save PDF document</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param variables:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">dictionary of variables to fill into template, defaults to {}</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param create_dirs:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">directory structure is created if it is missing,\ndefault <cite>True</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param exists_ok:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">file is overwritten if it exists, default <cite>True</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Use HTML content to generate PDF file.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Image",
+            "args": [
+                "name",
+                "x=None",
+                "y=None",
+                "w=0",
+                "h=0",
+                "type=",
+                "link="
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Put an image on the page</p>\n</div>\n</div>",
+            "shortdoc": "Put an image on the page",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Interleaved 2 Of 5",
+            "args": [
+                "txt",
+                "x",
+                "y",
+                "w=1.0",
+                "h=10.0"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Barcode I2of5 (numeric), adds a 0 if odd lenght</p>\n</div>\n</div>",
+            "shortdoc": "Barcode I2of5 (numeric), adds a 0 if odd lenght",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Is Pdf Encrypted",
+            "args": [
+                "source_pdf: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Check if PDF is encrypted.</p>\n<p>Returns True even if PDF was decrypted.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to the source pdf</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True if file is encrypted</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Check if PDF is encrypted.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Line",
+            "args": [
+                "x1",
+                "y1",
+                "x2",
+                "y2"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Draw a line</p>\n</div>\n</div>",
+            "shortdoc": "Draw a line",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Link",
+            "args": [
+                "x",
+                "y",
+                "w",
+                "h",
+                "link"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Put a link on the page</p>\n</div>\n</div>",
+            "shortdoc": "Put a link on the page",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Ln",
+            "args": [
+                "h="
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Line Feed; default value is last cell height</p>\n</div>\n</div>",
+            "shortdoc": "Line Feed; default value is last cell height",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Multi Cell",
+            "args": [
+                "w",
+                "h",
+                "txt=",
+                "border=0",
+                "align=J",
+                "fill=0",
+                "split_only=False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Output text with automatic or explicit line breaks</p>\n</div>\n</div>",
+            "shortdoc": "Output text with automatic or explicit line breaks",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Normalize Text",
+            "args": [
+                "txt"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Check that text input is in the correct format/encoding</p>\n</div>\n</div>",
+            "shortdoc": "Check that text input is in the correct format/encoding",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Open",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Begin document</p>\n</div>\n</div>",
+            "shortdoc": "Begin document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Open Pdf Document",
+            "args": [
+                "source_pdf: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Open PDF document.</p>\n<p>Also opens file for reading.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to the source pdf</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises ValueError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if PDF is already open</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Open PDF document.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Output",
+            "args": [
+                "name=",
+                "dest="
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Output PDF to some destination</p>\n</div>\n</div>",
+            "shortdoc": "Output PDF to some destination",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Page No",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get current page number</p>\n</div>\n</div>",
+            "shortdoc": "Get current page number",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Page Rotate",
+            "args": [
+                "pages: int",
+                "source_pdf: str = None",
+                "target_pdf: str = None",
+                "clockwise: bool = True",
+                "angle: int = 90"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Rotate pages in source PDF document and save to target PDF document.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to the source pdf</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param target_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filename to the target pdf, stored by default\nto <cite>output_directory</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param pages:</th><td class=\"field-body\">page numbers to extract from PDF (numbers start from 0)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param clockwise:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">directorion that page will be rotated to, default True</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param angle:</th><td class=\"field-body\">number of degrees to rotate, default 90</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Rotate pages in source PDF document and save to target PDF document.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Parse Pdf",
+            "args": [
+                "source_pdf: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Parse source PDF into entities which can be\nused for text searches for example.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">source</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Parse source PDF into entities which can be used for text searches for example.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Pdf Decrypt",
+            "args": [
+                "source_pdf: str = None",
+                "target_pdf: str = None",
+                "password: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Decrypt PDF with password.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to the source pdf</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param target_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to the decrypted pdf</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param password:</th><td class=\"field-body\">password as a string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True if decrypt was successful, else False or Exception</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises ValueError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">on decryption errors</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Decrypt PDF with password.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Pdf Encrypt",
+            "args": [
+                "source_pdf: str = None",
+                "target_pdf: str = None",
+                "user_pwd: str = ",
+                "owner_pwd: str = None",
+                "use_128bit: bool = True"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Encrypt PDF document.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to the source pdf</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param target_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filename to the target pdf, stored by default\nto <cite>output_directory</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param user_pwd:</th><td class=\"field-body\">allows opening and reading PDF with restrictions</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param owner_pwd:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">allows opening PDF without any restrictions, by\ndefault same <cite>user_pwd</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param use_128bit:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">whether to 128bit encryption, when false 40bit\nencryption is used, default True</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Encrypt PDF document.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Rect",
+            "args": [
+                "x",
+                "y",
+                "w",
+                "h",
+                "style="
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Draw a rectangle</p>\n</div>\n</div>",
+            "shortdoc": "Draw a rectangle",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Replace Text",
+            "args": [
+                "text: str",
+                "replace: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Replace text content with something else in the PDF.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param text:</th><td class=\"field-body\">this text will be replaced</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param replace:</th><td class=\"field-body\">used to replace <cite>text</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Replace text content with something else in the PDF.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Rotate",
+            "args": [
+                "angle",
+                "x=None",
+                "y=None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n</div>\n</div>",
+            "shortdoc": "",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Save Pdf",
+            "args": [
+                "source: str = None",
+                "target: str = None",
+                "use_modified_reader: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Save current over itself or to <cite>target_pdf</cite></p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param source:</th><td class=\"field-body\">filepath to source PDF</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param target:</th><td class=\"field-body\">filepath to target PDF</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param use_modified_reader:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">needs to be set to <cite>True</cite> if\nusing modified PDF reader</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Save current over itself or to `target_pdf`",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Anchor To Element",
+            "args": [
+                "locator: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Sets anchor point in the document for further searches.</p>\n<p>PDF needs to be parsed before elements can be found.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param locator:</th><td class=\"field-body\">element to search for</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True if element was found</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Sets anchor point in the document for further searches.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Author",
+            "args": [
+                "author"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Author of document</p>\n</div>\n</div>",
+            "shortdoc": "Author of document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Auto Page Break",
+            "args": [
+                "auto",
+                "margin=0"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set auto page break mode and triggering margin</p>\n</div>\n</div>",
+            "shortdoc": "Set auto page break mode and triggering margin",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Compression",
+            "args": [
+                "compress"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set page compression</p>\n</div>\n</div>",
+            "shortdoc": "Set page compression",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Creator",
+            "args": [
+                "creator"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Creator of document</p>\n</div>\n</div>",
+            "shortdoc": "Creator of document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Display Mode",
+            "args": [
+                "zoom",
+                "layout=continuous"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set display mode in viewer</p>\n<p>The &quot;zoom&quot; argument may be 'fullpage', 'fullwidth', 'real',\n'default', or a number, interpreted as a percentage.</p>\n</div>\n</div>",
+            "shortdoc": "Set display mode in viewer",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Draw Color",
+            "args": [
+                "r",
+                "g=-1",
+                "b=-1"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set color for all stroking operations</p>\n</div>\n</div>",
+            "shortdoc": "Set color for all stroking operations",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Field Value",
+            "args": [
+                "field_name: str",
+                "value: typing.Any",
+                "save: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set value for field with given name.</p>\n<p>Tries to match on field identifier and its label.</p>\n<p>Exception is thrown if field can't be found or more than 1 field matches\nthe given <cite>field_name</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param field_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">field to update</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param value:</th><td class=\"field-body\">new value for the field</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Set value for field with given name.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Fill Color",
+            "args": [
+                "r",
+                "g=-1",
+                "b=-1"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set color for all filling operations</p>\n</div>\n</div>",
+            "shortdoc": "Set color for all filling operations",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Font",
+            "args": [
+                "family",
+                "style=",
+                "size=0"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Select a font; size given in points</p>\n</div>\n</div>",
+            "shortdoc": "Select a font; size given in points",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Font Size",
+            "args": [
+                "size"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set font size in points</p>\n</div>\n</div>",
+            "shortdoc": "Set font size in points",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Keywords",
+            "args": [
+                "keywords"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Keywords of document</p>\n</div>\n</div>",
+            "shortdoc": "Keywords of document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Left Margin",
+            "args": [
+                "margin"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set left margin</p>\n</div>\n</div>",
+            "shortdoc": "Set left margin",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Line Width",
+            "args": [
+                "width"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set line width</p>\n</div>\n</div>",
+            "shortdoc": "Set line width",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Link",
+            "args": [
+                "link",
+                "y=0",
+                "page=-1"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set destination of internal link</p>\n</div>\n</div>",
+            "shortdoc": "Set destination of internal link",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Margins",
+            "args": [
+                "left",
+                "top",
+                "right=-1"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set left, top and right margins</p>\n</div>\n</div>",
+            "shortdoc": "Set left, top and right margins",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Output Directory",
+            "args": [
+                "outdir: str = ."
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set output directory where target files are saved to.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param outdir:</th><td class=\"field-body\">output directory path, default to current directory</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Set output directory where target files are saved to.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Right Margin",
+            "args": [
+                "margin"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set right margin</p>\n</div>\n</div>",
+            "shortdoc": "Set right margin",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Subject",
+            "args": [
+                "subject"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Subject of document</p>\n</div>\n</div>",
+            "shortdoc": "Subject of document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Text Color",
+            "args": [
+                "r",
+                "g=-1",
+                "b=-1"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set color for text</p>\n</div>\n</div>",
+            "shortdoc": "Set color for text",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Title",
+            "args": [
+                "title"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Title of document</p>\n</div>\n</div>",
+            "shortdoc": "Title of document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Top Margin",
+            "args": [
+                "margin"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set top margin</p>\n</div>\n</div>",
+            "shortdoc": "Set top margin",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set X",
+            "args": [
+                "x"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set x position</p>\n</div>\n</div>",
+            "shortdoc": "Set x position",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Xy",
+            "args": [
+                "x",
+                "y"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set x and y positions</p>\n</div>\n</div>",
+            "shortdoc": "Set x and y positions",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Y",
+            "args": [
+                "y"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set y position and reset x</p>\n</div>\n</div>",
+            "shortdoc": "Set y position and reset x",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Switch To Pdf Document",
+            "args": [
+                "source_pdf: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Switch library's current fileobject to already open file\nor open file if not opened.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises ValueError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if PDF filepath is not given and there are no active\nfile to activate</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Switch library's current fileobject to already open file or open file if not opened.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Template Html To Pdf",
+            "args": [
+                "template: str = None",
+                "filename: str = None",
+                "variables: dict = None",
+                "create_dirs: bool = True",
+                "exists_ok: bool = True"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Use HTML template file to generate PDF file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param template:</th><td class=\"field-body\">filepath to HTML template</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">filepath where to save PDF document</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param variables:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">dictionary of variables to fill into template, defaults to {}</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param create_dirs:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">directory structure is created if it is missing,\ndefault <cite>True</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param exists_ok:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">file is overwritten if it exists, default <cite>True</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Use HTML template file to generate PDF file.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Text",
+            "args": [
+                "x",
+                "y",
+                "txt="
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Output a string</p>\n</div>\n</div>",
+            "shortdoc": "Output a string",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Update Field Values",
+            "args": [
+                "source_pdf: str = None",
+                "target_pdf: str = None",
+                "newvals: dict = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Update field values in PDF if it has fields.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">source PDF with fields to update</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param target_pdf:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">updated target PDF</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param newvals:</th><td class=\"field-body\">dictionary with key values to update</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Update field values in PDF if it has fields.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Write",
+            "args": [
+                "h",
+                "txt=",
+                "link="
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Output text in flowing mode</p>\n</div>\n</div>",
+            "shortdoc": "Output text in flowing mode",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Write Html",
+            "args": [
+                "text",
+                "image_map=None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Parse HTML and convert it to PDF</p>\n</div>\n</div>",
+            "shortdoc": "Parse HTML and convert it to PDF",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

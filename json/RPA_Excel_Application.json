@@ -1,0 +1,153 @@
+{
+    "name": "RPA.Excel.Application",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Library for manipulating Excel application.</p>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-11-04 12:58:41",
+    "inits": [],
+    "keywords": [
+        {
+            "name": "Add New Sheet",
+            "args": [
+                "sheetname: str",
+                "tabname: str = None",
+                "create_workbook: bool = True"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Add new worksheet to workbook. Workbook is created by default if\nit does not exist.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param sheetname:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name for sheet</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param tabname:</th><td class=\"field-body\">name for tab, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param create_workbook:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">create workbook if True, defaults to True</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises ValueError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">error is raised if workbook does not exist and\n<cite>create_workbook</cite> is False</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Add new worksheet to workbook. Workbook is created by default if it does not exist.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Add New Workbook",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Adds new workbook for Excel application</p>\n</div>\n</div>",
+            "shortdoc": "Adds new workbook for Excel application",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Close Document",
+            "args": [
+                "save_changes: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Close the active document (if open).</p>\n</div>\n</div>",
+            "shortdoc": "Close the active document (if open).",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Find First Available Row",
+            "args": [
+                "worksheet: typing.Any = None",
+                "row: int = 1",
+                "column: int = 1"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Find first available free row and cell</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param worksheet:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">worksheet to handle, defaults to active worksheet if None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param row:</th><td class=\"field-body\">starting row for search, defaults to 1</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param column:</th><td class=\"field-body\">starting column for search, defaults to 1</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">tuple (row, column) or (None, None) if not found</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Find first available free row and cell",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Open Application",
+            "args": [
+                "visible: bool = False",
+                "display_alerts: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Open the Excel application.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param visible:</th><td class=\"field-body\">show window after opening</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param display_alerts:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">show alert popups</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Open the Excel application.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Open Workbook",
+            "args": [
+                "filename: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Open Excel by filename</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">path to filename</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Open Excel by filename",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Quit Application",
+            "args": [
+                "save_changes: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Quit the application.</p>\n</div>\n</div>",
+            "shortdoc": "Quit the application.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Read From Cells",
+            "args": [
+                "worksheet: typing.Any = None",
+                "row: int = None",
+                "column: int = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Read value from cell.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param worksheet:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">worksheet to handle, defaults to active worksheet if None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param row:</th><td class=\"field-body\">target row, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param column:</th><td class=\"field-body\">target row, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises ValueError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if cell is not given</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Read value from cell.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Run Macro",
+            "args": [
+                "macro_name: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Run Excel macro with given name</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param macro_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">macro to run</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Run Excel macro with given name",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Save Excel",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Saves Excel file</p>\n</div>\n</div>",
+            "shortdoc": "Saves Excel file",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Save Excel As",
+            "args": [
+                "filename: str",
+                "autofit: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Save Excel with name if workbook is open</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">where to save file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param autofit:</th><td class=\"field-body\">autofit cell widths if True, defaults to False</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Save Excel with name if workbook is open",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Active Worksheet",
+            "args": [
+                "sheetname: str = None",
+                "sheetnumber: int = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set active worksheet by either its sheet number or name</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param sheetname:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of Excel sheet, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param sheetnumber:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">index of Excel sheet, defaults to None</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Set active worksheet by either its sheet number or name",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Write To Cells",
+            "args": [
+                "worksheet: typing.Any = None",
+                "row: int = None",
+                "column: int = None",
+                "value: str = None",
+                "number_format: str = None",
+                "formula: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Write value, number_format and/or formula into cell.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param worksheet:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">worksheet to handle, defaults to active worksheet if None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param row:</th><td class=\"field-body\">target row, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param column:</th><td class=\"field-body\">target row, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param value:</th><td class=\"field-body\">possible value to set, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param number_format:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">possible number format to set, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param formula:</th><td class=\"field-body\">possible format to set, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises ValueError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if cell is not given</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Write value, number_format and/or formula into cell.",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

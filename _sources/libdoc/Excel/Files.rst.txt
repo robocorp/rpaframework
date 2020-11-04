@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: 
+:Library scope: Global
 
 Robot Framework library for manipulating Excel files.
 

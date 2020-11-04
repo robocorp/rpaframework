@@ -1,0 +1,39 @@
+{
+    "name": "RPA.Desktop.Clipboard",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><em>DEPRECATED!!</em> Use library RPA.Desktop's clipboard functionality instead.</p>\n<p>RPA Framework library for cross platform clipboard management.</p>\n<p>Will use <cite>win32</cite> package on Windows and <cite>clipboard</cite> package on Linux and Mac.</p>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-11-04 12:58:44",
+    "inits": [],
+    "keywords": [
+        {
+            "name": "Clear Clipboard",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><em>DEPRECATED!!</em> Use <cite>RPA.Desktop</cite> library's <cite>Clear Clipboard</cite> instead.\nClear clipboard contents</p>\n</div>\n</div>",
+            "shortdoc": "*DEPRECATED!!* Use `RPA.Desktop` library's `Clear Clipboard` instead. Clear clipboard contents",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Copy To Clipboard",
+            "args": [
+                "text"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><em>DEPRECATED!!</em> Use <cite>RPA.Desktop</cite> library's <cite>Copy to Clipboard</cite> instead.</p>\n<p>Copy text to clipboard</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param text:</th><td class=\"field-body\">to copy</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "*DEPRECATED!!* Use `RPA.Desktop` library's `Copy to Clipboard` instead.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Paste From Clipboard",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><em>DEPRECATED!!</em> Use <cite>RPA.Desktop</cite> library's <cite>Paste from Clipboard</cite> instead.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">text</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "*DEPRECATED!!* Use `RPA.Desktop` library's `Paste from Clipboard` instead.",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

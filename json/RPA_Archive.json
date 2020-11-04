@@ -1,0 +1,98 @@
+{
+    "name": "RPA.Archive",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Library for handling TAR and ZIP archives.</p>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-11-04 12:58:43",
+    "inits": [],
+    "keywords": [
+        {
+            "name": "Add To Archive",
+            "args": [
+                "files: typing.Any",
+                "archive_name: str",
+                "folder: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Add file(s) to the archive</p>\n<p>This keyword adds file or list of files into existing archive. Files\ncan be added to archive structure with relative path using argument <cite>folder</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param files:</th><td class=\"field-body\">name of the file, or list of files, to add</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param archive_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filename of the archive</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param folder:</th><td class=\"field-body\">name of the folder for added file (relative path in the archive)</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Add To Archive</span><span class=\"p\">  </span><span class=\"c\">extrafile.txt</span><span class=\"p\">  </span><span class=\"c\">myfiles.zip</span><span class=\"p\">\n</span><span class=\"c\">Add To Archive</span><span class=\"p\">  </span><span class=\"c\">stat.png</span><span class=\"p\">       </span><span class=\"c\">archive.tar.gz</span><span class=\"p\">  </span><span class=\"c\">images</span><span class=\"p\">\n</span><span class=\"c\">&#64;{files}</span><span class=\"p\">        </span><span class=\"c\">Create List</span><span class=\"p\">    </span><span class=\"c\">filename1.txt</span><span class=\"p\">   </span><span class=\"c\">filename2.txt</span><span class=\"p\">\n</span><span class=\"c\">Add To Archive</span><span class=\"p\">  </span><span class=\"c\">${files}</span><span class=\"p\">       </span><span class=\"c\">files.tar</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Add file(s) to the archive",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Archive Folder With Tar",
+            "args": [
+                "folder: str",
+                "archive_name: str",
+                "recursive: bool = False",
+                "include: str = None",
+                "exclude: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Create a tar/tar.gz archive of a folder</p>\n<p>This keyword creates an TAR or TAR.GZ archive of a local folder. Type of archive\nis determined by the file extension. By default subdirectories are not\nincluded, but they can included using <cite>recursive</cite> argument.</p>\n<p>To include only certain files, like TXT files, the argument <cite>include</cite> can be used.\nSimilarly to exclude certain file, like dotfiles, the argument <cite>exclude</cite> can be used.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param folder:</th><td class=\"field-body\">name of the folder to archive</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param archive_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filename of the archive</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param recursive:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">should sub directories be included, defaults is False</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param include:</th><td class=\"field-body\">define file pattern to include in the package, defaults to None (means all files)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param exclude:</th><td class=\"field-body\">define file pattern to exclude from the package, defaults is None</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Archive Folder With TAR</span><span class=\"p\">  </span><span class=\"c\">${CURDIR}${/}documents</span><span class=\"p\">  </span><span class=\"c\">documents.tar</span><span class=\"p\">\n</span><span class=\"c\">Archive Folder With TAR</span><span class=\"p\">  </span><span class=\"c\">${CURDIR}${/}tasks</span><span class=\"p\">      </span><span class=\"c\">tasks.tar.gz</span><span class=\"p\">   </span><span class=\"c\">include=*.robot</span><span class=\"p\">\n</span><span class=\"c\">Archive Folder With TAR</span><span class=\"p\">  </span><span class=\"c\">${CURDIR}${/}tasks</span><span class=\"p\">      </span><span class=\"c\">tasks.tar</span><span class=\"p\">      </span><span class=\"c\">exclude=/.*</span><span class=\"p\">\n</span><span class=\"c\">Archive Folder With TAR</span><span class=\"p\">  </span><span class=\"c\">${CURDIR}${/}documents</span><span class=\"p\">  </span><span class=\"c\">documents.tar</span><span class=\"p\">  </span><span class=\"c\">recursive=True</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Create a tar/tar.gz archive of a folder",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Archive Folder With Zip",
+            "args": [
+                "folder: str",
+                "archive_name: str",
+                "recursive: bool = False",
+                "include: str = None",
+                "exclude: str = None",
+                "compression: str = stored"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Create a zip archive of a folder</p>\n<p>This keyword creates an ZIP archive of a local folder. By default subdirectories are not\nincluded, but they can included using <cite>recursive</cite> argument.</p>\n<p>To include only certain files, like TXT files, the argument <cite>include</cite> can be used.\nSimilarly to exclude certain file, like dotfiles, the argument <cite>exclude</cite> can be used.</p>\n<dl class=\"docutils\">\n<dt>Compression methods:</dt>\n<dd><ul class=\"first last simple\">\n<li>stored, default</li>\n<li>deflated</li>\n<li>bzip2</li>\n<li>lzma</li>\n</ul>\n</dd>\n</dl>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param folder:</th><td class=\"field-body\">name of the folder to archive</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param archive_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filename of the archive</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param recursive:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">should sub directories be included, defaults is False</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param include:</th><td class=\"field-body\">define file pattern to include in the package, defaults to None (means all files)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param exclude:</th><td class=\"field-body\">define file pattern to exclude from the package, defaults is None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param compression:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">type of package compression method, defaults to &quot;stored&quot;</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Archive Folder With Zip</span><span class=\"p\">  </span><span class=\"c\">${CURDIR}${/}documents</span><span class=\"p\">  </span><span class=\"c\">mydocs.zip</span><span class=\"p\">\n</span><span class=\"c\">Archive Folder With Zip</span><span class=\"p\">  </span><span class=\"c\">${CURDIR}${/}tasks</span><span class=\"p\">      </span><span class=\"c\">robottasks.zip</span><span class=\"p\">   </span><span class=\"c\">include=*.robot</span><span class=\"p\">\n</span><span class=\"c\">Archive Folder With Zip</span><span class=\"p\">  </span><span class=\"c\">${CURDIR}${/}tasks</span><span class=\"p\">      </span><span class=\"c\">no_dotfiles.zip</span><span class=\"p\">  </span><span class=\"c\">exclude=/.*</span><span class=\"p\">\n</span><span class=\"c\">Archive Folder With Zip</span><span class=\"p\">  </span><span class=\"c\">${CURDIR}${/}documents</span><span class=\"p\">  </span><span class=\"c\">documents.zip</span><span class=\"p\">    </span><span class=\"c\">recursive=True</span><span class=\"p\">\n</span><span class=\"c\">Archive Folder With Zip</span><span class=\"p\">  </span><span class=\"c\">${CURDIR}</span><span class=\"p\">               </span><span class=\"c\">packagelzma.zip</span><span class=\"p\">  </span><span class=\"c\">compression=lzma</span><span class=\"p\">\n</span><span class=\"c\">Archive Folder With Zip</span><span class=\"p\">  </span><span class=\"c\">${CURDIR}</span><span class=\"p\">               </span><span class=\"c\">bzipped.zip</span><span class=\"p\">      </span><span class=\"c\">compression=bzip2</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Create a zip archive of a folder",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Extract Archive",
+            "args": [
+                "archive_name: str",
+                "path: str = None",
+                "members: typing.Any = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Extract files from archive into local directory</p>\n<p>This keyword supports extracting files from zip, tar and tar.gz archives.</p>\n<p>By default file is extracted into current working directory, but <cite>path</cite> argument\ncan be set to define extraction path.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param archive_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filename of the archive</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">filepath to extract file into, default is current working directory</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param members:</th><td class=\"field-body\">list of files to extract from, default is None (all files in archive are extracted)</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Extract Archive</span><span class=\"p\">    </span><span class=\"c\">myfiles.zip</span><span class=\"p\">   </span><span class=\"c\">${CURDIR}${/}extracted</span><span class=\"p\">\n</span><span class=\"c\">&#64;{files}</span><span class=\"p\">           </span><span class=\"c\">Create List</span><span class=\"p\">   </span><span class=\"c\">filename1.txt</span><span class=\"p\">    </span><span class=\"c\">filename2.txt</span><span class=\"p\">\n</span><span class=\"c\">Extract Archive</span><span class=\"p\">    </span><span class=\"c\">archive.tar</span><span class=\"p\">   </span><span class=\"c\">C:${/}myfiles${/}</span><span class=\"p\">  </span><span class=\"c\">${files}</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Extract files from archive into local directory",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Extract File From Archive",
+            "args": [
+                "filename: str",
+                "archive_name: str",
+                "path: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Extract a file from archive into local directory</p>\n<p>This keyword supports extracting a file from zip, tar and tar.gz archives.</p>\n<p>By default file is extracted into current working directory, but <cite>path</cite> argument can be set\nto define extraction path.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">name of the file to extract</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param archive_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filename of the archive</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">filepath to extract file into, default is current working directory</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Extract File From Archive</span><span class=\"p\">    </span><span class=\"c\">extrafile.txt</span><span class=\"p\">   </span><span class=\"c\">myfiles.zip</span><span class=\"p\">\n</span><span class=\"c\">Extract File From Archive</span><span class=\"p\">    </span><span class=\"c\">background.png</span><span class=\"p\">  </span><span class=\"c\">images.tar.gz</span><span class=\"p\">  </span><span class=\"c\">${CURDIR}${/}extracted</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Extract a file from archive into local directory",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Archive Info",
+            "args": [
+                "archive_name: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get information about the archive</p>\n<p>Returns following file attributes in a dictionary:</p>\n<blockquote>\n<ul class=\"simple\">\n<li>filename</li>\n<li>filemode</li>\n<li>size</li>\n<li>mtime</li>\n<li>last modification time in format <cite>%d.%m.%Y %H:%M:%S</cite></li>\n</ul>\n</blockquote>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param archive_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filename of the archive</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">&amp;{archiveinfo}</span><span class=\"p\">   </span><span class=\"c\">Get Archive Info</span><span class=\"p\">    </span><span class=\"c\">myfiles.zip</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Get information about the archive",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "List Archive",
+            "args": [
+                "archive_name: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>List files in an archive</p>\n<p>Returns list of file, where each file in a list is a dictionary\nwith following attributes:</p>\n<blockquote>\n<ul class=\"simple\">\n<li>name</li>\n<li>size</li>\n<li>mtime</li>\n<li>last modification time in format <cite>%d.%m.%Y %H:%M:%S</cite></li>\n</ul>\n</blockquote>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param archive_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filename of the archive</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">&#64;{files}</span><span class=\"p\">   </span><span class=\"c\">List Archive</span><span class=\"p\">    </span><span class=\"c\">myfiles.zip</span><span class=\"p\">\n</span><span class=\"c\">FOR</span><span class=\"p\">  </span><span class=\"c\">${file}</span><span class=\"p\">  </span><span class=\"c\">IN</span><span class=\"p\">   </span><span class=\"c\">${files}</span><span class=\"p\">\n    </span><span class=\"c\">Log</span><span class=\"p\">  </span><span class=\"c\">${file}[filename]</span><span class=\"p\">\n    </span><span class=\"c\">Log</span><span class=\"p\">  </span><span class=\"c\">${file}[size]</span><span class=\"p\">\n    </span><span class=\"c\">Log</span><span class=\"p\">  </span><span class=\"c\">${file}[mtime]</span><span class=\"p\">\n</span><span class=\"c\">END</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "List files in an archive",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

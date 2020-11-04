@@ -1,0 +1,409 @@
+{
+    "name": "RPA.Cloud.Google",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Library for interacting with Google services</p>\n<p>Google Storage URI:</p>\n<blockquote>\ngs://&lt;bucket_name&gt;/&lt;file_path_inside_bucket&gt;</blockquote>\n<p>The usage requires the following steps:</p>\n<blockquote>\n<ul class=\"simple\">\n<li>Create GCP project</li>\n<li>Create service account key file (json) and save it to a place the robot\ncan use it</li>\n<li>Enable APIs</li>\n<li>Install rpaframework[google]</li>\n</ul>\n</blockquote>\n<p>Services are taken into use with <tt class=\"docutils literal\">init_SERVICENAME_client</tt> keywords,\nwhich take as parameter an <tt class=\"docutils literal\">service_account</tt> JSON file.</p>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-11-04 12:58:42",
+    "inits": [
+        {
+            "name": "Init",
+            "args": [
+                "robocloud_vault_name: str = None",
+                "robocloud_vault_secret_key: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Initialize self.  See help(type(self)) for accurate signature.</p>\n</div>\n</div>",
+            "shortdoc": "Initialize self.  See help(type(self)) for accurate signature.",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "keywords": [
+        {
+            "name": "Analyze Sentiment",
+            "args": [
+                "text_file: str",
+                "file_type: str = text",
+                "json_file: str = None",
+                "lang=None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Analyze sentiment in a text file</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param text_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">source text file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param json_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">json target to save result, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param lang:</th><td class=\"field-body\">language code of the source, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">analysis response</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Analyze sentiment in a text file",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Annotate Image",
+            "args": [
+                "image_uri: str",
+                "json_file: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Annotate image</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param image_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">source image file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param json_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">json target to save result, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">detection response</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Annotate image",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Annotate Video",
+            "args": [
+                "video_uri: str = None",
+                "video_file: str = None",
+                "json_file: str = None",
+                "features: list = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Annotate video</p>\n<p>Possible values for features:\n- FEATURE_UNSPECIFIED, Unspecified.\n- LABEL_DETECTION, Label detection. Detect objects, such as dog or flower.\n- SHOT_CHANGE_DETECTION, Shot change detection.\n- EXPLICIT_CONTENT_DETECTION, Explicit content detection.\n- SPEECH_TRANSCRIPTION, Speech transcription.\n- TEXT_DETECTION, OCR text detection and tracking.\n- OBJECT_TRACKING, Object detection and tracking.\n- LOGO_RECOGNITION, Logo detection, tracking, and recognition.</p>\n<p>If <cite>video_uri</cite> is given then that is used even if <cite>video_file</cite> is None.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param video_uri:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Google Cloud Storage URI</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param video_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to video</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param json_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">json target to save result, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param features:</th><td class=\"field-body\">list of annotation features to detect,\ndefaults to [&quot;LABEL_DETECTION&quot;, &quot;SHOT_CHANGE_DETECTION&quot;]</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">annotate result</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Annotate video",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Classify Text",
+            "args": [
+                "text_file",
+                "json_file",
+                "lang=None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Classify text</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param text_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">source text file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param json_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">json target to save result, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param lang:</th><td class=\"field-body\">language code of the source, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">classify response</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Classify text",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Clear Values",
+            "args": [
+                "sheet_id: str",
+                "sheet_range: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Clear cell values for range of cells within a sheet</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param sheet_id:</th><td class=\"field-body\">target sheet</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param sheet_range:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">target sheet range</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Clear cell values for range of cells within a sheet",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Create Bucket",
+            "args": [
+                "bucket_name: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Create Google Cloud Storage bucket</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param bucket_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name as string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">bucket</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Create Google Cloud Storage bucket",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Create Sheet",
+            "args": [
+                "title: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Create empty sheet with a title</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param title:</th><td class=\"field-body\">name as string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">created <cite>sheet_id</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Create empty sheet with a title",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Delete Bucket",
+            "args": [
+                "bucket_name: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Delete Google Cloud Storage bucket</p>\n<p>Bucket needs to be empty before it can be deleted.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param bucket_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name as string</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Delete Google Cloud Storage bucket",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Delete Files",
+            "args": [
+                "bucket_name: str",
+                "files: typing.Any"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Delete files in the bucket</p>\n<p>Files need to be object name in the bucket.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param bucket_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name as string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param files:</th><td class=\"field-body\">single file, list of files or\ncomma separated list of files</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of files which could not be deleted,\nor True if all were deleted</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Delete files in the bucket",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Detect Document",
+            "args": [
+                "image_file: str",
+                "json_file: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Detect document</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param image_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">source image file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param json_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">json target to save result, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">detection response</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Detect document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Detect Labels",
+            "args": [
+                "image_file: str",
+                "json_file: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Detect labels in the image</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param image_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">source image file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param json_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">json target to save result, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">detection response</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Detect labels in the image",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Detect Text",
+            "args": [
+                "image_file: str",
+                "json_file: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Detect text in the image</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param image_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">source image file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param json_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">json target to save result, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">detection response</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Detect text in the image",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Download Files",
+            "args": [
+                "bucket_name: str",
+                "files: typing.Any"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Download files from a bucket</p>\n<p>Example <cite>files</cite>:\nfiles = {&quot;mytestimg&quot;: &quot;image1.png&quot;, &quot;mydoc&quot;: &quot;google.pdf</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param bucket_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name as string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param files:</th><td class=\"field-body\">list of object names or dictionary of\nobject names and target files</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of files which could not be downloaded, or\nTrue if all were downloaded</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Download files from a bucket",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Face Detection",
+            "args": [
+                "image_uri: str",
+                "json_file: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Detect faces</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param image_uri:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Google Cloud Storage URI</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param json_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">json target to save result, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">detection response</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Detect faces",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Bucket",
+            "args": [
+                "bucket_name: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get Google Cloud Storage bucket</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param bucket_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name as string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">bucket</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get Google Cloud Storage bucket",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Values",
+            "args": [
+                "sheet_id: str",
+                "sheet_range: str",
+                "value_render_option: str = UNFORMATTED_VALUE",
+                "datetime_render_option: str = FORMATTED_STRING"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get values from the range in the sheet</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param sheet_id:</th><td class=\"field-body\">target sheet</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param sheet_range:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">target sheet range</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param value_render_option:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">how values should be represented\nin the output defaults to &quot;UNFORMATTED_VALUE&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param datetime_render_option:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">ow dates, times, and durations should\nbe represented in the outpu, defaults to &quot;FORMATTED_STRING&quot;</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get values from the range in the sheet",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Init Natural Language Client",
+            "args": [
+                "service_credentials_file: str = None",
+                "use_robocloud_vault: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Initialize Google Cloud Natural Language client</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param service_credentials_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to credentials JSON</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param use_robocloud_vault:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">use json stored into <cite>Robocloud Vault</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Initialize Google Cloud Natural Language client",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Init Sheets Client",
+            "args": [
+                "service_credentials_file: str = None",
+                "use_robocloud_vault: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Initialize Google Sheets client</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param service_credentials_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to credentials JSON</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param use_robocloud_vault:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">use json stored into <cite>Robocloud Vault</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Initialize Google Sheets client",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Init Speech To Text Client",
+            "args": [
+                "service_credentials_file: str = None",
+                "use_robocloud_vault: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Initialize Google Cloud Speech to Text client</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param service_credentials_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to credentials JSON</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param use_robocloud_vault:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">use json stored into <cite>Robocloud Vault</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Initialize Google Cloud Speech to Text client",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Init Storage Client",
+            "args": [
+                "service_credentials_file: str = None",
+                "use_robocloud_vault: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Initialize Google Cloud Storage client</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param service_credentials_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to credentials JSON</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param use_robocloud_vault:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">use json stored into <cite>Robocloud Vault</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Initialize Google Cloud Storage client",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Init Text To Speech Client",
+            "args": [
+                "service_credentials_file: str = None",
+                "use_robocloud_vault: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Initialize Google Cloud Text to Speech client</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param service_credentials_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to credentials JSON</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param use_robocloud_vault:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">use json stored into <cite>Robocloud Vault</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Initialize Google Cloud Text to Speech client",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Init Translation Client",
+            "args": [
+                "service_credentials_file: str = None",
+                "project_identifier: str = None",
+                "use_robocloud_vault: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Initialize Google Cloud Translation client</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param service_credentials_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to credentials JSON</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param project_identifier:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">identifier for Translation project</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param use_robocloud_vault:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">use json stored into <cite>Robocloud Vault</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Initialize Google Cloud Translation client",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Init Video Intelligence Client",
+            "args": [
+                "service_credentials_file: str = None",
+                "use_robocloud_vault: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Initialize Google Cloud Video Intelligence client</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param service_credentials_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to credentials JSON</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param use_robocloud_vault:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">use json stored into <cite>Robocloud Vault</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Initialize Google Cloud Video Intelligence client",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Init Vision Client",
+            "args": [
+                "service_credentials_file: str = None",
+                "use_robocloud_vault: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Initialize Google Cloud Vision client</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param service_credentials_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to credentials JSON</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param use_robocloud_vault:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">use json stored into <cite>Robocloud Vault</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Initialize Google Cloud Vision client",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Insert Values",
+            "args": [
+                "sheet_id: str",
+                "sheet_range: str",
+                "values: list",
+                "major_dimension: str = COLUMNS",
+                "value_input_option: str = USER_ENTERED"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Insert values into sheet cells</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param sheet_id:</th><td class=\"field-body\">target sheet</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param sheet_range:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">target sheet range</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param values:</th><td class=\"field-body\">list of values to insert into sheet</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param major_dimension:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">major dimension of the values, default <cite>COLUMNS</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param value_input_option:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">controls whether input strings are parsed or not,\ndefault <cite>USER_ENTERED</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Insert values into sheet cells",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "List Buckets",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>List Google Cloud Storage buckets</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of buckets</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "List Google Cloud Storage buckets",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "List Files",
+            "args": [
+                "bucket_name: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>List files in the bucket</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param bucket_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name as string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of object names in the bucket</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "List files in the bucket",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "List Supported Voices",
+            "args": [
+                "language_code: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>List supported voices for the speech</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param language_code:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">voice languages to list, defaults to None (all)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of supported voices</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "List supported voices for the speech",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Recognize",
+            "args": [
+                "audio_file_uri",
+                "encoding: str = FLAC",
+                "language_code: str = en_US",
+                "audio_channel_count=2"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Recognize text in the audio file</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param audio_file_uri:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Google Cloud Storage URI</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">recognized texts</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Recognize text in the audio file",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Robocloud Vault",
+            "args": [
+                "vault_name",
+                "vault_secret_key"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set Robocloud Vault name and secret key name</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param vault_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Robocloud Vault name</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param vault_secret_key:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Rococloud Vault secret key name</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Set Robocloud Vault name and secret key name",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Synthesize Speech",
+            "args": [
+                "text",
+                "language=en-US",
+                "name=en-US-Standard-B",
+                "gender=MALE",
+                "encoding=MP3",
+                "target_file=synthesized.mp3"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Synthesize speech synchronously</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param text:</th><td class=\"field-body\">input text to synthesize</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param language:</th><td class=\"field-body\">voice language, defaults to &quot;en-US&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param name:</th><td class=\"field-body\">voice name, defaults to &quot;en-US-Standard-B&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param gender:</th><td class=\"field-body\">voice gender, defaults to &quot;MALE&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param encoding:</th><td class=\"field-body\">result encoding type, defaults to &quot;MP3&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param target_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">save synthesized output to file,\ndefaults to &quot;synthesized.mp3&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">synthesized output in bytes</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Synthesize speech synchronously",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Translate",
+            "args": [
+                "text: typing.Any",
+                "source_language: str = None",
+                "target_language: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Translate text</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param text:</th><td class=\"field-body\">text to translate</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_language:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">language code, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param target_language:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">language code, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">translated text</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Translate text",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Upload File",
+            "args": [
+                "bucket_name: str",
+                "filename: str",
+                "target_name: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Upload a file into a bucket</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param bucket_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name as string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">filepath to upload file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param target_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">target object name</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Upload a file into a bucket",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Upload Files",
+            "args": [
+                "bucket_name: str",
+                "files: dict"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Upload files into a bucket</p>\n<p>Example <cite>files</cite>:\nfiles = {&quot;mytestimg&quot;: &quot;image1.png&quot;, &quot;mydoc&quot;: &quot;google.pdf&quot;}</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param bucket_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name as string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param files:</th><td class=\"field-body\">dictionary of object names and filepaths</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Upload files into a bucket",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

@@ -1,0 +1,97 @@
+{
+    "name": "RPA.Desktop.OperatingSystem",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>RPA Framework library containing cross platform keywords for managing\ncomputer properties and actions.</p>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-11-04 12:58:44",
+    "inits": [],
+    "keywords": [
+        {
+            "name": "Boot Time In Seconds From Epoch",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get machine boot time</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">boot time in seconds from Epoch</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${epoch}</span><span class=\"p\">  </span><span class=\"c\">Boot Time In Seconds From Epoch</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Get machine boot time",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Boot Time",
+            "args": [
+                "as_datetime: bool = False",
+                "datetime_format: str = %Y-%m-%d %H:%M:%S"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get computer boot time in seconds from Epoch or in datetime string.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param as_datetime:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if True returns datetime string, otherwise seconds,\ndefaults to False</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param datetime_format:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">datetime string format, defaults to &quot;%Y-%m-%d %H:%M:%S&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">seconds from Epoch or datetime string</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${boottime}</span><span class=\"p\">  </span><span class=\"c\">Get Boot Time</span><span class=\"p\">\n</span><span class=\"c\">${boottime}</span><span class=\"p\">  </span><span class=\"c\">Get Boot Time</span><span class=\"p\">   </span><span class=\"c\">as_datetime=True</span><span class=\"p\">\n</span><span class=\"c\">${boottime}</span><span class=\"p\">  </span><span class=\"c\">Get Boot Time</span><span class=\"p\">   </span><span class=\"c\">as_datetime=True</span><span class=\"p\">  </span><span class=\"c\">datetime_format=%d.%m.%Y</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Get computer boot time in seconds from Epoch or in datetime string.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Machine Name",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get machine name</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">machine name as string</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${machine}</span><span class=\"p\">  </span><span class=\"c\">Get Machine Name</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Get machine name",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Memory Stats",
+            "args": [
+                "humanized: bool = True"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get computer memory stats and return those in bytes\nor in humanized memory format.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param humanized:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if False returns memory information in bytes, defaults to True</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">memory information in dictionary format</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">&amp;{mem}</span><span class=\"p\">     </span><span class=\"c\">Get Memory Stats</span><span class=\"p\">\n</span><span class=\"c\">&amp;{mem}</span><span class=\"p\">     </span><span class=\"c\">Get Memory Stats</span><span class=\"p\">   </span><span class=\"c\">humanized=False</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Get computer memory stats and return those in bytes or in humanized memory format.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Username",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get username of logged in user</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">username as string</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${user}</span><span class=\"p\">  </span><span class=\"c\">Get Username</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Get username of logged in user",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Kill Process",
+            "args": [
+                "process_name: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Kill process by name</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param process_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the process</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True if succeeds False if not</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${process}</span><span class=\"p\">  </span><span class=\"c\">Process Exists</span><span class=\"p\">  </span><span class=\"c\">calc</span><span class=\"p\">  </span><span class=\"c\">strict=False</span><span class=\"p\">\n</span><span class=\"c\">${status}</span><span class=\"p\">   </span><span class=\"c\">Kill Process</span><span class=\"p\">    </span><span class=\"c\">${process.name()}</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Kill process by name",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Kill Process By Pid",
+            "args": [
+                "pid: int"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Kill process by pid</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param pid:</th><td class=\"field-body\">process identifier</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${process}</span><span class=\"p\">  </span><span class=\"c\">Process Exists</span><span class=\"p\">  </span><span class=\"c\">calc</span><span class=\"p\">  </span><span class=\"c\">strict=False</span><span class=\"p\">\n</span><span class=\"c\">${status}</span><span class=\"p\">   </span><span class=\"c\">Kill Process</span><span class=\"p\">    </span><span class=\"c\">${process.pid}</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Kill process by pid",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Process Exists",
+            "args": [
+                "process_name: str",
+                "strict: bool = True"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Check if process exists by its name</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param process_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">search for this process</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param strict:</th><td class=\"field-body\">defines how match is made, default <cite>True</cite>\nwhich means that process name needs to be exact match\nand <cite>False</cite> does inclusive matching</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">process instance or False</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${process}</span><span class=\"p\">  </span><span class=\"c\">Process Exists</span><span class=\"p\">  </span><span class=\"c\">calc</span><span class=\"p\">\n</span><span class=\"c\">${process}</span><span class=\"p\">  </span><span class=\"c\">Process Exists</span><span class=\"p\">  </span><span class=\"c\">calc</span><span class=\"p\">  </span><span class=\"c\">strict=False</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Check if process exists by its name",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Put System To Sleep",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Puts system to sleep mode</p>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Put System To Sleep</span>\n</pre>\n</div>\n</div>",
+            "shortdoc": "Puts system to sleep mode",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

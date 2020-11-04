@@ -6,16 +6,16 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: 
+:Library scope: Global
 
 Library for interacting with AWS services
 
 Supported services:
 
-    - Comprehend
-    - S3
-    - SQS
-    - Textract
+- Comprehend
+- S3
+- SQS
+- Textract
 
 ********
 Keywords

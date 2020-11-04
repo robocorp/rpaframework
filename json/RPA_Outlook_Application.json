@@ -1,0 +1,70 @@
+{
+    "name": "RPA.Outlook.Application",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Library for manipulating Outlook application.</p>\n<p>For more information: <a class=\"reference external\" href=\"https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2007/bb219950(v=office.12\">https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2007/bb219950(v=office.12</a>) # noqa: E501</p>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-11-04 12:58:42",
+    "inits": [],
+    "keywords": [
+        {
+            "name": "Close Document",
+            "args": [
+                "save_changes: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Close the active document (if open).</p>\n</div>\n</div>",
+            "shortdoc": "Close the active document (if open).",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Open Application",
+            "args": [
+                "visible: bool = False",
+                "display_alerts: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Open the Outlook application.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param visible:</th><td class=\"field-body\">show window after opening</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param display_alerts:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">show alert popups</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Open the Outlook application.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Quit Application",
+            "args": [
+                "save_changes: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Quit the application.</p>\n</div>\n</div>",
+            "shortdoc": "Quit the application.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Send Message",
+            "args": [
+                "recipients: typing.Any",
+                "subject: str",
+                "body: str",
+                "html_body: bool = False",
+                "attachments: typing.Any = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Send message with Outlook</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param recipients:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">list of addresses</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param subject:</th><td class=\"field-body\">email subject</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param body:</th><td class=\"field-body\">email body</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param html_body:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">True if body contains HTML, defaults to False</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param attachments:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">list of filepaths to include in the email, defaults to []</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\"><cite>True</cite> if there were no errors</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Send message with Outlook",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Wait For Message",
+            "args": [
+                "criterion: str = None",
+                "timeout: float = 5.0",
+                "interval: float = 1.0"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Wait for email matching <cite>criterion</cite> to arrive into mailbox.</p>\n<p>Possible wait criterias are: SUBJECT, SENDER and BODY</p>\n<dl class=\"docutils\">\n<dt>Examples:</dt>\n<dd><ul class=\"first last simple\">\n<li>wait_for_message('SUBJECT:rpa task calling', timeout=300, interval=10)</li>\n</ul>\n</dd>\n</dl>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param criterion:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">message filter to wait for, defaults to &quot;&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param timeout:</th><td class=\"field-body\">total time in seconds to wait for email, defaults to 5.0</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param interval:</th><td class=\"field-body\">time in seconds for new check, defaults to 1.0</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of messages or False</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Wait for email matching `criterion` to arrive into mailbox.",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

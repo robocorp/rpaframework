@@ -1,0 +1,474 @@
+{
+    "name": "RPA.FileSystem",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>FileSystem</cite> is a library for finding, creating, and modifying\nfiles on a local filesystem.</p>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-11-04 12:58:43",
+    "inits": [],
+    "keywords": [
+        {
+            "name": "Absolute Path",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns the absolute path to a file, and resolves symlinks.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path that will be resolved</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">absolute path to file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns the absolute path to a file, and resolves symlinks.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Append To Binary File",
+            "args": [
+                "path",
+                "content"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Appends binary content to the given file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file to append to</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param content:</th><td class=\"field-body\">content to append</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Appends binary content to the given file.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Append To File",
+            "args": [
+                "path",
+                "content",
+                "encoding=utf-8"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Appends text to the given file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file to append to</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param content:</th><td class=\"field-body\">content to append</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param encoding:</th><td class=\"field-body\">character encoding of appended content</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Appends text to the given file.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Change File Extension",
+            "args": [
+                "path",
+                "extension"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Replaces file extension for file at given path.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file to rename</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param extension:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">new extension, e.g. .xlsx</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Replaces file extension for file at given path.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Copy Directory",
+            "args": [
+                "source",
+                "destination"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Copy directory from source path to destination path.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param source:</th><td class=\"field-body\">path to source directory</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param destination:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">path to copy destination</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Copy directory from source path to destination path.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Copy File",
+            "args": [
+                "source",
+                "destination"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Copy a file from source path to destination path.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param source:</th><td class=\"field-body\">path to source file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param destination:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">path to copy destination</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Copy a file from source path to destination path.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Copy Files",
+            "args": [
+                "sources",
+                "destination"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Copy multiple files to destination folder.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param sources:</th><td class=\"field-body\">list of source files</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param destination:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">path to destination folder</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Copy multiple files to destination folder.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Create Binary File",
+            "args": [
+                "path",
+                "content=None",
+                "overwrite=False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Creates a new binary file, and writes content if any is given.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file to write</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param content:</th><td class=\"field-body\">content to write to file (optional)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param overwrite:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">replace destination file if it already exists</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Creates a new binary file, and writes content if any is given.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Create Directory",
+            "args": [
+                "path",
+                "parents=False",
+                "exist_ok=True"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Creates a directory and (optionally) non-existing parent directories.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to new directory</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param parents:</th><td class=\"field-body\">create missing parent directories</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param exist_ok:</th><td class=\"field-body\">continue without errors if directory already exists</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Creates a directory and (optionally) non-existing parent directories.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Create File",
+            "args": [
+                "path",
+                "content=None",
+                "encoding=utf-8",
+                "overwrite=False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Creates a new text file, and writes content if any is given.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file to write</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param content:</th><td class=\"field-body\">content to write to file (optional)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param encoding:</th><td class=\"field-body\">character encoding of written content</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param overwrite:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">replace destination file if it already exists</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Creates a new text file, and writes content if any is given.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Does Directory Exist",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns True if the given directory exists, False if not.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to inspected directory</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns True if the given directory exists, False if not.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Does Directory Not Exist",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns True if the directory does not exist, False if it does.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to inspected directory</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns True if the directory does not exist, False if it does.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Does File Exist",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns True if the given file exists, False if not.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to inspected file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns True if the given file exists, False if not.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Does File Not Exist",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns True if the file does not exist, False if it does.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to inspected file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns True if the file does not exist, False if it does.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Empty Directory",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Removes all the files in the given directory.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">directory to remove files from</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Removes all the files in the given directory.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Find Files",
+            "args": [
+                "pattern",
+                "include_dirs=True",
+                "include_files=True"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Find files recursively according to a pattern.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param pattern:</th><td class=\"field-body\">search path in glob format pattern,\ne.g. <em>.xls or *</em>/orders.txt</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param include_dirs:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">include directories in results</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param include_files:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">include files in results</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of paths that match the pattern</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Find files recursively according to a pattern.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get File Creation Date",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns the creation time in seconds.\nNote: Linux sets this whenever file metadata changes</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file to inspect</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns the creation time in seconds. Note: Linux sets this whenever file metadata changes",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get File Extension",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns the suffix for the file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns the suffix for the file.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get File Modified Date",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns the modified time in seconds.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file to inspect</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns the modified time in seconds.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get File Name",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns only the filename portion of a path.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns only the filename portion of a path.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get File Size",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns the file size in bytes.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file to inspect</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns the file size in bytes.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Is Directory Empty",
+            "args": [
+                "path=None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns True if the given directory has no files or subdirectories.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to inspected directory</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns True if the given directory has no files or subdirectories.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Is Directory Not Empty",
+            "args": [
+                "path=None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns True if the given directory has any files or subdirectories.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to inspected directory</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns True if the given directory has any files or subdirectories.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Is File Empty",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns True if the given file has no content, i.e. has zero size.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to inspected file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns True if the given file has no content, i.e. has zero size.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Is File Not Empty",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Returns True if the given file has content, i.e. larger than zero size.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to inspected file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Returns True if the given file has content, i.e. larger than zero size.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Join Path",
+            "args": [
+                "*parts"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Joins multiple parts of a path together.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param parts:</th><td class=\"field-body\">Components of the path, e.g. dir, subdir, filename.ext</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Joins multiple parts of a path together.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "List Directories In Directory",
+            "args": [
+                "path=None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Lists all the directories in the given directory, relative to it.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">base directory for search, defaults to current working dir</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Lists all the directories in the given directory, relative to it.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "List Files In Directory",
+            "args": [
+                "path=None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Lists all the files in the given directory, relative to it.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">base directory for search, defaults to current working dir</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Lists all the files in the given directory, relative to it.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Log Directory Tree",
+            "args": [
+                "path=None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Logs all the files in the directory recursively.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">base directory to start from, defaults to current working dir</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Logs all the files in the directory recursively.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Move Directory",
+            "args": [
+                "source",
+                "destination",
+                "overwrite=False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Move a directory from source path to destination path.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param source:</th><td class=\"field-body\">source directory path for moving</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param destination:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">path to move to</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param overwrite:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">replace destination directory if it already exists</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Move a directory from source path to destination path.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Move File",
+            "args": [
+                "source",
+                "destination",
+                "overwrite=False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Move a file from source path to destination path,\noptionally overwriting the destination.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param source:</th><td class=\"field-body\">source file path for moving</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param destination:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">path to move to</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param overwrite:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">replace destination file if it already exists</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Move a file from source path to destination path, optionally overwriting the destination.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Move Files",
+            "args": [
+                "sources",
+                "destination",
+                "overwrite=False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Move multiple files to the destination folder.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param sources:</th><td class=\"field-body\">list of files to move</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param destination:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">path to move destination</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param overwrite:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">replace destination files if they already exist</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Move multiple files to the destination folder.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Normalize Path",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Removes redundant separators or up-level references from path.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path that will be normalized</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">path to file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Removes redundant separators or up-level references from path.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Read Binary File",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Reads a file in binary mode and returns the content.\nDoes not attempt to decode the content in any way.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file to read</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Reads a file in binary mode and returns the content. Does not attempt to decode the content in any way.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Read File",
+            "args": [
+                "path",
+                "encoding=utf-8"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Reads a file as text, with given <cite>encoding</cite>, and returns the content.&quot;</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file to read</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param encoding:</th><td class=\"field-body\">character encoding of file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Reads a file as text, with given `encoding`, and returns the content.\"",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Remove Directory",
+            "args": [
+                "path",
+                "recursive=False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Removes the given directory, and optionally everything it contains.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to directory</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param recursive:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">remove all subdirectories and files</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Removes the given directory, and optionally everything it contains.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Remove File",
+            "args": [
+                "path",
+                "missing_ok=True"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Removes the given file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to the file to remove</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param missing_ok:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">ignore non-existent file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Removes the given file.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Remove Files",
+            "args": [
+                "*paths",
+                "missing_ok=True"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Removes multiple files.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param paths:</th><td class=\"field-body\">paths to files to be removed</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param missing_ok:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">ignore non-existent files</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Removes multiple files.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Run Keyword If File Exists",
+            "args": [
+                "path",
+                "keyword",
+                "*args"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>If file exists at <cite>path</cite>, execute given keyword with arguments.</p>\n<p><strong>Example</strong></p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Run keyword if file exists</span><span class=\"p\">    </span><span class=\"c\">orders.xlsx</span><span class=\"p\">    </span><span class=\"c\">Process orders</span>\n</pre>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file to inspect</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param keyword:</th><td class=\"field-body\">Robot Framework keyword to execute</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param args:</th><td class=\"field-body\">arguments to keyword</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "If file exists at `path`, execute given keyword with arguments.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Touch File",
+            "args": [
+                "path"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Creates a file with no content, or if file already exists,\nupdates the modification and access times.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to file which is touched</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Creates a file with no content, or if file already exists, updates the modification and access times.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Wait Until Created",
+            "args": [
+                "path",
+                "timeout=5.0"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Poll path until it exists, or raise exception if timeout\nis reached.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to poll</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param timeout:</th><td class=\"field-body\">time in seconds until keyword fails</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Poll path until it exists, or raise exception if timeout is reached.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Wait Until Modified",
+            "args": [
+                "path",
+                "timeout=5.0"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Poll path until it has been modified after the keyword was called,\nor raise exception if timeout is reached.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to poll</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param timeout:</th><td class=\"field-body\">time in seconds until keyword fails</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Poll path until it has been modified after the keyword was called, or raise exception if timeout is reached.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Wait Until Removed",
+            "args": [
+                "path",
+                "timeout=5.0"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Poll path until it doesn't exist, or raise exception if timeout\nis reached.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to poll</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param timeout:</th><td class=\"field-body\">time in seconds until keyword fails</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Poll path until it doesn't exist, or raise exception if timeout is reached.",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

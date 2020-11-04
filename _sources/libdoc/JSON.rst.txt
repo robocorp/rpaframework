@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: 
+:Library scope: Global
 
 `JSON` is a library for manipulating `JSON`_ objects.
 Locating specific elements in the structure is done using `JSONPath`_.

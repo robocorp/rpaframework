@@ -1,0 +1,111 @@
+{
+    "name": "RPA.JSON",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>JSON</cite> is a library for manipulating <a class=\"reference external\" href=\"http://json.org/\">JSON</a> objects.\nLocating specific elements in the structure is done using <a class=\"reference external\" href=\"http://goessner.net/articles/JsonPath/\">JSONPath</a>.</p>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-11-04 12:58:43",
+    "inits": [],
+    "keywords": [
+        {
+            "name": "Add to JSON",
+            "args": [
+                "doc: typing.Any",
+                "expr: str",
+                "value: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Add items into a JSON object.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">jsonpath expression</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param value:</th><td class=\"field-body\">list to append into json or dictionary to update into json</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Add items into a JSON object.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Convert JSON to String",
+            "args": [
+                "doc: typing.Any"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Convert JSON object to a string.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">json as a string</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Convert JSON object to a string.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Convert String to JSON",
+            "args": [
+                "doc: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Convert a string to a JSON object.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Convert a string to a JSON object.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Delete from JSON",
+            "args": [
+                "doc: typing.Any",
+                "expr: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Delete item from a JSON object.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object or a string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">jsonpath expression</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Delete item from a JSON object.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get value from JSON",
+            "args": [
+                "doc: typing.Any",
+                "expr: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get a value from a JSON object.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object or a string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">jsonpath expression</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises ValueError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if expression matches more than one item</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">matching item</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get a value from a JSON object.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get values from JSON",
+            "args": [
+                "doc: typing.Any",
+                "expr: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get values from a JSON object.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object or a string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">jsonpath expression</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of matching values</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get values from a JSON object.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Load JSON from file",
+            "args": [
+                "filename: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Load JSON data from a file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">path to file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Load JSON data from a file.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Save JSON to file",
+            "args": [
+                "doc: typing.Any",
+                "filename: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Save JSON object into a file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object or a string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">path to file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Save JSON object into a file.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Update value to JSON",
+            "args": [
+                "doc: typing.Any",
+                "expr: str",
+                "value: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Update value in a JSON object.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object or a string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">jsonpath expression</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param value:</th><td class=\"field-body\">new value for the matching item</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Update value in a JSON object.",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

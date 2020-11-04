@@ -1,0 +1,257 @@
+{
+    "name": "RPA.Salesforce",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Library for accessing Salesforce using REST API.</p>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-11-04 12:58:42",
+    "inits": [
+        {
+            "name": "Init",
+            "args": [
+                "sandbox: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Initialize self.  See help(type(self)) for accurate signature.</p>\n</div>\n</div>",
+            "shortdoc": "Initialize self.  See help(type(self)) for accurate signature.",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "keywords": [
+        {
+            "name": "Add Product Into Opportunity",
+            "args": [
+                "product_name: str",
+                "quantity: int",
+                "opportunity_id: str = None",
+                "pricebook_name: str = None",
+                "custom_total_price: float = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Add Salesforce Product into Opportunity.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param product_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">type of the product in the Pricelist</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param quantity:</th><td class=\"field-body\">number of products to add</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param opportunity_id:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">identifier of Opportunity, default None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param pricebook_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the pricelist, default None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param custom_total_price:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">price that overrides quantity and product price,\ndefault None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True is operation is successful or False</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Add Salesforce Product into Opportunity.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Auth With Token",
+            "args": [
+                "username: str",
+                "password: str",
+                "api_token: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Authorize to Salesforce with security token, username\nand password creating instance.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param username:</th><td class=\"field-body\">Salesforce API username</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param password:</th><td class=\"field-body\">Salesforce API password</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param api_token:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce API security token</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Authorize to Salesforce with security token, username and password creating instance.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Create New Opportunity",
+            "args": [
+                "close_date: str",
+                "opportunity_name: str",
+                "stage_name: str = Closed Won",
+                "account_name: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Create Salesforce Opportunity object.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param close_date:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">closing date for the Opportunity, format 'YYYY-MM-DD'</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param opportunity_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">as string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param stage_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">needs to be one of the defined stages,\ndefaults to &quot;Closed Won&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param account_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">by default uses previously set account, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">created opportunity or False</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Create Salesforce Opportunity object.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Create Salesforce Object",
+            "args": [
+                "object_type: str",
+                "object_data: typing.Any"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Create Salesforce object by type and data.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_type:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object type</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_data:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object data</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises SalesforceDataNotAnDictionary:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">when <cite>object_data</cite> is not dictionary</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">resulting object as dictionary</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Create Salesforce object by type and data.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Delete Salesforce Object",
+            "args": [
+                "object_type: str",
+                "object_id: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Delete Salesfoce object by type and id.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_type:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object type</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_id:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True if successful</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Delete Salesfoce object by type and id.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Describe Salesforce Object",
+            "args": [
+                "object_type: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get Salesfoce object description by type.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_type:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object type</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">object description as dictionary</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get Salesfoce object description by type.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Execute Dataloader Insert",
+            "args": [
+                "input_object: typing.Any",
+                "mapping_object: typing.Any",
+                "object_type: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Keyword mimics Salesforce Dataloader 'insert' behaviour by taking\nin a <cite>input_object`representing dictionary of data to input into Salesforce,\na `mapping_object</cite> representing dictionary mapping the input keys into\nSalesforce keys, an <cite>object_type</cite> representing Salesforce object which\nDatahandler will handle with <cite>operation</cite> type.</p>\n<p>Stores operation successes into <cite>Salesforce.dataloader_success</cite> array.\nStores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>\n<p>These can be retrieved with keywords <cite>get_dataloader_success_table</cite> and\n<cite>get_dataloader_error_table</cite> which return corresponding data as\n<cite>RPA.Table</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param input_object:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath or list of dictionaries</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param mapping_object:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath or dictionary</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_type:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object type</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True if operation is successful</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Keyword mimics Salesforce Dataloader 'insert' behaviour by taking in a `input_object`representing dictionary of data to input into Salesforce, a `mapping_object` representing dictionary mapping the input keys into Salesforce keys, an `object_type` representing Salesforce object which Datahandler will handle with `operation` type.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Dataloader Error Table",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return Dataloader error entries as <cite>RPA.Table</cite></p>\n</div>\n</div>",
+            "shortdoc": "Return Dataloader error entries as `RPA.Table`",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Dataloader Success Table",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return Dataloader success entries as <cite>RPA.Table</cite></p>\n</div>\n</div>",
+            "shortdoc": "Return Dataloader success entries as `RPA.Table`",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Opportunity Id",
+            "args": [
+                "opportunity_name: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get ID of an Opportunity linked to set account.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param opportunity_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">opportunity to query</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">Id of the opportunity or False</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get ID of an Opportunity linked to set account.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Pricebook Entries",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get all pricebook entries.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">query result</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get all pricebook entries.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Pricebook Id",
+            "args": [
+                "pricebook_name: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get ID of a pricelist.</p>\n<p>Returns False if unique Id is not found.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param pricebook_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">pricelist to query</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">Id of the pricelist or False</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get ID of a pricelist.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Products In Pricelist",
+            "args": [
+                "pricebook_name: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get all products in a pricelist.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param pricebook_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">pricelist to query</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">products in dictionary</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get all products in a pricelist.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Salesforce Object By Id",
+            "args": [
+                "object_type: str",
+                "object_id: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get Salesforce object by id and type.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_type:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object type</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_id:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">dictionary of object attributes</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get Salesforce object by id and type.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Salesforce Object Metadata",
+            "args": [
+                "object_type: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get Salesfoce object metadata by type.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_type:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object type</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">object metadata as dictionary</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get Salesfoce object metadata by type.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Read Dictionary From File",
+            "args": [
+                "mapping_file: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Read dictionary from file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param mapping_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">path to the file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">file content as dictionary</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Read dictionary from file.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Salesforce Query",
+            "args": [
+                "sql_string: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Perform SQL query.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param sql_string:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">SQL clause to perform</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">result of the SQL query</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Perform SQL query.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Salesforce Query Result As Table",
+            "args": [
+                "sql_string: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Perform SQL query and return result as <cite>RPA.Table</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param sql_string:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">SQL clause to perform</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">result of the SQL query as Table</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Perform SQL query and return result as `RPA.Table`.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Account",
+            "args": [
+                "account_name: str = ",
+                "account_id: str = "
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set account name and id by giving either parameter.</p>\n<dl class=\"docutils\">\n<dt>Can be used together with keywords:</dt>\n<dd><ul class=\"first last simple\">\n<li>get_opportunity_id</li>\n<li>create_new_opportunity</li>\n</ul>\n</dd>\n</dl>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param account_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">string, defaults to &quot;&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param account_id:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">string, defaults to &quot;&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True if account was found from Salesforce, else False</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Set account name and id by giving either parameter.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Pricebook",
+            "args": [
+                "pricebook_name: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Sets Pricebook to be used in Salesforce operations.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param pricebook_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">pricelist to use</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Sets Pricebook to be used in Salesforce operations.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Update Salesforce Object",
+            "args": [
+                "object_type: str",
+                "object_id: str",
+                "object_data: typing.Any"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Update Salesfoce object by type, id and data.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_type:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object type</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_id:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_data:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object data</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises SalesforceDataNotAnDictionary:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">when <cite>object_data</cite> is not dictionary</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True if successful</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Update Salesfoce object by type, id and data.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Upsert Salesforce Object",
+            "args": [
+                "object_type: str",
+                "object_id: str",
+                "object_data: typing.Any"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Upsert Salesfoce object by type, id and data.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_type:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object type</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_id:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param object_data:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Salesforce object data</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises SalesforceDataNotAnDictionary:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">when <cite>object_data</cite> is not dictionary</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True if successful</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Upsert Salesfoce object by type, id and data.",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

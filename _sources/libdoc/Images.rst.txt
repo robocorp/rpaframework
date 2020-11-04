@@ -6,7 +6,7 @@ Robot Framework API
 Description
 ***********
 
-:Library scope: 
+:Library scope: Global
 
 *DEPRECATED* Use library `RPA.Desktop` or `RPA.Recognition`
 from package `rpaframework-recognition` instead
