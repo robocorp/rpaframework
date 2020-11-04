@@ -1,0 +1,514 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Robot Framework API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Python module API" href="../../libraries/robocloud_items/python.html" />
+    <link rel="prev" title="Robocloud.Items" href="../../libraries/robocloud_items/index.html" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!-- PureCookie -->
+<link async rel="stylesheet" type="text/css" href="../../_static/purecookie.css"/>
+<script async src="../../_static/purecookie.js"></script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/archive/index.html">Archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/cloud_azure/index.html">Cloud.Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/cloud_google/index.html">Cloud.Google</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/desktop/index.html">Desktop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/ftp/index.html">FTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/json/index.html">JSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/notifier/index.html">Notifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/pdf/index.html">PDF</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../libraries/robocloud_items/index.html">Robocloud.Items</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Robot Framework API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../libraries/robocloud_items/python.html">Python module API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/twitter/index.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../libraries/word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../libraries/robocloud_items/index.html">Robocloud.Items</a> &raquo;</li>
+        
+      <li>Robot Framework API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/robot/Robocloud/Items.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="robot-framework-api">
+<h1>Robot Framework API<a class="headerlink" href="#robot-framework-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Library scope</dt>
+<dd class="field-odd"><p>Global</p>
+</dd>
+</dl>
+<p>A library for interacting with RPA work items.</p>
+<p><cite>Items</cite> is a collection of keywords for handling data
+that is moved between different processes and Robot Framework
+tasks. It allows storing and restoring values to/from cloud or file based
+storage, and manipulating their contents.</p>
+<p>Environment variables:</p>
+<ul class="simple">
+<li><p>RPA_WORKITEMS_ADAPTER: Import path to adapter, e.g. “mymodule.MyAdapter”</p></li>
+<li><p>RC_WORKSPACE_ID:       Current default workspace ID</p></li>
+<li><p>RC_WORKITEM_ID:        Current default work item ID</p></li>
+</ul>
+</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list">
+<dt class="field-odd">Add Work Item File</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>path, name=None</p>
+</dd>
+</dl>
+<p>Add given file to work item.</p>
+<p>NOTE: Files are not uploaded before work item is saved</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add work item file</span><span class="p">    </span><span class="c">output.xls</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Add Work Item Files</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>pattern</p>
+</dd>
+</dl>
+<p>Add all files that match given pattern to work item.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add work item files</span><span class="p">    </span><span class="c">%{ROBOT_ROOT}/generated/*.csv</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Clear Work Item</dt>
+<dd class="field-even"><p>Remove all data in the current work item.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Clear work item</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-odd">Delete Work Item Variables</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>*names, force=True</p>
+</dd>
+</dl>
+<p>Delete variable(s) from the current work item.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Delete work item variables</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">email</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Get Work Item File</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>name, path=None</p>
+</dd>
+</dl>
+<p>Get attached file from work item to disk.
+Returns the absolute path to the created file.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${path}=</span><span class="p">    </span><span class="c">Get work item file</span><span class="p">    </span><span class="c">input.xls</span><span class="p"></span>
+<span class="c">Open workbook</span><span class="p">    </span><span class="c">${path}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Get Work Item Files</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>pattern, dirname=None</p>
+</dd>
+</dl>
+<p>Get files attached to work item that match given pattern.
+Returns a list of absolute paths to the downloaded files.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${paths}=</span><span class="p">    </span><span class="c">Get work item files</span><span class="p">    </span><span class="c">customer_*.xlsx</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${path}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{paths}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Handle customer file</span><span class="p">    </span><span class="c">${path}</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Get Work Item Payload</dt>
+<dd class="field-even"><p>Get the full JSON payload for a work item.</p>
+<p>NOTE: Most use cases should prefer higher-level keywords.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${payload}=</span><span class="p">    </span><span class="c">Get work item payload</span><span class="p"></span>
+<span class="c">Log</span><span class="p">    </span><span class="c">Entire payload as dictionary: ${payload}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-odd">Get Work Item Variable</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>name, default=&lt;object object at 0x7ff2b1f6f7a0&gt;</p>
+</dd>
+</dl>
+<p>Return a single variable value from the work item,
+or default value if defined and key does not exist.
+If key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${username}=</span><span class="p">    </span><span class="c">Get work item variable</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">default=guest</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Get Work Item Variables</dt>
+<dd class="field-even"><p>Read all variables from the current work item and
+return their names and values as a dictionary.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${variables}=</span><span class="p">    </span><span class="c">Get work item variables</span><span class="p"></span>
+<span class="c">Log</span><span class="p">    </span><span class="c">Username: ${variables}[username], Email: ${variables}[email]</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-odd">List Work Item Files</dt>
+<dd class="field-odd"><p>List the names of files attached to the current work item.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${names}=</span><span class="p">    </span><span class="c">List work item files</span><span class="p"></span>
+<span class="c">Log</span><span class="p">    </span><span class="c">Work item has files with names: ${names}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">List Work Item Variables</dt>
+<dd class="field-even"><p>List the variable names for the current work item.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${variables}=</span><span class="p">    </span><span class="c">List work item variables</span><span class="p"></span>
+<span class="c">Log</span><span class="p">    </span><span class="c">Available variables in work item: ${variables}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-odd">Load Work Item</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>workspace_id, item_id</p>
+</dd>
+</dl>
+<p>Load work item for reading/writing.</p>
+<dl class="simple">
+<dt>NOTE: Currently only one work item per execution is supported</dt><dd><p>by Robocorp Cloud, which should be loaded automatically.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Load Work Item From Environment</dt>
+<dd class="field-even"><p>Load current work item defined by the runtime environment.</p>
+<p>The corresponding environment variables are:</p>
+<ul class="simple">
+<li><p>RC_WORKSPACE_ID</p></li>
+<li><p>RC_WORKITEM_ID</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Remove Work Item File</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>name, missing_ok=True</p>
+</dd>
+</dl>
+<p>Remove attached file from work item.</p>
+<p>NOTE: Files are not deleted before work item is saved</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Remove work item file</span><span class="p">    </span><span class="c">input.xls</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Remove Work Item Files</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>pattern, missing_ok=True</p>
+</dd>
+</dl>
+<p>Removes files attached to work item that match given pattern.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Remove work item files</span><span class="p">    </span><span class="c">*.xlsx</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Save Work Item</dt>
+<dd class="field-even"><p>Save the current data in the work item. If not saved,
+all changes are discarded when the library goes out of scope.</p>
+</dd>
+<dt class="field-odd">Set Task Variables From Work Item</dt>
+<dd class="field-odd"><p>Convert all variables in the current work item to
+Robot Framework task variables.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Work item has variable INPUT_URL</span>
+<span class="c">Set task variables from work item</span><span class="p"></span>
+<span class="c">Log</span><span class="p">    </span><span class="c">The variable is now available: ${INPUT_URL}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Set Work Item Payload</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>payload</p>
+</dd>
+</dl>
+<p>Set the full JSON payload for a work item.</p>
+<p>NOTE: Most use cases should prefer higher-level keywords.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${output}=</span><span class="p">    </span><span class="c">Create dictionary</span><span class="p">    </span><span class="c">url=example.com</span><span class="p">    </span><span class="c">username=Mark</span><span class="p"></span>
+<span class="c">Set work item payload</span><span class="p">    </span><span class="c">${output}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Set Work Item Variable</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>name, value</p>
+</dd>
+</dl>
+<p>Set a single variable value in the current work item.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set work item variable</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">MarkyMark</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Set Work Item Variables</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>**kwargs</p>
+</dd>
+</dl>
+<p>Set multiple variables in the current work item.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set work item variables</span><span class="p">    </span><span class="c">username=MarkyMark</span><span class="p">    </span><span class="c">email=mark@example.com</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../libraries/robocloud_items/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../libraries/robocloud_items/index.html" class="btn btn-neutral float-left" title="Robocloud.Items" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

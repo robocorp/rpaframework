@@ -102,5 +102,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Images.rst
+   ../../robot/Images.rst
    python

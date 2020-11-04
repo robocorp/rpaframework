@@ -80,5 +80,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Twitter.rst
+   ../../robot/Twitter.rst
    python

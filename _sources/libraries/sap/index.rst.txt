@@ -21,5 +21,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/SAP.rst
+   ../../robot/SAP.rst
    python

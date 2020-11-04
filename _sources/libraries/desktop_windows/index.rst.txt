@@ -132,7 +132,7 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Desktop/Windows.rst
+   ../../robot/Desktop/Windows.rst
    python
 
 ****

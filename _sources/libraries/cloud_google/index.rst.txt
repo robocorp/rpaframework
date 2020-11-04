@@ -146,5 +146,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Cloud/Google.rst
+   ../../robot/Cloud/Google.rst
    python

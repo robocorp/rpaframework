@@ -67,5 +67,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Excel/Application.rst
+   ../../robot/Excel/Application.rst
    python

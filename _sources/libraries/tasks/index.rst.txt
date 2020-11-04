@@ -299,4 +299,4 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Tasks.rst
+   ../../robot/Tasks.rst

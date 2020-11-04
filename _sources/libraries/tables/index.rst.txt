@@ -106,5 +106,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Tables.rst
+   ../../robot/Tables.rst
    python

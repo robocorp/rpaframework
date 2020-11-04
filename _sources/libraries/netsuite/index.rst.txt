@@ -85,5 +85,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Netsuite.rst
+   ../../robot/Netsuite.rst
    python

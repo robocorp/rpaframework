@@ -82,5 +82,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Browser.rst
+   ../../robot/Browser.rst
    python

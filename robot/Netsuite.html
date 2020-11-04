@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Robot Framework API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python module API" href="../libraries/netsuite/python.html" />
+    <link rel="prev" title="Netsuite" href="../libraries/netsuite/index.html" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!-- PureCookie -->
+<link async rel="stylesheet" type="text/css" href="../_static/purecookie.css"/>
+<script async src="../_static/purecookie.js"></script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes.html">Release notes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../libraries/archive/index.html">Archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/cloud_azure/index.html">Cloud.Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/cloud_google/index.html">Cloud.Google</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/desktop/index.html">Desktop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/ftp/index.html">FTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/json/index.html">JSON</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../libraries/netsuite/index.html">Netsuite</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Robot Framework API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../libraries/netsuite/python.html">Python module API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/notifier/index.html">Notifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/twitter/index.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries/word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/conventions.html">Project conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../libraries/netsuite/index.html">Netsuite</a> &raquo;</li>
+        
+      <li>Robot Framework API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/robot/Netsuite.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="robot-framework-api">
+<h1>Robot Framework API<a class="headerlink" href="#robot-framework-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Library scope</dt>
+<dd class="field-odd"><p>Global</p>
+</dd>
+</dl>
+<p>Library for accessing Netsuite.</p>
+</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list">
+<dt class="field-odd">Connect</dt>
+<dd class="field-odd"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>account: str = None, consumer_key: str = None, consumer_secret: str = None, token_key: str = None, token_secret: str = None</p>
+</dd>
+</dl>
+<p>Connect to Netsuite with credentials from environment
+variables.</p>
+<p>Parameters are not logged into Robot Framework log.</p>
+</dd>
+<dt class="field-even">Get Accounts</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>count: int = 100, account_type: str = None</p>
+</dd>
+</dl>
+<p>Get Accounts of any type or specified type.</p>
+</dd>
+<dt class="field-even">Get Classifications</dt>
+<dd class="field-even"><p>Get all Netsuite Classifications</p>
+</dd>
+<dt class="field-odd">Get Currencies</dt>
+<dd class="field-odd"><p>Get all Netsuite Currencies</p>
+</dd>
+<dt class="field-even">Get Currency</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>currency_id: str</p>
+</dd>
+</dl>
+<p>Get all a Netsuite Currency by its ID</p>
+</dd>
+<dt class="field-even">Get Departments</dt>
+<dd class="field-even"><p>Get all Netsuite Departments</p>
+</dd>
+<dt class="field-odd">Get Locations</dt>
+<dd class="field-odd"><p>Get all Netsuite Locations</p>
+</dd>
+<dt class="field-even">Get Vendor Bills</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>count: int = 10</p>
+</dd>
+</dl>
+<p>Get list of vendor bills</p>
+</dd>
+<dt class="field-even">Get Vendors</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>count: int = 10</p>
+</dd>
+</dl>
+<p>Get list of vendors</p>
+</dd>
+<dt class="field-even">Login</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>account: str = None, email: str = None, password: str = None, role: str = None, appid: str = None</p>
+</dd>
+</dl>
+<p>Login to Netsuite with credentials from environment variables</p>
+<p>Parameters are not logged into Robot Framework log.</p>
+</dd>
+<dt class="field-even">Netsuite Get</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>record_type: str = None, internal_id: str = None, external_id: str = None</p>
+</dd>
+</dl>
+<p>Get all records of given type and internalId and/or externalId.</p>
+<dl class="field-list simple">
+<dt class="field-odd">raises ValueError</dt>
+<dd class="field-odd"><p>if record_type is not given</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Netsuite Get All</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>record_type: str</p>
+</dd>
+</dl>
+<p>Get all records of given type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">raises ValueError</dt>
+<dd class="field-odd"><p>if record_type is not given</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Netsuite Search</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>type_name: str, search_value: str, operator: str = contains, page_size: int = 5</p>
+</dd>
+</dl>
+<p>Search Netsuite for value from a type. Default operator is
+<cite>contains</cite>.</p>
+</dd>
+<dt class="field-even">Netsuite Search All</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>type_name: str, page_size: int = 20</p>
+</dd>
+</dl>
+<p>Search Netsuite for a type results.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../libraries/netsuite/python.html" class="btn btn-neutral float-right" title="Python module API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../libraries/netsuite/index.html" class="btn btn-neutral float-left" title="Netsuite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

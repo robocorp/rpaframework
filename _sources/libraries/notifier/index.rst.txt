@@ -89,5 +89,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Notifier.rst
+   ../../robot/Notifier.rst
    python

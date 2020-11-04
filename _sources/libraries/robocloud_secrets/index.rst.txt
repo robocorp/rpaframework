@@ -81,5 +81,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Robocloud/Secrets.rst
+   ../../robot/Robocloud/Secrets.rst
    python

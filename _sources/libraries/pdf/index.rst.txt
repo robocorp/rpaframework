@@ -72,5 +72,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/PDF.rst
+   ../../robot/PDF.rst
    python

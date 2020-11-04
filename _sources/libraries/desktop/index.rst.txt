@@ -146,4 +146,4 @@ Keyword documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Desktop.rst
+   ../../robot/Desktop.rst

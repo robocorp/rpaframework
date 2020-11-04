@@ -4,7 +4,7 @@
     "version": "",
     "named_args": true,
     "scope": "GLOBAL",
-    "generated": "2020-11-04 12:58:41",
+    "generated": "2020-11-04 14:42:46",
     "inits": [
         {
             "name": "Init",
@@ -93,7 +93,7 @@
             "name": "Get Work Item Variable",
             "args": [
                 "name",
-                "default=<object object at 0x7f801359ecd0>"
+                "default=<object object at 0x7f4ac02c9f50>"
             ],
             "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a single variable value from the work item,\nor default value if defined and key does not exist.\nIf key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${username}=</span><span class=\"p\">    </span><span class=\"c\">Get work item variable</span><span class=\"p\">    </span><span class=\"c\">username</span><span class=\"p\">    </span><span class=\"c\">default=guest</span>\n</pre>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param key:</th><td class=\"field-body\">Name of variable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param default:</th><td class=\"field-body\">Default value if key does not exist</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
             "shortdoc": "Return a single variable value from the work item, or default value if defined and key does not exist. If key does not exist and default is not defined, raises `KeyError`.",
