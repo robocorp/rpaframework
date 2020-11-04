@@ -11,6 +11,7 @@ dist/
 # Documentation
 docs/build/
 docs/source/libdoc/
+docs/source/robot/
 docs/source/prebuild/
 
 # Virtualenv
