@@ -63,5 +63,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Word/Application.rst
+   ../../robot/Word/Application.rst
    python

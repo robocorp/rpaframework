@@ -62,5 +62,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Outlook/Application.rst
+   ../../robot/Outlook/Application.rst
    python

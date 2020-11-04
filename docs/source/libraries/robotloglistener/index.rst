@@ -142,5 +142,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/RobotLogListener.rst
+   ../../robot/RobotLogListener.rst
    python

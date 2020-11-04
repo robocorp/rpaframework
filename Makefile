@@ -33,7 +33,7 @@ help: ## Print this help
 clean: clean-each ## Remove all build/test artifacts
 	$(rm) .venv
 	$(rm) docs/build/
-	$(rm) docs/source/libdoc/
+	$(rm) docs/source/robot/
 	$(rm) docs/source/prebuild/
 	find . -name "__pycache__" -exec rm -rf {} +
 

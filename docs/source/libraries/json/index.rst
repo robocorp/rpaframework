@@ -55,5 +55,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/JSON.rst
+   ../../robot/JSON.rst
    python

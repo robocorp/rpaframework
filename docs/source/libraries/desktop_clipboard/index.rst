@@ -53,5 +53,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Desktop/Clipboard.rst
+   ../../robot/Desktop/Clipboard.rst
    python

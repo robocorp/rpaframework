@@ -75,5 +75,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Email/Exchange.rst
+   ../../robot/Email/Exchange.rst
    python

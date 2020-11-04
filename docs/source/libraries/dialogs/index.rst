@@ -143,5 +143,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Dialogs.rst
+   ../../robot/Dialogs.rst
    python

@@ -172,5 +172,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Cloud/Azure.rst
+   ../../robot/Cloud/Azure.rst
    python

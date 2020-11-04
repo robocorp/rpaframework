@@ -96,5 +96,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Email/ImapSmtp.rst
+   ../../robot/Email/ImapSmtp.rst
    python

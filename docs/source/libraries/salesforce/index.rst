@@ -166,5 +166,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Salesforce.rst
+   ../../robot/Salesforce.rst
    python

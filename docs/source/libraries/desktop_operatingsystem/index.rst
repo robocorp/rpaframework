@@ -59,5 +59,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Desktop/OperatingSystem.rst
+   ../../robot/Desktop/OperatingSystem.rst
    python

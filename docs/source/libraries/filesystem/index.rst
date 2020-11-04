@@ -71,5 +71,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/FileSystem.rst
+   ../../robot/FileSystem.rst
    python

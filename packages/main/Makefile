@@ -114,7 +114,7 @@ docs-sphinx: install ## Prebuild sphinx keyword documentation
 	 --override-format src/RPA/HTTP.py=rest-html\
 	 --ignore src/RPA/core\
 	 --ignore src/RPA/Desktop/keywords\
-	 --output $(docs)/source/libdoc/\
+	 --output $(docs)/source/robot/\
 	 src/
 
 docs-hub: install ## Generate documentation for Robohub

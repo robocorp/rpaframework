@@ -65,5 +65,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/FTP.rst
+   ../../robot/FTP.rst
    python

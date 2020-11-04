@@ -154,5 +154,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Cloud/AWS.rst
+   ../../robot/Cloud/AWS.rst
    python

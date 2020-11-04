@@ -132,5 +132,5 @@ API Documentation
 .. toctree::
    :maxdepth: 1
 
-   ../../libdoc/Robocloud/Items.rst
+   ../../robot/Robocloud/Items.rst
    python
