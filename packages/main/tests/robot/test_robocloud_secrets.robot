@@ -1,7 +1,6 @@
 *** Settings ***
 Suite setup     Set mock data
 Library         OperatingSystem
-Library         RPA.Robocloud.Secrets
 Default Tags    RPA.Robocloud.Secrets
 
 *** Variables ***
@@ -20,3 +19,4 @@ Get non existing secret
 Set mock data
     Set environment variable    RPA_SECRET_MANAGER    RPA.Robocloud.Secrets.FileSecrets
     Set environment variable    RPA_SECRET_FILE       ${SECRETS_FILE}
+    Import library   RPA.Robocloud.Secrets
