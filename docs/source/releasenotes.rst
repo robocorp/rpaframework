@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Excel.Application**: Fix https://github.com/robocorp/rpaframework/issues/72
+
 6.4.0
 -----
 
