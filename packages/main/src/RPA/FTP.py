@@ -36,7 +36,48 @@ def ftpcommand(f):
 
 
 class FTP:
-    """RPA Framework library for FTP operations"""
+    """`FTP` library can be used to access an FTP server,
+    and interact with files.
+
+    The library is based on Python's built-in `ftplib`_.
+
+    .. _ftplib: https://docs.python.org/3/library/ftplib.html
+
+    **Examples**
+
+    **Robot Framework**
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library    RPA.FTP
+
+        *** Variables ***
+        ${HOST}       127.0.0.1
+        ${PORT}       27345
+        ${USER}       user
+        ${PASS}       12345
+
+        *** Tasks ***
+        List files on the server directory
+            Connect   ${HOST}  ${PORT}  ${USER}  ${PASS}
+            @{files}  List Files
+            FOR  ${file}  IN  @{files}
+                Log  ${file}
+            END
+
+    **Python**
+
+    .. code-block:: python
+
+        from RPA.FTP import FTP
+
+        library = FTP()
+        library.connect('127.0.0.1', 27345, 'user', '12345')
+        files = library.list_files()
+        for f in files:
+            print(f)
+    """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"

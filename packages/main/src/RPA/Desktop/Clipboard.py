@@ -11,9 +11,35 @@ if platform.system() == "Windows":
 class Clipboard:
     """*DEPRECATED!!* Use library RPA.Desktop's clipboard functionality instead.
 
-    RPA Framework library for cross platform clipboard management.
+    `Clipboard` is a library for managing clipboard - **copy** text to,
+    **paste** text from, and **clear** clipboard contents.
 
-    Will use `win32` package on Windows and `clipboard` package on Linux and Mac.
+    **Examples**
+
+    **Robot Framework**
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library    RPA.Desktop.Clipboard
+
+        *** Tasks ***
+        Clipping
+            Copy To Clipboard   Text from Robot to clipboard
+            ${var}=             Paste From Clipboard
+            Clear Clipboard
+
+    **Python**
+
+    .. code-block:: python
+
+        from RPA.Desktop.Clipboard import Clipboard
+
+        clip = Clipboard()
+        clip.copy_to_clipboard('Text from Python to clipboard')
+        text = clip.paste_from_clipboard()
+        print(f"clipboard had text: '{text}'")
+        clip.clear_clipboard()
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"

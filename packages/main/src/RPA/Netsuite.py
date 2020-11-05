@@ -32,7 +32,66 @@ class NetsuiteAuthenticationError(Exception):
 
 
 class Netsuite:
-    """Library for accessing Netsuite."""
+    """`Netsuite` is a library for accessing Netsuite using NetSuite SOAP web service SuiteTalk.
+    The library extends the `netsuitesdk library`_.
+
+    More information available at `NetSuite SOAP webservice SuiteTalk`_.
+
+    .. _netsuitesdk library:
+        https://github.com/fylein/netsuite-sdk-py
+
+    .. _NetSuite SOAP webservice SuiteTalk:
+        http://www.netsuite.com/portal/platform/developer/suitetalk.shtml
+
+    **Examples**
+
+    **Robot Framework**
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library     RPA.Netsuite
+        Library     RPA.Excel.Files
+        Library     RPA.Tables
+        Task Setup  Authorize Netsuite
+
+        *** Tasks ***
+        Get data from Netsuite and Store into Excel files
+            ${accounts}=        Get Accounts   account_type=_expense
+            ${accounts}=        Create table    ${accounts}
+            Create Workbook
+            Append Rows To Worksheet  ${accounts}
+            Save Workbook       netsuite_accounts.xlsx
+            Close Workbook
+            ${bills}=           Get Vendor Bills
+            ${bills}=           Create table    ${bills}
+            Create Workbook
+            Append Rows To Worksheet  ${bills}
+            Save Workbook       netsuite_bills.xlsx
+            Close Workbook
+
+
+        *** Keywords ***
+        Authorize Netsuite
+            ${secrets}=     Get Secret   netsuite
+            Connect
+            ...        account=${secrets}[ACCOUNT]
+            ...        consumer_key=${secrets}[CONSUMER_KEY]
+            ...        consumer_secret=${secrets}[CONSUMER_KEY]
+            ...        token_key=${secrets}[CONSUMER_SECRET]
+            ...        token_secret=${secrets}[TOKEN_KEY]
+
+    **Python**
+
+    .. code-block:: python
+
+        from RPA.Netsuite import Netsuite
+
+        ns = Netsuite()
+        ns.connect()
+        accounts = ns.get_accounts()
+        currencies = ns.get_currencies()
+    """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
@@ -74,6 +133,7 @@ class Netsuite:
         NS_CONSUMER_SECRET = required_env("NS_CONSUMER_SECRET", consumer_secret)
         NS_TOKEN_KEY = required_env("NS_TOKEN_KEY", token_key)
         NS_TOKEN_SECRET = required_env("NS_TOKEN_SECRET", token_secret)
+
         self.client = NetSuiteConnection(
             account=self.account,
             consumer_key=NS_CONSUMER_KEY,

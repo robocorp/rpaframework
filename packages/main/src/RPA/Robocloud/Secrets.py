@@ -256,25 +256,68 @@ class RobocloudVault(BaseSecretManager):
 
 
 class Secrets:
-    """A library for reading secrets, e.g. passwords or tokens, that can
-    be used during a task execution.
+    """`Secrets` is a library for interfacing secrets set in the Robocloud Vault
+    (used by default) or file-based secrets, which can be taken into use
+    by setting two environment variables below.
 
-    Primarily used with Robocloud Vault, but supports custom adapters
-    for storing secrets in other databases or local files.
+    Robocloud Vault works together with Robocloud Worker or Robocode CLI.
+    Following three environment variables need to exist (these are set by
+    Robocloud Worker automatically and can be set manually with Robocode CLI).
 
-    The selected adapter can be set with the environment
-    variable ``RPA_SECRET_MANAGER``, or the keyword argument ``default_adapter``.
-    Defaults to Robocloud Vault if not defined.
+    - RC_API_SECRET_HOST : URL to Robocloud Secrets API
+    - RC_API_SECRET_TOKEN : API Token for Robocloud Secrets API
+    - RC_WORKSPACE_ID : Robocloud Workspace ID
 
-    All other library arguments are passed to the adapter.
+    File based secrets can be set by defining two environment variables.
 
-    :param default_adapter: Override default secret adapter
+    - RPA_SECRET_MANAGER : 'RPA.Robocloud.Secrets.FileSecrets'
+    - RPA_SECRET_FILE : Absolute path to the secrets JSON file.
+
+    .. code-block:: json
+
+        {
+            "swaglabs": {
+                "username": "standard_user",
+                "password": "secret_sauce"
+            }
+        }
+
+    **Examples**
+
+    **Robot Framework**
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library    RPA.Robocloud.Secrets
+
+        *** Tasks ***
+        Reading secrets
+            ${secrets}=   Get Secret  swaglabs
+            Log Many      ${secrets}
+
+    **Python**
+
+    .. code-block:: python
+
+        from RPA.Robocloud.Secrets import Secrets
+
+        secret = Secrets()
+        print(f"My secrets: {secret.get_secret('swaglabs')}")
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self, *args, **kwargs):
+        """The selected adapter can be set with the environment
+        variable ``RPA_SECRET_MANAGER``, or the keyword argument ``default_adapter``.
+        Defaults to Robocloud Vault if not defined.
+
+        All other library arguments are passed to the adapter.
+
+        :param default_adapter: Override default secret adapter
+        """
         self.logger = logging.getLogger(__name__)
 
         default = kwargs.pop("default_adapter", RobocloudVault)

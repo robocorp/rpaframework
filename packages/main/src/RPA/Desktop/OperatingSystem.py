@@ -19,8 +19,42 @@ else:
 
 
 class OperatingSystem:
-    """RPA Framework library containing cross platform keywords for managing
+    """`OperatingSystem` is a cross-platform library for managing
     computer properties and actions.
+
+    **Examples**
+
+    **Robot Framework**
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library    RPA.Desktop.OperatingSystem
+
+        *** Tasks ***
+        Get computer information
+            ${boot_time}=   Get Boot Time  as_datetime=${TRUE}
+            ${machine}=     Get Machine Name
+            ${username}=    Get Username
+            &{memory}=      Get Memory Stats
+            Log Many        ${memory}
+
+    **Python**
+
+    .. code-block:: python
+
+        from RPA.Desktop.OperatingSystem import OperatingSystem
+
+        def get_computer_information():
+            ops = OperatingSystem()
+            print(f"Boot time    : { ops.get_boot_time(as_datetime=True) }"
+                  f"Machine name : { ops.get_machine_name() }"
+                  f"Username     : { ops.get_username() }"
+                  f"Memory       : { ops.get_memory_stats() }")
+
+        if __name__ == "__main__":
+            get_computer_information()
+
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"

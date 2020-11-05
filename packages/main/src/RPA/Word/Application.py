@@ -18,7 +18,41 @@ FILEFORMATS = {
 
 
 class Application:
-    """Library for manipulating Word application."""
+    """`Word.Application` is a library for controlling a Word application.
+
+    **Examples**
+
+    **Robot Framework**
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library                 RPA.Word.Application
+        Task Setup              Open Application
+        Suite Teardown          Quit Application
+
+        *** Tasks ***
+        Open existing file
+            Open File           old.docx
+            Write Text          Extra Line Text
+            Write Text          Another Extra Line of Text
+            Save Document AS    ${CURDIR}${/}new.docx
+            ${texts}=           Get all Texts
+            Close Document
+
+    **Python**
+
+    .. code-block:: python
+
+        from RPA.Word.Application import Application
+
+        app = Application()
+        app.open_application()
+        app.open_file('old.docx')
+        app.write_text('Extra Line Text')
+        app.save_document_as('new.docx')
+        app.quit_application()
+    """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"

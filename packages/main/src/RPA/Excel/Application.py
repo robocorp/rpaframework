@@ -9,7 +9,47 @@ if platform.system() == "Windows":
 
 
 class Application:
-    """Library for manipulating Excel application."""
+    """`Excel.Application` is a library for controlling an Excel application.
+
+    **Examples**
+
+    **Robot Framework**
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library             RPA.Excel.Application
+        Task Setup          Open Application
+        Task Teardown       Quit Application
+
+        *** Tasks ***
+        Manipulate Excel application
+            Open Workbook           workbook.xlsx
+            Set Active Worksheet    sheetname=new stuff
+            Write To Cells          row=1
+            ...                     column=1
+            ...                     value=my data
+            Save Excel
+
+        Run Excel Macro
+            Open Workbook   orders_with_macro.xlsm
+            Run Macro       Sheet1.CommandButton1_Click
+
+    **Python**
+
+    .. code-block:: python
+
+        from RPA.Excel.Application import Application
+
+        app = Application()
+
+        app.open_application()
+        app.open_workbook('workbook.xlsx')
+        app.set_active_worksheet(sheetname='new stuff')
+        app.write_to_cells(row=1, column=1, value='new data')
+        app.save_excel()
+        app.quit_application()
+    """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"

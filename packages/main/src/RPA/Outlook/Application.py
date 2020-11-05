@@ -13,10 +13,46 @@ if platform.system() == "Windows":
 
 class Application:
     # pylint: disable=C0301
-    """Library for manipulating Outlook application.
+    """`Outlook.Application` is a library for controlling the Outlook application.
 
-    For more information: https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2007/bb219950(v=office.12) # noqa: E501
-    """
+    **Examples**
+
+    **Robot Framework**
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library                 RPA.Outlook.Application
+        Task Setup              Open Application
+        Suite Teardown          Quit Application
+
+        *** Variables ***
+        ${RECIPIENT}            address@domain.com
+
+        *** Tasks ***
+        Send message
+            Send Message       recipients=${RECIPIENT}
+            ...                subject=This is the subject
+            ...                body=This is the message body
+            ..                 attachments=approved.png
+
+    **Python**
+
+    .. code-block:: python
+
+        from RPA.Outlook.Application import Application
+
+        def send_message():
+            app = Application()
+            app.open_application()
+            app.send_message(
+                recipients='EMAILADDRESS_1, EMAILADDRESS_2',
+                subject='email subject',
+                body='email body message',
+                attachments='../orders.csv'
+
+    For more information, see: https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2007/bb219950(v=office.12)
+    """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"

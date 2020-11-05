@@ -41,11 +41,315 @@ class BrowserNotFoundError(ValueError):
 
 
 class Browser(SeleniumLibrary):
-    """RPA Framework library for Browser operations.
+    """Browser is a web testing library for Robot Framework,
+    based on the popular SeleniumLibrary.
 
-    Extends functionality of SeleniumLibrary, for more information see
-    https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html
-    """
+    It uses the Selenium WebDriver modules internally to
+    control a web browser. See http://seleniumhq.org for more information
+    about Selenium in general.
+
+    = Locating elements =
+
+    All keywords in the browser library that need to interact with an element
+    on a web page take an argument typically named ``locator`` that specifies
+    how to find the element. Most often the locator is given as a string
+    using the locator syntax described below, but `using WebElements` is
+    possible too.
+
+    == Locator syntax ==
+
+    Finding elements can be done using different strategies
+    such as the element id, XPath expressions, or CSS selectors. The strategy
+    can either be explicitly specified with a prefix or the strategy can be
+    implicit.
+
+    === Default locator strategy ===
+
+    By default, locators are considered to use the keyword specific default
+    locator strategy. All keywords support finding elements based on ``id``
+    and ``name`` attributes, but some keywords support additional attributes
+    or other values that make sense in their context. For example, `Click
+    Link` supports the ``href`` attribute and the link text and addition
+    to the normal ``id`` and ``name``.
+
+    Examples:
+
+    | `Click Element` | example | # Match based on ``id`` or ``name``.            |
+    | `Click Link`    | example | # Match also based on link text and ``href``.   |
+    | `Click Button`  | example | # Match based on ``id``, ``name`` or ``value``. |
+
+    If a locator accidentally starts with a prefix recognized as `explicit
+    locator strategy` or `implicit XPath strategy`, it is possible to use
+    the explicit ``default`` prefix to enable the default strategy.
+
+    Examples:
+
+    | `Click Element` | name:foo         | # Find element with name ``foo``.               |
+    | `Click Element` | default:name:foo | # Use default strategy with value ``name:foo``. |
+    | `Click Element` | //foo            | # Find element using XPath ``//foo``.           |
+    | `Click Element` | default: //foo   | # Use default strategy with value ``//foo``.    |
+
+    === Explicit locator strategy ===
+
+    The explicit locator strategy is specified with a prefix using either
+    syntax ``strategy:value`` or ``strategy=value``. The former syntax
+    is preferred because the latter is identical to Robot Framework's
+    [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument-syntax|
+    named argument syntax] and that can cause problems. Spaces around
+    the separator are ignored, so ``id:foo``, ``id: foo`` and ``id : foo``
+    are all equivalent.
+
+    Locator strategies that are supported by default are listed in the table
+    below. In addition to them, it is possible to register `custom locators`.
+
+    | = Strategy = |          = Match based on =         |         = Example =            |
+    | id           | Element ``id``.                     | ``id:example``                 |
+    | name         | ``name`` attribute.                 | ``name:example``               |
+    | identifier   | Either ``id`` or ``name``.          | ``identifier:example``         |
+    | class        | Element ``class``.                  | ``class:example``              |
+    | tag          | Tag name.                           | ``tag:div``                    |
+    | xpath        | XPath expression.                   | ``xpath://div[@id="example"]`` |
+    | css          | CSS selector.                       | ``css:div#example``            |
+    | dom          | DOM expression.                     | ``dom:document.images[5]``     |
+    | link         | Exact text a link has.              | ``link:The example``           |
+    | partial link | Partial link text.                  | ``partial link:he ex``         |
+    | sizzle       | Sizzle selector deprecated.         | ``sizzle:div.example``         |
+    | jquery       | jQuery expression.                  | ``jquery:div.example``         |
+    | default      | Keyword specific default behavior.  | ``default:example``            |
+
+    See the `Default locator strategy` section below for more information
+    about how the default strategy works. Using the explicit ``default``
+    prefix is only necessary if the locator value itself accidentally
+    matches some of the explicit strategies.
+
+    Different locator strategies have different pros and cons. Using ids,
+    either explicitly like ``id:foo`` or by using the `default locator
+    strategy` simply like ``foo``, is recommended when possible, because
+    the syntax is simple and locating elements by id is fast for browsers.
+    If an element does not have an id or the id is not stable, other
+    solutions need to be used. If an element has a unique tag name or class,
+    using ``tag``, ``class`` or ``css`` strategy like ``tag:h1``,
+    ``class:example`` or ``css:h1.example`` is often an easy solution. In
+    more complex cases using XPath expressions is typically the best
+    approach. They are very powerful but a downside is that they can also
+    get complex.
+
+    Examples:
+
+    | `Click Element` | id:foo                      | # Element with id 'foo'. |
+    | `Click Element` | css:div#foo h1              | # h1 element under div with id 'foo'. |
+    | `Click Element` | xpath: //div[@id="foo"]//h1 | # Same as the above using XPath, not CSS. |
+    | `Click Element` | xpath: //*[contains(text(), "example")] | # Element containing text 'example'. |
+
+    *NOTE:*
+
+    - Using the ``sizzle`` strategy or its alias ``jquery`` requires that
+      the system under test contains the jQuery library.
+
+    === Implicit XPath strategy ===
+
+    If the locator starts with ``//`` or ``(//``, the locator is considered
+    to be an XPath expression. In other words, using ``//div`` is equivalent
+    to using explicit ``xpath://div``.
+
+    Examples:
+
+    | `Click Element` | //div[@id="foo"]//h1 |
+    | `Click Element` | (//div)[2]           |
+
+    == Using WebElements ==
+
+    In addition to specifying a locator as a string, it is possible to use
+    Selenium's WebElement objects. This requires first getting a WebElement,
+    for example, by using the `Get WebElement` keyword.
+
+    | ${elem} =       | `Get WebElement` | id:example |
+    | `Click Element` | ${elem}          |            |
+
+    == Custom locators ==
+
+    If more complex lookups are required than what is provided through the
+    default locators, custom lookup strategies can be created. Using custom
+    locators is a two part process. First, create a keyword that returns
+    a WebElement that should be acted on:
+
+    | Custom Locator Strategy | [Arguments] | ${browser} | ${locator} | ${tag} | ${constraints} |
+    |   | ${element}= | Execute Javascript | return window.document.getElementById('${locator}'); |
+    |   | [Return] | ${element} |
+
+    This keyword is a reimplementation of the basic functionality of the
+    ``id`` locator where ``${browser}`` is a reference to a WebDriver
+    instance and ``${locator}`` is the name of the locator strategy. To use
+    this locator, it must first be registered by using the
+    `Add Location Strategy` keyword:
+
+    | `Add Location Strategy` | custom | Custom Locator Strategy |
+
+    The first argument of `Add Location Strategy` specifies the name of
+    the strategy and it must be unique. After registering the strategy,
+    the usage is the same as with other locators:
+
+    | `Click Element` | custom:example |
+
+    See the `Add Location Strategy` keyword for more details.
+
+    = Browser and Window =
+
+    There is different conceptual meaning when this library talks
+    about windows or browsers. This chapter explains those differences.
+
+    == Browser ==
+
+    When `Open Browser` or `Create WebDriver` keyword is called, it
+    will create a new Selenium WebDriver instance by using the
+    [https://www.seleniumhq.org/docs/03_webdriver.jsp|Selenium WebDriver]
+    API. In this library's terms, a new browser is created. It is
+    possible to start multiple independent browsers (Selenium Webdriver
+    instances) at the same time, by calling `Open Browser` or
+    `Create WebDriver` multiple times. These browsers are usually
+    independent of each other and do not share data like cookies,
+    sessions or profiles. Typically when the browser starts, it
+    creates a single window which is shown to the user.
+
+    == Window ==
+
+    Windows are the part of a browser that loads the web site and presents
+    it to the user. All content of the site is the content of the window.
+    Windows are children of a browser. In this context a browser is a
+    synonym for WebDriver instance. One browser may have multiple
+    windows. Windows can appear as tabs, as separate windows or pop-ups with
+    different position and size. Windows belonging to the same browser
+    typically share the sessions detail, like cookies. If there is a
+    need to separate sessions detail, example login with two different
+    users, two browsers (Selenium WebDriver instances) must be created.
+    New windows can be opened example by the application under test or
+    by example `Execute Javascript` keyword:
+
+    | `Execute Javascript`    window.open()    # Opens a new window with location about:blank
+
+    The example below opens multiple browsers and windows,
+    to demonstrate how the different keywords can be used to interact
+    with browsers, and windows attached to these browsers.
+
+    Structure:
+    | BrowserA
+    |            Window 1  (location=https://robotframework.org/)
+    |            Window 2  (location=https://robocon.io/)
+    |            Window 3  (location=https://github.com/robotframework/)
+    |
+    | BrowserB
+    |            Window 1  (location=https://github.com/)
+
+    Example:
+    | `Open Browser`       | https://robotframework.org         | ${BROWSER}       | alias=BrowserA   | # BrowserA with first window is opened.                                       |
+    | `Execute Javascript` | window.open()                      |                  |                  | # In BrowserA second window is opened.                                        |
+    | `Switch Window`      | locator=NEW                        |                  |                  | # Switched to second window in BrowserA                                       |
+    | `Go To`              | https://robocon.io                 |                  |                  | # Second window navigates to robocon site.                                    |
+    | `Execute Javascript` | window.open()                      |                  |                  | # In BrowserA third window is opened.                                         |
+    | ${handle}            | `Switch Window`                    | locator=NEW      |                  | # Switched to third window in BrowserA                                        |
+    | `Go To`              | https://github.com/robotframework/ |                  |                  | # Third windows goes to robot framework github site.                          |
+    | `Open Browser`       | https://github.com                 | ${BROWSER}       | alias=BrowserB   | # BrowserB with first windows is opened.                                      |
+    | ${location}          | `Get Location`                     |                  |                  | # ${location} is: https://www.github.com                                      |
+    | `Switch Window`      | ${handle}                          | browser=BrowserA |                  | # BrowserA second windows is selected.                                        |
+    | ${location}          | `Get Location`                     |                  |                  | # ${location} = https://robocon.io/                                           |
+    | @{locations 1}       | `Get Locations`                    |                  |                  | # By default, lists locations under the currectly active browser (BrowserA).   |
+    | @{locations 2}       | `Get Locations`                    |  browser=ALL     |                  | # By using browser=ALL argument keyword list all locations from all browsers. |
+
+    The above example, @{locations 1} contains the following items:
+    https://robotframework.org/, https://robocon.io/ and
+    https://github.com/robotframework/'. The @{locations 2}
+    contains the following items: https://robotframework.org/,
+    https://robocon.io/, https://github.com/robotframework/'
+    and 'https://github.com/.
+
+    = Timeouts, waits, and delays =
+
+    This section discusses different ways how to wait for elements to
+    appear on web pages and to slow down execution speed otherwise.
+    It also explains the `time format` that can be used when setting various
+    timeouts, waits, and delays.
+
+    == Timeout ==
+
+    This library contains various keywords that have an optional
+    ``timeout`` argument that specifies how long these keywords should
+    wait for certain events or actions. These keywords include, for example,
+    ``Wait ...`` keywords and keywords related to alerts. Additionally
+    `Execute Async Javascript`. Although it does not have ``timeout``,
+    argument, uses a timeout to define how long asynchronous JavaScript
+    can run.
+
+    The default timeout these keywords use can be set globally either by
+    using the `Set Selenium Timeout` keyword or with the ``timeout`` argument
+    when `importing` the library. See `time format` below for supported
+    timeout syntax.
+
+    == Implicit wait ==
+
+    Implicit wait specifies the maximum time how long Selenium waits when
+    searching for elements. It can be set by using the `Set Selenium Implicit
+    Wait` keyword or with the ``implicit_wait`` argument when `importing`
+    the library. See [https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp|
+    Selenium documentation] for more information about this functionality.
+
+    See `time format` below for supported syntax.
+
+    == Selenium speed ==
+
+    Selenium execution speed can be slowed down globally by using `Set
+    Selenium speed` keyword. This functionality is designed to be used for
+    demonstrating or debugging purposes. Using it to make sure that elements
+    appear on a page is not a good idea. The above-explained timeouts
+    and waits should be used instead.
+
+    See `time format` below for supported syntax.
+
+    == Time format ==
+
+    All timeouts and waits can be given as numbers considered seconds
+    (e.g. ``0.5`` or ``42``) or in Robot Framework's time syntax
+    (e.g. ``1.5 seconds`` or ``1 min 30 s``). For more information about
+    the time syntax see the
+    [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time-format|Robot Framework User Guide].
+
+    = Run-on-failure functionality =
+
+    This library has a handy feature that it can automatically execute
+    a keyword if any of its own keywords fails. By default, it uses the
+    `Capture Page Screenshot` keyword, but this can be changed either by
+    using the `Register Keyword To Run On Failure` keyword or with the
+    ``run_on_failure`` argument when `importing` the library. It is
+    possible to use any keyword from any imported library or resource file.
+
+    The run-on-failure functionality can be disabled by using a special value
+    ``NOTHING`` or anything considered false (see `Boolean arguments`)
+    such as ``NONE``.
+
+    = Boolean arguments =
+
+    Some keywords accept arguments that are handled as Boolean values true or
+    false. If such an argument is given as a string, it is considered false if
+    it is either empty or case-insensitively equal to ``false``, ``no``, ``off``,
+     ``0`` or ``none``. Other strings are considered true regardless of their value and
+    other argument types are tested using the same
+    [https://docs.python.org/3/library/stdtypes.html#truth-value-testing|rules as in Python].
+
+    True examples:
+
+    | `Set Screenshot Directory` | ${RESULTS} | persist=True    | # Strings are generally true.    |
+    | `Set Screenshot Directory` | ${RESULTS} | persist=yes     | # Same as the above.             |
+    | `Set Screenshot Directory` | ${RESULTS} | persist=${TRUE} | # Python True is true.           |
+    | `Set Screenshot Directory` | ${RESULTS} | persist=${42}   | # Numbers other than 0 are true. |
+
+    False examples:
+
+    | `Set Screenshot Directory` | ${RESULTS} | persist=False    | # String false is false.        |
+    | `Set Screenshot Directory` | ${RESULTS} | persist=no       | # Also string no is false.      |
+    | `Set Screenshot Directory` | ${RESULTS} | persist=NONE     | # String NONE is false.         |
+    | `Set Screenshot Directory` | ${RESULTS} | persist=${EMPTY} | # Empty string is false.        |
+    | `Set Screenshot Directory` | ${RESULTS} | persist=${FALSE} | # Python False is false.        |
+    | `Set Screenshot Directory` | ${RESULTS} | persist=${NONE}  | # Python None is false.         |
+    """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
@@ -172,9 +476,10 @@ class Browser(SeleniumLibrary):
         https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari
 
         Example:
-            | ${idx1} | Open Available Browser | https://www.robocorp.com |
-            | ${idx2} | Open Available Browser | ${URL} | browser_selection=opera,firefox |
-            | Open Available Browser | ${URL} | headless=True | proxy=localhost:8899 |
+
+        | ${idx1} | Open Available Browser | https://www.robocorp.com |
+        | ${idx2} | Open Available Browser | ${URL} | browser_selection=opera,firefox |
+        | Open Available Browser | ${URL} | headless=True | proxy=localhost:8899 |
         """  # noqa: E501
         # pylint: disable=redefined-argument-from-local
         browser_options = self._get_browser_order(browser_selection)
@@ -435,7 +740,8 @@ class Browser(SeleniumLibrary):
         That port can then be used to connect using this keyword.
 
         Example:
-            | Attach Chrome Browser | port=9222 |
+
+        | Attach Chrome Browser | port=9222 |
         """
         options = ChromeOptions()
         options.add_experimental_option("debuggerAddress", f"localhost:{port:d}")
@@ -456,7 +762,8 @@ class Browser(SeleniumLibrary):
         ``url`` URL to open
 
         Example:
-            | ${idx} | Open Headless Chrome Browser | https://www.google.com |
+
+        | ${idx} | Open Headless Chrome Browser | https://www.google.com |
         """
         return self.open_chrome_browser(url, headless=True)
 
@@ -475,12 +782,13 @@ class Browser(SeleniumLibrary):
         if set to `None` then file is not saved at all
 
         Example:
-            | Screenshot | locator=//img[@alt="Google"] | filename=locator.png |             # element screenshot, defined filename
-            | Screenshot | filename=page.png            |                                    # page screenshot, defined filename
-            | Screenshot | filename=${NONE}             |                                    # page screenshot, NO file will be created
-            | Screenshot |                              |                                    # page screenshot, default filename
-            | Screenshot | locator=//img[@alt="Google"] |                                    # element screenshot, default filename
-            | Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing
+
+        | Screenshot | locator=//img[@alt="Google"] | filename=locator.png |             # element screenshot, defined filename
+        | Screenshot | filename=page.png        |                                    # page screenshot, defined filename
+        | Screenshot | filename=${NONE}         |                                    # page screenshot, NO file will be created
+        | Screenshot |                          |                                    # page screenshot, default filename
+        | Screenshot | locator=//img[@alt="Google"] |                                    # element screenshot, default filename
+        | Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing
         """  # noqa: E501
         screenshot_keywords = ScreenshotKeywords(self)
         default_filename_prefix = f"screenshot-{int(time.time())}"
@@ -526,9 +834,10 @@ class Browser(SeleniumLibrary):
         ``action_chain`` store action in Selenium ActionChain queue
 
         Example:
-            | Click Element When Visible | q |
-            | Click Element When Visible | id:button | CTRL+ALT |
-            | Click Element When Visible | action_chain=True |
+
+        | Click Element When Visible | q |
+        | Click Element When Visible | id:button | CTRL+ALT |
+        | Click Element When Visible | action_chain=True |
         """
         self.wait_until_element_is_visible(locator)
         self.click_element(locator, modifier, action_chain)
@@ -544,7 +853,8 @@ class Browser(SeleniumLibrary):
         ``modifier`` press given keys while clicking the element, e.g. CTRL
 
         Example:
-            | Click Button When Visible  | //button[@class="mybutton"] |
+
+        | Click Button When Visible  | //button[@class="mybutton"] |
         """
         self.wait_until_element_is_visible(locator)
         self.click_button(locator, modifier)
@@ -559,7 +869,8 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         Example:
-            | Click Element If Visible | //button[@class="mybutton"] |
+
+        | Click Element If Visible | //button[@class="mybutton"] |
         """
         visible = self.is_element_visible(locator)
         if visible:
@@ -575,7 +886,8 @@ class Browser(SeleniumLibrary):
         ``text`` insert text to locator
 
         Example:
-            | Input Text When Element Is Visible | //input[@id="freetext"]  | my feedback |
+
+        | Input Text When Element Is Visible | //input[@id="freetext"]  | my feedback |
         """  # noqa: E501
         self.wait_until_element_is_visible(locator)
         self.input_text(locator, text)
@@ -589,7 +901,8 @@ class Browser(SeleniumLibrary):
         Fail if element does not exist
 
         Example:
-            | ${res} | Is Element Enabled | input.field1 |
+
+        | ${res} | Is Element Enabled | input.field1 |
         """
         return self._run_should_keyword_and_return_status(
             self.element_should_be_enabled,
@@ -606,7 +919,8 @@ class Browser(SeleniumLibrary):
         Fail if element does not exist
 
         Example:
-            | ${res} | Is Element Visible | id:confirmation |
+
+        | ${res} | Is Element Visible | id:confirmation |
         """
         return self._run_should_keyword_and_return_status(
             self.element_should_be_visible,
@@ -623,7 +937,8 @@ class Browser(SeleniumLibrary):
         Fail if element does not exist
 
         Example:
-            | ${res} | Is Element Disabled | //input[@type="submit"] |
+
+        | ${res} | Is Element Disabled | //input[@type="submit"] |
         """
         return self._run_should_keyword_and_return_status(
             self.element_should_be_disabled,
@@ -640,7 +955,8 @@ class Browser(SeleniumLibrary):
         Fail if element does not exist
 
         Example:
-            | ${res} | Is Element Focused | //input[@id="freetext"] |
+
+        | ${res} | Is Element Focused | //input[@id="freetext"] |
         """
         return self._run_should_keyword_and_return_status(
             self.element_should_be_focused,
@@ -661,7 +977,8 @@ class Browser(SeleniumLibrary):
         ``expected`` is attribute value equal to this
 
         Example:
-            | ${res} | Is Element Attribute Equal To | h1 | id | main |
+
+        | ${res} | Is Element Attribute Equal To | h1 | id | main |
         """
         return self._run_should_keyword_and_return_status(
             self.element_attribute_value_should_be, locator, attribute, expected
@@ -680,7 +997,8 @@ class Browser(SeleniumLibrary):
         ``action`` possible action if alert is present, default ACCEPT
 
         Example:
-            | ${res} | Is Alert Present | alert message |
+
+        | ${res} | Is Alert Present | alert message |
         """
         return self._run_should_keyword_and_return_status(
             self.alert_should_be_present, text, action
@@ -695,7 +1013,8 @@ class Browser(SeleniumLibrary):
         does not exist
 
         Example:
-            | ${res} | Does Alert Contain | alert message |
+
+        | ${res} | Does Alert Contain | alert message |
         """
         alert_keywords = AlertKeywords(self)
         alert = alert_keywords._wait_alert(timeout)
@@ -713,7 +1032,8 @@ class Browser(SeleniumLibrary):
         does exist
 
         Example:
-            | ${res} | Does Alert Not Contain | unexpected message |
+
+        | ${res} | Does Alert Not Contain | unexpected message |
         """
         alert_keywords = AlertKeywords(self)
         alert = alert_keywords._wait_alert(timeout)
@@ -730,7 +1050,8 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         Example:
-            | ${res} |  Is Checkbox Selected  | id:taxes-paid |
+
+        | ${res} |  Is Checkbox Selected  | id:taxes-paid |
         """
         return self._run_should_keyword_and_return_status(
             self.checkbox_should_be_selected, locator
@@ -745,7 +1066,8 @@ class Browser(SeleniumLibrary):
         ``text`` does frame contain this text
 
         Example:
-            | ${res} | Does Frame Contain | id:myframe | secret |
+
+        | ${res} | Does Frame Contain | id:myframe | secret |
         """
         return self._run_should_keyword_and_return_status(
             self.frame_should_contain, locator, text
@@ -765,7 +1087,8 @@ class Browser(SeleniumLibrary):
         ``ignore_case`` should check be case insensitive, default `False`
 
         Example:
-            | ${res} | Does Element Contain | id:spec | specification complete | ignore_case=True |
+
+        | ${res} | Does Element Contain | id:spec | specification complete | ignore_case=True |
         """  # noqa: E501
         return self._run_should_keyword_and_return_status(
             self.element_should_contain,
@@ -787,8 +1110,9 @@ class Browser(SeleniumLibrary):
         ``ignore_case`` should check be case insensitive, default `False`
 
         Example:
-            | ${res} | Is Element Text | id:name | john doe |
-            | ${res} | Is Element Text | id:name | john doe | ignore_case=True |
+
+        | ${res} | Is Element Text | id:name | john doe |
+        | ${res} | Is Element Text | id:name | john doe | ignore_case=True |
         """
         return self._run_should_keyword_and_return_status(
             self.element_text_should_be,
@@ -806,7 +1130,8 @@ class Browser(SeleniumLibrary):
         ``expected`` expected selected options
 
         Example:
-            | ${res} | Is List Selection | id:cars | Ford |
+
+        | ${res} | Is List Selection | id:cars | Ford |
         """
         return self._run_should_keyword_and_return_status(
             self.list_selection_should_be, locator, *expected
@@ -819,7 +1144,8 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         Example:
-            | ${res} | Is List Selected | id:cars |
+
+        | ${res} | Is List Selected | id:cars |
         """
         self.logger.info("Will return if anything is selected on the list")
         return not self._run_should_keyword_and_return_status(
@@ -833,8 +1159,9 @@ class Browser(SeleniumLibrary):
         ``url`` expected current URL
 
         Example:
-            | Open Available Browser | https://www.robocorp.com |
-            | ${res} | Is Location | https://www.robocorp.com |
+
+        | Open Available Browser | https://www.robocorp.com |
+        | ${res} | Is Location | https://www.robocorp.com |
         """
         return self._run_should_keyword_and_return_status(self.location_should_be, url)
 
@@ -845,8 +1172,9 @@ class Browser(SeleniumLibrary):
         ``expected`` URL should contain this
 
         Example:
-            | Open Available Browser | https://robocorp.com |
-            | ${res} | Does Location Contain | robocorp |
+
+        | Open Available Browser | https://robocorp.com |
+        | ${res} | Does Location Contain | robocorp |
         """
         return self._run_should_keyword_and_return_status(
             self.location_should_contain, expected
@@ -859,8 +1187,9 @@ class Browser(SeleniumLibrary):
         ``text`` page should contain this
 
         Example:
-            | Open Available Browser | https://google.com |
-            | ${res} | Does Page Contain | Gmail |
+
+        | Open Available Browser | https://google.com |
+        | ${res} | Does Page Contain | Gmail |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain, text
@@ -873,7 +1202,8 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         Example:
-            | ${res} | Does Page Contain Button | search-button |
+
+        | ${res} | Does Page Contain Button | search-button |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_button, locator
@@ -886,7 +1216,8 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         Example:
-            | ${res} | Does Page Contain Checkbox | random-selection |
+
+        | ${res} | Does Page Contain Checkbox | random-selection |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_checkbox, locator
@@ -902,8 +1233,9 @@ class Browser(SeleniumLibrary):
         by default one or more
 
         Example:
-            | ${res} | Does Page Contain Element | textarea |
-            | ${res} | Does Page Contain Element | button | count=4 |
+
+        | ${res} | Does Page Contain Element | textarea |
+        | ${res} | Does Page Contain Element | button | count=4 |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_element, locator=locator, limit=count
@@ -916,8 +1248,9 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         Example:
-            | Open Available Browser | https://google.com |
-            | ${res} | Does Page Contain Image | Google |
+
+        | Open Available Browser | https://google.com |
+        | ${res} | Does Page Contain Image | Google |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_image, locator
@@ -930,7 +1263,8 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         Example:
-            | ${res} | Does Page Contain Link | id:submit |
+
+        | ${res} | Does Page Contain Link | id:submit |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_link, locator
@@ -943,7 +1277,8 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         Example:
-            | ${res} | Does Page Contain List | class:selections |
+
+        | ${res} | Does Page Contain List | class:selections |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_list, locator
@@ -956,7 +1291,8 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         Example:
-            | ${res} | Does Page Contain Radio Button | male |
+
+        | ${res} | Does Page Contain Radio Button | male |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_radio_button, locator
@@ -969,7 +1305,8 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         Example:
-            | ${res} | Does Page Contain Textfield | id:address |
+
+        | ${res} | Does Page Contain Textfield | id:address |
         """
         return self._run_should_keyword_and_return_status(
             self.page_should_contain_textfield, locator
@@ -984,7 +1321,8 @@ class Browser(SeleniumLibrary):
         ``value`` expected value
 
         Example:
-            | ${res} | Is Radio Button Set To | group_name=gender | value=female |
+
+        | ${res} | Is Radio Button Set To | group_name=gender | value=female |
         """
         return self._run_should_keyword_and_return_status(
             self.radio_button_should_be_set_to, group_name, value
@@ -997,7 +1335,8 @@ class Browser(SeleniumLibrary):
         ``group_name`` radio button group name
 
         Example:
-            | ${res} | Is Radio Button Selected | group_name=gender |
+
+        | ${res} | Is Radio Button Selected | group_name=gender |
         """
         self.logger.info(
             "Will return if anything is selected on the radio button group"
@@ -1021,7 +1360,8 @@ class Browser(SeleniumLibrary):
         ``expected`` expected text in table row
 
         Example:
-            | ${res} | Does Table Cell Contain | //table | 1 | 1 | Company |
+
+        | ${res} | Does Table Cell Contain | //table | 1 | 1 | Company |
         """
         return self._run_should_keyword_and_return_status(
             self.table_cell_should_contain, locator, row, column, expected
@@ -1040,7 +1380,8 @@ class Browser(SeleniumLibrary):
         ``expected`` expected text in table column
 
         Example:
-            | ${res} | Does Table Column Contain | //table | 1 | Nokia |
+
+        | ${res} | Does Table Column Contain | //table | 1 | Nokia |
         """
         return self._run_should_keyword_and_return_status(
             self.table_column_should_contain, locator, column, expected
@@ -1057,7 +1398,8 @@ class Browser(SeleniumLibrary):
         ``expected`` expected text in table row
 
         Example:
-            | ${res} | Does Table Row Contain | //table | 1 | Company |
+
+        | ${res} | Does Table Row Contain | //table | 1 | Company |
         """
         return self._run_should_keyword_and_return_status(
             self.table_row_should_contain, locator, row, expected
@@ -1072,7 +1414,8 @@ class Browser(SeleniumLibrary):
         ``expected`` expected text in table footer
 
         Example:
-            | ${res} | Does Table Footer Contain | //table | Sum |
+
+        | ${res} | Does Table Footer Contain | //table | Sum |
         """
         return self._run_should_keyword_and_return_status(
             self.table_footer_should_contain, locator, expected
@@ -1087,7 +1430,8 @@ class Browser(SeleniumLibrary):
         ``expected`` expected text in table header
 
         Example:
-            | ${res} | Does Table Header Contain | //table | Month |
+
+        | ${res} | Does Table Header Contain | //table | Month |
         """
         return self._run_should_keyword_and_return_status(
             self.table_header_should_contain, locator, expected
@@ -1102,7 +1446,8 @@ class Browser(SeleniumLibrary):
         ``expected`` expected text in table
 
         Example:
-            | ${res} | Does Table Contain | //table | February |
+
+        | ${res} | Does Table Contain | //table | February |
         """
         return self._run_should_keyword_and_return_status(
             self.table_should_contain, locator, expected
@@ -1117,7 +1462,8 @@ class Browser(SeleniumLibrary):
         ``expected`` expected textarea value
 
         Example:
-            | ${res} | Is Textarea Value | //textarea | Yours sincerely |
+
+        | ${res} | Is Textarea Value | //textarea | Yours sincerely |
         """
         return self._run_should_keyword_and_return_status(
             self.textarea_value_should_be, locator, expected
@@ -1132,7 +1478,8 @@ class Browser(SeleniumLibrary):
         ``expected`` expected text in textarea
 
         Example:
-            | ${res} | Does Textarea Contain | //textarea | sincerely |
+
+        | ${res} | Does Textarea Contain | //textarea | sincerely |
         """
         return self._run_should_keyword_and_return_status(
             self.textarea_should_contain, locator, expected
@@ -1147,7 +1494,8 @@ class Browser(SeleniumLibrary):
         ``expected`` expected text in textfield
 
         Example:
-            | ${res} | Does Textfield Contain | id:lname | Last |
+
+        | ${res} | Does Textfield Contain | id:lname | Last |
         """
         return self._run_should_keyword_and_return_status(
             self.textfield_should_contain, locator, expected
@@ -1162,7 +1510,8 @@ class Browser(SeleniumLibrary):
         ``expected`` expected textfield value
 
         Example:
-            | ${res} | Is Textfield Value | id:lname | Lastname |
+
+        | ${res} | Is Textfield Value | id:lname | Lastname |
         """
         return self._run_should_keyword_and_return_status(
             self.textfield_value_should_be, locator, expected
@@ -1175,7 +1524,8 @@ class Browser(SeleniumLibrary):
         ``title`` expected title value
 
         Example:
-            | ${res} | Is Title | Webpage title text |
+
+        | ${res} | Is Title | Webpage title text |
         """
         return self._run_should_keyword_and_return_status(self.title_should_be, title)
 
@@ -1206,11 +1556,12 @@ class Browser(SeleniumLibrary):
         ``locator`` element locator
 
         Example:
-            | &{res}  | Get Element Status | class:special |
-            | Log     | ${res.visible} |
-            | Log     | ${res.enabled} |
-            | Log     | ${res.disabled} |
-            | Log     | ${res.focused} |
+
+        | &{res}  | Get Element Status | class:special |
+        | Log     | ${res.visible} |
+        | Log     | ${res.enabled} |
+        | Log     | ${res.disabled} |
+        | Log     | ${res.focused} |
         """
         status_object = dict()
         status_object["visible"] = self.is_element_visible(locator)
@@ -1234,8 +1585,9 @@ class Browser(SeleniumLibrary):
                 in new window (`False`)
 
         Example:
-            | Open User Browser  | https://www.google.com?q=rpa |
-            | Open User Browser  | https://www.google.com?q=rpa | tab=False |
+
+        | Open User Browser  | https://www.google.com?q=rpa |
+        | Open User Browser  | https://www.google.com?q=rpa | tab=False |
         """
         browser_method = webbrowser.open_new_tab if tab else webbrowser.open_new
         browser_method(url)
@@ -1245,7 +1597,8 @@ class Browser(SeleniumLibrary):
         """Get dictionary of browser properties
 
         Example:
-            | ${caps}= | Get Browser Capabilities |
+
+        | ${caps}= | Get Browser Capabilities |
         """
         capabilities = self.driver.capabilities
         return dict(capabilities)

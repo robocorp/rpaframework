@@ -132,10 +132,10 @@ class ServiceS3(AWSBase):
     ) -> None:
         """Initialize AWS S3 client
 
-        :param aws_key_id: access key ID
-        :param aws_key: secret access key
-        :param region: AWS region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param aws_key_id (str): access key ID
+        :param aws_key (str): secret access key
+        :param region (str): AWS region
+        :param use_robocloud_vault (bool): use secret stored into `Robocloud Vault`
         """
         self._init_client("s3", aws_key_id, aws_key, region, use_robocloud_vault)
 
@@ -143,7 +143,7 @@ class ServiceS3(AWSBase):
     def create_bucket(self, bucket_name: str = None) -> bool:
         """Create S3 bucket with name
 
-        :param bucket_name: name for the bucket
+        :param bucket_name (str): name for the bucket
         :return: boolean indicating status of operation
         """
         required_param(bucket_name, "create_bucket")
@@ -159,7 +159,7 @@ class ServiceS3(AWSBase):
     def delete_bucket(self, bucket_name: str = None) -> bool:
         """Delete S3 bucket with name
 
-        :param bucket_name: name for the bucket
+        :param bucket_name (str): name for the bucket
         :return: boolean indicating status of operation
         """
         required_param(bucket_name, "delete_bucket")
@@ -826,15 +826,100 @@ class ServiceSQS(AWSBase):
 
 
 class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
-    """Library for interacting with AWS services
+    """`AWS` is a library for operating with Amazon AWS services S3, SQS,
+    Textract and Comprehend.
 
-    Supported services:
+    Services are initialized with keywords like ``Init S3 Client`` for S3.
 
-    - Comprehend
-    - S3
-    - SQS
-    - Textract
-    """
+    **AWS authentication**
+
+    Authentication for AWS is set with `key id` and `access key` which can be given to the library
+    in three different ways.
+
+    - Method 1 as environment variables, ``AWS_KEY_ID`` and ``AWS_KEY``.
+    - Method 2 as keyword parameters to ``Init Textract Client`` for example.
+    - Method 3 as Robocloud vault secret. The vault name needs to be given in library init or
+      with keyword ``Set Robocloud Vault``. Secret keys are expected to match environment variable
+      names.
+
+    Method 1. credentials using environment variable
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library   RPA.Cloud.AWS
+
+        *** Tasks ***
+        Init AWS services
+            # NO parameters for client, expecting to get credentials
+            # with AWS_KEY and AWS_KEY_ID environment variable
+            Init S3 Client
+
+    Method 2. credentials with keyword parameter
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library   RPA.Cloud.AWS
+
+        *** Tasks ***
+        Init AWS services
+            Init S3 Client  aws_key_id=${AWS_KEY_ID}  aws_key=${AWS_KEY}
+
+    Method 3. setting Robocloud Vault in the library init
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library   RPA.Cloud.AWS  robocloud_vault_name=aws
+
+        *** Tasks ***
+        Init AWS services
+            Init S3 Client  use_robocloud_vault=${TRUE}
+
+    Method 3. setting Robocloud Vault with keyword
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library   RPA.Cloud.AWS
+
+        *** Tasks ***
+        Init Azure services
+            Set Robocloud Vault         vault_name=aws
+            Init Textract Client  use_robocloud_vault=${TRUE}
+
+    **Requirements**
+
+    The default installation depends on `boto3`_ library. Due to the size of the
+    dependency, this library has been set as an optional package for ``rpaframework``.
+
+    This can be installed by opting in to the `aws` dependency:
+
+    ``pip install rpaframework[aws]``
+
+    .. _boto3:
+        https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
+
+    **Example**
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library   RPA.Cloud.AWS   region=us-east-1
+
+        *** Variables ***
+        ${BUCKET_NAME}        testbucket12213123123
+
+        *** Tasks ***
+        Upload a file into S3 bucket
+            [Setup]   Init S3 Client
+            Upload File      ${BUCKET_NAME}   ${/}path${/}to${/}file.pdf
+            @{files}         List Files   ${BUCKET_NAME}
+            FOR   ${file}  IN   @{files}
+                Log  ${file}
+            END
+    """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"

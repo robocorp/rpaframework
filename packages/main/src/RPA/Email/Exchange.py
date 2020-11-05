@@ -20,7 +20,58 @@ from exchangelib import (
 
 
 class Exchange:
-    """Library for interfacing with Microsoft Exchange Web Services (EWS)."""
+    """`Exchange` is a library for sending, reading, and deleting emails.
+    `Exchange` is interfacing with Exchange Web Services (EWS).
+
+    For more information about server settings, see
+    `this Microsoft support article <https://support.microsoft.com/en-us/office/server-settings-you-ll-need-from-your-email-provider-c82de912-adcc-4787-8283-45a1161f3cc3>`_.
+
+    **Examples**
+
+    **Robot Framework**
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library     RPA.Email.Exchange
+        Task Setup  Authorize  username=${ACCOUNT}  password=${PASSWORD}
+
+        *** Variables ***
+        ${ACCOUNT}              ACCOUNT_NAME
+        ${PASSWORD}             ACCOUNT_PASSWORD
+        ${RECIPIENT_ADDRESS}    RECIPIENT
+        ${IMAGES}               myimage.png
+        ${ATTACHMENTS}          C:${/}files${/}mydocument.pdf
+
+        *** Tasks ***
+        Sending email
+            Send Message  recipients=${RECIPIENT_ADDRESS}
+            ...           subject=Exchange Message from RPA Robot
+            ...           body=<p>Exchange RPA Robot message body<br><img src='myimage.png'/></p>
+            ...           save=${TRUE}
+            ...           html=${TRUE}
+            ...           images=${IMAGES}
+            ...           cc=EMAIL_ADDRESS
+            ...           bcc=EMAIL_ADDRESS
+            ...           attachments=${ATTACHMENTS}
+
+    **Python**
+
+    .. code-block:: python
+
+        from RPA.Email.Exchange import Exchange
+
+        ex_account = "ACCOUNT_NAME"
+        ex_password = "ACCOUNT_PASSWORD"
+
+        mail = Exchange()
+        mail.authorize(username=ex_account, password=ex_password)
+        mail.send_message(
+            recipients="RECIPIENT",
+            subject="Message from RPA Python",
+            body="RPA Python message body",
+        )
+    """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"

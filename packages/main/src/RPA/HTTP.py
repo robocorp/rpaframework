@@ -10,8 +10,7 @@ from RPA.core.notebook import notebook_file
 
 class HTTP(RequestsLibrary):
     """RPA Framework HTTP library that extends functionality of RequestsLibrary,
-    for more information see
-    https://github.com/MarketSquare/robotframework-requests
+    for more information see: https://github.com/MarketSquare/robotframework-requests
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"

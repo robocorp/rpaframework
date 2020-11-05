@@ -43,7 +43,36 @@ def list_files_in_directory(folder, recursive=False, include=None, exclude=None)
 
 
 class Archive:
-    """Library for handling TAR and ZIP archives."""
+    """`Archive` is a library for operating with ZIP and TAR packages.
+
+    Examples:
+
+    .. code-block:: robotframework
+
+       *** Settings ***
+       Library  RPA.Archive
+
+       *** Tasks ***
+       Creating a ZIP archive
+          Archive Folder With ZIP   ${CURDIR}${/}tasks  tasks.zip   recursive=True  include=*.robot  exclude=/.*
+          @{files}                  List Archive             tasks.zip
+          FOR  ${file}  IN  ${files}
+             Log  ${file}
+          END
+          Add To Archive            .${/}..${/}missing.robot  tasks.zip
+          &{info}                   Get Archive Info
+
+
+    .. code-block:: python
+
+        from RPA.Archive import Archive
+
+        lib = Archive()
+        lib.archive_folder_with_tar('./tasks', 'tasks.tar', recursive=True)
+        files = lib.list_archive('tasks.tar')
+        for file in files:
+           print(file)
+    """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
@@ -70,17 +99,11 @@ class Archive:
         Similarly to exclude certain file, like dotfiles, the argument `exclude` can be used.
 
         Compression methods:
-            - stored, default
-            - deflated
-            - bzip2
-            - lzma
 
-        :param folder: name of the folder to archive
-        :param archive_name: filename of the archive
-        :param recursive: should sub directories be included, defaults is False
-        :param include: define file pattern to include in the package, defaults to None (means all files)
-        :param exclude: define file pattern to exclude from the package, defaults is None
-        :param compression: type of package compression method, defaults to "stored"
+        - stored, default
+        - deflated
+        - bzip2
+        - lzma
 
         Example:
 
@@ -93,6 +116,12 @@ class Archive:
             Archive Folder With Zip  ${CURDIR}               packagelzma.zip  compression=lzma
             Archive Folder With Zip  ${CURDIR}               bzipped.zip      compression=bzip2
 
+        :param folder (str): name of the folder to archive
+        :param archive_name (str): filename of the archive
+        :param recursive (bool): should sub directories be included, defaults is False
+        :param include (str): define file pattern to include in the package, defaults to None (means all files)
+        :param exclude (str): define file pattern to exclude from the package, defaults is None
+        :param compression (str): type of package compression method, defaults to "stored"
         """  # noqa: E501
         if compression == "stored":
             comp_method = zipfile.ZIP_STORED
@@ -125,7 +154,6 @@ class Archive:
         include: str = None,
         exclude: str = None,
     ) -> None:
-        # pylint: disable=C0301
         """Create a tar/tar.gz archive of a folder
 
         This keyword creates an TAR or TAR.GZ archive of a local folder. Type of archive
@@ -134,12 +162,6 @@ class Archive:
 
         To include only certain files, like TXT files, the argument `include` can be used.
         Similarly to exclude certain file, like dotfiles, the argument `exclude` can be used.
-
-        :param folder: name of the folder to archive
-        :param archive_name: filename of the archive
-        :param recursive: should sub directories be included, defaults is False
-        :param include: define file pattern to include in the package, defaults to None (means all files)
-        :param exclude: define file pattern to exclude from the package, defaults is None
 
         Example:
 
@@ -150,6 +172,12 @@ class Archive:
             Archive Folder With TAR  ${CURDIR}${/}tasks      tasks.tar      exclude=/.*
             Archive Folder With TAR  ${CURDIR}${/}documents  documents.tar  recursive=True
 
+        :param folder (str): name of the folder to archive
+        :param archive_name (str): filename of the archive
+        :param recursive (bool): should sub directories be included, defaults is False
+        :param include (str): define file pattern to include in the package,
+                              by default all files are included
+        :param exclude (str): define file pattern to exclude from the package
         """  # noqa: E501
         filelist = list_files_in_directory(folder, recursive, include, exclude)
         if len(filelist) == 0:
@@ -170,10 +198,6 @@ class Archive:
         This keyword adds file or list of files into existing archive. Files
         can be added to archive structure with relative path using argument `folder`.
 
-        :param files: name of the file, or list of files, to add
-        :param archive_name: filename of the archive
-        :param folder: name of the folder for added file (relative path in the archive)
-
         Example:
 
         .. code-block:: robotframework
@@ -183,6 +207,10 @@ class Archive:
             @{files}        Create List    filename1.txt   filename2.txt
             Add To Archive  ${files}       files.tar
 
+        :param files (Any): name of the file, or list of files, to add
+        :param archive_name (str): filename of the archive
+        :param folder (str): name of the folder for added file,
+                             relative path in the archive
         """
         files_to_add = []
 
@@ -213,12 +241,11 @@ class Archive:
         Returns list of file, where each file in a list is a dictionary
         with following attributes:
 
-            - name
-            - size
-            - mtime
-            - last modification time in format `%d.%m.%Y %H:%M:%S`
+        - name
+        - size
+        - mtime
+        - last modification time in format `%d.%m.%Y %H:%M:%S`
 
-        :param archive_name: filename of the archive
 
         Example:
 
@@ -231,6 +258,7 @@ class Archive:
                 Log  ${file}[mtime]
             END
 
+        :param archive_name (str): filename of the archive
         """
         filelist = []
         if zipfile.is_zipfile(archive_name):
@@ -264,13 +292,11 @@ class Archive:
 
         Returns following file attributes in a dictionary:
 
-            - filename
-            - filemode
-            - size
-            - mtime
-            - last modification time in format `%d.%m.%Y %H:%M:%S`
-
-        :param archive_name: filename of the archive
+        - filename
+        - filemode
+        - size
+        - mtime
+        - last modification time in format `%d.%m.%Y %H:%M:%S`
 
         Example:
 
@@ -278,6 +304,7 @@ class Archive:
 
             &{archiveinfo}   Get Archive Info    myfiles.zip
 
+        :param archive_name (str): filename of the archive
         """
         archive_info = None
         st = os.stat(archive_name)
@@ -304,17 +331,12 @@ class Archive:
     def extract_archive(
         self, archive_name: str, path: str = None, members: Any = None
     ) -> None:
-        # pylint: disable=C0301
         """Extract files from archive into local directory
 
         This keyword supports extracting files from zip, tar and tar.gz archives.
 
         By default file is extracted into current working directory, but `path` argument
         can be set to define extraction path.
-
-        :param archive_name: filename of the archive
-        :param path: filepath to extract file into, default is current working directory
-        :param members: list of files to extract from, default is None (all files in archive are extracted)
 
         Example:
 
@@ -324,6 +346,10 @@ class Archive:
             @{files}           Create List   filename1.txt    filename2.txt
             Extract Archive    archive.tar   C:${/}myfiles${/}  ${files}
 
+        :param archive_name (str): filename of the archive
+        :param path (str): filepath to extract file into, default is current working directory
+        :param members (Any): list of files to extract from, by default
+                              all files in archive are extracted
         """  # noqa: E501
         root = Path(path) if path else Path.cwd()
         if members and not isinstance(members, list):
@@ -349,12 +375,8 @@ class Archive:
 
         This keyword supports extracting a file from zip, tar and tar.gz archives.
 
-        By default file is extracted into current working directory, but `path` argument can be set
-        to define extraction path.
-
-        :param filename: name of the file to extract
-        :param archive_name: filename of the archive
-        :param path: filepath to extract file into, default is current working directory
+        By default file is extracted into current working directory,
+        but `path` argument can be set to define extraction path.
 
         Example:
 
@@ -363,11 +385,15 @@ class Archive:
             Extract File From Archive    extrafile.txt   myfiles.zip
             Extract File From Archive    background.png  images.tar.gz  ${CURDIR}${/}extracted
 
+        :param filename (str): name of the file to extract
+        :param archive_name (str): filename of the archive
+        :param path (str): filepath to extract file into,
+                           default is current working directory
         """  # noqa: E501
         root = Path(path) if path else Path.cwd()
         if zipfile.is_zipfile(archive_name):
-            with zipfile.ZipFile(archive_name, "r") as f:
-                f.extract(filename, root)
+            with zipfile.ZipFile(archive_name, "r") as outfile:
+                outfile.extract(filename, root)
         elif tarfile.is_tarfile(archive_name):
-            with tarfile.open(archive_name, "r") as f:
-                f.extract(filename, root)
+            with tarfile.open(archive_name, "r") as outfile:
+                outfile.extract(filename, root)
