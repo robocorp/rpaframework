@@ -170,10 +170,10 @@ class AzureBase:
         if image_url is None and image_file is None:
             raise KeyError("Parameter 'image_url' or 'image_file' must be given.")
 
-    def set_robocloud_vault(self, vault_name):
+    def set_robocloud_vault(self, vault_name: str):
         """Set Robocloud Vault name
 
-        :param vault_name: Robocloud Vault name
+        :param vault_name (str): Robocloud Vault name
         """
         if vault_name:
             self.robocloud_vault_name = vault_name
@@ -193,8 +193,8 @@ class ServiceTextAnalytics(AzureBase):
     ):
         """Initialize Azure Text Analyticts
 
-        :param region: identifier for service region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param region (str): identifier for service region
+        :param use_robocloud_vault (bool): use secret stored into `Robocloud Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
@@ -205,10 +205,12 @@ class ServiceTextAnalytics(AzureBase):
     ) -> dict:
         """Analyze sentiments in the given text
 
-        :param text: A UTF-8 text string
-        :param language: if input language is known
-        :param json_file: filepath to write results into
-        :return: analysis in json format
+        :param text (str): A UTF-8 text string
+        :param language (str): if input language is known
+        :param json_file (str): filepath to write results into
+
+        Returns:
+            analysis in json format
         """
         analyze_url = f"{self.__base_url}/text/analytics/v3.0/sentiment"
 
@@ -223,9 +225,11 @@ class ServiceTextAnalytics(AzureBase):
     def detect_language(self, text: str, json_file: str = None) -> dict:
         """Detect languages in the given text
 
-        :param text: A UTF-8 text string
-        :param json_file: filepath to write results into
-        :return: analysis in json format
+        :param text (str): A UTF-8 text string
+        :param json_file (str): filepath to write results into
+
+        Returns:
+            analysis in json format
         """
         analyze_url = f"{self.__base_url}/text/analytics/v3.0/languages"
         document = {"id": "1", "text": text}
@@ -239,10 +243,12 @@ class ServiceTextAnalytics(AzureBase):
     ) -> dict:
         """Detect key phrases in the given text
 
-        :param text: A UTF-8 text string
-        :param language: if input language is known
-        :param json_file: filepath to write results into
-        :return: analysis in json format
+        :param text (str): A UTF-8 text string
+        :param language (str): if input language is known
+        :param json_file (str): filepath to write results into
+
+        Returns:
+            analysis in json format
         """
         analyze_url = f"{self.__base_url}/text/analytics/v3.0/keyphrases"
         document = {"id": "1", "text": text}
@@ -256,10 +262,12 @@ class ServiceTextAnalytics(AzureBase):
     def find_entities(self, text: str, language: str = None, json_file=None) -> dict:
         """Detect entities in the given text
 
-        :param text: A UTF-8 text string
-        :param language: if input language is known
-        :param json_file: filepath to write results into
-        :return: analysis in json format
+        :param text (str): A UTF-8 text string
+        :param language (str): if input language is known
+        :param json_file (str): filepath to write results into
+
+        Returns:
+            analysis in json format
         """
         analyze_url = f"{self.__base_url}/text/analytics/v2.1/entities"
         document = {"id": "1", "text": text}
@@ -284,8 +292,8 @@ class ServiceFace(AzureBase):
     ) -> None:
         """Initialize Azure Face
 
-        :param region: identifier for service region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param region (str): identifier for service region
+        :param use_robocloud_vault (bool): use secret stored into `Robocloud Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
@@ -319,18 +327,22 @@ class ServiceFace(AzureBase):
             - exposure
             - nouse
 
-        :param image_file: filepath of image file
-        :param image_url: URI to image, if given will be used instead of `image_file`
-        :param face_attributes: comma separated list of attributes,
-            for example. "age,gender,smile"
-        :param face_landmarks: return face landmarks of the detected faces
-            or not. The default value is `False`
-        :param recognition_model: model used by Azure to detech faces, options
-            are "recognition_01" or "recognition_02", default is "recognition_02"
-        :param json_file: filepath to write results into
-        :return: analysis in json format
+        :param image_file (str): filepath of image file
+        :param image_url (str): URI to image, if given will be used instead of `image_file`
+        :param face_attributes (str): comma separated list of attributes,
+        :param for example. "age,gender,smile"
+        :param face_landmarks (bool): return face landmarks of the detected faces
+        :param or not. The default value is `False`
+        :param recognition_model (str): model used by Azure to detech faces, options are
+        :param "recognition_01" or "recognition_02", default
+        :param is "recognition_02"
+        :param json_file (str): filepath to write results into
 
-        .. _Face detection explained: https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection  # noqa: E501
+        Returns:
+            analysis in json format
+
+        .. _Face detection explained:
+           https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection
         """
         self._image_url_or_image_file_is_required(image_url, image_file)
         analyze_url = f"{self.__base_url}/face/v1.0/detect"
@@ -361,8 +373,8 @@ class ServiceComputerVision(AzureBase):
     ) -> None:
         """Initialize Azure Computer Vision
 
-        :param region: identifier for service region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param region (str): identifier for service region
+        :param use_robocloud_vault (bool): use secret stored into `Robocloud Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
@@ -390,14 +402,17 @@ class ServiceComputerVision(AzureBase):
             - Objects
             - Tags
 
-        :param image_file: filepath of image file
-        :param image_url: URI to image, if given will be used instead of `image_file`
-        :param visual_features: comma separated list of features,
-            for example. "Categories,Description,Color"
-        :param json_file: filepath to write results into
-        :return: analysis in json format
+        :param image_file (str): filepath of image file
+        :param image_url (str): URI to image, if given will be used instead of `image_file`
+        :param visual_features (str): comma separated list of features,
+        :param for example. "Categories,Description,Color"
+        :param json_file (str): filepath to write results into
 
-        .. _Computer Vision API: https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga  # noqa: E501
+        Returns:
+            analysis in json format
+
+        .. _Computer Vision API:
+           https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga
         """
         self._image_url_or_image_file_is_required(image_url, image_file)
         analyze_url = f"{self.__base_url}/vision/v3.0/analyze"
@@ -414,10 +429,12 @@ class ServiceComputerVision(AzureBase):
     ) -> dict:
         """Describe image with tags and captions
 
-        :param image_file: filepath of image file
-        :param image_url: URI to image, if given will be used instead of `image_file`
-        :param json_file: filepath to write results into
-        :return: analysis in json format
+        :param image_file (str): filepath of image file
+        :param image_url (str): URI to image, if given will be used instead of `image_file`
+        :param json_file (str): filepath to write results into
+
+        Returns:
+            analysis in json format
         """
         self._image_url_or_image_file_is_required(image_url, image_file)
         analyze_url = f"{self.__base_url}/vision/v3.0/describe"
@@ -432,10 +449,12 @@ class ServiceComputerVision(AzureBase):
     ) -> dict:
         """Optical Character Recognition (OCR) detects text in an image
 
-        :param image_file: filepath of image file
-        :param image_url: URI to image, if given will be used instead of `image_file`
-        :param json_file: filepath to write results into
-        :return: analysis in json format
+        :param image_file (str): filepath of image file
+        :param image_url (str): URI to image, if given will be used instead of `image_file`
+        :param json_file (str): filepath to write results into
+
+        Returns:
+            analysis in json format
         """
         self._image_url_or_image_file_is_required(image_url, image_file)
         analyze_url = f"{self.__base_url}/vision/v3.0/ocr"
@@ -450,10 +469,12 @@ class ServiceComputerVision(AzureBase):
     ) -> dict:
         """Detect objects in the image
 
-        :param image_file: filepath of image file
-        :param image_url: URI to image, if given will be used instead of `image_file`
-        :param json_file: filepath to write results into
-        :return: analysis in json format
+        :param image_file (str): filepath of image file
+        :param image_url (str): URI to image, if given will be used instead of `image_file`
+        :param json_file (str): filepath to write results into
+
+        Returns:
+            analysis in json format
         """
         self._image_url_or_image_file_is_required(image_url, image_file)
         analyze_url = f"{self.__base_url}/vision/v3.0/detect"
@@ -480,8 +501,8 @@ class ServiceSpeech(AzureBase):
     ) -> None:
         """Initialize Azure Speech
 
-        :param region: identifier for service region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param region (str): identifier for service region
+        :param use_robocloud_vault (bool): use secret stored into `Robocloud Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.tts.speech.microsoft.com"
@@ -502,16 +523,18 @@ class ServiceSpeech(AzureBase):
         Neural voices are only supported for Speech resources created in
         East US, South East Asia, and West Europe regions.
 
-        :param text: input text to synthesize
-        :param language: voice language, defaults to "en-US"
-        :param name: voice name, defaults to "en-US-AriaRUS"
-        :param gender: voice gender, defaults to "FEMALE"
-        :param encoding: result encoding type, defaults to "MP3"
-        :param neural_voice_style: if given then neural voice is used,
-            example style. "cheerful"
-        :param target_file: save synthesized output to file,
-            defaults to "synthesized.mp3"
-        :return: synthesized output in bytes
+        :param text (str): input text to synthesize
+        :param language (str): voice language, defaults to "en-US"
+        :param name (str): voice name, defaults to "en-US-AriaRUS"
+        :param gender (str): voice gender, defaults to "FEMALE"
+        :param encoding (str): result encoding type, defaults to "MP3"
+        :param neural_voice_style (Any): if given then neural voice is used,
+        :param example style. "cheerful"
+        :param target_file (str): save synthesized output to file,
+        :param defaults to "synthesized.mp3"
+
+        Returns:
+            synthesized output in bytes
         """
         encoding = encoding.upper() if encoding else None
         if encoding is None or encoding not in self.audio_formats.keys():
@@ -568,11 +591,14 @@ class ServiceSpeech(AzureBase):
 
         Available voice selection might differ between regions.
 
-        :param locale: list only voices specific to locale, by default return all voices
-        :param neural_only: `True` if only neural voices should be returned,
-            `False` by default
-        :param json_file: filepath to write results into
-        :return: voices in json
+        :param locale (str): list only voices specific to locale, by default return
+        :param all voices
+        :param neural_only (bool): `True` if only neural voices should be returned,
+        :param `False` by default
+        :param json_file (str): filepath to write results into
+
+        Returns:
+            voices in json
         """
         token = self._get_token(self.__service_name, self.__region)
         voice_url = f"{self.__base_url}/cognitiveservices/voices/list"

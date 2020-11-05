@@ -329,7 +329,7 @@ class Schema:
 
 
 class Tasks:
-    """`Tasks` is a Robot Framework library for controlling
+    """Tasks is a Robot Framework library for controlling
     task execution inside a suite. It allows changing the next scheduled task
     or jumping immediately to other tasks by using the keywords it provides.
 
@@ -337,15 +337,18 @@ class Tasks:
     to visualize connected tasks, which is visible in the suite documentation
     field of the test log.
 
-    :param execution_limit: Maximum number of tasks to run in suite,
-                            used to prevent infinite loops
-    :param schema:          Path to optional schema file
-    :param graph:           Render execution result as graph using graphviz
-    :param graph_inline:    Inline graph into log, instead of saving as file
+    The ``execution_limit`` is the maximum number of tasks to run in suite,
+    used to prevent infinite loops
+
+    The ``schema`` is a path to an optional schema file, used to control execution.
+
+    With the boolean parameters ``graph`` and ``graph_inline``, it is possible
+    to control if an execution graph is rendered and whether that is
+    written into the log directly instead of a separate file.
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
     ROBOT_LISTENER_API_VERSION = 3
 
     TAG_NONCRITICAL = "tasks-schema-noncritical"
@@ -513,9 +516,8 @@ class Tasks:
 
     def set_next_task(self, name):
         """Set the next task to be executed.
-        Should be a task in the same suite.
 
-        :param name: Name of next task
+        Should be a task in the same suite.
         """
         task = self._task_by_name(name)
 
@@ -533,12 +535,9 @@ class Tasks:
         self.next = task
 
     def set_next_task_if(self, condition, name, default=None):
-        """Set the next task according to the condition.
-        If no default is given, does not modify execution order.
+        """Set the next task with ``name``, according to the ``condition``.
 
-        :param condition: Condition expression to evaluate
-        :param name:      Name of next task, if successful
-        :param default:   Name of next task, if unsuccessful
+        If no ``default`` is given, does not modify execution order.
         """
         is_true = (
             BuiltIn().evaluate(condition)
@@ -553,39 +552,40 @@ class Tasks:
             self.set_next_task(task)
 
     def jump_to_task(self, name):
-        """Jump directly to given task, skipping the rest of the task
-        execution. If run inside a teardown, also skips the rest of the
-        teardown sequence.
+        """Jump directly to given task with ``name``, skipping the rest of the
+        task execution.
+
+        If run inside a teardown, also skips the rest of the teardown sequence.
         """
         self.set_next_task(name)
         raise PassExecution(f"Jumping to: {self.next}")
 
     def jump_to_task_if(self, condition, name, default=None):
-        """Jump directly to given task according to the condition."""
+        """Jump directly to given task with ``name`` according to the ``condition``."""
         self.set_next_task_if(condition, name, default)
         if self.next:
             raise PassExecution(f"Jumping to: {self.next}")
 
     def set_next_task_if_keyword_fails(self, task, keyword, *args):
-        """Executes given keyword and sets the next task if it fails."""
+        """Executes given ``keyword`` and sets the next ``task`` if it fails."""
         success = BuiltIn().run_keyword_and_return_status(keyword, *args)
         if not success:
             self.set_next_task(task)
 
     def set_next_task_if_keyword_succeeds(self, task, keyword, *args):
-        """Executes given keyword and sets the next task if it succeeds."""
+        """Executes given ``keyword`` and sets the next ``task`` if it succeeds."""
         success = BuiltIn().run_keyword_and_return_status(keyword, *args)
         if success:
             self.set_next_task(task)
 
     def jump_to_task_if_keyword_fails(self, task, keyword, *args):
-        """Executes given keyword and jumps to given task if it fails."""
+        """Executes given ``keyword`` and jumps to given ``task`` if it fails."""
         success = BuiltIn().run_keyword_and_return_status(keyword, *args)
         if not success:
             self.jump_to_task(task)
 
     def jump_to_task_if_keyword_succeeds(self, task, keyword, *args):
-        """Executes given keyword and jumps to given task if it succeeds."""
+        """Executes given ``keyword`` and jumps to given ``task`` if it succeeds."""
         success = BuiltIn().run_keyword_and_return_status(keyword, *args)
         if success:
             self.jump_to_task(task)

@@ -12,7 +12,7 @@ class RobotLogListener:
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
     ROBOT_LISTENER_API_VERSION = 2
 
     KEYWORDS_TO_PROTECT = ["rpa.robocloud.secrets."]
@@ -28,10 +28,7 @@ class RobotLogListener:
         self.optional_keyword_to_run_failure = None
 
     def only_info_level(self, names: Any = None):
-        """Register keywords that are allowed only INFO level logging
-
-        :param names: list of keywords to protect
-        """
+        """Register keywords that are allowed only INFO level logging."""
         required_param(names, "only_info_level")
         if not isinstance(names, list):
             names = [names]
@@ -41,9 +38,8 @@ class RobotLogListener:
                 self.INFO_LEVEL_KEYWORDS.append(robotized_keyword)
 
     def register_protected_keywords(self, names: Any = None) -> None:
-        """Register keywords that are not going to be logged into Robot Framework logs.
-
-        :param names: list of keywords to protect
+        """Register keywords that are not going to be logged into
+        Robot Framework logs.
         """
         required_param(names, "register_protected_keywords")
         if not isinstance(names, list):
@@ -56,25 +52,20 @@ class RobotLogListener:
     def mute_run_on_failure(
         self, keywords: Any = None, optional_keyword_to_run: str = None
     ) -> None:
-        """Set keywords which should not execute `SeleniumLibrary`
-        default behaviour of running keyword on failure.
+        """Set keywords which should not execute ``Browser`` library
+        default behaviour of running keywords on failure.
 
         Keyword names do not need to be full names of keywords, ie. all keywords
-        matching even partially will be affected. `Run Keyword` would match all
-        `BuiltIn` library keywords (17 keywords in RF 3.2.1) and of course all
-        `Run Keyword` named keywords in any resource and/or library file which
+        matching even partially will be affected. ``Run Keyword`` would match all
+        ``BuiltIn`` library keywords (17 keywords in RF 3.2.1) and of course all
+        ``Run Keyword`` named keywords in any resource and/or library file which
         are imported would be matched also.
 
-        By default `SeleniumLibrary` executes `Capture Page Screenshot`
+        By default ``Browser`` executes ``Capture Page Screenshot`
         on failure.
 
-        If `optional_keyword_to_run` is not given then nothing is done
-        on failure, but this can be set to override `SeleniumLibrary`
-        default behaviour for a set of keywords.
-
-        :param keywords: list of keywords to mute
-        :param optional_keyword_to_run: name of the keyword to execute
-                                        if keyword defined by `keywords` fail
+        If ``optional_keyword_to_run`` is not given then nothing is done
+        on failure.
         """
         required_param(keywords, "mute_run_on_failure")
         if not isinstance(keywords, list):
@@ -89,10 +80,10 @@ class RobotLogListener:
         self.rpabrowser_instance = rpabrowser if status == "PASS" else None
         self.optional_keyword_to_run_failure = optional_keyword_to_run
 
-    def start_keyword(self, name, attributes):  # pylint: disable=W0613
+    def _start_keyword(self, name, attributes):  # pylint: disable=W0613
         """Listener method for keyword start.
 
-        If `name` exists in the protected keywords list then log level is
+        If ``name`` exists in the protected keywords list then log level is
         temporarily set to NONE.
 
         :param name: keyword name
@@ -112,10 +103,10 @@ class RobotLogListener:
                 self.optional_keyword_to_run_failure
             )
 
-    def end_keyword(self, name, attributes):  # pylint: disable=W0613
+    def _end_keyword(self, name, attributes):  # pylint: disable=W0613
         """Listener method for keyword end.
 
-        If `name` exists in the protected keywords list then log level is
+        If ``name`` exists in the protected keywords list then log level is
         restored back to level it was before settings to NONE.
 
         :param name: keyword name
@@ -136,7 +127,7 @@ class RobotLogListener:
 
         Keyword is lowercased and spaces are replaced by underscores.
 
-        :param kw_name: keyword name to robotize
-        :return: robotized keyword
+        :param kw_name (str): keyword name to robotize
+        :returns: robotized keyword name
         """
         return kw_name.lower().replace(" ", "_")

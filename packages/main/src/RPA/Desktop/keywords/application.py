@@ -43,6 +43,9 @@ class Application:
     def stop(self):
         if self._proc:
             self._proc.terminate()
+            self._proc.communicate()
+
+        self._proc = None
 
     def wait(self, timeout=30):
         if not self._proc:

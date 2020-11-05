@@ -35,19 +35,17 @@ class OperatingSystem:
     ) -> str:
         """Get computer boot time in seconds from Epoch or in datetime string.
 
-        :param as_datetime: if True returns datetime string, otherwise seconds,
-            defaults to False
-        :param datetime_format: datetime string format, defaults to "%Y-%m-%d %H:%M:%S"
-        :return: seconds from Epoch or datetime string
-
         Example:
+        | ${boottime} | Get Boot Time |
+        | ${boottime} | Get Boot Time | as_datetime=True |
+        | ${boottime} | Get Boot Time | as_datetime=True | datetime_format=%d.%m.%Y |
 
-        .. code-block:: robotframework
+        :param as_datetime (bool): if True returns datetime string, otherwise seconds,
+        :param defaults to False
+        :param datetime_format (str): datetime string format, defaults to "%Y-%m-%d %H:%M:%S"
 
-            ${boottime}  Get Boot Time
-            ${boottime}  Get Boot Time   as_datetime=True
-            ${boottime}  Get Boot Time   as_datetime=True  datetime_format=%d.%m.%Y
-
+        Returns:
+            seconds from Epoch or datetime string
         """
         btime = self.boot_time_in_seconds_from_epoch()
         if as_datetime:
@@ -58,42 +56,33 @@ class OperatingSystem:
     def boot_time_in_seconds_from_epoch(self) -> str:
         """Get machine boot time
 
-        :return: boot time in seconds from Epoch
-
         Example:
+        | ${epoch} | Boot Time In Seconds From Epoch |
 
-        .. code-block:: robotframework
-
-            ${epoch}  Boot Time In Seconds From Epoch
-
+        Returns:
+            boot time in seconds from Epoch
         """
         return psutil.boot_time()
 
     def get_machine_name(self) -> str:
         """Get machine name
 
-        :return: machine name as string
-
         Example:
+        | ${machine} | Get Machine Name |
 
-        .. code-block:: robotframework
-
-            ${machine}  Get Machine Name
-
+        Returns:
+            machine name as string
         """
         return socket.gethostname()
 
     def get_username(self) -> str:
         """Get username of logged in user
 
-        :return: username as string
-
         Example:
+        | ${user} | Get Username |
 
-        .. code-block:: robotframework
-
-            ${user}  Get Username
-
+        Returns:
+            username as string
         """
         return getpass.getuser()
 
@@ -102,11 +91,7 @@ class OperatingSystem:
         """Puts system to sleep mode
 
         Example:
-
-        .. code-block:: robotframework
-
-            Put System To Sleep
-
+        | Put System To Sleep |
         """
         if platform.system() == "Darwin":
             os.system("pmset sleepnow")
@@ -117,19 +102,17 @@ class OperatingSystem:
     def process_exists(self, process_name: str, strict: bool = True) -> Any:
         """Check if process exists by its name
 
-        :param process_name: search for this process
-        :param strict: defines how match is made, default `True`
-         which means that process name needs to be exact match
-         and `False` does inclusive matching
-        :return: process instance or False
-
         Example:
+        | ${process} | Process Exists | calc |
+        | ${process} | Process Exists | calc | strict=False |
 
-        .. code-block:: robotframework
+        :param process_name (str): search for this process
+        :param strict (bool): defines how match is made, default `True`
+        :param which means that process name needs to be exact match
+        :param and `False` does inclusive matching
 
-            ${process}  Process Exists  calc
-            ${process}  Process Exists  calc  strict=False
-
+        Returns:
+            process instance or False
         """
         for p in psutil.process_iter():
             p_name = p.name()
@@ -143,16 +126,14 @@ class OperatingSystem:
     def kill_process(self, process_name: str) -> bool:
         """Kill process by name
 
-        :param process_name: name of the process
-        :return: True if succeeds False if not
-
         Example:
+        | ${process} | Process Exists | calc | strict=False |
+        | ${status} | Kill Process | ${process.name()} |
 
-        .. code-block:: robotframework
+        :param process_name (str): name of the process
 
-            ${process}  Process Exists  calc  strict=False
-            ${status}   Kill Process    ${process.name()}
-
+        Returns:
+            `True` if succeeds `False` if not
         """
         p = self.process_exists(process_name)
         if p:
@@ -164,15 +145,11 @@ class OperatingSystem:
     def kill_process_by_pid(self, pid: int) -> None:
         """Kill process by pid
 
-        :param pid: process identifier
-
         Example:
+        | ${process} | Process Exists | calc | strict=False |
+        | ${status} | Kill Process | ${process.pid} |
 
-        .. code-block:: robotframework
-
-            ${process}  Process Exists  calc  strict=False
-            ${status}   Kill Process    ${process.pid}
-
+        :param pid (int): process identifier
         """
         os.kill(pid, signal.SIGTERM)
 
@@ -181,16 +158,15 @@ class OperatingSystem:
         """Get computer memory stats and return those in bytes
         or in humanized memory format.
 
-        :param humanized: if False returns memory information in bytes, defaults to True
-        :return: memory information in dictionary format
-
         Example:
+        | &{mem} | Get Memory Stats |
+        | &{mem} | Get Memory Stats | humanized=False |
 
-        .. code-block:: robotframework
+        :param humanized (bool): if `False` returns memory information in bytes,
+        :param defaults to `True`
 
-            &{mem}     Get Memory Stats
-            &{mem}     Get Memory Stats   humanized=False
-
+        Returns:
+            memory information in dictionary format
         """
         meminfo = psutil.virtual_memory()
         memdict = meminfo._asdict()

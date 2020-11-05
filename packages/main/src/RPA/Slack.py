@@ -7,7 +7,7 @@ class Slack:
     """RPA Framework library for Slack operations."""
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
@@ -22,11 +22,10 @@ class Slack:
     ):
         """Send message to Slack channel using webhook.
 
-        :param webhook_url: needs to be configured for the Slack server
-        :param channel: channel needs to exist in the Slack server
-        :param sender: shown in the message post as sender
-        :param text: text for the message post
-        :param icon_emoji: icon for the message post, defaults to None
+        The destination ``webhook_url`` is configured for the Slack server.
+
+        Optionally an emoji can be shown as the icon for the post,
+        given with the ``icon_emoji`` option.
         """
         headers = {"Content-Type": "application/json"}
         payload = {

@@ -86,8 +86,8 @@ class RobocorpAdapter(BaseAdapter):
 
     Required environment variables:
 
-    * RC_API_WORKITEM_HOST:     Work item API hostname
-    * RC_API_WORKITEM_TOKEN:    Work item API access token
+    - RC_API_WORKITEM_HOST:  Work item data API hostname
+    - RC_API_WORKITEM_TOKEN: Work item data API access token
     """
 
     def __init__(self, *args, **kwargs):
@@ -113,7 +113,10 @@ class RobocorpAdapter(BaseAdapter):
             return self.handle_error(response)
 
     def save_data(self, data):
-        """Save data payload as JSON."""
+        """Save data payload as JSON.
+
+        :param data: payload content
+        """
         url = self.url("data")
         data = json_dump_safe(data)
         logging.info("Saving work item data: %s", url)
@@ -224,7 +227,10 @@ class RobocorpAdapter(BaseAdapter):
         return matches[-1]["fileId"]
 
     def url(self, *parts):
-        """Create full URL to Robocorp endpoint."""
+        """Create full URL to Robocorp endpoint.
+
+        :param parts: to be attached to a URL
+        """
         return url_join(
             self.host,
             "json-v1",
@@ -263,7 +269,7 @@ class FileAdapter(BaseAdapter):
 
     Required environment variables:
 
-    * RPA_WORKITEMS_PATH:   Path to work items database file
+    - RPA_WORKITEMS_PATH: Path to work items database file
     """
 
     def __init__(self, *args, **kwargs):
@@ -279,7 +285,10 @@ class FileAdapter(BaseAdapter):
             return {}
 
     def save_data(self, data):
-        """Save data payload to file."""
+        """Save data payload to file.
+
+        :param data: payload content
+        """
         content = self.read_database()
         content.setdefault(self.workspace_id, {})[self.item_id] = data
 
@@ -299,19 +308,29 @@ class FileAdapter(BaseAdapter):
         return files
 
     def get_file(self, name):
-        """Read file from disk."""
+        """Read file from disk.
+
+        :param name:    Name of file
+        """
         dirname = Path(self.path).parent
         with open(dirname / name, "rb") as infile:
             return infile.read()
 
     def add_file(self, name, content):
-        """Write file to disk."""
+        """Write file to disk.
+
+        :param name:    Destination name
+        :param content: Content of file
+        """
         dirname = Path(self.path).parent
         with open(dirname / name, "wb") as outfile:
             outfile.write(content)
 
     def remove_file(self, name):
-        """Do not remove local files."""
+        """Do not remove local files.
+
+        :param name:    Name of file
+        """
         del name
 
     def read_database(self):
@@ -327,9 +346,9 @@ class FileAdapter(BaseAdapter):
 class WorkItem:
     """Container for a single work item, with local caching.
 
-    :param workspace_id:    Workspace ID which contains item
-    :param item_id:         Workitem ID
-    :param adapter:         Adapter for storage backend
+    :param workspace_id: Workspace ID which contains item
+    :param item_id:      Workitem ID
+    :param adapter:      Adapter for storage backend
     """
 
     def __init__(self, workspace_id, item_id, adapter):
@@ -418,7 +437,9 @@ class WorkItem:
 
         :param name: Name of attached file
         :param path: Destination path. Default to current working directory.
-        :returns:    Path to created file
+
+        Returns:
+            Path to created file
         """
         if name not in self.files:
             raise FileNotFoundError(f"No such file: {name}")
@@ -445,7 +466,7 @@ class WorkItem:
 
         :param path: Path to file to upload
         :param name: Name of file in work item. If not given,
-                     name of file on disk is used.
+        :param name of file on disk is used.
         """
         path = Path(path).resolve()
 
@@ -468,6 +489,7 @@ class WorkItem:
         until ``save()`` is called.
 
         :param name: Name of attached file
+        :param missing_ok: Do not raise exception if file doesn't exist
         """
         if not missing_ok and name not in self.files:
             raise FileNotFoundError(f"No such file: {name}")
@@ -484,7 +506,7 @@ class WorkItem:
 class Items:
     """A library for interacting with RPA work items.
 
-    `Items` is a collection of keywords for handling data
+    *Items* is a collection of keywords for handling data
     that is moved between different processes and Robot Framework
     tasks. It allows storing and restoring values to/from cloud or file based
     storage, and manipulating their contents.
@@ -494,9 +516,9 @@ class Items:
 
     Environment variables:
 
-    * RPA_WORKITEMS_ADAPTER: Import path to adapter, e.g. "mymodule.MyAdapter"
-    * RC_WORKSPACE_ID:       Current default workspace ID
-    * RC_WORKITEM_ID:        Current default work item ID
+    - RPA_WORKITEMS_ADAPTER: Import path to adapter, e.g. "mymodule.MyAdapter"
+    - RC_WORKSPACE_ID: Current default workspace ID
+    - RC_WORKITEM_ID: Current default work item ID
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -546,10 +568,8 @@ class Items:
     def load_work_item_from_environment(self):
         """Load current work item defined by the runtime environment.
 
-        The corresponding environment variables are:
-
-        * RC_WORKSPACE_ID
-        * RC_WORKITEM_ID
+        The corresponding environment variables are `RC_WORKSPACE_ID` and
+        `RC_WORKITEM_ID`.
         """
         workspace_id = required_env("RC_WORKSPACE_ID")
         item_id = required_env("RC_WORKITEM_ID")
@@ -558,11 +578,12 @@ class Items:
     def load_work_item(self, workspace_id, item_id):
         """Load work item for reading/writing.
 
-        NOTE: Currently only one work item per execution is supported
-              by Robocorp Cloud, which should be loaded automatically.
+        Note:
+            Currently only one work item per execution is supported
+            by Robocorp Cloud, which should be loaded automatically.
 
-        :param workspace_id:    Workspace ID which contains item
-        :param item_id:         Workitem ID to load
+        :param workspace_id (str): Workspace ID which contains item
+        :param item_id (str): Workitem ID to load
         """
         item = WorkItem(workspace_id, item_id, self.adapter)
         item.load()
@@ -581,11 +602,8 @@ class Items:
         """Remove all data in the current work item.
 
         Example:
-
-        .. code-block:: robotframework
-
-            Clear work item
-            Save work item
+        | Clear work item |
+        | Save work item |
         """
         assert self.current, "No active work item"
         self.current.data = {}
@@ -594,14 +612,12 @@ class Items:
     def get_work_item_payload(self):
         """Get the full JSON payload for a work item.
 
-        NOTE: Most use cases should prefer higher-level keywords.
-
         Example:
+        | ${payload}= | Get work item payload |
+        | Log | Entire payload as dictionary: ${payload} |
 
-        .. code-block:: robotframework
-
-            ${payload}=    Get work item payload
-            Log    Entire payload as dictionary: ${payload}
+        Note:
+            Most use cases should prefer higher-level keywords.
         """
         assert self.current, "No active work item"
         return self.current.data
@@ -609,16 +625,14 @@ class Items:
     def set_work_item_payload(self, payload):
         """Set the full JSON payload for a work item.
 
-        NOTE: Most use cases should prefer higher-level keywords.
+        Note:
+            Most use cases should prefer higher-level keywords.
 
         Example:
+        | ${output}= | Create dictionary | url=example.com | username=Mark |
+        | Set work item payload | ${output} |
 
-        .. code-block:: robotframework
-
-            ${output}=    Create dictionary    url=example.com    username=Mark
-            Set work item payload    ${output}
-
-        :param payload: Content of payload, must be JSON-serializable
+        :param payload (any): Content of payload, must be JSON-serializable
         """
         assert self.current, "No active work item"
         self.current.data = payload
@@ -627,28 +641,23 @@ class Items:
         """List the variable names for the current work item.
 
         Example:
-
-        .. code-block:: robotframework
-
-            ${variables}=    List work item variables
-            Log    Available variables in work item: ${variables}
+        | ${variables}= | List work item variables |
+        | Log | Available variables in work item: ${variables} |
 
         """
         return list(self.get_work_item_variables().keys())
 
     def get_work_item_variable(self, name, default=UNDEFINED):
-        """Return a single variable value from the work item,
-        or default value if defined and key does not exist.
+        """Return a single variable value from the work item.
+
         If key does not exist and default is not defined, raises `KeyError`.
 
         Example:
+        | ${username}= | Get Work Item Variable | username |
+        | ${password}= | Get Work Item Variable | password | default=${EMPTY} |
 
-        .. code-block:: robotframework
-
-            ${username}=    Get work item variable    username    default=guest
-
-        :param key:     Name of variable
-        :param default: Default value if key does not exist
+        :param name (str):    Name of variable
+        :param default (any): Default value if key does not exist
         """
         variables = self.get_work_item_variables()
         value = variables.get(name, default)
@@ -664,11 +673,10 @@ class Items:
         return their names and values as a dictionary.
 
         Example:
+        | ${variables}= | Get work item variables |
+        | Log | Username: ${variables}[username], Email: ${variables}[email] |
 
-        .. code-block:: robotframework
-
-            ${variables}=    Get work item variables
-            Log    Username: ${variables}[username], Email: ${variables}[email]
+        :param **kwargs: Pairs of variable names and values
         """
         assert self.current, "No active work item"
         return self.current.data.setdefault("variables", {})
@@ -677,14 +685,11 @@ class Items:
         """Set a single variable value in the current work item.
 
         Example:
+        | Set work item variable | username | MarkyMark |
+        | Save work item |
 
-        .. code-block:: robotframework
-
-            Set work item variable    username    MarkyMark
-            Save work item
-
-        :param key:     Name of variable
-        :param value:   Value of variable
+        :param name (str): Name of variable
+        :param value (any): Value of variable
         """
         variables = self.get_work_item_variables()
         logging.info("%s = %s", name, value)
@@ -694,13 +699,10 @@ class Items:
         """Set multiple variables in the current work item.
 
         Example:
+        | Set work item variables | username=MarkyMark | email=mark@example.com |
+        | Save work item |
 
-        .. code-block:: robotframework
-
-            Set work item variables    username=MarkyMark    email=mark@example.com
-            Save work item
-
-        :param kwargs: Pairs of variable names and values
+        :param **kwargs: Pairs of variable names and values
         """
         variables = self.get_work_item_variables()
         for name, value in kwargs.items():
@@ -711,14 +713,11 @@ class Items:
         """Delete variable(s) from the current work item.
 
         Example:
+        | Delete work item variables | username | email |
+        | Save work item |
 
-        .. code-block:: robotframework
-
-            Delete work item variables    username    email
-            Save work item
-
-        :param names:  names of variables to remove
-        :param force:  ignore variables that don't exist in work item
+        :param *names (str): Names of variables to remove
+        :param force (bool): Ignore variables that don't exist in work item
         """
         variables = self.get_work_item_variables()
         for name in names:
@@ -733,13 +732,9 @@ class Items:
         Robot Framework task variables.
 
         Example:
-
-        .. code-block:: robotframework
-
-            # Work item has variable INPUT_URL
-            Set task variables from work item
-            Log    The variable is now available: ${INPUT_URL}
-
+        | # Work item has variable INPUT_URL |
+        | Set task variables from work item |
+        | Log | The variable is now available: ${INPUT_URL} |
         """
         variables = self.get_work_item_variables()
         for name, value in variables.items():
@@ -749,12 +744,8 @@ class Items:
         """List the names of files attached to the current work item.
 
         Example:
-
-        .. code-block:: robotframework
-
-            ${names}=    List work item files
-            Log    Work item has files with names: ${names}
-
+        | ${names}= | List work item files |
+        | Log | Work item has files with names: ${names} |
         """
         assert self.current, "No active work item"
         return self.current.files
@@ -764,15 +755,12 @@ class Items:
         Returns the absolute path to the created file.
 
         Example:
-
-        .. code-block:: robotframework
-
-            ${path}=    Get work item file    input.xls
-            Open workbook    ${path}
+        | ${path}= | Get work item file | input.xls |
+        | Open workbook | ${path} |
 
         :param name: Name of attached file
         :param path: Destination path of file. If not given, current
-                     working directory is used.
+        :param working directory is used.
         """
         assert self.current, "No active work item"
         path = self.current.get_file(name, path)
@@ -782,18 +770,16 @@ class Items:
     def add_work_item_file(self, path, name=None):
         """Add given file to work item.
 
-        NOTE: Files are not uploaded before work item is saved
+        Note:
+            Files are not uploaded before work item is saved
 
         Example:
-
-        .. code-block:: robotframework
-
-            Add work item file    output.xls
-            Save work item
+        | Add work item file | output.xls |
+        | Save work item |
 
         :param path: Path to file on disk
         :param name: Destination name for file. If not given, current name
-                     of local file is used.
+        :param of local file is used.
         """
         assert self.current, "No active work item"
         logging.info("Adding file: %s", path)
@@ -805,13 +791,10 @@ class Items:
         NOTE: Files are not deleted before work item is saved
 
         Example:
+        | Remove work item file | input.xls |
+        | Save work item |
 
-        .. code-block:: robotframework
-
-            Remove work item file    input.xls
-            Save work item
-
-        :param name:       Name of attached file
+        :param name: Name of attached file
         :param missing_ok: Do not raise exception if file doesn't exist
         """
         assert self.current, "No active work item"
@@ -823,13 +806,10 @@ class Items:
         Returns a list of absolute paths to the downloaded files.
 
         Example:
-
-        .. code-block:: robotframework
-
-            ${paths}=    Get work item files    customer_*.xlsx
-            FOR  ${path}  IN  @{paths}
-                Handle customer file    ${path}
-            END
+        | ${paths}= | Get work item files | customer_*.xlsx |
+        | FOR | ${path} | IN | @{paths} |
+        | Handle customer file | ${path} |
+        | END |
 
         :param pattern: Filename wildcard pattern
         :param dirname: Destination directory, if not given robot root is used
@@ -850,11 +830,8 @@ class Items:
         """Add all files that match given pattern to work item.
 
         Example:
-
-        .. code-block:: robotframework
-
-            Add work item files    %{ROBOT_ROOT}/generated/*.csv
-            Save work item
+        | Add work item files | %{ROBOT_ROOT}/generated/*.csv |
+        | Save work item |
 
         :param pattern: Path wildcard pattern
         """
@@ -872,11 +849,8 @@ class Items:
         """Removes files attached to work item that match given pattern.
 
         Example:
-
-        .. code-block:: robotframework
-
-            Remove work item files    *.xlsx
-            Save work item
+        | Remove work item files | *.xlsx |
+        | Save work item |
 
         :param pattern: Filename wildcard pattern
         :param missing_ok: Do not raise exception if file doesn't exist

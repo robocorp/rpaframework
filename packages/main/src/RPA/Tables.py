@@ -53,12 +53,13 @@ class Table:
       can be namedtuples, dictionaries, lists, or tuples
     - dict: Dictionary of columns as keys and rows as values
 
-    .. todo:: Integers as column names? Columns forced to strings?
-    .. todo:: Implement column slicing
-    .. todo:: Existing column to index conversion
-    .. todo:: Index accessing through dot notation?
-    .. todo:: Index name conflict in exports/imports
-    .. todo:: Return Robot Framework DotDict instead of dict?
+    Todo:
+        * Integers as column names? Columns forced to strings?
+        * Implement column slicing
+        * Existing column to index conversion
+        * Index accessing through dot notation?
+        * Index name conflict in exports/imports
+        * Return Robot Framework DotDict instead of dict?
 
     :param data:     values for table,  see "Supported data formats"
     :param columns:  names for columns, should match data dimensions
@@ -343,9 +344,10 @@ class Table:
         """Helper method for accessing items in the Table.
 
         Examples:
-            table[:10]              First 10 rows
-            table[0,1]              Value in first row and second column
-            table[2:10,"email"]     Values in "email" column for rows 3 to 11
+
+        table[:10]              First 10 rows
+        table[0,1]              Value in first row and second column
+        table[2:10,"email"]     Values in "email" column for rows 3 to 11
         """
         # Both row index and columns given
         if isinstance(key, tuple):
@@ -363,8 +365,9 @@ class Table:
         """Helper method for setting items in the Table.
 
         Examples:
-            table[5]  = ["Mikko", "Mallikas"]
-            table[:2] = [["Marko", "Markonen"], ["Pentti", "Penttinen"]]
+
+        table[5] = ["Mikko", "Mallikas"]
+        table[:2] = [["Marko", "Markonen"], ["Pentti", "Penttinen"]]
         """
         # Both row index and columns given
         if isinstance(key, tuple):
@@ -433,6 +436,7 @@ class Table:
 
         :param indexes: list of indexes, or all if not given
         :param columns: list of columns, or all if not given
+        :param as_list: return row as dictionary, instead of list
         """
         indexes = if_none(indexes, self._index)
         columns = if_none(columns, self._columns)
@@ -861,82 +865,73 @@ class Tables:
     """Robot Framework library for manipulating tabular data."""
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 
     @staticmethod
-    def requires_table(obj):
+    def _requires_table(obj):
         if not isinstance(obj, Table):
             raise TypeError("Keyword requires Table object")
 
     def create_table(self, data=None, trim=False):
-        """Create Table object from data.
+        """Create Table object from ``data``.
 
         Data can be a combination of various iterable containers, e.g.
         list of lists, list of dicts, dict of lists.
 
-        :param data:    source data for table
-        :param trim:    remove all empty rows from the end of the worksheet,
-                        default `False`
+        If ``trim`` is a truthy value, all empty rows and columns
+        are discarded.
         """
         table = Table(data)
         self.logger.info("Created table: %s", table)
         if trim:
             self.trim_empty_rows(table)
             self.trim_column_names(table)
+
         notebook_table(self.table_head(table, 10))
         return table
 
     def export_table(self, table, with_index=False, as_list=True):
-        """Convert table object to standard Python containers.
+        """Convert ``table`` object to standard Python containers.
 
-        :param table:       table to convert to dict
-        :param with_index:  include index in values
-        :param as_list:     export data as list instead of dict
+        If ``with_index`` is truthy, the index nams are included in the result.
+
+        By default the export format is a list, but if the argument
+        ``as_list`` is set to a falsy value, a dictionary is exported instead.
         """
-        self.requires_table(table)
+        self._requires_table(table)
         if as_list:
             return table.to_list(with_index)
         else:
             return table.to_dict(with_index)
 
     def copy_table(self, table):
-        """Copy table object.
-
-        :param table:   table to copy
-        """
-        self.requires_table(table)
+        """Copy ``table`` object and return it."""
+        self._requires_table(table)
         return table.copy()
 
     def clear_table(self, table):
-        """Clear table in-place, but keep columns.
-
-        :param table:   table to clear
-        """
-        self.requires_table(table)
+        """Clear ``table`` in-place, but keep column names."""
+        self._requires_table(table)
         table.clear()
 
     def get_table_dimensions(self, table):
-        """Return table dimensions, as (rows, columns).
-
-        :param table:    table to inspect
-        """
-        self.requires_table(table)
+        """Return ``table`` dimensions, as (rows, columns)."""
+        self._requires_table(table)
         notebook_print(text=table.dimensions)
         return table.dimensions
 
     def rename_table_columns(self, table, columns, strict=False):
-        """Renames columns in the Table with given values. Columns with
-        name as `None` will be use previous value.
+        """Renames columns in ``table`` with ``columns``.
 
-        :param table:   table to modify
-        :param columns: list of new column names
-        :param strict:  if True, raises ValueError if column lengths
-                        do not match
+        Columns with name as ``None`` will use previous value.
+
+        If ``strict`` is enabled, an error will be raised unless a new name
+        is given for each existing column.
         """
-        self.requires_table(table)
+        self._requires_table(table)
         before = table.columns
 
         if strict and len(before) != len(columns):
@@ -954,76 +949,76 @@ class Tables:
         table.columns = after
 
     def add_table_column(self, table, name=None, values=None):
-        """Append a column to a table.
+        """Append a column to ``table``.
 
-        :param table:   table to modify
-        :param name:    name of new column
-        :param values:  row values (or single scalar value for all rows)
+        If no ``name`` is given, a numeric value is generated.
+
+        Optionally initial ``values`` can be supplied for each row in the
+        resulting columns, or a single scalar value which is used
+        for all rows.
         """
-        self.requires_table(table)
+        self._requires_table(table)
         table.append_column(name, values)
 
     def add_table_row(self, table, row, index=None):
-        """Append rows to a table.
+        """Append rows to a ``table``.
 
-        :param table:   table to modify
-        :param row:     value for new row
-        :param index:   index name for new row
+        The content of the ``row`` can be either a list-like or dict-like
+        container. With the latter, column names are assumed to match.
+
+        Optionally a name can be supplied with the ``index`` argument.
         """
-        self.requires_table(table)
+        self._requires_table(table)
         table.append_row(row, index=index)
 
     def get_table_row(self, table, index, as_list=False):
-        """Get a single row from table.
+        """Get a single row from `table`.
 
-        :param table:   table to read
-        :param row:     row to read
-        :param as_list: return list instead of dictionary
+        A row is identified with `index`, which is either a named
+        row or a generated integer index.
+
+        Optionally the values can be returned as a list instead of a dictionary
+        by setting the ``as_list`` argument.
         """
-        self.requires_table(table)
+        self._requires_table(table)
         row = table.get_row(index, as_list=as_list)
         notebook_print(text=row)
         return row
 
     def get_table_column(self, table, column, as_list=False):
-        """Get all column values from table.
+        """Get all ``column`` values from ``table``.
 
-        :param table:   table to read
-        :param column:  column to read
-        :param as_list: return list instead of dictionary
+        Optionally the values can be returned as a list instead of a dictionary
+        by setting the ``as_list`` argument.
         """
-        self.requires_table(table)
+        self._requires_table(table)
         col = table.get_column(column, as_list=as_list)
         return col
 
     def set_table_row(self, table, row, values):
-        """Assign values to a row in the table.
+        """Assign ``values`` to a ``row`` in the ``table``.
 
-        :param table:   table to modify
-        :param row:     row to modify
-        :param values:  value(s) to set
+        A row is identified with `index`, which is either a named
+        row or a generated integer index.
         """
-        self.requires_table(table)
+        self._requires_table(table)
         table.set_row(row, values)
 
     def set_table_column(self, table, column, values):
-        """Assign values to entire column in the table.
-
-        :param table:   table to modify
-        :param column:  column to modify
-        :param values:  value(s) to set
-        """
-        self.requires_table(table)
+        """Assign ``values`` to entire ``column`` in the ``table``."""
+        self._requires_table(table)
         table.set_column(column, values)
 
     def pop_table_row(self, table, index=None, as_list=False):
-        """Remove row from table and return it.
+        """Remove row from ``table`` and return it.
 
-        :param table:   table to modify
-        :param index:   row index, pops first row if none given
-        :param as_list: return list instead of dictionary
+        If no row is defined with the ``index`` argument, the first row is
+        returned.
+
+        Optionally the values can be returned as a list instead of a dictionary
+        by setting the ``as_list`` argument.
         """
-        self.requires_table(table)
+        self._requires_table(table)
         index = if_none(index, table.index[0])
 
         values = table.get_row(index, as_list=as_list)
@@ -1031,13 +1026,14 @@ class Tables:
         return values
 
     def pop_table_column(self, table, column=None, as_list=False):
-        """Remove column from table and return it.
+        """Remove column from ``table`` and return it.
 
-        :param table:   table to modify
-        :param column:  column to remove
-        :param as_list: return list instead of dictionary
+        If no ``column`` name is given, returns the first column.
+
+        Optionally the values can be returned as a list instead of a dictionary
+        by setting the ``as_list`` argument.
         """
-        self.requires_table(table)
+        self._requires_table(table)
         column = if_none(column, table.columns[0])
 
         values = self.get_table_column(table, column, as_list)
@@ -1045,82 +1041,62 @@ class Tables:
         return values
 
     def get_table_slice(self, table, start=None, end=None):
-        """Return a new Table from a subset of given Table rows.
+        """Return a new table from a subset of given ``table`` rows.
 
-        :param table:   table to read from
-        :param start:   start index (inclusive)
-        :param start:   end index (inclusive)
+        The ``start`` and ``end`` values for rows are either names
+        or integer positions. Both are included in the returned slice.
         """
-        self.requires_table(table)
+        self._requires_table(table)
         return table.get_slice(start, end)
 
     def set_column_as_index(self, table, column=None):
         """Set existing column as index for rows.
 
-        :param table:   table to modify
-        :param column:  column to convert to index
+        If no ``column`` name is given, the first column is used.
         """
         values = self.pop_table_column(table, column, as_list=True)
         table.index = values
 
     def table_head(self, table, count=5, as_list=False):
-        """Return first `count` rows from table.
+        """Return first ``count`` rows from ``table``.
 
-        :param table:   table to read from
-        :param count:   number of lines to read
-        :param as_list: return list instead of Table
+        Optionally the values can be returned as a list instead of a dictionary
+        by setting the ``as_list`` argument.
         """
-        self.requires_table(table)
+        self._requires_table(table)
         return table.head(count, as_list)
 
     def table_tail(self, table, count=5, as_list=False):
-        """Return last `count` rows from table.
+        """Return last ``count`` rows from ``table``.
 
-        :param table:   table to read from
-        :param count:   number of lines to read
-        :param as_list: return list instead of Table
+        Optionally the values can be returned as a list instead of a dictionary
+        by setting the ``as_list`` argument.
         """
-        self.requires_table(table)
+        self._requires_table(table)
         return table.tail(count, as_list)
 
     def get_table_cell(self, table, row, column):
-        """Get a cell value from table.
-
-        :param table:   table to read from
-        :param row:     row of cell
-        :param column:  column of cell
-        """
-        self.requires_table(table)
+        """Get value from ``row`` and ``column`` in ``table``."""
+        self._requires_table(table)
         return table.get_cell(row, column)
 
     def set_table_cell(self, table, row, column, value):
-        """Set a cell value in the table.
-
-        :param table:   table to modify to
-        :param row:     row of cell
-        :param column:  column of cell
-        :param value:   value to set
-        """
-        self.requires_table(table)
+        """Set a cell value in the table."""
+        self._requires_table(table)
         table.set_cell(row, column, value)
 
     def sort_table_by_column(self, table, column, ascending=False):
         """Sort table in-place according to `column`.
 
-        :param table:       table to sort
-        :param column:      column to sort with
-        :param ascending:   table sort order
+        By default the table is sorted in descending order, but can be controlled
+        by setting the option ``ascending``.
         """
-        self.requires_table(table)
+        self._requires_table(table)
         table.sort_by_column(column, ascending=ascending)
 
     def group_table_by_column(self, table, column):
-        """Group table by `column` and return a list of grouped Tables.
-
-        :param table:   table to use for grouping
-        :param column:  column which is used as grouping criteria
-        """
-        self.requires_table(table)
+        """Group table by ``column`` and return a list of grouped tables."""
+        self._requires_table(table)
         groups = table.group_by_column(column)
         self.logger.info("Found %s groups", len(groups))
         return groups
@@ -1128,12 +1104,13 @@ class Tables:
     def filter_table_by_column(self, table, column, operator, value):
         """Return all rows where the column values match the given condition.
 
-        :param table:       table to filter
-        :param column:      column to filter with
-        :param operator:    filtering operator, e.g. >, <, ==, contains
-        :param value:       value to compare column to (using operator)
+        The supported operators are: >, <, >=, <=, ==, !=, in, contains
+
+        Examples:
+        | Filter table by column | ${products} | cost | >= | 100 |
+        | Filter table by column | ${users} | email | contains | robocorp.com |
         """
-        self.requires_table(table)
+        self._requires_table(table)
 
         operator = str(operator).lower().strip()
         condition = {
@@ -1155,11 +1132,8 @@ class Tables:
         self.logger.info("Rows after filtering: %s", len(table))
 
     def filter_empty_rows(self, table):
-        """Remove all rows from the table which have only None values.
-
-        :param table:   table to filter
-        """
-        self.requires_table(table)
+        """Remove all rows from the table which have only None values."""
+        self._requires_table(table)
 
         empty = []
         for idx, row in table.iter_lists():
@@ -1170,11 +1144,9 @@ class Tables:
 
     def trim_empty_rows(self, table):
         """Remove all rows from the end of the table
-        which have only None values.
-
-        :param table:    table to filter
+        which have only ``None`` values.
         """
-        self.requires_table(table)
+        self._requires_table(table)
 
         empty = []
         for idx in reversed(table.index):
@@ -1187,7 +1159,8 @@ class Tables:
 
     def trim_column_names(self, table):
         """Remove all extraneous whitespace from column names."""
-        self.requires_table(table)
+        self._requires_table(table)
+
         table.columns = [
             column.strip() if isinstance(column, str) else column
             for column in table.columns
@@ -1210,12 +1183,6 @@ class Tables:
         The ``columns`` argument can be used to override the names of columns
         in the resulting table. The amount of columns must match the input
         data.
-
-        :param path:        path to CSV file
-        :param header:      CSV file includes header
-        :param columns:     names of columns in resulting table
-        :param dialect:     format of CSV file
-        :param delimiters:  string of possible delimiters
         """
         sniffer = csv.Sniffer()
         with open(path, newline="") as fd:
@@ -1240,14 +1207,10 @@ class Tables:
     def write_table_to_csv(self, table, path, header=True, dialect="excel"):
         """Write a table as a CSV file.
 
-        Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``.
-
-        :param path:    path to write to
-        :param table:   table to write
-        :param header:  write columns as header to CSV file
-        :param dialect: the format of output CSV
+        If ``header`` is set, the column names are included in the CSV file.
+        Valid ``dialect`` values are: ``excel``, ``excel-tab``, and ``unix``.
         """
-        self.requires_table(table)
+        self._requires_table(table)
 
         with open(path, mode="w", newline="") as fd:
             writer = csv.DictWriter(fd, fieldnames=table.columns, dialect=dialect)

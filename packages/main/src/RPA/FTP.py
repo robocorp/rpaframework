@@ -39,7 +39,7 @@ class FTP:
     """RPA Framework library for FTP operations"""
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
 
     def __init__(self):
         self.instance = None
@@ -54,15 +54,12 @@ class FTP:
         tls: bool = False,
         transfer: str = "passive",
     ):
-        """Connect to FTP server
+        """Connect to FTP server at given ``host`` and ``port``.
 
-        :param host: address of the server
-        :param port: port of the server, defaults to 21
-        :param user: login name, defaults to None
-        :param password: login password, defaults to None
-        :param tls: connect using TLS support, defaults to False
-        :param transfer: mode of the transfer, defaults to "passive"
-        :raises AuthenticationException: on authentication error with the server
+        TLS support can be enabled with the ``tls`` parameter,
+        and the ``transfer`` mode can be changed from passive.
+
+        Raises an AuthenticationException if there are issues in permissions.
         """
         try:
             if tls:
@@ -85,7 +82,7 @@ class FTP:
         return True
 
     def quit(self):
-        """Send QUIT command to the server and close connection"""
+        """Send QUIT command to the server and close connection."""
         try:
             self.instance.quit()
         except all_errors as e:
@@ -95,27 +92,25 @@ class FTP:
             self.instance = None
 
     def close(self):
-        """Close connection to the server unilaterally"""
+        """Close connection to the server unilaterally."""
         if self.instance:
             self.instance.close()
             self.instance = None
 
     @ftpcommand
     def upload(self, localfile: str, remotefile: str) -> bool:
-        """Upload file to FTP server
+        """Upload file to FTP server.
 
-        :param localfile: path to file to upload
-        :param remotefile: name of uploaded file in the server
+        Stores a local file with a given name on the remote server.
         """
         cmd = f"STOR {remotefile}"
         self.instance.storbinary(cmd, open(localfile, "rb"))
 
     def download(self, remotefile: str, localfile: str = None) -> bool:
-        """Download file from FTP server
+        """Download file from FTP server.
 
-        :param remotefile: path to remote file on the server
-        :param localfile: name of the downloaded file on the local filesystem,
-            if `None` will have same name as remote file
+        Optionally a path to resulting local path can be supplied,
+        otherwise the original name is used.
         """
         if self.instance is None:
             raise FTPException("No FTP connection")
@@ -139,10 +134,7 @@ class FTP:
 
     @ftpcommand
     def cwd(self, dirname: str) -> bool:
-        """Change working directory on the server
-
-        :param dirname: name of the directory
-        """
+        """Change working directory on the server."""
         self.instance.cwd(dirname)
 
     @ftpcommand
@@ -152,26 +144,17 @@ class FTP:
 
     @ftpcommand
     def mkd(self, dirname: str) -> bool:
-        """Create a new directory on the server
-
-        :param dirname: name of the directory
-        """
+        """Create a new directory on the server."""
         self.instance.mkd(dirname)
 
     @ftpcommand
     def rmd(self, dirname: str) -> bool:
-        """Remove directory on the server
-
-        :param dirname: name of the directory
-        """
+        """Remove directory on the server."""
         self.instance.rmd(dirname)
 
     @ftpcommand
     def list_files(self, dirname: str = None) -> dict:
-        """List files on the server directory
-
-        :param dirname: name of the directory
-        """
+        """List files on the server directory."""
         try:
             files = list(self.instance.mlsd(path=dirname))
             return files
@@ -181,39 +164,26 @@ class FTP:
 
     @ftpcommand
     def delete(self, filepath: str) -> bool:
-        """Delete file on the server
-
-        :param filepath: path to server file
-        """
+        """Delete file on the server."""
         self.instance.delete(filepath)
 
     @ftpcommand
     def rename(self, fromname: str, toname: str) -> bool:
-        """Rename file on the server
-
-        :param fromname: current name of the file
-        :param toname: new name for the file
-        """
+        """Rename file on the server."""
         self.instance.rename(fromname, toname)
 
     @ftpcommand
     def send_command(self, command: str) -> bool:
-        """Execute command on the server
+        """Execute raw command on the server
 
-        List of FTP commands
-
+        List of FTP commands:
         https://en.wikipedia.org/wiki/List_of_FTP_commands
-
-        :param command: name of the command to send
         """
         return self.instance.sendcmd(command)
 
     @ftpcommand
     def file_size(self, filepath: str) -> int:
-        """Return byte size of the file on the server
-
-        :param filepath: path to server file
-        """
+        """Return byte size of the file on the server."""
         self.set_binary_mode()
         return self.instance.size(filepath)
 
@@ -224,21 +194,17 @@ class FTP:
 
     @ftpcommand
     def get_welcome_message(self) -> str:
-        """Get server welcome message
-
-        :return: welcome message
-        """
+        """Get server welcome message."""
         return self.instance.getwelcome()
 
     @ftpcommand
     def set_debug_level(self, level: int = 0) -> bool:
-        """Set debug level for the library
+        """Set debug level for the library.
 
-        0 - no debugging output
-        1 - moderate amount of debugging
-        2+ - higher amount of debugging
-
-        :param level: integer value of debug level, defaults to 0
+        The supported debug levels are:
+        | 0  | no debugging output |
+        | 1  | moderate amount of debugging |
+        | 2+ | higher amount of debugging |
         """
         if level >= 0:
             self.instance.set_debuglevel(level)
@@ -246,9 +212,9 @@ class FTP:
             self.logger.warning("Valid debug levels are 0, 1 or 2+")
 
     def set_ascii_mode(self):
-        """Set transfer mode to ASCII"""
+        """Set transfer mode to ASCII."""
         self.send_command("TYPE a")
 
     def set_binary_mode(self):
-        """Set transfer mode to BINARY"""
+        """Set transfer mode to BINARY."""
         self.send_command("TYPE i")

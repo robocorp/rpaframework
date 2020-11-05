@@ -35,8 +35,8 @@ class Application:
     ) -> None:
         """Open the Outlook application.
 
-        :param visible: show window after opening
-        :param display_alerts: show alert popups
+        :param visible (bool): show window after opening
+        :param display_alerts (bool): show alert popups
         """
         self.app = win32com.client.gencache.EnsureDispatch("Outlook.Application")
 
@@ -48,12 +48,18 @@ class Application:
             self.app.DisplayAlerts = display_alerts
 
     def close_document(self, save_changes: bool = False) -> None:
-        """Close the active document (if open)."""
+        """Close the active document (if open).
+
+        :param save_changes (bool): if changes should be saved on close, default False
+        """
         if self.app is not None:
             self.app.ActiveDocument.Close(save_changes)
 
     def quit_application(self, save_changes: bool = False) -> None:
-        """Quit the application."""
+        """Quit the application.
+
+        :param save_changes (bool): if changes should be saved on quit, default False
+        """
         if self.app is not None:
             self.close_document(save_changes)
             self.app.Quit()
@@ -69,12 +75,14 @@ class Application:
     ) -> bool:
         """Send message with Outlook
 
-        :param recipients: list of addresses
-        :param subject: email subject
-        :param body: email body
-        :param html_body: True if body contains HTML, defaults to False
-        :param attachments: list of filepaths to include in the email, defaults to []
-        :return: `True` if there were no errors
+        :param recipients (Any): list of addresses
+        :param subject (str): email subject
+        :param body (str): email body
+        :param html_body (bool): True if body contains HTML, defaults to False
+        :param attachments (Any): list of filepaths to include in the email, defaults to []
+
+        Returns:
+            True if there were no errors
         """
         # pylint: disable=no-member
         attachments = attachments or []
@@ -164,13 +172,15 @@ class Application:
 
         Possible wait criterias are: SUBJECT, SENDER and BODY
 
-        Examples:
-            - wait_for_message('SUBJECT:rpa task calling', timeout=300, interval=10)
+        Example:
+        | Wait For Message | SUBJECT:rpa task calling | timeout=300 | interval=10 |
 
-        :param criterion: message filter to wait for, defaults to ""
-        :param timeout: total time in seconds to wait for email, defaults to 5.0
-        :param interval: time in seconds for new check, defaults to 1.0
-        :return: list of messages or False
+        :param criterion (str): message filter to wait for, defaults to ""
+        :param timeout (float): total time in seconds to wait for email, defaults to 5.0
+        :param interval (float): time in seconds for new check, defaults to 1.0
+
+        Returns:
+            list of messages or False
         """
         if self.app is None:
             raise ValueError("Requires active Outlook Application")

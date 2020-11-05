@@ -137,8 +137,7 @@ class Files:
     def save_workbook(self, path=None):
         """Save the active workbook.
 
-        :param path: Path to save to. If not given, uses path given
-                     when opened or created.
+        :param path: Path to save to. If not given, uses path given when opened or created.
         """
         assert self.workbook, "No active workbook"
 
@@ -166,7 +165,10 @@ class Files:
         return self.workbook.sheetnames
 
     def worksheet_exists(self, name):
-        """Return True if worksheet with given name is in workbook."""
+        """Return True if worksheet with given name is in workbook.
+
+        :param name: Name of worksheet
+        """
         assert self.workbook, "No active workbook"
         return bool(str(name) in self.list_worksheets())
 
@@ -206,7 +208,8 @@ class Files:
 
         :param name:   Name of worksheet to read
         :param header: If `True`, use the first row of the worksheet
-                       as headers for the rest of the rows.
+        :param as headers for the rest of the rows.
+        :param start: Row index to start reading data from (1-indexed)
         """
         assert self.workbook, "No active workbook"
         return self.workbook.read_worksheet(name, header, start)
@@ -217,7 +220,7 @@ class Files:
 
         :param name:   Name of worksheet to read
         :param header: If `True`, use the first row of the worksheet
-                       as headers for the rest of the rows.
+        :param as headers for the rest of the rows.
         :param trim:   Remove all empty rows from the end of the worksheet
         :param start:  Row index to start reading data from (1-indexed)
         """
@@ -231,7 +234,7 @@ class Files:
         :param content: Rows of values to append
         :param name:    Name of worksheet to append to
         :param header:  Set rows according to existing header row
-        :param start:   Start of data, NOTE: Only required when headers is True
+        :param start:   Start of data, NOTE: Only required when ``header`` is True
         """
         assert self.workbook, "No active workbook"
         return self.workbook.append_worksheet(name, content, header, start)

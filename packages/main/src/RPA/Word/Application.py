@@ -38,8 +38,8 @@ class Application:
     ) -> None:
         """Open the Word application.
 
-        :param visible: show window after opening
-        :param display_alerts: show alert popups
+        :param visible (bool): show window after opening
+        :param display_alerts (bool): show alert popups
         """
         self.app = win32com.client.gencache.EnsureDispatch("Word.Application")
 
@@ -51,12 +51,18 @@ class Application:
             self.app.DisplayAlerts = display_alerts
 
     def close_document(self, save_changes: bool = False) -> None:
-        """Close the active document (if open)."""
+        """Close the active document (if open).
+
+        :param save_changes (bool): if changes should be saved on close, default False
+        """
         if self.app is not None:
             self.app.ActiveDocument.Close(save_changes)
 
     def quit_application(self, save_changes: bool = False) -> None:
-        """Quit the application."""
+        """Quit the application.
+
+        :param save_changes (bool): if changes should be saved on quit, default False
+        """
         if self.app is not None:
             self.close_document(save_changes)
             self.app.Quit()
@@ -65,7 +71,7 @@ class Application:
     def open_file(self, filename: str = None) -> None:
         """Open Word document with filename.
 
-        :param filename: Word document filepath, defaults to None
+        :param filename (str): Word document filepath, defaults to None
         """
         if filename is not None:
             word_filepath = str(Path(filename).resolve())
@@ -85,7 +91,7 @@ class Application:
     def export_to_pdf(self, filename: str) -> None:
         """Export active document into PDF file.
 
-        :param filename: PDF to export WORD into
+        :param filename (str): name of source PDF to export
         """
         absolute_filepath = str(Path(filename).resolve())
         self.app.ActiveDocument.ExportAsFixedFormat(
@@ -95,8 +101,8 @@ class Application:
     def write_text(self, text: str, newline: bool = True) -> None:
         """Writes given text at the end of the document
 
-        :param text: string to write
-        :param newline: write text to newline if True, default to True
+        :param text (str): string to write
+        :param newline (bool): write text to newline if True, default to True
         """
         self.app.Selection.EndKey(Unit=constants.wdStory)
         if newline:
@@ -107,15 +113,15 @@ class Application:
     def replace_text(self, find: str, replace: str) -> None:
         """Replace text in active document
 
-        :param find: text to replace
-        :param replace: new text
+        :param find (str): text to replace
+        :param replace (str): new text
         """
         self.app.ActiveDocument.Content.Find.Execute(FindText=find, ReplaceWith=replace)
 
     def set_header(self, text: str) -> None:
         """Set header for the active document
 
-        :param text: header text to set
+        :param text (str): header text to set
         """
         for section in self.app.ActiveDocument.Sections:
             for header in section.Headers:
@@ -124,7 +130,7 @@ class Application:
     def set_footer(self, text: str) -> None:
         """Set footer for the active document
 
-        :param text: footer text to set
+        :param text (str): footer text to set
         """
         for section in self.app.ActiveDocument.Sections:
             for footer in section.Footers:
@@ -142,9 +148,9 @@ class Application:
     def save_document_as(self, filename: str, fileformat: str = None) -> None:
         """Save document with filename and optionally with given fileformat
 
-        :param filename: where to save document
-        :param fileformat: see @FILEFORMATS dictionary for possible format,
-            defaults to None
+        :param filename (str): where to save document
+        :param fileformat (str): see `@FILEFORMATS` dictionary for possible format,
+        :param defaults to None
         """
         absolute_filepath = str(Path(filename).resolve())
         # Accept all revisions
@@ -169,6 +175,7 @@ class Application:
     def get_all_texts(self) -> str:
         """Get all texts from active document
 
-        :return: texts
+        Returns:
+            texts
         """
         return self.app.ActiveDocument.Content.Text

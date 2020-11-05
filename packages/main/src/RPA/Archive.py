@@ -75,24 +75,20 @@ class Archive:
             - bzip2
             - lzma
 
-        :param folder: name of the folder to archive
-        :param archive_name: filename of the archive
-        :param recursive: should sub directories be included, defaults is False
-        :param include: define file pattern to include in the package, defaults to None (means all files)
-        :param exclude: define file pattern to exclude from the package, defaults is None
-        :param compression: type of package compression method, defaults to "stored"
-
         Example:
+        | Archive Folder With Zip | ${CURDIR}${/}documents | mydocs.zip |
+        | Archive Folder With Zip | ${CURDIR}${/}tasks | robottasks.zip | include=*.robot |
+        | Archive Folder With Zip | ${CURDIR}${/}tasks | no_dotfiles.zip | exclude=/.* |
+        | Archive Folder With Zip | ${CURDIR}${/}documents | documents.zip | recursive=True |
+        | Archive Folder With Zip | ${CURDIR} | packagelzma.zip | compression=lzma |
+        | Archive Folder With Zip | ${CURDIR} | bzipped.zip | compression=bzip2 |
 
-        .. code-block:: robotframework
-
-            Archive Folder With Zip  ${CURDIR}${/}documents  mydocs.zip
-            Archive Folder With Zip  ${CURDIR}${/}tasks      robottasks.zip   include=*.robot
-            Archive Folder With Zip  ${CURDIR}${/}tasks      no_dotfiles.zip  exclude=/.*
-            Archive Folder With Zip  ${CURDIR}${/}documents  documents.zip    recursive=True
-            Archive Folder With Zip  ${CURDIR}               packagelzma.zip  compression=lzma
-            Archive Folder With Zip  ${CURDIR}               bzipped.zip      compression=bzip2
-
+        :param folder (str): name of the folder to archive
+        :param archive_name (str): filename of the archive
+        :param recursive (bool): should sub directories be included, defaults is False
+        :param include (str): define file pattern to include in the package, defaults to None (means all files)
+        :param exclude (str): define file pattern to exclude from the package, defaults is None
+        :param compression (str): type of package compression method, defaults to "stored"
         """  # noqa: E501
         if compression == "stored":
             comp_method = zipfile.ZIP_STORED
@@ -135,21 +131,17 @@ class Archive:
         To include only certain files, like TXT files, the argument `include` can be used.
         Similarly to exclude certain file, like dotfiles, the argument `exclude` can be used.
 
-        :param folder: name of the folder to archive
-        :param archive_name: filename of the archive
-        :param recursive: should sub directories be included, defaults is False
-        :param include: define file pattern to include in the package, defaults to None (means all files)
-        :param exclude: define file pattern to exclude from the package, defaults is None
-
         Example:
+        | Archive Folder With TAR | ${CURDIR}${/}documents | documents.tar |
+        | Archive Folder With TAR | ${CURDIR}${/}tasks | tasks.tar.gz | include=*.robot |
+        | Archive Folder With TAR | ${CURDIR}${/}tasks | tasks.tar | exclude=/.* |
+        | Archive Folder With TAR | ${CURDIR}${/}documents | documents.tar | recursive=True |
 
-        .. code-block:: robotframework
-
-            Archive Folder With TAR  ${CURDIR}${/}documents  documents.tar
-            Archive Folder With TAR  ${CURDIR}${/}tasks      tasks.tar.gz   include=*.robot
-            Archive Folder With TAR  ${CURDIR}${/}tasks      tasks.tar      exclude=/.*
-            Archive Folder With TAR  ${CURDIR}${/}documents  documents.tar  recursive=True
-
+        :param folder (str): name of the folder to archive
+        :param archive_name (str): filename of the archive
+        :param recursive (bool): should sub directories be included, defaults is False
+        :param include (str): define file pattern to include in the package, defaults to None (means all files)
+        :param exclude (str): define file pattern to exclude from the package, defaults is None
         """  # noqa: E501
         filelist = list_files_in_directory(folder, recursive, include, exclude)
         if len(filelist) == 0:
@@ -170,19 +162,16 @@ class Archive:
         This keyword adds file or list of files into existing archive. Files
         can be added to archive structure with relative path using argument `folder`.
 
-        :param files: name of the file, or list of files, to add
-        :param archive_name: filename of the archive
-        :param folder: name of the folder for added file (relative path in the archive)
-
         Example:
+        | Add To Archive | extrafile.txt | myfiles.zip |
+        | Add To Archive | stat.png | archive.tar.gz | images |
+        | @{files} | Create List | filename1.txt | filename2.txt |
+        | Add To Archive | ${files} | files.tar |
 
-        .. code-block:: robotframework
-
-            Add To Archive  extrafile.txt  myfiles.zip
-            Add To Archive  stat.png       archive.tar.gz  images
-            @{files}        Create List    filename1.txt   filename2.txt
-            Add To Archive  ${files}       files.tar
-
+        :param files (Any): name of the file, or list of files, to add
+        :param archive_name (str): filename of the archive
+        :param folder (str): name of the folder for added file, relative path
+        :param in the archive
         """
         files_to_add = []
 
@@ -218,19 +207,15 @@ class Archive:
             - mtime
             - last modification time in format `%d.%m.%Y %H:%M:%S`
 
-        :param archive_name: filename of the archive
-
         Example:
+        | @{files} | List Archive | myfiles.zip |
+        | FOR | ${file} | IN | ${files} |
+        | Log | ${file}[filename] |
+        | Log | ${file}[size] |
+        | Log | ${file}[mtime] |
+        | END |
 
-        .. code-block:: robotframework
-
-            @{files}   List Archive    myfiles.zip
-            FOR  ${file}  IN   ${files}
-                Log  ${file}[filename]
-                Log  ${file}[size]
-                Log  ${file}[mtime]
-            END
-
+        :param archive_name (str): filename of the archive
         """
         filelist = []
         if zipfile.is_zipfile(archive_name):
@@ -270,14 +255,10 @@ class Archive:
             - mtime
             - last modification time in format `%d.%m.%Y %H:%M:%S`
 
-        :param archive_name: filename of the archive
-
         Example:
+        | &{archiveinfo} | Get Archive Info | myfiles.zip |
 
-        .. code-block:: robotframework
-
-            &{archiveinfo}   Get Archive Info    myfiles.zip
-
+        :param archive_name (str): filename of the archive
         """
         archive_info = None
         st = os.stat(archive_name)
@@ -312,18 +293,14 @@ class Archive:
         By default file is extracted into current working directory, but `path` argument
         can be set to define extraction path.
 
-        :param archive_name: filename of the archive
-        :param path: filepath to extract file into, default is current working directory
-        :param members: list of files to extract from, default is None (all files in archive are extracted)
-
         Example:
+        | Extract Archive | myfiles.zip | ${CURDIR}${/}extracted |
+        | @{files} | Create List | filename1.txt | filename2.txt |
+        | Extract Archive | archive.tar | C:${/}myfiles${/} | ${files} |
 
-        .. code-block:: robotframework
-
-            Extract Archive    myfiles.zip   ${CURDIR}${/}extracted
-            @{files}           Create List   filename1.txt    filename2.txt
-            Extract Archive    archive.tar   C:${/}myfiles${/}  ${files}
-
+        :param archive_name (str): filename of the archive
+        :param path (str): filepath to extract file into, default is current working directory
+        :param members (Any): list of files to extract from, default is None (all files in archive are extracted)
         """  # noqa: E501
         root = Path(path) if path else Path.cwd()
         if members and not isinstance(members, list):
@@ -352,17 +329,13 @@ class Archive:
         By default file is extracted into current working directory, but `path` argument can be set
         to define extraction path.
 
-        :param filename: name of the file to extract
-        :param archive_name: filename of the archive
-        :param path: filepath to extract file into, default is current working directory
-
         Example:
+        | Extract File From Archive | extrafile.txt | myfiles.zip |
+        | Extract File From Archive | background.png | images.tar.gz | ${CURDIR}${/}extracted |
 
-        .. code-block:: robotframework
-
-            Extract File From Archive    extrafile.txt   myfiles.zip
-            Extract File From Archive    background.png  images.tar.gz  ${CURDIR}${/}extracted
-
+        :param filename (str): name of the file to extract
+        :param archive_name (str): filename of the archive
+        :param path (str): filepath to extract file into, default is current working directory
         """  # noqa: E501
         root = Path(path) if path else Path.cwd()
         if zipfile.is_zipfile(archive_name):

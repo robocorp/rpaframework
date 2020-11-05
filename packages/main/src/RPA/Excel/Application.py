@@ -31,8 +31,8 @@ class Application:
     ) -> None:
         """Open the Excel application.
 
-        :param visible: show window after opening
-        :param display_alerts: show alert popups
+        :param visible (bool): show window after opening
+        :param display_alerts (bool): show alert popups
         """
         self.app = win32com.client.gencache.EnsureDispatch("Excel.Application")
 
@@ -44,12 +44,18 @@ class Application:
             self.app.DisplayAlerts = display_alerts
 
     def close_document(self, save_changes: bool = False) -> None:
-        """Close the active document (if open)."""
+        """Close the active document (if open).
+
+        :param save_changes (bool): if changes should be saved on close, default False
+        """
         if self.app is not None and hasattr(self.app, "ActiveDocument"):
             self.app.ActiveDocument.Close(save_changes)
 
     def quit_application(self, save_changes: bool = False) -> None:
-        """Quit the application."""
+        """Quit the application.
+
+        :param save_changes (bool): if changes should be saved on quit, default False
+        """
         if self.app is not None:
             self.close_document(save_changes)
             self.app.Quit()
@@ -62,7 +68,7 @@ class Application:
     def open_workbook(self, filename: str) -> None:
         """Open Excel by filename
 
-        :param filename: path to filename
+        :param filename (str): path to filename
         """
         if self.app is None:
             self.open_application()
@@ -77,8 +83,8 @@ class Application:
     ) -> None:
         """Set active worksheet by either its sheet number or name
 
-        :param sheetname: name of Excel sheet, defaults to None
-        :param sheetnumber: index of Excel sheet, defaults to None
+        :param sheetname (str): name of Excel sheet, defaults to None
+        :param sheetnumber (int): index of Excel sheet, defaults to None
         """
         if sheetnumber:
             self.active_worksheet = self.workbook.Worksheets(int(sheetnumber))
@@ -91,11 +97,13 @@ class Application:
         """Add new worksheet to workbook. Workbook is created by default if
         it does not exist.
 
-        :param sheetname: name for sheet
-        :param tabname: name for tab, defaults to None
-        :param create_workbook: create workbook if True, defaults to True
-        :raises ValueError: error is raised if workbook does not exist and
-            `create_workbook` is False
+        :param sheetname (str): name for sheet
+        :param tabname (str): name for tab, defaults to None
+        :param create_workbook (bool): create workbook if True, defaults to True
+
+        Raises:
+            ValueError: error is raised if workbook does not exist and
+                        `create_workbook` is False
         """
         self.logger.info("Adding sheet: %s", sheetname)
         if self.workbook is None:
@@ -111,10 +119,12 @@ class Application:
     ) -> Any:
         """Find first available free row and cell
 
-        :param worksheet: worksheet to handle, defaults to active worksheet if None
-        :param row: starting row for search, defaults to 1
-        :param column: starting column for search, defaults to 1
-        :return: tuple (row, column) or (None, None) if not found
+        :param worksheet (Any): worksheet to handle, defaults to active worksheet if None
+        :param row (int): starting row for search, defaults to 1
+        :param column (int): starting column for search, defaults to 1
+
+        Returns:
+            tuple (row, column) or (None, None) if not found
         """
         empty_found = False
         if worksheet:
@@ -139,13 +149,15 @@ class Application:
     ) -> None:
         """Write value, number_format and/or formula into cell.
 
-        :param worksheet: worksheet to handle, defaults to active worksheet if None
-        :param row: target row, defaults to None
-        :param column: target row, defaults to None
-        :param value: possible value to set, defaults to None
-        :param number_format: possible number format to set, defaults to None
-        :param formula: possible format to set, defaults to None
-        :raises ValueError: if cell is not given
+        :param worksheet (Any): worksheet to handle, defaults to active worksheet if None
+        :param row (int): target row, defaults to None
+        :param column (int): target row, defaults to None
+        :param value (str): possible value to set, defaults to None
+        :param number_format (str): possible number format to set, defaults to None
+        :param formula (str): possible format to set, defaults to None
+
+        Raises:
+            ValueError: if cell is not given
         """
         worksheet = worksheet if worksheet else self.active_worksheet
         if row is None and column is None:
@@ -168,10 +180,12 @@ class Application:
     ) -> str:
         """Read value from cell.
 
-        :param worksheet: worksheet to handle, defaults to active worksheet if None
-        :param row: target row, defaults to None
-        :param column: target row, defaults to None
-        :raises ValueError: if cell is not given
+        :param worksheet (Any): worksheet to handle, defaults to active worksheet if None
+        :param row (int): target row, defaults to None
+        :param column (int): target row, defaults to None
+
+        Raises:
+            ValueError: if cell is not given
         """
         worksheet = worksheet if worksheet else self.active_worksheet
         if row is None and column is None:
@@ -189,8 +203,8 @@ class Application:
     def save_excel_as(self, filename: str, autofit: bool = False) -> None:
         """Save Excel with name if workbook is open
 
-        :param filename: where to save file
-        :param autofit: autofit cell widths if True, defaults to False
+        :param filename (str): where to save file
+        :param autofit (bool): autofit cell widths if True, defaults to False
         """
         if self.workbook:
             if autofit:
@@ -202,7 +216,7 @@ class Application:
     def run_macro(self, macro_name: str = None):
         """Run Excel macro with given name
 
-        :param macro_name: macro to run
+        :param macro_name (str): macro to run
         """
         if self.app is None:
             raise ValueError(

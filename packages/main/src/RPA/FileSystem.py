@@ -1,4 +1,3 @@
-"""Files and filesystems library for Robot Framework"""
 import logging
 import os
 import shutil
@@ -75,11 +74,13 @@ class FileSystem:
     def find_files(self, pattern, include_dirs=True, include_files=True):
         """Find files recursively according to a pattern.
 
-        :param pattern:         search path in glob format pattern,
-                                e.g. *.xls or **/orders.txt
-        :param include_dirs:    include directories in results
-        :param include_files:   include files in results
-        :return:                list of paths that match the pattern
+        The ``pattern`` argument should be in glob format.
+        Examples of valid patterns are ``*.xls`` or ``**/orders.txt``.
+
+        With the options ``ìnclude_dirs`` and ``include_files``
+        directories and files can be included/excluded from the results.
+
+        Returns a list of paths that match the pattern.
         """
         pattern = Path(pattern)
 
@@ -106,21 +107,21 @@ class FileSystem:
     def list_files_in_directory(self, path=None):
         """Lists all the files in the given directory, relative to it.
 
-        :param path:    base directory for search, defaults to current working dir
+        If no path is given, uses current working directory.
         """
         return self.find_files(Path(path, "*"), include_dirs=False)
 
     def list_directories_in_directory(self, path=None):
         """Lists all the directories in the given directory, relative to it.
 
-        :param path:    base directory for search, defaults to current working dir
+        If no path is given, uses current working directory.
         """
         return self.find_files(Path(path, "*"), include_files=False)
 
     def log_directory_tree(self, path=None):
         """Logs all the files in the directory recursively.
 
-        :param path:    base directory to start from, defaults to current working dir
+        If no path is given, uses current working directory.
         """
         root = Path(path) if path else Path.cwd()
         files = self.find_files(Path(root, "**/*"))
@@ -145,81 +146,51 @@ class FileSystem:
         self.logger.info("\n".join(rows))
 
     def does_file_exist(self, path):
-        """Returns True if the given file exists, False if not.
-
-        :param path:    path to inspected file
-        """
+        """Returns True if the given file exists, False if not."""
         return bool(self.find_files(path, include_dirs=False))
 
     def does_file_not_exist(self, path):
-        """Returns True if the file does not exist, False if it does.
-
-        :param path:    path to inspected file
-        """
+        """Returns True if the file does not exist, False if it does."""
         return not self.does_file_exist(path)
 
     def does_directory_exist(self, path):
-        """Returns True if the given directory exists, False if not.
-
-        :param path:    path to inspected directory
-        """
+        """Returns True if the given directory exists, False if not."""
         return bool(self.find_files(path, include_files=False))
 
     def does_directory_not_exist(self, path):
-        """Returns True if the directory does not exist, False if it does.
-
-        :param path:    path to inspected directory
-        """
+        """Returns True if the directory does not exist, False if it does."""
         return not self.does_directory_exist(path)
 
     def is_directory_empty(self, path=None):
-        """Returns True if the given directory has no files or subdirectories.
-
-        :param path:    path to inspected directory
-        """
+        """Returns True if the given directory has no files or subdirectories."""
         if self.does_directory_not_exist(path):
             raise NotADirectoryError(f"Not a valid directory: {path}")
 
         return not bool(self.find_files(Path(path, "*")))
 
     def is_directory_not_empty(self, path=None):
-        """Returns True if the given directory has any files or subdirectories.
-
-        :param path:    path to inspected directory
-        """
+        """Returns True if the given directory has any files or subdirectories."""
         return not self.is_directory_empty(path)
 
     def is_file_empty(self, path):
-        """Returns True if the given file has no content, i.e. has zero size.
-
-        :param path:    path to inspected file
-        """
+        """Returns True if the given file has no content, i.e. has zero size."""
         if self.does_file_not_exist(path):
             raise FileNotFoundError(f"Not a valid file: {path}")
         path = Path(path)
         return path.stat().st_size == 0
 
     def is_file_not_empty(self, path):
-        """Returns True if the given file has content, i.e. larger than zero size.
-
-        :param path:    path to inspected file
-        """
+        """Returns True if the given file has content, i.e. larger than zero size."""
         return not self.is_file_empty(path)
 
     def read_file(self, path, encoding="utf-8"):
-        """Reads a file as text, with given `encoding`, and returns the content."
-
-        :param path:        path to file to read
-        :param encoding:    character encoding of file
-        """
+        """Reads a file as text, with given `encoding`, and returns the content."""
         with open(path, "r", encoding=encoding) as fd:
             return fd.read()
 
     def read_binary_file(self, path):
         """Reads a file in binary mode and returns the content.
         Does not attempt to decode the content in any way.
-
-        :param path:        path to file to read
         """
         with open(path, "rb") as fd:
             return fd.read()
@@ -227,18 +198,14 @@ class FileSystem:
     def touch_file(self, path):
         """Creates a file with no content, or if file already exists,
         updates the modification and access times.
-
-        :param path:        path to file which is touched
         """
         Path(path).touch()
 
     def create_file(self, path, content=None, encoding="utf-8", overwrite=False):
         """Creates a new text file, and writes content if any is given.
 
-        :param path:        path to file to write
-        :param content:     content to write to file (optional)
-        :param encoding:    character encoding of written content
-        :param overwrite:   replace destination file if it already exists
+        If the ``overwrite`` argument is truthy, the destination file is
+        replaced if it already exists.
         """
         if not overwrite and Path(path).exists():
             raise FileExistsError(f"Path already exists: {path}")
@@ -250,9 +217,8 @@ class FileSystem:
     def create_binary_file(self, path, content=None, overwrite=False):
         """Creates a new binary file, and writes content if any is given.
 
-        :param path:        path to file to write
-        :param content:     content to write to file (optional)
-        :param overwrite:   replace destination file if it already exists
+        If the ``overwrite`` argument is truthy, the destination file is
+        replaced if it already exists.
         """
         if not overwrite and Path(path).exists():
             raise FileExistsError(f"Path already exists: {path}")
@@ -262,12 +228,7 @@ class FileSystem:
                 fd.write(content)
 
     def append_to_file(self, path, content, encoding="utf-8"):
-        """Appends text to the given file.
-
-        :param path:        path to file to append to
-        :param content:     content to append
-        :param encoding:    character encoding of appended content
-        """
+        """Appends text to the given file."""
         if not Path(path).exists():
             raise FileNotFoundError(f"File does not exist: {path}")
 
@@ -275,11 +236,7 @@ class FileSystem:
             fd.write(content)
 
     def append_to_binary_file(self, path, content):
-        """Appends binary content to the given file.
-
-        :param path:        path to file to append to
-        :param content:     content to append
-        """
+        """Appends binary content to the given file."""
         if not Path(path).exists():
             raise FileNotFoundError(f"File does not exist: {path}")
 
@@ -289,17 +246,16 @@ class FileSystem:
     def create_directory(self, path, parents=False, exist_ok=True):
         """Creates a directory and (optionally) non-existing parent directories.
 
-        :param path:        path to new directory
-        :param parents:     create missing parent directories
-        :param exist_ok:    continue without errors if directory already exists
+        If the ``exist_ok`` argument is truthy, does not raise
+        an error if the directory already exists.
         """
         Path(path).mkdir(parents=parents, exist_ok=exist_ok)
 
     def remove_file(self, path, missing_ok=True):
         """Removes the given file.
 
-        :param path:        path to the file to remove
-        :param missing_ok:  ignore non-existent file
+        If the ``missing_ok`` argument is truthy, does not raise
+        an error if the file does not exist.
         """
         try:
             Path(path).unlink()
@@ -310,29 +266,22 @@ class FileSystem:
     def remove_files(self, *paths, missing_ok=True):
         """Removes multiple files.
 
-        :param paths:       paths to files to be removed
-        :param missing_ok:  ignore non-existent files
+        If the ``missing_ok`` argument is truthy, does not raise
+        an error if any of the files do not exist.
         """
         # TODO: glob support
         for path in paths:
             self.remove_file(path, missing_ok=missing_ok)
 
     def remove_directory(self, path, recursive=False):
-        """Removes the given directory, and optionally everything it contains.
-
-        :param path:        path to directory
-        :param recursive:   remove all subdirectories and files
-        """
+        """Removes the given directory, and optionally everything it contains."""
         if recursive:
             shutil.rmtree(str(path))
         else:
             Path(path).rmdir()
 
     def empty_directory(self, path):
-        """Removes all the files in the given directory.
-
-        :param path:    directory to remove files from
-        """
+        """Removes all the files in the given directory."""
         # TODO: Should it remove all subdirectories too?
         for item in self.list_files_in_directory(path):
             filepath = Path(path, item.name)
@@ -340,11 +289,7 @@ class FileSystem:
             self.logger.info("Removed file: %s", filepath)
 
     def copy_file(self, source, destination):
-        """Copy a file from source path to destination path.
-
-        :param source:      path to source file
-        :param destination: path to copy destination
-        """
+        """Copy a file from source path to destination path."""
         src = Path(source)
         dst = Path(destination)
 
@@ -357,8 +302,8 @@ class FileSystem:
     def copy_files(self, sources, destination):
         """Copy multiple files to destination folder.
 
-        :param sources:     list of source files
-        :param destination: path to destination folder
+        The ``sources`` argument is a list of files, and the
+        ``destination`` argument is a directory.
         """
         # TODO: glob support
         dst_dir = Path(destination)
@@ -372,11 +317,7 @@ class FileSystem:
             self.copy_file(src, dst)
 
     def copy_directory(self, source, destination):
-        """Copy directory from source path to destination path.
-
-        :param source:      path to source directory
-        :param destination: path to copy destination
-        """
+        """Copy directory from source path to destination path."""
         src = Path(source)
         dst = Path(destination)
 
@@ -390,10 +331,6 @@ class FileSystem:
     def move_file(self, source, destination, overwrite=False):
         """Move a file from source path to destination path,
         optionally overwriting the destination.
-
-        :param source:      source file path for moving
-        :param destination: path to move to
-        :param overwrite:   replace destination file if it already exists
         """
         src = Path(source)
         dst = Path(destination)
@@ -409,9 +346,11 @@ class FileSystem:
     def move_files(self, sources, destination, overwrite=False):
         """Move multiple files to the destination folder.
 
-        :param sources:     list of files to move
-        :param destination: path to move destination
-        :param overwrite:   replace destination files if they already exist
+        The ``sources`` argument is a list of files, and the
+        ``destination`` argument is a directory.
+
+        If the ``overwrite`` argument is truthy, overwrites any
+        overlapping files in the destination directory.
         """
         dst_dir = Path(destination)
 
@@ -425,9 +364,8 @@ class FileSystem:
     def move_directory(self, source, destination, overwrite=False):
         """Move a directory from source path to destination path.
 
-        :param source:      source directory path for moving
-        :param destination: path to move to
-        :param overwrite:   replace destination directory if it already exists
+        If the ``overwrite`` argument is truthy, overwrites the destination
+        directory if it already exists.
         """
         src = Path(source)
         dst = Path(destination)
@@ -440,74 +378,46 @@ class FileSystem:
         src.replace(dst)
 
     def change_file_extension(self, path, extension):
-        """Replaces file extension for file at given path.
-
-        :param path:        path to file to rename
-        :param extension:   new extension, e.g. .xlsx
-        """
+        """Replaces file extension for file at given path."""
         dst = Path(path).with_suffix(extension)
         self.move_file(path, dst)
 
     def join_path(self, *parts):
-        """Joins multiple parts of a path together.
-
-        :param parts:  Components of the path, e.g. dir, subdir, filename.ext
-        """
+        """Joins multiple parts of a path together."""
         parts = [str(part) for part in parts]
         return str(Path(*parts))
 
     def absolute_path(self, path):
-        """Returns the absolute path to a file, and resolves symlinks.
-
-        :param path:    path that will be resolved
-        :return:        absolute path to file
-        """
+        """Returns the absolute path to a file, and resolves symlinks."""
         return str(Path(path).resolve())
 
     def normalize_path(self, path):
-        """Removes redundant separators or up-level references from path.
-
-        :param path:    path that will be normalized
-        :return:        path to file
-        """
+        """Removes redundant separators or up-level references from path."""
         return str(os.path.normpath(Path(path)))
 
     def get_file_name(self, path):
-        """Returns only the filename portion of a path.
-
-        :param path:    path to file
-        """
+        """Returns only the filename portion of a path."""
         return str(Path(path).name)
 
     def get_file_extension(self, path):
-        """Returns the suffix for the file.
-
-        :param path:    path to file
-        """
+        """Returns the suffix for the file."""
         return Path(path).suffix
 
     def get_file_modified_date(self, path):
-        """Returns the modified time in seconds.
-
-        :param path:    path to file to inspect
-        """
+        """Returns the modified time in seconds."""
         # TODO: Convert to proper date
         return Path(path).stat().st_mtime
 
     def get_file_creation_date(self, path):
         """Returns the creation time in seconds.
-        Note: Linux sets this whenever file metadata changes
 
-        :param path:    path to file to inspect
+        Note: Linux sets this whenever file metadata changes
         """
         # TODO: Convert to proper date
         return Path(path).stat().st_ctime
 
     def get_file_size(self, path):
-        """Returns the file size in bytes.
-
-        :param path:    path to file to inspect
-        """
+        """Returns the file size in bytes."""
         # TODO: Convert to human-friendly?
         return Path(path).stat().st_size
 
@@ -526,9 +436,6 @@ class FileSystem:
     def wait_until_created(self, path, timeout=5.0):
         """Poll path until it exists, or raise exception if timeout
         is reached.
-
-        :param path:    path to poll
-        :param timeout: time in seconds until keyword fails
         """
         if not self._wait_file(path, lambda p: p.exists(), timeout):
             raise TimeoutException("Path was not created within timeout")
@@ -538,9 +445,6 @@ class FileSystem:
     def wait_until_modified(self, path, timeout=5.0):
         """Poll path until it has been modified after the keyword was called,
         or raise exception if timeout is reached.
-
-        :param path:    path to poll
-        :param timeout: time in seconds until keyword fails
         """
         now = time.time()
         if not self._wait_file(path, lambda p: p.stat().st_mtime >= now, timeout):
@@ -551,9 +455,6 @@ class FileSystem:
     def wait_until_removed(self, path, timeout=5.0):
         """Poll path until it doesn't exist, or raise exception if timeout
         is reached.
-
-        :param path:    path to poll
-        :param timeout: time in seconds until keyword fails
         """
         if not self._wait_file(path, lambda p: not p.exists(), timeout):
             raise TimeoutException("Path was not removed within timeout")
@@ -561,15 +462,8 @@ class FileSystem:
     def run_keyword_if_file_exists(self, path, keyword, *args):
         """If file exists at `path`, execute given keyword with arguments.
 
-        **Example**
-
-        .. code:: robotframework
-
-            Run keyword if file exists    orders.xlsx    Process orders
-
-        :param path:    path to file to inspect
-        :param keyword: Robot Framework keyword to execute
-        :param args:    arguments to keyword
+        Example:
+        | Run keyword if file exists | orders.xlsx | Process orders |
         """
         if self.does_file_exist(path):
             return BuiltIn().run_keyword(keyword, *args)

@@ -35,7 +35,7 @@ class Netsuite:
     """Library for accessing Netsuite."""
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
 
     def __init__(self) -> None:
         self.client = None
@@ -54,16 +54,18 @@ class Netsuite:
         token_key: str = None,
         token_secret: str = None,
     ) -> None:
-        """Connect to Netsuite with credentials from environment
-        variables.
+        """Connect to Netsuite with key/secret/token credentials
 
-        Parameters are not logged into Robot Framework log.
+        Arguments are not logged into Robot Framework log.
 
-        :param account: parameter or environment variable `NS_ACCOUNT`
-        :param consumer_key:  parameter or environment variable `NS_CONSUMER_KEY`
-        :param consumer_secret: parameter or environment variable `NS_CONSUMER_SECRET`
-        :param token_key: parameter or environment variable `NS_TOKEN_KEY`
-        :param token_secret: parameter or environment variable `NS_TOKEN_SECRET`
+        The arguments can also be supplied through environment variables:
+
+        | = Variable =           | = Argument =    |
+        | ``NS_ACCOUNT``         | account         |
+        | ``NS_CONSUMER_KEY``    | consumer_key    |
+        | ``NS_CONSUMER_SECRET`` | consumer_secret |
+        | ``NS_TOKEN_KEY``       | token_key       |
+        | ``NS_TOKEN_SECRET``    | token_secret    |
         """
         if account is None:
             self.account = required_env("NS_ACCOUNT")
@@ -90,15 +92,18 @@ class Netsuite:
         role: str = None,
         appid: str = None,
     ) -> None:
-        """Login to Netsuite with credentials from environment variables
+        """Login to Netsuite with email/password credentials.
 
-        Parameters are not logged into Robot Framework log.
+        Arguments are not logged into Robot Framework log.
 
-        :param account: parameter or environment variable `NS_ACCOUNT`
-        :param email: parameter or environment variable `NS_EMAIL`
-        :param password: parameter or environment variable `NS_PASSWORD`
-        :param role: parameter or environment variable `NS_ROLE`
-        :param appid: parameter or environment variable `NS_APPID`
+        The arguments can also be supplied through environment variables:
+
+        | = Variable =    | = Argument = |
+        | ``NS_ACCOUNT``  | account      |
+        | ``NS_EMAIL``    | email        |
+        | ``NS_PASSWORD`` | password     |
+        | ``NS_ROLE``     | role         |
+        | ``NS_APPID``    | appid        |
         """
         if account is None:
             account = required_env("NS_ACCOUNT", self.account)
@@ -122,13 +127,9 @@ class Netsuite:
     def netsuite_get(
         self, record_type: str = None, internal_id: str = None, external_id: str = None
     ) -> list:
-        """Get all records of given type and internalId and/or externalId.
+        """Get all records of given type, with given internalId and/or externalId.
 
-        :param record_type: type of Netsuite record to get
-        :param internal_id: internalId of the type, default None
-        :param external_id: external_id of the type, default None
-        :raises ValueError: if record_type is not given
-        :return: records as a list or None
+        Both ``internal_id`` and ``external_id`` are optional.
         """
         if record_type is None:
             raise ValueError("Parameter 'record_type' is required for kw: netsuite_get")
@@ -147,12 +148,7 @@ class Netsuite:
 
     @ns_instance_required
     def netsuite_get_all(self, record_type: str) -> list:
-        """Get all records of given type.
-
-        :param record_type: type of Netsuite record to get
-        :raises ValueError: if record_type is not given
-        :return: records as a list or None
-        """
+        """Get all records of given type."""
         if record_type is None:
             raise ValueError(
                 "Parameter 'record_type' is required for kw: netsuite_get_all"
@@ -166,14 +162,13 @@ class Netsuite:
         operator: str = "contains",
         page_size: int = 5,
     ) -> PaginatedSearch:
-        """Search Netsuite for value from a type. Default operator is
-        `contains`.
+        """Search Netsuite for given value from a type.
 
-        :param type_name: search target type name
-        :param search_value: what to search for within type
-        :param operator: name of the operation, defaults to "contains"
-        :param page_size: result items within one page, defaults to 5
-        :return: paginated search object
+        Default default search operator is `contains`.
+
+        Returns a paginated search object.
+        Optionally the amount of results per page can be adjusted with
+        ``page_size``.
         """
         # pylint: disable=E1101
         record_type_search_field = self.client.SearchStringField(
@@ -193,11 +188,11 @@ class Netsuite:
     def netsuite_search_all(
         self, type_name: str, page_size: int = 20
     ) -> PaginatedSearch:
-        """Search Netsuite for a type results.
+        """Search Netsuite for type results.
 
-        :param type_name: search target type name
-        :param page_size: result items within one page, defaults to 5
-        :return: paginated search object
+        Returns a paginated search object.
+        Optionally the amount of results per page can be adjusted with
+        ``page_size``.
         """
         paginated_search = PaginatedSearch(
             client=self.client, type_name=type_name, pageSize=page_size
@@ -206,12 +201,9 @@ class Netsuite:
 
     @ns_instance_required
     def get_accounts(self, count: int = 100, account_type: str = None) -> list:
-        """Get Accounts of any type or specified type.
+        """Get Accounts of any type, or limited to specified type.
 
-        :param count: number of Accounts to return, defaults to 100
-        :param account_type: if None returns all account types, example. "_expense",
-            defaults to None
-        :return: accounts
+        Results are limited to the given ``count``.
         """
         all_accounts = list(
             itertools.islice(self.client.accounts.get_all_generator(), count)
@@ -222,61 +214,37 @@ class Netsuite:
 
     @ns_instance_required
     def get_currency(self, currency_id: str) -> object:
-        """Get all a Netsuite Currency by its ID
-
-        :param currency_id: ID of the currency to get
-        :return: currency
-        """
+        """Get a Netsuite Currency by its ID."""
         return self.client.currencies.get(internalId=currency_id)
 
     @ns_instance_required
     def get_currencies(self) -> list:
-        """Get all Netsuite Currencies
-
-        :return: currencies
-        """
+        """Get all Netsuite Currencies."""
         return self.client.currencies.get_all()
 
     @ns_instance_required
     def get_locations(self) -> list:
-        """Get all Netsuite Locations
-
-        :return: locations
-        """
+        """Get all Netsuite Locations."""
         return self.client.locations.get_all()
 
     @ns_instance_required
     def get_departments(self) -> list:
-        """Get all Netsuite Departments
-
-        :return: departments
-        """
+        """Get all Netsuite Departments."""
         return self.client.departments.get_all()
 
     @ns_instance_required
     def get_classifications(self) -> list:
-        """Get all Netsuite Classifications
-
-        :return: classifications
-        """
+        """Get all Netsuite Classifications."""
         return self.client.classifications.get_all()
 
     @ns_instance_required
     def get_vendors(self, count: int = 10) -> list:
-        """Get list of vendors
-
-        :param count: number of vendors to return, defaults to 10
-        :return: list of vendors
-        """
+        """Get list of vendors, up to maximum of given ``count``."""
         return list(itertools.islice(self.client.vendors.get_all_generator(), count))
 
     @ns_instance_required
     def get_vendor_bills(self, count: int = 10) -> list:
-        """Get list of vendor bills
-
-        :param count: number of vendor bills to return, defaults to 10
-        :return: list of vendor bills
-        """
+        """Get list of vendor bills, up to maximum of given ``count``."""
         return list(
             itertools.islice(self.client.vendor_bills.get_all_generator(), count)
         )

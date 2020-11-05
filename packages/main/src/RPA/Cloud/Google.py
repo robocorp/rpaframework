@@ -56,8 +56,10 @@ class GoogleBase:
     def _get_client_for_service(self, service_name: str = None):
         """Return client instance for servive if it has been initialized.
 
-        :param service_name: name of the AWS service
-        :return: client instance
+        :param service_name (str): name of the AWS service
+
+        Returns:
+            client instance
         """
         if service_name not in self.clients.keys():
             raise KeyError(
@@ -113,11 +115,11 @@ class GoogleBase:
             client = client_object()
             self._set_service(service_name, client)
 
-    def set_robocloud_vault(self, vault_name, vault_secret_key):
+    def set_robocloud_vault(self, vault_name: str, vault_secret_key: str):
         """Set Robocloud Vault name and secret key name
 
-        :param vault_name: Robocloud Vault name
-        :param vault_secret_key: Rococloud Vault secret key name
+        :param vault_name (str): Robocloud Vault name
+        :param vault_secret_key (str): Rococloud Vault secret key name
         """
         if vault_name:
             self.robocloud_vault_name = vault_name
@@ -130,7 +132,8 @@ class ServiceVision(GoogleBase):
 
     Link to `Vision PyPI`_ page.
 
-    .. _Vision PyPI: https://pypi.org/project/google-cloud-vision/
+    .. _Vision PyPI:
+       https://pypi.org/project/google-cloud-vision/
     """
 
     __service_name = "vision"
@@ -147,8 +150,8 @@ class ServiceVision(GoogleBase):
     ) -> None:
         """Initialize Google Cloud Vision client
 
-        :param service_credentials_file: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_credentials_file (str): filepath to credentials JSON
+        :param use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             vision.ImageAnnotatorClient,
@@ -169,9 +172,11 @@ class ServiceVision(GoogleBase):
     def detect_labels(self, image_file: str, json_file: str = None) -> dict:
         """Detect labels in the image
 
-        :param image_file: source image file
-        :param json_file: json target to save result, defaults to None
-        :return: detection response
+        :param image_file (str): source image file
+        :param json_file (str): json target to save result, defaults to None
+
+        Returns:
+            detection response
         """
         client = self._get_client_for_service(self.__service_name)
         image = self._get_google_image(image_file)
@@ -183,9 +188,11 @@ class ServiceVision(GoogleBase):
     def detect_text(self, image_file: str, json_file: str = None) -> dict:
         """Detect text in the image
 
-        :param image_file: source image file
-        :param json_file: json target to save result, defaults to None
-        :return: detection response
+        :param image_file (str): source image file
+        :param json_file (str): json target to save result, defaults to None
+
+        Returns:
+            detection response
         """
         client = self._get_client_for_service(self.__service_name)
         image = self._get_google_image(image_file)
@@ -197,9 +204,11 @@ class ServiceVision(GoogleBase):
     def detect_document(self, image_file: str, json_file: str = None) -> dict:
         """Detect document
 
-        :param image_file: source image file
-        :param json_file: json target to save result, defaults to None
-        :return: detection response
+        :param image_file (str): source image file
+        :param json_file (str): json target to save result, defaults to None
+
+        Returns:
+            detection response
         """
         client = self._get_client_for_service(self.__service_name)
         image = self._get_google_image(image_file)
@@ -211,9 +220,11 @@ class ServiceVision(GoogleBase):
     def annotate_image(self, image_uri: str, json_file: str = None) -> dict:
         """Annotate image
 
-        :param image_file: source image file
-        :param json_file: json target to save result, defaults to None
-        :return: detection response
+        :param image_uri (str): source image file
+        :param json_file (str): json target to save result, defaults to None
+
+        Returns:
+            detection response
         """
         client = self._get_client_for_service(self.__service_name)
         response = client.annotate_image(
@@ -226,9 +237,11 @@ class ServiceVision(GoogleBase):
     def face_detection(self, image_uri: str, json_file: str = None) -> dict:
         """Detect faces
 
-        :param image_uri: Google Cloud Storage URI
-        :param json_file: json target to save result, defaults to None
-        :return: detection response
+        :param image_uri (str): Google Cloud Storage URI
+        :param json_file (str): json target to save result, defaults to None
+
+        Returns:
+            detection response
         """
         client = self._get_client_for_service(self.__service_name)
         response = client.face_detection({"source": {"image_uri": image_uri}})
@@ -241,7 +254,8 @@ class ServiceNaturalLanguage(GoogleBase):
 
     Link to `Natural Language PyPI`_ page.
 
-    .. _Natural Language PyPI: https://pypi.org/project/google-cloud-language/
+    .. _Natural Language PyPI:
+       https://pypi.org/project/google-cloud-language/
     """
 
     __service_name = "natural-language"
@@ -256,8 +270,8 @@ class ServiceNaturalLanguage(GoogleBase):
     ) -> None:
         """Initialize Google Cloud Natural Language client
 
-        :param service_credentials_file: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_credentials_file (str): filepath to credentials JSON
+        :param use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             language_v1.LanguageServiceClient,
@@ -268,14 +282,26 @@ class ServiceNaturalLanguage(GoogleBase):
 
     @google_dependency_required
     def analyze_sentiment(
-        self, text_file: str, file_type: str = "text", json_file: str = None, lang=None
+        self,
+        text_file: str,
+        file_type: str = "text",
+        json_file: str = None,
+        lang: str = None,
     ) -> dict:
         """Analyze sentiment in a text file
 
-        :param text_file: source text file
-        :param json_file: json target to save result, defaults to None
-        :param lang: language code of the source, defaults to None
-        :return: analysis response
+        Available file types:
+
+        - text
+        - html
+
+        :param text_file (str): source text file
+        :param file_type (str): format of the text file, default to `text`
+        :param json_file (str): json target to save result, defaults to None
+        :param lang (str): language code of the source, defaults to None
+
+        Returns:
+            analysis response
         """
         client = self._get_client_for_service(self.__service_name)
         with open(text_file, "r") as f:
@@ -298,13 +324,15 @@ class ServiceNaturalLanguage(GoogleBase):
         return response
 
     @google_dependency_required
-    def classify_text(self, text_file, json_file, lang=None):
+    def classify_text(self, text_file: str, json_file: str, lang: str = None):
         """Classify text
 
-        :param text_file: source text file
-        :param json_file: json target to save result, defaults to None
-        :param lang: language code of the source, defaults to None
-        :return: classify response
+        :param text_file (str): source text file
+        :param json_file (str): json target to save result, defaults to None
+        :param lang (str): language code of the source, defaults to None
+
+        Returns:
+            classify response
         """
         client = self._get_client_for_service(self.__service_name)
         with open(text_file, "r") as f:
@@ -329,8 +357,10 @@ class ServiceVideoIntelligence(GoogleBase):
 
     Link to `Video Intelligence PyPI`_ page.
 
-    .. _Video Intelligence PyPI: https://pypi.org/project/google-cloud-videointelligence
-    .. _Google Cloud Storages: https://cloud.google.com/storage/
+    .. _Video Intelligence PyPI:
+       https://pypi.org/project/google-cloud-videointelligence
+    .. _Google Cloud Storages:
+       https://cloud.google.com/storage/
     """
 
     __service_name = "video-intelligence"
@@ -347,8 +377,8 @@ class ServiceVideoIntelligence(GoogleBase):
     ) -> None:
         """Initialize Google Cloud Video Intelligence client
 
-        :param service_credentials_file: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_credentials_file (str): filepath to credentials JSON
+        :param use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             videointelligence.VideoIntelligenceServiceClient,
@@ -368,6 +398,7 @@ class ServiceVideoIntelligence(GoogleBase):
         """Annotate video
 
         Possible values for features:
+
         - FEATURE_UNSPECIFIED, Unspecified.
         - LABEL_DETECTION, Label detection. Detect objects, such as dog or flower.
         - SHOT_CHANGE_DETECTION, Shot change detection.
@@ -379,12 +410,14 @@ class ServiceVideoIntelligence(GoogleBase):
 
         If `video_uri` is given then that is used even if `video_file` is None.
 
-        :param video_uri: Google Cloud Storage URI
-        :param video_file: filepath to video
-        :param json_file: json target to save result, defaults to None
-        :param features: list of annotation features to detect,
-            defaults to ["LABEL_DETECTION", "SHOT_CHANGE_DETECTION"]
-        :return: annotate result
+        :param video_uri (str): Google Cloud Storage URI
+        :param video_file (str): filepath to video
+        :param json_file (str): json target to save result, defaults to None
+        :param features (list): list of annotation features to detect,
+        :param defaults to ["LABEL_DETECTION", "SHOT_CHANGE_DETECTION"]
+
+        Returns:
+            annotate result
         """
         client = self._get_client_for_service(self.__service_name)
         response = None
@@ -408,7 +441,8 @@ class ServiceTranslation(GoogleBase):
 
     Link to `Translation PyPI`_ page.
 
-    .. _Translation PyPI: https://pypi.org/project/google-cloud-translate/
+    .. _Translation PyPI:
+       https://pypi.org/project/google-cloud-translate/
     """
 
     __service_name = "translation"
@@ -427,9 +461,9 @@ class ServiceTranslation(GoogleBase):
     ) -> None:
         """Initialize Google Cloud Translation client
 
-        :param service_credentials_file: filepath to credentials JSON
-        :param project_identifier: identifier for Translation project
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_credentials_file (str): filepath to credentials JSON
+        :param project_identifier (str): identifier for Translation project
+        :param use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             translate_v3.TranslationServiceClient,
@@ -445,10 +479,12 @@ class ServiceTranslation(GoogleBase):
     ) -> dict:
         """Translate text
 
-        :param text: text to translate
-        :param source_language: language code, defaults to None
-        :param target_language: language code, defaults to None
-        :return: translated text
+        :param text (str): text to translate
+        :param source_language (str): language code, defaults to None
+        :param target_language (str): language code, defaults to None
+
+        Returns:
+            translated text
         """
         client = self._get_client_for_service(self.__service_name)
         if not text and not target_language:
@@ -470,7 +506,8 @@ class ServiceTextToSpeech(GoogleBase):
 
     Link to `Text To Speech PyPI`_ page.
 
-    .. _Text To Speech PyPI: https://pypi.org/project/google-cloud-texttospeech/
+    .. _Text To Speech PyPI:
+       https://pypi.org/project/google-cloud-texttospeech/
     """
 
     __service_name = "text-to-speech"
@@ -485,8 +522,8 @@ class ServiceTextToSpeech(GoogleBase):
     ) -> None:
         """Initialize Google Cloud Text to Speech client
 
-        :param service_credentials_file: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_credentials_file (str): filepath to credentials JSON
+        :param use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             texttospeech_v1.TextToSpeechClient,
@@ -499,8 +536,10 @@ class ServiceTextToSpeech(GoogleBase):
     def list_supported_voices(self, language_code: str = None):
         """List supported voices for the speech
 
-        :param language_code: voice languages to list, defaults to None (all)
-        :return: list of supported voices
+        :param language_code (str): voice languages to list, defaults to None (all)
+
+        Returns:
+            list of supported voices
         """
         client = self._get_client_for_service(self.__service_name)
         if language_code:
@@ -512,23 +551,25 @@ class ServiceTextToSpeech(GoogleBase):
     @google_dependency_required
     def synthesize_speech(
         self,
-        text,
-        language="en-US",
-        name="en-US-Standard-B",
-        gender="MALE",
-        encoding="MP3",
-        target_file="synthesized.mp3",
+        text: str,
+        language: str = "en-US",
+        name: str = "en-US-Standard-B",
+        gender: str = "MALE",
+        encoding: str = "MP3",
+        target_file: str = "synthesized.mp3",
     ):
         """Synthesize speech synchronously
 
-        :param text: input text to synthesize
-        :param language: voice language, defaults to "en-US"
-        :param name: voice name, defaults to "en-US-Standard-B"
-        :param gender: voice gender, defaults to "MALE"
-        :param encoding: result encoding type, defaults to "MP3"
-        :param target_file: save synthesized output to file,
-            defaults to "synthesized.mp3"
-        :return: synthesized output in bytes
+        :param text (str): input text to synthesize
+        :param language (str): voice language, defaults to "en-US"
+        :param name (str): voice name, defaults to "en-US-Standard-B"
+        :param gender (str): voice gender, defaults to "MALE"
+        :param encoding (str): result encoding type, defaults to "MP3"
+        :param target_file (str): save synthesized output to file,
+        :param defaults to "synthesized.mp3"
+
+        Returns:
+            synthesized output in bytes
         """
         if not text:
             raise KeyError("text is required for kw: synthesize_speech")
@@ -560,7 +601,8 @@ class ServiceSpeechToText(GoogleBase):
 
     Link to `Speech To Text PyPI`_ page.
 
-    .. _Speech To Text PyPI: https://pypi.org/project/google-cloud-speech/
+    .. _Speech To Text PyPI:
+       https://pypi.org/project/google-cloud-speech/
     """
 
     __service_name = "speech-to-text"
@@ -590,8 +632,8 @@ class ServiceSpeechToText(GoogleBase):
     ) -> None:
         """Initialize Google Cloud Speech to Text client
 
-        :param service_credentials_file: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_credentials_file (str): filepath to credentials JSON
+        :param use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             speech.SpeechClient,
@@ -603,15 +645,20 @@ class ServiceSpeechToText(GoogleBase):
     @google_dependency_required
     def recognize(
         self,
-        audio_file_uri,
+        audio_file_uri: str,
         encoding: str = "FLAC",
         language_code: str = "en_US",
-        audio_channel_count=2,
+        audio_channel_count: int = 2,
     ):
         """Recognize text in the audio file
 
-        :param audio_file_uri: Google Cloud Storage URI
-        :return: recognized texts
+        :param audio_file_uri (str): Google Cloud Storage URI
+        :param encoding (str): result encoding type, defaults to "FLAC"
+        :param language_code (str): voice language, defaults to "en_US"
+        :param audio_channel_count (int): channel count in the audio
+
+        Returns:
+            recognized texts
         """
         # flac or wav, does not require encoding type
         client = self._get_client_for_service(self.__service_name)
@@ -641,7 +688,8 @@ class ServiceStorage(GoogleBase):
 
     Link to `Google Storage PyPI`_ page.
 
-    .. _Google Storage PyPI: https://pypi.org/project/google-cloud-storage/
+    .. _Google Storage PyPI:
+       https://pypi.org/project/google-cloud-storage/
     """
 
     __service_name = "storage"
@@ -658,8 +706,8 @@ class ServiceStorage(GoogleBase):
     ) -> None:
         """Initialize Google Cloud Storage client
 
-        :param service_credentials_file: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_credentials_file (str): filepath to credentials JSON
+        :param use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             storage.Client,
@@ -672,8 +720,10 @@ class ServiceStorage(GoogleBase):
     def create_bucket(self, bucket_name: str):
         """Create Google Cloud Storage bucket
 
-        :param bucket_name: name as string
-        :return: bucket
+        :param bucket_name (str): name as string
+
+        Returns:
+            bucket
         """
         client = self._get_client_for_service(self.__service_name)
         bucket = client.create_bucket(bucket_name)
@@ -685,7 +735,7 @@ class ServiceStorage(GoogleBase):
 
         Bucket needs to be empty before it can be deleted.
 
-        :param bucket_name: name as string
+        :param bucket_name (str): name as string
         """
         bucket = self.get_bucket(bucket_name)
         try:
@@ -697,8 +747,10 @@ class ServiceStorage(GoogleBase):
     def get_bucket(self, bucket_name: str):
         """Get Google Cloud Storage bucket
 
-        :param bucket_name: name as string
-        :return: bucket
+        :param bucket_name (str): name as string
+
+        Returns:
+            bucket
         """
         if not bucket_name:
             raise KeyError("bucket_name is required for kw: get_bucket")
@@ -710,7 +762,8 @@ class ServiceStorage(GoogleBase):
     def list_buckets(self) -> list:
         """List Google Cloud Storage buckets
 
-        :return: list of buckets
+        Returns:
+            list of buckets
         """
         client = self._get_client_for_service(self.__service_name)
         buckets = list(client.list_buckets())
@@ -722,11 +775,11 @@ class ServiceStorage(GoogleBase):
 
         Files need to be object name in the bucket.
 
-        :param bucket_name: name as string
-        :param files: single file, list of files or
-            comma separated list of files
-        :return: list of files which could not be deleted,
-            or True if all were deleted
+        :param bucket_name (str): name as string
+        :param files (Any): single file, list of files or comma separated list of files
+
+        Returns:
+            list of files which could not be deleted, or `True` if all were deleted
         """
         if not bucket_name or not files:
             raise KeyError("bucket_name and files are required for kw: delete_files")
@@ -747,8 +800,10 @@ class ServiceStorage(GoogleBase):
     def list_files(self, bucket_name: str):
         """List files in the bucket
 
-        :param bucket_name: name as string
-        :return: list of object names in the bucket
+        :param bucket_name (str): name as string
+
+        Returns:
+            list of object names in the bucket
         """
         if not bucket_name:
             raise KeyError("bucket_name is required for kw: list_files")
@@ -760,9 +815,9 @@ class ServiceStorage(GoogleBase):
     def upload_file(self, bucket_name: str, filename: str, target_name: str):
         """Upload a file into a bucket
 
-        :param bucket_name: name as string
-        :param filename: filepath to upload file
-        :param target_name: target object name
+        :param bucket_name (str): name as string
+        :param filename (str): filepath to upload file
+        :param target_name (str): target object name
         """
         if not bucket_name or not filename or not target_name:
             raise KeyError(
@@ -780,8 +835,8 @@ class ServiceStorage(GoogleBase):
         Example `files`:
         files = {"mytestimg": "image1.png", "mydoc": "google.pdf"}
 
-        :param bucket_name: name as string
-        :param files: dictionary of object names and filepaths
+        :param bucket_name (str): name as string
+        :param files (dict): dictionary of object names and filepaths
         """
         if not bucket_name or not files:
             raise KeyError("bucket_name and files are required for kw: upload_files")
@@ -799,11 +854,13 @@ class ServiceStorage(GoogleBase):
         Example `files`:
         files = {"mytestimg": "image1.png", "mydoc": "google.pdf
 
-        :param bucket_name: name as string
-        :param files: list of object names or dictionary of
-            object names and target files
-        :return: list of files which could not be downloaded, or
-            True if all were downloaded
+        :param bucket_name (str): name as string
+        :param files (Any): list of object names or dictionary of object names
+        :param and target files
+
+        Returns:
+            list of files which could not be downloaded, or `True`
+            if all were downloaded
         """
         if isinstance(files, str):
             files = files.split(",")
@@ -849,7 +906,8 @@ class ServiceSheets(GoogleBase):
 
     For more information about Google Sheets API link_.
 
-    .. _link: https://developers.google.com/sheets/api/quickstart/python
+    .. _link:
+       https://developers.google.com/sheets/api/quickstart/python
     """
 
     __service_name = "sheets"
@@ -871,8 +929,8 @@ class ServiceSheets(GoogleBase):
     ) -> None:
         """Initialize Google Sheets client
 
-        :param service_credentials_file: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_credentials_file (str): filepath to credentials JSON
+        :param use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         service_account_file = None
         client = None
@@ -897,8 +955,10 @@ class ServiceSheets(GoogleBase):
     def create_sheet(self, title: str) -> str:
         """Create empty sheet with a title
 
-        :param title: name as string
-        :return: created `sheet_id`
+        :param title (str): name as string
+
+        Returns:
+            created `sheet_id`
         """
         if not title:
             raise KeyError("title is required for kw: create_sheet")
@@ -921,12 +981,12 @@ class ServiceSheets(GoogleBase):
     ) -> None:
         """Insert values into sheet cells
 
-        :param sheet_id: target sheet
-        :param sheet_range: target sheet range
-        :param values: list of values to insert into sheet
-        :param major_dimension: major dimension of the values, default `COLUMNS`
-        :param value_input_option: controls whether input strings are parsed or not,
-         default `USER_ENTERED`
+        :param sheet_id (str): target sheet
+        :param sheet_range (str): target sheet range
+        :param values (list): list of values to insert into sheet
+        :param major_dimension (str): major dimension of the values, default `COLUMNS`
+        :param value_input_option (str): controls whether input strings are parsed or not,
+        :param default `USER_ENTERED`
         """
         if not sheet_id or not sheet_range:
             raise KeyError(
@@ -957,12 +1017,13 @@ class ServiceSheets(GoogleBase):
     ) -> list:
         """Get values from the range in the sheet
 
-        :param sheet_id: target sheet
-        :param sheet_range: target sheet range
-        :param value_render_option: how values should be represented
-         in the output defaults to "UNFORMATTED_VALUE"
-        :param datetime_render_option: ow dates, times, and durations should
-         be represented in the outpu, defaults to "FORMATTED_STRING"
+        :param sheet_id (str): target sheet
+        :param sheet_range (str): target sheet range
+        :param value_render_option (str): how values should be represented
+        :param in the output defaults to "UNFORMATTED_VALUE"
+        :param datetime_render_option (str): how dates, times, and durations should be
+        :param represented in the output, defaults to
+        :param "FORMATTED_STRING"
         """
         client = self._get_client_for_service(self.__service_name)
         values = (
@@ -981,8 +1042,8 @@ class ServiceSheets(GoogleBase):
     def clear_values(self, sheet_id: str, sheet_range: str) -> None:
         """Clear cell values for range of cells within a sheet
 
-        :param sheet_id: target sheet
-        :param sheet_range: target sheet range
+        :param sheet_id (str): target sheet
+        :param sheet_range (str): target sheet range
         """
         client = self._get_client_for_service(self.__service_name)
         client.spreadsheets().values().clear(

@@ -11,7 +11,7 @@ class Notifier:
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
@@ -19,12 +19,11 @@ class Notifier:
     def notify_pushover(
         self, message: str = None, user: str = None, token: str = None, **kwargs: dict
     ) -> bool:
-        """Notify using Pushover service
+        """Notify using Pushover service.
 
-        :param message: notification message
-        :param user: target user for the notification
-        :param token: service token
-        :return: True is notification was success, False if not
+        Send a ``message`` to a given ``user``. Service ``token`` is given for authentication.
+
+        Returns a boolean value indicating if notification was sent.
         """
         response = notify("pushover", message=message, user=user, token=token, **kwargs)
         return self._handle_response(response)
@@ -36,12 +35,12 @@ class Notifier:
         webhook_url: str = None,
         **kwargs: dict,
     ) -> bool:
-        """Notify using Slack service
+        """Notify using Slack service.
 
-        :param message: notification message
-        :param channel: target channel for the notification
-        :param webhook_url: Slack webhook url
-        :return: True is notification was success, False if not
+        Send a ``message`` to a given ``channel``.
+        A ``webhook_url`` to the Slack instance should be supplied.
+
+        Returns a boolean value indicating if notification was sent.
         """
         response = notify(
             "slack",
@@ -61,10 +60,10 @@ class Notifier:
     ) -> bool:
         """Notify using Telegram service
 
-        :param message: notification message
-        :param chat_id: target chat id for the notification
-        :param token: service token
-        :return: True is notification was success, False if not
+        Send a ``message`` to a given target ``chat_id``.
+        Service ``token`` is given for authentication.
+
+        Returns a boolean value indicating if notification was sent.
         """
         response = notify(
             "telegram", message=message, chat_id=chat_id, token=token, **kwargs
@@ -79,13 +78,12 @@ class Notifier:
         password: str = None,
         **kwargs: dict,
     ) -> bool:
-        """Notify using Gmail service
+        """Notify using Gmail service.
 
-        :param message: notification message
-        :param to: target of email message
-        :param username: GMail service username
-        :param password: GMail service password
-        :return: True is notification was success, False if not
+        Send an email ``message`` to a given ``to`` recipient.
+        A GMail service ``username`` and ``password`` should be supplied.
+
+        Returns a boolean value indicating if notification was sent.
         """
         response = notify(
             "gmail",
@@ -105,13 +103,12 @@ class Notifier:
         password: str = None,
         **kwargs: dict,
     ) -> bool:
-        """Notify using email service
+        """Notify using email service.
 
-        :param message: notification message
-        :param to: target of email message
-        :param username: email service username
-        :param password: email service password
-        :return: True is notification was success, False if not
+        Send an email ``message`` to a given ``to`` recipient.
+        An email service ``username`` and ``password`` should be supplied.
+
+        Returns a boolean value indicating if notification was sent.
         """
         response = notify(
             "email",
@@ -132,14 +129,15 @@ class Notifier:
         token: str = None,
         **kwargs: dict,
     ) -> bool:
-        """Notify using Twilio service
+        """Notify using Twilio service.
 
-        :param message: notification message
-        :param number_from: number where the message comes from
-        :param number_to: number where the messages goes to
-        :param account_sid: Twilio account SID
-        :param token: Twilio account token
-        :return: True is notification was success, False if not
+        Send a notification ``message`` between two numbers
+        indicated with ``number_from`` and ``number_to``.
+
+        A Twili account SID and token should be supplied through ``account_sid``
+        and ``token`` arguments.
+
+        Returns a boolean value indicating if notification was sent.
         """
         response = notify(
             "twilio",

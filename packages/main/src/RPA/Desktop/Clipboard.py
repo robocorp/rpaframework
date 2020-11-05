@@ -22,12 +22,12 @@ class Clipboard:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 
-    def copy_to_clipboard(self, text):
+    def copy_to_clipboard(self, text: str):
         """*DEPRECATED!!* Use `RPA.Desktop` library's `Copy to Clipboard` instead.
 
-        Copy text to clipboard
+        Copy text to clipboard.
 
-        :param text: to copy
+        :param text (str): to copy
         """
         self.logger.debug("copy_to_clipboard")
         if platform.system() == "Windows":
@@ -41,7 +41,7 @@ class Clipboard:
     def paste_from_clipboard(self):
         """*DEPRECATED!!* Use `RPA.Desktop` library's `Paste from Clipboard` instead.
 
-        :return: text
+        Returns text from current clipboard.
         """
         self.logger.debug("paste_from_clipboard")
         if platform.system() == "Windows":
@@ -57,7 +57,9 @@ class Clipboard:
 
     def clear_clipboard(self):
         """*DEPRECATED!!* Use `RPA.Desktop` library's `Clear Clipboard` instead.
-        Clear clipboard contents"""
+
+        Clear clipboard contents.
+        """
         self.logger.debug("clear_clipboard")
         if platform.system() == "Windows":
             win32clipboard.OpenClipboard()

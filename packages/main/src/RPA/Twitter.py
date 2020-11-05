@@ -21,7 +21,7 @@ except RobotNotRunningError:
 
 @dataclass
 class Tweet:
-    """Represents Tweet"""
+    """Container for single Tweet."""
 
     created_at: datetime.datetime
     id: int
@@ -39,19 +39,19 @@ class Tweet:
 
 
 class Twitter:
-    """Library for managing Twitter.
+    """Library for interacting with Twitter.
 
-    Library usage requires Twitter developer credentials, which can
-    be requested from https://developer.twitter.com/
+    Usage requires Twitter developer credentials, which can
+    be requested from https://developer.twitter.com/.
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
-        self._auth = None
         self.api = None
+        self._auth = None
         self._me = None
         listener = RobotLogListener()
         listener.register_protected_keywords("authorize")
@@ -74,12 +74,11 @@ class Twitter:
         access_token: str = None,
         access_token_secret: str = None,
     ) -> None:
-        """Authorize to Twitter API
+        """Authorize to Twitter API.
 
-        :param consumer_key: app consumer key
-        :param consumer_secret: app consumer secret
-        :param access_token: user access token
-        :param access_token_secret: user access token secret
+        ``consumer_key`` and ``consumer_secret`` are the app consumer key and secret
+
+        ``access_token`` and ``access_token_secret`` are the user access token and secret
         """
         if consumer_key is None:
             consumer_key = required_env("TWITTER_CONSUMER_KEY")
@@ -101,20 +100,14 @@ class Twitter:
             raise TweepError from e
 
     def get_me(self) -> dict:
-        """Get Twitter profile of authenticated user
-
-        :return: user profile as dictionary or `None`
-        """
+        """Get Twitter profile of authenticated user."""
         data = self._me._json if self._me else None  # pylint: disable=W0212
         notebook_json(data)
         return data
 
     def get_user_tweets(self, username: str = None, count: int = 100) -> list:
-        """Get user tweets
-
-        :param username: whose tweets to get
-        :param count: maximum number of tweets, defaults to 100
-        :return: list of user tweets
+        """Get tweets from user with given ``username``, limiting results
+        to a maximum of ``count``.
         """
         required_param(username, "get_user_tweets")
         tweets = []
@@ -154,26 +147,32 @@ class Twitter:
         since_id: str = None,
         max_id: str = None,
     ) -> list:
-        """Search tweets defined by search query
+        """Search tweets filtered by given parameters.
 
-        Results types:
-            - mixed : include both popular and real time results in the response
-            - recent : return only the most recent results in the response
-            - popular : return only the most popular results in the response
+        ``query`` is a search string of 500 characters maximum, including operators
 
-        :param query: search query string of 500 characters maximum,
-            including operators
-        :param count: maximum number of tweets, defaults to 100
-        :param geocode: tweets by users located within a given
-            radius of the given latitude/longitude
-        :param lang: language code of tweets
-        :param locale: language of the query you are sending
-        :param result_type: type of search results you would prefer to receive,
-            default "mixed"
-        :param until: tweets created before the given date
-        :param since_id: Returns only statuses with an ID greater than
-        :param max_id: only statuses with an ID less than
-        :return: list of matching tweets
+        ``count`` is the maximum number of tweets
+
+        ``geocode`` is the physical location of the user, as latitude/longitude
+
+        ``lang`` is the language code of tweets being searched
+
+        ``locale`` is the language of the query being sent
+
+        ``result_type`` defines which types of tweets are preferred
+
+        Supported result types:
+        - mixed: include both popular and real time results in the response (default)
+        - recent: return only the most recent results in the response
+        - popular: return only the most popular results in the response
+
+        ``until`` limits tweets to ones created before given date
+
+        ``since_id`` is the minimum ID of returned tweets
+
+        ``max_id`` is the maximum ID of returned wtweets
+
+        Returns a list of ``Tweet`` class instances.
         """
         required_param(query, "text_search_tweets")
         tweets = []
@@ -211,10 +210,9 @@ class Twitter:
         return tweets
 
     def get_user_profile(self, username: str = None) -> dict:
-        """Get user's Twitter profile
+        """Get Twitter profile with ``username``.
 
-        :param username: whose profile to get
-        :return: profile as dictionary
+        Returns a dictionary of profile attributes.
         """
         required_param(username, "get_user_profile")
         try:
@@ -226,18 +224,17 @@ class Twitter:
             return None
 
     def tweet(self, content: str = None) -> None:
-        """Make a tweet with content
-
-        :param content: text for the status update
-        """
+        """Make a tweet with `content` as text. """
         required_param(content, "tweet")
         self.api.update_status(content)
 
     def like(self, tweet: Tweet = None) -> bool:
-        """Like a tweet
+        """Like a given ``tweet``.
 
-        :param tweet: as a class `Tweet`
-        :return: `True` if Tweet was liked, `False` if not
+        Tweet should be an instance of the ``Tweet`` class returned from other
+        keywords.
+
+        Returns True if tweet was liked, otherwise False.
         """
         required_param(tweet, "like")
         try:
@@ -252,10 +249,12 @@ class Twitter:
             return False
 
     def unlike(self, tweet: Tweet = None) -> bool:
-        """Unlike a tweet
+        """Unlike a given ``tweet``.
 
-        :param tweet: as a class `Tweet`
-        :return: `True` if Tweet was unliked, `False` if not
+        Tweet should be an instance of the ``Tweet`` class returned from other
+        keywords.
+
+        Returns True if tweet was unliked, otherwise False.
         """
         required_param(tweet, "unlike")
         try:
@@ -270,10 +269,9 @@ class Twitter:
             return False
 
     def follow(self, user: str = None) -> bool:
-        """Follow Twitter user
+        """Follow Twitter ``user`` with matching screen name.
 
-        :param user: screen name of the user
-        :return:  `True` if user was followed, `False` if not
+        Returns True if followed successfully, otherwise False.
         """
         required_param(user, "follow")
         try:
@@ -284,10 +282,9 @@ class Twitter:
             return False
 
     def unfollow(self, user: str = None) -> bool:
-        """Unfollow Twitter user
+        """Unfollow Twitter ``user`` with matching screen name.
 
-        :param user: screen name of the user
-        :return:  `True` if user was followed, `False` if not
+        Returns True if unfollowed successfully, otherwise False.
         """
         required_param(user, "unfollow")
         try:

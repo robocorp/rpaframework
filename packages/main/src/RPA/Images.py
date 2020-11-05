@@ -78,18 +78,19 @@ class Images:
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
-    ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.matcher = TemplateMatcher(opencv=HAS_OPENCV)
 
     def take_screenshot(self, filename=None, region=None) -> Image:
-        """*DEPRECATED* Use keyword `RPA.Desktop.Take Screenshot` instead
+        """*DEPRECATED* Use keyword `RPA.Desktop.Take Screenshot` instead.
+
         Take a screenshot of the current desktop.
 
-        :param filename:    Save screenshot to filename
-        :param region:      Region to crop screenshot to
+        Optionally the screenshot ``region`` can be limited
+        to an area, given by region coordinates (left, top, right, bottom).
         """
         region = to_region(region)
 
@@ -113,11 +114,9 @@ class Images:
         return pillow_image
 
     def crop_image(self, image, region, filename=None):
-        """Crop an existing image.
+        """Crop an existing image using given region.
 
-        :param image:       Image to crop
-        :param region:      Region to crop image to
-        :param filename:    Save cropped image to filename
+        Optionally saves the resulting image as ``filename``.
         """
         region = to_region(region)
         image = to_image(image)
@@ -133,16 +132,18 @@ class Images:
     def find_template_in_image(
         self, image, template, region=None, limit=None, tolerance=None
     ) -> List[Region]:
-        """*DEPRECATED* Use keyword `Find` from library `RPA.Recognition` instead
-        Attempt to find the template from the given image.
+        """*DEPRECATED* Use keyword `Find` from library `RPA.Recognition` instead.
 
-        :param image:       Path to image or Image instance, used to search from
-        :param template:    Path to image or Image instance, used to search with
-        :param limit:       Limit returned results to maximum of `limit`.
-        :param region:      Area to search from. Can speed up search significantly.
-        :param tolerance:   Tolerance for matching, value between 0.1 and 1.0
-        :return:            List of matching regions
-        :raises ImageNotFoundError: No match was found
+        Attempt to find the ``template`` from the given ``image``.
+        Given images should be either previously returned Image instances
+        or paths to images on disk.
+
+        Matches can be optionally limited to given ``limit``.
+
+        The ``tolerance`` for matching can also be adjusted, which is a value
+        between 0.1 and 1.0. A higher number indicates a stricter match.
+
+        Returns a list of matching regions, or raises a ImageNotFoundError.
         """
         # Ensure images are in Pillow format
         image = to_image(image)
@@ -179,7 +180,8 @@ class Images:
         return matches
 
     def find_template_on_screen(self, template, **kwargs) -> List[Region]:
-        """*DEPRECATED!!* use `RPA.Desktop.Find Element` instead
+        """*DEPRECATED* use `RPA.Desktop.Find Element` instead.
+
         Attempt to find the template image from the current desktop.
         For argument descriptions, see ``find_template_in_image()``
         """
@@ -188,9 +190,8 @@ class Images:
     def wait_template_on_screen(self, template, timeout=5, **kwargs):
         """*DEPRECATED!!* use `RPA.Desktop.Wait For Element` instead
         Wait for template image to appear on current desktop.
-        For further argument descriptions, see ``find_template_in_image()``
 
-        :param timeout: Time to wait for template (in seconds)
+        For further argument descriptions, see ``find_template_in_image()``
         """
         start_time = time.time()
         while time.time() - start_time < float(timeout):
@@ -203,10 +204,7 @@ class Images:
     def show_region_in_image(self, image, region, color="red", width=5):
         """Draw a rectangle onto the image around the given region.
 
-        :param image:   image to draw onto
-        :param region:  coordinates for region or Region object
-        :param color:   color of rectangle
-        :param width:   line width of rectangle
+        The ``color`` and line ``width`` for drawn rectangle can be adjusted.
         """
         image = to_image(image)
         region = to_region(region)
@@ -218,28 +216,19 @@ class Images:
     def show_region_on_screen(self, region, color="red", width=5):
         """Draw a rectangle around the given region on the current desktop.
 
-        :param region:  coordinates for region or Region object
-        :param color:   color of rectangle
-        :param width:   line width of rectangle
+        The ``color`` and line ``width`` for drawn rectangle can be adjusted.
         """
         image = self.take_screenshot()
         return self.show_region_in_image(image, region, color, width)
 
     def get_pixel_color_in_image(self, image, point):
-        """Get the RGB value of a pixel in the image.
-
-        :param image:   image to get pixel from
-        :param point:   coordinates for pixel or Point object
-        """
+        """Get the RGB value of a pixel in the image."""
         point = to_point(point)
         pixel = image.getpixel(point.as_tuple())
         return RGB.from_pixel(pixel)
 
     def get_pixel_color_on_screen(self, point):
-        """Get the RGB value of a pixel currently on screen.
-
-        :param point:   coordinates for pixel or Point object
-        """
+        """Get the RGB value of a pixel currently on screen."""
         return self.get_pixel_color_in_image(self.take_screenshot(), point)
 
 
@@ -270,7 +259,9 @@ class TemplateMatcher:
         :param template:    image to search with
         :param limit:       maximum number of returned matches
         :param tolerance:   minimum correlation factor between template and image
-        :return:            list of regions that match criteria
+
+        Returns:
+            list of regions that match criteria
         """
         if self._opencv:
             match_func = self._iter_match_opencv
