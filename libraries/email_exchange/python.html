@@ -215,7 +215,51 @@
 <dt id="RPA.Email.Exchange.Exchange">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Email.Exchange.</code><code class="sig-name descname">Exchange</code><a class="headerlink" href="#RPA.Email.Exchange.Exchange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Library for interfacing with Microsoft Exchange Web Services (EWS).</p>
+<p><cite>Exchange</cite> is a library for sending, reading, and deleting emails.
+<cite>Exchange</cite> is interfacing with Exchange Web Services (EWS).</p>
+<p>For more information about server settings, see
+<a class="reference external" href="https://support.microsoft.com/en-us/office/server-settings-you-ll-need-from-your-email-provider-c82de912-adcc-4787-8283-45a1161f3cc3">this Microsoft support article</a>.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">     </span><span class="nn">RPA.Email.Exchange</span><span class="p"></span>
+<span class="kn">Task Setup</span><span class="p">  </span><span class="nf">Authorize</span><span class="p">  </span><span class="s">username=</span><span class="p">${</span><span class="nv">ACCOUNT</span><span class="p">}  </span><span class="s">password=</span><span class="p">${</span><span class="nv">PASSWORD</span><span class="p">}</span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">ACCOUNT</span><span class="p">}              </span><span class="s">ACCOUNT_NAME</span><span class="p"></span>
+<span class="p">${</span><span class="nv">PASSWORD</span><span class="p">}             </span><span class="s">ACCOUNT_PASSWORD</span><span class="p"></span>
+<span class="p">${</span><span class="nv">RECIPIENT_ADDRESS</span><span class="p">}    </span><span class="s">RECIPIENT</span><span class="p"></span>
+<span class="p">${</span><span class="nv">IMAGES</span><span class="p">}               </span><span class="s">myimage.png</span><span class="p"></span>
+<span class="p">${</span><span class="nv">ATTACHMENTS</span><span class="p">}          </span><span class="s">C:</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">files</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">mydocument.pdf</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Sending email</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Send Message</span><span class="p">  </span><span class="s">recipients=</span><span class="p">${</span><span class="nv">RECIPIENT_ADDRESS</span><span class="p">}</span>
+<span class="p">    ...           </span><span class="s">subject=Exchange Message from RPA Robot</span><span class="p"></span>
+<span class="p">    ...           </span><span class="s">body=&lt;p&gt;Exchange RPA Robot message body&lt;br&gt;&lt;img src=&#39;myimage.png&#39;/&gt;&lt;/p&gt;</span><span class="p"></span>
+<span class="p">    ...           </span><span class="s">save=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+<span class="p">    ...           </span><span class="s">html=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+<span class="p">    ...           </span><span class="s">images=</span><span class="p">${</span><span class="nv">IMAGES</span><span class="p">}</span>
+<span class="p">    ...           </span><span class="s">cc=EMAIL_ADDRESS</span><span class="p"></span>
+<span class="p">    ...           </span><span class="s">bcc=EMAIL_ADDRESS</span><span class="p"></span>
+<span class="p">    ...           </span><span class="s">attachments=</span><span class="p">${</span><span class="nv">ATTACHMENTS</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Email.Exchange</span> <span class="kn">import</span> <span class="n">Exchange</span>
+
+<span class="n">ex_account</span> <span class="o">=</span> <span class="s2">&quot;ACCOUNT_NAME&quot;</span>
+<span class="n">ex_password</span> <span class="o">=</span> <span class="s2">&quot;ACCOUNT_PASSWORD&quot;</span>
+
+<span class="n">mail</span> <span class="o">=</span> <span class="n">Exchange</span><span class="p">()</span>
+<span class="n">mail</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">ex_account</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">ex_password</span><span class="p">)</span>
+<span class="n">mail</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span>
+    <span class="n">recipients</span><span class="o">=</span><span class="s2">&quot;RECIPIENT&quot;</span><span class="p">,</span>
+    <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;Message from RPA Python&quot;</span><span class="p">,</span>
+    <span class="n">body</span><span class="o">=</span><span class="s2">&quot;RPA Python message body&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="RPA.Email.Exchange.Exchange.ROBOT_LIBRARY_DOC_FORMAT">
 <code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Email.Exchange.Exchange.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>

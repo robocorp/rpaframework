@@ -215,14 +215,80 @@
 <dt id="RPA.Cloud.AWS.AWS">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.AWS.</code><code class="sig-name descname">AWS</code><span class="sig-paren">(</span><em class="sig-param">region: str = 'eu-west-1'</em>, <em class="sig-param">robocloud_vault_name: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.AWS.AWS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.AWS.ServiceS3" title="RPA.Cloud.AWS.ServiceS3"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceS3</span></code></a>, <a class="reference internal" href="#RPA.Cloud.AWS.ServiceTextract" title="RPA.Cloud.AWS.ServiceTextract"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceTextract</span></code></a>, <a class="reference internal" href="#RPA.Cloud.AWS.ServiceComprehend" title="RPA.Cloud.AWS.ServiceComprehend"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceComprehend</span></code></a>, <a class="reference internal" href="#RPA.Cloud.AWS.ServiceSQS" title="RPA.Cloud.AWS.ServiceSQS"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.AWS.ServiceSQS</span></code></a></p>
-<p>Library for interacting with AWS services</p>
-<p>Supported services:</p>
+<p><cite>AWS</cite> is a library for operating with Amazon AWS services S3, SQS,
+Textract and Comprehend.</p>
+<p>Services are initialized with keywords like <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">S3</span> <span class="pre">Client</span></code> for S3.</p>
+<p><strong>AWS authentication</strong></p>
+<p>Authentication for AWS is set with <cite>key id</cite> and <cite>access key</cite> which can be given to the library
+in three different ways.</p>
 <ul class="simple">
-<li><p>Comprehend</p></li>
-<li><p>S3</p></li>
-<li><p>SQS</p></li>
-<li><p>Textract</p></li>
+<li><p>Method 1 as environment variables, <code class="docutils literal notranslate"><span class="pre">AWS_KEY_ID</span></code> and <code class="docutils literal notranslate"><span class="pre">AWS_KEY</span></code>.</p></li>
+<li><p>Method 2 as keyword parameters to <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Textract</span> <span class="pre">Client</span></code> for example.</p></li>
+<li><p>Method 3 as Robocloud vault secret. The vault name needs to be given in library init or
+with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code>. Secret keys are expected to match environment variable
+names.</p></li>
 </ul>
+<p>Method 1. credentials using environment variable</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init AWS services</span><span class="p"></span>
+<span class="p">    </span><span class="c"># NO parameters for client, expecting to get credentials</span>
+<span class="p">    </span><span class="c"># with AWS_KEY and AWS_KEY_ID environment variable</span>
+<span class="p">    </span><span class="nf">Init S3 Client</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Method 2. credentials with keyword parameter</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init AWS services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init S3 Client</span><span class="p">  </span><span class="s">aws_key_id=</span><span class="p">${</span><span class="nv">AWS_KEY_ID</span><span class="p">}  </span><span class="s">aws_key=</span><span class="p">${</span><span class="nv">AWS_KEY</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Method 3. setting Robocloud Vault in the library init</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p">  </span><span class="s">robocloud_vault_name=aws</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init AWS services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init S3 Client</span><span class="p">  </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Method 3. setting Robocloud Vault with keyword</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Azure services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Robocloud Vault</span><span class="p">         </span><span class="s">vault_name=aws</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Textract Client</span><span class="p">  </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Requirements</strong></p>
+<p>The default installation depends on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html">boto3</a> library. Due to the size of the
+dependency, this library has been set as an optional package for <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>.</p>
+<p>This can be installed by opting in to the <cite>aws</cite> dependency:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpaframework[aws]</span></code></p>
+<p><strong>Example</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p">   </span><span class="s">region=us-east-1</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">BUCKET_NAME</span><span class="p">}        </span><span class="s">testbucket12213123123</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Upload a file into S3 bucket</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Setup</span><span class="p">]   </span><span class="nf">Init S3 Client</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Upload File</span><span class="p">      ${</span><span class="nv">BUCKET_NAME</span><span class="p">}   ${</span><span class="nv">/</span><span class="p">}</span><span class="s">path</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">to</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">file.pdf</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">files</span><span class="p">}         </span><span class="nf">List Files</span><span class="p">   ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
+<span class="p">    FOR   ${</span><span class="nv">file</span><span class="p">}  IN   @{</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log</span><span class="p">  ${</span><span class="nv">file</span><span class="p">}</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="RPA.Cloud.AWS.AWS.ROBOT_LIBRARY_DOC_FORMAT">
 <code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Cloud.AWS.AWS.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
@@ -262,7 +328,7 @@
 <dd><p>Create S3 bucket with name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>bucket_name</em>) – name for the bucket</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>boolean indicating status of operation</p>
@@ -290,7 +356,7 @@
 <dd><p>Delete S3 bucket with name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>bucket_name</em>) – name for the bucket</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>boolean indicating status of operation</p>
@@ -543,10 +609,10 @@ of text lines</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>aws_key_id</strong> – access key ID</p></li>
-<li><p><strong>aws_key</strong> – secret access key</p></li>
-<li><p><strong>region</strong> – AWS region</p></li>
-<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>region</em>) – access key ID</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – secret access key</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – AWS region</p></li>
+<li><p><strong>(</strong><strong>bool</strong><strong>)</strong> (<em>use_robocloud_vault</em>) – use secret stored into <cite>Robocloud Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -921,7 +987,7 @@ that 5,000 bytes of UTF-8 encoded characters</p></li>
 <dd><p>Create S3 bucket with name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>bucket_name</em>) – name for the bucket</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>boolean indicating status of operation</p>
@@ -935,7 +1001,7 @@ that 5,000 bytes of UTF-8 encoded characters</p></li>
 <dd><p>Delete S3 bucket with name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>bucket_name</strong> – name for the bucket</p>
+<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>bucket_name</em>) – name for the bucket</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>boolean indicating status of operation</p>
@@ -986,10 +1052,10 @@ current directory</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>aws_key_id</strong> – access key ID</p></li>
-<li><p><strong>aws_key</strong> – secret access key</p></li>
-<li><p><strong>region</strong> – AWS region</p></li>
-<li><p><strong>use_robocloud_vault</strong> – use secret stored into <cite>Robocloud Vault</cite></p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>region</em>) – access key ID</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – secret access key</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – AWS region</p></li>
+<li><p><strong>(</strong><strong>bool</strong><strong>)</strong> (<em>use_robocloud_vault</em>) – use secret stored into <cite>Robocloud Vault</cite></p></li>
 </ul>
 </dd>
 </dl>

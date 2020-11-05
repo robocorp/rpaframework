@@ -216,14 +216,80 @@
 <dd class="field-odd"><p>Global</p>
 </dd>
 </dl>
-<p>Library for interacting with AWS services</p>
-<p>Supported services:</p>
+<p><cite>AWS</cite> is a library for operating with Amazon AWS services S3, SQS,
+Textract and Comprehend.</p>
+<p>Services are initialized with keywords like <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">S3</span> <span class="pre">Client</span></code> for S3.</p>
+<p><strong>AWS authentication</strong></p>
+<p>Authentication for AWS is set with <cite>key id</cite> and <cite>access key</cite> which can be given to the library
+in three different ways.</p>
 <ul class="simple">
-<li><p>Comprehend</p></li>
-<li><p>S3</p></li>
-<li><p>SQS</p></li>
-<li><p>Textract</p></li>
+<li><p>Method 1 as environment variables, <code class="docutils literal notranslate"><span class="pre">AWS_KEY_ID</span></code> and <code class="docutils literal notranslate"><span class="pre">AWS_KEY</span></code>.</p></li>
+<li><p>Method 2 as keyword parameters to <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Textract</span> <span class="pre">Client</span></code> for example.</p></li>
+<li><p>Method 3 as Robocloud vault secret. The vault name needs to be given in library init or
+with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code>. Secret keys are expected to match environment variable
+names.</p></li>
 </ul>
+<p>Method 1. credentials using environment variable</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init AWS services</span><span class="p"></span>
+<span class="p">    </span><span class="c"># NO parameters for client, expecting to get credentials</span>
+<span class="p">    </span><span class="c"># with AWS_KEY and AWS_KEY_ID environment variable</span>
+<span class="p">    </span><span class="nf">Init S3 Client</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Method 2. credentials with keyword parameter</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init AWS services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init S3 Client</span><span class="p">  </span><span class="s">aws_key_id=</span><span class="p">${</span><span class="nv">AWS_KEY_ID</span><span class="p">}  </span><span class="s">aws_key=</span><span class="p">${</span><span class="nv">AWS_KEY</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Method 3. setting Robocloud Vault in the library init</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p">  </span><span class="s">robocloud_vault_name=aws</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init AWS services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init S3 Client</span><span class="p">  </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Method 3. setting Robocloud Vault with keyword</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Azure services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Robocloud Vault</span><span class="p">         </span><span class="s">vault_name=aws</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Textract Client</span><span class="p">  </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Requirements</strong></p>
+<p>The default installation depends on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html">boto3</a> library. Due to the size of the
+dependency, this library has been set as an optional package for <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>.</p>
+<p>This can be installed by opting in to the <cite>aws</cite> dependency:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpaframework[aws]</span></code></p>
+<p><strong>Example</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.AWS</span><span class="p">   </span><span class="s">region=us-east-1</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">BUCKET_NAME</span><span class="p">}        </span><span class="s">testbucket12213123123</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Upload a file into S3 bucket</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Setup</span><span class="p">]   </span><span class="nf">Init S3 Client</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Upload File</span><span class="p">      ${</span><span class="nv">BUCKET_NAME</span><span class="p">}   ${</span><span class="nv">/</span><span class="p">}</span><span class="s">path</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">to</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">file.pdf</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">files</span><span class="p">}         </span><span class="nf">List Files</span><span class="p">   ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
+<span class="p">    FOR   ${</span><span class="nv">file</span><span class="p">}  IN   @{</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log</span><span class="p">  ${</span><span class="nv">file</span><span class="p">}</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>

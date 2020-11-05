@@ -215,9 +215,72 @@
 <dt id="RPA.Email.ImapSmtp.ImapSmtp">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">ImapSmtp</code><span class="sig-paren">(</span><em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">smtp_port: int = 587</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">imap_port: int = 993</em>, <em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>RPA Framework library providing SMTP and IMAP operations for
-specified mail server.</p>
-<p>Proper initialization needs <cite>smtp_server</cite> and <cite>imap_server</cite> defined.</p>
+<p><cite>ImapSmtp</cite> is a library for sending, reading, and deleting emails.
+<cite>ImapSmtp</cite> is interfacing with SMTP and IMAP protocols.</p>
+<p><strong>Troubleshooting</strong></p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Authentication error with Gmail - “Application-specific password required”</dt><dd><p>see. <a class="reference external" href="https://support.google.com/mail/answer/185833?hl=en">https://support.google.com/mail/answer/185833?hl=en</a></p>
+</dd>
+</dl>
+</li>
+</ul>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<p>It is highly recommended to secure your passwords and take care
+that they are not stored in the version control by mistake.
+See <code class="docutils literal notranslate"><span class="pre">RPA.Robocloud.Secrets</span></code> how to store RPA Secrets into Robocloud.</p>
+<p>When sending HTML content with IMG tags, the <code class="docutils literal notranslate"><span class="pre">src</span></code> filenames must match
+the base image name given with the <code class="docutils literal notranslate"><span class="pre">images</span></code> parameter.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">     </span><span class="nn">RPA.Email.ImapSmtp</span><span class="p">   </span><span class="s">smtp_server=smtp.gmail.com</span><span class="p">  </span><span class="s">port=587</span><span class="p"></span>
+<span class="kn">Task Setup</span><span class="p">  </span><span class="nf">Authorize</span><span class="p">  </span><span class="s">account=</span><span class="p">${</span><span class="nv">GMAIL_ACCOUNT</span><span class="p">}  </span><span class="s">password=</span><span class="p">${</span><span class="nv">GMAIL_PASSWORD</span><span class="p">}</span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">GMAIL_ACCOUNT</span><span class="p">}        </span><span class="s">ACCOUNT_NAME</span><span class="p"></span>
+<span class="p">${</span><span class="nv">GMAIL_PASSWORD</span><span class="p">}       </span><span class="s">ACCOUNT_PASSWORD</span><span class="p"></span>
+<span class="p">${</span><span class="nv">RECIPIENT_ADDRESS</span><span class="p">}    </span><span class="s">RECIPIENT</span><span class="p"></span>
+<span class="p">${</span><span class="nv">BODY_IMG1</span><span class="p">}            ${</span><span class="nv">IMAGEDIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">approved.png</span><span class="p"></span>
+<span class="p">${</span><span class="nv">BODY_IMG2</span><span class="p">}            ${</span><span class="nv">IMAGEDIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">invoice.png</span><span class="p"></span>
+<span class="p">${</span><span class="nv">EMAIL_BODY</span><span class="p">}     </span><span class="s">&lt;h1&gt;Heading&lt;/h1&gt;&lt;p&gt;Status: &lt;img src=&#39;approved.png&#39; alt=&#39;approved image&#39;/&gt;&lt;/p&gt;</span><span class="p"></span>
+<span class="p">...               </span><span class="s">&lt;p&gt;INVOICE: &lt;img src=&#39;invoice.png&#39; alt=&#39;invoice image&#39;/&gt;&lt;/p&gt;</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Sending email</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Send Message</span><span class="p">  </span><span class="s">sender=</span><span class="p">${</span><span class="nv">GMAIL_ACCOUNT</span><span class="p">}</span>
+<span class="p">    ...           </span><span class="s">recipients=</span><span class="p">${</span><span class="nv">RECIPIENT_ADDRESS</span><span class="p">}</span>
+<span class="p">    ...           </span><span class="s">subject=Message from RPA Robot</span><span class="p"></span>
+<span class="p">    ...           </span><span class="s">body=RPA Robot message body</span><span class="p"></span>
+
+<span class="gu">Sending HTML Email With Image</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Documentation</span><span class="p">]     </span><span class="s">Sending email with HTML content and attachment</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Send Message</span><span class="p"></span>
+<span class="p">    ...                 </span><span class="s">sender=</span><span class="p">${</span><span class="nv">GMAIL_ACCOUNT</span><span class="p">}</span>
+<span class="p">    ...                 </span><span class="s">recipients=</span><span class="p">${</span><span class="nv">RECIPIENT_ADDRESS</span><span class="p">}</span>
+<span class="p">    ...                 </span><span class="s">subject=HTML email with body images (2) plus one attachment</span><span class="p"></span>
+<span class="p">    ...                 </span><span class="s">body=</span><span class="p">${</span><span class="nv">EMAIL_BODY</span><span class="p">}</span>
+<span class="p">    ...                 </span><span class="s">html=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+<span class="p">    ...                 </span><span class="s">images=</span><span class="p">${</span><span class="nv">BODY_IMG1</span><span class="p">}</span><span class="s">, </span><span class="p">${</span><span class="nv">BODY_IMG2</span><span class="p">}</span>
+<span class="p">    ...                 </span><span class="s">attachments=example.png</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Email.ImapSmtp</span> <span class="kn">import</span> <span class="n">ImapSmtp</span>
+
+<span class="n">gmail_account</span> <span class="o">=</span> <span class="s2">&quot;ACCOUNT_NAME&quot;</span>
+<span class="n">gmail_password</span> <span class="o">=</span> <span class="s2">&quot;ACCOUNT_PASSWORD&quot;</span>
+<span class="n">sender</span> <span class="o">=</span> <span class="n">gmail_account</span>
+
+<span class="n">mail</span> <span class="o">=</span> <span class="n">ImapSmtp</span><span class="p">(</span><span class="n">smtp_server</span><span class="o">=</span><span class="s2">&quot;smtp.gmail.com&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">587</span><span class="p">)</span>
+<span class="n">mail</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="n">account</span><span class="o">=</span><span class="n">gmail_account</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">gmail_password</span><span class="p">)</span>
+<span class="n">mail</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span>
+    <span class="n">sender</span><span class="o">=</span><span class="n">gmail_account</span><span class="p">,</span>
+    <span class="n">recipients</span><span class="o">=</span><span class="s2">&quot;RECIPIENT&quot;</span><span class="p">,</span>
+    <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;Message from RPA Python&quot;</span><span class="p">,</span>
+    <span class="n">body</span><span class="o">=</span><span class="s2">&quot;RPA Python message body&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.ROBOT_LIBRARY_DOC_FORMAT">
 <code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>

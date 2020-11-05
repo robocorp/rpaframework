@@ -216,9 +216,94 @@
 <dd class="field-odd"><p>Global</p>
 </dd>
 </dl>
-<p>Robot Framework library for manipulating Excel files.</p>
+<p>The <cite>Excel.Files</cite> library can be used to read and write Excel
+files without the need to start the actual Excel application.</p>
+<p>It supports both legacy .xls files and modern .xlsx files.</p>
 <p>Note: To run macros or load password protected worksheets,
 please use the Excel application library.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<p>A common use-case is to load an existing Excel file as a table,
+which can be iterated over later in a Robot Framework keyword or task:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Tables</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Excel.Files</span><span class="p"></span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Read orders as table</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Open workbook</span><span class="p">    ${</span><span class="nv">ORDERS_FILE</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">worksheet</span><span class="p">}=    </span><span class="nf">Read worksheet</span><span class="p">   </span><span class="s">header=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">orders</span><span class="p">}=       </span><span class="nf">Create table</span><span class="p">     ${</span><span class="nv">worksheet</span><span class="p">}</span>
+<span class="p">    [</span><span class="kn">Return</span><span class="p">]         ${</span><span class="nv">orders</span><span class="p">}</span>
+<span class="p">    [</span><span class="kn">Teardown</span><span class="p">]       </span><span class="nf">Close workbook</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Processing all worksheets in the Excel file and checking row count:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Excel.Files</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">EXCEL_FILE</span><span class="p">}   </span><span class="s">/path/to/excel.xlsx</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Rows in the sheet</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Setup</span><span class="p">]      </span><span class="nf">Open Workbook</span><span class="p">    ${</span><span class="nv">EXCEL_FILE</span><span class="p">}</span>
+<span class="p">    @{</span><span class="nv">sheets</span><span class="p">}=   </span><span class="nf">List Worksheets</span><span class="p"></span>
+<span class="p">    FOR  ${</span><span class="nv">sheet</span><span class="p">}  IN   @{</span><span class="nv">sheets</span><span class="p">}</span>
+<span class="p">        ${</span><span class="nv">count</span><span class="p">}=  </span><span class="nf">Get row count in the sheet</span><span class="p">   ${</span><span class="nv">sheet</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log</span><span class="p">   </span><span class="s">Worksheet &#39;</span><span class="p">${</span><span class="nv">sheet</span><span class="p">}</span><span class="s">&#39; has </span><span class="p">${</span><span class="nv">count</span><span class="p">}</span><span class="s"> rows</span><span class="p"></span>
+<span class="p">    END</span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Get row count in the sheet</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Arguments</span><span class="p">]      ${</span><span class="nv">SHEET_NAME</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">sheet</span><span class="p">}=        </span><span class="nf">Read Worksheet</span><span class="p">   ${</span><span class="nv">SHEET_NAME</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">rows</span><span class="p">}=         </span><span class="nf">Get Length</span><span class="p">  ${</span><span class="nv">sheet</span><span class="p">}</span>
+<span class="p">    [</span><span class="kn">Return</span><span class="p">]         ${</span><span class="nv">rows</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Creating a new Excel file with a dictionary:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Creating new Excel</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Create Workbook</span><span class="p">  </span><span class="s">my_new_excel.xlsx</span><span class="p"></span>
+<span class="p">    FOR    ${</span><span class="nv">index</span><span class="p">}    IN RANGE    </span><span class="s">20</span><span class="p"></span>
+<span class="p">        &amp;{</span><span class="nv">row</span><span class="p">}=       </span><span class="nf">Create Dictionary</span><span class="p"></span>
+<span class="p">        ...           </span><span class="s">Row No</span><span class="p">   ${</span><span class="nv">index</span><span class="p">}</span>
+<span class="p">        ...           </span><span class="s">Amount</span><span class="p">   ${</span><span class="nv">index * 25</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Append Rows to Worksheet</span><span class="p">  ${</span><span class="nv">row</span><span class="p">}  </span><span class="s">header=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+<span class="p">    END</span>
+<span class="p">    </span><span class="nf">Save Workbook</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Creating a new Excel file with a list:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">@{</span><span class="nv">heading</span><span class="p">}   </span><span class="s">Row No</span><span class="p">   </span><span class="s">Amount</span><span class="p"></span>
+<span class="p">@{</span><span class="nv">rows</span><span class="p">}      @{</span><span class="nv">heading</span><span class="p">}</span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Creating new Excel</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Create Workbook</span><span class="p">  </span><span class="s">my_new_excel.xlsx</span><span class="p"></span>
+<span class="p">    FOR    ${</span><span class="nv">index</span><span class="p">}    IN RANGE   </span><span class="s">1</span><span class="p">  </span><span class="s">20</span><span class="p"></span>
+<span class="p">        @{</span><span class="nv">row</span><span class="p">}=         </span><span class="nf">Create List</span><span class="p">   ${</span><span class="nv">index</span><span class="p">}   ${</span><span class="nv">index * 25</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Append To List</span><span class="p">  ${</span><span class="nv">rows</span><span class="p">}  ${</span><span class="nv">row</span><span class="p">}</span>
+<span class="p">    END</span>
+<span class="p">    </span><span class="nf">Append Rows to Worksheet</span><span class="p">  ${</span><span class="nv">rows</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Save Workbook</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<p>The library can also be imported directly into Python.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Excel.Files</span> <span class="kn">import</span> <span class="n">Files</span>
+
+<span class="k">def</span> <span class="nf">read_excel_worksheet</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">worksheet</span><span class="p">):</span>
+    <span class="n">lib</span> <span class="o">=</span> <span class="n">Files</span><span class="p">()</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">open_workbook</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">lib</span><span class="o">.</span><span class="n">read_worksheet</span><span class="p">(</span><span class="n">worksheet</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">lib</span><span class="o">.</span><span class="n">close_workbook</span><span class="p">()</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>

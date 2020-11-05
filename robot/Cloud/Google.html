@@ -216,23 +216,103 @@
 <dd class="field-odd"><p>Global</p>
 </dd>
 </dl>
-<p>Library for interacting with Google services</p>
-<p>Google Storage URI:</p>
-<blockquote>
-<div><p>gs://&lt;bucket_name&gt;/&lt;file_path_inside_bucket&gt;</p>
-</div></blockquote>
-<p>The usage requires the following steps:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Create GCP project</p></li>
-<li><p>Create service account key file (json) and save it to a place the robot
+<p><cite>Google</cite> is a library for operating with Google API endpoints.</p>
+<p>Usage requires the following steps:</p>
+<ul class="simple">
+<li><p>Create a GCP project</p></li>
+<li><p>Create a service account key file (JSON) and save it to a place the robot
 can use it</p></li>
 <li><p>Enable APIs</p></li>
 <li><p>Install rpaframework[google]</p></li>
 </ul>
-</div></blockquote>
-<p>Services are taken into use with <code class="docutils literal notranslate"><span class="pre">init_SERVICENAME_client</span></code> keywords,
-which take as parameter an <code class="docutils literal notranslate"><span class="pre">service_account</span></code> JSON file.</p>
+<p><strong>Google authentication</strong></p>
+<p>Authentication for Google is set with <cite>service credentials JSON file</cite> which can be given to the library
+in three different ways.</p>
+<ul class="simple">
+<li><p>Method 1 as environment variables, <code class="docutils literal notranslate"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> with path to JSON file.</p></li>
+<li><p>Method 2 as keyword parameter to <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Storage</span> <span class="pre">Client</span></code> for example.</p></li>
+<li><p>Method 3 as Robocloud vault secret. The vault name and secret key name needs to be given in library init
+or with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code>. Secret value should contain JSON file contents.</p></li>
+</ul>
+<p>Method 1. service credentials using environment variable</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google services</span><span class="p"></span>
+<span class="p">    </span><span class="c"># NO parameters for Vision Client, expecting to get JSON</span>
+<span class="p">    </span><span class="c"># with GOOGLE_APPLICATION_CREDENTIALS environment variable</span>
+<span class="p">    </span><span class="nf">Init Vision Client</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Method 2. service credentials with keyword parameter</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Speech To Text Client</span><span class="p">  </span><span class="s">/path/to/service_credentials.json</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Method 3. setting Robocloud Vault in the library init</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+<span class="p">...       </span><span class="s">robocloud_vault_name=googlecloud</span><span class="p"></span>
+<span class="p">...       </span><span class="s">robocloud_vault_secret_key=servicecreds</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Storage Client</span><span class="p">   </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Method 3. setting Robocloud Vault with keyword</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Robocloud Vault</span><span class="p">   </span><span class="s">vault_name=googlecloud</span><span class="p">  </span><span class="s">vault_secret_key=servicecreds</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Storage Client</span><span class="p">   </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Requirements</strong></p>
+<p>Due to number of dependencies related to Google Cloud services this library has been set as
+an optional package for <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>.</p>
+<p>This can be installed by opting in to the <cite>google</cite> dependency:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpaframework[google]</span></code></p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">SERVICE CREDENTIALS</span><span class="p">}    ${</span><span class="nv">/</span><span class="p">}</span><span class="s">path</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">to</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">service_credentials.json</span><span class="p"></span>
+<span class="p">${</span><span class="nv">BUCKET_NAME</span><span class="p">}            </span><span class="s">testbucket12213123123</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Upload a file into a new storage bucket</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Setup</span><span class="p">]   </span><span class="nf">Init Storage Client</span><span class="p">   ${</span><span class="nv">SERVICE CREDENTIALS</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Create Bucket</span><span class="p">    ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Upload File</span><span class="p">      ${</span><span class="nv">BUCKET_NAME</span><span class="p">}   ${</span><span class="nv">/</span><span class="p">}</span><span class="s">path</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">to</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">file.pdf</span><span class="p">  </span><span class="s">myfile.pdf</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">files</span><span class="p">}         </span><span class="nf">List Files</span><span class="p">   ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
+<span class="p">    FOR   ${</span><span class="nv">file</span><span class="p">}  IN   @{</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log</span><span class="p">  ${</span><span class="nv">file</span><span class="p">}</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Cloud.Google</span> <span class="kn">import</span> <span class="n">Google</span>
+
+<span class="n">library</span> <span class="o">=</span> <span class="n">Google</span>
+<span class="n">service_credentials</span> <span class="o">=</span> <span class="s1">&#39;/path/to/service_credentials.json&#39;</span>
+
+<span class="n">library</span><span class="o">.</span><span class="n">init_vision_client</span><span class="p">(</span><span class="n">service_credentials</span><span class="p">)</span>
+<span class="n">library</span><span class="o">.</span><span class="n">init_text_to_speech</span><span class="p">(</span><span class="n">service_credentials</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">detect_text</span><span class="p">(</span><span class="s1">&#39;imagefile.png&#39;</span><span class="p">,</span> <span class="s1">&#39;result.json&#39;</span><span class="p">)</span>
+<span class="n">library</span><span class="o">.</span><span class="n">synthesize_speech</span><span class="p">(</span><span class="s1">&#39;I want this said aloud&#39;</span><span class="p">,</span> <span class="n">target_file</span><span class="o">=</span><span class="s1">&#39;said.mp3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>

@@ -395,19 +395,48 @@ internal values when possible.</p>
 <dt id="RPA.Robocloud.Secrets.Secrets">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">Secrets</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.Secrets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A library for reading secrets, e.g. passwords or tokens, that can
-be used during a task execution.</p>
-<p>Primarily used with Robocloud Vault, but supports custom adapters
-for storing secrets in other databases or local files.</p>
-<p>The selected adapter can be set with the environment
-variable <code class="docutils literal notranslate"><span class="pre">RPA_SECRET_MANAGER</span></code>, or the keyword argument <code class="docutils literal notranslate"><span class="pre">default_adapter</span></code>.
-Defaults to Robocloud Vault if not defined.</p>
-<p>All other library arguments are passed to the adapter.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>default_adapter</strong> – Override default secret adapter</p>
-</dd>
-</dl>
+<p><cite>Secrets</cite> is a library for interfacing secrets set in the Robocloud Vault
+(used by default) or file-based secrets, which can be taken into use
+by setting two environment variables below.</p>
+<p>Robocloud Vault works together with Robocloud Worker or Robocode CLI.
+Following three environment variables need to exist (these are set by
+Robocloud Worker automatically and can be set manually with Robocode CLI).</p>
+<ul class="simple">
+<li><p>RC_API_SECRET_HOST : URL to Robocloud Secrets API</p></li>
+<li><p>RC_API_SECRET_TOKEN : API Token for Robocloud Secrets API</p></li>
+<li><p>RC_WORKSPACE_ID : Robocloud Workspace ID</p></li>
+</ul>
+<p>File based secrets can be set by defining two environment variables.</p>
+<ul class="simple">
+<li><p>RPA_SECRET_MANAGER : ‘RPA.Robocloud.Secrets.FileSecrets’</p></li>
+<li><p>RPA_SECRET_FILE : Absolute path to the secrets JSON file.</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;swaglabs&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;standard_user&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;secret_sauce&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocloud.Secrets</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Reading secrets</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">secrets</span><span class="p">}=   </span><span class="nf">Get Secret</span><span class="p">  </span><span class="s">swaglabs</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log Many</span><span class="p">      ${</span><span class="nv">secrets</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocloud.Secrets</span> <span class="kn">import</span> <span class="n">Secrets</span>
+
+<span class="n">secret</span> <span class="o">=</span> <span class="n">Secrets</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;My secrets: </span><span class="si">{</span><span class="n">secret</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s1">&#39;swaglabs&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="RPA.Robocloud.Secrets.Secrets.ROBOT_LIBRARY_DOC_FORMAT">
 <code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Robocloud.Secrets.Secrets.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>

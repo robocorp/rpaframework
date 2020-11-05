@@ -310,24 +310,87 @@
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Items.</code><code class="sig-name descname">Items</code><span class="sig-paren">(</span><em class="sig-param">load_env=True</em>, <em class="sig-param">default_adapter=&lt;class 'RPA.Robocloud.Items.RobocorpAdapter'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A library for interacting with RPA work items.</p>
-<p><cite>Items</cite> is a collection of keywords for handling data
-that is moved between different processes and Robot Framework
-tasks. It allows storing and restoring values to/from cloud or file based
-storage, and manipulating their contents.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>load_env</strong> – Automatically load work item using environment variables</p></li>
-<li><p><strong>default_adapter</strong> – Set default adapter if not overriden by environment</p></li>
-</ul>
-</dd>
-</dl>
-<p>Environment variables:</p>
+<p>Work items are used for managing data that go through multiple
+activities and tasks inside a process. Each execution of an activity receives
+a work item from the previous activity, and after the activity is finished, it
+is forwarded to the next one. During the execution, it can freely
+read and update the data contained in an item.</p>
+<p>The default implementation uses Robocloud to store the data, but the library
+allows using custom adapters.</p>
+<p><strong>Default environment</strong></p>
+<p>The library automatically loads the work item defined by its runtime
+environment if the argument <code class="docutils literal notranslate"><span class="pre">load_env</span></code> is truthy (enabled by default).
+This functionality is controlled by the following environment variables:</p>
 <ul class="simple">
-<li><p>RPA_WORKITEMS_ADAPTER: Import path to adapter, e.g. “mymodule.MyAdapter”</p></li>
-<li><p>RC_WORKSPACE_ID:       Current default workspace ID</p></li>
-<li><p>RC_WORKITEM_ID:        Current default work item ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RC_WORKSPACE_ID</span></code>: The ID for the Robocloud workspace</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RC_WORKITEM_ID</span></code>:  The ID for the Robocloud work item</p></li>
 </ul>
+<p>These values are dynamic and should be set by Robocloud, but can be
+overriden manually while developing an activity.</p>
+<p><strong>Item structure</strong></p>
+<p>A work item’s data payload is JSON and allows storing anything that is
+serializable. This library creates an object with the key ‘variables’
+that contains key-value pairs of a variable name and its contents.
+These variables can be exposed to the Robot Framework task to be used directly.</p>
+<p>In addition to the data section, a work item can also contain files,
+which are stored by default in Robocorp’s cloud. Adding and using
+files with work items requires no additional setup from the user.</p>
+<p><strong>Workflow</strong></p>
+<p>While a work item is loaded automatically when a suite starts, changes are
+not automatically reflected back to the source. The work item will be modified
+locally and then saved when the corresponding keyword is explicitly called.
+It is recommended to defer all saves to the end of the task to prevent
+leaving work items in a half-modified state after failures.</p>
+<p><strong>Custom adapters</strong></p>
+<p>While Robocloud is the default implementation, it can also be replaced
+with a custom adapter. The selection is based on either the <code class="docutils literal notranslate"><span class="pre">default_adapter</span></code>
+argument for the library, or the <code class="docutils literal notranslate"><span class="pre">RPA_WORKITEMS_ADAPTER</span></code> environment
+variable. A custom implementation should inherit from the <code class="docutils literal notranslate"><span class="pre">BaseAdapter</span></code>
+class. The library has a built-in alternative adapter called FileAdapter for
+storing work items to disk.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<p>In the following example the work item is modified locally and then saved
+back to Robocloud. Also note how the work item is loaded implicitly when
+the suite starts.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocloud.Items</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Save variables to Robocloud</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Add work item file</span><span class="p">    </span><span class="s">orders.xlsx</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set work item variables</span><span class="p">    </span><span class="s">user=Dude</span><span class="p">    </span><span class="s">mail=address@company.com</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Later in the process inside a different robot, we can use previously saved
+work item variables and files. The library also allows injecting the variables
+directly into the current task execution.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocloud.Items</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Use variables from Robocloud</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set task variables from work item</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Variables are now available: </span><span class="p">${</span><span class="nv">user</span><span class="p">}</span><span class="s">, </span><span class="p">${</span><span class="nv">mail</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">path</span><span class="p">}=    </span><span class="nf">Get work item file</span><span class="p">    </span><span class="s">orders.xlsx</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Files are also stored to disk: </span><span class="p">${</span><span class="nv">path</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<p>The library can also be used through Python, but it does not implicitly
+load the work item for the current execution.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">RPA.Robocloud.Items</span> <span class="kn">import</span> <span class="n">Items</span>
+
+<span class="k">def</span> <span class="nf">list_variables</span><span class="p">(</span><span class="n">item_id</span><span class="p">):</span>
+    <span class="n">library</span> <span class="o">=</span> <span class="n">Items</span><span class="p">()</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">load_work_item_from_environment</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">variable</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">library</span><span class="o">.</span><span class="n">get_work_item_variables</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="RPA.Robocloud.Items.Items.ROBOT_LIBRARY_DOC_FORMAT">
 <code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Robocloud.Items.Items.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>

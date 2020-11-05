@@ -514,7 +514,93 @@ If either index or column is missing, they are created.</p>
 <dt id="RPA.Tables.Tables">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Tables.</code><code class="sig-name descname">Tables</code><a class="headerlink" href="#RPA.Tables.Tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Robot Framework library for manipulating tabular data.</p>
+<p><cite>Tables</cite> is a library for manipulating tabular data inside Robot Framework.</p>
+<p>It can import data from various sources and apply different operations to it.
+Common use-cases are reading and writing CSV files, inspecting files in
+directories, or running tasks using existing Excel data.</p>
+<p><strong>Import types</strong></p>
+<p>The data from which a table can be created can be of two main types:</p>
+<ol class="arabic simple">
+<li><p>An iterable of individual rows, like a list of lists, or list of dictionaries</p></li>
+<li><p>A dictionary of columns, where each dictionary value is a list of values</p></li>
+</ol>
+<p>For instance, these two input values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data1</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mark&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">58</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">22</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Adam&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">67</span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="n">data2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Mark&quot;</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Adam&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span>  <span class="p">[</span>    <span class="mi">58</span><span class="p">,</span>     <span class="mi">22</span><span class="p">,</span>     <span class="mi">67</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Would both result in the following table:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 33%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Index</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Age</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Mark</p></td>
+<td><p>58</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>John</p></td>
+<td><p>22</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Adam</p></td>
+<td><p>67</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<p>The <cite>Tables</cite> library can load tabular data from various other libraries
+and manipulate it inside Robot Framework.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Tables</span><span class="p"></span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Files to Table</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">files</span><span class="p">}=    </span><span class="nf">List files in directory</span><span class="p">    ${</span><span class="nv">CURDIR</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">files</span><span class="p">}=    </span><span class="nf">Create table</span><span class="p">    ${</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Filter table by column</span><span class="p">    ${</span><span class="nv">files</span><span class="p">}    </span><span class="s">size</span><span class="p">  </span><span class="s">&gt;=</span><span class="p">  ${</span><span class="nv">1024</span><span class="p">}</span>
+<span class="p">    FOR    ${</span><span class="nv">file</span><span class="p">}    IN    @{</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log</span><span class="p">    ${</span><span class="nv">file</span><span class="p">}[</span><span class="nv">name</span><span class="p">]</span>
+<span class="p">    END</span>
+<span class="p">    </span><span class="nf">Write table to CSV</span><span class="p">    ${</span><span class="nv">files</span><span class="p">}    ${</span><span class="nv">OUTPUT_DIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">files.csv</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<p>The library is also available directly through Python, where it
+is easier to handle multiple different tables or do more bespoke
+manipulation operations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Tables</span> <span class="kn">import</span> <span class="n">Tables</span>
+
+<span class="n">library</span> <span class="o">=</span> <span class="n">Tables</span><span class="p">()</span>
+<span class="n">orders</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">read_table_from_csv</span><span class="p">(</span>
+    <span class="s2">&quot;orders.csv&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;mail&quot;</span><span class="p">,</span> <span class="s2">&quot;product&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">customers</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">group_table_by_column</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="s2">&quot;mail&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">customer</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">customer</span><span class="p">:</span>
+        <span class="n">add_cart</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+    <span class="n">make_order</span><span class="p">()</span>
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="RPA.Tables.Tables.ROBOT_LIBRARY_DOC_FORMAT">
 <code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Tables.Tables.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>

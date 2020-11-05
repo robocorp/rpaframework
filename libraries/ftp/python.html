@@ -234,7 +234,39 @@ set self.__traceback__ to tb and return self.</p>
 <dt id="RPA.FTP.FTP">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.FTP.</code><code class="sig-name descname">FTP</code><a class="headerlink" href="#RPA.FTP.FTP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>RPA Framework library for FTP operations</p>
+<p><cite>FTP</cite> library can be used to access an FTP server,
+and interact with files.</p>
+<p>The library is based on Python’s built-in <a class="reference external" href="https://docs.python.org/3/library/ftplib.html">ftplib</a>.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.FTP</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">HOST</span><span class="p">}       </span><span class="s">127.0.0.1</span><span class="p"></span>
+<span class="p">${</span><span class="nv">PORT</span><span class="p">}       </span><span class="s">27345</span><span class="p"></span>
+<span class="p">${</span><span class="nv">USER</span><span class="p">}       </span><span class="s">user</span><span class="p"></span>
+<span class="p">${</span><span class="nv">PASS</span><span class="p">}       </span><span class="s">12345</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">List files on the server directory</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Connect</span><span class="p">   ${</span><span class="nv">HOST</span><span class="p">}  ${</span><span class="nv">PORT</span><span class="p">}  ${</span><span class="nv">USER</span><span class="p">}  ${</span><span class="nv">PASS</span><span class="p">}</span>
+<span class="p">    @{</span><span class="nv">files</span><span class="p">}  </span><span class="nf">List Files</span><span class="p"></span>
+<span class="p">    FOR  ${</span><span class="nv">file</span><span class="p">}  IN  @{</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log</span><span class="p">  ${</span><span class="nv">file</span><span class="p">}</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.FTP</span> <span class="kn">import</span> <span class="n">FTP</span>
+
+<span class="n">library</span> <span class="o">=</span> <span class="n">FTP</span><span class="p">()</span>
+<span class="n">library</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">27345</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;12345&#39;</span><span class="p">)</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">list_files</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="RPA.FTP.FTP.ROBOT_LIBRARY_DOC_FORMAT">
 <code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.FTP.FTP.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>

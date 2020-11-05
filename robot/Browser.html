@@ -216,8 +216,430 @@
 <dd class="field-odd"><p>Global</p>
 </dd>
 </dl>
-<p>RPA Framework library for Browser operations.</p>
-<p>Extends functionality of SeleniumLibrary, for more information see <a href="https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html">https://robotframework.org/SeleniumLibrary/SeleniumLibrary.html</a></p></div>
+<p>Browser is a web testing library for Robot Framework, based on the popular SeleniumLibrary.</p>
+<p>It uses the Selenium WebDriver modules internally to control a web browser. See <a href="http://seleniumhq.org">http://seleniumhq.org</a> for more information about Selenium in general.</p>
+<h2>Locating elements</h2>
+<p>All keywords in the browser library that need to interact with an element on a web page take an argument typically named <code>locator</code> that specifies how to find the element. Most often the locator is given as a string using the locator syntax described below, but <a href="#Using%20WebElements" class="name">using WebElements</a> is possible too.</p>
+<h3>Locator syntax</h3>
+<p>Finding elements can be done using different strategies such as the element id, XPath expressions, or CSS selectors. The strategy can either be explicitly specified with a prefix or the strategy can be implicit.</p>
+<h4>Default locator strategy</h4>
+<p>By default, locators are considered to use the keyword specific default locator strategy. All keywords support finding elements based on <code>id</code> and <code>name</code> attributes, but some keywords support additional attributes or other values that make sense in their context. For example, <a href="#Click%20Link" class="name">Click Link</a> supports the <code>href</code> attribute and the link text and addition to the normal <code>id</code> and <code>name</code>.</p>
+<p>Examples:</p>
+<table border="1">
+<tr>
+<td><a href="#Click%20Element" class="name">Click Element</a></td>
+<td>example</td>
+<td># Match based on <code>id</code> or <code>name</code>.</td>
+</tr>
+<tr>
+<td><a href="#Click%20Link" class="name">Click Link</a></td>
+<td>example</td>
+<td># Match also based on link text and <code>href</code>.</td>
+</tr>
+<tr>
+<td><a href="#Click%20Button" class="name">Click Button</a></td>
+<td>example</td>
+<td># Match based on <code>id</code>, <code>name</code> or <code>value</code>.</td>
+</tr>
+</table>
+<p>If a locator accidentally starts with a prefix recognized as <a href="#Explicit%20locator%20strategy" class="name">explicit locator strategy</a> or <a href="#Implicit%20XPath%20strategy" class="name">implicit XPath strategy</a>, it is possible to use the explicit <code>default</code> prefix to enable the default strategy.</p>
+<p>Examples:</p>
+<table border="1">
+<tr>
+<td><a href="#Click%20Element" class="name">Click Element</a></td>
+<td>name:foo</td>
+<td># Find element with name <code>foo</code>.</td>
+</tr>
+<tr>
+<td><a href="#Click%20Element" class="name">Click Element</a></td>
+<td>default:name:foo</td>
+<td># Use default strategy with value <code>name:foo</code>.</td>
+</tr>
+<tr>
+<td><a href="#Click%20Element" class="name">Click Element</a></td>
+<td>//foo</td>
+<td># Find element using XPath <code>//foo</code>.</td>
+</tr>
+<tr>
+<td><a href="#Click%20Element" class="name">Click Element</a></td>
+<td>default: //foo</td>
+<td># Use default strategy with value <code>//foo</code>.</td>
+</tr>
+</table>
+<h4>Explicit locator strategy</h4>
+<p>The explicit locator strategy is specified with a prefix using either syntax <code>strategy:value</code> or <code>strategy=value</code>. The former syntax is preferred because the latter is identical to Robot Framework's <a href="http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument-syntax">named argument syntax</a> and that can cause problems. Spaces around the separator are ignored, so <code>id:foo</code>, <code>id: foo</code> and <code>id : foo</code> are all equivalent.</p>
+<p>Locator strategies that are supported by default are listed in the table below. In addition to them, it is possible to register <a href="#Custom%20locators" class="name">custom locators</a>.</p>
+<table border="1">
+<tr>
+<th>Strategy</th>
+<th>Match based on</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>id</td>
+<td>Element <code>id</code>.</td>
+<td><code>id:example</code></td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>name</code> attribute.</td>
+<td><code>name:example</code></td>
+</tr>
+<tr>
+<td>identifier</td>
+<td>Either <code>id</code> or <code>name</code>.</td>
+<td><code>identifier:example</code></td>
+</tr>
+<tr>
+<td>class</td>
+<td>Element <code>class</code>.</td>
+<td><code>class:example</code></td>
+</tr>
+<tr>
+<td>tag</td>
+<td>Tag name.</td>
+<td><code>tag:div</code></td>
+</tr>
+<tr>
+<td>xpath</td>
+<td>XPath expression.</td>
+<td><code>xpath://div[@id="example"]</code></td>
+</tr>
+<tr>
+<td>css</td>
+<td>CSS selector.</td>
+<td><code>css:div#example</code></td>
+</tr>
+<tr>
+<td>dom</td>
+<td>DOM expression.</td>
+<td><code>dom:document.images[5]</code></td>
+</tr>
+<tr>
+<td>link</td>
+<td>Exact text a link has.</td>
+<td><code>link:The example</code></td>
+</tr>
+<tr>
+<td>partial link</td>
+<td>Partial link text.</td>
+<td><code>partial link:he ex</code></td>
+</tr>
+<tr>
+<td>sizzle</td>
+<td>Sizzle selector deprecated.</td>
+<td><code>sizzle:div.example</code></td>
+</tr>
+<tr>
+<td>jquery</td>
+<td>jQuery expression.</td>
+<td><code>jquery:div.example</code></td>
+</tr>
+<tr>
+<td>default</td>
+<td>Keyword specific default behavior.</td>
+<td><code>default:example</code></td>
+</tr>
+</table>
+<p>See the <a href="#Default%20locator%20strategy" class="name">Default locator strategy</a> section below for more information about how the default strategy works. Using the explicit <code>default</code> prefix is only necessary if the locator value itself accidentally matches some of the explicit strategies.</p>
+<p>Different locator strategies have different pros and cons. Using ids, either explicitly like <code>id:foo</code> or by using the <a href="#Default%20locator%20strategy" class="name">default locator strategy</a> simply like <code>foo</code>, is recommended when possible, because the syntax is simple and locating elements by id is fast for browsers. If an element does not have an id or the id is not stable, other solutions need to be used. If an element has a unique tag name or class, using <code>tag</code>, <code>class</code> or <code>css</code> strategy like <code>tag:h1</code>, <code>class:example</code> or <code>css:h1.example</code> is often an easy solution. In more complex cases using XPath expressions is typically the best approach. They are very powerful but a downside is that they can also get complex.</p>
+<p>Examples:</p>
+<table border="1">
+<tr>
+<td><a href="#Click%20Element" class="name">Click Element</a></td>
+<td>id:foo</td>
+<td># Element with id 'foo'.</td>
+</tr>
+<tr>
+<td><a href="#Click%20Element" class="name">Click Element</a></td>
+<td>css:div#foo h1</td>
+<td># h1 element under div with id 'foo'.</td>
+</tr>
+<tr>
+<td><a href="#Click%20Element" class="name">Click Element</a></td>
+<td>xpath: //div[@id="foo"]//h1</td>
+<td># Same as the above using XPath, not CSS.</td>
+</tr>
+<tr>
+<td><a href="#Click%20Element" class="name">Click Element</a></td>
+<td>xpath: //*[contains(text(), "example")]</td>
+<td># Element containing text 'example'.</td>
+</tr>
+</table>
+<p><b>NOTE:</b></p>
+<ul>
+<li>Using the <code>sizzle</code> strategy or its alias <code>jquery</code> requires that the system under test contains the jQuery library.</li>
+</ul>
+<h4>Implicit XPath strategy</h4>
+<p>If the locator starts with <code>//</code> or <code>(//</code>, the locator is considered to be an XPath expression. In other words, using <code>//div</code> is equivalent to using explicit <code>xpath://div</code>.</p>
+<p>Examples:</p>
+<table border="1">
+<tr>
+<td><a href="#Click%20Element" class="name">Click Element</a></td>
+<td>//div[@id="foo"]//h1</td>
+</tr>
+<tr>
+<td><a href="#Click%20Element" class="name">Click Element</a></td>
+<td>(//div)[2]</td>
+</tr>
+</table>
+<h3>Using WebElements</h3>
+<p>In addition to specifying a locator as a string, it is possible to use Selenium's WebElement objects. This requires first getting a WebElement, for example, by using the <a href="#Get%20WebElement" class="name">Get WebElement</a> keyword.</p>
+<table border="1">
+<tr>
+<td>${elem} =</td>
+<td><a href="#Get%20WebElement" class="name">Get WebElement</a></td>
+<td>id:example</td>
+</tr>
+<tr>
+<td><a href="#Click%20Element" class="name">Click Element</a></td>
+<td>${elem}</td>
+<td></td>
+</tr>
+</table>
+<h3>Custom locators</h3>
+<p>If more complex lookups are required than what is provided through the default locators, custom lookup strategies can be created. Using custom locators is a two part process. First, create a keyword that returns a WebElement that should be acted on:</p>
+<table border="1">
+<tr>
+<td>Custom Locator Strategy</td>
+<td>[Arguments]</td>
+<td>${browser}</td>
+<td>${locator}</td>
+<td>${tag}</td>
+<td>${constraints}</td>
+</tr>
+<tr>
+<td></td>
+<td>${element}=</td>
+<td>Execute Javascript</td>
+<td>return window.document.getElementById('${locator}');</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>[Return]</td>
+<td>${element}</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</table>
+<p>This keyword is a reimplementation of the basic functionality of the <code>id</code> locator where <code>${browser}</code> is a reference to a WebDriver instance and <code>${locator}</code> is the name of the locator strategy. To use this locator, it must first be registered by using the <a href="#Add%20Location%20Strategy" class="name">Add Location Strategy</a> keyword:</p>
+<table border="1">
+<tr>
+<td><a href="#Add%20Location%20Strategy" class="name">Add Location Strategy</a></td>
+<td>custom</td>
+<td>Custom Locator Strategy</td>
+</tr>
+</table>
+<p>The first argument of <a href="#Add%20Location%20Strategy" class="name">Add Location Strategy</a> specifies the name of the strategy and it must be unique. After registering the strategy, the usage is the same as with other locators:</p>
+<table border="1">
+<tr>
+<td><a href="#Click%20Element" class="name">Click Element</a></td>
+<td>custom:example</td>
+</tr>
+</table>
+<p>See the <a href="#Add%20Location%20Strategy" class="name">Add Location Strategy</a> keyword for more details.</p>
+<h2>Browser and Window</h2>
+<p>There is different conceptual meaning when this library talks about windows or browsers. This chapter explains those differences.</p>
+<h3>Browser</h3>
+<p>When <a href="#Open%20Browser" class="name">Open Browser</a> or <a href="#Create%20Webdriver" class="name">Create WebDriver</a> keyword is called, it will create a new Selenium WebDriver instance by using the <a href="https://www.seleniumhq.org/docs/03_webdriver.jsp">Selenium WebDriver</a> API. In this library's terms, a new browser is created. It is possible to start multiple independent browsers (Selenium Webdriver instances) at the same time, by calling <a href="#Open%20Browser" class="name">Open Browser</a> or <a href="#Create%20Webdriver" class="name">Create WebDriver</a> multiple times. These browsers are usually independent of each other and do not share data like cookies, sessions or profiles. Typically when the browser starts, it creates a single window which is shown to the user.</p>
+<h3>Window</h3>
+<p>Windows are the part of a browser that loads the web site and presents it to the user. All content of the site is the content of the window. Windows are children of a browser. In this context a browser is a synonym for WebDriver instance. One browser may have multiple windows. Windows can appear as tabs, as separate windows or pop-ups with different position and size. Windows belonging to the same browser typically share the sessions detail, like cookies. If there is a need to separate sessions detail, example login with two different users, two browsers (Selenium WebDriver instances) must be created. New windows can be opened example by the application under test or by example <a href="#Execute%20Javascript" class="name">Execute Javascript</a> keyword:</p>
+<pre>
+<a href="#Execute%20Javascript" class="name">Execute Javascript</a>    window.open()    # Opens a new window with location about:blank
+</pre>
+<p>The example below opens multiple browsers and windows, to demonstrate how the different keywords can be used to interact with browsers, and windows attached to these browsers.</p>
+<p>Structure:</p>
+<pre>
+BrowserA
+           Window 1  (location=https://robotframework.org/)
+           Window 2  (location=https://robocon.io/)
+           Window 3  (location=https://github.com/robotframework/)
+
+BrowserB
+           Window 1  (location=https://github.com/)
+</pre>
+<p>Example:</p>
+<table border="1">
+<tr>
+<td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+<td><a href="https://robotframework.org">https://robotframework.org</a></td>
+<td>${BROWSER}</td>
+<td>alias=BrowserA</td>
+<td># BrowserA with first window is opened.</td>
+</tr>
+<tr>
+<td><a href="#Execute%20Javascript" class="name">Execute Javascript</a></td>
+<td>window.open()</td>
+<td></td>
+<td></td>
+<td># In BrowserA second window is opened.</td>
+</tr>
+<tr>
+<td><a href="#Switch%20Window" class="name">Switch Window</a></td>
+<td>locator=NEW</td>
+<td></td>
+<td></td>
+<td># Switched to second window in BrowserA</td>
+</tr>
+<tr>
+<td><a href="#Go%20To" class="name">Go To</a></td>
+<td><a href="https://robocon.io">https://robocon.io</a></td>
+<td></td>
+<td></td>
+<td># Second window navigates to robocon site.</td>
+</tr>
+<tr>
+<td><a href="#Execute%20Javascript" class="name">Execute Javascript</a></td>
+<td>window.open()</td>
+<td></td>
+<td></td>
+<td># In BrowserA third window is opened.</td>
+</tr>
+<tr>
+<td>${handle}</td>
+<td><a href="#Switch%20Window" class="name">Switch Window</a></td>
+<td>locator=NEW</td>
+<td></td>
+<td># Switched to third window in BrowserA</td>
+</tr>
+<tr>
+<td><a href="#Go%20To" class="name">Go To</a></td>
+<td><a href="https://github.com/robotframework/">https://github.com/robotframework/</a></td>
+<td></td>
+<td></td>
+<td># Third windows goes to robot framework github site.</td>
+</tr>
+<tr>
+<td><a href="#Open%20Browser" class="name">Open Browser</a></td>
+<td><a href="https://github.com">https://github.com</a></td>
+<td>${BROWSER}</td>
+<td>alias=BrowserB</td>
+<td># BrowserB with first windows is opened.</td>
+</tr>
+<tr>
+<td>${location}</td>
+<td><a href="#Get%20Location" class="name">Get Location</a></td>
+<td></td>
+<td></td>
+<td># ${location} is: <a href="https://www.github.com">https://www.github.com</a></td>
+</tr>
+<tr>
+<td><a href="#Switch%20Window" class="name">Switch Window</a></td>
+<td>${handle}</td>
+<td>browser=BrowserA</td>
+<td></td>
+<td># BrowserA second windows is selected.</td>
+</tr>
+<tr>
+<td>${location}</td>
+<td><a href="#Get%20Location" class="name">Get Location</a></td>
+<td></td>
+<td></td>
+<td># ${location} = <a href="https://robocon.io/">https://robocon.io/</a></td>
+</tr>
+<tr>
+<td>@{locations 1}</td>
+<td><a href="#Get%20Locations" class="name">Get Locations</a></td>
+<td></td>
+<td></td>
+<td># By default, lists locations under the currectly active browser (BrowserA).</td>
+</tr>
+<tr>
+<td>@{locations 2}</td>
+<td><a href="#Get%20Locations" class="name">Get Locations</a></td>
+<td>browser=ALL</td>
+<td></td>
+<td># By using browser=ALL argument keyword list all locations from all browsers.</td>
+</tr>
+</table>
+<p>The above example, @{locations 1} contains the following items: <a href="https://robotframework.org/">https://robotframework.org/</a>, <a href="https://robocon.io/">https://robocon.io/</a> and <a href="https://github.com/robotframework/">https://github.com/robotframework/</a>'. The @{locations 2} contains the following items: <a href="https://robotframework.org/">https://robotframework.org/</a>, <a href="https://robocon.io/">https://robocon.io/</a>, <a href="https://github.com/robotframework/">https://github.com/robotframework/</a>' and '<a href="https://github.com/">https://github.com/</a>.</p>
+<h2>Timeouts, waits, and delays</h2>
+<p>This section discusses different ways how to wait for elements to appear on web pages and to slow down execution speed otherwise. It also explains the <a href="#Time%20format" class="name">time format</a> that can be used when setting various timeouts, waits, and delays.</p>
+<h3>Timeout</h3>
+<p>This library contains various keywords that have an optional <code>timeout</code> argument that specifies how long these keywords should wait for certain events or actions. These keywords include, for example, <code>Wait ...</code> keywords and keywords related to alerts. Additionally <a href="#Execute%20Async%20Javascript" class="name">Execute Async Javascript</a>. Although it does not have <code>timeout</code>, argument, uses a timeout to define how long asynchronous JavaScript can run.</p>
+<p>The default timeout these keywords use can be set globally either by using the <a href="#Set%20Selenium%20Timeout" class="name">Set Selenium Timeout</a> keyword or with the <code>timeout</code> argument when <a href="#Importing" class="name">importing</a> the library. See <a href="#Time%20format" class="name">time format</a> below for supported timeout syntax.</p>
+<h3>Implicit wait</h3>
+<p>Implicit wait specifies the maximum time how long Selenium waits when searching for elements. It can be set by using the <a href="#Set%20Selenium%20Implicit%20Wait" class="name">Set Selenium Implicit Wait</a> keyword or with the <code>implicit_wait</code> argument when <a href="#Importing" class="name">importing</a> the library. See <a href="https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp">Selenium documentation</a> for more information about this functionality.</p>
+<p>See <a href="#Time%20format" class="name">time format</a> below for supported syntax.</p>
+<h3>Selenium speed</h3>
+<p>Selenium execution speed can be slowed down globally by using <a href="#Set%20Selenium%20Speed" class="name">Set Selenium speed</a> keyword. This functionality is designed to be used for demonstrating or debugging purposes. Using it to make sure that elements appear on a page is not a good idea. The above-explained timeouts and waits should be used instead.</p>
+<p>See <a href="#Time%20format" class="name">time format</a> below for supported syntax.</p>
+<h3>Time format</h3>
+<p>All timeouts and waits can be given as numbers considered seconds (e.g. <code>0.5</code> or <code>42</code>) or in Robot Framework's time syntax (e.g. <code>1.5 seconds</code> or <code>1 min 30 s</code>). For more information about the time syntax see the <a href="http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time-format">Robot Framework User Guide</a>.</p>
+<h2>Run-on-failure functionality</h2>
+<p>This library has a handy feature that it can automatically execute a keyword if any of its own keywords fails. By default, it uses the <a href="#Capture%20Page%20Screenshot" class="name">Capture Page Screenshot</a> keyword, but this can be changed either by using the <a href="#Register%20Keyword%20To%20Run%20On%20Failure" class="name">Register Keyword To Run On Failure</a> keyword or with the <code>run_on_failure</code> argument when <a href="#Importing" class="name">importing</a> the library. It is possible to use any keyword from any imported library or resource file.</p>
+<p>The run-on-failure functionality can be disabled by using a special value <code>NOTHING</code> or anything considered false (see <a href="#Boolean%20arguments" class="name">Boolean arguments</a>) such as <code>NONE</code>.</p>
+<h2>Boolean arguments</h2>
+<p>Some keywords accept arguments that are handled as Boolean values true or false. If such an argument is given as a string, it is considered false if it is either empty or case-insensitively equal to <code>false</code>, <code>no</code>, <code>off</code>, <code>0</code> or <code>none</code>. Other strings are considered true regardless of their value and other argument types are tested using the same <a href="https://docs.python.org/3/library/stdtypes.html#truth-value-testing">rules as in Python</a>.</p>
+<p>True examples:</p>
+<table border="1">
+<tr>
+<td><a href="#Set%20Screenshot%20Directory" class="name">Set Screenshot Directory</a></td>
+<td>${RESULTS}</td>
+<td>persist=True</td>
+<td># Strings are generally true.</td>
+</tr>
+<tr>
+<td><a href="#Set%20Screenshot%20Directory" class="name">Set Screenshot Directory</a></td>
+<td>${RESULTS}</td>
+<td>persist=yes</td>
+<td># Same as the above.</td>
+</tr>
+<tr>
+<td><a href="#Set%20Screenshot%20Directory" class="name">Set Screenshot Directory</a></td>
+<td>${RESULTS}</td>
+<td>persist=${TRUE}</td>
+<td># Python True is true.</td>
+</tr>
+<tr>
+<td><a href="#Set%20Screenshot%20Directory" class="name">Set Screenshot Directory</a></td>
+<td>${RESULTS}</td>
+<td>persist=${42}</td>
+<td># Numbers other than 0 are true.</td>
+</tr>
+</table>
+<p>False examples:</p>
+<table border="1">
+<tr>
+<td><a href="#Set%20Screenshot%20Directory" class="name">Set Screenshot Directory</a></td>
+<td>${RESULTS}</td>
+<td>persist=False</td>
+<td># String false is false.</td>
+</tr>
+<tr>
+<td><a href="#Set%20Screenshot%20Directory" class="name">Set Screenshot Directory</a></td>
+<td>${RESULTS}</td>
+<td>persist=no</td>
+<td># Also string no is false.</td>
+</tr>
+<tr>
+<td><a href="#Set%20Screenshot%20Directory" class="name">Set Screenshot Directory</a></td>
+<td>${RESULTS}</td>
+<td>persist=NONE</td>
+<td># String NONE is false.</td>
+</tr>
+<tr>
+<td><a href="#Set%20Screenshot%20Directory" class="name">Set Screenshot Directory</a></td>
+<td>${RESULTS}</td>
+<td>persist=${EMPTY}</td>
+<td># Empty string is false.</td>
+</tr>
+<tr>
+<td><a href="#Set%20Screenshot%20Directory" class="name">Set Screenshot Directory</a></td>
+<td>${RESULTS}</td>
+<td>persist=${FALSE}</td>
+<td># Python False is false.</td>
+</tr>
+<tr>
+<td><a href="#Set%20Screenshot%20Directory" class="name">Set Screenshot Directory</a></td>
+<td>${RESULTS}</td>
+<td>persist=${NONE}</td>
+<td># Python None is false.</td>
+</tr>
+</table></div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="browser">
@@ -1165,9 +1587,9 @@
 <p>Example:</p>
 <pre>
 Screenshot | locator=//img[@alt="Google"] | filename=locator.png |             # element screenshot, defined filename
-Screenshot | filename=page.png            |                                    # page screenshot, defined filename
-Screenshot | filename=${NONE}             |                                    # page screenshot, NO file will be created
-Screenshot |                              |                                    # page screenshot, default filename
+Screenshot | filename=page.png        |                                    # page screenshot, defined filename
+Screenshot | filename=${NONE}         |                                    # page screenshot, NO file will be created
+Screenshot |                          |                                    # page screenshot, default filename
 Screenshot | locator=//img[@alt="Google"] |                                    # element screenshot, default filename
 Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing
 </pre></dd>
@@ -1208,7 +1630,7 @@ Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  #
 </dl>
 <p>Verifies that an alert is present and by default, accepts it.</p>
 <p>Fails if no alert is present. If <code>text</code> is a non-empty string, then it is used to verify alert's message. The alert is accepted by default, but that behavior can be controlled by using the <code>action</code> argument same way as with <a href="#Handle%20Alert" class="name">Handle Alert</a>.</p>
-<p><code>timeout</code> specifies how long to wait for the alert to appear. If it is not given, the global default <span class="name">timeout</span> is used instead.</p>
+<p><code>timeout</code> specifies how long to wait for the alert to appear. If it is not given, the global default <a href="#Timeout" class="name">timeout</a> is used instead.</p>
 <p><code>action</code> and <code>timeout</code> arguments are new in SeleniumLibrary 3.0. In earlier versions, the alert was always accepted and a timeout was hardcoded to one second.</p></dd>
 <dt class="field-even">Alert Should Not Be Present</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -1218,7 +1640,7 @@ Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  #
 </dl>
 <p>Verifies that no alert is present.</p>
 <p>If the alert actually exists, the <code>action</code> argument determines how it should be handled. By default, the alert is accepted, but it can be also dismissed or left open the same way as with the <a href="#Handle%20Alert" class="name">Handle Alert</a> keyword.</p>
-<p><code>timeout</code> specifies how long to wait for the alert to appear. By default, is not waited for the alert at all, but a custom time can be given if alert may be delayed. See the <span class="name">time format</span> section for information about the syntax.</p>
+<p><code>timeout</code> specifies how long to wait for the alert to appear. By default, is not waited for the alert at all, but a custom time can be given if alert may be delayed. See the <a href="#Time%20format" class="name">time format</a> section for information about the syntax.</p>
 <p>New in SeleniumLibrary 3.0.</p></dd>
 <dt class="field-even">Handle Alert</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -1233,7 +1655,7 @@ Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  #
 <li><code>DISMISS</code>: Dismiss the alert i.e. press <code>Cancel</code>.</li>
 <li><code>LEAVE</code>: Leave the alert open.</li>
 </ul>
-<p>The <code>timeout</code> argument specifies how long to wait for the alert to appear. If it is not given, the global default <span class="name">timeout</span> is used instead.</p>
+<p>The <code>timeout</code> argument specifies how long to wait for the alert to appear. If it is not given, the global default <a href="#Timeout" class="name">timeout</a> is used instead.</p>
 <p>Examples:</p>
 <table border="1">
 <tr>
@@ -1282,7 +1704,7 @@ Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  #
 </dl>
 <p>Types the given <code>text</code> into an input field in an alert.</p>
 <p>The alert is accepted by default, but that behavior can be controlled by using the <code>action</code> argument same way as with <a href="#Handle%20Alert" class="name">Handle Alert</a>.</p>
-<p><code>timeout</code> specifies how long to wait for the alert to appear. If it is not given, the global default <span class="name">timeout</span> is used instead.</p>
+<p><code>timeout</code> specifies how long to wait for the alert to appear. If it is not given, the global default <a href="#Timeout" class="name">timeout</a> is used instead.</p>
 <p>New in SeleniumLibrary 3.0.</p></dd>
 </dl>
 </div>
@@ -1442,15 +1864,15 @@ Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  #
 <dt class="field-odd">Get Selenium Implicit Wait</dt>
 <dd class="field-odd"><p>Gets the implicit wait value used by Selenium.</p>
 <p>The value is returned as a human-readable string like <code>1 second</code>.</p>
-<p>See the <span class="name">Implicit wait</span> section above for more information.</p></dd>
+<p>See the <a href="#Implicit%20wait" class="name">Implicit wait</a> section above for more information.</p></dd>
 <dt class="field-even">Get Selenium Speed</dt>
 <dd class="field-even"><p>Gets the delay that is waited after each Selenium command.</p>
 <p>The value is returned as a human-readable string like <code>1 second</code>.</p>
-<p>See the <span class="name">Selenium Speed</span> section above for more information.</p></dd>
+<p>See the <a href="#Selenium%20speed" class="name">Selenium Speed</a> section above for more information.</p></dd>
 <dt class="field-odd">Get Selenium Timeout</dt>
 <dd class="field-odd"><p>Gets the timeout that is used by various keywords.</p>
 <p>The value is returned as a human-readable string like <code>1 second</code>.</p>
-<p>See the <span class="name">Timeout</span> section above for more information.</p></dd>
+<p>See the <a href="#Timeout" class="name">Timeout</a> section above for more information.</p></dd>
 <dt class="field-even">Get Session Id</dt>
 <dd class="field-even"><p>Returns the currently active browser session id.</p>
 <p>New in SeleniumLibrary 3.2</p></dd>
@@ -1764,7 +2186,7 @@ return options
 <p>Sets the implicit wait value used by Selenium.</p>
 <p>The value can be given as a number that is considered to be seconds or as a human-readable string like <code>1 second</code>. The previous value is returned and can be used to restore the original value later if needed.</p>
 <p>This keyword sets the implicit wait for all opened browsers. Use <a href="#Set%20Browser%20Implicit%20Wait" class="name">Set Browser Implicit Wait</a> to set it only to the current browser.</p>
-<p>See the <span class="name">Implicit wait</span> section above for more information.</p>
+<p>See the <a href="#Implicit%20wait" class="name">Implicit wait</a> section above for more information.</p>
 <p>Example:</p>
 <table border="1">
 <tr>
@@ -1791,7 +2213,7 @@ return options
 </dl>
 <p>Sets the delay that is waited after each Selenium command.</p>
 <p>The value can be given as a number that is considered to be seconds or as a human-readable string like <code>1 second</code>. The previous value is returned and can be used to restore the original value later if needed.</p>
-<p>See the <span class="name">Selenium Speed</span> section above for more information.</p>
+<p>See the <a href="#Selenium%20speed" class="name">Selenium Speed</a> section above for more information.</p>
 <p>Example:</p>
 <table border="1">
 <tr>
@@ -1807,7 +2229,7 @@ return options
 </dl>
 <p>Sets the timeout that is used by various keywords.</p>
 <p>The value can be given as a number that is considered to be seconds or as a human-readable string like <code>1 second</code>. The previous value is returned and can be used to restore the original value later if needed.</p>
-<p>See the <span class="name">Timeout</span> section above for more information.</p>
+<p>See the <a href="#Timeout" class="name">Timeout</a> section above for more information.</p>
 <p>Example:</p>
 <table border="1">
 <tr>
@@ -2057,7 +2479,7 @@ return options
 </dd>
 </dl>
 <p>Returns all cookies of the current page.</p>
-<p>If <code>as_dict</code> argument evaluates as false, see <span class="name">Boolean arguments</span> for more details, then cookie information is returned as a single string in format <code>name1=value1; name2=value2; name3=value3</code>. When <code>as_dict</code> argument evaluates as true, cookie information is returned as Robot Framework dictionary format. The string format can be used, for example, for logging purposes or in headers when sending HTTP requests. The dictionary format is helpful when the result can be passed to requests library's Create Session keyword's optional cookies parameter.</p>
+<p>If <code>as_dict</code> argument evaluates as false, see <a href="#Boolean%20arguments" class="name">Boolean arguments</a> for more details, then cookie information is returned as a single string in format <code>name1=value1; name2=value2; name3=value3</code>. When <code>as_dict</code> argument evaluates as true, cookie information is returned as Robot Framework dictionary format. The string format can be used, for example, for logging purposes or in headers when sending HTTP requests. The dictionary format is helpful when the result can be passed to requests library's Create Session keyword's optional cookies parameter.</p>
 <p>The <span class="name">` as_dict</span>` argument is new in SeleniumLibrary 3.3</p></dd>
 </dl>
 </div>
@@ -2071,8 +2493,8 @@ return options
 </dd>
 </dl>
 <p>Adds a custom location strategy.</p>
-<p>See <span class="name">Custom locators</span> for information on how to create and use custom strategies. <a href="#Remove%20Location%20Strategy" class="name">Remove Location Strategy</a> can be used to remove a registered strategy.</p>
-<p>Location strategies are automatically removed after leaving the current scope by default. Setting <code>persist</code> to a true value (see <span class="name">Boolean arguments</span>) will cause the location strategy to stay registered throughout the life of the test.</p></dd>
+<p>See <a href="#Custom%20locators" class="name">Custom locators</a> for information on how to create and use custom strategies. <a href="#Remove%20Location%20Strategy" class="name">Remove Location Strategy</a> can be used to remove a registered strategy.</p>
+<p>Location strategies are automatically removed after leaving the current scope by default. Setting <code>persist</code> to a true value (see <a href="#Boolean%20arguments" class="name">Boolean arguments</a>) will cause the location strategy to stay registered throughout the life of the test.</p></dd>
 <dt class="field-even">Assign Id To Element</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2081,7 +2503,7 @@ return options
 </dl>
 <p>Assigns a temporary <code>id</code> to the element specified by <code>locator</code>.</p>
 <p>This is mainly useful if the locator is complicated and/or slow XPath expression and it is needed multiple times. Identifier expires when the page is reloaded.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>Example:</p>
 <table border="1">
 <tr>
@@ -2102,7 +2524,7 @@ return options
 </dd>
 </dl>
 <p>Clears the value of the text-input-element identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Click Button</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2110,7 +2532,7 @@ return options
 </dd>
 </dl>
 <p>Clicks the button identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, buttons are searched using <code>id</code>, <code>name</code>, and <code>value</code>.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. When using the default locator strategy, buttons are searched using <code>id</code>, <code>name</code>, and <code>value</code>.</p>
 <p>See the <a href="#Click%20Element" class="name">Click Element</a> keyword for details about the <code>modifier</code> argument.</p>
 <p>The <code>modifier</code> argument is new in SeleniumLibrary 3.3</p></dd>
 <dt class="field-even">Click Element</dt>
@@ -2120,9 +2542,9 @@ return options
 </dd>
 </dl>
 <p>Click the element identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>The <code>modifier</code> argument can be used to pass <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys">Selenium Keys</a> when clicking the element. The <span class="name">+</span> can be used as a separator for different Selenium Keys. The <span class="name">CTRL</span> is internally translated to the <span class="name">CONTROL</span> key. The <code>modifier</code> is space and case insensitive, example "alt" and " aLt " are supported formats to <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys.ALT">ALT key</a> . If <code>modifier</code> does not match to Selenium Keys, keyword fails.</p>
-<p>If <code>action_chain</code> argument is true, see <span class="name">Boolean arguments</span> for more details on how to set boolean argument, then keyword uses ActionChain based click instead of the &lt;web_element&gt;.click() function. If both <code>action_chain</code> and <code>modifier</code> are defined, the click will be performed using <code>modifier</code> and <code>action_chain</code> will be ignored.</p>
+<p>If <code>action_chain</code> argument is true, see <a href="#Boolean%20arguments" class="name">Boolean arguments</a> for more details on how to set boolean argument, then keyword uses ActionChain based click instead of the &lt;web_element&gt;.click() function. If both <code>action_chain</code> and <code>modifier</code> are defined, the click will be performed using <code>modifier</code> and <code>action_chain</code> will be ignored.</p>
 <p>Example:</p>
 <table border="1">
 <tr>
@@ -2159,7 +2581,7 @@ return options
 </dl>
 <p>Click the element <code>locator</code> at <code>xoffset/yoffset</code>.</p>
 <p>The Cursor is moved and the center of the element and x/y coordinates are calculated from that point.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Click Image</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2167,7 +2589,7 @@ return options
 </dd>
 </dl>
 <p>Clicks an image identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, images are searched using <code>id</code>, <code>name</code>, <code>src</code> and <code>alt</code>.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. When using the default locator strategy, images are searched using <code>id</code>, <code>name</code>, <code>src</code> and <code>alt</code>.</p>
 <p>See the <a href="#Click%20Element" class="name">Click Element</a> keyword for details about the <code>modifier</code> argument.</p>
 <p>The <code>modifier</code> argument is new in SeleniumLibrary 3.3</p></dd>
 <dt class="field-even">Click Link</dt>
@@ -2177,7 +2599,7 @@ return options
 </dd>
 </dl>
 <p>Clicks a link identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, links are searched using <code>id</code>, <code>name</code>, <code>href</code> and the link text.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. When using the default locator strategy, links are searched using <code>id</code>, <code>name</code>, <code>href</code> and the link text.</p>
 <p>See the <a href="#Click%20Element" class="name">Click Element</a> keyword for details about the <code>modifier</code> argument.</p>
 <p>The <code>modifier</code> argument is new in SeleniumLibrary 3.3</p></dd>
 <dt class="field-even">Cover Element</dt>
@@ -2187,7 +2609,7 @@ return options
 </dd>
 </dl>
 <p>Will cover elements identified by <code>locator</code> with a blue div without breaking page layout.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>New in SeleniumLibrary 3.3.0</p>
 <p>Example: |<a href="#Cover%20Element" class="name">Cover Element</a> | css:div#container |</p></dd>
 <dt class="field-even">Double Click Element</dt>
@@ -2197,7 +2619,7 @@ return options
 </dd>
 </dl>
 <p>Double clicks the element identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Drag And Drop</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2205,7 +2627,7 @@ return options
 </dd>
 </dl>
 <p>Drags the element identified by <code>locator</code> into the <code>target</code> element.</p>
-<p>The <code>locator</code> argument is the locator of the dragged element and the <code>target</code> is the locator of the target. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>The <code>locator</code> argument is the locator of the dragged element and the <code>target</code> is the locator of the target. See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>Example:</p>
 <table border="1">
 <tr>
@@ -2221,7 +2643,7 @@ return options
 </dd>
 </dl>
 <p>Drags the element identified with <code>locator</code> by <code>xoffset/yoffset</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>The element will be moved by <code>xoffset</code> and <code>yoffset</code>, each of which is a negative or positive number specifying the offset.</p>
 <p>Example:</p>
 <table border="1">
@@ -2240,7 +2662,7 @@ return options
 </dd>
 </dl>
 <p>Verifies element identified by <code>locator</code> contains expected attribute value.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>Example: <a href="#Element%20Attribute%20Value%20Should%20Be" class="name">Element Attribute Value Should Be</a> | css:img | href | value</p>
 <p>New in SeleniumLibrary 3.2.</p></dd>
 <dt class="field-even">Element Should Be Disabled</dt>
@@ -2251,7 +2673,7 @@ return options
 </dl>
 <p>Verifies that element identified by <code>locator</code> is disabled.</p>
 <p>This keyword considers also elements that are read-only to be disabled.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Element Should Be Enabled</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2260,7 +2682,7 @@ return options
 </dl>
 <p>Verifies that element identified by <code>locator</code> is enabled.</p>
 <p>This keyword considers also elements that are read-only to be disabled.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Element Should Be Focused</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2268,7 +2690,7 @@ return options
 </dd>
 </dl>
 <p>Verifies that element identified by <code>locator</code> is focused.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>New in SeleniumLibrary 3.0.</p></dd>
 <dt class="field-even">Element Should Be Visible</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -2278,7 +2700,7 @@ return options
 </dl>
 <p>Verifies that the element identified by <code>locator</code> is visible.</p>
 <p>Herein, visible means that the element is logically visible, not optically visible in the current browser viewport. For example, an element that carries <code>display:none</code> is not logically visible, so using this keyword on that element would fail.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>The <code>message</code> argument can be used to override the default error message.</p></dd>
 <dt class="field-even">Element Should Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -2287,7 +2709,7 @@ return options
 </dd>
 </dl>
 <p>Verifies that element <code>locator</code> contains text <code>expected</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>The <code>message</code> argument can be used to override the default error message.</p>
 <p>The <code>ignore_case</code> argument can be set to True to compare case insensitive, default is False. New in SeleniumLibrary 3.1.</p>
 <p><code>ignore_case</code> argument is new in SeleniumLibrary 3.1.</p>
@@ -2307,7 +2729,7 @@ return options
 </dd>
 </dl>
 <p>Verifies that element <code>locator</code> does not contain text <code>expected</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>The <code>message</code> argument can be used to override the default error message.</p>
 <p>The <code>ignore_case</code> argument can be set to True to compare case insensitive, default is False.</p>
 <p><code>ignore_case</code> argument new in SeleniumLibrary 3.1.</p></dd>
@@ -2318,7 +2740,7 @@ return options
 </dd>
 </dl>
 <p>Verifies that element <code>locator</code> contains exact the text <code>expected</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>The <code>message</code> argument can be used to override the default error message.</p>
 <p>The <code>ignore_case</code> argument can be set to True to compare case insensitive, default is False.</p>
 <p><code>ignore_case</code> argument is new in SeleniumLibrary 3.1.</p>
@@ -2330,7 +2752,7 @@ return options
 </dd>
 </dl>
 <p>Verifies that element <code>locator</code> does not contain exact the text <code>not_expected</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>The <code>message</code> argument can be used to override the default error message.</p>
 <p>The <code>ignore_case</code> argument can be set to True to compare case insensitive, default is False.</p>
 <p>New in SeleniumLibrary 3.1.1</p></dd>
@@ -2344,7 +2766,7 @@ return options
 </dd>
 </dl>
 <p>Returns the value of <code>attribute</code> from the element <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>Example:</p>
 <table border="1">
 <tr>
@@ -2384,7 +2806,7 @@ return options
 </dd>
 </dl>
 <p>Returns width and height of the element identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>Both width and height are returned as integers.</p>
 <p>Example:</p>
 <table border="1">
@@ -2402,7 +2824,7 @@ return options
 </dd>
 </dl>
 <p>Returns the horizontal position of the element identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>The position is returned in pixels off the left side of the page, as an integer.</p>
 <p>See also <a href="#Get%20Vertical%20Position" class="name">Get Vertical Position</a>.</p></dd>
 <dt class="field-even">Get Text</dt>
@@ -2412,7 +2834,7 @@ return options
 </dd>
 </dl>
 <p>Returns the text value of the element identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Get Value</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2420,7 +2842,7 @@ return options
 </dd>
 </dl>
 <p>Returns the value attribute of the element identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Get Vertical Position</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2428,7 +2850,7 @@ return options
 </dd>
 </dl>
 <p>Returns the vertical position of the element identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>The position is returned in pixels off the top of the page, as an integer.</p>
 <p>See also <a href="#Get%20Horizontal%20Position" class="name">Get Horizontal Position</a>.</p></dd>
 <dt class="field-even">Get WebElement</dt>
@@ -2438,7 +2860,7 @@ return options
 </dd>
 </dl>
 <p>Returns the first WebElement matching the given <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Get WebElements</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2446,7 +2868,7 @@ return options
 </dd>
 </dl>
 <p>Returns a list of WebElement objects matching the <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>Starting from SeleniumLibrary 3.0, the keyword returns an empty list if there are no matching elements. In previous releases, the keyword failed in this case.</p></dd>
 <dt class="field-even">Locator Should Match X Times</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -2462,7 +2884,7 @@ return options
 </dd>
 </dl>
 <p>Simulates pressing the left mouse button on the element <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>The element is pressed without releasing the mouse button.</p>
 <p>See also the more specific keywords <a href="#Mouse%20Down%20On%20Image" class="name">Mouse Down On Image</a> and <a href="#Mouse%20Down%20On%20Link" class="name">Mouse Down On Link</a>.</p></dd>
 <dt class="field-even">Mouse Down On Image</dt>
@@ -2472,7 +2894,7 @@ return options
 </dd>
 </dl>
 <p>Simulates a mouse down event on an image identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, images are searched using <code>id</code>, <code>name</code>, <code>src</code> and <code>alt</code>.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. When using the default locator strategy, images are searched using <code>id</code>, <code>name</code>, <code>src</code> and <code>alt</code>.</p></dd>
 <dt class="field-even">Mouse Down On Link</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2480,7 +2902,7 @@ return options
 </dd>
 </dl>
 <p>Simulates a mouse down event on a link identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, links are searched using <code>id</code>, <code>name</code>, <code>href</code> and the link text.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. When using the default locator strategy, links are searched using <code>id</code>, <code>name</code>, <code>href</code> and the link text.</p></dd>
 <dt class="field-even">Mouse Out</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2488,7 +2910,7 @@ return options
 </dd>
 </dl>
 <p>Simulates moving the mouse away from the element <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Mouse Over</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2496,7 +2918,7 @@ return options
 </dd>
 </dl>
 <p>Simulates hovering the mouse over the element <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Mouse Up</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2504,7 +2926,7 @@ return options
 </dd>
 </dl>
 <p>Simulates releasing the left mouse button on the element <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Open Context Menu</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2527,7 +2949,7 @@ return options
 </dd>
 </dl>
 <p>Verifies that element <code>locator</code> is found on the current page.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>The <code>message</code> argument can be used to override the default error message.</p>
 <p>The <code>limit</code> argument can used to define how many elements the page should contain. When <code>limit</code> is <code>None</code> (default) page can contain one or more elements. When limit is a number, page must contain same number of elements.</p>
 <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about the <code>loglevel</code> argument.</p>
@@ -2566,7 +2988,7 @@ return options
 </dd>
 </dl>
 <p>Verifies image identified by <code>locator</code> is found from current page.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, images are searched using <code>id</code>, <code>name</code>, <code>src</code> and <code>alt</code>.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. When using the default locator strategy, images are searched using <code>id</code>, <code>name</code>, <code>src</code> and <code>alt</code>.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p></dd>
 <dt class="field-even">Page Should Contain Link</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -2575,7 +2997,7 @@ return options
 </dd>
 </dl>
 <p>Verifies link identified by <code>locator</code> is found from current page.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, links are searched using <code>id</code>, <code>name</code>, <code>href</code> and the link text.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. When using the default locator strategy, links are searched using <code>id</code>, <code>name</code>, <code>href</code> and the link text.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p></dd>
 <dt class="field-even">Page Should Not Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -2592,7 +3014,7 @@ return options
 </dd>
 </dl>
 <p>Verifies that element <code>locator</code> is not found on the current page.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p></dd>
 <dt class="field-even">Page Should Not Contain Image</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -2601,7 +3023,7 @@ return options
 </dd>
 </dl>
 <p>Verifies image identified by <code>locator</code> is not found from current page.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, images are searched using <code>id</code>, <code>name</code>, <code>src</code> and <code>alt</code>.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. When using the default locator strategy, images are searched using <code>id</code>, <code>name</code>, <code>src</code> and <code>alt</code>.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p></dd>
 <dt class="field-even">Page Should Not Contain Link</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -2610,7 +3032,7 @@ return options
 </dd>
 </dl>
 <p>Verifies link identified by <code>locator</code> is not found from current page.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, links are searched using <code>id</code>, <code>name</code>, <code>href</code> and the link text.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. When using the default locator strategy, links are searched using <code>id</code>, <code>name</code>, <code>href</code> and the link text.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p></dd>
 <dt class="field-even">Press Key</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -2626,7 +3048,7 @@ return options
 </dd>
 </dl>
 <p>Simulates the user pressing key(s) to an element or on the active browser.</p>
-<p>If <code>locator</code> evaluates as false, see <span class="name">Boolean arguments</span> for more details, then the <code>keys</code> are sent to the currently active browser. Otherwise element is searched and <code>keys</code> are send to the element identified by the <code>locator</code>. In later case, keyword fails if element is not found. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>If <code>locator</code> evaluates as false, see <a href="#Boolean%20arguments" class="name">Boolean arguments</a> for more details, then the <code>keys</code> are sent to the currently active browser. Otherwise element is searched and <code>keys</code> are send to the element identified by the <code>locator</code>. In later case, keyword fails if element is not found. See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p><code>keys</code> arguments can contain one or many strings, but it can not be empty. <code>keys</code> can also be a combination of <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html">Selenium Keys</a> and strings or a single Selenium Key. If Selenium Key is combined with strings, Selenium key and strings must be separated by the <span class="name">+</span> character, like in <span class="name">CONTROL+c</span>. Selenium Keys are space and case sensitive and Selenium Keys are not parsed inside of the string. Example AALTO, would send string <span class="name">AALTO</span> and <span class="name">ALT</span> not parsed inside of the string. But <span class="name">A+ALT+O</span> would found Selenium ALT key from the <code>keys</code> argument. It also possible to press many Selenium Keys down at the same time, example 'ALT+ARROW_DOWN`.</p>
 <p>If Selenium Keys are detected in the <code>keys</code> argument, keyword will press the Selenium Key down, send the strings and then release the Selenium Key. If keyword needs to send a Selenium Key as a string, then each character must be separated with <span class="name">+</span> character, example <span class="name">E+N+D</span>.</p>
 <p><span class="name">CTRL</span> is alias for <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys.CONTROL">Selenium CONTROL</a> and ESC is alias for <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys.ESCAPE">Selenium ESCAPE</a></p>
@@ -2704,7 +3126,7 @@ return options
 </dd>
 </dl>
 <p>Removes a previously added custom location strategy.</p>
-<p>See <span class="name">Custom locators</span> for information on how to create and use custom strategies.</p></dd>
+<p>See <a href="#Custom%20locators" class="name">Custom locators</a> for information on how to create and use custom strategies.</p></dd>
 <dt class="field-even">Scroll Element Into View</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2712,7 +3134,7 @@ return options
 </dd>
 </dl>
 <p>Scrolls the element identified by <code>locator</code> into view.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>New in SeleniumLibrary 3.2.0</p></dd>
 <dt class="field-even">Set Focus To Element</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -2721,7 +3143,7 @@ return options
 </dd>
 </dl>
 <p>Sets the focus to the element identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>Prior to SeleniumLibrary 3.0 this keyword was named <span class="name">Focus</span>.</p></dd>
 <dt class="field-even">Simulate Event</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -2731,7 +3153,7 @@ return options
 </dl>
 <p>Simulates <code>event</code> on the element identified by <code>locator</code>.</p>
 <p>This keyword is useful if element has <code>OnEvent</code> handler that needs to be explicitly invoked.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>Prior to SeleniumLibrary 3.0 this keyword was named <span class="name">Simulate</span>.</p></dd>
 </dl>
 </div>
@@ -2745,7 +3167,7 @@ return options
 </dd>
 </dl>
 <p>Verifies checkbox <code>locator</code> is selected/checked.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Checkbox Should Not Be Selected</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2753,7 +3175,7 @@ return options
 </dd>
 </dl>
 <p>Verifies checkbox <code>locator</code> is not selected/checked.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Choose File</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2778,7 +3200,7 @@ return options
 </dd>
 </dl>
 <p>Types the given password into the text field identified by <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. See <a href="#Input%20Text" class="name">Input Text</a> for <code>clear</code> argument details.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. See <a href="#Input%20Text" class="name">Input Text</a> for <code>clear</code> argument details.</p>
 <p>Difference compared to <a href="#Input%20Text" class="name">Input Text</a> is that this keyword does not log the given password on the INFO level. Notice that if you use the keyword like</p>
 <table border="1">
 <tr>
@@ -2806,7 +3228,7 @@ return options
 <p>Types the given <code>text</code> into the text field identified by <code>locator</code>.</p>
 <p>When <code>clear</code> is true, the input element is cleared before the text is typed into the element. When false, the previous text is not cleared from the element. Use <a href="#Input%20Password" class="name">Input Password</a> if you do not want the given <code>text</code> to be logged.</p>
 <p>If <a href="https://github.com/SeleniumHQ/selenium/wiki/Grid2">Selenium Grid</a> is used and the <code>text</code> argument points to a file in the file system, then this keyword prevents the Selenium to transfer the file to the Selenium Grid hub. Instead, this keyword will send the <code>text</code> string as is to the element. If a file should be transferred to the hub and upload should be performed, please use <a href="#Choose%20File" class="name">Choose File</a> keyword.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. See the <span class="name">Boolean arguments</span> section how Boolean values are handled.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. See the <a href="#Boolean%20arguments" class="name">Boolean arguments</a> section how Boolean values are handled.</p>
 <p>Disabling the file upload the Selenium Grid node and the <span class="name">clear</span> argument are new in SeleniumLibrary 4.0</p></dd>
 <dt class="field-even">Page Should Contain Button</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -2816,7 +3238,7 @@ return options
 </dl>
 <p>Verifies button <code>locator</code> is found from current page.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, buttons are searched using <code>id</code>, <code>name</code>, and <code>value</code>.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. When using the default locator strategy, buttons are searched using <code>id</code>, <code>name</code>, and <code>value</code>.</p></dd>
 <dt class="field-even">Page Should Contain Checkbox</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2825,7 +3247,7 @@ return options
 </dl>
 <p>Verifies checkbox <code>locator</code> is found from the current page.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Page Should Contain Radio Button</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2834,7 +3256,7 @@ return options
 </dl>
 <p>Verifies radio button <code>locator</code> is found from current page.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, radio buttons are searched using <code>id</code>, <code>name</code> and <code>value</code>.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. When using the default locator strategy, radio buttons are searched using <code>id</code>, <code>name</code> and <code>value</code>.</p></dd>
 <dt class="field-even">Page Should Contain Textfield</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2843,7 +3265,7 @@ return options
 </dl>
 <p>Verifies text field <code>locator</code> is found from current page.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Page Should Not Contain Button</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2852,7 +3274,7 @@ return options
 </dl>
 <p>Verifies button <code>locator</code> is not found from current page.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, buttons are searched using <code>id</code>, <code>name</code>, and <code>value</code>.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. When using the default locator strategy, buttons are searched using <code>id</code>, <code>name</code>, and <code>value</code>.</p></dd>
 <dt class="field-even">Page Should Not Contain Checkbox</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2861,7 +3283,7 @@ return options
 </dl>
 <p>Verifies checkbox <code>locator</code> is not found from the current page.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Page Should Not Contain Radio Button</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2870,7 +3292,7 @@ return options
 </dl>
 <p>Verifies radio button <code>locator</code> is not found from current page.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax. When using the default locator strategy, radio buttons are searched using <code>id</code>, <code>name</code> and <code>value</code>.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax. When using the default locator strategy, radio buttons are searched using <code>id</code>, <code>name</code> and <code>value</code>.</p></dd>
 <dt class="field-even">Page Should Not Contain Textfield</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2879,7 +3301,7 @@ return options
 </dl>
 <p>Verifies text field <code>locator</code> is not found from current page.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Radio Button Should Be Set To</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2904,7 +3326,7 @@ return options
 </dl>
 <p>Selects the checkbox identified by <code>locator</code>.</p>
 <p>Does nothing if checkbox is already selected.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Select Radio Button</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2938,7 +3360,7 @@ return options
 </dl>
 <p>Submits a form identified by <code>locator</code>.</p>
 <p>If <code>locator</code> is not given, first form on the page is submitted.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Textarea Should Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2947,7 +3369,7 @@ return options
 </dl>
 <p>Verifies text area <code>locator</code> contains text <code>expected</code>.</p>
 <p><code>message</code> can be used to override default error message.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Textarea Value Should Be</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2956,7 +3378,7 @@ return options
 </dl>
 <p>Verifies text area <code>locator</code> has exactly text <code>expected</code>.</p>
 <p><code>message</code> can be used to override default error message.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Textfield Should Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2965,7 +3387,7 @@ return options
 </dl>
 <p>Verifies text field <code>locator</code> contains text <code>expected</code>.</p>
 <p><code>message</code> can be used to override the default error message.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Textfield Value Should Be</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2974,7 +3396,7 @@ return options
 </dl>
 <p>Verifies text field <code>locator</code> has exactly text <code>expected</code>.</p>
 <p><code>message</code> can be used to override default error message.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Unselect Checkbox</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -2983,7 +3405,7 @@ return options
 </dl>
 <p>Removes the selection of checkbox identified by <code>locator</code>.</p>
 <p>Does nothing if the checkbox is not selected.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 </dl>
 </div>
 <div class="section" id="frames">
@@ -3013,7 +3435,7 @@ return options
 </dd>
 </dl>
 <p>Verifies that frame identified by <code>locator</code> contains <code>text</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about the <code>loglevel</code> argument.</p></dd>
 <dt class="field-even">Select Frame</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -3022,7 +3444,7 @@ return options
 </dd>
 </dl>
 <p>Sets frame identified by <code>locator</code> as the current frame.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>Works both with frames and iframes. Use <a href="#Unselect%20Frame" class="name">Unselect Frame</a> to cancel the frame selection and return to the main frame.</p>
 <p>Example:</p>
 <table border="1">
@@ -3063,7 +3485,7 @@ return options
 </dl>
 <p>Executes asynchronous JavaScript code with possible arguments.</p>
 <p>Similar to <a href="#Execute%20Javascript" class="name">Execute Javascript</a> except that scripts executed with this keyword must explicitly signal they are finished by invoking the provided callback. This callback is always injected into the executed function as the last argument.</p>
-<p>Scripts must complete within the script timeout or this keyword will fail. See the <span class="name">Timeout</span> section for more information.</p>
+<p>Scripts must complete within the script timeout or this keyword will fail. See the <a href="#Timeout" class="name">Timeout</a> section for more information.</p>
 <p>Starting from SeleniumLibrary 3.2 it is possible to provide JavaScript <a href="https://seleniumhq.github.io/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.execute_async_script">arguments</a> as part of <code>code</code> argument. See <a href="#Execute%20Javascript" class="name">Execute Javascript</a> for more details.</p>
 <p>Examples:</p>
 <table border="1">
@@ -3197,7 +3619,7 @@ return options
 </dd>
 </dl>
 <p>Captures a screenshot from the element identified by <code>locator</code> and embeds it into log file.</p>
-<p>See <a href="#Capture%20Page%20Screenshot" class="name">Capture Page Screenshot</a> for details about <code>filename</code> argument. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See <a href="#Capture%20Page%20Screenshot" class="name">Capture Page Screenshot</a> for details about <code>filename</code> argument. See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>An absolute path to the created element screenshot is returned.</p>
 <p>Support for capturing the screenshot from an element has limited support among browser vendors. Please check the browser vendor driver documentation does the browser support capturing a screenshot from an element.</p>
 <p>New in SeleniumLibrary 3.3. Support for EMBED is new in SeleniumLibrary 4.2.</p>
@@ -3309,8 +3731,8 @@ return options
 </dd>
 </dl>
 <p>Returns all labels or values of selection list <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
-<p>Returns visible labels by default, but values can be returned by setting the <code>values</code> argument to a true value (see <span class="name">Boolean arguments</span>).</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
+<p>Returns visible labels by default, but values can be returned by setting the <code>values</code> argument to a true value (see <a href="#Boolean%20arguments" class="name">Boolean arguments</a>).</p>
 <p>Example:</p>
 <table border="1">
 <tr>
@@ -3335,7 +3757,7 @@ return options
 </dl>
 <p>Returns the label of selected option from selection list <code>locator</code>.</p>
 <p>If there are multiple selected options, the label of the first option is returned.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Get Selected List Labels</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3344,7 +3766,7 @@ return options
 </dl>
 <p>Returns labels of selected options from selection list <code>locator</code>.</p>
 <p>Starting from SeleniumLibrary 3.0, returns an empty list if there are no selections. In earlier versions, this caused an error.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Get Selected List Value</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3353,7 +3775,7 @@ return options
 </dl>
 <p>Returns the value of selected option from selection list <code>locator</code>.</p>
 <p>If there are multiple selected options, the value of the first option is returned.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Get Selected List Values</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3362,7 +3784,7 @@ return options
 </dl>
 <p>Returns values of selected options from selection list <code>locator</code>.</p>
 <p>Starting from SeleniumLibrary 3.0, returns an empty list if there are no selections. In earlier versions, this caused an error.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">List Selection Should Be</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3372,7 +3794,7 @@ return options
 <p>Verifies selection list <code>locator</code> has <code>expected</code> options selected.</p>
 <p>It is possible to give expected options both as visible labels and as values. Starting from SeleniumLibrary 3.0, mixing labels and values is not possible. Order of the selected options is not validated.</p>
 <p>If no expected options are given, validates that the list has no selections. A more explicit alternative is using <a href="#List%20Should%20Have%20No%20Selections" class="name">List Should Have No Selections</a>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>Examples:</p>
 <table border="1">
 <tr>
@@ -3395,7 +3817,7 @@ return options
 </dd>
 </dl>
 <p>Verifies selection list <code>locator</code> has no options selected.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Page Should Contain List</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3404,7 +3826,7 @@ return options
 </dl>
 <p>Verifies selection list <code>locator</code> is found from current page.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Page Should Not Contain List</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3413,7 +3835,7 @@ return options
 </dl>
 <p>Verifies selection list <code>locator</code> is not found from current page.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about <code>message</code> and <code>loglevel</code> arguments.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Select All From List</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3421,7 +3843,7 @@ return options
 </dd>
 </dl>
 <p>Selects all options from multi-selection list <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Select From List By Index</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3431,7 +3853,7 @@ return options
 <p>Selects options from selection list <code>locator</code> by <code>indexes</code>.</p>
 <p>Indexes of list options start from 0.</p>
 <p>If more than one option is given for a single-selection list, the last value will be selected. With multi-selection lists all specified options are selected, but possible old selections are not cleared.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Select From List By Label</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3440,7 +3862,7 @@ return options
 </dl>
 <p>Selects options from selection list <code>locator</code> by <code>labels</code>.</p>
 <p>If more than one option is given for a single-selection list, the last value will be selected. With multi-selection lists all specified options are selected, but possible old selections are not cleared.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Select From List By Value</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3449,7 +3871,7 @@ return options
 </dl>
 <p>Selects options from selection list <code>locator</code> by <code>values</code>.</p>
 <p>If more than one option is given for a single-selection list, the last value will be selected. With multi-selection lists all specified options are selected, but possible old selections are not cleared.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Unselect All From List</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3457,7 +3879,7 @@ return options
 </dd>
 </dl>
 <p>Unselects all options from multi-selection list <code>locator</code>.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>New in SeleniumLibrary 3.0.</p></dd>
 <dt class="field-even">Unselect From List By Index</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -3467,7 +3889,7 @@ return options
 </dl>
 <p>Unselects options from selection list <code>locator</code> by <code>indexes</code>.</p>
 <p>Indexes of list options start from 0. This keyword works only with multi-selection lists.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Unselect From List By Label</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3476,7 +3898,7 @@ return options
 </dl>
 <p>Unselects options from selection list <code>locator</code> by <code>labels</code>.</p>
 <p>This keyword works only with multi-selection lists.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 <dt class="field-even">Unselect From List By Value</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
@@ -3485,7 +3907,7 @@ return options
 </dl>
 <p>Unselects options from selection list <code>locator</code> by <code>values</code>.</p>
 <p>This keyword works only with multi-selection lists.</p>
-<p>See the <span class="name">Locating elements</span> section for details about the locator syntax.</p></dd>
+<p>See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p></dd>
 </dl>
 </div>
 <div class="section" id="tableelement">
@@ -3498,7 +3920,7 @@ return options
 </dd>
 </dl>
 <p>Returns contents of a table cell.</p>
-<p>The table is located using the <code>locator</code> argument and its cell found using <code>row</code> and <code>column</code>. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>The table is located using the <code>locator</code> argument and its cell found using <code>row</code> and <code>column</code>. See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>Both row and column indexes start from 1, and header and footer rows are included in the count. It is possible to refer to rows and columns from the end by using negative indexes so that -1 is the last row/column, -2 is the second last, and so on.</p>
 <p>All <code>&lt;th&gt;</code> and <code>&lt;td&gt;</code> elements anywhere in the table are considered to be cells.</p>
 <p>See <a href="#Page%20Should%20Contain" class="name">Page Should Contain</a> for an explanation about the <code>loglevel</code> argument.</p></dd>
@@ -3517,7 +3939,7 @@ return options
 </dd>
 </dl>
 <p>Verifies table column contains text <code>expected</code>.</p>
-<p>The table is located using the <code>locator</code> argument and its column found using <code>column</code>. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>The table is located using the <code>locator</code> argument and its column found using <code>column</code>. See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>Column indexes start from 1. It is possible to refer to columns from the end by using negative indexes so that -1 is the last column, -2 is the second last, and so on.</p>
 <p>If a table contains cells that span multiple columns, those merged cells count as a single column.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about the <code>loglevel</code> argument.</p></dd>
@@ -3529,7 +3951,7 @@ return options
 </dl>
 <p>Verifies table footer contains text <code>expected</code>.</p>
 <p>Any <code>&lt;td&gt;</code> element inside <code>&lt;tfoot&gt;</code> element is considered to be part of the footer.</p>
-<p>The table is located using the <code>locator</code> argument. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>The table is located using the <code>locator</code> argument. See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about the <code>loglevel</code> argument.</p></dd>
 <dt class="field-even">Table Header Should Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -3539,7 +3961,7 @@ return options
 </dl>
 <p>Verifies table header contains text <code>expected</code>.</p>
 <p>Any <code>&lt;th&gt;</code> element anywhere in the table is considered to be part of the header.</p>
-<p>The table is located using the <code>locator</code> argument. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>The table is located using the <code>locator</code> argument. See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about the <code>loglevel</code> argument.</p></dd>
 <dt class="field-even">Table Row Should Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -3548,7 +3970,7 @@ return options
 </dd>
 </dl>
 <p>Verifies that table row contains text <code>expected</code>.</p>
-<p>The table is located using the <code>locator</code> argument and its column found using <code>column</code>. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>The table is located using the <code>locator</code> argument and its column found using <code>column</code>. See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>Row indexes start from 1. It is possible to refer to rows from the end by using negative indexes so that -1 is the last row, -2 is the second last, and so on.</p>
 <p>If a table contains cells that span multiple rows, a match only occurs for the uppermost row of those merged cells.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about the <code>loglevel</code> argument.</p></dd>
@@ -3559,7 +3981,7 @@ return options
 </dd>
 </dl>
 <p>Verifies table contains text <code>expected</code>.</p>
-<p>The table is located using the <code>locator</code> argument. See the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>The table is located using the <code>locator</code> argument. See the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p>See <a href="#Page%20Should%20Contain%20Element" class="name">Page Should Contain Element</a> for an explanation about the <code>loglevel</code> argument.</p></dd>
 </dl>
 </div>
@@ -3598,7 +4020,7 @@ return options
 </dd>
 </dl>
 <p>Waits until the element <code>locator</code> contains <code>text</code>.</p>
-<p>Fails if <code>timeout</code> expires before the text appears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>Fails if <code>timeout</code> expires before the text appears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p><code>error</code> can be used to override the default error message.</p></dd>
 <dt class="field-even">Wait Until Element Does Not Contain</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -3607,7 +4029,7 @@ return options
 </dd>
 </dl>
 <p>Waits until the element <code>locator</code> does not contain <code>text</code>.</p>
-<p>Fails if <code>timeout</code> expires before the text disappears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>Fails if <code>timeout</code> expires before the text disappears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p><code>error</code> can be used to override the default error message.</p></dd>
 <dt class="field-even">Wait Until Element Is Enabled</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -3617,7 +4039,7 @@ return options
 </dl>
 <p>Waits until the element <code>locator</code> is enabled.</p>
 <p>Element is considered enabled if it is not disabled nor read-only.</p>
-<p>Fails if <code>timeout</code> expires before the element is enabled. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>Fails if <code>timeout</code> expires before the element is enabled. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p><code>error</code> can be used to override the default error message.</p>
 <p>Considering read-only elements to be disabled is a new feature in SeleniumLibrary 3.0.</p></dd>
 <dt class="field-even">Wait Until Element Is Not Visible</dt>
@@ -3627,7 +4049,7 @@ return options
 </dd>
 </dl>
 <p>Waits until the element <code>locator</code> is not visible.</p>
-<p>Fails if <code>timeout</code> expires before the element is not visible. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>Fails if <code>timeout</code> expires before the element is not visible. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p><code>error</code> can be used to override the default error message.</p></dd>
 <dt class="field-even">Wait Until Element Is Visible</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -3636,7 +4058,7 @@ return options
 </dd>
 </dl>
 <p>Waits until the element <code>locator</code> is visible.</p>
-<p>Fails if <code>timeout</code> expires before the element is visible. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>Fails if <code>timeout</code> expires before the element is visible. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p><code>error</code> can be used to override the default error message.</p></dd>
 <dt class="field-even">Wait Until Location Contains</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -3698,7 +4120,7 @@ return options
 </dd>
 </dl>
 <p>Waits until the element <code>locator</code> appears on the current page.</p>
-<p>Fails if <code>timeout</code> expires before the element appears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>Fails if <code>timeout</code> expires before the element appears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p><code>error</code> can be used to override the default error message.</p>
 <p>The <code>limit</code> argument can used to define how many elements the page should contain. When <code>limit</code> is <span class="name">None</span> (default) page can contain one or more elements. When limit is a number, page must contain same number of elements.</p>
 <p><code>limit</code> is new in SeleniumLibrary 4.4</p></dd>
@@ -3718,7 +4140,7 @@ return options
 </dd>
 </dl>
 <p>Waits until the element <code>locator</code> disappears from the current page.</p>
-<p>Fails if <code>timeout</code> expires before the element disappears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <span class="name">Locating elements</span> section for details about the locator syntax.</p>
+<p>Fails if <code>timeout</code> expires before the element disappears. See the <span class="name">Timeouts</span> section for more information about using timeouts and their default value and the <a href="#Locating%20elements" class="name">Locating elements</a> section for details about the locator syntax.</p>
 <p><code>error</code> can be used to override the default error message.</p>
 <p>The <code>limit</code> argument can used to define how many elements the page should not contain. When <code>limit</code> is <span class="name">None</span> (default) page can`t contain any elements. When limit is a number, page must not contain same number of elements.</p>
 <p><code>limit</code> is new in SeleniumLibrary 4.4</p></dd>
@@ -3792,7 +4214,7 @@ return options
 </dl>
 <p>Returns current window width and height as integers.</p>
 <p>See also <a href="#Set%20Window%20Size" class="name">Set Window Size</a>.</p>
-<p>If <code>inner</code> parameter is set to True, keyword returns HTML DOM window.innerWidth and window.innerHeight properties. See <span class="name">Boolean arguments</span> for more details on how to set boolean arguments. The <code>inner</code> is new in SeleniumLibrary 4.0.</p>
+<p>If <code>inner</code> parameter is set to True, keyword returns HTML DOM window.innerWidth and window.innerHeight properties. See <a href="#Boolean%20arguments" class="name">Boolean arguments</a> for more details on how to set boolean arguments. The <code>inner</code> is new in SeleniumLibrary 4.0.</p>
 <p>Example:</p>
 <table border="1">
 <tr>
@@ -3851,7 +4273,7 @@ return options
 <p>Sets current windows size to given <code>width</code> and <code>height</code>.</p>
 <p>Values can be given using strings containing numbers or by using actual numbers. See also <a href="#Get%20Window%20Size" class="name">Get Window Size</a>.</p>
 <p>Browsers have a limit on their minimum size. Trying to set them smaller will cause the actual size to be bigger than the requested size.</p>
-<p>If <code>inner</code> parameter is set to True, keyword sets the necessary window width and height to have the desired HTML DOM <i>window.innerWidth</i> and <i>window.innerHeight</i>. See <span class="name">Boolean arguments</span> for more details on how to set boolean arguments.</p>
+<p>If <code>inner</code> parameter is set to True, keyword sets the necessary window width and height to have the desired HTML DOM <i>window.innerWidth</i> and <i>window.innerHeight</i>. See <a href="#Boolean%20arguments" class="name">Boolean arguments</a> for more details on how to set boolean arguments.</p>
 <p>The <code>inner</code> argument is new since SeleniumLibrary 4.0.</p>
 <p>This <code>inner</code> argument does not support Frames. If a frame is selected, switch to default before running this.</p>
 <p>Example:</p>
@@ -3878,7 +4300,7 @@ return options
 <p>Switches to browser window matching <code>locator</code>.</p>
 <p>If the window is found, all subsequent commands use the selected window, until this keyword is used again. If the window is not found, this keyword fails. The previous windows handle is returned and can be used to switch back to it later.</p>
 <p>Notice that alerts should be handled with <a href="#Handle%20Alert" class="name">Handle Alert</a> or other alert related keywords.</p>
-<p>The <code>locator</code> can be specified using different strategies somewhat similarly as when <span class="name">locating elements</span> on pages.</p>
+<p>The <code>locator</code> can be specified using different strategies somewhat similarly as when <a href="#Locating%20elements" class="name">locating elements</a> on pages.</p>
 <ul>
 <li>By default, the <code>locator</code> is matched against window handle, name, title, and URL. Matching is done in that order and the first matching window is selected.</li>
 </ul>

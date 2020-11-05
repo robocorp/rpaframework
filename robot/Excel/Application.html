@@ -216,7 +216,41 @@
 <dd class="field-odd"><p>Global</p>
 </dd>
 </dl>
-<p>Library for manipulating Excel application.</p>
+<p><cite>Excel.Application</cite> is a library for controlling an Excel application.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">             </span><span class="nn">RPA.Excel.Application</span><span class="p"></span>
+<span class="kn">Task Setup</span><span class="p">          </span><span class="nf">Open Application</span><span class="p"></span>
+<span class="kn">Task Teardown</span><span class="p">       </span><span class="nf">Quit Application</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Manipulate Excel application</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Open Workbook</span><span class="p">           </span><span class="s">workbook.xlsx</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Active Worksheet</span><span class="p">    </span><span class="s">sheetname=new stuff</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Write To Cells</span><span class="p">          </span><span class="s">row=1</span><span class="p"></span>
+<span class="p">    ...                     </span><span class="s">column=1</span><span class="p"></span>
+<span class="p">    ...                     </span><span class="s">value=my data</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save Excel</span><span class="p"></span>
+
+<span class="gu">Run Excel Macro</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Open Workbook</span><span class="p">   </span><span class="s">orders_with_macro.xlsm</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Run Macro</span><span class="p">       </span><span class="s">Sheet1.CommandButton1_Click</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Excel.Application</span> <span class="kn">import</span> <span class="n">Application</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">open_application</span><span class="p">()</span>
+<span class="n">app</span><span class="o">.</span><span class="n">open_workbook</span><span class="p">(</span><span class="s1">&#39;workbook.xlsx&#39;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">set_active_worksheet</span><span class="p">(</span><span class="n">sheetname</span><span class="o">=</span><span class="s1">&#39;new stuff&#39;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">write_to_cells</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;new data&#39;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">save_excel</span><span class="p">()</span>
+<span class="n">app</span><span class="o">.</span><span class="n">quit_application</span><span class="p">()</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>

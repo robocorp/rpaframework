@@ -216,12 +216,125 @@
 <dd class="field-odd"><p>Global</p>
 </dd>
 </dl>
-<p>Library for interacting with Azure services</p>
-<p>Authentication to Azure API is handled by <cite>service subcription key</cite> which
-can set for all services using environment variable <cite>AZURE_SUBSCRIPTION_KEY</cite>.</p>
-<p>If there are service specific subscription keys, these can be set using
-environment variable <cite>AZURE_SERVICENAME_KEY</cite>. Replace <cite>SERVICENAME</cite> with service
-name.</p>
+<p><cite>Azure</cite> is a library for operating with Microsoft Azure API endpoints.</p>
+<p>List of supported service names:</p>
+<ul class="simple">
+<li><p>computervision (<a class="reference external" href="https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/">Azure Computer Vision API</a>)</p></li>
+<li><p>face (<a class="reference external" href="https://docs.microsoft.com/en-us/azure/cognitive-services/face/">Azure Face API</a>)</p></li>
+<li><p>speech (<a class="reference external" href="https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/">Azure Speech Services API</a>)</p></li>
+<li><p>textanalytics (<a class="reference external" href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/">Azure Text Analytics API</a>)</p></li>
+</ul>
+<p><strong>Azure authentication</strong></p>
+<p>Authentication for Azure is set with <cite>service subscription key</cite> which can be given to the library
+in two different ways.</p>
+<ul class="simple">
+<li><p>Method 1 as environment variables, either service specific environment variable
+for example <code class="docutils literal notranslate"><span class="pre">AZURE_TEXTANALYTICS_KEY</span></code> or with common key <code class="docutils literal notranslate"><span class="pre">AZURE_SUBSCRIPTION_KEY</span></code> which
+will be used for all the services.</p></li>
+<li><p>Method 2 as Robocloud vault secret. The vault name needs to be given in library init or
+with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code>. Secret keys are expected to match environment variable
+names.</p></li>
+</ul>
+<p>Method 1. subscription key using environment variable</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Azure</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Azure services</span><span class="p"></span>
+<span class="p">    </span><span class="c"># NO parameters for client, expecting to get subscription key</span>
+<span class="p">    </span><span class="c"># with AZURE_TEXTANALYTICS_KEY or AZURE_SUBSCRIPTION_KEY environment variable</span>
+<span class="p">    </span><span class="nf">Init Text Analytics Service</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Method 2. setting Robocloud Vault in the library init</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Azure</span><span class="p">  </span><span class="s">robocloud_vault_name=azure</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Azure services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Text Analytics Service</span><span class="p">  </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Method 2. setting Robocloud Vault with keyword</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Azure</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Azure services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Robocloud Vault</span><span class="p">          </span><span class="s">vault_name=googlecloud</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Text Analytics Service</span><span class="p">  </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>References</strong></p>
+<p>List of supported language locales - <a class="reference external" href="https://docs.microsoft.com/en-gb/azure/cognitive-services/speech-service/language-support#speech-to-text">Azure locale list</a></p>
+<p>List of supported region identifiers - <a class="reference external" href="https://docs.microsoft.com/en-gb/azure/cognitive-services/speech-service/regions#speech-to-text-text-to-speech-and-translation">Azure region list</a></p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<p>This is a section which describes how to use the library in your
+Robot Framework tasks.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">  </span><span class="nn">RPA.Cloud.Azure</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">IMAGE_URL</span><span class="p">}   </span><span class="s">IMAGE_URL</span><span class="p"></span>
+<span class="p">${</span><span class="nv">FEATURES</span><span class="p">}    </span><span class="s">Faces,ImageType</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Visioning image information</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Init Computer Vision Service</span><span class="p"></span>
+<span class="p">   &amp;{</span><span class="nv">result</span><span class="p">}   </span><span class="nf">Vision Analyze</span><span class="p">  </span><span class="s">image_url=</span><span class="p">${</span><span class="nv">IMAGE_URL</span><span class="p">}  </span><span class="s">visual_features=</span><span class="p">${</span><span class="nv">FEATURES</span><span class="p">}</span>
+<span class="p">   @{</span><span class="nv">faces</span><span class="p">}    </span><span class="nf">Set Variable</span><span class="p">  ${</span><span class="nv">result</span><span class="p">}[</span><span class="nv">faces</span><span class="p">]</span>
+<span class="p">   FOR  ${</span><span class="nv">face</span><span class="p">}  IN   @{</span><span class="nv">faces</span><span class="p">}</span>
+<span class="p">      </span><span class="nf">Log</span><span class="p">  </span><span class="s">Age: </span><span class="p">${</span><span class="nv">face</span><span class="p">}[</span><span class="nv">age</span><span class="p">]</span><span class="s">, Gender: </span><span class="p">${</span><span class="nv">face</span><span class="p">}[</span><span class="nv">gender</span><span class="p">]</span><span class="s">, Rectangle: </span><span class="p">${</span><span class="nv">face</span><span class="p">}[</span><span class="nv">faceRectangle</span><span class="p">]</span>
+<span class="p">   END</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<p>This is a section which describes how to use the library in your
+own Python modules.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">library</span> <span class="o">=</span> <span class="n">Azure</span><span class="p">()</span>
+<span class="n">library</span><span class="o">.</span><span class="n">init_text_analytics_service</span><span class="p">()</span>
+<span class="n">library</span><span class="o">.</span><span class="n">init_face_service</span><span class="p">()</span>
+<span class="n">library</span><span class="o">.</span><span class="n">init_computer_vision_service</span><span class="p">()</span>
+<span class="n">library</span><span class="o">.</span><span class="n">init_speech_service</span><span class="p">(</span><span class="s2">&quot;westeurope&quot;</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">sentiment_analyze</span><span class="p">(</span>
+   <span class="n">text</span><span class="o">=</span><span class="s2">&quot;The rooms were wonderful and the staff was helpful.&quot;</span>
+<span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">detect_face</span><span class="p">(</span>
+   <span class="n">image_file</span><span class="o">=</span><span class="n">PATH_TO_FILE</span><span class="p">,</span>
+   <span class="n">face_attributes</span><span class="o">=</span><span class="s2">&quot;age,gender,smile,hair,facialHair,emotion&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+   <span class="n">gender</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;faceAttributes&quot;</span><span class="p">][</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span>
+   <span class="n">age</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;faceAttributes&quot;</span><span class="p">][</span><span class="s2">&quot;age&quot;</span><span class="p">]</span>
+   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detected a face, gender:</span><span class="si">{</span><span class="n">gender</span><span class="si">}</span><span class="s2">, age: </span><span class="si">{</span><span class="n">age</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">vision_analyze</span><span class="p">(</span>
+   <span class="n">image_url</span><span class="o">=</span><span class="n">URL_TO_IMAGE</span><span class="p">,</span>
+   <span class="n">visual_features</span><span class="o">=</span><span class="s2">&quot;Faces,ImageType&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">meta</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span>
+   <span class="sa">f</span><span class="s2">&quot;Image dimensions meta[&#39;width&#39;]</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> pixels&quot;</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;faces&quot;</span><span class="p">]:</span>
+   <span class="n">left</span> <span class="o">=</span> <span class="n">face</span><span class="p">[</span><span class="s2">&quot;faceRectangle&quot;</span><span class="p">][</span><span class="s2">&quot;left&quot;</span><span class="p">]</span>
+   <span class="n">top</span> <span class="o">=</span> <span class="n">face</span><span class="p">[</span><span class="s2">&quot;faceRectangle&quot;</span><span class="p">][</span><span class="s2">&quot;top&quot;</span><span class="p">]</span>
+   <span class="n">width</span> <span class="o">=</span> <span class="n">face</span><span class="p">[</span><span class="s2">&quot;faceRectangle&quot;</span><span class="p">][</span><span class="s2">&quot;width&quot;</span><span class="p">]</span>
+   <span class="n">height</span> <span class="o">=</span> <span class="n">face</span><span class="p">[</span><span class="s2">&quot;faceRectangle&quot;</span><span class="p">][</span><span class="s2">&quot;height&quot;</span><span class="p">]</span>
+   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detected a face, gender:</span><span class="si">{</span><span class="n">face</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, age: </span><span class="si">{</span><span class="n">face</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      Face rectangle: (left=</span><span class="si">{</span><span class="n">left</span><span class="si">}</span><span class="s2">, top=</span><span class="si">{</span><span class="n">top</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      Face rectangle: (width=</span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s2">, height=</span><span class="si">{</span><span class="n">height</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+<span class="n">library</span><span class="o">.</span><span class="n">text_to_speech</span><span class="p">(</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Developer tools for open-source RPA leveraging the Robot Framework ecosystem&quot;</span><span class="p">,</span>
+    <span class="n">neural_voice_style</span><span class="o">=</span><span class="s2">&quot;cheerful&quot;</span><span class="p">,</span>
+    <span class="n">target_file</span><span class="o">=</span><span class="s1">&#39;output.mp3&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>

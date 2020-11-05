@@ -216,8 +216,103 @@
 <dd class="field-odd"><p>Global</p>
 </dd>
 </dl>
-<p>RPA Framework library which implements Robot Framework Listener v2 interface.</p>
-<p>Is used to filter out logging for specified parts of the task execution.</p>
+<p><cite>RobotLogListener</cite> is a library for controlling logging during
+a Robot Framework execution using the listener API.</p>
+<p><strong>About keyword parameters</strong></p>
+<p>Parameters <cite>names</cite> and <cite>keywords</cite> for keywords <cite>Mute Run On Failure</cite> and <cite>Register Protected Keywords</cite>
+do not need to be full names of keywords, ie. all keywords matching even partially will be affected.
+<cite>Run Keyword</cite> would match all <cite>BuiltIn</cite> library keywords (17 keywords in RF 3.2.1) and of course all
+<cite>Run Keyword</cite> named keywords in any resource and/or library file which are imported would be matched also.</p>
+<p><strong>Mute Run On Failure</strong></p>
+<p>This keyword is to be used specifically with <cite>RPA.Browser</cite> library, which extends
+<cite>SeleniumLibrary</cite>.  Normally most of the <cite>SeleniumLibrary</cite> keywords execute <cite>run_on_failure</cite>
+behaviour, which can be set at library initialization. By default this behaviour is running
+<cite>Capture Page Screenshot</cite> keyword on failure.</p>
+<p>In the example task <cite>Check the official website</cite> below the keyword <cite>Run Keyword</cite> is muted and when
+it runs the keyword <cite>Element Should Be Visible</cite> then those failures do not create page screenshots
+into log file.</p>
+<p>It is also possible to change default failure behaviour by giving parameter
+<cite>optional_keyword_to_run</cite> for <cite>Mute Run On Failure</cite>, see task <cite>Check the official website with error log</cite>.
+This optional keyword would be then executed on failure. Due to the underlying <cite>SeleniumLibrary</cite>
+implementation this keyword can’t have arguments.</p>
+<p>Example of using <cite>Mute Run On Failure</cite> without and with optional keyword to run.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.Browser</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.RobotLogListener</span><span class="p"></span>
+<span class="kn">Task Setup</span><span class="p">      </span><span class="nf">Set Task Variable</span><span class="p">   ${</span><span class="nv">TRIES</span><span class="p">}   </span><span class="s">1</span><span class="p"></span>
+<span class="kn">Task Teardown</span><span class="p">   </span><span class="nf">Close All Browsers</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Check the official website</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Mute Run On Failure</span><span class="p">   </span><span class="s">Run Keyword</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Open Available Browser</span><span class="p">   </span><span class="s">https://www.robocorp.com</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Check for visible element</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Capture Page Screenshot</span><span class="p"></span>
+
+<span class="gu">Check the official website with error log</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Mute Run On Failure</span><span class="p">   </span><span class="s">Run Keyword</span><span class="p">  </span><span class="s">optional_keyword_to_run=Log tries</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Open Available Browser</span><span class="p">   </span><span class="s">https://www.robocorp.com</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Check for visible element</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Capture Page Screenshot</span><span class="p"></span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Check for visible element</span><span class="p"></span>
+<span class="p">   FOR  ${</span><span class="nv">idx</span><span class="p">}  IN RANGE  </span><span class="s">1</span><span class="p">   </span><span class="s">20</span><span class="p"></span>
+<span class="p">      </span><span class="nf">Set Task Variable</span><span class="p">   ${</span><span class="nv">TRIES</span><span class="p">}   ${</span><span class="nv">idx</span><span class="p">}</span>
+<span class="p">      ${</span><span class="nv">status</span><span class="p">}   </span><span class="nf">Run Keyword And Return Status</span><span class="p">   </span><span class="s">Element Should Be Visible</span><span class="p">  </span><span class="s">id:xyz</span><span class="p"></span>
+<span class="p">      </span><span class="nf">Exit For Loop If</span><span class="p">   </span><span class="s">&#39;</span><span class="p">${</span><span class="nv">status</span><span class="p">}</span><span class="s">&#39; == &#39;PASS&#39;</span><span class="p"></span>
+<span class="p">      </span><span class="nf">Sleep</span><span class="p">  </span><span class="s">2s</span><span class="p"></span>
+<span class="p">   END</span>
+
+<span class="gu">Log tries</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Log</span><span class="p">  </span><span class="s">Checked element visibility </span><span class="p">${</span><span class="nv">TRIES</span><span class="p">}</span><span class="s"> times</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Register Protected Keywords</strong></p>
+<p>This keyword is used to totally disable logging for named keywords. In the example below
+the keyword <cite>This will not output</cite> is protected and it will not be logging into Robot Framework
+log files.</p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.RobotLogListener</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Protecting keywords</span><span class="p"></span>
+<span class="p">   </span><span class="nf">This will not output</span><span class="p">        </span><span class="c"># will output because called before register</span>
+<span class="p">   </span><span class="nf">Register Protected Keywords</span><span class="p">    </span><span class="s">This will not output</span><span class="p"></span>
+<span class="p">   </span><span class="nf">This will not output</span><span class="p">        </span><span class="c"># is now registered</span>
+<span class="p">   </span><span class="nf">This will output</span><span class="p"></span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">This will not output</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Log</span><span class="p">   </span><span class="s">1</span><span class="p"></span>
+
+<span class="gu">This will output</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Log</span><span class="p">   </span><span class="s">2</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robot.libraries.BuiltIn</span> <span class="kn">import</span> <span class="n">BuiltIn</span><span class="p">,</span> <span class="n">RobotNotRunningError</span>
+<span class="kn">from</span> <span class="nn">RPA.RobotLogListener</span> <span class="kn">import</span> <span class="n">RobotLogListener</span>
+
+<span class="k">try</span><span class="p">:</span>
+   <span class="n">BuiltIn</span><span class="p">()</span><span class="o">.</span><span class="n">import_library</span><span class="p">(</span><span class="s2">&quot;RPA.RobotLogListener&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">RobotNotRunningError</span><span class="p">:</span>
+   <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">CustomLibrary</span><span class="p">:</span>
+
+   <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="n">listener</span> <span class="o">=</span> <span class="n">RobotLogListener</span><span class="p">()</span>
+      <span class="n">listener</span><span class="o">.</span><span class="n">register_protected_keywords</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot;CustomLibrary.special_keyword&quot;</span><span class="p">]</span>
+      <span class="p">)</span>
+
+   <span class="k">def</span> <span class="nf">special_keyword</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;will not be written to log&#39;</span><span class="p">)</span>
+      <span class="k">return</span> <span class="s1">&#39;not shown in the log&#39;</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>

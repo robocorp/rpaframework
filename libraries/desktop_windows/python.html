@@ -272,7 +272,89 @@ set self.__traceback__ to tb and return self.</p>
 <dt id="RPA.Desktop.Windows.Windows">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">Windows</code><span class="sig-paren">(</span><em class="sig-param">backend: str = 'uia'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../desktop_operatingsystem/python.html#RPA.Desktop.OperatingSystem.OperatingSystem" title="RPA.Desktop.OperatingSystem.OperatingSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Desktop.OperatingSystem.OperatingSystem</span></code></a></p>
-<p>Windows methods extending OperatingSystem class.</p>
+<p><cite>Windows</cite> is a library for managing the Windows operating system.</p>
+<p><strong>Running Windows applications</strong></p>
+<p>Windows applications can be started in several ways. The library supports
+the following keywords:</p>
+<ul class="simple">
+<li><p>Open Application (dispatch Office applications)</p></li>
+<li><p>Open File (open the file as process which opens the associated application)</p></li>
+<li><p>Open Executable (uses pywinauto start)</p></li>
+<li><p>Open Using Run Dialog (uses Windows run dialog)</p></li>
+<li><p>Open From Search (uses Windows search dialog)</p></li>
+</ul>
+<p><strong>Locators</strong></p>
+<p><cite>Locator</cite> is used to identify the element for interaction - usually for a mouse click.</p>
+<p>Locators can investigated for application once it has been opened by calling
+the keyword <cite>get_windows_elements</cite> which can store locator information into JSON file
+and <cite>screenshot</cite> of the element into an image file.</p>
+<p><strong>Identifying locator</strong></p>
+<p>The element needs to be identified by a unique method, for example, “Three” for button 3
+in the Calculator application. It can be given either as <cite>Three</cite> or <cite>name:Three</cite>.</p>
+<p>Possible search criterias:</p>
+<ul class="simple">
+<li><p>name</p></li>
+<li><p>class (class_name)</p></li>
+<li><p>type (control_type)</p></li>
+<li><p>id (automation_id)</p></li>
+<li><p>any if none was defined</p></li>
+</ul>
+<p>The current method of inspecting elements on Windows is <cite>inspect.exe</cite> which is part
+of <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects">Windows SDK</a>.</p>
+<p><strong>Keyboard</strong></p>
+<p>The keyword <cite>send_keys</cite> can be used to send keys to the active window. The keyword
+<cite>type_keys</cite> sends keys to the active window element.</p>
+<p>Special key codes are documented on <a class="reference external" href="https://pywinauto.readthedocs.io/en/latest/code/pywinauto.keyboard.html#">pywinauto</a>
+documentation page.</p>
+<p><strong>FAQ</strong></p>
+<ol class="upperalpha simple" start="17">
+<li><p>I see error message <cite>AttributeError: module ‘win32com.gen_py.00020813-0000-0000-C000-000000000046x0x1x9’ has no attribute ‘CLSIDToClassMap’</cite></p></li>
+</ol>
+<ol class="upperalpha simple">
+<li><p>From PowerShell run this command: <cite>Remove-Item -path $env:LOCALAPPDATATempgen_py -recurse</cite></p></li>
+</ol>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">          </span><span class="nn">RPA.Desktop.Windows</span><span class="p"></span>
+<span class="kn">Suite Teardown</span><span class="p">   </span><span class="nf">Close all applications</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Open Calculator using run dialog</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Open using run dialog</span><span class="p">    </span><span class="s">calc.exe</span><span class="p">   </span><span class="s">Calculator</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Get Window Elements</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Send Keys</span><span class="p">               </span><span class="s">5*2=</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Get element</span><span class="p">             </span><span class="s">partial name:Display is</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log Many</span><span class="p">                ${</span><span class="nv">result</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Get element rich text</span><span class="p">   </span><span class="s">id:CalculatorResults</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Should Be Equal As Strings</span><span class="p">  ${</span><span class="nv">result</span><span class="p">}  </span><span class="s">Display is 10</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Get element rectangle</span><span class="p">   </span><span class="s">partial name:Display is</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Is Element Visible</span><span class="p">      </span><span class="s">CalculatorResults</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Is Element Enabled</span><span class="p">      </span><span class="s">partial name:Display is</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Desktop.Windows</span> <span class="kn">import</span> <span class="n">Windows</span>
+
+<span class="n">win</span> <span class="o">=</span> <span class="n">Windows</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">open_calculator</span><span class="p">():</span>
+    <span class="n">win</span><span class="o">.</span><span class="n">open_from_search</span><span class="p">(</span><span class="s2">&quot;calc.exe&quot;</span><span class="p">,</span> <span class="s2">&quot;Calculator&quot;</span><span class="p">)</span>
+    <span class="n">elements</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">get_window_elements</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">make_calculations</span><span class="p">(</span><span class="n">expression</span><span class="p">):</span>
+    <span class="n">win</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">get_element_rich_text</span><span class="p">(</span><span class="s1">&#39;id:CalculatorResults&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;Display is &#39;</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">open_calculator</span><span class="p">()</span>
+    <span class="n">exp</span> <span class="o">=</span> <span class="s1">&#39;5*2=&#39;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">make_calculations</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Calculation result of &#39;</span><span class="si">{</span><span class="n">exp</span><span class="si">}</span><span class="s2">&#39; is &#39;</span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="n">win</span><span class="o">.</span><span class="n">close_all_applications</span><span class="p">()</span>
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="RPA.Desktop.Windows.Windows.ROBOT_LIBRARY_DOC_FORMAT">
 <code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Desktop.Windows.Windows.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>

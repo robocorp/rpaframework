@@ -215,7 +215,31 @@
 <dt id="RPA.Archive.Archive">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Archive.</code><code class="sig-name descname">Archive</code><a class="headerlink" href="#RPA.Archive.Archive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Library for handling TAR and ZIP archives.</p>
+<p><cite>Archive</cite> is a library for operating with ZIP and TAR packages.</p>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">  </span><span class="nn">RPA.Archive</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Creating a ZIP archive</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Archive Folder With ZIP</span><span class="p">   ${</span><span class="nv">CURDIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">tasks</span><span class="p">  </span><span class="s">tasks.zip</span><span class="p">   </span><span class="s">recursive=True</span><span class="p">  </span><span class="s">include=*.robot</span><span class="p">  </span><span class="s">exclude=/.*</span><span class="p"></span>
+<span class="p">   @{</span><span class="nv">files</span><span class="p">}                  </span><span class="nf">List Archive</span><span class="p">             </span><span class="s">tasks.zip</span><span class="p"></span>
+<span class="p">   FOR  ${</span><span class="nv">file</span><span class="p">}  IN  ${</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">      </span><span class="nf">Log</span><span class="p">  ${</span><span class="nv">file</span><span class="p">}</span>
+<span class="p">   END</span>
+<span class="p">   </span><span class="nf">Add To Archive</span><span class="p">            </span><span class="s">.</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">..</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">missing.robot</span><span class="p">  </span><span class="s">tasks.zip</span><span class="p"></span>
+<span class="p">   &amp;{</span><span class="nv">info</span><span class="p">}                   </span><span class="nf">Get Archive Info</span><span class="p"></span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Archive</span> <span class="kn">import</span> <span class="n">Archive</span>
+
+<span class="n">lib</span> <span class="o">=</span> <span class="n">Archive</span><span class="p">()</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">archive_folder_with_tar</span><span class="p">(</span><span class="s1">&#39;./tasks&#39;</span><span class="p">,</span> <span class="s1">&#39;tasks.tar&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">list_archive</span><span class="p">(</span><span class="s1">&#39;tasks.tar&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+   <span class="nb">print</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="RPA.Archive.Archive.ROBOT_LIBRARY_DOC_FORMAT">
 <code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Archive.Archive.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
@@ -232,15 +256,6 @@
 <dd><p>Add file(s) to the archive</p>
 <p>This keyword adds file or list of files into existing archive. Files
 can be added to archive structure with relative path using argument <cite>folder</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>files</strong> – name of the file, or list of files, to add</p></li>
-<li><p><strong>archive_name</strong> – filename of the archive</p></li>
-<li><p><strong>folder</strong> – name of the folder for added file (relative path in the archive)</p></li>
-</ul>
-</dd>
-</dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add To Archive</span><span class="p">  </span><span class="c">extrafile.txt</span><span class="p">  </span><span class="c">myfiles.zip</span><span class="p"></span>
 <span class="c">Add To Archive</span><span class="p">  </span><span class="c">stat.png</span><span class="p">       </span><span class="c">archive.tar.gz</span><span class="p">  </span><span class="c">images</span><span class="p"></span>
@@ -248,6 +263,16 @@ can be added to archive structure with relative path using argument <cite>folder
 <span class="c">Add To Archive</span><span class="p">  </span><span class="c">${files}</span><span class="p">       </span><span class="c">files.tar</span><span class="p"></span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>Any</strong><strong>)</strong> (<em>files</em>) – name of the file, or list of files, to add</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>folder</em>) – filename of the archive</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – name of the folder for added file,
+relative path in the archive</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -259,17 +284,6 @@ is determined by the file extension. By default subdirectories are not
 included, but they can included using <cite>recursive</cite> argument.</p>
 <p>To include only certain files, like TXT files, the argument <cite>include</cite> can be used.
 Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</cite> can be used.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder</strong> – name of the folder to archive</p></li>
-<li><p><strong>archive_name</strong> – filename of the archive</p></li>
-<li><p><strong>recursive</strong> – should sub directories be included, defaults is False</p></li>
-<li><p><strong>include</strong> – define file pattern to include in the package, defaults to None (means all files)</p></li>
-<li><p><strong>exclude</strong> – define file pattern to exclude from the package, defaults is None</p></li>
-</ul>
-</dd>
-</dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Archive Folder With TAR</span><span class="p">  </span><span class="c">${CURDIR}${/}documents</span><span class="p">  </span><span class="c">documents.tar</span><span class="p"></span>
 <span class="c">Archive Folder With TAR</span><span class="p">  </span><span class="c">${CURDIR}${/}tasks</span><span class="p">      </span><span class="c">tasks.tar.gz</span><span class="p">   </span><span class="c">include=*.robot</span><span class="p"></span>
@@ -277,6 +291,18 @@ Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</ci
 <span class="c">Archive Folder With TAR</span><span class="p">  </span><span class="c">${CURDIR}${/}documents</span><span class="p">  </span><span class="c">documents.tar</span><span class="p">  </span><span class="c">recursive=True</span><span class="p"></span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>exclude</em>) – name of the folder to archive</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – filename of the archive</p></li>
+<li><p><strong>(</strong><strong>bool</strong><strong>)</strong> (<em>recursive</em>) – should sub directories be included, defaults is False</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – define file pattern to include in the package,
+by default all files are included</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – define file pattern to exclude from the package</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -287,27 +313,13 @@ Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</ci
 included, but they can included using <cite>recursive</cite> argument.</p>
 <p>To include only certain files, like TXT files, the argument <cite>include</cite> can be used.
 Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</cite> can be used.</p>
-<dl class="simple">
-<dt>Compression methods:</dt><dd><ul class="simple">
+<p>Compression methods:</p>
+<ul class="simple">
 <li><p>stored, default</p></li>
 <li><p>deflated</p></li>
 <li><p>bzip2</p></li>
 <li><p>lzma</p></li>
 </ul>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder</strong> – name of the folder to archive</p></li>
-<li><p><strong>archive_name</strong> – filename of the archive</p></li>
-<li><p><strong>recursive</strong> – should sub directories be included, defaults is False</p></li>
-<li><p><strong>include</strong> – define file pattern to include in the package, defaults to None (means all files)</p></li>
-<li><p><strong>exclude</strong> – define file pattern to exclude from the package, defaults is None</p></li>
-<li><p><strong>compression</strong> – type of package compression method, defaults to “stored”</p></li>
-</ul>
-</dd>
-</dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Archive Folder With Zip</span><span class="p">  </span><span class="c">${CURDIR}${/}documents</span><span class="p">  </span><span class="c">mydocs.zip</span><span class="p"></span>
 <span class="c">Archive Folder With Zip</span><span class="p">  </span><span class="c">${CURDIR}${/}tasks</span><span class="p">      </span><span class="c">robottasks.zip</span><span class="p">   </span><span class="c">include=*.robot</span><span class="p"></span>
@@ -317,6 +329,18 @@ Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</ci
 <span class="c">Archive Folder With Zip</span><span class="p">  </span><span class="c">${CURDIR}</span><span class="p">               </span><span class="c">bzipped.zip</span><span class="p">      </span><span class="c">compression=bzip2</span><span class="p"></span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>compression</em>) – name of the folder to archive</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – filename of the archive</p></li>
+<li><p><strong>(</strong><strong>bool</strong><strong>)</strong> (<em>recursive</em>) – should sub directories be included, defaults is False</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – define file pattern to include in the package, defaults to None (means all files)</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – define file pattern to exclude from the package, defaults is None</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – type of package compression method, defaults to “stored”</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -326,21 +350,22 @@ Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</ci
 <p>This keyword supports extracting files from zip, tar and tar.gz archives.</p>
 <p>By default file is extracted into current working directory, but <cite>path</cite> argument
 can be set to define extraction path.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>archive_name</strong> – filename of the archive</p></li>
-<li><p><strong>path</strong> – filepath to extract file into, default is current working directory</p></li>
-<li><p><strong>members</strong> – list of files to extract from, default is None (all files in archive are extracted)</p></li>
-</ul>
-</dd>
-</dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Extract Archive</span><span class="p">    </span><span class="c">myfiles.zip</span><span class="p">   </span><span class="c">${CURDIR}${/}extracted</span><span class="p"></span>
 <span class="c">@{files}</span><span class="p">           </span><span class="c">Create List</span><span class="p">   </span><span class="c">filename1.txt</span><span class="p">    </span><span class="c">filename2.txt</span><span class="p"></span>
 <span class="c">Extract Archive</span><span class="p">    </span><span class="c">archive.tar</span><span class="p">   </span><span class="c">C:${/}myfiles${/}</span><span class="p">  </span><span class="c">${files}</span><span class="p"></span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>path</em>) – filename of the archive</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – filepath to extract file into, default is current working directory</p></li>
+<li><p><strong>(</strong><strong>Any</strong><strong>)</strong> (<em>members</em>) – list of files to extract from, by default
+all files in archive are extracted</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -348,22 +373,23 @@ can be set to define extraction path.</p>
 <code class="sig-name descname">extract_file_from_archive</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">archive_name: str</em>, <em class="sig-param">path: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Archive.Archive.extract_file_from_archive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract a file from archive into local directory</p>
 <p>This keyword supports extracting a file from zip, tar and tar.gz archives.</p>
-<p>By default file is extracted into current working directory, but <cite>path</cite> argument can be set
-to define extraction path.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> – name of the file to extract</p></li>
-<li><p><strong>archive_name</strong> – filename of the archive</p></li>
-<li><p><strong>path</strong> – filepath to extract file into, default is current working directory</p></li>
-</ul>
-</dd>
-</dl>
+<p>By default file is extracted into current working directory,
+but <cite>path</cite> argument can be set to define extraction path.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Extract File From Archive</span><span class="p">    </span><span class="c">extrafile.txt</span><span class="p">   </span><span class="c">myfiles.zip</span><span class="p"></span>
 <span class="c">Extract File From Archive</span><span class="p">    </span><span class="c">background.png</span><span class="p">  </span><span class="c">images.tar.gz</span><span class="p">  </span><span class="c">${CURDIR}${/}extracted</span><span class="p"></span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>path</em>) – name of the file to extract</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – filename of the archive</p></li>
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – filepath to extract file into,
+default is current working directory</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -371,24 +397,22 @@ to define extraction path.</p>
 <code class="sig-name descname">get_archive_info</code><span class="sig-paren">(</span><em class="sig-param">archive_name: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Archive.Archive.get_archive_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get information about the archive</p>
 <p>Returns following file attributes in a dictionary:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>filename</p></li>
 <li><p>filemode</p></li>
 <li><p>size</p></li>
 <li><p>mtime</p></li>
 <li><p>last modification time in format <cite>%d.%m.%Y %H:%M:%S</cite></p></li>
 </ul>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>archive_name</strong> – filename of the archive</p>
-</dd>
-</dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{archiveinfo}</span><span class="p">   </span><span class="c">Get Archive Info</span><span class="p">    </span><span class="c">myfiles.zip</span><span class="p"></span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>archive_name</em>) – filename of the archive</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -397,19 +421,12 @@ to define extraction path.</p>
 <dd><p>List files in an archive</p>
 <p>Returns list of file, where each file in a list is a dictionary
 with following attributes:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>name</p></li>
 <li><p>size</p></li>
 <li><p>mtime</p></li>
 <li><p>last modification time in format <cite>%d.%m.%Y %H:%M:%S</cite></p></li>
 </ul>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>archive_name</strong> – filename of the archive</p>
-</dd>
-</dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{files}</span><span class="p">   </span><span class="c">List Archive</span><span class="p">    </span><span class="c">myfiles.zip</span><span class="p"></span>
 <span class="c">FOR</span><span class="p">  </span><span class="c">${file}</span><span class="p">  </span><span class="c">IN</span><span class="p">   </span><span class="c">${files}</span><span class="p"></span>
@@ -419,6 +436,11 @@ with following attributes:</p>
 <span class="c">END</span><span class="p"></span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>archive_name</em>) – filename of the archive</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

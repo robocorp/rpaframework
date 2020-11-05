@@ -216,9 +216,48 @@
 <dd class="field-odd"><p>Global</p>
 </dd>
 </dl>
-<p>Library for managing Twitter.</p>
-<p>Library usage requires Twitter developer credentials, which can
-be requested from <a class="reference external" href="https://developer.twitter.com/">https://developer.twitter.com/</a></p>
+<p><cite>Twitter</cite> is a library for accessing Twitter using developer API.
+The library extends <a class="reference external" href="http://docs.tweepy.org/en/latest/index.html">tweepy</a> library.</p>
+<p>Authorization credentials can be given as parameters for <code class="docutils literal notranslate"><span class="pre">authorize</span></code> keyword
+or keyword can read them in as environment variables:</p>
+<ul class="simple">
+<li><p><cite>TWITTER_CONSUMER_KEY</cite></p></li>
+<li><p><cite>TWITTER_CONSUMER_SECRET</cite></p></li>
+<li><p><cite>TWITTER_ACCESS_TOKEN</cite></p></li>
+<li><p><cite>TWITTER_ACCESS_TOKEN_SECRET</cite></p></li>
+</ul>
+<p>Library usage requires Twitter developer credentials.
+Those can be requested from <a class="reference external" href="https://developer.twitter.com/">Twitter developer site</a></p>
+<p><strong>Examples</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Twitter</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Get user tweets and like them</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Setup</span><span class="p">]   </span><span class="nf">Authorize</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">tweets</span><span class="p">}=   </span><span class="nf">Get User Tweets</span><span class="p">   </span><span class="s">username=niinisto</span><span class="p">   </span><span class="s">count=5</span><span class="p"></span>
+<span class="p">    FOR   ${</span><span class="nv">tweet</span><span class="p">}  IN   @{</span><span class="nv">tweets</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Like</span><span class="p">   ${</span><span class="nv">tweet</span><span class="p">}</span>
+<span class="p">    END</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Twitter</span> <span class="kn">import</span> <span class="n">Twitter</span>
+
+<span class="n">library</span> <span class="o">=</span> <span class="n">Twitter</span><span class="p">()</span>
+<span class="n">library</span><span class="o">.</span><span class="n">authorize</span><span class="p">()</span>
+<span class="n">tweets</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">get_user_tweets</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;niinisto&quot;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">tw</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">:</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="n">tw</span><span class="p">)</span>
+<span class="n">tweets</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">text_search_tweets</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;corona trump&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">tw</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tw</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="n">user</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">get_user_profile</span><span class="p">(</span><span class="s2">&quot;niinisto&quot;</span><span class="p">)</span>
+<span class="n">library</span><span class="o">.</span><span class="n">follow</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="n">library</span><span class="o">.</span><span class="n">tweet</span><span class="p">(</span><span class="s2">&quot;first tweet&quot;</span><span class="p">)</span>
+<span class="n">me</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">get_me</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">me</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>

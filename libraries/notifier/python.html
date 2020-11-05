@@ -215,9 +215,64 @@
 <dt id="RPA.Notifier.Notifier">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Notifier.</code><code class="sig-name descname">Notifier</code><a class="headerlink" href="#RPA.Notifier.Notifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Library for using different notification services.</p>
-<p>All keywords take keyword arguments (<a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs) to allow giving
-additional arguments for the notifications.</p>
+<p><cite>Notifier</cite> is a library interfacting with different notification services.</p>
+<p>Supported services:</p>
+<ul class="simple">
+<li><p>email</p></li>
+<li><p>gmail</p></li>
+<li><p>pushover</p></li>
+<li><p>slack</p></li>
+<li><p>telegram</p></li>
+<li><p>twilio</p></li>
+</ul>
+<p>Services not supported yet:</p>
+<ul class="simple">
+<li><p>gitter</p></li>
+<li><p>join</p></li>
+<li><p>mailgun</p></li>
+<li><p>pagerduty</p></li>
+<li><p>popcornnotify</p></li>
+<li><p>pushbullet</p></li>
+<li><p>simplepush</p></li>
+<li><p>statuspage</p></li>
+<li><p>zulip</p></li>
+</ul>
+<p>Read more at <a class="reference external" href="https://notifiers.readthedocs.io/en/latest/">https://notifiers.readthedocs.io/en/latest/</a></p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">  </span><span class="nn">RPA.Notifier</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">${</span><span class="nv">SLACK_WEBHOOK</span><span class="p">}   </span><span class="s">https://hooks.slack.com/services/WEBHOOKDETAILS</span><span class="p"></span>
+<span class="p">${</span><span class="nv">CHANNEL</span><span class="p">}         </span><span class="s">notification-channel</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Lets notify</span><span class="p"></span>
+<span class="p">   </span><span class="nf">Notify Slack</span><span class="p">   </span><span class="s">message from robot</span><span class="p">  </span><span class="s">channel=</span><span class="p">${</span><span class="nv">CHANNEL</span><span class="p">}  </span><span class="s">webhook_url=</span><span class="p">${</span><span class="nv">SLACK_WEBHOOK</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Notifier</span> <span class="kn">import</span> <span class="n">Notifier</span>
+
+<span class="n">library</span> <span class="o">=</span> <span class="n">Notifier</span><span class="p">()</span>
+
+<span class="n">slack_attachments</span> <span class="o">=</span> <span class="p">[</span>
+   <span class="p">{</span>
+      <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;attachment 1&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;fallback&quot;</span><span class="p">:</span> <span class="s2">&quot;liverpool logo&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;image_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://upload.wikimedia.org/wikipedia/fi/thumb/c/cd/Liverpool_FC-n_logo.svg/1200px-Liverpool_FC-n_logo.svg.png&quot;</span><span class="p">,</span>
+   <span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">library</span><span class="o">.</span><span class="n">notify_slack</span><span class="p">(</span>
+   <span class="n">message</span><span class="o">=</span><span class="s1">&#39;message for the Slack&#39;</span><span class="p">,</span>
+   <span class="n">channel</span><span class="o">=</span><span class="s2">&quot;notification-channel&quot;</span><span class="p">,</span>
+   <span class="n">webhook_url</span><span class="o">=</span><span class="n">slack_webhook_url</span><span class="p">,</span>
+   <span class="n">attachments</span><span class="o">=</span><span class="n">slack_attachments</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="RPA.Notifier.Notifier.ROBOT_LIBRARY_DOC_FORMAT">
 <code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Notifier.Notifier.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
