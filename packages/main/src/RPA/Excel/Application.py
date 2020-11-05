@@ -117,10 +117,11 @@ class Application:
         :return: tuple (row, column) or (None, None) if not found
         """
         empty_found = False
-        worksheet = worksheet if worksheet else self.active_worksheet
+        if worksheet:
+            self.set_active_worksheet(worksheet)
 
         while empty_found is False:
-            cell_value = worksheet.Cells(row, column).Value
+            cell_value = self.active_worksheet.Cells(row, column).Value
             if cell_value is None:
                 empty_found = True
                 return (row, column)
