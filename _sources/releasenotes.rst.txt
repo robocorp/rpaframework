@@ -4,7 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
-- Library **Excel.Application**: Fix https://github.com/robocorp/rpaframework/issues/72
+6.5.0
+-----
+
+- Library **Excel.Application**: Fix for `finding first available row <https://github.com/robocorp/rpaframework/issues/72>`_.
+- Add missing variables for Robot Framework library scope and documentation format
+- Add more verbose library docstrings in general
 
 6.4.0
 -----
