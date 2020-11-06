@@ -215,8 +215,8 @@
 <dd class="field-odd"><p>Global</p>
 </dd>
 </dl>
-<dl>
-<dt><cite>Tasks</cite> is a library for controlling task execution during a Robot Framework run.</dt><dd><p>It allows conditional branching between tasks, loops and jumps, and optionally
+<p><cite>Tasks</cite> is a library for controlling task execution during a Robot Framework run.</p>
+<p>It allows conditional branching between tasks, loops and jumps, and optionally
 validating the execution through a schema file. It can also be used to
 visualize the tasks as a graph.</p>
 <p id="model"><strong>Execution model</strong></p>
@@ -271,9 +271,9 @@ the task <code class="docutils literal notranslate"><span class="pre">Increment<
 <li><p>The second task executes normally and in the end jumps back to the first
 task using the keyword <code class="docutils literal notranslate"><span class="pre">Jump</span> <span class="pre">to</span> <span class="pre">task</span></code>.</p></li>
 <li><p>The above sequence is repeated until the condition is met, and we move to
-the final task of the file. This final task does not schedule further tasks</p></li>
+the final task of the file. This final task does not schedule further tasks
+and the execution ends.</p></li>
 </ol>
-<p>and the execution ends.</p>
 <p>You can also note the task <code class="docutils literal notranslate"><span class="pre">This</span> <span class="pre">will</span> <span class="pre">not</span> <span class="pre">run</span></code>, which as the name implies
 is never executed, as no other task schedules or jumps to it.</p>
 <p>The console log from the above execution shows how the same task is executed
@@ -410,11 +410,8 @@ will reduce to the following:</p>
 <span class="p">    </span><span class="nf">Log</span><span class="p">    </span><span class="s">Those are some good numbers!</span><span class="p"></span>
 </pre></div>
 </div>
-</dd>
-</dl>
 <p><strong>Format</strong></p>
-<blockquote>
-<div><p>The current format is JSON with the following structure:</p>
+<p>The current format is JSON with the following structure:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;tasks&quot;</span><span class="o">:</span> <span class="p">{</span>
         <span class="p">[</span><span class="nx">name</span><span class="o">:</span> <span class="nx">string</span><span class="p">]</span><span class="o">:</span> <span class="p">{</span>
@@ -486,7 +483,6 @@ execution stops in a non-end task.</p>
 <span class="p">]</span>
 </pre></div>
 </div>
-</div></blockquote>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>

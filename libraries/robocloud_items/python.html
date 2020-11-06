@@ -478,8 +478,8 @@ of local file is used.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>names</strong> – names of variables to remove</p></li>
-<li><p><strong>force</strong> – ignore variables that don’t exist in work item</p></li>
+<li><p><strong>names</strong> – Names of variables to remove</p></li>
+<li><p><strong>force</strong> – Ignore variables that don’t exist in work item</p></li>
 </ul>
 </dd>
 </dl>
@@ -532,7 +532,7 @@ Returns a list of absolute paths to the downloaded files.</p>
 <dt id="RPA.Robocloud.Items.Items.get_work_item_payload">
 <code class="sig-name descname">get_work_item_payload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.get_work_item_payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the full JSON payload for a work item.</p>
-<p>NOTE: Most use cases should prefer higher-level keywords.</p>
+<p><strong>NOTE</strong>: Most use cases should prefer higher-level keywords.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${payload}=</span><span class="p">    </span><span class="c">Get work item payload</span><span class="p"></span>
 <span class="c">Log</span><span class="p">    </span><span class="c">Entire payload as dictionary: ${payload}</span><span class="p"></span>
@@ -599,7 +599,7 @@ return their names and values as a dictionary.</p>
 <code class="sig-name descname">load_work_item</code><span class="sig-paren">(</span><em class="sig-param">workspace_id</em>, <em class="sig-param">item_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.load_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load work item for reading/writing.</p>
 <dl class="simple">
-<dt>NOTE: Currently only one work item per execution is supported</dt><dd><p>by Robocorp Cloud, which should be loaded automatically.</p>
+<dt><strong>NOTE</strong>: Currently only one work item per execution is supported</dt><dd><p>by Robocorp Cloud, which should be loaded automatically.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
@@ -686,7 +686,7 @@ Robot Framework task variables.</p>
 <dt id="RPA.Robocloud.Items.Items.set_work_item_payload">
 <code class="sig-name descname">set_work_item_payload</code><span class="sig-paren">(</span><em class="sig-param">payload</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.set_work_item_payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the full JSON payload for a work item.</p>
-<p>NOTE: Most use cases should prefer higher-level keywords.</p>
+<p><strong>NOTE</strong>: Most use cases should prefer higher-level keywords.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${output}=</span><span class="p">    </span><span class="c">Create dictionary</span><span class="p">    </span><span class="c">url=example.com</span><span class="p">    </span><span class="c">username=Mark</span><span class="p"></span>
 <span class="c">Set work item payload</span><span class="p">    </span><span class="c">${output}</span><span class="p"></span>
