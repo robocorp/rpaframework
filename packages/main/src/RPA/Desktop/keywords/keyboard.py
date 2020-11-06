@@ -53,7 +53,7 @@ class KeyboardKeywords(LibraryContext):
             Type text    this text will be uppercase    shift
 
         :param text:       Text to write
-        :param *modifiers: Modifier or functions keys held during typing
+        :param modifiers:  Modifier or functions keys held during typing
         :param enter:      Press Enter / Return key after typing text
         """
         if self._error:
@@ -82,7 +82,7 @@ class KeyboardKeywords(LibraryContext):
             ${all_text}=  Get clipboard value
             Log    Text box content was: ${all_text}
 
-        :param *keys: Keys to press
+        :param keys: Keys to press
         """
         if self._error:
             raise self._error

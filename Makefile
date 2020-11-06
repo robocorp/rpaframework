@@ -79,7 +79,7 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 	$(rm) docs/source/include/libdoc/RPA_recognition*
 	$(rm) docs/source/include/libdoc/RPA_Desktop_keywords*
 	$(rm) docs/source/include/libdoc/RPA_Desktop_utils*
-	poetry run docgen --format json-html --output docs/source/json/ RPA.*
+	poetry run docgen --no-patches --format json-html --output docs/source/json/ RPA.*
 	# TODO: Remove these when non-importables are _private
 	$(rm) docs/source/json/RPA_core*
 	$(rm) docs/source/json/RPA_recognition*

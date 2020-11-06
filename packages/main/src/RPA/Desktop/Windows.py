@@ -836,7 +836,7 @@ class Windows(OperatingSystem):
         :param image: image to click on desktop
         :param method: one of the available methods to mouse click, default "locator"
         :param ctype: type of mouse click
-        :param **kwargs: these keyword arguments can be used to pass arguments
+        :param kwargs: these keyword arguments can be used to pass arguments
          to underlying `Images` library to finetune image template matching,
          for example. `tolerance=0.5` would adjust image tolerance for the image
          matching
@@ -890,7 +890,7 @@ class Windows(OperatingSystem):
         :param off_x: horizontal offset from top left corner to click on
         :param off_y: vertical offset from top left corner to click on
         :param ctype: type of mouse click
-        :param **kwargs: these keyword arguments can be used to pass arguments
+        :param kwargs: these keyword arguments can be used to pass arguments
          to underlying `Images` library to finetune image template matching,
          for example. `tolerance=0.5` would adjust image tolerance for the image
          matching
