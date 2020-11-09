@@ -96,6 +96,9 @@ class MouseKeywords(LibraryContext):
     ) -> None:
         """Click at the element indicated by locator.
 
+        :param locator: Locator for click position
+        :param action:  Click action, e.g. right click
+
         Example:
 
         .. code-block:: robotframework
@@ -103,9 +106,6 @@ class MouseKeywords(LibraryContext):
             Click
             Click    LoginForm.Button
             Click    coordinates:500,200    triple click
-
-        :param locator: Locator for click position
-        :param action:  Click action, e.g. right click
         """
         if self._error:
             raise self._error
@@ -126,14 +126,16 @@ class MouseKeywords(LibraryContext):
     ) -> None:
         """Click at a given pixel offset from the given locator.
 
-        .. code-block:: robotframework
-
-            Click with offset    Robocorp.Logo    y=400
-
         :param locator: Locator for click start position
         :param x:       Click horizontal offset in pixels
         :param y:       Click vertical offset in pixels
         :param action:  Click action, e.g. right click
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Click with offset    Robocorp.Logo    y=400
         """
         if self._error:
             raise self._error
@@ -150,6 +152,8 @@ class MouseKeywords(LibraryContext):
     def get_mouse_position(self) -> Point:
         """Get current mouse position in pixel coordinates.
 
+        Example:
+
         .. code-block:: robotframework
 
             ${position}=    Get mouse position
@@ -164,12 +168,14 @@ class MouseKeywords(LibraryContext):
     def move_mouse(self, locator: str) -> None:
         """Move mouse to given coordinates.
 
+        :param locator: Locator for mouse position
+
+        Example:
+
         .. code-block:: robotframework
 
             Move mouse    Robocorp.Logo
             Move mouse    offset:0,400
-
-        :param locator: Locator for mouse position
         """
         if self._error:
             raise self._error

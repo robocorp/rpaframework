@@ -205,9 +205,10 @@ class Twitter:
         """Search tweets defined by search query
 
         Results types:
-            - mixed : include both popular and real time results in the response
-            - recent : return only the most recent results in the response
-            - popular : return only the most popular results in the response
+
+        - mixed : include both popular and real time results in the response
+        - recent : return only the most recent results in the response
+        - popular : return only the most popular results in the response
 
         :param query: search query string of 500 characters maximum,
             including operators

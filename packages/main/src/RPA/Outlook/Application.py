@@ -198,15 +198,18 @@ class Application:
     ) -> Any:
         """Wait for email matching `criterion` to arrive into mailbox.
 
-        Possible wait criterias are: SUBJECT, SENDER and BODY
-
-        Examples:
-            - wait_for_message('SUBJECT:rpa task calling', timeout=300, interval=10)
-
         :param criterion: message filter to wait for, defaults to ""
         :param timeout: total time in seconds to wait for email, defaults to 5.0
         :param interval: time in seconds for new check, defaults to 1.0
         :return: list of messages or False
+
+        Possible wait criterias are: SUBJECT, SENDER and BODY
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Wait for message     SUBJECT:rpa task calling    timeout=300    interval=10
         """
         if self.app is None:
             raise ValueError("Requires active Outlook Application")

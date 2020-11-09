@@ -159,11 +159,6 @@ class Exchange:
     ):
         """Keyword for sending message through connected Exchange account.
 
-        Email addresses can be prefixed with `ex:` to indicate Exchange
-        account address.
-
-        Recipients is ``required`` parameter.
-
         :param recipients: list of email addresses, defaults to []
         :param subject: message subject, defaults to ""
         :param body: message body, defaults to ""
@@ -174,6 +169,11 @@ class Exchange:
         :param bcc: list of email addresses, defaults to []
         :param save: is sent message saved to Sent messages folder or not,
             defaults to False
+
+        Email addresses can be prefixed with ``ex:`` to indicate an Exchange
+        account address.
+
+        Recipients is a `required` parameter.
         """
         recipients, cc, bcc, attachments, images = self._handle_message_parameters(
             recipients, cc, bcc, attachments, images
@@ -355,18 +355,18 @@ class Exchange:
     ) -> bool:
         """Move message(s) from source folder to target folder
 
-        Criterion examples:
-
-            - subject:my message subject
-            - body:something in body
-            - sender:sender@domain.com
-
         :param criterion: move messages matching this criterion
         :param source: source folder
         :param target: target folder
         :param contains: if matching should be done using `contains` matching
              and not `equals` matching, default `False` is means `equals` matching
         :return: boolean result of operation, True if 1+ items were moved else False
+
+        Criterion examples:
+
+        - subject:my message subject
+        - body:something in body
+        - sender:sender@domain.com
         """
         source_folder = self._get_folder_object(source)
         target_folder = self._get_folder_object(target)

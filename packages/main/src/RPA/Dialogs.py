@@ -420,7 +420,7 @@ class Dialogs:
 
         :param title: form title, defaults to None
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -442,7 +442,7 @@ class Dialogs:
 
         :param title: text for the element
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -460,7 +460,7 @@ class Dialogs:
         :param name: input element name attribute
         :param value: input element value attribute
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -477,7 +477,7 @@ class Dialogs:
         :param name: input element name attribute
         :param value: input element value attribute
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -511,7 +511,7 @@ class Dialogs:
 
         Read more of the filetypes in the library documentation.
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -550,7 +550,7 @@ class Dialogs:
         :param options: values for the dropdown
         :param default: dropdown selected value, defaults to None
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -579,7 +579,7 @@ class Dialogs:
         :param name: element name attribute
         :param buttons: list of buttons
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -601,7 +601,7 @@ class Dialogs:
         :param options: values for the radio button
         :param default: radio button selected value, defaults to None
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -630,7 +630,7 @@ class Dialogs:
         :param options: values for the check box
         :param default: check box selected value, defaults to None
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -663,7 +663,7 @@ class Dialogs:
         :param cols: numnber of columns for the area, defaults to 40
         :param default: prefilled text for the area, defaults to None
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 
@@ -711,7 +711,7 @@ class Dialogs:
         :param window_height: window height in pixels, defaults to 1000
         :return: form response
 
-        Example.
+        Example:
 
         .. code-block:: robotframework
 

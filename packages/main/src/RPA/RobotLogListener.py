@@ -167,6 +167,10 @@ class RobotLogListener:
         """Set keywords which should not execute `SeleniumLibrary`
         default behaviour of running keyword on failure.
 
+        :param keywords: list of keywords to mute
+        :param optional_keyword_to_run: name of the keyword to execute
+            if keyword defined by `keywords` fail
+
         Keyword names do not need to be full names of keywords, ie. all keywords
         matching even partially will be affected. `Run Keyword` would match all
         `BuiltIn` library keywords (17 keywords in RF 3.2.1) and of course all
@@ -179,10 +183,6 @@ class RobotLogListener:
         If `optional_keyword_to_run` is not given then nothing is done
         on failure, but this can be set to override `SeleniumLibrary`
         default behaviour for a set of keywords.
-
-        :param keywords: list of keywords to mute
-        :param optional_keyword_to_run: name of the keyword to execute
-                                        if keyword defined by `keywords` fail
         """
         required_param(keywords, "mute_run_on_failure")
         if not isinstance(keywords, list):
@@ -200,11 +200,11 @@ class RobotLogListener:
     def start_keyword(self, name, attributes):  # pylint: disable=W0613
         """Listener method for keyword start.
 
-        If `name` exists in the protected keywords list then log level is
-        temporarily set to NONE.
-
         :param name: keyword name
         :param attributes: keyword attributes
+
+        If `name` exists in the protected keywords list then log level is
+        temporarily set to NONE.
         """
         robotized_keyword = self._robotize_keyword(name)
         if any(k in robotized_keyword for k in self.KEYWORDS_TO_PROTECT):
@@ -223,11 +223,11 @@ class RobotLogListener:
     def end_keyword(self, name, attributes):  # pylint: disable=W0613
         """Listener method for keyword end.
 
-        If `name` exists in the protected keywords list then log level is
-        restored back to level it was before settings to NONE.
-
         :param name: keyword name
         :param attributes: keyword attributes
+
+        If `name` exists in the protected keywords list then log level is
+        restored back to level it was before settings to NONE.
         """
         robotized_keyword = self._robotize_keyword(name)
         if any(k in robotized_keyword for k in self.KEYWORDS_TO_PROTECT):

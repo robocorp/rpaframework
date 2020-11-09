@@ -241,8 +241,7 @@ class FTP:
     def send_command(self, command: str) -> bool:
         """Execute command on the server
 
-        List of FTP commands
-
+        List of FTP commands:
         https://en.wikipedia.org/wiki/List_of_FTP_commands
 
         :param command: name of the command to send
@@ -275,11 +274,11 @@ class FTP:
     def set_debug_level(self, level: int = 0) -> bool:
         """Set debug level for the library
 
+        :param level: integer value of debug level, defaults to 0
+
         0 - no debugging output
         1 - moderate amount of debugging
         2+ - higher amount of debugging
-
-        :param level: integer value of debug level, defaults to 0
         """
         if level >= 0:
             self.instance.set_debuglevel(level)

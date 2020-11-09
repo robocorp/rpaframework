@@ -353,7 +353,7 @@ class Tasks:
 
     .. _execution-example:
 
-    **Example**
+    Example:
 
     As an example, the following Robot Framework file describes a process where
     a task would have to be executed multiple times before a condition is reached.
@@ -480,7 +480,7 @@ class Tasks:
     transition between tasks happens. It can also define rules for selecting the next
     task, which allows separating the task and process definitions.
 
-    **Example**
+    Example:
 
     The execution-example shown previously used keywords to control
     the execution. This can also be done using the following schema:

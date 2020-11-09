@@ -132,10 +132,10 @@ class ServiceS3(AWSBase):
     ) -> None:
         """Initialize AWS S3 client
 
-        :param aws_key_id (str): access key ID
-        :param aws_key (str): secret access key
-        :param region (str): AWS region
-        :param use_robocloud_vault (bool): use secret stored into `Robocloud Vault`
+        :param aws_key_id: access key ID
+        :param aws_key: secret access key
+        :param region: AWS region
+        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
         self._init_client("s3", aws_key_id, aws_key, region, use_robocloud_vault)
 
@@ -143,7 +143,7 @@ class ServiceS3(AWSBase):
     def create_bucket(self, bucket_name: str = None) -> bool:
         """Create S3 bucket with name
 
-        :param bucket_name (str): name for the bucket
+        :param bucket_name: name for the bucket
         :return: boolean indicating status of operation
         """
         required_param(bucket_name, "create_bucket")
@@ -159,7 +159,7 @@ class ServiceS3(AWSBase):
     def delete_bucket(self, bucket_name: str = None) -> bool:
         """Delete S3 bucket with name
 
-        :param bucket_name (str): name for the bucket
+        :param bucket_name: name for the bucket
         :return: boolean indicating status of operation
         """
         required_param(bucket_name, "delete_bucket")
@@ -248,13 +248,13 @@ class ServiceS3(AWSBase):
     ) -> tuple:
         """Upload single file into bucket
 
-        If `object_name` is not given then basename of the file is
-        used as `object_name`.
-
         :param bucket_name: name for the bucket
         :param filename: filepath for the file to be uploaded
         :param object_name: name of the object in the bucket, defaults to None
         :return: tuple of upload status and error
+
+        If `object_name` is not given then basename of the file is
+        used as `object_name`.
         """
         required_param([bucket_name, filename], "upload_file")
         if object_name is None:
@@ -265,16 +265,16 @@ class ServiceS3(AWSBase):
     def upload_files(self, bucket_name: str = None, files: list = None) -> list:
         """Upload multiple files into bucket
 
+        :param bucket_name: name for the bucket
+        :param files: list of files (2 possible ways, see above)
+        :return: number of files uploaded
+
         Giving files as list of filepaths:
             ['/path/to/file1.txt', '/path/to/file2.txt']
 
         Giving files as list of dictionaries (including filepath and object name):
             [{'filepath':'/path/to/file1.txt', 'object_name': 'file1.txt'},
             {'filepath': '/path/to/file2.txt', 'object_name': 'file2.txt'}]
-
-        :param bucket_name: name for the bucket
-        :param files: list of files (2 possible ways, see above)
-        :return: number of files uploaded
         """
         required_param([bucket_name, files], "upload_files")
         upload_count = 0
@@ -505,21 +505,21 @@ class ServiceTextract(AWSBase):
         for relationships between detected items such as key-value pairs,
         tables, and selection elements.
 
+        :param bucket_name_in: name of the S3 bucket for the input object,
+            defaults to None
+        :param object_name_in: name of the input object, defaults to None
+        :param object_version_in: version of the input object, defaults to None
+        :param bucket_name_out: name of the S3 bucket where to save analysis result
+            object, defaults to None
+        :param prefix_object_out: name of the S3 bucket for the analysis result object,
+        :return: job identifier
+
         Input object can be in JPEG, PNG or PDF format. Documents should
         be located in the Amazon S3 bucket.
 
         By default Amazon Textract will save the analysis result internally
         to be accessed by keyword ``Get Document Analysis``. This can
         be overridden by giving parameter ``bucket_name_out``.
-
-        :param bucket_name_in: name of the S3 bucket for the input object,
-                               defaults to None
-        :param object_name_in: name of the input object, defaults to None
-        :param object_version_in: version of the input object, defaults to None
-        :param bucket_name_out: name of the S3 bucket where to save analysis result
-                                object, defaults to None
-        :param prefix_object_out: name of the S3 bucket for the analysis result object,
-        :return: job identifier
         """
         client = self._get_client_for_service("textract")
         s3_object_dict = {"Bucket": bucket_name_in, "Name": object_name_in}
@@ -544,14 +544,14 @@ class ServiceTextract(AWSBase):
     ) -> dict:
         """Get the results of Textract asynchronous `Document Analysis` operation
 
-        Response dictionary has key `JobStatus` with value `SUCCEEDED` when analysis
-        has been completed.
-
         :param job_id: job identifier, defaults to None
         :param max_results: number of blocks to get at a time, defaults to 1000
         :param next_token: pagination token for getting next set of results,
                defaults to None
         :return: dictionary
+
+        Response dictionary has key `JobStatus` with value `SUCCEEDED` when analysis
+        has been completed.
 
         Example:
 
@@ -602,21 +602,21 @@ class ServiceTextract(AWSBase):
         Amazon Textract can detect lines of text and the words that make up a
         line of text.
 
+        :param bucket_name_in: name of the S3 bucket for the input object,
+            defaults to None
+        :param object_name_in: name of the input object, defaults to None
+        :param object_version_in: version of the input object, defaults to None
+        :param bucket_name_out: name of the S3 bucket where to save analysis result
+            object, defaults to None
+        :param prefix_object_out: name of the S3 bucket for the analysis result object,
+        :return: job identifier
+
         Input object can be in JPEG, PNG or PDF format. Documents should
         be located in the Amazon S3 bucket.
 
         By default Amazon Textract will save the analysis result internally
         to be accessed by keyword ``Get Document Text Detection``. This can
         be overridden by giving parameter ``bucket_name_out``.
-
-        :param bucket_name_in: name of the S3 bucket for the input object,
-                               defaults to None
-        :param object_name_in: name of the input object, defaults to None
-        :param object_version_in: version of the input object, defaults to None
-        :param bucket_name_out: name of the S3 bucket where to save analysis result
-                                object, defaults to None
-        :param prefix_object_out: name of the S3 bucket for the analysis result object,
-        :return: job identifier
         """
         client = self._get_client_for_service("textract")
         s3_object_dict = {"Bucket": bucket_name_in, "Name": object_name_in}
@@ -638,14 +638,14 @@ class ServiceTextract(AWSBase):
     ) -> dict:
         """Get the results of Textract asynchronous `Document Text Detection` operation
 
-        Response dictionary has key `JobStatus` with value `SUCCEEDED` when analysis
-        has been completed.
-
         :param job_id: job identifier, defaults to None
         :param max_results: number of blocks to get at a time, defaults to 1000
         :param next_token: pagination token for getting next set of results,
                defaults to None
         :return: dictionary
+
+        Response dictionary has key `JobStatus` with value `SUCCEEDED` when analysis
+        has been completed.
 
         Example:
 

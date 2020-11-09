@@ -1280,6 +1280,12 @@ class Tables:
     ):
         """Read a CSV file as a table.
 
+        :param path:        path to CSV file
+        :param header:      CSV file includes header
+        :param columns:     names of columns in resulting table
+        :param dialect:     format of CSV file
+        :param delimiters:  string of possible delimiters
+
         By default attempts to deduce the CSV format and headers
         from a sample of the input file. If it's unable to determine
         the format automatically, the dialect and header will
@@ -1292,12 +1298,6 @@ class Tables:
         The ``columns`` argument can be used to override the names of columns
         in the resulting table. The amount of columns must match the input
         data.
-
-        :param path:        path to CSV file
-        :param header:      CSV file includes header
-        :param columns:     names of columns in resulting table
-        :param dialect:     format of CSV file
-        :param delimiters:  string of possible delimiters
         """
         sniffer = csv.Sniffer()
         with open(path, newline="") as fd:
@@ -1322,12 +1322,13 @@ class Tables:
     def write_table_to_csv(self, table, path, header=True, dialect="excel"):
         """Write a table as a CSV file.
 
-        Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``.
-
         :param path:    path to write to
         :param table:   table to write
         :param header:  write columns as header to CSV file
         :param dialect: the format of output CSV
+
+        Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``.
+
         """
         self.requires_table(table)
 

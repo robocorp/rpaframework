@@ -70,16 +70,16 @@ class ApplicationKeywords(LibraryContext):
         """Start a given application by name (if in PATH),
         or by path to executable.
 
+        :param name_or_path: Name or path of application
+        :param args:         Command line arguments for application
+        :returns:            Application instance
+
         Example:
 
         .. code-block:: robotframework
 
             Open application    notepad.exe
             Open application    c:\\path\\to\\program.exe    --example-argument
-
-        :param name_or_path: Name or path of application
-        :param args:         Command line arguments for application
-        :returns:            Application instance
         """
         name = Path(name_or_path).name
         return self._create_app(name, [name_or_path] + list(args))
@@ -88,13 +88,13 @@ class ApplicationKeywords(LibraryContext):
     def open_file(self, path: str) -> Application:
         """Open a file with the default application.
 
+        :param path: Path to file
+
         Example:
 
         .. code-block:: robotframework
 
             Open file    orders.xlsx
-
-        :param path: Path to file
         """
         name = Path(path).name
 
@@ -133,6 +133,8 @@ class ApplicationKeywords(LibraryContext):
         """Close given application. Needs to be started
         with this library.
 
+        :param app: App instance
+
         Example:
 
         .. code-block:: robotframework
@@ -140,8 +142,6 @@ class ApplicationKeywords(LibraryContext):
             ${word}=    Open file    template.docx
             # Do something with Word
             Close application    ${word}
-
-        :param app: App instance
         """
         if app.is_running:
             app.stop()
