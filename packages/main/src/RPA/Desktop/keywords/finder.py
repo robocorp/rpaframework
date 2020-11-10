@@ -35,7 +35,7 @@ class FinderKeywords(LibraryContext):
         else:
             self.confidence = None
 
-    def find_tempaltes(self, locator: ImageTemplate) -> List[Union[Point, Region]]:
+    def find_templates(self, locator: ImageTemplate) -> List[Union[Point, Region]]:
         """Internal helper method for getting image template matches in all displays
         and returning them as Points or Regions, scaled to accomodate macOS HiDPI
         """

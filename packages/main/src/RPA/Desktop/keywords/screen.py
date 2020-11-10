@@ -98,7 +98,7 @@ class ScreenKeywords(LibraryContext):
         """
         with mss.mss() as sct:
             disp = sct.monitors[0]
-            return _region_from_mss_monitor(disp)
+            return region_from_mss_monitor(disp)
 
     @keyword
     def highlight_elements(self, locator: str):
