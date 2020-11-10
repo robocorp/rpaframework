@@ -191,7 +191,15 @@ def test_merge_tables(library):
     merged = library.merge_tables(Table(prices), Table(stock))
     assert len(merged) == 7
     assert merged.columns == ["Name", "Price", "Stock"]
-    assert merged[None,"Name"] == ["Egg", "Cheese", "Ham", "Egg", "Cheese", "Ham", "Spider"]
+    assert merged[None, "Name"] == [
+        "Egg",
+        "Cheese",
+        "Ham",
+        "Egg",
+        "Cheese",
+        "Ham",
+        "Spider",
+    ]
 
     merged = library.merge_tables(Table(prices), Table(stock), index="Name")
     assert len(merged) == 4

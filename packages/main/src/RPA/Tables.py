@@ -1054,7 +1054,10 @@ class Tables:
 
             ${products}=    Merge tables    ${prices}    ${stock}    index=Name
             FOR    ${product}    IN    @{products}
-                Log   Product: ${product}[Name], Price: ${product}[Price], Stock: ${product}[Stock]
+                Log many
+                ...    Product: ${product}[Name]
+                ...    Price: ${product}[Price]
+                ...    Stock: ${product}[Stock]
             END
         """
         if index is None:
