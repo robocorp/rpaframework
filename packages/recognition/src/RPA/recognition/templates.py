@@ -71,7 +71,7 @@ def find(
     # Do the actual search
     start = time.time()
 
-    matches = []
+    matches: List[Region] = []
     for match in _match_template(image, template, tolerance):
         matches.append(match)
         if limit is not None and len(matches) >= int(limit):
