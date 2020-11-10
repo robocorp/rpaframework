@@ -43,6 +43,19 @@ def if_none(value, default):
     return value if value is not None else default
 
 
+def uniq(seq):
+    """Return list of unique values while preserving order.
+    Values must be hashable.
+    """
+    seen, result = {}, []
+    for item in seq:
+        if item in seen:
+            continue
+        seen[item] = None
+        result.append(item)
+    return result
+
+
 class Table:
     """Container class for tabular data.
 
@@ -53,9 +66,9 @@ class Table:
       can be namedtuples, dictionaries, lists, or tuples
     - dict: Dictionary of columns as keys and rows as values
 
+    .. todo:: Distinguish between range-based index and named index
     .. todo:: Integers as column names? Columns forced to strings?
     .. todo:: Implement column slicing
-    .. todo:: Existing column to index conversion
     .. todo:: Index accessing through dot notation?
     .. todo:: Index name conflict in exports/imports
     .. todo:: Return Robot Framework DotDict instead of dict?
@@ -953,7 +966,7 @@ class Tables:
         if not isinstance(obj, Table):
             raise TypeError("Keyword requires Table object")
 
-    def create_table(self, data=None, trim=False):
+    def create_table(self, data=None, trim=False, columns=None, index=None):
         """Create Table object from data.
 
         Data can be a combination of various iterable containers, e.g.
@@ -962,13 +975,18 @@ class Tables:
         :param data:    source data for table
         :param trim:    remove all empty rows from the end of the worksheet,
                         default `False`
+        :param columns: names of columns (optional)
+        :param index:   names of rows (optional)
         """
-        table = Table(data)
-        self.logger.info("Created table: %s", table)
+        table = Table(data, columns, index)
+
         if trim:
             self.trim_empty_rows(table)
             self.trim_column_names(table)
+
+        self.logger.info("Created table: %s", table)
         notebook_table(self.table_head(table, 10))
+
         return table
 
     def export_table(self, table, with_index=False, as_list=True):
@@ -999,6 +1017,89 @@ class Tables:
         """
         self.requires_table(table)
         table.clear()
+
+    def merge_tables(self, *tables, index=None):
+        """Create a union of two tables and their contents.
+
+        :param tables: Tables to merge
+        :param index:  Column name to use as index for merge
+
+        By default rows from all tables are appended one after the other.
+        Optionally a column name can be given with ``index``, which is
+        used to merge rows together.
+
+        Example:
+
+        For instance, a ``name`` column could be used to identify
+        unique rows and the merge operation should overwrite values
+        instead of appending multiple copies of the same name.
+
+        ====== =====
+        Name   Price
+        ====== =====
+        Egg    10.0
+        Cheese 15.0
+        Ham    20.0
+        ====== =====
+
+        ====== =====
+        Name   Stock
+        ====== =====
+        Egg    12.0
+        Cheese 99.0
+        Ham    0.0
+        ====== =====
+
+        .. code-block:: robotframework
+
+            ${products}=    Merge tables    ${prices}    ${stock}    index=Name
+            FOR    ${product}    IN    @{products}
+                Log   Product: ${product}[Name], Price: ${product}[Price], Stock: ${product}[Stock]
+            END
+        """
+        if index is None:
+            return self._merge_by_append(tables)
+        else:
+            return self._merge_by_index(tables, index)
+
+    def _merge_by_append(self, tables):
+        """Merge tables by appending columns and rows."""
+        columns = uniq(column for table in tables for column in table.columns)
+
+        merged = Table(columns=columns)
+        for table in tables:
+            merged.append_rows(table)
+
+        return merged
+
+    def _merge_by_index(self, tables, index):
+        """Merge tables by using a column as shared key."""
+        columns = uniq(column for table in tables for column in table.columns)
+        merged = Table(columns=columns)
+
+        seen = {}
+
+        def find_index(row):
+            """Find index for row, if key already exists."""
+            value = row[index]
+            if value in seen:
+                return seen[value]
+            for row_ in merged.iter_dicts(True):
+                if row_[index] == value:
+                    seen[value] = row_["index"]
+                    return row_["index"]
+            return None
+
+        for table in tables:
+            for row in table.iter_dicts(False):
+                row_index = find_index(row)
+                if row_index is None:
+                    merged.append_row(row)
+                else:
+                    for column, value in row.items():
+                        merged.set_cell(row_index, column, value)
+
+        return merged
 
     def get_table_dimensions(self, table):
         """Return table dimensions, as (rows, columns).
@@ -1135,6 +1236,31 @@ class Tables:
         """
         self.requires_table(table)
         return table.get_slice(start, end)
+
+    def find_table_rows(self, table, column, value, as_list=False):
+        """Find a row in the table by a given column value.
+
+        :param table:   Table to find from
+        :param column:  name of column to search
+        :param value:   value to match for
+        :param as_list: return list instead of dictionary
+        """
+        self.requires_table(table)
+        result = []
+        for row in table.iter_dicts(True):
+            if row[column] == value:
+                match = self.get_table_row(table, row["index"], as_list)
+                result.append(match)
+        return result
+
+    def set_row_as_column_names(self, table, index):
+        """Set existing row as names for columns.
+
+        :param table: table to modify
+        :param index: row to use as column names
+        """
+        values = self.pop_table_row(table, index, as_list=True)
+        table.columns = values
 
     def set_column_as_index(self, table, column=None):
         """Set existing column as index for rows.

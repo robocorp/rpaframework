@@ -138,6 +138,15 @@ def test_table_iterate_tuples():
     )
 
 
+@pytest.mark.parametrize(
+    "data, columns", DATA_FIXTURE.values(), ids=DATA_FIXTURE.keys()
+)
+def test_keyword_create_table(data, columns, library):
+    table = library.create_table(data, columns=["yx", "kax", "kol", "nel"])
+    assert len(table) == 6
+    assert table.columns == ["yx", "kax", "kol", "nel"]
+
+
 def test_keyword_export_table_as_list(library, table):
     exported = library.export_table(table)
     assert exported == [
@@ -173,6 +182,23 @@ def test_keyword_clear_table(library, table):
     assert len(table) == 0
     assert len(table.index) == 0
     assert table.columns == DATA_COLUMNS
+
+
+def test_merge_tables(library):
+    prices = {"Name": ["Egg", "Cheese", "Ham"], "Price": [10.0, 15.0, 20.0]}
+    stock = {"Name": ["Egg", "Cheese", "Ham", "Spider"], "Stock": [12, 99, 0, 1]}
+
+    merged = library.merge_tables(Table(prices), Table(stock))
+    assert len(merged) == 7
+    assert merged.columns == ["Name", "Price", "Stock"]
+    assert merged[None,"Name"] == ["Egg", "Cheese", "Ham", "Egg", "Cheese", "Ham", "Spider"]
+
+    merged = library.merge_tables(Table(prices), Table(stock), index="Name")
+    assert len(merged) == 4
+    assert merged.get_row(0) == {"Name": "Egg", "Price": 10.0, "Stock": 12}
+    assert merged.get_row(1) == {"Name": "Cheese", "Price": 15.0, "Stock": 99}
+    assert merged.get_row(2) == {"Name": "Ham", "Price": 20.0, "Stock": 0}
+    assert merged.get_row(3) == {"Name": "Spider", "Price": None, "Stock": 1}
 
 
 def test_keyword_get_table_dimensions(library, table):
@@ -263,6 +289,25 @@ def test_keyword_get_table_slice(library, table):
 
     with pytest.raises(ValueError):
         library.get_table_slice(table, start=3, end=2)
+
+
+def test_keyword_find_table_rows(library, table):
+    matches = library.find_table_rows(table, "three", 3)
+    assert len(matches) == 2
+    assert all(match["two"] == 2 for match in matches)
+
+    matches = library.find_table_rows(table, "four", None, as_list=True)
+    assert len(matches) == 4
+    assert [row[0] for row in matches] == [1, "a", None, None]
+
+
+def test_keyword_set_row_as_column_names(library, table):
+    assert table.columns == ["one", "two", "three", "four"]
+    assert len(table) == 6
+
+    library.set_row_as_column_names(table, 4)
+    assert table.columns == [1, 2, 3, 4]
+    assert len(table) == 5
 
 
 def test_keyword_set_column_as_index(library, table):
