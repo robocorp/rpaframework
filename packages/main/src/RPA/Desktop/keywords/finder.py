@@ -10,7 +10,7 @@ from RPA.core.locators import (
     parse_locator,
 )
 
-from RPA.Desktop.keywords.screen import _get_displays, _region_from_mss_monitor
+from RPA.Desktop.keywords.screen import get_displays, region_from_mss_monitor
 
 try:
     from RPA.recognition import templates
@@ -35,14 +35,13 @@ class FinderKeywords(LibraryContext):
         else:
             self.confidence = None
 
-    def get_matches(self, locator: ImageTemplate) -> List[Union[Point, Region]]:
+    def find_tempaltes(self, locator: ImageTemplate) -> List[Union[Point, Region]]:
         """Internal helper method for getting image template matches in all displays
         and returning them as Points or Regions, scaled to accomodate macOS HiDPI
         """
 
         def get_scaled_matches(screenshot, locator, display):
             """ Internal helper function for finding matches on a single screen """
-            self.logger.info("Matching with confidence of %.1f", confidence)
             try:
                 matches: List[Region] = templates.find(
                     image=screenshot,
@@ -69,10 +68,11 @@ class FinderKeywords(LibraryContext):
 
         regions: List[Region] = []
         confidence = locator.confidence or self.confidence
-        displays = _get_displays()
+        self.logger.info("Matching with confidence of %.1f", confidence)
+        displays = get_displays()
         for display in displays:
             screenshot = self.ctx.take_screenshot(
-                locator=_region_from_mss_monitor(display)
+                locator=region_from_mss_monitor(display)
             )
             matches = get_scaled_matches(screenshot, locator, display)
             regions.extend(matches)
@@ -102,7 +102,7 @@ class FinderKeywords(LibraryContext):
                 )
             # TODO: Add built-in offset support
 
-            return self.get_matches(locator)
+            return self.find_templates(locator)
 
         else:
             raise NotImplementedError(f"Unsupported locator: {locator}")

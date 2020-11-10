@@ -38,7 +38,7 @@ def _draw_outline(region: Region):
         win32functions.DeleteDC(dc)
 
 
-def _get_displays() -> List[Dict[str, int]]:
+def get_displays() -> List[Dict[str, int]]:
     """ Returns list of mss displays, without the 1st virtual display"""
     with mss.mss() as sct:
         monitors = sct.monitors
@@ -46,7 +46,7 @@ def _get_displays() -> List[Dict[str, int]]:
         return monitors
 
 
-def _region_from_mss_monitor(disp) -> Region:
+def region_from_mss_monitor(disp) -> Region:
     return Region.from_size(disp["left"], disp["top"], disp["width"], disp["height"])
 
 
