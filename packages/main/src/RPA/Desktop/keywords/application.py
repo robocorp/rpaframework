@@ -78,7 +78,7 @@ class ApplicationKeywords(LibraryContext):
             Open application    c:\\path\\to\\program.exe    --example-argument
 
         :param name_or_path: Name or path of application
-        :param *args:        List of command line arguments for application
+        :param args:         Command line arguments for application
         :returns:            Application instance
         """
         name = Path(name_or_path).name

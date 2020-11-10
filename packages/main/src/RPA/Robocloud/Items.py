@@ -645,8 +645,8 @@ class Items:
     def load_work_item(self, workspace_id, item_id):
         """Load work item for reading/writing.
 
-        NOTE: Currently only one work item per execution is supported
-              by Robocorp Cloud, which should be loaded automatically.
+        **NOTE**: Currently only one work item per execution is supported
+                  by Robocorp Cloud, which should be loaded automatically.
 
         :param workspace_id:    Workspace ID which contains item
         :param item_id:         Workitem ID to load
@@ -681,7 +681,7 @@ class Items:
     def get_work_item_payload(self):
         """Get the full JSON payload for a work item.
 
-        NOTE: Most use cases should prefer higher-level keywords.
+        **NOTE**: Most use cases should prefer higher-level keywords.
 
         Example:
 
@@ -696,7 +696,7 @@ class Items:
     def set_work_item_payload(self, payload):
         """Set the full JSON payload for a work item.
 
-        NOTE: Most use cases should prefer higher-level keywords.
+        **NOTE**: Most use cases should prefer higher-level keywords.
 
         Example:
 
@@ -734,7 +734,7 @@ class Items:
 
             ${username}=    Get work item variable    username    default=guest
 
-        :param key:     Name of variable
+        :param key: Name of variable
         :param default: Default value if key does not exist
         """
         variables = self.get_work_item_variables()
@@ -770,8 +770,8 @@ class Items:
             Set work item variable    username    MarkyMark
             Save work item
 
-        :param key:     Name of variable
-        :param value:   Value of variable
+        :param key: Name of variable
+        :param value: Value of variable
         """
         variables = self.get_work_item_variables()
         logging.info("%s = %s", name, value)
@@ -804,8 +804,8 @@ class Items:
             Delete work item variables    username    email
             Save work item
 
-        :param names:  names of variables to remove
-        :param force:  ignore variables that don't exist in work item
+        :param names: Names of variables to remove
+        :param force: Ignore variables that don't exist in work item
         """
         variables = self.get_work_item_variables()
         for name in names:
@@ -898,7 +898,7 @@ class Items:
             Remove work item file    input.xls
             Save work item
 
-        :param name:       Name of attached file
+        :param name: Name of attached file
         :param missing_ok: Do not raise exception if file doesn't exist
         """
         assert self.current, "No active work item"
