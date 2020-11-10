@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List, Dict
 
 import mss
 from PIL import Image
@@ -38,6 +38,14 @@ def _draw_outline(region: Region):
         win32functions.DeleteDC(dc)
 
 
+def _get_displays() -> List[Dict[str, int]]:
+    """ Returns list of mss displays, without the 1st virtual display"""
+    with mss.mss() as sct:
+        monitors = sct.monitors
+        del monitors[0]
+        return monitors
+
+
 class ScreenKeywords(LibraryContext):
     """Keywords for reading screen information and content."""
 
@@ -55,8 +63,14 @@ class ScreenKeywords(LibraryContext):
         """
         with mss.mss() as sct:
             if locator is not None:
-                # TODO: Use something else to get region instead of point
+                # TODO: ensure we always get a region, not a point.
+                # sct.grab requires a 4-tuple as argument
                 match = self.ctx.find_element(locator)
+                if not isinstance(match, Region):
+                    raise ValueError(
+                        "Take Screenshot only supports locators"
+                        "that resolve to regions, not points"
+                    )
                 image = sct.grab(match.as_tuple())
             else:
                 # First monitor is combined virtual display of all monitors
