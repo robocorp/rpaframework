@@ -60,10 +60,6 @@ class Region:
     def from_size(cls, x, y, width, height):
         return cls(x, y, x + width, y + height)
 
-    @classmethod
-    def from_mss_dict(cls, left, top, width, height):
-        return cls.from_size(left, top, width, height)
-
     @property
     def width(self):
         return self.right - self.left
