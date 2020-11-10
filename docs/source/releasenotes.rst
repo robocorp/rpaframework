@@ -5,6 +5,7 @@ Upcoming release
 ----------------
 
 - Library **Excel.Application**: Fix https://github.com/robocorp/rpaframework/issues/72
+- Library **RPA.Desktop**: Fix macOS coordinate scaling when using image template locators for interaction
 
 6.4.0
 -----
