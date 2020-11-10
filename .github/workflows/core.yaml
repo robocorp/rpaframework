@@ -7,6 +7,12 @@ on:
     paths:
       - 'packages/core/**'
       - '.github/workflows/core.yaml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'packages/core/**'
+      - '.github/workflows/core.yaml'
 
 defaults:
   run:

@@ -7,6 +7,12 @@ on:
     paths:
       - 'packages/recognition/**'
       - '.github/workflows/recognition.yaml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'packages/recognition/**'
+      - '.github/workflows/recognition.yaml'
 
 defaults:
   run:
