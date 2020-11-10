@@ -1,4 +1,5 @@
 from dataclasses import dataclass, astuple
+from typing import Union
 
 
 def to_point(obj):
@@ -59,6 +60,10 @@ class Region:
     def from_size(cls, x, y, width, height):
         return cls(x, y, x + width, y + height)
 
+    @classmethod
+    def from_mss_dict(cls, left, top, width, height):
+        return cls.from_size(left, top, width, height)
+
     @property
     def width(self):
         return self.right - self.left
@@ -80,9 +85,32 @@ class Region:
     def as_tuple(self):
         return astuple(self)
 
+    def scale(self, scaling_factor: int):
+        """ Multiply region's left, top, right and bottom by `scaling_factor` """
+
+        self.left *= scaling_factor
+        self.top *= scaling_factor
+        self.right *= scaling_factor
+        self.bottom *= scaling_factor
+
     def move(self, left, top):
         width, height = self.width, self.height
         self.left = self.left + int(left)
         self.top = self.top + int(top)
         self.right = self.left + width
         self.bottom = self.top + height
+
+    def contains(self, element: Union[Point, "Region"]):
+        if isinstance(element, Point):
+            return (self.left <= element.x <= self.right) and (
+                self.top <= element.y <= self.bottom
+            )
+        elif isinstance(element, Region):
+            return (
+                element.left >= self.left
+                and element.top >= self.top
+                and element.right <= self.right
+                and element.bottom <= self.bottom
+            )
+        else:
+            raise NotImplementedError("Contains only supports Points and Regions")
