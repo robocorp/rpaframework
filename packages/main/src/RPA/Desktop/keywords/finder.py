@@ -53,13 +53,13 @@ class FinderKeywords(LibraryContext):
             except templates.ImageNotFoundError:
                 return []
 
-            # Calculate scaling factor (only relevant on macOS which uses virtual pixels for HiDPI)
+            # Calculate scaling factor
+            # (only relevant on macOS which uses virtual pixels for HiDPI)
+            # Should always be 1.0 on all other platforms
             scale_factor = screenshot.height / display["height"]
 
             # Virtual screen top-left might not be (0,0)
             left, top, _, _ = display.values()
-            # FIXME: Does this lose the information of which region was from which screen?
-            # FIXME: Should we actually split them up by display or something
             for region in matches:
                 # Scale by reverse of scale factor
                 region.scale(1 / scale_factor)
@@ -134,7 +134,7 @@ class FinderKeywords(LibraryContext):
 
         display: Region = self.ctx.get_display_dimensions()
         for match in matches:
-            if not (display.contains(match)):
+            if not display.contains(match):
                 self.logger.warning("Match outside display bounds: %s", match)
 
         return matches

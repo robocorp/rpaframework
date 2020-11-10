@@ -63,11 +63,13 @@ class ScreenKeywords(LibraryContext):
         """
         with mss.mss() as sct:
             if locator is not None:
-                # FIXME: ensure we always get a region, not a point. sct.grab requires a 4-tuple as argument
+                # TODO: ensure we always get a region, not a point.
+                # sct.grab requires a 4-tuple as argument
                 match = self.ctx.find_element(locator)
                 if not isinstance(match, Region):
                     raise ValueError(
-                        "Take Screenshot only supports locators that resolve to regions, not points"
+                        "Take Screenshot only supports locators"
+                        "that resolve to regions, not points"
                     )
                 image = sct.grab(match.as_tuple())
             else:
