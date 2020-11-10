@@ -85,13 +85,13 @@ class Region:
     def as_tuple(self):
         return astuple(self)
 
-    def scale(self, scaling_factor: int):
+    def scale(self, scaling_factor: float):
         """ Multiply region's left, top, right and bottom by `scaling_factor` """
 
-        self.left *= scaling_factor
-        self.top *= scaling_factor
-        self.right *= scaling_factor
-        self.bottom *= scaling_factor
+        self.left = int(self.left * scaling_factor)
+        self.top = int(self.top * scaling_factor)
+        self.right = int(self.right * scaling_factor)
+        self.bottom = int(self.bottom * scaling_factor)
 
     def move(self, left, top):
         width, height = self.width, self.height
