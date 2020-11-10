@@ -926,7 +926,7 @@ class ServiceSheets(GoogleBase):
         :param values: list of values to insert into sheet
         :param major_dimension: major dimension of the values, default `COLUMNS`
         :param value_input_option: controls whether input strings are parsed or not,
-         default `USER_ENTERED`
+            default `USER_ENTERED`
         """
         if not sheet_id or not sheet_range:
             raise KeyError(
@@ -960,9 +960,9 @@ class ServiceSheets(GoogleBase):
         :param sheet_id: target sheet
         :param sheet_range: target sheet range
         :param value_render_option: how values should be represented
-         in the output defaults to "UNFORMATTED_VALUE"
+            in the output defaults to "UNFORMATTED_VALUE"
         :param datetime_render_option: ow dates, times, and durations should
-         be represented in the outpu, defaults to "FORMATTED_STRING"
+            be represented in the outpu, defaults to "FORMATTED_STRING"
         """
         client = self._get_client_for_service(self.__service_name)
         values = (

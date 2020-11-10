@@ -508,10 +508,10 @@ class PDF(FPDF, HTMLMixin):
     def open_pdf_document(self, source_pdf: str = None) -> None:
         """Open PDF document.
 
-        Also opens file for reading.
-
         :param source_pdf: filepath to the source pdf
         :raises ValueError: if PDF is already open
+
+        Also opens file for reading.
         """
         if source_pdf is None:
             raise ValueError("Source PDF is missing")
@@ -683,13 +683,13 @@ class PDF(FPDF, HTMLMixin):
     ) -> None:
         """Extract pages from source PDF and save to target PDF document.
 
-        Page numbers starting from 1.
-
         :param source_pdf: filepath to the source pdf
         :param target_pdf: filename to the target pdf, stored by default
             to `output_directory`
         :param pages: page numbers to extract from PDF (numbers start from 0)
             if None then extracts all pages
+
+        Page numbers starting from 1.
         """
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject)
@@ -708,11 +708,11 @@ class PDF(FPDF, HTMLMixin):
     def get_text_from_pdf(self, source_pdf: str = None, pages: Any = None) -> dict:
         """Get text from set of pages in source PDF document.
 
-        PDF needs to be parsed before text can be read.
-
         :param source_pdf: filepath to the source pdf
         :param pages: page numbers to get text (numbers start from 0)
         :return: dictionary of pages and their texts
+
+        PDF needs to be parsed before text can be read.
         """
         self.switch_to_pdf_document(source_pdf)
         if self.rpa_pdf_document is None:
@@ -963,15 +963,15 @@ class PDF(FPDF, HTMLMixin):
     ) -> dict:
         """Get input fields in the PDF.
 
-        Stores input fields internally so that they can be used without
-        parsing PDF again.
-
-        Parameter `replace_none_value` is for convience to visualize fields.
-
         :param source_pdf: source filepath, defaults to None
         :param replace_none_value: if value is None replace it with key name,
             defaults to False
         :return: dictionary of input key values or `None`
+
+        Stores input fields internally so that they can be used without
+        parsing PDF again.
+
+        Parameter `replace_none_value` is for convience to visualize fields.
         """
         record_fields = {}
         if source_pdf is None and self.active_fields:
@@ -1176,9 +1176,9 @@ class PDF(FPDF, HTMLMixin):
     def get_all_figures(self) -> dict:
         """Return all figures in the PDF document.
 
-        PDF needs to be parsed before elements can be found.
-
         :return: dictionary of figures divided into pages
+
+        PDF needs to be parsed before elements can be found.
         """
         if self.rpa_pdf_document is None:
             raise ValueError("PDF has not been parsed yet")
@@ -1190,13 +1190,13 @@ class PDF(FPDF, HTMLMixin):
     def set_field_value(self, field_name: str, value: Any, save: bool = False):
         """Set value for field with given name.
 
+        :param field_name: field to update
+        :param value: new value for the field
+
         Tries to match on field identifier and its label.
 
         Exception is thrown if field can't be found or more than 1 field matches
         the given `field_name`.
-
-        :param field_name: field to update
-        :param value: new value for the field
         """
         if not self.active_fields:
             self.get_input_fields()
@@ -1231,7 +1231,6 @@ class PDF(FPDF, HTMLMixin):
     def replace_text(self, text: str, replace: str):
         """Replace text content with something else in the PDF.
 
-
         :param text: this text will be replaced
         :param replace: used to replace `text`
         """
@@ -1247,15 +1246,15 @@ class PDF(FPDF, HTMLMixin):
     def add_image_to_pdf(self, imagefile, source=None, target=None, coverage=0.2):
         """Add image to PDF which can be new or existing PDF.
 
-        Result will be always written to `target_pdf` so that needs
-        to be given for the keyword.
-
         :param imagefile: filepath to image file to add into PDF
         :param source: filepath to source, if not given add image to currently
             active PDF
         :param target: filepath of target PDF
         :param coverage: [description], defaults to 0.2
         :raises ValueError: [description]
+
+        Result will be always written to `target_pdf` so that needs
+        to be given for the keyword.
         """
         if target is None:
             raise ValueError("Target PDF needs to be set")

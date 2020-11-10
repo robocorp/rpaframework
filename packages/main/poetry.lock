@@ -284,14 +284,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "evdev"
-version = "1.3.0"
-description = "Bindings to the Linux input handling subsystem"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "exchangelib"
 version = "3.3.2"
 description = "Client for Microsoft Exchange Web Services (EWS)"
@@ -1057,15 +1049,14 @@ mccabe = ">=0.6,<0.7"
 toml = ">=0.7.1"
 
 [[package]]
-name = "pynput"
-version = "1.7.1"
+name = "pynput-robocorp-fork"
+version = "1.7.2"
 description = "Monitor and control user input devices"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-evdev = {version = ">=1.3", markers = "sys_platform in \"linux\""}
 pyobjc-framework-Quartz = {version = ">=3.0", markers = "sys_platform == \"darwin\""}
 python-xlib = {version = ">=0.17", markers = "sys_platform in \"linux\""}
 six = "*"
@@ -1666,7 +1657,7 @@ google = ["google-api-python-client", "google-auth-httplib2", "google-auth-oauth
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "10c0d20a78a291197f2ade6413527b676ca1c9a9b5bdb51e034e9f23ea93c42c"
+content-hash = "0bd33a07c104d0f31ab68da7d6eda8abec2c67a68eef3c812cbf71e718c4b98e"
 
 [metadata.files]
 appdirs = [
@@ -1835,9 +1826,6 @@ docutils = [
 ]
 et-xmlfile = [
     {file = "et_xmlfile-1.0.1.tar.gz", hash = "sha256:614d9722d572f6246302c4491846d2c393c199cfa4edc9af593437691683335b"},
-]
-evdev = [
-    {file = "evdev-1.3.0.tar.gz", hash = "sha256:b1c649b4fed7252711011da235782b2c260b32e004058d62473471e5cd30634d"},
 ]
 exchangelib = [
     {file = "exchangelib-3.3.2-py2.py3-none-any.whl", hash = "sha256:92f5328c91b4cc77170bafc55bdd6c7bc52457b29815100a0f53fbbade7bc67c"},
@@ -2343,10 +2331,10 @@ pylint = [
     {file = "pylint-2.6.0-py3-none-any.whl", hash = "sha256:bfe68f020f8a0fece830a22dd4d5dddb4ecc6137db04face4c3420a46a52239f"},
     {file = "pylint-2.6.0.tar.gz", hash = "sha256:bb4a908c9dadbc3aac18860550e870f58e1a02c9f2c204fdf5693d73be061210"},
 ]
-pynput = [
-    {file = "pynput-1.7.1-py2.py3-none-any.whl", hash = "sha256:b2b96cec8411a940a7f73da6965f13927d03d46fb5105c5bc63ed04f29b2b8f0"},
-    {file = "pynput-1.7.1-py3.8.egg", hash = "sha256:452e1f23ed1c2e85e61b2daedc8b6a5481a696b1ed1b98ef0ab164038a104adf"},
-    {file = "pynput-1.7.1.tar.gz", hash = "sha256:5a5598bfb14322eff980ac6ca820635fce9028faa4f64a8e1581243aaf6785ee"},
+pynput-robocorp-fork = [
+    {file = "pynput-robocorp-fork-1.7.2.tar.gz", hash = "sha256:45f835a1642ac9f9baa0ed3e0e8cb79ca36eac8e5736f438350bc7b7d57c70bc"},
+    {file = "pynput_robocorp_fork-1.7.2-py2.py3-none-any.whl", hash = "sha256:ccb2c7a32968842dd2667068f0a825d6424b90e0a04673e36cf363f6345f58ed"},
+    {file = "pynput_robocorp_fork-1.7.2-py3.7.egg", hash = "sha256:ca0e768bf4eb7cec999882f55f2c84bd4ed2b73e3a05c143c0c23e0b72010df5"},
 ]
 pyobjc-core = [
     {file = "pyobjc-core-6.2.2.tar.gz", hash = "sha256:38e7b15a042439dadd18b28b78229e52fb882460fc16ddbae342b9972d5a827c"},

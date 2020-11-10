@@ -24,6 +24,9 @@ class Desktop(DynamicCore):
     - Taking screenshots
     - Clipboard management
 
+    **Note:** Windows element selectors are not currently supported,
+        and require the use of ``RPA.Desktop.Windows``
+
     **Locating elements**
 
     To automate actions on the desktop, a robot needs to interact with various
@@ -132,6 +135,23 @@ class Desktop(DynamicCore):
     ============ ===========
 
     The supported mouse button types are ``left``, ``right``, and ``middle``.
+
+    **Examples***
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library    RPA.Desktop
+
+        *** Keywords ***
+        Write entry in accounting
+            [Arguments]    ${entry}
+            Open application    erp_client.exe
+            Click         image:%{ROBOT_ROOT}/images/create.png
+            Type text     ${entry}
+            Press keys    ctrl    s
+            Press keys    enter
+            [Teardown]    Close all applications
     """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"

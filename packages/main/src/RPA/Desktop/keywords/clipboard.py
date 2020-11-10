@@ -10,15 +10,15 @@ class ClipboardKeywords(LibraryContext):
     def copy_to_clipboard(self, locator) -> str:
         """Read value to system clipboard from given input element.
 
+        :param locator: Locator for element
+        :returns:       Current clipboard value
+
         Example:
 
         .. code-block:: robotframework
 
             ${value}=    Copy to clipboard    ResultPage.Counter
             Log    Copied text: ${value}
-
-        :param locator: Locator for element
-        :returns:       Current clipboard value
         """
         if utils.is_macos():
             self.ctx.click(locator, "triple click")
@@ -32,14 +32,14 @@ class ClipboardKeywords(LibraryContext):
     def paste_from_clipboard(self, locator) -> None:
         """Paste value from system clipboard into given element.
 
+        :param locator: Locator for element
+
         Example:
 
         .. code-block:: robotframework
 
             Copy to clipboard       coordinates:401,198
             Paste from clipboard    coordinates:822,710
-
-        :param locator: Locator for element
         """
         match = self.ctx.find_element(locator)
         text = pyperclip.paste()

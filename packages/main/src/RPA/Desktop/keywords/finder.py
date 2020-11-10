@@ -111,6 +111,8 @@ class FinderKeywords(LibraryContext):
     def find_elements(self, locator: str) -> List[Union[Point, Region]]:
         """Find all elements defined by locator, and return their positions.
 
+        :param locator: Locator string
+
         Example:
 
         .. code-block:: robotframework
@@ -119,8 +121,6 @@ class FinderKeywords(LibraryContext):
             FOR    ${match}  IN  @{matches}
                 Log    Found icon at ${match.x}, ${match.y}
             END
-
-        :param locator: Locator string
         """
         matches = []
 
@@ -143,14 +143,14 @@ class FinderKeywords(LibraryContext):
     def find_element(self, locator: str) -> Union[Point, Region]:
         """Find an element defined by locator, and return its position.
 
+        :param locator: Locator string
+
         Example:
 
         .. code-block:: robotframework
 
             ${match}=    Find element    image:logo.png
             Log    Found logo at ${match.x}, ${match.y}
-
-        :param locator: Locator string
         """
         matches = self.find_elements(locator)
 
@@ -174,14 +174,14 @@ class FinderKeywords(LibraryContext):
         """Wait for an element defined by locator to exist or
         until timeout is reached.
 
+        :param locator: Locator string
+
         Example:
 
         .. code-block:: robotframework
 
             Wait for element    alias:CookieConsent    timeout=30
             Click    image:%{ROBOT_ROOT}/accept.png
-
-        :param locator: Locator string
         """
         interval = float(interval)
         end_time = time.time() + float(timeout)

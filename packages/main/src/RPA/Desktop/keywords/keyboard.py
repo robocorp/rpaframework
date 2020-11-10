@@ -46,15 +46,15 @@ class KeyboardKeywords(LibraryContext):
     def type_text(self, text: str, *modifiers: str, enter: bool = False) -> None:
         """Type text one letter at a time.
 
+        :param text:       Text to write
+        :param modifiers:  Modifier or functions keys held during typing
+        :param enter:      Press Enter / Return key after typing text
+
         Example:
 
         .. code-block:: robotframework
 
             Type text    this text will be uppercase    shift
-
-        :param text:       Text to write
-        :param modifiers:  Modifier or functions keys held during typing
-        :param enter:      Press Enter / Return key after typing text
         """
         if self._error:
             raise self._error
@@ -71,6 +71,8 @@ class KeyboardKeywords(LibraryContext):
     def press_keys(self, *keys: str) -> None:
         """Press multiple keys down simultaneously.
 
+        :param keys: Keys to press
+
         Example:
 
         .. code-block:: robotframework
@@ -81,8 +83,6 @@ class KeyboardKeywords(LibraryContext):
             Press keys    ctrl  c
             ${all_text}=  Get clipboard value
             Log    Text box content was: ${all_text}
-
-        :param keys: Keys to press
         """
         if self._error:
             raise self._error
@@ -102,17 +102,17 @@ class KeyboardKeywords(LibraryContext):
     ) -> None:
         """Type text at the position indicated by given locator.
 
+        :param locator: Locator of input element
+        :param text:    Text to write
+        :param clear:   Clear element before writing
+        :param enter:      Press Enter / Return key after typing text
+
         Example:
 
         .. code-block:: robotframework
 
             Type text into    LoginForm.Name      Marky Mark
             Type text into    LoginForm.Password  ${PASSWORD}
-
-        :param locator: Locator of input element
-        :param text:    Text to write
-        :param clear:   Clear element before writing
-        :param enter:      Press Enter / Return key after typing text
         """
         if self._error:
             raise self._error

@@ -303,22 +303,6 @@ class ServiceFace(AzureBase):
         # pylint: disable=C0301
         """Detect facial attributes in the image
 
-        Read more about `face_attributes` at `Face detection explained`_:
-
-            - age
-            - gender
-            - smile
-            - facialHair
-            - headPose
-            - glasses
-            - emotion
-            - hair
-            - makeup
-            - accessories
-            - blur
-            - exposure
-            - nouse
-
         :param image_file: filepath of image file
         :param image_url: URI to image, if given will be used instead of `image_file`
         :param face_attributes: comma separated list of attributes,
@@ -330,8 +314,24 @@ class ServiceFace(AzureBase):
         :param json_file: filepath to write results into
         :return: analysis in json format
 
-        .. _Face detection explained: https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection  # noqa: E501
-        """
+        Read more about `face_attributes` at `Face detection explained`_:
+
+        - age
+        - gender
+        - smile
+        - facialHair
+        - headPose
+        - glasses
+        - emotion
+        - hair
+        - makeup
+        - accessories
+        - blur
+        - exposure
+        - nouse
+
+        .. _Face detection explained: https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection
+        """  # noqa: E501
         self._image_url_or_image_file_is_required(image_url, image_file)
         analyze_url = f"{self.__base_url}/face/v1.0/detect"
         params = {
@@ -378,18 +378,6 @@ class ServiceComputerVision(AzureBase):
         # pylint: disable=C0301
         """Identify features in the image
 
-        See `Computer Vision API`_ for valid feature names and their explanations:
-
-            - Adult
-            - Brands
-            - Categories
-            - Color
-            - Description
-            - Faces
-            - ImageType
-            - Objects
-            - Tags
-
         :param image_file: filepath of image file
         :param image_url: URI to image, if given will be used instead of `image_file`
         :param visual_features: comma separated list of features,
@@ -397,8 +385,20 @@ class ServiceComputerVision(AzureBase):
         :param json_file: filepath to write results into
         :return: analysis in json format
 
-        .. _Computer Vision API: https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga  # noqa: E501
-        """
+        See `Computer Vision API`_ for valid feature names and their explanations:
+
+        - Adult
+        - Brands
+        - Categories
+        - Color
+        - Description
+        - Faces
+        - ImageType
+        - Objects
+        - Tags
+
+        .. _Computer Vision API: https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga
+        """  # noqa: E501
         self._image_url_or_image_file_is_required(image_url, image_file)
         analyze_url = f"{self.__base_url}/vision/v3.0/analyze"
         params = {}
@@ -499,9 +499,6 @@ class ServiceSpeech(AzureBase):
     ):
         """Synthesize speech synchronously
 
-        Neural voices are only supported for Speech resources created in
-        East US, South East Asia, and West Europe regions.
-
         :param text: input text to synthesize
         :param language: voice language, defaults to "en-US"
         :param name: voice name, defaults to "en-US-AriaRUS"
@@ -512,6 +509,9 @@ class ServiceSpeech(AzureBase):
         :param target_file: save synthesized output to file,
             defaults to "synthesized.mp3"
         :return: synthesized output in bytes
+
+        Neural voices are only supported for Speech resources created in
+        East US, South East Asia, and West Europe regions.
         """
         encoding = encoding.upper() if encoding else None
         if encoding is None or encoding not in self.audio_formats.keys():
@@ -566,13 +566,13 @@ class ServiceSpeech(AzureBase):
     ):
         """List supported voices for Azure API Speech Services.
 
-        Available voice selection might differ between regions.
-
         :param locale: list only voices specific to locale, by default return all voices
         :param neural_only: `True` if only neural voices should be returned,
             `False` by default
         :param json_file: filepath to write results into
         :return: voices in json
+
+        Available voice selection might differ between regions.
         """
         token = self._get_token(self.__service_name, self.__region)
         voice_url = f"{self.__base_url}/cognitiveservices/voices/list"

@@ -605,15 +605,15 @@ class FileSystem:
     def run_keyword_if_file_exists(self, path, keyword, *args):
         """If file exists at `path`, execute given keyword with arguments.
 
-        **Example**
+        :param path:    path to file to inspect
+        :param keyword: Robot Framework keyword to execute
+        :param args:    arguments to keyword
+
+        Example:
 
         .. code:: robotframework
 
             Run keyword if file exists    orders.xlsx    Process orders
-
-        :param path:    path to file to inspect
-        :param keyword: Robot Framework keyword to execute
-        :param args:    arguments to keyword
         """
         if self.does_file_exist(path):
             return BuiltIn().run_keyword(keyword, *args)
