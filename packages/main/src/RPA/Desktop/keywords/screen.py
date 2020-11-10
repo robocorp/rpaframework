@@ -46,6 +46,10 @@ def _get_displays() -> List[Dict[str, int]]:
         return monitors
 
 
+def _region_from_mss_monitor(disp) -> Region:
+    return Region.from_size(disp["left"], disp["top"], disp["width"], disp["height"])
+
+
 class ScreenKeywords(LibraryContext):
     """Keywords for reading screen information and content."""
 
@@ -94,9 +98,7 @@ class ScreenKeywords(LibraryContext):
         """
         with mss.mss() as sct:
             disp = sct.monitors[0]
-            return Region.from_size(
-                disp["left"], disp["top"], disp["width"], disp["height"]
-            )
+            return _region_from_mss_monitor(disp)
 
     @keyword
     def highlight_elements(self, locator: str):

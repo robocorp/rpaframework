@@ -10,7 +10,7 @@ from RPA.core.locators import (
     parse_locator,
 )
 
-from RPA.Desktop.keywords.screen import _get_displays
+from RPA.Desktop.keywords.screen import _get_displays, _region_from_mss_monitor
 
 try:
     from RPA.recognition import templates
@@ -72,7 +72,7 @@ class FinderKeywords(LibraryContext):
         displays = _get_displays()
         for display in displays:
             screenshot = self.ctx.take_screenshot(
-                locator=Region.from_mss_dict(**display)
+                locator=_region_from_mss_monitor(display)
             )
             matches = get_scaled_matches(screenshot, locator, display)
             regions.extend(matches)
