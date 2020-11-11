@@ -1,7 +1,7 @@
 from enum import Enum
-from typing import Optional, Any
+from typing import Optional, Any, Union
 from RPA.core.helpers import delay
-from RPA.core.geometry import Point
+from RPA.core.geometry import Point, Region
 from RPA.Desktop.keywords import LibraryContext, keyword
 
 
@@ -63,7 +63,9 @@ class MouseKeywords(LibraryContext):
         self._mouse.position = point.as_tuple()
 
     def _click(
-        self, action: Action = Action.click, point: Optional[Point] = None
+        self,
+        action: Action = Action.click,
+        location: Optional[Union[Point, Region]] = None,
     ) -> None:
         """Perform defined mouse action, and optionally move to given point first."""
         # pylint: disable=C0415
@@ -71,8 +73,13 @@ class MouseKeywords(LibraryContext):
 
         action = to_action(action)
 
-        if point:
-            self._move(point)
+        if location:
+            if isinstance(location, Region):
+                self._move(location.center)
+            else:
+                self._move(location)
+            # Delay is needed, otherwise move might not have "completed" before clicking
+            delay(0.05)
 
         self.logger.info("Performing mouse action: %s", action)
 

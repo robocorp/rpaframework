@@ -10,6 +10,8 @@ from RPA.core.locators import (
     parse_locator,
 )
 
+from RPA.Desktop.keywords.screen import get_displays, region_from_mss_monitor
+
 try:
     from RPA.recognition import templates
 
@@ -33,6 +35,50 @@ class FinderKeywords(LibraryContext):
         else:
             self.confidence = None
 
+    def find_templates(self, locator: ImageTemplate) -> List[Union[Point, Region]]:
+        """Internal helper method for getting image template matches in all displays
+        and returning them as Points or Regions, scaled to accomodate macOS HiDPI
+        """
+
+        def get_scaled_matches(screenshot, locator, display):
+            """ Internal helper function for finding matches on a single screen """
+            try:
+                matches: List[Region] = templates.find(
+                    image=screenshot,
+                    template=locator.path,
+                    confidence=confidence,
+                )
+
+            except templates.ImageNotFoundError:
+                return []
+
+            # Calculate scaling factor
+            # (only relevant on macOS which uses virtual pixels for HiDPI)
+            # Should always be 1.0 on all other platforms
+            scale_factor = screenshot.height / display["height"]
+
+            # Virtual screen top-left might not be (0,0)
+            left, top, _, _ = display.values()
+            for region in matches:
+                # Scale by reverse of scale factor
+                region.scale(1 / scale_factor)
+                region.move(left, top)
+
+            return matches
+
+        regions: List[Region] = []
+        confidence = locator.confidence or self.confidence
+        self.logger.info("Matching with confidence of %.1f", confidence)
+        displays = get_displays()
+        for display in displays:
+            screenshot = self.ctx.take_screenshot(
+                locator=region_from_mss_monitor(display)
+            )
+            matches = get_scaled_matches(screenshot, locator, display)
+            regions.extend(matches)
+
+        return regions
+
     def find(self, locator: str) -> List[Union[Point, Region]]:
         """Internal method for resolving and searching locators."""
         if isinstance(locator, (Region, Point)):
@@ -55,29 +101,14 @@ class FinderKeywords(LibraryContext):
                     "rpaframework-recognition module"
                 )
             # TODO: Add built-in offset support
-            confidence = locator.confidence or self.confidence
-            self.logger.info("Matching with confidence of %.1f", confidence)
 
-            try:
-                regions = templates.find(
-                    image=self.ctx.take_screenshot(),
-                    template=locator.path,
-                    confidence=confidence,
-                )
+            return self.find_templates(locator)
 
-                # Virtual screen top-left might not be (0,0)
-                left, top, _, _ = self.ctx.get_display_dimensions()
-                for region in regions:
-                    region.move(left, top)
-            except templates.ImageNotFoundError:
-                return []
-
-            return regions
         else:
             raise NotImplementedError(f"Unsupported locator: {locator}")
 
     @keyword
-    def find_elements(self, locator: str) -> List[Point]:
+    def find_elements(self, locator: str) -> List[Union[Point, Region]]:
         """Find all elements defined by locator, and return their positions.
 
         :param locator: Locator string
@@ -95,25 +126,21 @@ class FinderKeywords(LibraryContext):
 
         for match in self.find(locator):
             if isinstance(match, Region):
-                matches.append(match.center)
+                matches.append(match)
             elif isinstance(match, Point):
                 matches.append(match)
             else:
                 raise TypeError(f"Unknown location type: {match}")
 
-        display = self.ctx.get_display_dimensions()
+        display: Region = self.ctx.get_display_dimensions()
         for match in matches:
-            # TODO: Add as contains() method in region class
-            if not (
-                (display.left <= match.x <= display.right)
-                and (display.top <= match.y <= display.bottom)
-            ):
+            if not display.contains(match):
                 self.logger.warning("Match outside display bounds: %s", match)
 
         return matches
 
     @keyword
-    def find_element(self, locator: str) -> Point:
+    def find_element(self, locator: str) -> Union[Point, Region]:
         """Find an element defined by locator, and return its position.
 
         :param locator: Locator string
@@ -133,8 +160,8 @@ class FinderKeywords(LibraryContext):
         if len(matches) > 1:
             # TODO: Add run-on-error support and maybe screenshotting matches?
             raise ValueError(
-                "Found {count} matches for: {locator}".format(
-                    count=len(matches), locator=locator
+                "Found {count} matches for: {locator} at locations {matches}".format(
+                    count=len(matches), locator=locator, matches=matches
                 )
             )
 

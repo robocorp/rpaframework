@@ -100,7 +100,7 @@ python-versions = "*"
 
 [[package]]
 name = "certifi"
-version = "2020.6.20"
+version = "2020.11.8"
 description = "Python package for providing Mozilla's CA Bundle."
 category = "main"
 optional = false
@@ -162,11 +162,11 @@ cffi = ">=1.8,<1.11.3 || >1.11.3"
 six = ">=1.4.1"
 
 [package.extras]
-docs = ["sphinx (>=1.6.5,<1.8.0 || >1.8.0)", "sphinx-rtd-theme"]
+docs = ["sphinx (>=1.6.5,!=1.8.0)", "sphinx-rtd-theme"]
 docstest = ["doc8", "pyenchant (>=1.6.11)", "twine (>=1.12.0)", "sphinxcontrib-spelling (>=4.0.1)"]
 idna = ["idna (>=2.1)"]
 pep8test = ["flake8", "flake8-import-order", "pep8-naming"]
-test = ["pytest (>=3.6.0,<3.9.0 || >3.9.0,<3.9.1 || >3.9.1,<3.9.2 || >3.9.2)", "pretend", "iso8601", "pytz", "hypothesis (>=1.11.4,<3.79.2 || >3.79.2)"]
+test = ["pytest (>=3.6.0,!=3.9.0,!=3.9.1,!=3.9.2)", "pretend", "iso8601", "pytz", "hypothesis (>=1.11.4,!=3.79.2)"]
 
 [[package]]
 name = "dataclasses"
@@ -219,14 +219,6 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 name = "et-xmlfile"
 version = "1.0.1"
 description = "An implementation of lxml.xmlfile for the standard library"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
-name = "evdev"
-version = "1.3.0"
-description = "Bindings to the Linux input handling subsystem"
 category = "main"
 optional = false
 python-versions = "*"
@@ -291,7 +283,7 @@ python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*"
 [package.extras]
 dev = ["tox (>=3.0)", "flake8", "pep8-naming", "wheel", "twine"]
 docs = ["sphinx (>=1.7)", "sphinx-rtd-theme"]
-test = ["mock (>=2)", "pytest (>=3.4,<3.10.0 || >3.10.0)", "pytest-mock (>=1.8)", "pytest-cov"]
+test = ["mock (>=2)", "pytest (>=3.4,!=3.10.0)", "pytest-mock (>=1.8)", "pytest-cov"]
 
 [[package]]
 name = "html2text"
@@ -466,7 +458,7 @@ requests = ">=2.21.0"
 rfc3987 = ">=1.3.8"
 
 [package.extras]
-dev = ["alabaster (0.7.11)", "aspy.yaml (1.1.1)", "atomicwrites (1.1.5)", "attrs (18.1.0)", "babel (2.6.0)", "bumpversion (0.5.3)", "certifi (2018.4.16)", "cfgv (2.0.0)", "chardet (3.0.4)", "click (6.7)", "codecov (2.0.15)", "coverage (4.5.1)", "docutils (0.14)", "hypothesis (4.32.3)", "identify (1.1.4)", "idna (2.7)", "imagesize (1.0.0)", "importlib-metadata (0.18)", "jinja2 (2.10.1)", "markupsafe (1.0)", "more-itertools (4.2.0)", "nodeenv (1.3.2)", "packaging (17.1)", "pip-tools (4.0.0)", "pluggy (0.12.0)", "pre-commit (1.18.2)", "py (1.5.4)", "pygments (2.2.0)", "pyparsing (2.2.0)", "pytest-cov (2.7.1)", "pytest (5.0.1)", "pytz (2018.5)", "pyyaml (5.1)", "requests (2.22.0)", "six (1.11.0)", "snowballstemmer (1.2.1)", "sphinx-autodoc-annotation (1.0.post1)", "sphinx-rtd-theme (0.4.3)", "sphinx (2.2.0)", "sphinxcontrib-applehelp (1.0.1)", "sphinxcontrib-devhelp (1.0.1)", "sphinxcontrib-htmlhelp (1.0.2)", "sphinxcontrib-jsmath (1.0.1)", "sphinxcontrib-qthelp (1.0.2)", "sphinxcontrib-serializinghtml (1.1.3)", "toml (0.9.4)", "urllib3 (1.24.2)", "virtualenv (16.0.0)", "wcwidth (0.1.7)", "zipp (0.5.1)"]
+dev = ["alabaster (==0.7.11)", "aspy.yaml (==1.1.1)", "atomicwrites (==1.1.5)", "attrs (==18.1.0)", "babel (==2.6.0)", "bumpversion (==0.5.3)", "certifi (==2018.4.16)", "cfgv (==2.0.0)", "chardet (==3.0.4)", "click (==6.7)", "codecov (==2.0.15)", "coverage (==4.5.1)", "docutils (==0.14)", "hypothesis (==4.32.3)", "identify (==1.1.4)", "idna (==2.7)", "imagesize (==1.0.0)", "importlib-metadata (==0.18)", "jinja2 (==2.10.1)", "markupsafe (==1.0)", "more-itertools (==4.2.0)", "nodeenv (==1.3.2)", "packaging (==17.1)", "pip-tools (==4.0.0)", "pluggy (==0.12.0)", "pre-commit (==1.18.2)", "py (==1.5.4)", "pygments (==2.2.0)", "pyparsing (==2.2.0)", "pytest-cov (==2.7.1)", "pytest (==5.0.1)", "pytz (==2018.5)", "pyyaml (==5.1)", "requests (==2.22.0)", "six (==1.11.0)", "snowballstemmer (==1.2.1)", "sphinx-autodoc-annotation (==1.0.post1)", "sphinx-rtd-theme (==0.4.3)", "sphinx (==2.2.0)", "sphinxcontrib-applehelp (==1.0.1)", "sphinxcontrib-devhelp (==1.0.1)", "sphinxcontrib-htmlhelp (==1.0.2)", "sphinxcontrib-jsmath (==1.0.1)", "sphinxcontrib-qthelp (==1.0.2)", "sphinxcontrib-serializinghtml (==1.1.3)", "toml (==0.9.4)", "urllib3 (==1.24.2)", "virtualenv (==16.0.0)", "wcwidth (==0.1.7)", "zipp (==0.5.1)"]
 
 [[package]]
 name = "ntlm-auth"
@@ -507,9 +499,6 @@ description = "Wrapper package for OpenCV python bindings."
 category = "main"
 optional = false
 python-versions = ">=3.6"
-
-[package.dependencies]
-numpy = ">=1.14.5"
 
 [[package]]
 name = "openpyxl"
@@ -618,15 +607,14 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
-name = "pynput"
-version = "1.7.1"
+name = "pynput-robocorp-fork"
+version = "1.7.2"
 description = "Monitor and control user input devices"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-evdev = {version = ">=1.3", markers = "sys_platform in \"linux\""}
 pyobjc-framework-Quartz = {version = ">=3.0", markers = "sys_platform == \"darwin\""}
 python-xlib = {version = ">=0.17", markers = "sys_platform in \"linux\""}
 six = "*"
@@ -759,7 +747,7 @@ urllib3 = ">=1.21.1,<1.25.0 || >1.25.0,<1.25.1 || >1.25.1,<1.26"
 
 [package.extras]
 security = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)"]
-socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7)", "win-inet-pton"]
+socks = ["PySocks (>=1.5.6,!=1.5.7)", "win-inet-pton"]
 
 [[package]]
 name = "requests-file"
@@ -910,7 +898,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "6.4.0"
+version = "6.6.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -918,43 +906,42 @@ python-versions = "^3.6"
 develop = false
 
 [package.dependencies]
-cryptography = ">=2.9.2,<3.0.0"
-dataclasses = {version = ">=0.7,<0.8", markers = "python_version >= \"3.6\" and python_version < \"3.7\""}
-evdev = {version = ">=1.3", markers = "sys_platform == \"linux\""}
-exchangelib = ">=3.1.1,<4.0.0"
-fpdf = ">=1.7.2,<2.0.0"
-graphviz = ">=0.13.2,<0.14.0"
-jsonpath-ng = ">=1.5.2,<2.0.0"
-mss = ">=6.0.0,<7.0.0"
-netsuitesdk = ">=1.1.0,<2.0.0"
-notifiers = ">=1.2.1,<2.0.0"
-openpyxl = ">=3.0.3,<4.0.0"
+cryptography = "^2.9.2"
+dataclasses = {version = "^0.7", markers = "python_version >= \"3.6\" and python_version < \"3.7\""}
+exchangelib = "^3.1.1"
+fpdf = "^1.7.2"
+graphviz = "^0.13.2"
+jsonpath-ng = "^1.5.2"
+mss = "^6.0.0"
+netsuitesdk = "^1.1.0"
+notifiers = "^1.2.1"
+openpyxl = "^3.0.3"
 "pdfminer.six" = "20201018"
-pillow = ">=8.0.1,<9.0.0"
-psutil = {version = ">=5.7.0,<6.0.0", markers = "sys_platform == \"win32\""}
-pynput = ">=1.7.0,<2.0.0"
-pypdf2 = ">=1.26.0,<2.0.0"
-pyperclip = ">=1.8.0,<2.0.0"
+pillow = "^8.0.1"
+psutil = {version = "^5.7.0", markers = "sys_platform == \"win32\""}
+pynput-robocorp-fork = "^1.7.2"
+pypdf2 = "^1.26.0"
+pyperclip = "^1.8.0"
 python-xlib = {version = ">=0.17", markers = "sys_platform == \"linux\""}
-pywin32 = {version = ">=227,<228", markers = "python_version < \"3.7.6\" and sys_platform == \"win32\" or python_version > \"3.7.6\" and python_version < \"3.8.1\" and sys_platform == \"win32\" or python_version > \"3.8.1\" and sys_platform == \"win32\""}
-pywinauto = {version = ">=0.6.8,<0.7.0", markers = "python_version < \"3.7.6\" and sys_platform == \"win32\" or python_version > \"3.7.6\" and python_version < \"3.8.1\" and sys_platform == \"win32\" or python_version > \"3.8.1\" and sys_platform == \"win32\""}
-robotframework = ">=3.2.2,<4.0.0"
-robotframework-pythonlibcore = ">=2.1.0,<3.0.0"
-robotframework-requests = ">=0.6.5,<0.7.0"
-robotframework-sapguilibrary = {version = ">=1.1,<2.0", markers = "sys_platform == \"win32\""}
-robotframework-seleniumlibrary = ">=4.5.0,<5.0.0"
-robotframework-seleniumtestability = ">=1.1.0,<2.0.0"
-rpaframework-core = ">=2.1.3,<3.0.0"
-simple_salesforce = ">=1.0.0,<2.0.0"
-tweepy = ">=3.8.0,<4.0.0"
-xlrd = ">=1.2.0,<2.0.0"
-xlutils = ">=2.0.0,<3.0.0"
-xlwt = ">=1.3.0,<2.0.0"
+pywin32 = {version = "^227", markers = "python_version < \"3.7.6\" and sys_platform == \"win32\" or python_version > \"3.7.6\" and python_version < \"3.8.1\" and sys_platform == \"win32\" or python_version > \"3.8.1\" and sys_platform == \"win32\""}
+pywinauto = {version = "^0.6.8", markers = "python_version < \"3.7.6\" and sys_platform == \"win32\" or python_version > \"3.7.6\" and python_version < \"3.8.1\" and sys_platform == \"win32\" or python_version > \"3.8.1\" and sys_platform == \"win32\""}
+robotframework = "^3.2.2"
+robotframework-pythonlibcore = "^2.1.0"
+robotframework-requests = "^0.6.5"
+robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
+robotframework-seleniumlibrary = "^4.5.0"
+robotframework-seleniumtestability = "^1.1.0"
+rpaframework-core = "^2.2.0"
+simple_salesforce = "^1.0.0"
+tweepy = "^3.8.0"
+xlrd = "^1.2.0"
+xlutils = "^2.0.0"
+xlwt = "^1.3.0"
 
 [package.extras]
-google = ["google-api-python-client (>=1.12.3,<2.0.0)", "google-cloud-language (>=1.3.0,<2.0.0)", "google-auth-httplib2 (>=0.0.4,<0.0.5)", "google-cloud-storage (>=1.28.1,<2.0.0)", "google-cloud-translate (>=2.0.1,<3.0.0)", "grpcio (>=1.29.0,<2.0.0)", "google-auth-oauthlib (>=0.4.1,<0.5.0)", "google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-cloud-vision (>=1.0.0,<2.0.0)", "google-cloud-texttospeech (>=1.0.1,<2.0.0)", "google-cloud-speech (>=1.3.2,<2.0.0)"]
 cv = ["rpaframework-recognition (>=0.3.0,<0.4.0)"]
 aws = ["boto3 (>=1.13.4,<2.0.0)"]
+google = ["google-api-python-client (>=1.12.3,<2.0.0)", "google-auth-httplib2 (>=0.0.4,<0.0.5)", "google-auth-oauthlib (>=0.4.1,<0.5.0)", "google-cloud-language (>=1.3.0,<2.0.0)", "google-cloud-speech (>=1.3.2,<2.0.0)", "google-cloud-storage (>=1.28.1,<2.0.0)", "google-cloud-texttospeech (>=1.0.1,<2.0.0)", "google-cloud-translate (>=2.0.1,<3.0.0)", "google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-cloud-vision (>=1.0.0,<2.0.0)", "grpcio (>=1.29.0,<2.0.0)"]
 
 [package.source]
 type = "directory"
@@ -962,7 +949,7 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-core"
-version = "2.1.3"
+version = "2.2.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -970,8 +957,8 @@ python-versions = "^3.6"
 develop = false
 
 [package.dependencies]
-selenium = ">=3.141.0,<4.0.0"
-webdrivermanager = ">=0.9.0,<0.10.0"
+selenium = "^3.141.0"
+webdrivermanager = "^0.9.0"
 
 [package.source]
 type = "directory"
@@ -988,9 +975,9 @@ develop = false
 
 [package.dependencies]
 numpy = "1.19.3"
-opencv-python = ">=4.4.0,<5.0.0"
-pillow = ">=8.0.1,<9.0.0"
-rpaframework-core = ">=2.1.3,<3.0.0"
+opencv-python = "^4.4.0"
+pillow = "^8.0.1"
+rpaframework-core = "^2.1.3"
 
 [package.source]
 type = "directory"
@@ -1037,7 +1024,7 @@ python-versions = "*"
 
 [[package]]
 name = "sortedcontainers"
-version = "2.2.2"
+version = "2.3.0"
 description = "Sorted Containers -- Sorted List, Sorted Dict, Sorted Set"
 category = "main"
 optional = false
@@ -1263,7 +1250,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
 [package.extras]
 brotli = ["brotlipy (>=0.6.0)"]
 secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
-socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7,<2.0)"]
+socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "webdrivermanager"
@@ -1351,7 +1338,7 @@ requests-toolbelt = ">=0.7.1"
 [package.extras]
 async = ["httpx"]
 docs = ["sphinx (>=1.4.0)"]
-test = ["coverage[toml] (5.2.1)", "freezegun (0.3.15)", "mock (2.0.0)", "pretend (1.0.9)", "pytest-cov (2.8.1)", "pytest-httpx", "pytest-asyncio", "pytest (6.0.1)", "requests-mock (>=0.7.0)", "isort (5.3.2)", "flake8 (3.8.3)", "flake8-blind-except (0.1.1)", "flake8-debugger (3.2.1)", "flake8-imports (0.1.1)"]
+test = ["coverage[toml] (==5.2.1)", "freezegun (==0.3.15)", "mock (==2.0.0)", "pretend (==1.0.9)", "pytest-cov (==2.8.1)", "pytest-httpx", "pytest-asyncio", "pytest (==6.0.1)", "requests-mock (>=0.7.0)", "isort (==5.3.2)", "flake8 (==3.8.3)", "flake8-blind-except (==0.1.1)", "flake8-debugger (==3.2.1)", "flake8-imports (==0.1.1)"]
 xmlsec = ["xmlsec (>=0.6.1)"]
 
 [[package]]
@@ -1364,7 +1351,7 @@ python-versions = ">=3.6"
 
 [package.extras]
 docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
-testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pytest-cov", "jaraco.test (>=3.2.0)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
+testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pytest-cov", "jaraco.test (>=3.2.0)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
 [metadata]
 lock-version = "1.1"
@@ -1423,8 +1410,8 @@ cached-property = [
     {file = "cached_property-1.5.2-py2.py3-none-any.whl", hash = "sha256:df4f613cf7ad9a588cc381aaf4a512d26265ecebd5eb9e1ba12f1319eb85a6a0"},
 ]
 certifi = [
-    {file = "certifi-2020.6.20-py2.py3-none-any.whl", hash = "sha256:8fc0819f1f30ba15bdb34cceffb9ef04d99f420f68eb75d901e9560b8749fc41"},
-    {file = "certifi-2020.6.20.tar.gz", hash = "sha256:5930595817496dd21bb8dc35dad090f1c2cd0adfaf21204bf6732ca5d8ee34d3"},
+    {file = "certifi-2020.11.8-py2.py3-none-any.whl", hash = "sha256:1f422849db327d534e3d0c5f02a263458c3955ec0aae4ff09b95f195c59f4edd"},
+    {file = "certifi-2020.11.8.tar.gz", hash = "sha256:f05def092c44fbf25834a51509ef6e631dc19765ab8a57b4e7ab85531f0a9cf4"},
 ]
 cffi = [
     {file = "cffi-1.14.3-2-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:3eeeb0405fd145e714f7633a5173318bd88d8bbfc3dd0a5751f8c4f70ae629bc"},
@@ -1522,9 +1509,6 @@ docutils = [
 ]
 et-xmlfile = [
     {file = "et_xmlfile-1.0.1.tar.gz", hash = "sha256:614d9722d572f6246302c4491846d2c393c199cfa4edc9af593437691683335b"},
-]
-evdev = [
-    {file = "evdev-1.3.0.tar.gz", hash = "sha256:b1c649b4fed7252711011da235782b2c260b32e004058d62473471e5cd30634d"},
 ]
 exchangelib = [
     {file = "exchangelib-3.3.2-py2.py3-none-any.whl", hash = "sha256:92f5328c91b4cc77170bafc55bdd6c7bc52457b29815100a0f53fbbade7bc67c"},
@@ -1810,10 +1794,10 @@ pygments = [
     {file = "Pygments-2.7.2-py3-none-any.whl", hash = "sha256:88a0bbcd659fcb9573703957c6b9cff9fab7295e6e76db54c9d00ae42df32773"},
     {file = "Pygments-2.7.2.tar.gz", hash = "sha256:381985fcc551eb9d37c52088a32914e00517e57f4a21609f48141ba08e193fa0"},
 ]
-pynput = [
-    {file = "pynput-1.7.1-py2.py3-none-any.whl", hash = "sha256:b2b96cec8411a940a7f73da6965f13927d03d46fb5105c5bc63ed04f29b2b8f0"},
-    {file = "pynput-1.7.1-py3.8.egg", hash = "sha256:452e1f23ed1c2e85e61b2daedc8b6a5481a696b1ed1b98ef0ab164038a104adf"},
-    {file = "pynput-1.7.1.tar.gz", hash = "sha256:5a5598bfb14322eff980ac6ca820635fce9028faa4f64a8e1581243aaf6785ee"},
+pynput-robocorp-fork = [
+    {file = "pynput-robocorp-fork-1.7.2.tar.gz", hash = "sha256:45f835a1642ac9f9baa0ed3e0e8cb79ca36eac8e5736f438350bc7b7d57c70bc"},
+    {file = "pynput_robocorp_fork-1.7.2-py2.py3-none-any.whl", hash = "sha256:ccb2c7a32968842dd2667068f0a825d6424b90e0a04673e36cf363f6345f58ed"},
+    {file = "pynput_robocorp_fork-1.7.2-py3.7.egg", hash = "sha256:ca0e768bf4eb7cec999882f55f2c84bd4ed2b73e3a05c143c0c23e0b72010df5"},
 ]
 pyobjc-core = [
     {file = "pyobjc-core-6.2.2.tar.gz", hash = "sha256:38e7b15a042439dadd18b28b78229e52fb882460fc16ddbae342b9972d5a827c"},
@@ -1956,8 +1940,8 @@ snowballstemmer = [
     {file = "snowballstemmer-2.0.0.tar.gz", hash = "sha256:df3bac3df4c2c01363f3dd2cfa78cce2840a79b9f1c2d2de9ce8d31683992f52"},
 ]
 sortedcontainers = [
-    {file = "sortedcontainers-2.2.2-py2.py3-none-any.whl", hash = "sha256:c633ebde8580f241f274c1f8994a665c0e54a17724fecd0cae2f079e09c36d3f"},
-    {file = "sortedcontainers-2.2.2.tar.gz", hash = "sha256:4e73a757831fc3ca4de2859c422564239a31d8213d09a2a666e375807034d2ba"},
+    {file = "sortedcontainers-2.3.0-py2.py3-none-any.whl", hash = "sha256:37257a32add0a3ee490bb170b599e93095eed89a55da91fa9f48753ea12fd73f"},
+    {file = "sortedcontainers-2.3.0.tar.gz", hash = "sha256:59cc937650cf60d677c16775597c89a960658a09cf7c1a668f86e1e4464b10a1"},
 ]
 soupsieve = [
     {file = "soupsieve-2.0.1-py3-none-any.whl", hash = "sha256:1634eea42ab371d3d346309b93df7870a88610f0725d47528be902a0d95ecc55"},
