@@ -87,12 +87,6 @@ test: install ## Run all unittests
 todo: install ## Print all TODO/FIXME comments
 	poetry run pylint --disable=all --enable=fixme --exit-zero src/
 
-docs-sphinx:
-	# Empty target for compatibility reasons
-
-docs-hub:
-	# Empty target for compatibility reasons
-
 exports: install ## Create setup.py and requirements.txt files
 	poetry export --without-hashes -f requirements.txt -o requirements.txt
 	poetry export --dev --without-hashes -f requirements.txt -o requirements-dev.txt

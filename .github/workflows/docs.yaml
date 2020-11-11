@@ -38,11 +38,3 @@ jobs:
           publish_dir: docs/build/html/
           github_token: ${{ secrets.GITHUB_TOKEN }}
           cname: rpaframework.org
-      - name: Build Robohub documentation
-        run: make docs-hub
-      - name: Publish Robohub documentation
-        if: success()
-        uses: actions/upload-artifact@v1
-        with:
-          name: robohub-docs
-          path: dist/hub/

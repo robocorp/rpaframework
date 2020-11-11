@@ -101,39 +101,6 @@ test-robot: install ## Run Robot Framework tests
 todo: install ## Print all TODO/FIXME comments
 	poetry run pylint --disable=all --enable=fixme --exit-zero src/
 
-docs-sphinx: install ## Prebuild sphinx keyword documentation
-	poetry run python\
-	 $(tools)/libdocext.py\
-	 --rpa\
-	 --title "Robot Framework API"\
-	 --docstring rest\
-	 --override-docstring src/RPA/Browser.py=robot\
-	 --override-docstring src/RPA/HTTP.py=robot\
-	 --format rest\
-	 --override-format src/RPA/Browser.py=rest-html\
-	 --override-format src/RPA/HTTP.py=rest-html\
-	 --ignore src/RPA/core\
-	 --ignore src/RPA/Desktop/keywords\
-	 --output $(docs)/source/robot/\
-	 src/
-
-docs-hub: install ## Generate documentation for Robohub
-	$(call title,"Building JSON documentation")
-	$(mkdir) $(dist)/hub/json
-	poetry run python\
-	 $(tools)/libdocext.py\
-	 --rpa\
-	 --namespace "RPA"\
-	 --docstring rest\
-	 --format json-html\
-	 --override-docstring src/RPA/Browser.py=robot\
-	 --override-docstring src/RPA/HTTP.py=robot\
-	 --ignore src/RPA/core\
-	 --ignore src/RPA/Desktop/keywords\
-	 --output $(dist)/hub/json\
-	 --collapse\
-	 src/
-
 exports: install ## Create setup.py and requirements.txt files
 	poetry export --without-hashes -f requirements.txt -o requirements.txt
 	poetry export --dev --without-hashes -f requirements.txt -o requirements-dev.txt

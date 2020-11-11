@@ -51,26 +51,10 @@ install: .venv/flag ## Install development environment
 poetry.lock: pyproject.toml
 	poetry lock
 
-docs: docs-each docs-libdoc install ## Generate documentation using Sphinx
+docs: docs-libdoc install ## Generate documentation using Sphinx
 	poetry run $(MAKE) -C docs clean
 	poetry run python ./tools/merge.py docs/source/json/ docs/source/include/latest.json
 	poetry run $(MAKE) -C docs html
-
-docs-each: packages/*
-	$(call make_each, "docs-sphinx")
-
-docs-hub: docs-hub-each ## Generate distributable documentation for Robohub
-	$(call title,"Building Markdown documentation")
-	poetry run $(MAKE) -C docs clean
-	poetry run $(MAKE) -C docs markdown
-	$(mkdir) dist/hub/markdown/
-	poetry run python ./tools/hub.py \
-		docs/source/libraries/ \
-		docs/build/markdown/libraries/ \
-		dist/hub/markdown/
-
-docs-hub-each: packages/*
-	$(call make_each, "docs-hub")
 
 docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 	poetry run docgen --format html --output docs/source/include/libdoc/ RPA.*

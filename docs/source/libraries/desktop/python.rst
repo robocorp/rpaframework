@@ -2,11 +2,11 @@
 Python API
 ##########
 
-*********
-Clipboard
-*********
+*******
+Desktop
+*******
 
-.. automodule:: RPA.Desktop.Clipboard
+.. automodule:: RPA.Desktop
    :members:
    :inherited-members:
    :undoc-members:

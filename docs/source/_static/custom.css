@@ -1,0 +1,49 @@
+html, body {
+	font-family: "Inter", sans-serif;
+    font-size: 16px;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Barlow", sans-serif;
+}
+hr {
+	border: 0;
+	border-top: 1px solid #b8bbca;
+}
+.document a, .document a:visited {
+	color: #6372b3;
+}
+.wy-nav-side {
+	background: #2b3253;
+}
+.wy-nav-top, .wy-side-nav-search {
+	background: #2b3253;
+}
+.wy-nav-side .caption {
+	color: #c7cad7 !important;
+	margin-top: 20px !important;
+}
+.wy-nav-side a:hover {
+	background: #171b2e;
+}
+.wy-nav-side li.current a {
+	background: #fff;
+}
+.wy-nav-side li.current a:hover {
+	background: #ccc;
+}
+.wy-nav-side .icon:hover {
+	background: none;
+}
+.wy-side-nav-search input {
+	border-radius: 5px !important;
+}
+.wy-nav-content {
+    max-width: 1200px !important;
+    background: #fff;
+}
+.libdoc {
+	width: 100%;
+	min-height: 100vh;
+	border: none;
+	overflow: hidden !important;
+}

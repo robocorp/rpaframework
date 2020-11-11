@@ -80,7 +80,7 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `Desktop.Windows`_         | Automate Windows desktop applications        |
 +----------------------------+----------------------------------------------+
-| `Dialogs`_                 | For requesting user input in a HTML form     |
+| `Dialogs`_                 | Request user input during executions         |
 +----------------------------+----------------------------------------------+
 | `Email.Exchange`_          | E-Mail operations (Exchange protocol)        |
 +----------------------------+----------------------------------------------+
@@ -92,7 +92,7 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `FileSystem`_              | Read and manipulate files and paths          |
 +----------------------------+----------------------------------------------+
-| `FTP`_                     | Interact with FTP server                     |
+| `FTP`_                     | Interact with FTP servers                    |
 +----------------------------+----------------------------------------------+
 | `HTTP`_                    | Interact directly with web APIs              |
 +----------------------------+----------------------------------------------+

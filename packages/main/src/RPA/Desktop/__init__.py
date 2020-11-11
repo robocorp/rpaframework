@@ -138,6 +138,9 @@ class Desktop(DynamicCore):
 
     **Examples***
 
+    The library can open applications and interact with them through
+    keyboard and mouse events.
+
     .. code-block:: robotframework
 
         *** Settings ***
@@ -152,6 +155,23 @@ class Desktop(DynamicCore):
             Press keys    ctrl    s
             Press keys    enter
             [Teardown]    Close all applications
+
+    Targeting can be currently done using coordinates (absolute or relative),
+    but using template matching is preferred.
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library    RPA.Desktop
+
+        *** Keywords ***
+        Write to field
+            [Arguments]    ${text}
+            Move mouse   image:input_label.png
+            Move mouse   offset:200,0
+            Click
+            Type text    ${text}
+            Press keys   enter
     """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"

@@ -289,8 +289,8 @@ class Browser(SeleniumLibrary):
     Implicit wait specifies the maximum time how long Selenium waits when
     searching for elements. It can be set by using the `Set Selenium Implicit
     Wait` keyword or with the ``implicit_wait`` argument when `importing`
-    the library. See [https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp|
-    Selenium documentation] for more information about this functionality.
+    the library. See [https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp|Selenium documentation]
+    for more information about this functionality.
 
     See `time format` below for supported syntax.
 
