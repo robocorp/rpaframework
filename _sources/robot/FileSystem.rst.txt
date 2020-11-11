@@ -295,12 +295,12 @@ Keywords
 
   If file exists at `path`, execute given keyword with arguments.
 
-  **Example**
+
+  Example:
 
   .. code:: robotframework
 
       Run keyword if file exists    orders.xlsx    Process orders
-
 
 :Touch File:
   :Arguments: path

@@ -181,9 +181,9 @@ Keywords
 
   Get the results of Textract asynchronous `Document Analysis` operation
 
+
   Response dictionary has key `JobStatus` with value `SUCCEEDED` when analysis
   has been completed.
-
 
   Example:
 
@@ -202,9 +202,9 @@ Keywords
 
   Get the results of Textract asynchronous `Document Text Detection` operation
 
+
   Response dictionary has key `JobStatus` with value `SUCCEEDED` when analysis
   has been completed.
-
 
   Example:
 
@@ -289,13 +289,13 @@ Keywords
   for relationships between detected items such as key-value pairs,
   tables, and selection elements.
 
+
   Input object can be in JPEG, PNG or PDF format. Documents should
   be located in the Amazon S3 bucket.
 
   By default Amazon Textract will save the analysis result internally
   to be accessed by keyword ``Get Document Analysis``. This can
   be overridden by giving parameter ``bucket_name_out``.
-
 
 :Start Document Text Detection:
   :Arguments: bucket_name_in: str = None, object_name_in: str = None, object_version_in: str = None, bucket_name_out: str = None, prefix_object_out: str = textract_output
@@ -304,6 +304,7 @@ Keywords
   Amazon Textract can detect lines of text and the words that make up a
   line of text.
 
+
   Input object can be in JPEG, PNG or PDF format. Documents should
   be located in the Amazon S3 bucket.
 
@@ -311,20 +312,20 @@ Keywords
   to be accessed by keyword ``Get Document Text Detection``. This can
   be overridden by giving parameter ``bucket_name_out``.
 
-
 :Upload File:
   :Arguments: bucket_name: str = None, filename: str = None, object_name: str = None
 
   Upload single file into bucket
 
+
   If `object_name` is not given then basename of the file is
   used as `object_name`.
-
 
 :Upload Files:
   :Arguments: bucket_name: str = None, files: list = None
 
   Upload multiple files into bucket
+
 
   Giving files as list of filepaths:
       ['/path/to/file1.txt', '/path/to/file2.txt']
@@ -332,4 +333,3 @@ Keywords
   Giving files as list of dictionaries (including filepath and object name):
       [{'filepath':'/path/to/file1.txt', 'object_name': 'file1.txt'},
       {'filepath': '/path/to/file2.txt', 'object_name': 'file2.txt'}]
-

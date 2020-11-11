@@ -416,12 +416,6 @@ load the work item for the current execution.</p>
 <dt id="RPA.Robocloud.Items.Items.add_work_item_file">
 <code class="sig-name descname">add_work_item_file</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.add_work_item_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add given file to work item.</p>
-<p>NOTE: Files are not uploaded before work item is saved</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add work item file</span><span class="p">    </span><span class="c">output.xls</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
-</pre></div>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -431,22 +425,28 @@ of local file is used.</p></li>
 </ul>
 </dd>
 </dl>
+<p><strong>NOTE</strong>: Files are not uploaded before work item is saved</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add work item file</span><span class="p">    </span><span class="c">output.xls</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocloud.Items.Items.add_work_item_files">
 <code class="sig-name descname">add_work_item_files</code><span class="sig-paren">(</span><em class="sig-param">pattern</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.add_work_item_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add all files that match given pattern to work item.</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add work item files</span><span class="p">    </span><span class="c">%{ROBOT_ROOT}/generated/*.csv</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
-</pre></div>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>pattern</strong> – Path wildcard pattern</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add work item files</span><span class="p">    </span><span class="c">%{ROBOT_ROOT}/generated/*.csv</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -470,11 +470,6 @@ of local file is used.</p></li>
 <dt id="RPA.Robocloud.Items.Items.delete_work_item_variables">
 <code class="sig-name descname">delete_work_item_variables</code><span class="sig-paren">(</span><em class="sig-param">*names</em>, <em class="sig-param">force=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.delete_work_item_variables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete variable(s) from the current work item.</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Delete work item variables</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">email</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
-</pre></div>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -483,6 +478,11 @@ of local file is used.</p></li>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Delete work item variables</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">email</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -490,11 +490,6 @@ of local file is used.</p></li>
 <code class="sig-name descname">get_work_item_file</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.get_work_item_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get attached file from work item to disk.
 Returns the absolute path to the created file.</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${path}=</span><span class="p">    </span><span class="c">Get work item file</span><span class="p">    </span><span class="c">input.xls</span><span class="p"></span>
-<span class="c">Open workbook</span><span class="p">    </span><span class="c">${path}</span><span class="p"></span>
-</pre></div>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -504,6 +499,11 @@ working directory is used.</p></li>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${path}=</span><span class="p">    </span><span class="c">Get work item file</span><span class="p">    </span><span class="c">input.xls</span><span class="p"></span>
+<span class="c">Open workbook</span><span class="p">    </span><span class="c">${path}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -511,13 +511,6 @@ working directory is used.</p></li>
 <code class="sig-name descname">get_work_item_files</code><span class="sig-paren">(</span><em class="sig-param">pattern</em>, <em class="sig-param">dirname=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.get_work_item_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get files attached to work item that match given pattern.
 Returns a list of absolute paths to the downloaded files.</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${paths}=</span><span class="p">    </span><span class="c">Get work item files</span><span class="p">    </span><span class="c">customer_*.xlsx</span><span class="p"></span>
-<span class="c">FOR</span><span class="p">  </span><span class="c">${path}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{paths}</span><span class="p"></span>
-<span class="p">    </span><span class="c">Handle customer file</span><span class="p">    </span><span class="c">${path}</span><span class="p"></span>
-<span class="c">END</span><span class="p"></span>
-</pre></div>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -526,6 +519,13 @@ Returns a list of absolute paths to the downloaded files.</p>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${paths}=</span><span class="p">    </span><span class="c">Get work item files</span><span class="p">    </span><span class="c">customer_*.xlsx</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${path}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{paths}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Handle customer file</span><span class="p">    </span><span class="c">${path}</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -546,10 +546,6 @@ Returns a list of absolute paths to the downloaded files.</p>
 <dd><p>Return a single variable value from the work item,
 or default value if defined and key does not exist.
 If key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${username}=</span><span class="p">    </span><span class="c">Get work item variable</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">default=guest</span><span class="p"></span>
-</pre></div>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -558,6 +554,10 @@ If key does not exist and default is not defined, raises <cite>KeyError</cite>.<
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${username}=</span><span class="p">    </span><span class="c">Get work item variable</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">default=guest</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -598,16 +598,16 @@ return their names and values as a dictionary.</p>
 <dt id="RPA.Robocloud.Items.Items.load_work_item">
 <code class="sig-name descname">load_work_item</code><span class="sig-paren">(</span><em class="sig-param">workspace_id</em>, <em class="sig-param">item_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.load_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load work item for reading/writing.</p>
-<dl class="simple">
-<dt><strong>NOTE</strong>: Currently only one work item per execution is supported</dt><dd><p>by Robocorp Cloud, which should be loaded automatically.</p>
-</dd>
-</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>workspace_id</strong> – Workspace ID which contains item</p></li>
 <li><p><strong>item_id</strong> – Workitem ID to load</p></li>
 </ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt><strong>NOTE</strong>: Currently only one work item per execution is supported</dt><dd><p>by Robocorp Cloud, which should be loaded automatically.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -627,12 +627,6 @@ return their names and values as a dictionary.</p>
 <dt id="RPA.Robocloud.Items.Items.remove_work_item_file">
 <code class="sig-name descname">remove_work_item_file</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">missing_ok=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.remove_work_item_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove attached file from work item.</p>
-<p>NOTE: Files are not deleted before work item is saved</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Remove work item file</span><span class="p">    </span><span class="c">input.xls</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
-</pre></div>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -641,17 +635,18 @@ return their names and values as a dictionary.</p>
 </ul>
 </dd>
 </dl>
+<p><strong>NOTE</strong>: Files are not deleted before work item is saved</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Remove work item file</span><span class="p">    </span><span class="c">input.xls</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocloud.Items.Items.remove_work_item_files">
 <code class="sig-name descname">remove_work_item_files</code><span class="sig-paren">(</span><em class="sig-param">pattern</em>, <em class="sig-param">missing_ok=True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.remove_work_item_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes files attached to work item that match given pattern.</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Remove work item files</span><span class="p">    </span><span class="c">*.xlsx</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
-</pre></div>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -660,6 +655,11 @@ return their names and values as a dictionary.</p>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Remove work item files</span><span class="p">    </span><span class="c">*.xlsx</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -686,28 +686,23 @@ Robot Framework task variables.</p>
 <dt id="RPA.Robocloud.Items.Items.set_work_item_payload">
 <code class="sig-name descname">set_work_item_payload</code><span class="sig-paren">(</span><em class="sig-param">payload</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.set_work_item_payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the full JSON payload for a work item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>payload</strong> – Content of payload, must be JSON-serializable</p>
+</dd>
+</dl>
 <p><strong>NOTE</strong>: Most use cases should prefer higher-level keywords.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${output}=</span><span class="p">    </span><span class="c">Create dictionary</span><span class="p">    </span><span class="c">url=example.com</span><span class="p">    </span><span class="c">username=Mark</span><span class="p"></span>
 <span class="c">Set work item payload</span><span class="p">    </span><span class="c">${output}</span><span class="p"></span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>payload</strong> – Content of payload, must be JSON-serializable</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocloud.Items.Items.set_work_item_variable">
 <code class="sig-name descname">set_work_item_variable</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.set_work_item_variable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a single variable value in the current work item.</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set work item variable</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">MarkyMark</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
-</pre></div>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -716,22 +711,27 @@ Robot Framework task variables.</p>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set work item variable</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">MarkyMark</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocloud.Items.Items.set_work_item_variables">
 <code class="sig-name descname">set_work_item_variables</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Items.Items.set_work_item_variables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set multiple variables in the current work item.</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set work item variables</span><span class="p">    </span><span class="c">username=MarkyMark</span><span class="p">    </span><span class="c">email=mark@example.com</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
-</pre></div>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>kwargs</strong> – Pairs of variable names and values</p>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set work item variables</span><span class="p">    </span><span class="c">username=MarkyMark</span><span class="p">    </span><span class="c">email=mark@example.com</span><span class="p"></span>
+<span class="c">Save work item</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>

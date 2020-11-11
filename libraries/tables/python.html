@@ -225,15 +225,15 @@ can be namedtuples, dictionaries, lists, or tuples</p></li>
 </ul>
 <div class="admonition-todo admonition" id="id1">
 <p class="admonition-title">Todo</p>
-<p>Integers as column names? Columns forced to strings?</p>
+<p>Distinguish between range-based index and named index</p>
 </div>
 <div class="admonition-todo admonition" id="id2">
 <p class="admonition-title">Todo</p>
-<p>Implement column slicing</p>
+<p>Integers as column names? Columns forced to strings?</p>
 </div>
 <div class="admonition-todo admonition" id="id3">
 <p class="admonition-title">Todo</p>
-<p>Existing column to index conversion</p>
+<p>Implement column slicing</p>
 </div>
 <div class="admonition-todo admonition" id="id4">
 <p class="admonition-title">Todo</p>
@@ -665,7 +665,7 @@ manipulation operations.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.create_table">
-<code class="sig-name descname">create_table</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">trim=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.create_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_table</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">trim=False</em>, <em class="sig-param">columns=None</em>, <em class="sig-param">index=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.create_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Table object from data.</p>
 <p>Data can be a combination of various iterable containers, e.g.
 list of lists, list of dicts, dict of lists.</p>
@@ -675,6 +675,8 @@ list of lists, list of dicts, dict of lists.</p>
 <li><p><strong>data</strong> – source data for table</p></li>
 <li><p><strong>trim</strong> – remove all empty rows from the end of the worksheet,
 default <cite>False</cite></p></li>
+<li><p><strong>columns</strong> – names of columns (optional)</p></li>
+<li><p><strong>index</strong> – names of rows (optional)</p></li>
 </ul>
 </dd>
 </dl>
@@ -717,6 +719,22 @@ default <cite>False</cite></p></li>
 <li><p><strong>column</strong> – column to filter with</p></li>
 <li><p><strong>operator</strong> – filtering operator, e.g. &gt;, &lt;, ==, contains</p></li>
 <li><p><strong>value</strong> – value to compare column to (using operator)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.find_table_rows">
+<code class="sig-name descname">find_table_rows</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column</em>, <em class="sig-param">value</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.find_table_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find a row in the table by a given column value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – Table to find from</p></li>
+<li><p><strong>column</strong> – name of column to search</p></li>
+<li><p><strong>value</strong> – value to match for</p></li>
+<li><p><strong>as_list</strong> – return list instead of dictionary</p></li>
 </ul>
 </dd>
 </dl>
@@ -808,6 +826,80 @@ default <cite>False</cite></p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Tables.Tables.merge_tables">
+<code class="sig-name descname">merge_tables</code><span class="sig-paren">(</span><em class="sig-param">*tables</em>, <em class="sig-param">index=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.merge_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a union of two tables and their contents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tables</strong> – Tables to merge</p></li>
+<li><p><strong>index</strong> – Column name to use as index for merge</p></li>
+</ul>
+</dd>
+</dl>
+<p>By default rows from all tables are appended one after the other.
+Optionally a column name can be given with <code class="docutils literal notranslate"><span class="pre">index</span></code>, which is
+used to merge rows together.</p>
+<p>Example:</p>
+<p>For instance, a <code class="docutils literal notranslate"><span class="pre">name</span></code> column could be used to identify
+unique rows and the merge operation should overwrite values
+instead of appending multiple copies of the same name.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Price</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Egg</p></td>
+<td><p>10.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cheese</p></td>
+<td><p>15.0</p></td>
+</tr>
+<tr class="row-even"><td><p>Ham</p></td>
+<td><p>20.0</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Stock</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Egg</p></td>
+<td><p>12.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cheese</p></td>
+<td><p>99.0</p></td>
+</tr>
+<tr class="row-even"><td><p>Ham</p></td>
+<td><p>0.0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${products}=</span><span class="p">    </span><span class="c">Merge tables</span><span class="p">    </span><span class="c">${prices}</span><span class="p">    </span><span class="c">${stock}</span><span class="p">    </span><span class="c">index=Name</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${product}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{products}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log many</span><span class="p"></span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">Product: ${product}[Name]</span><span class="p"></span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">Price: ${product}[Price]</span><span class="p"></span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">Stock: ${product}[Stock]</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Tables.Tables.pop_table_column">
 <code class="sig-name descname">pop_table_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column=None</em>, <em class="sig-param">as_list=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.pop_table_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove column from table and return it.</p>
@@ -841,16 +933,6 @@ default <cite>False</cite></p></li>
 <dt id="RPA.Tables.Tables.read_table_from_csv">
 <code class="sig-name descname">read_table_from_csv</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">header=None</em>, <em class="sig-param">columns=None</em>, <em class="sig-param">dialect=None</em>, <em class="sig-param">delimiters=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.read_table_from_csv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a CSV file as a table.</p>
-<p>By default attempts to deduce the CSV format and headers
-from a sample of the input file. If it’s unable to determine
-the format automatically, the dialect and header will
-have to be defined manually.</p>
-<p>Valid <code class="docutils literal notranslate"><span class="pre">dialect</span></code> values are <code class="docutils literal notranslate"><span class="pre">excel</span></code>, <code class="docutils literal notranslate"><span class="pre">excel-tab</span></code>, and <code class="docutils literal notranslate"><span class="pre">unix</span></code>,
-and <code class="docutils literal notranslate"><span class="pre">header</span></code> is boolean argument (<code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">False</span></code>). Optionally a
-set of valid <code class="docutils literal notranslate"><span class="pre">delimiters</span></code> can be given as a string.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">columns</span></code> argument can be used to override the names of columns
-in the resulting table. The amount of columns must match the input
-data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -862,6 +944,16 @@ data.</p>
 </ul>
 </dd>
 </dl>
+<p>By default attempts to deduce the CSV format and headers
+from a sample of the input file. If it’s unable to determine
+the format automatically, the dialect and header will
+have to be defined manually.</p>
+<p>Valid <code class="docutils literal notranslate"><span class="pre">dialect</span></code> values are <code class="docutils literal notranslate"><span class="pre">excel</span></code>, <code class="docutils literal notranslate"><span class="pre">excel-tab</span></code>, and <code class="docutils literal notranslate"><span class="pre">unix</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">header</span></code> is boolean argument (<code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">False</span></code>). Optionally a
+set of valid <code class="docutils literal notranslate"><span class="pre">delimiters</span></code> can be given as a string.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">columns</span></code> argument can be used to override the names of columns
+in the resulting table. The amount of columns must match the input
+data.</p>
 </dd></dl>
 
 <dl class="method">
@@ -895,6 +987,20 @@ do not match</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>table</strong> – table to modify</p></li>
 <li><p><strong>column</strong> – column to convert to index</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Tables.Tables.set_row_as_column_names">
+<code class="sig-name descname">set_row_as_column_names</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">index</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.set_row_as_column_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set existing row as names for columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table</strong> – table to modify</p></li>
+<li><p><strong>index</strong> – row to use as column names</p></li>
 </ul>
 </dd>
 </dl>
@@ -1013,7 +1119,6 @@ which have only None values.</p>
 <dt id="RPA.Tables.Tables.write_table_to_csv">
 <code class="sig-name descname">write_table_to_csv</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">path</em>, <em class="sig-param">header=True</em>, <em class="sig-param">dialect='excel'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.write_table_to_csv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a table as a CSV file.</p>
-<p>Valid <code class="docutils literal notranslate"><span class="pre">dialect</span></code> values are <code class="docutils literal notranslate"><span class="pre">excel</span></code>, <code class="docutils literal notranslate"><span class="pre">excel-tab</span></code>, and <code class="docutils literal notranslate"><span class="pre">unix</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1024,6 +1129,7 @@ which have only None values.</p>
 </ul>
 </dd>
 </dl>
+<p>Valid <code class="docutils literal notranslate"><span class="pre">dialect</span></code> values are <code class="docutils literal notranslate"><span class="pre">excel</span></code>, <code class="docutils literal notranslate"><span class="pre">excel-tab</span></code>, and <code class="docutils literal notranslate"><span class="pre">unix</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1044,6 +1150,13 @@ which have only None values.</p>
 <dt id="RPA.Tables.to_list">
 <code class="sig-prename descclassname">RPA.Tables.</code><code class="sig-name descname">to_list</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">size=1</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.to_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert (possibly scalar) value to list of <cite>size</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Tables.uniq">
+<code class="sig-prename descclassname">RPA.Tables.</code><code class="sig-name descname">uniq</code><span class="sig-paren">(</span><em class="sig-param">seq</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.uniq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of unique values while preserving order.
+Values must be hashable.</p>
 </dd></dl>
 
 </div>

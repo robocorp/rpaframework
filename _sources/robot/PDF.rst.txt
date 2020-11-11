@@ -62,10 +62,10 @@ Pdf
 
   Add image to PDF which can be new or existing PDF.
 
+  :raises ValueError: [description]
+
   Result will be always written to `target_pdf` so that needs
   to be given for the keyword.
-
-  :raises ValueError: [description]
 
 :Add Pages:
   :Arguments: pages: int = 1
@@ -100,14 +100,14 @@ Pdf
 
   Extract pages from source PDF and save to target PDF document.
 
-  Page numbers starting from 1.
 
+  Page numbers starting from 1.
 
 :Get All Figures:
   Return all figures in the PDF document.
 
-  PDF needs to be parsed before elements can be found.
 
+  PDF needs to be parsed before elements can be found.
 
 :Get Info:
   :Arguments: source_pdf: str = None
@@ -120,11 +120,11 @@ Pdf
 
   Get input fields in the PDF.
 
+
   Stores input fields internally so that they can be used without
   parsing PDF again.
 
   Parameter `replace_none_value` is for convience to visualize fields.
-
 
 :Get Number Of Pages:
   :Arguments: source_pdf: str = None
@@ -142,8 +142,8 @@ Pdf
 
   Get text from set of pages in source PDF document.
 
-  PDF needs to be parsed before text can be read.
 
+  PDF needs to be parsed before text can be read.
 
 :Get Value From Anchor:
   :Arguments: locator: str, pagenum: int = 1, direction: str = right, strict: bool = False, regexp: str = None
@@ -172,9 +172,9 @@ Pdf
 
   Open PDF document.
 
-  Also opens file for reading.
-
   :raises ValueError: if PDF is already open
+
+  Also opens file for reading.
 
 :Page Rotate:
   :Arguments: pages: int, source_pdf: str = None, target_pdf: str = None, clockwise: bool = True, angle: int = 90
@@ -208,7 +208,6 @@ Pdf
   Replace text content with something else in the PDF.
 
 
-
 :Save Pdf:
   :Arguments: source: str = None, target: str = None, use_modified_reader: bool = False
 
@@ -228,11 +227,11 @@ Pdf
 
   Set value for field with given name.
 
+
   Tries to match on field identifier and its label.
 
   Exception is thrown if field can't be found or more than 1 field matches
   the given `field_name`.
-
 
 :Set Output Directory:
   :Arguments: outdir: str = .

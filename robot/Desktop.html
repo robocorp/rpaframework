@@ -226,6 +226,10 @@ the same interfaces that are available to human users.</p>
 <li><p>Taking screenshots</p></li>
 <li><p>Clipboard management</p></li>
 </ul>
+<dl class="simple">
+<dt><strong>Note:</strong> Windows element selectors are not currently supported,</dt><dd><p>and require the use of <code class="docutils literal notranslate"><span class="pre">RPA.Desktop.Windows</span></code></p>
+</dd>
+</dl>
 <p><strong>Locating elements</strong></p>
 <p>To automate actions on the desktop, a robot needs to interact with various
 graphical elements such as buttons or input fields. The positions of these
@@ -437,6 +441,21 @@ done. Same formatting rules as function keys apply. They are as follows:</p>
 </tbody>
 </table>
 <p>The supported mouse button types are <code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code>, and <code class="docutils literal notranslate"><span class="pre">middle</span></code>.</p>
+<p><strong>Examples*</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Desktop</span><span class="p"></span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Write entry in accounting</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Arguments</span><span class="p">]    ${</span><span class="nv">entry</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Open application</span><span class="p">    </span><span class="s">erp_client.exe</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Click</span><span class="p">         </span><span class="s">image:</span><span class="p">%{</span><span class="nv">ROBOT_ROOT</span><span class="p">}</span><span class="s">/images/create.png</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Type text</span><span class="p">     ${</span><span class="nv">entry</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Press keys</span><span class="p">    </span><span class="s">ctrl</span><span class="p">    </span><span class="s">s</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Press keys</span><span class="p">    </span><span class="s">enter</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Teardown</span><span class="p">]    </span><span class="nf">Close all applications</span><span class="p"></span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
@@ -679,6 +698,7 @@ until timeout is reached.</p>
 </dd>
 </dl>
 <p>Click at a given pixel offset from the given locator.</p>
+<p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Click with offset</span><span class="p">    </span><span class="c">Robocorp.Logo</span><span class="p">    </span><span class="c">y=400</span><span class="p"></span>
 </pre></div>
 </div>
@@ -693,6 +713,7 @@ until timeout is reached.</p>
 </dd>
 <dt class="field-even">Get Mouse Position</dt>
 <dd class="field-even"><p>Get current mouse position in pixel coordinates.</p>
+<p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${position}=</span><span class="p">    </span><span class="c">Get mouse position</span><span class="p"></span>
 <span class="c">Log</span><span class="p">    </span><span class="c">Current mouse position is ${position.x}, ${position.y}</span><span class="p"></span>
 </pre></div>
@@ -705,6 +726,7 @@ until timeout is reached.</p>
 </dd>
 </dl>
 <p>Move mouse to given coordinates.</p>
+<p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Move mouse</span><span class="p">    </span><span class="c">Robocorp.Logo</span><span class="p"></span>
 <span class="c">Move mouse</span><span class="p">    </span><span class="c">offset:0,400</span><span class="p"></span>
 </pre></div>

@@ -120,7 +120,7 @@ Keywords
 
 
 :Create Table:
-  :Arguments: data=None, trim=False
+  :Arguments: data=None, trim=False, columns=None, index=None
 
   Create Table object from data.
 
@@ -144,6 +144,12 @@ Keywords
   :Arguments: table, column, operator, value
 
   Return all rows where the column values match the given condition.
+
+
+:Find Table Rows:
+  :Arguments: table, column, value, as_list=False
+
+  Find a row in the table by a given column value.
 
 
 :Get Table Cell:
@@ -182,6 +188,48 @@ Keywords
   Group table by `column` and return a list of grouped Tables.
 
 
+:Merge Tables:
+  :Arguments: \*tables, index=None
+
+  Create a union of two tables and their contents.
+
+
+  By default rows from all tables are appended one after the other.
+  Optionally a column name can be given with ``index``, which is
+  used to merge rows together.
+
+  Example:
+
+  For instance, a ``name`` column could be used to identify
+  unique rows and the merge operation should overwrite values
+  instead of appending multiple copies of the same name.
+
+  ====== =====
+  Name   Price
+  ====== =====
+  Egg    10.0
+  Cheese 15.0
+  Ham    20.0
+  ====== =====
+
+  ====== =====
+  Name   Stock
+  ====== =====
+  Egg    12.0
+  Cheese 99.0
+  Ham    0.0
+  ====== =====
+
+  .. code-block:: robotframework
+
+      ${products}=    Merge tables    ${prices}    ${stock}    index=Name
+      FOR    ${product}    IN    @{products}
+          Log many
+          ...    Product: ${product}[Name]
+          ...    Price: ${product}[Price]
+          ...    Stock: ${product}[Stock]
+      END
+
 :Pop Table Column:
   :Arguments: table, column=None, as_list=False
 
@@ -199,6 +247,7 @@ Keywords
 
   Read a CSV file as a table.
 
+
   By default attempts to deduce the CSV format and headers
   from a sample of the input file. If it's unable to determine
   the format automatically, the dialect and header will
@@ -211,7 +260,6 @@ Keywords
   The ``columns`` argument can be used to override the names of columns
   in the resulting table. The amount of columns must match the input
   data.
-
 
 :Rename Table Columns:
   :Arguments: table, columns, strict=False
@@ -229,6 +277,12 @@ Keywords
   :Arguments: table, column=None
 
   Set existing column as index for rows.
+
+
+:Set Row As Column Names:
+  :Arguments: table, index
+
+  Set existing row as names for columns.
 
 
 :Set Table Cell:
@@ -284,5 +338,5 @@ Keywords
 
   Write a table as a CSV file.
 
-  Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``.
 
+  Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``.

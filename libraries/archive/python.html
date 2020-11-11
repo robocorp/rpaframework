@@ -216,7 +216,7 @@
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Archive.</code><code class="sig-name descname">Archive</code><a class="headerlink" href="#RPA.Archive.Archive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p><cite>Archive</cite> is a library for operating with ZIP and TAR packages.</p>
-<p>Examples:</p>
+<p><strong>Examples</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">  </span><span class="nn">RPA.Archive</span><span class="p"></span>
 
@@ -254,6 +254,16 @@
 <dt id="RPA.Archive.Archive.add_to_archive">
 <code class="sig-name descname">add_to_archive</code><span class="sig-paren">(</span><em class="sig-param">files: Any</em>, <em class="sig-param">archive_name: str</em>, <em class="sig-param">folder: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Archive.Archive.add_to_archive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add file(s) to the archive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>files</strong> – name of the file, or list of files, to add</p></li>
+<li><p><strong>archive_name</strong> – filename of the archive</p></li>
+<li><p><strong>folder</strong> – name of the folder for added file,
+relative path in the archive</p></li>
+</ul>
+</dd>
+</dl>
 <p>This keyword adds file or list of files into existing archive. Files
 can be added to archive structure with relative path using argument <cite>folder</cite>.</p>
 <p>Example:</p>
@@ -263,22 +273,24 @@ can be added to archive structure with relative path using argument <cite>folder
 <span class="c">Add To Archive</span><span class="p">  </span><span class="c">${files}</span><span class="p">       </span><span class="c">files.tar</span><span class="p"></span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>(</strong><strong>Any</strong><strong>)</strong> (<em>files</em>) – name of the file, or list of files, to add</p></li>
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>folder</em>) – filename of the archive</p></li>
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – name of the folder for added file,
-relative path in the archive</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Archive.Archive.archive_folder_with_tar">
 <code class="sig-name descname">archive_folder_with_tar</code><span class="sig-paren">(</span><em class="sig-param">folder: str</em>, <em class="sig-param">archive_name: str</em>, <em class="sig-param">recursive: bool = False</em>, <em class="sig-param">include: str = None</em>, <em class="sig-param">exclude: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Archive.Archive.archive_folder_with_tar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a tar/tar.gz archive of a folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder</strong> – name of the folder to archive</p></li>
+<li><p><strong>archive_name</strong> – filename of the archive</p></li>
+<li><p><strong>recursive</strong> – should sub directories be included, defaults is False</p></li>
+<li><p><strong>include</strong> – define file pattern to include in the package,
+by default all files are included</p></li>
+<li><p><strong>exclude</strong> – define file pattern to exclude from the package</p></li>
+</ul>
+</dd>
+</dl>
 <p>This keyword creates an TAR or TAR.GZ archive of a local folder. Type of archive
 is determined by the file extension. By default subdirectories are not
 included, but they can included using <cite>recursive</cite> argument.</p>
@@ -291,24 +303,24 @@ Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</ci
 <span class="c">Archive Folder With TAR</span><span class="p">  </span><span class="c">${CURDIR}${/}documents</span><span class="p">  </span><span class="c">documents.tar</span><span class="p">  </span><span class="c">recursive=True</span><span class="p"></span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>exclude</em>) – name of the folder to archive</p></li>
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – filename of the archive</p></li>
-<li><p><strong>(</strong><strong>bool</strong><strong>)</strong> (<em>recursive</em>) – should sub directories be included, defaults is False</p></li>
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – define file pattern to include in the package,
-by default all files are included</p></li>
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – define file pattern to exclude from the package</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Archive.Archive.archive_folder_with_zip">
 <code class="sig-name descname">archive_folder_with_zip</code><span class="sig-paren">(</span><em class="sig-param">folder: str</em>, <em class="sig-param">archive_name: str</em>, <em class="sig-param">recursive: bool = False</em>, <em class="sig-param">include: str = None</em>, <em class="sig-param">exclude: str = None</em>, <em class="sig-param">compression: str = 'stored'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Archive.Archive.archive_folder_with_zip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a zip archive of a folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder</strong> – name of the folder to archive</p></li>
+<li><p><strong>archive_name</strong> – filename of the archive</p></li>
+<li><p><strong>recursive</strong> – should sub directories be included, defaults is False</p></li>
+<li><p><strong>include</strong> – define file pattern to include in the package, defaults to None (means all files)</p></li>
+<li><p><strong>exclude</strong> – define file pattern to exclude from the package, defaults is None</p></li>
+<li><p><strong>compression</strong> – type of package compression method, defaults to “stored”</p></li>
+</ul>
+</dd>
+</dl>
 <p>This keyword creates an ZIP archive of a local folder. By default subdirectories are not
 included, but they can included using <cite>recursive</cite> argument.</p>
 <p>To include only certain files, like TXT files, the argument <cite>include</cite> can be used.
@@ -329,24 +341,22 @@ Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</ci
 <span class="c">Archive Folder With Zip</span><span class="p">  </span><span class="c">${CURDIR}</span><span class="p">               </span><span class="c">bzipped.zip</span><span class="p">      </span><span class="c">compression=bzip2</span><span class="p"></span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>compression</em>) – name of the folder to archive</p></li>
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – filename of the archive</p></li>
-<li><p><strong>(</strong><strong>bool</strong><strong>)</strong> (<em>recursive</em>) – should sub directories be included, defaults is False</p></li>
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – define file pattern to include in the package, defaults to None (means all files)</p></li>
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – define file pattern to exclude from the package, defaults is None</p></li>
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – type of package compression method, defaults to “stored”</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Archive.Archive.extract_archive">
 <code class="sig-name descname">extract_archive</code><span class="sig-paren">(</span><em class="sig-param">archive_name: str</em>, <em class="sig-param">path: str = None</em>, <em class="sig-param">members: Any = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Archive.Archive.extract_archive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract files from archive into local directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>archive_name</strong> – filename of the archive</p></li>
+<li><p><strong>path</strong> – filepath to extract file into, default is current working directory</p></li>
+<li><p><strong>members</strong> – list of files to extract from, by default
+all files in archive are extracted</p></li>
+</ul>
+</dd>
+</dl>
 <p>This keyword supports extracting files from zip, tar and tar.gz archives.</p>
 <p>By default file is extracted into current working directory, but <cite>path</cite> argument
 can be set to define extraction path.</p>
@@ -356,22 +366,22 @@ can be set to define extraction path.</p>
 <span class="c">Extract Archive</span><span class="p">    </span><span class="c">archive.tar</span><span class="p">   </span><span class="c">C:${/}myfiles${/}</span><span class="p">  </span><span class="c">${files}</span><span class="p"></span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>path</em>) – filename of the archive</p></li>
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – filepath to extract file into, default is current working directory</p></li>
-<li><p><strong>(</strong><strong>Any</strong><strong>)</strong> (<em>members</em>) – list of files to extract from, by default
-all files in archive are extracted</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Archive.Archive.extract_file_from_archive">
 <code class="sig-name descname">extract_file_from_archive</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">archive_name: str</em>, <em class="sig-param">path: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Archive.Archive.extract_file_from_archive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract a file from archive into local directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – name of the file to extract</p></li>
+<li><p><strong>archive_name</strong> – filename of the archive</p></li>
+<li><p><strong>path</strong> – filepath to extract file into,
+default is current working directory</p></li>
+</ul>
+</dd>
+</dl>
 <p>This keyword supports extracting a file from zip, tar and tar.gz archives.</p>
 <p>By default file is extracted into current working directory,
 but <cite>path</cite> argument can be set to define extraction path.</p>
@@ -380,22 +390,17 @@ but <cite>path</cite> argument can be set to define extraction path.</p>
 <span class="c">Extract File From Archive</span><span class="p">    </span><span class="c">background.png</span><span class="p">  </span><span class="c">images.tar.gz</span><span class="p">  </span><span class="c">${CURDIR}${/}extracted</span><span class="p"></span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>path</em>) – name of the file to extract</p></li>
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – filename of the archive</p></li>
-<li><p><strong>(</strong><strong>str</strong><strong>)</strong> – filepath to extract file into,
-default is current working directory</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Archive.Archive.get_archive_info">
 <code class="sig-name descname">get_archive_info</code><span class="sig-paren">(</span><em class="sig-param">archive_name: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Archive.Archive.get_archive_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get information about the archive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>archive_name</strong> – filename of the archive</p>
+</dd>
+</dl>
 <p>Returns following file attributes in a dictionary:</p>
 <ul class="simple">
 <li><p>filename</p></li>
@@ -408,17 +413,17 @@ default is current working directory</p></li>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{archiveinfo}</span><span class="p">   </span><span class="c">Get Archive Info</span><span class="p">    </span><span class="c">myfiles.zip</span><span class="p"></span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>archive_name</em>) – filename of the archive</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Archive.Archive.list_archive">
 <code class="sig-name descname">list_archive</code><span class="sig-paren">(</span><em class="sig-param">archive_name: str</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Archive.Archive.list_archive" title="Permalink to this definition">¶</a></dt>
 <dd><p>List files in an archive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>archive_name</strong> – filename of the archive</p>
+</dd>
+</dl>
 <p>Returns list of file, where each file in a list is a dictionary
 with following attributes:</p>
 <ul class="simple">
@@ -436,11 +441,6 @@ with following attributes:</p>
 <span class="c">END</span><span class="p"></span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>archive_name</em>) – filename of the archive</p>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>

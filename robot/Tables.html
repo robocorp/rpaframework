@@ -342,7 +342,7 @@ manipulation operations.</p>
 <dt class="field-even">Create Table</dt>
 <dd class="field-even"><dl class="field-list simple">
 <dt class="field-odd">Arguments</dt>
-<dd class="field-odd"><p>data=None, trim=False</p>
+<dd class="field-odd"><p>data=None, trim=False, columns=None, index=None</p>
 </dd>
 </dl>
 <p>Create Table object from data.</p>
@@ -372,6 +372,14 @@ list of lists, list of dicts, dict of lists.</p>
 </dd>
 </dl>
 <p>Return all rows where the column values match the given condition.</p>
+</dd>
+<dt class="field-even">Find Table Rows</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, column, value, as_list=False</p>
+</dd>
+</dl>
+<p>Find a row in the table by a given column value.</p>
 </dd>
 <dt class="field-even">Get Table Cell</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -420,6 +428,74 @@ list of lists, list of dicts, dict of lists.</p>
 </dd>
 </dl>
 <p>Group table by <cite>column</cite> and return a list of grouped Tables.</p>
+</dd>
+<dt class="field-even">Merge Tables</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>*tables, index=None</p>
+</dd>
+</dl>
+<p>Create a union of two tables and their contents.</p>
+<p>By default rows from all tables are appended one after the other.
+Optionally a column name can be given with <code class="docutils literal notranslate"><span class="pre">index</span></code>, which is
+used to merge rows together.</p>
+<p>Example:</p>
+<p>For instance, a <code class="docutils literal notranslate"><span class="pre">name</span></code> column could be used to identify
+unique rows and the merge operation should overwrite values
+instead of appending multiple copies of the same name.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Price</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Egg</p></td>
+<td><p>10.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cheese</p></td>
+<td><p>15.0</p></td>
+</tr>
+<tr class="row-even"><td><p>Ham</p></td>
+<td><p>20.0</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Stock</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Egg</p></td>
+<td><p>12.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cheese</p></td>
+<td><p>99.0</p></td>
+</tr>
+<tr class="row-even"><td><p>Ham</p></td>
+<td><p>0.0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${products}=</span><span class="p">    </span><span class="c">Merge tables</span><span class="p">    </span><span class="c">${prices}</span><span class="p">    </span><span class="c">${stock}</span><span class="p">    </span><span class="c">index=Name</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${product}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{products}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log many</span><span class="p"></span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">Product: ${product}[Name]</span><span class="p"></span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">Price: ${product}[Price]</span><span class="p"></span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">Stock: ${product}[Stock]</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
 </dd>
 <dt class="field-even">Pop Table Column</dt>
 <dd class="field-even"><dl class="field-list simple">
@@ -478,6 +554,14 @@ name as <cite>None</cite> will be use previous value.</p>
 </dd>
 </dl>
 <p>Set existing column as index for rows.</p>
+</dd>
+<dt class="field-even">Set Row As Column Names</dt>
+<dd class="field-even"><dl class="field-list simple">
+<dt class="field-odd">Arguments</dt>
+<dd class="field-odd"><p>table, index</p>
+</dd>
+</dl>
+<p>Set existing row as names for columns.</p>
 </dd>
 <dt class="field-even">Set Table Cell</dt>
 <dd class="field-even"><dl class="field-list simple">

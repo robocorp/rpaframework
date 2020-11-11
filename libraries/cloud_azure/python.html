@@ -429,20 +429,6 @@ is set to 9.5 minutes = 570.0 seconds</p>
 <dt id="RPA.Cloud.Azure.ServiceComputerVision.vision_analyze">
 <code class="sig-name descname">vision_analyze</code><span class="sig-paren">(</span><em class="sig-param">image_file: str = None</em>, <em class="sig-param">image_url: str = None</em>, <em class="sig-param">visual_features: str = None</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Azure.ServiceComputerVision.vision_analyze" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identify features in the image</p>
-<p>See <a class="reference external" href="https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga#noqa:E501">Computer Vision API</a> for valid feature names and their explanations:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Adult</p></li>
-<li><p>Brands</p></li>
-<li><p>Categories</p></li>
-<li><p>Color</p></li>
-<li><p>Description</p></li>
-<li><p>Faces</p></li>
-<li><p>ImageType</p></li>
-<li><p>Objects</p></li>
-<li><p>Tags</p></li>
-</ul>
-</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -457,6 +443,18 @@ for example. “Categories,Description,Color”</p></li>
 <dd class="field-even"><p>analysis in json format</p>
 </dd>
 </dl>
+<p>See <a class="reference external" href="https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga">Computer Vision API</a> for valid feature names and their explanations:</p>
+<ul class="simple">
+<li><p>Adult</p></li>
+<li><p>Brands</p></li>
+<li><p>Categories</p></li>
+<li><p>Color</p></li>
+<li><p>Description</p></li>
+<li><p>Faces</p></li>
+<li><p>ImageType</p></li>
+<li><p>Objects</p></li>
+<li><p>Tags</p></li>
+</ul>
 </dd></dl>
 
 <dl class="method">
@@ -524,24 +522,6 @@ for example. “Categories,Description,Color”</p></li>
 <dt id="RPA.Cloud.Azure.ServiceFace.detect_face">
 <code class="sig-name descname">detect_face</code><span class="sig-paren">(</span><em class="sig-param">image_file: str = None</em>, <em class="sig-param">image_url: str = None</em>, <em class="sig-param">face_attributes: str = None</em>, <em class="sig-param">face_landmarks: bool = False</em>, <em class="sig-param">recognition_model: str = 'recognition_02'</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Azure.ServiceFace.detect_face" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect facial attributes in the image</p>
-<p>Read more about <cite>face_attributes</cite> at <a class="reference external" href="https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection#noqa:E501">Face detection explained</a>:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>age</p></li>
-<li><p>gender</p></li>
-<li><p>smile</p></li>
-<li><p>facialHair</p></li>
-<li><p>headPose</p></li>
-<li><p>glasses</p></li>
-<li><p>emotion</p></li>
-<li><p>hair</p></li>
-<li><p>makeup</p></li>
-<li><p>accessories</p></li>
-<li><p>blur</p></li>
-<li><p>exposure</p></li>
-<li><p>nouse</p></li>
-</ul>
-</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -560,6 +540,22 @@ are “recognition_01” or “recognition_02”, default is “recognition_02�
 <dd class="field-even"><p>analysis in json format</p>
 </dd>
 </dl>
+<p>Read more about <cite>face_attributes</cite> at <a class="reference external" href="https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection">Face detection explained</a>:</p>
+<ul class="simple">
+<li><p>age</p></li>
+<li><p>gender</p></li>
+<li><p>smile</p></li>
+<li><p>facialHair</p></li>
+<li><p>headPose</p></li>
+<li><p>glasses</p></li>
+<li><p>emotion</p></li>
+<li><p>hair</p></li>
+<li><p>makeup</p></li>
+<li><p>accessories</p></li>
+<li><p>blur</p></li>
+<li><p>exposure</p></li>
+<li><p>nouse</p></li>
+</ul>
 </dd></dl>
 
 <dl class="method">
@@ -606,7 +602,6 @@ are “recognition_01” or “recognition_02”, default is “recognition_02�
 <dt id="RPA.Cloud.Azure.ServiceSpeech.list_supported_voices">
 <code class="sig-name descname">list_supported_voices</code><span class="sig-paren">(</span><em class="sig-param">locale: str = None</em>, <em class="sig-param">neural_only: bool = False</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceSpeech.list_supported_voices" title="Permalink to this definition">¶</a></dt>
 <dd><p>List supported voices for Azure API Speech Services.</p>
-<p>Available voice selection might differ between regions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -620,14 +615,13 @@ are “recognition_01” or “recognition_02”, default is “recognition_02�
 <dd class="field-even"><p>voices in json</p>
 </dd>
 </dl>
+<p>Available voice selection might differ between regions.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Azure.ServiceSpeech.text_to_speech">
 <code class="sig-name descname">text_to_speech</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">language: str = 'en-US'</em>, <em class="sig-param">name: str = 'en-US-AriaRUS'</em>, <em class="sig-param">gender: str = 'FEMALE'</em>, <em class="sig-param">encoding: str = 'MP3'</em>, <em class="sig-param">neural_voice_style: Any = None</em>, <em class="sig-param">target_file: str = 'synthesized.mp3'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Azure.ServiceSpeech.text_to_speech" title="Permalink to this definition">¶</a></dt>
 <dd><p>Synthesize speech synchronously</p>
-<p>Neural voices are only supported for Speech resources created in
-East US, South East Asia, and West Europe regions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -646,6 +640,8 @@ defaults to “synthesized.mp3”</p></li>
 <dd class="field-even"><p>synthesized output in bytes</p>
 </dd>
 </dl>
+<p>Neural voices are only supported for Speech resources created in
+East US, South East Asia, and West Europe regions.</p>
 </dd></dl>
 
 </dd></dl>

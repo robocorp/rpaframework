@@ -847,10 +847,6 @@ Does not attempt to decode the content in any way.</p>
 <dt id="RPA.FileSystem.FileSystem.run_keyword_if_file_exists">
 <code class="sig-name descname">run_keyword_if_file_exists</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">keyword</em>, <em class="sig-param">*args</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.FileSystem.FileSystem.run_keyword_if_file_exists" title="Permalink to this definition">¶</a></dt>
 <dd><p>If file exists at <cite>path</cite>, execute given keyword with arguments.</p>
-<p><strong>Example</strong></p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Run keyword if file exists</span><span class="p">    </span><span class="c">orders.xlsx</span><span class="p">    </span><span class="c">Process orders</span><span class="p"></span>
-</pre></div>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -860,6 +856,10 @@ Does not attempt to decode the content in any way.</p>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Run keyword if file exists</span><span class="p">    </span><span class="c">orders.xlsx</span><span class="p">    </span><span class="c">Process orders</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">

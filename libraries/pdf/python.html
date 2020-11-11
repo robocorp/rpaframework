@@ -281,8 +281,6 @@ template file.</p>
 <dt id="RPA.PDF.PDF.add_image_to_pdf">
 <code class="sig-name descname">add_image_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">imagefile</em>, <em class="sig-param">source=None</em>, <em class="sig-param">target=None</em>, <em class="sig-param">coverage=0.2</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.add_image_to_pdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add image to PDF which can be new or existing PDF.</p>
-<p>Result will be always written to <cite>target_pdf</cite> so that needs
-to be given for the keyword.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -297,6 +295,8 @@ active PDF</p></li>
 <dd class="field-even"><p><strong>ValueError</strong> – [description]</p>
 </dd>
 </dl>
+<p>Result will be always written to <cite>target_pdf</cite> so that needs
+to be given for the keyword.</p>
 </dd></dl>
 
 <dl class="method">
@@ -431,7 +431,6 @@ to <cite>output_directory</cite></p></li>
 <dt id="RPA.PDF.PDF.extract_pages_from_pdf">
 <code class="sig-name descname">extract_pages_from_pdf</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">target_pdf: str = None</em>, <em class="sig-param">pages: Any = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.extract_pages_from_pdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract pages from source PDF and save to target PDF document.</p>
-<p>Page numbers starting from 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -443,6 +442,7 @@ if None then extracts all pages</p></li>
 </ul>
 </dd>
 </dl>
+<p>Page numbers starting from 1.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -460,12 +460,12 @@ if None then extracts all pages</p></li>
 <dt id="RPA.PDF.PDF.get_all_figures">
 <code class="sig-name descname">get_all_figures</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.PDF.PDF.get_all_figures" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return all figures in the PDF document.</p>
-<p>PDF needs to be parsed before elements can be found.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>dictionary of figures divided into pages</p>
 </dd>
 </dl>
+<p>PDF needs to be parsed before elements can be found.</p>
 </dd></dl>
 
 <dl class="method">
@@ -486,9 +486,6 @@ if None then extracts all pages</p></li>
 <dt id="RPA.PDF.PDF.get_input_fields">
 <code class="sig-name descname">get_input_fields</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">replace_none_value: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.PDF.PDF.get_input_fields" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get input fields in the PDF.</p>
-<p>Stores input fields internally so that they can be used without
-parsing PDF again.</p>
-<p>Parameter <cite>replace_none_value</cite> is for convience to visualize fields.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -501,6 +498,9 @@ defaults to False</p></li>
 <dd class="field-even"><p>dictionary of input key values or <cite>None</cite></p>
 </dd>
 </dl>
+<p>Stores input fields internally so that they can be used without
+parsing PDF again.</p>
+<p>Parameter <cite>replace_none_value</cite> is for convience to visualize fields.</p>
 </dd></dl>
 
 <dl class="method">
@@ -538,7 +538,6 @@ defaults to False</p></li>
 <dt id="RPA.PDF.PDF.get_text_from_pdf">
 <code class="sig-name descname">get_text_from_pdf</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">pages: Any = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.PDF.PDF.get_text_from_pdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get text from set of pages in source PDF document.</p>
-<p>PDF needs to be parsed before text can be read.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -550,6 +549,7 @@ defaults to False</p></li>
 <dd class="field-even"><p>dictionary of pages and their texts</p>
 </dd>
 </dl>
+<p>PDF needs to be parsed before text can be read.</p>
 </dd></dl>
 
 <dl class="method">
@@ -683,7 +683,6 @@ default <cite>True</cite></p></li>
 <dt id="RPA.PDF.PDF.open_pdf_document">
 <code class="sig-name descname">open_pdf_document</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.PDF.PDF.open_pdf_document" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open PDF document.</p>
-<p>Also opens file for reading.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>source_pdf</strong> – filepath to the source pdf</p>
@@ -692,6 +691,7 @@ default <cite>True</cite></p></li>
 <dd class="field-even"><p><strong>ValueError</strong> – if PDF is already open</p>
 </dd>
 </dl>
+<p>Also opens file for reading.</p>
 </dd></dl>
 
 <dl class="method">
@@ -885,9 +885,6 @@ using modified PDF reader</p></li>
 <dt id="RPA.PDF.PDF.set_field_value">
 <code class="sig-name descname">set_field_value</code><span class="sig-paren">(</span><em class="sig-param">field_name: str</em>, <em class="sig-param">value: Any</em>, <em class="sig-param">save: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.PDF.PDF.set_field_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set value for field with given name.</p>
-<p>Tries to match on field identifier and its label.</p>
-<p>Exception is thrown if field can’t be found or more than 1 field matches
-the given <cite>field_name</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -896,6 +893,9 @@ the given <cite>field_name</cite>.</p>
 </ul>
 </dd>
 </dl>
+<p>Tries to match on field identifier and its label.</p>
+<p>Exception is thrown if field can’t be found or more than 1 field matches
+the given <cite>field_name</cite>.</p>
 </dd></dl>
 
 <dl class="method">

@@ -129,15 +129,16 @@ Keywords
 
   Listener method for keyword end.
 
+
   If `name` exists in the protected keywords list then log level is
   restored back to level it was before settings to NONE.
-
 
 :Mute Run On Failure:
   :Arguments: keywords: typing.Any = None, optional_keyword_to_run: str = None
 
   Set keywords which should not execute `SeleniumLibrary`
   default behaviour of running keyword on failure.
+
 
   Keyword names do not need to be full names of keywords, ie. all keywords
   matching even partially will be affected. `Run Keyword` would match all
@@ -151,7 +152,6 @@ Keywords
   If `optional_keyword_to_run` is not given then nothing is done
   on failure, but this can be set to override `SeleniumLibrary`
   default behaviour for a set of keywords.
-
 
 :Only Info Level:
   :Arguments: names: typing.Any = None
@@ -170,6 +170,6 @@ Keywords
 
   Listener method for keyword start.
 
+
   If `name` exists in the protected keywords list then log level is
   temporarily set to NONE.
-

@@ -120,7 +120,8 @@ Keywords
 
   Add given file to work item.
 
-  NOTE: Files are not uploaded before work item is saved
+
+  **NOTE**: Files are not uploaded before work item is saved
 
   Example:
 
@@ -129,11 +130,11 @@ Keywords
       Add work item file    output.xls
       Save work item
 
-
 :Add Work Item Files:
   :Arguments: pattern
 
   Add all files that match given pattern to work item.
+
 
   Example:
 
@@ -141,7 +142,6 @@ Keywords
 
       Add work item files    %{ROBOT_ROOT}/generated/*.csv
       Save work item
-
 
 :Clear Work Item:
   Remove all data in the current work item.
@@ -158,6 +158,7 @@ Keywords
 
   Delete variable(s) from the current work item.
 
+
   Example:
 
   .. code-block:: robotframework
@@ -165,12 +166,12 @@ Keywords
       Delete work item variables    username    email
       Save work item
 
-
 :Get Work Item File:
   :Arguments: name, path=None
 
   Get attached file from work item to disk.
   Returns the absolute path to the created file.
+
 
   Example:
 
@@ -179,12 +180,12 @@ Keywords
       ${path}=    Get work item file    input.xls
       Open workbook    ${path}
 
-
 :Get Work Item Files:
   :Arguments: pattern, dirname=None
 
   Get files attached to work item that match given pattern.
   Returns a list of absolute paths to the downloaded files.
+
 
   Example:
 
@@ -194,7 +195,6 @@ Keywords
       FOR  ${path}  IN  @{paths}
           Handle customer file    ${path}
       END
-
 
 :Get Work Item Payload:
   Get the full JSON payload for a work item.
@@ -209,18 +209,18 @@ Keywords
       Log    Entire payload as dictionary: ${payload}
 
 :Get Work Item Variable:
-  :Arguments: name, default=<object object at 0x7fd6b2220dd0>
+  :Arguments: name, default=<object object at 0x7f40455b7fd0>
 
   Return a single variable value from the work item,
   or default value if defined and key does not exist.
   If key does not exist and default is not defined, raises `KeyError`.
+
 
   Example:
 
   .. code-block:: robotframework
 
       ${username}=    Get work item variable    username    default=guest
-
 
 :Get Work Item Variables:
   Read all variables from the current work item and
@@ -258,9 +258,9 @@ Keywords
 
   Load work item for reading/writing.
 
+
   **NOTE**: Currently only one work item per execution is supported
             by Robocorp Cloud, which should be loaded automatically.
-
 
 :Load Work Item From Environment:
   Load current work item defined by the runtime environment.
@@ -275,7 +275,8 @@ Keywords
 
   Remove attached file from work item.
 
-  NOTE: Files are not deleted before work item is saved
+
+  **NOTE**: Files are not deleted before work item is saved
 
   Example:
 
@@ -284,11 +285,11 @@ Keywords
       Remove work item file    input.xls
       Save work item
 
-
 :Remove Work Item Files:
   :Arguments: pattern, missing_ok=True
 
   Removes files attached to work item that match given pattern.
+
 
   Example:
 
@@ -296,7 +297,6 @@ Keywords
 
       Remove work item files    *.xlsx
       Save work item
-
 
 :Save Work Item:
   Save the current data in the work item. If not saved,
@@ -319,6 +319,7 @@ Keywords
 
   Set the full JSON payload for a work item.
 
+
   **NOTE**: Most use cases should prefer higher-level keywords.
 
   Example:
@@ -328,11 +329,11 @@ Keywords
       ${output}=    Create dictionary    url=example.com    username=Mark
       Set work item payload    ${output}
 
-
 :Set Work Item Variable:
   :Arguments: name, value
 
   Set a single variable value in the current work item.
+
 
   Example:
 
@@ -341,11 +342,11 @@ Keywords
       Set work item variable    username    MarkyMark
       Save work item
 
-
 :Set Work Item Variables:
   :Arguments: \*\*kwargs
 
   Set multiple variables in the current work item.
+
 
   Example:
 
@@ -353,4 +354,3 @@ Keywords
 
       Set work item variables    username=MarkyMark    email=mark@example.com
       Save work item
-

@@ -357,14 +357,6 @@ received time.</p>
 <dt id="RPA.Email.Exchange.Exchange.move_messages">
 <code class="sig-name descname">move_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">source: str = None</em>, <em class="sig-param">target: str = None</em>, <em class="sig-param">contains: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.move_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move message(s) from source folder to target folder</p>
-<p>Criterion examples:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>subject:my message subject</p></li>
-<li><p>body:something in body</p></li>
-<li><p>sender:sender&#64;domain.com</p></li>
-</ul>
-</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -379,6 +371,12 @@ and not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>
 <dd class="field-even"><p>boolean result of operation, True if 1+ items were moved else False</p>
 </dd>
 </dl>
+<p>Criterion examples:</p>
+<ul class="simple">
+<li><p>subject:my message subject</p></li>
+<li><p>body:something in body</p></li>
+<li><p>sender:sender&#64;domain.com</p></li>
+</ul>
 </dd></dl>
 
 <dl class="method">
@@ -403,9 +401,6 @@ and not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>
 <dt id="RPA.Email.Exchange.Exchange.send_message">
 <code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">recipients: str</em>, <em class="sig-param">subject: str = ''</em>, <em class="sig-param">body: str = ''</em>, <em class="sig-param">attachments: str = None</em>, <em class="sig-param">html: bool = False</em>, <em class="sig-param">images: str = None</em>, <em class="sig-param">cc: str = None</em>, <em class="sig-param">bcc: str = None</em>, <em class="sig-param">save: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.send_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keyword for sending message through connected Exchange account.</p>
-<p>Email addresses can be prefixed with <cite>ex:</cite> to indicate Exchange
-account address.</p>
-<p>Recipients is <code class="docutils literal notranslate"><span class="pre">required</span></code> parameter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -422,6 +417,9 @@ defaults to False</p></li>
 </ul>
 </dd>
 </dl>
+<p>Email addresses can be prefixed with <code class="docutils literal notranslate"><span class="pre">ex:</span></code> to indicate an Exchange
+account address.</p>
+<p>Recipients is a <cite>required</cite> parameter.</p>
 </dd></dl>
 
 <dl class="method">

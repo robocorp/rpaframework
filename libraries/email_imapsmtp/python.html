@@ -295,7 +295,6 @@ the base image name given with the <code class="docutils literal notranslate"><s
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize">
 <code class="sig-name descname">authorize</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">smtp_port: int = None</em>, <em class="sig-param">imap_port: int = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorize user to SMTP and IMAP servers.</p>
-<p>Will use separately set credentials or those given in keyword call.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -308,6 +307,7 @@ the base image name given with the <code class="docutils literal notranslate"><s
 </ul>
 </dd>
 </dl>
+<p>Will use separately set credentials or those given in keyword call.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Authorize</span><span class="p">    </span><span class="c">${username}</span><span class="p">   </span><span class="c">${password}</span><span class="p">  </span><span class="c">smtp_server=smtp.gmail.com</span><span class="p">  </span><span class="c">smtp_port=587</span><span class="p"></span>
 </pre></div>
@@ -318,9 +318,6 @@ the base image name given with the <code class="docutils literal notranslate"><s
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize_imap">
 <code class="sig-name descname">authorize_imap</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">imap_port: int = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_imap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorize to IMAP server.</p>
-<p>Can be called without giving any parameters if library
-has been initialized with necessary information and/or
-keyword <code class="docutils literal notranslate"><span class="pre">set_credentials</span></code> has been used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -331,6 +328,9 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </ul>
 </dd>
 </dl>
+<p>Can be called without giving any parameters if library
+has been initialized with necessary information and/or
+keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Credentials</span></code> has been called.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Authorize IMAP</span><span class="p">    </span><span class="c">${username}</span><span class="p">   </span><span class="c">${password}</span><span class="p">  </span><span class="c">imap.gmail.com</span><span class="p">  </span><span class="c">993</span><span class="p"></span>
 </pre></div>
@@ -341,9 +341,6 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize_smtp">
 <code class="sig-name descname">authorize_smtp</code><span class="sig-paren">(</span><em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">smtp_port: int = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.authorize_smtp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Authorize to SMTP server.</p>
-<p>Can be called without giving any parameters if library
-has been initialized with necessary information and/or
-keyword <code class="docutils literal notranslate"><span class="pre">set_credentials</span></code> has been used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -354,6 +351,9 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 </ul>
 </dd>
 </dl>
+<p>Can be called without giving any parameters if library
+has been initialized with necessary information and/or
+keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Credentials</span></code> has been called.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Authorize SMTP</span><span class="p">    </span><span class="c">${username}</span><span class="p">   </span><span class="c">${password}</span><span class="p">  </span><span class="c">smtp.gmail.com</span><span class="p">  </span><span class="c">587</span><span class="p"></span>
 </pre></div>
@@ -400,7 +400,6 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.delete_message">
 <code class="sig-name descname">delete_message</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.delete_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete single message from server based on criterion.</p>
-<p>If criterion does not return exactly 1 message then delete is not done.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>criterion</strong> – filter messages based on this, defaults to “”</p>
@@ -409,6 +408,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">set_credent
 <dd class="field-even"><p>True if success, False if not</p>
 </dd>
 </dl>
+<p>If criterion does not return exactly 1 message then delete is not done.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Delete Message</span><span class="p">  </span><span class="c">SUBJECT &quot;Greetings RPA developer&quot;</span><span class="p"></span>
 </pre></div>
@@ -640,8 +640,6 @@ with attachment files.</p>
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.select_folder">
 <code class="sig-name descname">select_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = 'INBOX'</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.select_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select folder by name</p>
-<p>Returns number of messages in the folder or
-exception if folder does not exist on the server.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>folder_name</strong> – name of the folder to select</p>
@@ -650,6 +648,8 @@ exception if folder does not exist on the server.</p>
 <dd class="field-even"><p>message count in the selected folder</p>
 </dd>
 </dl>
+<p>Returns number of messages in the folder or
+exception if folder does not exist on the server.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Select Folder</span><span class="p">   </span><span class="c">subfolder</span><span class="p"></span>
 </pre></div>
@@ -660,13 +660,6 @@ exception if folder does not exist on the server.</p>
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.send_message">
 <code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">sender: str</em>, <em class="sig-param">recipients: str</em>, <em class="sig-param">subject: str = ''</em>, <em class="sig-param">body: str = ''</em>, <em class="sig-param">attachments: str = None</em>, <em class="sig-param">html: bool = False</em>, <em class="sig-param">images: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send SMTP email</p>
-<dl class="simple">
-<dt>Valid sender values:</dt><dd><ul class="simple">
-<li><p>First Lastname &lt;<a class="reference external" href="mailto:address&#37;&#52;&#48;domain">address<span>&#64;</span>domain</a>&gt;</p></li>
-<li><p><a class="reference external" href="mailto:address&#37;&#52;&#48;domain">address<span>&#64;</span>domain</a></p></li>
-</ul>
-</dd>
-</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -680,6 +673,11 @@ exception if folder does not exist on the server.</p>
 </ul>
 </dd>
 </dl>
+<p>Valid sender values:</p>
+<ul class="simple">
+<li><p>First Lastname &lt;<a class="reference external" href="mailto:address&#37;&#52;&#48;domain">address<span>&#64;</span>domain</a>&gt;</p></li>
+<li><p><a class="reference external" href="mailto:address&#37;&#52;&#48;domain">address<span>&#64;</span>domain</a></p></li>
+</ul>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Send Message</span><span class="p">  </span><span class="c">sender@domain.com</span><span class="p">  </span><span class="c">recipient@domain.com</span><span class="p"></span>
 <span class="c">...</span><span class="p">           </span><span class="c">subject=Greetings Software Robot Developer</span><span class="p"></span>
@@ -694,9 +692,6 @@ exception if folder does not exist on the server.</p>
 <code class="sig-name descname">send_smtp_hello</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_smtp_hello" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send hello message to SMTP server.</p>
 <p>Required step when creating SMTP connection.</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Send SMTP Hello</span><span class="p"></span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">

@@ -88,8 +88,8 @@ Keywords
 
   Authorize user to SMTP and IMAP servers.
 
-  Will use separately set credentials or those given in keyword call.
 
+  Will use separately set credentials or those given in keyword call.
 
   Example:
 
@@ -102,10 +102,10 @@ Keywords
 
   Authorize to IMAP server.
 
+
   Can be called without giving any parameters if library
   has been initialized with necessary information and/or
-  keyword ``set_credentials`` has been used.
-
+  keyword ``Set Credentials`` has been called.
 
   Example:
 
@@ -118,10 +118,10 @@ Keywords
 
   Authorize to SMTP server.
 
+
   Can be called without giving any parameters if library
   has been initialized with necessary information and/or
-  keyword ``set_credentials`` has been used.
-
+  keyword ``Set Credentials`` has been called.
 
   Example:
 
@@ -158,8 +158,8 @@ Keywords
 
   Delete single message from server based on criterion.
 
-  If criterion does not return exactly 1 message then delete is not done.
 
+  If criterion does not return exactly 1 message then delete is not done.
 
   Example:
 
@@ -311,9 +311,9 @@ Keywords
 
   Select folder by name
 
+
   Returns number of messages in the folder or
   exception if folder does not exist on the server.
-
 
   Example:
 
@@ -326,10 +326,11 @@ Keywords
 
   Send SMTP email
 
-  Valid sender values:
-      - First Lastname <address@domain>
-      - address@domain
 
+  Valid sender values:
+
+  - First Lastname <address@domain>
+  - address@domain
 
   Example:
 
@@ -344,10 +345,6 @@ Keywords
   Send hello message to SMTP server.
 
   Required step when creating SMTP connection.
-
-  .. code-block:: robotframework
-
-      Send SMTP Hello
 
 :Set Credentials:
   :Arguments: account: str = None, password: str = None

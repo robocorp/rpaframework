@@ -346,8 +346,6 @@ log files.</p>
 <dt id="RPA.RobotLogListener.RobotLogListener.end_keyword">
 <code class="sig-name descname">end_keyword</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">attributes</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.end_keyword" title="Permalink to this definition">¶</a></dt>
 <dd><p>Listener method for keyword end.</p>
-<p>If <cite>name</cite> exists in the protected keywords list then log level is
-restored back to level it was before settings to NONE.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -356,6 +354,8 @@ restored back to level it was before settings to NONE.</p>
 </ul>
 </dd>
 </dl>
+<p>If <cite>name</cite> exists in the protected keywords list then log level is
+restored back to level it was before settings to NONE.</p>
 </dd></dl>
 
 <dl class="method">
@@ -363,6 +363,15 @@ restored back to level it was before settings to NONE.</p>
 <code class="sig-name descname">mute_run_on_failure</code><span class="sig-paren">(</span><em class="sig-param">keywords: Any = None</em>, <em class="sig-param">optional_keyword_to_run: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.mute_run_on_failure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set keywords which should not execute <cite>SeleniumLibrary</cite>
 default behaviour of running keyword on failure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keywords</strong> – list of keywords to mute</p></li>
+<li><p><strong>optional_keyword_to_run</strong> – name of the keyword to execute
+if keyword defined by <cite>keywords</cite> fail</p></li>
+</ul>
+</dd>
+</dl>
 <p>Keyword names do not need to be full names of keywords, ie. all keywords
 matching even partially will be affected. <cite>Run Keyword</cite> would match all
 <cite>BuiltIn</cite> library keywords (17 keywords in RF 3.2.1) and of course all
@@ -373,15 +382,6 @@ on failure.</p>
 <p>If <cite>optional_keyword_to_run</cite> is not given then nothing is done
 on failure, but this can be set to override <cite>SeleniumLibrary</cite>
 default behaviour for a set of keywords.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>keywords</strong> – list of keywords to mute</p></li>
-<li><p><strong>optional_keyword_to_run</strong> – name of the keyword to execute
-if keyword defined by <cite>keywords</cite> fail</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
@@ -410,8 +410,6 @@ if keyword defined by <cite>keywords</cite> fail</p></li>
 <dt id="RPA.RobotLogListener.RobotLogListener.start_keyword">
 <code class="sig-name descname">start_keyword</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">attributes</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.RobotLogListener.RobotLogListener.start_keyword" title="Permalink to this definition">¶</a></dt>
 <dd><p>Listener method for keyword start.</p>
-<p>If <cite>name</cite> exists in the protected keywords list then log level is
-temporarily set to NONE.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -420,6 +418,8 @@ temporarily set to NONE.</p>
 </ul>
 </dd>
 </dl>
+<p>If <cite>name</cite> exists in the protected keywords list then log level is
+temporarily set to NONE.</p>
 </dd></dl>
 
 </dd></dl>

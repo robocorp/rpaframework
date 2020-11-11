@@ -79,8 +79,11 @@ Keywords
 
   Wait for email matching `criterion` to arrive into mailbox.
 
+
   Possible wait criterias are: SUBJECT, SENDER and BODY
 
-  Examples:
-      - wait_for_message('SUBJECT:rpa task calling', timeout=300, interval=10)
+  Example:
 
+  .. code-block:: robotframework
+
+      Wait for message     SUBJECT:rpa task calling    timeout=300    interval=10

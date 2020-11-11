@@ -129,7 +129,7 @@ Keywords
   Add checkbox element
 
 
-  Example.
+  Example:
 
   .. code-block:: robotframework
 
@@ -145,7 +145,7 @@ Keywords
   Add dropdown element
 
 
-  Example.
+  Example:
 
   .. code-block:: robotframework
 
@@ -163,7 +163,7 @@ Keywords
 
   Read more of the filetypes in the library documentation.
 
-  Example.
+  Example:
 
   .. code-block:: robotframework
 
@@ -186,7 +186,7 @@ Keywords
   Add hidden input element
 
 
-  Example.
+  Example:
 
   .. code-block:: robotframework
 
@@ -200,7 +200,7 @@ Keywords
   Add radio button element
 
 
-  Example.
+  Example:
 
   .. code-block:: robotframework
 
@@ -213,7 +213,7 @@ Keywords
   Add submit element
 
 
-  Example.
+  Example:
 
   .. code-block:: robotframework
 
@@ -239,7 +239,7 @@ Keywords
   Add text input element
 
 
-  Example.
+  Example:
 
   .. code-block:: robotframework
 
@@ -252,7 +252,7 @@ Keywords
   Add textarea element
 
 
-  Example.
+  Example:
 
   .. code-block:: robotframework
 
@@ -266,7 +266,7 @@ Keywords
   Add h3 element into form
 
 
-  Example.
+  Example:
 
   .. code-block:: robotframework
 
@@ -279,7 +279,7 @@ Keywords
   Create new form
 
 
-  Example.
+  Example:
 
   .. code-block:: robotframework
 
@@ -292,7 +292,7 @@ Keywords
   Start server and show form. Waits for user response.
 
 
-  Example.
+  Example:
 
   .. code-block:: robotframework
 

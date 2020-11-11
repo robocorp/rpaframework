@@ -161,24 +161,24 @@ Keywords
 
   Detect facial attributes in the image
 
+
   Read more about `face_attributes` at `Face detection explained`_:
 
-      - age
-      - gender
-      - smile
-      - facialHair
-      - headPose
-      - glasses
-      - emotion
-      - hair
-      - makeup
-      - accessories
-      - blur
-      - exposure
-      - nouse
+  - age
+  - gender
+  - smile
+  - facialHair
+  - headPose
+  - glasses
+  - emotion
+  - hair
+  - makeup
+  - accessories
+  - blur
+  - exposure
+  - nouse
 
-
-  .. _Face detection explained: https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection  # noqa: E501
+  .. _Face detection explained: https://docs.microsoft.com/en-us/azure/cognitive-services/face/concepts/face-detection
 
 :Detect Language:
   :Arguments: text: str, json_file: str = None
@@ -227,8 +227,8 @@ Keywords
 
   List supported voices for Azure API Speech Services.
 
-  Available voice selection might differ between regions.
 
+  Available voice selection might differ between regions.
 
 :Sentiment Analyze:
   :Arguments: text: str, language: str = None, json_file: str = None
@@ -247,29 +247,29 @@ Keywords
 
   Synthesize speech synchronously
 
+
   Neural voices are only supported for Speech resources created in
   East US, South East Asia, and West Europe regions.
-
 
 :Vision Analyze:
   :Arguments: image_file: str = None, image_url: str = None, visual_features: str = None, json_file: str = None
 
   Identify features in the image
 
+
   See `Computer Vision API`_ for valid feature names and their explanations:
 
-      - Adult
-      - Brands
-      - Categories
-      - Color
-      - Description
-      - Faces
-      - ImageType
-      - Objects
-      - Tags
+  - Adult
+  - Brands
+  - Categories
+  - Color
+  - Description
+  - Faces
+  - ImageType
+  - Objects
+  - Tags
 
-
-  .. _Computer Vision API: https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga  # noqa: E501
+  .. _Computer Vision API: https://westcentralus.dev.cognitive.microsoft.com/docs/services/computer-vision-v3-ga
 
 :Vision Describe:
   :Arguments: image_file: str = None, image_url: str = None, json_file: str = None

@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Desktop**: Fix macOS coordinate scaling when using image template locators for interaction
+
 6.5.0
 -----
 

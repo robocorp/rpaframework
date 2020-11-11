@@ -100,12 +100,12 @@ Keywords
 
   Move message(s) from source folder to target folder
 
+
   Criterion examples:
 
-      - subject:my message subject
-      - body:something in body
-      - sender:sender@domain.com
-
+  - subject:my message subject
+  - body:something in body
+  - sender:sender@domain.com
 
 :Rename Folder:
   :Arguments: oldname: str = None, newname: str = None, parent_folder: str = None
@@ -118,11 +118,11 @@ Keywords
 
   Keyword for sending message through connected Exchange account.
 
-  Email addresses can be prefixed with `ex:` to indicate Exchange
+
+  Email addresses can be prefixed with ``ex:`` to indicate an Exchange
   account address.
 
-  Recipients is ``required`` parameter.
-
+  Recipients is a `required` parameter.
 
 :Wait For Message:
   :Arguments: criterion: str = , timeout: float = 5.0, interval: float = 1.0, contains: bool = False
