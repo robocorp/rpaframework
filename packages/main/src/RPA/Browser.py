@@ -1668,7 +1668,7 @@ class Browser(SeleniumLibrary):
             )
             self.driver.execute_script(script)
 
-        def highlight():
+        def add_highlight_attribute_to_elements():
             script = "".join(
                 f'arguments[{idx}].setAttribute("{attribute_name}", "");'
                 for idx in range(len(elements))
@@ -1676,19 +1676,16 @@ class Browser(SeleniumLibrary):
             self.driver.execute_script(script, *elements)
 
         inject_style()
-        highlight()
+        add_highlight_attribute_to_elements()
 
     @keyword
     def clear_all_highlights(self):
         """Remove all highlighting made by ``Highlight Elements``."""
         attribute_name = "rpaframework-highlight"
 
-        def clear():
-            elements = self.driver.find_elements_by_css_selector(f"[{attribute_name}]")
-            script = "".join(
-                f'arguments[{idx}].removeAttribute("{attribute_name}");'
-                for idx in range(len(elements))
-            )
-            self.driver.execute_script(script, *elements)
-
-        clear()
+        elements = self.driver.find_elements_by_css_selector(f"[{attribute_name}]")
+        script = "".join(
+            f'arguments[{idx}].removeAttribute("{attribute_name}");'
+            for idx in range(len(elements))
+        )
+        self.driver.execute_script(script, *elements)
