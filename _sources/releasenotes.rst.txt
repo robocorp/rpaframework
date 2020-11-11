@@ -4,7 +4,17 @@ Release notes
 Upcoming release
 ----------------
 
-- Library **RPA.Desktop**: Fix macOS coordinate scaling when using image template locators for interaction
+6.6.0
+-----
+
+- Library **Tables**: Add various helper keywords:
+
+  - ``Merge Tables`` for merging tables, with an optional shared key
+  - ``Find Table Rows`` for finding rows with a specific column value
+  - ``Set Row As Column Names`` for setting an existing row as header
+
+- Library **Browser**: Add keyword ``Highlight Elements`` for highlighting elements that match a selector
+- Library **RPA.Desktop**: Fix macOS coordinate scaling when using image template locators
 
 6.5.0
 -----
