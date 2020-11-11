@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Python module API &mdash; RPA Framework  documentation</title>
+  <title>Python API &mdash; RPA Framework  documentation</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/custom.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -33,10 +34,11 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Cloud.AWS" href="../cloud_aws/index.html" />
-    <link rel="prev" title="Robot Framework API" href="../../robot/Browser.html" />
+    <link rel="prev" title="Browser" href="index.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -101,8 +103,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../archive/index.html">Archive</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Browser</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../robot/Browser.html">Robot Framework API</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Python module API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python API</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
@@ -188,7 +189,7 @@
         
           <li><a href="index.html">Browser</a> &raquo;</li>
         
-      <li>Python module API</li>
+      <li>Python API</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -207,8 +208,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="python-module-api">
-<h1>Python module API<a class="headerlink" href="#python-module-api" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="python-api">
+<h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-RPA.Browser">
 <span id="browser"></span><h2>Browser<a class="headerlink" href="#module-RPA.Browser" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -432,8 +433,8 @@ timeout syntax.</p>
 <p>Implicit wait specifies the maximum time how long Selenium waits when
 searching for elements. It can be set by using the <cite>Set Selenium Implicit
 Wait</cite> keyword or with the <code class="docutils literal notranslate"><span class="pre">implicit_wait</span></code> argument when <cite>importing</cite>
-the library. See [<a class="reference external" href="https://www.seleniumhq.org/docs/04_webdriver_advanced">https://www.seleniumhq.org/docs/04_webdriver_advanced</a>.jsp|
-Selenium documentation] for more information about this functionality.</p>
+the library. See [<a class="reference external" href="https://www.seleniumhq.org/docs/04_webdriver_advanced">https://www.seleniumhq.org/docs/04_webdriver_advanced</a>.jsp|Selenium documentation]
+for more information about this functionality.</p>
 <p>See <cite>time format</cite> below for supported syntax.</p>
 <p>== Selenium speed ==</p>
 <p>Selenium execution speed can be slowed down globally by using <cite>Set
@@ -525,6 +526,12 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 <div class="line-block">
 <div class="line">Attach Chrome Browser | port=9222 |</div>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Browser.clear_all_highlights">
+<code class="sig-name descname">clear_all_highlights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.clear_all_highlights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all highlighting made by <code class="docutils literal notranslate"><span class="pre">Highlight</span> <span class="pre">Elements</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -970,6 +977,22 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Browser.Browser.highlight_elements">
+<code class="sig-name descname">highlight_elements</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">width: str = '2px'</em>, <em class="sig-param">style: str = 'dotted'</em>, <em class="sig-param">color: str = 'blue'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Browser.highlight_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Highlight all matching elements by locator.</p>
+<p>Highlighing is done by adding a colored outline
+around the elements with CSS styling.</p>
+<p><code class="docutils literal notranslate"><span class="pre">locator</span></code>  element locator
+<code class="docutils literal notranslate"><span class="pre">width</span></code>    highlight outline width
+<code class="docutils literal notranslate"><span class="pre">style</span></code>    highlight outline style
+<code class="docutils literal notranslate"><span class="pre">color</span></code>    highlight outline color</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">Highlight Elements | xpath://h2 |</div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Browser.Browser.input_text_when_element_is_visible">
 <code class="sig-name descname">input_text_when_element_is_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Browser.input_text_when_element_is_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Input text into locator after it has become visible.</p>
@@ -1370,7 +1393,7 @@ set self.__traceback__ to tb and return self.</p>
         <a href="../cloud_aws/index.html" class="btn btn-neutral float-right" title="Cloud.AWS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../../robot/Browser.html" class="btn btn-neutral float-left" title="Robot Framework API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Browser" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -25,6 +25,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/custom.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -33,10 +34,11 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Robot Framework API" href="../../robot/Dialogs.html" />
-    <link rel="prev" title="Python module API" href="../desktop_windows/python.html" />
+    <link rel="next" title="Python API" href="python.html" />
+    <link rel="prev" title="Python API" href="../desktop_windows/python.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -110,8 +112,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Dialogs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../robot/Dialogs.html">Robot Framework API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="python.html">Python module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">Python API</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
@@ -207,208 +208,14 @@
             
   <div class="section" id="dialogs">
 <h1>Dialogs<a class="headerlink" href="#dialogs" title="Permalink to this headline">¶</a></h1>
-<div class="contents local topic" id="table-of-contents">
-<p class="topic-title">Table of Contents</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#description" id="id1">Description</a></p></li>
-<li><p><a class="reference internal" href="#examples" id="id2">Examples</a></p></li>
-<li><p><a class="reference internal" href="#api-documentation" id="id3">API Documentation</a></p></li>
-</ul>
-</div>
-<div class="section" id="description">
-<h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>The <cite>Dialogs</cite> library provides a way to ask for user input during executions
-through HTML forms. Form elements can be built with library keywords or they can
-be defined in a static JSON file.</p>
-<div class="section" id="how-the-library-works">
-<h3>How the library works<a class="headerlink" href="#how-the-library-works" title="Permalink to this headline">¶</a></h3>
-<p>The main keyword of the library is <code class="docutils literal notranslate"><span class="pre">Request</span> <span class="pre">Response</span></code> which works as follows:</p>
-<ol class="arabic simple">
-<li><p>It starts an HTTP server in the background</p></li>
-<li><p>The HTML form is generated either according to a JSON file or the
-keywords called during the task</p></li>
-<li><p>It opens a browser and shows the created form (The browser is opened with
-the <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Available</span> <span class="pre">Browser</span></code> keyword from the <code class="docutils literal notranslate"><span class="pre">RPA.Browser</span></code> library)</p></li>
-<li><p>Once the form is filled and submitted by the user, the server will process
-the response and extract the field values, which in turn are returned by the keyword</p></li>
-<li><p>In the end, the browser is closed and the HTTP server is stopped</p></li>
-</ol>
-<p><code class="docutils literal notranslate"><span class="pre">Request</span> <span class="pre">Response</span></code> can be invoked in two ways:</p>
-<ol class="arabic simple">
-<li><p>Without any parameters. This means that form shown is the one created
-by other library keywords. If no form elements have been added with
-keywords then the form will contain just one submit button. Form building
-must be started with the keyword <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Form</span></code>.</p></li>
-<li><p>Giving a path to a JSON file (using the parameter <strong>formspec</strong>) which
-specifies the elements that form should include.</p></li>
-</ol>
-<p>The keyword has optional parameters to specify form window <strong>width</strong> and <strong>height</strong>.
-The default size is 600px wide and 1000px high.</p>
-</div>
-<div class="section" id="setting-library-arguments">
-<h3>Setting library arguments<a class="headerlink" href="#setting-library-arguments" title="Permalink to this headline">¶</a></h3>
-<p>Library has arguments <code class="docutils literal notranslate"><span class="pre">server_port</span></code> and <code class="docutils literal notranslate"><span class="pre">stylesheet</span></code>. The <code class="docutils literal notranslate"><span class="pre">server_port</span></code> argument
-takes integer value, which defines port where HTTP server will be run. By default port is 8105.
-The <code class="docutils literal notranslate"><span class="pre">stylesheet</span></code> can be used to point CSS file, which will be used to modify style of form,
-which is shown to the user. Defaults to built-in Robocorp stylesheet.</p>
-</div>
-<div class="section" id="supported-element-types">
-<h3>Supported element types<a class="headerlink" href="#supported-element-types" title="Permalink to this headline">¶</a></h3>
-<p>As a bare minimum, the form is displayed with a submit button when the
-<code class="docutils literal notranslate"><span class="pre">Request</span> <span class="pre">Response</span></code> keyword is called.</p>
-<p>The supported input elements and their corresponding HTML tags are:</p>
-<ul class="simple">
-<li><p>form (<code class="docutils literal notranslate"><span class="pre">&lt;form&gt;</span></code>)</p></li>
-<li><p>title (<code class="docutils literal notranslate"><span class="pre">&lt;h3&gt;</span></code>)</p></li>
-<li><p>text (<code class="docutils literal notranslate"><span class="pre">&lt;p&gt;</span></code>)</p></li>
-<li><p>radiobutton  (<code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type='radio'&gt;</span></code>)</p></li>
-<li><p>checkbox (<code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type='checkbox'&gt;</span></code>)</p></li>
-<li><p>dropdown (<code class="docutils literal notranslate"><span class="pre">&lt;select&gt;</span></code>)</p></li>
-<li><p>textarea (<code class="docutils literal notranslate"><span class="pre">&lt;textarea&gt;</span></code>)</p></li>
-<li><p>textinput (<code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type='text'&gt;</span></code>)</p></li>
-<li><p>fileinput (<code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type='file'&gt;</span></code>)</p></li>
-<li><p>hiddeninput (<code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type='hidden'&gt;</span></code>)</p></li>
-<li><p>submit (<code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type='submit'&gt;</span></code>)</p></li>
-</ul>
-<p>An example JSON file which contains all possible form elements and their attributes:</p>
-<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;form&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;Give some additional information&quot;</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;textinput&quot;</span><span class="p">,</span> <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;What is your name ?&quot;</span><span class="p">,</span> <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;username&quot;</span><span class="p">},</span>
-    <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;hiddeninput&quot;</span><span class="p">,</span> <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;hiddendata&quot;</span><span class="p">,</span> <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;username&quot;</span><span class="p">},</span>
-    <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;What is your gender&quot;</span> <span class="p">},</span>
-    <span class="p">{</span>
-      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;radiobutton&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;question&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;male&quot;</span><span class="p">,</span> <span class="s2">&quot;female&quot;</span><span class="p">],</span>
-      <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;male&quot;</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;fileinput&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;myfileinput&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Give file inputs&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;myfileinput&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;filetypes&quot;</span><span class="p">:</span> <span class="s2">&quot;image/png, image/jpeg&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;target_directory&quot;</span><span class="p">:</span> <span class="s2">&quot;output&quot;</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;checkbox&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Select your weapons&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;checking&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;guns&quot;</span><span class="p">,</span> <span class="s2">&quot;swords&quot;</span><span class="p">,</span> <span class="s2">&quot;shields&quot;</span><span class="p">],</span>
-      <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;swords&quot;</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;textarea&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;freeword&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;free word&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;rows&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-      <span class="nt">&quot;cols&quot;</span><span class="p">:</span> <span class="mi">40</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;dropdown&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Select job&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;job&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;engineer&quot;</span><span class="p">,</span> <span class="s2">&quot;nurse&quot;</span><span class="p">,</span> <span class="s2">&quot;teacher&quot;</span><span class="p">],</span>
-      <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;teacher&quot;</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;submit&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;submitbutton&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;buttons&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;no&quot;</span><span class="p">]</span>
-    <span class="p">}</span>
-  <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="about-file-types">
-<h3>About file types<a class="headerlink" href="#about-file-types" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">File</span> <span class="pre">Input</span></code> keyword has parameter <code class="docutils literal notranslate"><span class="pre">filetypes</span></code>. Parameter sets filter
-for file types that can be uploaded via element. Parameter can be set to <code class="docutils literal notranslate"><span class="pre">filetypes=${EMPTY}</span></code>
-to accept all files. Multiple types are separated with comma <code class="docutils literal notranslate"><span class="pre">filetypes=image/jpeg,image/png</span></code>.</p>
-<p>Some common filetypes:</p>
-<ul class="simple">
-<li><p>image/* (all image types)</p></li>
-<li><p>audio/* (all audio types)</p></li>
-<li><p>video/* (all video types)</p></li>
-<li><p>application/pdf (PDFs)</p></li>
-<li><p>application/vnd.ms-excel (.xls, .xlsx)</p></li>
-</ul>
-<p>The list of all possible <a class="reference external" href="http://www.iana.org/assignments/media-types/media-types.xhtml">MIME-types</a>.</p>
-</div>
-</div>
-<div class="section" id="examples">
-<h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="robot-framework">
-<h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
-<p>Examples of creating forms through keywords and a JSON file:</p>
-<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Dialogs</span><span class="p"></span>
-
-<span class="gh">*** Keywords ***</span><span class="p"></span>
-<span class="gu">Ask Question From User By Form Built With Keywords</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Create Form</span><span class="p">     </span><span class="s">questions</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Add Text Input</span><span class="p">  </span><span class="s">label=What is your name?</span><span class="p">  </span><span class="s">name=username</span><span class="p"></span>
-<span class="p">    &amp;{</span><span class="nv">response</span><span class="p">}=    </span><span class="nf">Request Response</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Log</span><span class="p">             </span><span class="s">Username is &quot;</span><span class="p">${</span><span class="nv">response</span><span class="p">}[</span><span class="nv">username</span><span class="p">]</span><span class="s">&quot;</span><span class="p"></span>
-
-<span class="gu">Ask Question From User By Form Specified With JSON</span><span class="p"></span>
-<span class="p">    &amp;{</span><span class="nv">response</span><span class="p">}=    </span><span class="nf">Request Response</span><span class="p">  </span><span class="s">/path/to/myform.json</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Log</span><span class="p">             </span><span class="s">Username is &quot;</span><span class="p">${</span><span class="nv">response</span><span class="p">}[</span><span class="nv">username</span><span class="p">]</span><span class="s">&quot;</span><span class="p"></span>
-</pre></div>
-</td></tr></table></div>
-</div>
-<div class="section" id="python">
-<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
-<p>The library can also be used inside Python:</p>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Dialogs</span> <span class="kn">import</span> <span class="n">Dialogs</span>
-
-<span class="k">def</span> <span class="nf">ask_question_from_user</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">Dialogs</span><span class="p">()</span>
-    <span class="n">d</span><span class="o">.</span><span class="n">create_form</span><span class="p">(</span><span class="s1">&#39;questions&#39;</span><span class="p">)</span>
-    <span class="n">d</span><span class="o">.</span><span class="n">add_text_input</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">attribute</span><span class="p">)</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">request_response</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">response</span>
-
-<span class="n">response</span> <span class="o">=</span> <span class="n">ask_question_from_user</span><span class="p">(</span><span class="s1">&#39;What is your name ?&#39;</span><span class="p">,</span> <span class="s1">&#39;username&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Username is &#39;</span><span class="si">{</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-</div>
-<div class="section" id="api-documentation">
-<h2><a class="toc-backref" href="#id3">API Documentation</a><a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
-<p>See <a class="reference external" href="../../libdoc/RPA_Dialogs.html">libdoc documentation</a>.</p>
+<p>Request user input during executions.</p>
 <div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../robot/Dialogs.html">Robot Framework API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="python.html">Python module API</a></li>
-</ul>
 </div>
-</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<p>🔗 Direct link to <a class="reference external" href="../../libdoc/RPA_Dialogs.html">keyword documentation</a>.</p>
+<hr class="docutils" />
+<iframe scrolling="no" class="libdoc" src="../../libdoc/RPA_Dialogs.html" /></div>
 </div>
 
 
@@ -419,10 +226,10 @@ to accept all files. Multiple types are separated with comma <code class="docuti
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../robot/Dialogs.html" class="btn btn-neutral float-right" title="Robot Framework API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="python.html" class="btn btn-neutral float-right" title="Python API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../desktop_windows/python.html" class="btn btn-neutral float-left" title="Python module API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../desktop_windows/python.html" class="btn btn-neutral float-left" title="Python API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

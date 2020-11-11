@@ -2,67 +2,21 @@
 Outlook.Application
 ###################
 
-.. contents:: Table of Contents
-   :local:
-   :depth: 1
-
-***********
-Description
-***********
-
-`Outlook.Application` is a library for manipulating Outlook application.
-
-********
-Examples
-********
-
-Robot Framework
-===============
-
-.. code-block:: robotframework
-    :linenos:
-
-    *** Settings ***
-    Library                 RPA.Outlook.Application
-    Task Setup              Open Application
-    Suite Teardown          Quit Application
-
-    *** Variables ***
-    ${RECIPIENT}            address@domain.com
-
-    *** Tasks ***
-    Send message
-        Send Message       recipients=${RECIPIENT}
-        ...                subject=This is the subject
-        ...                body=This is the message body
-        ..                 attachments=approved.png
-
-Python
-======
-
-.. code-block:: python
-    :linenos:
-
-    from RPA.Outlook.Application import Application
-
-    def send_message():
-        app = Application()
-        app.open_application()
-        app.send_message(
-            recipients='EMAILADDRESS_1, EMAILADDRESS_2',
-            subject='email subject',
-            body='email body message',
-            attachments='../orders.csv'
-
-
-*****************
-API Documentation
-*****************
-
-See `libdoc documentation <../../libdoc/RPA_Outlook_Application.html>`_.
+Control the Outlook desktop application.
 
 .. toctree::
    :maxdepth: 1
+   :hidden:
 
-   ../../robot/Outlook/Application.rst
    python
+
+Keywords
+========
+
+🔗 Direct link to `keyword documentation <../../libdoc/RPA_Outlook_Application.html>`_.
+
+-------
+
+.. raw:: html
+
+   <iframe scrolling="no" class="libdoc" src="../../libdoc/RPA_Outlook_Application.html" />

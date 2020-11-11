@@ -5,7 +5,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:38",
+        "generated": "2020-11-11 16:15:54",
         "inits": [],
         "keywords": [
             {
@@ -103,7 +103,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:37",
+        "generated": "2020-11-11 16:15:54",
         "inits": [
             {
                 "name": "Init",
@@ -239,6 +239,14 @@
                 ],
                 "doc": "<p>Inputs the <code>file_path</code> into the file input field <code>locator</code>.</p>\n<p>This keyword is most often used to input files into upload forms. The keyword does not check <code>file_path</code> is the file or folder available on the machine where tests are executed. If the <code>file_path</code> points at a file and when using Selenium Grid, Selenium will <a href=\"https://seleniumhq.github.io/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.command.html?highlight=upload#selenium.webdriver.remote.command.Command.UPLOAD_FILE\">magically</a>, transfer the file from the machine where the tests are executed to the Selenium Grid node where the browser is running. Then Selenium will send the file path, from the nodes file system, to the browser.</p>\n<p>That <code>file_path</code> is not checked, is new in SeleniumLibrary 4.0.</p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Choose%20File\" class=\"name\">Choose File</a></td>\n<td>my_upload_field</td>\n<td>${CURDIR}/trades.csv</td>\n</tr>\n</table>",
                 "shortdoc": "Inputs the ``file_path`` into the file input field ``locator``.",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Clear All Highlights",
+                "args": [],
+                "doc": "<p>Remove all highlighting made by <code>Highlight Elements</code>.</p>",
+                "shortdoc": "Remove all highlighting made by ``Highlight Elements``.",
                 "tags": [],
                 "matched": true
             },
@@ -1224,6 +1232,19 @@
                 ],
                 "doc": "<p>Handles the current alert and returns its message.</p>\n<p>By default, the alert is accepted, but this can be controlled with the <code>action</code> argument that supports the following case-insensitive values:</p>\n<ul>\n<li><code>ACCEPT</code>: Accept the alert i.e. press <code>Ok</code>. Default.</li>\n<li><code>DISMISS</code>: Dismiss the alert i.e. press <code>Cancel</code>.</li>\n<li><code>LEAVE</code>: Leave the alert open.</li>\n</ul>\n<p>The <code>timeout</code> argument specifies how long to wait for the alert to appear. If it is not given, the global default <a href=\"#Timeout\" class=\"name\">timeout</a> is used instead.</p>\n<p>Examples:</p>\n<table border=\"1\">\n<tr>\n<td>Handle Alert</td>\n<td></td>\n<td></td>\n<td># Accept alert.</td>\n</tr>\n<tr>\n<td>Handle Alert</td>\n<td>action=DISMISS</td>\n<td></td>\n<td># Dismiss alert.</td>\n</tr>\n<tr>\n<td>Handle Alert</td>\n<td>timeout=10 s</td>\n<td></td>\n<td># Use custom timeout and accept alert.</td>\n</tr>\n<tr>\n<td>Handle Alert</td>\n<td>DISMISS</td>\n<td>1 min</td>\n<td># Use custom timeout and dismiss alert.</td>\n</tr>\n<tr>\n<td>${message} =</td>\n<td>Handle Alert</td>\n<td></td>\n<td># Accept alert and get its message.</td>\n</tr>\n<tr>\n<td>${message} =</td>\n<td>Handle Alert</td>\n<td>LEAVE</td>\n<td># Leave alert open and get its message.</td>\n</tr>\n</table>\n<p>New in SeleniumLibrary 3.0.</p>",
                 "shortdoc": "Handles the current alert and returns its message.",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Highlight Elements",
+                "args": [
+                    "locator: str",
+                    "width: str = 2px",
+                    "style: str = dotted",
+                    "color: str = blue"
+                ],
+                "doc": "<p>Highlight all matching elements by locator.</p>\n<p>Highlighing is done by adding a colored outline around the elements with CSS styling.</p>\n<p><code>locator</code>  element locator <code>width</code>    highlight outline width <code>style</code>    highlight outline style <code>color</code>    highlight outline color</p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td>Highlight Elements</td>\n<td><a href=\"xpath://h2\">xpath://h2</a></td>\n</tr>\n</table>",
+                "shortdoc": "Highlight all matching elements by locator.",
                 "tags": [],
                 "matched": true
             },
@@ -2601,7 +2622,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:38",
+        "generated": "2020-11-11 16:15:53",
         "inits": [
             {
                 "name": "Init",
@@ -2954,7 +2975,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:38",
+        "generated": "2020-11-11 16:15:55",
         "inits": [
             {
                 "name": "Init",
@@ -3172,7 +3193,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:40",
+        "generated": "2020-11-11 16:15:55",
         "inits": [
             {
                 "name": "Init",
@@ -3581,7 +3602,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:38",
+        "generated": "2020-11-11 16:15:53",
         "inits": [],
         "keywords": [
             {
@@ -3695,11 +3716,11 @@
     },
     "RPA.Desktop": {
         "name": "RPA.Desktop",
-        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>Desktop</cite> is a cross-platform library for navigating and interacting with\ndesktop environments. It can be used to automate applications through\nthe same interfaces that are available to human users.</p>\n<p>The library includes the following features:</p>\n<ul class=\"simple\">\n<li>Mouse and keyboard input emulation</li>\n<li>Starting and stopping applications</li>\n<li>Finding elements through image template matching</li>\n<li>Taking screenshots</li>\n<li>Clipboard management</li>\n</ul>\n<dl class=\"docutils\">\n<dt><strong>Note:</strong> Windows element selectors are not currently supported,</dt>\n<dd>and require the use of <tt class=\"docutils literal\">RPA.Desktop.Windows</tt></dd>\n</dl>\n<p><strong>Locating elements</strong></p>\n<p>To automate actions on the desktop, a robot needs to interact with various\ngraphical elements such as buttons or input fields. The positions of these\nelements can be found using a feature called <cite>locators</cite>.</p>\n<p>A locator describes the properties or features of an element. This information\ncan be later used to locate similar elements even when window positions or\nstates change.</p>\n<p>The currently supported locator types are:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"12%\" />\n<col width=\"21%\" />\n<col width=\"67%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Name</th>\n<th class=\"head\">Arguments</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>alias</td>\n<td>name (str)</td>\n<td>A named locator, the default.</td>\n</tr>\n<tr><td>image</td>\n<td>path (str)</td>\n<td>Image of an element that is matched to current screen content</td>\n</tr>\n<tr><td>coordinates</td>\n<td>x (int), y (int)</td>\n<td>Pixel coordinates as absolute position</td>\n</tr>\n<tr><td>offset</td>\n<td>x (int), y (int)</td>\n<td>Pixel coordinates relative to current mouse position</td>\n</tr>\n</tbody>\n</table>\n<p>A locator is defined by its type and arguments, divided by a colon.\nSome example usages are shown below. Note that the prefix for alias can\nbe omitted as its the default type.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Click</span><span class=\"p\">    </span><span class=\"c\">alias:SpareBin.Login</span><span class=\"p\">\n</span><span class=\"c\">Click</span><span class=\"p\">    </span><span class=\"c\">SpareBin.Login</span><span class=\"p\">\n\n</span><span class=\"c\">Move mouse</span><span class=\"p\">    </span><span class=\"c\">image:%{ROBOT_ROOT}/logo.png</span><span class=\"p\">\n</span><span class=\"c\">Move mouse</span><span class=\"p\">    </span><span class=\"c\">offset:200,0</span><span class=\"p\">\n</span><span class=\"c\">Click</span>\n</pre>\n<p><strong>Named locators</strong></p>\n<p>The library supports storing locators in a database, which contains\nall of the required fields and various bits of metadata. This enables\nhaving one source of truth, which can be updated if a website's or applications's\nUI changes. Robot Framework scripts can then only contain a reference\nto a stored locator by name.</p>\n<p>The main way to create named locators is with <a class=\"reference external\" href=\"https://robocorp.com/docs/product-manuals/robocorp-lab/robocorp-lab-overview\">Robocorp Lab</a>.</p>\n<p><strong>Keyboard and mouse</strong></p>\n<p>Keyboard keywords can emulate typing text, but also pressing various function keys.\nThe name of a key is case-insensitive and spaces will be converted to underscores,\ni.e. the key <tt class=\"docutils literal\">Page Down</tt> and <tt class=\"docutils literal\">page_down</tt> are equivalent.</p>\n<p>The following function keys are supported:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"16%\" />\n<col width=\"84%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Key</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>shift</td>\n<td>A generic Shift key. This is a modifier.</td>\n</tr>\n<tr><td>shift_l</td>\n<td>The left Shift key. This is a modifier.</td>\n</tr>\n<tr><td>shift_r</td>\n<td>The right Shift key. This is a modifier.</td>\n</tr>\n<tr><td>ctrl</td>\n<td>A generic Ctrl key. This is a modifier.</td>\n</tr>\n<tr><td>ctrl_l</td>\n<td>he left Ctrl key. This is a modifier.</td>\n</tr>\n<tr><td>ctrl_r</td>\n<td>The right Ctrl key. This is a modifier.</td>\n</tr>\n<tr><td>alt</td>\n<td>A generic Alt key. This is a modifier.</td>\n</tr>\n<tr><td>alt_l</td>\n<td>The left Alt key. This is a modifier.</td>\n</tr>\n<tr><td>alt_r</td>\n<td>The right Alt key. This is a modifier.</td>\n</tr>\n<tr><td>alt_gr</td>\n<td>The AltGr key. This is a modifier.</td>\n</tr>\n<tr><td>cmd</td>\n<td>A generic command button (Windows / Command / Super key). This may be a modifier.</td>\n</tr>\n<tr><td>cmd_l</td>\n<td>The left command button (Windows / Command / Super key). This may be a modifier.</td>\n</tr>\n<tr><td>cmd_r</td>\n<td>The right command button (Windows / Command / Super key). This may be a modifier.</td>\n</tr>\n<tr><td>up</td>\n<td>An up arrow key.</td>\n</tr>\n<tr><td>down</td>\n<td>A down arrow key.</td>\n</tr>\n<tr><td>left</td>\n<td>A left arrow key.</td>\n</tr>\n<tr><td>right</td>\n<td>A right arrow key.</td>\n</tr>\n<tr><td>enter</td>\n<td>The Enter or Return key.</td>\n</tr>\n<tr><td>space</td>\n<td>The Space key.</td>\n</tr>\n<tr><td>tab</td>\n<td>The Tab key.</td>\n</tr>\n<tr><td>backspace</td>\n<td>The Backspace key.</td>\n</tr>\n<tr><td>delete</td>\n<td>The Delete key.</td>\n</tr>\n<tr><td>esc</td>\n<td>The Esc key.</td>\n</tr>\n<tr><td>home</td>\n<td>The Home key.</td>\n</tr>\n<tr><td>end</td>\n<td>The End key.</td>\n</tr>\n<tr><td>page_down</td>\n<td>The Page Down key.</td>\n</tr>\n<tr><td>page_up</td>\n<td>The Page Up key.</td>\n</tr>\n<tr><td>caps_lock</td>\n<td>The Caps Lock key.</td>\n</tr>\n<tr><td>f1 to f20</td>\n<td>The function keys.</td>\n</tr>\n<tr><td>insert</td>\n<td>The Insert key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>menu</td>\n<td>The Menu key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>num_lock</td>\n<td>The Num Lock key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>pause</td>\n<td>The Pause / Break key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>print_screen</td>\n<td>The Print Screen key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>scroll_lock</td>\n<td>The Scroll Lock key. This may be undefined for some platforms.</td>\n</tr>\n</tbody>\n</table>\n<p>When controlling the mouse, there are different types of actions that can be\ndone. Same formatting rules as function keys apply. They are as follows:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"26%\" />\n<col width=\"74%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Action</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>click</td>\n<td>Click with left mouse button</td>\n</tr>\n<tr><td>left_click</td>\n<td>Click with left mouse button</td>\n</tr>\n<tr><td>double_click</td>\n<td>Double click with left mouse button</td>\n</tr>\n<tr><td>triple_click</td>\n<td>Triple click with left mouse button</td>\n</tr>\n<tr><td>right_click</td>\n<td>Click with right mouse button</td>\n</tr>\n</tbody>\n</table>\n<p>The supported mouse button types are <tt class=\"docutils literal\">left</tt>, <tt class=\"docutils literal\">right</tt>, and <tt class=\"docutils literal\">middle</tt>.</p>\n<p><strong>Examples*</strong></p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.Desktop</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Write entry in accounting</span><span class=\"p\">\n    [</span><span class=\"kn\">Arguments</span><span class=\"p\">]    ${</span><span class=\"nv\">entry</span><span class=\"p\">}\n    </span><span class=\"nf\">Open application</span><span class=\"p\">    </span><span class=\"s\">erp_client.exe</span><span class=\"p\">\n    </span><span class=\"nf\">Click</span><span class=\"p\">         </span><span class=\"s\">image:</span><span class=\"p\">%{</span><span class=\"nv\">ROBOT_ROOT</span><span class=\"p\">}</span><span class=\"s\">/images/create.png</span><span class=\"p\">\n    </span><span class=\"nf\">Type text</span><span class=\"p\">     ${</span><span class=\"nv\">entry</span><span class=\"p\">}\n    </span><span class=\"nf\">Press keys</span><span class=\"p\">    </span><span class=\"s\">ctrl</span><span class=\"p\">    </span><span class=\"s\">s</span><span class=\"p\">\n    </span><span class=\"nf\">Press keys</span><span class=\"p\">    </span><span class=\"s\">enter</span><span class=\"p\">\n    [</span><span class=\"kn\">Teardown</span><span class=\"p\">]    </span><span class=\"nf\">Close all applications</span>\n</pre>\n</div>\n</div>",
+        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>Desktop</cite> is a cross-platform library for navigating and interacting with\ndesktop environments. It can be used to automate applications through\nthe same interfaces that are available to human users.</p>\n<p>The library includes the following features:</p>\n<ul class=\"simple\">\n<li>Mouse and keyboard input emulation</li>\n<li>Starting and stopping applications</li>\n<li>Finding elements through image template matching</li>\n<li>Taking screenshots</li>\n<li>Clipboard management</li>\n</ul>\n<dl class=\"docutils\">\n<dt><strong>Note:</strong> Windows element selectors are not currently supported,</dt>\n<dd>and require the use of <tt class=\"docutils literal\">RPA.Desktop.Windows</tt></dd>\n</dl>\n<p><strong>Locating elements</strong></p>\n<p>To automate actions on the desktop, a robot needs to interact with various\ngraphical elements such as buttons or input fields. The positions of these\nelements can be found using a feature called <cite>locators</cite>.</p>\n<p>A locator describes the properties or features of an element. This information\ncan be later used to locate similar elements even when window positions or\nstates change.</p>\n<p>The currently supported locator types are:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"12%\" />\n<col width=\"21%\" />\n<col width=\"67%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Name</th>\n<th class=\"head\">Arguments</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>alias</td>\n<td>name (str)</td>\n<td>A named locator, the default.</td>\n</tr>\n<tr><td>image</td>\n<td>path (str)</td>\n<td>Image of an element that is matched to current screen content</td>\n</tr>\n<tr><td>coordinates</td>\n<td>x (int), y (int)</td>\n<td>Pixel coordinates as absolute position</td>\n</tr>\n<tr><td>offset</td>\n<td>x (int), y (int)</td>\n<td>Pixel coordinates relative to current mouse position</td>\n</tr>\n</tbody>\n</table>\n<p>A locator is defined by its type and arguments, divided by a colon.\nSome example usages are shown below. Note that the prefix for alias can\nbe omitted as its the default type.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Click</span><span class=\"p\">    </span><span class=\"c\">alias:SpareBin.Login</span><span class=\"p\">\n</span><span class=\"c\">Click</span><span class=\"p\">    </span><span class=\"c\">SpareBin.Login</span><span class=\"p\">\n\n</span><span class=\"c\">Move mouse</span><span class=\"p\">    </span><span class=\"c\">image:%{ROBOT_ROOT}/logo.png</span><span class=\"p\">\n</span><span class=\"c\">Move mouse</span><span class=\"p\">    </span><span class=\"c\">offset:200,0</span><span class=\"p\">\n</span><span class=\"c\">Click</span>\n</pre>\n<p><strong>Named locators</strong></p>\n<p>The library supports storing locators in a database, which contains\nall of the required fields and various bits of metadata. This enables\nhaving one source of truth, which can be updated if a website's or applications's\nUI changes. Robot Framework scripts can then only contain a reference\nto a stored locator by name.</p>\n<p>The main way to create named locators is with <a class=\"reference external\" href=\"https://robocorp.com/docs/product-manuals/robocorp-lab/robocorp-lab-overview\">Robocorp Lab</a>.</p>\n<p><strong>Keyboard and mouse</strong></p>\n<p>Keyboard keywords can emulate typing text, but also pressing various function keys.\nThe name of a key is case-insensitive and spaces will be converted to underscores,\ni.e. the key <tt class=\"docutils literal\">Page Down</tt> and <tt class=\"docutils literal\">page_down</tt> are equivalent.</p>\n<p>The following function keys are supported:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"16%\" />\n<col width=\"84%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Key</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>shift</td>\n<td>A generic Shift key. This is a modifier.</td>\n</tr>\n<tr><td>shift_l</td>\n<td>The left Shift key. This is a modifier.</td>\n</tr>\n<tr><td>shift_r</td>\n<td>The right Shift key. This is a modifier.</td>\n</tr>\n<tr><td>ctrl</td>\n<td>A generic Ctrl key. This is a modifier.</td>\n</tr>\n<tr><td>ctrl_l</td>\n<td>he left Ctrl key. This is a modifier.</td>\n</tr>\n<tr><td>ctrl_r</td>\n<td>The right Ctrl key. This is a modifier.</td>\n</tr>\n<tr><td>alt</td>\n<td>A generic Alt key. This is a modifier.</td>\n</tr>\n<tr><td>alt_l</td>\n<td>The left Alt key. This is a modifier.</td>\n</tr>\n<tr><td>alt_r</td>\n<td>The right Alt key. This is a modifier.</td>\n</tr>\n<tr><td>alt_gr</td>\n<td>The AltGr key. This is a modifier.</td>\n</tr>\n<tr><td>cmd</td>\n<td>A generic command button (Windows / Command / Super key). This may be a modifier.</td>\n</tr>\n<tr><td>cmd_l</td>\n<td>The left command button (Windows / Command / Super key). This may be a modifier.</td>\n</tr>\n<tr><td>cmd_r</td>\n<td>The right command button (Windows / Command / Super key). This may be a modifier.</td>\n</tr>\n<tr><td>up</td>\n<td>An up arrow key.</td>\n</tr>\n<tr><td>down</td>\n<td>A down arrow key.</td>\n</tr>\n<tr><td>left</td>\n<td>A left arrow key.</td>\n</tr>\n<tr><td>right</td>\n<td>A right arrow key.</td>\n</tr>\n<tr><td>enter</td>\n<td>The Enter or Return key.</td>\n</tr>\n<tr><td>space</td>\n<td>The Space key.</td>\n</tr>\n<tr><td>tab</td>\n<td>The Tab key.</td>\n</tr>\n<tr><td>backspace</td>\n<td>The Backspace key.</td>\n</tr>\n<tr><td>delete</td>\n<td>The Delete key.</td>\n</tr>\n<tr><td>esc</td>\n<td>The Esc key.</td>\n</tr>\n<tr><td>home</td>\n<td>The Home key.</td>\n</tr>\n<tr><td>end</td>\n<td>The End key.</td>\n</tr>\n<tr><td>page_down</td>\n<td>The Page Down key.</td>\n</tr>\n<tr><td>page_up</td>\n<td>The Page Up key.</td>\n</tr>\n<tr><td>caps_lock</td>\n<td>The Caps Lock key.</td>\n</tr>\n<tr><td>f1 to f20</td>\n<td>The function keys.</td>\n</tr>\n<tr><td>insert</td>\n<td>The Insert key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>menu</td>\n<td>The Menu key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>num_lock</td>\n<td>The Num Lock key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>pause</td>\n<td>The Pause / Break key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>print_screen</td>\n<td>The Print Screen key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>scroll_lock</td>\n<td>The Scroll Lock key. This may be undefined for some platforms.</td>\n</tr>\n</tbody>\n</table>\n<p>When controlling the mouse, there are different types of actions that can be\ndone. Same formatting rules as function keys apply. They are as follows:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"26%\" />\n<col width=\"74%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Action</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>click</td>\n<td>Click with left mouse button</td>\n</tr>\n<tr><td>left_click</td>\n<td>Click with left mouse button</td>\n</tr>\n<tr><td>double_click</td>\n<td>Double click with left mouse button</td>\n</tr>\n<tr><td>triple_click</td>\n<td>Triple click with left mouse button</td>\n</tr>\n<tr><td>right_click</td>\n<td>Click with right mouse button</td>\n</tr>\n</tbody>\n</table>\n<p>The supported mouse button types are <tt class=\"docutils literal\">left</tt>, <tt class=\"docutils literal\">right</tt>, and <tt class=\"docutils literal\">middle</tt>.</p>\n<p><strong>Examples*</strong></p>\n<p>The library can open applications and interact with them through\nkeyboard and mouse events.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.Desktop</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Write entry in accounting</span><span class=\"p\">\n    [</span><span class=\"kn\">Arguments</span><span class=\"p\">]    ${</span><span class=\"nv\">entry</span><span class=\"p\">}\n    </span><span class=\"nf\">Open application</span><span class=\"p\">    </span><span class=\"s\">erp_client.exe</span><span class=\"p\">\n    </span><span class=\"nf\">Click</span><span class=\"p\">         </span><span class=\"s\">image:</span><span class=\"p\">%{</span><span class=\"nv\">ROBOT_ROOT</span><span class=\"p\">}</span><span class=\"s\">/images/create.png</span><span class=\"p\">\n    </span><span class=\"nf\">Type text</span><span class=\"p\">     ${</span><span class=\"nv\">entry</span><span class=\"p\">}\n    </span><span class=\"nf\">Press keys</span><span class=\"p\">    </span><span class=\"s\">ctrl</span><span class=\"p\">    </span><span class=\"s\">s</span><span class=\"p\">\n    </span><span class=\"nf\">Press keys</span><span class=\"p\">    </span><span class=\"s\">enter</span><span class=\"p\">\n    [</span><span class=\"kn\">Teardown</span><span class=\"p\">]    </span><span class=\"nf\">Close all applications</span>\n</pre>\n<p>Targeting can be currently done using coordinates (absolute or relative),\nbut using template matching is preferred.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.Desktop</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Write to field</span><span class=\"p\">\n    [</span><span class=\"kn\">Arguments</span><span class=\"p\">]    ${</span><span class=\"nv\">text</span><span class=\"p\">}\n    </span><span class=\"nf\">Move mouse</span><span class=\"p\">   </span><span class=\"s\">image:input_label.png</span><span class=\"p\">\n    </span><span class=\"nf\">Move mouse</span><span class=\"p\">   </span><span class=\"s\">offset:200,0</span><span class=\"p\">\n    </span><span class=\"nf\">Click</span><span class=\"p\">\n    </span><span class=\"nf\">Type text</span><span class=\"p\">    ${</span><span class=\"nv\">text</span><span class=\"p\">}\n    </span><span class=\"nf\">Press keys</span><span class=\"p\">   </span><span class=\"s\">enter</span>\n</pre>\n</div>\n</div>",
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:37",
+        "generated": "2020-11-11 16:15:54",
         "inits": [],
         "keywords": [
             {
@@ -3978,7 +3999,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:39",
+        "generated": "2020-11-11 16:15:54",
         "inits": [],
         "keywords": [
             {
@@ -4017,7 +4038,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:38",
+        "generated": "2020-11-11 16:15:55",
         "inits": [],
         "keywords": [
             {
@@ -4114,7 +4135,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:39",
+        "generated": "2020-11-11 16:15:56",
         "inits": [
             {
                 "name": "Init",
@@ -4714,7 +4735,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:40",
+        "generated": "2020-11-11 16:15:54",
         "inits": [
             {
                 "name": "Init",
@@ -4880,7 +4901,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:39",
+        "generated": "2020-11-11 16:15:55",
         "inits": [],
         "keywords": [
             {
@@ -5009,7 +5030,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:36",
+        "generated": "2020-11-11 16:15:53",
         "inits": [
             {
                 "name": "Init",
@@ -5286,7 +5307,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:37",
+        "generated": "2020-11-11 16:15:55",
         "inits": [],
         "keywords": [
             {
@@ -5439,7 +5460,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:36",
+        "generated": "2020-11-11 16:15:55",
         "inits": [],
         "keywords": [
             {
@@ -5621,7 +5642,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:37",
+        "generated": "2020-11-11 16:15:54",
         "inits": [],
         "keywords": [
             {
@@ -5818,7 +5839,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:38",
+        "generated": "2020-11-11 16:15:54",
         "inits": [],
         "keywords": [
             {
@@ -6292,7 +6313,7 @@
         "version": "0.6.6",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:37",
+        "generated": "2020-11-11 16:15:56",
         "inits": [
             {
                 "name": "Init",
@@ -6323,7 +6344,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'DELETE', 'TRACE', 'HEAD', 'OPTIONS', 'GET']"
+                    "retry_method_list=['HEAD', 'DELETE', 'PUT', 'GET', 'OPTIONS', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>client_certs</code> ['client certificate', 'client key'] PEM files containing the client key and certificate</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6346,7 +6367,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'DELETE', 'TRACE', 'HEAD', 'OPTIONS', 'GET']"
+                    "retry_method_list=['HEAD', 'DELETE', 'PUT', 'GET', 'OPTIONS', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> A Custom Authentication object to be passed on to the requests library. <a href=\"http://docs.python-requests.org/en/master/user/advanced/#custom-authentication\">http://docs.python-requests.org/en/master/user/advanced/#custom-authentication</a></p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6369,7 +6390,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'DELETE', 'TRACE', 'HEAD', 'OPTIONS', 'GET']"
+                    "retry_method_list=['HEAD', 'DELETE', 'PUT', 'GET', 'OPTIONS', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6392,7 +6413,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'DELETE', 'TRACE', 'HEAD', 'OPTIONS', 'GET']"
+                    "retry_method_list=['HEAD', 'DELETE', 'PUT', 'GET', 'OPTIONS', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6415,7 +6436,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'DELETE', 'TRACE', 'HEAD', 'OPTIONS', 'GET']"
+                    "retry_method_list=['HEAD', 'DELETE', 'PUT', 'GET', 'OPTIONS', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> List of username &amp; password for HTTP Basic Auth</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6649,7 +6670,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:39",
+        "generated": "2020-11-11 16:15:56",
         "inits": [],
         "keywords": [
             {
@@ -6768,7 +6789,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:37",
+        "generated": "2020-11-11 16:15:54",
         "inits": [],
         "keywords": [
             {
@@ -6879,7 +6900,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:40",
+        "generated": "2020-11-11 16:15:54",
         "inits": [],
         "keywords": [
             {
@@ -7039,7 +7060,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:37",
+        "generated": "2020-11-11 16:15:53",
         "inits": [],
         "keywords": [
             {
@@ -7134,7 +7155,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:38",
+        "generated": "2020-11-11 16:15:55",
         "inits": [],
         "keywords": [
             {
@@ -7204,7 +7225,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:37",
+        "generated": "2020-11-11 16:15:53",
         "inits": [
             {
                 "name": "Init",
@@ -8143,7 +8164,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:39",
+        "generated": "2020-11-11 16:15:54",
         "inits": [
             {
                 "name": "Init",
@@ -8232,7 +8253,7 @@
                 "name": "Get Work Item Variable",
                 "args": [
                     "name",
-                    "default=<object object at 0x7f084c01d580>"
+                    "default=<object object at 0x7f21afdefc90>"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a single variable value from the work item,\nor default value if defined and key does not exist.\nIf key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param key:</th><td class=\"field-body\">Name of variable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param default:</th><td class=\"field-body\">Default value if key does not exist</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${username}=</span><span class=\"p\">    </span><span class=\"c\">Get work item variable</span><span class=\"p\">    </span><span class=\"c\">username</span><span class=\"p\">    </span><span class=\"c\">default=guest</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Return a single variable value from the work item, or default value if defined and key does not exist. If key does not exist and default is not defined, raises `KeyError`.",
@@ -8361,7 +8382,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:39",
+        "generated": "2020-11-11 16:15:54",
         "inits": [
             {
                 "name": "Init",
@@ -8396,7 +8417,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:37",
+        "generated": "2020-11-11 16:15:54",
         "inits": [],
         "keywords": [
             {
@@ -8462,7 +8483,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:37",
+        "generated": "2020-11-11 16:15:54",
         "inits": [
             {
                 "name": "Init",
@@ -8486,7 +8507,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:39",
+        "generated": "2020-11-11 16:15:55",
         "inits": [
             {
                 "name": "Init",
@@ -8743,7 +8764,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:40",
+        "generated": "2020-11-11 16:15:54",
         "inits": [],
         "keywords": [
             {
@@ -8770,7 +8791,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:36",
+        "generated": "2020-11-11 16:15:55",
         "inits": [],
         "keywords": [
             {
@@ -9156,7 +9177,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:39",
+        "generated": "2020-11-11 16:15:53",
         "inits": [
             {
                 "name": "Init",
@@ -9275,7 +9296,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:36",
+        "generated": "2020-11-11 16:15:53",
         "inits": [],
         "keywords": [
             {
@@ -9398,7 +9419,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-11 08:22:38",
+        "generated": "2020-11-11 16:15:55",
         "inits": [],
         "keywords": [
             {

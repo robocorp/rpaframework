@@ -25,6 +25,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/custom.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -33,10 +34,11 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Robot Framework API" href="../../robot/Desktop/Windows.html" />
-    <link rel="prev" title="Python module API" href="../desktop_operatingsystem/python.html" />
+    <link rel="next" title="Python API" href="python.html" />
+    <link rel="prev" title="Python API" href="../desktop_operatingsystem/python.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -109,8 +111,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Desktop.Windows</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../robot/Desktop/Windows.html">Robot Framework API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="python.html">Python module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">Python API</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../dialogs/index.html">Dialogs</a></li>
@@ -206,161 +207,15 @@
            <div itemprop="articleBody">
             
   <div class="section" id="desktop-windows">
-<span id="library-desktop-windows"></span><h1>Desktop.Windows<a class="headerlink" href="#desktop-windows" title="Permalink to this headline">¶</a></h1>
-<div class="contents local topic" id="table-of-contents">
-<p class="topic-title">Table of Contents</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#description" id="id1">Description</a></p></li>
-<li><p><a class="reference internal" href="#faq" id="id2">FAQ</a></p></li>
-<li><p><a class="reference internal" href="#examples" id="id3">Examples</a></p></li>
-<li><p><a class="reference internal" href="#api-documentation" id="id4">API Documentation</a></p></li>
-</ul>
-</div>
-<div class="section" id="description">
-<h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p><cite>Windows</cite> is a library for managing the Windows operating system.</p>
-<div class="section" id="running-windows-applications">
-<h3>Running Windows applications<a class="headerlink" href="#running-windows-applications" title="Permalink to this headline">¶</a></h3>
-<p>Windows applications can be started in several ways. The library supports
-the following keywords:</p>
-<ul class="simple">
-<li><p>Open Application (dispatch Office applications)</p></li>
-<li><p>Open File (open the file as process which opens the associated application)</p></li>
-<li><p>Open Executable (uses pywinauto start)</p></li>
-<li><p>Open Using Run Dialog (uses Windows run dialog)</p></li>
-<li><p>Open From Search (uses Windows search dialog)</p></li>
-</ul>
-</div>
-<div class="section" id="locators">
-<h3>Locators<a class="headerlink" href="#locators" title="Permalink to this headline">¶</a></h3>
-<p><cite>Locator</cite> is used to identify the element for interaction - usually for a mouse click.</p>
-<p>Locators can investigated for application once it has been opened by calling
-the keyword <cite>get_windows_elements</cite> which can store locator information into JSON file
-and <cite>screenshot</cite> of the element into an image file.</p>
-</div>
-<div class="section" id="identifying-locator">
-<h3>Identifying locator<a class="headerlink" href="#identifying-locator" title="Permalink to this headline">¶</a></h3>
-<p>The element needs to be identified by a unique method, for example, “Three” for button 3
-in the Calculator application. It can be given either as <cite>Three</cite> or <cite>name:Three</cite>.</p>
-<p>Possible search criterias:</p>
-<ul class="simple">
-<li><p>name</p></li>
-<li><p>class (class_name)</p></li>
-<li><p>type (control_type)</p></li>
-<li><p>id (automation_id)</p></li>
-<li><p>any if none was defined</p></li>
-</ul>
-<p>The current method of inspecting elements on Windows is <cite>inspect.exe</cite> which is part
-of <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects">Windows SDK</a>.</p>
-</div>
-<div class="section" id="keyboard">
-<h3>Keyboard<a class="headerlink" href="#keyboard" title="Permalink to this headline">¶</a></h3>
-<p>The keyword <cite>send_keys</cite> can be used to send keys to the active window. The keyword
-<cite>type_keys</cite> sends keys to the active window element.</p>
-<p>Special key codes are documented on <a class="reference external" href="https://pywinauto.readthedocs.io/en/latest/code/pywinauto.keyboard.html#">pywinauto</a>
-documentation page.</p>
-</div>
-</div>
-<div class="section" id="faq">
-<h2><a class="toc-backref" href="#id2">FAQ</a><a class="headerlink" href="#faq" title="Permalink to this headline">¶</a></h2>
-<ol class="upperalpha simple" start="17">
-<li><p>I see error message <cite>AttributeError: module ‘win32com.gen_py.00020813-0000-0000-C000-000000000046x0x1x9’ has no attribute ‘CLSIDToClassMap’</cite></p></li>
-</ol>
-<ol class="upperalpha simple">
-<li><p>From PowerShell run this command: <cite>Remove-Item -path $env:LOCALAPPDATATempgen_py -recurse</cite></p></li>
-</ol>
-</div>
-<div class="section" id="examples">
-<h2><a class="toc-backref" href="#id3">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="robot-framework">
-<h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">          </span><span class="nn">RPA.Desktop.Windows</span><span class="p"></span>
-<span class="kn">Suite Teardown</span><span class="p">   </span><span class="nf">Close all applications</span><span class="p"></span>
-
-<span class="gh">*** Tasks ***</span><span class="p"></span>
-<span class="gu">Open Calculator using run dialog</span><span class="p"></span>
-<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Open using run dialog</span><span class="p">    </span><span class="s">calc.exe</span><span class="p">   </span><span class="s">Calculator</span><span class="p"></span>
-<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Get Window Elements</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Send Keys</span><span class="p">               </span><span class="s">5*2=</span><span class="p"></span>
-<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Get element</span><span class="p">             </span><span class="s">partial name:Display is</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Log Many</span><span class="p">                ${</span><span class="nv">result</span><span class="p">}</span>
-<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Get element rich text</span><span class="p">   </span><span class="s">id:CalculatorResults</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Should Be Equal As Strings</span><span class="p">  ${</span><span class="nv">result</span><span class="p">}  </span><span class="s">Display is 10</span><span class="p"></span>
-<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Get element rectangle</span><span class="p">   </span><span class="s">partial name:Display is</span><span class="p"></span>
-<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Is Element Visible</span><span class="p">      </span><span class="s">CalculatorResults</span><span class="p"></span>
-<span class="p">    ${</span><span class="nv">result</span><span class="p">}=              </span><span class="nf">Is Element Enabled</span><span class="p">      </span><span class="s">partial name:Display is</span><span class="p"></span>
-</pre></div>
-</td></tr></table></div>
-</div>
-<div class="section" id="python">
-<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Desktop.Windows</span> <span class="kn">import</span> <span class="n">Windows</span>
-
-<span class="n">win</span> <span class="o">=</span> <span class="n">Windows</span><span class="p">()</span>
-
-<span class="k">def</span> <span class="nf">open_calculator</span><span class="p">():</span>
-    <span class="n">win</span><span class="o">.</span><span class="n">open_from_search</span><span class="p">(</span><span class="s2">&quot;calc.exe&quot;</span><span class="p">,</span> <span class="s2">&quot;Calculator&quot;</span><span class="p">)</span>
-    <span class="n">elements</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">get_window_elements</span><span class="p">()</span>
-
-<span class="k">def</span> <span class="nf">make_calculations</span><span class="p">(</span><span class="n">expression</span><span class="p">):</span>
-    <span class="n">win</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">get_element_rich_text</span><span class="p">(</span><span class="s1">&#39;id:CalculatorResults&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;Display is &#39;</span><span class="p">))</span>
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">open_calculator</span><span class="p">()</span>
-    <span class="n">exp</span> <span class="o">=</span> <span class="s1">&#39;5*2=&#39;</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">make_calculations</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Calculation result of &#39;</span><span class="si">{</span><span class="n">exp</span><span class="si">}</span><span class="s2">&#39; is &#39;</span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-    <span class="n">win</span><span class="o">.</span><span class="n">close_all_applications</span><span class="p">()</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-</div>
-<div class="section" id="api-documentation">
-<h2><a class="toc-backref" href="#id4">API Documentation</a><a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
-<p>See <a class="reference external" href="../../libdoc/RPA_Desktop_Windows.html">libdoc documentation</a>.</p>
+<h1>Desktop.Windows<a class="headerlink" href="#desktop-windows" title="Permalink to this headline">¶</a></h1>
+<p>Automate Windows desktop applications.</p>
 <div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../robot/Desktop/Windows.html">Robot Framework API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="python.html">Python module API</a></li>
-</ul>
 </div>
-</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<p>🔗 Direct link to <a class="reference external" href="../../libdoc/RPA_Desktop_Windows.html">keyword documentation</a>.</p>
+<hr class="docutils" />
+<iframe scrolling="no" class="libdoc" src="../../libdoc/RPA_Desktop_Windows.html" /></div>
 </div>
 
 
@@ -371,10 +226,10 @@ documentation page.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../robot/Desktop/Windows.html" class="btn btn-neutral float-right" title="Robot Framework API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="python.html" class="btn btn-neutral float-right" title="Python API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../desktop_operatingsystem/python.html" class="btn btn-neutral float-left" title="Python module API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../desktop_operatingsystem/python.html" class="btn btn-neutral float-left" title="Python API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

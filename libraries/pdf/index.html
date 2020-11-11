@@ -25,6 +25,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/custom.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -33,10 +34,11 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Robot Framework API" href="../../robot/PDF.html" />
-    <link rel="prev" title="Python module API" href="../outlook_application/python.html" />
+    <link rel="next" title="Python API" href="python.html" />
+    <link rel="prev" title="Python API" href="../outlook_application/python.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -123,8 +125,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../notifier/index.html">Notifier</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">PDF</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../robot/PDF.html">Robot Framework API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="python.html">Python module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">Python API</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
@@ -207,119 +208,14 @@
             
   <div class="section" id="pdf">
 <h1>PDF<a class="headerlink" href="#pdf" title="Permalink to this headline">¶</a></h1>
-<div class="contents local topic" id="table-of-contents">
-<p class="topic-title">Table of Contents</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#description" id="id4">Description</a></p></li>
-<li><p><a class="reference internal" href="#examples" id="id5">Examples</a></p></li>
-<li><p><a class="reference internal" href="#api-documentation" id="id6">API Documentation</a></p></li>
-</ul>
-</div>
-<div class="section" id="description">
-<h2><a class="toc-backref" href="#id4">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p><cite>PDF</cite> is a library for managing PDF documents.</p>
-<p>It provides an easy method of generating a PDF document from an HTML formatted
-template file.</p>
-</div>
-<div class="section" id="examples">
-<h2><a class="toc-backref" href="#id5">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="robot-framework">
-<h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">order.template</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
-<div class="highlight-html notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Order confirmation<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Thank you for the order.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>Name: {{name}}<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
-    email: {{email}}
-    zip: {{zip}}
-<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>{{items}}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">example.robot</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
-<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.PDF</span><span class="p"></span>
-
-<span class="gh">*** Variables ***</span><span class="p"></span>
-<span class="p">${</span><span class="nv">TEMPLATE</span><span class="p">}    </span><span class="s">order.template</span><span class="p"></span>
-<span class="p">${</span><span class="nv">PDF</span><span class="p">}         </span><span class="s">result.pdf</span><span class="p"></span>
-<span class="p">&amp;{</span><span class="nv">VARS</span><span class="p">}        </span><span class="s">name=Robot Generated</span><span class="p"></span>
-<span class="p">...            </span><span class="s">email=robot@domain.com</span><span class="p"></span>
-<span class="p">...            </span><span class="s">zip=00100</span><span class="p"></span>
-<span class="p">...            </span><span class="s">items=Item 1, Item 2</span><span class="p"></span>
-
-<span class="gh">*** Tasks ***</span><span class="p"></span>
-<span class="gu">Create PDF from HTML template</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Template HTML to PDF</span><span class="p">   ${</span><span class="nv">TEMPLATE</span><span class="p">}  ${</span><span class="nv">PDF</span><span class="p">}  ${</span><span class="nv">VARS</span><span class="p">}</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-</div>
-<div class="section" id="python">
-<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">example.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.PDF</span> <span class="kn">import</span> <span class="n">PDF</span>
-
-<span class="n">p</span> <span class="o">=</span> <span class="n">PDF</span><span class="p">()</span>
-<span class="n">orders</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;item 1&quot;</span><span class="p">,</span> <span class="s2">&quot;item 2&quot;</span><span class="p">,</span> <span class="s2">&quot;item 3&quot;</span><span class="p">]</span>
-<span class="nb">vars</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Robot Process&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;robot@domain.com&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;zip&quot;</span><span class="p">:</span> <span class="s2">&quot;00100&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;br/&gt;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">orders</span><span class="p">),</span>
-<span class="p">}</span>
-<span class="n">p</span><span class="o">.</span><span class="n">template_html_to_pdf</span><span class="p">(</span><span class="s2">&quot;order.template&quot;</span><span class="p">,</span> <span class="s2">&quot;order.pdf&quot;</span><span class="p">,</span> <span class="nb">vars</span><span class="p">)</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-</div>
-</div>
-<div class="section" id="api-documentation">
-<h2><a class="toc-backref" href="#id6">API Documentation</a><a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
-<p>See <a class="reference external" href="../../libdoc/RPA_PDF.html">libdoc documentation</a>.</p>
+<p>Read and create PDF documents.</p>
 <div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../robot/PDF.html">Robot Framework API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="python.html">Python module API</a></li>
-</ul>
 </div>
-</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<p>🔗 Direct link to <a class="reference external" href="../../libdoc/RPA_PDF.html">keyword documentation</a>.</p>
+<hr class="docutils" />
+<iframe scrolling="no" class="libdoc" src="../../libdoc/RPA_PDF.html" /></div>
 </div>
 
 
@@ -330,10 +226,10 @@ template file.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../robot/PDF.html" class="btn btn-neutral float-right" title="Robot Framework API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="python.html" class="btn btn-neutral float-right" title="Python API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../outlook_application/python.html" class="btn btn-neutral float-left" title="Python module API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../outlook_application/python.html" class="btn btn-neutral float-left" title="Python API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

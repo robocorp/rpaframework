@@ -1,0 +1,581 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/custom.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Desktop.Clipboard" href="../desktop_clipboard/index.html" />
+    <link rel="prev" title="Desktop" href="index.html" />
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!-- PureCookie -->
+<link async rel="stylesheet" type="text/css" href="../../_static/purecookie.css"/>
+<script async src="../../_static/purecookie.js"></script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../archive/index.html">Archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_azure/index.html">Cloud.Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_google/index.html">Cloud.Google</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Desktop</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ftp/index.html">FTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">JSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notifier/index.html">Notifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter/index.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Desktop</a> &raquo;</li>
+        
+      <li>Python API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/desktop/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-api">
+<h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.Desktop">
+<span id="desktop"></span><h2>Desktop<a class="headerlink" href="#module-RPA.Desktop" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Desktop.Desktop">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Desktop.</code><code class="sig-name descname">Desktop</code><a class="headerlink" href="#RPA.Desktop.Desktop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">robotlibcore.DynamicCore</span></code></p>
+<p><cite>Desktop</cite> is a cross-platform library for navigating and interacting with
+desktop environments. It can be used to automate applications through
+the same interfaces that are available to human users.</p>
+<p>The library includes the following features:</p>
+<ul class="simple">
+<li><p>Mouse and keyboard input emulation</p></li>
+<li><p>Starting and stopping applications</p></li>
+<li><p>Finding elements through image template matching</p></li>
+<li><p>Taking screenshots</p></li>
+<li><p>Clipboard management</p></li>
+</ul>
+<dl class="simple">
+<dt><strong>Note:</strong> Windows element selectors are not currently supported,</dt><dd><p>and require the use of <code class="docutils literal notranslate"><span class="pre">RPA.Desktop.Windows</span></code></p>
+</dd>
+</dl>
+<p><strong>Locating elements</strong></p>
+<p>To automate actions on the desktop, a robot needs to interact with various
+graphical elements such as buttons or input fields. The positions of these
+elements can be found using a feature called <cite>locators</cite>.</p>
+<p>A locator describes the properties or features of an element. This information
+can be later used to locate similar elements even when window positions or
+states change.</p>
+<p>The currently supported locator types are:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 21%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Arguments</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>alias</p></td>
+<td><p>name (str)</p></td>
+<td><p>A named locator, the default.</p></td>
+</tr>
+<tr class="row-odd"><td><p>image</p></td>
+<td><p>path (str)</p></td>
+<td><p>Image of an element that is matched to current screen content</p></td>
+</tr>
+<tr class="row-even"><td><p>coordinates</p></td>
+<td><p>x (int), y (int)</p></td>
+<td><p>Pixel coordinates as absolute position</p></td>
+</tr>
+<tr class="row-odd"><td><p>offset</p></td>
+<td><p>x (int), y (int)</p></td>
+<td><p>Pixel coordinates relative to current mouse position</p></td>
+</tr>
+</tbody>
+</table>
+<p>A locator is defined by its type and arguments, divided by a colon.
+Some example usages are shown below. Note that the prefix for alias can
+be omitted as its the default type.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Click</span><span class="p">    </span><span class="c">alias:SpareBin.Login</span><span class="p"></span>
+<span class="c">Click</span><span class="p">    </span><span class="c">SpareBin.Login</span><span class="p"></span>
+
+<span class="c">Move mouse</span><span class="p">    </span><span class="c">image:%{ROBOT_ROOT}/logo.png</span><span class="p"></span>
+<span class="c">Move mouse</span><span class="p">    </span><span class="c">offset:200,0</span><span class="p"></span>
+<span class="c">Click</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Named locators</strong></p>
+<p>The library supports storing locators in a database, which contains
+all of the required fields and various bits of metadata. This enables
+having one source of truth, which can be updated if a website’s or applications’s
+UI changes. Robot Framework scripts can then only contain a reference
+to a stored locator by name.</p>
+<p>The main way to create named locators is with <a class="reference external" href="https://robocorp.com/docs/product-manuals/robocorp-lab/robocorp-lab-overview">Robocorp Lab</a>.</p>
+<p><strong>Keyboard and mouse</strong></p>
+<p>Keyboard keywords can emulate typing text, but also pressing various function keys.
+The name of a key is case-insensitive and spaces will be converted to underscores,
+i.e. the key <code class="docutils literal notranslate"><span class="pre">Page</span> <span class="pre">Down</span></code> and <code class="docutils literal notranslate"><span class="pre">page_down</span></code> are equivalent.</p>
+<p>The following function keys are supported:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 84%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>shift</p></td>
+<td><p>A generic Shift key. This is a modifier.</p></td>
+</tr>
+<tr class="row-odd"><td><p>shift_l</p></td>
+<td><p>The left Shift key. This is a modifier.</p></td>
+</tr>
+<tr class="row-even"><td><p>shift_r</p></td>
+<td><p>The right Shift key. This is a modifier.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ctrl</p></td>
+<td><p>A generic Ctrl key. This is a modifier.</p></td>
+</tr>
+<tr class="row-even"><td><p>ctrl_l</p></td>
+<td><p>he left Ctrl key. This is a modifier.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ctrl_r</p></td>
+<td><p>The right Ctrl key. This is a modifier.</p></td>
+</tr>
+<tr class="row-even"><td><p>alt</p></td>
+<td><p>A generic Alt key. This is a modifier.</p></td>
+</tr>
+<tr class="row-odd"><td><p>alt_l</p></td>
+<td><p>The left Alt key. This is a modifier.</p></td>
+</tr>
+<tr class="row-even"><td><p>alt_r</p></td>
+<td><p>The right Alt key. This is a modifier.</p></td>
+</tr>
+<tr class="row-odd"><td><p>alt_gr</p></td>
+<td><p>The AltGr key. This is a modifier.</p></td>
+</tr>
+<tr class="row-even"><td><p>cmd</p></td>
+<td><p>A generic command button (Windows / Command / Super key). This may be a modifier.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cmd_l</p></td>
+<td><p>The left command button (Windows / Command / Super key). This may be a modifier.</p></td>
+</tr>
+<tr class="row-even"><td><p>cmd_r</p></td>
+<td><p>The right command button (Windows / Command / Super key). This may be a modifier.</p></td>
+</tr>
+<tr class="row-odd"><td><p>up</p></td>
+<td><p>An up arrow key.</p></td>
+</tr>
+<tr class="row-even"><td><p>down</p></td>
+<td><p>A down arrow key.</p></td>
+</tr>
+<tr class="row-odd"><td><p>left</p></td>
+<td><p>A left arrow key.</p></td>
+</tr>
+<tr class="row-even"><td><p>right</p></td>
+<td><p>A right arrow key.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enter</p></td>
+<td><p>The Enter or Return key.</p></td>
+</tr>
+<tr class="row-even"><td><p>space</p></td>
+<td><p>The Space key.</p></td>
+</tr>
+<tr class="row-odd"><td><p>tab</p></td>
+<td><p>The Tab key.</p></td>
+</tr>
+<tr class="row-even"><td><p>backspace</p></td>
+<td><p>The Backspace key.</p></td>
+</tr>
+<tr class="row-odd"><td><p>delete</p></td>
+<td><p>The Delete key.</p></td>
+</tr>
+<tr class="row-even"><td><p>esc</p></td>
+<td><p>The Esc key.</p></td>
+</tr>
+<tr class="row-odd"><td><p>home</p></td>
+<td><p>The Home key.</p></td>
+</tr>
+<tr class="row-even"><td><p>end</p></td>
+<td><p>The End key.</p></td>
+</tr>
+<tr class="row-odd"><td><p>page_down</p></td>
+<td><p>The Page Down key.</p></td>
+</tr>
+<tr class="row-even"><td><p>page_up</p></td>
+<td><p>The Page Up key.</p></td>
+</tr>
+<tr class="row-odd"><td><p>caps_lock</p></td>
+<td><p>The Caps Lock key.</p></td>
+</tr>
+<tr class="row-even"><td><p>f1 to f20</p></td>
+<td><p>The function keys.</p></td>
+</tr>
+<tr class="row-odd"><td><p>insert</p></td>
+<td><p>The Insert key. This may be undefined for some platforms.</p></td>
+</tr>
+<tr class="row-even"><td><p>menu</p></td>
+<td><p>The Menu key. This may be undefined for some platforms.</p></td>
+</tr>
+<tr class="row-odd"><td><p>num_lock</p></td>
+<td><p>The Num Lock key. This may be undefined for some platforms.</p></td>
+</tr>
+<tr class="row-even"><td><p>pause</p></td>
+<td><p>The Pause / Break key. This may be undefined for some platforms.</p></td>
+</tr>
+<tr class="row-odd"><td><p>print_screen</p></td>
+<td><p>The Print Screen key. This may be undefined for some platforms.</p></td>
+</tr>
+<tr class="row-even"><td><p>scroll_lock</p></td>
+<td><p>The Scroll Lock key. This may be undefined for some platforms.</p></td>
+</tr>
+</tbody>
+</table>
+<p>When controlling the mouse, there are different types of actions that can be
+done. Same formatting rules as function keys apply. They are as follows:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 74%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Action</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>click</p></td>
+<td><p>Click with left mouse button</p></td>
+</tr>
+<tr class="row-odd"><td><p>left_click</p></td>
+<td><p>Click with left mouse button</p></td>
+</tr>
+<tr class="row-even"><td><p>double_click</p></td>
+<td><p>Double click with left mouse button</p></td>
+</tr>
+<tr class="row-odd"><td><p>triple_click</p></td>
+<td><p>Triple click with left mouse button</p></td>
+</tr>
+<tr class="row-even"><td><p>right_click</p></td>
+<td><p>Click with right mouse button</p></td>
+</tr>
+</tbody>
+</table>
+<p>The supported mouse button types are <code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code>, and <code class="docutils literal notranslate"><span class="pre">middle</span></code>.</p>
+<p><strong>Examples*</strong></p>
+<p>The library can open applications and interact with them through
+keyboard and mouse events.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Desktop</span><span class="p"></span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Write entry in accounting</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Arguments</span><span class="p">]    ${</span><span class="nv">entry</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Open application</span><span class="p">    </span><span class="s">erp_client.exe</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Click</span><span class="p">         </span><span class="s">image:</span><span class="p">%{</span><span class="nv">ROBOT_ROOT</span><span class="p">}</span><span class="s">/images/create.png</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Type text</span><span class="p">     ${</span><span class="nv">entry</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Press keys</span><span class="p">    </span><span class="s">ctrl</span><span class="p">    </span><span class="s">s</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Press keys</span><span class="p">    </span><span class="s">enter</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Teardown</span><span class="p">]    </span><span class="nf">Close all applications</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Targeting can be currently done using coordinates (absolute or relative),
+but using template matching is preferred.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Desktop</span><span class="p"></span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Write to field</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Arguments</span><span class="p">]    ${</span><span class="nv">text</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Move mouse</span><span class="p">   </span><span class="s">image:input_label.png</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Move mouse</span><span class="p">   </span><span class="s">offset:200,0</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Click</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Type text</span><span class="p">    ${</span><span class="nv">text</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Press keys</span><span class="p">   </span><span class="s">enter</span><span class="p"></span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="RPA.Desktop.Desktop.ROBOT_LIBRARY_DOC_FORMAT">
+<code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Desktop.Desktop.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Desktop.Desktop.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Desktop.Desktop.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Desktop.add_library_components">
+<code class="sig-name descname">add_library_components</code><span class="sig-paren">(</span><em class="sig-param">library_components</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Desktop.add_library_components" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Desktop.get_keyword_arguments">
+<code class="sig-name descname">get_keyword_arguments</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Desktop.get_keyword_arguments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Desktop.get_keyword_documentation">
+<code class="sig-name descname">get_keyword_documentation</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Desktop.get_keyword_documentation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Desktop.get_keyword_names">
+<code class="sig-name descname">get_keyword_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Desktop.get_keyword_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Desktop.get_keyword_source">
+<code class="sig-name descname">get_keyword_source</code><span class="sig-paren">(</span><em class="sig-param">keyword_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Desktop.get_keyword_source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Desktop.get_keyword_tags">
+<code class="sig-name descname">get_keyword_tags</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Desktop.get_keyword_tags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Desktop.get_keyword_types">
+<code class="sig-name descname">get_keyword_types</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Desktop.get_keyword_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Desktop.Desktop.run_keyword">
+<code class="sig-name descname">run_keyword</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">args</em>, <em class="sig-param">kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Desktop.run_keyword" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../desktop_clipboard/index.html" class="btn btn-neutral float-right" title="Desktop.Clipboard" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Desktop" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -25,6 +25,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/custom.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -33,9 +34,10 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Robot Framework API" href="../../robot/Archive.html" />
+    <link rel="next" title="Python API" href="python.html" />
     <link rel="prev" title="Release notes" href="../../releasenotes.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
@@ -100,8 +102,7 @@
 <p class="caption"><span class="caption-text">Libraries</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Archive</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../robot/Archive.html">Robot Framework API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="python.html">Python module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">Python API</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
@@ -207,74 +208,14 @@
             
   <div class="section" id="archive">
 <h1>Archive<a class="headerlink" href="#archive" title="Permalink to this headline">¶</a></h1>
-<div class="contents local topic" id="table-of-contents">
-<p class="topic-title">Table of Contents</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#description" id="id1">Description</a></p></li>
-<li><p><a class="reference internal" href="#examples" id="id2">Examples</a></p></li>
-<li><p><a class="reference internal" href="#api-documentation" id="id3">API Documentation</a></p></li>
-</ul>
-</div>
-<div class="section" id="description">
-<h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p><cite>Archive</cite> is a library for operating with ZIP and TAR
-packages.</p>
-<p>See <cite>API documentation</cite> for detailed examples how to use
-library.</p>
-</div>
-<div class="section" id="examples">
-<h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">  </span><span class="nn">RPA.Archive</span><span class="p"></span>
-
-<span class="gh">*** Tasks ***</span><span class="p"></span>
-<span class="gu">Creating a ZIP archive</span><span class="p"></span>
-<span class="p">   </span><span class="nf">Archive Folder With ZIP</span><span class="p">   ${</span><span class="nv">CURDIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">tasks</span><span class="p">  </span><span class="s">tasks.zip</span><span class="p">   </span><span class="s">recursive=True</span><span class="p">  </span><span class="s">include=*.robot</span><span class="p">  </span><span class="s">exclude=/.*</span><span class="p"></span>
-<span class="p">   @{</span><span class="nv">files</span><span class="p">}                  </span><span class="nf">List Archive</span><span class="p">             </span><span class="s">tasks.zip</span><span class="p"></span>
-<span class="p">   FOR  ${</span><span class="nv">file</span><span class="p">}  IN  ${</span><span class="nv">files</span><span class="p">}</span>
-<span class="p">      </span><span class="nf">Log</span><span class="p">  ${</span><span class="nv">file</span><span class="p">}</span>
-<span class="p">   END</span>
-<span class="p">   </span><span class="nf">Add To Archive</span><span class="p">            </span><span class="s">.</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">..</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">missing.robot</span><span class="p">  </span><span class="s">tasks.zip</span><span class="p"></span>
-<span class="p">   &amp;{</span><span class="nv">info</span><span class="p">}                   </span><span class="nf">Get Archive Info</span><span class="p"></span>
-</pre></div>
-</td></tr></table></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Archive</span> <span class="kn">import</span> <span class="n">Archive</span>
-
-<span class="n">lib</span> <span class="o">=</span> <span class="n">Archive</span><span class="p">()</span>
-<span class="n">lib</span><span class="o">.</span><span class="n">archive_folder_with_tar</span><span class="p">(</span><span class="s1">&#39;./tasks&#39;</span><span class="p">,</span> <span class="s1">&#39;tasks.tar&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">files</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">list_archive</span><span class="p">(</span><span class="s1">&#39;tasks.tar&#39;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-   <span class="nb">print</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-<div class="section" id="api-documentation">
-<h2><a class="toc-backref" href="#id3">API Documentation</a><a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
-<p>See <a class="reference external" href="../../libdoc/RPA_Archive.html">libdoc documentation</a>.</p>
+<p>Archiving TAR and ZIP files.</p>
 <div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../robot/Archive.html">Robot Framework API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="python.html">Python module API</a></li>
-</ul>
 </div>
-</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<p>🔗 Direct link to <a class="reference external" href="../../libdoc/RPA_Archive.html">keyword documentation</a>.</p>
+<hr class="docutils" />
+<iframe scrolling="no" class="libdoc" src="../../libdoc/RPA_Archive.html" /></div>
 </div>
 
 
@@ -285,7 +226,7 @@ library.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../robot/Archive.html" class="btn btn-neutral float-right" title="Robot Framework API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="python.html" class="btn btn-neutral float-right" title="Python API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../../releasenotes.html" class="btn btn-neutral float-left" title="Release notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

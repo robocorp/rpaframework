@@ -2,90 +2,21 @@
 Netsuite
 ########
 
-.. contents:: Table of Contents
-   :local:
-   :depth: 1
-
-***********
-Description
-***********
-
-`Netsuite` is a library for accessing Netsuite using NetSuite SOAP web service SuiteTalk.
-The library extends `netsuitesdk library`_.
-
-More information available at `NetSuite SOAP webservice SuiteTalk`_.
-
-
-.. _netsuitesdk library:
-    https://github.com/fylein/netsuite-sdk-py
-
-.. _NetSuite SOAP webservice SuiteTalk:
-    http://www.netsuite.com/portal/platform/developer/suitetalk.shtml
-
-********
-Examples
-********
-
-Robot Framework
-===============
-
-.. code-block:: robotframework
-    :linenos:
-
-    *** Settings ***
-    Library     RPA.Netsuite
-    Library     RPA.Excel.Files
-    Library     RPA.Tables
-    Task Setup  Authorize Netsuite
-
-    *** Tasks ***
-    Get data from Netsuite and Store into Excel files
-        ${accounts}=        Get Accounts   account_type=_expense
-        ${accounts}=        Create table    ${accounts}
-        Create Workbook
-        Append Rows To Worksheet  ${accounts}
-        Save Workbook       netsuite_accounts.xlsx
-        Close Workbook
-        ${bills}=           Get Vendor Bills
-        ${bills}=           Create table    ${bills}
-        Create Workbook
-        Append Rows To Worksheet  ${bills}
-        Save Workbook       netsuite_bills.xlsx
-        Close Workbook
-
-
-    *** Keywords ***
-    Authorize Netsuite
-        ${secrets}=     Get Secret   netsuite
-        Connect
-        ...        account=${secrets}[ACCOUNT]
-        ...        consumer_key=${secrets}[CONSUMER_KEY]
-        ...        consumer_secret=${secrets}[CONSUMER_KEY]
-        ...        token_key=${secrets}[CONSUMER_SECRET]
-        ...        token_secret=${secrets}[TOKEN_KEY]
-
-Python
-======
-
-.. code-block:: python
-    :linenos:
-
-    from RPA.Netsuite import Netsuite
-
-    ns = Netsuite()
-    ns.connect()
-    accounts = ns.get_accounts()
-    currencies = ns.get_currencies()
-
-
-*****************
-API Documentation
-*****************
-
-See `libdoc documentation <../../libdoc/RPA_Netsuite.html>`_.
+Access NetSuite's SuiteTalk service.
 
 .. toctree::
    :maxdepth: 1
+   :hidden:
 
-   ../../robot/Netsuite.rst
    python
+
+Keywords
+========
+
+🔗 Direct link to `keyword documentation <../../libdoc/RPA_Netsuite.html>`_.
+
+-------
+
+.. raw:: html
+
+   <iframe scrolling="no" class="libdoc" src="../../libdoc/RPA_Netsuite.html" />

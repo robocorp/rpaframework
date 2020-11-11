@@ -25,6 +25,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/custom.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -33,10 +34,11 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Robot Framework API" href="../../robot/Cloud/Google.html" />
-    <link rel="prev" title="Python module API" href="../cloud_azure/python.html" />
+    <link rel="next" title="Python API" href="python.html" />
+    <link rel="prev" title="Python API" href="../cloud_azure/python.html" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
@@ -104,8 +106,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cloud_azure/index.html">Cloud.Azure</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Cloud.Google</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../robot/Cloud/Google.html">Robot Framework API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="python.html">Python module API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html">Python API</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
@@ -207,183 +208,14 @@
             
   <div class="section" id="cloud-google">
 <h1>Cloud.Google<a class="headerlink" href="#cloud-google" title="Permalink to this headline">¶</a></h1>
-<div class="contents local topic" id="table-of-contents">
-<p class="topic-title">Table of Contents</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#description" id="id1">Description</a></p></li>
-<li><p><a class="reference internal" href="#examples" id="id2">Examples</a></p></li>
-<li><p><a class="reference internal" href="#api-documentation" id="id3">API Documentation</a></p></li>
-</ul>
-</div>
-<div class="section" id="description">
-<h2><a class="toc-backref" href="#id1">Description</a><a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p><cite>Google</cite> is a library for operating with Google API endpoints.</p>
-<p>Usage requires the following steps:</p>
-<ul class="simple">
-<li><p>Create a GCP project</p></li>
-<li><p>Create a service account key file (JSON) and save it to a place the robot
-can use it</p></li>
-<li><p>Enable APIs</p></li>
-<li><p>Install rpaframework[google]</p></li>
-</ul>
-<div class="section" id="google-authentication">
-<h3>Google authentication<a class="headerlink" href="#google-authentication" title="Permalink to this headline">¶</a></h3>
-<p>Authentication for Google is set with <cite>service credentials JSON file</cite> which can be given to the library
-in three different ways.</p>
-<ul class="simple">
-<li><p>Method 1 as environment variables, <code class="docutils literal notranslate"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> with path to JSON file.</p></li>
-<li><p>Method 2 as keyword parameter to <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Storage</span> <span class="pre">Client</span></code> for example.</p></li>
-<li><p>Method 3 as Robocloud vault secret. The vault name and secret key name needs to be given in library init
-or with keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Robocloud</span> <span class="pre">Vault</span></code>. Secret value should contain JSON file contents.</p></li>
-</ul>
-<p>Method 1. service credentials using environment variable</p>
-<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
-
-<span class="gh">*** Tasks ***</span><span class="p"></span>
-<span class="gu">Init Google services</span><span class="p"></span>
-<span class="p">    </span><span class="c"># NO parameters for Vision Client, expecting to get JSON</span>
-<span class="p">    </span><span class="c"># with GOOGLE_APPLICATION_CREDENTIALS environment variable</span>
-<span class="p">    </span><span class="nf">Init Vision Client</span><span class="p"></span>
-</pre></div>
-</td></tr></table></div>
-<p>Method 2. service credentials with keyword parameter</p>
-<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
-
-<span class="gh">*** Tasks ***</span><span class="p"></span>
-<span class="gu">Init Google services</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Init Speech To Text Client</span><span class="p">  </span><span class="s">/path/to/service_credentials.json</span><span class="p"></span>
-</pre></div>
-</td></tr></table></div>
-<p>Method 3. setting Robocloud Vault in the library init</p>
-<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
-<span class="p">...       </span><span class="s">robocloud_vault_name=googlecloud</span><span class="p"></span>
-<span class="p">...       </span><span class="s">robocloud_vault_secret_key=servicecreds</span><span class="p"></span>
-
-<span class="gh">*** Tasks ***</span><span class="p"></span>
-<span class="gu">Init Google services</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Init Storage Client</span><span class="p">   </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
-</pre></div>
-</td></tr></table></div>
-<p>Method 3. setting Robocloud Vault with keyword</p>
-<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
-
-<span class="gh">*** Tasks ***</span><span class="p"></span>
-<span class="gu">Init Google services</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Set Robocloud Vault</span><span class="p">   </span><span class="s">vault_name=googlecloud</span><span class="p">  </span><span class="s">vault_secret_key=servicecreds</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Init Storage Client</span><span class="p">   </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-<div class="section" id="requirements">
-<h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
-<p>Due to number of dependencies related to Google Cloud services this library has been set as
-an optional package for <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>.</p>
-<p>This can be installed by opting in to the <cite>google</cite> dependency:</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpaframework[google]</span></code></p>
-</div>
-</div>
-<div class="section" id="examples">
-<h2><a class="toc-backref" href="#id2">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="robot-framework">
-<h3>Robot Framework<a class="headerlink" href="#robot-framework" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-robotframework notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
-
-<span class="gh">*** Variables ***</span><span class="p"></span>
-<span class="p">${</span><span class="nv">SERVICE CREDENTIALS</span><span class="p">}    ${</span><span class="nv">/</span><span class="p">}</span><span class="s">path</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">to</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">service_credentials.json</span><span class="p"></span>
-<span class="p">${</span><span class="nv">BUCKET_NAME</span><span class="p">}            </span><span class="s">testbucket12213123123</span><span class="p"></span>
-
-<span class="gh">*** Tasks ***</span><span class="p"></span>
-<span class="gu">Upload a file into a new storage bucket</span><span class="p"></span>
-<span class="p">    [</span><span class="kn">Setup</span><span class="p">]   </span><span class="nf">Init Storage Client</span><span class="p">   ${</span><span class="nv">SERVICE CREDENTIALS</span><span class="p">}</span>
-<span class="p">    </span><span class="nf">Create Bucket</span><span class="p">    ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
-<span class="p">    </span><span class="nf">Upload File</span><span class="p">      ${</span><span class="nv">BUCKET_NAME</span><span class="p">}   ${</span><span class="nv">/</span><span class="p">}</span><span class="s">path</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">to</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">file.pdf</span><span class="p">  </span><span class="s">myfile.pdf</span><span class="p"></span>
-<span class="p">    @{</span><span class="nv">files</span><span class="p">}         </span><span class="nf">List Files</span><span class="p">   ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
-<span class="p">    FOR   ${</span><span class="nv">file</span><span class="p">}  IN   @{</span><span class="nv">files</span><span class="p">}</span>
-<span class="p">        </span><span class="nf">Log</span><span class="p">  ${</span><span class="nv">file</span><span class="p">}</span>
-<span class="p">    END</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-<div class="section" id="python">
-<h3>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Cloud.Google</span> <span class="kn">import</span> <span class="n">Google</span>
-
-<span class="n">library</span> <span class="o">=</span> <span class="n">Google</span>
-<span class="n">service_credentials</span> <span class="o">=</span> <span class="s1">&#39;/path/to/service_credentials.json&#39;</span>
-
-<span class="n">library</span><span class="o">.</span><span class="n">init_vision_client</span><span class="p">(</span><span class="n">service_credentials</span><span class="p">)</span>
-<span class="n">library</span><span class="o">.</span><span class="n">init_text_to_speech</span><span class="p">(</span><span class="n">service_credentials</span><span class="p">)</span>
-
-<span class="n">response</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">detect_text</span><span class="p">(</span><span class="s1">&#39;imagefile.png&#39;</span><span class="p">,</span> <span class="s1">&#39;result.json&#39;</span><span class="p">)</span>
-<span class="n">library</span><span class="o">.</span><span class="n">synthesize_speech</span><span class="p">(</span><span class="s1">&#39;I want this said aloud&#39;</span><span class="p">,</span> <span class="n">target_file</span><span class="o">=</span><span class="s1">&#39;said.mp3&#39;</span><span class="p">)</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-</div>
-<div class="section" id="api-documentation">
-<h2><a class="toc-backref" href="#id3">API Documentation</a><a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
-<p>See <a class="reference external" href="../../libdoc/RPA_Cloud_Google.html">libdoc documentation</a>.</p>
+<p>Use Google Cloud services.</p>
 <div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../robot/Cloud/Google.html">Robot Framework API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="python.html">Python module API</a></li>
-</ul>
 </div>
-</div>
+<div class="section" id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<p>🔗 Direct link to <a class="reference external" href="../../libdoc/RPA_Cloud_Google.html">keyword documentation</a>.</p>
+<hr class="docutils" />
+<iframe scrolling="no" class="libdoc" src="../../libdoc/RPA_Cloud_Google.html" /></div>
 </div>
 
 
@@ -394,10 +226,10 @@ an optional package for <code class="docutils literal notranslate"><span class="
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../robot/Cloud/Google.html" class="btn btn-neutral float-right" title="Robot Framework API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="python.html" class="btn btn-neutral float-right" title="Python API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../cloud_azure/python.html" class="btn btn-neutral float-left" title="Python module API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../cloud_azure/python.html" class="btn btn-neutral float-left" title="Python API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
