@@ -55,3 +55,16 @@ Set download directory
     Open Available Browser  https://cdn.robocorp.com/legal/Robocorp-EULA-v1.0.pdf  headless=${TRUE}
     File Should Exist       ${OUTPUT_DIR}${/}Robocorp-EULA-v1.0.pdf
     [Teardown]  Run Keyword And Ignore Error   Remove File  ${OUTPUT_DIR}${/}Robocorp-EULA-v1.0.pdf
+
+Highlight elements
+    # TODO: test somehow that the outline is really drawn.
+    [Setup]  Open available browser  https://robocorp.com/docs/quickstart-guide  headless=${TRUE}
+    Highlight Elements               xpath://h2
+    Page Should Contain Element      xpath://h2[@rpaframework-highlight]
+
+Clear all highlights
+    [Setup]  Open available browser  https://robocorp.com/docs/quickstart-guide  headless=${TRUE}
+    Highlight Elements               xpath://h2
+    Clear All Highlights
+    Page Should Contain Element      xpath://h2
+    Page Should Not Contain Element  xpath://h2[@rpaframework-highlight]

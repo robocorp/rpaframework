@@ -1626,3 +1626,66 @@ class Browser(SeleniumLibrary):
                 "download.directory_upgrade": True,
                 "download.prompt_for_download": False,
             }
+
+    @keyword
+    def highlight_elements(
+        self,
+        locator: str,
+        width: str = "2px",
+        style: str = "dotted",
+        color: str = "blue",
+    ):
+        """
+        Highlight all matching elements by locator.
+
+        Highlighing is done by adding a colored outline
+        around the elements with CSS styling.
+
+        ``locator``  element locator
+        ``width``    highlight outline width
+        ``style``    highlight outline style
+        ``color``    highlight outline color
+
+        Example:
+
+        | Highlight Elements | xpath://h2 |
+        """
+        elements = self.find_elements(locator)
+        attribute_name = "rpaframework-highlight"
+
+        def inject_style():
+            css = (
+                "\n"
+                f"[{attribute_name}] {{\n"
+                f"  outline: {width} {style} {color};\n"
+                "}\n"
+            )
+            script = (
+                "var node = document.createElement('style');\n"
+                "node.setAttribute('data-name', 'rpaframework');\n"
+                f"node.innerHTML=`{css}`\n"
+                "document.head.appendChild(node);"
+            )
+            self.driver.execute_script(script)
+
+        def add_highlight_attribute_to_elements():
+            script = "".join(
+                f'arguments[{idx}].setAttribute("{attribute_name}", "");'
+                for idx in range(len(elements))
+            )
+            self.driver.execute_script(script, *elements)
+
+        inject_style()
+        add_highlight_attribute_to_elements()
+
+    @keyword
+    def clear_all_highlights(self):
+        """Remove all highlighting made by ``Highlight Elements``."""
+        attribute_name = "rpaframework-highlight"
+
+        elements = self.driver.find_elements_by_css_selector(f"[{attribute_name}]")
+        script = "".join(
+            f'arguments[{idx}].removeAttribute("{attribute_name}");'
+            for idx in range(len(elements))
+        )
+        self.driver.execute_script(script, *elements)
