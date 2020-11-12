@@ -962,7 +962,7 @@ class Tables:
         self.logger = logging.getLogger(__name__)
 
     @staticmethod
-    def requires_table(obj):
+    def _requires_table(obj):
         if not isinstance(obj, Table):
             raise TypeError("Keyword requires Table object")
 
@@ -996,7 +996,7 @@ class Tables:
         :param with_index:  include index in values
         :param as_list:     export data as list instead of dict
         """
-        self.requires_table(table)
+        self._requires_table(table)
         if as_list:
             return table.to_list(with_index)
         else:
@@ -1007,7 +1007,7 @@ class Tables:
 
         :param table:   table to copy
         """
-        self.requires_table(table)
+        self._requires_table(table)
         return table.copy()
 
     def clear_table(self, table):
@@ -1015,7 +1015,7 @@ class Tables:
 
         :param table:   table to clear
         """
-        self.requires_table(table)
+        self._requires_table(table)
         table.clear()
 
     def merge_tables(self, *tables, index=None):
@@ -1109,7 +1109,7 @@ class Tables:
 
         :param table:    table to inspect
         """
-        self.requires_table(table)
+        self._requires_table(table)
         notebook_print(text=table.dimensions)
         return table.dimensions
 
@@ -1122,7 +1122,7 @@ class Tables:
         :param strict:  if True, raises ValueError if column lengths
                         do not match
         """
-        self.requires_table(table)
+        self._requires_table(table)
         before = table.columns
 
         if strict and len(before) != len(columns):
@@ -1146,7 +1146,7 @@ class Tables:
         :param name:    name of new column
         :param values:  row values (or single scalar value for all rows)
         """
-        self.requires_table(table)
+        self._requires_table(table)
         table.append_column(name, values)
 
     def add_table_row(self, table, row, index=None):
@@ -1156,7 +1156,7 @@ class Tables:
         :param row:     value for new row
         :param index:   index name for new row
         """
-        self.requires_table(table)
+        self._requires_table(table)
         table.append_row(row, index=index)
 
     def get_table_row(self, table, index, as_list=False):
@@ -1166,7 +1166,7 @@ class Tables:
         :param row:     row to read
         :param as_list: return list instead of dictionary
         """
-        self.requires_table(table)
+        self._requires_table(table)
         row = table.get_row(index, as_list=as_list)
         notebook_print(text=row)
         return row
@@ -1178,7 +1178,7 @@ class Tables:
         :param column:  column to read
         :param as_list: return list instead of dictionary
         """
-        self.requires_table(table)
+        self._requires_table(table)
         col = table.get_column(column, as_list=as_list)
         return col
 
@@ -1189,7 +1189,7 @@ class Tables:
         :param row:     row to modify
         :param values:  value(s) to set
         """
-        self.requires_table(table)
+        self._requires_table(table)
         table.set_row(row, values)
 
     def set_table_column(self, table, column, values):
@@ -1199,7 +1199,7 @@ class Tables:
         :param column:  column to modify
         :param values:  value(s) to set
         """
-        self.requires_table(table)
+        self._requires_table(table)
         table.set_column(column, values)
 
     def pop_table_row(self, table, index=None, as_list=False):
@@ -1209,7 +1209,7 @@ class Tables:
         :param index:   row index, pops first row if none given
         :param as_list: return list instead of dictionary
         """
-        self.requires_table(table)
+        self._requires_table(table)
         index = if_none(index, table.index[0])
 
         values = table.get_row(index, as_list=as_list)
@@ -1223,7 +1223,7 @@ class Tables:
         :param column:  column to remove
         :param as_list: return list instead of dictionary
         """
-        self.requires_table(table)
+        self._requires_table(table)
         column = if_none(column, table.columns[0])
 
         values = self.get_table_column(table, column, as_list)
@@ -1237,7 +1237,7 @@ class Tables:
         :param start:   start index (inclusive)
         :param start:   end index (inclusive)
         """
-        self.requires_table(table)
+        self._requires_table(table)
         return table.get_slice(start, end)
 
     def find_table_rows(self, table, column, value, as_list=False):
@@ -1248,7 +1248,7 @@ class Tables:
         :param value:   value to match for
         :param as_list: return list instead of dictionary
         """
-        self.requires_table(table)
+        self._requires_table(table)
         result = []
         for row in table.iter_dicts(True):
             if row[column] == value:
@@ -1281,7 +1281,7 @@ class Tables:
         :param count:   number of lines to read
         :param as_list: return list instead of Table
         """
-        self.requires_table(table)
+        self._requires_table(table)
         return table.head(count, as_list)
 
     def table_tail(self, table, count=5, as_list=False):
@@ -1291,7 +1291,7 @@ class Tables:
         :param count:   number of lines to read
         :param as_list: return list instead of Table
         """
-        self.requires_table(table)
+        self._requires_table(table)
         return table.tail(count, as_list)
 
     def get_table_cell(self, table, row, column):
@@ -1301,7 +1301,7 @@ class Tables:
         :param row:     row of cell
         :param column:  column of cell
         """
-        self.requires_table(table)
+        self._requires_table(table)
         return table.get_cell(row, column)
 
     def set_table_cell(self, table, row, column, value):
@@ -1312,7 +1312,7 @@ class Tables:
         :param column:  column of cell
         :param value:   value to set
         """
-        self.requires_table(table)
+        self._requires_table(table)
         table.set_cell(row, column, value)
 
     def sort_table_by_column(self, table, column, ascending=False):
@@ -1322,7 +1322,7 @@ class Tables:
         :param column:      column to sort with
         :param ascending:   table sort order
         """
-        self.requires_table(table)
+        self._requires_table(table)
         table.sort_by_column(column, ascending=ascending)
 
     def group_table_by_column(self, table, column):
@@ -1331,7 +1331,7 @@ class Tables:
         :param table:   table to use for grouping
         :param column:  column which is used as grouping criteria
         """
-        self.requires_table(table)
+        self._requires_table(table)
         groups = table.group_by_column(column)
         self.logger.info("Found %s groups", len(groups))
         return groups
@@ -1344,7 +1344,7 @@ class Tables:
         :param operator:    filtering operator, e.g. >, <, ==, contains
         :param value:       value to compare column to (using operator)
         """
-        self.requires_table(table)
+        self._requires_table(table)
 
         operator = str(operator).lower().strip()
         condition = {
@@ -1370,7 +1370,7 @@ class Tables:
 
         :param table:   table to filter
         """
-        self.requires_table(table)
+        self._requires_table(table)
 
         empty = []
         for idx, row in table.iter_lists():
@@ -1385,7 +1385,7 @@ class Tables:
 
         :param table:    table to filter
         """
-        self.requires_table(table)
+        self._requires_table(table)
 
         empty = []
         for idx in reversed(table.index):
@@ -1398,7 +1398,7 @@ class Tables:
 
     def trim_column_names(self, table):
         """Remove all extraneous whitespace from column names."""
-        self.requires_table(table)
+        self._requires_table(table)
         table.columns = [
             column.strip() if isinstance(column, str) else column
             for column in table.columns
@@ -1459,7 +1459,7 @@ class Tables:
         Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``.
 
         """
-        self.requires_table(table)
+        self._requires_table(table)
 
         with open(path, mode="w", newline="") as fd:
             writer = csv.DictWriter(fd, fieldnames=table.columns, dialect=dialect)
