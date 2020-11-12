@@ -15,6 +15,7 @@ Upcoming release
 
 - Library **Browser**: Add keyword ``Highlight Elements`` for highlighting elements that match a selector
 - Library **RPA.Desktop**: Fix macOS coordinate scaling when using image template locators
+- Remove dependency to ``python-evdev`` on Linux
 
 6.5.0
 -----
