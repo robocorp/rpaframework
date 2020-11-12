@@ -383,6 +383,23 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Excel.Files.Files.insert_image_to_worksheet">
+<code class="sig-name descname">insert_image_to_worksheet</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">path</em>, <em class="sig-param">scale=1.0</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.insert_image_to_worksheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert an image into the given cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> – Index of row to write</p></li>
+<li><p><strong>column</strong> – Name or index of column</p></li>
+<li><p><strong>image</strong> – Path to image file</p></li>
+<li><p><strong>scale</strong> – Scale of image</p></li>
+<li><p><strong>name</strong> – Name of worksheet</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Excel.Files.Files.list_worksheets">
 <code class="sig-name descname">list_worksheets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.list_worksheets" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all names of worksheets in the given workbook.</p>
@@ -547,6 +564,11 @@ when opened or created.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Excel.Files.XlsWorkbook.insert_image">
+<code class="sig-name descname">insert_image</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">image</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.insert_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.open">
 <code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param">path_or_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.open" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -621,6 +643,11 @@ when opened or created.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.find_empty_row">
 <code class="sig-name descname">find_empty_row</code><span class="sig-paren">(</span><em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.find_empty_row" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsxWorkbook.insert_image">
+<code class="sig-name descname">insert_image</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">image</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.insert_image" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
