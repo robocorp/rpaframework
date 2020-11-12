@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Excel.Files**: Add keyword for inserting images to worksheets
+
 6.6.0
 -----
 

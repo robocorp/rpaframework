@@ -249,3 +249,8 @@ def test_set_worksheet_value(library):
     assert row["A"] == "First"
     assert row["B"] == "Second"
     assert row["C"] == "Third"
+
+
+def test_insert_image_to_worksheet(library):
+    library.insert_image_to_worksheet(10, "B", "tests/resources/faces.jpeg", scale=4)
+    library.save_workbook(BytesIO())

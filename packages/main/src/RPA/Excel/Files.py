@@ -10,6 +10,7 @@ from openpyxl.utils import get_column_letter
 import xlrd
 import xlwt
 from xlutils.copy import copy as xlutils_copy
+from PIL import Image
 
 from RPA.Tables import Tables, Table
 
@@ -371,6 +372,27 @@ class Files:
         assert self.workbook, "No active workbook"
         self.workbook.set_cell_value(row, column, value, name)
 
+    def insert_image_to_worksheet(self, row, column, path, scale=1.0, name=None):
+        """Insert an image into the given cell.
+
+        :param row:     Index of row to write
+        :param column:  Name or index of column
+        :param image:   Path to image file
+        :param scale:   Scale of image
+        :param name:    Name of worksheet
+        """
+        assert self.workbook, "No active workbook"
+        image = Image.open(path)
+
+        if scale != 1.0:
+            fmt = image.format
+            width = int(image.width * float(scale))
+            height = int(image.height * float(scale))
+            image = image.resize((width, height), Image.ANTIALIAS)
+            image.format = fmt
+
+        self.workbook.insert_image(row, column, image, name)
+
 
 class XlsxWorkbook:
     """Container for manipulating moden Excel files (.xlsx)"""
@@ -417,6 +439,15 @@ class XlsxWorkbook:
             name = self.sheetnames[name]
 
         return name
+
+    def _get_cellname(self, row, column):
+        row = int(row)
+        try:
+            column = int(column)
+            column = get_column_letter(column)
+        except ValueError:
+            pass
+        return "%s%s" % (column, row)
 
     def _to_index(self, value):
         value = int(value) if value is not None else 1
@@ -545,15 +576,23 @@ class XlsxWorkbook:
     def set_cell_value(self, row, column, value, name=None):
         name = self._get_sheetname(name)
         sheet = self._book[name]
+        cell = self._get_cellname(row, column)
 
-        row = int(row)
-        try:
-            column = int(column)
-            column = get_column_letter(column)
-        except ValueError:
-            pass
+        sheet[cell] = value
 
-        sheet["%s%s" % (column, row)] = value
+    def insert_image(self, row, column, image, name=None):
+        name = self._get_sheetname(name)
+        sheet = self._book[name]
+        cell = self._get_cellname(row, column)
+
+        # For compatibility with openpyxl
+        stream = BytesIO()
+        image.save(stream, format=image.format)
+        image.fp = stream
+
+        img = openpyxl.drawing.image.Image(image)
+        img.anchor = cell
+        sheet.add_image(img)
 
 
 class XlsWorkbook:
@@ -565,6 +604,7 @@ class XlsWorkbook:
         self._book = None
         self._extension = None
         self._active = None
+        self._images = []
 
     @property
     def sheetnames(self):
@@ -613,6 +653,14 @@ class XlsWorkbook:
 
         return name
 
+    def _get_cell(self, row, column):
+        row = int(row)
+        try:
+            column = int(column)
+        except ValueError:
+            column = get_column_index(column)
+        return row - 1, column - 1
+
     def _to_index(self, value):
         value = (int(value) - 1) if value is not None else 0
         if value < 0:
@@ -656,12 +704,14 @@ class XlsWorkbook:
                 )
 
         self._extension = extension
+        self._images = []
 
     def close(self):
         self._book.release_resources()
         self._book = None
         self._extension = None
         self._active = None
+        self._images = []
 
     @contextmanager
     def _book_write(self):
@@ -683,6 +733,7 @@ class XlsWorkbook:
             raise ValueError("No path defined for workbook")
 
         book = xlutils_copy(self._book)
+        self._insert_images(book)
         book.save(path)
 
     def create_worksheet(self, name):
@@ -799,13 +850,22 @@ class XlsWorkbook:
 
     def set_cell_value(self, row, column, value, name=None):
         name = self._get_sheetname(name)
-
-        row = int(row)
-        try:
-            column = int(column)
-        except ValueError:
-            column = get_column_index(column)
+        row, column = self._get_cell(row, column)
 
         with self._book_write() as book:
             sheet = book.get_sheet(name)
-            sheet.write(row - 1, column - 1, value)
+            sheet.write(row, column, value)
+
+    def insert_image(self, row, column, image, name=None):
+        name = self._get_sheetname(name)
+        row, column = self._get_cell(row, column)
+        self._images.append((name, row, column, image))
+
+    def _insert_images(self, book):
+        for name, row, column, image in self._images:
+            stream = BytesIO()
+            image.save(stream, format="BMP")
+            bitmap = stream.getvalue()
+
+            sheet = book.get_sheet(name)
+            sheet.insert_bitmap_data(bitmap, row, column)
