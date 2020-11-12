@@ -168,8 +168,6 @@ class ImapSmtp:
                 self.smtp_conn = None
 
         if self.imap_conn:
-            self.select_folder()
-            self.imap_conn.close()
             self.imap_conn.logout()
             self.imap_conn = None
 
