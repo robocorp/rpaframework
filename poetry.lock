@@ -44,7 +44,7 @@ client = ["requests"]
 
 [[package]]
 name = "babel"
-version = "2.8.1"
+version = "2.9.0"
 description = "Internationalization utilities"
 category = "dev"
 optional = false
@@ -735,7 +735,7 @@ six = "*"
 
 [[package]]
 name = "requests"
-version = "2.24.0"
+version = "2.25.0"
 description = "Python HTTP for Humans."
 category = "main"
 optional = false
@@ -746,7 +746,7 @@ certifi = ">=2017.4.17"
 chardet = ">=3.0.2,<4"
 idna = ">=2.5,<3"
 PySocks = {version = ">=1.5.6,<1.5.7 || >1.5.7", optional = true, markers = "extra == \"socks\""}
-urllib3 = ">=1.21.1,<1.25.0 || >1.25.0,<1.25.1 || >1.25.1,<1.26"
+urllib3 = ">=1.21.1,<1.27"
 
 [package.extras]
 security = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)"]
@@ -821,7 +821,7 @@ python-versions = "*"
 
 [[package]]
 name = "robotframework-docgen"
-version = "0.4.0"
+version = "0.4.1"
 description = "Robot Framework documentation finder and generator"
 category = "dev"
 optional = false
@@ -942,9 +942,9 @@ xlutils = ">=2.0.0,<3.0.0"
 xlwt = ">=1.3.0,<2.0.0"
 
 [package.extras]
-google = ["google-api-python-client (>=1.12.3,<2.0.0)", "google-cloud-storage (>=1.28.1,<2.0.0)", "google-auth-httplib2 (>=0.0.4,<0.0.5)", "google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-cloud-translate (>=2.0.1,<3.0.0)", "google-cloud-language (>=1.3.0,<2.0.0)", "google-cloud-vision (>=1.0.0,<2.0.0)", "google-cloud-speech (>=1.3.2,<2.0.0)", "google-cloud-texttospeech (>=1.0.1,<2.0.0)", "google-auth-oauthlib (>=0.4.1,<0.5.0)", "grpcio (>=1.29.0,<2.0.0)"]
-aws = ["boto3 (>=1.13.4,<2.0.0)"]
+google = ["google-auth-httplib2 (>=0.0.4,<0.0.5)", "google-auth-oauthlib (>=0.4.1,<0.5.0)", "grpcio (>=1.29.0,<2.0.0)", "google-cloud-speech (>=1.3.2,<2.0.0)", "google-cloud-vision (>=1.0.0,<2.0.0)", "google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-api-python-client (>=1.12.3,<2.0.0)", "google-cloud-language (>=1.3.0,<2.0.0)", "google-cloud-storage (>=1.28.1,<2.0.0)", "google-cloud-translate (>=2.0.1,<3.0.0)", "google-cloud-texttospeech (>=1.0.1,<2.0.0)"]
 cv = ["rpaframework-recognition (>=0.3.0,<0.4.0)"]
+aws = ["boto3 (>=1.13.4,<2.0.0)"]
 
 [package.source]
 type = "directory"
@@ -1244,7 +1244,7 @@ python-versions = "*"
 
 [[package]]
 name = "urllib3"
-version = "1.25.11"
+version = "1.26.1"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 category = "main"
 optional = false
@@ -1359,7 +1359,7 @@ testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs (>=1.2.3)", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "fd2d4edeba41cd5e968fc901ad574a8a4dcb354b7c937afe078d50642a31e14a"
+content-hash = "a513243c514bfae97f39893c1d8af4c3c10e91520c66262575063a893116d77f"
 
 [metadata.files]
 alabaster = [
@@ -1379,8 +1379,8 @@ authlib = [
     {file = "Authlib-0.15.2.tar.gz", hash = "sha256:21b34625c83ca48150684bbeca8f7c884cd281913c72d146dbf0e9d2fbfdec4e"},
 ]
 babel = [
-    {file = "Babel-2.8.1-py2.py3-none-any.whl", hash = "sha256:be432f50d6c38c705ea45a0c05a4bbb22a70742a93888fbae5e7948da1635d23"},
-    {file = "Babel-2.8.1.tar.gz", hash = "sha256:820c195271534e8a86f564ba9ef2c207f356cfeb7e94d2bdc6b57897c4233837"},
+    {file = "Babel-2.9.0-py2.py3-none-any.whl", hash = "sha256:9d35c22fcc79893c3ecc85ac4a56cde1ecf3f19c540bba0922308a6c06ca6fa5"},
+    {file = "Babel-2.9.0.tar.gz", hash = "sha256:da031ab54472314f210b0adcff1588ee5d1d1d0ba4dbd07b94dba82bde791e05"},
 ]
 backports-datetime-fromisoformat = [
     {file = "backports-datetime-fromisoformat-1.0.0.tar.gz", hash = "sha256:9577a2a9486cd7383a5f58b23bb8e81cf0821dbbc0eb7c87d3fa198c1df40f5c"},
@@ -1868,8 +1868,8 @@ pywinauto = [
     {file = "pywinauto-0.6.8.tar.gz", hash = "sha256:de23f1e977cc51e7eddd95c8f365710343136433968d1e2ad377962d6bd6540a"},
 ]
 requests = [
-    {file = "requests-2.24.0-py2.py3-none-any.whl", hash = "sha256:fe75cc94a9443b9246fc7049224f75604b113c36acb93f87b80ed42c44cbb898"},
-    {file = "requests-2.24.0.tar.gz", hash = "sha256:b3559a131db72c33ee969480840fff4bb6dd111de7dd27c8ee1f820f4f00231b"},
+    {file = "requests-2.25.0-py2.py3-none-any.whl", hash = "sha256:e786fa28d8c9154e6a4de5d46a1d921b8749f8b74e28bde23768e5e16eece998"},
+    {file = "requests-2.25.0.tar.gz", hash = "sha256:7f1a0b932f4a60a1a65caa4263921bb7d9ee911957e0ae4a23a6dd08185ad5f8"},
 ]
 requests-file = [
     {file = "requests-file-1.5.1.tar.gz", hash = "sha256:07d74208d3389d01c38ab89ef403af0cfec63957d53a0081d8eca738d0247d8e"},
@@ -1897,8 +1897,8 @@ robotframework = [
     {file = "robotframework-3.2.2.zip", hash = "sha256:a0786a916d0572bd9d6afe26e95c6021e3df5dcafa0ece6b302e36366e58c24e"},
 ]
 robotframework-docgen = [
-    {file = "robotframework-docgen-0.4.0.tar.gz", hash = "sha256:e9966c89a133328dae3ea46a4aaad8f0ecaedc9d8df111d052fb6cb29b24da7d"},
-    {file = "robotframework_docgen-0.4.0-py3-none-any.whl", hash = "sha256:d49496a6a300eee59a92c84d67568bf249ee35b512d84e595a9e678b43346a4a"},
+    {file = "robotframework-docgen-0.4.1.tar.gz", hash = "sha256:2aed4a4399636c666ea79bba9dcc921770ad93fea991d802fd3b52737f0e5467"},
+    {file = "robotframework_docgen-0.4.1-py3-none-any.whl", hash = "sha256:534fad3081fc81018609a39e511b0e186475e22e3536f24c3e230e62c9c8f1ae"},
 ]
 robotframework-pythonlibcore = [
     {file = "robotframework-pythonlibcore-2.1.0.tar.gz", hash = "sha256:8b210bf29cbb78069b41a3d0b90e4cc8dd23f509ea2daf450e3ef4a6ee758949"},
@@ -2013,8 +2013,8 @@ untokenize = [
     {file = "untokenize-0.1.1.tar.gz", hash = "sha256:3865dbbbb8efb4bb5eaa72f1be7f3e0be00ea8b7f125c69cbd1f5fda926f37a2"},
 ]
 urllib3 = [
-    {file = "urllib3-1.25.11-py2.py3-none-any.whl", hash = "sha256:f5321fbe4bf3fefa0efd0bfe7fb14e90909eb62a48ccda331726b4319897dd5e"},
-    {file = "urllib3-1.25.11.tar.gz", hash = "sha256:8d7eaa5a82a1cac232164990f04874c594c9453ec55eef02eab885aa02fc17a2"},
+    {file = "urllib3-1.26.1-py2.py3-none-any.whl", hash = "sha256:61ad24434555a42c0439770462df38b47d05d9e8e353d93ec3742900975e3e65"},
+    {file = "urllib3-1.26.1.tar.gz", hash = "sha256:097116a6f16f13482d2a2e56792088b9b2920f4eb6b4f84a2c90555fb673db74"},
 ]
 webdrivermanager = [
     {file = "webdrivermanager-0.9.0.tar.gz", hash = "sha256:fdd0305be5e6f18edb48afb8e738e2d622ec7817ccd98b3a939c1e443f540cc2"},
