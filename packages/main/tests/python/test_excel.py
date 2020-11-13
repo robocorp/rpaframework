@@ -235,7 +235,7 @@ def test_ensure_unique_nested():
 
 def test_find_empty_row(library):
     row = library.find_empty_row()
-    assert row == 10
+    assert row == 11
 
 
 def test_set_worksheet_value(library):

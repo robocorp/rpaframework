@@ -844,7 +844,7 @@ class XlsWorkbook:
 
         for row in reversed(range(sheet.nrows)):
             if any(cell.value for cell in sheet.row(row)):
-                return row + 1
+                return row + 2
 
         return 1
 
