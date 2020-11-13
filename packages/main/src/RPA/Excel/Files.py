@@ -569,7 +569,7 @@ class XlsxWorkbook:
         for idx in reversed(range(sheet.max_row)):
             idx += 1
             if any(value for value in sheet[idx]):
-                return idx
+                return idx + 1
 
         return 1
 
