@@ -567,9 +567,9 @@ class XlsxWorkbook:
         sheet = self._book[name]
 
         for idx in reversed(range(sheet.max_row)):
-            idx += 1
+            idx += 1  # Convert to 1-based indexing
             if any(value for value in sheet[idx]):
-                return idx + 1
+                return idx + 1  # Return first empty row
 
         return 1
 
@@ -844,6 +844,8 @@ class XlsWorkbook:
 
         for row in reversed(range(sheet.nrows)):
             if any(cell.value for cell in sheet.row(row)):
+                # Convert to 1-based indexing and
+                # return first empty row
                 return row + 2
 
         return 1
