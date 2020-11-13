@@ -4,7 +4,10 @@ Release notes
 Upcoming release
 ----------------
 
-- Library **Excel.Files**: Add keyword for inserting images to worksheets
+- Library **Excel.Files**:
+
+  - Add keyword for inserting images to worksheets
+  - Fix ``Find Empty Row`` for .xlsx files
 
 6.6.0
 -----
