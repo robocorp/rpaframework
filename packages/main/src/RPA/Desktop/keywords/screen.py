@@ -50,19 +50,33 @@ def region_from_mss_monitor(disp) -> Region:
     return Region.from_size(disp["left"], disp["top"], disp["width"], disp["height"])
 
 
+def _generate_unique_indexed_path(filename: str) -> Path:
+    if "{index}" not in filename:
+        return Path(filename).with_suffix(".png")
+    index = 0
+    while True:
+        index += 1
+        indexed = Path(filename.replace("{index}", str(index)))
+        path = indexed.with_suffix(".png")
+        # If generated path is unique
+        if not path.is_file():
+            return path
+
+
 class ScreenKeywords(LibraryContext):
     """Keywords for reading screen information and content."""
 
     @keyword
     def take_screenshot(
         self,
-        path: Optional[str] = None,
+        path: str = "rpa-desktop-screenshot-{index}",
         locator: Optional[str] = None,
     ) -> None:
         """Take a screenshot of the whole screen, or an element
         identified by the given locator.
 
-        :param path: Name of screenshot
+        :param path: Name of screenshot. {index} will be replaced with
+        an index number to avoid overwriting previous screenshots.
         :param locator:  Element to crop screenshot to
         """
         with mss.mss() as sct:
@@ -80,13 +94,11 @@ class ScreenKeywords(LibraryContext):
                 # First monitor is combined virtual display of all monitors
                 image = sct.grab(sct.monitors[0])
 
-        if path is not None:
-            path = Path(path).with_suffix(".png")
+        parsed_path = _generate_unique_indexed_path(path)
+        os.makedirs(parsed_path.parent, exist_ok=True)
+        mss.tools.to_png(image.rgb, image.size, output=parsed_path)
 
-            os.makedirs(path.parent, exist_ok=True)
-            mss.tools.to_png(image.rgb, image.size, output=path)
-
-            self.logger.info("Saved screenshot as '%s'", path)
+        self.logger.info("Saved screenshot as '%s'", parsed_path)
 
         # Convert raw mss screenshot to Pillow Image. Might be a bit slow.
         return Image.frombytes("RGB", image.size, image.bgra, "raw", "BGRX")
