@@ -9,6 +9,11 @@ Upcoming release
   - Add keyword for inserting images to worksheets
   - Fix off-by-one issue with ``Find Empty Row`` return value
 
+- Library **Desktop**:
+
+  - Store screenshots in unique path by default, embed preview in logs
+  - Resolve image templates correctly with different working directories
+
 6.6.0
 -----
 
