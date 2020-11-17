@@ -6,7 +6,7 @@ import os
 import re
 from contextlib import contextmanager
 from pathlib import Path
-from RPA.core.locators import Locator, BrowserDOM
+from RPA.core.locators import Locator, BrowserDOM, ImageTemplate
 
 
 @contextmanager
@@ -75,10 +75,7 @@ class LocatorsDatabase:
             error_msg, error_args = database.error
             raise ValueError(error_msg % error_args)
 
-        if name not in database.locators:
-            raise ValueError(f"No locator with name: {name}")
-
-        return database.locators[name]
+        return database.resolve(name)
 
     @property
     def default_path(self):
@@ -88,8 +85,37 @@ class LocatorsDatabase:
         return os.path.join(dirname, filename)
 
     @property
+    def parent(self):
+        """Return parent directory for database."""
+        return (
+            Path(self.path).parent
+            if not isinstance(self.path, io.IOBase)
+            else Path(".")
+        )
+
+    @property
     def error(self):
         return self._error
+
+    def resolve(self, name):
+        """Fetch locator form database, and fix relative paths."""
+        if name not in self.locators:
+            raise ValueError(f"No locator with name: {name}")
+
+        locator = self.locators[name]
+
+        def to_absolute(field_name):
+            value = getattr(locator, field_name)
+            if value is not None and not Path(value).is_absolute():
+                setattr(locator, field_name, str(Path(self.parent) / value))
+
+        if isinstance(locator, BrowserDOM):
+            to_absolute("screenshot")
+        elif isinstance(locator, ImageTemplate):
+            to_absolute("path")
+            to_absolute("source")
+
+        return locator
 
     def set_error(self, msg, *args):
         """Log an error message. Ensures the same message
@@ -181,13 +207,7 @@ class LocatorsDatabase:
         if not locator.screenshot:
             return
 
-        root = (
-            Path(self.path).parent
-            if not isinstance(self.path, io.IOBase)
-            else Path(".")
-        )
-
-        images = root / ".images"
+        images = self.parent / ".images"
         path = images / "{}-{}.png".format(sanitize_name(name), "screenshot")
         content = base64.b64decode(locator.screenshot)
 
@@ -195,4 +215,4 @@ class LocatorsDatabase:
         with open(path, "wb") as fd:
             fd.write(content)
 
-        locator.screenshot = path.relative_to(root)
+        locator.screenshot = path.relative_to(self.parent)

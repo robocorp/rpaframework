@@ -67,6 +67,11 @@ CURRENT = {
         "value": "btn-primary",
         "source": "https://robotsparebinindustries.com/",
     },
+    "RobotSpareBin.Logo": {
+        "type": "image",
+        "path": "relative/locator/path.png",
+        "source": "/absolute/locator/path.png",
+    },
 }
 
 ERRORS = {
@@ -230,18 +235,6 @@ class TestLocators:
 
 
 class TestDatabase:
-    @pytest.fixture
-    def legacy_database(self):
-        database = LocatorsDatabase(to_stream(LEGACY))
-        database.load()
-        return database
-
-    @pytest.fixture
-    def current_database(self):
-        database = LocatorsDatabase(to_stream(CURRENT))
-        database.load()
-        return database
-
     def test_load_legacy(self):
         database = LocatorsDatabase(to_stream(LEGACY))
         database.load()
@@ -296,7 +289,7 @@ class TestDatabase:
         database.load()
 
         assert database.error is None
-        assert len(database.locators) == 3
+        assert len(database.locators) == 4
 
     def test_load_invalid(self):
         database = LocatorsDatabase(to_stream(ERRORS))
@@ -305,3 +298,16 @@ class TestDatabase:
         assert database.error is None
         assert len(database.locators) == 1
         assert len(database._invalid) == 2
+
+    def test_resolve_paths(self):
+        database = LocatorsDatabase(to_stream(CURRENT))
+        database.load()
+
+        database.path = "/example/root/path/locators.json"
+
+        locator = database.resolve("RobotSpareBin.Logo")
+        assert isinstance(locator, ImageTemplate)
+        assert Path(locator.path) == Path(
+            "/example/root/path/relative/locator/path.png"
+        )
+        assert Path(locator.source) == Path("/absolute/locator/path.png")
