@@ -88,14 +88,13 @@ class FinderKeywords(LibraryContext):
 
             # Calculate scaling factor for macOS, which uses virtual pixels for HiDPI.
             # Should always be 1.0 on all other platforms
-            scale_factor = screenshot.height / display["height"]
+            scale_factor = float(screenshot.height) / float(display.height)
 
-            left, top, _, _ = display.values()
             for region in matches:
                 # Scale by reverse of scale factor
                 region.scale(1 / scale_factor)
                 # Virtual screen top-left might not be (0,0)
-                region.move(left, top)
+                region.move(display.left, display.top)
 
             regions.extend(matches)
 
