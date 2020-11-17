@@ -333,7 +333,7 @@ class Windows(OperatingSystem):
         }
         return self._add_app_instance(app, dialog=False, params=params)
 
-    # TODO. How to manage app launched by open_file
+    # TODO: How to manage app launched by open_file
     def open_file(self, filename: str) -> bool:
         """Open associated application when opening file
 
@@ -981,7 +981,7 @@ class Windows(OperatingSystem):
                 self.logger.debug("%s=%s", key, element[key])
             return element
         else:
-            # TODO. return more valuable information about what should
+            # TODO: return more valuable information about what should
             # be matching element ?
             self.logger.info(
                 "Locator '%s' matched multiple elements in '%s'. "
@@ -1231,7 +1231,7 @@ class Windows(OperatingSystem):
 
         return search_criteria, locator
 
-    # TODO. supporting multiple search criterias at same time to identify ONE element
+    # TODO: supporting multiple search criterias at same time to identify ONE element
     def _is_element_matching(
         self, itemdict: dict, locator: str, criteria: str, wildcard: bool = False
     ) -> bool:
@@ -1257,7 +1257,7 @@ class Windows(OperatingSystem):
             return self.is_element_matching(itemdict, locator, "name", True)
         return False
 
-    # TODO. supporting multiple search criterias at same time to identify ONE element
+    # TODO: supporting multiple search criterias at same time to identify ONE element
     def is_element_matching(
         self, itemdict: dict, locator: str, criteria: str, wildcard: bool = False
     ) -> bool:
