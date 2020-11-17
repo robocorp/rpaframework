@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-recognition"
-version = "0.3.1"
+version = "0.4.0"
 description = "Core utilities used by RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -33,7 +33,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
-rpaframework-core = "^2.1.3"
+rpaframework-core = "^3.0.0"
 pillow = "^8.0.1"
 opencv-python = "^4.4.0"
 numpy = "1.19.3"
