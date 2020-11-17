@@ -57,8 +57,8 @@ class Region:
         return iter(self.as_tuple())
 
     @classmethod
-    def from_size(cls, x, y, width, height):
-        return cls(x, y, x + width, y + height)
+    def from_size(cls, left, top, width, height):
+        return cls(left, top, left + width, top + height)
 
     @property
     def width(self):
@@ -82,8 +82,6 @@ class Region:
         return astuple(self)
 
     def scale(self, scaling_factor: float):
-        """ Multiply region's left, top, right and bottom by `scaling_factor` """
-
         self.left = int(self.left * scaling_factor)
         self.top = int(self.top * scaling_factor)
         self.right = int(self.right * scaling_factor)
