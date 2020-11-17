@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-core"
-version = "2.2.0"
+version = "3.0.0"
 description = "Core utilities used by RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
