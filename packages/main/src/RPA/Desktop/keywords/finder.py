@@ -10,7 +10,11 @@ from RPA.core.locators import (
     parse_locator,
 )
 
-from RPA.Desktop.keywords.screen import get_displays, region_from_mss_monitor
+from RPA.Desktop.keywords.screen import (
+    all_displays,
+    take_screenshot,
+    screenshot_to_image,
+)
 
 try:
     from RPA.recognition import templates
@@ -35,50 +39,6 @@ class FinderKeywords(LibraryContext):
         else:
             self.confidence = None
 
-    def find_templates(self, locator: ImageTemplate) -> List[Union[Point, Region]]:
-        """Internal helper method for getting image template matches in all displays
-        and returning them as Points or Regions, scaled to accomodate macOS HiDPI
-        """
-
-        def get_scaled_matches(screenshot, locator, display):
-            """ Internal helper function for finding matches on a single screen """
-            try:
-                matches: List[Region] = templates.find(
-                    image=screenshot,
-                    template=locator.path,
-                    confidence=confidence,
-                )
-
-            except templates.ImageNotFoundError:
-                return []
-
-            # Calculate scaling factor
-            # (only relevant on macOS which uses virtual pixels for HiDPI)
-            # Should always be 1.0 on all other platforms
-            scale_factor = screenshot.height / display["height"]
-
-            # Virtual screen top-left might not be (0,0)
-            left, top, _, _ = display.values()
-            for region in matches:
-                # Scale by reverse of scale factor
-                region.scale(1 / scale_factor)
-                region.move(left, top)
-
-            return matches
-
-        regions: List[Region] = []
-        confidence = locator.confidence or self.confidence
-        self.logger.info("Matching with confidence of %.1f", confidence)
-        displays = get_displays()
-        for display in displays:
-            screenshot = self.ctx.take_screenshot(
-                locator=region_from_mss_monitor(display)
-            )
-            matches = get_scaled_matches(screenshot, locator, display)
-            regions.extend(matches)
-
-        return regions
-
     def find(self, locator: str) -> List[Union[Point, Region]]:
         """Internal method for resolving and searching locators."""
         if isinstance(locator, (Region, Point)):
@@ -98,14 +58,48 @@ class FinderKeywords(LibraryContext):
             if not HAS_RECOGNITION:
                 raise ValueError(
                     "Image templates not supported, please install "
-                    "rpaframework-recognition module"
+                    "rpaframework-recognition package"
                 )
             # TODO: Add built-in offset support
-
-            return self.find_templates(locator)
+            return self._find_templates(locator)
 
         else:
             raise NotImplementedError(f"Unsupported locator: {locator}")
+
+    def _find_templates(self, locator: ImageTemplate) -> List[Union[Point, Region]]:
+        """Internal helper method for getting image template matches in all displays
+        and returning them as Regions, scaled to accomodate macOS HiDPI.
+        """
+        confidence = locator.confidence or self.confidence
+        self.logger.info("Matching with confidence of %.1f", confidence)
+
+        regions: List[Region] = []
+        for display in all_displays():
+            screenshot = take_screenshot(display)
+
+            try:
+                matches: List[Region] = templates.find(
+                    image=screenshot_to_image(screenshot),
+                    template=locator.path,
+                    confidence=confidence,
+                )
+            except templates.ImageNotFoundError:
+                continue
+
+            # Calculate scaling factor for macOS, which uses virtual pixels for HiDPI.
+            # Should always be 1.0 on all other platforms
+            scale_factor = screenshot.height / display["height"]
+
+            left, top, _, _ = display.values()
+            for region in matches:
+                # Scale by reverse of scale factor
+                region.scale(1 / scale_factor)
+                # Virtual screen top-left might not be (0,0)
+                region.move(left, top)
+
+            regions.extend(matches)
+
+        return regions
 
     @keyword
     def find_elements(self, locator: str) -> List[Union[Point, Region]]:

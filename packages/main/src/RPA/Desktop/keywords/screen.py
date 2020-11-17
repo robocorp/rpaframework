@@ -1,9 +1,15 @@
+import base64
 import os
+from itertools import count
+from io import BytesIO
 from pathlib import Path
-from typing import Optional, List, Dict
+from typing import Optional, Union, List, Dict
 
 import mss
+from mss.screenshot import ScreenShot
 from PIL import Image
+from robot.api import logger as robot_logger
+from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 from RPA.core.geometry import Point, Region
 from RPA.Desktop import utils
@@ -38,16 +44,49 @@ def _draw_outline(region: Region):
         win32functions.DeleteDC(dc)
 
 
-def get_displays() -> List[Dict[str, int]]:
-    """ Returns list of mss displays, without the 1st virtual display"""
+def _create_unique_path(template: Union[Path, str]) -> Path:
+    """Creates a unique path from template with `{index}` placeholder."""
+    template = str(template)
+
+    if "{index}" not in template:
+        return Path(template)
+
+    for index in count(1):
+        path = Path(str(template).format(index=index))
+        if not path.is_file():
+            return path
+
+    raise RuntimeError("Failed to generate unique path")  # Should not reach here
+
+
+def monitor_to_region(monitor: Dict) -> Region:
+    """Convert mss monitor to Region instance."""
+    return Region.from_size(
+        monitor["left"], monitor["top"], monitor["width"], monitor["height"]
+    )
+
+
+def screenshot_to_image(screenshot: ScreenShot) -> Image:
+    """Convert mss screenshot to PIL.Image instance."""
+    return Image.frombytes("RGB", screenshot.size, screenshot.bgra, "raw", "BGRX")
+
+
+def all_displays() -> List[Region]:
+    """Returns list of display regions, without combined virtual display."""
     with mss.mss() as sct:
-        monitors = sct.monitors
-        del monitors[0]
-        return monitors
+        return [monitor_to_region(monitor) for monitor in sct.monitors[1:]]
 
 
-def region_from_mss_monitor(disp) -> Region:
-    return Region.from_size(disp["left"], disp["top"], disp["width"], disp["height"])
+def take_screenshot(region: Optional[Region]) -> ScreenShot:
+    """Take a screenshot of either the full virtual display,
+    or a cropped region defined by the given locator.
+    """
+    with mss.mss() as sct:
+        if region is not None:
+            return sct.grab(region.as_tuple())
+        else:
+            # First monitor is combined virtual display of all monitors
+            return sct.grab(sct.monitors[0])
 
 
 class ScreenKeywords(LibraryContext):
@@ -58,38 +97,43 @@ class ScreenKeywords(LibraryContext):
         self,
         path: Optional[str] = None,
         locator: Optional[str] = None,
-    ) -> None:
+        embed: bool = True,
+    ) -> Path:
         """Take a screenshot of the whole screen, or an element
         identified by the given locator.
 
-        :param path: Name of screenshot
-        :param locator:  Element to crop screenshot to
+        :param path: Path to screenshot. The string ``{index}`` will be replaced with
+            an index number to avoid overwriting previous screenshots.
+        :param locator: Element to crop screenshot to
+        :param embed: Embed screenshot into Robot Framework log
         """
-        with mss.mss() as sct:
-            if locator is not None:
-                # TODO: ensure we always get a region, not a point.
-                # sct.grab requires a 4-tuple as argument
-                match = self.ctx.find_element(locator)
-                if not isinstance(match, Region):
-                    raise ValueError(
-                        "Take Screenshot only supports locators"
-                        "that resolve to regions, not points"
-                    )
-                image = sct.grab(match.as_tuple())
-            else:
-                # First monitor is combined virtual display of all monitors
-                image = sct.grab(sct.monitors[0])
+        element = None
+        if locator is not None:
+            element = self.ctx.find_element(locator)
+            if not isinstance(element, Region):
+                raise ValueError(
+                    "Take Screenshot only supports locators "
+                    "that resolve to regions, not points."
+                )
 
-        if path is not None:
-            path = Path(path).with_suffix(".png")
+        if path is None:
+            try:
+                dirname = Path(BuiltIn().get_variable_value("${OUTPUT_DIR}"))
+            except RobotNotRunningError:
+                dirname = Path.cwd()
+            path = dirname / "desktop-screenshot-{index}.png"
 
-            os.makedirs(path.parent, exist_ok=True)
-            mss.tools.to_png(image.rgb, image.size, output=path)
+        path = _create_unique_path(path).with_suffix(".png")
+        os.makedirs(path.parent, exist_ok=True)
 
-            self.logger.info("Saved screenshot as '%s'", path)
+        image = take_screenshot(element)
+        mss.tools.to_png(image.rgb, image.size, output=path)
+        self.logger.info("Saved screenshot as '%s'", path)
 
-        # Convert raw mss screenshot to Pillow Image. Might be a bit slow.
-        return Image.frombytes("RGB", image.size, image.bgra, "raw", "BGRX")
+        if embed:
+            self._embed_screenshot(image)
+
+        return path
 
     @keyword
     def get_display_dimensions(self) -> Region:
@@ -97,8 +141,7 @@ class ScreenKeywords(LibraryContext):
         which is the combined size of all physical monitors.
         """
         with mss.mss() as sct:
-            disp = sct.monitors[0]
-            return region_from_mss_monitor(disp)
+            return monitor_to_region(sct.monitors[0])
 
     @keyword
     def highlight_elements(self, locator: str):
@@ -116,3 +159,18 @@ class ScreenKeywords(LibraryContext):
                 _draw_outline(region)
             else:
                 raise TypeError(f"Unknown location type: {match}")
+
+    def _embed_screenshot(self, screenshot: ScreenShot, size=(1024, 1024)):
+        """Embed screenshot as inline image in Robot Framework log."""
+        image = screenshot_to_image(screenshot)
+        image.thumbnail(size, Image.ANTIALIAS)
+
+        buf = BytesIO()
+        image.save(buf, format="PNG")
+        content = base64.b64encode(buf.getvalue()).decode("utf-8")
+
+        robot_logger.info(
+            '<img alt="screenshot" class="rpaframework-desktop-screenshot" '
+            f'src="data:image/png;base64,{content}" >',
+            html=True,
+        )
