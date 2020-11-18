@@ -128,3 +128,20 @@ class Offset(Locator):
     def __post_init__(self):
         self.x = int(self.x)
         self.y = int(self.y)
+
+
+@dataclass
+class OCR(Locator):
+    """Locator for OCR-based text."""
+
+    text: str
+    confidence: Optional[float] = None
+
+    @property
+    def typename(self):
+        return "ocr"
+
+    def __post_init__(self):
+        self.text = str(self.text)
+        if self.confidence is not None:
+            self.confidence = float(self.confidence)
