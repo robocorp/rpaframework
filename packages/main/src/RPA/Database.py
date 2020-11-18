@@ -310,6 +310,17 @@ class Database:
                 host=self.config.get("host"),
                 port=self.config.get("port"),
             )
+        elif module_name == "pymssql":
+            self.config.set_default_port(1433)
+            self.logger.info(self.config.get_connection_parameters_as_string())
+            self._dbconnection = dbmodule.connect(
+                server=self.config.get("host"),
+                user=self.config.get("username"),
+                password=self.config.get("password"),
+                database=self.config.get("database"),
+                port=self.config.get("port"),
+                host=self.config.get("host", "."),
+            )
         else:
             conf = self.config.all_but_empty()
             self.logger.info(self.config.get_connection_parameters_as_string(conf))
