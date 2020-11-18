@@ -37,6 +37,7 @@ rpaframework-core = "^3.0.0"
 pillow = "^8.0.1"
 opencv-python = "^4.4.0"
 numpy = "1.19.3"
+pytesseract = "^0.3.6"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }

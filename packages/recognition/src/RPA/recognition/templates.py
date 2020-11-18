@@ -1,34 +1,21 @@
 import logging
 import time
-import math
 from pathlib import Path
-from typing import Any, Iterator, List, Optional, Union
+from typing import Iterator, List, Optional, Union
 
 import cv2
 import numpy
 from PIL import Image
+
 from RPA.core import geometry
 from RPA.core.geometry import Region
+from RPA.recognition.utils import to_image, clamp, log2lin
 
 
 DEFAULT_CONFIDENCE = 80.0
 LIMIT_FAILSAFE = 256
 
-logger = logging.getLogger(__name__)
-
-
-def clamp(minimum, value, maximum):
-    """Clamp value between given minimum and maximum."""
-    return max(minimum, min(value, maximum))
-
-
-def log2lin(minimum, value, maximum):
-    """Maps logarithmic scale to linear scale of same range."""
-    assert value >= minimum
-    assert value <= maximum
-    return (maximum - minimum) * (math.log(value) - math.log(minimum)) / (
-        math.log(maximum) - math.log(minimum)
-    ) + minimum
+LOGGER = logging.getLogger(__name__)
 
 
 class ImageNotFoundError(Exception):
@@ -53,8 +40,8 @@ def find(
     :raises ImageNotFoundError: No match was found
     """
     # Ensure images are in Pillow format
-    image = _to_image(image)
-    template = _to_image(template)
+    image = to_image(image)
+    template = to_image(template)
 
     # Convert confidence value to tolerance
     tolerance = _to_tolerance(confidence)
@@ -77,10 +64,10 @@ def find(
         if limit is not None and len(matches) >= int(limit):
             break
         elif len(matches) >= LIMIT_FAILSAFE:
-            logger.warning("Reached maximum of %d matches", LIMIT_FAILSAFE)
+            LOGGER.warning("Reached maximum of %d matches", LIMIT_FAILSAFE)
             break
 
-    logging.info("Scanned image in %.2f seconds", time.time() - start)
+    LOGGER.info("Scanned image in %.2f seconds", time.time() - start)
 
     if not matches:
         raise ImageNotFoundError("No matches for given template")
@@ -91,13 +78,6 @@ def find(
             match.move(region.left, region.top)
 
     return matches
-
-
-def _to_image(obj: Any) -> Image.Image:
-    """Convert `obj` to instance of Pillow's Image class."""
-    if obj is None or isinstance(obj, Image.Image):
-        return obj
-    return Image.open(obj)
 
 
 def _to_tolerance(confidence):
