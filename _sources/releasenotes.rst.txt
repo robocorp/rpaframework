@@ -14,6 +14,15 @@ Upcoming release
   - Store screenshots in unique path by default, embed preview in logs
   - Resolve image templates correctly with different working directories
 
+- Library **Excel.Application**:
+
+  - Add keyword ``Find First Available Cell`` to return free cell
+  - Keyword ``Open Workbook`` will set first worksheet active by default
+
+- Library **PDF**: Fix error when parsing figures in the document
+- Library **Database**: Add support for ``pymssql`` database module
+
+
 6.6.0
 -----
 

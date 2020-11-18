@@ -294,9 +294,9 @@ it does not exist.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Excel.Application.Application.find_first_available_row">
-<code class="sig-name descname">find_first_available_row</code><span class="sig-paren">(</span><em class="sig-param">worksheet: Any = None</em>, <em class="sig-param">row: int = 1</em>, <em class="sig-param">column: int = 1</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Excel.Application.Application.find_first_available_row" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find first available free row and cell</p>
+<dt id="RPA.Excel.Application.Application.find_first_available_cell">
+<code class="sig-name descname">find_first_available_cell</code><span class="sig-paren">(</span><em class="sig-param">worksheet: Any = None</em>, <em class="sig-param">row: int = 1</em>, <em class="sig-param">column: int = 1</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Excel.Application.Application.find_first_available_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find first available free cell</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -307,6 +307,24 @@ it does not exist.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>tuple (row, column) or (None, None) if not found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Application.Application.find_first_available_row">
+<code class="sig-name descname">find_first_available_row</code><span class="sig-paren">(</span><em class="sig-param">worksheet: Any = None</em>, <em class="sig-param">row: int = 1</em>, <em class="sig-param">column: int = 1</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Excel.Application.Application.find_first_available_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find first available free row</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worksheet</strong> – worksheet to handle, defaults to active worksheet if None</p></li>
+<li><p><strong>row</strong> – starting row for search, defaults to 1</p></li>
+<li><p><strong>column</strong> – starting column for search, defaults to 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>row or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -329,6 +347,7 @@ it does not exist.</p>
 <dt id="RPA.Excel.Application.Application.open_workbook">
 <code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.open_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Excel by filename</p>
+<p>By default sets active worksheet to sheet number 1</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>filename</strong> – path to filename</p>
