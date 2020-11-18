@@ -118,7 +118,7 @@ class Application:
             self.workbook = self.app.Workbooks(excel_filepath)
         except com_error:
             self.workbook = self.app.Workbooks.Open(excel_filepath)
-        self.set_active_worksheet(1)
+        self.set_active_worksheet(sheetnumber=1)
         self.logger.debug("Workbook: %s", self.workbook)
 
     def set_active_worksheet(
@@ -167,7 +167,9 @@ class Application:
         """
         cell = self.find_first_available_cell(worksheet, row, column)
         self.logger.debug("First available cell: %s", cell)
-        return cell[0] if cell else None
+        # Note. keep return type for backward compability for now
+        # return cell[0] if cell else None
+        return cell
 
     def find_first_available_cell(
         self, worksheet: Any = None, row: int = 1, column: int = 1
