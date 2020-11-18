@@ -6,7 +6,6 @@ from typing import Any
 
 if platform.system() == "Windows":
     import win32com.client
-    from pywintypes import com_error
 
 
 class Application:
@@ -116,7 +115,9 @@ class Application:
         self.logger.info("Opening workbook: %s", excel_filepath)
         try:
             self.workbook = self.app.Workbooks(excel_filepath)
-        except com_error:
+        except Exception as e:  # pylint: disable=broad-except
+            self.logger.debug(str(e))
+            self.logger.info("trying to open workbook by another method")
             self.workbook = self.app.Workbooks.Open(excel_filepath)
         self.set_active_worksheet(sheetnumber=1)
         self.logger.debug("Workbook: %s", self.workbook)
