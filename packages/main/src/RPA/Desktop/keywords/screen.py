@@ -133,7 +133,7 @@ class ScreenKeywords(LibraryContext):
         if embed:
             self._embed_screenshot(image)
 
-        return path
+        return str(path)
 
     @keyword
     def get_display_dimensions(self) -> Region:
