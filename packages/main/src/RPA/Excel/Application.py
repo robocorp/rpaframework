@@ -6,6 +6,7 @@ from typing import Any
 
 if platform.system() == "Windows":
     import win32com.client
+    from pywintypes import com_error
 
 
 class Application:
@@ -75,7 +76,7 @@ class Application:
         :param display_alerts: show alert popups
         """
         self.app = win32com.client.gencache.EnsureDispatch("Excel.Application")
-
+        self.logger.debug(self.app)
         if hasattr(self.app, "Visible"):
             self.app.Visible = visible
 
@@ -91,6 +92,8 @@ class Application:
     def quit_application(self, save_changes: bool = False) -> None:
         """Quit the application."""
         if self.app is not None:
+            if self.workbook:
+                self.workbook.Close(save_changes)
             self.close_document(save_changes)
             self.app.Quit()
             self.app = None
@@ -102,6 +105,8 @@ class Application:
     def open_workbook(self, filename: str) -> None:
         """Open Excel by filename
 
+        By default sets active worksheet to sheet number 1
+
         :param filename: path to filename
         """
         if self.app is None:
@@ -109,7 +114,11 @@ class Application:
         excel_filepath = str(Path(filename).resolve())
         self.workbook_name = Path(filename).name
         self.logger.info("Opening workbook: %s", excel_filepath)
-        self.workbook = self.app.Workbooks.Open(excel_filepath)
+        try:
+            self.workbook = self.app.Workbooks(excel_filepath)
+        except com_error:
+            self.workbook = self.app.Workbooks.Open(excel_filepath)
+        self.set_active_worksheet(1)
         self.logger.debug("Workbook: %s", self.workbook)
 
     def set_active_worksheet(
@@ -149,7 +158,21 @@ class Application:
     def find_first_available_row(
         self, worksheet: Any = None, row: int = 1, column: int = 1
     ) -> Any:
-        """Find first available free row and cell
+        """Find first available free row
+
+        :param worksheet: worksheet to handle, defaults to active worksheet if None
+        :param row: starting row for search, defaults to 1
+        :param column: starting column for search, defaults to 1
+        :return: row or None
+        """
+        cell = self.find_first_available_cell(worksheet, row, column)
+        self.logger.debug("First available cell: %s", cell)
+        return cell[0] if cell else None
+
+    def find_first_available_cell(
+        self, worksheet: Any = None, row: int = 1, column: int = 1
+    ) -> Any:
+        """Find first available free cell
 
         :param worksheet: worksheet to handle, defaults to active worksheet if None
         :param row: starting row for search, defaults to 1

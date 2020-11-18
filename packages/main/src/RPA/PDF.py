@@ -304,15 +304,20 @@ class RPAConverter(PDFConverter):
                 )
                 self.write(s)
             elif isinstance(item, LTFigure):
-                s = '<figure name="%s" bbox="%s">\n' % (item.name, bbox2str(item.bbox))
-                self.write(s)
                 self.figure = RpaFigure(item.name, item.bbox)
-                for child in item:
-                    self.figure.set_item(item)
-                    render(child)
-                self.write("</figure>\n")
-                self.current_page.add_content(self.figure)
-                self.figure = None
+                if self.figure:
+                    s = '<figure name="%s" bbox="%s">\n' % (
+                        item.name,
+                        bbox2str(item.bbox),
+                    )
+                    self.write(s)
+                    for child in item:
+                        if self.figure:
+                            self.figure.set_item(item)
+                        render(child)
+                    self.write("</figure>\n")
+                    self.current_page.add_content(self.figure)
+                    self.figure = None
             elif isinstance(item, LTTextLine):
                 self.write('<textline bbox="%s">\n' % bbox2str(item.bbox))
                 for child in item:
