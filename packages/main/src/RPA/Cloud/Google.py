@@ -2,15 +2,19 @@ from functools import wraps
 import json
 import logging
 import os
+from pathlib import Path
+import pickle
 import tempfile
 from typing import Any
 
 try:
-    from apiclient import discovery
+    from apiclient import discovery, MediaFileUpload  # MediaIoBaseDownload
+    from googleapiclient.discovery import build
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    from google.auth.transport.requests import Request
     from google.cloud import vision
     from google.cloud import language_v1
     from google.cloud.language_v1 import enums
-    from google.protobuf.json_format import MessageToJson
     from google.cloud import storage
     from google.cloud import videointelligence
     from google.cloud import translate_v3
@@ -22,6 +26,7 @@ try:
     )
     from google.cloud import speech
     from google.oauth2 import service_account
+    from google.protobuf.json_format import MessageToJson
 
     HAS_GOOGLECLOUD = True
 except ImportError:
@@ -52,8 +57,12 @@ class GoogleBase:
     region: str = None
     robocloud_vault_name: str = None
     robocloud_vault_secret_key: str = None
+    global_scopes: list = []
 
-    def _get_client_for_service(self, service_name: str = None):
+    # def __init__(self):
+    #     self.global_scopes = []
+
+    def _get_service(self, service_name: str = None):
         """Return client instance for servive if it has been initialized.
 
         :param service_name: name of the AWS service
@@ -65,8 +74,8 @@ class GoogleBase:
             )
         return self.clients[service_name]
 
-    def _set_service(self, service_name: str = None, client: Any = None):
-        self.clients[service_name] = client
+    def _set_service(self, service_name: str = None, service: Any = None):
+        self.clients[service_name] = service
 
     @google_dependency_required
     def _write_json(self, json_file, response):
@@ -95,8 +104,8 @@ class GoogleBase:
     def _init_with_robocloud(self, client_object, service_name):
         temp_filedesc = self._get_service_account_from_robocloud()
         try:
-            client = client_object.from_service_account_json(temp_filedesc)
-            self._set_service(service_name, client)
+            service = client_object.from_service_account_json(temp_filedesc)
+            self._set_service(service_name, service)
         finally:
             if temp_filedesc:
                 os.remove(temp_filedesc)
@@ -107,11 +116,11 @@ class GoogleBase:
         if use_robocloud_vault:
             self._init_with_robocloud(client_object, service_name)
         elif service_credentials_file:
-            client = client_object.from_service_account_json(service_credentials_file)
-            self._set_service(service_name, client)
+            service = client_object.from_service_account_json(service_credentials_file)
+            self._set_service(service_name, service)
         else:
-            client = client_object()
-            self._set_service(service_name, client)
+            service = client_object()
+            self._set_service(service_name, service)
 
     def set_robocloud_vault(self, vault_name, vault_secret_key):
         """Set Robocloud Vault name and secret key name
@@ -124,6 +133,18 @@ class GoogleBase:
         if vault_secret_key:
             self.robocloud_vault_secret_key = vault_secret_key
 
+    def set_global_scopes(self, scopes: list = None):
+        """Set global Google authentication scopes
+
+        Useful when using numerous services with different scopes
+
+        :param scopes: list of authentication scopes
+        """
+        if isinstance(scopes, list):
+            self.global_scopes = scopes
+        else:
+            raise AttributeError("scopes needs to be a list")
+
 
 class ServiceVision(GoogleBase):
     """Class for Google Cloud Vision API
@@ -133,10 +154,10 @@ class ServiceVision(GoogleBase):
     .. _Vision PyPI: https://pypi.org/project/google-cloud-vision/
     """
 
-    __service_name = "vision"
+    _service_name = "vision"
 
     def __init__(self) -> None:
-        self.services.append(self.__service_name)
+        self.services.append(self._service_name)
         self.logger.debug("ServiceVision init")
 
     @google_dependency_required
@@ -152,7 +173,7 @@ class ServiceVision(GoogleBase):
         """
         self._init_service(
             vision.ImageAnnotatorClient,
-            self.__service_name,
+            self._service_name,
             service_credentials_file,
             use_robocloud_vault,
         )
@@ -173,9 +194,9 @@ class ServiceVision(GoogleBase):
         :param json_file: json target to save result, defaults to None
         :return: detection response
         """
-        client = self._get_client_for_service(self.__service_name)
+        service = self._get_service(self._service_name)
         image = self._get_google_image(image_file)
-        response = client.label_detection(image=image)
+        response = service.label_detection(image=image)
         self._write_json(json_file, response)
         return response
 
@@ -187,9 +208,9 @@ class ServiceVision(GoogleBase):
         :param json_file: json target to save result, defaults to None
         :return: detection response
         """
-        client = self._get_client_for_service(self.__service_name)
+        service = self._get_service(self._service_name)
         image = self._get_google_image(image_file)
-        response = client.text_detection(image=image)
+        response = service.text_detection(image=image)
         self._write_json(json_file, response)
         return response
 
@@ -201,9 +222,9 @@ class ServiceVision(GoogleBase):
         :param json_file: json target to save result, defaults to None
         :return: detection response
         """
-        client = self._get_client_for_service(self.__service_name)
+        service = self._get_service(self._service_name)
         image = self._get_google_image(image_file)
-        response = client.document_text_detection(image=image)
+        response = service.document_text_detection(image=image)
         self._write_json(json_file, response)
         return response
 
@@ -215,8 +236,8 @@ class ServiceVision(GoogleBase):
         :param json_file: json target to save result, defaults to None
         :return: detection response
         """
-        client = self._get_client_for_service(self.__service_name)
-        response = client.annotate_image(
+        service = self._get_service(self._service_name)
+        response = service.annotate_image(
             {"image": {"source": {"image_uri": image_uri}}}
         )
         self._write_json(json_file, response)
@@ -230,8 +251,8 @@ class ServiceVision(GoogleBase):
         :param json_file: json target to save result, defaults to None
         :return: detection response
         """
-        client = self._get_client_for_service(self.__service_name)
-        response = client.face_detection({"source": {"image_uri": image_uri}})
+        service = self._get_service(self._service_name)
+        response = service.face_detection({"source": {"image_uri": image_uri}})
         self._write_json(json_file, response)
         return response
 
@@ -244,10 +265,10 @@ class ServiceNaturalLanguage(GoogleBase):
     .. _Natural Language PyPI: https://pypi.org/project/google-cloud-language/
     """
 
-    __service_name = "natural-language"
+    _service_name = "natural-language"
 
     def __init__(self) -> None:
-        self.services.append(self.__service_name)
+        self.services.append(self._service_name)
         self.logger.debug("ServiceNaturalLanguage init")
 
     @google_dependency_required
@@ -261,7 +282,7 @@ class ServiceNaturalLanguage(GoogleBase):
         """
         self._init_service(
             language_v1.LanguageServiceClient,
-            self.__service_name,
+            self._service_name,
             service_credentials_file,
             use_robocloud_vault,
         )
@@ -277,7 +298,7 @@ class ServiceNaturalLanguage(GoogleBase):
         :param lang: language code of the source, defaults to None
         :return: analysis response
         """
-        client = self._get_client_for_service(self.__service_name)
+        service = self._get_service(self._service_name)
         with open(text_file, "r") as f:
             text_content = f.read()
         # Available types: PLAIN_TEXT, HTML
@@ -293,7 +314,7 @@ class ServiceNaturalLanguage(GoogleBase):
             document["language"] = lang
         # Available values: NONE, UTF8, UTF16, UTF32
         encoding_type = enums.EncodingType.UTF8
-        response = client.analyze_sentiment(document, encoding_type=encoding_type)
+        response = service.analyze_sentiment(document, encoding_type=encoding_type)
         self._write_json(json_file, response)
         return response
 
@@ -306,7 +327,7 @@ class ServiceNaturalLanguage(GoogleBase):
         :param lang: language code of the source, defaults to None
         :return: classify response
         """
-        client = self._get_client_for_service(self.__service_name)
+        service = self._get_service(self._service_name)
         with open(text_file, "r") as f:
             text_content = f.read()
         # Available types: PLAIN_TEXT, HTML
@@ -317,7 +338,7 @@ class ServiceNaturalLanguage(GoogleBase):
         # https://cloud.google.com/natural-language/docs/languages
         if lang is not None:
             document["language"] = lang
-        response = client.classify_text(document)
+        response = service.classify_text(document)
         self._write_json(json_file, response)
         return response
 
@@ -333,10 +354,10 @@ class ServiceVideoIntelligence(GoogleBase):
     .. _Google Cloud Storages: https://cloud.google.com/storage/
     """
 
-    __service_name = "video-intelligence"
+    _service_name = "video-intelligence"
 
     def __init__(self) -> None:
-        self.services.append(self.__service_name)
+        self.services.append(self._service_name)
         self.logger.debug("ServiceVideoIntelligence init")
 
     @google_dependency_required
@@ -352,7 +373,7 @@ class ServiceVideoIntelligence(GoogleBase):
         """
         self._init_service(
             videointelligence.VideoIntelligenceServiceClient,
-            self.__service_name,
+            self._service_name,
             service_credentials_file,
             use_robocloud_vault,
         )
@@ -368,6 +389,7 @@ class ServiceVideoIntelligence(GoogleBase):
         """Annotate video
 
         Possible values for features:
+
         - FEATURE_UNSPECIFIED, Unspecified.
         - LABEL_DETECTION, Label detection. Detect objects, such as dog or flower.
         - SHOT_CHANGE_DETECTION, Shot change detection.
@@ -386,17 +408,17 @@ class ServiceVideoIntelligence(GoogleBase):
             defaults to ["LABEL_DETECTION", "SHOT_CHANGE_DETECTION"]
         :return: annotate result
         """
-        client = self._get_client_for_service(self.__service_name)
+        service = self._get_service(self._service_name)
         response = None
         if features is None:
             features = ["LABEL_DETECTION", "SHOT_CHANGE_DETECTION"]
         if video_uri:
-            response = client.annotate_video(
+            response = service.annotate_video(
                 input_uri=video_uri, features=features
             ).result()
         elif video_file:
             with open(video_file, "rb") as f:
-                response = client.annotate_video(
+                response = service.annotate_video(
                     input_content=f.read(), features=features
                 ).result()
         self._write_json(json_file, response)
@@ -411,12 +433,12 @@ class ServiceTranslation(GoogleBase):
     .. _Translation PyPI: https://pypi.org/project/google-cloud-translate/
     """
 
-    __service_name = "translation"
+    _service_name = "translation"
 
     def __init__(self) -> None:
-        self.services.append(self.__service_name)
+        self.services.append(self._service_name)
         self.logger.debug("ServiceTranslation init")
-        self.__project_id = ""
+        self._project_id = ""
 
     @google_dependency_required
     def init_translation_client(
@@ -433,11 +455,11 @@ class ServiceTranslation(GoogleBase):
         """
         self._init_service(
             translate_v3.TranslationServiceClient,
-            self.__service_name,
+            self._service_name,
             service_credentials_file,
             use_robocloud_vault,
         )
-        self.__project_id = project_identifier
+        self._project_id = project_identifier
 
     @google_dependency_required
     def translate(
@@ -450,13 +472,13 @@ class ServiceTranslation(GoogleBase):
         :param target_language: language code, defaults to None
         :return: translated text
         """
-        client = self._get_client_for_service(self.__service_name)
+        service = self._get_service(self._service_name)
         if not text and not target_language:
             raise KeyError("text and target_language are required parameters")
-        parent = client.location_path(self.__project_id, "global")
+        parent = service.location_path(self._project_id, "global")
         if isinstance(text, str):
             text = [text]
-        response = client.translate_text(
+        response = service.translate_text(
             contents=text,
             source_language_code=source_language,
             target_language_code=target_language,
@@ -473,10 +495,10 @@ class ServiceTextToSpeech(GoogleBase):
     .. _Text To Speech PyPI: https://pypi.org/project/google-cloud-texttospeech/
     """
 
-    __service_name = "text-to-speech"
+    _service_name = "text-to-speech"
 
     def __init__(self) -> None:
-        self.services.append(self.__service_name)
+        self.services.append(self._service_name)
         self.logger.debug("ServiceTextToSpeech init")
 
     @google_dependency_required
@@ -490,7 +512,7 @@ class ServiceTextToSpeech(GoogleBase):
         """
         self._init_service(
             texttospeech_v1.TextToSpeechClient,
-            self.__service_name,
+            self._service_name,
             service_credentials_file,
             use_robocloud_vault,
         )
@@ -502,11 +524,11 @@ class ServiceTextToSpeech(GoogleBase):
         :param language_code: voice languages to list, defaults to None (all)
         :return: list of supported voices
         """
-        client = self._get_client_for_service(self.__service_name)
+        service = self._get_service(self._service_name)
         if language_code:
-            voices = client.list_voices(language_code)
+            voices = service.list_voices(language_code)
         else:
-            voices = client.list_voices()
+            voices = service.list_voices()
         return voices.voices
 
     @google_dependency_required
@@ -532,13 +554,13 @@ class ServiceTextToSpeech(GoogleBase):
         """
         if not text:
             raise KeyError("text is required for kw: synthesize_speech")
-        client = self._get_client_for_service(self.__service_name)
+        service = self._get_service(self._service_name)
         synth_input = SynthesisInput(text=text)
         voice_selection = VoiceSelectionParams(
             language_code=language, name=name, ssml_gender=gender
         )
         audio_config = AudioConfig(audio_encoding=encoding)
-        response = client.synthesize_speech(synth_input, voice_selection, audio_config)
+        response = service.synthesize_speech(synth_input, voice_selection, audio_config)
         if target_file:
             with open(target_file, "wb") as f:
                 f.write(response.audio_content)
@@ -549,6 +571,7 @@ class ServiceSpeechToText(GoogleBase):
     """Class for Google Cloud Speech-To-Text API
 
     Possible input audio encodings:
+
     - 'AMR'
     - 'AMR_WB'
     - 'ENCODING_UNSPECIFIED'
@@ -563,9 +586,9 @@ class ServiceSpeechToText(GoogleBase):
     .. _Speech To Text PyPI: https://pypi.org/project/google-cloud-speech/
     """
 
-    __service_name = "speech-to-text"
+    _service_name = "speech-to-text"
     if HAS_GOOGLECLOUD:
-        __encodings = {
+        _encodings = {
             "AMR": speech.enums.RecognitionConfig.AudioEncoding.AMR,
             "AMR_WB": speech.enums.RecognitionConfig.AudioEncoding.AMR_WB,
             "FLAC": speech.enums.RecognitionConfig.AudioEncoding.FLAC,
@@ -576,10 +599,10 @@ class ServiceSpeechToText(GoogleBase):
             "UNSPECIFIED": speech.enums.RecognitionConfig.AudioEncoding.ENCODING_UNSPECIFIED,  # noqa: E501 # pylint: disable=C0301
         }
     else:
-        __encodings = {}
+        _encodings = {}
 
     def __init__(self) -> None:
-        self.services.append(self.__service_name)
+        self.services.append(self._service_name)
         self.logger.debug("ServiceSpeechToText init")
 
     @google_dependency_required
@@ -595,7 +618,7 @@ class ServiceSpeechToText(GoogleBase):
         """
         self._init_service(
             speech.SpeechClient,
-            self.__service_name,
+            self._service_name,
             service_credentials_file,
             use_robocloud_vault,
         )
@@ -614,19 +637,19 @@ class ServiceSpeechToText(GoogleBase):
         :return: recognized texts
         """
         # flac or wav, does not require encoding type
-        client = self._get_client_for_service(self.__service_name)
+        service = self._get_service(self._service_name)
         audio = speech.types.RecognitionAudio(  # pylint: disable=E1101
             uri=audio_file_uri
         )
-        if encoding and encoding not in self.__encodings:
-            encoding = self.__encodings["UNSPECIFIED"]
+        if encoding and encoding not in self._encodings:
+            encoding = self._encodings["UNSPECIFIED"]
         config = speech.types.RecognitionConfig(  # pylint: disable=E1101
             encoding=encoding,
             language_code=language_code,
             audio_channel_count=audio_channel_count,
             use_enhanced=True,
         )
-        rec = client.recognize(config=config, audio=audio)
+        rec = service.recognize(config=config, audio=audio)
         return rec.results
 
 
@@ -644,10 +667,10 @@ class ServiceStorage(GoogleBase):
     .. _Google Storage PyPI: https://pypi.org/project/google-cloud-storage/
     """
 
-    __service_name = "storage"
+    _service_name = "storage"
 
     def __init__(self) -> None:
-        self.services.append(self.__service_name)
+        self.services.append(self._service_name)
         self.logger.debug("ServiceStorage init")
 
     @google_dependency_required
@@ -663,7 +686,7 @@ class ServiceStorage(GoogleBase):
         """
         self._init_service(
             storage.Client,
-            self.__service_name,
+            self._service_name,
             service_credentials_file,
             use_robocloud_vault,
         )
@@ -675,8 +698,8 @@ class ServiceStorage(GoogleBase):
         :param bucket_name: name as string
         :return: bucket
         """
-        client = self._get_client_for_service(self.__service_name)
-        bucket = client.create_bucket(bucket_name)
+        service = self._get_service(self._service_name)
+        bucket = service.create_bucket(bucket_name)
         return bucket
 
     @google_dependency_required
@@ -702,8 +725,8 @@ class ServiceStorage(GoogleBase):
         """
         if not bucket_name:
             raise KeyError("bucket_name is required for kw: get_bucket")
-        client = self._get_client_for_service(self.__service_name)
-        bucket = client.get_bucket(bucket_name)
+        service = self._get_service(self._service_name)
+        bucket = service.get_bucket(bucket_name)
         return bucket
 
     @google_dependency_required
@@ -712,8 +735,8 @@ class ServiceStorage(GoogleBase):
 
         :return: list of buckets
         """
-        client = self._get_client_for_service(self.__service_name)
-        buckets = list(client.list_buckets())
+        service = self._get_service(self._service_name)
+        buckets = list(service.list_buckets())
         return buckets
 
     @google_dependency_required
@@ -852,12 +875,12 @@ class ServiceSheets(GoogleBase):
     .. _link: https://developers.google.com/sheets/api/quickstart/python
     """
 
-    __service_name = "sheets"
+    _service_name = "sheets"
 
     def __init__(self) -> None:
-        self.services.append(self.__service_name)
+        self.services.append(self._service_name)
         self.logger.debug("ServiceSheets init")
-        self.scopes = [
+        self._scopes = [
             "https://www.googleapis.com/auth/drive",
             "https://www.googleapis.com/auth/drive.file",
             "https://www.googleapis.com/auth/spreadsheets",
@@ -875,23 +898,25 @@ class ServiceSheets(GoogleBase):
         :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
         service_account_file = None
-        client = None
+        service = None
         if use_robocloud_vault:
             service_account_file = self._get_service_account_from_robocloud()
         elif service_credentials_file:
             service_account_file = service_credentials_file
         try:
             credentials = service_account.Credentials.from_service_account_file(
-                service_account_file, scopes=self.scopes
+                service_account_file, scopes=self._scopes
             )
-            client = discovery.build("sheets", "v4", credentials=credentials)
+            service = discovery.build(
+                "sheets", "v4", credentials=credentials, cache_discovery=False
+            )
         except OSError as e:
             raise AssertionError from e
         finally:
             if use_robocloud_vault:
                 os.remove(service_account_file)
 
-        self._set_service(self.__service_name, client)
+        self._set_service(self._service_name, service)
 
     @google_dependency_required
     def create_sheet(self, title: str) -> str:
@@ -903,10 +928,10 @@ class ServiceSheets(GoogleBase):
         if not title:
             raise KeyError("title is required for kw: create_sheet")
 
-        client = self._get_client_for_service(self.__service_name)
+        service = self._get_service(self._service_name)
         data = {"properties": {"title": title}}
         spreadsheet = (
-            client.spreadsheets().create(body=data, fields="spreadsheetId").execute()
+            service.spreadsheets().create(body=data, fields="spreadsheetId").execute()
         )
         return spreadsheet.get("spreadsheetId")
 
@@ -926,7 +951,7 @@ class ServiceSheets(GoogleBase):
         :param values: list of values to insert into sheet
         :param major_dimension: major dimension of the values, default `COLUMNS`
         :param value_input_option: controls whether input strings are parsed or not,
-            default `USER_ENTERED`
+                                   default `USER_ENTERED`
         """
         if not sheet_id or not sheet_range:
             raise KeyError(
@@ -935,13 +960,13 @@ class ServiceSheets(GoogleBase):
         if not values:
             raise ValueError("Please provide list of values to insert into sheet")
 
-        client = self._get_client_for_service(self.__service_name)
+        service = self._get_service(self._service_name)
 
         datavalues = []
         for val in values:
             datavalues.append([val])
         resource = {"majorDimension": major_dimension, "values": datavalues}
-        client.spreadsheets().values().append(
+        service.spreadsheets().values().append(
             spreadsheetId=sheet_id,
             range=sheet_range,
             body=resource,
@@ -960,13 +985,13 @@ class ServiceSheets(GoogleBase):
         :param sheet_id: target sheet
         :param sheet_range: target sheet range
         :param value_render_option: how values should be represented
-            in the output defaults to "UNFORMATTED_VALUE"
-        :param datetime_render_option: ow dates, times, and durations should
-            be represented in the outpu, defaults to "FORMATTED_STRING"
-        """
-        client = self._get_client_for_service(self.__service_name)
+                                    in the output defaults to "UNFORMATTED_VALUE"
+        :param datetime_render_option: how dates, times, and durations should be
+                                       represented in the output, defaults to "FORMATTED_STRING"
+        """  # noqa: E501
+        service = self._get_service(self._service_name)
         values = (
-            client.spreadsheets()
+            service.spreadsheets()
             .values()
             .get(
                 spreadsheetId=sheet_id,
@@ -984,11 +1009,208 @@ class ServiceSheets(GoogleBase):
         :param sheet_id: target sheet
         :param sheet_range: target sheet range
         """
-        client = self._get_client_for_service(self.__service_name)
-        client.spreadsheets().values().clear(
+        service = self._get_service(self._service_name)
+        service.spreadsheets().values().clear(
             spreadsheetId=sheet_id,
             range=sheet_range,
         ).execute()
+
+
+class ServiceAppsScript(GoogleBase):
+    """Class for Google Apps Script API
+
+    **Note:** The Apps Script API does not work with _service accounts_
+
+    Following steps are needed to authenticate and use the service:
+
+    1. enable Apps Script API in the Cloud Platform project (GCP)
+    2. create OAuth credentials so API can be authorized (download ``credentials.json``
+       which is needed to initialize service)
+    3. the Google Script needs to be linked to Cloud Platform project number
+    4. Google Script needs to have necessary OAuth scopes to access app
+       which is being scripted
+    5. necessary authentication scopes and credentials.json are needed
+       to initialize service and run scripts
+
+    For more information about Google Apps Script API link_.
+
+    .. _link: https://developers.google.com/apps-script/api
+    """
+
+    _service_name = "apps_script"
+
+    def __init__(self) -> None:
+        self.services.append(self._service_name)
+        self._scopes = ["https://www.googleapis.com/auth/script.projects"]
+        robocorp_home = os.getenv("ROBOCORP_HOME", None)
+        token_directory = robocorp_home or Path.home()
+        self._token_file = (token_directory / ".rpafw_oauth_token").absolute()
+        self.logger.info("Using token file from: %s", self._token_file)
+        self.logger.debug("ServiceAppsScript init")
+
+    @google_dependency_required
+    def init_apps_script_client(
+        self,
+        service_credentials_file: str = None,
+        use_robocloud_vault: bool = False,
+        scopes: list = None,
+    ) -> None:
+        """Initialize Google Apps Script client
+
+        :param service_credentials_file: filepath to credentials JSON
+        :param scopes: authenticated scopes, for example. ['forms', 'spreadsheets']
+        """
+        self.logger.info(use_robocloud_vault)
+        # token_file = self._token_file
+        # if use_robocloud_vault:
+        #    token_file = self._get_token_file_from_robocloud()
+        if scopes:
+            self._scopes = self._scopes + [
+                f"https://www.googleapis.com/auth/{scope}" for scope in scopes
+            ]
+        credentials = None
+        # credentials = self.get_authentication_credentials(token_file,
+        # use_robocloud_vault, scopes)
+        if os.path.exists(self._token_file):
+            with open(self._token_file, "rb") as token:
+                credentials = pickle.load(token)
+
+        if not credentials or not credentials.valid:
+            if credentials and credentials.expired and credentials.refresh_token:
+                credentials.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    service_credentials_file, self._scopes
+                )
+                credentials = flow.run_local_server()
+            with open(self._token_file, "wb") as token:
+                pickle.dump(credentials, token)
+
+        service = build("script", "v1", credentials=credentials, cache_discovery=False)
+        self._set_service(self._service_name, service)
+
+    def run_script(self, script_id: str, function_name: str, parameters: dict) -> None:
+        """Run the Google Apps Script
+
+        :param script_id: Google Script identifier
+        :param function_name: name of the script function
+        :param parameters: script function parameters as a dictionary
+        :raises AssertionError: thrown when Google Script returns errors
+
+        Example:
+
+        .. code-block:: robotframework
+
+            &{params}=    Create Dictionary  formid=aaad4232  formvalues=1,2,3
+            Run Script    abc21397283712da  submit_form   ${params}
+        """
+        request = {
+            "function": function_name,
+            "parameters": [parameters],
+        }
+        service = self._get_service(self._service_name)
+        response = (
+            service.scripts()
+            .run(
+                body=request,
+                scriptId=script_id,
+            )
+            .execute()
+        )
+        if "error" in response.keys():
+            raise AssertionError(response["error"])
+
+
+class ServiceDrive(GoogleBase):
+    """Class for Google Drive API
+
+    **Note:** The Drive API does not work with _service accounts_
+
+    Following steps are needed to authenticate and use the service:
+
+    1. enable Drive API in the Cloud Platform project (GCP)
+    2. create OAuth credentials so API can be authorized (download ``credentials.json``
+       which is needed to initialize service)
+    3. necessary authentication scopes and credentials.json are needed
+       to initialize service
+
+    For more information about Google Drive API link_.
+
+    .. _link: https://developers.google.com/drive/api
+    """
+
+    _service_name = "drive"
+
+    def __init__(self) -> None:
+        self.services.append(self._service_name)
+        self._scopes = [
+            "https://www.googleapis.com/auth/drive.appdata",
+            "https://www.googleapis.com/auth/drive.file",
+            "https://www.googleapis.com/auth/drive.install",
+        ]
+        robocorp_home = os.getenv("ROBOCORP_HOME", None)
+        token_directory = robocorp_home or Path.home()
+        self._token_file = (token_directory / ".rpafw_oauth_token").absolute()
+        self.logger.info("Using token file from: %s", self._token_file)
+        self.logger.debug("ServiceDrive init")
+
+    @google_dependency_required
+    def init_drive_client(
+        self, service_credentials_file: str = None, scopes: list = None
+    ) -> None:
+        """Initialize Google Drive client
+
+        :param service_credentials_file: filepath to credentials JSON
+        """
+        if scopes:
+            self._scopes = self._scopes + [
+                f"https://www.googleapis.com/auth/{scope}" for scope in scopes
+            ]
+        credentials = None
+        if os.path.exists(self._token_file):
+            with open(self._token_file, "rb") as token:
+                credentials = pickle.load(token)
+
+        if not credentials or not credentials.valid:
+            if credentials and credentials.expired and credentials.refresh_token:
+                credentials.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    service_credentials_file, self._scopes
+                )
+                credentials = flow.run_local_server()
+            with open(self._token_file, "wb") as token:
+                pickle.dump(credentials, token)
+
+        service = build("script", "v3", credentials=credentials, cache_discovery=False)
+        self._set_service(self._service_name, service)
+
+    def upload_file(self, filepath: str):
+        service = self._get_service(self._service_name)
+        filepath = Path(filepath)
+        file_metadata = {"name": filepath.name, "mimeType": "*/*"}
+        media = MediaFileUpload(filepath.absolute, mimetype="*/*", resumable=True)
+        file = (
+            service.files()
+            .create(body=file_metadata, media_body=media, fields="id")
+            .execute()
+        )
+        print("File ID: " + file.get("id"))
+
+    def download_file(self):
+        pass
+
+    def search_files(self):
+        pass
+
+    def trash_file(self):
+        pass
+
+    def untrash_file(self):
+        pass
+
+    def delete_file(self):
+        pass
 
 
 class Google(  # pylint: disable=R0901
@@ -1000,6 +1222,8 @@ class Google(  # pylint: disable=R0901
     ServiceSpeechToText,
     ServiceStorage,
     ServiceSheets,
+    ServiceAppsScript,
+    ServiceDrive,
 ):
     """`Google` is a library for operating with Google API endpoints.
 
@@ -1014,7 +1238,9 @@ class Google(  # pylint: disable=R0901
     **Google authentication**
 
     Authentication for Google is set with `service credentials JSON file` which can be given to the library
-    in three different ways.
+    in three different ways or with `credentials.json`, which is used for OAuth authentication.
+
+    Methods when using service credentials:
 
     - Method 1 as environment variables, ``GOOGLE_APPLICATION_CREDENTIALS`` with path to JSON file.
     - Method 2 as keyword parameter to ``Init Storage Client`` for example.
@@ -1069,6 +1295,22 @@ class Google(  # pylint: disable=R0901
         Init Google services
             Set Robocloud Vault   vault_name=googlecloud  vault_secret_key=servicecreds
             Init Storage Client   use_robocloud_vault=${TRUE}
+
+    Method when using OAuth credentials.json:
+
+    The Google Apps Script service is authenticated using this method.
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library   RPA.Cloud.Google
+
+        *** Variables ***
+        @{SCRIPT_SCOPES}     forms   spreadsheets
+
+        *** Tasks ***
+        Init Google OAuth services
+            Init Apps Script Client   /path/to/credentials.json   ${SCRIPT_SCOPES}
 
     **Requirements**
 
@@ -1134,4 +1376,6 @@ class Google(  # pylint: disable=R0901
         ServiceSpeechToText.__init__(self)
         ServiceStorage.__init__(self)
         ServiceSheets.__init__(self)
+        ServiceAppsScript.__init__(self)
+        ServiceDrive.__init__(self)
         self.logger.info("Google library initialized")
