@@ -7,6 +7,7 @@ from RPA.core.locators import (
     Coordinates,
     Offset,
     ImageTemplate,
+    OCR,
     parse_locator,
 )
 
@@ -17,11 +18,36 @@ from RPA.Desktop.keywords.screen import (
 )
 
 try:
-    from RPA.recognition import templates
+    from RPA.recognition import templates, ocr
 
     HAS_RECOGNITION = True
 except ImportError:
     HAS_RECOGNITION = False
+
+
+def ensure_recognition():
+    if not HAS_RECOGNITION:
+        raise ValueError(
+            "Locator type not supported, please install the "
+            "rpaframework-recognition package"
+        )
+
+
+def transform(source, destination, regions):
+    """Transform given regions in screen-space to virtual-display-space.
+
+    Takes into account the facts that:
+        1) individual monitors can have different scaling
+        2) the top-left of the screen might not be 0,0
+
+    :param source: Original dimensions of screen used for regions
+    :param destination: Dimensions of screen in display-space
+    :param regions: List of regions to transform
+    """
+    scale = float(destination.height) / float(source.height)
+    for region in regions:
+        region.scale(scale)
+        region.move(destination.left, destination.top)
 
 
 class TimeoutException(ValueError):
@@ -55,30 +81,28 @@ class FinderKeywords(LibraryContext):
             position.offset(locator.x, locator.y)
             return [position]
         elif isinstance(locator, ImageTemplate):
-            if not HAS_RECOGNITION:
-                raise ValueError(
-                    "Image templates not supported, please install "
-                    "rpaframework-recognition package"
-                )
-            # TODO: Add built-in offset support
+            ensure_recognition()
             return self._find_templates(locator)
-
+        elif isinstance(locator, OCR):
+            ensure_recognition()
+            return self._find_ocr(locator)
         else:
             raise NotImplementedError(f"Unsupported locator: {locator}")
 
-    def _find_templates(self, locator: ImageTemplate) -> List[Union[Point, Region]]:
-        """Internal helper method for getting image template matches in all displays
-        and returning them as Regions, scaled to accomodate macOS HiDPI.
+    def _find_templates(self, locator: ImageTemplate) -> List[Region]:
+        """Find all regions that match given image template,
+        inside the combined virtual display.
         """
         confidence = locator.confidence or self.confidence
         self.logger.info("Matching with confidence of %.1f", confidence)
 
-        regions: List[Region] = []
+        regions = []
+
         for display in all_displays():
             screenshot = take_screenshot(display)
 
             try:
-                matches: List[Region] = templates.find(
+                matches = templates.find(
                     image=screenshot_to_image(screenshot),
                     template=locator.path,
                     confidence=confidence,
@@ -86,16 +110,26 @@ class FinderKeywords(LibraryContext):
             except templates.ImageNotFoundError:
                 continue
 
-            # Calculate scaling factor for macOS, which uses virtual pixels for HiDPI.
-            # Should always be 1.0 on all other platforms
-            scale_factor = float(screenshot.height) / float(display.height)
+            transform(screenshot, display, matches)
+            regions.extend(matches)
 
-            for region in matches:
-                # Scale by reverse of scale factor
-                region.scale(1 / scale_factor)
-                # Virtual screen top-left might not be (0,0)
-                region.move(display.left, display.top)
+        return regions
 
+    def _find_ocr(self, locator: OCR) -> List[Region]:
+        """Find the position of all blocks of text that match the given string,
+        inside the combined virtual display.
+        """
+        regions = []
+
+        for display in all_displays():
+            screenshot = take_screenshot(display)
+
+            matches = ocr.find(screenshot_to_image(screenshot))
+            matches = [
+                match["region"] for match in matches if match["text"] == locator.text
+            ]
+
+            transform(screenshot, display, matches)
             regions.extend(matches)
 
         return regions
