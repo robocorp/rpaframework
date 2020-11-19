@@ -82,7 +82,7 @@ lint: install ## Verify code formatting and conventions
 	poetry run pylint -j1 --rcfile $(configs)/pylint src/RPA
 
 test: install ## Run all unittests
-	poetry run pytest -v tests/
+	poetry run pytest -v --cov=src tests/
 
 todo: install ## Print all TODO/FIXME comments
 	poetry run pylint --disable=all --enable=fixme --exit-zero src/

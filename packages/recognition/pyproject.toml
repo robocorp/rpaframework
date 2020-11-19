@@ -45,6 +45,7 @@ flake8 = "^3.7.9"
 pylint = "^2.4.4"
 pytest = "^5.2"
 mock = "^4.0.2"
+pytest-cov = "^2.10.1"
 
 [tool.black]
 target-version = ["py36", "py37", "py38"]
