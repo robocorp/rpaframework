@@ -4,7 +4,10 @@ Release notes
 Upcoming release
 ----------------
 
-- Library **Desktop**: Fix clicking with offset from image template
+6.7.1
+-----
+
+- Library **Desktop**: Fix moving mouse to image template
 
 6.7.0
 -----
