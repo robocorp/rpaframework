@@ -115,17 +115,9 @@ class FinderKeywords(LibraryContext):
                 Log    Found icon at ${match.x}, ${match.y}
             END
         """
-        matches = []
+        matches = self.find(locator)
 
-        for match in self.find(locator):
-            if isinstance(match, Region):
-                matches.append(match)
-            elif isinstance(match, Point):
-                matches.append(match)
-            else:
-                raise TypeError(f"Unknown location type: {match}")
-
-        display: Region = self.ctx.get_display_dimensions()
+        display = self.ctx.get_display_dimensions()
         for match in matches:
             if not display.contains(match):
                 self.logger.warning("Match outside display bounds: %s", match)

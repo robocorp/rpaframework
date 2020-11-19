@@ -155,6 +155,7 @@ class ScreenKeywords(LibraryContext):
             if isinstance(match, Region):
                 _draw_outline(match)
             elif isinstance(match, Point):
+                # TODO: Draw a circle instead?
                 region = Region(match.x - 5, match.y - 5, match.x + 5, match.y + 5)
                 _draw_outline(region)
             else:

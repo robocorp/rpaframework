@@ -42,6 +42,16 @@ def to_button(value):
         raise ValueError(f"Unknown mouse button: {value}") from err
 
 
+def to_point(location):
+    """Converted resolved location to single point, for clicking."""
+    if isinstance(location, Point):
+        return location
+    elif isinstance(location, Region):
+        return location.center
+    else:
+        raise TypeError(f"Unknown location type: {location}")
+
+
 class MouseKeywords(LibraryContext):
     """Keywords for sending inputs through an (emulated) mouse."""
 
@@ -56,9 +66,10 @@ class MouseKeywords(LibraryContext):
         except ImportError as exc:
             self._error = exc
 
-    def _move(self, point: Point) -> None:
+    def _move(self, location: Union[Point, Region]) -> None:
         """Move mouse to given point."""
         # TODO: Clamp to screen dimensions?
+        point = to_point(location)
         self.logger.info("Moving mouse to (%d, %d)", *point)
         self._mouse.position = point.as_tuple()
 
@@ -74,11 +85,7 @@ class MouseKeywords(LibraryContext):
         action = to_action(action)
 
         if location:
-            if isinstance(location, Region):
-                self._move(location.center)
-            else:
-                self._move(location)
-            # Delay is needed, otherwise move might not have "completed" before clicking
+            self._move(location)
             delay(0.05)
 
         self.logger.info("Performing mouse action: %s", action)
@@ -116,7 +123,9 @@ class MouseKeywords(LibraryContext):
         """
         if self._error:
             raise self._error
+
         action = to_action(action)
+
         if locator:
             match = self.ctx.find_element(locator)
             self._click(action, match)
@@ -146,9 +155,12 @@ class MouseKeywords(LibraryContext):
         """
         if self._error:
             raise self._error
+
         action = to_action(action)
+
         if locator:
             match = self.ctx.find_element(locator)
+            match = to_point(match)
             match.offset(x, y)
             self._click(action, match)
         else:
@@ -168,6 +180,7 @@ class MouseKeywords(LibraryContext):
         """
         if self._error:
             raise self._error
+
         x, y = self._mouse.position
         return Point(x, y)
 
@@ -186,6 +199,7 @@ class MouseKeywords(LibraryContext):
         """
         if self._error:
             raise self._error
+
         match = self.ctx.find_element(locator)
         self._move(match)
 
@@ -194,6 +208,7 @@ class MouseKeywords(LibraryContext):
         """Press down mouse button and keep it pressed."""
         if self._error:
             raise self._error
+
         button = to_button(button)
         self._mouse.press(button)
 
@@ -202,6 +217,7 @@ class MouseKeywords(LibraryContext):
         """Release mouse button that was previously pressed."""
         if self._error:
             raise self._error
+
         button = to_button(button)
         self._mouse.release(button)
 
@@ -222,8 +238,12 @@ class MouseKeywords(LibraryContext):
         """
         if self._error:
             raise self._error
+
         src = self.ctx.find_element(source)
         dst = self.ctx.find_element(destination)
+
+        src = to_point(src)
+        dst = to_point(dst)
 
         self.logger.info("Dragging from (%d, %d) to (%d, %d)", *src, *dst)
 
