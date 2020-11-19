@@ -67,7 +67,7 @@ class MouseKeywords(LibraryContext):
             self._error = exc
 
     def _move(self, location: Union[Point, Region]) -> None:
-        """Move mouse to given point."""
+        """Move mouse to given location."""
         # TODO: Clamp to screen dimensions?
         point = to_point(location)
         self.logger.info("Moving mouse to (%d, %d)", *point)
