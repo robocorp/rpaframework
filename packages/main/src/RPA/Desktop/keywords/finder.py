@@ -119,16 +119,21 @@ class FinderKeywords(LibraryContext):
         """Find the position of all blocks of text that match the given string,
         inside the combined virtual display.
         """
+        confidence = locator.confidence or self.confidence
+        self.logger.info("Matching with confidence of %.1f", confidence)
+
         regions = []
 
         for display in all_displays():
             screenshot = take_screenshot(display)
 
-            matches = ocr.find(screenshot_to_image(screenshot))
-            matches = [
-                match["region"] for match in matches if match["text"] == locator.text
-            ]
+            matches = ocr.find(
+                image=screenshot_to_image(screenshot),
+                text=locator.text,
+                confidence=confidence,
+            )
 
+            matches = [match["region"] for match in matches]
             transform(screenshot, display, matches)
             regions.extend(matches)
 
