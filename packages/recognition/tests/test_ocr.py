@@ -15,6 +15,9 @@ DATA = {
 
 @pytest.mark.parametrize("image, text", DATA.values(), ids=DATA.keys())
 def test_find_ocr(image, text):
-    matches = ocr.find(image=IMAGES / image)
-    words = [match["text"] for match in matches]
-    assert text in words
+    matches = ocr.find(IMAGES / image, text)
+    assert len(matches) == 1
+
+    match = matches[0]
+    assert match["text"] == text
+    assert match["confidence"] == 100

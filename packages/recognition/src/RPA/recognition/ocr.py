@@ -1,5 +1,7 @@
 import logging
 import time
+from collections import defaultdict
+from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Union, Dict, List
 
@@ -8,7 +10,7 @@ from pytesseract import TesseractNotFoundError
 from PIL import Image
 
 from RPA.core.geometry import Region
-from RPA.recognition.utils import to_image
+from RPA.recognition.utils import to_image, clamp
 
 LOGGER = logging.getLogger(__name__)
 
@@ -18,37 +20,70 @@ INSTALL_PROMPT = (
     "see library documentation for installation instructions"
 )
 
+DEFAULT_CONFIDENCE = 80.0
 
-def find(image: Union[Image.Image, Path]):
-    """Scan image for text and return a list of words,
-    including their bounding boxes and confidences.
+
+def find(image: Union[Image.Image, Path], text: str, confidence: float = DEFAULT_CONFIDENCE):
+    """Scan image for text and return a list of regions
+    that contain it (or something close to it).
 
     :param image: Path to image or Image object
+    :param text: Text to find in image
+    :param confidence: Minimum confidence for text similarity
     """
-    image = to_image(image)
+    text = str(text)
+    confidence = clamp(1, float(confidence), 100)
+
     data = _scan_image(image)
 
-    results = []
+    lines = defaultdict(list)
     for word in _iter_rows(data):
         if word["level"] != 5:
             continue
 
+        key = "{:d}-{:d}-{:d}".format(
+            word["block_num"], word["par_num"], word["line_num"]
+        )
         region = Region.from_size(
             word["left"], word["top"], word["width"], word["height"]
         )
-        results.append(
-            {"text": word["text"], "region": region, "confidence": float(word["conf"])}
-        )
 
-    return results
+        # NOTE: Currently ignoring confidence in tesseract results
+        lines[key].append({"text": word["text"], "region": region})
+        assert len(lines[key]) == word["word_num"]
+
+    matches = []
+    for line in lines.values():
+        match = {}
+
+        for window in range(1, len(line) + 1):
+            for index in range(len(line) - window + 1):
+                words = line[index : index + window]
+
+                sentence = " ".join(word["text"] for word in words)
+                ratio = SequenceMatcher(None, sentence, text).ratio() * 100.0
+
+                if ratio < confidence:
+                    continue
+
+                if match and match["confidence"] >= ratio:
+                    continue
+
+                region = _join_regions([word["region"] for word in words])
+                match = {"text": sentence, "region": region, "confidence": ratio}
+
+        if match:
+            matches.append(match)
+
+    return sorted(matches, key=lambda match: match["confidence"], reverse=True)
 
 
 def _scan_image(image: Union[Image.Image, Path]) -> Dict:
     """Use tesseract to scan image for text."""
+    image = to_image(image)
     try:
         start_time = time.time()
         data = pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT)
-
         logging.info("Scanned image in %.2f seconds", time.time() - start_time)
         return data
     except TesseractNotFoundError as err:
@@ -58,3 +93,13 @@ def _scan_image(image: Union[Image.Image, Path]) -> Dict:
 def _iter_rows(data: Dict) -> List:
     """Convert dictionary of columns to iterable rows."""
     return (dict(zip(data.keys(), values)) for values in zip(*data.values()))
+
+
+def _join_regions(regions):
+    """Join list of regions into one bounding box."""
+    left = min(region.left for region in regions)
+    top = min(region.top for region in regions)
+    right = max(region.right for region in regions)
+    bottom = max(region.bottom for region in regions)
+
+    return Region(left, top, right, bottom)
