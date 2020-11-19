@@ -3,6 +3,9 @@ from dataclasses import dataclass, asdict, fields, MISSING
 from pathlib import Path
 from typing import Optional
 
+from RPA.core.geometry import Region
+
+
 # Dictionary of all locator typenames to class instances
 TYPES = {}
 

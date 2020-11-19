@@ -219,7 +219,7 @@ class FinderKeywords(LibraryContext):
     @keyword
     def wait_for_element(
         self, locator: str, timeout: float = 10.0, interval: float = 0.5
-    ) -> Point:
+    ) -> Union[Point, Region]:
         """Wait for an element defined by locator to exist or
         until timeout is reached.
 
@@ -242,6 +242,32 @@ class FinderKeywords(LibraryContext):
                 time.sleep(interval)
 
         raise TimeoutException(f"No element found within timeout: {locator}")
+
+    @keyword
+    def wait_for_element_to_disappear(
+        self, locator: str, timeout: float = 10.0, interval: float = 0.5
+    ) -> None:
+        """Wait for an element defined by locator to disappear.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Wait for element to disappear    alias:LoadingScreen    timeout=30
+            Click    image:%{ROBOT_ROOT}/main_menu.png
+        """
+        interval = float(interval)
+        end_time = time.time() + float(timeout)
+
+        while time.time() <= end_time:
+            try:
+                self.find_element(locator)
+            except ValueError:
+                return
+            else:
+                time.sleep(interval)
+
+        raise TimeoutException(f"Element didn't disappear within timeout: {locator}")
 
     @keyword
     def set_default_confidence(self, confidence: float):
