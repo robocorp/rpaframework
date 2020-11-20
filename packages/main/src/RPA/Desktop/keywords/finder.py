@@ -28,7 +28,9 @@ def ensure_recognition():
         )
 
 
-def transform(regions: List[Region], source: Region, destination: Region):
+def transform(
+    regions: List[Region], source: Region, destination: Region
+) -> List[Region]:
     """Transform given regions from a local coordinate system to a
     global coordinate system.
 
@@ -40,9 +42,14 @@ def transform(regions: List[Region], source: Region, destination: Region):
     :param destination: Position/scale of local coordinates in the global scope
     """
     scale = float(destination.height) / float(source.height)
+
+    transformed = []
     for region in regions:
-        region.scale(scale)
-        region.move(destination.left, destination.top)
+        region = region.scale(scale)
+        region = region.move(destination.left, destination.top)
+        transformed.append(region)
+
+    return transformed
 
 
 class TimeoutException(ValueError):
@@ -73,7 +80,7 @@ class FinderKeywords(LibraryContext):
             return [position]
         elif isinstance(locator, Offset):
             position = self.ctx.get_mouse_position()
-            position.offset(locator.x, locator.y)
+            position = position.move(locator.x, locator.y)
             return [position]
         elif isinstance(locator, ImageTemplate):
             ensure_recognition()

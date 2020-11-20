@@ -161,7 +161,7 @@ class MouseKeywords(LibraryContext):
         if locator:
             match = self.ctx.find_element(locator)
             match = to_point(match)
-            match.offset(x, y)
+            match = match.move(x, y)
             self._click(action, match)
         else:
             self._mouse.move(int(x), int(y))

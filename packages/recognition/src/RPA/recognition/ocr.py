@@ -2,7 +2,7 @@ import logging
 from collections import defaultdict
 from difflib import SequenceMatcher
 from pathlib import Path
-from typing import Union, Dict, List
+from typing import Union, Dict, List, Generator
 
 import pytesseract
 from pytesseract import TesseractNotFoundError
@@ -69,7 +69,7 @@ def _scan_image(image: Union[Image.Image, Path]) -> Dict:
         raise EnvironmentError(INSTALL_PROMPT) from err
 
 
-def _iter_rows(data: Dict) -> List:
+def _iter_rows(data: Dict) -> Generator:
     """Convert dictionary of columns to iterable rows."""
     return (dict(zip(data.keys(), values)) for values in zip(*data.values()))
 
@@ -85,6 +85,7 @@ def _match_lines(lines: List[Dict], text: str, confidence: float) -> List[Dict]:
         for window in range(1, len(line) + 1):
             for index in range(len(line) - window + 1):
                 words = line[index : index + window]
+                regions = [word["region"] for word in words]
 
                 sentence = " ".join(word["text"] for word in words)
                 ratio = SequenceMatcher(None, sentence, text).ratio() * 100.0
@@ -95,20 +96,13 @@ def _match_lines(lines: List[Dict], text: str, confidence: float) -> List[Dict]:
                 if match and match["confidence"] >= ratio:
                     continue
 
-                region = _join_regions([word["region"] for word in words])
-                match = {"text": sentence, "region": region, "confidence": ratio}
+                match = {
+                    "text": sentence,
+                    "region": Region.merge(*regions),
+                    "confidence": ratio,
+                }
 
         if match:
             matches.append(match)
 
     return matches
-
-
-def _join_regions(regions):
-    """Join list of regions into one bounding box."""
-    left = min(region.left for region in regions)
-    top = min(region.top for region in regions)
-    right = max(region.right for region in regions)
-    bottom = max(region.bottom for region in regions)
-
-    return Region(left, top, right, bottom)

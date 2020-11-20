@@ -1,8 +1,8 @@
 from dataclasses import dataclass, astuple
-from typing import Union
+from typing import Any, Optional, Union, List, Tuple
 
 
-def to_point(obj):
+def to_point(obj: Any) -> Optional["Point"]:
     """Convert `obj` to instance of Point."""
     if obj is None or isinstance(obj, Point):
         return obj
@@ -11,7 +11,7 @@ def to_point(obj):
     return Point(*(int(i) for i in obj))
 
 
-def to_region(obj):
+def to_region(obj: Any) -> Optional["Region"]:
     """Convert `obj` to instance of Region."""
     if obj is None or isinstance(obj, Region):
         return obj
@@ -30,12 +30,11 @@ class Point:
     def __iter__(self):
         return iter(self.as_tuple())
 
-    def as_tuple(self):
+    def as_tuple(self) -> Tuple:
         return astuple(self)
 
-    def offset(self, x, y):
-        self.x += int(x)
-        self.y += int(y)
+    def move(self, x: int, y: int) -> "Point":
+        return Point(self.x + int(x), self.y + int(y))
 
 
 @dataclass
@@ -57,44 +56,56 @@ class Region:
         return iter(self.as_tuple())
 
     @classmethod
-    def from_size(cls, left, top, width, height):
+    def from_size(cls, left: int, top: int, width: int, height: int) -> "Region":
         return cls(left, top, left + width, top + height)
 
+    @classmethod
+    def merge(cls, regions: List["Region"]) -> "Region":
+        left = min(region.left for region in regions)
+        top = min(region.top for region in regions)
+        right = max(region.right for region in regions)
+        bottom = max(region.bottom for region in regions)
+
+        return cls(left, top, right, bottom)
+
     @property
-    def width(self):
+    def width(self) -> int:
         return self.right - self.left
 
     @property
-    def height(self):
+    def height(self) -> int:
         return self.bottom - self.top
 
     @property
-    def area(self):
+    def area(self) -> int:
         return self.width * self.height
 
     @property
-    def center(self):
+    def center(self) -> Point:
         return Point(
             x=int((self.left + self.right) / 2), y=int((self.top + self.bottom) / 2)
         )
 
-    def as_tuple(self):
+    def as_tuple(self) -> Tuple:
         return astuple(self)
 
-    def scale(self, scaling_factor: float):
-        self.left = int(self.left * scaling_factor)
-        self.top = int(self.top * scaling_factor)
-        self.right = int(self.right * scaling_factor)
-        self.bottom = int(self.bottom * scaling_factor)
+    def scale(self, scaling_factor: float) -> "Region":
+        left = int(self.left * scaling_factor)
+        top = int(self.top * scaling_factor)
+        right = int(self.right * scaling_factor)
+        bottom = int(self.bottom * scaling_factor)
 
-    def move(self, left, top):
-        width, height = self.width, self.height
-        self.left = self.left + int(left)
-        self.top = self.top + int(top)
-        self.right = self.left + width
-        self.bottom = self.top + height
+        return Region(left, top, right, bottom)
 
-    def contains(self, element: Union[Point, "Region"]):
+    def move(self, left: int, top: int) -> "Region":
+        left = self.left + int(left)
+        top = self.top + int(top)
+        right = self.left + self.width
+        bottom = self.top + self.height
+
+        return Region(left, top, right, bottom)
+
+    def contains(self, element: Union[Point, "Region"]) -> bool:
         if isinstance(element, Point):
             return (self.left <= element.x <= self.right) and (
                 self.top <= element.y <= self.bottom
@@ -107,4 +118,4 @@ class Region:
                 and element.bottom <= self.bottom
             )
         else:
-            raise NotImplementedError("Contains only supports Points and Regions")
+            raise NotImplementedError("contains() only supports Points and Regions")

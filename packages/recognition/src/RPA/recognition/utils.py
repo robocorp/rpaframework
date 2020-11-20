@@ -1,7 +1,6 @@
 import base64
 import io
 import math
-from numbers import Number
 from typing import Any
 
 from PIL import Image
@@ -31,12 +30,12 @@ def base64_to_image(text: str) -> Image.Image:
     return image
 
 
-def clamp(minimum: Number, value: Number, maximum: Number) -> Number:
+def clamp(minimum: float, value: float, maximum: float) -> float:
     """Clamp value between given minimum and maximum."""
     return max(minimum, min(value, maximum))
 
 
-def log2lin(minimum: Number, value: Number, maximum: Number) -> Number:
+def log2lin(minimum: float, value: float, maximum: float) -> float:
     """Maps logarithmic scale to linear scale of same range."""
     assert value >= minimum
     assert value <= maximum
