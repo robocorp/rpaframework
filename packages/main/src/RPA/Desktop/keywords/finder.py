@@ -1,7 +1,7 @@
 import time
 from typing import List, Union
 
-from RPA.Desktop.keywords import LibraryContext, keyword
+from RPA.Desktop.keywords import LibraryContext, keyword, screen
 from RPA.core.geometry import Point, Region
 from RPA.core.locators import (
     Coordinates,
@@ -9,12 +9,6 @@ from RPA.core.locators import (
     ImageTemplate,
     OCR,
     parse_locator,
-)
-
-from RPA.Desktop.keywords.screen import (
-    all_displays,
-    take_screenshot,
-    screenshot_to_image,
 )
 
 try:
@@ -33,16 +27,16 @@ def ensure_recognition():
         )
 
 
-def transform(source, destination, regions):
-    """Transform given regions in screen-space to virtual-display-space.
+def transform(regions: List[Region], source: Region, destination: Region):
+    """Transform given regions from a local coordinate system to a
+    global coordinate system.
 
-    Takes into account the facts that:
-        1) individual monitors can have different scaling
-        2) the top-left of the screen might not be 0,0
+    Takes into account location and scaling of the regions.
+    Assumes that the aspect ratio does not change.
 
-    :param source: Original dimensions of screen used for regions
-    :param destination: Dimensions of screen in display-space
     :param regions: List of regions to transform
+    :param source: Dimensions of local coordinate system
+    :param destination: Position/scale of local coordinates in the global scope
     """
     scale = float(destination.height) / float(source.height)
     for region in regions:
@@ -65,7 +59,7 @@ class FinderKeywords(LibraryContext):
         else:
             self.confidence = None
 
-    def find(self, locator: str) -> List[Union[Point, Region]]:
+    def _find(self, locator: str) -> List[Union[Point, Region]]:
         """Internal method for resolving and searching locators."""
         if isinstance(locator, (Region, Point)):
             return [locator]
@@ -96,24 +90,28 @@ class FinderKeywords(LibraryContext):
         confidence = locator.confidence or self.confidence
         self.logger.info("Matching with confidence of %.1f", confidence)
 
-        regions = []
+        results = []
 
-        for display in all_displays():
-            screenshot = take_screenshot(display)
+        for display in screen.displays():
+            image = screen.grab(display)
 
             try:
-                matches = templates.find(
-                    image=screenshot_to_image(screenshot),
+                regions = templates.find(
+                    image=image,
                     template=locator.path,
                     confidence=confidence,
                 )
             except templates.ImageNotFoundError:
                 continue
 
-            transform(screenshot, display, matches)
-            regions.extend(matches)
+            for region in regions:
+                screen.log_image(image.crop(region.as_tuple()), size=400)
 
-        return regions
+            local = Region.from_size(0, 0, image.size[0], image.size[1])
+            transform(regions, local, display)
+            results.extend(regions)
+
+        return results
 
     def _find_ocr(self, locator: OCR) -> List[Region]:
         """Find the position of all blocks of text that match the given string,
@@ -122,22 +120,26 @@ class FinderKeywords(LibraryContext):
         confidence = locator.confidence or self.confidence
         self.logger.info("Matching with confidence of %.1f", confidence)
 
-        regions = []
+        results = []
 
-        for display in all_displays():
-            screenshot = take_screenshot(display)
+        for display in screen.displays():
+            image = screen.grab(display)
 
             matches = ocr.find(
-                image=screenshot_to_image(screenshot),
+                image=image,
                 text=locator.text,
                 confidence=confidence,
             )
 
-            matches = [match["region"] for match in matches]
-            transform(screenshot, display, matches)
-            regions.extend(matches)
+            regions = [match["region"] for match in matches]
+            for region in regions:
+                screen.log_image(image.crop(region.as_tuple()), size=400)
 
-        return regions
+            local = Region.from_size(0, 0, image.size[0], image.size[1])
+            transform(regions, local, display)
+            results.extend(regions)
+
+        return results
 
     @keyword
     def find_elements(self, locator: str) -> List[Union[Point, Region]]:
@@ -154,7 +156,7 @@ class FinderKeywords(LibraryContext):
                 Log    Found icon at ${match.x}, ${match.y}
             END
         """
-        matches = self.find(locator)
+        matches = self._find(locator)
 
         display = self.ctx.get_display_dimensions()
         for match in matches:
