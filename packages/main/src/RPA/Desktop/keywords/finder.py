@@ -1,6 +1,7 @@
 import time
-from typing import List, Union
+from typing import Callable, List, Union
 
+from PIL import Image
 from RPA.Desktop.keywords import LibraryContext, keyword, screen
 from RPA.core.geometry import Point, Region
 from RPA.core.locators import (
@@ -90,28 +91,17 @@ class FinderKeywords(LibraryContext):
         confidence = locator.confidence or self.confidence
         self.logger.info("Matching with confidence of %.1f", confidence)
 
-        results = []
-
-        for display in screen.displays():
-            image = screen.grab(display)
-
+        def finder(image: Image.Image) -> List[Region]:
             try:
-                regions = templates.find(
+                return templates.find(
                     image=image,
                     template=locator.path,
                     confidence=confidence,
                 )
             except templates.ImageNotFoundError:
-                continue
+                return []
 
-            for region in regions:
-                screen.log_image(image.crop(region.as_tuple()), size=400)
-
-            local = Region.from_size(0, 0, image.size[0], image.size[1])
-            transform(regions, local, display)
-            results.extend(regions)
-
-        return results
+        return self._find_from_displays(finder)
 
     def _find_ocr(self, locator: OCR) -> List[Region]:
         """Find the position of all blocks of text that match the given string,
@@ -120,24 +110,50 @@ class FinderKeywords(LibraryContext):
         confidence = locator.confidence or self.confidence
         self.logger.info("Matching with confidence of %.1f", confidence)
 
-        results = []
-
-        for display in screen.displays():
-            image = screen.grab(display)
-
+        def finder(image: Image.Image) -> List[Region]:
             matches = ocr.find(
                 image=image,
                 text=locator.text,
                 confidence=confidence,
             )
 
-            regions = [match["region"] for match in matches]
+            return [match["region"] for match in matches]
+
+        return self._find_from_displays(finder)
+
+    def _find_from_displays(
+        self, finder: Callable[[Image.Image], List[Region]]
+    ) -> List[Region]:
+        """Call finder function for each display and return
+        a list of found regions.
+
+        :param finder: Callable that searches an image
+        """
+        results = []
+        screenshots = []
+
+        start_time = time.time()
+        for display in screen.displays():
+            image = screen.grab(display)
+            regions = finder(image)
+
             for region in regions:
-                screen.log_image(image.crop(region.as_tuple()), size=400)
+                screenshot = image.crop(region.as_tuple())
+                screenshots.append(screenshot)
 
             local = Region.from_size(0, 0, image.size[0], image.size[1])
             transform(regions, local, display)
             results.extend(regions)
+
+        duration = time.time() - start_time
+        plural = "es" if len(results) != 1 else ""
+
+        self.logger.info("Searched in %.2f seconds", duration)
+        self.logger.info("Found %d match%s", len(results), plural)
+
+        for result, screenshot in zip(results, screenshots):
+            screen.log_image(screenshot, size=400)
+            self.logger.info(result)
 
         return results
 

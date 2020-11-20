@@ -1,5 +1,4 @@
 import logging
-import time
 from collections import defaultdict
 from difflib import SequenceMatcher
 from pathlib import Path
@@ -23,7 +22,9 @@ INSTALL_PROMPT = (
 DEFAULT_CONFIDENCE = 80.0
 
 
-def find(image: Union[Image.Image, Path], text: str, confidence: float = DEFAULT_CONFIDENCE):
+def find(
+    image: Union[Image.Image, Path], text: str, confidence: float = DEFAULT_CONFIDENCE
+):
     """Scan image for text and return a list of regions
     that contain it (or something close to it).
 
@@ -52,8 +53,33 @@ def find(image: Union[Image.Image, Path], text: str, confidence: float = DEFAULT
         lines[key].append({"text": word["text"], "region": region})
         assert len(lines[key]) == word["word_num"]
 
+    matches = _match_lines(lines.values(), text, confidence)
+    matches = sorted(matches, key=lambda match: match["confidence"], reverse=True)
+
+    return matches
+
+
+def _scan_image(image: Union[Image.Image, Path]) -> Dict:
+    """Use tesseract to scan image for text."""
+    image = to_image(image)
+    try:
+        data = pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT)
+        return data
+    except TesseractNotFoundError as err:
+        raise EnvironmentError(INSTALL_PROMPT) from err
+
+
+def _iter_rows(data: Dict) -> List:
+    """Convert dictionary of columns to iterable rows."""
+    return (dict(zip(data.keys(), values)) for values in zip(*data.values()))
+
+
+def _match_lines(lines: List[Dict], text: str, confidence: float) -> List[Dict]:
+    """Find best matches between lines of text and target text,
+    and return resulting bounding boxes and confidences.
+    """
     matches = []
-    for line in lines.values():
+    for line in lines:
         match = {}
 
         for window in range(1, len(line) + 1):
@@ -75,24 +101,7 @@ def find(image: Union[Image.Image, Path], text: str, confidence: float = DEFAULT
         if match:
             matches.append(match)
 
-    return sorted(matches, key=lambda match: match["confidence"], reverse=True)
-
-
-def _scan_image(image: Union[Image.Image, Path]) -> Dict:
-    """Use tesseract to scan image for text."""
-    image = to_image(image)
-    try:
-        start_time = time.time()
-        data = pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT)
-        logging.info("Scanned image in %.2f seconds", time.time() - start_time)
-        return data
-    except TesseractNotFoundError as err:
-        raise EnvironmentError(INSTALL_PROMPT) from err
-
-
-def _iter_rows(data: Dict) -> List:
-    """Convert dictionary of columns to iterable rows."""
-    return (dict(zip(data.keys(), values)) for values in zip(*data.values()))
+    return matches
 
 
 def _join_regions(regions):

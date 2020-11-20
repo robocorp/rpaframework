@@ -1,5 +1,4 @@
 import logging
-import time
 from pathlib import Path
 from typing import Iterator, List, Optional, Union
 
@@ -56,8 +55,6 @@ def find(
         raise ValueError("Template is larger than search region")
 
     # Do the actual search
-    start = time.time()
-
     matches: List[Region] = []
     for match in _match_template(image, template, tolerance):
         matches.append(match)
@@ -66,8 +63,6 @@ def find(
         elif len(matches) >= LIMIT_FAILSAFE:
             LOGGER.warning("Reached maximum of %d matches", LIMIT_FAILSAFE)
             break
-
-    LOGGER.info("Scanned image in %.2f seconds", time.time() - start)
 
     if not matches:
         raise ImageNotFoundError("No matches for given template")
