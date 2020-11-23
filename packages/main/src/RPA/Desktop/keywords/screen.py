@@ -174,3 +174,7 @@ class ScreenKeywords(LibraryContext):
                 _draw_outline(region)
             else:
                 raise TypeError(f"Unknown location type: {match}")
+
+    @keyword
+    def move_region(self, region, left, top):
+        return region.move(left, top)
