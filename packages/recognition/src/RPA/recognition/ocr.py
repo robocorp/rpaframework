@@ -22,6 +22,18 @@ INSTALL_PROMPT = (
 DEFAULT_CONFIDENCE = 80.0
 
 
+def read(image: Union[Image.Image, Path]):
+    """Scan image for text and return it as one string.
+
+    :param image: Path to image or Image object
+    """
+    image = to_image(image)
+    try:
+        return pytesseract.image_to_string(image).strip()
+    except TesseractNotFoundError as err:
+        raise EnvironmentError(INSTALL_PROMPT) from err
+
+
 def find(
     image: Union[Image.Image, Path], text: str, confidence: float = DEFAULT_CONFIDENCE
 ):
@@ -30,16 +42,26 @@ def find(
 
     :param image: Path to image or Image object
     :param text: Text to find in image
-    :param confidence: Minimum confidence for text similarity
+    :param confidence: Minimum confidence for text similaritys
     """
-    text = str(text)
+    image = to_image(image)
     confidence = clamp(1, float(confidence), 100)
 
-    data = _scan_image(image)
+    text = str(text).strip()
+    if not text:
+        raise ValueError("Empty search string")
+
+    try:
+        data = pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT)
+    except TesseractNotFoundError as err:
+        raise EnvironmentError(INSTALL_PROMPT) from err
 
     lines = defaultdict(list)
     for word in _iter_rows(data):
         if word["level"] != 5:
+            continue
+
+        if not word["text"].strip():
             continue
 
         key = "{:d}-{:d}-{:d}".format(
@@ -54,29 +76,20 @@ def find(
         assert len(lines[key]) == word["word_num"]
 
     matches = _match_lines(lines.values(), text, confidence)
-    matches = sorted(matches, key=lambda match: match["confidence"], reverse=True)
-
     return matches
 
 
-def _scan_image(image: Union[Image.Image, Path]) -> Dict:
-    """Use tesseract to scan image for text."""
-    image = to_image(image)
-    try:
-        data = pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT)
-        return data
-    except TesseractNotFoundError as err:
-        raise EnvironmentError(INSTALL_PROMPT) from err
-
-
 def _iter_rows(data: Dict) -> Generator:
-    """Convert dictionary of columns to iterable rows."""
+    """Iterate dictionary of columns by row."""
     return (dict(zip(data.keys(), values)) for values in zip(*data.values()))
 
 
 def _match_lines(lines: List[Dict], text: str, confidence: float) -> List[Dict]:
     """Find best matches between lines of text and target text,
     and return resulting bounding boxes and confidences.
+
+    A line of N words will be matched to the given text in all 1 to N
+    length sections, in every sequential position.
     """
     matches = []
     for line in lines:
@@ -98,11 +111,11 @@ def _match_lines(lines: List[Dict], text: str, confidence: float) -> List[Dict]:
 
                 match = {
                     "text": sentence,
-                    "region": Region.merge(*regions),
+                    "region": Region.merge(regions),
                     "confidence": ratio,
                 }
 
         if match:
             matches.append(match)
 
-    return matches
+    return sorted(matches, key=lambda match: match["confidence"], reverse=True)
