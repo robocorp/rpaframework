@@ -100,8 +100,8 @@ class Region:
     def move(self, left: int, top: int) -> "Region":
         left = self.left + int(left)
         top = self.top + int(top)
-        right = self.left + self.width
-        bottom = self.top + self.height
+        right = left + self.width
+        bottom = top + self.height
 
         return Region(left, top, right, bottom)
 
