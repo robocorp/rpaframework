@@ -1,3 +1,24 @@
+try:
+    import RPA.recognition as _unused
+
+    del _unused
+    HAS_RECOGNITION = True
+except ImportError:
+    HAS_RECOGNITION = False
+
+
+class ElementNotFound(ValueError):
+    """No matching elements were found."""
+
+
+class MultipleElementsFound(ValueError):
+    """Multiple matching elements were found, but only one was expected."""
+
+
+class TimeoutException(ValueError):
+    """Timeout reached while waiting for condition."""
+
+
 class LibraryContext:
     """Shared context for all keyword libraries."""
 

@@ -2,22 +2,28 @@ import time
 from typing import Callable, List, Union
 
 from PIL import Image
-from RPA.Desktop.keywords import LibraryContext, keyword, screen
+from RPA.Desktop.keywords import (
+    LibraryContext,
+    keyword,
+    screen,
+    ElementNotFound,
+    MultipleElementsFound,
+    TimeoutException,
+    HAS_RECOGNITION,
+)
+
 from RPA.core.geometry import Point, Region
 from RPA.core.locators import (
     Coordinates,
     Offset,
+    Area,
     ImageTemplate,
     OCR,
     parse_locator,
 )
 
-try:
+if HAS_RECOGNITION:
     from RPA.recognition import templates, ocr
-
-    HAS_RECOGNITION = True
-except ImportError:
-    HAS_RECOGNITION = False
 
 
 def ensure_recognition():
@@ -52,10 +58,6 @@ def transform(
     return transformed
 
 
-class TimeoutException(ValueError):
-    """Timeout reached while waiting for condition."""
-
-
 class FinderKeywords(LibraryContext):
     """Keywords for locating elements."""
 
@@ -82,6 +84,9 @@ class FinderKeywords(LibraryContext):
             position = self.ctx.get_mouse_position()
             position = position.move(locator.x, locator.y)
             return [position]
+        elif isinstance(locator, Area):
+            region = Region(locator.left, locator.top, locator.right, locator.bottom)
+            return [region]
         elif isinstance(locator, ImageTemplate):
             ensure_recognition()
             return self._find_templates(locator)
@@ -149,7 +154,7 @@ class FinderKeywords(LibraryContext):
                 screenshots.append(screenshot)
 
             local = Region.from_size(0, 0, image.size[0], image.size[1])
-            transform(regions, local, display)
+            regions = transform(regions, local, display)
             results.extend(regions)
 
         duration = time.time() - start_time
@@ -204,11 +209,11 @@ class FinderKeywords(LibraryContext):
         matches = self.find_elements(locator)
 
         if not matches:
-            raise ValueError(f"No matches found for: {locator}")
+            raise ElementNotFound(f"No matches found for: {locator}")
 
         if len(matches) > 1:
             # TODO: Add run-on-error support and maybe screenshotting matches?
-            raise ValueError(
+            raise MultipleElementsFound(
                 "Found {count} matches for: {locator} at locations {matches}".format(
                     count=len(matches), locator=locator, matches=matches
                 )
@@ -238,7 +243,7 @@ class FinderKeywords(LibraryContext):
         while time.time() <= end_time:
             try:
                 return self.find_element(locator)
-            except ValueError:
+            except ElementNotFound:
                 time.sleep(interval)
 
         raise TimeoutException(f"No element found within timeout: {locator}")
@@ -262,7 +267,7 @@ class FinderKeywords(LibraryContext):
         while time.time() <= end_time:
             try:
                 self.find_element(locator)
-            except ValueError:
+            except ElementNotFound:
                 return
             else:
                 time.sleep(interval)

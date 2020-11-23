@@ -126,7 +126,7 @@ class ScreenKeywords(LibraryContext):
         if locator is not None:
             element = self.ctx.find_element(locator)
             if not isinstance(element, Region):
-                raise ValueError("Screenshot locator must resolve to region")
+                raise ValueError("Locator must resolve to a region")
             image = grab(element)
         else:
             image = grab()

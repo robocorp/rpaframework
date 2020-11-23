@@ -3,9 +3,6 @@ from dataclasses import dataclass, asdict, fields, MISSING
 from pathlib import Path
 from typing import Optional
 
-from RPA.core.geometry import Region
-
-
 # Dictionary of all locator typenames to class instances
 TYPES = {}
 
@@ -71,37 +68,6 @@ class Locator(metaclass=LocatorMeta):
 
 
 @dataclass
-class ImageTemplate(Locator):
-    """Image-based locator for template matching."""
-
-    path: Path
-    confidence: Optional[float] = None
-    source: Optional[Path] = None  # TODO: Remove when crop is implemented
-
-    @property
-    def typename(self):
-        return "image"
-
-    def __post_init__(self):
-        if self.confidence is not None:
-            self.confidence = float(self.confidence)
-
-
-@dataclass
-class BrowserDOM(Locator):
-    """Browser-based locator for DOM elements."""
-
-    strategy: str
-    value: str
-    source: Optional[str] = None
-    screenshot: Optional[Path] = None
-
-    @property
-    def typename(self):
-        return "browser"
-
-
-@dataclass
 class Coordinates(Locator):
     """Locator for absolute coordinates."""
 
@@ -131,6 +97,57 @@ class Offset(Locator):
     def __post_init__(self):
         self.x = int(self.x)
         self.y = int(self.y)
+
+
+@dataclass
+class Area(Locator):
+    """Locator for area defined by coordinates."""
+
+    left: int
+    top: int
+    right: int
+    bottom: int
+
+    @property
+    def typename(self):
+        return "area"
+
+    def __post_init__(self):
+        self.left = int(self.left)
+        self.top = int(self.top)
+        self.right = int(self.right)
+        self.bottom = int(self.bottom)
+
+
+@dataclass
+class BrowserDOM(Locator):
+    """Browser-based locator for DOM elements."""
+
+    strategy: str
+    value: str
+    source: Optional[str] = None
+    screenshot: Optional[Path] = None
+
+    @property
+    def typename(self):
+        return "browser"
+
+
+@dataclass
+class ImageTemplate(Locator):
+    """Image-based locator for template matching."""
+
+    path: Path
+    confidence: Optional[float] = None
+    source: Optional[Path] = None  # TODO: Remove when crop is implemented
+
+    @property
+    def typename(self):
+        return "image"
+
+    def __post_init__(self):
+        if self.confidence is not None:
+            self.confidence = float(self.confidence)
 
 
 @dataclass

@@ -3,10 +3,11 @@ from dataclasses import fields
 from .containers import (
     TYPES,
     Locator,
-    BrowserDOM,
-    ImageTemplate,
     Coordinates,
     Offset,
+    Area,
+    BrowserDOM,
+    ImageTemplate,
     OCR,
 )
 from .database import LocatorsDatabase, sanitize_name

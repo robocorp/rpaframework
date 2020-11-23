@@ -2,12 +2,16 @@ import logging
 from robotlibcore import DynamicCore
 
 from RPA.Desktop.keywords import (
+    ElementNotFound,
+    MultipleElementsFound,
+    TimeoutException,
     ApplicationKeywords,
     ClipboardKeywords,
     FinderKeywords,
     KeyboardKeywords,
     MouseKeywords,
     ScreenKeywords,
+    TextKeywords,
 )
 
 
@@ -188,5 +192,6 @@ class Desktop(DynamicCore):
             KeyboardKeywords(self),
             MouseKeywords(self),
             ScreenKeywords(self),
+            TextKeywords(self),
         ]
         super().__init__(libraries)
