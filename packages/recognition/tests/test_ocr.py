@@ -13,19 +13,13 @@ IMAGES = Path(__file__).resolve().parent / "images"
 DATA = {
     "Standard": ("source.png", "Standard"),
     "Calculator": ("source.png", "Calculator"),
-    "gnucash_main_window": ("gnucash_main_screen.png", "New")
+    "gnucash_main_window": ("gnucash_main_screen.png", "New"),
 }
 
 GNUCASH_MAIN_WINDOW = IMAGES / DATA["gnucash_main_window"][0]
 
 
-@pytest.mark.parametrize(
-    "arg",
-    [
-        GNUCASH_MAIN_WINDOW,
-        Image.open(GNUCASH_MAIN_WINDOW)
-    ]
-)
+@pytest.mark.parametrize("arg", [GNUCASH_MAIN_WINDOW, Image.open(GNUCASH_MAIN_WINDOW)])
 def test_read(arg):
     output = ocr.read(arg)
 
@@ -34,7 +28,9 @@ def test_read(arg):
 
 
 def test_read_when_no_tesseract(monkeypatch):
-    monkeypatch.setattr("pytesseract.pytesseract.tesseract_cmd", "totallynotatesseract.exe")
+    monkeypatch.setattr(
+        "pytesseract.pytesseract.tesseract_cmd", "totallynotatesseract.exe"
+    )
 
     expected_text = (
         "tesseract is not installed or not in PATH, "
@@ -47,7 +43,9 @@ def test_read_when_no_tesseract(monkeypatch):
 
 
 def test_find_when_no_tesseract(monkeypatch):
-    monkeypatch.setattr("pytesseract.pytesseract.tesseract_cmd", "totallynotatesseract.exe")
+    monkeypatch.setattr(
+        "pytesseract.pytesseract.tesseract_cmd", "totallynotatesseract.exe"
+    )
 
     expected_text = (
         "tesseract is not installed or not in PATH, "
@@ -81,12 +79,12 @@ def test__iter_rows():
         "conf": [-1, -1, -1],
         "level": [1, 2, 3],
         "page_num": [1, 1, 1],
-        "text": ["A", "B", "C"]
+        "text": ["A", "B", "C"],
     }
     expected = (
         {"conf": -1, "level": 1, "page_num": 1, "text": "A"},
         {"conf": -1, "level": 2, "page_num": 1, "text": "B"},
-        {"conf": -1, "level": 3, "page_num": 1, "text": "C"}
+        {"conf": -1, "level": 3, "page_num": 1, "text": "C"},
     )
     result = tuple(ocr._iter_rows(data))
 
@@ -94,18 +92,34 @@ def test__iter_rows():
 
 
 def test__match_lines():
-    lines = [[
-        {"text": "Open", "region": Region(left=1356, top=440, right=1417, bottom=473)},
-        {"text": "Edit", "region": Region(left=1493, top=440, right=1536, bottom=473)},
-        {"text": "New", "region": Region(left=1641, top=446, right=1690, bottom=464)},
-        {"text": "Delete", "region": Region(left=1755, top=444, right=1831, bottom=464)}
-    ]]
+    lines = [
+        [
+            {
+                "text": "Open",
+                "region": Region(left=1356, top=440, right=1417, bottom=473),
+            },
+            {
+                "text": "Edit",
+                "region": Region(left=1493, top=440, right=1536, bottom=473),
+            },
+            {
+                "text": "New",
+                "region": Region(left=1641, top=446, right=1690, bottom=464),
+            },
+            {
+                "text": "Delete",
+                "region": Region(left=1755, top=444, right=1831, bottom=464),
+            },
+        ]
+    ]
 
-    expected = [{
-        "text": "New",
-        "region": Region(left=1641, top=446, right=1690, bottom=464),
-        "confidence": 100.0
-    }]
+    expected = [
+        {
+            "text": "New",
+            "region": Region(left=1641, top=446, right=1690, bottom=464),
+            "confidence": 100.0,
+        }
+    ]
     result = ocr._match_lines(lines, "New", 100)
 
     assert result == expected
