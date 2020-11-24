@@ -23,7 +23,7 @@ from SeleniumLibrary.keywords import (
 from selenium.webdriver import ChromeOptions
 
 from RPA.core import notebook, webdriver
-from RPA.core.locators import LocatorsDatabase, BrowserDOM
+from RPA.core.locators import LocatorsDatabase, BrowserLocator
 
 
 def html_table(header, rows):
@@ -403,7 +403,7 @@ class Browser(SeleniumLibrary):
         del constraints
         locator = LocatorsDatabase.load_by_name(criteria, self.locators_path)
 
-        if not isinstance(locator, BrowserDOM):
+        if not isinstance(locator, BrowserLocator):
             raise ValueError(f"Not a browser locator: {criteria}")
 
         selector = "{strategy}:{value}".format(

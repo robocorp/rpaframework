@@ -14,11 +14,11 @@ from RPA.Desktop.keywords import (
 
 from RPA.core.geometry import Point, Region
 from RPA.core.locators import (
-    Coordinates,
-    Offset,
-    Area,
-    ImageTemplate,
-    OCR,
+    PointLocator,
+    OffsetLocator,
+    RegionLocator,
+    ImageLocator,
+    OcrLocator,
     parse_locator,
 )
 
@@ -85,26 +85,26 @@ class FinderKeywords(LibraryContext):
         locator = parse_locator(locator)
         self.logger.info("Using locator: %s", locator)
 
-        if isinstance(locator, Coordinates):
+        if isinstance(locator, PointLocator):
             position = Point(locator.x, locator.y)
             return [position]
-        elif isinstance(locator, Offset):
+        elif isinstance(locator, OffsetLocator):
             position = self.ctx.get_mouse_position()
             position = position.move(locator.x, locator.y)
             return [position]
-        elif isinstance(locator, Area):
+        elif isinstance(locator, RegionLocator):
             region = Region(locator.left, locator.top, locator.right, locator.bottom)
             return [region]
-        elif isinstance(locator, ImageTemplate):
+        elif isinstance(locator, ImageLocator):
             ensure_recognition()
             return self._find_templates(locator)
-        elif isinstance(locator, OCR):
+        elif isinstance(locator, OcrLocator):
             ensure_recognition()
             return self._find_ocr(locator)
         else:
             raise NotImplementedError(f"Unsupported locator: {locator}")
 
-    def _find_templates(self, locator: ImageTemplate) -> List[Region]:
+    def _find_templates(self, locator: ImageLocator) -> List[Region]:
         """Find all regions that match given image template,
         inside the combined virtual display.
         """
@@ -123,7 +123,7 @@ class FinderKeywords(LibraryContext):
 
         return self._find_from_displays(finder)
 
-    def _find_ocr(self, locator: OCR) -> List[Region]:
+    def _find_ocr(self, locator: OcrLocator) -> List[Region]:
         """Find the position of all blocks of text that match the given string,
         inside the combined virtual display.
         """
@@ -167,22 +167,17 @@ class FinderKeywords(LibraryContext):
             regions = transform(regions, local, display)
             matches.extend(regions)
 
-        # Log statistics, preview images, and possible warnings
+        # Log matches and preview images
 
         duration = time.time() - start_time
-        self.logger.info("Searched in %.2f seconds", duration)
-
         plural = "es" if len(matches) != 1 else ""
-        self.logger.info("Found %d match%s", len(matches), plural)
 
-        display = self.ctx.get_display_dimensions()
+        self.logger.info("Searched in %.2f seconds", duration)
+        self.logger.info("Found %d match%s", len(matches), plural)
 
         for match, screenshot in zip(matches, screenshots):
             screen.log_image(screenshot, size=400)
             self.logger.info(match)
-
-            if not display.contains(match):
-                self.logger.warning("Match outside display bounds: %s", match)
 
         return matches
 
@@ -238,7 +233,14 @@ class FinderKeywords(LibraryContext):
                 Log    Found icon at ${match.x}, ${match.y}
             END
         """
-        return self._find(locator)
+        matches = self._find(locator)
+
+        display = self.ctx.get_display_dimensions()
+        for match in matches:
+            if not display.contains(match):
+                self.logger.warning("Match outside display bounds: %s", match)
+
+        return matches
 
     @keyword
     def find_element(self, locator: str) -> Geometry:
@@ -255,7 +257,7 @@ class FinderKeywords(LibraryContext):
             ${match}=    Find element    image:logo.png
             Log    Found logo at ${match.x}, ${match.y}
         """
-        matches = self._find(locator)
+        matches = self.find_elements(locator)
 
         if not matches:
             raise ElementNotFound(f"No matches found for: {locator}")

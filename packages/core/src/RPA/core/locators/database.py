@@ -6,7 +6,7 @@ import os
 import re
 from contextlib import contextmanager
 from pathlib import Path
-from RPA.core.locators import Locator, BrowserDOM, ImageTemplate
+from RPA.core.locators import Locator, BrowserLocator, ImageLocator
 
 
 @contextmanager
@@ -109,9 +109,9 @@ class LocatorsDatabase:
             if value is not None and not Path(value).is_absolute():
                 setattr(locator, field_name, str(Path(self.parent) / value))
 
-        if isinstance(locator, BrowserDOM):
+        if isinstance(locator, BrowserLocator):
             to_absolute("screenshot")
-        elif isinstance(locator, ImageTemplate):
+        elif isinstance(locator, ImageLocator):
             to_absolute("path")
             to_absolute("source")
 
@@ -201,7 +201,7 @@ class LocatorsDatabase:
 
     def _convert_screenshot(self, name, locator):
         """Migrate base64 screenshot to file."""
-        if not isinstance(locator, BrowserDOM):
+        if not isinstance(locator, BrowserLocator):
             return
 
         if not locator.screenshot:

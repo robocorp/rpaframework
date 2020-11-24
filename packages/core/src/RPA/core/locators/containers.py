@@ -68,7 +68,7 @@ class Locator(metaclass=LocatorMeta):
 
 
 @dataclass
-class Coordinates(Locator):
+class PointLocator(Locator):
     """Locator for absolute coordinates."""
 
     x: int
@@ -84,7 +84,7 @@ class Coordinates(Locator):
 
 
 @dataclass
-class Offset(Locator):
+class OffsetLocator(Locator):
     """Locator for offset coordinates."""
 
     x: int
@@ -100,7 +100,7 @@ class Offset(Locator):
 
 
 @dataclass
-class Area(Locator):
+class RegionLocator(Locator):
     """Locator for area defined by coordinates."""
 
     left: int
@@ -120,21 +120,7 @@ class Area(Locator):
 
 
 @dataclass
-class BrowserDOM(Locator):
-    """Browser-based locator for DOM elements."""
-
-    strategy: str
-    value: str
-    source: Optional[str] = None
-    screenshot: Optional[Path] = None
-
-    @property
-    def typename(self):
-        return "browser"
-
-
-@dataclass
-class ImageTemplate(Locator):
+class ImageLocator(Locator):
     """Image-based locator for template matching."""
 
     path: Path
@@ -151,7 +137,7 @@ class ImageTemplate(Locator):
 
 
 @dataclass
-class OCR(Locator):
+class OcrLocator(Locator):
     """Locator for OCR-based text."""
 
     text: str
@@ -165,3 +151,24 @@ class OCR(Locator):
         self.text = str(self.text)
         if self.confidence is not None:
             self.confidence = float(self.confidence)
+
+
+@dataclass
+class BrowserLocator(Locator):
+    """Browser-based locator for DOM elements."""
+
+    strategy: str
+    value: str
+    source: Optional[str] = None
+    screenshot: Optional[Path] = None
+
+    @property
+    def typename(self):
+        return "browser"
+
+
+# Aliases for backwards compatibility, just in case.
+Coordinates = PointLocator
+Offset = OffsetLocator
+BrowserDOM = BrowserLocator
+ImageTemplate = ImageLocator

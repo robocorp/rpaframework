@@ -3,12 +3,17 @@ from dataclasses import fields
 from .containers import (
     TYPES,
     Locator,
+    PointLocator,
+    OffsetLocator,
+    RegionLocator,
+    ImageLocator,
+    OcrLocator,
+    BrowserLocator,
+    # For backwards compatibility:
     Coordinates,
     Offset,
-    Area,
     BrowserDOM,
     ImageTemplate,
-    OCR,
 )
 from .database import LocatorsDatabase, sanitize_name
 
