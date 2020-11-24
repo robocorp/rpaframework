@@ -124,7 +124,7 @@ class ScreenKeywords(LibraryContext):
         :param embed: Embed screenshot into Robot Framework log
         """
         if locator is not None:
-            element = self.ctx.find_element(locator)
+            element = self.ctx.wait_for_element(locator)
             if not isinstance(element, Region):
                 raise ValueError("Locator must resolve to a region")
             image = grab(element)

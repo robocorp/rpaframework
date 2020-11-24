@@ -1,5 +1,5 @@
 import time
-from typing import Callable, List, Union
+from typing import Any, Callable, List, Optional, Union, Tuple
 
 from PIL import Image
 from RPA.Desktop.keywords import (
@@ -24,6 +24,8 @@ from RPA.core.locators import (
 
 if HAS_RECOGNITION:
     from RPA.recognition import templates, ocr
+
+Geometry = Union[Point, Region]
 
 
 def ensure_recognition():
@@ -58,18 +60,24 @@ def transform(
     return transformed
 
 
+def clamp(minimum: float, value: float, maximum: float) -> float:
+    """Clamp value between given minimum and maximum."""
+    return max(minimum, min(value, maximum))
+
+
 class FinderKeywords(LibraryContext):
     """Keywords for locating elements."""
 
     def __init__(self, ctx):
         super().__init__(ctx)
 
+        self.timeout = 3.0
         if HAS_RECOGNITION:
             self.confidence = templates.DEFAULT_CONFIDENCE
         else:
             self.confidence = None
 
-    def _find(self, locator: str) -> List[Union[Point, Region]]:
+    def _find(self, locator: str) -> List[Geometry]:
         """Internal method for resolving and searching locators."""
         if isinstance(locator, (Region, Point)):
             return [locator]
@@ -141,8 +149,10 @@ class FinderKeywords(LibraryContext):
 
         :param finder: Callable that searches an image
         """
-        results = []
+        matches = []
         screenshots = []
+
+        # Search all displays, and map results to combined virtual display
 
         start_time = time.time()
         for display in screen.displays():
@@ -155,22 +165,66 @@ class FinderKeywords(LibraryContext):
 
             local = Region.from_size(0, 0, image.size[0], image.size[1])
             regions = transform(regions, local, display)
-            results.extend(regions)
+            matches.extend(regions)
+
+        # Log statistics, preview images, and possible warnings
 
         duration = time.time() - start_time
-        plural = "es" if len(results) != 1 else ""
-
         self.logger.info("Searched in %.2f seconds", duration)
-        self.logger.info("Found %d match%s", len(results), plural)
 
-        for result, screenshot in zip(results, screenshots):
+        plural = "es" if len(matches) != 1 else ""
+        self.logger.info("Found %d match%s", len(matches), plural)
+
+        display = self.ctx.get_display_dimensions()
+
+        for match, screenshot in zip(matches, screenshots):
             screen.log_image(screenshot, size=400)
-            self.logger.info(result)
+            self.logger.info(match)
 
-        return results
+            if not display.contains(match):
+                self.logger.warning("Match outside display bounds: %s", match)
+
+        return matches
+
+    def _wait_condition(
+        self,
+        condition: Callable[[], Tuple[bool, Any]],
+        timeout: Optional[float] = None,
+        interval: float = 0.5,
+    ) -> Any:
+        """Wait for condition to succeed, or raise a timeout.
+
+        When the condition is successful it should return
+        a tuple of (True, ReturnValue), and when it is not successful
+        it should return a tuple of (False, ErrorMessage).
+
+        :param condition: Condition function to check
+        :param timeout: Time to wait in seconds
+        :param interval: The minimum interval between checks
+        """
+        if timeout is None:
+            timeout = self.timeout
+
+        interval = float(interval)
+        end_time = time.time() + float(timeout)
+
+        error = "Operation timed out"
+        while time.time() <= end_time:
+            start = time.time()
+            success, value = condition()
+
+            if success:
+                return value
+
+            error = value
+            duration = time.time() - start
+            if duration < interval:
+                time.sleep(interval - duration)
+
+        raise TimeoutException(error)
 
     @keyword
-    def find_elements(self, locator: str) -> List[Union[Point, Region]]:
+    def find_elements(self, locator: str) -> List[Geometry]:
         """Find all elements defined by locator, and return their positions.
 
         :param locator: Locator string
@@ -184,18 +238,13 @@ class FinderKeywords(LibraryContext):
                 Log    Found icon at ${match.x}, ${match.y}
             END
         """
-        matches = self._find(locator)
-
-        display = self.ctx.get_display_dimensions()
-        for match in matches:
-            if not display.contains(match):
-                self.logger.warning("Match outside display bounds: %s", match)
-
-        return matches
+        return self._find(locator)
 
     @keyword
-    def find_element(self, locator: str) -> Union[Point, Region]:
+    def find_element(self, locator: str) -> Geometry:
         """Find an element defined by locator, and return its position.
+        Raises ``ElementNotFound`` if` no matches were found, or
+        ``MultipleElementsFound`` if there were multiple matches.
 
         :param locator: Locator string
 
@@ -206,7 +255,7 @@ class FinderKeywords(LibraryContext):
             ${match}=    Find element    image:logo.png
             Log    Found logo at ${match.x}, ${match.y}
         """
-        matches = self.find_elements(locator)
+        matches = self._find(locator)
 
         if not matches:
             raise ElementNotFound(f"No matches found for: {locator}")
@@ -223,10 +272,10 @@ class FinderKeywords(LibraryContext):
 
     @keyword
     def wait_for_element(
-        self, locator: str, timeout: float = 10.0, interval: float = 0.5
-    ) -> Union[Point, Region]:
-        """Wait for an element defined by locator to exist or
-        until timeout is reached.
+        self, locator: str, timeout: Optional[float] = None, interval: float = 0.5
+    ) -> Geometry:
+        """Wait for an element defined by locator to exist, or
+        raise a TimeoutException if none were found within timeout.
 
         :param locator: Locator string
 
@@ -237,16 +286,15 @@ class FinderKeywords(LibraryContext):
             Wait for element    alias:CookieConsent    timeout=30
             Click    image:%{ROBOT_ROOT}/accept.png
         """
-        interval = float(interval)
-        end_time = time.time() + float(timeout)
 
-        while time.time() <= end_time:
+        def condition():
+            """Verify that a single match is found."""
             try:
-                return self.find_element(locator)
-            except ElementNotFound:
-                time.sleep(interval)
+                return True, self.find_element(locator)
+            except (ElementNotFound, MultipleElementsFound) as err:
+                return False, err
 
-        raise TimeoutException(f"No element found within timeout: {locator}")
+        return self._wait_condition(condition, timeout, interval)
 
     @keyword
     def wait_for_element_to_disappear(
@@ -261,26 +309,34 @@ class FinderKeywords(LibraryContext):
             Wait for element to disappear    alias:LoadingScreen    timeout=30
             Click    image:%{ROBOT_ROOT}/main_menu.png
         """
-        interval = float(interval)
-        end_time = time.time() + float(timeout)
 
-        while time.time() <= end_time:
+        def condition():
+            """Verify that no matches are found."""
             try:
-                self.find_element(locator)
+                match = self.find_element(locator)
+                return False, f"Element found at: {match}"
+            except MultipleElementsFound as err:
+                return False, err
             except ElementNotFound:
-                return
-            else:
-                time.sleep(interval)
+                return True, None
 
-        raise TimeoutException(f"Element didn't disappear within timeout: {locator}")
+        return self._wait_condition(condition, timeout, interval)
 
     @keyword
-    def set_default_confidence(self, confidence: float):
+    def set_default_timeout(self, timeout: float = 3.0):
+        """Set the default time to wait for elements.
+
+        :param timeout: Time in seconds
+        """
+        self.timeout = max(0.0, float(timeout))
+
+    @keyword
+    def set_default_confidence(self, confidence: float = None):
         """Set the default template matching confidence.
 
         :param confidence: Value from 1 to 100
         """
-        confidence = float(confidence)
-        confidence = min(confidence, 100.0)
-        confidence = max(confidence, 1.0)
-        self.confidence = confidence
+        if confidence is None:
+            confidence = templates.DEFAULT_CONFIDENCE if HAS_RECOGNITION else 80.0
+
+        self.confidence = clamp(1.0, float(confidence), 100.0)

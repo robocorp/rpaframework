@@ -127,7 +127,7 @@ class MouseKeywords(LibraryContext):
         action = to_action(action)
 
         if locator:
-            match = self.ctx.find_element(locator)
+            match = self.ctx.wait_for_element(locator)
             self._click(action, match)
         else:
             self._click(action)
@@ -159,7 +159,7 @@ class MouseKeywords(LibraryContext):
         action = to_action(action)
 
         if locator:
-            match = self.ctx.find_element(locator)
+            match = self.ctx.wait_for_element(locator)
             match = to_point(match)
             match = match.move(x, y)
             self._click(action, match)
@@ -200,7 +200,7 @@ class MouseKeywords(LibraryContext):
         if self._error:
             raise self._error
 
-        match = self.ctx.find_element(locator)
+        match = self.ctx.wait_for_element(locator)
         self._move(match)
 
     @keyword
@@ -239,8 +239,8 @@ class MouseKeywords(LibraryContext):
         if self._error:
             raise self._error
 
-        src = self.ctx.find_element(source)
-        dst = self.ctx.find_element(destination)
+        src = self.ctx.wait_for_element(source)
+        dst = self.ctx.wait_for_element(destination)
 
         src = to_point(src)
         dst = to_point(dst)

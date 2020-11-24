@@ -41,7 +41,7 @@ class ClipboardKeywords(LibraryContext):
             Copy to clipboard       coordinates:401,198
             Paste from clipboard    coordinates:822,710
         """
-        match = self.ctx.find_element(locator)
+        match = self.ctx.wait_for_element(locator)
         text = pyperclip.paste()
         self.ctx.click(match)
 
