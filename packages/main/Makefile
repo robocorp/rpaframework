@@ -86,7 +86,7 @@ test: test-python test-robot ## Run all acceptance tests
 
 test-python: install ## Run python unittests
 	$(mkdir) tests/temp
-	poetry run pytest -v tests/python
+	poetry run pytest
 
 test-robot: install ## Run Robot Framework tests
 	$(rm) tests/results

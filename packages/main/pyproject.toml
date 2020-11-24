@@ -83,7 +83,8 @@ mss = "^6.0.0"
 black = { version = "*", allow-prereleases = true }
 flake8 = "^3.7.9"
 pylint = "^2.4.4"
-pytest = "^5.2"
+pytest = "^6.1.2"
+pytest-cov = "^2.10.1"
 mock = "^4.0.2"
 mypy = "^0.782"
 
@@ -110,3 +111,8 @@ target-version = ["py36", "py37", "py38"]
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
+
+
+[tool.pytest.ini_options]
+addopts = "-v --cov=src --cov-branch"
+testpaths = ["tests/python"]
