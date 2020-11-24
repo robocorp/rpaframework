@@ -61,11 +61,12 @@ class KeyboardKeywords(LibraryContext):
 
         keys = [to_key(key) for key in modifiers]
 
-        with self._keyboard.pressed(*keys):
-            self._keyboard.type(text)
+        with self.buffer():
+            with self._keyboard.pressed(*keys):
+                self._keyboard.type(text)
 
-        if enter:
-            self.press_keys("enter")
+            if enter:
+                self.press_keys("enter")
 
     @keyword
     def press_keys(self, *keys: str) -> None:
@@ -90,11 +91,12 @@ class KeyboardKeywords(LibraryContext):
         keys = [to_key(key) for key in keys]
         self.logger.info("Pressing keys: %s", ", ".join(str(key) for key in keys))
 
-        for key in keys:
-            self._keyboard.press(key)
+        with self.buffer():
+            for key in keys:
+                self._keyboard.press(key)
 
-        for key in reversed(keys):
-            self._keyboard.release(key)
+            for key in reversed(keys):
+                self._keyboard.release(key)
 
     @keyword
     def type_text_into(

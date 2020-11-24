@@ -28,3 +28,7 @@ class LibraryContext:
     @property
     def logger(self):
         return self.ctx.logger
+
+    @property
+    def buffer(self):
+        return self.ctx.buffer

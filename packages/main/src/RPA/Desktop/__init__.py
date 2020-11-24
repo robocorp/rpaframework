@@ -1,6 +1,7 @@
 import logging
 from robotlibcore import DynamicCore
 
+from RPA.Desktop.utils import Buffer
 from RPA.Desktop.keywords import (
     ElementNotFound,
     MultipleElementsFound,
@@ -183,6 +184,7 @@ class Desktop(DynamicCore):
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
+        self.buffer = Buffer(self.logger)
 
         # Register keyword libraries to LibCore
         libraries = [

@@ -70,8 +70,10 @@ class MouseKeywords(LibraryContext):
         """Move mouse to given location."""
         # TODO: Clamp to screen dimensions?
         point = to_point(location)
-        self.logger.info("Moving mouse to (%d, %d)", *point)
-        self._mouse.position = point.as_tuple()
+
+        with self.buffer():
+            self.logger.info("Moving mouse to (%d, %d)", *point)
+            self._mouse.position = point.as_tuple()
 
     def _click(
         self,
@@ -88,19 +90,19 @@ class MouseKeywords(LibraryContext):
             self._move(location)
             delay(0.05)
 
-        self.logger.info("Performing mouse action: %s", action)
-
-        if action is Action.click:
-            self._mouse.click(Button.left)
-        elif action is Action.double_click:
-            self._mouse.click(Button.left, 2)
-        elif action is Action.triple_click:
-            self._mouse.click(Button.left, 3)
-        elif action is Action.right_click:
-            self._mouse.click(Button.right)
-        else:
-            # TODO: mypy should handle enum exhaustivity validation
-            raise ValueError(f"Unsupported action: {action}")
+        with self.buffer():
+            self.logger.info("Performing mouse action: %s", action)
+            if action is Action.click:
+                self._mouse.click(Button.left)
+            elif action is Action.double_click:
+                self._mouse.click(Button.left, 2)
+            elif action is Action.triple_click:
+                self._mouse.click(Button.left, 3)
+            elif action is Action.right_click:
+                self._mouse.click(Button.right)
+            else:
+                # TODO: mypy should handle enum exhaustivity validation
+                raise ValueError(f"Unsupported action: {action}")
 
     @keyword
     def click(
@@ -159,13 +161,13 @@ class MouseKeywords(LibraryContext):
         action = to_action(action)
 
         if locator:
-            match = self.ctx.wait_for_element(locator)
-            match = to_point(match)
-            match = match.move(x, y)
-            self._click(action, match)
+            position = self.ctx.wait_for_element(locator)
+            position = to_point(position)
         else:
-            self._mouse.move(int(x), int(y))
-            self._click(action)
+            position = self.get_mouse_position()
+
+        position = position.move(int(x), int(y))
+        self._click(action, position)
 
     @keyword
     def get_mouse_position(self) -> Point:
@@ -210,7 +212,9 @@ class MouseKeywords(LibraryContext):
             raise self._error
 
         button = to_button(button)
-        self._mouse.press(button)
+        with self.buffer():
+            self.logger.info("Pressing down mouse button: %s", button)
+            self._mouse.press(button)
 
     @keyword
     def release_mouse_button(self, button: Any = "left") -> None:
@@ -219,7 +223,9 @@ class MouseKeywords(LibraryContext):
             raise self._error
 
         button = to_button(button)
-        self._mouse.release(button)
+        with self.buffer():
+            self.logger.info("Releasing mouse button: %s", button)
+            self._mouse.release(button)
 
     @keyword
     def drag_and_drop(
@@ -249,7 +255,9 @@ class MouseKeywords(LibraryContext):
 
         self._move(src)
         self.press_mouse_button()
-        delay(start_delay)
-        self._move(dst)
-        delay(end_delay)
-        self.release_mouse_button()
+
+        with self.buffer(start_delay):
+            self._move(dst)
+
+        with self.buffer(end_delay):
+            self.release_mouse_button()
