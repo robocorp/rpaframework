@@ -1,8 +1,10 @@
 import logging
 import pytest
+import shutil
 from pathlib import Path
 
 from PIL import Image
+import pytesseract
 from pytesseract import TesseractNotFoundError
 
 from RPA.recognition import ocr
@@ -17,6 +19,10 @@ DATA = {
 }
 
 GNUCASH_MAIN_WINDOW = IMAGES / DATA["gnucash_main_window"][0]
+
+
+if shutil.which(pytesseract.pytesseract.tesseract_cmd) is None:
+    pytest.skip("tesseract binaries are not installed", allow_module_level=True)
 
 
 @pytest.mark.parametrize("arg", [GNUCASH_MAIN_WINDOW, Image.open(GNUCASH_MAIN_WINDOW)])
