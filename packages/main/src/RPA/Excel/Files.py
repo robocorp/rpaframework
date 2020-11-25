@@ -134,7 +134,7 @@ class Files:
 
         *** Variables ***
         @{heading}   Row No   Amount
-        @{rows}      @{heading}
+        @{rows}      ${heading}
 
         *** Tasks ***
         Creating new Excel
