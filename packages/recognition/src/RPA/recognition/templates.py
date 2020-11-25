@@ -69,8 +69,7 @@ def find(
 
     # Convert region coördinates back to full-size coördinates
     if region is not None:
-        for match in matches:
-            match.move(region.left, region.top)
+        matches = [match.move(region.left, region.top) for match in matches]
 
     return matches
 
