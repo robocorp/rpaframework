@@ -1,5 +1,5 @@
 from dataclasses import dataclass, astuple
-from typing import Any, Optional, Union, List, Tuple
+from typing import Any, Optional, Union, Sequence, Tuple
 
 
 def to_point(obj: Any) -> Optional["Point"]:
@@ -60,7 +60,7 @@ class Region:
         return cls(left, top, left + width, top + height)
 
     @classmethod
-    def merge(cls, regions: List["Region"]) -> "Region":
+    def merge(cls, regions: Sequence["Region"]) -> "Region":
         left = min(region.left for region in regions)
         top = min(region.top for region in regions)
         right = max(region.right for region in regions)

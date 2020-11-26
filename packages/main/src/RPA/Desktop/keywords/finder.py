@@ -14,6 +14,7 @@ from RPA.Desktop.keywords import (
 
 from RPA.core.geometry import Point, Region
 from RPA.core.locators import (
+    Locator,
     PointLocator,
     OffsetLocator,
     RegionLocator,
@@ -75,14 +76,14 @@ class FinderKeywords(LibraryContext):
         if HAS_RECOGNITION:
             self.confidence = templates.DEFAULT_CONFIDENCE
         else:
-            self.confidence = None
+            self.confidence = 80.0
 
     def _find(self, locator: str) -> List[Geometry]:
         """Internal method for resolving and searching locators."""
         if isinstance(locator, (Region, Point)):
             return [locator]
 
-        locator = parse_locator(locator)
+        locator: Locator = parse_locator(locator)
         self.logger.info("Using locator: %s", locator)
 
         if isinstance(locator, PointLocator):
