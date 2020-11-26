@@ -1148,6 +1148,17 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
+name = "pytesseract"
+version = "0.3.6"
+description = "Python-tesseract is a python wrapper for Google's Tesseract-OCR"
+category = "main"
+optional = true
+python-versions = "*"
+
+[package.dependencies]
+Pillow = "*"
+
+[[package]]
 name = "pytest"
 version = "6.1.2"
 description = "pytest: simple powerful testing with Python"
@@ -1393,7 +1404,7 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "3.0.0"
+version = "4.0.2"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -1405,7 +1416,7 @@ webdrivermanager = ">=0.9.0,<0.10.0"
 
 [[package]]
 name = "rpaframework-recognition"
-version = "0.4.0"
+version = "0.5.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = true
@@ -1415,7 +1426,8 @@ python-versions = ">=3.6,<4.0"
 numpy = "1.19.3"
 opencv-python = ">=4.4.0,<5.0.0"
 pillow = ">=8.0.1,<9.0.0"
-rpaframework-core = ">=3.0.0,<4.0.0"
+pytesseract = ">=0.3.6,<0.4.0"
+rpaframework-core = ">=4.0.1,<5.0.0"
 
 [[package]]
 name = "rsa"
@@ -1679,7 +1691,7 @@ google = ["google-api-python-client", "google-auth-httplib2", "google-auth-oauth
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "f63746786b176e84143d59373bf5dc6e4896bb295499b87efd9ba570904382b6"
+content-hash = "dd0111322aa9d6f690495f408504f9697da64b5c39b67e96817f6d104090e2da"
 
 [metadata.files]
 appdirs = [
@@ -2432,6 +2444,9 @@ pysocks = [
     {file = "PySocks-1.7.1-py3-none-any.whl", hash = "sha256:2725bd0a9925919b9b51739eea5f9e2bae91e83288108a9ad338b2e3a4435ee5"},
     {file = "PySocks-1.7.1.tar.gz", hash = "sha256:3f8804571ebe159c380ac6de37643bb4685970655d3bba243530d6558b799aa0"},
 ]
+pytesseract = [
+    {file = "pytesseract-0.3.6.tar.gz", hash = "sha256:b79641b7915ff039da22d5591cb2f5ca6cb0ed7c65194c9c750360dc6a1cc87f"},
+]
 pytest = [
     {file = "pytest-6.1.2-py3-none-any.whl", hash = "sha256:4288fed0d9153d9646bfcdf0c0428197dba1ecb27a33bb6e031d002fa88653fe"},
     {file = "pytest-6.1.2.tar.gz", hash = "sha256:c0a7e94a8cdbc5422a51ccdad8e6f1024795939cc89159a0ae7f0b316ad3823e"},
@@ -2562,12 +2577,12 @@ robotframework-seleniumtestability = [
     {file = "robotframework-seleniumtestability-1.1.0.tar.gz", hash = "sha256:18810869a0c0010cc623aea4bb382afdc9aa6fe8404c35fa58452766d0322735"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-3.0.0.tar.gz", hash = "sha256:0e9e131e1b15c4814a0ef2c4b77a8effc52b38ae5d4ef159d531adf7533296fb"},
-    {file = "rpaframework_core-3.0.0-py3-none-any.whl", hash = "sha256:fdddec9f7abcd636a51844e0d4dd5661bade5bc45ba7b0e3504065960330b8d1"},
+    {file = "rpaframework-core-4.0.2.tar.gz", hash = "sha256:555d18889bf5b425896db363316dcd372a8a734a56294ba589d62b47e4f24145"},
+    {file = "rpaframework_core-4.0.2-py3-none-any.whl", hash = "sha256:1f5577c05bef8f8dff3b584ffb68102d1213ac82307ab8521cdb5b81736e41e5"},
 ]
 rpaframework-recognition = [
-    {file = "rpaframework-recognition-0.4.0.tar.gz", hash = "sha256:c57e514f30103a8923011d46acd76e7c1a6c3ab63a0272d71c5e299bfdb36113"},
-    {file = "rpaframework_recognition-0.4.0-py3-none-any.whl", hash = "sha256:4c106f720b45d43f38d8288261396ae5647479d27ae90d8d0ffda4bfde599b35"},
+    {file = "rpaframework-recognition-0.5.0.tar.gz", hash = "sha256:dd4ae959b9de7b1006636f66f28cfbe28200434eb1499b79f3924626b2e1d978"},
+    {file = "rpaframework_recognition-0.5.0-py3-none-any.whl", hash = "sha256:1b4294637ea89ae2b6273e263c73c95b2a3b0586ba8266f529bc5ec0c39d007d"},
 ]
 rsa = [
     {file = "rsa-4.6-py3-none-any.whl", hash = "sha256:6166864e23d6b5195a5cfed6cd9fed0fe774e226d8f854fcb23b7bbef0350233"},
