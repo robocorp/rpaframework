@@ -97,6 +97,19 @@ class Region:
 
         return Region(left, top, right, bottom)
 
+    def resize(self, relative: float) -> "Region":
+        relative = float(relative)
+        center_x, center_y = self.center
+        size_x = self.width / 2.0
+        size_y = self.height / 2.0
+
+        left = center_x - size_x * relative
+        top = center_y - size_y * relative
+        right = center_x + size_x * relative
+        bottom = center_y + size_y * relative
+
+        return Region(left, top, right, bottom)
+
     def move(self, left: int, top: int) -> "Region":
         left = self.left + int(left)
         top = self.top + int(top)

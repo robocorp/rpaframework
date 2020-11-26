@@ -126,6 +126,16 @@ def test_region_scale():
     assert scaled.bottom == 20
 
 
+def test_region_rezise():
+    region = geometry.Region(20, 40, 30, 60)
+
+    resized = region.resize(2)
+    assert resized.left == 15
+    assert resized.top == 30
+    assert resized.right == 35
+    assert resized.bottom == 70
+
+
 def test_region_move():
     region = geometry.Region(5, 5, 10, 10)
 
