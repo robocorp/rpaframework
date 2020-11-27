@@ -176,5 +176,45 @@ class ScreenKeywords(LibraryContext):
                 raise TypeError(f"Unknown location type: {match}")
 
     @keyword
-    def move_region(self, region, left, top):
+    def define_region(self, left: int, top: int, right: int, bottom: int) -> Region:
+        """
+        Return a new ``Region`` with the given dimensions.
+
+        :param left: left edge coordinate.
+        :param top: top edge coordinate.
+        :param right: right edge coordinate.
+        :param bottom: bottom edge coordinate.
+        """
+        return Region(left, top, right, bottom)
+
+    @keyword
+    def move_region(self, region: Region, left: int, top: int) -> Region:
+        """
+        Return a new ``Region`` with an offset from the given region.
+
+        :param region: the region to move.
+        :param left: amount of pixels to move left/right.
+        :param top: amount of pixels to move up/down.
+        """
         return region.move(left, top)
+
+    @keyword
+    def resize_region(
+        self,
+        region: Region,
+        left: Optional[int] = 0,
+        top: Optional[int] = 0,
+        right: Optional[int] = 0,
+        bottom: Optional[int] = 0,
+    ) -> Region:
+        """
+        Return a resized new ``Region`` from a given region.
+
+        :param region: the region to resize.
+        :param left: amount of pixels to resize left edge.
+        :param top: amount of pixels to resize top edge.
+        :param right: amount of pixels to resize right edge.
+        :param bottom: amount of pixels to resize bottom edge.
+
+        """
+        return region.resize(left, top, right, bottom)
