@@ -104,8 +104,32 @@ def test_region_width():
     assert geometry.Region(10, 5, 25, 10).width == 15
 
 
+def test_region_width_setter():
+    region = geometry.Region(10, 5, 30, 15)
+    assert region.width == 20
+    assert region.height == 10
+    assert region.center == geometry.Point(20, 10)
+
+    region.width = 30
+    assert region.width == 30
+    assert region.height == 10
+    assert region.center == geometry.Point(20, 10)
+
+
 def test_region_height():
     assert geometry.Region(10, 5, 25, 10).height == 5
+
+
+def test_region_height_setter():
+    region = geometry.Region(10, 5, 30, 15)
+    assert region.width == 20
+    assert region.height == 10
+    assert region.center == geometry.Point(20, 10)
+
+    region.height = 30
+    assert region.width == 20
+    assert region.height == 30
+    assert region.center == geometry.Point(20, 10)
 
 
 def test_region_area():
@@ -129,11 +153,45 @@ def test_region_scale():
 def test_region_rezise():
     region = geometry.Region(20, 40, 30, 60)
 
-    resized = region.resize(2)
+    resized = region.resize(5)
+    assert resized.left == 15
+    assert resized.top == 35
+    assert resized.right == 35
+    assert resized.bottom == 65
+
+    resized = region.resize(-2)
+    assert resized.left == 22
+    assert resized.top == 42
+    assert resized.right == 28
+    assert resized.bottom == 58
+
+    with pytest.raises(ValueError):
+        region.resize(-5)
+
+
+def test_region_resize_varargs():
+    region = geometry.Region(20, 40, 30, 60)
+
+    resized = region.resize(5, 10)
     assert resized.left == 15
     assert resized.top == 30
     assert resized.right == 35
     assert resized.bottom == 70
+
+    resized = region.resize(5, 10, 15)
+    assert resized.left == 15
+    assert resized.top == 30
+    assert resized.right == 45
+    assert resized.bottom == 70
+
+    resized = region.resize(5, 10, 15, 20)
+    assert resized.left == 15
+    assert resized.top == 30
+    assert resized.right == 45
+    assert resized.bottom == 80
+
+    with pytest.raises(ValueError):
+        region.resize(1, 2, 3, 4, 5)
 
 
 def test_region_move():

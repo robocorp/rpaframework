@@ -27,6 +27,10 @@ class Point:
     x: int
     y: int
 
+    def __post_init__(self):
+        self.x = int(self.x)
+        self.y = int(self.y)
+
     def __iter__(self):
         return iter(self.as_tuple())
 
@@ -34,6 +38,9 @@ class Point:
         return astuple(self)
 
     def move(self, x: int, y: int) -> "Point":
+        """Move the point relativce to the current position,
+        and return the resulting copy.
+        """
         return Point(self.x + int(x), self.y + int(y))
 
 
@@ -47,6 +54,11 @@ class Region:
     bottom: int
 
     def __post_init__(self):
+        self.left = int(self.left)
+        self.top = int(self.top)
+        self.right = int(self.right)
+        self.bottom = int(self.bottom)
+
         if self.left >= self.right:
             raise ValueError("Invalid width")
         if self.top >= self.bottom:
@@ -72,9 +84,27 @@ class Region:
     def width(self) -> int:
         return self.right - self.left
 
+    @width.setter
+    def width(self, value: int):
+        diff = int(value) - self.width
+        if self.width + diff <= 0:
+            raise ValueError("Invalid width")
+
+        self.left -= int(diff / 2)
+        self.right += int(diff / 2)
+
     @property
     def height(self) -> int:
         return self.bottom - self.top
+
+    @height.setter
+    def height(self, value: int):
+        diff = int(value) - self.height
+        if self.height + diff <= 0:
+            raise ValueError("Invalid height")
+
+        self.top -= int(diff / 2)
+        self.bottom += int(diff / 2)
 
     @property
     def area(self) -> int:
@@ -90,6 +120,11 @@ class Region:
         return astuple(self)
 
     def scale(self, scaling_factor: float) -> "Region":
+        """Scale all coordinate values with a given factor.
+
+        Used for instance when regions are from a monitor with
+        different pixel scaling.
+        """
         left = int(self.left * scaling_factor)
         top = int(self.top * scaling_factor)
         right = int(self.right * scaling_factor)
@@ -97,20 +132,43 @@ class Region:
 
         return Region(left, top, right, bottom)
 
-    def resize(self, relative: float) -> "Region":
-        relative = float(relative)
-        center_x, center_y = self.center
-        size_x = self.width / 2.0
-        size_y = self.height / 2.0
+    def resize(self, *sizes: int) -> "Region":
+        """Grow or shrink the region a given amount of pixels,
+        and return the resulting copy.
 
-        left = center_x - size_x * relative
-        top = center_y - size_y * relative
-        right = center_x + size_x * relative
-        bottom = center_y + size_y * relative
+        The method supports different ways to resize:
+
+        resize(a):          a = all edges
+        resize(a, b):       a = left/right, b = top/bottom
+        resize(a, b, c):    a = left, b = top/bottom, c = right
+        resize(a, b, c, d): a = left, b = top, c = right, d = bottom
+        """
+        count = len(sizes)
+        if count == 1:
+            left = top = right = bottom = sizes[0]
+        elif count == 2:
+            left = right = sizes[0]
+            top = bottom = sizes[1]
+        elif count == 3:
+            left = sizes[0]
+            top = bottom = sizes[1]
+            right = sizes[2]
+        elif count == 4:
+            left, top, right, bottom = sizes
+        else:
+            raise ValueError(f"Too many resize arguments: {count}")
+
+        left = self.left - int(left)
+        top = self.top - int(top)
+        right = self.right + int(right)
+        bottom = self.bottom + int(bottom)
 
         return Region(left, top, right, bottom)
 
     def move(self, left: int, top: int) -> "Region":
+        """Move the region relative to current position,
+        and return the resulting copy.
+        """
         left = self.left + int(left)
         top = self.top + int(top)
         right = left + self.width
@@ -119,6 +177,7 @@ class Region:
         return Region(left, top, right, bottom)
 
     def contains(self, element: Union[Point, "Region"]) -> bool:
+        """Check if a point or region is inside this region."""
         if isinstance(element, Point):
             return (self.left <= element.x <= self.right) and (
                 self.top <= element.y <= self.bottom
