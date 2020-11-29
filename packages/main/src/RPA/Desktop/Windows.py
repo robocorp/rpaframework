@@ -1788,9 +1788,14 @@ class Windows(OperatingSystem):
 
         Window dictionaries contain:
 
+        - automation_id
+        - control_id
         - title
         - pid
         - handle
+        - is_active
+        - keyboard_focus
+        - rectangle
 
         :return: list of window dictionaries
 
