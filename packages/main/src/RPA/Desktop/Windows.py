@@ -1443,7 +1443,8 @@ class Windows(OperatingSystem):
             left, top, right, bottom = map(
                 int,
                 re.match(
-                    r"\(L(\d+).*T(\d+).*R(\d+).*B(\d+)\)", str(rectangle)
+                    r"\(L([-]?\d+).*T([-]?\d+).*R([-]?\d+).*B([-]?\d+)\)",
+                    str(rectangle),
                 ).groups(),
             )
         return left, top, right, bottom
@@ -1806,6 +1807,15 @@ class Windows(OperatingSystem):
         window_list = []
         for w in windows:
             window_list.append(
-                {"title": w.window_text(), "pid": w.process_id(), "handle": w.handle}
+                {
+                    "automation_id": w.automation_id(),
+                    "control_id": w.control_id(),
+                    "title": w.window_text(),
+                    "pid": w.process_id(),
+                    "handle": w.handle,
+                    "is_active": w.is_active(),
+                    "keyboard_focus": w.has_keyboard_focus(),
+                    "rectangle": self._get_element_coordinates(w.rectangle()),
+                }
             )
         return window_list
