@@ -33,7 +33,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
-rpaframework-core = "^4.0.1"
+rpaframework-core = "^4.0.2"
 pillow = "^8.0.1"
 opencv-python = "^4.4.0"
 numpy = "1.19.3"
