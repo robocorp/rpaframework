@@ -1052,14 +1052,14 @@ toml = ">=0.7.1"
 
 [[package]]
 name = "pynput-robocorp-fork"
-version = "1.7.2"
+version = "1.7.3"
 description = "Monitor and control user input devices"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-pyobjc-framework-Quartz = {version = ">=3.0", markers = "sys_platform == \"darwin\""}
+pyobjc-framework-Quartz = {version = ">=6.0,<7.0", markers = "sys_platform == \"darwin\""}
 python-xlib = {version = ">=0.17", markers = "sys_platform in \"linux\""}
 six = "*"
 
@@ -1084,15 +1084,15 @@ pyobjc-core = ">=7.0"
 
 [[package]]
 name = "pyobjc-framework-quartz"
-version = "7.0"
+version = "6.2.2"
 description = "Wrappers for the Quartz frameworks on macOS"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-pyobjc-core = ">=7.0"
-pyobjc-framework-Cocoa = ">=7.0"
+pyobjc-core = ">=6.2.2"
+pyobjc-framework-Cocoa = ">=6.2.2"
 
 [[package]]
 name = "pyparsing"
@@ -1659,7 +1659,7 @@ google = ["google-api-python-client", "google-auth-httplib2", "google-auth-oauth
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "b04051b1331989a760ba21c650773f0a7ff2424d13241dee66f57473af10fe5d"
+content-hash = "ce67f5afff6e8667092303d72e5f1f3ce6e44302e74f144929b8785ab4e5dd3e"
 
 [metadata.files]
 appdirs = [
@@ -2333,9 +2333,9 @@ pylint = [
     {file = "pylint-2.6.0.tar.gz", hash = "sha256:bb4a908c9dadbc3aac18860550e870f58e1a02c9f2c204fdf5693d73be061210"},
 ]
 pynput-robocorp-fork = [
-    {file = "pynput-robocorp-fork-1.7.2.tar.gz", hash = "sha256:45f835a1642ac9f9baa0ed3e0e8cb79ca36eac8e5736f438350bc7b7d57c70bc"},
-    {file = "pynput_robocorp_fork-1.7.2-py2.py3-none-any.whl", hash = "sha256:ccb2c7a32968842dd2667068f0a825d6424b90e0a04673e36cf363f6345f58ed"},
-    {file = "pynput_robocorp_fork-1.7.2-py3.7.egg", hash = "sha256:ca0e768bf4eb7cec999882f55f2c84bd4ed2b73e3a05c143c0c23e0b72010df5"},
+    {file = "pynput-robocorp-fork-1.7.3.tar.gz", hash = "sha256:ee7ee57f11448bdc7ee5fe4720ffc9589ba351509a38df5b3cf55b1c48f41fb2"},
+    {file = "pynput_robocorp_fork-1.7.3-py2.py3-none-any.whl", hash = "sha256:986c518ec21934c8abc7c67349d697defaef098a634abdf7fb0c2c5b7edf4bc8"},
+    {file = "pynput_robocorp_fork-1.7.3-py3.7.egg", hash = "sha256:46a6213b9995844d02c44db055efe6bd39805da018d64b7d93b5ebb531ac3c42"},
 ]
 pyobjc-core = [
     {file = "pyobjc-core-7.0.tar.gz", hash = "sha256:c4d3d7007451d0ddfbd70c3292b5e57e72228df0f309c236b96804db5c8aaf47"},
@@ -2348,9 +2348,11 @@ pyobjc-framework-cocoa = [
     {file = "pyobjc_framework_Cocoa-7.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:acb1bf4153d8f26d9f95a1a574feb4a8ee17bafe82cbe3e000ea11c3d12a9610"},
 ]
 pyobjc-framework-quartz = [
-    {file = "pyobjc-framework-Quartz-7.0.tar.gz", hash = "sha256:7dc3c8f8593b869b504e091bf95cee58fcb79269af971e88ff4fa67fb597b36a"},
-    {file = "pyobjc_framework_Quartz-7.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:aa053f13906d76c84fc8fef353da90012c3808b9dc3a91379a63d8f2c924fee7"},
-    {file = "pyobjc_framework_Quartz-7.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:aedcf1864a43bd0509e3ae237c9b9da0792e321bae8e446ed3e6d4beb9abb427"},
+    {file = "pyobjc-framework-Quartz-6.2.2.tar.gz", hash = "sha256:5a56cfc0289061eaf33f04e3c73e749e04f177b0c1ee8749aa46e87d1e897cda"},
+    {file = "pyobjc_framework_Quartz-6.2.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:56d183dc32b11f15ceb0833a2a24953d1212264f07c274e2b8878e691eb72472"},
+    {file = "pyobjc_framework_Quartz-6.2.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:a57c7f50286d96ee7b9051c657a8607f0449949891cf0697be3efac76a97be7e"},
+    {file = "pyobjc_framework_Quartz-6.2.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:552b15eb409f87d34870345feabe6695375a031d8c4063f175dbaa3422005160"},
+    {file = "pyobjc_framework_Quartz-6.2.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:15f3c7b50d0543f66b927e28cd336c1a6962d58c9808799f49dcf30e4a1a13c2"},
 ]
 pyparsing = [
     {file = "pyparsing-2.4.7-py2.py3-none-any.whl", hash = "sha256:ef9d7589ef3c200abe66653d3f1ab1033c3c419ae9b9bdb1240a85b024efc88b"},
