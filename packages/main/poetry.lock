@@ -1052,20 +1052,22 @@ toml = ">=0.7.1"
 
 [[package]]
 name = "pynput-robocorp-fork"
-version = "1.7.3"
+version = "1.7.4"
 description = "Monitor and control user input devices"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
+pyobjc-core = {version = ">=6.0,<7.0", markers = "sys_platform == \"darwin\""}
+pyobjc-framework-Cocoa = {version = ">=6.0,<7.0", markers = "sys_platform == \"darwin\""}
 pyobjc-framework-Quartz = {version = ">=6.0,<7.0", markers = "sys_platform == \"darwin\""}
 python-xlib = {version = ">=0.17", markers = "sys_platform in \"linux\""}
 six = "*"
 
 [[package]]
 name = "pyobjc-core"
-version = "7.0"
+version = "6.2.2"
 description = "Python<->ObjC Interoperability Module"
 category = "main"
 optional = false
@@ -1073,14 +1075,14 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "pyobjc-framework-cocoa"
-version = "7.0"
+version = "6.2.2"
 description = "Wrappers for the Cocoa frameworks on macOS"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-pyobjc-core = ">=7.0"
+pyobjc-core = ">=6.2.2"
 
 [[package]]
 name = "pyobjc-framework-quartz"
@@ -1659,7 +1661,7 @@ google = ["google-api-python-client", "google-auth-httplib2", "google-auth-oauth
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "ce67f5afff6e8667092303d72e5f1f3ce6e44302e74f144929b8785ab4e5dd3e"
+content-hash = "f5ddff9bd123ca9da74091dd1d8adfaa51f1f527b58a92750ab590b905b9a5c9"
 
 [metadata.files]
 appdirs = [
@@ -2333,19 +2335,23 @@ pylint = [
     {file = "pylint-2.6.0.tar.gz", hash = "sha256:bb4a908c9dadbc3aac18860550e870f58e1a02c9f2c204fdf5693d73be061210"},
 ]
 pynput-robocorp-fork = [
-    {file = "pynput-robocorp-fork-1.7.3.tar.gz", hash = "sha256:ee7ee57f11448bdc7ee5fe4720ffc9589ba351509a38df5b3cf55b1c48f41fb2"},
-    {file = "pynput_robocorp_fork-1.7.3-py2.py3-none-any.whl", hash = "sha256:986c518ec21934c8abc7c67349d697defaef098a634abdf7fb0c2c5b7edf4bc8"},
-    {file = "pynput_robocorp_fork-1.7.3-py3.7.egg", hash = "sha256:46a6213b9995844d02c44db055efe6bd39805da018d64b7d93b5ebb531ac3c42"},
+    {file = "pynput-robocorp-fork-1.7.4.tar.gz", hash = "sha256:e7a04d385cb11040ac092f696ed8246ce66627ca42c0e128bc438b5735c5c855"},
+    {file = "pynput_robocorp_fork-1.7.4-py2.py3-none-any.whl", hash = "sha256:a2840edf5e90147d9af647d8e3788d6b72bd10ebe15a20839dcfaec01a0ea1f2"},
+    {file = "pynput_robocorp_fork-1.7.4-py3.7.egg", hash = "sha256:ce70aaabeaed51f492b581fc5cdb02a3d2d707344c9619fc646371d3253d0380"},
 ]
 pyobjc-core = [
-    {file = "pyobjc-core-7.0.tar.gz", hash = "sha256:c4d3d7007451d0ddfbd70c3292b5e57e72228df0f309c236b96804db5c8aaf47"},
-    {file = "pyobjc_core-7.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:930ae3a0da8346d8c660acef78e93826254f2fe6b8c30a5792f498a3694a365c"},
-    {file = "pyobjc_core-7.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:9edca8235dec6ece603dc49af699d012a992f26a5ed9ea564c13167c81ce9cbb"},
+    {file = "pyobjc-core-6.2.2.tar.gz", hash = "sha256:38e7b15a042439dadd18b28b78229e52fb882460fc16ddbae342b9972d5a827c"},
+    {file = "pyobjc_core-6.2.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:73938398559b718595076fce4921022f21983dd85ebace3ecbe6182697abe164"},
+    {file = "pyobjc_core-6.2.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:60d0c57de915b6ed91a9a26e3bdefdcaeb1288623c69f291338208c5a227d190"},
+    {file = "pyobjc_core-6.2.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:be312b7a0edb45dd8ea68e70f2b411b59677d4ceb513c48eace73cb78dbfd85f"},
+    {file = "pyobjc_core-6.2.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:47a89171d218905dbf13011b1a7d698c246cb66fb5f14119bc0d9e039d0486fa"},
 ]
 pyobjc-framework-cocoa = [
-    {file = "pyobjc-framework-Cocoa-7.0.tar.gz", hash = "sha256:b078ac6debcfaedbb06c27d8776520bf41598015e7bbf3a3a97e463567329497"},
-    {file = "pyobjc_framework_Cocoa-7.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:ecdf0265f85310c8d7efe30b26c7fe9aaac8879ea179f1649153426ebac56948"},
-    {file = "pyobjc_framework_Cocoa-7.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:acb1bf4153d8f26d9f95a1a574feb4a8ee17bafe82cbe3e000ea11c3d12a9610"},
+    {file = "pyobjc-framework-Cocoa-6.2.2.tar.gz", hash = "sha256:75821b98fb789d240bea7034c4f96396b2eac3e7b02428b4be9101fc899b7fc3"},
+    {file = "pyobjc_framework_Cocoa-6.2.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:779299f73b8b5a1dd0973b3b16bd706e1f67df44edfb3f3ca6e5e873591c0efc"},
+    {file = "pyobjc_framework_Cocoa-6.2.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:45e3011efbd8ab4eb4c7ee1f55a8b5ecb41cf66fa797aff0e9454060781645a0"},
+    {file = "pyobjc_framework_Cocoa-6.2.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:2a5ab2e33cafe577592c31b2663f3b23f6e142fd717c8cf3826394a380cc4353"},
+    {file = "pyobjc_framework_Cocoa-6.2.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:6f5e1d59f6e1f4be40dedf051925b8d90c561657c9ec2453652af033fe5c2bf0"},
 ]
 pyobjc-framework-quartz = [
     {file = "pyobjc-framework-Quartz-6.2.2.tar.gz", hash = "sha256:5a56cfc0289061eaf33f04e3c73e749e04f177b0c1ee8749aa46e87d1e897cda"},
