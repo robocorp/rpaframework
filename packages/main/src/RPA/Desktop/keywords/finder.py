@@ -161,6 +161,7 @@ class FinderKeywords(LibraryContext):
             regions = finder(image)
 
             for region in regions:
+                region = region.resize(5)
                 screenshot = image.crop(region.as_tuple())
                 screenshots.append(screenshot)
 

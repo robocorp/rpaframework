@@ -76,12 +76,19 @@ def grab(region: Optional[Region] = None) -> Image.Image:
     """Take a screenshot of either the full virtual display,
     or a cropped area of the given region.
     """
+
     with mss.mss() as sct:
+        display = _monitor_to_region(sct.monitors[0])
+
         if region is not None:
+            # TODO: Instead of error clamp region to display
+            if not display.contains(region):
+                raise ValueError("Screenshot region outside display bounds")
+
             screenshot = sct.grab(region.as_tuple())
         else:
             # First monitor is combined virtual display of all monitors
-            screenshot = sct.grab(sct.monitors[0])
+            screenshot = sct.grab(display.as_tuple())
 
     return Image.frombytes("RGB", screenshot.size, screenshot.bgra, "raw", "BGRX")
 
