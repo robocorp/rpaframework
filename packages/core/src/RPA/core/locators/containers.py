@@ -1,24 +1,9 @@
-from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, asdict, fields, MISSING
-from pathlib import Path
 from typing import Optional
-
-# Dictionary of all locator typenames to class instances
-TYPES = {}
-
-
-class LocatorMeta(ABCMeta):
-    """Metaclass for keeping track of all locator types."""
-
-    def __new__(cls, name, bases, namespace, **kwargs):
-        locator = super().__new__(cls, name, bases, namespace, **kwargs)
-        if name != "Locator":
-            TYPES[locator().typename] = locator
-        return locator
 
 
 @dataclass
-class Locator(metaclass=LocatorMeta):
+class Locator:
     """Baseclass for a locator entry."""
 
     @staticmethod
@@ -51,20 +36,9 @@ class Locator(metaclass=LocatorMeta):
 
     def to_dict(self):
         """Convert locator instance to a dictionary with type information."""
-        data = {"type": self.typename}
-
-        for key, value in asdict(self).items():
-            if isinstance(value, Path):
-                value = str(value)
-            data[key] = value
-
+        data = {"type": TYPES[type(self)]}
+        data.update(asdict(self))
         return data
-
-    @property
-    @abstractmethod
-    def typename(self):
-        """Name of locator type used in serialization."""
-        raise NotImplementedError
 
 
 @dataclass
@@ -73,10 +47,6 @@ class PointLocator(Locator):
 
     x: int
     y: int
-
-    @property
-    def typename(self):
-        return "coordinates"
 
     def __post_init__(self):
         self.x = int(self.x)
@@ -89,10 +59,6 @@ class OffsetLocator(Locator):
 
     x: int
     y: int
-
-    @property
-    def typename(self):
-        return "offset"
 
     def __post_init__(self):
         self.x = int(self.x)
@@ -108,10 +74,6 @@ class RegionLocator(Locator):
     right: int
     bottom: int
 
-    @property
-    def typename(self):
-        return "area"
-
     def __post_init__(self):
         self.left = int(self.left)
         self.top = int(self.top)
@@ -123,13 +85,9 @@ class RegionLocator(Locator):
 class ImageLocator(Locator):
     """Image-based locator for template matching."""
 
-    path: Path
+    path: str
     confidence: Optional[float] = None
-    source: Optional[Path] = None  # TODO: Remove when crop is implemented
-
-    @property
-    def typename(self):
-        return "image"
+    source: Optional[str] = None  # TODO: Remove when crop is implemented
 
     def __post_init__(self):
         if self.confidence is not None:
@@ -142,10 +100,6 @@ class OcrLocator(Locator):
 
     text: str
     confidence: Optional[float] = None
-
-    @property
-    def typename(self):
-        return "ocr"
 
     def __post_init__(self):
         self.text = str(self.text)
@@ -160,15 +114,23 @@ class BrowserLocator(Locator):
     strategy: str
     value: str
     source: Optional[str] = None
-    screenshot: Optional[Path] = None
-
-    @property
-    def typename(self):
-        return "browser"
+    screenshot: Optional[str] = None
 
 
 # Aliases for backwards compatibility, just in case.
-Coordinates = PointLocator
 Offset = OffsetLocator
 BrowserDOM = BrowserLocator
 ImageTemplate = ImageLocator
+Coordinates = PointLocator
+
+# Mapping of supported locator typenames to classes.
+# Used for parsing locator literals.
+TYPES = {
+    "point": PointLocator,
+    "offset": OffsetLocator,
+    "region": RegionLocator,
+    "image": ImageLocator,
+    "ocr": OcrLocator,
+    "browser": BrowserLocator,
+    "coordinates": PointLocator,  # Backwards compatibility
+}
