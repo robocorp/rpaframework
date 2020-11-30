@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+6.7.2
+-----
+
 - Add ``docutils`` as dependency to fix robotframework-lsp support
 
 6.7.1
