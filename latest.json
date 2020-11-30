@@ -5,7 +5,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:07",
+        "generated": "2020-11-30 14:40:52",
         "inits": [],
         "keywords": [
             {
@@ -103,7 +103,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:04",
+        "generated": "2020-11-30 14:40:48",
         "inits": [
             {
                 "name": "Init",
@@ -2622,7 +2622,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:05",
+        "generated": "2020-11-30 14:40:48",
         "inits": [
             {
                 "name": "Init",
@@ -2975,7 +2975,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:06",
+        "generated": "2020-11-30 14:40:48",
         "inits": [
             {
                 "name": "Init",
@@ -3193,7 +3193,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:06",
+        "generated": "2020-11-30 14:40:49",
         "inits": [
             {
                 "name": "Init",
@@ -3602,7 +3602,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:02",
+        "generated": "2020-11-30 14:40:49",
         "inits": [],
         "keywords": [
             {
@@ -3720,7 +3720,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:06",
+        "generated": "2020-11-30 14:40:50",
         "inits": [],
         "keywords": [
             {
@@ -4000,7 +4000,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:03",
+        "generated": "2020-11-30 14:40:49",
         "inits": [],
         "keywords": [
             {
@@ -4039,7 +4039,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:07",
+        "generated": "2020-11-30 14:40:48",
         "inits": [],
         "keywords": [
             {
@@ -4136,7 +4136,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:03",
+        "generated": "2020-11-30 14:40:51",
         "inits": [
             {
                 "name": "Init",
@@ -4736,7 +4736,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:07",
+        "generated": "2020-11-30 14:40:50",
         "inits": [
             {
                 "name": "Init",
@@ -4902,7 +4902,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:02",
+        "generated": "2020-11-30 14:40:47",
         "inits": [],
         "keywords": [
             {
@@ -5031,7 +5031,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:05",
+        "generated": "2020-11-30 14:40:49",
         "inits": [
             {
                 "name": "Init",
@@ -5308,7 +5308,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:03",
+        "generated": "2020-11-30 14:40:52",
         "inits": [],
         "keywords": [
             {
@@ -5469,11 +5469,11 @@
     },
     "RPA.Excel.Files": {
         "name": "RPA.Excel.Files",
-        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>The <cite>Excel.Files</cite> library can be used to read and write Excel\nfiles without the need to start the actual Excel application.</p>\n<p>It supports both legacy .xls files and modern .xlsx files.</p>\n<p>Note: To run macros or load password protected worksheets,\nplease use the Excel application library.</p>\n<p><strong>Examples</strong></p>\n<p><strong>Robot Framework</strong></p>\n<p>A common use-case is to load an existing Excel file as a table,\nwhich can be iterated over later in a Robot Framework keyword or task:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.Tables</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.Excel.Files</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Read orders as table</span><span class=\"p\">\n    </span><span class=\"nf\">Open workbook</span><span class=\"p\">    ${</span><span class=\"nv\">ORDERS_FILE</span><span class=\"p\">}\n    ${</span><span class=\"nv\">worksheet</span><span class=\"p\">}=    </span><span class=\"nf\">Read worksheet</span><span class=\"p\">   </span><span class=\"s\">header=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}\n    ${</span><span class=\"nv\">orders</span><span class=\"p\">}=       </span><span class=\"nf\">Create table</span><span class=\"p\">     ${</span><span class=\"nv\">worksheet</span><span class=\"p\">}\n    [</span><span class=\"kn\">Return</span><span class=\"p\">]         ${</span><span class=\"nv\">orders</span><span class=\"p\">}\n    [</span><span class=\"kn\">Teardown</span><span class=\"p\">]       </span><span class=\"nf\">Close workbook</span>\n</pre>\n<p>Processing all worksheets in the Excel file and checking row count:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.Excel.Files</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Variables ***</span><span class=\"p\">\n${</span><span class=\"nv\">EXCEL_FILE</span><span class=\"p\">}   </span><span class=\"s\">/path/to/excel.xlsx</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Rows in the sheet</span><span class=\"p\">\n    [</span><span class=\"kn\">Setup</span><span class=\"p\">]      </span><span class=\"nf\">Open Workbook</span><span class=\"p\">    ${</span><span class=\"nv\">EXCEL_FILE</span><span class=\"p\">}\n    &#64;{</span><span class=\"nv\">sheets</span><span class=\"p\">}=   </span><span class=\"nf\">List Worksheets</span><span class=\"p\">\n    </span><span class=\"nf\">FOR</span><span class=\"p\">  ${</span><span class=\"nv\">sheet</span><span class=\"p\">}  </span><span class=\"s\">IN</span><span class=\"p\">   &#64;{</span><span class=\"nv\">sheets</span><span class=\"p\">}\n        ${</span><span class=\"nv\">count</span><span class=\"p\">}=  </span><span class=\"nf\">Get row count in the sheet</span><span class=\"p\">   ${</span><span class=\"nv\">sheet</span><span class=\"p\">}\n        </span><span class=\"nf\">Log</span><span class=\"p\">   </span><span class=\"s\">Worksheet '</span><span class=\"p\">${</span><span class=\"nv\">sheet</span><span class=\"p\">}</span><span class=\"s\">' has </span><span class=\"p\">${</span><span class=\"nv\">count</span><span class=\"p\">}</span><span class=\"s\"> rows</span><span class=\"p\">\n    </span><span class=\"nf\">END</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Get row count in the sheet</span><span class=\"p\">\n    [</span><span class=\"kn\">Arguments</span><span class=\"p\">]      ${</span><span class=\"nv\">SHEET_NAME</span><span class=\"p\">}\n    ${</span><span class=\"nv\">sheet</span><span class=\"p\">}=        </span><span class=\"nf\">Read Worksheet</span><span class=\"p\">   ${</span><span class=\"nv\">SHEET_NAME</span><span class=\"p\">}\n    ${</span><span class=\"nv\">rows</span><span class=\"p\">}=         </span><span class=\"nf\">Get Length</span><span class=\"p\">  ${</span><span class=\"nv\">sheet</span><span class=\"p\">}\n    [</span><span class=\"kn\">Return</span><span class=\"p\">]         ${</span><span class=\"nv\">rows</span><span class=\"p\">}</span>\n</pre>\n<p>Creating a new Excel file with a dictionary:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Creating new Excel</span><span class=\"p\">\n    </span><span class=\"nf\">Create Workbook</span><span class=\"p\">  </span><span class=\"s\">my_new_excel.xlsx</span><span class=\"p\">\n    </span><span class=\"nf\">FOR</span><span class=\"p\">    ${</span><span class=\"nv\">index</span><span class=\"p\">}    </span><span class=\"s\">IN RANGE</span><span class=\"p\">    </span><span class=\"s\">20</span><span class=\"p\">\n        &amp;{</span><span class=\"nv\">row</span><span class=\"p\">}=       </span><span class=\"nf\">Create Dictionary</span><span class=\"p\">\n        ...           </span><span class=\"s\">Row No</span><span class=\"p\">   ${</span><span class=\"nv\">index</span><span class=\"p\">}\n        ...           </span><span class=\"s\">Amount</span><span class=\"p\">   ${</span><span class=\"nv\">index * 25</span><span class=\"p\">}\n        </span><span class=\"nf\">Append Rows to Worksheet</span><span class=\"p\">  ${</span><span class=\"nv\">row</span><span class=\"p\">}  </span><span class=\"s\">header=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}\n    </span><span class=\"nf\">END</span><span class=\"p\">\n    </span><span class=\"nf\">Save Workbook</span>\n</pre>\n<p>Creating a new Excel file with a list:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Variables ***</span><span class=\"p\">\n&#64;{</span><span class=\"nv\">heading</span><span class=\"p\">}   </span><span class=\"s\">Row No</span><span class=\"p\">   </span><span class=\"s\">Amount</span><span class=\"p\">\n&#64;{</span><span class=\"nv\">rows</span><span class=\"p\">}      &#64;{</span><span class=\"nv\">heading</span><span class=\"p\">}\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Creating new Excel</span><span class=\"p\">\n    </span><span class=\"nf\">Create Workbook</span><span class=\"p\">  </span><span class=\"s\">my_new_excel.xlsx</span><span class=\"p\">\n    </span><span class=\"nf\">FOR</span><span class=\"p\">    ${</span><span class=\"nv\">index</span><span class=\"p\">}    </span><span class=\"s\">IN RANGE</span><span class=\"p\">   </span><span class=\"s\">1</span><span class=\"p\">  </span><span class=\"s\">20</span><span class=\"p\">\n        &#64;{</span><span class=\"nv\">row</span><span class=\"p\">}=         </span><span class=\"nf\">Create List</span><span class=\"p\">   ${</span><span class=\"nv\">index</span><span class=\"p\">}   ${</span><span class=\"nv\">index * 25</span><span class=\"p\">}\n        </span><span class=\"nf\">Append To List</span><span class=\"p\">  ${</span><span class=\"nv\">rows</span><span class=\"p\">}  ${</span><span class=\"nv\">row</span><span class=\"p\">}\n    </span><span class=\"nf\">END</span><span class=\"p\">\n    </span><span class=\"nf\">Append Rows to Worksheet</span><span class=\"p\">  ${</span><span class=\"nv\">rows</span><span class=\"p\">}\n    </span><span class=\"nf\">Save Workbook</span>\n</pre>\n<p><strong>Python</strong></p>\n<p>The library can also be imported directly into Python.</p>\n<pre class=\"code python literal-block\">\n<span class=\"kn\">from</span> <span class=\"nn\">RPA.Excel.Files</span> <span class=\"kn\">import</span> <span class=\"n\">Files</span>\n\n<span class=\"k\">def</span> <span class=\"nf\">read_excel_worksheet</span><span class=\"p\">(</span><span class=\"n\">path</span><span class=\"p\">,</span> <span class=\"n\">worksheet</span><span class=\"p\">):</span>\n    <span class=\"n\">lib</span> <span class=\"o\">=</span> <span class=\"n\">Files</span><span class=\"p\">()</span>\n    <span class=\"n\">lib</span><span class=\"o\">.</span><span class=\"n\">open_workbook</span><span class=\"p\">(</span><span class=\"n\">path</span><span class=\"p\">)</span>\n    <span class=\"k\">try</span><span class=\"p\">:</span>\n        <span class=\"k\">return</span> <span class=\"n\">lib</span><span class=\"o\">.</span><span class=\"n\">read_worksheet</span><span class=\"p\">(</span><span class=\"n\">worksheet</span><span class=\"p\">)</span>\n    <span class=\"k\">finally</span><span class=\"p\">:</span>\n        <span class=\"n\">lib</span><span class=\"o\">.</span><span class=\"n\">close_workbook</span><span class=\"p\">()</span>\n</pre>\n</div>\n</div>",
+        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>The <cite>Excel.Files</cite> library can be used to read and write Excel\nfiles without the need to start the actual Excel application.</p>\n<p>It supports both legacy .xls files and modern .xlsx files.</p>\n<p>Note: To run macros or load password protected worksheets,\nplease use the Excel application library.</p>\n<p><strong>Examples</strong></p>\n<p><strong>Robot Framework</strong></p>\n<p>A common use-case is to load an existing Excel file as a table,\nwhich can be iterated over later in a Robot Framework keyword or task:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.Tables</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.Excel.Files</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Read orders as table</span><span class=\"p\">\n    </span><span class=\"nf\">Open workbook</span><span class=\"p\">    ${</span><span class=\"nv\">ORDERS_FILE</span><span class=\"p\">}\n    ${</span><span class=\"nv\">worksheet</span><span class=\"p\">}=    </span><span class=\"nf\">Read worksheet</span><span class=\"p\">   </span><span class=\"s\">header=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}\n    ${</span><span class=\"nv\">orders</span><span class=\"p\">}=       </span><span class=\"nf\">Create table</span><span class=\"p\">     ${</span><span class=\"nv\">worksheet</span><span class=\"p\">}\n    [</span><span class=\"kn\">Return</span><span class=\"p\">]         ${</span><span class=\"nv\">orders</span><span class=\"p\">}\n    [</span><span class=\"kn\">Teardown</span><span class=\"p\">]       </span><span class=\"nf\">Close workbook</span>\n</pre>\n<p>Processing all worksheets in the Excel file and checking row count:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.Excel.Files</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Variables ***</span><span class=\"p\">\n${</span><span class=\"nv\">EXCEL_FILE</span><span class=\"p\">}   </span><span class=\"s\">/path/to/excel.xlsx</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Rows in the sheet</span><span class=\"p\">\n    [</span><span class=\"kn\">Setup</span><span class=\"p\">]      </span><span class=\"nf\">Open Workbook</span><span class=\"p\">    ${</span><span class=\"nv\">EXCEL_FILE</span><span class=\"p\">}\n    &#64;{</span><span class=\"nv\">sheets</span><span class=\"p\">}=   </span><span class=\"nf\">List Worksheets</span><span class=\"p\">\n    </span><span class=\"nf\">FOR</span><span class=\"p\">  ${</span><span class=\"nv\">sheet</span><span class=\"p\">}  </span><span class=\"s\">IN</span><span class=\"p\">   &#64;{</span><span class=\"nv\">sheets</span><span class=\"p\">}\n        ${</span><span class=\"nv\">count</span><span class=\"p\">}=  </span><span class=\"nf\">Get row count in the sheet</span><span class=\"p\">   ${</span><span class=\"nv\">sheet</span><span class=\"p\">}\n        </span><span class=\"nf\">Log</span><span class=\"p\">   </span><span class=\"s\">Worksheet '</span><span class=\"p\">${</span><span class=\"nv\">sheet</span><span class=\"p\">}</span><span class=\"s\">' has </span><span class=\"p\">${</span><span class=\"nv\">count</span><span class=\"p\">}</span><span class=\"s\"> rows</span><span class=\"p\">\n    </span><span class=\"nf\">END</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Get row count in the sheet</span><span class=\"p\">\n    [</span><span class=\"kn\">Arguments</span><span class=\"p\">]      ${</span><span class=\"nv\">SHEET_NAME</span><span class=\"p\">}\n    ${</span><span class=\"nv\">sheet</span><span class=\"p\">}=        </span><span class=\"nf\">Read Worksheet</span><span class=\"p\">   ${</span><span class=\"nv\">SHEET_NAME</span><span class=\"p\">}\n    ${</span><span class=\"nv\">rows</span><span class=\"p\">}=         </span><span class=\"nf\">Get Length</span><span class=\"p\">  ${</span><span class=\"nv\">sheet</span><span class=\"p\">}\n    [</span><span class=\"kn\">Return</span><span class=\"p\">]         ${</span><span class=\"nv\">rows</span><span class=\"p\">}</span>\n</pre>\n<p>Creating a new Excel file with a dictionary:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Creating new Excel</span><span class=\"p\">\n    </span><span class=\"nf\">Create Workbook</span><span class=\"p\">  </span><span class=\"s\">my_new_excel.xlsx</span><span class=\"p\">\n    </span><span class=\"nf\">FOR</span><span class=\"p\">    ${</span><span class=\"nv\">index</span><span class=\"p\">}    </span><span class=\"s\">IN RANGE</span><span class=\"p\">    </span><span class=\"s\">20</span><span class=\"p\">\n        &amp;{</span><span class=\"nv\">row</span><span class=\"p\">}=       </span><span class=\"nf\">Create Dictionary</span><span class=\"p\">\n        ...           </span><span class=\"s\">Row No</span><span class=\"p\">   ${</span><span class=\"nv\">index</span><span class=\"p\">}\n        ...           </span><span class=\"s\">Amount</span><span class=\"p\">   ${</span><span class=\"nv\">index * 25</span><span class=\"p\">}\n        </span><span class=\"nf\">Append Rows to Worksheet</span><span class=\"p\">  ${</span><span class=\"nv\">row</span><span class=\"p\">}  </span><span class=\"s\">header=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}\n    </span><span class=\"nf\">END</span><span class=\"p\">\n    </span><span class=\"nf\">Save Workbook</span>\n</pre>\n<p>Creating a new Excel file with a list:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Variables ***</span><span class=\"p\">\n&#64;{</span><span class=\"nv\">heading</span><span class=\"p\">}   </span><span class=\"s\">Row No</span><span class=\"p\">   </span><span class=\"s\">Amount</span><span class=\"p\">\n&#64;{</span><span class=\"nv\">rows</span><span class=\"p\">}      ${</span><span class=\"nv\">heading</span><span class=\"p\">}\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Creating new Excel</span><span class=\"p\">\n    </span><span class=\"nf\">Create Workbook</span><span class=\"p\">  </span><span class=\"s\">my_new_excel.xlsx</span><span class=\"p\">\n    </span><span class=\"nf\">FOR</span><span class=\"p\">    ${</span><span class=\"nv\">index</span><span class=\"p\">}    </span><span class=\"s\">IN RANGE</span><span class=\"p\">   </span><span class=\"s\">1</span><span class=\"p\">  </span><span class=\"s\">20</span><span class=\"p\">\n        &#64;{</span><span class=\"nv\">row</span><span class=\"p\">}=         </span><span class=\"nf\">Create List</span><span class=\"p\">   ${</span><span class=\"nv\">index</span><span class=\"p\">}   ${</span><span class=\"nv\">index * 25</span><span class=\"p\">}\n        </span><span class=\"nf\">Append To List</span><span class=\"p\">  ${</span><span class=\"nv\">rows</span><span class=\"p\">}  ${</span><span class=\"nv\">row</span><span class=\"p\">}\n    </span><span class=\"nf\">END</span><span class=\"p\">\n    </span><span class=\"nf\">Append Rows to Worksheet</span><span class=\"p\">  ${</span><span class=\"nv\">rows</span><span class=\"p\">}\n    </span><span class=\"nf\">Save Workbook</span>\n</pre>\n<p><strong>Python</strong></p>\n<p>The library can also be imported directly into Python.</p>\n<pre class=\"code python literal-block\">\n<span class=\"kn\">from</span> <span class=\"nn\">RPA.Excel.Files</span> <span class=\"kn\">import</span> <span class=\"n\">Files</span>\n\n<span class=\"k\">def</span> <span class=\"nf\">read_excel_worksheet</span><span class=\"p\">(</span><span class=\"n\">path</span><span class=\"p\">,</span> <span class=\"n\">worksheet</span><span class=\"p\">):</span>\n    <span class=\"n\">lib</span> <span class=\"o\">=</span> <span class=\"n\">Files</span><span class=\"p\">()</span>\n    <span class=\"n\">lib</span><span class=\"o\">.</span><span class=\"n\">open_workbook</span><span class=\"p\">(</span><span class=\"n\">path</span><span class=\"p\">)</span>\n    <span class=\"k\">try</span><span class=\"p\">:</span>\n        <span class=\"k\">return</span> <span class=\"n\">lib</span><span class=\"o\">.</span><span class=\"n\">read_worksheet</span><span class=\"p\">(</span><span class=\"n\">worksheet</span><span class=\"p\">)</span>\n    <span class=\"k\">finally</span><span class=\"p\">:</span>\n        <span class=\"n\">lib</span><span class=\"o\">.</span><span class=\"n\">close_workbook</span><span class=\"p\">()</span>\n</pre>\n</div>\n</div>",
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:03",
+        "generated": "2020-11-30 14:40:50",
         "inits": [],
         "keywords": [
             {
@@ -5669,7 +5669,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:02",
+        "generated": "2020-11-30 14:40:47",
         "inits": [],
         "keywords": [
             {
@@ -5866,7 +5866,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:04",
+        "generated": "2020-11-30 14:40:51",
         "inits": [],
         "keywords": [
             {
@@ -6340,7 +6340,7 @@
         "version": "0.6.6",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:05",
+        "generated": "2020-11-30 14:40:48",
         "inits": [
             {
                 "name": "Init",
@@ -6371,7 +6371,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'OPTIONS', 'TRACE', 'HEAD', 'PUT', 'DELETE']"
+                    "retry_method_list=['GET', 'HEAD', 'PUT', 'OPTIONS', 'DELETE', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>client_certs</code> ['client certificate', 'client key'] PEM files containing the client key and certificate</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6394,7 +6394,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'OPTIONS', 'TRACE', 'HEAD', 'PUT', 'DELETE']"
+                    "retry_method_list=['GET', 'HEAD', 'PUT', 'OPTIONS', 'DELETE', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> A Custom Authentication object to be passed on to the requests library. <a href=\"http://docs.python-requests.org/en/master/user/advanced/#custom-authentication\">http://docs.python-requests.org/en/master/user/advanced/#custom-authentication</a></p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6417,7 +6417,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'OPTIONS', 'TRACE', 'HEAD', 'PUT', 'DELETE']"
+                    "retry_method_list=['GET', 'HEAD', 'PUT', 'OPTIONS', 'DELETE', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6440,7 +6440,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'OPTIONS', 'TRACE', 'HEAD', 'PUT', 'DELETE']"
+                    "retry_method_list=['GET', 'HEAD', 'PUT', 'OPTIONS', 'DELETE', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6463,7 +6463,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'OPTIONS', 'TRACE', 'HEAD', 'PUT', 'DELETE']"
+                    "retry_method_list=['GET', 'HEAD', 'PUT', 'OPTIONS', 'DELETE', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> List of username &amp; password for HTTP Basic Auth</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6697,7 +6697,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:06",
+        "generated": "2020-11-30 14:40:47",
         "inits": [],
         "keywords": [
             {
@@ -6816,7 +6816,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:05",
+        "generated": "2020-11-30 14:40:50",
         "inits": [],
         "keywords": [
             {
@@ -6927,7 +6927,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:05",
+        "generated": "2020-11-30 14:40:48",
         "inits": [],
         "keywords": [
             {
@@ -7087,7 +7087,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:07",
+        "generated": "2020-11-30 14:40:48",
         "inits": [],
         "keywords": [
             {
@@ -7182,7 +7182,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:06",
+        "generated": "2020-11-30 14:40:47",
         "inits": [],
         "keywords": [
             {
@@ -7252,7 +7252,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:07",
+        "generated": "2020-11-30 14:40:46",
         "inits": [
             {
                 "name": "Init",
@@ -8191,7 +8191,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:07",
+        "generated": "2020-11-30 14:40:47",
         "inits": [
             {
                 "name": "Init",
@@ -8280,7 +8280,7 @@
                 "name": "Get Work Item Variable",
                 "args": [
                     "name",
-                    "default=<object object at 0x7f003de2cd30>"
+                    "default=<object object at 0x7f0ec980df50>"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a single variable value from the work item,\nor default value if defined and key does not exist.\nIf key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param key:</th><td class=\"field-body\">Name of variable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param default:</th><td class=\"field-body\">Default value if key does not exist</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${username}=</span><span class=\"p\">    </span><span class=\"c\">Get work item variable</span><span class=\"p\">    </span><span class=\"c\">username</span><span class=\"p\">    </span><span class=\"c\">default=guest</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Return a single variable value from the work item, or default value if defined and key does not exist. If key does not exist and default is not defined, raises <cite>KeyError</cite>.",
@@ -8409,7 +8409,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:07",
+        "generated": "2020-11-30 14:40:48",
         "inits": [
             {
                 "name": "Init",
@@ -8444,7 +8444,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:04",
+        "generated": "2020-11-30 14:40:49",
         "inits": [],
         "keywords": [
             {
@@ -8510,7 +8510,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:06",
+        "generated": "2020-11-30 14:40:48",
         "inits": [
             {
                 "name": "Init",
@@ -8534,7 +8534,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:02",
+        "generated": "2020-11-30 14:40:49",
         "inits": [
             {
                 "name": "Init",
@@ -8791,7 +8791,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:02",
+        "generated": "2020-11-30 14:40:48",
         "inits": [],
         "keywords": [
             {
@@ -8818,7 +8818,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:04",
+        "generated": "2020-11-30 14:40:50",
         "inits": [],
         "keywords": [
             {
@@ -9194,7 +9194,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:06",
+        "generated": "2020-11-30 14:40:46",
         "inits": [
             {
                 "name": "Init",
@@ -9313,7 +9313,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:04",
+        "generated": "2020-11-30 14:40:47",
         "inits": [],
         "keywords": [
             {
@@ -9436,7 +9436,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-19 13:57:05",
+        "generated": "2020-11-30 14:40:48",
         "inits": [],
         "keywords": [
             {
