@@ -70,11 +70,8 @@ class ImageNotFoundError(Exception):
 
 
 class Images:
-    """*DEPRECATED* For image-based automation use `RPA.Desktop` instead.
-
-    `Images` is a library for taking screenshots, matching templates, and
-    generally manipulating images. It can also be used for GUI-based automation
-    when traditional UI locators are not available.
+    """`Images` is a library for general image manipulation.
+    For image-based desktop automation, use the ``RPA.Desktop`` library.
 
     **Coordinates**
 
@@ -152,7 +149,7 @@ class Images:
         self.logger = logging.getLogger(__name__)
         self.matcher = TemplateMatcher(opencv=HAS_OPENCV)
 
-    def take_screenshot(self, filename=None, region=None) -> Image:
+    def take_screenshot(self, filename=None, region=None) -> Image.Image:
         """*DEPRECATED* Use keyword `RPA.Desktop.Take Screenshot` instead
         Take a screenshot of the current desktop.
 
