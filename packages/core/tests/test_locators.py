@@ -8,6 +8,10 @@ from RPA.core.locators import (
     TYPES,
     LocatorsDatabase,
     Locator,
+    PointLocator,
+    OffsetLocator,
+    BrowserLocator,
+    ImageLocator,
     Coordinates,
     Offset,
     BrowserDOM,
@@ -123,25 +127,32 @@ def test_sanitize_name(sanitized):
 class TestParse:
     def test_parse_image(self):
         locator = parse_locator("image:path/to/file.png")
-        assert isinstance(locator, ImageTemplate)
+        assert isinstance(locator, ImageLocator)
         assert locator.path == "path/to/file.png"
         assert locator.confidence == None
 
     def test_parse_image_args(self):
         locator = parse_locator("image:path/to/file.png,80.0")
-        assert isinstance(locator, ImageTemplate)
+        assert isinstance(locator, ImageLocator)
         assert locator.path == "path/to/file.png"
         assert locator.confidence == 80.0
 
+    def test_parse_point(self):
+        locator = parse_locator("point:100,200")
+        assert isinstance(locator, PointLocator)
+        assert locator.x == 100
+        assert locator.y == 200
+
     def test_parse_coordinates(self):
+        # Kept for backwards compatibility
         locator = parse_locator("coordinates:100,200")
-        assert isinstance(locator, Coordinates)
+        assert isinstance(locator, PointLocator)
         assert locator.x == 100
         assert locator.y == 200
 
     def test_parse_offset(self):
         locator = parse_locator("offset:100,200")
-        assert isinstance(locator, Offset)
+        assert isinstance(locator, OffsetLocator)
         assert locator.x == 100
         assert locator.y == 200
 
@@ -160,7 +171,7 @@ class TestLocators:
         }
 
         locator = Locator.from_dict(data)
-        assert isinstance(locator, BrowserDOM)
+        assert isinstance(locator, BrowserLocator)
         assert locator.strategy == "class"
         assert locator.value == "btn-primary"
         assert locator.source == "https://robotsparebinindustries.com/"
@@ -175,7 +186,7 @@ class TestLocators:
         }
 
         locator = Locator.from_dict(data)
-        assert isinstance(locator, BrowserDOM)
+        assert isinstance(locator, BrowserLocator)
 
     def test_from_dict_optional(self):
         data = {
@@ -185,7 +196,7 @@ class TestLocators:
         }
 
         locator = Locator.from_dict(data)
-        assert isinstance(locator, BrowserDOM)
+        assert isinstance(locator, BrowserLocator)
         assert locator.strategy == "class"
         assert locator.value == "btn-primary"
         assert locator.source == None
@@ -215,7 +226,7 @@ class TestLocators:
             "source": "images/TestSource.png",
         }
         locator = Locator.from_dict(data)
-        assert isinstance(locator, ImageTemplate)
+        assert isinstance(locator, ImageLocator)
         assert locator.path == "images/TestTemplate.png"
         assert locator.source == "images/TestSource.png"
         assert locator.confidence == None
@@ -228,10 +239,30 @@ class TestLocators:
             "confidence": 90.0,
         }
         locator = Locator.from_dict(data)
-        assert isinstance(locator, ImageTemplate)
+        assert isinstance(locator, ImageLocator)
         assert locator.path == "images/TestTemplate.png"
         assert locator.source == "images/TestSource.png"
         assert locator.confidence == 90.0
+
+    def test_image_to_dict(self):
+        locator = ImageLocator("doesntmatter")
+        data = locator.to_dict()
+        assert data["path"] == "doesntmatter"
+        assert data["type"] == "image"
+
+    def test_coordinates_to_dict(self):
+        locator = Coordinates(1, 2)
+        data = locator.to_dict()
+        assert data["x"] == 1
+        assert data["y"] == 2
+        assert data["type"] == "point"
+
+    def test_point_to_dict(self):
+        locator = PointLocator(1, 2)
+        data = locator.to_dict()
+        assert data["x"] == 1
+        assert data["y"] == 2
+        assert data["type"] == "point"
 
 
 class TestDatabase:
@@ -306,7 +337,7 @@ class TestDatabase:
         database.path = "/example/root/path/locators.json"
 
         locator = database.resolve("RobotSpareBin.Logo")
-        assert isinstance(locator, ImageTemplate)
+        assert isinstance(locator, ImageLocator)
         assert Path(locator.path) == Path(
             "/example/root/path/relative/locator/path.png"
         )

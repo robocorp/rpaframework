@@ -36,7 +36,7 @@ class Locator:
 
     def to_dict(self):
         """Convert locator instance to a dictionary with type information."""
-        data = {"type": TYPES[type(self)]}
+        data = {"type": NAMES[type(self)]}
         data.update(asdict(self))
         return data
 
@@ -133,4 +133,15 @@ TYPES = {
     "ocr": OcrLocator,
     "browser": BrowserLocator,
     "coordinates": PointLocator,  # Backwards compatibility
+}
+
+# Above mapping but in reverse direction.
+NAMES = {
+    PointLocator: "point",
+    OffsetLocator: "offset",
+    RegionLocator: "region",
+    ImageLocator: "image",
+    OcrLocator: "ocr",
+    BrowserLocator: "browser",
+    PointLocator: "point",  # Backwards compatibility
 }
