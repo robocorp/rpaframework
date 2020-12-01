@@ -5,7 +5,7 @@ from RPA.core.geometry import Region
 from RPA.Desktop.keywords import LibraryContext, keyword, screen, HAS_RECOGNITION
 
 if HAS_RECOGNITION:
-    from RPA.recognition import ocr
+    from RPA.recognition import ocr  # pylint: disable=no-name-in-module
 
 
 def ensure_recognition():
