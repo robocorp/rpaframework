@@ -271,7 +271,7 @@ trio = ["trio (>=0.14.0)", "sniffio (>=1.1)"]
 name = "docutils"
 version = "0.14"
 description = "Docutils -- Python Documentation Utilities"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -1658,7 +1658,7 @@ google = ["google-api-python-client", "google-auth-httplib2", "google-auth-oauth
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "13f7eb3aea3d13f1d18ae95d0c0131c388792eb9856c78c1573d3c9c61240205"
+content-hash = "6af1c0ffcc9897fb04de6b420a2430f158e0b9ed0c4870d8854c4134601d24e0"
 
 [metadata.files]
 appdirs = [
