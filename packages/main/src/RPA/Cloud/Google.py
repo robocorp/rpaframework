@@ -1,14 +1,22 @@
+import base64
+from enum import Enum
 from functools import wraps
+from io import BytesIO
 import json
 import logging
 import os
 from pathlib import Path
 import pickle
+import shutil
 import tempfile
+import time
 from typing import Any
 
+
 try:
-    from apiclient import discovery, MediaFileUpload  # MediaIoBaseDownload
+    from apiclient import discovery  # MediaIoBaseDownload
+    from apiclient.errors import HttpError
+    from apiclient.http import MediaFileUpload, MediaIoBaseDownload
     from googleapiclient.discovery import build
     from google_auth_oauthlib.flow import InstalledAppFlow
     from google.auth.transport.requests import Request
@@ -28,9 +36,9 @@ try:
     from google.oauth2 import service_account
     from google.protobuf.json_format import MessageToJson
 
-    HAS_GOOGLECLOUD = True
-except ImportError:
-    HAS_GOOGLECLOUD = False
+    GOOGLECLOUD_IMPORT_ERROR = None
+except ImportError as e:
+    GOOGLECLOUD_IMPORT_ERROR = str(e)
 
 from RPA.Robocloud.Secrets import Secrets
 
@@ -38,14 +46,44 @@ from RPA.Robocloud.Secrets import Secrets
 def google_dependency_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        if not HAS_GOOGLECLOUD:
+        if GOOGLECLOUD_IMPORT_ERROR:
             raise ValueError(
                 "Please install optional `google` package, "
-                "`pip install rpaframework[google]` to use RPA.Cloud.Google library"
+                "`pip install rpaframework[google]` to use RPA.Cloud.Google library\n"
+                + GOOGLECLOUD_IMPORT_ERROR
             )
         return f(*args, **kwargs)
 
     return wrapper
+
+
+class GoogleOAuthAuthenticationError(Exception):
+    """Raised when unable to get Google OAuth credentials."""
+
+
+class GoogleDriveError(Exception):
+    """Raised with errors in Drive API"""
+
+
+class Update(Enum):
+    """Possible file update actions."""
+
+    trash = 1
+    untrash = 2
+    star = 3
+    unstar = 4
+
+
+def to_action(value):
+    """Convert value to Update enum."""
+    if isinstance(value, Update):
+        return value
+
+    sanitized = str(value).lower().strip().replace(" ", "_")
+    try:
+        return Update[sanitized]
+    except KeyError as err:
+        raise ValueError(f"Unknown file update action: {value}") from err
 
 
 class GoogleBase:
@@ -58,9 +96,7 @@ class GoogleBase:
     robocloud_vault_name: str = None
     robocloud_vault_secret_key: str = None
     global_scopes: list = []
-
-    # def __init__(self):
-    #     self.global_scopes = []
+    _scopes: list = []
 
     def _get_service(self, service_name: str = None):
         """Return client instance for servive if it has been initialized.
@@ -100,6 +136,24 @@ class GoogleBase:
 
         return temp_filedesc.name
 
+    def _get_filecontent_from_robocloud(
+        self, vault_name: str = None, secret_key: str = None
+    ):
+        vault_name = vault_name or self.robocloud_vault_name
+        secret_key = secret_key or self.robocloud_vault_secret_key
+        if vault_name is None or secret_key is None:
+            raise KeyError(
+                "Both 'robocloud_vault_name' and 'robocloud_vault_secret_key' "
+                "are required to access Robocloud Vault. Set them in library "
+                "init or with `set_robocloud_vault` keyword."
+            )
+        vault = Secrets()
+        vault_items = vault.get_secret(vault_name)
+        if isinstance(vault_items[secret_key], dict):
+            return vault_items[secret_key]
+        else:
+            return vault_items[secret_key].strip()
+
     @google_dependency_required
     def _init_with_robocloud(self, client_object, service_name):
         temp_filedesc = self._get_service_account_from_robocloud()
@@ -122,7 +176,7 @@ class GoogleBase:
             service = client_object()
             self._set_service(service_name, service)
 
-    def set_robocloud_vault(self, vault_name, vault_secret_key):
+    def set_robocloud_vault(self, vault_name: str = None, vault_secret_key: str = None):
         """Set Robocloud Vault name and secret key name
 
         :param vault_name: Robocloud Vault name
@@ -144,6 +198,40 @@ class GoogleBase:
             self.global_scopes = scopes
         else:
             raise AttributeError("scopes needs to be a list")
+
+    def _get_credentials_with_oauth_token(
+        self, use_robocloud_vault, token_file, credentials_file, scopes, save_token
+    ):
+        credentials = None
+        token_file_location = Path(token_file).absolute()
+        if use_robocloud_vault:
+            token = self._get_filecontent_from_robocloud(secret_key="oauth-token")
+            credentials = pickle.loads(base64.b64decode(token))
+        else:
+            if os.path.exists(token_file_location):
+                with open(token_file_location, "rb") as token:
+                    credentials = pickle.loads(token)
+        if scopes:
+            self._scopes = self._scopes + [
+                f"https://www.googleapis.com/auth/{scope}" for scope in scopes
+            ]
+
+        if not credentials or not credentials.valid:
+            if credentials and credentials.expired and credentials.refresh_token:
+                credentials.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    credentials_file, self._scopes
+                )
+                credentials = flow.run_local_server()
+            if save_token:
+                with open(token_file_location, "wb") as token:
+                    pickle.dump(credentials, token)
+        if not credentials:
+            raise GoogleOAuthAuthenticationError(
+                "Could not get Google OAuth credentials"
+            )
+        return credentials
 
 
 class ServiceVision(GoogleBase):
@@ -587,7 +675,7 @@ class ServiceSpeechToText(GoogleBase):
     """
 
     _service_name = "speech-to-text"
-    if HAS_GOOGLECLOUD:
+    if not GOOGLECLOUD_IMPORT_ERROR:
         _encodings = {
             "AMR": speech.enums.RecognitionConfig.AudioEncoding.AMR,
             "AMR_WB": speech.enums.RecognitionConfig.AudioEncoding.AMR_WB,
@@ -1042,49 +1130,27 @@ class ServiceAppsScript(GoogleBase):
     def __init__(self) -> None:
         self.services.append(self._service_name)
         self._scopes = ["https://www.googleapis.com/auth/script.projects"]
-        robocorp_home = os.getenv("ROBOCORP_HOME", None)
-        token_directory = robocorp_home or Path.home()
-        self._token_file = (token_directory / ".rpafw_oauth_token").absolute()
-        self.logger.info("Using token file from: %s", self._token_file)
-        self.logger.debug("ServiceAppsScript init")
 
     @google_dependency_required
     def init_apps_script_client(
         self,
-        service_credentials_file: str = None,
+        credentials_file: str = "credentials.json",
+        token_file: str = "oauth.token",
         use_robocloud_vault: bool = False,
         scopes: list = None,
+        save_token: bool = False,
     ) -> None:
         """Initialize Google Apps Script client
 
-        :param service_credentials_file: filepath to credentials JSON
+        :param credentials_file: filepath to credentials JSON
+        :param token_file: filepath to OAuth token file
+        :param use_robocloud_vault: if `True` the token is read from Robocloud
         :param scopes: authenticated scopes, for example. ['forms', 'spreadsheets']
+        :param save_token: set to `True` if token should be saved to local file
         """
-        self.logger.info(use_robocloud_vault)
-        # token_file = self._token_file
-        # if use_robocloud_vault:
-        #    token_file = self._get_token_file_from_robocloud()
-        if scopes:
-            self._scopes = self._scopes + [
-                f"https://www.googleapis.com/auth/{scope}" for scope in scopes
-            ]
-        credentials = None
-        # credentials = self.get_authentication_credentials(token_file,
-        # use_robocloud_vault, scopes)
-        if os.path.exists(self._token_file):
-            with open(self._token_file, "rb") as token:
-                credentials = pickle.load(token)
-
-        if not credentials or not credentials.valid:
-            if credentials and credentials.expired and credentials.refresh_token:
-                credentials.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    service_credentials_file, self._scopes
-                )
-                credentials = flow.run_local_server()
-            with open(self._token_file, "wb") as token:
-                pickle.dump(credentials, token)
+        credentials = self._get_credentials_with_oauth_token(
+            use_robocloud_vault, token_file, credentials_file, scopes, save_token
+        )
 
         service = build("script", "v1", credentials=credentials, cache_discovery=False)
         self._set_service(self._service_name, service)
@@ -1102,7 +1168,8 @@ class ServiceAppsScript(GoogleBase):
         .. code-block:: robotframework
 
             &{params}=    Create Dictionary  formid=aaad4232  formvalues=1,2,3
-            Run Script    abc21397283712da  submit_form   ${params}
+            ${response}=  Run Script    abc21397283712da  submit_form   ${params}
+            Log Many   ${response}
         """
         request = {
             "function": function_name,
@@ -1119,6 +1186,7 @@ class ServiceAppsScript(GoogleBase):
         )
         if "error" in response.keys():
             raise AssertionError(response["error"])
+        return response
 
 
 class ServiceDrive(GoogleBase):
@@ -1148,69 +1216,472 @@ class ServiceDrive(GoogleBase):
             "https://www.googleapis.com/auth/drive.file",
             "https://www.googleapis.com/auth/drive.install",
         ]
-        robocorp_home = os.getenv("ROBOCORP_HOME", None)
-        token_directory = robocorp_home or Path.home()
-        self._token_file = (token_directory / ".rpafw_oauth_token").absolute()
-        self.logger.info("Using token file from: %s", self._token_file)
-        self.logger.debug("ServiceDrive init")
 
     @google_dependency_required
     def init_drive_client(
-        self, service_credentials_file: str = None, scopes: list = None
+        self,
+        credentials_file: str = "credentials.json",
+        token_file: str = "oauth.token",
+        use_robocloud_vault: bool = False,
+        scopes: list = None,
+        save_token: bool = False,
     ) -> None:
         """Initialize Google Drive client
 
-        :param service_credentials_file: filepath to credentials JSON
+        :param credentials_file: filepath to credentials JSON
+        :param token_file: filepath to OAuth token file
+        :param use_robocloud_vault: if `True` the token is read from Robocloud
+        :param scopes: authenticated scopes, for example. ['forms', 'spreadsheets']
+        :param save_token: set to `True` if token should be saved to local file
         """
-        if scopes:
-            self._scopes = self._scopes + [
-                f"https://www.googleapis.com/auth/{scope}" for scope in scopes
-            ]
-        credentials = None
-        if os.path.exists(self._token_file):
-            with open(self._token_file, "rb") as token:
-                credentials = pickle.load(token)
-
-        if not credentials or not credentials.valid:
-            if credentials and credentials.expired and credentials.refresh_token:
-                credentials.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    service_credentials_file, self._scopes
-                )
-                credentials = flow.run_local_server()
-            with open(self._token_file, "wb") as token:
-                pickle.dump(credentials, token)
-
-        service = build("script", "v3", credentials=credentials, cache_discovery=False)
+        credentials = self._get_credentials_with_oauth_token(
+            use_robocloud_vault, token_file, credentials_file, scopes, save_token
+        )
+        service = build("drive", "v3", credentials=credentials, cache_discovery=False)
+        self.logger.info(service)
         self._set_service(self._service_name, service)
 
-    def upload_file(self, filepath: str):
+    def drive_upload_file(
+        self,
+        filename: str = None,
+        folder: str = None,
+        overwrite: bool = False,
+        make_dir: bool = False,
+    ) -> dict:
+        """Upload files into Drive
+
+        :param filename: name of the file to upload
+        :param folder: target folder for upload
+        :param overwrite: set to `True` if already existing file should be overwritten
+        :param make_dir: set to `True` if folder should be created if it does not exist
+        :raises GoogleDriveError: if target_folder does not exist or
+         trying to upload directory
+        :return: uploaded file id
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${file1_id}=  Drive Upload File   data.json  # Upload file to drive root
+            ${file2_id}=  Drive Upload File   newdata.json  new_folder  make_dir=True
+            ${file3_id}=  Drive Upload File   data.json  overwrite=True
+        """
         service = self._get_service(self._service_name)
-        filepath = Path(filepath)
-        file_metadata = {"name": filepath.name, "mimeType": "*/*"}
-        media = MediaFileUpload(filepath.absolute, mimetype="*/*", resumable=True)
-        file = (
-            service.files()
-            .create(body=file_metadata, media_body=media, fields="id")
-            .execute()
-        )
-        print("File ID: " + file.get("id"))
 
-    def download_file(self):
-        pass
+        folder_id = self.drive_get_folder_id(folder)
+        if folder_id is None and make_dir:
+            folder_id = self.drive_create_directory(folder)
+        if folder_id is None:
+            raise GoogleDriveError(
+                "Target folder '%s' does not exist or could not be created" % folder
+            )
 
-    def search_files(self):
-        pass
+        filepath = Path(filename)
+        if filepath.is_dir():
+            raise GoogleDriveError(
+                "The '%s' is a directory and can not be uploaded" % filename
+            )
+        elif not filepath.is_file():
+            raise GoogleDriveError("Filename '%s' does not exist" % filename)
 
-    def trash_file(self):
-        pass
+        query_string = f"name = '{filename}' and '{folder_id}' in parents"
+        target_file = self.drive_search_files(query=query_string, recurse=True)
+        file_metadata = {
+            "name": filepath.name,
+            "parents": [folder_id],
+            "mimeType": "*/*",
+        }
+        media = MediaFileUpload(filepath.absolute(), mimetype="*/*", resumable=True)
+        if len(target_file) == 1 and overwrite:
+            self.logger.info("Overwriting file '%s' with new content", filename)
+            file = (
+                service.files()
+                .update(fileId=target_file[0]["id"], media_body=media, fields="id")
+                .execute()
+            )
+            return file.get("id", None)
+        elif len(target_file) == 1 and not overwrite:
+            self.logger.info("Not uploading new copy of file '%s'", filename)
+            return None
+        elif len(target_file) > 1:
+            self.logger.warning(
+                "Drive already contains '%s' copies of file '%s'. Not uploading again."
+                % (len(target_file), filename)
+            )
+            return None
+        else:
+            file = (
+                service.files()
+                .create(body=file_metadata, media_body=media, fields="id")
+                .execute()
+            )
+            return file.get("id", None)
 
-    def untrash_file(self):
-        pass
+    def _download_with_fileobject(self, file_object):
+        service = self._get_service(self._service_name)
+        request = service.files().get_media(fileId=file_object["id"])
+        fh = BytesIO()
+        downloader = MediaIoBaseDownload(fh, request)
+        done = False
+        while done is False:
+            _, done = downloader.next_chunk()
+        fh.seek(0)
+        with open(file_object["name"], "wb") as f:
+            # pylint: disable=protected-access
+            shutil.copyfileobj(fh, f, length=downloader._total_size)
 
-    def delete_file(self):
-        pass
+    def drive_download_files(
+        self,
+        file_dict: dict = None,
+        query: str = None,
+        limit: int = None,
+        timeout: float = None,
+    ):
+        """Download files specified by file dictionary or query string
+
+        Parameters `start`, `limit` and `timeout` are used only when
+        downloading files defined by `query` parameter.
+
+        :param file_dict: file dictionary returned by `Drive Search Files`
+        :param query: drive query string to find target files, defaults to None
+        :param start: start index from which to start download files
+        :param limit: maximum amount of files that are downloaded, defaults to None
+        :param timeout: maximum allowed time in seconds for download process
+        :return: list of downloaded files
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${files}=    Drive Search Files    query=name contains '.json'
+            FOR    ${f}    IN    @{files}
+                Run Keyword If  ${f}[size] < 2000  Drive Download Files  file_dict=${f}
+            END
+
+            ${folder_id}=   Drive Get Folder Id   datafolder
+            Drive Download Files  query=name contains '.json' and '${folder_id}' in parents  recurse=True
+        """  # noqa: E501
+        if query:
+            filelist = self.drive_search_files(query)
+            files_downloaded = []
+            start_time = time.time()
+
+            for f in filelist:
+                self._download_with_fileobject(f)
+                current_time = time.time()
+                files_downloaded.append(f["name"])
+                if limit and len(files_downloaded) >= limit:
+                    self.logger.info(
+                        "Drive download limit %s reached. Stopping the download.", limit
+                    )
+                    break
+                if timeout and (current_time - start_time) > float(timeout):
+                    self.logger.info(
+                        "Drive download timeout %s seconds reached. "
+                        "Stopping the download.",
+                        timeout,
+                    )
+                    break
+            return files_downloaded
+
+        if file_dict:
+            self._download_with_fileobject(file_dict)
+            return [file_dict]
+        return None
+
+    def drive_update_file(
+        self,
+        file_id: str = None,
+        file_dict: dict = None,
+        query: str = None,
+        action: Update = Update.star,
+        multiple_ok: bool = False,
+    ):
+        """Update file specified by id, file dictionary or query string
+
+        Possible actions:
+        - star
+        - unstar
+        - trash
+        - untrash
+
+        :param file_id: drive file id
+        :param file_dict: file dictionary returned by `Drive Search Files`
+        :param query: drive query string to find target file, needs to match 1 file
+        :param action: update action, default star file
+        :param multiple_ok: set to `True` if it is ok to perform update
+         on more than 1 file
+        :return: number of updated files
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${folder_id}=  Drive Get Folder Id   datafolder
+            ${updated}=    Drive Update File   query=name contains '.json' and '${folder_id}' in parents
+            ...            action=star
+            ...            multiple_ok=True
+        """  # noqa: E501
+        target_files = self._get_target_file(file_id, file_dict, query, multiple_ok)
+
+        update_count = 0
+        for tf in target_files:
+            self._drive_files_update(tf, action)
+            update_count += 1
+        return update_count
+
+    def _get_target_file(self, file_id, file_dict, query, multiple_ok):
+        target_files = []
+        if file_id:
+            target_files.append(file_id)
+        elif file_dict:
+            target_files.append(file_dict.get("id", None))
+        else:
+            files = self.drive_search_files(query, recurse=True)
+            target_files = [tf.get("id", None) for tf in files]
+            if not multiple_ok and len(target_files) > 1:
+                raise GoogleDriveError(
+                    "expected search to match 1 file, but it matched %s files"
+                    % len(files)
+                )
+
+        return target_files
+
+    def _drive_files_update(self, file_id: str, action: Update):
+        service = self._get_service(self._service_name)
+        body = None
+        if action == Update.trash:
+            body = {"trashed": True}
+        elif action == Update.untrash:
+            body = {"trashed": False}
+        elif action == Update.star:
+            body = {"starred": True}
+        elif action == Update.unstar:
+            body = {"starred": False}
+        else:
+            # TODO: mypy should handle enum exhaustivity validation
+            raise ValueError(f"Unsupported update action: {action}")
+        updated_file = service.files().update(fileId=file_id, body=body).execute()
+        return updated_file
+
+    def drive_delete_file(
+        self,
+        file_id: str = None,
+        file_dict: dict = None,
+        query: str = None,
+        multiple_ok: bool = False,
+    ):
+        """Delete file specified by id, file dictionary or query string
+
+        Note. Be extra careful when calling this keyword!
+
+        :param file_id: drive file id
+        :param file_dict: file dictionary returned by `Drive Search Files`
+        :param query: drive query string to find target file, needs to match 1 file
+         unless parameter `multiple_ok` is set to `True`
+        :param multiple_ok: set to `True` if it is ok to perform delete
+         on more than 1 file
+        :return: how many files where deleted
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${folder_id}=  Drive Get Folder Id   datafolder
+            ${deleted}=    Drive Delete File   query=name contains '.json' and '${folder_id}' in parents
+            ...            multiple_ok=True
+        """  # noqa: E501
+        service = self._get_service(self._service_name)
+        target_files = self._get_target_file(file_id, file_dict, query, multiple_ok)
+
+        delete_count = 0
+        for tf in target_files:
+            service.files().delete(fileId=tf).execute()
+            delete_count += 1
+        return delete_count
+
+    def drive_get_folder_id(self, folder: str = None):
+        """Get file id for the folder
+
+        :param folder: name of the folder to identify, by default returns drive's
+         `root` folder id
+        :return: file id of the folder
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${root_id}=    Drive Get Folder Id   # returns Drive root folder id
+            ${folder_id}=  Drive Get Folder Id  subdir
+        """
+        service = self._get_service(self._service_name)
+        mime_folder_type = "application/vnd.google-apps.folder"
+        folder_id = None
+        if folder is None:
+            file = service.files().get(fileId="root", fields="id").execute()
+            folder_id = file.get("id", None)
+        else:
+            query_string = f"name = '{folder}' AND mimeType = '{mime_folder_type}'"
+            folders = self.drive_search_files(query=query_string, recurse=True)
+            if len(folders) == 1:
+                folder_id = folders[0].get("id", None)
+            else:
+                self.logger.info(
+                    "Found '%s' directories with name '%s'", (len(folders), folder)
+                )
+        return folder_id
+
+    def drive_move_file(
+        self,
+        file_id: str = None,
+        file_dict: dict = None,
+        query: str = None,
+        folder: str = None,
+        folder_id: str = None,
+        multiple_ok: bool = False,
+    ):
+        """Move file specified by id, file dictionary or query string into target folder
+
+        :param file_id: drive file id
+        :param file_dict: file dictionary returned by `Drive Search Files`
+        :param query: drive query string to find target file, needs to match 1 file
+        :param folder: name of the folder to move file into, is by default drive's
+         `root` folder id
+        :param folder_id: id of the folder to move file into, if set the `folder`
+         parameter is ignored
+        :param multiple_ok: if `True` then moving more than 1 file
+        :return: list of file ids
+        :raises GoogleDriveError: if there are no files to move or
+         target folder can't be found
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${source_id}=  Drive Get Folder Id  sourcefolder
+            ${query}=      Set Variable  name contains '.json' and '${sourceid}' in parents
+            ${files}=      Drive Move File  query=${query}  folder=target_folder  multiple_ok=True
+        """  # noqa: E501
+        result_files = []
+        service = self._get_service(self._service_name)
+        target_files = self._get_target_file(file_id, file_dict, query, multiple_ok)
+        if len(target_files) == 0:
+            raise GoogleDriveError("Did not find any files to move")
+        if folder_id:
+            target_parent = folder_id
+        else:
+            target_parent = self.drive_get_folder_id(folder)
+        if target_parent is None:
+            raise GoogleDriveError(
+                "Unable to find target folder: '%s'" % (folder if folder else "root")
+            )
+        for tf in target_files:
+            file = service.files().get(fileId=tf, fields="parents").execute()
+            previous_parents = ",".join(file.get("parents"))
+            result_file = (
+                service.files()
+                .update(
+                    fileId=tf,
+                    addParents=target_parent,
+                    removeParents=previous_parents,
+                    fields="id, parents",
+                )
+                .execute()
+            )
+            result_files.append(result_file)
+        return result_files
+
+    def drive_search_files(
+        self, query: str = None, recurse: bool = False, folder_name: str = None
+    ) -> list:
+        """Search Google Drive for files matching query string
+
+        :param query: search string, defaults to None which means that all files
+         and folders are returned
+        :param recurse: set to `True` if search should recursive
+        :param folder_name: search files in this directory
+        :raises GoogleDriveError: if there is a request error
+        :return: list of files
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${files}=  Drive Search Files   query=name contains 'hello'
+            ${files}=  Drive Search Files   query=modifiedTime > '2020-06-04T12:00:00'
+            ${files}=  Drive Search Files   query=mimeType contains 'image/' or mimeType contains 'video/'
+            ${files}=  Drive Search Files   query=name contains '.yaml'  recurse=True
+            ${files}=  Drive Search Files   query=name contains '.yaml'  folder_name=datadirectory
+        """  # noqa: E501
+        service = self._get_service(self._service_name)
+        page_token = None
+        filelist = []
+        parameters = {"fields": "nextPageToken, files", "spaces": "drive", "q": ""}
+        query_string = [query] if query else []
+
+        if not recurse:
+            folder_id = (
+                "root" if not folder_name else self.drive_get_folder_id(folder_name)
+            )
+            if folder_id is None:
+                return []
+            query_string.append(f"'{folder_id}' in parents")
+
+        parameters["q"] = " and ".join(query_string)
+
+        while True:
+            parameters["pageToken"] = page_token
+            try:
+                response = service.files().list(**parameters).execute()
+            except HttpError as e:
+                raise GoogleDriveError(str(e)) from e
+            for file in response.get("files", []):
+                filesize = file.get("size")
+                filelist.append(
+                    {
+                        "name": file.get("name"),
+                        "id": file.get("id"),
+                        "size": int(filesize) if filesize else None,
+                        "kind": file.get("kind"),
+                        "parents": file.get("parents"),
+                        "starred": file.get("starred"),
+                        "trashed": file.get("trashed"),
+                        "shared": file.get("shared"),
+                        "mimeType": file.get("mimeType"),
+                        "spaces": file.get("spaces", None),
+                        "exportLinks": file.get("exportLinks"),
+                        "createdTime": file.get("createdTime"),
+                        "modifiedTime": file.get("modifiedTime"),
+                    }
+                )
+            page_token = response.get("nextPageToken", None)
+            if page_token is None:
+                break
+        return filelist
+
+    def drive_create_directory(self, folder: str = None):
+        """Create new directory to Google Drive
+
+        :param folder: name for the new directory
+        :raises GoogleDriveError: if folder name is not given
+        :return: created file id
+        """
+        if not folder or len(folder) == 0:
+            raise GoogleDriveError("Can't create Drive directory with empty name")
+
+        folder_id = self.drive_get_folder_id(folder)
+        if folder_id:
+            self.logger.info("Folder '%s' already exists. Not creating new one.")
+            return None
+
+        service = self._get_service(self._service_name)
+        file_metadata = {
+            "name": folder,
+            "mimeType": "application/vnd.google-apps.folder",
+        }
+
+        added_folder = service.files().create(body=file_metadata, fields="id").execute()
+        return added_folder
 
 
 class Google(  # pylint: disable=R0901
@@ -1298,7 +1769,7 @@ class Google(  # pylint: disable=R0901
 
     Method when using OAuth credentials.json:
 
-    The Google Apps Script service is authenticated using this method.
+    The Google Apps Script and Google Drive services are authenticated using this method.
 
     .. code-block:: robotframework
 

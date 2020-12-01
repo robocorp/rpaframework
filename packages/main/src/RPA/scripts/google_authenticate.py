@@ -13,7 +13,8 @@ def get_arguments(parser):
         "--credentials",
         dest="credentials_file",
         default="credentials.json",
-        help="project credentials file, by default tries to access file from current directory",
+        help="project credentials file, by default tries to access file "
+        "from current directory",
     )
     parser.add_argument(
         "--scopes",
