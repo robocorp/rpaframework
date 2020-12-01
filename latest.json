@@ -5,7 +5,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:52",
+        "generated": "2020-12-01 11:09:13",
         "inits": [],
         "keywords": [
             {
@@ -103,7 +103,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:48",
+        "generated": "2020-12-01 11:09:15",
         "inits": [
             {
                 "name": "Init",
@@ -2622,7 +2622,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:48",
+        "generated": "2020-12-01 11:09:14",
         "inits": [
             {
                 "name": "Init",
@@ -2975,7 +2975,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:48",
+        "generated": "2020-12-01 11:09:16",
         "inits": [
             {
                 "name": "Init",
@@ -3193,7 +3193,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:49",
+        "generated": "2020-12-01 11:09:14",
         "inits": [
             {
                 "name": "Init",
@@ -3602,7 +3602,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:49",
+        "generated": "2020-12-01 11:09:16",
         "inits": [],
         "keywords": [
             {
@@ -3720,7 +3720,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:50",
+        "generated": "2020-12-01 11:09:13",
         "inits": [],
         "keywords": [
             {
@@ -3784,6 +3784,19 @@
                 "matched": true
             },
             {
+                "name": "Define Region",
+                "args": [
+                    "left: int",
+                    "top: int",
+                    "right: int",
+                    "bottom: int"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a new <tt class=\"docutils literal\">Region</tt> with the given dimensions.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param left:</th><td class=\"field-body\">left edge coordinate.</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param top:</th><td class=\"field-body\">top edge coordinate.</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param right:</th><td class=\"field-body\">right edge coordinate.</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param bottom:</th><td class=\"field-body\">bottom edge coordinate.</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+                "shortdoc": "Return a new <tt class=\"docutils literal\">Region</tt> with the given dimensions.",
+                "tags": [],
+                "matched": true
+            },
+            {
                 "name": "Drag And Drop",
                 "args": [
                     "source: str",
@@ -3801,8 +3814,8 @@
                 "args": [
                     "locator: str"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Find an element defined by locator, and return its position.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param locator:</th><td class=\"field-body\">Locator string</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${match}=</span><span class=\"p\">    </span><span class=\"c\">Find element</span><span class=\"p\">    </span><span class=\"c\">image:logo.png</span><span class=\"p\">\n</span><span class=\"c\">Log</span><span class=\"p\">    </span><span class=\"c\">Found logo at ${match.x}, ${match.y}</span>\n</pre>\n</div>\n</div>",
-                "shortdoc": "Find an element defined by locator, and return its position.",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Find an element defined by locator, and return its position.\nRaises <tt class=\"docutils literal\">ElementNotFound</tt> if` no matches were found, or\n<tt class=\"docutils literal\">MultipleElementsFound</tt> if there were multiple matches.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param locator:</th><td class=\"field-body\">Locator string</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${match}=</span><span class=\"p\">    </span><span class=\"c\">Find element</span><span class=\"p\">    </span><span class=\"c\">image:logo.png</span><span class=\"p\">\n</span><span class=\"c\">Log</span><span class=\"p\">    </span><span class=\"c\">Found logo at ${match.x}, ${match.y}</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Find an element defined by locator, and return its position. Raises <tt class=\"docutils literal\">ElementNotFound</tt> if` no matches were found, or <tt class=\"docutils literal\">MultipleElementsFound</tt> if there were multiple matches.",
                 "tags": [],
                 "matched": true
             },
@@ -3861,6 +3874,18 @@
                 "matched": true
             },
             {
+                "name": "Move Region",
+                "args": [
+                    "region: Region",
+                    "left: int",
+                    "top: int"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a new <tt class=\"docutils literal\">Region</tt> with an offset from the given region.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param region:</th><td class=\"field-body\">the region to move.</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param left:</th><td class=\"field-body\">amount of pixels to move left/right.</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param top:</th><td class=\"field-body\">amount of pixels to move up/down.</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+                "shortdoc": "Return a new <tt class=\"docutils literal\">Region</tt> with an offset from the given region.",
+                "tags": [],
+                "matched": true
+            },
+            {
                 "name": "Open Application",
                 "args": [
                     "name_or_path: str",
@@ -3912,12 +3937,36 @@
                 "matched": true
             },
             {
+                "name": "Read Text",
+                "args": [
+                    "locator: str = None"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Read text using OCR from the screen, or an area of the\nscreen defined by the given locator.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param locator:</th><td class=\"field-body\">Location of element to read text from</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+                "shortdoc": "Read text using OCR from the screen, or an area of the screen defined by the given locator.",
+                "tags": [],
+                "matched": true
+            },
+            {
                 "name": "Release Mouse Button",
                 "args": [
                     "button: typing.Any = left"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Release mouse button that was previously pressed.</p>\n</div>\n</div>",
                 "shortdoc": "Release mouse button that was previously pressed.",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Resize Region",
+                "args": [
+                    "region: Region",
+                    "left: typing.Union[int, NoneType] = 0",
+                    "top: typing.Union[int, NoneType] = 0",
+                    "right: typing.Union[int, NoneType] = 0",
+                    "bottom: typing.Union[int, NoneType] = 0"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a resized new <tt class=\"docutils literal\">Region</tt> from a given region.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param region:</th><td class=\"field-body\">the region to resize.</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param left:</th><td class=\"field-body\">amount of pixels to resize left edge.</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param top:</th><td class=\"field-body\">amount of pixels to resize top edge.</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param right:</th><td class=\"field-body\">amount of pixels to resize right edge.</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param bottom:</th><td class=\"field-body\">amount of pixels to resize bottom edge.</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+                "shortdoc": "Return a resized new <tt class=\"docutils literal\">Region</tt> from a given region.",
                 "tags": [],
                 "matched": true
             },
@@ -3934,10 +3983,20 @@
             {
                 "name": "Set Default Confidence",
                 "args": [
-                    "confidence: float"
+                    "confidence: float = None"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set the default template matching confidence.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param confidence:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Value from 1 to 100</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
                 "shortdoc": "Set the default template matching confidence.",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Set Default Timeout",
+                "args": [
+                    "timeout: float = 3.0"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set the default time to wait for elements.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param timeout:</th><td class=\"field-body\">Time in seconds</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+                "shortdoc": "Set the default time to wait for elements.",
                 "tags": [],
                 "matched": true
             },
@@ -3982,11 +4041,23 @@
                 "name": "Wait For Element",
                 "args": [
                     "locator: str",
+                    "timeout: float = None",
+                    "interval: float = 0.5"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Wait for an element defined by locator to exist, or\nraise a TimeoutException if none were found within timeout.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param locator:</th><td class=\"field-body\">Locator string</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Wait for element</span><span class=\"p\">    </span><span class=\"c\">alias:CookieConsent</span><span class=\"p\">    </span><span class=\"c\">timeout=30</span><span class=\"p\">\n</span><span class=\"c\">Click</span><span class=\"p\">    </span><span class=\"c\">image:%{ROBOT_ROOT}/accept.png</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Wait for an element defined by locator to exist, or raise a TimeoutException if none were found within timeout.",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Wait For Element To Disappear",
+                "args": [
+                    "locator: str",
                     "timeout: float = 10.0",
                     "interval: float = 0.5"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Wait for an element defined by locator to exist or\nuntil timeout is reached.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param locator:</th><td class=\"field-body\">Locator string</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Wait for element</span><span class=\"p\">    </span><span class=\"c\">alias:CookieConsent</span><span class=\"p\">    </span><span class=\"c\">timeout=30</span><span class=\"p\">\n</span><span class=\"c\">Click</span><span class=\"p\">    </span><span class=\"c\">image:%{ROBOT_ROOT}/accept.png</span>\n</pre>\n</div>\n</div>",
-                "shortdoc": "Wait for an element defined by locator to exist or until timeout is reached.",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Wait for an element defined by locator to disappear.</p>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Wait for element to disappear</span><span class=\"p\">    </span><span class=\"c\">alias:LoadingScreen</span><span class=\"p\">    </span><span class=\"c\">timeout=30</span><span class=\"p\">\n</span><span class=\"c\">Click</span><span class=\"p\">    </span><span class=\"c\">image:%{ROBOT_ROOT}/main_menu.png</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Wait for an element defined by locator to disappear.",
                 "tags": [],
                 "matched": true
             }
@@ -4000,7 +4071,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:49",
+        "generated": "2020-12-01 11:09:17",
         "inits": [],
         "keywords": [
             {
@@ -4039,7 +4110,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:48",
+        "generated": "2020-12-01 11:09:18",
         "inits": [],
         "keywords": [
             {
@@ -4136,7 +4207,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:51",
+        "generated": "2020-12-01 11:09:16",
         "inits": [
             {
                 "name": "Init",
@@ -4736,7 +4807,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:50",
+        "generated": "2020-12-01 11:09:18",
         "inits": [
             {
                 "name": "Init",
@@ -4902,7 +4973,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:47",
+        "generated": "2020-12-01 11:09:19",
         "inits": [],
         "keywords": [
             {
@@ -5031,7 +5102,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:49",
+        "generated": "2020-12-01 11:09:14",
         "inits": [
             {
                 "name": "Init",
@@ -5308,7 +5379,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:52",
+        "generated": "2020-12-01 11:09:19",
         "inits": [],
         "keywords": [
             {
@@ -5473,7 +5544,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:50",
+        "generated": "2020-12-01 11:09:14",
         "inits": [],
         "keywords": [
             {
@@ -5669,7 +5740,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:47",
+        "generated": "2020-12-01 11:09:19",
         "inits": [],
         "keywords": [
             {
@@ -5866,7 +5937,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:51",
+        "generated": "2020-12-01 11:09:15",
         "inits": [],
         "keywords": [
             {
@@ -6337,10 +6408,10 @@
     "RPA.HTTP": {
         "name": "RPA.HTTP",
         "doc": "<p>RPA Framework HTTP library that extends functionality of RequestsLibrary, for more information see: <a href=\"https://github.com/MarketSquare/robotframework-requests\">https://github.com/MarketSquare/robotframework-requests</a></p>",
-        "version": "0.6.6",
+        "version": "0.7.2",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:48",
+        "generated": "2020-12-01 11:09:19",
         "inits": [
             {
                 "name": "Init",
@@ -6371,7 +6442,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'HEAD', 'PUT', 'OPTIONS', 'DELETE', 'TRACE']"
+                    "retry_method_list=['HEAD', 'PUT', 'GET', 'TRACE', 'OPTIONS', 'DELETE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>client_certs</code> ['client certificate', 'client key'] PEM files containing the client key and certificate</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6394,7 +6465,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'HEAD', 'PUT', 'OPTIONS', 'DELETE', 'TRACE']"
+                    "retry_method_list=['HEAD', 'PUT', 'GET', 'TRACE', 'OPTIONS', 'DELETE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> A Custom Authentication object to be passed on to the requests library. <a href=\"http://docs.python-requests.org/en/master/user/advanced/#custom-authentication\">http://docs.python-requests.org/en/master/user/advanced/#custom-authentication</a></p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6417,7 +6488,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'HEAD', 'PUT', 'OPTIONS', 'DELETE', 'TRACE']"
+                    "retry_method_list=['HEAD', 'PUT', 'GET', 'TRACE', 'OPTIONS', 'DELETE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6440,7 +6511,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'HEAD', 'PUT', 'OPTIONS', 'DELETE', 'TRACE']"
+                    "retry_method_list=['HEAD', 'PUT', 'GET', 'TRACE', 'OPTIONS', 'DELETE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6463,7 +6534,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'HEAD', 'PUT', 'OPTIONS', 'DELETE', 'TRACE']"
+                    "retry_method_list=['HEAD', 'PUT', 'GET', 'TRACE', 'OPTIONS', 'DELETE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> List of username &amp; password for HTTP Basic Auth</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6515,6 +6586,16 @@
                 "args": [],
                 "doc": "<p>Get request session alias that was used with the <code>HTTP Get</code> keyword.</p>\n<p>Return name of session alias.</p>",
                 "shortdoc": "Get request session alias that was used with the <code>HTTP Get</code> keyword.",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Get File For Streaming Upload",
+                "args": [
+                    "path"
+                ],
+                "doc": "<p>Opens and returns a file descriptor of a specified file to be passed as <code>data</code> parameter to other requests keywords.</p>\n<p>This allows streaming upload of large files without reading them into memory.</p>\n<p>File descriptor is binary mode and read only. Requests keywords will automatically close the file, if used outside this library it's up to the caller to close it.</p>",
+                "shortdoc": "Opens and returns a file descriptor of a specified file to be passed as <code>data</code> parameter to other requests keywords.",
                 "tags": [],
                 "matched": true
             },
@@ -6591,7 +6672,7 @@
                     "allow_redirects=None",
                     "timeout=None"
                 ],
-                "doc": "<p>Send a PATCH request on the session object found using the given <span class=\"name\">alias</span></p>\n<p><code>alias</code> that will be used to identify the Session object in the cache</p>\n<p><code>uri</code> to send the PATCH request to</p>\n<p><code>data</code> a dictionary of key-value pairs that will be urlencoded and sent as PATCH data or binary data that is sent as the raw body content</p>\n<p><code>json</code> a value that will be json encoded and sent as PATCH data if data is not specified</p>\n<p><code>headers</code> a dictionary of headers to use with the request</p>\n<p><code>files</code> a dictionary of file names containing file data to PATCH to the server</p>\n<p><code>allow_redirects</code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>\n<p><code>params</code> url parameters to append to the uri</p>\n<p><code>timeout</code> connection timeout</p>",
+                "doc": "<p>Send a PATCH request on the session object found using the given <span class=\"name\">alias</span></p>\n<p><code>alias</code> that will be used to identify the Session object in the cache</p>\n<p><code>uri</code> to send the PATCH request to</p>\n<p><code>data</code> a dictionary of key-value pairs that will be urlencoded and sent as PATCH data or binary data that is sent as the raw body content or file descriptor retrieved by Get File For Streaming Upload</p>\n<p><code>json</code> a value that will be json encoded and sent as PATCH data if data is not specified</p>\n<p><code>headers</code> a dictionary of headers to use with the request</p>\n<p><code>files</code> a dictionary of file names containing file data to PATCH to the server</p>\n<p><code>allow_redirects</code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>\n<p><code>params</code> url parameters to append to the uri</p>\n<p><code>timeout</code> connection timeout</p>",
                 "shortdoc": "Send a PATCH request on the session object found using the given <span class=\"name\">alias</span>",
                 "tags": [],
                 "matched": true
@@ -6609,7 +6690,7 @@
                     "allow_redirects=None",
                     "timeout=None"
                 ],
-                "doc": "<p>Send a POST request on the session object found using the given <span class=\"name\">alias</span></p>\n<p><code>alias</code> that will be used to identify the Session object in the cache</p>\n<p><code>uri</code> to send the POST request to</p>\n<p><code>data</code> a dictionary of key-value pairs that will be urlencoded and sent as POST data or binary data that is sent as the raw body content or passed as such for multipart form data if <code>files</code> is also defined</p>\n<p><code>json</code> a value that will be json encoded and sent as POST data if files or data is not specified</p>\n<p><code>params</code> url parameters to append to the uri</p>\n<p><code>headers</code> a dictionary of headers to use with the request</p>\n<p><code>files</code> a dictionary of file names containing file data to POST to the server</p>\n<p><code>allow_redirects</code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>\n<p><code>timeout</code> connection timeout</p>",
+                "doc": "<p>Send a POST request on the session object found using the given <span class=\"name\">alias</span></p>\n<p><code>alias</code> that will be used to identify the Session object in the cache</p>\n<p><code>uri</code> to send the POST request to</p>\n<p><code>data</code> a dictionary of key-value pairs that will be urlencoded and sent as POST data or binary data that is sent as the raw body content or passed as such for multipart form data if <code>files</code> is also defined or file descriptor retrieved by Get File For Streaming Upload</p>\n<p><code>json</code> a value that will be json encoded and sent as POST data if files or data is not specified</p>\n<p><code>params</code> url parameters to append to the uri</p>\n<p><code>headers</code> a dictionary of headers to use with the request</p>\n<p><code>files</code> a dictionary of file names containing file data to POST to the server</p>\n<p><code>allow_redirects</code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>\n<p><code>timeout</code> connection timeout</p>",
                 "shortdoc": "Send a POST request on the session object found using the given <span class=\"name\">alias</span>",
                 "tags": [],
                 "matched": true
@@ -6627,7 +6708,7 @@
                     "allow_redirects=None",
                     "timeout=None"
                 ],
-                "doc": "<p>Send a PUT request on the session object found using the given <span class=\"name\">alias</span></p>\n<p><code>alias</code> that will be used to identify the Session object in the cache</p>\n<p><code>uri</code> to send the PUT request to</p>\n<p><code>data</code> a dictionary of key-value pairs that will be urlencoded and sent as PUT data or binary data that is sent as the raw body content</p>\n<p><code>json</code> a value that will be json encoded and sent as PUT data if data is not specified</p>\n<p><code>headers</code> a dictionary of headers to use with the request</p>\n<p><code>allow_redirects</code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>\n<p><code>params</code> url parameters to append to the uri</p>\n<p><code>timeout</code> connection timeout</p>",
+                "doc": "<p>Send a PUT request on the session object found using the given <span class=\"name\">alias</span></p>\n<p><code>alias</code> that will be used to identify the Session object in the cache</p>\n<p><code>uri</code> to send the PUT request to</p>\n<p><code>data</code> a dictionary of key-value pairs that will be urlencoded and sent as PUT data or binary data that is sent as the raw body content or file descriptor retrieved by Get File For Streaming Upload</p>\n<p><code>json</code> a value that will be json encoded and sent as PUT data if data is not specified</p>\n<p><code>headers</code> a dictionary of headers to use with the request</p>\n<p><code>allow_redirects</code> Boolean. Set to True if POST/PUT/DELETE redirect following is allowed.</p>\n<p><code>params</code> url parameters to append to the uri</p>\n<p><code>timeout</code> connection timeout</p>",
                 "shortdoc": "Send a PUT request on the session object found using the given <span class=\"name\">alias</span>",
                 "tags": [],
                 "matched": true
@@ -6693,11 +6774,11 @@
     },
     "RPA.Images": {
         "name": "RPA.Images",
-        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><em>DEPRECATED</em> For image-based automation use <cite>RPA.Desktop</cite> instead.</p>\n<p><cite>Images</cite> is a library for taking screenshots, matching templates, and\ngenerally manipulating images. It can also be used for GUI-based automation\nwhen traditional UI locators are not available.</p>\n<p><strong>Coordinates</strong></p>\n<p>The coordinates used in the library are pairs of x and y values that\nrepresent pixels. The upper left corner of the image or screen\nis (0, 0). The x-coordinate increases towards the right, and the y-coordinate\nincreases towards the bottom.</p>\n<p>Regions are represented as tuples of (left, top, right, bottom). For example,\na 400 by 200-pixel region in the upper left corner would be (0, 0, 400, 200).</p>\n<p><strong>Template matching</strong></p>\n<p>Template matching refers to an operation where the (potential) location of\na smaller image is searched from a larger image. It can be used for verifying\ncertain conditions or locating UI elements for desktop or web automation.</p>\n<p><strong>Requirements</strong></p>\n<p>The default installation depends on <a class=\"reference external\" href=\"https://python-pillow.org/\">Pillow</a>\nlibrary, which is used for general image manipulation operations.</p>\n<p>For more robust and faster template matching, the library can use a combination\nof <a class=\"reference external\" href=\"https://numpy.org/\">NumPy</a> and <a class=\"reference external\" href=\"https://opencv.org/\">OpenCV</a>.\nThey can be installed by opting in to the <cite>cv</cite> dependency:</p>\n<p><tt class=\"docutils literal\">pip install rpaframework[cv]</tt></p>\n<p><strong>Examples</strong></p>\n<p><strong>Robot Framework</strong></p>\n<p>The <cite>Images</cite> library can be imported and used directly in Robot Framework,\nfor instance, for capturing screenshots or verifying something on the screen.</p>\n<p>Desktop automation based on images should be done using the corresponding\ndesktop library, i.e. <tt class=\"docutils literal\">RPA.Desktop</tt>.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.Images</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Should show success</span><span class=\"p\">\n    [</span><span class=\"kn\">Documentation</span><span class=\"p\">]    </span><span class=\"s\">Raises ImageNotFoundError if success image is not on screen</span><span class=\"p\">\n    </span><span class=\"nf\">Find template on screen</span><span class=\"p\">    ${</span><span class=\"nv\">CURDIR</span><span class=\"p\">}${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">success.png</span><span class=\"p\">\n\n</span><span class=\"gu\">Save screenshot to results</span><span class=\"p\">\n    [</span><span class=\"kn\">Documentation</span><span class=\"p\">]    </span><span class=\"s\">Saves screenshot of desktop with unique name</span><span class=\"p\">\n    ${</span><span class=\"nv\">timestamp</span><span class=\"p\">}=      </span><span class=\"nf\">Get current date</span><span class=\"p\">    </span><span class=\"s\">result_format=%H%M%S</span><span class=\"p\">\n    </span><span class=\"nf\">Take screenshot</span><span class=\"p\">    </span><span class=\"s\">filename=</span><span class=\"p\">${</span><span class=\"nv\">OUTPUT_DIR</span><span class=\"p\">}${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">desktop_</span><span class=\"p\">${</span><span class=\"nv\">timestamp</span><span class=\"p\">}</span><span class=\"s\">.png</span>\n</pre>\n<p><strong>Python</strong></p>\n<pre class=\"code python literal-block\">\n<span class=\"kn\">from</span> <span class=\"nn\">RPA.Images</span> <span class=\"kn\">import</span> <span class=\"n\">Images</span>\n\n<span class=\"k\">def</span> <span class=\"nf\">draw_matches_on_desktop</span><span class=\"p\">(</span><span class=\"n\">template</span><span class=\"p\">):</span>\n    <span class=\"n\">lib</span> <span class=\"o\">=</span> <span class=\"n\">Images</span><span class=\"p\">()</span>\n    <span class=\"n\">screenshot</span> <span class=\"o\">=</span> <span class=\"n\">lib</span><span class=\"o\">.</span><span class=\"n\">take_screenshot</span><span class=\"p\">()</span>\n\n    <span class=\"n\">matches</span> <span class=\"o\">=</span> <span class=\"n\">lib</span><span class=\"o\">.</span><span class=\"n\">find_template_in_image</span><span class=\"p\">(</span><span class=\"n\">screenshot</span><span class=\"p\">,</span> <span class=\"n\">template</span><span class=\"p\">)</span>\n    <span class=\"k\">for</span> <span class=\"n\">match</span> <span class=\"ow\">in</span> <span class=\"n\">matches</span><span class=\"p\">:</span>\n        <span class=\"n\">lib</span><span class=\"o\">.</span><span class=\"n\">show_region_in_image</span><span class=\"p\">(</span><span class=\"n\">screenshot</span><span class=\"p\">,</span> <span class=\"n\">match</span><span class=\"p\">)</span>\n\n    <span class=\"n\">screenshot</span><span class=\"o\">.</span><span class=\"n\">save</span><span class=\"p\">(</span><span class=\"s2\">&quot;matches.png&quot;</span><span class=\"p\">)</span>\n</pre>\n</div>\n</div>",
+        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>Images</cite> is a library for general image manipulation.\nFor image-based desktop automation, use the <tt class=\"docutils literal\">RPA.Desktop</tt> library.</p>\n<p><strong>Coordinates</strong></p>\n<p>The coordinates used in the library are pairs of x and y values that\nrepresent pixels. The upper left corner of the image or screen\nis (0, 0). The x-coordinate increases towards the right, and the y-coordinate\nincreases towards the bottom.</p>\n<p>Regions are represented as tuples of (left, top, right, bottom). For example,\na 400 by 200-pixel region in the upper left corner would be (0, 0, 400, 200).</p>\n<p><strong>Template matching</strong></p>\n<p>Template matching refers to an operation where the (potential) location of\na smaller image is searched from a larger image. It can be used for verifying\ncertain conditions or locating UI elements for desktop or web automation.</p>\n<p><strong>Requirements</strong></p>\n<p>The default installation depends on <a class=\"reference external\" href=\"https://python-pillow.org/\">Pillow</a>\nlibrary, which is used for general image manipulation operations.</p>\n<p>For more robust and faster template matching, the library can use a combination\nof <a class=\"reference external\" href=\"https://numpy.org/\">NumPy</a> and <a class=\"reference external\" href=\"https://opencv.org/\">OpenCV</a>.\nThey can be installed by opting in to the <cite>cv</cite> dependency:</p>\n<p><tt class=\"docutils literal\">pip install rpaframework[cv]</tt></p>\n<p><strong>Examples</strong></p>\n<p><strong>Robot Framework</strong></p>\n<p>The <cite>Images</cite> library can be imported and used directly in Robot Framework,\nfor instance, for capturing screenshots or verifying something on the screen.</p>\n<p>Desktop automation based on images should be done using the corresponding\ndesktop library, i.e. <tt class=\"docutils literal\">RPA.Desktop</tt>.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.Images</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Should show success</span><span class=\"p\">\n    [</span><span class=\"kn\">Documentation</span><span class=\"p\">]    </span><span class=\"s\">Raises ImageNotFoundError if success image is not on screen</span><span class=\"p\">\n    </span><span class=\"nf\">Find template on screen</span><span class=\"p\">    ${</span><span class=\"nv\">CURDIR</span><span class=\"p\">}${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">success.png</span><span class=\"p\">\n\n</span><span class=\"gu\">Save screenshot to results</span><span class=\"p\">\n    [</span><span class=\"kn\">Documentation</span><span class=\"p\">]    </span><span class=\"s\">Saves screenshot of desktop with unique name</span><span class=\"p\">\n    ${</span><span class=\"nv\">timestamp</span><span class=\"p\">}=      </span><span class=\"nf\">Get current date</span><span class=\"p\">    </span><span class=\"s\">result_format=%H%M%S</span><span class=\"p\">\n    </span><span class=\"nf\">Take screenshot</span><span class=\"p\">    </span><span class=\"s\">filename=</span><span class=\"p\">${</span><span class=\"nv\">OUTPUT_DIR</span><span class=\"p\">}${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">desktop_</span><span class=\"p\">${</span><span class=\"nv\">timestamp</span><span class=\"p\">}</span><span class=\"s\">.png</span>\n</pre>\n<p><strong>Python</strong></p>\n<pre class=\"code python literal-block\">\n<span class=\"kn\">from</span> <span class=\"nn\">RPA.Images</span> <span class=\"kn\">import</span> <span class=\"n\">Images</span>\n\n<span class=\"k\">def</span> <span class=\"nf\">draw_matches_on_desktop</span><span class=\"p\">(</span><span class=\"n\">template</span><span class=\"p\">):</span>\n    <span class=\"n\">lib</span> <span class=\"o\">=</span> <span class=\"n\">Images</span><span class=\"p\">()</span>\n    <span class=\"n\">screenshot</span> <span class=\"o\">=</span> <span class=\"n\">lib</span><span class=\"o\">.</span><span class=\"n\">take_screenshot</span><span class=\"p\">()</span>\n\n    <span class=\"n\">matches</span> <span class=\"o\">=</span> <span class=\"n\">lib</span><span class=\"o\">.</span><span class=\"n\">find_template_in_image</span><span class=\"p\">(</span><span class=\"n\">screenshot</span><span class=\"p\">,</span> <span class=\"n\">template</span><span class=\"p\">)</span>\n    <span class=\"k\">for</span> <span class=\"n\">match</span> <span class=\"ow\">in</span> <span class=\"n\">matches</span><span class=\"p\">:</span>\n        <span class=\"n\">lib</span><span class=\"o\">.</span><span class=\"n\">show_region_in_image</span><span class=\"p\">(</span><span class=\"n\">screenshot</span><span class=\"p\">,</span> <span class=\"n\">match</span><span class=\"p\">)</span>\n\n    <span class=\"n\">screenshot</span><span class=\"o\">.</span><span class=\"n\">save</span><span class=\"p\">(</span><span class=\"s2\">&quot;matches.png&quot;</span><span class=\"p\">)</span>\n</pre>\n</div>\n</div>",
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:47",
+        "generated": "2020-12-01 11:09:15",
         "inits": [],
         "keywords": [
             {
@@ -6816,7 +6897,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:50",
+        "generated": "2020-12-01 11:09:15",
         "inits": [],
         "keywords": [
             {
@@ -6927,7 +7008,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:48",
+        "generated": "2020-12-01 11:09:18",
         "inits": [],
         "keywords": [
             {
@@ -7087,7 +7168,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:48",
+        "generated": "2020-12-01 11:09:18",
         "inits": [],
         "keywords": [
             {
@@ -7182,7 +7263,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:47",
+        "generated": "2020-12-01 11:09:15",
         "inits": [],
         "keywords": [
             {
@@ -7252,7 +7333,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:46",
+        "generated": "2020-12-01 11:09:16",
         "inits": [
             {
                 "name": "Init",
@@ -8191,7 +8272,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:47",
+        "generated": "2020-12-01 11:09:17",
         "inits": [
             {
                 "name": "Init",
@@ -8280,7 +8361,7 @@
                 "name": "Get Work Item Variable",
                 "args": [
                     "name",
-                    "default=<object object at 0x7f0ec980df50>"
+                    "default=<object object at 0x7f131614d950>"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a single variable value from the work item,\nor default value if defined and key does not exist.\nIf key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param key:</th><td class=\"field-body\">Name of variable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param default:</th><td class=\"field-body\">Default value if key does not exist</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${username}=</span><span class=\"p\">    </span><span class=\"c\">Get work item variable</span><span class=\"p\">    </span><span class=\"c\">username</span><span class=\"p\">    </span><span class=\"c\">default=guest</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Return a single variable value from the work item, or default value if defined and key does not exist. If key does not exist and default is not defined, raises <cite>KeyError</cite>.",
@@ -8409,7 +8490,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:48",
+        "generated": "2020-12-01 11:09:17",
         "inits": [
             {
                 "name": "Init",
@@ -8444,7 +8525,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:49",
+        "generated": "2020-12-01 11:09:15",
         "inits": [],
         "keywords": [
             {
@@ -8510,7 +8591,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:48",
+        "generated": "2020-12-01 11:09:17",
         "inits": [
             {
                 "name": "Init",
@@ -8534,7 +8615,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:49",
+        "generated": "2020-12-01 11:09:17",
         "inits": [
             {
                 "name": "Init",
@@ -8791,7 +8872,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:48",
+        "generated": "2020-12-01 11:09:17",
         "inits": [],
         "keywords": [
             {
@@ -8818,7 +8899,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:50",
+        "generated": "2020-12-01 11:09:18",
         "inits": [],
         "keywords": [
             {
@@ -9194,7 +9275,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:46",
+        "generated": "2020-12-01 11:09:13",
         "inits": [
             {
                 "name": "Init",
@@ -9313,7 +9394,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:47",
+        "generated": "2020-12-01 11:09:18",
         "inits": [],
         "keywords": [
             {
@@ -9436,7 +9517,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-11-30 14:40:48",
+        "generated": "2020-12-01 11:09:13",
         "inits": [],
         "keywords": [
             {

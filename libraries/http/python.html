@@ -220,7 +220,7 @@
 for more information see: <a class="reference external" href="https://github.com/MarketSquare/robotframework-requests">https://github.com/MarketSquare/robotframework-requests</a></p>
 <dl class="attribute">
 <dt id="RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST">
-<code class="sig-name descname">DEFAULT_RETRY_METHOD_LIST</code><em class="property"> = ['DELETE', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'HEAD']</em><a class="headerlink" href="#RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">DEFAULT_RETRY_METHOD_LIST</code><em class="property"> = ['PUT', 'HEAD', 'OPTIONS', 'GET', 'TRACE', 'DELETE']</em><a class="headerlink" href="#RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -235,7 +235,7 @@ for more information see: <a class="reference external" href="https://github.com
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_client_cert_session">
-<code class="sig-name descname">create_client_cert_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_client_cert_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_client_cert_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'HEAD', 'OPTIONS', 'GET', 'TRACE', 'DELETE']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_client_cert_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -272,7 +272,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_custom_session">
-<code class="sig-name descname">create_custom_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_custom_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_custom_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'HEAD', 'OPTIONS', 'GET', 'TRACE', 'DELETE']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_custom_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -312,7 +312,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_digest_session">
-<code class="sig-name descname">create_digest_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_digest_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_digest_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'HEAD', 'OPTIONS', 'GET', 'TRACE', 'DELETE']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_digest_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -349,7 +349,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_ntlm_session">
-<code class="sig-name descname">create_ntlm_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_ntlm_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_ntlm_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'HEAD', 'OPTIONS', 'GET', 'TRACE', 'DELETE']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_ntlm_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -386,7 +386,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_session">
-<code class="sig-name descname">create_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['DELETE', 'TRACE', 'GET', 'PUT', 'OPTIONS', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['PUT', 'HEAD', 'OPTIONS', 'GET', 'TRACE', 'DELETE']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
@@ -467,6 +467,16 @@ the target file, default <code class="docutils literal notranslate"><span class=
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.HTTP.HTTP.get_file_for_streaming_upload">
+<em class="property">static </em><code class="sig-name descname">get_file_for_streaming_upload</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.get_file_for_streaming_upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens and returns a file descriptor of a specified file to be passed as <code class="docutils literal notranslate"><span class="pre">data</span></code> parameter
+to other requests keywords.</p>
+<p>This allows streaming upload of large files without reading them into memory.</p>
+<p>File descriptor is binary mode and read only. Requests keywords will automatically close the file,
+if used outside this library it’s up to the caller to close it.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.HTTP.HTTP.get_request">
 <code class="sig-name descname">get_request</code><span class="sig-paren">(</span><em class="sig-param">alias</em>, <em class="sig-param">uri</em>, <em class="sig-param">headers=None</em>, <em class="sig-param">data=None</em>, <em class="sig-param">json=None</em>, <em class="sig-param">params=None</em>, <em class="sig-param">allow_redirects=None</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.get_request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send a GET request on the session object found using the
@@ -536,7 +546,8 @@ given <cite>alias</cite></p>
 <p><code class="docutils literal notranslate"><span class="pre">uri</span></code> to send the PATCH request to</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">data</span></code> a dictionary of key-value pairs that will be urlencoded</dt><dd><p>and sent as PATCH data
-or binary data that is sent as the raw body content</p>
+or binary data that is sent as the raw body content
+or file descriptor retrieved by Get File For Streaming Upload</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">json</span></code> a value that will be json encoded</dt><dd><p>and sent as PATCH data if data is not specified</p>
 </dd>
@@ -555,13 +566,11 @@ or binary data that is sent as the raw body content</p>
 given <cite>alias</cite></p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> that will be used to identify the Session object in the cache</p>
 <p><code class="docutils literal notranslate"><span class="pre">uri</span></code> to send the POST request to</p>
-<dl>
+<dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">data</span></code> a dictionary of key-value pairs that will be urlencoded</dt><dd><p>and sent as POST data
 or binary data that is sent as the raw body content
-or passed as such for multipart form data if <code class="docutils literal notranslate"><span class="pre">files</span></code> is also</p>
-<blockquote>
-<div><p>defined</p>
-</div></blockquote>
+or passed as such for multipart form data if <code class="docutils literal notranslate"><span class="pre">files</span></code> is also defined
+or file descriptor retrieved by Get File For Streaming Upload</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">json</span></code> a value that will be json encoded</dt><dd><p>and sent as POST data if files or data is not specified</p>
 </dd>
@@ -582,7 +591,8 @@ given <cite>alias</cite></p>
 <p><code class="docutils literal notranslate"><span class="pre">uri</span></code> to send the PUT request to</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">data</span></code> a dictionary of key-value pairs that will be urlencoded</dt><dd><p>and sent as PUT data
-or binary data that is sent as the raw body content</p>
+or binary data that is sent as the raw body content
+or file descriptor retrieved by Get File For Streaming Upload</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">json</span></code> a value that will be json encoded</dt><dd><p>and sent as PUT data if data is not specified</p>
 </dd>

@@ -235,10 +235,8 @@ set self.__traceback__ to tb and return self.</p>
 <dt id="RPA.Images.Images">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Images.</code><code class="sig-name descname">Images</code><a class="headerlink" href="#RPA.Images.Images" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p><em>DEPRECATED</em> For image-based automation use <cite>RPA.Desktop</cite> instead.</p>
-<p><cite>Images</cite> is a library for taking screenshots, matching templates, and
-generally manipulating images. It can also be used for GUI-based automation
-when traditional UI locators are not available.</p>
+<p><cite>Images</cite> is a library for general image manipulation.
+For image-based desktop automation, use the <code class="docutils literal notranslate"><span class="pre">RPA.Desktop</span></code> library.</p>
 <p><strong>Coordinates</strong></p>
 <p>The coordinates used in the library are pairs of x and y values that
 represent pixels. The upper left corner of the image or screen
@@ -406,7 +404,7 @@ For argument descriptions, see <code class="docutils literal notranslate"><span 
 
 <dl class="method">
 <dt id="RPA.Images.Images.take_screenshot">
-<code class="sig-name descname">take_screenshot</code><span class="sig-paren">(</span><em class="sig-param">filename=None</em>, <em class="sig-param">region=None</em><span class="sig-paren">)</span> &#x2192; &lt;module 'PIL.Image' from '/home/runner/work/rpaframework/rpaframework/.venv/lib/python3.7/site-packages/PIL/Image.py'&gt;<a class="headerlink" href="#RPA.Images.Images.take_screenshot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">take_screenshot</code><span class="sig-paren">(</span><em class="sig-param">filename=None</em>, <em class="sig-param">region=None</em><span class="sig-paren">)</span> &#x2192; PIL.Image.Image<a class="headerlink" href="#RPA.Images.Images.take_screenshot" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>DEPRECATED</em> Use keyword <cite>RPA.Desktop.Take Screenshot</cite> instead
 Take a screenshot of the current desktop.</p>
 <dl class="field-list simple">
