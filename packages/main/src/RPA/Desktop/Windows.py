@@ -1813,6 +1813,7 @@ class Windows(OperatingSystem):
         for w in windows:
             try:
                 left, top, right, bottom = self._get_element_coordinates(w.rectangle())
+                # Do not add windows into list if its rectangle area is zero
                 if left == right and bottom == top:
                     continue
                 window_list.append(
