@@ -1,0 +1,95 @@
+{
+    "name": "RPA.Notifier",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>Notifier</cite> is a library interfacting with different notification services.</p>\n<p>Supported services:</p>\n<ul class=\"simple\">\n<li>email</li>\n<li>gmail</li>\n<li>pushover</li>\n<li>slack</li>\n<li>telegram</li>\n<li>twilio</li>\n</ul>\n<p>Services not supported yet:</p>\n<ul class=\"simple\">\n<li>gitter</li>\n<li>join</li>\n<li>mailgun</li>\n<li>pagerduty</li>\n<li>popcornnotify</li>\n<li>pushbullet</li>\n<li>simplepush</li>\n<li>statuspage</li>\n<li>zulip</li>\n</ul>\n<p>Read more at <a class=\"reference external\" href=\"https://notifiers.readthedocs.io/en/latest/\">https://notifiers.readthedocs.io/en/latest/</a></p>\n<p><strong>Examples</strong></p>\n<p><strong>Robot Framework</strong></p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">  </span><span class=\"nn\">RPA.Notifier</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Variables ***</span><span class=\"p\">\n${</span><span class=\"nv\">SLACK_WEBHOOK</span><span class=\"p\">}   </span><span class=\"s\">https://hooks.slack.com/services/WEBHOOKDETAILS</span><span class=\"p\">\n${</span><span class=\"nv\">CHANNEL</span><span class=\"p\">}         </span><span class=\"s\">notification-channel</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Lets notify</span><span class=\"p\">\n   </span><span class=\"nf\">Notify Slack</span><span class=\"p\">   </span><span class=\"s\">message from robot</span><span class=\"p\">  </span><span class=\"s\">channel=</span><span class=\"p\">${</span><span class=\"nv\">CHANNEL</span><span class=\"p\">}  </span><span class=\"s\">webhook_url=</span><span class=\"p\">${</span><span class=\"nv\">SLACK_WEBHOOK</span><span class=\"p\">}</span>\n</pre>\n<p><strong>Python</strong></p>\n<pre class=\"code python literal-block\">\n<span class=\"kn\">from</span> <span class=\"nn\">RPA.Notifier</span> <span class=\"kn\">import</span> <span class=\"n\">Notifier</span>\n\n<span class=\"n\">library</span> <span class=\"o\">=</span> <span class=\"n\">Notifier</span><span class=\"p\">()</span>\n\n<span class=\"n\">slack_attachments</span> <span class=\"o\">=</span> <span class=\"p\">[</span>\n   <span class=\"p\">{</span>\n      <span class=\"s2\">&quot;title&quot;</span><span class=\"p\">:</span> <span class=\"s2\">&quot;attachment 1&quot;</span><span class=\"p\">,</span>\n      <span class=\"s2\">&quot;fallback&quot;</span><span class=\"p\">:</span> <span class=\"s2\">&quot;liverpool logo&quot;</span><span class=\"p\">,</span>\n      <span class=\"s2\">&quot;image_url&quot;</span><span class=\"p\">:</span> <span class=\"s2\">&quot;https://upload.wikimedia.org/wikipedia/fi/thumb/c/cd/Liverpool_FC-n_logo.svg/1200px-Liverpool_FC-n_logo.svg.png&quot;</span><span class=\"p\">,</span>\n   <span class=\"p\">}</span>\n<span class=\"p\">]</span>\n\n<span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">notify_slack</span><span class=\"p\">(</span>\n   <span class=\"n\">message</span><span class=\"o\">=</span><span class=\"s1\">'message for the Slack'</span><span class=\"p\">,</span>\n   <span class=\"n\">channel</span><span class=\"o\">=</span><span class=\"s2\">&quot;notification-channel&quot;</span><span class=\"p\">,</span>\n   <span class=\"n\">webhook_url</span><span class=\"o\">=</span><span class=\"n\">slack_webhook_url</span><span class=\"p\">,</span>\n   <span class=\"n\">attachments</span><span class=\"o\">=</span><span class=\"n\">slack_attachments</span><span class=\"p\">,</span>\n<span class=\"p\">)</span>\n</pre>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-12-01 13:50:49",
+    "inits": [],
+    "keywords": [
+        {
+            "name": "Notify Email",
+            "args": [
+                "message: str = None",
+                "to: str = None",
+                "username: str = None",
+                "password: str = None",
+                "**kwargs: dict"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Notify using email service</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param message:</th><td class=\"field-body\">notification message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param to:</th><td class=\"field-body\">target of email message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param username:</th><td class=\"field-body\">email service username</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param password:</th><td class=\"field-body\">email service password</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True is notification was success, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Notify using email service",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Notify Gmail",
+            "args": [
+                "message: str = None",
+                "to: str = None",
+                "username: str = None",
+                "password: str = None",
+                "**kwargs: dict"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Notify using Gmail service</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param message:</th><td class=\"field-body\">notification message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param to:</th><td class=\"field-body\">target of email message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param username:</th><td class=\"field-body\">GMail service username</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param password:</th><td class=\"field-body\">GMail service password</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True is notification was success, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Notify using Gmail service",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Notify Pushover",
+            "args": [
+                "message: str = None",
+                "user: str = None",
+                "token: str = None",
+                "**kwargs: dict"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Notify using Pushover service</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param message:</th><td class=\"field-body\">notification message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param user:</th><td class=\"field-body\">target user for the notification</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param token:</th><td class=\"field-body\">service token</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True is notification was success, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Notify using Pushover service",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Notify Slack",
+            "args": [
+                "message: str = None",
+                "channel: str = None",
+                "webhook_url: str = None",
+                "**kwargs: dict"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Notify using Slack service</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param message:</th><td class=\"field-body\">notification message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param channel:</th><td class=\"field-body\">target channel for the notification</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param webhook_url:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Slack webhook url</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True is notification was success, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Notify using Slack service",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Notify Telegram",
+            "args": [
+                "message: str = None",
+                "chat_id: str = None",
+                "token: str = None",
+                "**kwargs: dict"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Notify using Telegram service</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param message:</th><td class=\"field-body\">notification message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param chat_id:</th><td class=\"field-body\">target chat id for the notification</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param token:</th><td class=\"field-body\">service token</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True is notification was success, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Notify using Telegram service",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Notify Twilio",
+            "args": [
+                "message: str = None",
+                "number_from: str = None",
+                "number_to: str = None",
+                "account_sid: str = None",
+                "token: str = None",
+                "**kwargs: dict"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Notify using Twilio service</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param message:</th><td class=\"field-body\">notification message</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param number_from:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">number where the message comes from</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param number_to:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">number where the messages goes to</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param account_sid:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Twilio account SID</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param token:</th><td class=\"field-body\">Twilio account token</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True is notification was success, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Notify using Twilio service",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

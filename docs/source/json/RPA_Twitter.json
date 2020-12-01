@@ -1,0 +1,123 @@
+{
+    "name": "RPA.Twitter",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>Twitter</cite> is a library for accessing Twitter using developer API.\nThe library extends <a class=\"reference external\" href=\"http://docs.tweepy.org/en/latest/index.html\">tweepy</a> library.</p>\n<p>Authorization credentials can be given as parameters for <tt class=\"docutils literal\">authorize</tt> keyword\nor keyword can read them in as environment variables:</p>\n<ul class=\"simple\">\n<li><cite>TWITTER_CONSUMER_KEY</cite></li>\n<li><cite>TWITTER_CONSUMER_SECRET</cite></li>\n<li><cite>TWITTER_ACCESS_TOKEN</cite></li>\n<li><cite>TWITTER_ACCESS_TOKEN_SECRET</cite></li>\n</ul>\n<p>Library usage requires Twitter developer credentials.\nThose can be requested from <a class=\"reference external\" href=\"https://developer.twitter.com/\">Twitter developer site</a></p>\n<p><strong>Examples</strong></p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Twitter</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Get user tweets and like them</span><span class=\"p\">\n    [</span><span class=\"kn\">Setup</span><span class=\"p\">]   </span><span class=\"nf\">Authorize</span><span class=\"p\">\n    &#64;{</span><span class=\"nv\">tweets</span><span class=\"p\">}=   </span><span class=\"nf\">Get User Tweets</span><span class=\"p\">   </span><span class=\"s\">username=niinisto</span><span class=\"p\">   </span><span class=\"s\">count=5</span><span class=\"p\">\n    </span><span class=\"nf\">FOR</span><span class=\"p\">   ${</span><span class=\"nv\">tweet</span><span class=\"p\">}  </span><span class=\"s\">IN</span><span class=\"p\">   &#64;{</span><span class=\"nv\">tweets</span><span class=\"p\">}\n        </span><span class=\"nf\">Like</span><span class=\"p\">   ${</span><span class=\"nv\">tweet</span><span class=\"p\">}\n    </span><span class=\"nf\">END</span>\n</pre>\n<pre class=\"code python literal-block\">\n<span class=\"kn\">from</span> <span class=\"nn\">RPA.Twitter</span> <span class=\"kn\">import</span> <span class=\"n\">Twitter</span>\n\n<span class=\"n\">library</span> <span class=\"o\">=</span> <span class=\"n\">Twitter</span><span class=\"p\">()</span>\n<span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">authorize</span><span class=\"p\">()</span>\n<span class=\"n\">tweets</span> <span class=\"o\">=</span> <span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">get_user_tweets</span><span class=\"p\">(</span><span class=\"n\">username</span><span class=\"o\">=</span><span class=\"s2\">&quot;niinisto&quot;</span><span class=\"p\">,</span> <span class=\"n\">count</span><span class=\"o\">=</span><span class=\"mi\">5</span><span class=\"p\">)</span>\n<span class=\"k\">for</span> <span class=\"n\">tw</span> <span class=\"ow\">in</span> <span class=\"n\">tweets</span><span class=\"p\">:</span>\n    <span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">like</span><span class=\"p\">(</span><span class=\"n\">tw</span><span class=\"p\">)</span>\n<span class=\"n\">tweets</span> <span class=\"o\">=</span> <span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">text_search_tweets</span><span class=\"p\">(</span><span class=\"n\">query</span><span class=\"o\">=</span><span class=\"s2\">&quot;corona trump&quot;</span><span class=\"p\">)</span>\n<span class=\"k\">for</span> <span class=\"n\">tw</span> <span class=\"ow\">in</span> <span class=\"n\">tweets</span><span class=\"p\">:</span>\n    <span class=\"nb\">print</span><span class=\"p\">(</span><span class=\"n\">tw</span><span class=\"o\">.</span><span class=\"n\">text</span><span class=\"p\">)</span>\n<span class=\"n\">user</span> <span class=\"o\">=</span> <span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">get_user_profile</span><span class=\"p\">(</span><span class=\"s2\">&quot;niinisto&quot;</span><span class=\"p\">)</span>\n<span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">follow</span><span class=\"p\">(</span><span class=\"n\">user</span><span class=\"p\">)</span>\n<span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">tweet</span><span class=\"p\">(</span><span class=\"s2\">&quot;first tweet&quot;</span><span class=\"p\">)</span>\n<span class=\"n\">me</span> <span class=\"o\">=</span> <span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">get_me</span><span class=\"p\">()</span>\n<span class=\"nb\">print</span><span class=\"p\">(</span><span class=\"n\">me</span><span class=\"p\">)</span>\n</pre>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-12-01 13:50:50",
+    "inits": [],
+    "keywords": [
+        {
+            "name": "Authorize",
+            "args": [
+                "consumer_key: str = None",
+                "consumer_secret: str = None",
+                "access_token: str = None",
+                "access_token_secret: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Authorize to Twitter API</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param consumer_key:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">app consumer key</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param consumer_secret:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">app consumer secret</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param access_token:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">user access token</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param access_token_secret:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">user access token secret</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Authorize to Twitter API",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Follow",
+            "args": [
+                "user: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Follow Twitter user</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param user:</th><td class=\"field-body\">screen name of the user</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\"><cite>True</cite> if user was followed, <cite>False</cite> if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Follow Twitter user",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Me",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get Twitter profile of authenticated user</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">user profile as dictionary or <cite>None</cite></td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get Twitter profile of authenticated user",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get User Profile",
+            "args": [
+                "username: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get user's Twitter profile</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param username:</th><td class=\"field-body\">whose profile to get</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">profile as dictionary</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get user's Twitter profile",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get User Tweets",
+            "args": [
+                "username: str = None",
+                "count: int = 100"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get user tweets</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param username:</th><td class=\"field-body\">whose tweets to get</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param count:</th><td class=\"field-body\">maximum number of tweets, defaults to 100</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of user tweets</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get user tweets",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Like",
+            "args": [
+                "tweet: Tweet = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Like a tweet</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param tweet:</th><td class=\"field-body\">as a class <cite>Tweet</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\"><cite>True</cite> if Tweet was liked, <cite>False</cite> if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Like a tweet",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Text Search Tweets",
+            "args": [
+                "query: str = None",
+                "count: int = 100",
+                "geocode: str = None",
+                "lang: str = None",
+                "locale: str = None",
+                "result_type: str = mixed",
+                "until: str = None",
+                "since_id: str = None",
+                "max_id: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Search tweets defined by search query</p>\n<p>Results types:</p>\n<ul class=\"simple\">\n<li>mixed : include both popular and real time results in the response</li>\n<li>recent : return only the most recent results in the response</li>\n<li>popular : return only the most popular results in the response</li>\n</ul>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param query:</th><td class=\"field-body\">search query string of 500 characters maximum,\nincluding operators</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param count:</th><td class=\"field-body\">maximum number of tweets, defaults to 100</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param geocode:</th><td class=\"field-body\">tweets by users located within a given\nradius of the given latitude/longitude</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param lang:</th><td class=\"field-body\">language code of tweets</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param locale:</th><td class=\"field-body\">language of the query you are sending</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param result_type:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">type of search results you would prefer to receive,\ndefault &quot;mixed&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param until:</th><td class=\"field-body\">tweets created before the given date</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param since_id:</th><td class=\"field-body\">Returns only statuses with an ID greater than</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param max_id:</th><td class=\"field-body\">only statuses with an ID less than</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of matching tweets</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Search tweets defined by search query",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Tweet",
+            "args": [
+                "content: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Make a tweet with content</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param content:</th><td class=\"field-body\">text for the status update</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Make a tweet with content",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Unfollow",
+            "args": [
+                "user: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Unfollow Twitter user</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param user:</th><td class=\"field-body\">screen name of the user</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\"><cite>True</cite> if user was followed, <cite>False</cite> if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Unfollow Twitter user",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Unlike",
+            "args": [
+                "tweet: Tweet = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Unlike a tweet</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param tweet:</th><td class=\"field-body\">as a class <cite>Tweet</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\"><cite>True</cite> if Tweet was unliked, <cite>False</cite> if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Unlike a tweet",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

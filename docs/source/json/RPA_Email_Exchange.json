@@ -1,0 +1,129 @@
+{
+    "name": "RPA.Email.Exchange",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>Exchange</cite> is a library for sending, reading, and deleting emails.\n<cite>Exchange</cite> is interfacing with Exchange Web Services (EWS).</p>\n<p>For more information about server settings, see\n<a class=\"reference external\" href=\"https://support.microsoft.com/en-us/office/server-settings-you-ll-need-from-your-email-provider-c82de912-adcc-4787-8283-45a1161f3cc3\">this Microsoft support article</a>.</p>\n<p><strong>Examples</strong></p>\n<p><strong>Robot Framework</strong></p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">     </span><span class=\"nn\">RPA.Email.Exchange</span><span class=\"p\">\n</span><span class=\"kn\">Task Setup</span><span class=\"p\">  </span><span class=\"nf\">Authorize</span><span class=\"p\">  </span><span class=\"s\">username=</span><span class=\"p\">${</span><span class=\"nv\">ACCOUNT</span><span class=\"p\">}  </span><span class=\"s\">password=</span><span class=\"p\">${</span><span class=\"nv\">PASSWORD</span><span class=\"p\">}\n\n</span><span class=\"gh\">*** Variables ***</span><span class=\"p\">\n${</span><span class=\"nv\">ACCOUNT</span><span class=\"p\">}              </span><span class=\"s\">ACCOUNT_NAME</span><span class=\"p\">\n${</span><span class=\"nv\">PASSWORD</span><span class=\"p\">}             </span><span class=\"s\">ACCOUNT_PASSWORD</span><span class=\"p\">\n${</span><span class=\"nv\">RECIPIENT_ADDRESS</span><span class=\"p\">}    </span><span class=\"s\">RECIPIENT</span><span class=\"p\">\n${</span><span class=\"nv\">IMAGES</span><span class=\"p\">}               </span><span class=\"s\">myimage.png</span><span class=\"p\">\n${</span><span class=\"nv\">ATTACHMENTS</span><span class=\"p\">}          </span><span class=\"s\">C:</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">files</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">mydocument.pdf</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Sending email</span><span class=\"p\">\n    </span><span class=\"nf\">Send Message</span><span class=\"p\">  </span><span class=\"s\">recipients=</span><span class=\"p\">${</span><span class=\"nv\">RECIPIENT_ADDRESS</span><span class=\"p\">}\n    ...           </span><span class=\"s\">subject=Exchange Message from RPA Robot</span><span class=\"p\">\n    ...           </span><span class=\"s\">body=&lt;p&gt;Exchange RPA Robot message body&lt;br&gt;&lt;img src='myimage.png'/&gt;&lt;/p&gt;</span><span class=\"p\">\n    ...           </span><span class=\"s\">save=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}\n    ...           </span><span class=\"s\">html=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}\n    ...           </span><span class=\"s\">images=</span><span class=\"p\">${</span><span class=\"nv\">IMAGES</span><span class=\"p\">}\n    ...           </span><span class=\"s\">cc=EMAIL_ADDRESS</span><span class=\"p\">\n    ...           </span><span class=\"s\">bcc=EMAIL_ADDRESS</span><span class=\"p\">\n    ...           </span><span class=\"s\">attachments=</span><span class=\"p\">${</span><span class=\"nv\">ATTACHMENTS</span><span class=\"p\">}</span>\n</pre>\n<p><strong>Python</strong></p>\n<pre class=\"code python literal-block\">\n<span class=\"kn\">from</span> <span class=\"nn\">RPA.Email.Exchange</span> <span class=\"kn\">import</span> <span class=\"n\">Exchange</span>\n\n<span class=\"n\">ex_account</span> <span class=\"o\">=</span> <span class=\"s2\">&quot;ACCOUNT_NAME&quot;</span>\n<span class=\"n\">ex_password</span> <span class=\"o\">=</span> <span class=\"s2\">&quot;ACCOUNT_PASSWORD&quot;</span>\n\n<span class=\"n\">mail</span> <span class=\"o\">=</span> <span class=\"n\">Exchange</span><span class=\"p\">()</span>\n<span class=\"n\">mail</span><span class=\"o\">.</span><span class=\"n\">authorize</span><span class=\"p\">(</span><span class=\"n\">username</span><span class=\"o\">=</span><span class=\"n\">ex_account</span><span class=\"p\">,</span> <span class=\"n\">password</span><span class=\"o\">=</span><span class=\"n\">ex_password</span><span class=\"p\">)</span>\n<span class=\"n\">mail</span><span class=\"o\">.</span><span class=\"n\">send_message</span><span class=\"p\">(</span>\n    <span class=\"n\">recipients</span><span class=\"o\">=</span><span class=\"s2\">&quot;RECIPIENT&quot;</span><span class=\"p\">,</span>\n    <span class=\"n\">subject</span><span class=\"o\">=</span><span class=\"s2\">&quot;Message from RPA Python&quot;</span><span class=\"p\">,</span>\n    <span class=\"n\">body</span><span class=\"o\">=</span><span class=\"s2\">&quot;RPA Python message body&quot;</span><span class=\"p\">,</span>\n<span class=\"p\">)</span>\n</pre>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-12-01 13:50:48",
+    "inits": [],
+    "keywords": [
+        {
+            "name": "Authorize",
+            "args": [
+                "username: str",
+                "password: str",
+                "autodiscover: bool = True",
+                "access_type: str = DELEGATE",
+                "server: str = None",
+                "primary_smtp_address: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Connect to Exchange account</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param username:</th><td class=\"field-body\">account username</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param password:</th><td class=\"field-body\">account password</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param autodiscover:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">use autodiscover or set it off</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param accesstype:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">default &quot;DELEGATE&quot;, other option &quot;IMPERSONATION&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param server:</th><td class=\"field-body\">required for configuration options</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param primary_smtp_address:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">by default set to username, but can be\nset to be different than username</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Connect to Exchange account",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Create Folder",
+            "args": [
+                "folder_name: str = None",
+                "parent_folder: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Create email folder</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param folder_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name for the new folder</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param parent_folder:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name for the parent folder, by default INBOX</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True if operation was successful, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Create email folder",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Delete Folder",
+            "args": [
+                "folder_name: str = None",
+                "parent_folder: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Delete email folder</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param folder_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">current folder name</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param parent_folder:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name for the parent folder, by default INBOX</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True if operation was successful, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Delete email folder",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Empty Folder",
+            "args": [
+                "folder_name: str = None",
+                "parent_folder: str = None",
+                "delete_sub_folders: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Empty email folder of all items</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param folder_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">current folder name</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param parent_folder:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name for the parent folder, by default INBOX</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param delete_sub_folders:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">delete sub folders or not, by default False</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True if operation was successful, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Empty email folder of all items",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "List Messages",
+            "args": [
+                "folder_name: str = None",
+                "count: int = 100"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>List messages in the account inbox. Order by descending\nreceived time.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param count:</th><td class=\"field-body\">number of messages to list</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "List messages in the account inbox. Order by descending received time.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Move Messages",
+            "args": [
+                "criterion: str = ",
+                "source: str = None",
+                "target: str = None",
+                "contains: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Move message(s) from source folder to target folder</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param criterion:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">move messages matching this criterion</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param source:</th><td class=\"field-body\">source folder</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param target:</th><td class=\"field-body\">target folder</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param contains:</th><td class=\"field-body\">if matching should be done using <cite>contains</cite> matching\nand not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>equals</cite> matching</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">boolean result of operation, True if 1+ items were moved else False</td>\n</tr>\n</tbody>\n</table>\n<p>Criterion examples:</p>\n<ul class=\"simple\">\n<li>subject:my message subject</li>\n<li>body:something in body</li>\n<li>sender:sender&#64;domain.com</li>\n</ul>\n</div>\n</div>",
+            "shortdoc": "Move message(s) from source folder to target folder",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Rename Folder",
+            "args": [
+                "oldname: str = None",
+                "newname: str = None",
+                "parent_folder: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Rename email folder</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param oldname:</th><td class=\"field-body\">current folder name</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param newname:</th><td class=\"field-body\">new name for the folder</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param parent_folder:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name for the parent folder, by default INBOX</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">True if operation was successful, False if not</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Rename email folder",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Send Message",
+            "args": [
+                "recipients: str",
+                "subject: str = ",
+                "body: str = ",
+                "attachments: str = None",
+                "html: bool = False",
+                "images: str = None",
+                "cc: str = None",
+                "bcc: str = None",
+                "save: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Keyword for sending message through connected Exchange account.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param recipients:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">list of email addresses, defaults to []</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param subject:</th><td class=\"field-body\">message subject, defaults to &quot;&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param body:</th><td class=\"field-body\">message body, defaults to &quot;&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param attachments:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">list of filepaths to attach, defaults to []</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param html:</th><td class=\"field-body\">if message content is in HTML, default <cite>False</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param images:</th><td class=\"field-body\">list of filepaths for inline use, defaults to []</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param cc:</th><td class=\"field-body\">list of email addresses, defaults to []</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param bcc:</th><td class=\"field-body\">list of email addresses, defaults to []</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param save:</th><td class=\"field-body\">is sent message saved to Sent messages folder or not,\ndefaults to False</td>\n</tr>\n</tbody>\n</table>\n<p>Email addresses can be prefixed with <tt class=\"docutils literal\">ex:</tt> to indicate an Exchange\naccount address.</p>\n<p>Recipients is a <cite>required</cite> parameter.</p>\n</div>\n</div>",
+            "shortdoc": "Keyword for sending message through connected Exchange account.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Wait For Message",
+            "args": [
+                "criterion: str = ",
+                "timeout: float = 5.0",
+                "interval: float = 1.0",
+                "contains: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Wait for email matching <cite>criterion</cite> to arrive into INBOX.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param criterion:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">wait for message matching criterion</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param timeout:</th><td class=\"field-body\">total time in seconds to wait for email, defaults to 5.0</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param interval:</th><td class=\"field-body\">time in seconds for new check, defaults to 1.0</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param contains:</th><td class=\"field-body\">if matching should be done using <cite>contains</cite> matching\nand not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>equals</cite> matching</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of messages</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Wait for email matching <cite>criterion</cite> to arrive into INBOX.",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

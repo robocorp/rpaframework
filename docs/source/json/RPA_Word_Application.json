@@ -1,0 +1,141 @@
+{
+    "name": "RPA.Word.Application",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>Word.Application</cite> is a library for controlling a Word application.</p>\n<p><strong>Examples</strong></p>\n<p><strong>Robot Framework</strong></p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">                 </span><span class=\"nn\">RPA.Word.Application</span><span class=\"p\">\n</span><span class=\"kn\">Task Setup</span><span class=\"p\">              </span><span class=\"nf\">Open Application</span><span class=\"p\">\n</span><span class=\"kn\">Suite Teardown</span><span class=\"p\">          </span><span class=\"nf\">Quit Application</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Open existing file</span><span class=\"p\">\n    </span><span class=\"nf\">Open File</span><span class=\"p\">           </span><span class=\"s\">old.docx</span><span class=\"p\">\n    </span><span class=\"nf\">Write Text</span><span class=\"p\">          </span><span class=\"s\">Extra Line Text</span><span class=\"p\">\n    </span><span class=\"nf\">Write Text</span><span class=\"p\">          </span><span class=\"s\">Another Extra Line of Text</span><span class=\"p\">\n    </span><span class=\"nf\">Save Document AS</span><span class=\"p\">    ${</span><span class=\"nv\">CURDIR</span><span class=\"p\">}${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">new.docx</span><span class=\"p\">\n    ${</span><span class=\"nv\">texts</span><span class=\"p\">}=           </span><span class=\"nf\">Get all Texts</span><span class=\"p\">\n    </span><span class=\"nf\">Close Document</span>\n</pre>\n<p><strong>Python</strong></p>\n<pre class=\"code python literal-block\">\n<span class=\"kn\">from</span> <span class=\"nn\">RPA.Word.Application</span> <span class=\"kn\">import</span> <span class=\"n\">Application</span>\n\n<span class=\"n\">app</span> <span class=\"o\">=</span> <span class=\"n\">Application</span><span class=\"p\">()</span>\n<span class=\"n\">app</span><span class=\"o\">.</span><span class=\"n\">open_application</span><span class=\"p\">()</span>\n<span class=\"n\">app</span><span class=\"o\">.</span><span class=\"n\">open_file</span><span class=\"p\">(</span><span class=\"s1\">'old.docx'</span><span class=\"p\">)</span>\n<span class=\"n\">app</span><span class=\"o\">.</span><span class=\"n\">write_text</span><span class=\"p\">(</span><span class=\"s1\">'Extra Line Text'</span><span class=\"p\">)</span>\n<span class=\"n\">app</span><span class=\"o\">.</span><span class=\"n\">save_document_as</span><span class=\"p\">(</span><span class=\"s1\">'new.docx'</span><span class=\"p\">)</span>\n<span class=\"n\">app</span><span class=\"o\">.</span><span class=\"n\">quit_application</span><span class=\"p\">()</span>\n</pre>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-12-01 13:50:50",
+    "inits": [],
+    "keywords": [
+        {
+            "name": "Close Document",
+            "args": [
+                "save_changes: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Close the active document (if open).</p>\n</div>\n</div>",
+            "shortdoc": "Close the active document (if open).",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Create New Document",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Create new document for Word application</p>\n</div>\n</div>",
+            "shortdoc": "Create new document for Word application",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Export To Pdf",
+            "args": [
+                "filename: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Export active document into PDF file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">PDF to export WORD into</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Export active document into PDF file.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get All Texts",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get all texts from active document</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">texts</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get all texts from active document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Open Application",
+            "args": [
+                "visible: bool = False",
+                "display_alerts: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Open the Word application.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param visible:</th><td class=\"field-body\">show window after opening</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param display_alerts:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">show alert popups</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Open the Word application.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Open File",
+            "args": [
+                "filename: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Open Word document with filename.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">Word document filepath, defaults to None</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Open Word document with filename.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Quit Application",
+            "args": [
+                "save_changes: bool = False"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Quit the application.</p>\n</div>\n</div>",
+            "shortdoc": "Quit the application.",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Replace Text",
+            "args": [
+                "find: str",
+                "replace: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Replace text in active document</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param find:</th><td class=\"field-body\">text to replace</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param replace:</th><td class=\"field-body\">new text</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Replace text in active document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Save Document",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Save active document</p>\n</div>\n</div>",
+            "shortdoc": "Save active document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Save Document As",
+            "args": [
+                "filename: str",
+                "fileformat: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Save document with filename and optionally with given fileformat</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">where to save document</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param fileformat:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">see &#64;FILEFORMATS dictionary for possible format,\ndefaults to None</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Save document with filename and optionally with given fileformat",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Footer",
+            "args": [
+                "text: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set footer for the active document</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param text:</th><td class=\"field-body\">footer text to set</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Set footer for the active document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Header",
+            "args": [
+                "text: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set header for the active document</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param text:</th><td class=\"field-body\">header text to set</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Set header for the active document",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Write Text",
+            "args": [
+                "text: str",
+                "newline: bool = True"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Writes given text at the end of the document</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param text:</th><td class=\"field-body\">string to write</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param newline:</th><td class=\"field-body\">write text to newline if True, default to True</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Writes given text at the end of the document",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}

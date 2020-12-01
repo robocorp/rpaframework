@@ -1,0 +1,197 @@
+{
+    "name": "RPA.FTP",
+    "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>FTP</cite> library can be used to access an FTP server,\nand interact with files.</p>\n<p>The library is based on Python's built-in <a class=\"reference external\" href=\"https://docs.python.org/3/library/ftplib.html\">ftplib</a>.</p>\n<p><strong>Examples</strong></p>\n<p><strong>Robot Framework</strong></p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.FTP</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Variables ***</span><span class=\"p\">\n${</span><span class=\"nv\">HOST</span><span class=\"p\">}       </span><span class=\"s\">127.0.0.1</span><span class=\"p\">\n${</span><span class=\"nv\">PORT</span><span class=\"p\">}       </span><span class=\"s\">27345</span><span class=\"p\">\n${</span><span class=\"nv\">USER</span><span class=\"p\">}       </span><span class=\"s\">user</span><span class=\"p\">\n${</span><span class=\"nv\">PASS</span><span class=\"p\">}       </span><span class=\"s\">12345</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">List files on the server directory</span><span class=\"p\">\n    </span><span class=\"nf\">Connect</span><span class=\"p\">   ${</span><span class=\"nv\">HOST</span><span class=\"p\">}  ${</span><span class=\"nv\">PORT</span><span class=\"p\">}  ${</span><span class=\"nv\">USER</span><span class=\"p\">}  ${</span><span class=\"nv\">PASS</span><span class=\"p\">}\n    &#64;{</span><span class=\"nv\">files</span><span class=\"p\">}  </span><span class=\"nf\">List Files</span><span class=\"p\">\n    </span><span class=\"nf\">FOR</span><span class=\"p\">  ${</span><span class=\"nv\">file</span><span class=\"p\">}  </span><span class=\"s\">IN</span><span class=\"p\">  &#64;{</span><span class=\"nv\">files</span><span class=\"p\">}\n        </span><span class=\"nf\">Log</span><span class=\"p\">  ${</span><span class=\"nv\">file</span><span class=\"p\">}\n    </span><span class=\"nf\">END</span>\n</pre>\n<p><strong>Python</strong></p>\n<pre class=\"code python literal-block\">\n<span class=\"kn\">from</span> <span class=\"nn\">RPA.FTP</span> <span class=\"kn\">import</span> <span class=\"n\">FTP</span>\n\n<span class=\"n\">library</span> <span class=\"o\">=</span> <span class=\"n\">FTP</span><span class=\"p\">()</span>\n<span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">connect</span><span class=\"p\">(</span><span class=\"s1\">'127.0.0.1'</span><span class=\"p\">,</span> <span class=\"mi\">27345</span><span class=\"p\">,</span> <span class=\"s1\">'user'</span><span class=\"p\">,</span> <span class=\"s1\">'12345'</span><span class=\"p\">)</span>\n<span class=\"n\">files</span> <span class=\"o\">=</span> <span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">list_files</span><span class=\"p\">()</span>\n<span class=\"k\">for</span> <span class=\"n\">f</span> <span class=\"ow\">in</span> <span class=\"n\">files</span><span class=\"p\">:</span>\n    <span class=\"nb\">print</span><span class=\"p\">(</span><span class=\"n\">f</span><span class=\"p\">)</span>\n</pre>\n</div>\n</div>",
+    "version": "",
+    "named_args": true,
+    "scope": "GLOBAL",
+    "generated": "2020-12-01 13:50:48",
+    "inits": [],
+    "keywords": [
+        {
+            "name": "Abort",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Abort a file transfer in progress</p>\n</div>\n</div>",
+            "shortdoc": "Abort a file transfer in progress",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Close",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Close connection to the server unilaterally</p>\n</div>\n</div>",
+            "shortdoc": "Close connection to the server unilaterally",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Connect",
+            "args": [
+                "host: str",
+                "port: int = 21",
+                "user: str = None",
+                "password: str = None",
+                "tls: bool = False",
+                "transfer: str = passive"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Connect to FTP server</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param host:</th><td class=\"field-body\">address of the server</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param port:</th><td class=\"field-body\">port of the server, defaults to 21</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param user:</th><td class=\"field-body\">login name, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param password:</th><td class=\"field-body\">login password, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param tls:</th><td class=\"field-body\">connect using TLS support, defaults to False</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param transfer:</th><td class=\"field-body\">mode of the transfer, defaults to &quot;passive&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises AuthenticationException:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">on authentication error with the server</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Connect to FTP server",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Cwd",
+            "args": [
+                "dirname: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Change working directory on the server</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param dirname:</th><td class=\"field-body\">name of the directory</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Change working directory on the server",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Delete",
+            "args": [
+                "filepath: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Delete file on the server</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param filepath:</th><td class=\"field-body\">path to server file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Delete file on the server",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Download",
+            "args": [
+                "remotefile: str",
+                "localfile: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Download file from FTP server</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param remotefile:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">path to remote file on the server</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param localfile:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the downloaded file on the local filesystem,\nif <cite>None</cite> will have same name as remote file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Download file from FTP server",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "File Size",
+            "args": [
+                "filepath: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return byte size of the file on the server</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param filepath:</th><td class=\"field-body\">path to server file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Return byte size of the file on the server",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Get Welcome Message",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get server welcome message</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">welcome message</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Get server welcome message",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "List Files",
+            "args": [
+                "dirname: str = None"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>List files on the server directory</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param dirname:</th><td class=\"field-body\">name of the directory</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "List files on the server directory",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Mkd",
+            "args": [
+                "dirname: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Create a new directory on the server</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param dirname:</th><td class=\"field-body\">name of the directory</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Create a new directory on the server",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Pwd",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get current working directory on the server</p>\n</div>\n</div>",
+            "shortdoc": "Get current working directory on the server",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Quit",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Send QUIT command to the server and close connection</p>\n</div>\n</div>",
+            "shortdoc": "Send QUIT command to the server and close connection",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Rename",
+            "args": [
+                "fromname: str",
+                "toname: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Rename file on the server</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param fromname:</th><td class=\"field-body\">current name of the file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param toname:</th><td class=\"field-body\">new name for the file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Rename file on the server",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Rmd",
+            "args": [
+                "dirname: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Remove directory on the server</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param dirname:</th><td class=\"field-body\">name of the directory</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Remove directory on the server",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Send Command",
+            "args": [
+                "command: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Execute command on the server</p>\n<p>List of FTP commands:\n<a class=\"reference external\" href=\"https://en.wikipedia.org/wiki/List_of_FTP_commands\">https://en.wikipedia.org/wiki/List_of_FTP_commands</a></p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param command:</th><td class=\"field-body\">name of the command to send</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Execute command on the server",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Ascii Mode",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set transfer mode to ASCII</p>\n</div>\n</div>",
+            "shortdoc": "Set transfer mode to ASCII",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Binary Mode",
+            "args": [],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set transfer mode to BINARY</p>\n</div>\n</div>",
+            "shortdoc": "Set transfer mode to BINARY",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Set Debug Level",
+            "args": [
+                "level: int = 0"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set debug level for the library</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param level:</th><td class=\"field-body\">integer value of debug level, defaults to 0</td>\n</tr>\n</tbody>\n</table>\n<p>0 - no debugging output\n1 - moderate amount of debugging\n2+ - higher amount of debugging</p>\n</div>\n</div>",
+            "shortdoc": "Set debug level for the library",
+            "tags": [],
+            "matched": true
+        },
+        {
+            "name": "Upload",
+            "args": [
+                "localfile: str",
+                "remotefile: str"
+            ],
+            "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Upload file to FTP server</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param localfile:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">path to file to upload</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param remotefile:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of uploaded file in the server</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+            "shortdoc": "Upload file to FTP server",
+            "tags": [],
+            "matched": true
+        }
+    ],
+    "all_tags": [],
+    "contains_tags": false
+}
