@@ -38,6 +38,7 @@ Links
 - Homepage: `<https://www.github.com/robocorp/rpaframework/>`_
 - Documentation: `<https://rpaframework.org/>`_
 - PyPI: `<https://pypi.org/project/rpaframework/>`_
+- Release notes: `<https://rpaframework.org/releasenotes.html>`_
 
 ------------
 
@@ -52,7 +53,6 @@ Links
 .. image:: https://img.shields.io/pypi/l/rpaframework.svg
    :target: http://www.apache.org/licenses/LICENSE-2.0.html
    :alt: License
-
 
 Libraries
 ---------
@@ -150,12 +150,10 @@ The RPA Framework project currently includes the following libraries:
 .. _Robocloud.Secrets: https://rpaframework.org/libraries/robocloud_secrets/
 .. _Salesforce: https://rpaframework.org/libraries/salesforce/
 .. _SAP: https://rpaframework.org/libraries/sap/
-.. _Slack: https://rpaframework.org/libraries/slack/
 .. _Tables: https://rpaframework.org/libraries/tables/
 .. _Tasks: https://rpaframework.org/libraries/tasks/
 .. _Twitter: https://rpaframework.org/libraries/twitter/
 .. _Word.Application: https://rpaframework.org/libraries/word_application/
-
 
 Installation
 ------------
@@ -170,7 +168,6 @@ To install all extra packages, you can use:
 ``pip install rpaframework[aws,cv,google]``
 
 .. note:: Python 3.6 or higher is required
-
 
 Example
 -------
