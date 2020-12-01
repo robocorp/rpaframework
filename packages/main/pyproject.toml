@@ -88,6 +88,9 @@ pytest-cov = "^2.10.1"
 mock = "^4.0.2"
 mypy = "^0.782"
 
+[tool.poetry.scripts]
+rpa-google-oauth = 'RPA.scripts.google_authenticate:start'
+
 [tool.poetry.extras]
 cv = ["rpaframework-recognition"]
 aws = ["boto3"]

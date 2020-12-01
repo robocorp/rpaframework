@@ -1443,7 +1443,8 @@ class Windows(OperatingSystem):
             left, top, right, bottom = map(
                 int,
                 re.match(
-                    r"\(L(\d+).*T(\d+).*R(\d+).*B(\d+)\)", str(rectangle)
+                    r"\(L([-]?\d+).*T([-]?\d+).*R([-]?\d+).*B([-]?\d+)\)",
+                    str(rectangle),
                 ).groups(),
             )
         return left, top, right, bottom
@@ -1787,9 +1788,14 @@ class Windows(OperatingSystem):
 
         Window dictionaries contain:
 
+        - automation_id
+        - control_id
         - title
         - pid
         - handle
+        - is_active
+        - keyboard_focus
+        - rectangle
 
         :return: list of window dictionaries
 
@@ -1805,7 +1811,23 @@ class Windows(OperatingSystem):
         windows = pywinauto.Desktop(backend=self._backend).windows()
         window_list = []
         for w in windows:
-            window_list.append(
-                {"title": w.window_text(), "pid": w.process_id(), "handle": w.handle}
-            )
+            try:
+                left, top, right, bottom = self._get_element_coordinates(w.rectangle())
+                # Do not add windows into list if its rectangle area is zero
+                if left == right and bottom == top:
+                    continue
+                window_list.append(
+                    {
+                        "automation_id": w.automation_id(),
+                        "control_id": w.control_id(),
+                        "title": w.window_text(),
+                        "pid": w.process_id(),
+                        "handle": w.handle,
+                        "is_active": w.is_active(),
+                        "keyboard_focus": w.has_keyboard_focus(),
+                        "rectangle": [left, top, right, bottom],
+                    }
+                )
+            except Exception as e:  # pylint: disable=broad-except
+                self.logger.debug(str(e))
         return window_list
