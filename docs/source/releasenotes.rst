@@ -16,6 +16,8 @@ Upcoming release
   - Add support for Apps Script service
   - Add support for Drive service
 
+- Library **Desktop.Windows**: Add more properties into dictionary returned by ``Get Window List``
+
 6.7.2
 -----
 
