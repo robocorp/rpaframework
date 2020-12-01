@@ -610,7 +610,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "pynput-robocorp-fork"
-version = "1.7.4"
+version = "2.0.0"
 description = "Monitor and control user input devices"
 category = "main"
 optional = false
@@ -935,7 +935,7 @@ openpyxl = ">=3.0.3,<4.0.0"
 "pdfminer.six" = "20201018"
 pillow = ">=8.0.1,<9.0.0"
 psutil = {version = ">=5.7.0,<6.0.0", markers = "sys_platform == \"win32\""}
-pynput-robocorp-fork = ">=1.7.4,<2.0.0"
+pynput-robocorp-fork = ">=2.0.0,<3.0.0"
 pypdf2 = ">=1.26.0,<2.0.0"
 pyperclip = ">=1.8.0,<2.0.0"
 python-xlib = {version = ">=0.17", markers = "sys_platform == \"linux\""}
@@ -955,8 +955,8 @@ xlutils = ">=2.0.0,<3.0.0"
 xlwt = ">=1.3.0,<2.0.0"
 
 [package.extras]
-google = ["google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-api-python-client (>=1.12.3,<2.0.0)", "google-auth-httplib2 (>=0.0.4,<0.0.5)", "grpcio (>=1.29.0,<2.0.0)", "google-auth-oauthlib (>=0.4.1,<0.5.0)", "google-cloud-translate (>=2.0.1,<3.0.0)", "google-cloud-speech (>=1.3.2,<2.0.0)", "google-cloud-texttospeech (>=1.0.1,<2.0.0)", "google-cloud-storage (>=1.28.1,<2.0.0)", "google-cloud-language (>=1.3.0,<2.0.0)", "google-cloud-vision (>=1.0.0,<2.0.0)"]
 aws = ["boto3 (>=1.13.4,<2.0.0)"]
+google = ["google-cloud-storage (>=1.28.1,<2.0.0)", "google-auth-oauthlib (>=0.4.1,<0.5.0)", "google-cloud-speech (>=1.3.2,<2.0.0)", "grpcio (>=1.29.0,<2.0.0)", "google-cloud-translate (>=2.0.1,<3.0.0)", "google-auth-httplib2 (>=0.0.4,<0.0.5)", "google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-cloud-vision (>=1.0.0,<2.0.0)", "google-cloud-texttospeech (>=1.0.1,<2.0.0)", "google-api-python-client (>=1.12.3,<2.0.0)", "google-cloud-language (>=1.3.0,<2.0.0)"]
 cv = ["rpaframework-recognition (>=0.5.0,<0.6.0)"]
 
 [package.source]
@@ -1812,9 +1812,9 @@ pygments = [
     {file = "Pygments-2.7.2.tar.gz", hash = "sha256:381985fcc551eb9d37c52088a32914e00517e57f4a21609f48141ba08e193fa0"},
 ]
 pynput-robocorp-fork = [
-    {file = "pynput-robocorp-fork-1.7.4.tar.gz", hash = "sha256:e7a04d385cb11040ac092f696ed8246ce66627ca42c0e128bc438b5735c5c855"},
-    {file = "pynput_robocorp_fork-1.7.4-py2.py3-none-any.whl", hash = "sha256:a2840edf5e90147d9af647d8e3788d6b72bd10ebe15a20839dcfaec01a0ea1f2"},
-    {file = "pynput_robocorp_fork-1.7.4-py3.7.egg", hash = "sha256:ce70aaabeaed51f492b581fc5cdb02a3d2d707344c9619fc646371d3253d0380"},
+    {file = "pynput-robocorp-fork-2.0.0.tar.gz", hash = "sha256:3d748e8c049b647ca2b93841d835d3339e47dd9760eabacf0cf7f3d4a8effad2"},
+    {file = "pynput_robocorp_fork-2.0.0-py2.py3-none-any.whl", hash = "sha256:f79b827c6835dddd42058c06392f0c520d5fdc95334b8c875dfc06ddd670ee8b"},
+    {file = "pynput_robocorp_fork-2.0.0-py3.7.egg", hash = "sha256:81f86ac6d743cc7345e8d287e88209ef767fafaa3015b69ac47f990263dc8f09"},
 ]
 pyobjc-core = [
     {file = "pyobjc-core-6.2.2.tar.gz", hash = "sha256:38e7b15a042439dadd18b28b78229e52fb882460fc16ddbae342b9972d5a827c"},
