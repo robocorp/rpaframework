@@ -215,7 +215,7 @@
 <dl class="class">
 <dt id="RPA.Cloud.Google.Google">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">Google</code><span class="sig-paren">(</span><em class="sig-param">robocloud_vault_name: str = None</em>, <em class="sig-param">robocloud_vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Google.ServiceVision" title="RPA.Cloud.Google.ServiceVision"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceVision</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceNaturalLanguage" title="RPA.Cloud.Google.ServiceNaturalLanguage"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceNaturalLanguage</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceVideoIntelligence" title="RPA.Cloud.Google.ServiceVideoIntelligence"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceVideoIntelligence</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceTranslation" title="RPA.Cloud.Google.ServiceTranslation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceTranslation</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceTextToSpeech" title="RPA.Cloud.Google.ServiceTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceTextToSpeech</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceSpeechToText" title="RPA.Cloud.Google.ServiceSpeechToText"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceSpeechToText</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceStorage" title="RPA.Cloud.Google.ServiceStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceStorage</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceSheets" title="RPA.Cloud.Google.ServiceSheets"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceSheets</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Google.ServiceVision" title="RPA.Cloud.Google.ServiceVision"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceVision</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceNaturalLanguage" title="RPA.Cloud.Google.ServiceNaturalLanguage"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceNaturalLanguage</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceVideoIntelligence" title="RPA.Cloud.Google.ServiceVideoIntelligence"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceVideoIntelligence</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceTranslation" title="RPA.Cloud.Google.ServiceTranslation"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceTranslation</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceTextToSpeech" title="RPA.Cloud.Google.ServiceTextToSpeech"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceTextToSpeech</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceSpeechToText" title="RPA.Cloud.Google.ServiceSpeechToText"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceSpeechToText</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceStorage" title="RPA.Cloud.Google.ServiceStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceStorage</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceSheets" title="RPA.Cloud.Google.ServiceSheets"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceSheets</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceAppsScript" title="RPA.Cloud.Google.ServiceAppsScript"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceAppsScript</span></code></a>, <a class="reference internal" href="#RPA.Cloud.Google.ServiceDrive" title="RPA.Cloud.Google.ServiceDrive"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.ServiceDrive</span></code></a></p>
 <p><cite>Google</cite> is a library for operating with Google API endpoints.</p>
 <p>Usage requires the following steps:</p>
 <ul class="simple">
@@ -227,7 +227,8 @@ can use it</p></li>
 </ul>
 <p><strong>Google authentication</strong></p>
 <p>Authentication for Google is set with <cite>service credentials JSON file</cite> which can be given to the library
-in three different ways.</p>
+in three different ways or with <cite>credentials.json</cite>, which is used for OAuth authentication.</p>
+<p>Methods when using service credentials:</p>
 <ul class="simple">
 <li><p>Method 1 as environment variables, <code class="docutils literal notranslate"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> with path to JSON file.</p></li>
 <li><p>Method 2 as keyword parameter to <code class="docutils literal notranslate"><span class="pre">Init</span> <span class="pre">Storage</span> <span class="pre">Client</span></code> for example.</p></li>
@@ -273,6 +274,38 @@ or with keyword <code class="docutils literal notranslate"><span class="pre">Set
 <span class="gu">Init Google services</span><span class="p"></span>
 <span class="p">    </span><span class="nf">Set Robocloud Vault</span><span class="p">   </span><span class="s">vault_name=googlecloud</span><span class="p">  </span><span class="s">vault_secret_key=servicecreds</span><span class="p"></span>
 <span class="p">    </span><span class="nf">Init Storage Client</span><span class="p">   </span><span class="s">use_robocloud_vault=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Method when using OAuth credentials.json:</p>
+<p>The Google Apps Script and Google Drive services are authenticated using this method.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.Cloud.Google</span><span class="p"></span>
+
+<span class="gh">*** Variables ***</span><span class="p"></span>
+<span class="p">@{</span><span class="nv">SCRIPT_SCOPES</span><span class="p">}     </span><span class="s">forms</span><span class="p">   </span><span class="s">spreadsheets</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Init Google OAuth services</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Apps Script Client</span><span class="p">   </span><span class="s">/path/to/credentials.json</span><span class="p">   ${</span><span class="nv">SCRIPT_SCOPES</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Creating and using OAuth token file</strong></p>
+<p>The token file can be created using <cite>credentials.json</cite> by running command:</p>
+<p><code class="docutils literal notranslate"><span class="pre">rpa-google-oauth</span> <span class="pre">--service</span> <span class="pre">drive</span></code> or
+<code class="docutils literal notranslate"><span class="pre">rpa-google-oauth</span> <span class="pre">--scopes</span> <span class="pre">drive.appdata,drive.file,drive.install</span></code></p>
+<p>This will start web based authentication process, which outputs the token at the end.
+Token could be stored into <code class="docutils literal notranslate"><span class="pre">Robocorp</span> <span class="pre">Vault</span></code> where it needs to be in variable <code class="docutils literal notranslate"><span class="pre">google-oauth</span></code>.</p>
+<p>Example Vault content.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>&quot;googlecloud&quot;: {
+    &quot;oauth-token&quot;: &quot;gANfd123321aabeedYsc&quot;
+}
+</pre></div>
+</div>
+<p>Using the Vault.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Set up Google Drive authentication</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Robocloud Vault</span><span class="p">    </span><span class="s">vault_name=googlecloud</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Init Drive Client</span><span class="p">    </span><span class="s">use_robocloud_vault=True</span><span class="p"></span>
 </pre></div>
 </div>
 <p><strong>Requirements</strong></p>
@@ -362,15 +395,17 @@ an optional package for <code class="docutils literal notranslate"><span class="
 <dt id="RPA.Cloud.Google.Google.annotate_video">
 <code class="sig-name descname">annotate_video</code><span class="sig-paren">(</span><em class="sig-param">video_uri: str = None</em>, <em class="sig-param">video_file: str = None</em>, <em class="sig-param">json_file: str = None</em>, <em class="sig-param">features: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.annotate_video" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annotate video</p>
-<p>Possible values for features:
-- FEATURE_UNSPECIFIED, Unspecified.
-- LABEL_DETECTION, Label detection. Detect objects, such as dog or flower.
-- SHOT_CHANGE_DETECTION, Shot change detection.
-- EXPLICIT_CONTENT_DETECTION, Explicit content detection.
-- SPEECH_TRANSCRIPTION, Speech transcription.
-- TEXT_DETECTION, OCR text detection and tracking.
-- OBJECT_TRACKING, Object detection and tracking.
-- LOGO_RECOGNITION, Logo detection, tracking, and recognition.</p>
+<p>Possible values for features:</p>
+<ul class="simple">
+<li><p>FEATURE_UNSPECIFIED, Unspecified.</p></li>
+<li><p>LABEL_DETECTION, Label detection. Detect objects, such as dog or flower.</p></li>
+<li><p>SHOT_CHANGE_DETECTION, Shot change detection.</p></li>
+<li><p>EXPLICIT_CONTENT_DETECTION, Explicit content detection.</p></li>
+<li><p>SPEECH_TRANSCRIPTION, Speech transcription.</p></li>
+<li><p>TEXT_DETECTION, OCR text detection and tracking.</p></li>
+<li><p>OBJECT_TRACKING, Object detection and tracking.</p></li>
+<li><p>LOGO_RECOGNITION, Logo detection, tracking, and recognition.</p></li>
+</ul>
 <p>If <cite>video_uri</cite> is given then that is used even if <cite>video_file</cite> is None.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -558,6 +593,228 @@ True if all were downloaded</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.Google.drive_create_directory">
+<code class="sig-name descname">drive_create_directory</code><span class="sig-paren">(</span><em class="sig-param">folder: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.drive_create_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new directory to Google Drive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>folder</strong> – name for the new directory</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#RPA.Cloud.Google.GoogleDriveError" title="RPA.Cloud.Google.GoogleDriveError"><strong>GoogleDriveError</strong></a> – if folder name is not given</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>created file id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.drive_delete_file">
+<code class="sig-name descname">drive_delete_file</code><span class="sig-paren">(</span><em class="sig-param">file_id: str = None</em>, <em class="sig-param">file_dict: dict = None</em>, <em class="sig-param">query: str = None</em>, <em class="sig-param">multiple_ok: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.drive_delete_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete file specified by id, file dictionary or query string</p>
+<p>Note. Be extra careful when calling this keyword!</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_id</strong> – drive file id</p></li>
+<li><p><strong>file_dict</strong> – file dictionary returned by <cite>Drive Search Files</cite></p></li>
+<li><p><strong>query</strong> – drive query string to find target file, needs to match 1 file
+unless parameter <cite>multiple_ok</cite> is set to <cite>True</cite></p></li>
+<li><p><strong>multiple_ok</strong> – set to <cite>True</cite> if it is ok to perform delete
+on more than 1 file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>how many files where deleted</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${folder_id}=</span><span class="p">  </span><span class="c">Drive Get Folder Id</span><span class="p">   </span><span class="c">datafolder</span><span class="p"></span>
+<span class="c">${deleted}=</span><span class="p">    </span><span class="c">Drive Delete File</span><span class="p">   </span><span class="c">query=name contains &#39;.json&#39; and &#39;${folder_id}&#39; in parents</span><span class="p"></span>
+<span class="c">...</span><span class="p">            </span><span class="c">multiple_ok=True</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.drive_download_files">
+<code class="sig-name descname">drive_download_files</code><span class="sig-paren">(</span><em class="sig-param">file_dict: dict = None</em>, <em class="sig-param">query: str = None</em>, <em class="sig-param">limit: int = None</em>, <em class="sig-param">timeout: float = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.drive_download_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download files specified by file dictionary or query string</p>
+<p>Parameters <cite>start</cite>, <cite>limit</cite> and <cite>timeout</cite> are used only when
+downloading files defined by <cite>query</cite> parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_dict</strong> – file dictionary returned by <cite>Drive Search Files</cite></p></li>
+<li><p><strong>query</strong> – drive query string to find target files, defaults to None</p></li>
+<li><p><strong>start</strong> – start index from which to start download files</p></li>
+<li><p><strong>limit</strong> – maximum amount of files that are downloaded, defaults to None</p></li>
+<li><p><strong>timeout</strong> – maximum allowed time in seconds for download process</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of downloaded files</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${files}=</span><span class="p">    </span><span class="c">Drive Search Files</span><span class="p">    </span><span class="c">query=name contains &#39;.json&#39;</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${f}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{files}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Run Keyword If</span><span class="p">  </span><span class="c">${f}[size] &lt; 2000</span><span class="p">  </span><span class="c">Drive Download Files</span><span class="p">  </span><span class="c">file_dict=${f}</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+
+<span class="c">${folder_id}=</span><span class="p">   </span><span class="c">Drive Get Folder Id</span><span class="p">   </span><span class="c">datafolder</span><span class="p"></span>
+<span class="c">Drive Download Files</span><span class="p">  </span><span class="c">query=name contains &#39;.json&#39; and &#39;${folder_id}&#39; in parents</span><span class="p">  </span><span class="c">recurse=True</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.drive_get_folder_id">
+<code class="sig-name descname">drive_get_folder_id</code><span class="sig-paren">(</span><em class="sig-param">folder: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.drive_get_folder_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get file id for the folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>folder</strong> – name of the folder to identify, by default returns drive’s
+<cite>root</cite> folder id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>file id of the folder</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${root_id}=</span><span class="p">    </span><span class="c">Drive Get Folder Id</span><span class="p">   </span><span class="c"># returns Drive root folder id</span>
+<span class="c">${folder_id}=</span><span class="p">  </span><span class="c">Drive Get Folder Id</span><span class="p">  </span><span class="c">subdir</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.drive_move_file">
+<code class="sig-name descname">drive_move_file</code><span class="sig-paren">(</span><em class="sig-param">file_id: str = None</em>, <em class="sig-param">file_dict: dict = None</em>, <em class="sig-param">query: str = None</em>, <em class="sig-param">folder: str = None</em>, <em class="sig-param">folder_id: str = None</em>, <em class="sig-param">multiple_ok: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.drive_move_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move file specified by id, file dictionary or query string into target folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_id</strong> – drive file id</p></li>
+<li><p><strong>file_dict</strong> – file dictionary returned by <cite>Drive Search Files</cite></p></li>
+<li><p><strong>query</strong> – drive query string to find target file, needs to match 1 file</p></li>
+<li><p><strong>folder</strong> – name of the folder to move file into, is by default drive’s
+<cite>root</cite> folder id</p></li>
+<li><p><strong>folder_id</strong> – id of the folder to move file into, if set the <cite>folder</cite>
+parameter is ignored</p></li>
+<li><p><strong>multiple_ok</strong> – if <cite>True</cite> then moving more than 1 file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of file ids</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#RPA.Cloud.Google.GoogleDriveError" title="RPA.Cloud.Google.GoogleDriveError"><strong>GoogleDriveError</strong></a> – if there are no files to move or
+target folder can’t be found</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${source_id}=</span><span class="p">  </span><span class="c">Drive Get Folder Id</span><span class="p">  </span><span class="c">sourcefolder</span><span class="p"></span>
+<span class="c">${query}=</span><span class="p">      </span><span class="c">Set Variable</span><span class="p">  </span><span class="c">name contains &#39;.json&#39; and &#39;${sourceid}&#39; in parents</span><span class="p"></span>
+<span class="c">${files}=</span><span class="p">      </span><span class="c">Drive Move File</span><span class="p">  </span><span class="c">query=${query}</span><span class="p">  </span><span class="c">folder=target_folder</span><span class="p">  </span><span class="c">multiple_ok=True</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.drive_search_files">
+<code class="sig-name descname">drive_search_files</code><span class="sig-paren">(</span><em class="sig-param">query: str = None</em>, <em class="sig-param">recurse: bool = False</em>, <em class="sig-param">folder_name: str = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.Google.Google.drive_search_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search Google Drive for files matching query string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> – search string, defaults to None which means that all files
+and folders are returned</p></li>
+<li><p><strong>recurse</strong> – set to <cite>True</cite> if search should recursive</p></li>
+<li><p><strong>folder_name</strong> – search files in this directory</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#RPA.Cloud.Google.GoogleDriveError" title="RPA.Cloud.Google.GoogleDriveError"><strong>GoogleDriveError</strong></a> – if there is a request error</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of files</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${files}=</span><span class="p">  </span><span class="c">Drive Search Files</span><span class="p">   </span><span class="c">query=name contains &#39;hello&#39;</span><span class="p"></span>
+<span class="c">${files}=</span><span class="p">  </span><span class="c">Drive Search Files</span><span class="p">   </span><span class="c">query=modifiedTime &gt; &#39;2020-06-04T12:00:00&#39;</span><span class="p"></span>
+<span class="c">${files}=</span><span class="p">  </span><span class="c">Drive Search Files</span><span class="p">   </span><span class="c">query=mimeType contains &#39;image/&#39; or mimeType contains &#39;video/&#39;</span><span class="p"></span>
+<span class="c">${files}=</span><span class="p">  </span><span class="c">Drive Search Files</span><span class="p">   </span><span class="c">query=name contains &#39;.yaml&#39;</span><span class="p">  </span><span class="c">recurse=True</span><span class="p"></span>
+<span class="c">${files}=</span><span class="p">  </span><span class="c">Drive Search Files</span><span class="p">   </span><span class="c">query=name contains &#39;.yaml&#39;</span><span class="p">  </span><span class="c">folder_name=datadirectory</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.drive_update_file">
+<code class="sig-name descname">drive_update_file</code><span class="sig-paren">(</span><em class="sig-param">file_id: str = None</em>, <em class="sig-param">file_dict: dict = None</em>, <em class="sig-param">query: str = None</em>, <em class="sig-param">action: RPA.Cloud.Google.Update = &lt;Update.star: 3&gt;</em>, <em class="sig-param">multiple_ok: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.drive_update_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update file specified by id, file dictionary or query string</p>
+<p>Possible actions:
+- star
+- unstar
+- trash
+- untrash</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_id</strong> – drive file id</p></li>
+<li><p><strong>file_dict</strong> – file dictionary returned by <cite>Drive Search Files</cite></p></li>
+<li><p><strong>query</strong> – drive query string to find target file, needs to match 1 file</p></li>
+<li><p><strong>action</strong> – update action, default star file</p></li>
+<li><p><strong>multiple_ok</strong> – set to <cite>True</cite> if it is ok to perform update
+on more than 1 file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>number of updated files</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${folder_id}=</span><span class="p">  </span><span class="c">Drive Get Folder Id</span><span class="p">   </span><span class="c">datafolder</span><span class="p"></span>
+<span class="c">${updated}=</span><span class="p">    </span><span class="c">Drive Update File</span><span class="p">   </span><span class="c">query=name contains &#39;.json&#39; and &#39;${folder_id}&#39; in parents</span><span class="p"></span>
+<span class="c">...</span><span class="p">            </span><span class="c">action=star</span><span class="p"></span>
+<span class="c">...</span><span class="p">            </span><span class="c">multiple_ok=True</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.drive_upload_file">
+<code class="sig-name descname">drive_upload_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str = None</em>, <em class="sig-param">folder: str = None</em>, <em class="sig-param">overwrite: bool = False</em>, <em class="sig-param">make_dir: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Google.Google.drive_upload_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload files into Drive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – name of the file to upload</p></li>
+<li><p><strong>folder</strong> – target folder for upload</p></li>
+<li><p><strong>overwrite</strong> – set to <cite>True</cite> if already existing file should be overwritten</p></li>
+<li><p><strong>make_dir</strong> – set to <cite>True</cite> if folder should be created if it does not exist</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#RPA.Cloud.Google.GoogleDriveError" title="RPA.Cloud.Google.GoogleDriveError"><strong>GoogleDriveError</strong></a> – if target_folder does not exist or
+trying to upload directory</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>uploaded file id</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${file1_id}=</span><span class="p">  </span><span class="c">Drive Upload File</span><span class="p">   </span><span class="c">data.json</span><span class="p">  </span><span class="c"># Upload file to drive root</span>
+<span class="c">${file2_id}=</span><span class="p">  </span><span class="c">Drive Upload File</span><span class="p">   </span><span class="c">newdata.json</span><span class="p">  </span><span class="c">new_folder</span><span class="p">  </span><span class="c">make_dir=True</span><span class="p"></span>
+<span class="c">${file3_id}=</span><span class="p">  </span><span class="c">Drive Upload File</span><span class="p">   </span><span class="c">data.json</span><span class="p">  </span><span class="c">overwrite=True</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.Google.face_detection">
 <code class="sig-name descname">face_detection</code><span class="sig-paren">(</span><em class="sig-param">image_uri: str</em>, <em class="sig-param">json_file: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Google.Google.face_detection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect faces</p>
@@ -599,8 +856,47 @@ True if all were downloaded</p>
 <li><p><strong>sheet_range</strong> – target sheet range</p></li>
 <li><p><strong>value_render_option</strong> – how values should be represented
 in the output defaults to “UNFORMATTED_VALUE”</p></li>
-<li><p><strong>datetime_render_option</strong> – ow dates, times, and durations should
-be represented in the outpu, defaults to “FORMATTED_STRING”</p></li>
+<li><p><strong>datetime_render_option</strong> – how dates, times, and durations should be
+represented in the output, defaults to “FORMATTED_STRING”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.Google.global_scopes">
+<code class="sig-name descname">global_scopes</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.Google.global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.init_apps_script_client">
+<code class="sig-name descname">init_apps_script_client</code><span class="sig-paren">(</span><em class="sig-param">credentials_file: str = 'credentials.json'</em>, <em class="sig-param">token_file: str = 'oauth.token'</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">scopes: list = None</em>, <em class="sig-param">save_token: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_apps_script_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Apps Script client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>token_file</strong> – filepath to OAuth token file</p></li>
+<li><p><strong>use_robocloud_vault</strong> – if <cite>True</cite> the token is read from Robocloud</p></li>
+<li><p><strong>scopes</strong> – authenticated scopes, for example. [‘forms’, ‘spreadsheets’]</p></li>
+<li><p><strong>save_token</strong> – set to <cite>True</cite> if token should be saved to local file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.init_drive_client">
+<code class="sig-name descname">init_drive_client</code><span class="sig-paren">(</span><em class="sig-param">credentials_file: str = 'credentials.json'</em>, <em class="sig-param">token_file: str = 'oauth.token'</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">scopes: list = None</em>, <em class="sig-param">save_token: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_drive_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Drive client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>token_file</strong> – filepath to OAuth token file</p></li>
+<li><p><strong>use_robocloud_vault</strong> – if <cite>True</cite> the token is read from Robocloud</p></li>
+<li><p><strong>scopes</strong> – authenticated scopes, for example. [‘forms’, ‘spreadsheets’]</p></li>
+<li><p><strong>save_token</strong> – set to <cite>True</cite> if token should be saved to local file</p></li>
 </ul>
 </dd>
 </dl>
@@ -810,14 +1106,50 @@ default <cite>USER_ENTERED</cite></p></li>
 <code class="sig-name descname">robocloud_vault_secret_key</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.Google.robocloud_vault_secret_key" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.run_script">
+<code class="sig-name descname">run_script</code><span class="sig-paren">(</span><em class="sig-param">script_id: str</em>, <em class="sig-param">function_name: str</em>, <em class="sig-param">parameters: dict</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.run_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the Google Apps Script</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>script_id</strong> – Google Script identifier</p></li>
+<li><p><strong>function_name</strong> – name of the script function</p></li>
+<li><p><strong>parameters</strong> – script function parameters as a dictionary</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – thrown when Google Script returns errors</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{params}=</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p">  </span><span class="c">formid=aaad4232</span><span class="p">  </span><span class="c">formvalues=1,2,3</span><span class="p"></span>
+<span class="c">${response}=</span><span class="p">  </span><span class="c">Run Script</span><span class="p">    </span><span class="c">abc21397283712da</span><span class="p">  </span><span class="c">submit_form</span><span class="p">   </span><span class="c">${params}</span><span class="p"></span>
+<span class="c">Log Many</span><span class="p">   </span><span class="c">${response}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="RPA.Cloud.Google.Google.services">
 <code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.Google.services" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.Google.set_global_scopes">
+<code class="sig-name descname">set_global_scopes</code><span class="sig-paren">(</span><em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.set_global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global Google authentication scopes</p>
+<p>Useful when using numerous services with different scopes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopes</strong> – list of authentication scopes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.Google.set_robocloud_vault">
-<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name: str = None</em>, <em class="sig-param">vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Robocloud Vault name and secret key name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -913,6 +1245,11 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Cloud.Google.GoogleBase.global_scopes">
+<code class="sig-name descname">global_scopes</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.GoogleBase.global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Cloud.Google.GoogleBase.logger">
 <code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.GoogleBase.logger" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -938,8 +1275,497 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.GoogleBase.set_global_scopes">
+<code class="sig-name descname">set_global_scopes</code><span class="sig-paren">(</span><em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.GoogleBase.set_global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global Google authentication scopes</p>
+<p>Useful when using numerous services with different scopes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopes</strong> – list of authentication scopes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.GoogleBase.set_robocloud_vault">
-<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.GoogleBase.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name: str = None</em>, <em class="sig-param">vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.GoogleBase.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name and secret key name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vault_name</strong> – Robocloud Vault name</p></li>
+<li><p><strong>vault_secret_key</strong> – Rococloud Vault secret key name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.Cloud.Google.GoogleDriveError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">GoogleDriveError</code><a class="headerlink" href="#RPA.Cloud.Google.GoogleDriveError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised with errors in Drive API</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.GoogleDriveError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Cloud.Google.GoogleDriveError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.GoogleDriveError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.GoogleDriveError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.Cloud.Google.GoogleOAuthAuthenticationError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">GoogleOAuthAuthenticationError</code><a class="headerlink" href="#RPA.Cloud.Google.GoogleOAuthAuthenticationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when unable to get Google OAuth credentials.</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.GoogleOAuthAuthenticationError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Cloud.Google.GoogleOAuthAuthenticationError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.GoogleOAuthAuthenticationError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.GoogleOAuthAuthenticationError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.Google.ServiceAppsScript">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">ServiceAppsScript</code><a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Google.GoogleBase" title="RPA.Cloud.Google.GoogleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.GoogleBase</span></code></a></p>
+<p>Class for Google Apps Script API</p>
+<p><strong>Note:</strong> The Apps Script API does not work with _service <a href="#id3"><span class="problematic" id="id4">accounts_</span></a></p>
+<p>Following steps are needed to authenticate and use the service:</p>
+<ol class="arabic simple">
+<li><p>enable Apps Script API in the Cloud Platform project (GCP)</p></li>
+<li><p>create OAuth credentials so API can be authorized (download <code class="docutils literal notranslate"><span class="pre">credentials.json</span></code>
+which is needed to initialize service)</p></li>
+<li><p>the Google Script needs to be linked to Cloud Platform project number</p></li>
+<li><p>Google Script needs to have necessary OAuth scopes to access app
+which is being scripted</p></li>
+<li><p>necessary authentication scopes and credentials.json are needed
+to initialize service and run scripts</p></li>
+</ol>
+<p>For more information about Google Apps Script API <a href="#id5"><span class="problematic" id="id6">link_</span></a>.</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceAppsScript.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceAppsScript.global_scopes">
+<code class="sig-name descname">global_scopes</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript.global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceAppsScript.init_apps_script_client">
+<code class="sig-name descname">init_apps_script_client</code><span class="sig-paren">(</span><em class="sig-param">credentials_file: str = 'credentials.json'</em>, <em class="sig-param">token_file: str = 'oauth.token'</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">scopes: list = None</em>, <em class="sig-param">save_token: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript.init_apps_script_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Apps Script client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>token_file</strong> – filepath to OAuth token file</p></li>
+<li><p><strong>use_robocloud_vault</strong> – if <cite>True</cite> the token is read from Robocloud</p></li>
+<li><p><strong>scopes</strong> – authenticated scopes, for example. [‘forms’, ‘spreadsheets’]</p></li>
+<li><p><strong>save_token</strong> – set to <cite>True</cite> if token should be saved to local file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceAppsScript.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceAppsScript.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceAppsScript.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceAppsScript.robocloud_vault_secret_key">
+<code class="sig-name descname">robocloud_vault_secret_key</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript.robocloud_vault_secret_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceAppsScript.run_script">
+<code class="sig-name descname">run_script</code><span class="sig-paren">(</span><em class="sig-param">script_id: str</em>, <em class="sig-param">function_name: str</em>, <em class="sig-param">parameters: dict</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript.run_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the Google Apps Script</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>script_id</strong> – Google Script identifier</p></li>
+<li><p><strong>function_name</strong> – name of the script function</p></li>
+<li><p><strong>parameters</strong> – script function parameters as a dictionary</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – thrown when Google Script returns errors</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{params}=</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p">  </span><span class="c">formid=aaad4232</span><span class="p">  </span><span class="c">formvalues=1,2,3</span><span class="p"></span>
+<span class="c">${response}=</span><span class="p">  </span><span class="c">Run Script</span><span class="p">    </span><span class="c">abc21397283712da</span><span class="p">  </span><span class="c">submit_form</span><span class="p">   </span><span class="c">${params}</span><span class="p"></span>
+<span class="c">Log Many</span><span class="p">   </span><span class="c">${response}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceAppsScript.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceAppsScript.set_global_scopes">
+<code class="sig-name descname">set_global_scopes</code><span class="sig-paren">(</span><em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript.set_global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global Google authentication scopes</p>
+<p>Useful when using numerous services with different scopes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopes</strong> – list of authentication scopes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceAppsScript.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name: str = None</em>, <em class="sig-param">vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Robocloud Vault name and secret key name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vault_name</strong> – Robocloud Vault name</p></li>
+<li><p><strong>vault_secret_key</strong> – Rococloud Vault secret key name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Cloud.Google.ServiceDrive">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">ServiceDrive</code><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Google.GoogleBase" title="RPA.Cloud.Google.GoogleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.GoogleBase</span></code></a></p>
+<p>Class for Google Drive API</p>
+<p><strong>Note:</strong> The Drive API does not work with _service <a href="#id7"><span class="problematic" id="id8">accounts_</span></a></p>
+<p>Following steps are needed to authenticate and use the service:</p>
+<ol class="arabic simple">
+<li><p>enable Drive API in the Cloud Platform project (GCP)</p></li>
+<li><p>create OAuth credentials so API can be authorized (download <code class="docutils literal notranslate"><span class="pre">credentials.json</span></code>
+which is needed to initialize service)</p></li>
+<li><p>necessary authentication scopes and credentials.json are needed
+to initialize service</p></li>
+</ol>
+<p>For more information about Google Drive API <a href="#id9"><span class="problematic" id="id10">link_</span></a>.</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceDrive.clients">
+<code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceDrive.drive_create_directory">
+<code class="sig-name descname">drive_create_directory</code><span class="sig-paren">(</span><em class="sig-param">folder: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.drive_create_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new directory to Google Drive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>folder</strong> – name for the new directory</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#RPA.Cloud.Google.GoogleDriveError" title="RPA.Cloud.Google.GoogleDriveError"><strong>GoogleDriveError</strong></a> – if folder name is not given</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>created file id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceDrive.drive_delete_file">
+<code class="sig-name descname">drive_delete_file</code><span class="sig-paren">(</span><em class="sig-param">file_id: str = None</em>, <em class="sig-param">file_dict: dict = None</em>, <em class="sig-param">query: str = None</em>, <em class="sig-param">multiple_ok: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.drive_delete_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete file specified by id, file dictionary or query string</p>
+<p>Note. Be extra careful when calling this keyword!</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_id</strong> – drive file id</p></li>
+<li><p><strong>file_dict</strong> – file dictionary returned by <cite>Drive Search Files</cite></p></li>
+<li><p><strong>query</strong> – drive query string to find target file, needs to match 1 file
+unless parameter <cite>multiple_ok</cite> is set to <cite>True</cite></p></li>
+<li><p><strong>multiple_ok</strong> – set to <cite>True</cite> if it is ok to perform delete
+on more than 1 file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>how many files where deleted</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${folder_id}=</span><span class="p">  </span><span class="c">Drive Get Folder Id</span><span class="p">   </span><span class="c">datafolder</span><span class="p"></span>
+<span class="c">${deleted}=</span><span class="p">    </span><span class="c">Drive Delete File</span><span class="p">   </span><span class="c">query=name contains &#39;.json&#39; and &#39;${folder_id}&#39; in parents</span><span class="p"></span>
+<span class="c">...</span><span class="p">            </span><span class="c">multiple_ok=True</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceDrive.drive_download_files">
+<code class="sig-name descname">drive_download_files</code><span class="sig-paren">(</span><em class="sig-param">file_dict: dict = None</em>, <em class="sig-param">query: str = None</em>, <em class="sig-param">limit: int = None</em>, <em class="sig-param">timeout: float = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.drive_download_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download files specified by file dictionary or query string</p>
+<p>Parameters <cite>start</cite>, <cite>limit</cite> and <cite>timeout</cite> are used only when
+downloading files defined by <cite>query</cite> parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_dict</strong> – file dictionary returned by <cite>Drive Search Files</cite></p></li>
+<li><p><strong>query</strong> – drive query string to find target files, defaults to None</p></li>
+<li><p><strong>start</strong> – start index from which to start download files</p></li>
+<li><p><strong>limit</strong> – maximum amount of files that are downloaded, defaults to None</p></li>
+<li><p><strong>timeout</strong> – maximum allowed time in seconds for download process</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of downloaded files</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${files}=</span><span class="p">    </span><span class="c">Drive Search Files</span><span class="p">    </span><span class="c">query=name contains &#39;.json&#39;</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${f}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{files}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Run Keyword If</span><span class="p">  </span><span class="c">${f}[size] &lt; 2000</span><span class="p">  </span><span class="c">Drive Download Files</span><span class="p">  </span><span class="c">file_dict=${f}</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+
+<span class="c">${folder_id}=</span><span class="p">   </span><span class="c">Drive Get Folder Id</span><span class="p">   </span><span class="c">datafolder</span><span class="p"></span>
+<span class="c">Drive Download Files</span><span class="p">  </span><span class="c">query=name contains &#39;.json&#39; and &#39;${folder_id}&#39; in parents</span><span class="p">  </span><span class="c">recurse=True</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceDrive.drive_get_folder_id">
+<code class="sig-name descname">drive_get_folder_id</code><span class="sig-paren">(</span><em class="sig-param">folder: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.drive_get_folder_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get file id for the folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>folder</strong> – name of the folder to identify, by default returns drive’s
+<cite>root</cite> folder id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>file id of the folder</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${root_id}=</span><span class="p">    </span><span class="c">Drive Get Folder Id</span><span class="p">   </span><span class="c"># returns Drive root folder id</span>
+<span class="c">${folder_id}=</span><span class="p">  </span><span class="c">Drive Get Folder Id</span><span class="p">  </span><span class="c">subdir</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceDrive.drive_move_file">
+<code class="sig-name descname">drive_move_file</code><span class="sig-paren">(</span><em class="sig-param">file_id: str = None</em>, <em class="sig-param">file_dict: dict = None</em>, <em class="sig-param">query: str = None</em>, <em class="sig-param">folder: str = None</em>, <em class="sig-param">folder_id: str = None</em>, <em class="sig-param">multiple_ok: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.drive_move_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move file specified by id, file dictionary or query string into target folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_id</strong> – drive file id</p></li>
+<li><p><strong>file_dict</strong> – file dictionary returned by <cite>Drive Search Files</cite></p></li>
+<li><p><strong>query</strong> – drive query string to find target file, needs to match 1 file</p></li>
+<li><p><strong>folder</strong> – name of the folder to move file into, is by default drive’s
+<cite>root</cite> folder id</p></li>
+<li><p><strong>folder_id</strong> – id of the folder to move file into, if set the <cite>folder</cite>
+parameter is ignored</p></li>
+<li><p><strong>multiple_ok</strong> – if <cite>True</cite> then moving more than 1 file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of file ids</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#RPA.Cloud.Google.GoogleDriveError" title="RPA.Cloud.Google.GoogleDriveError"><strong>GoogleDriveError</strong></a> – if there are no files to move or
+target folder can’t be found</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${source_id}=</span><span class="p">  </span><span class="c">Drive Get Folder Id</span><span class="p">  </span><span class="c">sourcefolder</span><span class="p"></span>
+<span class="c">${query}=</span><span class="p">      </span><span class="c">Set Variable</span><span class="p">  </span><span class="c">name contains &#39;.json&#39; and &#39;${sourceid}&#39; in parents</span><span class="p"></span>
+<span class="c">${files}=</span><span class="p">      </span><span class="c">Drive Move File</span><span class="p">  </span><span class="c">query=${query}</span><span class="p">  </span><span class="c">folder=target_folder</span><span class="p">  </span><span class="c">multiple_ok=True</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceDrive.drive_search_files">
+<code class="sig-name descname">drive_search_files</code><span class="sig-paren">(</span><em class="sig-param">query: str = None</em>, <em class="sig-param">recurse: bool = False</em>, <em class="sig-param">folder_name: str = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.drive_search_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search Google Drive for files matching query string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> – search string, defaults to None which means that all files
+and folders are returned</p></li>
+<li><p><strong>recurse</strong> – set to <cite>True</cite> if search should recursive</p></li>
+<li><p><strong>folder_name</strong> – search files in this directory</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#RPA.Cloud.Google.GoogleDriveError" title="RPA.Cloud.Google.GoogleDriveError"><strong>GoogleDriveError</strong></a> – if there is a request error</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of files</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${files}=</span><span class="p">  </span><span class="c">Drive Search Files</span><span class="p">   </span><span class="c">query=name contains &#39;hello&#39;</span><span class="p"></span>
+<span class="c">${files}=</span><span class="p">  </span><span class="c">Drive Search Files</span><span class="p">   </span><span class="c">query=modifiedTime &gt; &#39;2020-06-04T12:00:00&#39;</span><span class="p"></span>
+<span class="c">${files}=</span><span class="p">  </span><span class="c">Drive Search Files</span><span class="p">   </span><span class="c">query=mimeType contains &#39;image/&#39; or mimeType contains &#39;video/&#39;</span><span class="p"></span>
+<span class="c">${files}=</span><span class="p">  </span><span class="c">Drive Search Files</span><span class="p">   </span><span class="c">query=name contains &#39;.yaml&#39;</span><span class="p">  </span><span class="c">recurse=True</span><span class="p"></span>
+<span class="c">${files}=</span><span class="p">  </span><span class="c">Drive Search Files</span><span class="p">   </span><span class="c">query=name contains &#39;.yaml&#39;</span><span class="p">  </span><span class="c">folder_name=datadirectory</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceDrive.drive_update_file">
+<code class="sig-name descname">drive_update_file</code><span class="sig-paren">(</span><em class="sig-param">file_id: str = None</em>, <em class="sig-param">file_dict: dict = None</em>, <em class="sig-param">query: str = None</em>, <em class="sig-param">action: RPA.Cloud.Google.Update = &lt;Update.star: 3&gt;</em>, <em class="sig-param">multiple_ok: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.drive_update_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update file specified by id, file dictionary or query string</p>
+<p>Possible actions:
+- star
+- unstar
+- trash
+- untrash</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_id</strong> – drive file id</p></li>
+<li><p><strong>file_dict</strong> – file dictionary returned by <cite>Drive Search Files</cite></p></li>
+<li><p><strong>query</strong> – drive query string to find target file, needs to match 1 file</p></li>
+<li><p><strong>action</strong> – update action, default star file</p></li>
+<li><p><strong>multiple_ok</strong> – set to <cite>True</cite> if it is ok to perform update
+on more than 1 file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>number of updated files</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${folder_id}=</span><span class="p">  </span><span class="c">Drive Get Folder Id</span><span class="p">   </span><span class="c">datafolder</span><span class="p"></span>
+<span class="c">${updated}=</span><span class="p">    </span><span class="c">Drive Update File</span><span class="p">   </span><span class="c">query=name contains &#39;.json&#39; and &#39;${folder_id}&#39; in parents</span><span class="p"></span>
+<span class="c">...</span><span class="p">            </span><span class="c">action=star</span><span class="p"></span>
+<span class="c">...</span><span class="p">            </span><span class="c">multiple_ok=True</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceDrive.drive_upload_file">
+<code class="sig-name descname">drive_upload_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str = None</em>, <em class="sig-param">folder: str = None</em>, <em class="sig-param">overwrite: bool = False</em>, <em class="sig-param">make_dir: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.drive_upload_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload files into Drive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – name of the file to upload</p></li>
+<li><p><strong>folder</strong> – target folder for upload</p></li>
+<li><p><strong>overwrite</strong> – set to <cite>True</cite> if already existing file should be overwritten</p></li>
+<li><p><strong>make_dir</strong> – set to <cite>True</cite> if folder should be created if it does not exist</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#RPA.Cloud.Google.GoogleDriveError" title="RPA.Cloud.Google.GoogleDriveError"><strong>GoogleDriveError</strong></a> – if target_folder does not exist or
+trying to upload directory</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>uploaded file id</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${file1_id}=</span><span class="p">  </span><span class="c">Drive Upload File</span><span class="p">   </span><span class="c">data.json</span><span class="p">  </span><span class="c"># Upload file to drive root</span>
+<span class="c">${file2_id}=</span><span class="p">  </span><span class="c">Drive Upload File</span><span class="p">   </span><span class="c">newdata.json</span><span class="p">  </span><span class="c">new_folder</span><span class="p">  </span><span class="c">make_dir=True</span><span class="p"></span>
+<span class="c">${file3_id}=</span><span class="p">  </span><span class="c">Drive Upload File</span><span class="p">   </span><span class="c">data.json</span><span class="p">  </span><span class="c">overwrite=True</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceDrive.global_scopes">
+<code class="sig-name descname">global_scopes</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceDrive.init_drive_client">
+<code class="sig-name descname">init_drive_client</code><span class="sig-paren">(</span><em class="sig-param">credentials_file: str = 'credentials.json'</em>, <em class="sig-param">token_file: str = 'oauth.token'</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">scopes: list = None</em>, <em class="sig-param">save_token: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.init_drive_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Drive client</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>token_file</strong> – filepath to OAuth token file</p></li>
+<li><p><strong>use_robocloud_vault</strong> – if <cite>True</cite> the token is read from Robocloud</p></li>
+<li><p><strong>scopes</strong> – authenticated scopes, for example. [‘forms’, ‘spreadsheets’]</p></li>
+<li><p><strong>save_token</strong> – set to <cite>True</cite> if token should be saved to local file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceDrive.logger">
+<code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceDrive.region">
+<code class="sig-name descname">region</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceDrive.robocloud_vault_name">
+<code class="sig-name descname">robocloud_vault_name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.robocloud_vault_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceDrive.robocloud_vault_secret_key">
+<code class="sig-name descname">robocloud_vault_secret_key</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.robocloud_vault_secret_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceDrive.services">
+<code class="sig-name descname">services</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.services" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceDrive.set_global_scopes">
+<code class="sig-name descname">set_global_scopes</code><span class="sig-paren">(</span><em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.set_global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global Google authentication scopes</p>
+<p>Useful when using numerous services with different scopes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopes</strong> – list of authentication scopes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceDrive.set_robocloud_vault">
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name: str = None</em>, <em class="sig-param">vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Robocloud Vault name and secret key name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1000,6 +1826,11 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 <code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.clients" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceNaturalLanguage.global_scopes">
+<code class="sig-name descname">global_scopes</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceNaturalLanguage.init_natural_language_client">
 <code class="sig-name descname">init_natural_language_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.init_natural_language_client" title="Permalink to this definition">¶</a></dt>
@@ -1040,8 +1871,20 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.ServiceNaturalLanguage.set_global_scopes">
+<code class="sig-name descname">set_global_scopes</code><span class="sig-paren">(</span><em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.set_global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global Google authentication scopes</p>
+<p>Useful when using numerous services with different scopes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopes</strong> – list of authentication scopes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.ServiceNaturalLanguage.set_robocloud_vault">
-<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name: str = None</em>, <em class="sig-param">vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceNaturalLanguage.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Robocloud Vault name and secret key name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1064,7 +1907,7 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 service account you are using to authenticate with
 Google Sheets API. The IAM page in the console is here:
 <a class="reference external" href="https://console.cloud.google.com/iam-admin/iam/project">https://console.cloud.google.com/iam-admin/iam/project</a></p>
-<p>For more information about Google Sheets API <a class="reference external" href="https://developers.google.com/sheets/api/quickstart/python">link</a>.</p>
+<p>For more information about Google Sheets API <a href="#id11"><span class="problematic" id="id12">link_</span></a>.</p>
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceSheets.clear_values">
 <code class="sig-name descname">clear_values</code><span class="sig-paren">(</span><em class="sig-param">sheet_id: str</em>, <em class="sig-param">sheet_range: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.clear_values" title="Permalink to this definition">¶</a></dt>
@@ -1109,12 +1952,17 @@ Google Sheets API. The IAM page in the console is here:
 <li><p><strong>sheet_range</strong> – target sheet range</p></li>
 <li><p><strong>value_render_option</strong> – how values should be represented
 in the output defaults to “UNFORMATTED_VALUE”</p></li>
-<li><p><strong>datetime_render_option</strong> – ow dates, times, and durations should
-be represented in the outpu, defaults to “FORMATTED_STRING”</p></li>
+<li><p><strong>datetime_render_option</strong> – how dates, times, and durations should be
+represented in the output, defaults to “FORMATTED_STRING”</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSheets.global_scopes">
+<code class="sig-name descname">global_scopes</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceSheets.init_sheets_client">
@@ -1174,8 +2022,20 @@ default <cite>USER_ENTERED</cite></p></li>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.ServiceSheets.set_global_scopes">
+<code class="sig-name descname">set_global_scopes</code><span class="sig-paren">(</span><em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.set_global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global Google authentication scopes</p>
+<p>Useful when using numerous services with different scopes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopes</strong> – list of authentication scopes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.ServiceSheets.set_robocloud_vault">
-<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name: str = None</em>, <em class="sig-param">vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Robocloud Vault name and secret key name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1194,19 +2054,26 @@ default <cite>USER_ENTERED</cite></p></li>
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">ServiceSpeechToText</code><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Cloud.Google.GoogleBase" title="RPA.Cloud.Google.GoogleBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Cloud.Google.GoogleBase</span></code></a></p>
 <p>Class for Google Cloud Speech-To-Text API</p>
-<p>Possible input audio encodings:
-- ‘AMR’
-- ‘AMR_WB’
-- ‘ENCODING_UNSPECIFIED’
-- ‘FLAC’
-- ‘LINEAR16’
-- ‘MULAW’
-- ‘OGG_OPUS’
-- ‘SPEEX_WITH_HEADER_BYTE’</p>
+<p>Possible input audio encodings:</p>
+<ul class="simple">
+<li><p>‘AMR’</p></li>
+<li><p>‘AMR_WB’</p></li>
+<li><p>‘ENCODING_UNSPECIFIED’</p></li>
+<li><p>‘FLAC’</p></li>
+<li><p>‘LINEAR16’</p></li>
+<li><p>‘MULAW’</p></li>
+<li><p>‘OGG_OPUS’</p></li>
+<li><p>‘SPEEX_WITH_HEADER_BYTE’</p></li>
+</ul>
 <p>Link to <a class="reference external" href="https://pypi.org/project/google-cloud-speech/">Speech To Text PyPI</a> page.</p>
 <dl class="attribute">
 <dt id="RPA.Cloud.Google.ServiceSpeechToText.clients">
 <code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceSpeechToText.global_scopes">
+<code class="sig-name descname">global_scopes</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.global_scopes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1263,8 +2130,20 @@ default <cite>USER_ENTERED</cite></p></li>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.ServiceSpeechToText.set_global_scopes">
+<code class="sig-name descname">set_global_scopes</code><span class="sig-paren">(</span><em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.set_global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global Google authentication scopes</p>
+<p>Useful when using numerous services with different scopes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopes</strong> – list of authentication scopes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.ServiceSpeechToText.set_robocloud_vault">
-<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name: str = None</em>, <em class="sig-param">vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceSpeechToText.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Robocloud Vault name and secret key name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1377,6 +2256,11 @@ True if all were downloaded</p>
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceStorage.global_scopes">
+<code class="sig-name descname">global_scopes</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceStorage.init_storage_client">
 <code class="sig-name descname">init_storage_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.init_storage_client" title="Permalink to this definition">¶</a></dt>
@@ -1442,8 +2326,20 @@ True if all were downloaded</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.ServiceStorage.set_global_scopes">
+<code class="sig-name descname">set_global_scopes</code><span class="sig-paren">(</span><em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.set_global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global Google authentication scopes</p>
+<p>Useful when using numerous services with different scopes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopes</strong> – list of authentication scopes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.ServiceStorage.set_robocloud_vault">
-<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name: str = None</em>, <em class="sig-param">vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceStorage.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Robocloud Vault name and secret key name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1497,6 +2393,11 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 <dl class="attribute">
 <dt id="RPA.Cloud.Google.ServiceTextToSpeech.clients">
 <code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTextToSpeech.global_scopes">
+<code class="sig-name descname">global_scopes</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.global_scopes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1553,8 +2454,20 @@ files = {“mytestimg”: “image1.png”, “mydoc”: “google.pdf”}</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.ServiceTextToSpeech.set_global_scopes">
+<code class="sig-name descname">set_global_scopes</code><span class="sig-paren">(</span><em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.set_global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global Google authentication scopes</p>
+<p>Useful when using numerous services with different scopes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopes</strong> – list of authentication scopes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.ServiceTextToSpeech.set_robocloud_vault">
-<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name: str = None</em>, <em class="sig-param">vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceTextToSpeech.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Robocloud Vault name and secret key name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1601,6 +2514,11 @@ defaults to “synthesized.mp3”</p></li>
 <code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.clients" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceTranslation.global_scopes">
+<code class="sig-name descname">global_scopes</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceTranslation.init_translation_client">
 <code class="sig-name descname">init_translation_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">project_identifier: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.init_translation_client" title="Permalink to this definition">¶</a></dt>
@@ -1642,8 +2560,20 @@ defaults to “synthesized.mp3”</p></li>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.ServiceTranslation.set_global_scopes">
+<code class="sig-name descname">set_global_scopes</code><span class="sig-paren">(</span><em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.set_global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global Google authentication scopes</p>
+<p>Useful when using numerous services with different scopes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopes</strong> – list of authentication scopes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.ServiceTranslation.set_robocloud_vault">
-<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name: str = None</em>, <em class="sig-param">vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceTranslation.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Robocloud Vault name and secret key name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1686,15 +2616,17 @@ defaults to “synthesized.mp3”</p></li>
 <dt id="RPA.Cloud.Google.ServiceVideoIntelligence.annotate_video">
 <code class="sig-name descname">annotate_video</code><span class="sig-paren">(</span><em class="sig-param">video_uri: str = None</em>, <em class="sig-param">video_file: str = None</em>, <em class="sig-param">json_file: str = None</em>, <em class="sig-param">features: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.annotate_video" title="Permalink to this definition">¶</a></dt>
 <dd><p>Annotate video</p>
-<p>Possible values for features:
-- FEATURE_UNSPECIFIED, Unspecified.
-- LABEL_DETECTION, Label detection. Detect objects, such as dog or flower.
-- SHOT_CHANGE_DETECTION, Shot change detection.
-- EXPLICIT_CONTENT_DETECTION, Explicit content detection.
-- SPEECH_TRANSCRIPTION, Speech transcription.
-- TEXT_DETECTION, OCR text detection and tracking.
-- OBJECT_TRACKING, Object detection and tracking.
-- LOGO_RECOGNITION, Logo detection, tracking, and recognition.</p>
+<p>Possible values for features:</p>
+<ul class="simple">
+<li><p>FEATURE_UNSPECIFIED, Unspecified.</p></li>
+<li><p>LABEL_DETECTION, Label detection. Detect objects, such as dog or flower.</p></li>
+<li><p>SHOT_CHANGE_DETECTION, Shot change detection.</p></li>
+<li><p>EXPLICIT_CONTENT_DETECTION, Explicit content detection.</p></li>
+<li><p>SPEECH_TRANSCRIPTION, Speech transcription.</p></li>
+<li><p>TEXT_DETECTION, OCR text detection and tracking.</p></li>
+<li><p>OBJECT_TRACKING, Object detection and tracking.</p></li>
+<li><p>LOGO_RECOGNITION, Logo detection, tracking, and recognition.</p></li>
+</ul>
 <p>If <cite>video_uri</cite> is given then that is used even if <cite>video_file</cite> is None.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1715,6 +2647,11 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 <dl class="attribute">
 <dt id="RPA.Cloud.Google.ServiceVideoIntelligence.clients">
 <code class="sig-name descname">clients</code><em class="property">: dict</em><em class="property"> = {}</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.clients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVideoIntelligence.global_scopes">
+<code class="sig-name descname">global_scopes</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.global_scopes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1757,8 +2694,20 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.ServiceVideoIntelligence.set_global_scopes">
+<code class="sig-name descname">set_global_scopes</code><span class="sig-paren">(</span><em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.set_global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global Google authentication scopes</p>
+<p>Useful when using numerous services with different scopes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopes</strong> – list of authentication scopes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.ServiceVideoIntelligence.set_robocloud_vault">
-<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name: str = None</em>, <em class="sig-param">vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceVideoIntelligence.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Robocloud Vault name and secret key name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1868,6 +2817,11 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 </dl>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.ServiceVision.global_scopes">
+<code class="sig-name descname">global_scopes</code><em class="property">: list</em><em class="property"> = []</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceVision.init_vision_client">
 <code class="sig-name descname">init_vision_client</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.init_vision_client" title="Permalink to this definition">¶</a></dt>
@@ -1908,8 +2862,20 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.ServiceVision.set_global_scopes">
+<code class="sig-name descname">set_global_scopes</code><span class="sig-paren">(</span><em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.set_global_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global Google authentication scopes</p>
+<p>Useful when using numerous services with different scopes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scopes</strong> – list of authentication scopes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.ServiceVision.set_robocloud_vault">
-<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name</em>, <em class="sig-param">vault_secret_key</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_robocloud_vault</code><span class="sig-paren">(</span><em class="sig-param">vault_name: str = None</em>, <em class="sig-param">vault_secret_key: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceVision.set_robocloud_vault" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Robocloud Vault name and secret key name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1923,10 +2889,43 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="RPA.Cloud.Google.Update">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">Update</code><a class="headerlink" href="#RPA.Cloud.Google.Update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Possible file update actions.</p>
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.Update.star">
+<code class="sig-name descname">star</code><em class="property"> = 3</em><a class="headerlink" href="#RPA.Cloud.Google.Update.star" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.Update.trash">
+<code class="sig-name descname">trash</code><em class="property"> = 1</em><a class="headerlink" href="#RPA.Cloud.Google.Update.trash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.Update.unstar">
+<code class="sig-name descname">unstar</code><em class="property"> = 4</em><a class="headerlink" href="#RPA.Cloud.Google.Update.unstar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Cloud.Google.Update.untrash">
+<code class="sig-name descname">untrash</code><em class="property"> = 2</em><a class="headerlink" href="#RPA.Cloud.Google.Update.untrash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="RPA.Cloud.Google.google_dependency_required">
 <code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">google_dependency_required</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.google_dependency_required" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="RPA.Cloud.Google.to_action">
+<code class="sig-prename descclassname">RPA.Cloud.Google.</code><code class="sig-name descname">to_action</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.to_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert value to Update enum.</p>
+</dd></dl>
 
 </div>
 </div>

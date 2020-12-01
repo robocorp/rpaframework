@@ -5,7 +5,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:29",
+        "generated": "2020-12-01 13:39:35",
         "inits": [],
         "keywords": [
             {
@@ -103,7 +103,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:29",
+        "generated": "2020-12-01 13:39:35",
         "inits": [
             {
                 "name": "Init",
@@ -2622,7 +2622,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:29",
+        "generated": "2020-12-01 13:39:36",
         "inits": [
             {
                 "name": "Init",
@@ -2975,7 +2975,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:29",
+        "generated": "2020-12-01 13:39:36",
         "inits": [
             {
                 "name": "Init",
@@ -3189,11 +3189,11 @@
     },
     "RPA.Cloud.Google": {
         "name": "RPA.Cloud.Google",
-        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>Google</cite> is a library for operating with Google API endpoints.</p>\n<p>Usage requires the following steps:</p>\n<ul class=\"simple\">\n<li>Create a GCP project</li>\n<li>Create a service account key file (JSON) and save it to a place the robot\ncan use it</li>\n<li>Enable APIs</li>\n<li>Install rpaframework[google]</li>\n</ul>\n<p><strong>Google authentication</strong></p>\n<p>Authentication for Google is set with <cite>service credentials JSON file</cite> which can be given to the library\nin three different ways.</p>\n<ul class=\"simple\">\n<li>Method 1 as environment variables, <tt class=\"docutils literal\">GOOGLE_APPLICATION_CREDENTIALS</tt> with path to JSON file.</li>\n<li>Method 2 as keyword parameter to <tt class=\"docutils literal\">Init Storage Client</tt> for example.</li>\n<li>Method 3 as Robocloud vault secret. The vault name and secret key name needs to be given in library init\nor with keyword <tt class=\"docutils literal\">Set Robocloud Vault</tt>. Secret value should contain JSON file contents.</li>\n</ul>\n<p>Method 1. service credentials using environment variable</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.Google</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init Google services</span><span class=\"p\">\n    </span><span class=\"c\"># NO parameters for Vision Client, expecting to get JSON\n</span><span class=\"p\">    </span><span class=\"c\"># with GOOGLE_APPLICATION_CREDENTIALS environment variable\n</span><span class=\"p\">    </span><span class=\"nf\">Init Vision Client</span>\n</pre>\n<p>Method 2. service credentials with keyword parameter</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.Google</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init Google services</span><span class=\"p\">\n    </span><span class=\"nf\">Init Speech To Text Client</span><span class=\"p\">  </span><span class=\"s\">/path/to/service_credentials.json</span>\n</pre>\n<p>Method 3. setting Robocloud Vault in the library init</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.Google</span><span class=\"p\">\n...       </span><span class=\"s\">robocloud_vault_name=googlecloud</span><span class=\"p\">\n...       </span><span class=\"s\">robocloud_vault_secret_key=servicecreds</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init Google services</span><span class=\"p\">\n    </span><span class=\"nf\">Init Storage Client</span><span class=\"p\">   </span><span class=\"s\">use_robocloud_vault=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}</span>\n</pre>\n<p>Method 3. setting Robocloud Vault with keyword</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.Google</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init Google services</span><span class=\"p\">\n    </span><span class=\"nf\">Set Robocloud Vault</span><span class=\"p\">   </span><span class=\"s\">vault_name=googlecloud</span><span class=\"p\">  </span><span class=\"s\">vault_secret_key=servicecreds</span><span class=\"p\">\n    </span><span class=\"nf\">Init Storage Client</span><span class=\"p\">   </span><span class=\"s\">use_robocloud_vault=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}</span>\n</pre>\n<p><strong>Requirements</strong></p>\n<p>Due to number of dependencies related to Google Cloud services this library has been set as\nan optional package for <tt class=\"docutils literal\">rpaframework</tt>.</p>\n<p>This can be installed by opting in to the <cite>google</cite> dependency:</p>\n<p><tt class=\"docutils literal\">pip install rpaframework[google]</tt></p>\n<p><strong>Examples</strong></p>\n<p><strong>Robot Framework</strong></p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.Google</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Variables ***</span><span class=\"p\">\n${</span><span class=\"nv\">SERVICE CREDENTIALS</span><span class=\"p\">}    ${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">path</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">to</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">service_credentials.json</span><span class=\"p\">\n${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}            </span><span class=\"s\">testbucket12213123123</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Upload a file into a new storage bucket</span><span class=\"p\">\n    [</span><span class=\"kn\">Setup</span><span class=\"p\">]   </span><span class=\"nf\">Init Storage Client</span><span class=\"p\">   ${</span><span class=\"nv\">SERVICE CREDENTIALS</span><span class=\"p\">}\n    </span><span class=\"nf\">Create Bucket</span><span class=\"p\">    ${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}\n    </span><span class=\"nf\">Upload File</span><span class=\"p\">      ${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}   ${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">path</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">to</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">file.pdf</span><span class=\"p\">  </span><span class=\"s\">myfile.pdf</span><span class=\"p\">\n    &#64;{</span><span class=\"nv\">files</span><span class=\"p\">}         </span><span class=\"nf\">List Files</span><span class=\"p\">   ${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}\n    </span><span class=\"nf\">FOR</span><span class=\"p\">   ${</span><span class=\"nv\">file</span><span class=\"p\">}  </span><span class=\"s\">IN</span><span class=\"p\">   &#64;{</span><span class=\"nv\">files</span><span class=\"p\">}\n        </span><span class=\"nf\">Log</span><span class=\"p\">  ${</span><span class=\"nv\">file</span><span class=\"p\">}\n    </span><span class=\"nf\">END</span>\n</pre>\n<p><strong>Python</strong></p>\n<pre class=\"code python literal-block\">\n<span class=\"kn\">from</span> <span class=\"nn\">RPA.Cloud.Google</span> <span class=\"kn\">import</span> <span class=\"n\">Google</span>\n\n<span class=\"n\">library</span> <span class=\"o\">=</span> <span class=\"n\">Google</span>\n<span class=\"n\">service_credentials</span> <span class=\"o\">=</span> <span class=\"s1\">'/path/to/service_credentials.json'</span>\n\n<span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">init_vision_client</span><span class=\"p\">(</span><span class=\"n\">service_credentials</span><span class=\"p\">)</span>\n<span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">init_text_to_speech</span><span class=\"p\">(</span><span class=\"n\">service_credentials</span><span class=\"p\">)</span>\n\n<span class=\"n\">response</span> <span class=\"o\">=</span> <span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">detect_text</span><span class=\"p\">(</span><span class=\"s1\">'imagefile.png'</span><span class=\"p\">,</span> <span class=\"s1\">'result.json'</span><span class=\"p\">)</span>\n<span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">synthesize_speech</span><span class=\"p\">(</span><span class=\"s1\">'I want this said aloud'</span><span class=\"p\">,</span> <span class=\"n\">target_file</span><span class=\"o\">=</span><span class=\"s1\">'said.mp3'</span><span class=\"p\">)</span>\n</pre>\n</div>\n</div>",
+        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>Google</cite> is a library for operating with Google API endpoints.</p>\n<p>Usage requires the following steps:</p>\n<ul class=\"simple\">\n<li>Create a GCP project</li>\n<li>Create a service account key file (JSON) and save it to a place the robot\ncan use it</li>\n<li>Enable APIs</li>\n<li>Install rpaframework[google]</li>\n</ul>\n<p><strong>Google authentication</strong></p>\n<p>Authentication for Google is set with <cite>service credentials JSON file</cite> which can be given to the library\nin three different ways or with <cite>credentials.json</cite>, which is used for OAuth authentication.</p>\n<p>Methods when using service credentials:</p>\n<ul class=\"simple\">\n<li>Method 1 as environment variables, <tt class=\"docutils literal\">GOOGLE_APPLICATION_CREDENTIALS</tt> with path to JSON file.</li>\n<li>Method 2 as keyword parameter to <tt class=\"docutils literal\">Init Storage Client</tt> for example.</li>\n<li>Method 3 as Robocloud vault secret. The vault name and secret key name needs to be given in library init\nor with keyword <tt class=\"docutils literal\">Set Robocloud Vault</tt>. Secret value should contain JSON file contents.</li>\n</ul>\n<p>Method 1. service credentials using environment variable</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.Google</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init Google services</span><span class=\"p\">\n    </span><span class=\"c\"># NO parameters for Vision Client, expecting to get JSON\n</span><span class=\"p\">    </span><span class=\"c\"># with GOOGLE_APPLICATION_CREDENTIALS environment variable\n</span><span class=\"p\">    </span><span class=\"nf\">Init Vision Client</span>\n</pre>\n<p>Method 2. service credentials with keyword parameter</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.Google</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init Google services</span><span class=\"p\">\n    </span><span class=\"nf\">Init Speech To Text Client</span><span class=\"p\">  </span><span class=\"s\">/path/to/service_credentials.json</span>\n</pre>\n<p>Method 3. setting Robocloud Vault in the library init</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.Google</span><span class=\"p\">\n...       </span><span class=\"s\">robocloud_vault_name=googlecloud</span><span class=\"p\">\n...       </span><span class=\"s\">robocloud_vault_secret_key=servicecreds</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init Google services</span><span class=\"p\">\n    </span><span class=\"nf\">Init Storage Client</span><span class=\"p\">   </span><span class=\"s\">use_robocloud_vault=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}</span>\n</pre>\n<p>Method 3. setting Robocloud Vault with keyword</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.Google</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init Google services</span><span class=\"p\">\n    </span><span class=\"nf\">Set Robocloud Vault</span><span class=\"p\">   </span><span class=\"s\">vault_name=googlecloud</span><span class=\"p\">  </span><span class=\"s\">vault_secret_key=servicecreds</span><span class=\"p\">\n    </span><span class=\"nf\">Init Storage Client</span><span class=\"p\">   </span><span class=\"s\">use_robocloud_vault=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}</span>\n</pre>\n<p>Method when using OAuth credentials.json:</p>\n<p>The Google Apps Script and Google Drive services are authenticated using this method.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.Google</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Variables ***</span><span class=\"p\">\n&#64;{</span><span class=\"nv\">SCRIPT_SCOPES</span><span class=\"p\">}     </span><span class=\"s\">forms</span><span class=\"p\">   </span><span class=\"s\">spreadsheets</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init Google OAuth services</span><span class=\"p\">\n    </span><span class=\"nf\">Init Apps Script Client</span><span class=\"p\">   </span><span class=\"s\">/path/to/credentials.json</span><span class=\"p\">   ${</span><span class=\"nv\">SCRIPT_SCOPES</span><span class=\"p\">}</span>\n</pre>\n<p><strong>Creating and using OAuth token file</strong></p>\n<p>The token file can be created using <cite>credentials.json</cite> by running command:</p>\n<p><tt class=\"docutils literal\"><span class=\"pre\">rpa-google-oauth</span> <span class=\"pre\">--service</span> drive</tt> or\n<tt class=\"docutils literal\"><span class=\"pre\">rpa-google-oauth</span> <span class=\"pre\">--scopes</span> drive.appdata,drive.file,drive.install</tt></p>\n<p>This will start web based authentication process, which outputs the token at the end.\nToken could be stored into <tt class=\"docutils literal\">Robocorp Vault</tt> where it needs to be in variable <tt class=\"docutils literal\"><span class=\"pre\">google-oauth</span></tt>.</p>\n<p>Example Vault content.</p>\n<pre class=\"code json literal-block\">\n<span class=\"s2\">&quot;googlecloud&quot;</span><span class=\"err\">:</span> <span class=\"p\">{</span>\n    <span class=\"nt\">&quot;oauth-token&quot;</span><span class=\"p\">:</span> <span class=\"s2\">&quot;gANfd123321aabeedYsc&quot;</span>\n<span class=\"p\">}</span>\n</pre>\n<p>Using the Vault.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Set up Google Drive authentication</span><span class=\"p\">\n    </span><span class=\"nf\">Set Robocloud Vault</span><span class=\"p\">    </span><span class=\"s\">vault_name=googlecloud</span><span class=\"p\">\n    </span><span class=\"nf\">Init Drive Client</span><span class=\"p\">    </span><span class=\"s\">use_robocloud_vault=True</span>\n</pre>\n<p><strong>Requirements</strong></p>\n<p>Due to number of dependencies related to Google Cloud services this library has been set as\nan optional package for <tt class=\"docutils literal\">rpaframework</tt>.</p>\n<p>This can be installed by opting in to the <cite>google</cite> dependency:</p>\n<p><tt class=\"docutils literal\">pip install rpaframework[google]</tt></p>\n<p><strong>Examples</strong></p>\n<p><strong>Robot Framework</strong></p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.Google</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Variables ***</span><span class=\"p\">\n${</span><span class=\"nv\">SERVICE CREDENTIALS</span><span class=\"p\">}    ${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">path</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">to</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">service_credentials.json</span><span class=\"p\">\n${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}            </span><span class=\"s\">testbucket12213123123</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Upload a file into a new storage bucket</span><span class=\"p\">\n    [</span><span class=\"kn\">Setup</span><span class=\"p\">]   </span><span class=\"nf\">Init Storage Client</span><span class=\"p\">   ${</span><span class=\"nv\">SERVICE CREDENTIALS</span><span class=\"p\">}\n    </span><span class=\"nf\">Create Bucket</span><span class=\"p\">    ${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}\n    </span><span class=\"nf\">Upload File</span><span class=\"p\">      ${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}   ${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">path</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">to</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">file.pdf</span><span class=\"p\">  </span><span class=\"s\">myfile.pdf</span><span class=\"p\">\n    &#64;{</span><span class=\"nv\">files</span><span class=\"p\">}         </span><span class=\"nf\">List Files</span><span class=\"p\">   ${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}\n    </span><span class=\"nf\">FOR</span><span class=\"p\">   ${</span><span class=\"nv\">file</span><span class=\"p\">}  </span><span class=\"s\">IN</span><span class=\"p\">   &#64;{</span><span class=\"nv\">files</span><span class=\"p\">}\n        </span><span class=\"nf\">Log</span><span class=\"p\">  ${</span><span class=\"nv\">file</span><span class=\"p\">}\n    </span><span class=\"nf\">END</span>\n</pre>\n<p><strong>Python</strong></p>\n<pre class=\"code python literal-block\">\n<span class=\"kn\">from</span> <span class=\"nn\">RPA.Cloud.Google</span> <span class=\"kn\">import</span> <span class=\"n\">Google</span>\n\n<span class=\"n\">library</span> <span class=\"o\">=</span> <span class=\"n\">Google</span>\n<span class=\"n\">service_credentials</span> <span class=\"o\">=</span> <span class=\"s1\">'/path/to/service_credentials.json'</span>\n\n<span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">init_vision_client</span><span class=\"p\">(</span><span class=\"n\">service_credentials</span><span class=\"p\">)</span>\n<span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">init_text_to_speech</span><span class=\"p\">(</span><span class=\"n\">service_credentials</span><span class=\"p\">)</span>\n\n<span class=\"n\">response</span> <span class=\"o\">=</span> <span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">detect_text</span><span class=\"p\">(</span><span class=\"s1\">'imagefile.png'</span><span class=\"p\">,</span> <span class=\"s1\">'result.json'</span><span class=\"p\">)</span>\n<span class=\"n\">library</span><span class=\"o\">.</span><span class=\"n\">synthesize_speech</span><span class=\"p\">(</span><span class=\"s1\">'I want this said aloud'</span><span class=\"p\">,</span> <span class=\"n\">target_file</span><span class=\"o\">=</span><span class=\"s1\">'said.mp3'</span><span class=\"p\">)</span>\n</pre>\n</div>\n</div>",
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:29",
+        "generated": "2020-12-01 13:39:36",
         "inits": [
             {
                 "name": "Init",
@@ -3240,7 +3240,7 @@
                     "json_file: str = None",
                     "features: list = None"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Annotate video</p>\n<p>Possible values for features:\n- FEATURE_UNSPECIFIED, Unspecified.\n- LABEL_DETECTION, Label detection. Detect objects, such as dog or flower.\n- SHOT_CHANGE_DETECTION, Shot change detection.\n- EXPLICIT_CONTENT_DETECTION, Explicit content detection.\n- SPEECH_TRANSCRIPTION, Speech transcription.\n- TEXT_DETECTION, OCR text detection and tracking.\n- OBJECT_TRACKING, Object detection and tracking.\n- LOGO_RECOGNITION, Logo detection, tracking, and recognition.</p>\n<p>If <cite>video_uri</cite> is given then that is used even if <cite>video_file</cite> is None.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param video_uri:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Google Cloud Storage URI</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param video_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to video</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param json_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">json target to save result, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param features:</th><td class=\"field-body\">list of annotation features to detect,\ndefaults to [&quot;LABEL_DETECTION&quot;, &quot;SHOT_CHANGE_DETECTION&quot;]</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">annotate result</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Annotate video</p>\n<p>Possible values for features:</p>\n<ul class=\"simple\">\n<li>FEATURE_UNSPECIFIED, Unspecified.</li>\n<li>LABEL_DETECTION, Label detection. Detect objects, such as dog or flower.</li>\n<li>SHOT_CHANGE_DETECTION, Shot change detection.</li>\n<li>EXPLICIT_CONTENT_DETECTION, Explicit content detection.</li>\n<li>SPEECH_TRANSCRIPTION, Speech transcription.</li>\n<li>TEXT_DETECTION, OCR text detection and tracking.</li>\n<li>OBJECT_TRACKING, Object detection and tracking.</li>\n<li>LOGO_RECOGNITION, Logo detection, tracking, and recognition.</li>\n</ul>\n<p>If <cite>video_uri</cite> is given then that is used even if <cite>video_file</cite> is None.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param video_uri:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Google Cloud Storage URI</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param video_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to video</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param json_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">json target to save result, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param features:</th><td class=\"field-body\">list of annotation features to detect,\ndefaults to [&quot;LABEL_DETECTION&quot;, &quot;SHOT_CHANGE_DETECTION&quot;]</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">annotate result</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
                 "shortdoc": "Annotate video",
                 "tags": [],
                 "matched": true
@@ -3354,6 +3354,106 @@
                 "matched": true
             },
             {
+                "name": "Drive Create Directory",
+                "args": [
+                    "folder: str = None"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Create new directory to Google Drive</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param folder:</th><td class=\"field-body\">name for the new directory</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises GoogleDriveError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if folder name is not given</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">created file id</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+                "shortdoc": "Create new directory to Google Drive",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Drive Delete File",
+                "args": [
+                    "file_id: str = None",
+                    "file_dict: dict = None",
+                    "query: str = None",
+                    "multiple_ok: bool = False"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Delete file specified by id, file dictionary or query string</p>\n<p>Note. Be extra careful when calling this keyword!</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param file_id:</th><td class=\"field-body\">drive file id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param file_dict:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">file dictionary returned by <cite>Drive Search Files</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param query:</th><td class=\"field-body\">drive query string to find target file, needs to match 1 file\nunless parameter <cite>multiple_ok</cite> is set to <cite>True</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param multiple_ok:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">set to <cite>True</cite> if it is ok to perform delete\non more than 1 file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">how many files where deleted</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${folder_id}=</span><span class=\"p\">  </span><span class=\"c\">Drive Get Folder Id</span><span class=\"p\">   </span><span class=\"c\">datafolder</span><span class=\"p\">\n</span><span class=\"c\">${deleted}=</span><span class=\"p\">    </span><span class=\"c\">Drive Delete File</span><span class=\"p\">   </span><span class=\"c\">query=name contains '.json' and '${folder_id}' in parents</span><span class=\"p\">\n</span><span class=\"c\">...</span><span class=\"p\">            </span><span class=\"c\">multiple_ok=True</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Delete file specified by id, file dictionary or query string",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Drive Download Files",
+                "args": [
+                    "file_dict: dict = None",
+                    "query: str = None",
+                    "limit: int = None",
+                    "timeout: float = None"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Download files specified by file dictionary or query string</p>\n<p>Parameters <cite>start</cite>, <cite>limit</cite> and <cite>timeout</cite> are used only when\ndownloading files defined by <cite>query</cite> parameter.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param file_dict:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">file dictionary returned by <cite>Drive Search Files</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param query:</th><td class=\"field-body\">drive query string to find target files, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param start:</th><td class=\"field-body\">start index from which to start download files</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param limit:</th><td class=\"field-body\">maximum amount of files that are downloaded, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param timeout:</th><td class=\"field-body\">maximum allowed time in seconds for download process</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of downloaded files</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${files}=</span><span class=\"p\">    </span><span class=\"c\">Drive Search Files</span><span class=\"p\">    </span><span class=\"c\">query=name contains '.json'</span><span class=\"p\">\n</span><span class=\"c\">FOR</span><span class=\"p\">    </span><span class=\"c\">${f}</span><span class=\"p\">    </span><span class=\"c\">IN</span><span class=\"p\">    </span><span class=\"c\">&#64;{files}</span><span class=\"p\">\n    </span><span class=\"c\">Run Keyword If</span><span class=\"p\">  </span><span class=\"c\">${f}[size] &lt; 2000</span><span class=\"p\">  </span><span class=\"c\">Drive Download Files</span><span class=\"p\">  </span><span class=\"c\">file_dict=${f}</span><span class=\"p\">\n</span><span class=\"c\">END</span><span class=\"p\">\n\n</span><span class=\"c\">${folder_id}=</span><span class=\"p\">   </span><span class=\"c\">Drive Get Folder Id</span><span class=\"p\">   </span><span class=\"c\">datafolder</span><span class=\"p\">\n</span><span class=\"c\">Drive Download Files</span><span class=\"p\">  </span><span class=\"c\">query=name contains '.json' and '${folder_id}' in parents</span><span class=\"p\">  </span><span class=\"c\">recurse=True</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Download files specified by file dictionary or query string",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Drive Get Folder Id",
+                "args": [
+                    "folder: str = None"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get file id for the folder</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param folder:</th><td class=\"field-body\">name of the folder to identify, by default returns drive's\n<cite>root</cite> folder id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">file id of the folder</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${root_id}=</span><span class=\"p\">    </span><span class=\"c\">Drive Get Folder Id</span><span class=\"p\">   </span><span class=\"c\"># returns Drive root folder id\n${folder_id}=</span><span class=\"p\">  </span><span class=\"c\">Drive Get Folder Id</span><span class=\"p\">  </span><span class=\"c\">subdir</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Get file id for the folder",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Drive Move File",
+                "args": [
+                    "file_id: str = None",
+                    "file_dict: dict = None",
+                    "query: str = None",
+                    "folder: str = None",
+                    "folder_id: str = None",
+                    "multiple_ok: bool = False"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Move file specified by id, file dictionary or query string into target folder</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param file_id:</th><td class=\"field-body\">drive file id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param file_dict:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">file dictionary returned by <cite>Drive Search Files</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param query:</th><td class=\"field-body\">drive query string to find target file, needs to match 1 file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param folder:</th><td class=\"field-body\">name of the folder to move file into, is by default drive's\n<cite>root</cite> folder id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param folder_id:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">id of the folder to move file into, if set the <cite>folder</cite>\nparameter is ignored</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param multiple_ok:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if <cite>True</cite> then moving more than 1 file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of file ids</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises GoogleDriveError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if there are no files to move or\ntarget folder can't be found</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${source_id}=</span><span class=\"p\">  </span><span class=\"c\">Drive Get Folder Id</span><span class=\"p\">  </span><span class=\"c\">sourcefolder</span><span class=\"p\">\n</span><span class=\"c\">${query}=</span><span class=\"p\">      </span><span class=\"c\">Set Variable</span><span class=\"p\">  </span><span class=\"c\">name contains '.json' and '${sourceid}' in parents</span><span class=\"p\">\n</span><span class=\"c\">${files}=</span><span class=\"p\">      </span><span class=\"c\">Drive Move File</span><span class=\"p\">  </span><span class=\"c\">query=${query}</span><span class=\"p\">  </span><span class=\"c\">folder=target_folder</span><span class=\"p\">  </span><span class=\"c\">multiple_ok=True</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Move file specified by id, file dictionary or query string into target folder",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Drive Search Files",
+                "args": [
+                    "query: str = None",
+                    "recurse: bool = False",
+                    "folder_name: str = None"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Search Google Drive for files matching query string</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param query:</th><td class=\"field-body\">search string, defaults to None which means that all files\nand folders are returned</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param recurse:</th><td class=\"field-body\">set to <cite>True</cite> if search should recursive</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param folder_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">search files in this directory</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises GoogleDriveError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if there is a request error</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of files</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${files}=</span><span class=\"p\">  </span><span class=\"c\">Drive Search Files</span><span class=\"p\">   </span><span class=\"c\">query=name contains 'hello'</span><span class=\"p\">\n</span><span class=\"c\">${files}=</span><span class=\"p\">  </span><span class=\"c\">Drive Search Files</span><span class=\"p\">   </span><span class=\"c\">query=modifiedTime &gt; '2020-06-04T12:00:00'</span><span class=\"p\">\n</span><span class=\"c\">${files}=</span><span class=\"p\">  </span><span class=\"c\">Drive Search Files</span><span class=\"p\">   </span><span class=\"c\">query=mimeType contains 'image/' or mimeType contains 'video/'</span><span class=\"p\">\n</span><span class=\"c\">${files}=</span><span class=\"p\">  </span><span class=\"c\">Drive Search Files</span><span class=\"p\">   </span><span class=\"c\">query=name contains '.yaml'</span><span class=\"p\">  </span><span class=\"c\">recurse=True</span><span class=\"p\">\n</span><span class=\"c\">${files}=</span><span class=\"p\">  </span><span class=\"c\">Drive Search Files</span><span class=\"p\">   </span><span class=\"c\">query=name contains '.yaml'</span><span class=\"p\">  </span><span class=\"c\">folder_name=datadirectory</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Search Google Drive for files matching query string",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Drive Update File",
+                "args": [
+                    "file_id: str = None",
+                    "file_dict: dict = None",
+                    "query: str = None",
+                    "action: Update { trash | untrash | star | unstar } = Update.star",
+                    "multiple_ok: bool = False"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Update file specified by id, file dictionary or query string</p>\n<p>Possible actions:\n- star\n- unstar\n- trash\n- untrash</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param file_id:</th><td class=\"field-body\">drive file id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param file_dict:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">file dictionary returned by <cite>Drive Search Files</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param query:</th><td class=\"field-body\">drive query string to find target file, needs to match 1 file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param action:</th><td class=\"field-body\">update action, default star file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param multiple_ok:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">set to <cite>True</cite> if it is ok to perform update\non more than 1 file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">number of updated files</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${folder_id}=</span><span class=\"p\">  </span><span class=\"c\">Drive Get Folder Id</span><span class=\"p\">   </span><span class=\"c\">datafolder</span><span class=\"p\">\n</span><span class=\"c\">${updated}=</span><span class=\"p\">    </span><span class=\"c\">Drive Update File</span><span class=\"p\">   </span><span class=\"c\">query=name contains '.json' and '${folder_id}' in parents</span><span class=\"p\">\n</span><span class=\"c\">...</span><span class=\"p\">            </span><span class=\"c\">action=star</span><span class=\"p\">\n</span><span class=\"c\">...</span><span class=\"p\">            </span><span class=\"c\">multiple_ok=True</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Update file specified by id, file dictionary or query string",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Drive Upload File",
+                "args": [
+                    "filename: str = None",
+                    "folder: str = None",
+                    "overwrite: bool = False",
+                    "make_dir: bool = False"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Upload files into Drive</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">name of the file to upload</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param folder:</th><td class=\"field-body\">target folder for upload</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param overwrite:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">set to <cite>True</cite> if already existing file should be overwritten</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param make_dir:</th><td class=\"field-body\">set to <cite>True</cite> if folder should be created if it does not exist</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises GoogleDriveError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if target_folder does not exist or\ntrying to upload directory</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">uploaded file id</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${file1_id}=</span><span class=\"p\">  </span><span class=\"c\">Drive Upload File</span><span class=\"p\">   </span><span class=\"c\">data.json</span><span class=\"p\">  </span><span class=\"c\"># Upload file to drive root\n${file2_id}=</span><span class=\"p\">  </span><span class=\"c\">Drive Upload File</span><span class=\"p\">   </span><span class=\"c\">newdata.json</span><span class=\"p\">  </span><span class=\"c\">new_folder</span><span class=\"p\">  </span><span class=\"c\">make_dir=True</span><span class=\"p\">\n</span><span class=\"c\">${file3_id}=</span><span class=\"p\">  </span><span class=\"c\">Drive Upload File</span><span class=\"p\">   </span><span class=\"c\">data.json</span><span class=\"p\">  </span><span class=\"c\">overwrite=True</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Upload files into Drive",
+                "tags": [],
+                "matched": true
+            },
+            {
                 "name": "Face Detection",
                 "args": [
                     "image_uri: str",
@@ -3382,8 +3482,36 @@
                     "value_render_option: str = UNFORMATTED_VALUE",
                     "datetime_render_option: str = FORMATTED_STRING"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get values from the range in the sheet</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param sheet_id:</th><td class=\"field-body\">target sheet</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param sheet_range:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">target sheet range</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param value_render_option:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">how values should be represented\nin the output defaults to &quot;UNFORMATTED_VALUE&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param datetime_render_option:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">ow dates, times, and durations should\nbe represented in the outpu, defaults to &quot;FORMATTED_STRING&quot;</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get values from the range in the sheet</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param sheet_id:</th><td class=\"field-body\">target sheet</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param sheet_range:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">target sheet range</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param value_render_option:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">how values should be represented\nin the output defaults to &quot;UNFORMATTED_VALUE&quot;</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param datetime_render_option:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">how dates, times, and durations should be\nrepresented in the output, defaults to &quot;FORMATTED_STRING&quot;</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
                 "shortdoc": "Get values from the range in the sheet",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Init Apps Script Client",
+                "args": [
+                    "credentials_file: str = credentials.json",
+                    "token_file: str = oauth.token",
+                    "use_robocloud_vault: bool = False",
+                    "scopes: list = None",
+                    "save_token: bool = False"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Initialize Google Apps Script client</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param credentials_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to credentials JSON</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param token_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to OAuth token file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param use_robocloud_vault:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if <cite>True</cite> the token is read from Robocloud</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param scopes:</th><td class=\"field-body\">authenticated scopes, for example. ['forms', 'spreadsheets']</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param save_token:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">set to <cite>True</cite> if token should be saved to local file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+                "shortdoc": "Initialize Google Apps Script client",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Init Drive Client",
+                "args": [
+                    "credentials_file: str = credentials.json",
+                    "token_file: str = oauth.token",
+                    "use_robocloud_vault: bool = False",
+                    "scopes: list = None",
+                    "save_token: bool = False"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Initialize Google Drive client</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param credentials_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to credentials JSON</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param token_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">filepath to OAuth token file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param use_robocloud_vault:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if <cite>True</cite> the token is read from Robocloud</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param scopes:</th><td class=\"field-body\">authenticated scopes, for example. ['forms', 'spreadsheets']</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param save_token:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">set to <cite>True</cite> if token should be saved to local file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+                "shortdoc": "Initialize Google Drive client",
                 "tags": [],
                 "matched": true
             },
@@ -3532,10 +3660,32 @@
                 "matched": true
             },
             {
+                "name": "Run Script",
+                "args": [
+                    "script_id: str",
+                    "function_name: str",
+                    "parameters: dict"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Run the Google Apps Script</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param script_id:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Google Script identifier</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param function_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the script function</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param parameters:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">script function parameters as a dictionary</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises AssertionError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">thrown when Google Script returns errors</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">&amp;{params}=</span><span class=\"p\">    </span><span class=\"c\">Create Dictionary</span><span class=\"p\">  </span><span class=\"c\">formid=aaad4232</span><span class=\"p\">  </span><span class=\"c\">formvalues=1,2,3</span><span class=\"p\">\n</span><span class=\"c\">${response}=</span><span class=\"p\">  </span><span class=\"c\">Run Script</span><span class=\"p\">    </span><span class=\"c\">abc21397283712da</span><span class=\"p\">  </span><span class=\"c\">submit_form</span><span class=\"p\">   </span><span class=\"c\">${params}</span><span class=\"p\">\n</span><span class=\"c\">Log Many</span><span class=\"p\">   </span><span class=\"c\">${response}</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Run the Google Apps Script",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Set Global Scopes",
+                "args": [
+                    "scopes: list = None"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set global Google authentication scopes</p>\n<p>Useful when using numerous services with different scopes</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param scopes:</th><td class=\"field-body\">list of authentication scopes</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+                "shortdoc": "Set global Google authentication scopes",
+                "tags": [],
+                "matched": true
+            },
+            {
                 "name": "Set Robocloud Vault",
                 "args": [
-                    "vault_name",
-                    "vault_secret_key"
+                    "vault_name: str = None",
+                    "vault_secret_key: str = None"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Set Robocloud Vault name and secret key name</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param vault_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Robocloud Vault name</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param vault_secret_key:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">Rococloud Vault secret key name</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
                 "shortdoc": "Set Robocloud Vault name and secret key name",
@@ -3602,7 +3752,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:30",
+        "generated": "2020-12-01 13:39:36",
         "inits": [],
         "keywords": [
             {
@@ -3720,7 +3870,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:30",
+        "generated": "2020-12-01 13:39:37",
         "inits": [],
         "keywords": [
             {
@@ -4071,7 +4221,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:30",
+        "generated": "2020-12-01 13:39:37",
         "inits": [],
         "keywords": [
             {
@@ -4110,7 +4260,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:30",
+        "generated": "2020-12-01 13:39:37",
         "inits": [],
         "keywords": [
             {
@@ -4207,7 +4357,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:30",
+        "generated": "2020-12-01 13:39:37",
         "inits": [
             {
                 "name": "Init",
@@ -4452,7 +4602,7 @@
             {
                 "name": "Get Window List",
                 "args": [],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get list of open windows</p>\n<p>Window dictionaries contain:</p>\n<ul class=\"simple\">\n<li>title</li>\n<li>pid</li>\n<li>handle</li>\n</ul>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of window dictionaries</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">&#64;{windows}</span><span class=\"p\">    </span><span class=\"c\">Get Window List</span><span class=\"p\">\n</span><span class=\"c\">FOR</span><span class=\"p\">  </span><span class=\"c\">${window}</span><span class=\"p\">  </span><span class=\"c\">IN</span><span class=\"p\">  </span><span class=\"c\">&#64;{windows}</span><span class=\"p\">\n    </span><span class=\"c\">Log Many</span><span class=\"p\">  </span><span class=\"c\">${window}</span><span class=\"p\">\n</span><span class=\"c\">END</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get list of open windows</p>\n<p>Window dictionaries contain:</p>\n<ul class=\"simple\">\n<li>automation_id</li>\n<li>control_id</li>\n<li>title</li>\n<li>pid</li>\n<li>handle</li>\n<li>is_active</li>\n<li>keyboard_focus</li>\n<li>rectangle</li>\n</ul>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of window dictionaries</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">&#64;{windows}</span><span class=\"p\">    </span><span class=\"c\">Get Window List</span><span class=\"p\">\n</span><span class=\"c\">FOR</span><span class=\"p\">  </span><span class=\"c\">${window}</span><span class=\"p\">  </span><span class=\"c\">IN</span><span class=\"p\">  </span><span class=\"c\">&#64;{windows}</span><span class=\"p\">\n    </span><span class=\"c\">Log Many</span><span class=\"p\">  </span><span class=\"c\">${window}</span><span class=\"p\">\n</span><span class=\"c\">END</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Get list of open windows",
                 "tags": [],
                 "matched": true
@@ -4807,7 +4957,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:31",
+        "generated": "2020-12-01 13:39:38",
         "inits": [
             {
                 "name": "Init",
@@ -4973,7 +5123,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:31",
+        "generated": "2020-12-01 13:39:38",
         "inits": [],
         "keywords": [
             {
@@ -5102,7 +5252,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:31",
+        "generated": "2020-12-01 13:39:38",
         "inits": [
             {
                 "name": "Init",
@@ -5379,7 +5529,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:31",
+        "generated": "2020-12-01 13:39:38",
         "inits": [],
         "keywords": [
             {
@@ -5544,7 +5694,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:31",
+        "generated": "2020-12-01 13:39:38",
         "inits": [],
         "keywords": [
             {
@@ -5740,7 +5890,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:32",
+        "generated": "2020-12-01 13:39:39",
         "inits": [],
         "keywords": [
             {
@@ -5937,7 +6087,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:32",
+        "generated": "2020-12-01 13:39:39",
         "inits": [],
         "keywords": [
             {
@@ -6411,7 +6561,7 @@
         "version": "0.7.2",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:32",
+        "generated": "2020-12-01 13:39:39",
         "inits": [
             {
                 "name": "Init",
@@ -6442,7 +6592,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'TRACE', 'DELETE', 'OPTIONS', 'GET', 'PUT']"
+                    "retry_method_list=['PUT', 'GET', 'OPTIONS', 'TRACE', 'HEAD', 'DELETE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>client_certs</code> ['client certificate', 'client key'] PEM files containing the client key and certificate</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6465,7 +6615,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'TRACE', 'DELETE', 'OPTIONS', 'GET', 'PUT']"
+                    "retry_method_list=['PUT', 'GET', 'OPTIONS', 'TRACE', 'HEAD', 'DELETE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> A Custom Authentication object to be passed on to the requests library. <a href=\"http://docs.python-requests.org/en/master/user/advanced/#custom-authentication\">http://docs.python-requests.org/en/master/user/advanced/#custom-authentication</a></p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6488,7 +6638,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'TRACE', 'DELETE', 'OPTIONS', 'GET', 'PUT']"
+                    "retry_method_list=['PUT', 'GET', 'OPTIONS', 'TRACE', 'HEAD', 'DELETE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6511,7 +6661,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'TRACE', 'DELETE', 'OPTIONS', 'GET', 'PUT']"
+                    "retry_method_list=['PUT', 'GET', 'OPTIONS', 'TRACE', 'HEAD', 'DELETE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6534,7 +6684,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'TRACE', 'DELETE', 'OPTIONS', 'GET', 'PUT']"
+                    "retry_method_list=['PUT', 'GET', 'OPTIONS', 'TRACE', 'HEAD', 'DELETE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> List of username &amp; password for HTTP Basic Auth</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -6778,7 +6928,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:32",
+        "generated": "2020-12-01 13:39:39",
         "inits": [],
         "keywords": [
             {
@@ -6897,7 +7047,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:32",
+        "generated": "2020-12-01 13:39:39",
         "inits": [],
         "keywords": [
             {
@@ -7008,7 +7158,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:32",
+        "generated": "2020-12-01 13:39:39",
         "inits": [],
         "keywords": [
             {
@@ -7168,7 +7318,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:32",
+        "generated": "2020-12-01 13:39:39",
         "inits": [],
         "keywords": [
             {
@@ -7263,7 +7413,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:32",
+        "generated": "2020-12-01 13:39:40",
         "inits": [],
         "keywords": [
             {
@@ -7333,7 +7483,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:33",
+        "generated": "2020-12-01 13:39:40",
         "inits": [
             {
                 "name": "Init",
@@ -8272,7 +8422,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:33",
+        "generated": "2020-12-01 13:39:40",
         "inits": [
             {
                 "name": "Init",
@@ -8361,7 +8511,7 @@
                 "name": "Get Work Item Variable",
                 "args": [
                     "name",
-                    "default=<object object at 0x7ff1459019b0>"
+                    "default=<object object at 0x7efe096fe9b0>"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a single variable value from the work item,\nor default value if defined and key does not exist.\nIf key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param key:</th><td class=\"field-body\">Name of variable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param default:</th><td class=\"field-body\">Default value if key does not exist</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${username}=</span><span class=\"p\">    </span><span class=\"c\">Get work item variable</span><span class=\"p\">    </span><span class=\"c\">username</span><span class=\"p\">    </span><span class=\"c\">default=guest</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Return a single variable value from the work item, or default value if defined and key does not exist. If key does not exist and default is not defined, raises <cite>KeyError</cite>.",
@@ -8490,7 +8640,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:33",
+        "generated": "2020-12-01 13:39:41",
         "inits": [
             {
                 "name": "Init",
@@ -8525,7 +8675,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:33",
+        "generated": "2020-12-01 13:39:41",
         "inits": [],
         "keywords": [
             {
@@ -8591,7 +8741,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:33",
+        "generated": "2020-12-01 13:39:41",
         "inits": [
             {
                 "name": "Init",
@@ -8615,7 +8765,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:33",
+        "generated": "2020-12-01 13:39:41",
         "inits": [
             {
                 "name": "Init",
@@ -8872,7 +9022,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:34",
+        "generated": "2020-12-01 13:39:41",
         "inits": [],
         "keywords": [
             {
@@ -8899,7 +9049,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:34",
+        "generated": "2020-12-01 13:39:41",
         "inits": [],
         "keywords": [
             {
@@ -9275,7 +9425,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:34",
+        "generated": "2020-12-01 13:39:41",
         "inits": [
             {
                 "name": "Init",
@@ -9394,7 +9544,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:34",
+        "generated": "2020-12-01 13:39:41",
         "inits": [],
         "keywords": [
             {
@@ -9517,7 +9667,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-01 11:37:34",
+        "generated": "2020-12-01 13:39:41",
         "inits": [],
         "keywords": [
             {

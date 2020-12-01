@@ -11,6 +11,12 @@ Upcoming release
   - Add built-in wait period for all locators, instead of failing immediately
   - Add preview images for matched locators in Robot Framework log
 
+- Library **Cloud.Google**:
+
+  - Add support for Apps Script service
+  - Add support for Drive service
+
+- Library **Desktop.Windows**: Add more properties into dictionary returned by ``Get Window List``
 
 6.7.2
 -----
