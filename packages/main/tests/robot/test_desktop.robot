@@ -69,3 +69,42 @@ Test keyboard keywords
     Press Keys
     Type Text
     Type Text Into
+
+Test Define Region
+    ${region}=          Define Region  100  100  300  300
+    ${width}=           Evaluate  $region.width
+    ${height}=          Evaluate  $region.height
+    Should Be True      ${width} == 200
+    Should Be True      ${height} == 200
+
+Test Move Region
+    ${region}=          Define Region  100  100  300  300
+    ${moved_region}=    Move Region  ${region}  50  50
+    ${left}=            Evaluate  $moved_region.left
+    ${top}=             Evaluate  $moved_region.top
+    ${right}=           Evaluate  $moved_region.right
+    ${bottom}=          Evaluate  $moved_region.bottom
+    Should Be True      ${left} == 150
+    Should Be True      ${top} == 150
+    Should Be True      ${right} == 350
+    Should Be True      ${bottom} == 350
+
+Test Resize Region All Dimensions
+    ${region}=          Define Region  100  100  300  300
+    ${moved_region}=    Resize Region  ${region}  left=50  top=50  right=50  bottom=50
+    ${left}=            Evaluate  $moved_region.left
+    ${top}=             Evaluate  $moved_region.top
+    ${right}=           Evaluate  $moved_region.right
+    ${bottom}=          Evaluate  $moved_region.bottom
+    Should Be True      ${left} == 50
+    Should Be True      ${top} == 50
+    Should Be True      ${right} == 350
+    Should Be True      ${bottom} == 350
+
+Test Resize Region One Dimension
+    ${region}=          Define Region  100  100  300  300
+    ${moved_region}=    Resize Region  ${region}  right=50
+    ${right}=           Evaluate  $moved_region.right
+    ${width}=           Evaluate  $moved_region.width
+    Should Be True      ${right} == 350
+    Should Be True      ${width} == 250

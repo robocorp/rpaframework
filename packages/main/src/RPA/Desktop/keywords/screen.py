@@ -6,9 +6,9 @@ from pathlib import Path
 from typing import Optional, Union, List, Dict
 
 import mss
-from mss.screenshot import ScreenShot
 from PIL import Image
 from robot.api import logger as robot_logger
+from robot.running.context import EXECUTION_CONTEXTS
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 from RPA.core.geometry import Point, Region
@@ -59,34 +59,57 @@ def _create_unique_path(template: Union[Path, str]) -> Path:
     raise RuntimeError("Failed to generate unique path")  # Should not reach here
 
 
-def monitor_to_region(monitor: Dict) -> Region:
+def _monitor_to_region(monitor: Dict) -> Region:
     """Convert mss monitor to Region instance."""
     return Region.from_size(
         monitor["left"], monitor["top"], monitor["width"], monitor["height"]
     )
 
 
-def screenshot_to_image(screenshot: ScreenShot) -> Image:
-    """Convert mss screenshot to PIL.Image instance."""
+def displays() -> List[Region]:
+    """Returns list of display regions, without combined virtual display."""
+    with mss.mss() as sct:
+        return [_monitor_to_region(monitor) for monitor in sct.monitors[1:]]
+
+
+def grab(region: Optional[Region] = None) -> Image.Image:
+    """Take a screenshot of either the full virtual display,
+    or a cropped area of the given region.
+    """
+
+    with mss.mss() as sct:
+        display = _monitor_to_region(sct.monitors[0])
+
+        if region is not None:
+            # TODO: Instead of error clamp region to display
+            if not display.contains(region):
+                raise ValueError("Screenshot region outside display bounds")
+
+            screenshot = sct.grab(region.as_tuple())
+        else:
+            # First monitor is combined virtual display of all monitors
+            screenshot = sct.grab(display.as_tuple())
+
     return Image.frombytes("RGB", screenshot.size, screenshot.bgra, "raw", "BGRX")
 
 
-def all_displays() -> List[Region]:
-    """Returns list of display regions, without combined virtual display."""
-    with mss.mss() as sct:
-        return [monitor_to_region(monitor) for monitor in sct.monitors[1:]]
+def log_image(image: Image.Image, size=1024):
+    """Embed image into Robot Framework log."""
+    if EXECUTION_CONTEXTS.current is None:
+        return
 
+    image = image.copy()
+    image.thumbnail((int(size), int(size)), Image.ANTIALIAS)
 
-def take_screenshot(region: Optional[Region]) -> ScreenShot:
-    """Take a screenshot of either the full virtual display,
-    or a cropped region defined by the given locator.
-    """
-    with mss.mss() as sct:
-        if region is not None:
-            return sct.grab(region.as_tuple())
-        else:
-            # First monitor is combined virtual display of all monitors
-            return sct.grab(sct.monitors[0])
+    buf = BytesIO()
+    image.save(buf, format="PNG")
+    content = base64.b64encode(buf.getvalue()).decode("utf-8")
+
+    robot_logger.info(
+        '<img alt="screenshot" class="rpaframework-desktop-screenshot" '
+        f'src="data:image/png;base64,{content}" >',
+        html=True,
+    )
 
 
 class ScreenKeywords(LibraryContext):
@@ -107,14 +130,13 @@ class ScreenKeywords(LibraryContext):
         :param locator: Element to crop screenshot to
         :param embed: Embed screenshot into Robot Framework log
         """
-        element = None
         if locator is not None:
-            element = self.ctx.find_element(locator)
+            element = self.ctx.wait_for_element(locator)
             if not isinstance(element, Region):
-                raise ValueError(
-                    "Take Screenshot only supports locators "
-                    "that resolve to regions, not points."
-                )
+                raise ValueError("Locator must resolve to a region")
+            image = grab(element)
+        else:
+            image = grab()
 
         if path is None:
             try:
@@ -126,12 +148,11 @@ class ScreenKeywords(LibraryContext):
         path = _create_unique_path(path).with_suffix(".png")
         os.makedirs(path.parent, exist_ok=True)
 
-        image = take_screenshot(element)
-        mss.tools.to_png(image.rgb, image.size, output=path)
+        image.save(path)
         self.logger.info("Saved screenshot as '%s'", path)
 
         if embed:
-            self._embed_screenshot(image)
+            log_image(image)
 
         return str(path)
 
@@ -141,7 +162,7 @@ class ScreenKeywords(LibraryContext):
         which is the combined size of all physical monitors.
         """
         with mss.mss() as sct:
-            return monitor_to_region(sct.monitors[0])
+            return _monitor_to_region(sct.monitors[0])
 
     @keyword
     def highlight_elements(self, locator: str):
@@ -149,7 +170,7 @@ class ScreenKeywords(LibraryContext):
         if not utils.is_windows():
             raise NotImplementedError("Not supported on non-Windows platforms")
 
-        matches = self.ctx.find(locator)
+        matches = self.ctx.find_elements(locator)
 
         for match in matches:
             if isinstance(match, Region):
@@ -161,17 +182,46 @@ class ScreenKeywords(LibraryContext):
             else:
                 raise TypeError(f"Unknown location type: {match}")
 
-    def _embed_screenshot(self, screenshot: ScreenShot, size=(1024, 1024)):
-        """Embed screenshot as inline image in Robot Framework log."""
-        image = screenshot_to_image(screenshot)
-        image.thumbnail(size, Image.ANTIALIAS)
+    @keyword
+    def define_region(self, left: int, top: int, right: int, bottom: int) -> Region:
+        """
+        Return a new ``Region`` with the given dimensions.
 
-        buf = BytesIO()
-        image.save(buf, format="PNG")
-        content = base64.b64encode(buf.getvalue()).decode("utf-8")
+        :param left: left edge coordinate.
+        :param top: top edge coordinate.
+        :param right: right edge coordinate.
+        :param bottom: bottom edge coordinate.
+        """
+        return Region(left, top, right, bottom)
 
-        robot_logger.info(
-            '<img alt="screenshot" class="rpaframework-desktop-screenshot" '
-            f'src="data:image/png;base64,{content}" >',
-            html=True,
-        )
+    @keyword
+    def move_region(self, region: Region, left: int, top: int) -> Region:
+        """
+        Return a new ``Region`` with an offset from the given region.
+
+        :param region: the region to move.
+        :param left: amount of pixels to move left/right.
+        :param top: amount of pixels to move up/down.
+        """
+        return region.move(left, top)
+
+    @keyword
+    def resize_region(
+        self,
+        region: Region,
+        left: Optional[int] = 0,
+        top: Optional[int] = 0,
+        right: Optional[int] = 0,
+        bottom: Optional[int] = 0,
+    ) -> Region:
+        """
+        Return a resized new ``Region`` from a given region.
+
+        :param region: the region to resize.
+        :param left: amount of pixels to resize left edge.
+        :param top: amount of pixels to resize top edge.
+        :param right: amount of pixels to resize right edge.
+        :param bottom: amount of pixels to resize bottom edge.
+
+        """
+        return region.resize(left, top, right, bottom)

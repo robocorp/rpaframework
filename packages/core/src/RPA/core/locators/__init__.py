@@ -1,6 +1,20 @@
 # flake8: noqa
 from dataclasses import fields
-from .containers import TYPES, Locator, BrowserDOM, ImageTemplate, Coordinates, Offset
+from .containers import (
+    TYPES,
+    Locator,
+    PointLocator,
+    OffsetLocator,
+    RegionLocator,
+    ImageLocator,
+    OcrLocator,
+    BrowserLocator,
+    # For backwards compatibility:
+    Coordinates,
+    Offset,
+    BrowserDOM,
+    ImageTemplate,
+)
 from .database import LocatorsDatabase, sanitize_name
 
 

@@ -34,3 +34,6 @@ poetry.toml
 
 # LibreOffice
 **/.~lock*
+
+# coverage
+*.coverage

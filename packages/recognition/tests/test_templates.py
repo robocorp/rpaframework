@@ -73,20 +73,3 @@ def test_find_template(region_and_template):
     assert len(matches) == 1
     match = matches[0]
     assert match.center == region.center
-
-
-def test_clamp():
-    assert templates.clamp(1, 50, 100) == 50
-    assert templates.clamp(1, 1, 100) == 1
-    assert templates.clamp(1, 100, 100) == 100
-    assert templates.clamp(1, -2, 100) == 1
-    assert templates.clamp(0, 1, 0) == 0
-    assert templates.clamp(1, 99, 100) == 99
-    assert templates.clamp(1, 110, 100) == 100
-
-
-def test_log2lin():
-    assert templates.log2lin(1, 1, 100) == 1
-    assert templates.log2lin(1, 100, 100) == 100
-    assert int(templates.log2lin(1, 50, 100)) == 85
-    assert int(templates.log2lin(1, templates.DEFAULT_CONFIDENCE, 100)) == 95

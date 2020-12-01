@@ -1,24 +1,9 @@
-from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, asdict, fields, MISSING
-from pathlib import Path
 from typing import Optional
-
-# Dictionary of all locator typenames to class instances
-TYPES = {}
-
-
-class LocatorMeta(ABCMeta):
-    """Metaclass for keeping track of all locator types."""
-
-    def __new__(cls, name, bases, namespace, **kwargs):
-        locator = super().__new__(cls, name, bases, namespace, **kwargs)
-        if name != "Locator":
-            TYPES[locator().typename] = locator
-        return locator
 
 
 @dataclass
-class Locator(metaclass=LocatorMeta):
+class Locator:
     """Baseclass for a locator entry."""
 
     @staticmethod
@@ -51,33 +36,58 @@ class Locator(metaclass=LocatorMeta):
 
     def to_dict(self):
         """Convert locator instance to a dictionary with type information."""
-        data = {"type": self.typename}
-
-        for key, value in asdict(self).items():
-            if isinstance(value, Path):
-                value = str(value)
-            data[key] = value
-
+        data = {"type": NAMES[type(self)]}
+        data.update(asdict(self))
         return data
-
-    @property
-    @abstractmethod
-    def typename(self):
-        """Name of locator type used in serialization."""
-        raise NotImplementedError
 
 
 @dataclass
-class ImageTemplate(Locator):
+class PointLocator(Locator):
+    """Locator for absolute coordinates."""
+
+    x: int
+    y: int
+
+    def __post_init__(self):
+        self.x = int(self.x)
+        self.y = int(self.y)
+
+
+@dataclass
+class OffsetLocator(Locator):
+    """Locator for offset coordinates."""
+
+    x: int
+    y: int
+
+    def __post_init__(self):
+        self.x = int(self.x)
+        self.y = int(self.y)
+
+
+@dataclass
+class RegionLocator(Locator):
+    """Locator for area defined by coordinates."""
+
+    left: int
+    top: int
+    right: int
+    bottom: int
+
+    def __post_init__(self):
+        self.left = int(self.left)
+        self.top = int(self.top)
+        self.right = int(self.right)
+        self.bottom = int(self.bottom)
+
+
+@dataclass
+class ImageLocator(Locator):
     """Image-based locator for template matching."""
 
-    path: Path
+    path: str
     confidence: Optional[float] = None
-    source: Optional[Path] = None  # TODO: Remove when crop is implemented
-
-    @property
-    def typename(self):
-        return "image"
+    source: Optional[str] = None  # TODO: Remove when crop is implemented
 
     def __post_init__(self):
         if self.confidence is not None:
@@ -85,46 +95,53 @@ class ImageTemplate(Locator):
 
 
 @dataclass
-class BrowserDOM(Locator):
+class OcrLocator(Locator):
+    """Locator for OCR-based text."""
+
+    text: str
+    confidence: Optional[float] = None
+
+    def __post_init__(self):
+        self.text = str(self.text)
+        if self.confidence is not None:
+            self.confidence = float(self.confidence)
+
+
+@dataclass
+class BrowserLocator(Locator):
     """Browser-based locator for DOM elements."""
 
     strategy: str
     value: str
     source: Optional[str] = None
-    screenshot: Optional[Path] = None
-
-    @property
-    def typename(self):
-        return "browser"
+    screenshot: Optional[str] = None
 
 
-@dataclass
-class Coordinates(Locator):
-    """Locator for absolute coordinates."""
+# Aliases for backwards compatibility, just in case.
+Offset = OffsetLocator
+BrowserDOM = BrowserLocator
+ImageTemplate = ImageLocator
+Coordinates = PointLocator
 
-    x: int
-    y: int
+# Mapping of supported locator typenames to classes.
+# Used for parsing locator literals.
+TYPES = {
+    "point": PointLocator,
+    "offset": OffsetLocator,
+    "region": RegionLocator,
+    "image": ImageLocator,
+    "ocr": OcrLocator,
+    "browser": BrowserLocator,
+    "coordinates": PointLocator,  # Backwards compatibility
+}
 
-    @property
-    def typename(self):
-        return "coordinates"
-
-    def __post_init__(self):
-        self.x = int(self.x)
-        self.y = int(self.y)
-
-
-@dataclass
-class Offset(Locator):
-    """Locator for offset coordinates."""
-
-    x: int
-    y: int
-
-    @property
-    def typename(self):
-        return "offset"
-
-    def __post_init__(self):
-        self.x = int(self.x)
-        self.y = int(self.y)
+# Above mapping but in reverse direction.
+NAMES = {
+    PointLocator: "point",
+    OffsetLocator: "offset",
+    RegionLocator: "region",
+    ImageLocator: "image",
+    OcrLocator: "ocr",
+    BrowserLocator: "browser",
+    PointLocator: "point",  # Backwards compatibility
+}

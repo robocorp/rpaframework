@@ -5,3 +5,5 @@ exclude =
     venv
 max-complexity = 10
 max-line-length = 88
+per-file-ignores =
+    */__init__.py: F401

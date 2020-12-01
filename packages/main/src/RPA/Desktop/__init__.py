@@ -1,13 +1,18 @@
 import logging
 from robotlibcore import DynamicCore
 
+from RPA.Desktop.utils import Buffer
 from RPA.Desktop.keywords import (
+    ElementNotFound,
+    MultipleElementsFound,
+    TimeoutException,
     ApplicationKeywords,
     ClipboardKeywords,
     FinderKeywords,
     KeyboardKeywords,
     MouseKeywords,
     ScreenKeywords,
+    TextKeywords,
 )
 
 
@@ -179,6 +184,7 @@ class Desktop(DynamicCore):
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
+        self.buffer = Buffer(self.logger)
 
         # Register keyword libraries to LibCore
         libraries = [
@@ -188,5 +194,6 @@ class Desktop(DynamicCore):
             KeyboardKeywords(self),
             MouseKeywords(self),
             ScreenKeywords(self),
+            TextKeywords(self),
         ]
         super().__init__(libraries)

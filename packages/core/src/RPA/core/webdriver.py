@@ -6,7 +6,7 @@ import stat
 import subprocess
 import tempfile
 from pathlib import Path
-from typing import Any, List
+from typing import Any, Optional, List
 
 from selenium import webdriver
 from webdrivermanager import AVAILABLE_DRIVERS
@@ -51,7 +51,7 @@ CHROME_VERSION_COMMANDS = {
 }
 
 
-def executable(browser: str, download: bool = False) -> str:
+def executable(browser: str, download: bool = False) -> Optional[str]:
     """Get path to webdriver executable, and download it if requested.
 
     :param browser: name of browser to get webdriver for
@@ -106,7 +106,7 @@ def start(name: str, **options):
     return driver
 
 
-def _driver_path(factory: Any, download: bool) -> Any:
+def _driver_path(factory: Any, download: bool) -> Path:
     if platform.system() != "Windows":
         manager = factory(link_path="/usr/bin")
     else:
@@ -123,7 +123,7 @@ def _driver_path(factory: Any, download: bool) -> Any:
         return link_path
 
 
-def _chrome_version() -> str:
+def _chrome_version() -> Optional[str]:
     system = platform.system()
     commands = CHROME_VERSION_COMMANDS.get(system)
 
@@ -145,7 +145,7 @@ def _chrome_version() -> str:
     return None
 
 
-def _chromedriver_version(path: Path) -> str:
+def _chromedriver_version(path: Path) -> Optional[str]:
     output = _run_command([str(path), "--version"])
     if not output:
         return None
@@ -188,7 +188,7 @@ def _set_executable_permissions(path: str) -> None:
     )
 
 
-def _run_command(args: List[str]) -> str:
+def _run_command(args: List[str]) -> Optional[str]:
     try:
         output = subprocess.check_output(args)
         return output.decode().strip()
