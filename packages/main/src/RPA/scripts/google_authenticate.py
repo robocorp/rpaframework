@@ -5,7 +5,10 @@ import pickle
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 
-SERVICE_SCOPES = {"drive": ["drive.appdata", "drive.file", "drive.install", "drive"]}
+SERVICE_SCOPES = {
+    "drive": ["drive.appdata", "drive.file", "drive.install", "drive"],
+    "apps-script": ["script.projects"],
+}
 
 
 def get_arguments(parser):
@@ -26,7 +29,8 @@ def get_arguments(parser):
         "--service",
         dest="service",
         default=None,
-        help="set authentication scopes for the given service",
+        help="set authentication scopes for the given service, "
+        "supported services: drive,apps-script",
     )
     parser.add_argument(
         "--console",
@@ -55,7 +59,7 @@ def start():
     if args.service and args.service in SERVICE_SCOPES.keys():
         auth_scopes.extend(SERVICE_SCOPES[args.service])
     if args.scopes:
-        auth_scopes = args.scopes.split(",")
+        auth_scopes.extend(args.scopes.split(","))
     if not auth_scopes:
         print("WARNING: No authentication scopes have been defined!\n")
         parser.print_help()

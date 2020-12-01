@@ -1783,6 +1783,34 @@ class Google(  # pylint: disable=R0901
         Init Google OAuth services
             Init Apps Script Client   /path/to/credentials.json   ${SCRIPT_SCOPES}
 
+    **Creating and using OAuth token file**
+
+    The token file can be created using `credentials.json` by running command:
+
+    ``rpa-google-oauth --service drive`` or
+    ``rpa-google-oauth --scopes drive.appdata,drive.file,drive.install``
+
+    This will start web based authentication process, which outputs the token at the end.
+    Token could be stored into ``Robocorp Vault`` where it needs to be in variable ``google-oauth``.
+
+    Example Vault content.
+
+    .. code-block:: json
+
+        "googlecloud": {
+            "oauth-token": "gANfd123321aabeedYsc"
+        }
+
+    Using the Vault.
+
+    .. code-block:: robotframework
+
+        *** Keywords ***
+        Set up Google Drive authentication
+            Set Robocloud Vault    vault_name=googlecloud
+            Init Drive Client    use_robocloud_vault=True
+
+
     **Requirements**
 
     Due to number of dependencies related to Google Cloud services this library has been set as
