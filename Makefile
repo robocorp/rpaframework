@@ -70,6 +70,9 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 	$(rm) docs/source/json/RPA_Desktop_keywords*
 	$(rm) docs/source/json/RPA_Desktop_utils*
 
+api-diff:
+	poetry run python ./tools/api_changes.py
+
 changelog: ## Print changes in latest release
 	poetry run python ./tools/changelog.py
 

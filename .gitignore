@@ -9,7 +9,9 @@ __pycache__/
 dist/
 
 # Documentation
-docs/build/
+docs/build/html/*
+docs/build/doctrees
+!docs/build/html/latest.json
 docs/source/libdoc/
 docs/source/robot/
 docs/source/prebuild/
