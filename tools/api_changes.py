@@ -6,7 +6,7 @@ def main():
     run_and_capture = partial(subprocess.run, shell=True, check=True, capture_output=True, text=True)
 
     filename = "docs/build/html/latest.json"
-    result = run_and_capture(f"git diff --unified=10 {filename}")
+    result = run_and_capture(f"git diff --unified=1 {filename}")
     regex_for_timestamp_changes = r'([-+] {8}\"generated\": \"[\d\-: ]{19}\",\n){2}'
     regex_for_linecounts = r'@@.*@@\n'
     # print(f"result.stdout: {result.stdout}")

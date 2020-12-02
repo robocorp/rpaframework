@@ -71,6 +71,7 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 	$(rm) docs/source/json/RPA_Desktop_utils*
 
 api-diff:
+	poetry run docgen --no-patches --format json --output tmpdocs rpaframework;./tools/merge.py tmpdocs docs/build/html/latest.json
 	poetry run python ./tools/api_changes.py
 
 changelog: ## Print changes in latest release
