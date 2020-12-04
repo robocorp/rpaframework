@@ -524,10 +524,20 @@ class ImapSmtp:
     def _search_message(self, criterion: str) -> list:
         return self.imap_conn.search(None, "(" + criterion + ")")
 
-    def _search_and_return_mail_ids(self, criterion: str) -> list:
+    def _search_and_return_mail_ids(self, criterion: str, uids: bool = False) -> list:
         _, data = self._search_message(criterion)
-        mail_ids = bytes.decode(data[0])
-        return mail_ids.split() if len(mail_ids) > 1 else []
+        mail_id_data = bytes.decode(data[0])
+        mail_ids = mail_id_data.split() if len(mail_id_data) > 1 else []
+        if uids:
+            mail_uids = []
+            for mid in mail_ids:
+                mail_uid = self._fetch_uid_with_retry(mid)
+                mail_uids.append(mail_uid)
+                if mail_uid is None:
+                    self.logger.info("Could not get UID for mail_id: %s", mid)
+                    continue
+            return mail_uids
+        return mail_ids
 
     @imap_connection
     def _set_message_flag(
@@ -538,7 +548,14 @@ class ImapSmtp:
         mail_uid = self._fetch_uid(mail_id)
         status_code, data = self.imap_conn.uid("STORE", mail_uid, flag_type, flag)
         data_message = data[0]
-        self.logger.debug("Set message flag: %s, %s", status_code, data)
+        self.logger.debug(
+            "Set message %s flag: %s, %s, %s, %s",
+            mail_id,
+            status_code,
+            flag_type,
+            flag,
+            data,
+        )
         if status_code != "OK":
             self.logger.debug(
                 "Message flag '%s' failed for mail_id: %s, mail_uid: %s",
@@ -993,7 +1010,65 @@ class ImapSmtp:
             raise KeyError("Criterion is required parameter")
 
     def _fetch_uid(self, mail_id):
-        _, data = self.imap_conn.fetch(mail_id, "(UID)")
+        uid, data = self.imap_conn.fetch(mail_id, "(UID)")
+        self.logger.debug("fetch uid: %s, %s", uid, data)
         pattern_uid = re.compile(r"\d+ \(UID (?P<uid>\d+)\)")
-        match = pattern_uid.match(bytes.decode(data[0]))
-        return match.group("uid")
+        return (
+            None
+            if data[0] is None
+            else pattern_uid.match(bytes.decode(data[0])).group("uid")
+        )
+
+    def _fetch_uid_with_retry(self, mail_id):
+        mail_uid = None
+        for _ in range(5):
+            mail_uid = self._fetch_uid(mail_id)
+            if mail_uid is not None:
+                break
+            time.sleep(1)
+        return mail_uid
+
+    @imap_connection
+    def move_messages(
+        self,
+        criterion: str = None,
+        target_folder: str = None,
+        source_folder: str = None,
+    ):
+        """Move messages from source folder to target folder
+
+        :param criterion: [description], defaults to None
+        :param source_folder: [description], defaults to None
+        :param target_folder: [description], defaults to None
+        """
+        move_count = 0
+        self._validate_criterion(criterion)
+        if target_folder is None or len(target_folder) == 0:
+            raise KeyError("Can't move messages without target_folder")
+        if source_folder:
+            self.select_folder(source_folder)
+
+        mail_uids = self._search_and_return_mail_ids(criterion, uids=True)
+        if len(mail_uids) == 0:
+            self.logger.info("Did not find any messages to move")
+            return move_count
+        for mail_uid in mail_uids:
+            copy_status, _ = self.imap_conn.uid("COPY", mail_uid, target_folder)
+            label_status, _ = self.imap_conn.uid(
+                "STORE", mail_uid, "+X-GM-LABELS", f"({target_folder})"
+            )
+            self.logger.info("GMail add label status: %s", label_status)
+            if copy_status == "OK":
+                delete_status, _ = self.imap_conn.uid(
+                    "STORE", mail_uid, "+FLAGS", FLAG_DELETED
+                )
+                if source_folder:
+                    label_status, _ = self.imap_conn.uid(
+                        "STORE", mail_uid, "-X-GM-LABELS", f"({source_folder})"
+                    )
+                    self.logger.info("GMail remove label status: %s", label_status)
+                if delete_status:
+                    move_count += 1
+        if move_count > 0:
+            self.imap_conn.expunge()
+        return move_count

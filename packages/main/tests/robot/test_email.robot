@@ -66,15 +66,30 @@ Filtering emails
     END
 
 Getting emails
-    [Documentation]     Gettings emails
     List messages       criterion=SUBJECT "rpa"
 
 Saving attachments
-    [Documentation]     Saving email attachments
     Save attachments    criterion=SUBJECT "rpa"  target_folder=../temp
+
+Move messages empty criterion
+    Run Keyword And Expect Error    KeyError*    Move Messages    ${EMPTY}
+
+Move messages empty target
+    Run Keyword And Expect Error    KeyError*    Move Messages    SUBJECT 'RPA'
+
+Move messages to target folder from inbox
+    ${result}=    Move Messages
+    ...    criterion=SUBJECT "order confirmation"
+    ...    target_folder=yyy
+
+Move messages from subfolder to another
+    ${result}=    Move Messages
+    ...    criterion=ALL
+    ...    source_folder=yyy
+    ...    target_folder=XXX
 
 *** Keywords ***
 Init GMail
     ${email}=           Get secret     gmail
-    Authorize SMTP      robocorp.tester@gmail.com   ${email}[password]  smtp.gmail.com
-    Authorize IMAP      robocorp.tester@gmail.com   ${email}[password]  smtp.gmail.com
+    Authorize SMTP      ${email}[account]   ${email}[password]  ${email}[smtpserver]
+    Authorize IMAP      ${email}[account]   ${email}[password]  ${email}[imapserver]
