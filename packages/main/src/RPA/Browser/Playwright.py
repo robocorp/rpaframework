@@ -3,5 +3,5 @@ try:
 except ModuleNotFoundError:
     raise ModuleNotFoundError(
         "Please install robotframework-browser following these instructions"
-        "https://rpaframework.org/libraries/browser_playwright/index.html#install-instructions"
+        "https://rpaframework.org/libraries/browser_playwright/index.html#install-instructions"  # noqa: E501
     ) from None
