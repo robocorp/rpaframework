@@ -2,10 +2,4 @@
 Browser
 #######
 
-Alias for RPA.Browser.Selenium. Please use either RPA.Browser.Selenium or the newer RPA.Browser.Playwright for new code.
-
-.. toctree::
-   :maxdepth: 1
-   :hidden:
-
-   python
+Alias for :ref:`Selenium<selenium>`. Please use either :ref:`Selenium<selenium>` or the newer :ref:`Playwright browser<playwright>` for new code.
