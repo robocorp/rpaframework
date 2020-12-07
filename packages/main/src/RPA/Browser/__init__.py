@@ -1,6 +1,9 @@
 import logging
 
-from RPA.Browser.Playwright import Browser as Playwright
+try:
+    from RPA.Browser.Playwright import Browser as Playwright
+except (ImportError, ModuleNotFoundError):
+    pass
 from RPA.Browser.Selenium import Browser as Selenium
 
 
