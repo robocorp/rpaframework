@@ -2,21 +2,10 @@
 Browser
 #######
 
-Control browsers and automate the web.
+Alias for RPA.Browser.Selenium. Please use either RPA.Browser.Selenium or the newer RPA.Browser.Playwright for new code.
 
 .. toctree::
    :maxdepth: 1
    :hidden:
 
    python
-
-Keywords
-========
-
-🔗 Direct link to `keyword documentation <../../libdoc/RPA_Browser.html>`_.
-
--------
-
-.. raw:: html
-
-   <iframe scrolling="no" class="libdoc" src="../../libdoc/RPA_Browser.html" />

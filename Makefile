@@ -47,6 +47,7 @@ install: .venv/flag ## Install development environment
 	$(sync)
 	poetry install
 	-touch $@
+	poetry run rfbrowser init --skip-browsers
 
 poetry.lock: pyproject.toml
 	poetry lock

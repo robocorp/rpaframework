@@ -1,5 +1,6 @@
 import logging
 
+from RPA.Browser.Playwright import Browser as Playwright
 from RPA.Browser.Selenium import Browser as Selenium
 
 

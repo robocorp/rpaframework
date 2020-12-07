@@ -3,10 +3,10 @@ Python API
 ##########
 
 ********
-Browser
+Browser.Selenium
 ********
 
-.. automodule:: RPA.Browser
+.. automodule:: RPA.Browser.Selenium
    :members:
    :inherited-members:
    :undoc-members:
