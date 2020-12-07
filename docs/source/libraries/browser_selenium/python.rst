@@ -2,9 +2,9 @@
 Python API
 ##########
 
-********
+****************
 Browser.Selenium
-********
+****************
 
 .. automodule:: RPA.Browser.Selenium
    :members:

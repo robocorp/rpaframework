@@ -2,9 +2,9 @@
 Python API
 ##########
 
-********
+******************
 Browser.Playwright
-********
+******************
 
 .. automodule:: RPA.Browser.Playwright
    :members:

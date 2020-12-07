@@ -1,19 +1,21 @@
-#######
+.. _playwright:
+
+##################
 Browser.Playwright
-#######
+##################
 
 
 Playwright based browser automation library.
 
 Install instructions
-========
+====================
 
 The playwright based browser library uses bundled browser executables as part of it's package to avoid
 browser version conflicts and enable browser patches to maximize automation possibilities. In practice
 this means that some extra steps are required to install it for use in a project.
 
 conda.yaml (RCC and Robocorp Lab)
-========
+========================================
 Ensure you're using python 3.7 or newer.
 
 Add nodejs, robotframework-browser and rccPostInstall: rfbrowser init to conda.yaml
@@ -36,7 +38,7 @@ Example conda.yaml:
     - rfbrowser init
 
 pip
-========
+====================
 See https://github.com/MarketSquare/robotframework-browser#installation-instructions
 
 
@@ -47,11 +49,11 @@ See https://github.com/MarketSquare/robotframework-browser#installation-instruct
    python
 
 Keywords
-=========
+========
 
 🔗 Direct link to `keyword documentation <../../libdoc/RPA_Browser_Playwright.html>`_.
 
----------
+--------
 
 .. raw:: html
 

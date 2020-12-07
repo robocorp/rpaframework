@@ -1,6 +1,8 @@
-#######
+.. _selenium:
+
+################
 Browser.Selenium
-#######
+################
 
 Control browsers and automate the web with SeleniumLibrary.
 
