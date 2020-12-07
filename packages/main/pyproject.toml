@@ -33,7 +33,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
-docutils = "^0.14"
+docutils = "*"
 dataclasses = { version = "^0.7", python=">=3.6,<3.7" }
 rpaframework-core = "^4.0.2"
 rpaframework-recognition = { version = "^0.5.0", optional = true }
