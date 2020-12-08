@@ -5,7 +5,10 @@ Browser.Playwright
 ##################
 
 
-Playwright based browser automation library.
+New Playwright based browser automation library. Upstream examples, 
+docs and issue tracker available at `github.`_
+
+.. _github.: https://github.com/marketsquare/robotframework-browser#robotframework-browser
 
 Install instructions
 ====================
@@ -39,7 +42,9 @@ Example conda.yaml:
 
 pip
 ====================
-See https://github.com/MarketSquare/robotframework-browser#installation-instructions
+See `upstream installation instructions`_
+
+.. _upstream installation instructions: https://github.com/MarketSquare/robotframework-browser#installation-instructions
 
 
 .. toctree::

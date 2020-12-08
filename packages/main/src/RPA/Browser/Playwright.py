@@ -1,7 +1,9 @@
 import sys
 
 try:
-    from Browser import Browser  # noqa: F401 # pylint: disable=unused-import
+    from Browser import (
+        Browser as Playwright,
+    )  # noqa: F401 # pylint: disable=unused-import
 except (ModuleNotFoundError, ImportError):
     sys.tracebacklimit = 0
     raise ModuleNotFoundError(

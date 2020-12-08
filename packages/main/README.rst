@@ -62,7 +62,9 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `Archive`_                 | Archiving TAR and ZIP files                  |
 +----------------------------+----------------------------------------------+
-| `Browser`_                 | Control browsers and automate the web        |
+| `Browser.Selenium`_        | Control browsers and automate the web        |
++----------------------------+----------------------------------------------+
+| `Browser.Playwright`_      | Newer way to control browsers                |
 +----------------------------+----------------------------------------------+
 | `Cloud.AWS`_               | Use Amazon AWS services                      |
 +----------------------------+----------------------------------------------+
@@ -124,7 +126,8 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 
 .. _Archive: https://rpaframework.org/libraries/archive/
-.. _Browser: https://rpaframework.org/libraries/browser/
+.. _Browser.Playwright: https://rpaframework.org/libraries/browser_playwright/
+.. _Browser.Selenium: https://rpaframework.org/libraries/browser_selenium/
 .. _Cloud.AWS: https://rpaframework.org/libraries/cloud_aws/
 .. _Cloud.Azure: https://rpaframework.org/libraries/cloud_azure/
 .. _Cloud.Google: https://rpaframework.org/libraries/cloud_google/
