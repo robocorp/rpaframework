@@ -94,6 +94,7 @@ rpa-google-oauth = 'RPA.scripts.google_authenticate:start'
 
 [tool.poetry.extras]
 cv = ["rpaframework-recognition"]
+playwright = ["robotframework-browser"]
 aws = ["boto3"]
 google = [
 	"google-api-python-client",
@@ -115,7 +116,6 @@ target-version = ["py36", "py37", "py38"]
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
-
 
 [tool.pytest.ini_options]
 addopts = "-v --cov=src --cov-branch"
