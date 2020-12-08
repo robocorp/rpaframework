@@ -17,6 +17,12 @@ Upcoming release
   - Add support for Drive service
 
 - Library **Desktop.Windows**: Add more properties into dictionary returned by ``Get Window List``
+- Library **Email.ImapSmtp**:
+
+  - Add keyword ``Move Messages``
+  - Add source folder parameter to ``List Messages``
+  - Add limit to ``Delete Messages``
+  - Add keywords to add/remove labels from GMail messages
 
 6.7.2
 -----

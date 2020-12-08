@@ -1096,6 +1096,19 @@ class ImapSmtp:
         :param criterion: move messages matching criterion
         :param source_folder: location of the messages, default `INBOX`
         :param target_folder: where messages should be move into
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${result}=    Move Messages
+            ...    criterion=SUBJECT "order confirmation 32"
+            ...    target_folder=yyy
+
+            ${result}=    Move Messages
+            ...    criterion=ALL
+            ...    source_folder=yyy
+            ...    target_folder=XXX
         """
         self._validate_criterion(criterion)
         if target_folder is None or len(target_folder) == 0:
@@ -1145,6 +1158,13 @@ class ImapSmtp:
         :param criterion: label messages matching criterion
         :param source_folder: look for messages in this folder, default all folders
         :return: status of the operation
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Add Gmail Labels  customer1   SUBJECT "order confirmation"
+            Add Gmail Labels  wip         SUBJECT "order confirmation"   customerfolder
         """
         return self._modify_gmail_labels(
             labels, criterion, Action.glabel_add, source_folder
@@ -1158,6 +1178,13 @@ class ImapSmtp:
         :param criterion: unlabel messages matching criterion
         :param source_folder: look for messages in this folder, default all folders
         :return: status of the operation
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Remove Gmail Labels  wip  SUBJECT "order confirmation"
+            Remove Gmail Labels  wip  SUBJECT "order confirmation"  customerfolder
         """
         return self._modify_gmail_labels(
             labels, criterion, Action.glabel_remove, source_folder
