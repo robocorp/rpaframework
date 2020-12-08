@@ -8,7 +8,7 @@ authors = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
-rpaframework = { path = "packages/main/" }
+rpaframework = { path = "packages/main/", extras = ["playwright"] }
 rpaframework-recognition = { path = "packages/recognition/" }
 rpaframework-core = { path = "packages/core/" }
 
