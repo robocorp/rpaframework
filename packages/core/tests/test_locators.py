@@ -10,6 +10,8 @@ from RPA.core.locators import (
     Locator,
     PointLocator,
     OffsetLocator,
+    RegionLocator,
+    SizeLocator,
     BrowserLocator,
     ImageLocator,
     Coordinates,
@@ -17,7 +19,7 @@ from RPA.core.locators import (
     BrowserDOM,
     ImageTemplate,
     sanitize_name,
-    parse_locator,
+    literal,
 )
 
 
@@ -124,37 +126,51 @@ def test_sanitize_name(sanitized):
     assert sanitize_name(name) == result
 
 
-class TestParse:
+class TestLiteral:
     def test_parse_image(self):
-        locator = parse_locator("image:path/to/file.png")
+        locator = literal.parse("image:path/to/file.png")
         assert isinstance(locator, ImageLocator)
         assert locator.path == "path/to/file.png"
         assert locator.confidence == None
 
     def test_parse_image_args(self):
-        locator = parse_locator("image:path/to/file.png,80.0")
+        locator = literal.parse("image:path/to/file.png,80.0")
         assert isinstance(locator, ImageLocator)
         assert locator.path == "path/to/file.png"
         assert locator.confidence == 80.0
 
     def test_parse_point(self):
-        locator = parse_locator("point:100,200")
+        locator = literal.parse("point:100,200")
         assert isinstance(locator, PointLocator)
         assert locator.x == 100
         assert locator.y == 200
 
     def test_parse_coordinates(self):
         # Kept for backwards compatibility
-        locator = parse_locator("coordinates:100,200")
+        locator = literal.parse("coordinates:100,200")
         assert isinstance(locator, PointLocator)
         assert locator.x == 100
         assert locator.y == 200
 
     def test_parse_offset(self):
-        locator = parse_locator("offset:100,200")
+        locator = literal.parse("offset:100,200")
         assert isinstance(locator, OffsetLocator)
         assert locator.x == 100
         assert locator.y == 200
+
+    def test_parse_size(self):
+        locator = literal.parse("region:50,75,100,200")
+        assert isinstance(locator, RegionLocator)
+        assert locator.left == 50
+        assert locator.top == 75
+        assert locator.right == 100
+        assert locator.bottom == 200
+
+    def test_parse_size(self):
+        locator = literal.parse("size:100,200")
+        assert isinstance(locator, SizeLocator)
+        assert locator.width == 100
+        assert locator.height == 200
 
 
 class TestLocators:

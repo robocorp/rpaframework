@@ -82,6 +82,18 @@ class RegionLocator(Locator):
 
 
 @dataclass
+class SizeLocator(Locator):
+    """Locator for area defined by width/height."""
+
+    width: int
+    height: int
+
+    def __post_init__(self):
+        self.width = int(self.width)
+        self.height = int(self.height)
+
+
+@dataclass
 class ImageLocator(Locator):
     """Image-based locator for template matching."""
 
@@ -129,6 +141,7 @@ TYPES = {
     "point": PointLocator,
     "offset": OffsetLocator,
     "region": RegionLocator,
+    "size": SizeLocator,
     "image": ImageLocator,
     "ocr": OcrLocator,
     "browser": BrowserLocator,
@@ -140,6 +153,7 @@ NAMES = {
     PointLocator: "point",
     OffsetLocator: "offset",
     RegionLocator: "region",
+    SizeLocator: "size",
     ImageLocator: "image",
     OcrLocator: "ocr",
     BrowserLocator: "browser",

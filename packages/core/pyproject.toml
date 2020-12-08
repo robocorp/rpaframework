@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-core"
-version = "4.0.2"
+version = "5.0.0"
 description = "Core utilities used by RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -43,6 +43,7 @@ pylint = "^2.4.4"
 pytest = "^6.1.2"
 pytest-cov = "^2.10.1"
 mock = "^4.0.2"
+mypy = "^0.790"
 
 [tool.black]
 target-version = ["py36", "py37", "py38"]
