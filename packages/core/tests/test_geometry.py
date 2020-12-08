@@ -218,3 +218,20 @@ def test_region_contains():
     assert region.contains(geometry.Region(-10, 15, 255, 137))
     assert not region.contains(geometry.Region(-11, 15, 137, 137))
     assert not region.contains(geometry.Region(15, 90, 100, 10000))
+
+
+def test_region_clamp():
+    region = geometry.Region(200, -20, 600, 75)
+    bounds = geometry.Region(200, 0, 500, 80)
+
+    clamped = region.clamp(bounds)
+    assert clamped.left == 200
+    assert clamped.top == 0
+    assert clamped.right == 500
+    assert clamped.bottom == 75
+
+    region = geometry.Region(0, 0, 100, 100)
+    bounds = geometry.Region(200, 250, 500, 500)
+
+    with pytest.raises(ValueError):
+        region.clamp(bounds)
