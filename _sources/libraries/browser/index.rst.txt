@@ -2,21 +2,9 @@
 Browser
 #######
 
-Control browsers and automate the web.
+Deprecated alias for :ref:`RPA.Browser.Selenium<selenium>`. 
+Please explicitly use either :ref:`RPA.Browser.Selenium<selenium>` or the newer :ref:`RPA.Browser.Playwright<playwright>` for new code.
 
-.. toctree::
-   :maxdepth: 1
-   :hidden:
+Which should you use?
 
-   python
 
-Keywords
-========
-
-🔗 Direct link to `keyword documentation <../../libdoc/RPA_Browser.html>`_.
-
--------
-
-.. raw:: html
-
-   <iframe scrolling="no" class="libdoc" src="../../libdoc/RPA_Browser.html" />
