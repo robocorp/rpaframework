@@ -88,6 +88,14 @@ Move messages from subfolder to another
     ...    source_folder=yyy
     ...    target_folder=XXX
 
+Performing message actions
+    ${actions}=    Create List    msg_unflag    msg_read    msg_save    msg_attachment_save
+    Do Message Actions    SUBJECT "Order confirmation"
+    ...    ${actions}
+    ...    source_folder=XXX
+    ...    target_folder=${CURDIR}
+    ...    overwrite=True
+
 *** Keywords ***
 Init GMail
     ${email}=           Get secret     gmail

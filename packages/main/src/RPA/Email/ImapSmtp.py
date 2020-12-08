@@ -45,6 +45,18 @@ class Action(Enum):
     glabel_remove = 21  # Remove GMail label
 
 
+def to_action(value):
+    """Convert value to Action enum."""
+    if isinstance(value, Action):
+        return value
+
+    sanitized = str(value).lower().strip().replace(" ", "_")
+    try:
+        return Action[sanitized]
+    except KeyError as err:
+        raise ValueError(f"Unknown email action: {value}") from err
+
+
 IMAGE_FORMATS = ["jpg", "jpeg", "bmp", "png", "gif"]
 FLAG_DELETED = "\\Deleted"
 FLAG_SEEN = "\\Seen"
@@ -551,6 +563,7 @@ class ImapSmtp:
         source_folder: str = None,
         target_folder: str = None,
         limit: int = None,
+        overwrite: bool = False,
     ) -> list:
         selected_folder = source_folder or self.selected_folder
         folders = self.get_folder_list(subdirectory=selected_folder)
@@ -568,6 +581,7 @@ class ImapSmtp:
                     mail,
                     labels=labels,
                     target_folder=target_folder,
+                    overwrite=overwrite,
                 )
                 if status:
                     result["actions_done"] += 1
@@ -598,6 +612,7 @@ class ImapSmtp:
         mail: dict,
         labels: str = None,
         target_folder: str = None,
+        overwrite: bool = False,
     ):
         action_status = True
         mail_uid, mail_dict = mail
@@ -612,7 +627,9 @@ class ImapSmtp:
             Action.msg_unread: ["-FLAGS", FLAG_SEEN],
         }
 
-        for action in actions:
+        for act in actions:
+            action = to_action(act)
+            self.logger.debug("Performing %s Action", action)
             if action in store_params.keys():
                 m_op, m_param = store_params[action]
                 action_status, _ = self.imap_conn.uid("STORE", mail_uid, m_op, m_param)
@@ -621,11 +638,13 @@ class ImapSmtp:
             elif action == Action.msg_list:
                 pass
             elif action == Action.msg_save:
-                emlfile = Path(target_folder) / f"{mail_dict['Mail-Id']}.eml"
-                with open(emlfile, "wb") as f:
-                    f.write(mail_dict["bytes"])
+                if target_folder is None:
+                    target_folder = os.path.expanduser("~")
+                self._save_eml_file(mail_dict, target_folder, overwrite)
             elif action == Action.msg_attachment_save:
-                pass
+                if target_folder is None:
+                    target_folder = os.path.expanduser("~")
+                self._save_attachment(mail_dict, target_folder, overwrite)
             else:
                 # TODO: mypy should handle enum exhaustivity validation
                 raise ValueError(f"Unsupported email action: {action}")
@@ -777,20 +796,36 @@ class ImapSmtp:
         """  # noqa: E501
         if target_folder is None:
             target_folder = os.path.expanduser("~")
-        msg = message["Message"] if isinstance(message, dict) else message
+        self._save_attachment(message, target_folder, overwrite)
+
+    def _save_attachment(self, message, target_folder, overwrite):
         attachments_saved = []
+        msg = message["Message"] if isinstance(message, dict) else message
         for part in msg.walk():
             content_maintype = part.get_content_maintype()
             content_disposition = part.get("Content-Disposition")
             if content_maintype != "multipart" and content_disposition is not None:
                 filename = part.get_filename()
-                self.logger.info("%s %s", filename, content_maintype)
                 if bool(filename):
                     filepath = Path(target_folder) / filename
                     if not filepath.exists() or overwrite:
+                        self.logger.info(
+                            "Saving attachment: %s",
+                            filename,
+                        )
                         with open(filepath, "wb") as f:
                             f.write(part.get_payload(decode=True))
                             attachments_saved.append(filepath)
+                    elif filepath.exists() and not overwrite:
+                        self.logger.warning("Did not overwrite file: %s", filepath)
+
+    def _save_eml_file(self, message, target_folder, overwrite):
+        emlfile = Path(target_folder) / f"{message['Mail-Id']}.eml"
+        if not emlfile.exists() or overwrite:
+            with open(emlfile, "wb") as f:
+                f.write(message["bytes"])
+        elif emlfile.exists() and not overwrite:
+            self.logger.warning("Did not overwrite file: %s", emlfile)
 
     @imap_connection
     def wait_for_message(
@@ -848,7 +883,6 @@ class ImapSmtp:
             @{folders}  Get Folder List  pattern=important
             @{folders}  Get Folder List  subdirectory=sub
         """
-        self.logger.info("Get folder list")
         kwparams = {}
         if subdirectory:
             kwparams["directory"] = subdirectory
@@ -1150,6 +1184,7 @@ class ImapSmtp:
 
         return result["actions_done"] == result["message_count"]
 
+    @imap_connection
     def add_gmail_labels(self, labels, criterion, source_folder: str = None) -> bool:
         """Add GMail labels to messages matching criterion and if given,
         source folder
@@ -1170,6 +1205,7 @@ class ImapSmtp:
             labels, criterion, Action.glabel_add, source_folder
         )
 
+    @imap_connection
     def remove_gmail_labels(self, labels, criterion, source_folder: str = None) -> bool:
         """Remove GMail labels to messages matching criterion and if given,
         source folder
@@ -1189,3 +1225,71 @@ class ImapSmtp:
         return self._modify_gmail_labels(
             labels, criterion, Action.glabel_remove, source_folder
         )
+
+    @imap_connection
+    def do_message_actions(
+        self,
+        criterion: str = "",
+        actions: list = None,
+        source_folder: str = None,
+        target_folder: str = None,
+        labels: str = None,
+        limit: int = None,
+        overwrite: bool = False,
+    ) -> Any:
+        """Do actions to messages matching criterion and if given,
+        source folder
+
+        Actions can be:
+
+        - msg_copy
+        - msg_delete
+        - msg_flag
+        - msg_unflag
+        - msg_read
+        - msg_unread
+        - msg_save
+        - glabel_add
+        - glabel_remove
+
+        Result object contains following attributes:
+
+        - actions_done, number of messages on which action was performed
+        - message_count, number of messages matching criterion
+        - ids, message ids matching criterion
+        - uids, dictionary of message uids and message content
+
+        :param criterion: perform actions on messages matching this
+        :param actions: list of actions to perform on matching messages
+        :param source_folder: look for messages in this folder, default all folders
+        :param target_folder: can be file path or email folder
+         (for example action: msg_copy)
+        :param labels: comma separated list of labels (for example action: glabel_add)
+        :param limit:  maximum number of messages (for example action: msg_delete)
+        :param overwrite: to control if file should overwrite
+         (for example action: msg_attachment_save)
+        :return: result object
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${actions}=   Create List  msg_unflag  msg_read  msg_save  msg_attachment_save
+            Do Message Actions    SUBJECT "Order confirmation"
+            ...                   ${actions}
+            ...                   source_folder=XXX
+            ...                   target_folder=${CURDIR}
+            ...                   overwrite=True
+        """  # noqa: E501
+
+        parsed_actions = [to_action(act) for act in actions]
+        result = self._do_actions_on_messages(
+            criterion=criterion,
+            actions=parsed_actions,
+            labels=labels,
+            source_folder=source_folder,
+            target_folder=target_folder,
+            limit=limit,
+            overwrite=overwrite,
+        )
+        return result["actions_done"] == result["message_count"]
