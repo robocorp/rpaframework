@@ -1,5 +1,6 @@
 import time
 from typing import Optional
+from PIL import ImageOps
 
 from RPA.core.geometry import Region
 from RPA.Desktop.keywords import LibraryContext, keyword, screen, HAS_RECOGNITION
@@ -20,11 +21,13 @@ class TextKeywords(LibraryContext):
     """Keywords for reading screen information and content."""
 
     @keyword
-    def read_text(self, locator: Optional[str] = None):
+    def read_text(self, locator: Optional[str] = None, invert: bool = False):
         """Read text using OCR from the screen, or an area of the
         screen defined by the given locator.
 
         :param locator: Location of element to read text from
+        :param invert:  Invert image colors, useful for reading white text
+                        on dark background
         """
         ensure_recognition()
 
@@ -40,6 +43,9 @@ class TextKeywords(LibraryContext):
             image = screen.grab()
 
         screen.log_image(image)
+
+        if invert:
+            image = ImageOps.invert(image)
 
         start_time = time.time()
         text = ocr.read(image)
