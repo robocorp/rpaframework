@@ -1348,14 +1348,14 @@ class Tables:
 
         operator = str(operator).lower().strip()
         condition = {
-            ">": lambda x: x > value,
-            "<": lambda x: x < value,
-            ">=": lambda x: x >= value,
-            "<=": lambda x: x <= value,
-            "==": lambda x: x == value,
-            "!=": lambda x: x != value,
+            ">": lambda x: x is not None and x > value,
+            "<": lambda x: x is not None and x < value,
+            ">=": lambda x: x is not None and x >= value,
+            "<=": lambda x: x is not None and x <= value,
+            "==": lambda x: x is not None and x == value,
+            "!=": lambda x: x is not None and x != value,
+            "contains": lambda x: x is not None and value in x,
             "in": lambda x: x in value,
-            "contains": lambda x: value in x,
         }.get(operator)
 
         if not condition:

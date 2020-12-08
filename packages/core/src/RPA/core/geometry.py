@@ -21,6 +21,11 @@ def to_region(obj: Any) -> Optional["Region"]:
 
 
 @dataclass
+class Undefined:
+    """Internal placeholder for generic geometry."""
+
+
+@dataclass
 class Point:
     """Container for a 2D point."""
 
@@ -191,3 +196,14 @@ class Region:
             )
         else:
             raise NotImplementedError("contains() only supports Points and Regions")
+
+    def clamp(self, container: "Region") -> "Region":
+        """Limit the region to the maximum dimensions defined by the container,
+        and return the resulting copy.
+        """
+        left = max(container.left, min(self.left, container.right))
+        top = max(container.top, min(self.top, container.bottom))
+        right = min(container.right, max(self.right, container.left))
+        bottom = min(container.bottom, max(self.bottom, container.top))
+
+        return Region(left, top, right, bottom)
