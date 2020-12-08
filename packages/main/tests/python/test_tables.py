@@ -375,9 +375,16 @@ def test_keyword_group_table_by_column(library, table):
     library.group_table_by_column(table, column)
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_keyword_filter_table_by_column(library, table):
-    library.filter_table_by_column(table, column, operator, value)
+    library.filter_table_by_column(table, "two", "==", 2)
+    assert len(table) == 3
+    assert all(row["two"] == 2 for row in table)
+
+
+def test_keyword_filter_table_by_column_in(library, table):
+    library.filter_table_by_column(table, "two", "in", ["b", None])
+    assert len(table) == 3
+    assert all(row["two"] != 2 for row in table)
 
 
 def test_keyword_filter_empty_rows(library, table):
