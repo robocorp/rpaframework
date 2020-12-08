@@ -1423,7 +1423,7 @@ class ServiceDrive(GoogleBase):
             ...            multiple_ok=True
         """  # noqa: E501
         target_files = self._get_target_file(file_id, file_dict, query, multiple_ok)
-
+        action = to_action(action)
         update_count = 0
         for tf in target_files:
             self._drive_files_update(tf, action)
