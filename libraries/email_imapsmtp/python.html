@@ -213,6 +213,68 @@
 <div class="section" id="module-RPA.Email.ImapSmtp">
 <span id="imapsmtp"></span><h2>ImapSmtp<a class="headerlink" href="#module-RPA.Email.ImapSmtp" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
+<dt id="RPA.Email.ImapSmtp.Action">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">Action</code><a class="headerlink" href="#RPA.Email.ImapSmtp.Action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Possible email actions.</p>
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.Action.glabel_add">
+<code class="sig-name descname">glabel_add</code><em class="property"> = 20</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.glabel_add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.Action.glabel_remove">
+<code class="sig-name descname">glabel_remove</code><em class="property"> = 21</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.glabel_remove" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.Action.msg_attachment_save">
+<code class="sig-name descname">msg_attachment_save</code><em class="property"> = 9</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.msg_attachment_save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.Action.msg_copy">
+<code class="sig-name descname">msg_copy</code><em class="property"> = 1</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.msg_copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.Action.msg_delete">
+<code class="sig-name descname">msg_delete</code><em class="property"> = 2</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.msg_delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.Action.msg_flag">
+<code class="sig-name descname">msg_flag</code><em class="property"> = 4</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.msg_flag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.Action.msg_list">
+<code class="sig-name descname">msg_list</code><em class="property"> = 3</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.msg_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.Action.msg_read">
+<code class="sig-name descname">msg_read</code><em class="property"> = 6</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.msg_read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.Action.msg_save">
+<code class="sig-name descname">msg_save</code><em class="property"> = 8</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.msg_save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.Action.msg_unflag">
+<code class="sig-name descname">msg_unflag</code><em class="property"> = 5</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.msg_unflag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.Action.msg_unread">
+<code class="sig-name descname">msg_unread</code><em class="property"> = 7</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.msg_unread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">ImapSmtp</code><span class="sig-paren">(</span><em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">smtp_port: int = 587</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">imap_port: int = 993</em>, <em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -291,6 +353,30 @@ the base image name given with the <code class="docutils literal notranslate"><s
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.ROBOT_LIBRARY_SCOPE">
 <code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.add_gmail_labels">
+<code class="sig-name descname">add_gmail_labels</code><span class="sig-paren">(</span><em class="sig-param">labels</em>, <em class="sig-param">criterion</em>, <em class="sig-param">source_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.add_gmail_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add GMail labels to messages matching criterion and if given,
+source folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> – comma separated list of labels to add</p></li>
+<li><p><strong>criterion</strong> – label messages matching criterion</p></li>
+<li><p><strong>source_folder</strong> – look for messages in this folder, default all folders</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>status of the operation</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add Gmail Labels</span><span class="p">  </span><span class="c">customer1</span><span class="p">   </span><span class="c">SUBJECT &quot;order confirmation&quot;</span><span class="p"></span>
+<span class="c">Add Gmail Labels</span><span class="p">  </span><span class="c">wip</span><span class="p">         </span><span class="c">SUBJECT &quot;order confirmation&quot;</span><span class="p">   </span><span class="c">customerfolder</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.authorize">
@@ -418,11 +504,14 @@ keyword <code class="docutils literal notranslate"><span class="pre">Set</span> 
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.delete_messages">
-<code class="sig-name descname">delete_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.delete_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">limit: int = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.delete_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete messages from server based on criterion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>criterion</strong> – filter messages based on this, defaults to “”</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>criterion</strong> – filter messages based on this, defaults to “”</p></li>
+<li><p><strong>limit</strong> – maximum number of message to delete</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>True if success, False if not</p>
@@ -430,6 +519,59 @@ keyword <code class="docutils literal notranslate"><span class="pre">Set</span> 
 </dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Delete Messages</span><span class="p">  </span><span class="c">SUBJECT Greetings</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.do_message_actions">
+<code class="sig-name descname">do_message_actions</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">actions: list = None</em>, <em class="sig-param">source_folder: str = None</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">labels: str = None</em>, <em class="sig-param">limit: int = None</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.do_message_actions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do actions to messages matching criterion and if given,
+source folder</p>
+<p>Actions can be:</p>
+<ul class="simple">
+<li><p>msg_copy</p></li>
+<li><p>msg_delete</p></li>
+<li><p>msg_flag</p></li>
+<li><p>msg_unflag</p></li>
+<li><p>msg_read</p></li>
+<li><p>msg_unread</p></li>
+<li><p>msg_save</p></li>
+<li><p>glabel_add</p></li>
+<li><p>glabel_remove</p></li>
+</ul>
+<p>Result object contains following attributes:</p>
+<ul class="simple">
+<li><p>actions_done, number of messages on which action was performed</p></li>
+<li><p>message_count, number of messages matching criterion</p></li>
+<li><p>ids, message ids matching criterion</p></li>
+<li><p>uids, dictionary of message uids and message content</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>criterion</strong> – perform actions on messages matching this</p></li>
+<li><p><strong>actions</strong> – list of actions to perform on matching messages</p></li>
+<li><p><strong>source_folder</strong> – look for messages in this folder, default all folders</p></li>
+<li><p><strong>target_folder</strong> – can be file path or email folder
+(for example action: msg_copy)</p></li>
+<li><p><strong>labels</strong> – comma separated list of labels (for example action: glabel_add)</p></li>
+<li><p><strong>limit</strong> – maximum number of messages (for example action: msg_delete)</p></li>
+<li><p><strong>overwrite</strong> – to control if file should overwrite
+(for example action: msg_attachment_save)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>result object</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${actions}=</span><span class="p">   </span><span class="c">Create List</span><span class="p">  </span><span class="c">msg_unflag</span><span class="p">  </span><span class="c">msg_read</span><span class="p">  </span><span class="c">msg_save</span><span class="p">  </span><span class="c">msg_attachment_save</span><span class="p"></span>
+<span class="c">Do Message Actions</span><span class="p">    </span><span class="c">SUBJECT &quot;Order confirmation&quot;</span><span class="p"></span>
+<span class="c">...</span><span class="p">                   </span><span class="c">${actions}</span><span class="p"></span>
+<span class="c">...</span><span class="p">                   </span><span class="c">source_folder=XXX</span><span class="p"></span>
+<span class="c">...</span><span class="p">                   </span><span class="c">target_folder=${CURDIR}</span><span class="p"></span>
+<span class="c">...</span><span class="p">                   </span><span class="c">overwrite=True</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -481,7 +623,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">Set</span> 
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.list_messages">
-<code class="sig-name descname">list_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.list_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">source_folder: str = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.list_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return list of messages matching criterion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -545,6 +687,56 @@ keyword <code class="docutils literal notranslate"><span class="pre">Set</span> 
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.move_messages">
+<code class="sig-name descname">move_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = None</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">source_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.move_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move messages from source folder to target folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>criterion</strong> – move messages matching criterion</p></li>
+<li><p><strong>source_folder</strong> – location of the messages, default <cite>INBOX</cite></p></li>
+<li><p><strong>target_folder</strong> – where messages should be move into</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${result}=</span><span class="p">    </span><span class="c">Move Messages</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">criterion=SUBJECT &quot;order confirmation 32&quot;</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">target_folder=yyy</span><span class="p"></span>
+
+<span class="c">${result}=</span><span class="p">    </span><span class="c">Move Messages</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">criterion=ALL</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">source_folder=yyy</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">target_folder=XXX</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.remove_gmail_labels">
+<code class="sig-name descname">remove_gmail_labels</code><span class="sig-paren">(</span><em class="sig-param">labels</em>, <em class="sig-param">criterion</em>, <em class="sig-param">source_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.remove_gmail_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove GMail labels to messages matching criterion and if given,
+source folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> – comma separated list of labels to remove</p></li>
+<li><p><strong>criterion</strong> – unlabel messages matching criterion</p></li>
+<li><p><strong>source_folder</strong> – look for messages in this folder, default all folders</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>status of the operation</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Remove Gmail Labels</span><span class="p">  </span><span class="c">wip</span><span class="p">  </span><span class="c">SUBJECT &quot;order confirmation&quot;</span><span class="p"></span>
+<span class="c">Remove Gmail Labels</span><span class="p">  </span><span class="c">wip</span><span class="p">  </span><span class="c">SUBJECT &quot;order confirmation&quot;</span><span class="p">  </span><span class="c">customerfolder</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.rename_folder">
 <code class="sig-name descname">rename_folder</code><span class="sig-paren">(</span><em class="sig-param">oldname: str = None</em>, <em class="sig-param">newname: str = None</em>, <em class="sig-param">suppress_error: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.rename_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rename email folder</p>
@@ -582,7 +774,7 @@ defaults to user’s home directory if None</p></li>
 </dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{emails}</span><span class="p">  </span><span class="c">List Messages</span><span class="p">  </span><span class="c">SUBJECT &quot;rpa task&quot;</span><span class="p"></span>
-<span class="c">FOR</span><span class="p">  </span><span class="c">${email}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{EMAILS}</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">  </span><span class="c">${email}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{emails}</span><span class="p"></span>
 <span class="p">    </span><span class="c">Run Keyword If</span><span class="p">   </span><span class="c">${email}[Has-Attachments] == True</span><span class="p"></span>
 <span class="p">    </span><span class="c">...</span><span class="p">              </span><span class="c">Save Attachment</span><span class="p">  </span><span class="c">${email}</span><span class="p">  </span><span class="c">target_folder=${CURDIR}</span><span class="p">  </span><span class="c">overwrite=True</span><span class="p"></span>
 <span class="c">END</span><span class="p"></span>
@@ -683,7 +875,7 @@ exception if folder does not exist on the server.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Send Message</span><span class="p">  </span><span class="c">sender@domain.com</span><span class="p">  </span><span class="c">recipient@domain.com</span><span class="p"></span>
 <span class="c">...</span><span class="p">           </span><span class="c">subject=Greetings Software Robot Developer</span><span class="p"></span>
 <span class="c">...</span><span class="p">           </span><span class="c">body=${email_body}</span><span class="p"></span>
-<span class="c">...</span><span class="p">           </span><span class="c">attachments:${CURDIR}${/}report.pdf</span><span class="p"></span>
+<span class="c">...</span><span class="p">           </span><span class="c">attachments=${CURDIR}${/}report.pdf</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -765,6 +957,12 @@ exception if folder does not exist on the server.</p>
 <dt id="RPA.Email.ImapSmtp.smtp_connection">
 <code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">smtp_connection</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.smtp_connection" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="RPA.Email.ImapSmtp.to_action">
+<code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">to_action</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.to_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert value to Action enum.</p>
+</dd></dl>
 
 </div>
 </div>

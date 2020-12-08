@@ -241,6 +241,8 @@
 </li>
       <li><a href="libraries/salesforce/python.html#RPA.Salesforce.Salesforce.account">account (RPA.Salesforce.Salesforce attribute)</a>
 </li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.Action">Action (class in RPA.Email.ImapSmtp)</a>
+</li>
       <li><a href="libraries/excel_files/python.html#RPA.Excel.Files.XlsWorkbook.active">active() (RPA.Excel.Files.XlsWorkbook property)</a>
 
       <ul>
@@ -272,6 +274,8 @@
       <li><a href="libraries/dialogs/python.html#RPA.Dialogs.Dialogs.add_file_input">add_file_input() (RPA.Dialogs.Dialogs method)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.add_font">add_font() (RPA.PDF.PDF method)</a>
+</li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.add_gmail_labels">add_gmail_labels() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
       <li><a href="libraries/dialogs/python.html#RPA.Dialogs.Dialogs.add_hidden_input">add_hidden_input() (RPA.Dialogs.Dialogs method)</a>
 </li>
@@ -905,13 +909,15 @@
 </li>
       <li><a href="libraries/dialogs/python.html#RPA.Dialogs.Handler.disable_nagle_algorithm">disable_nagle_algorithm (RPA.Dialogs.Handler attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/database/python.html#RPA.Database.Database.disconnect_from_database">disconnect_from_database() (RPA.Database.Database method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/dialogs/python.html#RPA.Dialogs.Handler.do_GET">do_GET() (RPA.Dialogs.Handler method)</a>
 </li>
       <li><a href="libraries/dialogs/python.html#RPA.Dialogs.Handler.do_HEAD">do_HEAD() (RPA.Dialogs.Handler method)</a>
+</li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.do_message_actions">do_message_actions() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
       <li><a href="libraries/dialogs/python.html#RPA.Dialogs.Handler.do_POST">do_POST() (RPA.Dialogs.Handler method)</a>
 </li>
@@ -1403,14 +1409,14 @@
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.RpaPdfDocument.get_pages">get_pages() (RPA.PDF.RpaPdfDocument method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.AWS.get_pages_and_text">get_pages_and_text() (RPA.Cloud.AWS.AWS method)</a>
 
       <ul>
         <li><a href="libraries/cloud_aws/python.html#RPA.Cloud.AWS.ServiceTextract.get_pages_and_text">(RPA.Cloud.AWS.ServiceTextract method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/images/python.html#RPA.Images.Images.get_pixel_color_in_image">get_pixel_color_in_image() (RPA.Images.Images method)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.Images.get_pixel_color_on_screen">get_pixel_color_on_screen() (RPA.Images.Images method)</a>
@@ -1542,6 +1548,10 @@
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.get_x">get_x() (RPA.PDF.PDF method)</a>
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.get_y">get_y() (RPA.PDF.PDF method)</a>
+</li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.Action.glabel_add">glabel_add (RPA.Email.ImapSmtp.Action attribute)</a>
+</li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.Action.glabel_remove">glabel_remove (RPA.Email.ImapSmtp.Action attribute)</a>
 </li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.Google.global_scopes">global_scopes (RPA.Cloud.Google.Google attribute)</a>
 
@@ -2093,8 +2103,6 @@
 </li>
       <li><a href="libraries/pdf/python.html#RPA.PDF.PDF.modified_reader">modified_reader (RPA.PDF.PDF attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/dialogs/python.html#RPA.Dialogs.Handler.monthname">monthname (RPA.Dialogs.Handler attribute)</a>
 </li>
       <li><a href="libraries/desktop_windows/python.html#RPA.Desktop.Windows.Windows.mouse_click">mouse_click() (RPA.Desktop.Windows.Windows method)</a>
@@ -2105,11 +2113,35 @@
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.move_directory">move_directory() (RPA.FileSystem.FileSystem method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.move_file">move_file() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.move_files">move_files() (RPA.FileSystem.FileSystem method)</a>
 </li>
       <li><a href="libraries/email_exchange/python.html#RPA.Email.Exchange.Exchange.move_messages">move_messages() (RPA.Email.Exchange.Exchange method)</a>
+
+      <ul>
+        <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.move_messages">(RPA.Email.ImapSmtp.ImapSmtp method)</a>
+</li>
+      </ul></li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.Action.msg_attachment_save">msg_attachment_save (RPA.Email.ImapSmtp.Action attribute)</a>
+</li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.Action.msg_copy">msg_copy (RPA.Email.ImapSmtp.Action attribute)</a>
+</li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.Action.msg_delete">msg_delete (RPA.Email.ImapSmtp.Action attribute)</a>
+</li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.Action.msg_flag">msg_flag (RPA.Email.ImapSmtp.Action attribute)</a>
+</li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.Action.msg_list">msg_list (RPA.Email.ImapSmtp.Action attribute)</a>
+</li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.Action.msg_read">msg_read (RPA.Email.ImapSmtp.Action attribute)</a>
+</li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.Action.msg_save">msg_save (RPA.Email.ImapSmtp.Action attribute)</a>
+</li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.Action.msg_unflag">msg_unflag (RPA.Email.ImapSmtp.Action attribute)</a>
+</li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.Action.msg_unread">msg_unread (RPA.Email.ImapSmtp.Action attribute)</a>
 </li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.File.mtime">mtime() (RPA.FileSystem.File property)</a>
 </li>
@@ -2432,6 +2464,8 @@
 </li>
       </ul></li>
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.FileSystem.remove_files">remove_files() (RPA.FileSystem.FileSystem method)</a>
+</li>
+      <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.ImapSmtp.remove_gmail_labels">remove_gmail_labels() (RPA.Email.ImapSmtp.ImapSmtp method)</a>
 </li>
       <li><a href="libraries/robocloud_items/python.html#RPA.Robocloud.Items.Items.remove_work_item_file">remove_work_item_file() (RPA.Robocloud.Items.Items method)</a>
 </li>
@@ -3308,11 +3342,15 @@
       <li><a href="libraries/filesystem/python.html#RPA.FileSystem.TimeoutException">TimeoutException</a>
 </li>
       <li><a href="libraries/cloud_google/python.html#RPA.Cloud.Google.to_action">to_action() (in module RPA.Cloud.Google)</a>
+
+      <ul>
+        <li><a href="libraries/email_imapsmtp/python.html#RPA.Email.ImapSmtp.to_action">(in module RPA.Email.ImapSmtp)</a>
 </li>
-      <li><a href="libraries/tables/python.html#RPA.Tables.Table.to_dict">to_dict() (RPA.Tables.Table method)</a>
-</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="libraries/tables/python.html#RPA.Tables.Table.to_dict">to_dict() (RPA.Tables.Table method)</a>
+</li>
       <li><a href="libraries/tables/python.html#RPA.Tables.to_identifier">to_identifier() (in module RPA.Tables)</a>
 </li>
       <li><a href="libraries/images/python.html#RPA.Images.to_image">to_image() (in module RPA.Images)</a>
