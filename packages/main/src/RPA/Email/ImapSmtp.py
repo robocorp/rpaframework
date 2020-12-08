@@ -1249,6 +1249,7 @@ class ImapSmtp:
         - msg_read
         - msg_unread
         - msg_save
+        - msg_attachment_save
         - glabel_add
         - glabel_remove
 
