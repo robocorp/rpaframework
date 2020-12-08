@@ -27,6 +27,7 @@ Upcoming release
   - Add keyword ``Do Message Actions`` for performing custom set of actions on selected messages
 
 - **RPA.Browser** libraries
+
   - RPA.Browser.Playwright has been added, enabling use of playwright based robotframework-browser library
   - RPA.Browser was moved to RPA.Browser.Selenium, and the old import RPA.Browser is kept as deprecated alias for now
 
