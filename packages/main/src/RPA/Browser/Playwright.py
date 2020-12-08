@@ -3,7 +3,9 @@ import sys
 try:
     from Browser import (
         Browser as Playwright,
-    )  # noqa: F401 # pylint: disable=unused-import
+    )
+
+    __all__ = ["Playwright"]
 except (ModuleNotFoundError, ImportError):
     sys.tracebacklimit = 0
     raise ModuleNotFoundError(

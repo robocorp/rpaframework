@@ -1,7 +1,10 @@
 import logging
 
+__all__ = ["Browser"]
 try:
     from RPA.Browser.Playwright import Playwright
+
+    __all__.append("Playwright")
 except (ImportError, ModuleNotFoundError):
     pass
 from RPA.Browser.Selenium import Browser as Selenium
