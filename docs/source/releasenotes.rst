@@ -18,6 +18,10 @@ Upcoming release
 
 - Library **Desktop.Windows**: Add more properties into dictionary returned by ``Get Window List``
 
+- **RPA.Browser** libraries
+  - RPA.Browser.Playwright has been added, enabling use of playwright based robotframework-browser library
+  - RPA.Browser was moved to RPA.Browser.Selenium, and the old import RPA.Browser is kept as deprecated alias for now
+
 6.7.2
 -----
 
