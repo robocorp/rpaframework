@@ -1683,6 +1683,48 @@ class ServiceDrive(GoogleBase):
         added_folder = service.files().create(body=file_metadata, fields="id").execute()
         return added_folder
 
+    def drive_export_file(
+        self,
+        file_id: str = None,
+        file_dict: dict = None,
+        target_file: str = None,
+        mimetype: str = "application/pdf",
+    ):
+        """Export Google Drive file using Drive export links
+
+        :param file_id: drive file id
+        :param file_dict: file dictionary returned by `Drive Search Files`
+        :param target_file: name for the exported file
+        :param mimetype: export mimetype, defaults to "application/pdf"
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${files}=  Drive Search Files  query=name contains 'my example worksheet'
+            Drive Export File  file_dict=${files}[0]
+        """
+        if target_file is None or len(target_file) == 0:
+            raise AttributeError("The target_file is required parameter for export")
+        if file_id is None and file_dict is None:
+            raise AttributeError("Either file_id or file_dict is required for export")
+        service = self._get_service(self._service_name)
+        target_files = self._get_target_file(file_id, file_dict, None, False)
+        if len(target_files) != 1:
+            raise ValueError("Did not find the Google Drive file to export")
+        request = service.files().export(fileId=target_files[0], mimeType=mimetype)
+
+        fh = BytesIO()
+        downloader = MediaIoBaseDownload(fh, request)
+        done = False
+        while done is False:
+            _, done = downloader.next_chunk()
+
+        fh.seek(0)
+        filepath = Path(target_file).absolute()
+        with open(filepath, "wb") as f:
+            shutil.copyfileobj(fh, f, length=131072)
+
 
 class Google(  # pylint: disable=R0901
     ServiceVision,
