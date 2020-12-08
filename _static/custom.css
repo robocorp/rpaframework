@@ -12,6 +12,9 @@ hr {
 .document a, .document a:visited {
 	color: #6372b3;
 }
+.wy-nav-side .icon-home {
+	color: #e8e8d8;
+}
 .wy-nav-side {
 	background: #2b3253;
 }
@@ -19,7 +22,7 @@ hr {
 	background: #2b3253;
 }
 .wy-nav-side .caption {
-	color: #c7cad7 !important;
+	color: #e8e8d8 !important;
 	margin-top: 20px !important;
 }
 .wy-nav-side a:hover {

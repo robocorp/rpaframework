@@ -5,7 +5,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:27:59",
+        "generated": "2020-12-08 14:48:46",
         "inits": [],
         "keywords": [
             {
@@ -103,7 +103,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:27:59",
+        "generated": "2020-12-08 14:48:46",
         "inits": [
             {
                 "name": "Init",
@@ -2622,7 +2622,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:27:59",
+        "generated": "2020-12-08 14:48:46",
         "inits": [
             {
                 "name": "Init",
@@ -5141,7 +5141,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:27:59",
+        "generated": "2020-12-08 14:48:46",
         "inits": [
             {
                 "name": "Init",
@@ -7660,7 +7660,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:27:59",
+        "generated": "2020-12-08 14:48:46",
         "inits": [
             {
                 "name": "Init",
@@ -8013,7 +8013,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:27:59",
+        "generated": "2020-12-08 14:48:46",
         "inits": [
             {
                 "name": "Init",
@@ -8231,7 +8231,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:27:59",
+        "generated": "2020-12-08 14:48:47",
         "inits": [
             {
                 "name": "Init",
@@ -8424,6 +8424,19 @@
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Download files specified by file dictionary or query string</p>\n<p>Parameters <cite>start</cite>, <cite>limit</cite> and <cite>timeout</cite> are used only when\ndownloading files defined by <cite>query</cite> parameter.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param file_dict:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">file dictionary returned by <cite>Drive Search Files</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param query:</th><td class=\"field-body\">drive query string to find target files, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param start:</th><td class=\"field-body\">start index from which to start download files</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param limit:</th><td class=\"field-body\">maximum amount of files that are downloaded, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param timeout:</th><td class=\"field-body\">maximum allowed time in seconds for download process</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of downloaded files</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${files}=</span><span class=\"p\">    </span><span class=\"c\">Drive Search Files</span><span class=\"p\">    </span><span class=\"c\">query=name contains '.json'</span><span class=\"p\">\n</span><span class=\"c\">FOR</span><span class=\"p\">    </span><span class=\"c\">${f}</span><span class=\"p\">    </span><span class=\"c\">IN</span><span class=\"p\">    </span><span class=\"c\">&#64;{files}</span><span class=\"p\">\n    </span><span class=\"c\">Run Keyword If</span><span class=\"p\">  </span><span class=\"c\">${f}[size] &lt; 2000</span><span class=\"p\">  </span><span class=\"c\">Drive Download Files</span><span class=\"p\">  </span><span class=\"c\">file_dict=${f}</span><span class=\"p\">\n</span><span class=\"c\">END</span><span class=\"p\">\n\n</span><span class=\"c\">${folder_id}=</span><span class=\"p\">   </span><span class=\"c\">Drive Get Folder Id</span><span class=\"p\">   </span><span class=\"c\">datafolder</span><span class=\"p\">\n</span><span class=\"c\">Drive Download Files</span><span class=\"p\">  </span><span class=\"c\">query=name contains '.json' and '${folder_id}' in parents</span><span class=\"p\">  </span><span class=\"c\">recurse=True</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Download files specified by file dictionary or query string",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Drive Export File",
+                "args": [
+                    "file_id: str = None",
+                    "file_dict: dict = None",
+                    "target_file: str = None",
+                    "mimetype: str = application/pdf"
+                ],
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Export Google Drive file using Drive export links</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param file_id:</th><td class=\"field-body\">drive file id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param file_dict:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">file dictionary returned by <cite>Drive Search Files</cite></td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param target_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name for the exported file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param mimetype:</th><td class=\"field-body\">export mimetype, defaults to &quot;application/pdf&quot;</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${files}=</span><span class=\"p\">  </span><span class=\"c\">Drive Search Files</span><span class=\"p\">  </span><span class=\"c\">query=name contains 'my example worksheet'</span><span class=\"p\">\n</span><span class=\"c\">Drive Export File</span><span class=\"p\">  </span><span class=\"c\">file_dict=${files}[0]</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Export Google Drive file using Drive export links",
                 "tags": [],
                 "matched": true
             },
@@ -8790,7 +8803,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:00",
+        "generated": "2020-12-08 14:48:47",
         "inits": [],
         "keywords": [
             {
@@ -8908,7 +8921,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:00",
+        "generated": "2020-12-08 14:48:47",
         "inits": [],
         "keywords": [
             {
@@ -9248,7 +9261,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:00",
+        "generated": "2020-12-08 14:48:48",
         "inits": [],
         "keywords": [
             {
@@ -9287,7 +9300,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:00",
+        "generated": "2020-12-08 14:48:48",
         "inits": [],
         "keywords": [
             {
@@ -9384,7 +9397,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:00",
+        "generated": "2020-12-08 14:48:48",
         "inits": [
             {
                 "name": "Init",
@@ -9984,7 +9997,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:01",
+        "generated": "2020-12-08 14:48:48",
         "inits": [
             {
                 "name": "Init",
@@ -10150,7 +10163,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:01",
+        "generated": "2020-12-08 14:48:49",
         "inits": [],
         "keywords": [
             {
@@ -10279,7 +10292,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:01",
+        "generated": "2020-12-08 14:48:49",
         "inits": [
             {
                 "name": "Init",
@@ -10403,7 +10416,7 @@
                     "limit: int = None",
                     "overwrite: bool = False"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Do actions to messages matching criterion and if given,\nsource folder</p>\n<p>Actions can be:</p>\n<ul class=\"simple\">\n<li>msg_copy</li>\n<li>msg_delete</li>\n<li>msg_flag</li>\n<li>msg_unflag</li>\n<li>msg_read</li>\n<li>msg_unread</li>\n<li>msg_save</li>\n<li>glabel_add</li>\n<li>glabel_remove</li>\n</ul>\n<p>Result object contains following attributes:</p>\n<ul class=\"simple\">\n<li>actions_done, number of messages on which action was performed</li>\n<li>message_count, number of messages matching criterion</li>\n<li>ids, message ids matching criterion</li>\n<li>uids, dictionary of message uids and message content</li>\n</ul>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param criterion:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">perform actions on messages matching this</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param actions:</th><td class=\"field-body\">list of actions to perform on matching messages</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_folder:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">look for messages in this folder, default all folders</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param target_folder:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">can be file path or email folder\n(for example action: msg_copy)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param labels:</th><td class=\"field-body\">comma separated list of labels (for example action: glabel_add)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param limit:</th><td class=\"field-body\">maximum number of messages (for example action: msg_delete)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param overwrite:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">to control if file should overwrite\n(for example action: msg_attachment_save)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">result object</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${actions}=</span><span class=\"p\">   </span><span class=\"c\">Create List</span><span class=\"p\">  </span><span class=\"c\">msg_unflag</span><span class=\"p\">  </span><span class=\"c\">msg_read</span><span class=\"p\">  </span><span class=\"c\">msg_save</span><span class=\"p\">  </span><span class=\"c\">msg_attachment_save</span><span class=\"p\">\n</span><span class=\"c\">Do Message Actions</span><span class=\"p\">    </span><span class=\"c\">SUBJECT &quot;Order confirmation&quot;</span><span class=\"p\">\n</span><span class=\"c\">...</span><span class=\"p\">                   </span><span class=\"c\">${actions}</span><span class=\"p\">\n</span><span class=\"c\">...</span><span class=\"p\">                   </span><span class=\"c\">source_folder=XXX</span><span class=\"p\">\n</span><span class=\"c\">...</span><span class=\"p\">                   </span><span class=\"c\">target_folder=${CURDIR}</span><span class=\"p\">\n</span><span class=\"c\">...</span><span class=\"p\">                   </span><span class=\"c\">overwrite=True</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Do actions to messages matching criterion and if given,\nsource folder</p>\n<p>Actions can be:</p>\n<ul class=\"simple\">\n<li>msg_copy</li>\n<li>msg_delete</li>\n<li>msg_flag</li>\n<li>msg_unflag</li>\n<li>msg_read</li>\n<li>msg_unread</li>\n<li>msg_save</li>\n<li>msg_attachment_save</li>\n<li>glabel_add</li>\n<li>glabel_remove</li>\n</ul>\n<p>Result object contains following attributes:</p>\n<ul class=\"simple\">\n<li>actions_done, number of messages on which action was performed</li>\n<li>message_count, number of messages matching criterion</li>\n<li>ids, message ids matching criterion</li>\n<li>uids, dictionary of message uids and message content</li>\n</ul>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param criterion:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">perform actions on messages matching this</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param actions:</th><td class=\"field-body\">list of actions to perform on matching messages</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param source_folder:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">look for messages in this folder, default all folders</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param target_folder:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">can be file path or email folder\n(for example action: msg_copy)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param labels:</th><td class=\"field-body\">comma separated list of labels (for example action: glabel_add)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param limit:</th><td class=\"field-body\">maximum number of messages (for example action: msg_delete)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param overwrite:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">to control if file should overwrite\n(for example action: msg_attachment_save)</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">result object</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${actions}=</span><span class=\"p\">   </span><span class=\"c\">Create List</span><span class=\"p\">  </span><span class=\"c\">msg_unflag</span><span class=\"p\">  </span><span class=\"c\">msg_read</span><span class=\"p\">  </span><span class=\"c\">msg_save</span><span class=\"p\">  </span><span class=\"c\">msg_attachment_save</span><span class=\"p\">\n</span><span class=\"c\">Do Message Actions</span><span class=\"p\">    </span><span class=\"c\">SUBJECT &quot;Order confirmation&quot;</span><span class=\"p\">\n</span><span class=\"c\">...</span><span class=\"p\">                   </span><span class=\"c\">${actions}</span><span class=\"p\">\n</span><span class=\"c\">...</span><span class=\"p\">                   </span><span class=\"c\">source_folder=XXX</span><span class=\"p\">\n</span><span class=\"c\">...</span><span class=\"p\">                   </span><span class=\"c\">target_folder=${CURDIR}</span><span class=\"p\">\n</span><span class=\"c\">...</span><span class=\"p\">                   </span><span class=\"c\">overwrite=True</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Do actions to messages matching criterion and if given, source folder",
                 "tags": [],
                 "matched": true
@@ -10610,7 +10623,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:01",
+        "generated": "2020-12-08 14:48:49",
         "inits": [],
         "keywords": [
             {
@@ -10775,7 +10788,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:01",
+        "generated": "2020-12-08 14:48:49",
         "inits": [],
         "keywords": [
             {
@@ -10971,7 +10984,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:02",
+        "generated": "2020-12-08 14:48:49",
         "inits": [],
         "keywords": [
             {
@@ -11168,7 +11181,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:02",
+        "generated": "2020-12-08 14:48:49",
         "inits": [],
         "keywords": [
             {
@@ -11642,7 +11655,7 @@
         "version": "0.7.2",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:02",
+        "generated": "2020-12-08 14:48:50",
         "inits": [
             {
                 "name": "Init",
@@ -11673,7 +11686,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'OPTIONS', 'HEAD', 'TRACE', 'GET', 'DELETE']"
+                    "retry_method_list=['DELETE', 'PUT', 'HEAD', 'OPTIONS', 'GET', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>client_certs</code> ['client certificate', 'client key'] PEM files containing the client key and certificate</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -11696,7 +11709,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'OPTIONS', 'HEAD', 'TRACE', 'GET', 'DELETE']"
+                    "retry_method_list=['DELETE', 'PUT', 'HEAD', 'OPTIONS', 'GET', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> A Custom Authentication object to be passed on to the requests library. <a href=\"http://docs.python-requests.org/en/master/user/advanced/#custom-authentication\">http://docs.python-requests.org/en/master/user/advanced/#custom-authentication</a></p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -11719,7 +11732,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'OPTIONS', 'HEAD', 'TRACE', 'GET', 'DELETE']"
+                    "retry_method_list=['DELETE', 'PUT', 'HEAD', 'OPTIONS', 'GET', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -11742,7 +11755,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'OPTIONS', 'HEAD', 'TRACE', 'GET', 'DELETE']"
+                    "retry_method_list=['DELETE', 'PUT', 'HEAD', 'OPTIONS', 'GET', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -11765,7 +11778,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'OPTIONS', 'HEAD', 'TRACE', 'GET', 'DELETE']"
+                    "retry_method_list=['DELETE', 'PUT', 'HEAD', 'OPTIONS', 'GET', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> List of username &amp; password for HTTP Basic Auth</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -12009,7 +12022,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:02",
+        "generated": "2020-12-08 14:48:50",
         "inits": [],
         "keywords": [
             {
@@ -12128,7 +12141,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:02",
+        "generated": "2020-12-08 14:48:50",
         "inits": [],
         "keywords": [
             {
@@ -12239,7 +12252,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:02",
+        "generated": "2020-12-08 14:48:50",
         "inits": [],
         "keywords": [
             {
@@ -12399,7 +12412,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:02",
+        "generated": "2020-12-08 14:48:50",
         "inits": [],
         "keywords": [
             {
@@ -12494,7 +12507,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:02",
+        "generated": "2020-12-08 14:48:50",
         "inits": [],
         "keywords": [
             {
@@ -12564,7 +12577,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:02",
+        "generated": "2020-12-08 14:48:50",
         "inits": [
             {
                 "name": "Init",
@@ -13503,7 +13516,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:03",
+        "generated": "2020-12-08 14:48:51",
         "inits": [
             {
                 "name": "Init",
@@ -13592,7 +13605,7 @@
                 "name": "Get Work Item Variable",
                 "args": [
                     "name",
-                    "default=<object object at 0x7f3b55022990>"
+                    "default=<object object at 0x7f90b2abb940>"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a single variable value from the work item,\nor default value if defined and key does not exist.\nIf key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param key:</th><td class=\"field-body\">Name of variable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param default:</th><td class=\"field-body\">Default value if key does not exist</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${username}=</span><span class=\"p\">    </span><span class=\"c\">Get work item variable</span><span class=\"p\">    </span><span class=\"c\">username</span><span class=\"p\">    </span><span class=\"c\">default=guest</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Return a single variable value from the work item, or default value if defined and key does not exist. If key does not exist and default is not defined, raises <cite>KeyError</cite>.",
@@ -13721,7 +13734,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:03",
+        "generated": "2020-12-08 14:48:51",
         "inits": [
             {
                 "name": "Init",
@@ -13756,7 +13769,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:03",
+        "generated": "2020-12-08 14:48:51",
         "inits": [],
         "keywords": [
             {
@@ -13822,7 +13835,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:03",
+        "generated": "2020-12-08 14:48:51",
         "inits": [
             {
                 "name": "Init",
@@ -13846,7 +13859,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:03",
+        "generated": "2020-12-08 14:48:51",
         "inits": [
             {
                 "name": "Init",
@@ -14103,7 +14116,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:04",
+        "generated": "2020-12-08 14:48:52",
         "inits": [],
         "keywords": [
             {
@@ -14130,7 +14143,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:04",
+        "generated": "2020-12-08 14:48:52",
         "inits": [],
         "keywords": [
             {
@@ -14506,7 +14519,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:04",
+        "generated": "2020-12-08 14:48:52",
         "inits": [
             {
                 "name": "Init",
@@ -14625,7 +14638,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:04",
+        "generated": "2020-12-08 14:48:52",
         "inits": [],
         "keywords": [
             {
@@ -14748,7 +14761,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2020-12-08 14:28:04",
+        "generated": "2020-12-08 14:48:52",
         "inits": [],
         "keywords": [
             {

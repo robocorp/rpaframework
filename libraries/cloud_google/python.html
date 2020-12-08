@@ -672,6 +672,27 @@ downloading files defined by <cite>query</cite> parameter.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.Google.drive_export_file">
+<code class="sig-name descname">drive_export_file</code><span class="sig-paren">(</span><em class="sig-param">file_id: str = None</em>, <em class="sig-param">file_dict: dict = None</em>, <em class="sig-param">target_file: str = None</em>, <em class="sig-param">mimetype: str = 'application/pdf'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.drive_export_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export Google Drive file using Drive export links</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_id</strong> – drive file id</p></li>
+<li><p><strong>file_dict</strong> – file dictionary returned by <cite>Drive Search Files</cite></p></li>
+<li><p><strong>target_file</strong> – name for the exported file</p></li>
+<li><p><strong>mimetype</strong> – export mimetype, defaults to “application/pdf”</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${files}=</span><span class="p">  </span><span class="c">Drive Search Files</span><span class="p">  </span><span class="c">query=name contains &#39;my example worksheet&#39;</span><span class="p"></span>
+<span class="c">Drive Export File</span><span class="p">  </span><span class="c">file_dict=${files}[0]</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.Google.drive_get_folder_id">
 <code class="sig-name descname">drive_get_folder_id</code><span class="sig-paren">(</span><em class="sig-param">folder: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.drive_get_folder_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get file id for the folder</p>
@@ -1557,6 +1578,27 @@ downloading files defined by <cite>query</cite> parameter.</p>
 
 <span class="c">${folder_id}=</span><span class="p">   </span><span class="c">Drive Get Folder Id</span><span class="p">   </span><span class="c">datafolder</span><span class="p"></span>
 <span class="c">Drive Download Files</span><span class="p">  </span><span class="c">query=name contains &#39;.json&#39; and &#39;${folder_id}&#39; in parents</span><span class="p">  </span><span class="c">recurse=True</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceDrive.drive_export_file">
+<code class="sig-name descname">drive_export_file</code><span class="sig-paren">(</span><em class="sig-param">file_id: str = None</em>, <em class="sig-param">file_dict: dict = None</em>, <em class="sig-param">target_file: str = None</em>, <em class="sig-param">mimetype: str = 'application/pdf'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.drive_export_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export Google Drive file using Drive export links</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_id</strong> – drive file id</p></li>
+<li><p><strong>file_dict</strong> – file dictionary returned by <cite>Drive Search Files</cite></p></li>
+<li><p><strong>target_file</strong> – name for the exported file</p></li>
+<li><p><strong>mimetype</strong> – export mimetype, defaults to “application/pdf”</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${files}=</span><span class="p">  </span><span class="c">Drive Search Files</span><span class="p">  </span><span class="c">query=name contains &#39;my example worksheet&#39;</span><span class="p"></span>
+<span class="c">Drive Export File</span><span class="p">  </span><span class="c">file_dict=${files}[0]</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>

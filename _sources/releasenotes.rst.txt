@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+7.0.0
+-----
+
 - Library **Desktop**:
 
   - Add initial version of OCR support
