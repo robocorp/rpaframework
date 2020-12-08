@@ -1,3 +1,4 @@
+from enum import Enum
 from functools import wraps
 
 from io import StringIO
@@ -26,6 +27,34 @@ from typing import Any
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.RobotLogListener import RobotLogListener
+
+
+class Action(Enum):
+    """Possible email actions."""
+
+    msg_copy = 1
+    msg_delete = 2
+    msg_list = 3
+    msg_flag = 4
+    msg_unflag = 5
+    msg_read = 6
+    msg_unread = 7
+    msg_save = 8
+    msg_attachment_save = 9
+    glabel_add = 20  # Add GMail label
+    glabel_remove = 21  # Remove GMail label
+
+
+def to_action(value):
+    """Convert value to Action enum."""
+    if isinstance(value, Action):
+        return value
+
+    sanitized = str(value).lower().strip().replace(" ", "_")
+    try:
+        return Action[sanitized]
+    except KeyError as err:
+        raise ValueError(f"Unknown email action: {value}") from err
 
 
 IMAGE_FORMATS = ["jpg", "jpeg", "bmp", "png", "gif"]
@@ -157,6 +186,7 @@ class ImapSmtp:
         self.set_credentials(account, password)
         self.smtp_conn = None
         self.imap_conn = None
+        self.selected_folder = None
 
     def __del__(self) -> None:
         if self.smtp_conn:
@@ -359,7 +389,7 @@ class ImapSmtp:
             Send Message  sender@domain.com  recipient@domain.com
             ...           subject=Greetings Software Robot Developer
             ...           body=${email_body}
-            ...           attachments:${CURDIR}${/}report.pdf
+            ...           attachments=${CURDIR}${/}report.pdf
         """
         add_charset("utf-8", QP, QP, "utf-8")
         recipients, attachments, images = self._handle_message_parameters(
@@ -453,6 +483,10 @@ class ImapSmtp:
         messages = []
         for mail_id in mail_ids:
             _, data = self.imap_conn.fetch(mail_id, "(RFC822)")
+            if data[0] is None:
+                self.logger.debug("Data was none for : %s", mail_id)
+                continue
+            self.logger.debug(data)
             message = message_from_bytes(data[0][1])
             message_dict = {"Mail-Id": mail_id, "Message": message}
             for k, v in message.items():
@@ -521,38 +555,102 @@ class ImapSmtp:
             return text.strip(), has_attachments
 
     @imap_connection
-    def _search_message(self, criterion: str) -> list:
-        return self.imap_conn.search(None, "(" + criterion + ")")
+    def _do_actions_on_messages(
+        self,
+        criterion: str,
+        actions: list,
+        labels: str = None,
+        source_folder: str = None,
+        target_folder: str = None,
+        limit: int = None,
+        overwrite: bool = False,
+    ) -> list:
+        selected_folder = source_folder or self.selected_folder
+        folders = self.get_folder_list(subdirectory=selected_folder)
+        result = {"actions_done": 0, "message_count": 0, "ids": [], "uids": {}}
+        for f in folders:
+            if "Noselect" in f["flags"]:
+                continue
+            self.select_folder(f["name"])
+            self._search_message(criterion, f["name"], actions, limit, result)
 
-    def _search_and_return_mail_ids(self, criterion: str) -> list:
-        _, data = self._search_message(criterion)
-        mail_ids = bytes.decode(data[0])
-        return mail_ids.split() if len(mail_ids) > 1 else []
+        if limit is None or len(result["uids"]) <= limit:
+            for mail in result["uids"].items():
+                status = self._perform_actions(
+                    actions,
+                    mail,
+                    labels=labels,
+                    target_folder=target_folder,
+                    overwrite=overwrite,
+                )
+                if status:
+                    result["actions_done"] += 1
+        self.logger.debug(result)
+        return result
 
-    @imap_connection
-    def _set_message_flag(
-        self, mail_id: str = None, flag: str = None, unset: bool = False
+    def _search_message(self, criterion, folder_name, actions, limit, result):
+        status, data = self.imap_conn.search(None, "(" + criterion + ")")
+        if status == "OK":
+            mail_id_data = bytes.decode(data[0])
+            mail_ids = mail_id_data.split() if len(mail_id_data) > 0 else []
+            if limit and len(mail_ids) + result["message_count"] > limit:
+                return
+            if len(mail_ids) > 0:
+                result["message_count"] += len(mail_ids)
+                result["ids"].extend(mail_ids)
+                for mail_id in mail_ids:
+                    mail_uid, message = self._fetch_uid_and_body(
+                        folder_name, mail_id, actions
+                    )
+                    if mail_uid is None or mail_uid in result["uids"].keys():
+                        continue
+                    result["uids"][mail_uid] = message
+
+    def _perform_actions(
+        self,
+        actions: list,
+        mail: dict,
+        labels: str = None,
+        target_folder: str = None,
+        overwrite: bool = False,
     ):
-        flag_type = "-FLAGS" if unset else "+FLAGS"
-        # self.imap_conn.uid("STORE", mail_id, flag_type, f"({flag})")
-        mail_uid = self._fetch_uid(mail_id)
-        status_code, data = self.imap_conn.uid("STORE", mail_uid, flag_type, flag)
-        data_message = data[0]
-        self.logger.debug("Set message flag: %s, %s", status_code, data)
-        if status_code != "OK":
-            self.logger.debug(
-                "Message flag '%s' failed for mail_id: %s, mail_uid: %s",
-                flag,
-                mail_id,
-                mail_uid,
-            )
-        return status_code == "OK" and data_message is not None
+        action_status = True
+        mail_uid, mail_dict = mail
 
-    @imap_connection
-    def _delete_messages(self, mail_ids: list) -> None:
-        for mail_id in mail_ids:
-            self._set_message_flag(mail_id, FLAG_DELETED)
-        self.imap_conn.expunge()
+        store_params = {
+            Action.glabel_add: ["+X-GM-LABELS", f"({labels})"],
+            Action.glabel_remove: ["-X-GM-LABELS", f"({labels})"],
+            Action.msg_delete: ["+FLAGS", FLAG_DELETED],
+            Action.msg_flag: ["+FLAGS", FLAG_FLAGGED],
+            Action.msg_unflag: ["-FLAGS", FLAG_FLAGGED],
+            Action.msg_read: ["+FLAGS", FLAG_SEEN],
+            Action.msg_unread: ["-FLAGS", FLAG_SEEN],
+        }
+
+        for act in actions:
+            action = to_action(act)
+            self.logger.debug("Performing %s Action", action)
+            if action in store_params.keys():
+                m_op, m_param = store_params[action]
+                action_status, _ = self.imap_conn.uid("STORE", mail_uid, m_op, m_param)
+            elif action == Action.msg_copy:
+                action_status, _ = self.imap_conn.uid("COPY", mail_uid, target_folder)
+            elif action == Action.msg_list:
+                pass
+            elif action == Action.msg_save:
+                if target_folder is None:
+                    target_folder = os.path.expanduser("~")
+                self._save_eml_file(mail_dict, target_folder, overwrite)
+            elif action == Action.msg_attachment_save:
+                if target_folder is None:
+                    target_folder = os.path.expanduser("~")
+                self._save_attachment(mail_dict, target_folder, overwrite)
+            else:
+                # TODO: mypy should handle enum exhaustivity validation
+                raise ValueError(f"Unsupported email action: {action}")
+            if not action_status:
+                break
+        return action_status
 
     @imap_connection
     def delete_message(self, criterion: str = "") -> bool:
@@ -570,23 +668,17 @@ class ImapSmtp:
             Delete Message  SUBJECT \"Greetings RPA developer\"
         """
         self._validate_criterion(criterion)
-        _, data = self._search_message(criterion)
-        mail_ids = data[0].split()
-        if len(mail_ids) != 1:
-            self.logger.warning(
-                "Delete message criteria matched %d messages. Not deleting.",
-                len(mail_ids),
-            )
-            return False
-        else:
-            self._delete_messages(mail_ids)
-            return True
+        result = self._do_actions_on_messages(
+            criterion, actions=[Action.msg_delete], limit=1
+        )
+        return result["actions_done"] == 1
 
     @imap_connection
-    def delete_messages(self, criterion: str = "") -> bool:
+    def delete_messages(self, criterion: str = "", limit: int = None) -> bool:
         """Delete messages from server based on criterion.
 
         :param criterion: filter messages based on this, defaults to ""
+        :param limit: maximum number of message to delete
         :return: True if success, False if not
 
         Example:
@@ -596,9 +688,10 @@ class ImapSmtp:
             Delete Messages  SUBJECT Greetings
         """
         self._validate_criterion(criterion)
-        mail_ids = self._search_and_return_mail_ids(criterion)
-        self._delete_messages(mail_ids)
-        return True
+        result = self._do_actions_on_messages(
+            criterion, actions=[Action.msg_delete], limit=limit
+        )
+        return result["actions_done"] == result["message_count"]
 
     @imap_connection
     def save_messages(self, criterion: str = "", target_folder: str = None) -> bool:
@@ -621,17 +714,13 @@ class ImapSmtp:
         self._validate_criterion(criterion)
         if target_folder is None:
             target_folder = os.path.expanduser("~")
-        _, data = self._search_message(criterion)
-        mail_ids = data[0].split()
-        for mail_id in mail_ids:
-            _, data = self.imap_conn.fetch(mail_id, "(RFC822)")
-            emlfile = Path(target_folder) / f"{str(int(mail_id))}.eml"
-            with open(emlfile, "wb") as f:
-                f.write(data[0][1])
-        return True
+        result = self._do_actions_on_messages(
+            criterion, actions=[Action.msg_save], target_folder=target_folder
+        )
+        return result["actions_done"] == result["message_count"]
 
     @imap_connection
-    def list_messages(self, criterion: str = "") -> Any:
+    def list_messages(self, criterion: str = "", source_folder: str = None) -> Any:
         """Return list of messages matching criterion.
 
         :param criterion: list emails matching this, defaults to ""
@@ -641,7 +730,7 @@ class ImapSmtp:
 
         .. code-block:: robotframework
 
-            @{emails}  List Messages  SUBJECT \"rpa task\"
+            @{emails}  List Messages  SUBJECT "rpa task"
             FOR  ${email}  IN  @{EMAILS}
                 Log  ${email}[Subject]
                 Log  ${email}[From]
@@ -652,9 +741,11 @@ class ImapSmtp:
             END
         """
         self.logger.info("List messages: %s", criterion)
-        _, data = self._search_message(criterion)
-        mail_ids = data[0].split()
-        return self._fetch_messages(mail_ids)
+        result = self._do_actions_on_messages(
+            criterion, source_folder=source_folder, actions=[Action.msg_list]
+        )
+        self.logger.info(result)
+        return result["uids"].values()
 
     @imap_connection
     def save_attachments(
@@ -697,28 +788,44 @@ class ImapSmtp:
 
         .. code-block:: robotframework
 
-            @{emails}  List Messages  SUBJECT \"rpa task\"
-            FOR  ${email}  IN  @{EMAILS}
+            @{emails}  List Messages  SUBJECT "rpa task"
+            FOR  ${email}  IN  @{emails}
                 Run Keyword If   ${email}[Has-Attachments] == True
                 ...              Save Attachment  ${email}  target_folder=${CURDIR}  overwrite=True
             END
         """  # noqa: E501
         if target_folder is None:
             target_folder = os.path.expanduser("~")
-        msg = message["Message"] if isinstance(message, dict) else message
+        self._save_attachment(message, target_folder, overwrite)
+
+    def _save_attachment(self, message, target_folder, overwrite):
         attachments_saved = []
+        msg = message["Message"] if isinstance(message, dict) else message
         for part in msg.walk():
             content_maintype = part.get_content_maintype()
             content_disposition = part.get("Content-Disposition")
             if content_maintype != "multipart" and content_disposition is not None:
                 filename = part.get_filename()
-                self.logger.info("%s %s", filename, content_maintype)
                 if bool(filename):
                     filepath = Path(target_folder) / filename
                     if not filepath.exists() or overwrite:
+                        self.logger.info(
+                            "Saving attachment: %s",
+                            filename,
+                        )
                         with open(filepath, "wb") as f:
                             f.write(part.get_payload(decode=True))
                             attachments_saved.append(filepath)
+                    elif filepath.exists() and not overwrite:
+                        self.logger.warning("Did not overwrite file: %s", filepath)
+
+    def _save_eml_file(self, message, target_folder, overwrite):
+        emlfile = Path(target_folder) / f"{message['Mail-Id']}.eml"
+        if not emlfile.exists() or overwrite:
+            with open(emlfile, "wb") as f:
+                f.write(message["bytes"])
+        elif emlfile.exists() and not overwrite:
+            self.logger.warning("Did not overwrite file: %s", emlfile)
 
     @imap_connection
     def wait_for_message(
@@ -741,13 +848,11 @@ class ImapSmtp:
         end_time = time.time() + float(timeout)
         while time.time() < end_time:
             self.imap_conn.select("inbox")
-            _, data = self._search_message(criterion)
-            mail_ids = data[0].split()
-            self.logger.warning(
-                "Wait for message found matching message %d time(s).", len(mail_ids)
+            result = self._do_actions_on_messages(
+                criterion, actions=[Action.msg_list], source_folder="INBOX"
             )
-            if len(mail_ids) > 0:
-                return self._fetch_messages(mail_ids)
+            if result["message_count"] > 0:
+                return result["uids"].values()
             time.sleep(interval)
         return False
 
@@ -778,7 +883,6 @@ class ImapSmtp:
             @{folders}  Get Folder List  pattern=important
             @{folders}  Get Folder List  subdirectory=sub
         """
-        self.logger.info("Get folder list")
         kwparams = {}
         if subdirectory:
             kwparams["directory"] = subdirectory
@@ -807,10 +911,12 @@ class ImapSmtp:
 
             Select Folder   subfolder
         """
-        self.logger.info("Select folder: %s", folder_name)
-        status_code, data = self.imap_conn.select(mailbox=folder_name, readonly=False)
+        status_code, data = self.imap_conn.select(
+            mailbox=f'"{folder_name}"', readonly=False
+        )
         if status_code == "OK":
             message_count = bytes.decode(data[0])
+            self.selected_folder = folder_name
             return int(message_count)
         else:
             raise ValueError("Folder '%s' does not exist on the server" % folder_name)
@@ -921,16 +1027,9 @@ class ImapSmtp:
             ${unflagged}  ${oftotal}  Flag Messages   SUBJECT rpa  unflag=True
         """
         self._validate_criterion(criterion)
-        if unflag:
-            self.logger.info("Unflag messages: '%s'", criterion)
-        else:
-            self.logger.info("Flag messages: '%s'", criterion)
-        mail_ids = self._search_and_return_mail_ids(criterion)
-        success_count = 0
-        for mail_id in mail_ids:
-            status = self._set_message_flag(mail_id, FLAG_FLAGGED, unflag)
-            success_count += 1 if status else 0
-        return success_count, len(mail_ids)
+        action = Action.msg_unflag if unflag else Action.msg_flag
+        result = self._do_actions_on_messages(criterion, actions=[action])
+        return result["actions_done"] == result["message_count"]
 
     @imap_connection
     def unflag_messages(self, criterion: str = None) -> Any:
@@ -962,16 +1061,9 @@ class ImapSmtp:
             ${read}  ${oftotal}  Mark As Read   SUBJECT rpa
         """
         self._validate_criterion(criterion)
-        if unread:
-            self.logger.info("Mark messages as unread: '%s'", criterion)
-        else:
-            self.logger.info("Mark messages as read: '%s'", criterion)
-        mail_ids = self._search_and_return_mail_ids(criterion)
-        success_count = 0
-        for mail_id in mail_ids:
-            status = self._set_message_flag(mail_id, FLAG_SEEN, unread)
-            success_count += 1 if status else 0
-        return success_count, len(mail_ids)
+        action = Action.msg_unread if unread else Action.msg_read
+        result = self._do_actions_on_messages(criterion, actions=[action])
+        return result["actions_done"] == result["message_count"]
 
     @imap_connection
     def mark_as_unread(self, criterion: str = None) -> Any:
@@ -992,8 +1084,212 @@ class ImapSmtp:
         if criterion is None or len(criterion) < 1:
             raise KeyError("Criterion is required parameter")
 
-    def _fetch_uid(self, mail_id):
-        _, data = self.imap_conn.fetch(mail_id, "(UID)")
-        pattern_uid = re.compile(r"\d+ \(UID (?P<uid>\d+)\)")
-        match = pattern_uid.match(bytes.decode(data[0]))
-        return match.group("uid")
+    def _fetch_uid_and_body(self, folder_name, mail_id, actions):
+        body = None
+        self.select_folder(folder_name)
+        status, data = self.imap_conn.fetch(mail_id, "(UID RFC822)")
+        self.logger.debug("fetch uid for mail_id: %s result: %s", mail_id, status)
+        pattern_uid = re.compile(r"\d+ \(UID (?P<uid>\d+) RFC822")
+        uid = (
+            None
+            if data[0] is None
+            else pattern_uid.match(bytes.decode(data[0][0])).group("uid")
+        )
+        if uid:
+            body = self._fetch_body(mail_id, data, actions)
+        return uid, body
+
+    def _fetch_body(self, mail_id, data, actions):
+        # _, data = self.imap_conn.fetch(mail_id, "(RFC822)")
+        message = message_from_bytes(data[0][1])
+        message_dict = {"Mail-Id": mail_id, "Message": message}
+        if Action.msg_save in actions:
+            message_dict["bytes"] = data[0][1]
+        for k, v in message.items():
+            msg_item = decode_header(v)
+            message_dict[k] = make_header(msg_item)
+        (
+            message_dict["Body"],
+            has_attachments,
+        ) = self._get_decoded_email_body(message)
+        # SET DEFAULT VALUES FOR KEYS
+        if "Delivered-To" not in message_dict.keys():
+            message_dict["Delivered-To"] = ""
+        message_dict["Has-Attachments"] = has_attachments
+        return message_dict
+
+    @imap_connection
+    def move_messages(
+        self,
+        criterion: str = None,
+        target_folder: str = None,
+        source_folder: str = None,
+    ) -> bool:
+        """Move messages from source folder to target folder
+
+        :param criterion: move messages matching criterion
+        :param source_folder: location of the messages, default `INBOX`
+        :param target_folder: where messages should be move into
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${result}=    Move Messages
+            ...    criterion=SUBJECT "order confirmation 32"
+            ...    target_folder=yyy
+
+            ${result}=    Move Messages
+            ...    criterion=ALL
+            ...    source_folder=yyy
+            ...    target_folder=XXX
+        """
+        self._validate_criterion(criterion)
+        if target_folder is None or len(target_folder) == 0:
+            raise KeyError("Can't move messages without target_folder")
+        actions = [Action.msg_copy, Action.msg_delete]
+        result = self._do_actions_on_messages(
+            criterion=criterion,
+            actions=actions,
+            source_folder=source_folder,
+            target_folder=target_folder,
+        )
+        if result["actions_done"] > 0:
+            self.imap_conn.expunge()
+        action_result = result["actions_done"] == result["message_count"]
+        if not action_result:
+            self.logger.warning(
+                "Criterion matched %s messages, but actions done to %s messages",
+                result["message_count"],
+                result["actions_done"],
+            )
+        return action_result
+
+    @imap_connection
+    def _modify_gmail_labels(
+        self,
+        labels: str,
+        criterion: str,
+        action: bool = True,
+        source_folder: str = None,
+    ) -> bool:
+        result = self._do_actions_on_messages(
+            criterion=criterion,
+            actions=[action],
+            labels=labels,
+            source_folder=source_folder,
+        )
+        if result["message_count"] == 0:
+            self.logger.info("Did not find any messages matching criterion")
+
+        return result["actions_done"] == result["message_count"]
+
+    @imap_connection
+    def add_gmail_labels(self, labels, criterion, source_folder: str = None) -> bool:
+        """Add GMail labels to messages matching criterion and if given,
+        source folder
+
+        :param labels: comma separated list of labels to add
+        :param criterion: label messages matching criterion
+        :param source_folder: look for messages in this folder, default all folders
+        :return: status of the operation
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Add Gmail Labels  customer1   SUBJECT "order confirmation"
+            Add Gmail Labels  wip         SUBJECT "order confirmation"   customerfolder
+        """
+        return self._modify_gmail_labels(
+            labels, criterion, Action.glabel_add, source_folder
+        )
+
+    @imap_connection
+    def remove_gmail_labels(self, labels, criterion, source_folder: str = None) -> bool:
+        """Remove GMail labels to messages matching criterion and if given,
+        source folder
+
+        :param labels: comma separated list of labels to remove
+        :param criterion: unlabel messages matching criterion
+        :param source_folder: look for messages in this folder, default all folders
+        :return: status of the operation
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Remove Gmail Labels  wip  SUBJECT "order confirmation"
+            Remove Gmail Labels  wip  SUBJECT "order confirmation"  customerfolder
+        """
+        return self._modify_gmail_labels(
+            labels, criterion, Action.glabel_remove, source_folder
+        )
+
+    @imap_connection
+    def do_message_actions(
+        self,
+        criterion: str = "",
+        actions: list = None,
+        source_folder: str = None,
+        target_folder: str = None,
+        labels: str = None,
+        limit: int = None,
+        overwrite: bool = False,
+    ) -> Any:
+        """Do actions to messages matching criterion and if given,
+        source folder
+
+        Actions can be:
+
+        - msg_copy
+        - msg_delete
+        - msg_flag
+        - msg_unflag
+        - msg_read
+        - msg_unread
+        - msg_save
+        - glabel_add
+        - glabel_remove
+
+        Result object contains following attributes:
+
+        - actions_done, number of messages on which action was performed
+        - message_count, number of messages matching criterion
+        - ids, message ids matching criterion
+        - uids, dictionary of message uids and message content
+
+        :param criterion: perform actions on messages matching this
+        :param actions: list of actions to perform on matching messages
+        :param source_folder: look for messages in this folder, default all folders
+        :param target_folder: can be file path or email folder
+         (for example action: msg_copy)
+        :param labels: comma separated list of labels (for example action: glabel_add)
+        :param limit:  maximum number of messages (for example action: msg_delete)
+        :param overwrite: to control if file should overwrite
+         (for example action: msg_attachment_save)
+        :return: result object
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${actions}=   Create List  msg_unflag  msg_read  msg_save  msg_attachment_save
+            Do Message Actions    SUBJECT "Order confirmation"
+            ...                   ${actions}
+            ...                   source_folder=XXX
+            ...                   target_folder=${CURDIR}
+            ...                   overwrite=True
+        """  # noqa: E501
+
+        parsed_actions = [to_action(act) for act in actions]
+        result = self._do_actions_on_messages(
+            criterion=criterion,
+            actions=parsed_actions,
+            labels=labels,
+            source_folder=source_folder,
+            target_folder=target_folder,
+            limit=limit,
+            overwrite=overwrite,
+        )
+        return result["actions_done"] == result["message_count"]
