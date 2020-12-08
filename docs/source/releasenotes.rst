@@ -25,6 +25,10 @@ Upcoming release
   - Add keywords to add/remove labels from GMail messages
   - Add keyword ``Do Message Actions`` for performing custom set of actions on selected messages
 
+- **RPA.Browser** libraries
+  - RPA.Browser.Playwright has been added, enabling use of playwright based robotframework-browser library
+  - RPA.Browser was moved to RPA.Browser.Selenium, and the old import RPA.Browser is kept as deprecated alias for now
+
 - Library **Tables**: Correctly handle empty fields when filtering
 
 6.7.2

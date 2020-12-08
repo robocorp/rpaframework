@@ -47,6 +47,7 @@ install: .venv/flag ## Install development environment
 	$(sync)
 	poetry install
 	-touch $@
+	poetry run rfbrowser init --skip-browsers
 
 poetry.lock: pyproject.toml
 	poetry lock
@@ -75,3 +76,7 @@ changelog: ## Print changes in latest release
 
 build-each: packages/*
 	$(call make_each, "build")
+lint-each: packages/*
+	$(call make_each, "lint")
+install-hooks:
+	git config core.hooksPath ./config/git-hooks/
