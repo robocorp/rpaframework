@@ -894,6 +894,9 @@ category = "main"
 optional = true
 python-versions = ">=3.6"
 
+[package.dependencies]
+numpy = ">=1.14.5"
+
 [[package]]
 name = "openpyxl"
 version = "3.0.5"
@@ -1440,7 +1443,7 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "4.0.2"
+version = "5.0.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -1452,7 +1455,7 @@ webdrivermanager = ">=0.9.0,<0.10.0"
 
 [[package]]
 name = "rpaframework-recognition"
-version = "0.5.0"
+version = "0.6.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = true
@@ -1463,7 +1466,7 @@ numpy = "1.19.3"
 opencv-python = ">=4.4.0,<5.0.0"
 pillow = ">=8.0.1,<9.0.0"
 pytesseract = ">=0.3.6,<0.4.0"
-rpaframework-core = ">=4.0.1,<5.0.0"
+rpaframework-core = ">=5.0.0,<6.0.0"
 
 [[package]]
 name = "rsa"
@@ -1723,11 +1726,12 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 aws = ["boto3"]
 cv = ["rpaframework-recognition"]
 google = ["google-api-python-client", "google-auth-httplib2", "google-auth-oauthlib", "google-cloud-language", "google-cloud-speech", "google-cloud-storage", "google-cloud-texttospeech", "google-cloud-translate", "google-cloud-videointelligence", "google-cloud-vision", "grpcio"]
+playwright = ["robotframework-browser"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "8e976292f3f5db54d5c9ee88dc4f7bcfac2f8fe596e91b6a112ea84bf3e5405e"
+content-hash = "70d3e0b9acc2fd34918f59272c4a3d69c9eb15b69cc9fb7d2931caa6edc96fd9"
 
 [metadata.files]
 appdirs = [
@@ -2668,12 +2672,12 @@ robotframework-seleniumtestability = [
     {file = "robotframework-seleniumtestability-1.1.0.tar.gz", hash = "sha256:18810869a0c0010cc623aea4bb382afdc9aa6fe8404c35fa58452766d0322735"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-4.0.2.tar.gz", hash = "sha256:555d18889bf5b425896db363316dcd372a8a734a56294ba589d62b47e4f24145"},
-    {file = "rpaframework_core-4.0.2-py3-none-any.whl", hash = "sha256:1f5577c05bef8f8dff3b584ffb68102d1213ac82307ab8521cdb5b81736e41e5"},
+    {file = "rpaframework-core-5.0.0.tar.gz", hash = "sha256:f0ff805017280116741a9db0428dc03707a2f7576e5751bd1c99b908eff7896d"},
+    {file = "rpaframework_core-5.0.0-py3-none-any.whl", hash = "sha256:070dca456a41e6e3345fab6fb0bca4c5e3f632e8631789fb623646600262cc86"},
 ]
 rpaframework-recognition = [
-    {file = "rpaframework-recognition-0.5.0.tar.gz", hash = "sha256:dd4ae959b9de7b1006636f66f28cfbe28200434eb1499b79f3924626b2e1d978"},
-    {file = "rpaframework_recognition-0.5.0-py3-none-any.whl", hash = "sha256:1b4294637ea89ae2b6273e263c73c95b2a3b0586ba8266f529bc5ec0c39d007d"},
+    {file = "rpaframework-recognition-0.6.0.tar.gz", hash = "sha256:7c6c480b156fa9ada6360fd482569796880b56812dcb94b38db6403cf8b6afee"},
+    {file = "rpaframework_recognition-0.6.0-py3-none-any.whl", hash = "sha256:0bdb7b9019ded7ebc4bc5bda20ceea8cc25980d0318efe5ff3df63902ebf4643"},
 ]
 rsa = [
     {file = "rsa-4.6-py3-none-any.whl", hash = "sha256:6166864e23d6b5195a5cfed6cd9fed0fe774e226d8f854fcb23b7bbef0350233"},
@@ -2736,6 +2740,12 @@ typed-ast = [
     {file = "typed_ast-1.4.1-cp38-cp38-win32.whl", hash = "sha256:715ff2f2df46121071622063fc7543d9b1fd19ebfc4f5c8895af64a77a8c852c"},
     {file = "typed_ast-1.4.1-cp38-cp38-win_amd64.whl", hash = "sha256:fc0fea399acb12edbf8a628ba8d2312f583bdbdb3335635db062fa98cf71fca4"},
     {file = "typed_ast-1.4.1-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:d43943ef777f9a1c42bf4e552ba23ac77a6351de620aa9acf64ad54933ad4d34"},
+    {file = "typed_ast-1.4.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:92c325624e304ebf0e025d1224b77dd4e6393f18aab8d829b5b7e04afe9b7a2c"},
+    {file = "typed_ast-1.4.1-cp39-cp39-manylinux1_i686.whl", hash = "sha256:d648b8e3bf2fe648745c8ffcee3db3ff903d0817a01a12dd6a6ea7a8f4889072"},
+    {file = "typed_ast-1.4.1-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:fac11badff8313e23717f3dada86a15389d0708275bddf766cca67a84ead3e91"},
+    {file = "typed_ast-1.4.1-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:0d8110d78a5736e16e26213114a38ca35cb15b6515d535413b090bd50951556d"},
+    {file = "typed_ast-1.4.1-cp39-cp39-win32.whl", hash = "sha256:b52ccf7cfe4ce2a1064b18594381bccf4179c2ecf7f513134ec2f993dd4ab395"},
+    {file = "typed_ast-1.4.1-cp39-cp39-win_amd64.whl", hash = "sha256:3742b32cf1c6ef124d57f95be609c473d7ec4c14d0090e5a5e05a15269fb4d0c"},
     {file = "typed_ast-1.4.1.tar.gz", hash = "sha256:8c8aaad94455178e3187ab22c8b01a3837f8ee50e09cf31f1ba129eb293ec30b"},
 ]
 typing-extensions = [

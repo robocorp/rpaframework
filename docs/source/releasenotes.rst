@@ -7,6 +7,7 @@ Upcoming release
 - Library **Desktop**:
 
   - Add initial version of OCR support
+  - Add syntax for locator chaining
   - Add built-in buffer time between keyboard/mouse inputs
   - Add built-in wait period for all locators, instead of failing immediately
   - Add preview images for matched locators in Robot Framework log

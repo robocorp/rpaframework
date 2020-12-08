@@ -1,5 +1,5 @@
 import time
-from typing import Any, Callable, List, Optional, Union, Tuple
+from typing import Callable, List, Optional, Union
 
 from PIL import Image
 from RPA.Desktop.keywords import (
@@ -12,21 +12,22 @@ from RPA.Desktop.keywords import (
     HAS_RECOGNITION,
 )
 
-from RPA.core.geometry import Point, Region
+from RPA.core.geometry import Point, Region, Undefined
 from RPA.core.locators import (
     Locator,
     PointLocator,
     OffsetLocator,
     RegionLocator,
+    SizeLocator,
     ImageLocator,
     OcrLocator,
-    parse_locator,
+    syntax,
 )
 
 if HAS_RECOGNITION:
     from RPA.recognition import templates, ocr  # pylint: disable=no-name-in-module
 
-Geometry = Union[Point, Region]
+Geometry = Union[Point, Region, Undefined]
 
 
 def ensure_recognition():
@@ -71,6 +72,7 @@ class FinderKeywords(LibraryContext):
 
     def __init__(self, ctx):
         super().__init__(ctx)
+        self._resolver = syntax.Resolver(self._find)
 
         self.timeout = 3.0
         if HAS_RECOGNITION:
@@ -78,39 +80,94 @@ class FinderKeywords(LibraryContext):
         else:
             self.confidence = 80.0
 
-    def _find(self, locator: str) -> List[Geometry]:
+    def _find(self, base: Geometry, locator: Locator) -> List:
         """Internal method for resolving and searching locators."""
         if isinstance(locator, (Region, Point)):
             return [locator]
 
-        locator: Locator = parse_locator(locator)
-        self.logger.info("Using locator: %s", locator)
+        self.logger.debug("Finding locator: %s", locator)
 
-        if isinstance(locator, PointLocator):
-            position = Point(locator.x, locator.y)
-            return [position]
-        elif isinstance(locator, OffsetLocator):
+        finders = {
+            PointLocator: self._find_point,
+            OffsetLocator: self._find_offset,
+            RegionLocator: self._find_region,
+            SizeLocator: self._find_size,
+            ImageLocator: self._find_templates,
+            OcrLocator: self._find_ocr,
+        }
+
+        for klass, finder in finders.items():
+            if isinstance(locator, klass):
+                return finder(base, locator)
+
+        raise NotImplementedError(f"Unsupported locator: {locator}")
+
+    def _find_point(self, base: Geometry, point: PointLocator):
+        """Find absolute point on screen. CAn not be based on existing value."""
+        if not isinstance(base, Undefined):
+            self.logger.warning("Using absolute point coordinates")
+
+        result = Point(point.x, point.y)
+        return [result]
+
+    def _find_offset(self, base: Geometry, offset: OffsetLocator):
+        """Find pixel offset from given base value, or if no base,
+        offset from current mouse position.
+        """
+        if isinstance(base, Undefined):
             position = self.ctx.get_mouse_position()
-            position = position.move(locator.x, locator.y)
-            return [position]
-        elif isinstance(locator, RegionLocator):
-            region = Region(locator.left, locator.top, locator.right, locator.bottom)
-            return [region]
-        elif isinstance(locator, ImageLocator):
-            ensure_recognition()
-            return self._find_templates(locator)
-        elif isinstance(locator, OcrLocator):
-            ensure_recognition()
-            return self._find_ocr(locator)
+        elif isinstance(base, Region):
+            position = base.center
         else:
-            raise NotImplementedError(f"Unsupported locator: {locator}")
+            position = base
 
-    def _find_templates(self, locator: ImageLocator) -> List[Region]:
+        result = position.move(offset.x, offset.y)
+        return [result]
+
+    def _find_region(self, base: Geometry, region: RegionLocator):
+        """Find absolute region on screen. Can not be based on existing value."""
+        if not isinstance(base, Undefined):
+            self.logger.warning("Using absolute region coordinates")
+
+        position = Region(region.left, region.top, region.right, region.bottom)
+        return [position]
+
+    def _find_size(self, base: Geometry, size: SizeLocator):
+        """Find region of fixed size around base, or origin if no base defined."""
+        if isinstance(base, Undefined):
+            return Region.from_size(0, 0, size.width, size.height)
+
+        if isinstance(base, Region):
+            center = base.center
+        else:
+            center = base
+
+        left = center.x - size.width // 2
+        top = center.y - size.height // 2
+
+        result = Region.from_size(left, top, size.width, size.height)
+        return [result]
+
+    def _find_templates(self, base: Geometry, locator: ImageLocator) -> List[Region]:
         """Find all regions that match given image template,
         inside the combined virtual display.
         """
+        ensure_recognition()
+
+        if isinstance(base, Undefined):
+            region = None
+        elif isinstance(base, Region):
+            region = base
+        else:
+            raise ValueError(f"Unsupported search specifier for template: {base}")
+
         confidence = locator.confidence or self.confidence
-        self.logger.info("Matching with confidence of %.1f", confidence)
+        self.logger.info(
+            "Searching for image '%s' (region: %s, confidence: %.1f)",
+            locator.path,
+            region or "display",
+            confidence,
+        )
 
         def finder(image: Image.Image) -> List[Region]:
             try:
@@ -118,24 +175,41 @@ class FinderKeywords(LibraryContext):
                     image=image,
                     template=locator.path,
                     confidence=confidence,
+                    region=region,
                 )
+
             except templates.ImageNotFoundError:
                 return []
 
         return self._find_from_displays(finder)
 
-    def _find_ocr(self, locator: OcrLocator) -> List[Region]:
+    def _find_ocr(self, base: Geometry, locator: OcrLocator) -> List[Region]:
         """Find the position of all blocks of text that match the given string,
         inside the combined virtual display.
         """
+        ensure_recognition()
+
+        if isinstance(base, Undefined):
+            region = None
+        elif isinstance(base, Region):
+            region = base
+        else:
+            raise ValueError(f"Unsupported search specifier for OCR: {base}")
+
         confidence = locator.confidence or self.confidence
-        self.logger.info("Matching with confidence of %.1f", confidence)
+        self.logger.info(
+            "Searching for text '%s' (region: %s, confidence: %.1f)",
+            locator.text,
+            region or "display",
+            confidence,
+        )
 
         def finder(image: Image.Image) -> List[Region]:
             matches = ocr.find(
                 image=image,
                 text=locator.text,
                 confidence=confidence,
+                region=region,
             )
 
             return [match["region"] for match in matches]
@@ -183,43 +257,6 @@ class FinderKeywords(LibraryContext):
 
         return matches
 
-    def _wait_condition(
-        self,
-        condition: Callable[[], Tuple[bool, Any]],
-        timeout: Optional[float] = None,
-        interval: float = 0.5,
-    ) -> Any:
-        """Wait for condition to succeed, or raise a timeout.
-
-        When the condition is successful it should return
-        a tuple of (True, ReturnValue), and when it is not successful
-        it should return a tuple of (False, ErrorMessage).
-
-        :param condition: Condition function to check
-        :param timeout: Time to wait in seconds
-        :param interval: The minimum interval between checks
-        """
-        if timeout is None:
-            timeout = self.timeout
-
-        interval = float(interval)
-        end_time = time.time() + float(timeout)
-
-        error = "Operation timed out"
-        while time.time() <= end_time:
-            start = time.time()
-            success, value = condition()
-
-            if success:
-                return value
-
-            error = value
-            duration = time.time() - start
-            if duration < interval:
-                time.sleep(interval - duration)
-
-        raise TimeoutException(error)
-
     @keyword
     def find_elements(self, locator: str) -> List[Geometry]:
         """Find all elements defined by locator, and return their positions.
@@ -235,14 +272,8 @@ class FinderKeywords(LibraryContext):
                 Log    Found icon at ${match.x}, ${match.y}
             END
         """
-        matches = self._find(locator)
-
-        display = self.ctx.get_display_dimensions()
-        for match in matches:
-            if not display.contains(match):
-                self.logger.warning("Match outside display bounds: %s", match)
-
-        return matches
+        self.logger.info("Resolving locator: %s", locator)
+        return self._resolver.dispatch(locator)
 
     @keyword
     def find_element(self, locator: str) -> Geometry:
@@ -290,41 +321,25 @@ class FinderKeywords(LibraryContext):
             Wait for element    alias:CookieConsent    timeout=30
             Click    image:%{ROBOT_ROOT}/accept.png
         """
+        if timeout is None:
+            timeout = self.timeout
 
-        def condition():
-            """Verify that a single match is found."""
+        interval = float(interval)
+        end_time = time.time() + float(timeout)
+
+        error = "Operation timed out"
+        while time.time() <= end_time:
+            start = time.time()
             try:
-                return True, self.find_element(locator)
+                return self.find_element(locator)
             except (ElementNotFound, MultipleElementsFound) as err:
-                return False, err
+                error = err
 
-        return self._wait_condition(condition, timeout, interval)
+            duration = time.time() - start
+            if duration < interval:
+                time.sleep(interval - duration)
 
-    @keyword
-    def wait_for_element_to_disappear(
-        self, locator: str, timeout: float = 10.0, interval: float = 0.5
-    ) -> None:
-        """Wait for an element defined by locator to disappear.
-
-        Example:
-
-        .. code-block:: robotframework
-
-            Wait for element to disappear    alias:LoadingScreen    timeout=30
-            Click    image:%{ROBOT_ROOT}/main_menu.png
-        """
-
-        def condition():
-            """Verify that no matches are found."""
-            try:
-                match = self.find_element(locator)
-                return False, f"Element found at: {match}"
-            except MultipleElementsFound as err:
-                return False, err
-            except ElementNotFound:
-                return True, None
-
-        return self._wait_condition(condition, timeout, interval)
+        raise TimeoutException(error)
 
     @keyword
     def set_default_timeout(self, timeout: float = 3.0):

@@ -81,11 +81,11 @@ def grab(region: Optional[Region] = None) -> Image.Image:
         display = _monitor_to_region(sct.monitors[0])
 
         if region is not None:
-            # TODO: Instead of error clamp region to display
-            if not display.contains(region):
-                raise ValueError("Screenshot region outside display bounds")
-
-            screenshot = sct.grab(region.as_tuple())
+            try:
+                region = region.clamp(display)
+                screenshot = sct.grab(region.as_tuple())
+            except ValueError as err:
+                raise ValueError("Screenshot region outside display bounds") from err
         else:
             # First monitor is combined virtual display of all monitors
             screenshot = sct.grab(display.as_tuple())
@@ -121,7 +121,7 @@ class ScreenKeywords(LibraryContext):
         path: Optional[str] = None,
         locator: Optional[str] = None,
         embed: bool = True,
-    ) -> Path:
+    ) -> str:
         """Take a screenshot of the whole screen, or an element
         identified by the given locator.
 
@@ -145,7 +145,7 @@ class ScreenKeywords(LibraryContext):
                 dirname = Path.cwd()
             path = dirname / "desktop-screenshot-{index}.png"
 
-        path = _create_unique_path(path).with_suffix(".png")
+        path: Path = _create_unique_path(path).with_suffix(".png")
         os.makedirs(path.parent, exist_ok=True)
 
         image.save(path)
@@ -187,10 +187,10 @@ class ScreenKeywords(LibraryContext):
         """
         Return a new ``Region`` with the given dimensions.
 
-        :param left: left edge coordinate.
-        :param top: top edge coordinate.
-        :param right: right edge coordinate.
-        :param bottom: bottom edge coordinate.
+        :param left: Left edge coordinate.
+        :param top: Top edge coordinate.
+        :param right: Right edge coordinate.
+        :param bottom: Bottom edge coordinate.
         """
         return Region(left, top, right, bottom)
 
@@ -199,9 +199,9 @@ class ScreenKeywords(LibraryContext):
         """
         Return a new ``Region`` with an offset from the given region.
 
-        :param region: the region to move.
-        :param left: amount of pixels to move left/right.
-        :param top: amount of pixels to move up/down.
+        :param region: The region to move.
+        :param left: Amount of pixels to move left/right.
+        :param top: Amount of pixels to move up/down.
         """
         return region.move(left, top)
 
@@ -209,19 +209,21 @@ class ScreenKeywords(LibraryContext):
     def resize_region(
         self,
         region: Region,
-        left: Optional[int] = 0,
-        top: Optional[int] = 0,
-        right: Optional[int] = 0,
-        bottom: Optional[int] = 0,
+        left: int = 0,
+        top: int = 0,
+        right: int = 0,
+        bottom: int = 0,
     ) -> Region:
         """
         Return a resized new ``Region`` from a given region.
 
-        :param region: the region to resize.
-        :param left: amount of pixels to resize left edge.
-        :param top: amount of pixels to resize top edge.
-        :param right: amount of pixels to resize right edge.
-        :param bottom: amount of pixels to resize bottom edge.
+        Extends edges the given amount outward from the center,
+        i.e. positive left values move the left edge to the left.
 
+        :param region: The region to resize.
+        :param left: Amount of pixels to resize left edge.
+        :param top: Amount of pixels to resize top edge.
+        :param right: Amount of pixels to resize right edge.
+        :param bottom: Amount of pixels to resize bottom edge.
         """
         return region.resize(left, top, right, bottom)
