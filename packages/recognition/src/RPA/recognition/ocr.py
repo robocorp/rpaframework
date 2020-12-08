@@ -2,12 +2,13 @@ import logging
 from collections import defaultdict
 from difflib import SequenceMatcher
 from pathlib import Path
-from typing import Union, Dict, List, Generator
+from typing import Union, Dict, List, Generator, Optional
 
 import pytesseract
 from pytesseract import TesseractNotFoundError
 from PIL import Image
 
+from RPA.core import geometry
 from RPA.core.geometry import Region
 from RPA.recognition.utils import to_image, clamp
 
@@ -28,6 +29,7 @@ def read(image: Union[Image.Image, Path]):
     :param image: Path to image or Image object
     """
     image = to_image(image)
+
     try:
         return pytesseract.image_to_string(image).strip()
     except TesseractNotFoundError as err:
@@ -35,7 +37,10 @@ def read(image: Union[Image.Image, Path]):
 
 
 def find(
-    image: Union[Image.Image, Path], text: str, confidence: float = DEFAULT_CONFIDENCE
+    image: Union[Image.Image, Path],
+    text: str,
+    confidence: float = DEFAULT_CONFIDENCE,
+    region: Optional[Region] = None,
 ):
     """Scan image for text and return a list of regions
     that contain it (or something close to it).
@@ -51,11 +56,26 @@ def find(
     if not text:
         raise ValueError("Empty search string")
 
+    if region is not None:
+        region = geometry.to_region(region)
+        image = image.crop(region.as_tuple())
+
     try:
         data = pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT)
     except TesseractNotFoundError as err:
         raise EnvironmentError(INSTALL_PROMPT) from err
 
+    lines = _dict_lines(data)
+    matches = _match_lines(lines, text, confidence)
+
+    if region is not None:
+        for match in matches:
+            match["region"] = match["region"].move(region.left, region.top)
+
+    return matches
+
+
+def _dict_lines(data: Dict) -> List:
     lines = defaultdict(list)
     for word in _iter_rows(data):
         if word["level"] != 5:
@@ -75,8 +95,7 @@ def find(
         lines[key].append({"text": word["text"], "region": region})
         assert len(lines[key]) == word["word_num"]
 
-    matches = _match_lines(lines.values(), text, confidence)
-    return matches
+    return list(lines.values())
 
 
 def _iter_rows(data: Dict) -> Generator:
