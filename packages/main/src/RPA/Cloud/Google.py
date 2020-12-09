@@ -991,7 +991,6 @@ class ServiceSheets(GoogleBase):
         elif service_credentials_file:
             service_account_file = service_credentials_file
         try:
-            self.logger.warning(self._scopes)
             credentials = service_account.Credentials.from_service_account_file(
                 service_account_file, scopes=self._scopes
             )
