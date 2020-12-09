@@ -967,12 +967,6 @@ class ServiceSheets(GoogleBase):
 
     def __init__(self) -> None:
         self.services.append(self._service_name)
-        self.logger.debug("ServiceSheets init")
-        self._scopes = [
-            "https://www.googleapis.com/auth/drive",
-            "https://www.googleapis.com/auth/drive.file",
-            "https://www.googleapis.com/auth/spreadsheets",
-        ]
 
     @google_dependency_required
     def init_sheets_client(
@@ -985,6 +979,11 @@ class ServiceSheets(GoogleBase):
         :param service_credentials_file: filepath to credentials JSON
         :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
+        self._scopes = [
+            "https://www.googleapis.com/auth/drive",
+            "https://www.googleapis.com/auth/drive.file",
+            "https://www.googleapis.com/auth/spreadsheets",
+        ]
         service_account_file = None
         service = None
         if use_robocloud_vault:
@@ -992,6 +991,7 @@ class ServiceSheets(GoogleBase):
         elif service_credentials_file:
             service_account_file = service_credentials_file
         try:
+            self.logger.warning(self._scopes)
             credentials = service_account.Credentials.from_service_account_file(
                 service_account_file, scopes=self._scopes
             )
@@ -1129,7 +1129,6 @@ class ServiceAppsScript(GoogleBase):
 
     def __init__(self) -> None:
         self.services.append(self._service_name)
-        self._scopes = ["https://www.googleapis.com/auth/script.projects"]
 
     @google_dependency_required
     def init_apps_script_client(
@@ -1148,6 +1147,7 @@ class ServiceAppsScript(GoogleBase):
         :param scopes: authenticated scopes, for example. ['forms', 'spreadsheets']
         :param save_token: set to `True` if token should be saved to local file
         """
+        self._scopes = ["https://www.googleapis.com/auth/script.projects"]
         credentials = self._get_credentials_with_oauth_token(
             use_robocloud_vault, token_file, credentials_file, scopes, save_token
         )
@@ -1211,11 +1211,6 @@ class ServiceDrive(GoogleBase):
 
     def __init__(self) -> None:
         self.services.append(self._service_name)
-        self._scopes = [
-            "https://www.googleapis.com/auth/drive.appdata",
-            "https://www.googleapis.com/auth/drive.file",
-            "https://www.googleapis.com/auth/drive.install",
-        ]
 
     @google_dependency_required
     def init_drive_client(
@@ -1234,6 +1229,11 @@ class ServiceDrive(GoogleBase):
         :param scopes: authenticated scopes, for example. ['forms', 'spreadsheets']
         :param save_token: set to `True` if token should be saved to local file
         """
+        self._scopes = [
+            "https://www.googleapis.com/auth/drive.appdata",
+            "https://www.googleapis.com/auth/drive.file",
+            "https://www.googleapis.com/auth/drive.install",
+        ]
         credentials = self._get_credentials_with_oauth_token(
             use_robocloud_vault, token_file, credentials_file, scopes, save_token
         )
