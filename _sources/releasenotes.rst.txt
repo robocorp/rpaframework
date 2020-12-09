@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+7.0.2
+-----
+
+- Library **Cloud.Google**: Remove unnecessary log message
+
 7.0.1
 -----
 
