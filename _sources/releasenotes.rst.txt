@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+7.0.1
+-----
+
+- Library **Cloud.Google**: Fix how authentication scopes are initialized
+
 7.0.0
 -----
 
