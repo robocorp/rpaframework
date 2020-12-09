@@ -896,7 +896,7 @@ wrapt = ">=1.12.1"
 
 [[package]]
 name = "robotframework-docgen"
-version = "0.5.0"
+version = "0.6.1"
 description = "Robot Framework documentation finder and generator"
 category = "dev"
 optional = false
@@ -976,7 +976,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "6.8.0"
+version = "7.0.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1446,7 +1446,7 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "afe7a8fd3aeb0c99abe8bd4617529cfd0defd6b9514fbc8c72fc00c1a9288770"
+content-hash = "471d9851ecf083ff140271bbc07ad313a7bc2ffc15af2c3fad3a9d31eca0c81f"
 
 [metadata.files]
 alabaster = [
@@ -2108,8 +2108,8 @@ robotframework-browser = [
     {file = "robotframework_browser-2.3.4-py3-none-any.whl", hash = "sha256:36ffeedd748c9923f7a85e9e3ae53149713f2f64566e8b96f8234bcd3d850222"},
 ]
 robotframework-docgen = [
-    {file = "robotframework-docgen-0.5.0.tar.gz", hash = "sha256:1a1c399ed5acb0d50231e9459923c92e28f97035531461924a53b4ec855b61e5"},
-    {file = "robotframework_docgen-0.5.0-py3-none-any.whl", hash = "sha256:ed2d5afe8f183241f103907de4abc3822ec64ff4f7308fde87a91cd5bcab58bb"},
+    {file = "robotframework-docgen-0.6.1.tar.gz", hash = "sha256:7f72a1f98c6dd3a82f20ba6a0752f493006c44fa116b3cef83ecf04be04a6343"},
+    {file = "robotframework_docgen-0.6.1-py3-none-any.whl", hash = "sha256:e94a67ea07f947c47437420d40a9bafc66a8a6fd17dda635a620672152d966bd"},
 ]
 robotframework-pythonlibcore = [
     {file = "robotframework-pythonlibcore-2.1.0.tar.gz", hash = "sha256:8b210bf29cbb78069b41a3d0b90e4cc8dd23f509ea2daf450e3ef4a6ee758949"},
