@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+7.0.3
+-----
+
+- Library **Desktop.Windows**: Fix possible COM exception when gathering elements from a window
+
 7.0.2
 -----
 
