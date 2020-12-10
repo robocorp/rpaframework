@@ -1537,11 +1537,14 @@ class Selenium(SeleniumLibrary):
             runnable_keyword(*args, **kwargs)
             return True
         except catches as e:
-            BuiltIn().log(
-                "Ran with keyword <b>%s</b> which returned error: <i>%s</i>"
-                % (runnable_keyword.__func__.__name__.replace("_", " ").title(), e),
-                html=True,
-            )
+            try:
+                BuiltIn().log(
+                    "Ran with keyword <b>%s</b> which returned error: <i>%s</i>"
+                    % (runnable_keyword.__func__.__name__.replace("_", " ").title(), e),
+                    html=True,
+                )
+            except RobotNotRunningError:
+                pass
             return False
 
     @keyword
