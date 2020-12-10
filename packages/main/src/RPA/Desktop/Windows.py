@@ -25,6 +25,7 @@ if platform.system() == "Windows":
     import win32security
     import pywinauto
     import win32gui
+    from comtypes import COMError
 
 
 def write_element_info_as_json(
@@ -1547,13 +1548,15 @@ class Windows(OperatingSystem):
         element_attributes = [a for a in dir(element_info) if not a.startswith("_")]
 
         for attr in element_attributes:
-            attr_value = getattr(element_info, attr)
             try:
+                attr_value = getattr(element_info, attr)
                 element_dict[attr] = (
                     attr_value() if callable(attr_value) else str(attr_value)
                 )
             except TypeError:
                 pass
+            except COMError as ce:
+                self.logger.info("Got COM error: %s", str(ce))
 
         for attr in attributes_to_remove:
             element_dict.pop(attr, None)
