@@ -181,11 +181,11 @@ After installation the libraries can be directly imported inside
 .. code:: robotframework
 
     *** Settings ***
-    Library    RPA.Browser
+    Library    RPA.Browser.Selenium
 
     *** Tasks ***
     Login as user
-        Open browser  https://example.com
+        Open available browser    https://example.com
         Input text    id:user-name    ${USERNAME}
         Input text    id:password     ${PASSWORD}
 
@@ -193,11 +193,11 @@ The libraries are also available inside Python_:
 
 .. code:: python
 
-    from RPA.Browser import Browser
+    from RPA.Browser.Selenium import Selenium
 
-    lib = Browser()
+    lib = Selenium()
 
-    lib.open_browser("https://example.com")
+    lib.open_available_browser("https://example.com")
     lib.input_text("id:user-name", username)
     lib.input_text("id:password", password)
 
