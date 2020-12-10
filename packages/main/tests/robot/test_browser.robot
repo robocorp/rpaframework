@@ -1,5 +1,6 @@
 *** Settings ***
-Library         RPA.Browser    locators_path=${LOCATORS}  run_on_failure=${NONE}
+Library         RPA.Browser.Selenium    locators_path=${LOCATORS}
+Library         RPA.RobotLogListener
 Library         OperatingSystem
 Suite Setup     Open Available Browser  about:blank  headless=${TRUE}
 Suite Teardown  Close All Browsers
@@ -9,7 +10,6 @@ Default Tags    RPA.Browser
 ${RESOURCES}    ${CURDIR}${/}..${/}resources
 ${LOCATORS}     ${RESOURCES}${/}locators.json
 ${ALERT_HTML}   file://${RESOURCES}${/}alert.html
-
 
 *** Tasks ***
 Does alert contain
@@ -68,3 +68,14 @@ Clear all highlights
     Clear All Highlights
     Page Should Contain Element      xpath://h2
     Page Should Not Contain Element  xpath://h2[@rpaframework-highlight]
+
+Mute browser failures
+    Mute run on failure    My Custom Keyword
+    Open Available Browser    https://robotsparebinindustries.com/    headless=${TRUE}
+    Run keyword and expect error    *    My Custom Keyword
+    Run keyword and expect error    *    Get Value    id:notexist
+
+*** Keywords ***
+
+My Custom Keyword
+    Get Value    id:notexist
