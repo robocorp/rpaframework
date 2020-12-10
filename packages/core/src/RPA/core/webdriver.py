@@ -18,7 +18,7 @@ LOGGER = logging.getLogger(__name__)
 
 DRIVER_DIR = Path(tempfile.gettempdir()) / "drivers"
 DRIVER_PREFERENCE = {
-    "Windows": ["Chrome", "Firefox", "Edge", "IE", "Opera"],
+    "Windows": ["Chrome", "Firefox", "Edge", "Ie", "Opera"],
     "Linux": ["Chrome", "Firefox", "Opera"],
     "Darwin": ["Chrome", "Safari", "Firefox", "Opera"],
     "default": ["Chrome", "Firefox"],
