@@ -1,9 +1,5 @@
 try:
-    from Browser import (
-        Browser as Playwright,
-    )
-
-    __all__ = ["Playwright"]
+    from Browser import Browser as Playwright  # noqa pylint: disable=unused-import
 except (ModuleNotFoundError, ImportError):
     raise ModuleNotFoundError(
         "Please install robotframework-browser following these instructions\n"

@@ -20,7 +20,7 @@ from urllib.parse import unquote_plus
 import requests
 
 
-from RPA.Browser import Browser
+from RPA.Browser.Selenium import Selenium
 
 try:
     from importlib import import_module
@@ -273,7 +273,7 @@ class Dialogs:
     2. The HTML form is generated either according to a JSON file or the
        keywords called during the task
     3. It opens a browser and shows the created form (The browser is opened with
-       the ``Open Available Browser`` keyword from the ``RPA.Browser`` library)
+       the ``Open Available Browser`` keyword from the ``RPA.Browser.Selenium`` library)
     4. Once the form is filled and submitted by the user, the server will process
        the response and extract the field values, which in turn are returned by the keyword
     5. In the end, the browser is closed and the HTTP server is stopped
@@ -735,7 +735,7 @@ class Dialogs:
 
         response_json = {}
         try:
-            br = Browser()
+            br = Selenium()
             br.open_available_browser(f"{self.server_address}/form.html")
             br.set_window_size(window_width, window_height)
 

@@ -40,7 +40,7 @@ class BrowserNotFoundError(ValueError):
     """Raised when browser can't be initialized."""
 
 
-class Browser(SeleniumLibrary):
+class Selenium(SeleniumLibrary):
     """Browser is a web testing library for Robot Framework,
     based on the popular SeleniumLibrary.
 
@@ -1689,3 +1689,8 @@ class Browser(SeleniumLibrary):
             for idx in range(len(elements))
         )
         self.driver.execute_script(script, *elements)
+
+
+# For backwards compatibility,
+# remove in next major version
+Browser = Selenium
