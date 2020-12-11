@@ -174,13 +174,6 @@ class Windows(OperatingSystem):
         self.logger = logging.getLogger(__name__)
         self.clipboard = Clipboard()
 
-    def __del__(self):
-        try:
-            # TODO: Do this as RF listener instead of __del__?
-            self.clipboard.clear_clipboard()
-        except RuntimeError as err:
-            self.logger.debug("Failed to clear clipboard: %s", err)
-
     def set_windows_backend(self, backend: str) -> None:
         """Set Windows backend which is used to interact with Windows
         applications

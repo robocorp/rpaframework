@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+7.0.4
+-----
+
+- Library **Desktop.Windows**: Remove library destructor actions
+
 7.0.3
 -----
 
