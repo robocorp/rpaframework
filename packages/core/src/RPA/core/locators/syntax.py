@@ -1,3 +1,4 @@
+import re
 from enum import Enum
 from typing import List, Union, NamedTuple
 
@@ -109,58 +110,57 @@ class Peekable:
 class Tokenizer:
     """Methods for tokenizing a locator string."""
 
-    LEXEME = {
-        Token.THEN: ("then", "+"),
-        Token.AND: ("and", "&", "&&"),
-        Token.OR: ("or", "|", "||"),
-        Token.NOT: ("not", "!"),
-        Token.LPAREN: ("("),
-        Token.RPAREN: (")"),
-    }
+    # fmt: off
+    TOKEN_PATTERNS = [
+        r"(?P<THEN>then|\+)",
+        r"(?P<AND>and|\&\&|\&)",
+        r"(?P<OR>or|\|\||\|)",
+        r"(?P<NOT>not|\!)",
+        r"(?P<LPAREN>\()",
+        r"(?P<RPAREN>\))",
+        (
+            r"(?P<LOCATOR>"
+            r"(\w+\:)?"      # Optional locator typename, e.g. ocr:
+            r"(("            # Argument definition:
+            r"\"[^\"]*\""    # 1. If quoted, continue until end quote
+            r"|"             # or
+            r"[^\s\)]+"      # 2. If unquoted, continue until whitespace or paren
+            r")[\,]?)+"      # One or more arguments, comma delimited
+            r")"
+        ),
+        r"(?P<SKIP>\s+)",
+        r"(?P<MISMATCH>.+)",
+    ]
+    # fmt: on
 
-    PREFIX = {
-        Token.NOT: ("!"),
-        Token.LPAREN: ("("),
-    }
-
-    SUFFIX = {
-        Token.RPAREN: (")"),
-    }
+    PATTERN = re.compile("|".join(TOKEN_PATTERNS))
 
     @classmethod
     def tokenize(cls, locator: str) -> List[TokenPair]:
         """Convert locator string to list of token pairs."""
+        scanner = cls.PATTERN.scanner(locator)
+
         tokens = []
-        for part in str(locator).split():
-            tokens.extend(cls._part(part))
+        for match in iter(scanner.match, None):
+            name = match.lastgroup
+            value = match.group()
+
+            if name == "MISMATCH":
+                raise InvalidSyntax(f"Unknown token: '{value}'")
+
+            if name == "SKIP":
+                continue
+
+            if name == "LOCATOR":
+                value = literal.parse(value)
+
+            pair = TokenPair(Token[name], value)
+            tokens.append(pair)
 
         if not tokens:
             raise InvalidSyntax("Empty expression")
 
         return tokens
-
-    @classmethod
-    def _part(cls, text: str) -> List[TokenPair]:
-        # Exact lexeme match
-        for key, values in cls.LEXEME.items():
-            if text in values:
-                return [TokenPair(key, text)]
-
-        # Prefixed with token
-        for key, values in cls.PREFIX.items():
-            if text.startswith(values):
-                prefix = [TokenPair(key, text[0])]
-                return prefix + cls._part(text[1:])
-
-        # Suffixed with token
-        for key, values in cls.SUFFIX.items():
-            if text.endswith(values):
-                suffix = [TokenPair(key, text[-1])]
-                return cls._part(text[:-1]) + suffix
-
-        # No matches -> must be valid locator literal
-        locator = literal.parse(text)
-        return [TokenPair(Token.LOCATOR, locator)]
 
 
 class SyntaxParser:

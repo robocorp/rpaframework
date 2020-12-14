@@ -4,7 +4,13 @@ from RPA.core.locators import LocatorsDatabase, Locator, TYPES
 LocatorType = Union[str, Locator]
 
 
-def parse(locator: Union[str, Locator]) -> Locator:
+def _unquote(text):
+    if text.startswith('"') and text.endswith('"'):
+        text = text[1:-1]
+    return text
+
+
+def parse(locator: LocatorType) -> Locator:
     """Parse locator string literal into a ``Locator`` instance.
 
     For example: "image:path/to/image.png" -> ImageLocator(path="path/to/image-png")
@@ -22,11 +28,11 @@ def parse(locator: Union[str, Locator]) -> Locator:
 
     typename = typename.strip().lower()
     if typename == "alias":
-        return LocatorsDatabase.load_by_name(value)
+        return LocatorsDatabase.load_by_name(_unquote(value))
     else:
         klass = TYPES.get(typename)
         if not klass:
             raise ValueError(f"Unknown locator type: {typename}")
 
-        args = value.split(",")
+        args = [_unquote(arg) for arg in value.split(",")]
         return klass(*args)
