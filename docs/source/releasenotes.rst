@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Fix issue with pip resolving incompatible chardet version
+
 7.0.4
 -----
 
