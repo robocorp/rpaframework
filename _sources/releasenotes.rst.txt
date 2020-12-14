@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+7.0.5
+-----
+
 - Fix issue with pip resolving incompatible chardet version
 
 7.0.4
@@ -57,6 +60,11 @@ Upcoming release
   - RPA.Browser was moved to RPA.Browser.Selenium, and the old import RPA.Browser is kept as deprecated alias for now
 
 - Library **Tables**: Correctly handle empty fields when filtering
+
+6.7.3
+-----
+
+- Fix issue with pip resolving incompatible chardet version
 
 6.7.2
 -----
