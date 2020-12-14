@@ -28,6 +28,21 @@ class TextKeywords(LibraryContext):
         :param locator: Location of element to read text from
         :param invert:  Invert image colors, useful for reading white text
                         on dark background
+
+        Usage examples:
+
+        .. code-block:: robotframework
+
+            ${label_region}=  Find Element  image:label.png
+            ${value_region}=  Move Region   ${label_region}  100  0
+            ${text}=          Read Text     ${value_region}
+
+        .. code-block:: python
+
+            label_region = desktop.find_element("image:label.png")
+            value_region = desktop.move_region(label_region, 100, 0)
+            text = desktop.read_text(value_region)
+
         """
         ensure_recognition()
 
