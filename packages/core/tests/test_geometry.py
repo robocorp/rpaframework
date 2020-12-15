@@ -43,6 +43,11 @@ def test_point_move():
     assert third.as_tuple() == (5, 5)
 
 
+def test_point_string():
+    point = geometry.Point(200, -20)
+    assert str(point) == "point:200,-20"
+
+
 def test_str_to_region():
     region = geometry.to_region("10,20,30,40")
     assert isinstance(region, geometry.Region)
@@ -235,3 +240,8 @@ def test_region_clamp():
 
     with pytest.raises(ValueError):
         region.clamp(bounds)
+
+
+def test_region_string():
+    region = geometry.Region(200, -20, 600, 75)
+    assert str(region) == "region:200,-20,600,75"

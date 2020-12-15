@@ -151,8 +151,8 @@ class TestResolver:
         )
 
         assert result == [
-            "Undefined() -> PointLocator(x=10, y=20) -> OffsetLocator(x=200, y=0) -> ImageLocator(path='logo.png', confidence=None, source=None)",
-            "Undefined() -> PointLocator(x=10, y=20) -> OffsetLocator(x=200, y=0) -> ImageLocator(path='test.png', confidence=None, source=None)",
+            "undefined -> point:10,20 -> offset:200,0 -> image:logo.png",
+            "undefined -> point:10,20 -> offset:200,0 -> image:test.png",
         ]
 
     def test_negate_empty(self):
