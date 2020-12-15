@@ -6,6 +6,16 @@ from typing import Optional
 class Locator:
     """Baseclass for a locator entry."""
 
+    def __str__(self):
+        values = []
+        for field in fields(self):
+            if field.default is not MISSING:
+                break
+            values.append(getattr(self, field.name))
+
+        typename = NAMES[type(self)]
+        return "{}:{}".format(typename, ",".join(str(value) for value in values))
+
     @staticmethod
     def from_dict(data):
         """Construct correct locator subclass from dictionary,

@@ -24,8 +24,11 @@ def to_region(obj: Any) -> Optional["Region"]:
 class Undefined:
     """Internal placeholder for generic geometry."""
 
+    def __str__(self):
+        return "undefined"
 
-@dataclass
+
+@dataclass(order=True)
 class Point:
     """Container for a 2D point."""
 
@@ -35,6 +38,9 @@ class Point:
     def __post_init__(self):
         self.x = int(self.x)
         self.y = int(self.y)
+
+    def __str__(self):
+        return f"point:{self.x},{self.y}"
 
     def __iter__(self):
         return iter(self.as_tuple())
@@ -49,7 +55,7 @@ class Point:
         return Point(self.x + int(x), self.y + int(y))
 
 
-@dataclass
+@dataclass(order=True)
 class Region:
     """Container for a 2D rectangular region."""
 
@@ -68,6 +74,9 @@ class Region:
             raise ValueError("Invalid width")
         if self.top >= self.bottom:
             raise ValueError("Invalid height")
+
+    def __str__(self):
+        return f"region:{self.left},{self.top},{self.right},{self.bottom}"
 
     def __iter__(self):
         return iter(self.as_tuple())

@@ -280,6 +280,16 @@ class TestLocators:
         assert data["y"] == 2
         assert data["type"] == "point"
 
+    def test_string_conversion(self):
+        locator = PointLocator(1, 2)
+        assert str(locator) == "point:1,2"
+
+        locator = ImageLocator("path/to/something.png")
+        assert str(locator) == "image:path/to/something.png"
+
+        locator = BrowserLocator(strategy="class", value="btn-primary")
+        assert str(locator) == "browser:class,btn-primary"
+
 
 class TestDatabase:
     def test_load_legacy(self):
