@@ -30,12 +30,6 @@ jobs:
         run: make install
       - name: Build HTML documentation
         run: make docs
-      - name: Store libdoc output
-        if: success()
-        uses: actions/upload-artifact@v1
-        with:
-          name: libdoc-html
-          path: docs/build/html/libdoc/
       - name: Publish HTML documentation
         if: success()
         uses: peaceiris/actions-gh-pages@v3
