@@ -214,15 +214,14 @@
 docs and issue tracker available at <a class="reference external" href="https://github.com/marketsquare/robotframework-browser#robotframework-browser">github.</a></p>
 <div class="section" id="install-instructions">
 <h2>Install instructions<a class="headerlink" href="#install-instructions" title="Permalink to this headline">¶</a></h2>
-<p>The playwright based browser library uses bundled browser executables as part of it’s package to avoid
-browser version conflicts and enable browser patches to maximize automation possibilities. In practice
+<p>The Playwright based browser library uses bundled browser executables as part of its package to avoid
+browser version conflicts and to enable browser patches to maximize automation possibilities. In practice
 this means that some extra steps are required to install it for use in a project.</p>
-</div>
 <div class="section" id="conda-yaml-rcc-vscode-and-robocorp-lab">
-<h2>conda.yaml (RCC, VSCode and Robocorp Lab)<a class="headerlink" href="#conda-yaml-rcc-vscode-and-robocorp-lab" title="Permalink to this headline">¶</a></h2>
+<h3>conda.yaml (RCC, VSCode and Robocorp Lab)<a class="headerlink" href="#conda-yaml-rcc-vscode-and-robocorp-lab" title="Permalink to this headline">¶</a></h3>
 <p>Ensure you’re using python 3.7 or newer.</p>
-<p>Add nodejs, robotframework-browser and rccPostInstall: rfbrowser init to conda.yaml</p>
-<p>Example conda.yaml:</p>
+<p>Add <code class="docutils literal notranslate"><span class="pre">nodejs</span></code>, <code class="docutils literal notranslate"><span class="pre">robotframework-browser</span></code> and <code class="docutils literal notranslate"><span class="pre">rccPostInstall:</span> <span class="pre">rfbrowser</span> <span class="pre">init</span></code> to <code class="docutils literal notranslate"><span class="pre">conda.yaml</span></code>.</p>
+<p>Example <code class="docutils literal notranslate"><span class="pre">conda.yaml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">defaults</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
@@ -239,9 +238,10 @@ this means that some extra steps are required to install it for use in a project
 </div>
 </div>
 <div class="section" id="pip">
-<h2>pip<a class="headerlink" href="#pip" title="Permalink to this headline">¶</a></h2>
+<h3>pip<a class="headerlink" href="#pip" title="Permalink to this headline">¶</a></h3>
 <p>See <a class="reference external" href="https://github.com/MarketSquare/robotframework-browser#installation-instructions">upstream installation instructions</a></p>
 <div class="toctree-wrapper compound">
+</div>
 </div>
 </div>
 <div class="section" id="keywords">

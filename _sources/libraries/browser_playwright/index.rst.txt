@@ -5,7 +5,7 @@ Browser.Playwright
 ##################
 
 
-New Playwright based browser automation library. Upstream examples, 
+New Playwright based browser automation library. Upstream examples,
 docs and issue tracker available at `github.`_
 
 .. _github.: https://github.com/marketsquare/robotframework-browser#robotframework-browser
@@ -13,17 +13,17 @@ docs and issue tracker available at `github.`_
 Install instructions
 ====================
 
-The playwright based browser library uses bundled browser executables as part of it's package to avoid
-browser version conflicts and enable browser patches to maximize automation possibilities. In practice
+The Playwright based browser library uses bundled browser executables as part of its package to avoid
+browser version conflicts and to enable browser patches to maximize automation possibilities. In practice
 this means that some extra steps are required to install it for use in a project.
 
 conda.yaml (RCC, VSCode and Robocorp Lab)
-=========================================
+-----------------------------------------
 Ensure you're using python 3.7 or newer.
 
-Add nodejs, robotframework-browser and rccPostInstall: rfbrowser init to conda.yaml
+Add ``nodejs``, ``robotframework-browser`` and ``rccPostInstall: rfbrowser init`` to ``conda.yaml``.
 
-Example conda.yaml:
+Example ``conda.yaml``:
 
 .. code-block:: yaml
 
@@ -41,7 +41,7 @@ Example conda.yaml:
     - rfbrowser init
 
 pip
-====================
+---
 See `upstream installation instructions`_
 
 .. _upstream installation instructions: https://github.com/MarketSquare/robotframework-browser#installation-instructions
