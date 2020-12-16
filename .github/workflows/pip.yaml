@@ -1,7 +1,6 @@
 name: pip installation tests
 
 on:
-  push:
   schedule:
     - cron: '0 6 * * *'
 
