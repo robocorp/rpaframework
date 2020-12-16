@@ -109,6 +109,20 @@ def test_create_worksheet_duplicate(library):
     assert library.list_worksheets() == ["First", "Second", "New"]
 
 
+def test_create_worksheet_content(library):
+    table = Table({"one": [1, 2, 3], "two": ["a", "b", "c"]})
+
+    library.create_worksheet("New", table)
+    data = library.read_worksheet_as_table()
+    assert len(data) == 3
+    assert data.get_column("A", as_list=True) == [1,2,3]
+
+    library.create_worksheet("New2", table, header=True)
+    data = library.read_worksheet_as_table(header=True)
+    assert len(data) == 3
+    assert data.get_column("one", as_list=True) == [1,2,3]
+
+
 def test_read_worksheet_default(library):
     data = library.read_worksheet()
     assert len(data) == 10

@@ -283,12 +283,13 @@ class Files:
         assert self.workbook, "No active workbook"
         self.workbook.active = value
 
-    def create_worksheet(self, name, content=None, exist_ok=False):
+    def create_worksheet(self, name, content=None, exist_ok=False, header=False):
         """Create a new worksheet in the current workbook.
 
         :param name:     Name of new worksheet
         :param content:  Optional content for worksheet
         :param exist_ok: If `False`, raise an error if name is already in use
+        :param header:   If content is provided, write headers to worksheet
         """
         assert self.workbook, "No active workbook"
         if name in self.workbook.sheetnames and not exist_ok:
@@ -296,7 +297,7 @@ class Files:
 
         self.workbook.create_worksheet(name)
         if content:
-            self.workbook.append_worksheet(name, content)
+            self.workbook.append_worksheet(name, content, header)
 
     def read_worksheet(self, name=None, header=False, start=None):
         """Read the content of a worksheet into a list of dictionaries.
