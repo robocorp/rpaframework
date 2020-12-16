@@ -258,17 +258,17 @@ Test Wait Until Created
 
 Test Wait Until Removed
     Touch file   will_be_removed
-    Execute deferred    rm will_be_removed    timeout=1.0
+    Execute deferred    rm will_be_removed    timeout=2.0
     Run keyword and expect error    *TimeoutException*    Wait until removed    will_be_removed    timeout=0.5
-    Wait until removed    will_be_removed    timeout=1.0
+    Wait until removed    will_be_removed    timeout=4.0
     [Teardown]    Run keyword and ignore error    Remove file    will_be_removed
 
 Test Wait Until Modified
     [Tags]    posix
     Touch file    will_be_modified
-    Execute deferred    touch will_be_modified    timeout=1.0
+    Execute deferred    touch will_be_modified    timeout=2.0
     Run keyword and expect error    *TimeoutException*    Wait until modified    will_be_modified    timeout=0.5
-    Wait until modified    will_be_modified    timeout=1.0
+    Wait until modified    will_be_modified    timeout=4.0
     [Teardown]    Remove file    will_be_modified
 
 Test Run Keyword If File Exists
