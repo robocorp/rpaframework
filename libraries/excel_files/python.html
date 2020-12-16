@@ -354,7 +354,7 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.create_worksheet">
-<code class="sig-name descname">create_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">content=None</em>, <em class="sig-param">exist_ok=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.create_worksheet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_worksheet</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">content=None</em>, <em class="sig-param">exist_ok=False</em>, <em class="sig-param">header=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.create_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new worksheet in the current workbook.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -362,6 +362,7 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 <li><p><strong>name</strong> – Name of new worksheet</p></li>
 <li><p><strong>content</strong> – Optional content for worksheet</p></li>
 <li><p><strong>exist_ok</strong> – If <cite>False</cite>, raise an error if name is already in use</p></li>
+<li><p><strong>header</strong> – If content is provided, write headers to worksheet</p></li>
 </ul>
 </dd>
 </dl>

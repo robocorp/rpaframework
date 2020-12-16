@@ -4,6 +4,10 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **Desktop**: Handle locators with whitespace, allow using return values as arguments
+- Library **Excel.Files**: Expose ``header`` argument in ``Create Worksheet``
+
+
 7.0.5
 -----
 
