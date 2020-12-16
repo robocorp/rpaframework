@@ -1,4 +1,5 @@
 from typing import Any
+from RPA.core.locators import LocatorType
 from RPA.Desktop.keywords import LibraryContext, keyword
 
 
@@ -100,7 +101,7 @@ class KeyboardKeywords(LibraryContext):
 
     @keyword
     def type_text_into(
-        self, locator: str, text: str, clear: bool = False, enter: bool = False
+        self, locator: LocatorType, text: str, clear: bool = False, enter: bool = False
     ) -> None:
         """Type text at the position indicated by given locator.
 

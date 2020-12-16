@@ -12,6 +12,7 @@ from robot.running.context import EXECUTION_CONTEXTS
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 from RPA.core.geometry import Point, Region
+from RPA.core.locators import LocatorType
 from RPA.Desktop import utils
 from RPA.Desktop.keywords import LibraryContext, keyword
 
@@ -119,7 +120,7 @@ class ScreenKeywords(LibraryContext):
     def take_screenshot(
         self,
         path: Optional[str] = None,
-        locator: Optional[str] = None,
+        locator: Optional[LocatorType] = None,
         embed: bool = True,
     ) -> str:
         """Take a screenshot of the whole screen, or an element
@@ -165,7 +166,7 @@ class ScreenKeywords(LibraryContext):
             return _monitor_to_region(sct.monitors[0])
 
     @keyword
-    def highlight_elements(self, locator: str):
+    def highlight_elements(self, locator: LocatorType):
         """Draw an outline around all matching elements."""
         if not utils.is_windows():
             raise NotImplementedError("Not supported on non-Windows platforms")

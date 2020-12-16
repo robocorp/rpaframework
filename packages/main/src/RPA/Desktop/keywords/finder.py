@@ -15,6 +15,7 @@ from RPA.Desktop.keywords import (
 from RPA.core.geometry import Point, Region, Undefined
 from RPA.core.locators import (
     Locator,
+    LocatorType,
     PointLocator,
     OffsetLocator,
     RegionLocator,
@@ -80,7 +81,7 @@ class FinderKeywords(LibraryContext):
         else:
             self.confidence = 80.0
 
-    def _find(self, base: Geometry, locator: Locator) -> List:
+    def _find(self, base: Geometry, locator: LocatorType) -> List:
         """Internal method for resolving and searching locators."""
         if isinstance(locator, (Region, Point)):
             return [locator]
@@ -248,7 +249,7 @@ class FinderKeywords(LibraryContext):
         duration = time.time() - start_time
         plural = "es" if len(matches) != 1 else ""
 
-        self.logger.info("Searched in %.2f seconds", duration)
+        self.logger.debug("Searched in %.2f seconds", duration)
         self.logger.info("Found %d match%s", len(matches), plural)
 
         for match, screenshot in zip(matches, screenshots):
@@ -258,7 +259,7 @@ class FinderKeywords(LibraryContext):
         return matches
 
     @keyword
-    def find_elements(self, locator: str) -> List[Geometry]:
+    def find_elements(self, locator: LocatorType) -> List[Geometry]:
         """Find all elements defined by locator, and return their positions.
 
         :param locator: Locator string
@@ -273,10 +274,14 @@ class FinderKeywords(LibraryContext):
             END
         """
         self.logger.info("Resolving locator: %s", locator)
-        return self._resolver.dispatch(locator)
+
+        if isinstance(locator, (Locator, Region, Point)):
+            return self._find(Undefined, locator)
+        else:
+            return self._resolver.dispatch(str(locator))
 
     @keyword
-    def find_element(self, locator: str) -> Geometry:
+    def find_element(self, locator: LocatorType) -> Geometry:
         """Find an element defined by locator, and return its position.
         Raises ``ElementNotFound`` if` no matches were found, or
         ``MultipleElementsFound`` if there were multiple matches.
@@ -307,7 +312,10 @@ class FinderKeywords(LibraryContext):
 
     @keyword
     def wait_for_element(
-        self, locator: str, timeout: Optional[float] = None, interval: float = 0.5
+        self,
+        locator: LocatorType,
+        timeout: Optional[float] = None,
+        interval: float = 0.5,
     ) -> Geometry:
         """Wait for an element defined by locator to exist, or
         raise a TimeoutException if none were found within timeout.

@@ -1,5 +1,7 @@
 from enum import Enum
 from typing import Optional, Any, Union
+
+from RPA.core.locators import LocatorType
 from RPA.core.helpers import delay
 from RPA.core.geometry import Point, Region
 from RPA.Desktop.keywords import LibraryContext, keyword
@@ -107,7 +109,7 @@ class MouseKeywords(LibraryContext):
     @keyword
     def click(
         self,
-        locator: Optional[str] = None,
+        locator: Optional[LocatorType] = None,
         action: Action = Action.click,
     ) -> None:
         """Click at the element indicated by locator.
@@ -137,7 +139,7 @@ class MouseKeywords(LibraryContext):
     @keyword
     def click_with_offset(
         self,
-        locator: Optional[str] = None,
+        locator: Optional[LocatorType] = None,
         x: int = 0,
         y: int = 0,
         action: Action = Action.click,
@@ -187,7 +189,7 @@ class MouseKeywords(LibraryContext):
         return Point(x, y)
 
     @keyword
-    def move_mouse(self, locator: str) -> None:
+    def move_mouse(self, locator: LocatorType) -> None:
         """Move mouse to given coordinates.
 
         :param locator: Locator for mouse position
@@ -230,8 +232,8 @@ class MouseKeywords(LibraryContext):
     @keyword
     def drag_and_drop(
         self,
-        source: str,
-        destination: str,
+        source: LocatorType,
+        destination: LocatorType,
         start_delay: float = 2.0,
         end_delay: float = 0.5,
     ) -> None:
