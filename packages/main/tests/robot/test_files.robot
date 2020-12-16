@@ -245,6 +245,10 @@ Test Get File Size
     ${result}=   Get file size    emptyfile
     Should be equal as integers    ${result}    0
 
+Test Get File Owner
+    ${result}=    Get file owner    notemptyfile
+    Should not be empty    ${result}
+
 Test Wait Until Created
     [Tags]   skip
     Execute deferred    touch will_exist    timeout=1.0

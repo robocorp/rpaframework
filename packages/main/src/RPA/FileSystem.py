@@ -1,12 +1,18 @@
 """Files and filesystems library for Robot Framework"""
 import logging
 import os
+import platform
 import shutil
 import time
 from pathlib import Path
 from typing import NamedTuple
-
 from robot.libraries.BuiltIn import BuiltIn
+
+# Used for reading file ownership information
+if platform.system() == "Windows":
+    import win32security
+else:
+    from pwd import getpwuid
 
 
 class TimeoutException(Exception):
@@ -554,6 +560,25 @@ class FileSystem:
         """
         # TODO: Convert to human-friendly?
         return Path(path).stat().st_size
+
+    def get_file_owner(self, path):
+        """Return the name of the user who owns the file.
+
+        :param path:    path to file to inspect
+        """
+        path = Path(path)
+
+        if platform.system() == "Windows":
+            desc = win32security.GetFileSecurity(
+                str(path), win32security.OWNER_SECURITY_INFORMATION
+            )
+            sid = desc.GetSecurityDescriptorOwner()
+            name, _, _ = win32security.LookupAccountSid(None, sid)
+        else:
+            sid = path.stat().st_uid
+            name = getpwuid(sid).pw_name
+
+        return name
 
     def _wait_file(self, path, condition, timeout):
         """Poll file with `condition` callback until it returns True,
