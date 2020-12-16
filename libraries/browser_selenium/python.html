@@ -214,9 +214,34 @@
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-RPA.Browser.Selenium">
 <span id="browser-selenium"></span><h2>Browser.Selenium<a class="headerlink" href="#module-RPA.Browser.Selenium" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="attribute">
 <dt id="RPA.Browser.Selenium.Browser">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Browser.Selenium.</code><code class="sig-name descname">Browser</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">RPA.Browser.Selenium.</code><code class="sig-name descname">Browser</code><a class="headerlink" href="#RPA.Browser.Selenium.Browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#RPA.Browser.Selenium.Selenium" title="RPA.Browser.Selenium.Selenium"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Browser.Selenium.Selenium</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.Browser.Selenium.BrowserNotFoundError">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.Browser.Selenium.</code><code class="sig-name descname">BrowserNotFoundError</code><a class="headerlink" href="#RPA.Browser.Selenium.BrowserNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+<p>Raised when browser can’t be initialized.</p>
+<dl class="attribute">
+<dt id="RPA.Browser.Selenium.BrowserNotFoundError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Browser.Selenium.BrowserNotFoundError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Browser.Selenium.BrowserNotFoundError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserNotFoundError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Browser.Selenium.Selenium">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Browser.Selenium.</code><code class="sig-name descname">Selenium</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SeleniumLibrary.SeleniumLibrary</span></code></p>
 <p>Browser is a web testing library for Robot Framework,
 based on the popular SeleniumLibrary.</p>
@@ -487,38 +512,38 @@ it is either empty or case-insensitively equal to <code class="docutils literal 
 <div class="line"><cite>Set Screenshot Directory</cite> | ${RESULTS} | persist=${NONE}  | # Python None is false.         |</div>
 </div>
 <dl class="attribute">
-<dt id="RPA.Browser.Selenium.Browser.AUTOMATIC_BROWSER_SELECTION">
-<code class="sig-name descname">AUTOMATIC_BROWSER_SELECTION</code><em class="property"> = 'AUTO'</em><a class="headerlink" href="#RPA.Browser.Selenium.Browser.AUTOMATIC_BROWSER_SELECTION" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.AUTOMATIC_BROWSER_SELECTION">
+<code class="sig-name descname">AUTOMATIC_BROWSER_SELECTION</code><em class="property"> = 'AUTO'</em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.AUTOMATIC_BROWSER_SELECTION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="RPA.Browser.Selenium.Browser.AVAILABLE_OPTIONS">
-<code class="sig-name descname">AVAILABLE_OPTIONS</code><em class="property"> = {'chrome': 'ChromeOptions', 'firefox': 'FirefoxOptions'}</em><a class="headerlink" href="#RPA.Browser.Selenium.Browser.AVAILABLE_OPTIONS" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.AVAILABLE_OPTIONS">
+<code class="sig-name descname">AVAILABLE_OPTIONS</code><em class="property"> = {'chrome': 'ChromeOptions', 'firefox': 'FirefoxOptions'}</em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.AVAILABLE_OPTIONS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="RPA.Browser.Selenium.Browser.ROBOT_LIBRARY_DOC_FORMAT">
-<code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'ROBOT'</em><a class="headerlink" href="#RPA.Browser.Selenium.Browser.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_DOC_FORMAT">
+<code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'ROBOT'</em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="RPA.Browser.Selenium.Browser.ROBOT_LIBRARY_SCOPE">
-<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Browser.Selenium.Browser.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="RPA.Browser.Selenium.Browser.ROBOT_LIBRARY_VERSION">
-<code class="sig-name descname">ROBOT_LIBRARY_VERSION</code><em class="property"> = '4.5.0'</em><a class="headerlink" href="#RPA.Browser.Selenium.Browser.ROBOT_LIBRARY_VERSION" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION">
+<code class="sig-name descname">ROBOT_LIBRARY_VERSION</code><em class="property"> = '4.5.0'</em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.add_library_components">
-<code class="sig-name descname">add_library_components</code><span class="sig-paren">(</span><em class="sig-param">library_components</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.add_library_components" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.add_library_components">
+<code class="sig-name descname">add_library_components</code><span class="sig-paren">(</span><em class="sig-param">library_components</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.add_library_components" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.attach_chrome_browser">
-<code class="sig-name descname">attach_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">port: int</em>, <em class="sig-param">alias: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.attach_chrome_browser" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.attach_chrome_browser">
+<code class="sig-name descname">attach_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">port: int</em>, <em class="sig-param">alias: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.attach_chrome_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attach to an existing instance of Chrome or Chromium.</p>
 <p>Requires that the browser was started with the command line
 option <code class="docutils literal notranslate"><span class="pre">--remote-debugging-port=&lt;port&gt;</span></code>, where port is any
@@ -531,14 +556,14 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.clear_all_highlights">
-<code class="sig-name descname">clear_all_highlights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.clear_all_highlights" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.clear_all_highlights">
+<code class="sig-name descname">clear_all_highlights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.clear_all_highlights" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all highlighting made by <code class="docutils literal notranslate"><span class="pre">Highlight</span> <span class="pre">Elements</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.click_button_when_visible">
-<code class="sig-name descname">click_button_when_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">modifier: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Browser.click_button_when_visible" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.click_button_when_visible">
+<code class="sig-name descname">click_button_when_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">modifier: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.click_button_when_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click button identified by <code class="docutils literal notranslate"><span class="pre">locator</span></code>, once it becomes visible.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">modifier</span></code> press given keys while clicking the element, e.g. CTRL</p>
@@ -549,8 +574,8 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.click_element_if_visible">
-<code class="sig-name descname">click_element_if_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Browser.click_element_if_visible" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.click_element_if_visible">
+<code class="sig-name descname">click_element_if_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.click_element_if_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click element if it is visible</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -560,8 +585,8 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.click_element_when_visible">
-<code class="sig-name descname">click_element_when_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">modifier: Optional[str] = None</em>, <em class="sig-param">action_chain: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Browser.click_element_when_visible" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.click_element_when_visible">
+<code class="sig-name descname">click_element_when_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">modifier: Optional[str] = None</em>, <em class="sig-param">action_chain: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.click_element_when_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click element identified by <code class="docutils literal notranslate"><span class="pre">locator</span></code>, once it becomes visible.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">modifier</span></code> press given keys while clicking the element, e.g. CTRL</p>
@@ -575,8 +600,8 @@ option <code class="docutils literal notranslate"><span class="pre">--remote-deb
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_alert_contain">
-<code class="sig-name descname">does_alert_contain</code><span class="sig-paren">(</span><em class="sig-param">text: str = None</em>, <em class="sig-param">timeout: float = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_alert_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_alert_contain">
+<code class="sig-name descname">does_alert_contain</code><span class="sig-paren">(</span><em class="sig-param">text: str = None</em>, <em class="sig-param">timeout: float = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_alert_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does alert contain text.</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> check if alert includes text, will raise ValueError is text
 does not exist</p>
@@ -587,8 +612,8 @@ does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_alert_not_contain">
-<code class="sig-name descname">does_alert_not_contain</code><span class="sig-paren">(</span><em class="sig-param">text: str = None</em>, <em class="sig-param">timeout: float = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_alert_not_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_alert_not_contain">
+<code class="sig-name descname">does_alert_not_contain</code><span class="sig-paren">(</span><em class="sig-param">text: str = None</em>, <em class="sig-param">timeout: float = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_alert_not_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does alert not contain text.</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> check that alert does not include text, will raise ValueError if text
 does exist</p>
@@ -599,8 +624,8 @@ does exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_element_contain">
-<code class="sig-name descname">does_element_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em>, <em class="sig-param">ignore_case: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_element_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_element_contain">
+<code class="sig-name descname">does_element_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em>, <em class="sig-param">ignore_case: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_element_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does element contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected element text</p>
@@ -612,8 +637,8 @@ does exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_frame_contain">
-<code class="sig-name descname">does_frame_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_frame_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_frame_contain">
+<code class="sig-name descname">does_frame_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_frame_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does frame contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> locator of the frame to check</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> does frame contain this text</p>
@@ -624,8 +649,8 @@ does exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_location_contain">
-<code class="sig-name descname">does_location_contain</code><span class="sig-paren">(</span><em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_location_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_location_contain">
+<code class="sig-name descname">does_location_contain</code><span class="sig-paren">(</span><em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_location_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does current URL contain expected</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> URL should contain this</p>
 <p>Example:</p>
@@ -636,8 +661,8 @@ does exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_page_contain">
-<code class="sig-name descname">does_page_contain</code><span class="sig-paren">(</span><em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_page_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_page_contain">
+<code class="sig-name descname">does_page_contain</code><span class="sig-paren">(</span><em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> page should contain this</p>
 <p>Example:</p>
@@ -648,8 +673,8 @@ does exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_page_contain_button">
-<code class="sig-name descname">does_page_contain_button</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_page_contain_button" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_page_contain_button">
+<code class="sig-name descname">does_page_contain_button</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected button</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -659,8 +684,8 @@ does exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_page_contain_checkbox">
-<code class="sig-name descname">does_page_contain_checkbox</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_page_contain_checkbox" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_page_contain_checkbox">
+<code class="sig-name descname">does_page_contain_checkbox</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_checkbox" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected checkbox</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -670,8 +695,8 @@ does exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_page_contain_element">
-<code class="sig-name descname">does_page_contain_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">count: int = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_page_contain_element" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_page_contain_element">
+<code class="sig-name descname">does_page_contain_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">count: int = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected element</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">count</span></code> how many times element is expected to appear on page
@@ -684,8 +709,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_page_contain_image">
-<code class="sig-name descname">does_page_contain_image</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_page_contain_image" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_page_contain_image">
+<code class="sig-name descname">does_page_contain_image</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected image</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -696,8 +721,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_page_contain_link">
-<code class="sig-name descname">does_page_contain_link</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_page_contain_link" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_page_contain_link">
+<code class="sig-name descname">does_page_contain_link</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected link</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -707,8 +732,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_page_contain_list">
-<code class="sig-name descname">does_page_contain_list</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_page_contain_list" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_page_contain_list">
+<code class="sig-name descname">does_page_contain_list</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected list</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -718,8 +743,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_page_contain_radio_button">
-<code class="sig-name descname">does_page_contain_radio_button</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_page_contain_radio_button" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_page_contain_radio_button">
+<code class="sig-name descname">does_page_contain_radio_button</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_radio_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected radio button</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -729,8 +754,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_page_contain_textfield">
-<code class="sig-name descname">does_page_contain_textfield</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_page_contain_textfield" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_page_contain_textfield">
+<code class="sig-name descname">does_page_contain_textfield</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_page_contain_textfield" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does page contain expected textfield</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -740,8 +765,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_table_cell_contain">
-<code class="sig-name descname">does_table_cell_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">row: int</em>, <em class="sig-param">column: int</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_table_cell_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_table_cell_contain">
+<code class="sig-name descname">does_table_cell_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">row: int</em>, <em class="sig-param">column: int</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_cell_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does table cell contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">row</span></code> row index starting from 1 (beginning) or -1 (from the end)</p>
@@ -754,8 +779,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_table_column_contain">
-<code class="sig-name descname">does_table_column_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">column: int</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_table_column_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_table_column_contain">
+<code class="sig-name descname">does_table_column_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">column: int</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_column_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does table column contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">column</span></code> column index starting from 1 (beginning) or -1 (from the end)</p>
@@ -767,8 +792,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_table_contain">
-<code class="sig-name descname">does_table_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_table_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_table_contain">
+<code class="sig-name descname">does_table_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does table contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table</p>
@@ -779,8 +804,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_table_footer_contain">
-<code class="sig-name descname">does_table_footer_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_table_footer_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_table_footer_contain">
+<code class="sig-name descname">does_table_footer_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_footer_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does table footer contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table footer</p>
@@ -791,8 +816,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_table_header_contain">
-<code class="sig-name descname">does_table_header_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_table_header_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_table_header_contain">
+<code class="sig-name descname">does_table_header_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_header_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does table header contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in table header</p>
@@ -803,8 +828,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_table_row_contain">
-<code class="sig-name descname">does_table_row_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">row: int</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_table_row_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_table_row_contain">
+<code class="sig-name descname">does_table_row_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">row: int</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_table_row_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does table row contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator for the table</p>
 <p><code class="docutils literal notranslate"><span class="pre">row</span></code> row index starting from 1 (beginning) or -1 (from the end)</p>
@@ -816,8 +841,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_textarea_contain">
-<code class="sig-name descname">does_textarea_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_textarea_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_textarea_contain">
+<code class="sig-name descname">does_textarea_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_textarea_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does textarea contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in textarea</p>
@@ -828,8 +853,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.does_textfield_contain">
-<code class="sig-name descname">does_textfield_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.does_textfield_contain" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.does_textfield_contain">
+<code class="sig-name descname">does_textfield_contain</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.does_textfield_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does textfield contain expected text</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected text in textfield</p>
@@ -840,8 +865,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.driver">
-<em class="property">property </em><code class="sig-name descname">driver</code><a class="headerlink" href="#RPA.Browser.Selenium.Browser.driver" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.driver">
+<em class="property">property </em><code class="sig-name descname">driver</code><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.driver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Current active driver.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -854,8 +879,8 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.failure_occurred">
-<code class="sig-name descname">failure_occurred</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.failure_occurred" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.failure_occurred">
+<code class="sig-name descname">failure_occurred</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.failure_occurred" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method that is executed when a SeleniumLibrary keyword fails.</p>
 <p>By default, executes the registered run-on-failure keyword.
 Libraries extending SeleniumLibrary can overwrite this hook
@@ -863,8 +888,8 @@ method if they want to provide custom functionality instead.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.find_element">
-<code class="sig-name descname">find_element</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.find_element" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.find_element">
+<code class="sig-name descname">find_element</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find element matching <cite>locator</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -888,8 +913,8 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.find_elements">
-<code class="sig-name descname">find_elements</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.find_elements" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.find_elements">
+<code class="sig-name descname">find_elements</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_elements" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find all elements matching <cite>locator</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -910,8 +935,8 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.get_browser_capabilities">
-<code class="sig-name descname">get_browser_capabilities</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Browser.Selenium.Browser.get_browser_capabilities" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.get_browser_capabilities">
+<code class="sig-name descname">get_browser_capabilities</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_browser_capabilities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get dictionary of browser properties</p>
 <p>Example:</p>
 <div class="line-block">
@@ -920,8 +945,8 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.get_element_status">
-<code class="sig-name descname">get_element_status</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Browser.Selenium.Browser.get_element_status" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.get_element_status">
+<code class="sig-name descname">get_element_status</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_element_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return dictionary containing element status of:</p>
 <blockquote>
 <div><ul class="simple">
@@ -943,44 +968,44 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.get_keyword_arguments">
-<code class="sig-name descname">get_keyword_arguments</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.get_keyword_arguments" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.get_keyword_arguments">
+<code class="sig-name descname">get_keyword_arguments</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_keyword_arguments" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.get_keyword_documentation">
-<code class="sig-name descname">get_keyword_documentation</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.get_keyword_documentation" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.get_keyword_documentation">
+<code class="sig-name descname">get_keyword_documentation</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_keyword_documentation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.get_keyword_names">
-<code class="sig-name descname">get_keyword_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.get_keyword_names" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.get_keyword_names">
+<code class="sig-name descname">get_keyword_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_keyword_names" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.get_keyword_source">
-<code class="sig-name descname">get_keyword_source</code><span class="sig-paren">(</span><em class="sig-param">keyword_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.get_keyword_source" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.get_keyword_source">
+<code class="sig-name descname">get_keyword_source</code><span class="sig-paren">(</span><em class="sig-param">keyword_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_keyword_source" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.get_keyword_tags">
-<code class="sig-name descname">get_keyword_tags</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.get_keyword_tags" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.get_keyword_tags">
+<code class="sig-name descname">get_keyword_tags</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_keyword_tags" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.get_keyword_types">
-<code class="sig-name descname">get_keyword_types</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.get_keyword_types" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.get_keyword_types">
+<code class="sig-name descname">get_keyword_types</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_keyword_types" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.get_testability_status">
-<code class="sig-name descname">get_testability_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.get_testability_status" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.get_testability_status">
+<code class="sig-name descname">get_testability_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_testability_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get SeleniumTestability plugin status</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.highlight_elements">
-<code class="sig-name descname">highlight_elements</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">width: str = '2px'</em>, <em class="sig-param">style: str = 'dotted'</em>, <em class="sig-param">color: str = 'blue'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.highlight_elements" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.highlight_elements">
+<code class="sig-name descname">highlight_elements</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">width: str = '2px'</em>, <em class="sig-param">style: str = 'dotted'</em>, <em class="sig-param">color: str = 'blue'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.highlight_elements" title="Permalink to this definition">¶</a></dt>
 <dd><p>Highlight all matching elements by locator.</p>
 <p>Highlighing is done by adding a colored outline
 around the elements with CSS styling.</p>
@@ -995,8 +1020,8 @@ around the elements with CSS styling.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.input_text_when_element_is_visible">
-<code class="sig-name descname">input_text_when_element_is_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Browser.input_text_when_element_is_visible" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.input_text_when_element_is_visible">
+<code class="sig-name descname">input_text_when_element_is_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.input_text_when_element_is_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Input text into locator after it has become visible.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> insert text to locator</p>
@@ -1007,8 +1032,8 @@ around the elements with CSS styling.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_alert_present">
-<code class="sig-name descname">is_alert_present</code><span class="sig-paren">(</span><em class="sig-param">text: str = None</em>, <em class="sig-param">action: str = 'ACCEPT'</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_alert_present" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_alert_present">
+<code class="sig-name descname">is_alert_present</code><span class="sig-paren">(</span><em class="sig-param">text: str = None</em>, <em class="sig-param">action: str = 'ACCEPT'</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_alert_present" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is alert box present, which can be identified with text
 and action can also be done which by default is ACCEPT.</p>
 <p>Other possible actions are DISMISS and LEAVE.</p>
@@ -1022,8 +1047,8 @@ will check if alert is present at all</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_checkbox_selected">
-<code class="sig-name descname">is_checkbox_selected</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_checkbox_selected" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_checkbox_selected">
+<code class="sig-name descname">is_checkbox_selected</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_checkbox_selected" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is checkbox selected</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -1033,8 +1058,8 @@ will check if alert is present at all</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_element_attribute_equal_to">
-<code class="sig-name descname">is_element_attribute_equal_to</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">attribute: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_element_attribute_equal_to" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_element_attribute_equal_to">
+<code class="sig-name descname">is_element_attribute_equal_to</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">attribute: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_attribute_equal_to" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element attribute equal to expected value</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">attribute</span></code> element attribute to check for</p>
@@ -1046,8 +1071,8 @@ will check if alert is present at all</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_element_disabled">
-<code class="sig-name descname">is_element_disabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">missing_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_element_disabled" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_element_disabled">
+<code class="sig-name descname">is_element_disabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">missing_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_disabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element disabled</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator
 <code class="docutils literal notranslate"><span class="pre">missing_ok</span></code> default True, set to False if keyword should
@@ -1059,8 +1084,8 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_element_enabled">
-<code class="sig-name descname">is_element_enabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">missing_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_element_enabled" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_element_enabled">
+<code class="sig-name descname">is_element_enabled</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">missing_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_enabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element enabled</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator
 <code class="docutils literal notranslate"><span class="pre">missing_ok</span></code> default True, set to False if keyword should
@@ -1072,8 +1097,8 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_element_focused">
-<code class="sig-name descname">is_element_focused</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">missing_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_element_focused" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_element_focused">
+<code class="sig-name descname">is_element_focused</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">missing_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_focused" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element focused</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator
 <code class="docutils literal notranslate"><span class="pre">missing_ok</span></code> default True, set to False if keyword should
@@ -1085,8 +1110,8 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_element_text">
-<code class="sig-name descname">is_element_text</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em>, <em class="sig-param">ignore_case: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_element_text" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_element_text">
+<code class="sig-name descname">is_element_text</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em>, <em class="sig-param">ignore_case: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element text expected</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected element text</p>
@@ -1099,8 +1124,8 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_element_visible">
-<code class="sig-name descname">is_element_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">missing_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_element_visible" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_element_visible">
+<code class="sig-name descname">is_element_visible</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">missing_ok: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_element_visible" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is element visible</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator
 <code class="docutils literal notranslate"><span class="pre">missing_ok</span></code> default True, set to False if keyword should
@@ -1112,8 +1137,8 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_list_selected">
-<code class="sig-name descname">is_list_selected</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_list_selected" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_list_selected">
+<code class="sig-name descname">is_list_selected</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_list_selected" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is any option selected in the</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p>Example:</p>
@@ -1123,8 +1148,8 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_list_selection">
-<code class="sig-name descname">is_list_selection</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">*expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_list_selection" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_list_selection">
+<code class="sig-name descname">is_list_selection</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">*expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_list_selection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is list selected with expected values</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected selected options</p>
@@ -1135,8 +1160,8 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_location">
-<code class="sig-name descname">is_location</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_location" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_location">
+<code class="sig-name descname">is_location</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is current URL expected url</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> expected current URL</p>
 <p>Example:</p>
@@ -1147,8 +1172,8 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_radio_button_selected">
-<code class="sig-name descname">is_radio_button_selected</code><span class="sig-paren">(</span><em class="sig-param">group_name: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_radio_button_selected" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_radio_button_selected">
+<code class="sig-name descname">is_radio_button_selected</code><span class="sig-paren">(</span><em class="sig-param">group_name: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_radio_button_selected" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is any radio button selected in the button group</p>
 <p><code class="docutils literal notranslate"><span class="pre">group_name</span></code> radio button group name</p>
 <p>Example:</p>
@@ -1158,8 +1183,8 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_radio_button_set_to">
-<code class="sig-name descname">is_radio_button_set_to</code><span class="sig-paren">(</span><em class="sig-param">group_name: str</em>, <em class="sig-param">value: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_radio_button_set_to" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_radio_button_set_to">
+<code class="sig-name descname">is_radio_button_set_to</code><span class="sig-paren">(</span><em class="sig-param">group_name: str</em>, <em class="sig-param">value: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_radio_button_set_to" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is radio button group set to expected value</p>
 <p><code class="docutils literal notranslate"><span class="pre">group_name</span></code> radio button group name</p>
 <p><code class="docutils literal notranslate"><span class="pre">value</span></code> expected value</p>
@@ -1170,8 +1195,8 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_textarea_value">
-<code class="sig-name descname">is_textarea_value</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_textarea_value" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_textarea_value">
+<code class="sig-name descname">is_textarea_value</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_textarea_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is textarea matching expected value</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected textarea value</p>
@@ -1182,8 +1207,8 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_textfield_value">
-<code class="sig-name descname">is_textfield_value</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_textfield_value" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_textfield_value">
+<code class="sig-name descname">is_textfield_value</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">expected: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_textfield_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is textfield value expected</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">expected</span></code> expected textfield value</p>
@@ -1194,8 +1219,8 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.is_title">
-<code class="sig-name descname">is_title</code><span class="sig-paren">(</span><em class="sig-param">title: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Browser.is_title" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.is_title">
+<code class="sig-name descname">is_title</code><span class="sig-paren">(</span><em class="sig-param">title: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.is_title" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is page title expected</p>
 <p><code class="docutils literal notranslate"><span class="pre">title</span></code> expected title value</p>
 <p>Example:</p>
@@ -1205,14 +1230,14 @@ Fail if element does not exist</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.location">
-<em class="property">property </em><code class="sig-name descname">location</code><a class="headerlink" href="#RPA.Browser.Selenium.Browser.location" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.location">
+<em class="property">property </em><code class="sig-name descname">location</code><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return browser location.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.open_available_browser">
-<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: Optional[bool] = None</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Selenium.Browser.open_available_browser" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.open_available_browser">
+<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: Optional[bool] = None</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_available_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Opens the first available browser in the system in preferred order, or the
 given browser (<code class="docutils literal notranslate"><span class="pre">browser_selection</span></code>).</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open</p>
@@ -1254,15 +1279,15 @@ given browser (<code class="docutils literal notranslate"><span class="pre">brow
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.open_chrome_browser">
-<code class="sig-name descname">open_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: bool = False</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Selenium.Browser.open_chrome_browser" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.open_chrome_browser">
+<code class="sig-name descname">open_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: bool = False</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_chrome_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Chrome browser. See <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Available</span> <span class="pre">Browser</span></code> for
 descriptions of arguments.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.open_headless_chrome_browser">
-<code class="sig-name descname">open_headless_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Selenium.Browser.open_headless_chrome_browser" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.open_headless_chrome_browser">
+<code class="sig-name descname">open_headless_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_headless_chrome_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Chrome browser in headless mode.</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open</p>
 <p>Example:</p>
@@ -1272,8 +1297,8 @@ descriptions of arguments.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.open_user_browser">
-<code class="sig-name descname">open_user_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">tab=True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Browser.open_user_browser" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.open_user_browser">
+<code class="sig-name descname">open_user_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">tab=True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_user_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open URL with user’s default browser</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open
 <code class="docutils literal notranslate"><span class="pre">tab</span></code> defines is url is opened in a tab (default <cite>True</cite>) or</p>
@@ -1288,8 +1313,8 @@ descriptions of arguments.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.register_driver">
-<code class="sig-name descname">register_driver</code><span class="sig-paren">(</span><em class="sig-param">driver</em>, <em class="sig-param">alias</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.register_driver" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.register_driver">
+<code class="sig-name descname">register_driver</code><span class="sig-paren">(</span><em class="sig-param">driver</em>, <em class="sig-param">alias</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.register_driver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add’s a <cite>driver</cite> to the library WebDriverCache.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1308,13 +1333,13 @@ descriptions of arguments.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.run_keyword">
-<code class="sig-name descname">run_keyword</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">args</em>, <em class="sig-param">kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Browser.run_keyword" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.run_keyword">
+<code class="sig-name descname">run_keyword</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">args</em>, <em class="sig-param">kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.run_keyword" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.screenshot">
-<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">locator: str = None</em>, <em class="sig-param">filename: str = ''</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Browser.screenshot" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.screenshot">
+<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">locator: str = None</em>, <em class="sig-param">filename: str = ''</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.screenshot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Capture page and/or element screenshot.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> if defined, take element screenshot, if not takes page screenshot</p>
 <p><code class="docutils literal notranslate"><span class="pre">filename</span></code> filename for the screenshot, by default creates file <cite>screenshot-timestamp-element/page.png</cite>
@@ -1331,8 +1356,8 @@ if set to <cite>None</cite> then file is not saved at all</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.set_download_directory">
-<code class="sig-name descname">set_download_directory</code><span class="sig-paren">(</span><em class="sig-param">directory: str = None</em>, <em class="sig-param">download_pdf: bool = True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Browser.set_download_directory" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.set_download_directory">
+<code class="sig-name descname">set_download_directory</code><span class="sig-paren">(</span><em class="sig-param">directory: str = None</em>, <em class="sig-param">download_pdf: bool = True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.set_download_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set browser download directory</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">directory</span></code>    target directory for downloads, defaults to None which means</dt><dd><p>that setting is removed</p>
@@ -1343,8 +1368,8 @@ if set to <cite>None</cite> then file is not saved at all</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Browser.Selenium.Browser.wait_and_click_button">
-<code class="sig-name descname">wait_and_click_button</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">modifier: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Browser.wait_and_click_button" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Browser.Selenium.Selenium.wait_and_click_button">
+<code class="sig-name descname">wait_and_click_button</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">modifier: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.wait_and_click_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click button identified by <code class="docutils literal notranslate"><span class="pre">locator</span></code>, once it becomes visible.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code> element locator</p>
 <p><code class="docutils literal notranslate"><span class="pre">modifier</span></code> press given keys while clicking the element, e.g. CTRL</p>
@@ -1352,25 +1377,6 @@ if set to <cite>None</cite> then file is not saved at all</p>
 <div class="line-block">
 <div class="line">Click Button When Visible  | //button[&#64;class=”mybutton”] |</div>
 </div>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="exception">
-<dt id="RPA.Browser.Selenium.BrowserNotFoundError">
-<em class="property">exception </em><code class="sig-prename descclassname">RPA.Browser.Selenium.</code><code class="sig-name descname">BrowserNotFoundError</code><a class="headerlink" href="#RPA.Browser.Selenium.BrowserNotFoundError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
-<p>Raised when browser can’t be initialized.</p>
-<dl class="attribute">
-<dt id="RPA.Browser.Selenium.BrowserNotFoundError.args">
-<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Browser.Selenium.BrowserNotFoundError.args" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Browser.Selenium.BrowserNotFoundError.with_traceback">
-<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.BrowserNotFoundError.with_traceback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
 </dd></dl>

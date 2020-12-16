@@ -373,21 +373,21 @@ you can use:</p>
 <p>After installation the libraries can be directly imported inside
 <a class="reference external" href="https://robotframework.org">Robot Framework</a>:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Browser</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Browser.Selenium</span><span class="p"></span>
 
 <span class="gh">*** Tasks ***</span><span class="p"></span>
 <span class="gu">Login as user</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Open browser</span><span class="p">  </span><span class="s">https://example.com</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Open available browser</span><span class="p">    </span><span class="s">https://example.com</span><span class="p"></span>
 <span class="p">    </span><span class="nf">Input text</span><span class="p">    </span><span class="s">id:user-name</span><span class="p">    ${</span><span class="nv">USERNAME</span><span class="p">}</span>
 <span class="p">    </span><span class="nf">Input text</span><span class="p">    </span><span class="s">id:password</span><span class="p">     ${</span><span class="nv">PASSWORD</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>The libraries are also available inside <a class="reference external" href="https://python.org">Python</a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Browser</span> <span class="kn">import</span> <span class="n">Browser</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Browser.Selenium</span> <span class="kn">import</span> <span class="n">Selenium</span>
 
-<span class="n">lib</span> <span class="o">=</span> <span class="n">Browser</span><span class="p">()</span>
+<span class="n">lib</span> <span class="o">=</span> <span class="n">Selenium</span><span class="p">()</span>
 
-<span class="n">lib</span><span class="o">.</span><span class="n">open_browser</span><span class="p">(</span><span class="s2">&quot;https://example.com&quot;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">open_available_browser</span><span class="p">(</span><span class="s2">&quot;https://example.com&quot;</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">input_text</span><span class="p">(</span><span class="s2">&quot;id:user-name&quot;</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
 <span class="n">lib</span><span class="o">.</span><span class="n">input_text</span><span class="p">(</span><span class="s2">&quot;id:password&quot;</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
 </pre></div>

@@ -226,7 +226,7 @@ do not need to be full names of keywords, ie. all keywords matching even partial
 <cite>Run Keyword</cite> would match all <cite>BuiltIn</cite> library keywords (17 keywords in RF 3.2.1) and of course all
 <cite>Run Keyword</cite> named keywords in any resource and/or library file which are imported would be matched also.</p>
 <p><strong>Mute Run On Failure</strong></p>
-<p>This keyword is to be used specifically with <cite>RPA.Browser</cite> library, which extends
+<p>This keyword is to be used specifically with <cite>RPA.Browser.Selenium</cite> library, which extends
 <cite>SeleniumLibrary</cite>.  Normally most of the <cite>SeleniumLibrary</cite> keywords execute <cite>run_on_failure</cite>
 behaviour, which can be set at library initialization. By default this behaviour is running
 <cite>Capture Page Screenshot</cite> keyword on failure.</p>
@@ -239,7 +239,7 @@ This optional keyword would be then executed on failure. Due to the underlying <
 implementation this keyword can’t have arguments.</p>
 <p>Example of using <cite>Mute Run On Failure</cite> without and with optional keyword to run.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.Browser</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.Browser.Selenium</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">         </span><span class="nn">RPA.RobotLogListener</span><span class="p"></span>
 <span class="kn">Task Setup</span><span class="p">      </span><span class="nf">Set Task Variable</span><span class="p">   ${</span><span class="nv">TRIES</span><span class="p">}   </span><span class="s">1</span><span class="p"></span>
 <span class="kn">Task Teardown</span><span class="p">   </span><span class="nf">Close All Browsers</span><span class="p"></span>
