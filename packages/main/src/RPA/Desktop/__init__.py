@@ -26,6 +26,8 @@ class Desktop(DynamicCore):
     - Mouse and keyboard input emulation
     - Starting and stopping applications
     - Finding elements through image template matching
+    - Finding elements through OCR matching
+    - Scraping text from given regions
     - Taking screenshots
     - Clipboard management
 
@@ -35,7 +37,7 @@ class Desktop(DynamicCore):
     **Locating elements**
 
     To automate actions on the desktop, a robot needs to interact with various
-    graphical elements such as buttons or input fields. The positions of these
+    graphical elements such as buttons or input fields. The locations of these
     elements can be found using a feature called `locators`.
 
     A locator describes the properties or features of an element. This information
@@ -44,27 +46,45 @@ class Desktop(DynamicCore):
 
     The currently supported locator types are:
 
-    =========== =================== ===========
-    Name        Arguments           Description
-    =========== =================== ===========
-    alias       name (str)          A named locator, the default.
-    image       path (str)          Image of an element that is matched to current screen content
-    coordinates x (int), y (int)    Pixel coordinates as absolute position
-    offset      x (int), y (int)    Pixel coordinates relative to current mouse position
-    =========== =================== ===========
+    =========== ================================================ ===========
+    Name        Arguments                                        Description
+    =========== ================================================ ===========
+    alias       name (str)                                       A custom named locator from the locator database, the default.
+    image       path (str)                                       Image of an element that is matched to current screen content.
+    point       x (int), y (int)                                 Pixel coordinates as absolute position.
+    offset      x (int), y (int)                                 Pixel coordinates relative to current mouse position.
+    size        width (int), height (int)                        Region of fixed size, around point or screen top-left
+    region      left (int), top (int), right (int), bottom (int) Bounding coordinates for a rectangular region.
+    ocr         text (str), confidence (float, optional)         Text to find from the current screen.
+    =========== ================================================ ===========
 
     A locator is defined by its type and arguments, divided by a colon.
-    Some example usages are shown below. Note that the prefix for alias can
+    Some example usages are shown below. Note that the prefix for ``alias`` can
     be omitted as its the default type.
 
     .. code-block:: robotframework
 
-        Click    alias:SpareBin.Login
-        Click    SpareBin.Login
+        Click       alias:SpareBin.Login
+        Click       SpareBin.Login
 
-        Move mouse    image:%{ROBOT_ROOT}/logo.png
-        Move mouse    offset:200,0
+        Move mouse  image:%{ROBOT_ROOT}/logo.png
+        Move mouse  offset:200,0
         Click
+
+        Click       point:50,100
+
+        Click       region:20,20,100,30
+
+        Click       ocr:"Create New Account"
+
+
+    You can also pass internal ``region`` objects as locators:
+
+    .. code-block:: robotframework
+
+        ${region}=  Find Element  ocr:"Customer name"
+        Click       ${region}
+
 
     **Named locators**
 
@@ -141,15 +161,26 @@ class Desktop(DynamicCore):
 
     The supported mouse button types are ``left``, ``right``, and ``middle``.
 
-    **Examples***
+    **Examples**
 
-    The library can open applications and interact with them through
-    keyboard and mouse events.
+    Both Robot Framework and Python examples follow.
+
+    The library must be imported first.
 
     .. code-block:: robotframework
 
         *** Settings ***
         Library    RPA.Desktop
+
+    .. code-block:: python
+
+        from RPA.Desktop import Desktop
+        desktop = Desktop()
+
+    The library can open applications and interact with them through
+    keyboard and mouse events.
+
+    .. code-block:: robotframework
 
         *** Keywords ***
         Write entry in accounting
@@ -159,24 +190,87 @@ class Desktop(DynamicCore):
             Type text     ${entry}
             Press keys    ctrl    s
             Press keys    enter
-            [Teardown]    Close all applications
+
+    .. code-block:: python
+
+        def write_entry_in_accounting(entry):
+            desktop.open_application("erp_client.exe")
+            desktop.click(f"image:{ROBOT_ROOT}/images/create.png")
+            desktop.type_text(entry)
+            desktop.press_keys("ctrl", "s")
+            desktop.press_keys("enter")
+
 
     Targeting can be currently done using coordinates (absolute or relative),
     but using template matching is preferred.
 
     .. code-block:: robotframework
 
-        *** Settings ***
-        Library    RPA.Desktop
-
         *** Keywords ***
         Write to field
-            [Arguments]    ${text}
+            [Arguments]  ${text}
             Move mouse   image:input_label.png
             Move mouse   offset:200,0
             Click
             Type text    ${text}
             Press keys   enter
+
+    .. code-block:: python
+
+        def write_to_field(text):
+            desktop.move_mouse("image:input_label.png")
+            desktop.move_mouse("offset:200,0")
+            desktop.click()
+            desktop.type_text(text)
+            desktop.press_keys("enter")
+
+
+    Elements can be found by text too.
+
+    .. code-block:: robotframework
+
+        *** Keywords ***
+        Click New
+            Click       ocr:New
+
+    .. code-block:: python
+
+        def click_new():
+            desktop.click('ocr:"New"')
+
+
+    It is recommended to wait for the elements to be visible before
+    trying any interaction. You can also pass ``region`` objects as locators.
+
+    .. code-block:: robotframework
+
+        *** Keywords ***
+        Click New
+            ${region}=  Wait For element  ocr:New
+            Click       ${region}
+
+    .. code-block:: python
+
+        def click_new():
+            region = desktop.wait_for_element("ocr:New")
+            desktop.click(region)
+
+    Another way to find elements by offsetting from an anchor:
+
+    .. code-block:: robotframework
+
+        *** Keywords ***
+        Type Notes
+            [Arguments]        ${text}
+            Click With Offset  ocr:Notes  500  0
+            Type Text          ${text}
+
+    .. code-block:: python
+
+        def type_notes(text):
+            desktop.click_with_offset("ocr:Notes", 500, 0)
+            desktop.type_text(text)
+
     """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"

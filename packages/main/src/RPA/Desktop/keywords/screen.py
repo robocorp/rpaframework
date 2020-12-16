@@ -192,6 +192,17 @@ class ScreenKeywords(LibraryContext):
         :param top: Top edge coordinate.
         :param right: Right edge coordinate.
         :param bottom: Bottom edge coordinate.
+
+        Usage examples:
+
+        .. code-block:: robotframework
+
+            ${region}=  Define Region  10  10  50  30
+
+        .. code-block:: python
+
+            region = desktop.define_region(10, 10, 50, 30)
+
         """
         return Region(left, top, right, bottom)
 
@@ -203,6 +214,19 @@ class ScreenKeywords(LibraryContext):
         :param region: The region to move.
         :param left: Amount of pixels to move left/right.
         :param top: Amount of pixels to move up/down.
+
+        Usage examples:
+
+        .. code-block:: robotframework
+
+            ${region}=          Find Element  ocr:"Net Assets"
+            ${moved_region}=    Move Region  ${region}  500  0
+
+        .. code-block:: python
+
+            region = desktop.find_element('ocr:"Net Assets"')
+            moved_region = desktop.move_region(region, 500, 0)
+
         """
         return region.move(left, top)
 
@@ -226,5 +250,17 @@ class ScreenKeywords(LibraryContext):
         :param top: Amount of pixels to resize top edge.
         :param right: Amount of pixels to resize right edge.
         :param bottom: Amount of pixels to resize bottom edge.
+
+        Usage examples:
+
+        .. code-block:: robotframework
+
+            ${region}=          Find Element  ocr:"Net Assets"
+            ${resized_region}=  Resize Region  ${region}  bottom=10
+
+        .. code-block:: python
+
+            region = desktop.find_element('ocr:"Net Assets"')
+            resized_region = desktop.resize_region(region, bottom=10)
         """
         return region.resize(left, top, right, bottom)
