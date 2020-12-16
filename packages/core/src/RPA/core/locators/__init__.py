@@ -17,3 +17,4 @@ from .containers import (
     ImageTemplate,
 )
 from .database import LocatorsDatabase, sanitize_name
+from .literal import LocatorType

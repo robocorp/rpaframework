@@ -1,6 +1,8 @@
 from typing import Union
 from RPA.core.locators import LocatorsDatabase, Locator, TYPES
 
+LocatorType = Union[str, Locator]
+
 
 def parse(locator: Union[str, Locator]) -> Locator:
     """Parse locator string literal into a ``Locator`` instance.
