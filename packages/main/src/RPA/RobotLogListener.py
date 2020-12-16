@@ -18,7 +18,7 @@ class RobotLogListener:
 
     **Mute Run On Failure**
 
-    This keyword is to be used specifically with `RPA.Browser` library, which extends
+    This keyword is to be used specifically with `RPA.Browser.Selenium` library, which extends
     `SeleniumLibrary`.  Normally most of the `SeleniumLibrary` keywords execute `run_on_failure`
     behaviour, which can be set at library initialization. By default this behaviour is running
     `Capture Page Screenshot` keyword on failure.
@@ -37,7 +37,7 @@ class RobotLogListener:
     .. code-block:: robotframework
 
        *** Settings ***
-       Library         RPA.Browser
+       Library         RPA.Browser.Selenium
        Library         RPA.RobotLogListener
        Task Setup      Set Task Variable   ${TRIES}   1
        Task Teardown   Close All Browsers
@@ -131,9 +131,10 @@ class RobotLogListener:
         self.ROBOT_LIBRARY_LISTENER = self
         self.logger = logging.getLogger(__name__)
         self.previous_level = None
-        self.previous_kw = None
-        self.rpabrowser_instance = None
-        self.optional_keyword_to_run_failure = None
+
+        self.muted_keyword = None
+        self.muted_optionals = []
+        self.muted_previous = {}
 
     def only_info_level(self, names: Any = None):
         """Register keywords that are allowed only INFO level logging
@@ -143,6 +144,7 @@ class RobotLogListener:
         required_param(names, "only_info_level")
         if not isinstance(names, list):
             names = [names]
+
         for name in names:
             robotized_keyword = self._robotize_keyword(name)
             if robotized_keyword not in self.INFO_LEVEL_KEYWORDS:
@@ -156,6 +158,7 @@ class RobotLogListener:
         required_param(names, "register_protected_keywords")
         if not isinstance(names, list):
             names = [names]
+
         for name in names:
             robotized_keyword = self._robotize_keyword(name)
             if robotized_keyword not in self.KEYWORDS_TO_PROTECT:
@@ -187,15 +190,18 @@ class RobotLogListener:
         required_param(keywords, "mute_run_on_failure")
         if not isinstance(keywords, list):
             keywords = [keywords]
+
         for keyword in keywords:
             robotized_keyword = self._robotize_keyword(keyword)
             if robotized_keyword not in self.KEYWORDS_TO_MUTE:
                 self.KEYWORDS_TO_MUTE.append(robotized_keyword)
-        status, rpabrowser = BuiltIn().run_keyword_and_ignore_error(
-            "get_library_instance", "RPA.Browser"
-        )
-        self.rpabrowser_instance = rpabrowser if status == "PASS" else None
-        self.optional_keyword_to_run_failure = optional_keyword_to_run
+
+        for library in ("RPA.Browser", "RPA.Browser.Selenium"):
+            status, instance = BuiltIn().run_keyword_and_ignore_error(
+                "get_library_instance", library
+            )
+            if status == "PASS":
+                self.muted_optionals.append((instance, optional_keyword_to_run))
 
     def start_keyword(self, name, attributes):  # pylint: disable=W0613
         """Listener method for keyword start.
@@ -207,18 +213,26 @@ class RobotLogListener:
         temporarily set to NONE.
         """
         robotized_keyword = self._robotize_keyword(name)
-        if any(k in robotized_keyword for k in self.KEYWORDS_TO_PROTECT):
-            self.logger.info("protecting keyword: %s", robotized_keyword)
+
+        if any(kw in robotized_keyword for kw in self.KEYWORDS_TO_PROTECT):
+            self.logger.info("Protecting keyword: %s", robotized_keyword)
             self.previous_level = BuiltIn().set_log_level("NONE")
-        elif any(k in robotized_keyword for k in self.INFO_LEVEL_KEYWORDS):
+        elif any(kw in robotized_keyword for kw in self.INFO_LEVEL_KEYWORDS):
             self.previous_level = BuiltIn().set_log_level("INFO")
-        if self.rpabrowser_instance and any(
-            k in robotized_keyword for k in self.KEYWORDS_TO_MUTE
-        ):
-            # pylint: disable=C0301
-            self.previous_kw = self.rpabrowser_instance.register_keyword_to_run_on_failure(  # noqa: E501
-                self.optional_keyword_to_run_failure
-            )
+
+        if self.muted_keyword:
+            return
+
+        keywords = {}
+        for library, optional in self.muted_optionals:
+            if any(kw in robotized_keyword for kw in self.KEYWORDS_TO_MUTE):
+                previous = library.register_keyword_to_run_on_failure(optional)
+                keywords[library.__class__.__name__] = previous
+
+        if keywords:
+            self.logger.debug("Muting failures before keyword: %s", name)
+            self.muted_keyword = robotized_keyword
+            self.muted_previous = keywords
 
     def end_keyword(self, name, attributes):  # pylint: disable=W0613
         """Listener method for keyword end.
@@ -230,14 +244,21 @@ class RobotLogListener:
         restored back to level it was before settings to NONE.
         """
         robotized_keyword = self._robotize_keyword(name)
-        if any(k in robotized_keyword for k in self.KEYWORDS_TO_PROTECT):
+
+        if any(kw in robotized_keyword for kw in self.KEYWORDS_TO_PROTECT):
             BuiltIn().set_log_level(self.previous_level)
-        if self.rpabrowser_instance and any(
-            k in robotized_keyword for k in self.KEYWORDS_TO_MUTE
-        ):
-            self.rpabrowser_instance.register_keyword_to_run_on_failure(
-                self.previous_kw
-            )
+
+        if robotized_keyword != self.muted_keyword:
+            return
+
+        self.logger.debug("Un-muting failures after keyword: %s", name)
+        for library, _ in self.muted_optionals:
+            previous = self.muted_previous.get(library.__class__.__name__)
+            if previous:
+                library.register_keyword_to_run_on_failure(previous)
+
+        self.muted_keyword = None
+        self.muted_previous = {}
 
     def _robotize_keyword(self, kw_name: str) -> str:
         """Modifies keyword name for programmatic use.
