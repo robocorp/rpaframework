@@ -1,4 +1,5 @@
 import pyperclip
+from RPA.core.locators import LocatorType
 from RPA.Desktop import utils
 from RPA.Desktop.keywords import LibraryContext, keyword
 
@@ -7,7 +8,7 @@ class ClipboardKeywords(LibraryContext):
     """Keywords for interacting with the system clipboard."""
 
     @keyword
-    def copy_to_clipboard(self, locator) -> str:
+    def copy_to_clipboard(self, locator: LocatorType) -> str:
         """Read value to system clipboard from given input element.
 
         :param locator: Locator for element
@@ -29,7 +30,7 @@ class ClipboardKeywords(LibraryContext):
         return self.get_clipboard_value()
 
     @keyword
-    def paste_from_clipboard(self, locator) -> None:
+    def paste_from_clipboard(self, locator: LocatorType) -> None:
         """Paste value from system clipboard into given element.
 
         :param locator: Locator for element
