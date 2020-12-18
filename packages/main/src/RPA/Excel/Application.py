@@ -194,16 +194,19 @@ class Application:
         :raises ValueError: error is raised if workbook does not exist and
             `create_workbook` is False
         """
-        self.logger.info("Adding sheet: %s", sheetname)
-
         if tabname:
-            self.logger.warning("Ignoring deprecated argument 'tabname'")
+            sheetname = tabname
+            self.logger.warning(
+                "Argument 'tabname' is deprecated, "
+                "and will be removed in a future version"
+            )
 
         if not self.workbook:
             if not create_workbook:
                 raise ValueError("No workbook open")
             self.add_new_workbook()
 
+        self.logger.info("Adding sheet: %s", sheetname)
         with catch_com_error():
             last = self.app.Worksheets(self.app.Worksheets.Count)
             self.worksheet = self.app.Worksheets.Add(After=last)
