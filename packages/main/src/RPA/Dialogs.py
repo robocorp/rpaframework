@@ -1,25 +1,23 @@
 import cgi
-from collections import OrderedDict
-from datetime import datetime
-
-# pylint: disable=no-name-in-module
-from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from json import JSONDecodeError
 import logging
 import os
-from pathlib import Path
-
-from socketserver import ThreadingMixIn
 import shutil
 import tempfile
 import threading
 import time
-from typing import Any
+from collections import OrderedDict
+from datetime import datetime
+from http.server import (  # pylint: disable=no-name-in-module
+    BaseHTTPRequestHandler,
+    HTTPServer,
+)
+from pathlib import Path
+from socketserver import ThreadingMixIn
+from typing import Any, Dict, Optional
 from urllib.parse import unquote_plus
+
 import requests
-
-
 from RPA.Browser.Selenium import Selenium
 
 try:
@@ -222,15 +220,14 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path.endswith("favicon.ico"):
             return
+
         if self.path.endswith("requestresponse"):
             if self.server.formresponse is not None:
                 self._set_response(200, "json")
                 self.wfile.write(json.dumps(self.server.formresponse).encode("utf-8"))
                 self.server.formresponse = None
-                return
             else:
                 self._set_response(304, "json")
-                return
         elif self.path.endswith(".html"):
             self._set_response(200, "html")
             if self.path == "/":
@@ -241,10 +238,8 @@ class Handler(BaseHTTPRequestHandler):
                 html = fh.read()
                 # html = bytes(html, 'utf8')
                 self.wfile.write(html)
-            return
         else:
             self._set_response(404, "html")
-            return
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
@@ -702,13 +697,18 @@ class Dialogs:
         self.custom_form["form"].append(element)
 
     def request_response(
-        self, formspec: str = None, window_width: int = 600, window_height: int = 1000
-    ) -> dict:
+        self,
+        formspec: str = None,
+        window_width: int = 600,
+        window_height: int = 1000,
+        timeout: Optional[int] = None,
+    ) -> Dict:
         """Start server and show form. Waits for user response.
 
         :param formspec: form json specification file, defaults to None
         :param window_width: window width in pixels, defaults to 600
         :param window_height: window height in pixels, defaults to 1000
+        :param timeout: optional time to wait for response, in seconds
         :return: form response
 
         Example:
@@ -720,47 +720,63 @@ class Dialogs:
 
         """
         self._start_attended_server()
-        if self.custom_form is None:
-            self.create_form("Requesting response")
-        if formspec:
-            formdata = open(formspec, "rb")
-        else:
-            formdata = json.dumps(self.custom_form)
-        headers = {"Accept": "application/json", "Content-Type": "application/json"}
-        requests.post(
-            f"{self.server_address}/formspec",
-            data=formdata,
-            headers=headers,
-        )
 
-        response_json = {}
         try:
-            br = Selenium()
-            br.open_available_browser(f"{self.server_address}/form.html")
-            br.set_window_size(window_width, window_height)
+            if self.custom_form is None:
+                self.create_form("Requesting response")
 
-            headers = {"Prefer": "wait=120"}
-            # etag = None
-            while True:
-                # if etag:
-                #    headers['If-None-Match'] = etag
-                headers["If-None-Match"] = "2434432243"
-                response = requests.get(
-                    f"{self.server_address}/requestresponse", headers=headers
-                )
-                # etag = response.headers.get("ETag")
-                if response.status_code == 200:
-                    try:
-                        response_json = response.json()
-                        break
-                    except JSONDecodeError:
-                        break
-                elif response.status_code != 304:
-                    # back off if the server is throwing errors
-                    time.sleep(10)
-                    continue
-                time.sleep(1)
+            if formspec:
+                formdata = open(formspec, "rb")
+            else:
+                formdata = json.dumps(self.custom_form)
+
+            requests.post(
+                f"{self.server_address}/formspec",
+                data=formdata,
+                headers={
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+            )
+
+            return self._wait_response(window_width, window_height, timeout)
         finally:
-            br.close_browser()
             self._stop_attended_server()
-        return response_json
+
+    def _wait_response(
+        self, window_width: int, window_height: int, timeout: Optional[int]
+    ) -> Dict:
+        """Open a browser to the created form and wait for the user
+        to submit it.
+        """
+        browser = Selenium()
+
+        def is_browser_open():
+            try:
+                return bool(browser.driver.current_window_handle)
+            except Exception:  # pylint: disable=broad-except
+                return False
+
+        try:
+            browser.open_available_browser(f"{self.server_address}/form.html")
+            browser.set_window_size(window_width, window_height)
+
+            start_time = time.time()
+            while True:
+                response = requests.get(
+                    f"{self.server_address}/requestresponse",
+                    headers={"Prefer": "wait=120"},
+                )
+
+                if response.status_code == 200:
+                    return response.json()
+                elif response.status_code != 304:
+                    response.raise_for_status()
+                elif not is_browser_open():
+                    raise RuntimeError("Browser closed by user")
+                elif timeout and time.time() > start_time + int(timeout):
+                    raise RuntimeError("No response within timeout")
+                else:
+                    time.sleep(1)
+        finally:
+            browser.close_browser()
