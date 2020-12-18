@@ -2,8 +2,6 @@ import cgi
 import json
 import logging
 import os
-import shutil
-import tempfile
 import threading
 import time
 from collections import OrderedDict
@@ -12,8 +10,8 @@ from http.server import (  # pylint: disable=no-name-in-module
     BaseHTTPRequestHandler,
     HTTPServer,
 )
+from itertools import count
 from pathlib import Path
-from socketserver import ThreadingMixIn
 from typing import Any, Dict, Optional
 from urllib.parse import unquote_plus
 
@@ -26,8 +24,6 @@ try:
 except ImportError:
     # Try backported to PY<37 `importlib_resources`.
     import importlib_resources as pkg_resources
-
-LOGGER = logging.getLogger(__name__)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -161,8 +157,8 @@ class Handler(BaseHTTPRequestHandler):
         if not has_submit:
             formhtml += "<input type='submit' value='Submit'>"
         formhtml += "</form></body>"
-        with open("form.html", "w") as f:
-            f.write(formhtml)
+
+        self.server.formhtml = formhtml.encode("utf-8")
 
     def do_HEAD(self):
         self.send_response(200)
@@ -177,7 +173,6 @@ class Handler(BaseHTTPRequestHandler):
             self.server.formresponse = None
             self.create_form(message)
             self._set_response()
-            return
         elif "formresponsehandling" in self.path:
             length = int(self.headers.get("Content-length", 0))
             form = cgi.FieldStorage(
@@ -210,12 +205,11 @@ class Handler(BaseHTTPRequestHandler):
                     response[field_name].append(filepath)
                 else:
                     response[field_name] = [filepath]
+
             self.server.formresponse = response
             self._set_response()
-            return
         else:
             self._set_response(404)
-            return
 
     def do_GET(self):
         if self.path.endswith("favicon.ico"):
@@ -228,6 +222,12 @@ class Handler(BaseHTTPRequestHandler):
                 self.server.formresponse = None
             else:
                 self._set_response(304, "json")
+        elif self.path == "/":
+            if self.server.formhtml:
+                self._set_response(200, "html")
+                self.wfile.write(self.server.formhtml)
+            else:
+                self._set_response(404, "html")
         elif self.path.endswith(".html"):
             self._set_response(200, "html")
             if self.path == "/":
@@ -236,23 +236,9 @@ class Handler(BaseHTTPRequestHandler):
                 filename = "./" + self.path
             with open(filename, "rb") as fh:
                 html = fh.read()
-                # html = bytes(html, 'utf8')
                 self.wfile.write(html)
         else:
             self._set_response(404, "html")
-
-
-class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
-    """Handle requests in a separate thread."""
-
-
-def start_server_cmd(directory, stylepath, port=8105):
-    LOGGER.info("starting server at port=%s", port)
-    formserver = HTTPServer(("", port), Handler)
-    formserver.formresponse = None
-    formserver.workdir = directory
-    formserver.stylepath = stylepath
-    formserver.serve_forever()
 
 
 class Dialogs:
@@ -379,36 +365,47 @@ class Dialogs:
         :param stylesheet: defaults to built-in Robocorp stylesheet
         """
         self.logger = logging.getLogger(__name__)
-        self.server_address = None
+        self.server_port = int(server_port)
+        self.server_address = f"http://localhost:{self.server_port}"
         self.server = None
-        self.workdir = None
+        self.thread = None
+
         self.custom_form = None
-        self.server_port = server_port
         self.stylesheet = stylesheet
+
         if self.stylesheet is None:
             includes = import_module("RPA.includes")
-            with pkg_resources.path(includes, "dialog_styles.css") as p:
-                self.stylesheet = p
+            with pkg_resources.path(includes, "dialog_styles.css") as path:
+                self.stylesheet = path
 
-    def _start_attended_server(self):
+    def _start_server_thread(self):
         """Start a server which will server form html and
         handles form post.
         """
-        if self.server is None:
-            self.workdir = tempfile.mkdtemp(suffix="_dialog_server_workdir")
-            self.server_address = f"http://localhost:{self.server_port}"
-            self.server = threading.Thread(
-                name="daemon_server",
-                target=start_server_cmd,
-                args=(self.workdir, self.stylesheet, self.server_port),
-            )
-            self.server.setDaemon(True)
-            self.server.start()
+        # Already running
+        if self.thread and self.thread.is_alive():
+            return
 
-    def _stop_attended_server(self):
-        """Stop server"""
-        if self.server is not None and self.workdir:
-            shutil.rmtree(self.workdir, ignore_errors=True)
+        # Previous server thread has died
+        if self.thread and not self.thread.is_alive():
+            self.server.shutdown()
+            self.server.server_close()
+            self.thread.join()
+
+        self.thread = threading.Thread(name="form_server", target=self._run_server)
+        self.thread.setDaemon(True)
+        self.thread.start()
+
+    def _run_server(self):
+        self.logger.info("Starting server at port %d", self.server_port)
+
+        self.server = HTTPServer(("", self.server_port), Handler)
+        self.server.allow_reuse_address = True
+        self.server.stylepath = self.stylesheet
+        self.server.formresponse = None
+        self.server.formhtml = None
+
+        self.server.serve_forever()
 
     def create_form(self, title: str = None) -> None:
         """Create new form
@@ -719,29 +716,35 @@ class Dialogs:
             &{response}    Request Response
 
         """
-        self._start_attended_server()
+        self._start_server_thread()
 
-        try:
-            if self.custom_form is None:
-                self.create_form("Requesting response")
+        if self.custom_form is None:
+            self.create_form("Requesting response")
 
-            if formspec:
-                formdata = open(formspec, "rb")
-            else:
-                formdata = json.dumps(self.custom_form)
+        if formspec:
+            formdata = open(formspec, "rb")
+        else:
+            formdata = json.dumps(self.custom_form)
 
-            requests.post(
-                f"{self.server_address}/formspec",
-                data=formdata,
-                headers={
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                },
-            )
+        for attempt in count():
+            try:
+                response = requests.post(
+                    f"{self.server_address}/formspec",
+                    data=formdata,
+                    headers={
+                        "Accept": "application/json",
+                        "Content-Type": "application/json",
+                    },
+                    timeout=5,
+                )
+                response.raise_for_status()
+                break
+            except Exception as exc:  # pylint: disable=broad-except
+                if not self.thread.is_alive() or attempt >= 5:
+                    raise RuntimeError("Failed to start input server") from exc
+                time.sleep(1)
 
-            return self._wait_response(window_width, window_height, timeout)
-        finally:
-            self._stop_attended_server()
+        return self._wait_response(window_width, window_height, timeout)
 
     def _wait_response(
         self, window_width: int, window_height: int, timeout: Optional[int]
@@ -758,7 +761,7 @@ class Dialogs:
                 return False
 
         try:
-            browser.open_available_browser(f"{self.server_address}/form.html")
+            browser.open_available_browser(self.server_address)
             browser.set_window_size(window_width, window_height)
 
             start_time = time.time()
