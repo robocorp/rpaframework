@@ -554,7 +554,7 @@ to accept all files. Multiple types are separated with comma <code class="docuti
 
 <dl class="method">
 <dt id="RPA.Dialogs.Dialogs.request_response">
-<code class="sig-name descname">request_response</code><span class="sig-paren">(</span><em class="sig-param">formspec: str = None</em>, <em class="sig-param">window_width: int = 600</em>, <em class="sig-param">window_height: int = 1000</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Dialogs.Dialogs.request_response" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">request_response</code><span class="sig-paren">(</span><em class="sig-param">formspec: str = None</em>, <em class="sig-param">window_width: int = 600</em>, <em class="sig-param">window_height: int = 1000</em>, <em class="sig-param">timeout: Optional[int] = None</em><span class="sig-paren">)</span> &#x2192; Dict<a class="headerlink" href="#RPA.Dialogs.Dialogs.request_response" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start server and show form. Waits for user response.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -562,6 +562,7 @@ to accept all files. Multiple types are separated with comma <code class="docuti
 <li><p><strong>formspec</strong> – form json specification file, defaults to None</p></li>
 <li><p><strong>window_width</strong> – window width in pixels, defaults to 600</p></li>
 <li><p><strong>window_height</strong> – window height in pixels, defaults to 1000</p></li>
+<li><p><strong>timeout</strong> – optional time to wait for response, in seconds</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

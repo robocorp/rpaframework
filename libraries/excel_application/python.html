@@ -272,7 +272,7 @@ it does not exist.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sheetname</strong> – name for sheet</p></li>
-<li><p><strong>tabname</strong> – name for tab, defaults to None</p></li>
+<li><p><strong>tabname</strong> – name for tab (deprecated)</p></li>
 <li><p><strong>create_workbook</strong> – create workbook if True, defaults to True</p></li>
 </ul>
 </dd>
@@ -383,11 +383,15 @@ it does not exist.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Application.Application.run_macro">
-<code class="sig-name descname">run_macro</code><span class="sig-paren">(</span><em class="sig-param">macro_name: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.run_macro" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_macro</code><span class="sig-paren">(</span><em class="sig-param">macro_name: str</em>, <em class="sig-param">*args: Any</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.run_macro" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run Excel macro with given name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>macro_name</strong> – macro to run</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>macro_name</strong> – macro to run</p></li>
+<li><p><strong>*args</strong> – <p>arguments to pass to macro</p>
+</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -447,6 +451,12 @@ it does not exist.</p>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Excel.Application.catch_com_error">
+<code class="sig-prename descclassname">RPA.Excel.Application.</code><code class="sig-name descname">catch_com_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.catch_com_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to convert COM errors to human readable format.</p>
 </dd></dl>
 
 </div>
