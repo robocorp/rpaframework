@@ -390,10 +390,10 @@ class Dialogs:
         if self.thread and not self.thread.is_alive():
             self.server.shutdown()
             self.server.server_close()
-            self.thread.join()
+            self.thread.join(timeout=10)
 
         self.thread = threading.Thread(name="form_server", target=self._run_server)
-        self.thread.setDaemon(True)
+        self.thread.daemon = True
         self.thread.start()
 
     def _run_server(self):
