@@ -1,7 +1,7 @@
 import base64
 from enum import Enum, auto
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 from cryptography.fernet import Fernet, InvalidToken
 from cryptography.hazmat.primitives import hashes
@@ -38,16 +38,6 @@ def to_hash_context(element: Hash) -> hashes.HashContext:
     """Convert hash enum value to hash context instance."""
     method = getattr(hashes, str(element.name))
     return hashes.Hash(method(), backend=default_backend())
-
-
-def to_base64(data: bytes) -> str:
-    """Convert bytes to base64 string."""
-    return base64.b64encode(data).decode("utf-8")
-
-
-def from_base64(text: str) -> bytes:
-    """Convert base64 string to bytes."""
-    return base64.b64decode(text)
 
 
 class Crypto:
@@ -164,7 +154,7 @@ class Crypto:
         self.use_encryption_key(value)
 
     def hash_string(self, text: str, method: Hash = Hash.SHA1, encoding="utf-8") -> str:
-        """Calculate a hash from a string.
+        """Calculate a hash from a string, in base64 format.
 
         :param text: String to hash
         :param method: Used hashing method
@@ -184,10 +174,10 @@ class Crypto:
         context.update(text)
 
         digest = context.finalize()
-        return to_base64(digest)
+        return base64.b64encode(digest).decode("utf-8")
 
     def hash_file(self, path: str, method: Hash = Hash.SHA1) -> str:
-        """Calculate a hash from a file.
+        """Calculate a hash from a file, in base64 format.
 
         :param path: Path to file
         :param method: The used hashing method
@@ -208,9 +198,9 @@ class Crypto:
                 context.update(chunk)
 
         digest = context.finalize()
-        return to_base64(digest)
+        return base64.b64encode(digest).decode("utf-8")
 
-    def encrypt_string(self, text: str, encoding="utf-8") -> str:
+    def encrypt_string(self, text: Union[str, bytes], encoding="utf-8") -> bytes:
         """Encrypt a string.
 
         :param text: Source text to encrypt
@@ -230,9 +220,11 @@ class Crypto:
             text = text.encode(encoding)
 
         token = self._key.encrypt(text)
-        return to_base64(token)
+        return token
 
-    def decrypt_string(self, data: str, encoding="utf-8") -> str:
+    def decrypt_string(
+        self, data: Union[str, bytes], encoding="utf-8"
+    ) -> Union[str, bytes]:
         """Decrypt a string.
 
         :param data: Encrypted data as base64 string
@@ -252,9 +244,11 @@ class Crypto:
         if not self._key:
             raise ValueError("No encryption key set")
 
+        if isinstance(data, str):
+            data = data.encode("utf-8")
+
         try:
-            token = from_base64(data)
-            text = self._key.decrypt(token)
+            text = self._key.decrypt(data)
         except InvalidToken as err:
             raise ValueError(
                 "Failed to decrypt string (malformed content or invalid signature)"

@@ -77,7 +77,7 @@ def test_encrypt_decrypt_string():
     encrypted = lib.encrypt_string(text)
 
     assert encrypted != text
-    assert base64.b64decode(encrypted) != text
+    assert base64.urlsafe_b64decode(encrypted) != text
 
     decrypted = lib.decrypt_string(encrypted)
     assert decrypted == text
