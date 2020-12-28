@@ -7,7 +7,7 @@ Upcoming release
 - Library **Desktop**: Handle locators with whitespace, allow using return values as arguments
 - Library **FileSystem**: Add keyword for reading file owner
 - Library **Dialogs**: Throw error is user closes browser, add timeout to response
-- Library **Excel.Files**:
+- Library **Excel.Application**:
 
   - Expose ``header`` argument in ``Create Worksheet``
   - Fix issues with worksheet access in keywords
