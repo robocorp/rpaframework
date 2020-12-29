@@ -61,8 +61,6 @@ openpyxl = "^3.0.3"
 pillow = "^8.0.1"
 simple_salesforce = "^1.0.0"
 netsuitesdk = "^1.1.0"
-"pdfminer.six" = "20201018"
-pypdf2 = "^1.26.0"
 tweepy = "^3.8.0"
 boto3 = { version = "^1.13.4", optional = true }
 google-api-python-client = { version = "^1.12.3", optional = true }
