@@ -358,7 +358,7 @@ class RPAConverter(PDFConverter):
         return self.rpa_pdf_document
 
 
-class ConverterKeywords(LibraryContext):
+class ModelKeywords(LibraryContext):
     """Keywords for converting PDF document into specific RPA object model"""
 
     def __init__(self, ctx):
@@ -372,6 +372,10 @@ class ConverterKeywords(LibraryContext):
 
         :param source_pdf: source
         """
+        if not source_pdf:
+            self.logger.warn(dir(self))
+            self.logger.warn(dir(self.ctx))
+            return
         source_parser = PDFParser(self.active_fileobject)
         source_document = PDFDocument(source_parser)
         source_pages = PDFPage.create_pages(source_document)

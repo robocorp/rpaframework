@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-pdf"
-version = "0.1.0"
+version = "0.2.0"
 description = "PDF utilities used by RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -33,7 +33,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
-rpaframework-core = "^5.0.0"
+rpaframework-core = "^5.2.0"
 rpaframework-recognition = "^0.6.0"
 "pdfminer.six" = "20201018"
 pypdf2 = "^1.26.0"

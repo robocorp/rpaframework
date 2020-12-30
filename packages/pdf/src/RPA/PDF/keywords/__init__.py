@@ -7,5 +7,6 @@ from .context import (
     HAS_RECOGNITION,
 )
 
-from .converter import ConverterKeywords
+from .document import DocumentKeywords
 from .finder import FinderKeywords
+from .model import ModelKeywords

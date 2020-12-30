@@ -2,7 +2,7 @@ import logging
 from robotlibcore import DynamicCore
 
 from RPA.PDF.utils import Buffer
-from RPA.PDF.keywords import ConverterKeywords, FinderKeywords
+from RPA.PDF.keywords import DocumentKeywords, FinderKeywords, ModelKeywords
 
 
 class PDF(DynamicCore):
@@ -59,7 +59,8 @@ class PDF(DynamicCore):
 
         # Register keyword libraries to LibCore
         libraries = [
-            ConverterKeywords,
-            FinderKeywords,
+            DocumentKeywords(self),
+            FinderKeywords(self),
+            ModelKeywords(self),
         ]
         super().__init__(libraries)
