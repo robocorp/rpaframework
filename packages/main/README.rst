@@ -72,6 +72,8 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `Cloud.Google`_            | Use Google Cloud services                    |
 +----------------------------+----------------------------------------------+
+| `Crypto`_                  | Common hashing and encryption operations     |
++----------------------------+----------------------------------------------+
 | `Database`_                | Interact with databases                      |
 +----------------------------+----------------------------------------------+
 | `Desktop`_                 | Cross-platform desktop automation            |
@@ -131,6 +133,7 @@ The RPA Framework project currently includes the following libraries:
 .. _Cloud.AWS: https://rpaframework.org/libraries/cloud_aws/
 .. _Cloud.Azure: https://rpaframework.org/libraries/cloud_azure/
 .. _Cloud.Google: https://rpaframework.org/libraries/cloud_google/
+.. _Crypto: https://rpaframework.org/libraries/crypto/
 .. _Database: https://rpaframework.org/libraries/database/
 .. _Desktop: https://rpaframework.org/libraries/desktop/
 .. _Desktop.Clipboard: https://rpaframework.org/libraries/desktop_clipboard/

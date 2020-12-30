@@ -4,6 +4,7 @@ Release notes
 Upcoming release
 ----------------
 
+- New library **Crypto** for common hashing and encryption operations
 - Library **Desktop**: Handle locators with whitespace, allow using return values as arguments
 - Library **FileSystem**: Add keyword for reading file owner
 - Library **Dialogs**: Throw error is user closes browser, add timeout to response
