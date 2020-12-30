@@ -92,7 +92,7 @@ mock = "^4.0.2"
 mypy = "^0.782"
 
 [tool.poetry.scripts]
-rpa-google-oauth = 'RPA.scripts.google_authenticate:start'
+rpa-google-oauth = 'RPA.scripts.google_authenticate:main'
 
 [tool.poetry.extras]
 cv = ["rpaframework-recognition"]
