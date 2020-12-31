@@ -978,7 +978,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "7.0.5"
+version = "7.1.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
