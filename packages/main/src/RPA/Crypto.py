@@ -53,7 +53,7 @@ class Crypto:
     the key in a secure place, such as Robocorp Vault, and load it within
     the execution before calling encryption/decryption keywords.
 
-    *Example usage with Robocorp Vault*
+    **Example usage with Robocorp Vault**
 
     Create an encryption key with the CLI utility:
 
