@@ -4,17 +4,22 @@ Release notes
 Upcoming release
 ----------------
 
+7.1.0
+-----
+
 - New library **Crypto** for common hashing and encryption operations
+- Library **Cloud.Google**: Improve help and error messages for ``rpa-google-oauth`` tool
 - Library **Desktop**: Handle locators with whitespace, allow using return values as arguments
-- Library **FileSystem**: Add keyword for reading file owner
 - Library **Dialogs**: Throw error is user closes browser, add timeout to response
 - Library **Excel.Application**:
 
   - Expose ``header`` argument in ``Create Worksheet``
   - Fix issues with worksheet access in keywords
-  - Add more helpful error messages
   - Deprecate argument ``tabname`` in keyword ``Add new sheet``
+  - Add more helpful error messages
 
+- Library **FileSystem**: Add keyword for reading file owner
+- Constrain version of ``comtypes`` dependency to fix issue with Windows DLLs
 
 7.0.5
 -----
