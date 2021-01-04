@@ -62,9 +62,9 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 	poetry run docgen\
 		--format html\
 		--output docs/source/include/libdoc/\
-		--exclude RPA.core.*\
-		--exclude RPA.recognition.*\
-		--exclude RPA.scripts.*\
+		--exclude RPA.core*\
+		--exclude RPA.recognition*\
+		--exclude RPA.scripts*\
 		--exclude RPA.Desktop.keywords.*\
 		--exclude RPA.Desktop.utils.*\
 		--exclude RPA.Browser\
@@ -74,9 +74,9 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 		--no-patches\
 		--format json-html\
 		--output docs/source/json/\
-		--exclude RPA.core.*\
-		--exclude RPA.recognition.*\
-		--exclude RPA.scripts.*\
+		--exclude RPA.core*\
+		--exclude RPA.recognition*\
+		--exclude RPA.scripts*\
 		--exclude RPA.Desktop.keywords.*\
 		--exclude RPA.Desktop.utils.*\
 		--exclude RPA.Browser\
