@@ -530,7 +530,7 @@ signedtoken = ["cryptography", "pyjwt (>=1.0.0)"]
 
 [[package]]
 name = "opencv-python"
-version = "4.4.0.46"
+version = "4.5.1.48"
 description = "Wrapper package for OpenCV python bindings."
 category = "main"
 optional = false
@@ -592,7 +592,7 @@ docs = ["sphinx", "sphinx-argparse"]
 
 [[package]]
 name = "pillow"
-version = "8.0.1"
+version = "8.1.0"
 description = "Python Imaging Library (Fork)"
 category = "main"
 optional = false
@@ -898,18 +898,18 @@ wrapt = ">=1.12.1"
 
 [[package]]
 name = "robotframework-docgen"
-version = "0.6.1"
+version = "0.8.0"
 description = "Robot Framework documentation finder and generator"
 category = "dev"
 optional = false
 python-versions = ">=3.6,<4.0"
 
 [package.dependencies]
-robotframework = ">=3.2.2,<4.0.0"
+robotframework = ">=3.2.2,<5"
 
 [[package]]
 name = "robotframework-pythonlibcore"
-version = "2.1.0"
+version = "2.2.1"
 description = "Tools to ease creating larger test libraries for Robot Framework using Python."
 category = "main"
 optional = false
@@ -1261,7 +1261,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "tqdm"
-version = "4.55.0"
+version = "4.55.1"
 description = "Fast, Extensible Progress Meter"
 category = "main"
 optional = false
@@ -1451,7 +1451,7 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "471d9851ecf083ff140271bbc07ad313a7bc2ffc15af2c3fad3a9d31eca0c81f"
+content-hash = "b46e99b3ca514e3b4f2a3eff86411524b889d6155c3103ac6056fdb8ec5668c1"
 
 [metadata.files]
 alabaster = [
@@ -1889,27 +1889,31 @@ oauthlib = [
     {file = "oauthlib-3.1.0.tar.gz", hash = "sha256:bee41cc35fcca6e988463cacc3bcb8a96224f470ca547e697b604cc697b2f889"},
 ]
 opencv-python = [
-    {file = "opencv-python-4.4.0.46.tar.gz", hash = "sha256:d80db278a07f51811dbf0f9c31ff7cd5b2501822fb7a7587e71f9ff27d5c04bd"},
-    {file = "opencv_python-4.4.0.46-cp36-cp36m-macosx_10_13_x86_64.whl", hash = "sha256:14df77490c8aedceae74e660564d48c04761658aecc93895ac5e974006a89606"},
-    {file = "opencv_python-4.4.0.46-cp36-cp36m-manylinux2014_i686.whl", hash = "sha256:6b6d23de6d5ddc55e865ac8532bf8062b26ba70305fa1c87c671717027dcd370"},
-    {file = "opencv_python-4.4.0.46-cp36-cp36m-manylinux2014_x86_64.whl", hash = "sha256:6b1d85cbb64ce20ac5f79ad8e3e76a3dbff53d258c65f2fc0b9411321147a0be"},
-    {file = "opencv_python-4.4.0.46-cp36-cp36m-win32.whl", hash = "sha256:4af0053c6a70f127a52c26b112341826d3dbfce6955beb9044d3eabd7e14d1cd"},
-    {file = "opencv_python-4.4.0.46-cp36-cp36m-win_amd64.whl", hash = "sha256:135e05b69ab9665cbe2589f56e60895219bc2443a632bdc4bde72fb95eda1582"},
-    {file = "opencv_python-4.4.0.46-cp37-cp37m-macosx_10_13_x86_64.whl", hash = "sha256:51baebb0f8f3cae4cccd30daf018a5bb75cb759d5658aea29100d34cd5cac106"},
-    {file = "opencv_python-4.4.0.46-cp37-cp37m-manylinux2014_i686.whl", hash = "sha256:9659e80059c9f39728c7dcc22032dff0d1d467f07b6cd8e036613393e4b7c71a"},
-    {file = "opencv_python-4.4.0.46-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:f69a56e958ecb549ba84e0497a438080932b4d52ded441cec04d80afde71dc0a"},
-    {file = "opencv_python-4.4.0.46-cp37-cp37m-win32.whl", hash = "sha256:68a9ec7e32f82cab267b6f757d9862a9a930371062739f9d00472e7c850c5854"},
-    {file = "opencv_python-4.4.0.46-cp37-cp37m-win_amd64.whl", hash = "sha256:17581c68400f828700e5c6b3b082f50c781bf74cb9a7b972a04f05d26c8e894a"},
-    {file = "opencv_python-4.4.0.46-cp38-cp38-macosx_10_13_x86_64.whl", hash = "sha256:db874c65654465ef71d6e8618bed8c725722bc90624132b9512bf061abb4eec0"},
-    {file = "opencv_python-4.4.0.46-cp38-cp38-manylinux2014_i686.whl", hash = "sha256:8aeda9b2c37bf91fa88d67f09b85f2250661eec43d72184ec544783de204e96a"},
-    {file = "opencv_python-4.4.0.46-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:8a8ebd7ceebc0be9c14ca3e25a1c4ae086016b469848258e998247f2fc855314"},
-    {file = "opencv_python-4.4.0.46-cp38-cp38-win32.whl", hash = "sha256:e4c072cf4260063ebadc70e34d622fa1127a88e364475ed757709e249ebe990f"},
-    {file = "opencv_python-4.4.0.46-cp38-cp38-win_amd64.whl", hash = "sha256:6022609b67f9c0f14e6807e782660d1d1be94d4f0c7bc1794d7d8f600014acb2"},
-    {file = "opencv_python-4.4.0.46-cp39-cp39-macosx_10_13_x86_64.whl", hash = "sha256:117dbb2fd184de28d831f14c1da17864efcee7bb7895e43adf40f5e1da9137fb"},
-    {file = "opencv_python-4.4.0.46-cp39-cp39-manylinux2014_i686.whl", hash = "sha256:c1382209a771ca8a25fe89d4a2377875538c6ed3cf8745280e65636cbd0988f2"},
-    {file = "opencv_python-4.4.0.46-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:744e9ae2fb4c8574e6d4a762146b4d0984bdec60b98480fc54a363c03a07a1ac"},
-    {file = "opencv_python-4.4.0.46-cp39-cp39-win32.whl", hash = "sha256:7fe81d08df4eb5dc4c6aa5f09888b6fd390fce5fa7d5624a98cac890b9aa6181"},
-    {file = "opencv_python-4.4.0.46-cp39-cp39-win_amd64.whl", hash = "sha256:0548981fe189e0d57b9cc65066b66fd70d4bc84ea906f349a63d9098e1b911c6"},
+    {file = "opencv-python-4.5.1.48.tar.gz", hash = "sha256:78a6db8467639383caedf1d111da3510a4ee1a0aacf2117821cae2ee8f92ce37"},
+    {file = "opencv_python-4.5.1.48-cp36-cp36m-macosx_10_13_x86_64.whl", hash = "sha256:bcb27773cfd5340b2b599b303d9f5499838ef4780c20c038f6030175408c64df"},
+    {file = "opencv_python-4.5.1.48-cp36-cp36m-manylinux2014_aarch64.whl", hash = "sha256:9646875c501788b1b098f282d777b667d6da69801739504f1b2fd1268970d1da"},
+    {file = "opencv_python-4.5.1.48-cp36-cp36m-manylinux2014_i686.whl", hash = "sha256:ebe83901971a6755512424c4fe9f63341cca501b7c497bf608dd38ee31ba3f4c"},
+    {file = "opencv_python-4.5.1.48-cp36-cp36m-manylinux2014_x86_64.whl", hash = "sha256:d8aefcb30b71064dbbaa2b0ace161a36464c29375a83998fbda39a1d1740f942"},
+    {file = "opencv_python-4.5.1.48-cp36-cp36m-win32.whl", hash = "sha256:32dee1c9fd3e31e28edef7b56f868e2b40e280b7062304f9fb8a14dbc51547d5"},
+    {file = "opencv_python-4.5.1.48-cp36-cp36m-win_amd64.whl", hash = "sha256:9c77d508e6822f1f40c727d21b822d017622d8305dce7eccf0ab06caac16d5c6"},
+    {file = "opencv_python-4.5.1.48-cp37-cp37m-macosx_10_13_x86_64.whl", hash = "sha256:4982fa8ccc38310a2bd93e06334ba090b12b6aff2f6fcb8ff9613e3c9bc48f48"},
+    {file = "opencv_python-4.5.1.48-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:c0503bfaa2b7b743d6ff5d81f1dd8428dbf4c33e7e4f836456d11be20c2e7721"},
+    {file = "opencv_python-4.5.1.48-cp37-cp37m-manylinux2014_i686.whl", hash = "sha256:e27d062fa1098d90f48b6c047351c89816492a08906a021c973ce510b04a7b9d"},
+    {file = "opencv_python-4.5.1.48-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:6d8434a45e8f75c4da5fd0068ce001f4f8e35771cc851d746d4721eeaf517e25"},
+    {file = "opencv_python-4.5.1.48-cp37-cp37m-win32.whl", hash = "sha256:e2c17714da59d9d516ceef0450766ff9557ee232d62f702665af905193557582"},
+    {file = "opencv_python-4.5.1.48-cp37-cp37m-win_amd64.whl", hash = "sha256:efac9893d9e21cfb599828801c755ecde8f1e657f05ec6f002efe19422456d5a"},
+    {file = "opencv_python-4.5.1.48-cp38-cp38-macosx_10_13_x86_64.whl", hash = "sha256:e77d0feaff37326f62b127098264e2a7099deb476e38432b1083ce11cdedf560"},
+    {file = "opencv_python-4.5.1.48-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:ffc75c614b8dc3d8102f3ba15dafd6ec0400c7ffa71a91953d41511964ee50e0"},
+    {file = "opencv_python-4.5.1.48-cp38-cp38-manylinux2014_i686.whl", hash = "sha256:c1159d91f29a85c3333edef6ca420284566d9bcdae46dda2fe7282515b48c8b6"},
+    {file = "opencv_python-4.5.1.48-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:d16144c435b816c5536d5ff012c1a2b7e93155017db7103942ff7efb98c4df1f"},
+    {file = "opencv_python-4.5.1.48-cp38-cp38-win32.whl", hash = "sha256:b2b9ac86aec5f2dd531545cebdea1a1ef4f81ef1fb1760d78b4725f9575504f9"},
+    {file = "opencv_python-4.5.1.48-cp38-cp38-win_amd64.whl", hash = "sha256:30edebc81b260bcfeb760b3600c367c5261dfb2fe41e5d1408d5357d0867b40d"},
+    {file = "opencv_python-4.5.1.48-cp39-cp39-macosx_10_13_x86_64.whl", hash = "sha256:e38fbd7b2db03204ec09930609b7313d6b6d2b271c8fe2c0aa271fa69b726a1b"},
+    {file = "opencv_python-4.5.1.48-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:fc1472b825d26c8a4f1cfb172a90c3cc47733e4af7522276c1c2efe8f6006a8b"},
+    {file = "opencv_python-4.5.1.48-cp39-cp39-manylinux2014_i686.whl", hash = "sha256:c4ea4f8b217f3e8be6247fc0787fb81797d85202c722523f41070124a7a621c7"},
+    {file = "opencv_python-4.5.1.48-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:a1dfa0486db367594510c0c799ec7481247dc86e651b69008806d875ab731471"},
+    {file = "opencv_python-4.5.1.48-cp39-cp39-win32.whl", hash = "sha256:5172cb37dfd8a0b4945b071a493eb36e5f17675a160637fa380f9c1d9d80535c"},
+    {file = "opencv_python-4.5.1.48-cp39-cp39-win_amd64.whl", hash = "sha256:c8cc1f5ff3c352ebe756119014c4e4ec7ae5ac536d1f66b0316667ced37637c8"},
 ]
 openpyxl = [
     {file = "openpyxl-3.0.5-py2.py3-none-any.whl", hash = "sha256:f7d666b569f729257082cf7ddc56262431878f602dcc2bc3980775c59439cdab"},
@@ -1928,34 +1932,34 @@ packaging = [
     {file = "pdfminer.six-20201018.tar.gz", hash = "sha256:b9aac0ebeafb21c08bf65f2039f4b2c5f78a3449d0a41df711d72445649e952a"},
 ]
 pillow = [
-    {file = "Pillow-8.0.1-cp36-cp36m-macosx_10_10_x86_64.whl", hash = "sha256:b63d4ff734263ae4ce6593798bcfee6dbfb00523c82753a3a03cbc05555a9cc3"},
-    {file = "Pillow-8.0.1-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:5f9403af9c790cc18411ea398a6950ee2def2a830ad0cfe6dc9122e6d528b302"},
-    {file = "Pillow-8.0.1-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:6b4a8fd632b4ebee28282a9fef4c341835a1aa8671e2770b6f89adc8e8c2703c"},
-    {file = "Pillow-8.0.1-cp36-cp36m-manylinux2014_aarch64.whl", hash = "sha256:cc3ea6b23954da84dbee8025c616040d9aa5eaf34ea6895a0a762ee9d3e12e11"},
-    {file = "Pillow-8.0.1-cp36-cp36m-win32.whl", hash = "sha256:d8a96747df78cda35980905bf26e72960cba6d355ace4780d4bdde3b217cdf1e"},
-    {file = "Pillow-8.0.1-cp36-cp36m-win_amd64.whl", hash = "sha256:7ba0ba61252ab23052e642abdb17fd08fdcfdbbf3b74c969a30c58ac1ade7cd3"},
-    {file = "Pillow-8.0.1-cp37-cp37m-macosx_10_10_x86_64.whl", hash = "sha256:795e91a60f291e75de2e20e6bdd67770f793c8605b553cb6e4387ce0cb302e09"},
-    {file = "Pillow-8.0.1-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:0a2e8d03787ec7ad71dc18aec9367c946ef8ef50e1e78c71f743bc3a770f9fae"},
-    {file = "Pillow-8.0.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:006de60d7580d81f4a1a7e9f0173dc90a932e3905cc4d47ea909bc946302311a"},
-    {file = "Pillow-8.0.1-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:bd7bf289e05470b1bc74889d1466d9ad4a56d201f24397557b6f65c24a6844b8"},
-    {file = "Pillow-8.0.1-cp37-cp37m-win32.whl", hash = "sha256:95edb1ed513e68bddc2aee3de66ceaf743590bf16c023fb9977adc4be15bd3f0"},
-    {file = "Pillow-8.0.1-cp37-cp37m-win_amd64.whl", hash = "sha256:e38d58d9138ef972fceb7aeec4be02e3f01d383723965bfcef14d174c8ccd039"},
-    {file = "Pillow-8.0.1-cp38-cp38-macosx_10_10_x86_64.whl", hash = "sha256:d3d07c86d4efa1facdf32aa878bd508c0dc4f87c48125cc16b937baa4e5b5e11"},
-    {file = "Pillow-8.0.1-cp38-cp38-manylinux1_i686.whl", hash = "sha256:fbd922f702582cb0d71ef94442bfca57624352622d75e3be7a1e7e9360b07e72"},
-    {file = "Pillow-8.0.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:92c882b70a40c79de9f5294dc99390671e07fc0b0113d472cbea3fde15db1792"},
-    {file = "Pillow-8.0.1-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:7c9401e68730d6c4245b8e361d3d13e1035cbc94db86b49dc7da8bec235d0015"},
-    {file = "Pillow-8.0.1-cp38-cp38-win32.whl", hash = "sha256:6c1aca8231625115104a06e4389fcd9ec88f0c9befbabd80dc206c35561be271"},
-    {file = "Pillow-8.0.1-cp38-cp38-win_amd64.whl", hash = "sha256:cc9ec588c6ef3a1325fa032ec14d97b7309db493782ea8c304666fb10c3bd9a7"},
-    {file = "Pillow-8.0.1-cp39-cp39-macosx_10_10_x86_64.whl", hash = "sha256:eb472586374dc66b31e36e14720747595c2b265ae962987261f044e5cce644b5"},
-    {file = "Pillow-8.0.1-cp39-cp39-manylinux1_i686.whl", hash = "sha256:0eeeae397e5a79dc088d8297a4c2c6f901f8fb30db47795113a4a605d0f1e5ce"},
-    {file = "Pillow-8.0.1-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:81f812d8f5e8a09b246515fac141e9d10113229bc33ea073fec11403b016bcf3"},
-    {file = "Pillow-8.0.1-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:895d54c0ddc78a478c80f9c438579ac15f3e27bf442c2a9aa74d41d0e4d12544"},
-    {file = "Pillow-8.0.1-cp39-cp39-win32.whl", hash = "sha256:2fb113757a369a6cdb189f8df3226e995acfed0a8919a72416626af1a0a71140"},
-    {file = "Pillow-8.0.1-cp39-cp39-win_amd64.whl", hash = "sha256:59e903ca800c8cfd1ebe482349ec7c35687b95e98cefae213e271c8c7fffa021"},
-    {file = "Pillow-8.0.1-pp36-pypy36_pp73-macosx_10_10_x86_64.whl", hash = "sha256:5abd653a23c35d980b332bc0431d39663b1709d64142e3652890df4c9b6970f6"},
-    {file = "Pillow-8.0.1-pp36-pypy36_pp73-manylinux2010_x86_64.whl", hash = "sha256:4b0ef2470c4979e345e4e0cc1bbac65fda11d0d7b789dbac035e4c6ce3f98adb"},
-    {file = "Pillow-8.0.1-pp37-pypy37_pp73-win32.whl", hash = "sha256:8de332053707c80963b589b22f8e0229f1be1f3ca862a932c1bcd48dafb18dd8"},
-    {file = "Pillow-8.0.1.tar.gz", hash = "sha256:11c5c6e9b02c9dac08af04f093eb5a2f84857df70a7d4a6a6ad461aca803fb9e"},
+    {file = "Pillow-8.1.0-cp36-cp36m-macosx_10_10_x86_64.whl", hash = "sha256:d355502dce85ade85a2511b40b4c61a128902f246504f7de29bbeec1ae27933a"},
+    {file = "Pillow-8.1.0-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:93a473b53cc6e0b3ce6bf51b1b95b7b1e7e6084be3a07e40f79b42e83503fbf2"},
+    {file = "Pillow-8.1.0-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:2353834b2c49b95e1313fb34edf18fca4d57446675d05298bb694bca4b194174"},
+    {file = "Pillow-8.1.0-cp36-cp36m-win32.whl", hash = "sha256:dd9eef866c70d2cbbea1ae58134eaffda0d4bfea403025f4db6859724b18ab3d"},
+    {file = "Pillow-8.1.0-cp36-cp36m-win_amd64.whl", hash = "sha256:b09e10ec453de97f9a23a5aa5e30b334195e8d2ddd1ce76cc32e52ba63c8b31d"},
+    {file = "Pillow-8.1.0-cp37-cp37m-macosx_10_10_x86_64.whl", hash = "sha256:b02a0b9f332086657852b1f7cb380f6a42403a6d9c42a4c34a561aa4530d5234"},
+    {file = "Pillow-8.1.0-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:ca20739e303254287138234485579b28cb0d524401f83d5129b5ff9d606cb0a8"},
+    {file = "Pillow-8.1.0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:604815c55fd92e735f9738f65dabf4edc3e79f88541c221d292faec1904a4b17"},
+    {file = "Pillow-8.1.0-cp37-cp37m-win32.whl", hash = "sha256:47c0d93ee9c8b181f353dbead6530b26980fe4f5485aa18be8f1fd3c3cbc685e"},
+    {file = "Pillow-8.1.0-cp37-cp37m-win_amd64.whl", hash = "sha256:96d4dc103d1a0fa6d47c6c55a47de5f5dafd5ef0114fa10c85a1fd8e0216284b"},
+    {file = "Pillow-8.1.0-cp38-cp38-macosx_10_10_x86_64.whl", hash = "sha256:7916cbc94f1c6b1301ac04510d0881b9e9feb20ae34094d3615a8a7c3db0dcc0"},
+    {file = "Pillow-8.1.0-cp38-cp38-manylinux1_i686.whl", hash = "sha256:3de6b2ee4f78c6b3d89d184ade5d8fa68af0848f9b6b6da2b9ab7943ec46971a"},
+    {file = "Pillow-8.1.0-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:cdbbe7dff4a677fb555a54f9bc0450f2a21a93c5ba2b44e09e54fcb72d2bd13d"},
+    {file = "Pillow-8.1.0-cp38-cp38-win32.whl", hash = "sha256:cb192176b477d49b0a327b2a5a4979552b7a58cd42037034316b8018ac3ebb59"},
+    {file = "Pillow-8.1.0-cp38-cp38-win_amd64.whl", hash = "sha256:6c5275bd82711cd3dcd0af8ce0bb99113ae8911fc2952805f1d012de7d600a4c"},
+    {file = "Pillow-8.1.0-cp39-cp39-macosx_10_10_x86_64.whl", hash = "sha256:165c88bc9d8dba670110c689e3cc5c71dbe4bfb984ffa7cbebf1fac9554071d6"},
+    {file = "Pillow-8.1.0-cp39-cp39-manylinux1_i686.whl", hash = "sha256:5e2fe3bb2363b862671eba632537cd3a823847db4d98be95690b7e382f3d6378"},
+    {file = "Pillow-8.1.0-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:7612520e5e1a371d77e1d1ca3a3ee6227eef00d0a9cddb4ef7ecb0b7396eddf7"},
+    {file = "Pillow-8.1.0-cp39-cp39-win32.whl", hash = "sha256:dc577f4cfdda354db3ae37a572428a90ffdbe4e51eda7849bf442fb803f09c9b"},
+    {file = "Pillow-8.1.0-cp39-cp39-win_amd64.whl", hash = "sha256:22d070ca2e60c99929ef274cfced04294d2368193e935c5d6febfd8b601bf865"},
+    {file = "Pillow-8.1.0-pp36-pypy36_pp73-macosx_10_10_x86_64.whl", hash = "sha256:a3d3e086474ef12ef13d42e5f9b7bbf09d39cf6bd4940f982263d6954b13f6a9"},
+    {file = "Pillow-8.1.0-pp36-pypy36_pp73-manylinux2010_i686.whl", hash = "sha256:731ca5aabe9085160cf68b2dbef95fc1991015bc0a3a6ea46a371ab88f3d0913"},
+    {file = "Pillow-8.1.0-pp36-pypy36_pp73-manylinux2010_x86_64.whl", hash = "sha256:bba80df38cfc17f490ec651c73bb37cd896bc2400cfba27d078c2135223c1206"},
+    {file = "Pillow-8.1.0-pp37-pypy37_pp73-macosx_10_10_x86_64.whl", hash = "sha256:c3d911614b008e8a576b8e5303e3db29224b455d3d66d1b2848ba6ca83f9ece9"},
+    {file = "Pillow-8.1.0-pp37-pypy37_pp73-manylinux2010_i686.whl", hash = "sha256:39725acf2d2e9c17356e6835dccebe7a697db55f25a09207e38b835d5e1bc032"},
+    {file = "Pillow-8.1.0-pp37-pypy37_pp73-manylinux2010_x86_64.whl", hash = "sha256:81c3fa9a75d9f1afafdb916d5995633f319db09bd773cb56b8e39f1e98d90820"},
+    {file = "Pillow-8.1.0-pp37-pypy37_pp73-win32.whl", hash = "sha256:b6f00ad5ebe846cc91763b1d0c6d30a8042e02b2316e27b05de04fa6ec831ec5"},
+    {file = "Pillow-8.1.0.tar.gz", hash = "sha256:887668e792b7edbfb1d3c9d8b5d8c859269a0f0eba4dda562adb95500f60dbba"},
 ]
 ply = [
     {file = "ply-3.11-py2.py3-none-any.whl", hash = "sha256:096f9b8350b65ebd2fd1346b12452efe5b9607f7482813ffca50c22722a807ce"},
@@ -2130,12 +2134,12 @@ robotframework-browser = [
     {file = "robotframework_browser-2.4.2-py3-none-any.whl", hash = "sha256:73acb1918df23f38b2273ba82d395662e4d0497ea4ba52d4316f15a261397411"},
 ]
 robotframework-docgen = [
-    {file = "robotframework-docgen-0.6.1.tar.gz", hash = "sha256:7f72a1f98c6dd3a82f20ba6a0752f493006c44fa116b3cef83ecf04be04a6343"},
-    {file = "robotframework_docgen-0.6.1-py3-none-any.whl", hash = "sha256:e94a67ea07f947c47437420d40a9bafc66a8a6fd17dda635a620672152d966bd"},
+    {file = "robotframework-docgen-0.8.0.tar.gz", hash = "sha256:93baefa8552f994a8b12da2a36d50d6c2f87807c0c51258b674bcab68bee0ce4"},
+    {file = "robotframework_docgen-0.8.0-py3-none-any.whl", hash = "sha256:44b2b6f61f7953f89bdbb3df097ee55a0c0dad0a4865e30ceb3afe3ff65f8300"},
 ]
 robotframework-pythonlibcore = [
-    {file = "robotframework-pythonlibcore-2.1.0.tar.gz", hash = "sha256:8b210bf29cbb78069b41a3d0b90e4cc8dd23f509ea2daf450e3ef4a6ee758949"},
-    {file = "robotframework_pythonlibcore-2.1.0-py2.py3-none-any.whl", hash = "sha256:5dda5be2daa98495dc76e48be7a2f3f95a65465d1696b46238c926582a880a10"},
+    {file = "robotframework-pythonlibcore-2.2.1.tar.gz", hash = "sha256:1b311764721b6117d85b0702ab95a7f1d0525d9d3e3433cca02cdbc0010edb55"},
+    {file = "robotframework_pythonlibcore-2.2.1-py2.py3-none-any.whl", hash = "sha256:b5b30239086b656e2fb6adbc91e988b9745636bd0d3ff7db2ab0cab43b0621a9"},
 ]
 robotframework-requests = [
     {file = "robotframework-requests-0.7.2.tar.gz", hash = "sha256:662e0ce5036a55bcb4cb46ff9741f40c78c670f4fb64cd37714cf83d5fd31774"},
@@ -2224,8 +2228,8 @@ toml = [
     {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
 ]
 tqdm = [
-    {file = "tqdm-4.55.0-py2.py3-none-any.whl", hash = "sha256:0cd81710de29754bf17b6fee07bdb86f956b4fa20d3078f02040f83e64309416"},
-    {file = "tqdm-4.55.0.tar.gz", hash = "sha256:f4f80b96e2ceafea69add7bf971b8403b9cba8fb4451c1220f91c79be4ebd208"},
+    {file = "tqdm-4.55.1-py2.py3-none-any.whl", hash = "sha256:b8b46036fd00176d0870307123ef06bb851096964fa7fc578d789f90ce82c3e4"},
+    {file = "tqdm-4.55.1.tar.gz", hash = "sha256:556c55b081bd9aa746d34125d024b73f0e2a0e62d5927ff0e400e20ee0a03b9a"},
 ]
 tweepy = [
     {file = "tweepy-3.10.0-py2.py3-none-any.whl", hash = "sha256:5e22003441a11f6f4c2ea4d05ec5532f541e9f5d874c3908270f0c28e649b53a"},
