@@ -10,7 +10,7 @@ Upcoming release
 - New library **Crypto** for common hashing and encryption operations
 - Library **Cloud.Google**: Improve help and error messages for ``rpa-google-oauth`` tool
 - Library **Desktop**: Handle locators with whitespace, allow using return values as arguments
-- Library **Dialogs**: Throw error is user closes browser, add timeout to response
+- Library **Dialogs**: Throw error if user closes browser, add timeout to response
 - Library **Excel.Application**:
 
   - Expose ``header`` argument in ``Create Worksheet``
