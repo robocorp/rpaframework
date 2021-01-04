@@ -1,9 +1,14 @@
 import logging
-from RPA.Browser.Selenium import Selenium as _Selenium
+from RPA.Browser.Selenium import Selenium
+
+try:
+    from RPA.Browser.Playwright import Playwright
+except ModuleNotFoundError:
+    pass
 
 
-class Browser(_Selenium):
-    __doc__ = _Selenium.__doc__
+class Browser(Selenium):
+    __doc__ = Selenium.__doc__
 
     def __init__(self, *args, **kwargs):
         logging.warning(
