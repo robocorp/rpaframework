@@ -46,13 +46,6 @@ See `upstream installation instructions`_
 
 .. _upstream installation instructions: https://github.com/MarketSquare/robotframework-browser#installation-instructions
 
-
-.. toctree::
-   :maxdepth: 1
-   :hidden:
-
-   python
-
 Keywords
 ========
 
