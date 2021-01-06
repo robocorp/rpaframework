@@ -65,9 +65,8 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 		--exclude RPA.core*\
 		--exclude RPA.recognition*\
 		--exclude RPA.scripts*\
-		--exclude RPA.Desktop.keywords.*\
-		--exclude RPA.Desktop.utils.*\
-		--exclude RPA.Browser\
+		--exclude RPA.Desktop.keywords*\
+		--exclude RPA.Desktop.utils*\
 		rpaframework
 
 	poetry run docgen\
@@ -77,9 +76,8 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 		--exclude RPA.core*\
 		--exclude RPA.recognition*\
 		--exclude RPA.scripts*\
-		--exclude RPA.Desktop.keywords.*\
-		--exclude RPA.Desktop.utils.*\
-		--exclude RPA.Browser\
+		--exclude RPA.Desktop.keywords*\
+		--exclude RPA.Desktop.utils*\
 		rpaframework
 
 changelog: ## Print changes in latest release
