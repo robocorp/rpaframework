@@ -81,6 +81,7 @@ notifiers = "^1.2.1"
 cryptography = "^2.9.2"
 mss = "^6.0.0"
 chardet = "^3.0.0"
+PySocks = ">=1.5.6,!=1.5.7,<2.0.0"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }
