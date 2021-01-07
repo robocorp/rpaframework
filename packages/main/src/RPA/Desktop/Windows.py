@@ -382,17 +382,17 @@ class Windows(OperatingSystem):
         self.logger.info("Opening executable: %s - window: %s", executable, windowtitle)
         if backend:
             self.set_windows_backend(backend)
-        params = {
-            "executable": executable,
-            "windowtitle": windowtitle,
-            "startkeyword": "Open Executable",
-        }
+
         self.windowtitle = windowtitle
         app = pywinauto.Application(backend=self._backend).start(
             cmd_line=executable, work_dir=work_dir
         )
-
-        return self._add_app_instance(app, dialog=False, params=params)
+        app_instance = self.open_dialog(windowtitle)
+        self._apps[app_instance]["app"] = app
+        self._apps[app_instance]["windowtitle"] = windowtitle
+        self._apps[app_instance]["executable"] = executable
+        self._apps[app_instance]["startkeyword"] = "Open Executable"
+        return app_instance
 
     def open_using_run_dialog(
         self, executable: str, windowtitle: str, timeout: int = 10
@@ -584,7 +584,7 @@ class Windows(OperatingSystem):
             Open Dialog       Untitled - Notepad   highlight=True   timeout=5
 
         """
-        self.logger.info("Open dialog: '%s', '%s'", windowtitle, highlight)
+        self.logger.info("Open dialog: '%s'", windowtitle)
 
         if windowtitle:
             self.windowtitle = windowtitle
@@ -595,11 +595,14 @@ class Windows(OperatingSystem):
             for window in self.get_window_list():
                 if window["title"] == self.windowtitle:
                     app_instance = self.connect_by_handle(
-                        window["handle"], existing_app=existing_app
+                        window["handle"],
+                        windowtitle=window["title"],
+                        existing_app=existing_app,
                     )
+                    break
             time.sleep(0.1)
 
-        if self.dlg is None:
+        if app_instance is None:
             raise ValueError("No window with title '{}'".format(self.windowtitle))
 
         if highlight:
@@ -650,9 +653,14 @@ class Windows(OperatingSystem):
             handle=handle, visible_only=False
         )
         self.dlg = app.window(handle=handle)
-        self.dlg.restore()
+        self.dlg.set_focus()
         params = None
-        if not existing_app:
+        if existing_app:
+            for key in self._apps:
+                if self._apps[key]["handle"] == handle:
+                    app_instance = key
+                    break
+        else:
             if windowtitle is not None:
                 params = {"windowtitle": windowtitle}
             app_instance = self._add_app_instance(app=app, params=params, dialog=False)
@@ -1371,16 +1379,14 @@ class Windows(OperatingSystem):
             @{elements}   Get Window Elements  screenshot=True  element_json=True  outline=True
 
         """  # noqa: E501
-        if self.dlg is None:
-            raise ValueError("No dialog open")
-
-        ctrls = [self.dlg]
-        if hasattr(self.dlg, "descendants"):
-            ctrls += self.dlg.descendants()
-
+        ctrls = self._get_all_window_controls()
         elements, controls = [], []
         for _, ctrl in enumerate(ctrls):
-            if not hasattr(ctrl, "element_info"):
+            try:
+                if not hasattr(ctrl, "element_info"):
+                    continue
+            except COMError as ce:
+                self.logger.info("Got COM error: %s", str(ce))
                 continue
 
             filename = clean_filename(
@@ -1407,6 +1413,18 @@ class Windows(OperatingSystem):
             )
 
         return controls, elements
+
+    def _get_all_window_controls(self):
+        if self.dlg is None:
+            raise ValueError("No dialog open")
+
+        ctrls = [self.dlg]
+        try:
+            if hasattr(self.dlg, "descendants"):
+                ctrls += self.dlg.descendants()
+        except COMError as ce:
+            self.logger.info("Got COM error: %s", str(ce))
+        return ctrls
 
     def _get_element_coordinates(self, rectangle: Any) -> Any:
         """Get element coordinates from pywinauto object.
