@@ -4,6 +4,14 @@ Release notes
 Upcoming release
 ----------------
 
+7.1.1
+-----
+
+- Library **Desktop.Windows**:
+
+  - Fix `Open Executable` error not taking control of the window
+  - Address window resizing issue with `Open Dialog`
+
 7.1.0
 -----
 
