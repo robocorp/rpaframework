@@ -1,8 +1,10 @@
 import re
 import sys
+from collections import OrderedDict
 from typing import Any, Iterable
 
-from collections import OrderedDict
+import PyPDF2
+import pdfminer
 from pdfminer.converter import PDFConverter
 from pdfminer.layout import (
     LAParams,
@@ -21,10 +23,10 @@ from pdfminer.layout import (
 )
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfparser import PDFParser
+from pdfminer.utils import enc, bbox2str
 from pdfminer.pdfpage import PDFPage
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-from pdfminer.utils import enc, bbox2str
-
+from pdfminer.converter import PDFConverter
 
 from RPA.PDF.keywords import (
     LibraryContext,
@@ -32,7 +34,7 @@ from RPA.PDF.keywords import (
 )
 
 
-def iterable_items_to_int(bbox):
+def iterable_items_to_int(bbox) -> list:
     if bbox is None:
         return list()
     return list(map(int, bbox))
@@ -58,9 +60,9 @@ class RpaFigure:
 
     def details(self):
         return '<image src="%s" width="%d" height="%d" />' % (
-            self.image_name,
-            self.item["width"],
-            self.item["height"],
+            self.image_name or self.figure_name,
+            self.item.width,
+            self.item.height,
         )
 
 
@@ -361,9 +363,9 @@ class RPAConverter(PDFConverter):
 class ModelKeywords(LibraryContext):
     """Keywords for converting PDF document into specific RPA object model"""
 
-    def __init__(self, ctx):
-        super().__init__(ctx)
-        self.active_fileobject = None
+    # def __init__(self, ctx):
+    #     super().__init__(ctx)
+        # self.active_fileobject = None
 
     @keyword
     def convert(self, source_pdf: str = None) -> None:
@@ -372,26 +374,212 @@ class ModelKeywords(LibraryContext):
 
         :param source_pdf: source
         """
-        if not source_pdf:
-            self.logger.warn(dir(self))
-            self.logger.warn(dir(self.ctx))
-            return
-        source_parser = PDFParser(self.active_fileobject)
+        if source_pdf:
+            self.ctx.switch_to_pdf_document(source_pdf)
+        source_parser = PDFParser(self.ctx.active_fileobject)
         source_document = PDFDocument(source_parser)
         source_pages = PDFPage.create_pages(source_document)
-        rsrcmgr = PDFResourceManager()
-        laparams = LAParams(
+        rsrcmgr = pdfminer.pdfinterp.PDFResourceManager()
+        laparams = pdfminer.layout.LAParams(
             detect_vertical=True,
             all_texts=True,
         )
         device = RPAConverter(rsrcmgr, laparams=laparams)
-        interpreter = PDFPageInterpreter(rsrcmgr, device)
+        interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
 
-        # # Look at all (nested) objects on each page
+        # Look at all (nested) objects on each page
         for _, page in enumerate(source_pages, 0):
             interpreter.process_page(page)
         self.rpa_pdf_document = device.close()
 
     @keyword
+    def get_input_fields(
+        self, source_pdf: str = None, replace_none_value: bool = False
+    ) -> dict:
+        """Get input fields in the PDF.
+
+        :param source_pdf: source filepath, defaults to None
+        :param replace_none_value: if value is None replace it with key name,
+            defaults to False
+        :return: dictionary of input key values or `None`
+
+        Stores input fields internally so that they can be used without
+        parsing PDF again.
+
+        Parameter `replace_none_value` is for convience to visualize fields.
+        """
+        record_fields = {}
+        if not source_pdf and self.ctx.active_fields:
+            return self.ctx.active_fields
+        self.ctx.switch_to_pdf_document(source_pdf)
+        source_parser = PDFParser(self.ctx.active_fileobject)
+        source_document = PDFDocument(source_parser)
+
+        try:
+            fields = pdfminer.pdftypes.resolve1(source_document.catalog["AcroForm"])["Fields"]
+        except KeyError:
+            self.logger.info(
+                'PDF "%s" does not have any input fields.', self.ctx.active_pdf
+            )
+            return None
+
+        for i in fields:
+            field = pdfminer.pdftypes.resolve1(i)
+            if field is None:
+                continue
+            name, value, rect, label = (
+                field.get("T"),
+                field.get("V"),
+                field.get("Rect"),
+                field.get("TU"),
+            )
+            if value is None and replace_none_value:
+                record_fields[name.decode("iso-8859-1")] = {
+                    "value": name.decode("iso-8859-1"),
+                    "rect": iterable_items_to_int(rect),
+                    "label": label.decode("iso-8859-1") if label else None,
+                }
+            else:
+                try:
+                    record_fields[name.decode("iso-8859-1")] = {
+                        "value": value.decode("iso-8859-1") if value else "",
+                        "rect": iterable_items_to_int(rect),
+                        "label": label.decode("iso-8859-1") if label else None,
+                    }
+                except AttributeError:
+                    self.logger.debug("Attribute error")
+                    record_fields[name.decode("iso-8859-1")] = {
+                        "value": value,
+                        "rect": iterable_items_to_int(rect),
+                        "label": label.decode("iso-8859-1") if label else None,
+                    }
+
+        self.ctx.active_fields = record_fields or None
+        return record_fields
+
+    @keyword
+    def set_field_value(self, field_name: str, value: Any, save: bool = False):
+        """Set value for field with given name.
+
+        :param field_name: field to update
+        :param value: new value for the field
+
+        Tries to match on field identifier and its label.
+
+        Exception is thrown if field can't be found or more than 1 field matches
+        the given `field_name`.
+        """
+        if not self.ctx.active_fields:
+            self.get_input_fields()
+            if not self.ctx.active_fields:
+                raise ValueError("Document does not have input fields")
+
+        if field_name in self.ctx.active_fields.keys():
+            self.ctx.active_fields[field_name]["value"] = value  # pylint: disable=E1136
+        else:
+            label_matches = 0
+            field_key = None
+            for k, _ in self.ctx.active_fields.items():
+                # pylint: disable=E1136
+                if self.ctx.active_fields[k]["label"] == field_name:
+                    label_matches += 1
+                    field_key = k
+            if label_matches == 1:
+                self.ctx.active_fields[field_key]["value"] = value  # pylint: disable=E1136
+            elif label_matches > 1:
+                raise ValueError(
+                    "Unable to set field value - field name: '%s' matched %d fields"
+                    % (field_name, label_matches)
+                )
+            else:
+                raise ValueError(
+                    "Unable to set field value - field name: '%s' "
+                    "not found in the document" % field_name
+                )
+        if save:
+            self.update_field_values(None, None, self.ctx.active_fields)
+
+    @keyword
+    def update_field_values(
+        self, source_pdf: str = None, target_pdf: str = None, newvals: dict = None
+    ) -> None:
+        """Update field values in PDF if it has fields.
+
+        :param source_pdf: source PDF with fields to update
+        :param target_pdf: updated target PDF
+        :param newvals: dictionary with key values to update
+        """
+        self.ctx.switch_to_pdf_document(source_pdf)
+        reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject, strict=False)
+        if "/AcroForm" in reader.trailer["/Root"]:
+            reader.trailer["/Root"]["/AcroForm"].update(
+                {PyPDF2.generic.NameObject("/NeedAppearances"): PyPDF2.generic.BooleanObject(True)}
+            )
+        writer = PyPDF2.PdfFileWriter()
+
+        self._set_need_appearances_writer(writer)
+
+        for i in range(reader.getNumPages()):
+            page = reader.getPage(i)
+            try:
+                if newvals:
+                    self.logger.debug("Updating form field values for page %s", i)
+                    updatedFields = {
+                        k: v["value"] if v["value"] else ""
+                        for (k, v) in newvals.items()
+                    }
+                    writer.updatePageFormFieldValues(page, fields=updatedFields)
+                elif self.ctx.active_fields:
+                    updatedFields = {
+                        k: v["value"] if v["value"] else ""
+                        for (k, v) in self.ctx.active_fields.items()
+                    }
+                    writer.updatePageFormFieldValues(page, fields=updatedFields)
+                writer.addPage(page)
+            except Exception as e:  # pylint: disable=W0703
+                self.logger.warning(repr(e))
+                writer.addPage(page)
+
+        if target_pdf is None:
+            target_pdf = self.ctx.active_pdf
+        with open(target_pdf, "wb") as f:
+            writer.write(f)
+
+    def _set_need_appearances_writer(self, writer: PyPDF2.PdfFileWriter):
+        # See 12.7.2 and 7.7.2 for more information:
+        # http://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf
+        try:
+            catalog = writer._root_object  # pylint: disable=W0212
+            # get the AcroForm tree
+            if "/AcroForm" not in catalog:
+                catalog.update(
+                    {
+                        PyPDF2.generic.NameObject("/AcroForm"): PyPDF2.generic.IndirectObject(
+                            len(writer._objects), 0, writer  # pylint: disable=W0212
+                        )
+                    }
+                )
+
+            need_appearances = PyPDF2.generic.NameObject("/NeedAppearances")
+            catalog["/AcroForm"][need_appearances] = PyPDF2.generic.BooleanObject(True)
+            # del writer._root_object["/AcroForm"]['NeedAppearances']
+            return writer
+
+        except Exception as e:  # pylint: disable=broad-except
+            print("set_need_appearances_writer() catch : ", repr(e))
+            return writer
+
+    @keyword
+    def dump_pdf_as_xml(self, source_pdf: str = None) -> str:
+        """Get PDFMiner format XML dump of the PDF
+
+        :param source_pdf: filepath
+        :return: XML content as a string.
+        """
+        self.ctx.switch_to_pdf_document(source_pdf)
+        if self.rpa_pdf_document is None:
+            self.convert()
+        return self.rpa_pdf_document.dump_xml()
+
     def pdf_to_image(self, pdf_document: str = None, pages=None, target_file: str = ""):
         pass

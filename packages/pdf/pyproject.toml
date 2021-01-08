@@ -35,8 +35,11 @@ packages = [
 python = "^3.6"
 rpaframework-core = "^5.2.0"
 rpaframework-recognition = "^0.6.0"
+robotframework = "^3.2.2"
+robotframework-pythonlibcore = "^2.1.0"
 "pdfminer.six" = "20201018"
 pypdf2 = "^1.26.0"
+fpdf2 = "^2.0"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }

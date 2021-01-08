@@ -36,3 +36,7 @@ class LibraryContext:
     @property
     def rpa_pdf_document(self):
         return self.ctx.rpa_pdf_document
+
+    @rpa_pdf_document.setter
+    def rpa_pdf_document(self, value):
+        self.ctx.rpa_pdf_document = value

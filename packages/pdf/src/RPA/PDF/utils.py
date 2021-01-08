@@ -1,3 +1,4 @@
+import os
 import platform
 import time
 
@@ -43,3 +44,9 @@ def is_macos():
 
 def is_linux():
     return platform.system() == "Linux"
+
+
+def is_abspath(path):
+    if os.path.basename(path) == path:
+        return False
+    return True
