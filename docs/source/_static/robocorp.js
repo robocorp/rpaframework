@@ -26,19 +26,23 @@
 
   function bannerShow() {
     if (!getCookie("bannerDismiss")) {
-      var el = document.getElementById("robocorpBanner");
-      el.style.display = "block";
-      var el = document.getElementsByClassName("wy-side-scroll")[0];
-      el.style.marginTop = "50px";
+      var banner = document.getElementById("robocorpBanner");
+      var sidebar = document.getElementsByClassName("wy-side-scroll")[0];
+      var content = document.getElementsByClassName("wy-nav-content-wrap")[0];
+      banner.style.display = "block";
+      sidebar.style.paddingTop = "50px";
+      content.style.paddingTop = "50px";
     }
   }
 
   function bannerDismiss() {
     setCookie("bannerDismiss", "1", 7);
-    var el = document.getElementById("robocorpBanner");
-    el.style.display = "none";
-    var el = document.getElementsByClassName("wy-side-scroll")[0];
-    el.style.marginTop = "0px";
+    var banner = document.getElementById("robocorpBanner");
+    var sidebar = document.getElementsByClassName("wy-side-scroll")[0];
+    var content = document.getElementsByClassName("wy-nav-content-wrap")[0];
+    banner.style.display = "none";
+    sidebar.style.paddingTop = "0px";
+    content.style.paddingTop = "0px";
   }
 
   window.bannerDismiss = bannerDismiss;
