@@ -19,4 +19,4 @@ Keywords
 
 .. raw:: html
 
-   <iframe scrolling="no" class="libdoc" src="../../libdoc/RPA_Desktop_Clipboard.html" />
+   <iframe scrolling="no" class="libdoc" src="../../libdoc/RPA_Desktop_Clipboard.html"></iframe>

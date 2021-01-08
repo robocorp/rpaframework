@@ -1,0 +1,55 @@
+#robocorpBanner {
+	z-index: 999;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 50px;
+	background: #141028;
+	color: #fff;
+	display: none;
+}
+#bannerContent {
+	text-align: center;
+	line-height: 48px;
+	vertical-align: middle;
+}
+#bannerLogo {
+	display: inline-block;
+	height: 24px;
+	margin-right: 30px;
+}
+#bannerText {
+	display: inline-block;
+	font-family: Inter;
+	font-style: normal;
+	font-size: 14px;
+	font-weight: 600;
+}
+#bannerButton {
+	display: inline-block;
+	line-height: normal;
+	background: #176bbe;
+	color: #fff;
+	margin-left: 30px;
+	padding: 9px 15px;
+	border-radius: 4px;
+	font-family: Inter;
+	font-style: normal;
+	font-size: 14px;
+	font-weight: 600;
+}
+#bannerButton:hover {
+	background: #1d4e7d;
+}
+#bannerButton:visited {
+	color: #fff;
+}
+#bannerButton img {
+	margin-left: 6px;
+}
+#bannerDismiss {
+	float: right;
+	padding-right: 20px;
+	vertical-align: text-top;
+}

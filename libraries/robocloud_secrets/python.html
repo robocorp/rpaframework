@@ -39,7 +39,14 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="RobotLogListener" href="../robotloglistener/index.html" />
     <link rel="prev" title="Robocloud.Secrets" href="index.html" />
-<!-- Global site tag (gtag.js) - Google Analytics -->
+	<!-- Cookie consent -->
+<link async rel="stylesheet" type="text/css" href="../../_static/cookie.css"/>
+<script async src="../../_static/cookie.js"></script>
+<!-- Robocorp banner -->
+<link async rel="stylesheet" type="text/css" href="../../_static/robocorp.css"/>
+<script async src="../../_static/robocorp.js"></script>
+<!--            -->
+	<!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -47,9 +54,6 @@
   gtag('js', new Date());
   gtag('config', 'UA-151433780-3');
 </script>
-<!-- PureCookie -->
-<link async rel="stylesheet" type="text/css" href="../../_static/purecookie.css"/>
-<script async src="../../_static/purecookie.js"></script>
 <!--            -->
 
 </head>
@@ -209,6 +213,7 @@
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+	
            <div itemprop="articleBody">
             
   <div class="section" id="python-api">
@@ -482,6 +487,37 @@ and return it as a <code class="docutils literal notranslate"><span class="pre">
            </div>
            
           </div>
+	<div id="cookieConsentContainer">
+  <div class="cookieDesc">
+    <p>
+      This website uses cookies to enhance the user experience.
+      By using the website you accept the use of cookies.
+      You can check our <a href="https://robocorp.com/privacy-policy">Privacy Policy</a> to learn more.
+    </p>
+  </div>
+  <div class="cookieButton">
+    <a onClick="cookieDismiss();">
+      I understand
+    </a>
+  </div>
+</div>
+	<div id="robocorpBanner">
+  <div id="bannerContent">
+    <div id="bannerDismiss">
+      <a onClick="bannerDismiss();">
+        <img src="/_static/icon_cross.svg"/>
+      </a>
+    </div>
+    <img id="bannerLogo" src="https://cdn.robocorp.com/brand/Logo/Negative logo transparent/Negative logo transparent.svg"/>
+    <span id="bannerText">
+      The automation stack for RPA Framework.
+    </span>
+    <a id="bannerButton" href="https://robocorp.com/get-started">
+      Get started <img src="/_static/icon_arrow.svg"/>
+    </a>
+  </div>
+</div>
+
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
