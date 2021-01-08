@@ -1,4 +1,10 @@
 {% extends "!layout.html" %}
 {% block extrahead %}
-{% include 'analytics.html' %}
+	{% include 'includes.html' %}
+	{% include 'analytics.html' %}
+{% endblock %}
+{% block document %}
+	{{super()}}
+	{% include 'cookie.html' %}
+	{% include 'robocorp.html' %}
 {% endblock %}

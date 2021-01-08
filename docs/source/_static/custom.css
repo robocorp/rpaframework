@@ -17,6 +17,8 @@ hr {
 }
 .wy-nav-side {
 	background: #2b3253;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 .wy-nav-top, .wy-side-nav-search {
 	background: #2b3253;
