@@ -22,7 +22,7 @@
 	padding: 0;
 }
 #cookieConsentContainer .cookieDesc a {
-	font-family: OpenSans, arial, "sans-serif";
+	font-family: Inter, sans-serif;
 	color: #2980B9;
 }
 #cookieConsentContainer .cookieButton a {
@@ -31,7 +31,7 @@
 	box-sizing: border-box;
 	color: #fff;
 	display: inline-block;
-	font-family: OpenSans, arial, "sans-serif";
+	font-family: Inter, sans-serif;
 	font-size: 14px;
 	font-weight: bold;
 	margin-top: 14px;
