@@ -645,6 +645,9 @@ class Selenium(SeleniumLibrary):
         options.add_argument("--headless")
         options.add_argument("--disable-gpu")
 
+        if browser.lower() == "chrome":
+            options.add_argument("--window-size=1440,900")
+
     def _set_user_profile(
         self,
         options: dict,
