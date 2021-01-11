@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Browser.Selenium**: Increase headless Chrome window size
+
 7.1.1
 -----
 

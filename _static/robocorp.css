@@ -4,23 +4,22 @@
 	top: 0;
 	left: 0;
 	right: 0;
-	height: 50px;
 	background: #141028;
 	color: #fff;
 	display: none;
 }
 #bannerContent {
 	text-align: center;
-	line-height: 48px;
-	vertical-align: middle;
+	line-height: 50px;
+	padding-bottom: 2px;
 }
 #bannerLogo {
 	display: inline-block;
 	height: 24px;
-	margin-right: 30px;
 }
 #bannerText {
 	display: inline-block;
+	margin: 0px 30px;
 	font-family: Inter, sans-serif;
 	font-style: normal;
 	font-size: 14px;
@@ -31,7 +30,6 @@
 	line-height: normal;
 	background: #176bbe;
 	color: #fff;
-	margin-left: 30px;
 	padding: 9px 15px;
 	border-radius: 4px;
 	font-family: Inter, sans-serif;
