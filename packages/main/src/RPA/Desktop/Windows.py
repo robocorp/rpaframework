@@ -173,6 +173,8 @@ class Windows(OperatingSystem):
         self.windowtitle = None
         self.logger = logging.getLogger(__name__)
         self.clipboard = Clipboard()
+        self.elements = None
+        self.controls = None
 
     def set_windows_backend(self, backend: str) -> None:
         """Set Windows backend which is used to interact with Windows
@@ -664,6 +666,7 @@ class Windows(OperatingSystem):
             if windowtitle is not None:
                 params = {"windowtitle": windowtitle}
             app_instance = self._add_app_instance(app=app, params=params, dialog=False)
+        self.refresh_window()
         return app_instance
 
     def close_all_applications(self) -> None:
@@ -1177,7 +1180,11 @@ class Windows(OperatingSystem):
         if search_criteria is None:
             search_criteria, search_locator = self._determine_search_criteria(locator)
 
-        controls, elements = self.get_window_elements()
+        if self.elements is None:
+            controls, elements = self.get_window_elements()
+        else:
+            controls = self.controls
+            elements = self.elements
         self.logger.info(
             "Find element: (locator: %s, criteria: %s)",
             locator,
@@ -1572,6 +1579,7 @@ class Windows(OperatingSystem):
         for attr in attributes_to_remove:
             element_dict.pop(attr, None)
 
+        element_dict["object"] = element
         return element_dict
 
     def put_system_to_sleep(self) -> None:
@@ -1845,3 +1853,9 @@ class Windows(OperatingSystem):
             except Exception as e:  # pylint: disable=broad-except
                 self.logger.debug(str(e))
         return window_list
+
+    def refresh_window(self):
+        controls, elements = self.get_window_elements()
+        self.elements = elements
+        self.controls = controls
+        return controls, elements
