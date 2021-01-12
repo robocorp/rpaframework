@@ -26,13 +26,24 @@ class Desktop(DynamicCore):
     - Mouse and keyboard input emulation
     - Starting and stopping applications
     - Finding elements through image template matching
-    - Finding elements through OCR matching
     - Scraping text from given regions
     - Taking screenshots
     - Clipboard management
 
     **Note:** Windows element selectors are not currently supported,
         and require the use of ``RPA.Desktop.Windows``
+
+    **Installation**
+
+    The basic features such as mouse and keyboard input and application
+    control work with a default ``rpaframework`` install.
+
+    Advanced computer-vision features such as image template matching and
+    OCR require an additional library called ``rpaframework-recognition``.
+
+    The dependency can be either added separately or through additional
+    extras with ``rpaframework[cv]``. If installing recognition through
+    ``pip`` instead of ``conda``, the OCR feature also requires ``tesseract``.
 
     **Locating elements**
 
@@ -64,19 +75,17 @@ class Desktop(DynamicCore):
 
     .. code-block:: robotframework
 
-        Click       alias:SpareBin.Login
-        Click       SpareBin.Login
+        Click       point:50,100
+        Click       region:20,20,100,30
 
         Move mouse  image:%{ROBOT_ROOT}/logo.png
         Move mouse  offset:200,0
         Click
 
-        Click       point:50,100
-
-        Click       region:20,20,100,30
+        Click       alias:SpareBin.Login
+        Click       SpareBin.Login
 
         Click       ocr:"Create New Account"
-
 
     You can also pass internal ``region`` objects as locators:
 
@@ -85,6 +94,40 @@ class Desktop(DynamicCore):
         ${region}=  Find Element  ocr:"Customer name"
         Click       ${region}
 
+    **Locator chaining**
+
+    Often it is not enough to have one locator, but instead an element
+    is defined through a relationship of various locators. For this use
+    case the library supports a special syntax, which we will call
+    locator chaining.
+
+    An example of chaining:
+
+    .. code-block:: robotframework
+
+        # Read text from area on the right side of logo
+        Read text    image:logo.png + offset:600,0 + size:400,200
+
+    The supported operators are:
+
+    ========== =========================================
+    Operator   Description
+    ========== =========================================
+    then, +    Base locator relative to the previous one
+    and, &&, & Both locators should be found
+    or, ||, |  Either of the locators should be found
+    not, !     The locator should not be found
+    ========== =========================================
+
+    Further examples:
+
+    .. code-block:: robotframework
+
+        # Click below either label
+        Click    (image:name.png or image:email.png) then offset:0,300
+
+        # Wait until dialog disappears
+        Wait for element    not image:cookie.png
 
     **Named locators**
 
