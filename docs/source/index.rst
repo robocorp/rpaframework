@@ -14,13 +14,6 @@ Documentation
 -------------
 
 .. toctree::
-   :maxdepth: 1
-   :hidden:
-
-   Overview <self>
-   releasenotes
-
-.. toctree::
    :caption: Libraries
    :titlesonly:
    :maxdepth: 1
@@ -29,10 +22,11 @@ Documentation
    libraries/**/index
 
 .. toctree::
-   :caption: Contributing
+   :caption: Project
    :titlesonly:
    :maxdepth: 1
 
+   releasenotes
    contributing/guide
    contributing/conventions
 
