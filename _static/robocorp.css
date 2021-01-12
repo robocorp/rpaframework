@@ -16,6 +16,8 @@
 #bannerLogo {
 	display: inline-block;
 	height: 24px;
+	position: relative;
+	top: -2px;
 }
 #bannerText {
 	display: inline-block;

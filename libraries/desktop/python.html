@@ -99,11 +99,7 @@
               
             
             
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../index.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Libraries</span></p>
+              <p class="caption"><span class="caption-text">Libraries</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../archive/index.html">Archive</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
@@ -145,8 +141,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../twitter/index.html">Twitter</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Contributing</span></p>
+<p class="caption"><span class="caption-text">Project</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
 </ul>
@@ -232,7 +229,6 @@ the same interfaces that are available to human users.</p>
 <li><p>Mouse and keyboard input emulation</p></li>
 <li><p>Starting and stopping applications</p></li>
 <li><p>Finding elements through image template matching</p></li>
-<li><p>Finding elements through OCR matching</p></li>
 <li><p>Scraping text from given regions</p></li>
 <li><p>Taking screenshots</p></li>
 <li><p>Clipboard management</p></li>
@@ -241,6 +237,14 @@ the same interfaces that are available to human users.</p>
 <dt><strong>Note:</strong> Windows element selectors are not currently supported,</dt><dd><p>and require the use of <code class="docutils literal notranslate"><span class="pre">RPA.Desktop.Windows</span></code></p>
 </dd>
 </dl>
+<p><strong>Installation</strong></p>
+<p>The basic features such as mouse and keyboard input and application
+control work with a default <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code> install.</p>
+<p>Advanced computer-vision features such as image template matching and
+OCR require an additional library called <code class="docutils literal notranslate"><span class="pre">rpaframework-recognition</span></code>.</p>
+<p>The dependency can be either added separately or through additional
+extras with <code class="docutils literal notranslate"><span class="pre">rpaframework[cv]</span></code>. If installing recognition through
+<code class="docutils literal notranslate"><span class="pre">pip</span></code> instead of <code class="docutils literal notranslate"><span class="pre">conda</span></code>, the OCR feature also requires <code class="docutils literal notranslate"><span class="pre">tesseract</span></code>.</p>
 <p><strong>Locating elements</strong></p>
 <p>To automate actions on the desktop, a robot needs to interact with various
 graphical elements such as buttons or input fields. The locations of these
@@ -295,16 +299,15 @@ states change.</p>
 <p>A locator is defined by its type and arguments, divided by a colon.
 Some example usages are shown below. Note that the prefix for <code class="docutils literal notranslate"><span class="pre">alias</span></code> can
 be omitted as its the default type.</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Click</span><span class="p">       </span><span class="c">alias:SpareBin.Login</span><span class="p"></span>
-<span class="c">Click</span><span class="p">       </span><span class="c">SpareBin.Login</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Click</span><span class="p">       </span><span class="c">point:50,100</span><span class="p"></span>
+<span class="c">Click</span><span class="p">       </span><span class="c">region:20,20,100,30</span><span class="p"></span>
 
 <span class="c">Move mouse</span><span class="p">  </span><span class="c">image:%{ROBOT_ROOT}/logo.png</span><span class="p"></span>
 <span class="c">Move mouse</span><span class="p">  </span><span class="c">offset:200,0</span><span class="p"></span>
 <span class="c">Click</span><span class="p"></span>
 
-<span class="c">Click</span><span class="p">       </span><span class="c">point:50,100</span><span class="p"></span>
-
-<span class="c">Click</span><span class="p">       </span><span class="c">region:20,20,100,30</span><span class="p"></span>
+<span class="c">Click</span><span class="p">       </span><span class="c">alias:SpareBin.Login</span><span class="p"></span>
+<span class="c">Click</span><span class="p">       </span><span class="c">SpareBin.Login</span><span class="p"></span>
 
 <span class="c">Click</span><span class="p">       </span><span class="c">ocr:&quot;Create New Account&quot;</span><span class="p"></span>
 </pre></div>
@@ -312,6 +315,50 @@ be omitted as its the default type.</p>
 <p>You can also pass internal <code class="docutils literal notranslate"><span class="pre">region</span></code> objects as locators:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${region}=</span><span class="p">  </span><span class="c">Find Element</span><span class="p">  </span><span class="c">ocr:&quot;Customer name&quot;</span><span class="p"></span>
 <span class="c">Click</span><span class="p">       </span><span class="c">${region}</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Locator chaining</strong></p>
+<p>Often it is not enough to have one locator, but instead an element
+is defined through a relationship of various locators. For this use
+case the library supports a special syntax, which we will call
+locator chaining.</p>
+<p>An example of chaining:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Read text from area on the right side of logo</span>
+<span class="c">Read text</span><span class="p">    </span><span class="c">image:logo.png + offset:600,0 + size:400,200</span><span class="p"></span>
+</pre></div>
+</div>
+<p>The supported operators are:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Operator</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>then, +</p></td>
+<td><p>Base locator relative to the previous one</p></td>
+</tr>
+<tr class="row-odd"><td><p>and, &amp;&amp;, &amp;</p></td>
+<td><p>Both locators should be found</p></td>
+</tr>
+<tr class="row-even"><td><p>or, ||, |</p></td>
+<td><p>Either of the locators should be found</p></td>
+</tr>
+<tr class="row-odd"><td><p>not, !</p></td>
+<td><p>The locator should not be found</p></td>
+</tr>
+</tbody>
+</table>
+<p>Further examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Click below either label</span>
+<span class="c">Click</span><span class="p">    </span><span class="c">(image:name.png or image:email.png) then offset:0,300</span><span class="p"></span>
+
+<span class="c"># Wait until dialog disappears</span>
+<span class="c">Wait for element</span><span class="p">    </span><span class="c">not image:cookie.png</span><span class="p"></span>
 </pre></div>
 </div>
 <p><strong>Named locators</strong></p>
