@@ -21,6 +21,7 @@ from SeleniumLibrary.keywords import (
     AlertKeywords,
 )
 from selenium.webdriver import ChromeOptions
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from RPA.core import notebook, webdriver
 from RPA.core.locators import LocatorsDatabase, BrowserLocator
@@ -613,6 +614,7 @@ class Selenium(SeleniumLibrary):
                 "prefs",
                 {**default_preferences, **preferences, **self.download_preferences},
             )
+
             options.add_experimental_option(
                 "excludeSwitches", ["enable-logging", "enable-automation"]
             )
@@ -624,7 +626,11 @@ class Selenium(SeleniumLibrary):
                 kwargs["service_log_path"] = "chromedriver.log"
                 kwargs["service_args"] = ["--verbose"]
 
+            caps = DesiredCapabilities.CHROME
+            caps["goog:loggingPrefs"] = {"performance": "ALL"}
+
             kwargs["chrome_options"] = options
+            kwargs["desired_capabilities"] = caps
 
         return kwargs, options.arguments
 
@@ -1695,6 +1701,36 @@ class Selenium(SeleniumLibrary):
             for idx in range(len(elements))
         )
         self.driver.execute_script(script, *elements)
+
+    @keyword
+    def get_network_events(self):
+        script = """
+            var performance =
+                window.performance ||
+                window.mozPerformance ||
+                window.msPerformance ||
+                window.webkitPerformance ||
+                {};
+
+            var network = performance.getEntries() || {};
+
+            const getCircularReplacer = () => {
+              const seen = new WeakSet();
+              return (key, value) => {
+                if (typeof value === "object" && value !== null) {
+                  if (seen.has(value)) {
+                    return;
+                  }
+                  seen.add(value);
+                }
+                return value;
+              };
+            };
+
+            var entries = JSON.stringify(network, getCircularReplacer());
+            return JSON.parse(entries);
+        """
+        return self.driver.execute_script(script)
 
 
 # For backwards compatibility,
