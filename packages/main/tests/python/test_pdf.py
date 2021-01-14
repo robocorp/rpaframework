@@ -139,4 +139,30 @@ def test_set_field_value(library):
 
 
 def test_get_texts_matching_regexp(library):
-    pass
+    library.open_pdf_document(invoice_pdf)
+    item = library.get_value_from_anchor(
+        "text:Invoice Number", direction="right", regexp="INV-\\d{4}"
+    )
+    assert item.text == "INV-3337"
+
+
+def test_get_texts_from_area(library):
+    expected = [
+        "Invoice Number",
+        "INV-3337",
+        "Order Number",
+        "12345",
+        "Invoice Date",
+        "January 25, 2016",
+        "Due Date",
+        "January 31, 2016",
+        "Total Due",
+        "$93.50",
+    ]
+    library.open_pdf_document(invoice_pdf)
+    items = library.get_value_from_anchor(
+        "coords:345,645,520,725", direction="box", only_closest=False
+    )
+    assert len(items) == 10
+    for item in items:
+        assert item.text in expected
