@@ -1,5 +1,6 @@
 import base64
 import importlib
+import json
 import logging
 import os
 import platform
@@ -11,6 +12,7 @@ from typing import Any, Optional
 from pathlib import Path
 import webbrowser
 
+import robot
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from SeleniumLibrary import SeleniumLibrary, EMBED
 from SeleniumLibrary.base import keyword
@@ -1644,7 +1646,7 @@ class Selenium(SeleniumLibrary):
         """
         Highlight all matching elements by locator.
 
-        Highlighing is done by adding a colored outline
+        Highlighting is done by adding a colored outline
         around the elements with CSS styling.
 
         ``locator``  element locator
@@ -1695,6 +1697,68 @@ class Selenium(SeleniumLibrary):
             for idx in range(len(elements))
         )
         self.driver.execute_script(script, *elements)
+
+    @keyword
+    def print_to_pdf(
+        self, source: str = None, output_path: str = None, params: dict = None
+    ):
+        """
+        Print the page to a PDF document using Chromium devtools.
+
+        By default it prints the currently open page.
+
+        For Chrome print parameters see
+        https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
+
+        ``source`` Page to print, by default the current page.
+        ``output_path`` filepath for the generated pdf. By default it is saved to
+          the output folder with name `out.pdf`.
+        ``params`` parameters for the Chrome print method. By default uses values
+            {
+                "landscape": False,
+                "displayHeaderFooter": False,
+                "printBackground": True,
+                "preferCSSPageSize": True,
+            }
+        """
+        if "chrom" not in self.driver.name:
+            self.logger.warning("PDF printing works only with Chrome/Chromium")
+            return
+
+        def send_command_and_get_result(cmd, params):
+            resource = (
+                f"session/{self.driver.session_id}/chromium/send_command_and_get_result"
+            )
+            # pylint: disable=protected-access
+            url = f"{self.driver.command_executor._url}/{resource}"
+            body = json.dumps({"cmd": cmd, "params": params})
+            response = self.driver.command_executor._request("POST", url, body)
+
+            return response.get("value")
+
+        if source:
+            self.driver.get(source)
+
+        default_params = {
+            "landscape": False,
+            "displayHeaderFooter": False,
+            "printBackground": True,
+            "preferCSSPageSize": True,
+        }
+
+        try:
+            output_dir = BuiltIn().get_variable_value("${OUTPUT_DIR}", "output")
+        except robot.libraries.BuiltIn.RobotNotRunningError:
+            output_dir = "output"
+        default_output = f"{output_dir}/out.pdf"
+        output_path = output_path if output_path else default_output
+
+        params = params if params else default_params
+        result = send_command_and_get_result("Page.printToPDF", params)
+        pdf = base64.b64decode(result["data"])
+
+        with open(output_path, "wb") as f:
+            f.write(pdf)
 
 
 # For backwards compatibility,
