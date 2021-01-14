@@ -6,7 +6,7 @@ from unittest import TestCase
 import pytest
 
 from RPA.PDF import PDF
-from . import RESOURCE_DIR
+from . import RESOURCE_DIR, temp_filename
 
 
 class TestBrowserFunctionality(TestCase):
@@ -24,9 +24,9 @@ class TestBrowserFunctionality(TestCase):
 
         testfile = RESOURCE_DIR / "browser_docs.html"
         selenium_lib.open_available_browser(f"file://{testfile}", headless=True)
-        with tempfile.NamedTemporaryFile() as tmp_file:
-            selenium_lib.print_to_pdf(output_path=tmp_file.name)
-            text = PDF().get_text_from_pdf(tmp_file.name)
+        with temp_filename() as tmp_file:
+            selenium_lib.print_to_pdf(output_path=tmp_file)
+            text = PDF().get_text_from_pdf(tmp_file)
 
             assert "Please explicitly use either RPA.Browser.Selenium" in text[1]
 
@@ -38,10 +38,8 @@ class TestBrowserFunctionality(TestCase):
         startpage = RESOURCE_DIR / "alert.html"
         testfile = RESOURCE_DIR / "browser_docs.html"
         selenium_lib.open_available_browser(f"file://{startpage}", headless=True)
-        with tempfile.NamedTemporaryFile() as tmp_file:
-            selenium_lib.print_to_pdf(
-                source=f"file://{testfile}", output_path=tmp_file.name
-            )
-            text = PDF().get_text_from_pdf(tmp_file.name)
+        with temp_filename() as tmp_file:
+            selenium_lib.print_to_pdf(source=f"file://{testfile}", output_path=tmp_file)
+            text = PDF().get_text_from_pdf(tmp_file)
 
             assert "Please explicitly use either RPA.Browser.Selenium" in text[1]
