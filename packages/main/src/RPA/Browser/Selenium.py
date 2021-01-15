@@ -626,7 +626,7 @@ class Selenium(SeleniumLibrary):
                 kwargs["service_log_path"] = "chromedriver.log"
                 kwargs["service_args"] = ["--verbose"]
 
-            kwargs["chrome_options"] = options
+            kwargs["options"] = options
 
         return kwargs, options.arguments
 
@@ -750,9 +750,7 @@ class Selenium(SeleniumLibrary):
         """
         options = ChromeOptions()
         options.add_experimental_option("debuggerAddress", f"localhost:{port:d}")
-        create = partial(
-            self._create_webdriver, "Chrome", alias, chrome_options=options
-        )
+        create = partial(self._create_webdriver, "Chrome", alias, options=options)
 
         try:
             return create(download=False)
