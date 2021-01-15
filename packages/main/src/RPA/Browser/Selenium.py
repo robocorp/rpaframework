@@ -1722,8 +1722,7 @@ class Selenium(SeleniumLibrary):
             }
         """
         if "chrom" not in self.driver.name:
-            self.logger.warning("PDF printing works only with Chrome/Chromium")
-            return
+            raise NotImplementedError("PDF printing works only with Chrome/Chromium")
 
         def send_command_and_get_result(cmd, params):
             resource = (
@@ -1751,9 +1750,9 @@ class Selenium(SeleniumLibrary):
         except robot.libraries.BuiltIn.RobotNotRunningError:
             output_dir = "output"
         default_output = f"{output_dir}/out.pdf"
-        output_path = output_path if output_path else default_output
+        output_path = output_path or default_output
 
-        params = params if params else default_params
+        params = params or default_params
         result = send_command_and_get_result("Page.printToPDF", params)
         pdf = base64.b64decode(result["data"])
 
