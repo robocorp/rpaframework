@@ -1697,18 +1697,13 @@ class Selenium(SeleniumLibrary):
         self.driver.execute_script(script, *elements)
 
     @keyword
-    def print_to_pdf(
-        self, source: str = None, output_path: str = None, params: dict = None
-    ):
+    def print_to_pdf(self, output_path: str = None, params: dict = None):
         """
-        Print the page to a PDF document using Chromium devtools.
+        Print the current page to a PDF document using Chromium devtools.
 
-        By default it prints the currently open page.
-
-        For Chrome print parameters see
+        For supported parameters see:
         https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
 
-        ``source`` Page to print, by default the current page.
         ``output_path`` filepath for the generated pdf. By default it is saved to
           the output folder with name `out.pdf`.
         ``params`` parameters for the Chrome print method. By default uses values
@@ -1733,9 +1728,6 @@ class Selenium(SeleniumLibrary):
 
             return response.get("value")
 
-        if source:
-            self.driver.get(source)
-
         default_params = {
             "landscape": False,
             "displayHeaderFooter": False,
@@ -1756,6 +1748,8 @@ class Selenium(SeleniumLibrary):
 
         with open(output_path, "wb") as f:
             f.write(pdf)
+
+        return output_path
 
 
 # For backwards compatibility,
