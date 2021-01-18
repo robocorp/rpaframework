@@ -1583,6 +1583,11 @@ class Windows(OperatingSystem):
         for attr in attributes_to_remove:
             element_dict.pop(attr, None)
 
+        element_dict["legacy"] = (
+            element.legacy_properties()
+            if hasattr(element, "legacy_properties")
+            else None
+        )
         element_dict["object"] = element
         return element_dict
 
