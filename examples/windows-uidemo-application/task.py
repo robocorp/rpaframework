@@ -10,6 +10,8 @@ from variables import CURRENT_DATE, CURRENT_TIME, CASH_IN, ON_US, NOT_US
 
 
 application_path = Path(os.getenv("UIDEMO_EXE"))
+if not os.path.exists(application_path):
+    raise ValueError("Set path to UIDemo.exe with environment variable UIDEMO_EXE")
 
 library = None
 stdout = logging.StreamHandler(sys.stdout)
@@ -25,7 +27,6 @@ LOGGER = logging.getLogger(__name__)
 
 def set_slider_value(locator, slidervalue):
     element, _ = library.find_element(locator)
-    LOGGER.debug(dir(element))
     if element and len(element) == 1:
         target_element = element[0]
     else:
@@ -85,9 +86,6 @@ def main():
 
     click_transactions()
     click_configurations()
-    library.minimize_dialog()
-    sleep(3)
-    library.restore_dialog()
     type_cash(500, 300, 100)
     click_settings()
 
