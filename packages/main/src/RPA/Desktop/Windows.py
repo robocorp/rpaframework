@@ -57,6 +57,17 @@ class UnknownWindowsBackendError(Exception):
 
 
 SUPPORTED_BACKENDS = ["uia", "win32"]
+WINDOWS_LOCATOR_STRATEGIES = {
+    "name": "name",
+    "class_name": "class_name",
+    "class": "class_name",
+    "control_type": "control_type",
+    "type": "control_type",
+    "automation_id": "automation_id",
+    "id": "automation_id",
+    "partial name": "partial name",
+    "regexp": "regexp",
+}
 
 
 class Windows(OperatingSystem):
@@ -355,14 +366,13 @@ class Windows(OperatingSystem):
             subprocess.call(["xdg-open", filename])
             return True
 
-        return False
-
     def open_executable(
         self,
         executable: str,
         windowtitle: str,
         backend: str = None,
         work_dir: str = None,
+        wildcard: bool = False,
     ) -> int:
         """Open Windows executable. Window title name is required
         to get handle on the application.
@@ -370,8 +380,9 @@ class Windows(OperatingSystem):
         :param executable: name of the executable
         :param windowtitle: name of the window
         :param backend: set Windows backend, default None means using
-         library default value
+        library default value
         :param work_dir: path to working directory, default None
+        :param wildcard: set True for inclusive window title search, default False
         :return: application instance id
 
         Example:
@@ -379,25 +390,28 @@ class Windows(OperatingSystem):
         .. code-block:: robotframework
 
             ${app1}    Open Executable   calc.exe  Calculator
+            ${app2}    Open Executable   notepad.exe  Notepad   wildcard=True
 
         """
         self.logger.info("Opening executable: %s - window: %s", executable, windowtitle)
         if backend:
             self.set_windows_backend(backend)
 
-        self.windowtitle = windowtitle
         app = pywinauto.Application(backend=self._backend).start(
             cmd_line=executable, work_dir=work_dir
         )
-        app_instance = self.open_dialog(windowtitle)
+        app_instance = self.open_dialog(windowtitle, wildcard=wildcard)
         self._apps[app_instance]["app"] = app
-        self._apps[app_instance]["windowtitle"] = windowtitle
         self._apps[app_instance]["executable"] = executable
         self._apps[app_instance]["startkeyword"] = "Open Executable"
         return app_instance
 
     def open_using_run_dialog(
-        self, executable: str, windowtitle: str, timeout: int = 10
+        self,
+        executable: str,
+        windowtitle: str,
+        timeout: int = 10,
+        wildcard: bool = False,
     ) -> int:
         """Open application using Windows run dialog.
         Window title name is required to get handle on the application.
@@ -405,6 +419,7 @@ class Windows(OperatingSystem):
         :param executable: name of the executable
         :param windowtitle: name of the window
         :param timeout: time to wait for dialog to appear
+        :param wildcard: set True for inclusive window title search, default False
         :return: application instance id
 
         Example:
@@ -412,6 +427,7 @@ class Windows(OperatingSystem):
         .. code-block:: robotframework
 
             ${app1}    Open Using Run Dialog  notepad  Untitled - Notepad
+            ${app2}    Open Using Run Dialog  notepad  Notepad    wildcard=True
 
         """
         self.send_keys("{VK_LWIN down}r{VK_LWIN up}")
@@ -419,14 +435,17 @@ class Windows(OperatingSystem):
 
         self.send_keys_to_input(executable, send_delay=0.2, enter_delay=0.5)
 
-        app_instance = self.open_dialog(windowtitle, timeout=timeout)
-        self._apps[app_instance]["windowtitle"] = windowtitle
+        app_instance = self.open_dialog(windowtitle, timeout=timeout, wildcard=wildcard)
         self._apps[app_instance]["executable"] = executable
         self._apps[app_instance]["startkeyword"] = "Open Using Run Dialog"
         return app_instance
 
     def open_from_search(
-        self, executable: str, windowtitle: str, timeout: int = 10
+        self,
+        executable: str,
+        windowtitle: str,
+        timeout: int = 10,
+        wildcard: bool = False,
     ) -> int:
         """Open application using Windows search dialog.
         Window title name is required to get handle on the application.
@@ -434,6 +453,7 @@ class Windows(OperatingSystem):
         :param executable: name of the executable
         :param windowtitle: name of the window
         :param timeout: time to wait for dialog to appear
+        :param wildcard: set True for inclusive window title search, default False
         :return: application instance id
 
         Example:
@@ -441,6 +461,7 @@ class Windows(OperatingSystem):
         .. code-block:: robotframework
 
             ${app1}    Open From Search  calculator  Calculator
+            ${app2}    Open From Search  notepad  Notepad  wildcard=True
 
         """
         self.logger.info("Run from start menu: %s", executable)
@@ -449,8 +470,7 @@ class Windows(OperatingSystem):
 
         self.send_keys_to_input(executable)
 
-        app_instance = self.open_dialog(windowtitle, timeout=timeout)
-        self._apps[app_instance]["windowtitle"] = windowtitle
+        app_instance = self.open_dialog(windowtitle, timeout=timeout, wildcard=wildcard)
         self._apps[app_instance]["executable"] = executable
         self._apps[app_instance]["startkeyword"] = "Open From Search"
         return app_instance
@@ -467,6 +487,7 @@ class Windows(OperatingSystem):
 
             ${txt}    Get Spaced String   My name is Bond
             # ${txt} = My{VK_SPACE}name{VK_SPACE}is{VK_SPACE}Bond
+            Send Keys To Input  ${txt}
 
         """
         return text.replace(" ", "{VK_SPACE}")
@@ -512,7 +533,7 @@ class Windows(OperatingSystem):
         """Minimize window by its title
 
         :param windowtitle: name of the window, default `None` means that
-         active window is going to be minimized
+        active window is going to be minimized
 
         Example:
 
@@ -531,11 +552,11 @@ class Windows(OperatingSystem):
         self.dlg = pywinauto.Desktop(backend=self._backend)[windowtitle]
         self.dlg.minimize()
 
-    def restore_dialog(self, windowtitle: str = None) -> None:
+    def restore_dialog(self, windowtitle: str = None) -> None:  # noqa: C901
         """Restore window by its title
 
         :param windowtitle: name of the window, default `None` means that
-         active window is going to be restored
+        active window is going to be restored
 
         Example:
 
@@ -549,21 +570,40 @@ class Windows(OperatingSystem):
             Restore Dialog    Untitled - Notepad
 
         """
-        windowtitle = (
-            windowtitle or self._apps[self._active_app_instance]["windowtitle"]
-        )
+        # TODO. Handle too compled method
         self.logger.info("Restore dialog: %s", windowtitle)
-        app = pywinauto.Application().connect(title_re=".*%s" % windowtitle)
+        if windowtitle is None and self._active_app_instance == -1:
+            raise ValueError(
+                "There are no applications opened by library or window title is empty"
+            )
+        app = None
+        handle = None
+        if windowtitle is None:
+            app = self._apps[self._active_app_instance]["app"]
+            handle = self._apps[self._active_app_instance]["handle"]
+            windowtitle = self._apps[self._active_app_instance]["windowtitle"]
+        else:
+            for app_id, app in self._apps.items():
+                if "windowtitle" in app.keys() and windowtitle == app["windowtitle"]:
+                    application_id = app_id
+                    app = self._apps[application_id]["app"]
+                    handle = self._apps[application_id]["handle"]
         try:
-            app.window().restore()
+            if app and handle > 0:
+                app.window(handle=handle).restore()
+            else:
+                wins = self.get_window_list()
+                for win in wins:
+                    if windowtitle == win["title"]:
+                        handle = win["handle"]
+                        break
+                if handle and handle > 0:
+                    self.connect_by_handle(handle, windowtitle=windowtitle)
+                    self.restore_dialog()
+                else:
+                    raise ValueError("Could not restore dialog: %s" % windowtitle)
         except pywinauto.findwindows.ElementAmbiguousError as e:
             self.logger.info("Could not restore dialog, %s", str(e))
-        finally:
-            if "handle" in self._apps[self._active_app_instance]:
-                app = pywinauto.Application().connect(
-                    handle=self._apps[self._active_app_instance]["handle"]
-                )
-                app.window().restore()
 
     def open_dialog(
         self,
@@ -571,12 +611,16 @@ class Windows(OperatingSystem):
         highlight: bool = False,
         timeout: int = 10,
         existing_app: bool = False,
+        wildcard: bool = False,
     ) -> Any:
         """Open window by its title.
 
         :param windowtitle: name of the window, defaults to active window if None
-        :param highlight: draw outline for window if True, defaults to False
+        :param highlight: draw outline for window if True, default False
         :param timeout: time to wait for dialog to appear
+        :param existing_app: set True if selecting window which library has already
+        accessed, default False
+        :param wildcard: set True for inclusive window title search, default False
 
         Example:
 
@@ -584,28 +628,31 @@ class Windows(OperatingSystem):
 
             Open Dialog       Untitled - Notepad
             Open Dialog       Untitled - Notepad   highlight=True   timeout=5
+            Open Dialog       Notepad   wildcard=True
 
         """
         self.logger.info("Open dialog: '%s'", windowtitle)
-
-        if windowtitle:
-            self.windowtitle = windowtitle
 
         app_instance = None
         end_time = time.time() + float(timeout)
         while time.time() < end_time and app_instance is None:
             for window in self.get_window_list():
-                if window["title"] == self.windowtitle:
+                if (not wildcard and windowtitle == window["title"]) or (
+                    wildcard and windowtitle in window["title"]
+                ):
+                    self.windowtitle = window["title"]
                     app_instance = self.connect_by_handle(
                         window["handle"],
-                        windowtitle=window["title"],
+                        windowtitle=self.windowtitle,
                         existing_app=existing_app,
                     )
                     break
             time.sleep(0.1)
 
         if app_instance is None:
-            raise ValueError("No window with title '{}'".format(self.windowtitle))
+            raise ValueError(
+                "No window with title '%s', wildcard: %s" % (windowtitle, wildcard)
+            )
 
         if highlight:
             self.dlg.draw_outline()
@@ -716,8 +763,12 @@ class Windows(OperatingSystem):
             else:
                 if "process_id" in app and app["process_id"] > 0:
                     # pylint: disable=E1101
-                    self.logger.info("Quit by killing process id")
-                    self.kill_process_by_pid(app["process_id"])
+                    pid = app["process_id"]
+                    if self.process_id_exists(pid):
+                        self.logger.info("Quit by killing process id")
+                        self.kill_process_by_pid(pid)
+                    else:
+                        self.logger.info("Process pid '%s' did not exist anymore", pid)
                 else:
                     self.logger.info("Quit by app.kill()")
                     app["app"].kill()
@@ -823,6 +874,7 @@ class Windows(OperatingSystem):
         image: str = None,
         method: str = "locator",
         ctype: str = "click",
+        focus: str = "center",
         **kwargs,
     ) -> None:
         # pylint: disable=C0301
@@ -845,6 +897,8 @@ class Windows(OperatingSystem):
         :param image: image to click on desktop
         :param method: one of the available methods to mouse click, default "locator"
         :param ctype: type of mouse click
+        :param focus: default point for element click is 'center', can be set to 'topleft'
+         to click top left corner of the element
         :param kwargs: these keyword arguments can be used to pass arguments
          to underlying `Images` library to finetune image template matching,
          for example. `tolerance=0.5` would adjust image tolerance for the image
@@ -862,6 +916,7 @@ class Windows(OperatingSystem):
             FOR  ${element}  IN  @{elements}
                 Run Keyword If   ${element}[visible]   Mouse Click  ${element}
             END
+            Mouse Click  id:TrickyCheckbox  focus=topleft
 
         """  # noqa: E501
         self.logger.info("Mouse click: %s", locator)
@@ -878,7 +933,12 @@ class Windows(OperatingSystem):
                     raise ValueError(f"Could not find unique element for '{locator}'")
             if target_element is None:
                 raise ValueError("Could not find unique element to click")
-            x, y = self.get_element_center(target_element)
+            if focus == "topleft":
+                x, y, _, _ = self._get_element_coordinates(target_element)
+                x += 2
+                y += 2
+            else:
+                x, y = self.get_element_center(target_element)
             self.click_type(x + off_x, y + off_y, ctype)
         elif method == "coordinates":
             self.mouse_click_coords(x, y, ctype)
@@ -1132,9 +1192,9 @@ class Windows(OperatingSystem):
         :param locator: name of the locator
         :param search_criteria: criteria by which element is matched
         :param timeout: defines how long to wait for element to appear,
-         defaults to 30.0 seconds
+        defaults to 30.0 seconds
         :param interval: how often to poll for element,
-         defaults to 2.0 seconds (minimum is 0.5 seconds)
+        defaults to 2.0 seconds (minimum is 0.5 seconds)
 
         Example:
 
@@ -1144,12 +1204,13 @@ class Windows(OperatingSystem):
             @{elements}  Wait For Element  Results   timeout=10  interval=1.5
 
         """
+        self.refresh_window()
         end_time = time.time() + float(timeout)
         interval = max([0.5, interval])
         elements = None
         while time.time() < end_time:
             elements, _ = self.find_element(locator, search_criteria)
-            if len(elements) > 1:
+            if len(elements) > 0:
                 break
             if interval >= timeout:
                 self.logger.info(
@@ -1180,31 +1241,28 @@ class Windows(OperatingSystem):
             Log Many  ${elements[1]}     # list of all available locators
 
         """
-        search_locator = locator
-        if search_criteria is None:
-            search_criteria, search_locator = self._determine_search_criteria(locator)
-
+        # TODO. Handle incoming 'search_criteria'
+        match_type, search_locators = self._parse_locator(locator)
         if self.elements is None:
             controls, elements = self.get_window_elements()
         else:
             controls = self.controls
             elements = self.elements
-        self.logger.info(
-            "Find element: (locator: %s, criteria: %s)",
-            locator,
-            search_criteria,
-        )
 
         matching_elements, locators = [], []
+
         for ctrl, element in zip(controls, elements):
-            if self.is_element_matching(element, search_locator, search_criteria):
+            match_results = []
+            for criteria, search_locator in search_locators:
+                match_results.append(
+                    self.is_element_matching(element, search_locator, criteria)
+                )
+            if (match_type == "all" and all(match_results)) or (
+                match_type == "any" and any(match_results)
+            ):
                 element["control"] = ctrl
                 matching_elements.append(element)
-            if search_criteria == "any" and "name" in element:
-                locators.append(element["name"])
-            elif search_criteria and search_criteria in element:
                 locators.append(element[search_criteria])
-
         return matching_elements, locators
 
     def _determine_search_criteria(self, locator: str) -> Any:
@@ -1437,32 +1495,31 @@ class Windows(OperatingSystem):
             self.logger.info("Got COM error: %s", str(ce))
         return ctrls
 
-    def _get_element_coordinates(self, rectangle: Any) -> Any:
+    def _get_element_coordinates(self, element: Any) -> Any:
         """Get element coordinates from pywinauto object.
 
         :param rectangle: item containing rectangle information
         :return: coordinates: left, top, right, bottom
         """
-        self.logger.debug(
-            "Get element coordinates from rectangle: %s of type %s",
-            rectangle,
-            type(rectangle),
-        )
         left = 0
         top = 0
         right = 0
         bottom = 0
-        if isinstance(rectangle, pywinauto.win32structures.RECT):
-            left = rectangle.left
-            top = rectangle.top
-            right = rectangle.right
-            bottom = rectangle.bottom
-        elif isinstance(rectangle, dict):
-            left = rectangle.left
-            top = rectangle.top
-            right = rectangle.right
-            bottom = rectangle.bottom
+        if isinstance(element, pywinauto.win32structures.RECT):
+            left = element.left
+            top = element.top
+            right = element.right
+            bottom = element.bottom
+        elif isinstance(element, dict) and "rectangle" not in element.keys():
+            left = element.left
+            top = element.top
+            right = element.right
+            bottom = element.bottom
         else:
+            if isinstance(element, dict) and "rectangle" in element.keys():
+                rectangle = element["rectangle"]
+            else:
+                rectangle = element
             left, top, right, bottom = map(
                 int,
                 re.match(
@@ -1724,7 +1781,7 @@ class Windows(OperatingSystem):
         :param src_locator: elements to move
         :param handle_ctrl_key: True if keyword should press CTRL down dragging
         :param drop_delay: how many seconds to wait until releasing mouse drop,
-         default 2.0
+        default 2.0
         :raises ValueError: on validation errors
 
         Example:
@@ -1767,7 +1824,6 @@ class Windows(OperatingSystem):
                 self.restore_dialog(src["windowtitle"])
             for idx, selection in enumerate(selections):
                 self.logger.debug("Selecting item %d by mouse_click", idx)
-                self.logger.debug(selection)
                 # pywinauto.mouse.click(coords=(selection[0]+5, selection[1]+5))
                 self.mouse_click_coords(selection[0] + 5, selection[1] + 5)
 
@@ -1844,9 +1900,6 @@ class Windows(OperatingSystem):
         for w in windows:
             try:
                 left, top, right, bottom = self._get_element_coordinates(w.rectangle())
-                # Do not add windows into list if its rectangle area is zero
-                if left == right and bottom == top:
-                    continue
                 window_list.append(
                     {
                         "automation_id": w.automation_id(),
@@ -1864,7 +1917,40 @@ class Windows(OperatingSystem):
         return window_list
 
     def refresh_window(self):
+        """Get controls and elements for current windows.
+
+        Should be called always when window content changes on
+        Windows desktop.
+
+        :return: controls (list) and elements (list)
+        """
+        self.logger.debug("Refresh window")
         controls, elements = self.get_window_elements()
         self.elements = elements
         self.controls = controls
         return controls, elements
+
+    def _parse_locator(self, locator: str):
+        regex = rf"({':|'.join(WINDOWS_LOCATOR_STRATEGIES.keys())}:|or|and)('{{1}}(.+)'{{1}}|(\S+))?"  # noqa: E501
+        parts = re.finditer(regex, locator, re.IGNORECASE)
+
+        locators = []
+        match_type = "all"
+
+        for part in parts:
+            groups = part.groups()
+            if groups[0].lower() == "or":
+                match_type = "any"
+            elif groups[0].lower() == "and":
+                pass
+            else:
+                strategy, _ = groups[0].split(":")
+                value = groups[2] if groups[2] else groups[3]
+                locators.append([WINDOWS_LOCATOR_STRATEGIES[strategy], value])
+
+        # Add some strategies if there aren't other valid strategies
+        if not locators:
+            match_type = "any"
+            locators.append(["name", locator])
+            locators.append(["automation_id", locator])
+        return match_type, locators
