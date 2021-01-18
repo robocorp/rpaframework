@@ -1252,17 +1252,16 @@ class Windows(OperatingSystem):
         matching_elements, locators = [], []
 
         for ctrl, element in zip(controls, elements):
-            match_results = []
+            match_results = {}
             for criteria, search_locator in search_locators:
-                match_results.append(
-                    self.is_element_matching(element, search_locator, criteria)
+                match_results[criteria] = self.is_element_matching(
+                    element, search_locator, criteria
                 )
-            if (match_type == "all" and all(match_results)) or (
-                match_type == "any" and any(match_results)
+            if (match_type == "all" and all(match_results.values())) or (
+                match_type == "any" and any(match_results.values())
             ):
                 element["control"] = ctrl
                 matching_elements.append(element)
-                locators.append(element[search_criteria])
         return matching_elements, locators
 
     def _determine_search_criteria(self, locator: str) -> Any:
