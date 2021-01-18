@@ -174,6 +174,26 @@ class OperatingSystem:
         return False
 
     @operating_system_required("Windows")
+    def process_id_exists(self, pid: int) -> Any:
+        """Check if process exists by its id
+
+        :param pid: process identifier
+        :return: process instance or False
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${process}  Process ID Exists  4567
+            Run Keyword If   ${process}  Log  Process exists
+
+        """
+        for p in psutil.process_iter():
+            if p.pid == pid:
+                return p
+        return False
+
+    @operating_system_required("Windows")
     def kill_process(self, process_name: str) -> bool:
         """Kill process by name
 
@@ -205,7 +225,7 @@ class OperatingSystem:
         .. code-block:: robotframework
 
             ${process}  Process Exists  calc  strict=False
-            ${status}   Kill Process    ${process.pid}
+            ${status}   Kill Process By PID   ${process.pid}
 
         """
         os.kill(pid, signal.SIGTERM)
