@@ -786,12 +786,12 @@ class Selenium(SeleniumLibrary):
 
         Example:
 
-        | Screenshot | locator=//img[@alt="Google"] | filename=locator.png |             # element screenshot, defined filename
-        | Screenshot | filename=page.png        |                                    # page screenshot, defined filename
-        | Screenshot | filename=${NONE}         |                                    # page screenshot, NO file will be created
-        | Screenshot |                          |                                    # page screenshot, default filename
-        | Screenshot | locator=//img[@alt="Google"] |                                    # element screenshot, default filename
-        | Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing
+        | Screenshot | locator=//img[@alt="Google"] | filename=locator.png              | # element screenshot, defined filename            |
+        | Screenshot | filename=page.png            |                                   | # page screenshot, defined filename               |
+        | Screenshot | filename=${NONE}             |                                   | # page screenshot, NO file will be created        |
+        | Screenshot |                              |                                   | # page screenshot, default filename               |
+        | Screenshot | locator=//img[@alt="Google"] |                                   | # element screenshot, default filename            |
+        | Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png | # element screenshot, create dirs if not existing |
         """  # noqa: E501
         screenshot_keywords = ScreenshotKeywords(self)
         default_filename_prefix = f"screenshot-{int(time.time())}"
@@ -1706,13 +1706,15 @@ class Selenium(SeleniumLibrary):
 
         ``output_path`` filepath for the generated pdf. By default it is saved to
           the output folder with name `out.pdf`.
-        ``params`` parameters for the Chrome print method. By default uses values
-            {
-                "landscape": False,
-                "displayHeaderFooter": False,
-                "printBackground": True,
-                "preferCSSPageSize": True,
-            }
+
+        ``params`` parameters for the Chrome print method. By default uses values:
+
+        ``{
+            "landscape": False,
+            "displayHeaderFooter": False,
+            "printBackground": True,
+            "preferCSSPageSize": True,
+        }``
         """
         if "chrom" not in self.driver.name:
             raise NotImplementedError("PDF printing works only with Chrome/Chromium")
