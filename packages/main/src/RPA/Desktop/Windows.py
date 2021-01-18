@@ -1241,8 +1241,7 @@ class Windows(OperatingSystem):
             Log Many  ${elements[1]}     # list of all available locators
 
         """
-        # TODO. Handle incoming 'search_criteria'
-        match_type, search_locators = self._parse_locator(locator)
+        match_type, search_locators = self._parse_locator(locator, search_criteria)
         if self.elements is None:
             controls, elements = self.get_window_elements()
         else:
@@ -1929,7 +1928,7 @@ class Windows(OperatingSystem):
         self.controls = controls
         return controls, elements
 
-    def _parse_locator(self, locator: str):
+    def _parse_locator(self, locator: str, search_criteria: str):
         regex = rf"({':|'.join(WINDOWS_LOCATOR_STRATEGIES.keys())}:|or|and)('{{1}}(.+)'{{1}}|(\S+))?"  # noqa: E501
         parts = re.finditer(regex, locator, re.IGNORECASE)
 
@@ -1952,4 +1951,5 @@ class Windows(OperatingSystem):
             match_type = "any"
             locators.append(["name", locator])
             locators.append(["automation_id", locator])
+            locators.append([search_criteria, locator])
         return match_type, locators
