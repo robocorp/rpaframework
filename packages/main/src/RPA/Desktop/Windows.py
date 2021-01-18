@@ -706,16 +706,20 @@ class Windows(OperatingSystem):
         app = self.get_app(app_id)
         self.logger.info("Quit application: %s (%s)", app_id, app)
         if send_keys:
+            self.logger.info("Quit by F4 shortcut")
             self.switch_to_application(app_id)
             self.send_keys("%{F4}")
         else:
             if app["dispatched"]:
+                self.logger.info("Quit by app.Quit()")
                 app["app"].Quit()
             else:
-                if "process" in app and app["process"] > 0:
+                if "process_id" in app and app["process_id"] > 0:
                     # pylint: disable=E1101
-                    self.kill_process_by_pid(app["process"])
+                    self.logger.info("Quit by killing process id")
+                    self.kill_process_by_pid(app["process_id"])
                 else:
+                    self.logger.info("Quit by app.kill()")
                     app["app"].kill()
         self._active_app_instance = -1
 
