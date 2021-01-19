@@ -387,7 +387,7 @@ class Windows(OperatingSystem):
         :param executable: name of the executable
         :param windowtitle: name of the window
         :param backend: set Windows backend, default None means using
-        library default value
+         library default value
         :param work_dir: path to working directory, default None
         :param wildcard: set True for inclusive window title search, default False
         :return: application instance id
@@ -540,7 +540,7 @@ class Windows(OperatingSystem):
         """Minimize window by its title
 
         :param windowtitle: name of the window, default `None` means that
-        active window is going to be minimized
+         active window is going to be minimized
 
         Example:
 
@@ -563,7 +563,7 @@ class Windows(OperatingSystem):
         """Restore window by its title
 
         :param windowtitle: name of the window, default `None` means that
-        active window is going to be restored
+         active window is going to be restored
 
         Example:
 
@@ -626,7 +626,7 @@ class Windows(OperatingSystem):
         :param highlight: draw outline for window if True, default False
         :param timeout: time to wait for dialog to appear
         :param existing_app: set True if selecting window which library has already
-        accessed, default False
+         accessed, default False
         :param wildcard: set True for inclusive window title search, default False
 
         Example:
@@ -670,6 +670,7 @@ class Windows(OperatingSystem):
         """Connect to application by its pid
 
         :param app_pid: process id of the application
+        :param windowtitle: name of the window, defaults to active window if None
 
         Example:
 
@@ -695,6 +696,9 @@ class Windows(OperatingSystem):
         """Connect to application by its handle
 
         :param handle: handle of the application
+        :param windowtitle: name of the window, defaults to active window if None
+        :param existing_app: set True if selecting window which library has already
+         accessed, default False
 
         Example:
 
@@ -747,6 +751,7 @@ class Windows(OperatingSystem):
         active application if `app_id` is None.
 
         :param app_id: application_id, defaults to None
+        :param send_keys: if ALT+F4 should be used to quit, default False
 
         Example:
 
@@ -803,6 +808,7 @@ class Windows(OperatingSystem):
 
         :param locator: element locator
         :param keys:    list of keys to type
+        :param empty_field: if field should be emptied before typing, default False
 
         Example:
 
@@ -832,7 +838,7 @@ class Windows(OperatingSystem):
         .. code-block:: robotframework
 
             Open Executable  calc.exe  Calculator
-            Send Keys        2{+}3=
+            Send Keys        2{+}3{=}
 
         """
         pywinauto.keyboard.send_keys(keys)
@@ -1188,9 +1194,9 @@ class Windows(OperatingSystem):
         :param locator: name of the locator
         :param search_criteria: criteria by which element is matched
         :param timeout: defines how long to wait for element to appear,
-        defaults to 30.0 seconds
+         defaults to 30.0 seconds
         :param interval: how often to poll for element,
-        defaults to 2.0 seconds (minimum is 0.5 seconds)
+         defaults to 2.0 seconds (minimum is 0.5 seconds)
 
         Example:
 
@@ -1341,6 +1347,7 @@ class Windows(OperatingSystem):
         """Get dialog rectangle coordinates
 
         If `ctrl` is None then get coordinates from `dialog`
+
         :param ctrl: name of the window control object, defaults to None
         :return: coordinates: left, top, right, bottom
 
@@ -1775,7 +1782,7 @@ class Windows(OperatingSystem):
         :param src_locator: elements to move
         :param handle_ctrl_key: True if keyword should press CTRL down dragging
         :param drop_delay: how many seconds to wait until releasing mouse drop,
-        default 2.0
+         default 2.0
         :raises ValueError: on validation errors
 
         Example:
