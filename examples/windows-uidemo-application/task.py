@@ -95,7 +95,7 @@ def main():
     for w in winlist:
         LOGGER.info(w)
     library.refresh_window()
-    set_slider_value("id:uiScaleSlider ad type:Slider", 0.5)
+    set_slider_value("id:uiScaleSlider and type:Slider", 0.5)
     sleep(5)
     LOGGER.info("Done.")
 
