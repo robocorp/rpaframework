@@ -163,6 +163,6 @@ def test_get_texts_from_area(library):
     items = library.get_value_from_anchor(
         "coords:345,645,520,725", direction="box", only_closest=False
     )
-    assert len(items) == 10
+    assert len(items) == len(expected)
     for item in items:
         assert item.text in expected
