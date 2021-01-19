@@ -257,6 +257,11 @@ template file.</p>
 </pre></div>
 </div>
 <dl class="attribute">
+<dt id="RPA.PDF.PDF.PIXEL_TOLERANCE">
+<code class="sig-name descname">PIXEL_TOLERANCE</code><em class="property"> = 5</em><a class="headerlink" href="#RPA.PDF.PDF.PIXEL_TOLERANCE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.PDF.PDF.ROBOT_LIBRARY_DOC_FORMAT">
 <code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.PDF.PDF.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -542,13 +547,14 @@ parsing PDF again.</p>
 
 <dl class="method">
 <dt id="RPA.PDF.PDF.get_text_from_pdf">
-<code class="sig-name descname">get_text_from_pdf</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">pages: Any = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.PDF.PDF.get_text_from_pdf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_text_from_pdf</code><span class="sig-paren">(</span><em class="sig-param">source_pdf: str = None</em>, <em class="sig-param">pages: Any = None</em>, <em class="sig-param">details: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.PDF.PDF.get_text_from_pdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get text from set of pages in source PDF document.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source_pdf</strong> – filepath to the source pdf</p></li>
 <li><p><strong>pages</strong> – page numbers to get text (numbers start from 0)</p></li>
+<li><p><strong>details</strong> – set to <cite>True</cite> to return textboxes, default <cite>False</cite></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -560,7 +566,7 @@ parsing PDF again.</p>
 
 <dl class="method">
 <dt id="RPA.PDF.PDF.get_value_from_anchor">
-<code class="sig-name descname">get_value_from_anchor</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">pagenum: int = 1</em>, <em class="sig-param">direction: str = 'right'</em>, <em class="sig-param">strict: bool = False</em>, <em class="sig-param">regexp: str = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.PDF.PDF.get_value_from_anchor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_value_from_anchor</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">pagenum: int = 1</em>, <em class="sig-param">direction: str = 'right'</em>, <em class="sig-param">strict: bool = False</em>, <em class="sig-param">regexp: str = None</em>, <em class="sig-param">only_closest: bool = True</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.PDF.PDF.get_value_from_anchor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get closest text (value) to anchor element.</p>
 <p>PDF needs to be parsed before elements can be found.</p>
 <dl class="field-list simple">
@@ -569,10 +575,12 @@ parsing PDF again.</p>
 <li><p><strong>locator</strong> – element to set anchor to</p></li>
 <li><p><strong>pagenum</strong> – page number where search if performed on, default 1 (first)</p></li>
 <li><p><strong>direction</strong> – in which direction to search for text,
-directions  ‘top’, ‘bottom’, ‘left’ or ‘right’, defaults to ‘right’</p></li>
+directions  ‘top’/’up’, ‘bottom’/’down’, ‘left’ or ‘right’,
+defaults to ‘right’</p></li>
 <li><p><strong>strict</strong> – if element margins should be used for matching points,
 used when direction is ‘top’ or ‘bottom’, default <cite>False</cite></p></li>
 <li><p><strong>regexp</strong> – expected format of value to match, defaults to None</p></li>
+<li><p><strong>only_closest</strong> – return all possible values or only the closest</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1404,6 +1412,28 @@ default <cite>True</cite></p></li>
 <dl class="method">
 <dt id="RPA.PDF.RpaTextBox.top">
 <em class="property">property </em><code class="sig-name descname">top</code><a class="headerlink" href="#RPA.PDF.RpaTextBox.top" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.PDF.TargetObject">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.PDF.</code><code class="sig-name descname">TargetObject</code><a class="headerlink" href="#RPA.PDF.TargetObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container for Target text box</p>
+<dl class="attribute">
+<dt id="RPA.PDF.TargetObject.bbox">
+<code class="sig-name descname">bbox</code><em class="property">: tuple</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.TargetObject.bbox" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.TargetObject.boxid">
+<code class="sig-name descname">boxid</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.TargetObject.boxid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.PDF.TargetObject.text">
+<code class="sig-name descname">text</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.PDF.TargetObject.text" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
