@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+7.2.0
+-----
+
 - Library **RPA.Desktop.Windows**:
 
   - Add keyword ``Refresh Window`` to support element re-evaluation when UI changes
