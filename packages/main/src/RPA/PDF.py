@@ -60,6 +60,14 @@ def iterable_items_to_int(bbox):
 logging.getLogger("pdfminer").setLevel(logging.WARNING)
 
 
+class TargetObject:
+    """Container for Target text box"""
+
+    boxid: int
+    bbox: tuple
+    text: str
+
+
 class RpaFigure:
     """Class for each LTFigure element in the PDF"""
 
@@ -439,6 +447,7 @@ class PDF(FPDF, HTMLMixin):
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
+    PIXEL_TOLERANCE = 5
 
     anchor_element: dict
     active_fileobject: object
@@ -710,11 +719,14 @@ class PDF(FPDF, HTMLMixin):
         with open(str(output_filepath), "wb") as f:
             writer.write(f)
 
-    def get_text_from_pdf(self, source_pdf: str = None, pages: Any = None) -> dict:
+    def get_text_from_pdf(
+        self, source_pdf: str = None, pages: Any = None, details: bool = False
+    ) -> dict:
         """Get text from set of pages in source PDF document.
 
         :param source_pdf: filepath to the source pdf
         :param pages: page numbers to get text (numbers start from 0)
+        :param details: set to `True` to return textboxes, default `False`
         :return: dictionary of pages and their texts
 
         PDF needs to be parsed before text can be read.
@@ -728,13 +740,12 @@ class PDF(FPDF, HTMLMixin):
             pages = list(map(int, pages))
         pdf_text = {}
         for idx, page in self.rpa_pdf_document.get_pages().items():
-            self.logger.info("%s:%s", idx, pages)
+            pdf_text[idx] = [] if details else ""
             for _, item in page.get_textboxes().items():
-                if pages is None or idx in pages:
-                    if idx in pdf_text:
-                        pdf_text[idx] += item.text
-                    else:
-                        pdf_text[idx] = item.text
+                if details:
+                    pdf_text[idx].append(item)
+                else:
+                    pdf_text[idx] += item.text
         return pdf_text
 
     def page_rotate(
@@ -1044,6 +1055,34 @@ class PDF(FPDF, HTMLMixin):
             if match:
                 self.anchor_element = match
                 return True
+        elif locator.startswith("coords:"):
+            _, locator = locator.split(":", 1)
+            coords = locator.split(",")
+            if len(coords) == 2:
+                left, bottom = coords
+                top = bottom
+                right = left
+            elif len(coords) == 4:
+                left, bottom, right, top = coords
+            else:
+                raise ValueError("Give 2 coordinates for point, or 4 for area")
+            self.anchor_element = TargetObject()
+            self.anchor_element.boxid = -1
+            self.anchor_element.bbox = (
+                int(left),
+                int(bottom),
+                int(right),
+                int(top),
+            )
+            self.anchor_element.text = None
+            return True
+        else:
+            # use "text" criteria by default
+            criteria = "text"
+            match = self._find_matching_textbox(criteria, locator)
+            if match:
+                self.anchor_element = match
+                return True
         self.anchor_element = None
         return False
 
@@ -1077,6 +1116,7 @@ class PDF(FPDF, HTMLMixin):
         direction: str = "right",
         strict: bool = False,
         regexp: str = None,
+        only_closest: bool = True,
     ) -> str:
         """Get closest text (value) to anchor element.
 
@@ -1085,61 +1125,81 @@ class PDF(FPDF, HTMLMixin):
         :param locator: element to set anchor to
         :param pagenum: page number where search if performed on, default 1 (first)
         :param direction: in which direction to search for text,
-            directions  'top', 'bottom', 'left' or 'right', defaults to 'right'
+            directions  'top'/'up', 'bottom'/'down', 'left' or 'right',
+            defaults to 'right'
         :param strict: if element margins should be used for matching points,
             used when direction is 'top' or 'bottom', default `False`
         :param regexp: expected format of value to match, defaults to None
+        :param only_closest: return all possible values or only the closest
         :return: closest matching text or `None`
         """
         self.logger.debug(
-            "get_value_from_anchor: ('locator=%s', 'direction=%s', 'regexp=%s')",
+            "Get Value From Anchor: ('locator=%s', 'direction=%s', 'regexp=%s')",
             locator,
             direction,
             regexp,
         )
         self.set_anchor_to_element(locator)
+        possibles = []
         if self.anchor_element:
             self.logger.debug("we have anchor: %s", self.anchor_element.bbox)
-            possibles = []
             page = self.rpa_pdf_document.get_page(int(pagenum))
             for _, item in page.get_textboxes().items():
+                possible = None
                 # Skip anchor element from matching
                 if item.boxid == self.anchor_element.boxid:
                     continue
                 if direction in ["left", "right"]:
-                    text = self._is_match_on_horizontal(direction, item, regexp)
-                    if text:
-                        return item
-                elif direction in ["top", "bottom"]:
+                    possible = self._is_match_on_horizontal(direction, item, regexp)
+                elif direction in ["top", "bottom", "up", "down"]:
                     possible = self._is_match_on_vertical(
                         direction, item, strict, regexp
                     )
-                    if possible:
-                        possibles.append(possible)
-            return self._get_closest_from_possibles(direction, possibles)
+                elif direction == "box":
+                    possible = self._is_match_in_box(item)
+                if possible:
+                    possibles.append(possible)
+            if only_closest:
+                return self._get_closest_from_possibles(direction, possibles)
+            else:
+                return possibles
         self.logger.info("NO ANCHOR")
-        return None
+        return possibles
+
+    def _is_within_tolerance(self, base, target):
+        max_target = target + self.PIXEL_TOLERANCE
+        min_target = max(target - self.PIXEL_TOLERANCE, 0)
+        return min_target <= base <= max_target
 
     def _is_match_on_horizontal(self, direction, item, regexp):
         (left, _, right, top) = self.anchor_element.bbox
-        text = None
-        if direction == "right" and item.top == top and item.left > right:
-            self.logger.debug("MATCH %s %s %s", item.boxid, item.text, item.bbox)
-            text = item
-        elif direction == "left" and item.top == top and item.right < left:
-            self.logger.debug("MATCH %s %s %s", item.boxid, item.text, item.bbox)
-            text = item
-        if regexp and text and re.match(regexp, text):
-            return item
-        elif regexp is None and text:
-            return item
-        return None
+        match = False
+        direction_ok = False
+        if (
+            direction == "right"
+            and self._is_within_tolerance(item.top, top)
+            and item.left >= right
+        ):
+            direction_ok = True
+        elif (
+            direction == "left"
+            and self._is_within_tolerance(item.top, top)
+            and item.right <= left
+        ):
+            direction_ok = True
+        if regexp and direction_ok and item and re.match(regexp, item.text):
+            match = True
+        elif regexp is None and direction_ok and item:
+            match = True
+        return item if match else None
 
     def _is_match_on_vertical(self, direction, item, strict, regexp):
         (left, bottom, right, top) = self.anchor_element.bbox
         text = None
-        if (direction == "bottom" and item.top < bottom) or (
-            direction == "top" and item.bottom > top
+        direction_down = direction in ["bottom", "down"]
+        direction_up = direction in ["top", "up"]
+        if (direction_down and item.top <= bottom) or (
+            direction_up and item.bottom >= top
         ):
             if not strict and (item.right <= right or item.left >= left):
                 text = item
@@ -1157,12 +1217,24 @@ class PDF(FPDF, HTMLMixin):
                 return item
         return None
 
+    def _is_match_in_box(self, item):
+        (left, bottom, right, top) = self.anchor_element.bbox
+        if (
+            left <= item.left
+            and right >= item.right
+            and bottom <= item.bottom
+            and top >= item.top
+        ):
+            return item
+        return None
+
     def _get_closest_from_possibles(self, direction, possibles):
         distance = 500000
         closest = None
         (_, bottom, right, top) = self.anchor_element.bbox
+        direction_down = direction in ["bottom", "down"]
         for p in possibles:
-            if direction == "bottom":
+            if direction_down:
                 vertical_distance = bottom - p.top
             else:
                 vertical_distance = top - p.bottom

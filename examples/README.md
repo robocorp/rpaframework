@@ -1,5 +1,9 @@
 # Code examples
 
+## manipulating-pdf
+
+Python syntax example of working with PDFs.
+
 ## windows-basics
 
 Python and RFW syntax example of Windows basic operations with Calculator and Notepad.
