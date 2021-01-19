@@ -22,8 +22,8 @@ Hash string change method
 
 Encrypt string
     ${key}=    Command  key
-    ${enc}=    Command  encrypt  -t  ${key.stdout}  ${PLAINTEXT_FILE}  ${OUTPUT_DIR}${/}encrypted.bin
-    ${dec}=    Command  decrypt  -t  ${key.stdout}  ${OUTPUT_DIR}${/}encrypted.bin
+    ${enc}=    Command  encrypt  -t  "${key.stdout}"  ${PLAINTEXT_FILE}  ${OUTPUT_DIR}${/}encrypted.bin
+    ${dec}=    Command  decrypt  -t  "${key.stdout}"  ${OUTPUT_DIR}${/}encrypted.bin
     Should be equal    ${dec.stdout}    avalue
 
 *** Keywords ***
