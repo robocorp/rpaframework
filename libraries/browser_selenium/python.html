@@ -1010,7 +1010,7 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 <dt id="RPA.Browser.Selenium.Selenium.highlight_elements">
 <code class="sig-name descname">highlight_elements</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">width: str = '2px'</em>, <em class="sig-param">style: str = 'dotted'</em>, <em class="sig-param">color: str = 'blue'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.highlight_elements" title="Permalink to this definition">¶</a></dt>
 <dd><p>Highlight all matching elements by locator.</p>
-<p>Highlighing is done by adding a colored outline
+<p>Highlighting is done by adding a colored outline
 around the elements with CSS styling.</p>
 <p><code class="docutils literal notranslate"><span class="pre">locator</span></code>  element locator
 <code class="docutils literal notranslate"><span class="pre">width</span></code>    highlight outline width
@@ -1316,6 +1316,27 @@ descriptions of arguments.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Browser.Selenium.Selenium.print_to_pdf">
+<code class="sig-name descname">print_to_pdf</code><span class="sig-paren">(</span><em class="sig-param">output_path: str = None</em>, <em class="sig-param">params: dict = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.print_to_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the current page to a PDF document using Chromium devtools.</p>
+<p>For supported parameters see:
+<a class="reference external" href="https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF">https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF</a></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">output_path</span></code> filepath for the generated pdf. By default it is saved to</dt><dd><p>the output folder with name <cite>out.pdf</cite>.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">params</span></code> parameters for the Chrome print method. By default uses values:</p>
+<dl class="simple">
+<dt><a href="#id3"><span class="problematic" id="id4">``</span></a>{</dt><dd><p>“landscape”: False,
+“displayHeaderFooter”: False,
+“printBackground”: True,
+“preferCSSPageSize”: True,</p>
+</dd>
+</dl>
+<p>}``</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.register_driver">
 <code class="sig-name descname">register_driver</code><span class="sig-paren">(</span><em class="sig-param">driver</em>, <em class="sig-param">alias</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.register_driver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add’s a <cite>driver</cite> to the library WebDriverCache.</p>
@@ -1349,12 +1370,12 @@ descriptions of arguments.</p>
 if set to <cite>None</cite> then file is not saved at all</p>
 <p>Example:</p>
 <div class="line-block">
-<div class="line">Screenshot | locator=//img[&#64;alt=”Google”] | filename=locator.png |             # element screenshot, defined filename</div>
-<div class="line">Screenshot | filename=page.png        |                                    # page screenshot, defined filename</div>
-<div class="line">Screenshot | filename=${NONE}         |                                    # page screenshot, NO file will be created</div>
-<div class="line">Screenshot |                          |                                    # page screenshot, default filename</div>
-<div class="line">Screenshot | locator=//img[&#64;alt=”Google”] |                                    # element screenshot, default filename</div>
-<div class="line">Screenshot | locator=//img[&#64;alt=”Google”] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing</div>
+<div class="line">Screenshot | locator=//img[&#64;alt=”Google”] | filename=locator.png              | # element screenshot, defined filename            |</div>
+<div class="line">Screenshot | filename=page.png            |                                   | # page screenshot, defined filename               |</div>
+<div class="line">Screenshot | filename=${NONE}             |                                   | # page screenshot, NO file will be created        |</div>
+<div class="line">Screenshot |                              |                                   | # page screenshot, default filename               |</div>
+<div class="line">Screenshot | locator=//img[&#64;alt=”Google”] |                                   | # element screenshot, default filename            |</div>
+<div class="line">Screenshot | locator=//img[&#64;alt=”Google”] | filename=${CURDIR}/subdir/loc.png | # element screenshot, create dirs if not existing |</div>
 </div>
 </dd></dl>
 

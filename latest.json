@@ -5,7 +5,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:09",
+        "generated": "2021-01-19 08:43:23",
         "inits": [],
         "keywords": [
             {
@@ -103,7 +103,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:09",
+        "generated": "2021-01-19 08:43:24",
         "inits": [
             {
                 "name": "Init",
@@ -1243,7 +1243,7 @@
                     "style: str = dotted",
                     "color: str = blue"
                 ],
-                "doc": "<p>Highlight all matching elements by locator.</p>\n<p>Highlighing is done by adding a colored outline around the elements with CSS styling.</p>\n<p><code>locator</code>  element locator <code>width</code>    highlight outline width <code>style</code>    highlight outline style <code>color</code>    highlight outline color</p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td>Highlight Elements</td>\n<td><a href=\"xpath://h2\">xpath://h2</a></td>\n</tr>\n</table>",
+                "doc": "<p>Highlight all matching elements by locator.</p>\n<p>Highlighting is done by adding a colored outline around the elements with CSS styling.</p>\n<p><code>locator</code>  element locator <code>width</code>    highlight outline width <code>style</code>    highlight outline style <code>color</code>    highlight outline color</p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td>Highlight Elements</td>\n<td><a href=\"xpath://h2\">xpath://h2</a></td>\n</tr>\n</table>",
                 "shortdoc": "Highlight all matching elements by locator.",
                 "tags": [],
                 "matched": true
@@ -1942,6 +1942,17 @@
                 "matched": true
             },
             {
+                "name": "Print To Pdf",
+                "args": [
+                    "output_path: str = None",
+                    "params: dict = None"
+                ],
+                "doc": "<p>Print the current page to a PDF document using Chromium devtools.</p>\n<p>For supported parameters see: <a href=\"https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF\">https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF</a></p>\n<p><code>output_path</code> filepath for the generated pdf. By default it is saved to the output folder with name <span class=\"name\">out.pdf</span>.</p>\n<p><code>params</code> parameters for the Chrome print method. By default uses values:</p>\n<p><code>{ \"landscape\": False, \"displayHeaderFooter\": False, \"printBackground\": True, \"preferCSSPageSize\": True, }</code></p>",
+                "shortdoc": "Print the current page to a PDF document using Chromium devtools.",
+                "tags": [],
+                "matched": true
+            },
+            {
                 "name": "Radio Button Should Be Set To",
                 "args": [
                     "group_name",
@@ -1996,7 +2007,7 @@
                     "locator: str = None",
                     "filename: str = "
                 ],
-                "doc": "<p>Capture page and/or element screenshot.</p>\n<p><code>locator</code> if defined, take element screenshot, if not takes page screenshot</p>\n<p><code>filename</code> filename for the screenshot, by default creates file <span class=\"name\">screenshot-timestamp-element/page.png</span> if set to <span class=\"name\">None</span> then file is not saved at all</p>\n<p>Example:</p>\n<pre>\nScreenshot | locator=//img[@alt=\"Google\"] | filename=locator.png |             # element screenshot, defined filename\nScreenshot | filename=page.png        |                                    # page screenshot, defined filename\nScreenshot | filename=${NONE}         |                                    # page screenshot, NO file will be created\nScreenshot |                          |                                    # page screenshot, default filename\nScreenshot | locator=//img[@alt=\"Google\"] |                                    # element screenshot, default filename\nScreenshot | locator=//img[@alt=\"Google\"] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing\n</pre>",
+                "doc": "<p>Capture page and/or element screenshot.</p>\n<p><code>locator</code> if defined, take element screenshot, if not takes page screenshot</p>\n<p><code>filename</code> filename for the screenshot, by default creates file <span class=\"name\">screenshot-timestamp-element/page.png</span> if set to <span class=\"name\">None</span> then file is not saved at all</p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td>Screenshot</td>\n<td>locator=//img[@alt=\"Google\"]</td>\n<td>filename=locator.png</td>\n<td># element screenshot, defined filename</td>\n</tr>\n<tr>\n<td>Screenshot</td>\n<td>filename=page.png</td>\n<td></td>\n<td># page screenshot, defined filename</td>\n</tr>\n<tr>\n<td>Screenshot</td>\n<td>filename=${NONE}</td>\n<td></td>\n<td># page screenshot, NO file will be created</td>\n</tr>\n<tr>\n<td>Screenshot</td>\n<td></td>\n<td></td>\n<td># page screenshot, default filename</td>\n</tr>\n<tr>\n<td>Screenshot</td>\n<td>locator=//img[@alt=\"Google\"]</td>\n<td></td>\n<td># element screenshot, default filename</td>\n</tr>\n<tr>\n<td>Screenshot</td>\n<td>locator=//img[@alt=\"Google\"]</td>\n<td>filename=${CURDIR}/subdir/loc.png</td>\n<td># element screenshot, create dirs if not existing</td>\n</tr>\n</table>",
                 "shortdoc": "Capture page and/or element screenshot.",
                 "tags": [],
                 "matched": true
@@ -2622,7 +2633,7 @@
         "version": "2.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:10",
+        "generated": "2021-01-19 08:43:24",
         "inits": [
             {
                 "name": "Init",
@@ -4154,7 +4165,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:10",
+        "generated": "2021-01-19 08:43:25",
         "inits": [
             {
                 "name": "Init",
@@ -5294,7 +5305,7 @@
                     "style: str = dotted",
                     "color: str = blue"
                 ],
-                "doc": "<p>Highlight all matching elements by locator.</p>\n<p>Highlighing is done by adding a colored outline around the elements with CSS styling.</p>\n<p><code>locator</code>  element locator <code>width</code>    highlight outline width <code>style</code>    highlight outline style <code>color</code>    highlight outline color</p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td>Highlight Elements</td>\n<td><a href=\"xpath://h2\">xpath://h2</a></td>\n</tr>\n</table>",
+                "doc": "<p>Highlight all matching elements by locator.</p>\n<p>Highlighting is done by adding a colored outline around the elements with CSS styling.</p>\n<p><code>locator</code>  element locator <code>width</code>    highlight outline width <code>style</code>    highlight outline style <code>color</code>    highlight outline color</p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td>Highlight Elements</td>\n<td><a href=\"xpath://h2\">xpath://h2</a></td>\n</tr>\n</table>",
                 "shortdoc": "Highlight all matching elements by locator.",
                 "tags": [],
                 "matched": true
@@ -5993,6 +6004,17 @@
                 "matched": true
             },
             {
+                "name": "Print To Pdf",
+                "args": [
+                    "output_path: str = None",
+                    "params: dict = None"
+                ],
+                "doc": "<p>Print the current page to a PDF document using Chromium devtools.</p>\n<p>For supported parameters see: <a href=\"https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF\">https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF</a></p>\n<p><code>output_path</code> filepath for the generated pdf. By default it is saved to the output folder with name <span class=\"name\">out.pdf</span>.</p>\n<p><code>params</code> parameters for the Chrome print method. By default uses values:</p>\n<p><code>{ \"landscape\": False, \"displayHeaderFooter\": False, \"printBackground\": True, \"preferCSSPageSize\": True, }</code></p>",
+                "shortdoc": "Print the current page to a PDF document using Chromium devtools.",
+                "tags": [],
+                "matched": true
+            },
+            {
                 "name": "Radio Button Should Be Set To",
                 "args": [
                     "group_name",
@@ -6047,7 +6069,7 @@
                     "locator: str = None",
                     "filename: str = "
                 ],
-                "doc": "<p>Capture page and/or element screenshot.</p>\n<p><code>locator</code> if defined, take element screenshot, if not takes page screenshot</p>\n<p><code>filename</code> filename for the screenshot, by default creates file <span class=\"name\">screenshot-timestamp-element/page.png</span> if set to <span class=\"name\">None</span> then file is not saved at all</p>\n<p>Example:</p>\n<pre>\nScreenshot | locator=//img[@alt=\"Google\"] | filename=locator.png |             # element screenshot, defined filename\nScreenshot | filename=page.png        |                                    # page screenshot, defined filename\nScreenshot | filename=${NONE}         |                                    # page screenshot, NO file will be created\nScreenshot |                          |                                    # page screenshot, default filename\nScreenshot | locator=//img[@alt=\"Google\"] |                                    # element screenshot, default filename\nScreenshot | locator=//img[@alt=\"Google\"] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing\n</pre>",
+                "doc": "<p>Capture page and/or element screenshot.</p>\n<p><code>locator</code> if defined, take element screenshot, if not takes page screenshot</p>\n<p><code>filename</code> filename for the screenshot, by default creates file <span class=\"name\">screenshot-timestamp-element/page.png</span> if set to <span class=\"name\">None</span> then file is not saved at all</p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td>Screenshot</td>\n<td>locator=//img[@alt=\"Google\"]</td>\n<td>filename=locator.png</td>\n<td># element screenshot, defined filename</td>\n</tr>\n<tr>\n<td>Screenshot</td>\n<td>filename=page.png</td>\n<td></td>\n<td># page screenshot, defined filename</td>\n</tr>\n<tr>\n<td>Screenshot</td>\n<td>filename=${NONE}</td>\n<td></td>\n<td># page screenshot, NO file will be created</td>\n</tr>\n<tr>\n<td>Screenshot</td>\n<td></td>\n<td></td>\n<td># page screenshot, default filename</td>\n</tr>\n<tr>\n<td>Screenshot</td>\n<td>locator=//img[@alt=\"Google\"]</td>\n<td></td>\n<td># element screenshot, default filename</td>\n</tr>\n<tr>\n<td>Screenshot</td>\n<td>locator=//img[@alt=\"Google\"]</td>\n<td>filename=${CURDIR}/subdir/loc.png</td>\n<td># element screenshot, create dirs if not existing</td>\n</tr>\n</table>",
                 "shortdoc": "Capture page and/or element screenshot.",
                 "tags": [],
                 "matched": true
@@ -6673,7 +6695,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:10",
+        "generated": "2021-01-19 08:43:25",
         "inits": [
             {
                 "name": "Init",
@@ -7026,7 +7048,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:11",
+        "generated": "2021-01-19 08:43:25",
         "inits": [
             {
                 "name": "Init",
@@ -7244,7 +7266,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:11",
+        "generated": "2021-01-19 08:43:25",
         "inits": [
             {
                 "name": "Init",
@@ -7816,7 +7838,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:12",
+        "generated": "2021-01-19 08:43:26",
         "inits": [],
         "keywords": [
             {
@@ -7925,7 +7947,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:12",
+        "generated": "2021-01-19 08:43:26",
         "inits": [],
         "keywords": [
             {
@@ -8043,7 +8065,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:12",
+        "generated": "2021-01-19 08:43:26",
         "inits": [],
         "keywords": [
             {
@@ -8383,7 +8405,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:12",
+        "generated": "2021-01-19 08:43:27",
         "inits": [],
         "keywords": [
             {
@@ -8422,7 +8444,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:12",
+        "generated": "2021-01-19 08:43:27",
         "inits": [],
         "keywords": [
             {
@@ -8519,7 +8541,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:13",
+        "generated": "2021-01-19 08:43:27",
         "inits": [
             {
                 "name": "Init",
@@ -9119,7 +9141,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:13",
+        "generated": "2021-01-19 08:43:28",
         "inits": [
             {
                 "name": "Init",
@@ -9286,7 +9308,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:14",
+        "generated": "2021-01-19 08:43:28",
         "inits": [],
         "keywords": [
             {
@@ -9415,7 +9437,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:14",
+        "generated": "2021-01-19 08:43:28",
         "inits": [
             {
                 "name": "Init",
@@ -9746,7 +9768,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:14",
+        "generated": "2021-01-19 08:43:29",
         "inits": [],
         "keywords": [
             {
@@ -9912,7 +9934,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:15",
+        "generated": "2021-01-19 08:43:29",
         "inits": [],
         "keywords": [
             {
@@ -10109,7 +10131,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:15",
+        "generated": "2021-01-19 08:43:29",
         "inits": [],
         "keywords": [
             {
@@ -10306,7 +10328,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:15",
+        "generated": "2021-01-19 08:43:29",
         "inits": [],
         "keywords": [
             {
@@ -10790,7 +10812,7 @@
         "version": "0.7.2",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:16",
+        "generated": "2021-01-19 08:43:30",
         "inits": [
             {
                 "name": "Init",
@@ -10821,7 +10843,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'HEAD', 'DELETE', 'TRACE', 'OPTIONS', 'PUT']"
+                    "retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'GET', 'DELETE', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>client_certs</code> ['client certificate', 'client key'] PEM files containing the client key and certificate</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10844,7 +10866,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'HEAD', 'DELETE', 'TRACE', 'OPTIONS', 'PUT']"
+                    "retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'GET', 'DELETE', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> A Custom Authentication object to be passed on to the requests library. <a href=\"http://docs.python-requests.org/en/master/user/advanced/#custom-authentication\">http://docs.python-requests.org/en/master/user/advanced/#custom-authentication</a></p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10867,7 +10889,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'HEAD', 'DELETE', 'TRACE', 'OPTIONS', 'PUT']"
+                    "retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'GET', 'DELETE', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10890,7 +10912,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'HEAD', 'DELETE', 'TRACE', 'OPTIONS', 'PUT']"
+                    "retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'GET', 'DELETE', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10913,7 +10935,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['GET', 'HEAD', 'DELETE', 'TRACE', 'OPTIONS', 'PUT']"
+                    "retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'GET', 'DELETE', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> List of username &amp; password for HTTP Basic Auth</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -11157,7 +11179,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:16",
+        "generated": "2021-01-19 08:43:30",
         "inits": [],
         "keywords": [
             {
@@ -11276,7 +11298,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:16",
+        "generated": "2021-01-19 08:43:30",
         "inits": [],
         "keywords": [
             {
@@ -11387,7 +11409,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:16",
+        "generated": "2021-01-19 08:43:30",
         "inits": [],
         "keywords": [
             {
@@ -11547,7 +11569,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:16",
+        "generated": "2021-01-19 08:43:30",
         "inits": [],
         "keywords": [
             {
@@ -11642,7 +11664,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:16",
+        "generated": "2021-01-19 08:43:30",
         "inits": [],
         "keywords": [
             {
@@ -11712,7 +11734,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:17",
+        "generated": "2021-01-19 08:43:31",
         "inits": [
             {
                 "name": "Init",
@@ -12651,7 +12673,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:17",
+        "generated": "2021-01-19 08:43:31",
         "inits": [
             {
                 "name": "Init",
@@ -12740,7 +12762,7 @@
                 "name": "Get Work Item Variable",
                 "args": [
                     "name",
-                    "default=<object object at 0x00000162889D5B00>"
+                    "default=<object object at 0x000002042AF87D80>"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a single variable value from the work item,\nor default value if defined and key does not exist.\nIf key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param key:</th><td class=\"field-body\">Name of variable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param default:</th><td class=\"field-body\">Default value if key does not exist</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${username}=</span><span class=\"p\">    </span><span class=\"c\">Get work item variable</span><span class=\"p\">    </span><span class=\"c\">username</span><span class=\"p\">    </span><span class=\"c\">default=guest</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Return a single variable value from the work item, or default value if defined and key does not exist. If key does not exist and default is not defined, raises <cite>KeyError</cite>.",
@@ -12869,7 +12891,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:18",
+        "generated": "2021-01-19 08:43:32",
         "inits": [
             {
                 "name": "Init",
@@ -12904,7 +12926,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:18",
+        "generated": "2021-01-19 08:43:32",
         "inits": [],
         "keywords": [
             {
@@ -12970,7 +12992,7 @@
         "version": "1.1",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:18",
+        "generated": "2021-01-19 08:43:32",
         "inits": [
             {
                 "name": "Init",
@@ -13387,7 +13409,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:18",
+        "generated": "2021-01-19 08:43:32",
         "inits": [
             {
                 "name": "Init",
@@ -13644,7 +13666,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:18",
+        "generated": "2021-01-19 08:43:32",
         "inits": [],
         "keywords": [
             {
@@ -13671,7 +13693,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:18",
+        "generated": "2021-01-19 08:43:32",
         "inits": [],
         "keywords": [
             {
@@ -14047,7 +14069,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:19",
+        "generated": "2021-01-19 08:43:33",
         "inits": [
             {
                 "name": "Init",
@@ -14166,7 +14188,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:19",
+        "generated": "2021-01-19 08:43:33",
         "inits": [],
         "keywords": [
             {
@@ -14289,7 +14311,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-12 18:33:19",
+        "generated": "2021-01-19 08:43:33",
         "inits": [],
         "keywords": [
             {
