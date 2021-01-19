@@ -61,7 +61,7 @@ logging.getLogger("pdfminer").setLevel(logging.WARNING)
 
 
 class TargetObject:
-    """Class for Target text box"""
+    """Container for Target text box"""
 
     boxid: int
     bbox: tuple
@@ -1160,12 +1160,8 @@ class PDF(FPDF, HTMLMixin):
         return possibles
 
     def _is_within_tolerance(self, base, target):
-        min_target = (
-            target
-            if (target - self.PIXEL_TOLERANCE) < 0
-            else target - self.PIXEL_TOLERANCE
-        )
         max_target = target + self.PIXEL_TOLERANCE
+        min_target = max(target - self.PIXEL_TOLERANCE, 0)
         return min_target <= base <= max_target
 
     def _is_match_on_horizontal(self, direction, item, regexp):
@@ -1181,7 +1177,7 @@ class PDF(FPDF, HTMLMixin):
         elif (
             direction == "left"
             and self._is_within_tolerance(item.top, top)
-            and item.right < left
+            and item.right <= left
         ):
             direction_ok = True
         if regexp and direction_ok and item and re.match(regexp, item.text):
@@ -1195,8 +1191,8 @@ class PDF(FPDF, HTMLMixin):
         text = None
         direction_down = direction in ["bottom", "down"]
         direction_up = direction in ["top", "up"]
-        if (direction_down and item.top < bottom) or (
-            direction_up and item.bottom > top
+        if (direction_down and item.top <= bottom) or (
+            direction_up and item.bottom >= top
         ):
             if not strict and (item.right <= right or item.left >= left):
                 text = item

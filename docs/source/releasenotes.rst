@@ -25,8 +25,8 @@ Upcoming release
 
 - Library **RPA.PDF**:
 
-  - Add possibility to get textboxes from PDF (text and its coordinates) with ``Get Text From PDF``
-  - Add possibility to set anchor to point or area for ``Get Value From Anchor``
+  - Add possibility to get textboxes (text and its coordinates) with keyword ``Get Text From PDF``
+  - Add possibility to set anchor to point or area for keyword ``Get Value From Anchor``
 
 7.1.1
 -----
