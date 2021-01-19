@@ -1076,6 +1076,13 @@ class PDF(FPDF, HTMLMixin):
             )
             self.anchor_element.text = None
             return True
+        else:
+            # use "text" criteria by default
+            criteria = "text"
+            match = self._find_matching_textbox(criteria, locator)
+            if match:
+                self.anchor_element = match
+                return True
         self.anchor_element = None
         return False
 
@@ -1127,7 +1134,7 @@ class PDF(FPDF, HTMLMixin):
         :return: closest matching text or `None`
         """
         self.logger.debug(
-            "get_value_from_anchor: ('locator=%s', 'direction=%s', 'regexp=%s')",
+            "Get Value From Anchor: ('locator=%s', 'direction=%s', 'regexp=%s')",
             locator,
             direction,
             regexp,
