@@ -4,6 +4,20 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Desktop.Windows**:
+
+  - Add keyword ``Refresh Window`` to support element re-evaluation when UI changes
+  - Improve ``Restore Dialog`` keyword
+  - Add experimental support for combined locators like ``name:element1 and type:Button``
+  - Add window title wildcard support for keywords starting applications and ``Open Dialog``
+  - Fix ``Quit Application`` error when using process id to quit
+  - Add ``focus`` parameter to ``Mouse Click`` keyword
+  - Add ``legacy`` and ``object`` attributes to element dictionary
+  - Fix ``Wait For Element`` error when asserting number of elements to wait
+  - Fix ``Open File`` by adding parameters to control window it opens
+  - Fix ``Connect By Handle`` parameter type to int
+
+- Library **RPA.Desktop.OperatingSystem**: Add keyword ``Process ID Exists``
 - Library **RPA.Browser.Selenium**:
 
   - Add keyword ``Print to PDF``
