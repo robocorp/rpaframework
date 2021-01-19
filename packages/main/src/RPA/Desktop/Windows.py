@@ -690,7 +690,7 @@ class Windows(OperatingSystem):
         return None
 
     def connect_by_handle(
-        self, handle: str, windowtitle: str = None, existing_app: bool = False
+        self, handle: int, windowtitle: str = None, existing_app: bool = False
     ) -> Any:
         """Connect to application by its handle
 
