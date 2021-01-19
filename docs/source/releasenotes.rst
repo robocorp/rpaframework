@@ -14,6 +14,7 @@ Upcoming release
   - Add ``focus`` parameter to ``Mouse Click`` keyword
   - Add ``legacy`` and ``object`` attributes to element dictionary
   - Fix ``Wait For Element`` error when asserting number of elements to wait
+  - Fix ``Open File`` by adding parameters to control window it opens
 
 - Library **RPA.Desktop.OperatingSystem**: Add keyword ``Process ID Exists``
 - Library **RPA.Browser.Selenium**:

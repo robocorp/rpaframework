@@ -1,8 +1,8 @@
 # Code examples
 
-## windows-calculator
+## windows-basics
 
-Python and RFW syntax example of Windows Calculator
+Python and RFW syntax example of Windows basic operations with Calculator and Notepad.
 
 ## windows-uidemo-application
 

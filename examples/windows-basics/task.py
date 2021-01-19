@@ -1,5 +1,6 @@
 """ Windows Calculator robot. """
 import logging
+from pathlib import Path
 import sys
 from time import sleep
 
@@ -45,7 +46,7 @@ def open_navigation(navigation_item):
     library.refresh_window()
 
 
-def main():
+def open_calculator():
     library.open_executable("calc.exe", "Calculator")
     open_navigation("Standard Calculator")
     controls, elements = library.get_window_elements()
@@ -72,10 +73,18 @@ def minimize_maximize(windowtitle):
     library.restore_dialog(windowtitle)
 
 
+def open_text_file():
+    filepath = Path(__file__).parent / "mytextfile.txt"
+    library.open_file(filepath.absolute(), "Notepad", wildcard=True)
+    element = library.get_element("class:Edit")
+    assert element["legacy"]["Value"] == "Story of the Windows RPA"
+
+
 if __name__ == "__main__":
     library = Windows()
     try:
-        main()
+        open_text_file()
+        open_calculator()
         minimize_maximize("Calculator")
         open_navigation("Standard Calculator")
         library.mouse_click("Clear")
