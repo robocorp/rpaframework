@@ -1,5 +1,6 @@
 import base64
 import importlib
+import json
 import logging
 import os
 import platform
@@ -11,6 +12,7 @@ from typing import Any, Optional
 from pathlib import Path
 import webbrowser
 
+import robot
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from SeleniumLibrary import SeleniumLibrary, EMBED
 from SeleniumLibrary.base import keyword
@@ -624,7 +626,7 @@ class Selenium(SeleniumLibrary):
                 kwargs["service_log_path"] = "chromedriver.log"
                 kwargs["service_args"] = ["--verbose"]
 
-            kwargs["chrome_options"] = options
+            kwargs["options"] = options
 
         return kwargs, options.arguments
 
@@ -748,9 +750,7 @@ class Selenium(SeleniumLibrary):
         """
         options = ChromeOptions()
         options.add_experimental_option("debuggerAddress", f"localhost:{port:d}")
-        create = partial(
-            self._create_webdriver, "Chrome", alias, chrome_options=options
-        )
+        create = partial(self._create_webdriver, "Chrome", alias, options=options)
 
         try:
             return create(download=False)
@@ -786,12 +786,12 @@ class Selenium(SeleniumLibrary):
 
         Example:
 
-        | Screenshot | locator=//img[@alt="Google"] | filename=locator.png |             # element screenshot, defined filename
-        | Screenshot | filename=page.png        |                                    # page screenshot, defined filename
-        | Screenshot | filename=${NONE}         |                                    # page screenshot, NO file will be created
-        | Screenshot |                          |                                    # page screenshot, default filename
-        | Screenshot | locator=//img[@alt="Google"] |                                    # element screenshot, default filename
-        | Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png  # element screenshot, create dirs if not existing
+        | Screenshot | locator=//img[@alt="Google"] | filename=locator.png              | # element screenshot, defined filename            |
+        | Screenshot | filename=page.png            |                                   | # page screenshot, defined filename               |
+        | Screenshot | filename=${NONE}             |                                   | # page screenshot, NO file will be created        |
+        | Screenshot |                              |                                   | # page screenshot, default filename               |
+        | Screenshot | locator=//img[@alt="Google"] |                                   | # element screenshot, default filename            |
+        | Screenshot | locator=//img[@alt="Google"] | filename=${CURDIR}/subdir/loc.png | # element screenshot, create dirs if not existing |
         """  # noqa: E501
         screenshot_keywords = ScreenshotKeywords(self)
         default_filename_prefix = f"screenshot-{int(time.time())}"
@@ -1644,7 +1644,7 @@ class Selenium(SeleniumLibrary):
         """
         Highlight all matching elements by locator.
 
-        Highlighing is done by adding a colored outline
+        Highlighting is done by adding a colored outline
         around the elements with CSS styling.
 
         ``locator``  element locator
@@ -1695,6 +1695,63 @@ class Selenium(SeleniumLibrary):
             for idx in range(len(elements))
         )
         self.driver.execute_script(script, *elements)
+
+    @keyword
+    def print_to_pdf(self, output_path: str = None, params: dict = None):
+        """
+        Print the current page to a PDF document using Chromium devtools.
+
+        For supported parameters see:
+        https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
+
+        ``output_path`` filepath for the generated pdf. By default it is saved to
+          the output folder with name `out.pdf`.
+
+        ``params`` parameters for the Chrome print method. By default uses values:
+
+        ``{
+            "landscape": False,
+            "displayHeaderFooter": False,
+            "printBackground": True,
+            "preferCSSPageSize": True,
+        }``
+        """
+        if "chrom" not in self.driver.name:
+            raise NotImplementedError("PDF printing works only with Chrome/Chromium")
+
+        def send_command_and_get_result(cmd, params):
+            resource = (
+                f"session/{self.driver.session_id}/chromium/send_command_and_get_result"
+            )
+            # pylint: disable=protected-access
+            url = f"{self.driver.command_executor._url}/{resource}"
+            body = json.dumps({"cmd": cmd, "params": params})
+            response = self.driver.command_executor._request("POST", url, body)
+
+            return response.get("value")
+
+        default_params = {
+            "landscape": False,
+            "displayHeaderFooter": False,
+            "printBackground": True,
+            "preferCSSPageSize": True,
+        }
+
+        try:
+            output_dir = BuiltIn().get_variable_value("${OUTPUT_DIR}", "output")
+        except robot.libraries.BuiltIn.RobotNotRunningError:
+            output_dir = "output"
+        default_output = f"{output_dir}/out.pdf"
+        output_path = output_path or default_output
+
+        params = params or default_params
+        result = send_command_and_get_result("Page.printToPDF", params)
+        pdf = base64.b64decode(result["data"])
+
+        with open(output_path, "wb") as f:
+            f.write(pdf)
+
+        return output_path
 
 
 # For backwards compatibility,
