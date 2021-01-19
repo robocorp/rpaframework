@@ -340,11 +340,14 @@ class Windows(OperatingSystem):
         }
         return self._add_app_instance(app, dialog=False, params=params)
 
-    # TODO: How to manage app launched by open_file
-    def open_file(self, filename: str) -> bool:
+    def open_file(
+        self, filename: str, windowtitle: str = None, wildcard: bool = False
+    ) -> bool:
         """Open associated application when opening file
 
         :param filename: path to file
+        :param windowtitle: name of the window
+        :param wildcard: set True for inclusive window title search, default False
         :return: True if application is opened, False if not
 
         Example:
@@ -358,13 +361,17 @@ class Windows(OperatingSystem):
         if platform.system() == "Windows":
             # pylint: disable=no-member
             os.startfile(filename)
-            return True
         elif platform.system() == "Darwin":
             subprocess.call(["open", filename])
-            return True
         else:
             subprocess.call(["xdg-open", filename])
+        app_instance = self.open_dialog(windowtitle, wildcard=wildcard)
+        if app_instance > 0:
+            self._apps[app_instance]["executable"] = filename
+            self._apps[app_instance]["startkeyword"] = "Open File"
             return True
+        else:
+            return False
 
     def open_executable(
         self,
@@ -1025,22 +1032,13 @@ class Windows(OperatingSystem):
             self.open_dialog(self.windowtitle)
         self.dlg.wait("exists enabled visible ready")
 
-        search_criteria, locator = self._determine_search_criteria(locator)
-        matching_elements, locators = self.find_element(locator, search_criteria)
-
-        locators = sorted(set(locators))
-        if locator in locators:
-            locators.remove(locator)
-        locators_string = "\n\t- ".join(locators)
+        matching_elements, _ = self.find_element(locator)
 
         if len(matching_elements) == 0:
             self.logger.info(
-                "Locator '%s' using search criteria '%s' not found in '%s'.\n"
-                "Maybe one of these would be better?\n%s\n",
+                "Locator '%s' not found in '%s'.\n",
                 locator,
-                search_criteria,
                 self.windowtitle,
-                locators_string,
             )
         elif len(matching_elements) == 1:
             element = matching_elements[0]
@@ -1053,11 +1051,9 @@ class Windows(OperatingSystem):
             # TODO: return more valuable information about what should
             # be matching element ?
             self.logger.info(
-                "Locator '%s' matched multiple elements in '%s'. "
-                "Maybe one of these would be better?\n%s\n",
+                "Locator '%s' matched multiple elements in '%s'. ",
                 locator,
                 self.windowtitle,
-                locators_string,
             )
         return False
 
