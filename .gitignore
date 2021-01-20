@@ -16,6 +16,7 @@ docs/source/prebuild/
 docs/source/json/
 docs/source/include/libdoc/
 docs/source/include/latest.json
+docs/source/contributing/todos.rst
 
 # Virtualenv
 *venv/

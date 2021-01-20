@@ -52,8 +52,9 @@ install: .venv/flag ## Install development environment
 poetry.lock: pyproject.toml
 	poetry lock
 
-docs: docs-libdoc install ## Generate documentation using Sphinx
+docs: install ## Generate documentation using Sphinx
 	poetry run $(MAKE) -C docs clean
+	poetry run python ./tools/todos.py packages/main/src docs/source/contributing/todos.rst
 	poetry run python ./tools/merge.py docs/source/json/ docs/source/include/latest.json
 	poetry run $(MAKE) -C docs html
 
@@ -85,7 +86,9 @@ changelog: ## Print changes in latest release
 
 build-each: packages/*
 	$(call make_each, "build")
+
 lint-each: packages/*
 	$(call make_each, "lint")
-install-hooks:
+
+install-hooks: ## Install git hooks
 	git config core.hooksPath ./config/git-hooks/
