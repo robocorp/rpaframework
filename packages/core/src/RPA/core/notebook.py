@@ -110,6 +110,19 @@ def notebook_table(table, count: int = 20):
 
 
 @print_precheck
+def notebook_table_from_raw_data(data, columns=None, index=None, count=None):
+    """Creates an RPA.Table from data and then prints it as a table.
+
+    Useful for avoiding unnecessary RPA.Table dependencies in client code.
+    """
+    # pylint: disable=C0415,E0611
+    from RPA.Tables import Table  # noqa
+
+    table = Table(data, columns, index)
+    notebook_table(table, count)
+
+
+@print_precheck
 def notebook_image(image):
     """Display IPython Image object in the notebook
 

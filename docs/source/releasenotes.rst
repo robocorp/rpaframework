@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Browser**:
+  - Keyword ``Open Available Browser`` now prints table of attempts to jupyter notebook when run in such an environment.
+
 7.2.0
 -----
 

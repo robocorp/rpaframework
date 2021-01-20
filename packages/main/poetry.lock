@@ -44,7 +44,7 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "authlib"
-version = "0.15.2"
+version = "0.15.3"
 description = "The ultimate Python library in building OAuth and OpenID Connect servers."
 category = "main"
 optional = false
@@ -126,20 +126,20 @@ d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
 
 [[package]]
 name = "boto3"
-version = "1.16.54"
+version = "1.16.57"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = "*"
 
 [package.dependencies]
-botocore = ">=1.19.54,<1.20.0"
+botocore = ">=1.19.57,<1.20.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
 [[package]]
 name = "botocore"
-version = "1.19.54"
+version = "1.19.57"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -367,7 +367,7 @@ six = ">=1.8.0"
 
 [[package]]
 name = "google-api-core"
-version = "1.24.1"
+version = "1.25.0"
 description = "Google API client core library"
 category = "main"
 optional = true
@@ -546,7 +546,7 @@ google-api-core = {version = ">=1.14.0,<2.0.0dev", extras = ["grpc"]}
 
 [[package]]
 name = "google-crc32c"
-version = "1.1.0"
+version = "1.1.1"
 description = "A python wrapper of the C library 'Google CRC32C'"
 category = "main"
 optional = true
@@ -661,7 +661,7 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 
 [[package]]
 name = "importlib-resources"
-version = "5.0.0"
+version = "5.1.0"
 description = "Read resources from Python packages"
 category = "main"
 optional = false
@@ -896,9 +896,12 @@ category = "main"
 optional = true
 python-versions = ">=3.6"
 
+[package.dependencies]
+numpy = ">=1.17.3"
+
 [[package]]
 name = "openpyxl"
-version = "3.0.5"
+version = "3.0.6"
 description = "A Python library to read/write Excel 2010 xlsx/xlsm files"
 category = "main"
 optional = false
@@ -1202,14 +1205,14 @@ testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xm
 
 [[package]]
 name = "pytest-cov"
-version = "2.10.1"
+version = "2.11.1"
 description = "Pytest plugin for measuring coverage."
 category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.dependencies]
-coverage = ">=4.4"
+coverage = ">=5.2.1"
 pytest = ">=4.6"
 
 [package.extras]
@@ -1750,8 +1753,8 @@ attrs = [
     {file = "attrs-20.3.0.tar.gz", hash = "sha256:832aa3cde19744e49938b91fea06d69ecb9e649c93ba974535d08ad92164f700"},
 ]
 authlib = [
-    {file = "Authlib-0.15.2-py2.py3-none-any.whl", hash = "sha256:078b900fa9fbebf9f8dae1d5dc1ca857b6a742493093ef9b0b36ad926f36e41f"},
-    {file = "Authlib-0.15.2.tar.gz", hash = "sha256:21b34625c83ca48150684bbeca8f7c884cd281913c72d146dbf0e9d2fbfdec4e"},
+    {file = "Authlib-0.15.3-py2.py3-none-any.whl", hash = "sha256:0f6af3a38d37dd77361808dd3f2e258b647668dac6d2cefcefc4c4ebc3c7d2b2"},
+    {file = "Authlib-0.15.3.tar.gz", hash = "sha256:7dde11ba45db51e97169c261362fab3193073100b7387e60c159db1eec470bbc"},
 ]
 backports-datetime-fromisoformat = [
     {file = "backports-datetime-fromisoformat-1.0.0.tar.gz", hash = "sha256:9577a2a9486cd7383a5f58b23bb8e81cf0821dbbc0eb7c87d3fa198c1df40f5c"},
@@ -1787,12 +1790,12 @@ black = [
     {file = "black-20.8b1.tar.gz", hash = "sha256:1c02557aa099101b9d21496f8a914e9ed2222ef70336404eeeac8edba836fbea"},
 ]
 boto3 = [
-    {file = "boto3-1.16.54-py2.py3-none-any.whl", hash = "sha256:15d3910eb1acfcdaa6aa8a64f3ed956ada1b5f3f9a8f2f127fd786036cb2afa5"},
-    {file = "boto3-1.16.54.tar.gz", hash = "sha256:d46f7c8c586c9c293f1a1eead56c18b82fcc3eec4dcebd4686aad4a675fd45b8"},
+    {file = "boto3-1.16.57-py2.py3-none-any.whl", hash = "sha256:2fd3c2f42006988dc8ddae43c988aea481d11e2af7ab1deb83b293640357986c"},
+    {file = "boto3-1.16.57.tar.gz", hash = "sha256:4a499cc2f53dd557a88c6db6a552748a2abd83ffeda70ceb71dc8db39a027314"},
 ]
 botocore = [
-    {file = "botocore-1.19.54-py2.py3-none-any.whl", hash = "sha256:bba883f97c6657df941598150bf8a5a88bb976b7de53ec41ad3e518cfe8931d3"},
-    {file = "botocore-1.19.54.tar.gz", hash = "sha256:edfe213f3b01467605754ba1d46c6ac3b8a4be721fdf879d45c2132a99b4ac49"},
+    {file = "botocore-1.19.57-py2.py3-none-any.whl", hash = "sha256:cf7d108a4d67a0fe670379111927b5d9e0ff1160146c81c326bb9e54c2b8cb19"},
+    {file = "botocore-1.19.57.tar.gz", hash = "sha256:c756d65ffa989c5c0e92178175e41abf7b18ad19b2fe2e82e192f085e264e03a"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -1967,8 +1970,8 @@ furl = [
     {file = "furl-2.1.0.tar.gz", hash = "sha256:c0e0231a1feee2acd256574b7033df3144775451c610cb587060d6a0d7e0b621"},
 ]
 google-api-core = [
-    {file = "google-api-core-1.24.1.tar.gz", hash = "sha256:0f1dee446db2685863c3c493a90fefa5fc7f4defaf8e1a320b50ccaddfb5d469"},
-    {file = "google_api_core-1.24.1-py2.py3-none-any.whl", hash = "sha256:a7f5794446a22ff7d36764959ba5f319f37628faf4da04fdc0dedf1598b556c1"},
+    {file = "google-api-core-1.25.0.tar.gz", hash = "sha256:d967beae8d8acdb88fb2f6f769e2ee0ee813042576a08891bded3b8e234150ae"},
+    {file = "google_api_core-1.25.0-py2.py3-none-any.whl", hash = "sha256:4656345cba9627ab1290eab51300a6397cc50370d99366133df1ae64b744e1eb"},
 ]
 google-api-python-client = [
     {file = "google-api-python-client-1.12.8.tar.gz", hash = "sha256:f3b9684442eec2cfe9f9bb48e796ef919456b82142c7528c5fd527e5224f08bb"},
@@ -2019,22 +2022,27 @@ google-cloud-vision = [
     {file = "google_cloud_vision-1.0.0-py2.py3-none-any.whl", hash = "sha256:e61091a52f334a20e597b74e2fb42c9f27dda25323544cd157d6110fde26c9a6"},
 ]
 google-crc32c = [
-    {file = "google-crc32c-1.1.0.tar.gz", hash = "sha256:6a6f3a365de5f433e41602b73df21306f67f02f15fdd2750961ae7d4a4629863"},
-    {file = "google_crc32c-1.1.0-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:e9be2ccfc510fc84a7de875d8f8e59d70818c819fbd0f74ff0a8aa4a1c057f94"},
-    {file = "google_crc32c-1.1.0-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:ebc3c794d9f96d0fbb5177984e12206d3d7371762f67782cfd150e32722b8aed"},
-    {file = "google_crc32c-1.1.0-cp36-cp36m-manylinux2010_x86_64.whl", hash = "sha256:4a9ab614ec85d0977af76a093cab514ce78ec20ba3cecd3af4715a111a5ec250"},
-    {file = "google_crc32c-1.1.0-cp36-cp36m-win32.whl", hash = "sha256:bb1d7efb881406963dd919fbc3db4f248a5aa0c600295b2a65ea68d4ca79032a"},
-    {file = "google_crc32c-1.1.0-cp36-cp36m-win_amd64.whl", hash = "sha256:e25e8cf79d1daf05dae69bf4dd1b73f2ee34674f4ea44176ed3cd764f206cc9d"},
-    {file = "google_crc32c-1.1.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:e5cc963e4c76f1c85a4b5045f86fdbb501c1ff0579a3d40431eac2137508af68"},
-    {file = "google_crc32c-1.1.0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:f050433604b55ff7efbca099d0b806dcbbf5fc1eec2a2640eb61ca0e44aaed5b"},
-    {file = "google_crc32c-1.1.0-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:279f38be88b274872d9c9ef8d0479a0bc3279e5b7faebea45a86501d18000242"},
-    {file = "google_crc32c-1.1.0-cp37-cp37m-win32.whl", hash = "sha256:d0cede9482ec2c3cc3c1b8fa11c10f1ac4760e1dbd8efdb5e39f93420ca75bec"},
-    {file = "google_crc32c-1.1.0-cp37-cp37m-win_amd64.whl", hash = "sha256:28e0712ddb73ba02e5a4f03d571a864e8a1e64941e394a8ace1118128903c73b"},
-    {file = "google_crc32c-1.1.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:ade6f03d3670bec8ccc1b9a6ca7123985c14e83923ecba2b88dedd3f88e795e5"},
-    {file = "google_crc32c-1.1.0-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:55e44136e0a23de7f31207644d5765c1c55402f7b23bf1a6625317f4d50c8725"},
-    {file = "google_crc32c-1.1.0-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:9ad95a167f7bf8e27992677b5b1e411eaadf0ffa81961fa203d88b2be5394618"},
-    {file = "google_crc32c-1.1.0-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:6385d87cd15a7c9f7ff63b08f6d01c8665053ad69f1ac80054cf7a94a7139bfc"},
-    {file = "google_crc32c-1.1.0-cp39-cp39-manylinux2010_x86_64.whl", hash = "sha256:82b4ce1c515a455f21e4f6aea8d45252e2b319fa604b8d9f2cb301d5a752f578"},
+    {file = "google-crc32c-1.1.1.tar.gz", hash = "sha256:d585f5d962812354a6113f962d06d67c4177993d8ed1b99e3fbb9753b1b98d65"},
+    {file = "google_crc32c-1.1.1-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:703d3f2fe4426f403ac8eb1229bbf458780df795bd4fdb04b0b73400dd58c108"},
+    {file = "google_crc32c-1.1.1-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:75a43a19a6df9366d4ce6c171ab46ea60a0995eedf3ab988c111796e02e8e5ce"},
+    {file = "google_crc32c-1.1.1-cp36-cp36m-manylinux2010_x86_64.whl", hash = "sha256:38d8808446fd38c7084a7b21bfc0aa22cd97eda320f3a391f524390de84377f8"},
+    {file = "google_crc32c-1.1.1-cp36-cp36m-win32.whl", hash = "sha256:4c5f7c9a2d500ca4b6142708832439410fb2b1422b5cebbad7f455bc0c40753b"},
+    {file = "google_crc32c-1.1.1-cp36-cp36m-win_amd64.whl", hash = "sha256:3060d2e0d415a15de5189c2f6f521723c69f45633f8b4a62db8402c456b583bc"},
+    {file = "google_crc32c-1.1.1-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:2c4d71f5212f039de575c3ec17ee5b2c14f293ec9f95ce7d054194aa55499405"},
+    {file = "google_crc32c-1.1.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:46654a852cea70d0a5ccbfb078bdadca43c01448e96f301e5677d3bd4a0a808d"},
+    {file = "google_crc32c-1.1.1-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:be277a1861ffef89cf68f34a1acb63173811df9f7e4d3f136a6ff2f578d1f54d"},
+    {file = "google_crc32c-1.1.1-cp37-cp37m-win32.whl", hash = "sha256:df5bccf9f38e72c77c607f27781f3e0c5cf77a1938020829872eb167f295c744"},
+    {file = "google_crc32c-1.1.1-cp37-cp37m-win_amd64.whl", hash = "sha256:2071754849915d070d6eb04a6522e05a1ecf2a58e55230c50367e183d6dc825b"},
+    {file = "google_crc32c-1.1.1-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:8875822807ab288b8034ba29a2d9b927036e31455b20e4831473e4f3d8b3f01c"},
+    {file = "google_crc32c-1.1.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:783278dbe80c79637bfff011a2a61e02d268fdb38766be5bf1c56c43076c881a"},
+    {file = "google_crc32c-1.1.1-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:5a92ce8dd5dd27d3386dfb2a53fd272814f03e2f41b6e941061345fc36954f54"},
+    {file = "google_crc32c-1.1.1-cp38-cp38-win32.whl", hash = "sha256:e10342adc665c0d22d76ea0d044cf588a96dfbea56b564a82d9ec5ae0634c848"},
+    {file = "google_crc32c-1.1.1-cp38-cp38-win_amd64.whl", hash = "sha256:c981f2fc2dc50a400cca9c0536ffe9080f8c713908633617007530ddf302eec8"},
+    {file = "google_crc32c-1.1.1-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:94e65d56383f234b1f39dffc3a5647769918e4f13d49db11df7b176035781a39"},
+    {file = "google_crc32c-1.1.1-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:1aed1db85b5862b969e93e9fef80e9c61d989447d52ea236f9f76af76dd84a51"},
+    {file = "google_crc32c-1.1.1-cp39-cp39-manylinux2010_x86_64.whl", hash = "sha256:a9d784f37637b992447a80d4312a10f948400e4cd7a626f22d23131238cda722"},
+    {file = "google_crc32c-1.1.1-cp39-cp39-win32.whl", hash = "sha256:15f6d38bfc860463169b142da327a2e875266d4c0db83a3ec8e6366364ac9dd7"},
+    {file = "google_crc32c-1.1.1-cp39-cp39-win_amd64.whl", hash = "sha256:c83720353c57a5a800b51d3118e0297b00ede1413a9b49a0f75e61c96ee91e98"},
 ]
 google-resumable-media = [
     {file = "google-resumable-media-1.2.0.tar.gz", hash = "sha256:ee98b1921e5bda94867a08c864e55b4763d63887664f49ee1c231988f56b9d43"},
@@ -2157,8 +2165,8 @@ importlib-metadata = [
     {file = "importlib_metadata-3.4.0.tar.gz", hash = "sha256:fa5daa4477a7414ae34e95942e4dd07f62adf589143c875c133c1e53c4eff38d"},
 ]
 importlib-resources = [
-    {file = "importlib_resources-5.0.0-py3-none-any.whl", hash = "sha256:ea17df80a0ff04b5dbd3d96dbeab1842acfd1c6c902eaeb8c8858abf2720161e"},
-    {file = "importlib_resources-5.0.0.tar.gz", hash = "sha256:4743f090ed8946e713745ec0e660249ef9fb0b9843eacc5b5ff931d2fd5aa67f"},
+    {file = "importlib_resources-5.1.0-py3-none-any.whl", hash = "sha256:885b8eae589179f661c909d699a546cf10d83692553e34dca1bf5eb06f7f6217"},
+    {file = "importlib_resources-5.1.0.tar.gz", hash = "sha256:bfdad047bce441405a49cf8eb48ddce5e56c696e185f59147a8b79e75e9e6380"},
 ]
 iniconfig = [
     {file = "iniconfig-1.1.1-py2.py3-none-any.whl", hash = "sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3"},
@@ -2362,8 +2370,8 @@ opencv-python = [
     {file = "opencv_python-4.5.1.48-cp39-cp39-win_amd64.whl", hash = "sha256:c8cc1f5ff3c352ebe756119014c4e4ec7ae5ac536d1f66b0316667ced37637c8"},
 ]
 openpyxl = [
-    {file = "openpyxl-3.0.5-py2.py3-none-any.whl", hash = "sha256:f7d666b569f729257082cf7ddc56262431878f602dcc2bc3980775c59439cdab"},
-    {file = "openpyxl-3.0.5.tar.gz", hash = "sha256:18e11f9a650128a12580a58e3daba14e00a11d9e907c554a17ea016bf1a2c71b"},
+    {file = "openpyxl-3.0.6-py2.py3-none-any.whl", hash = "sha256:1a4b3869c2500b5c713e8e28341cdada49ecfcff1b10cd9006945f5bcefc090d"},
+    {file = "openpyxl-3.0.6.tar.gz", hash = "sha256:b229112b46e158b910a5d1b270b212c42773d39cab24e8db527f775b82afc041"},
 ]
 orderedmultidict = [
     {file = "orderedmultidict-1.0.1-py2.py3-none-any.whl", hash = "sha256:43c839a17ee3cdd62234c47deca1a8508a3f2ca1d0678a3bf791c87cf84adbf3"},
@@ -2575,8 +2583,8 @@ pytest = [
     {file = "pytest-6.2.1.tar.gz", hash = "sha256:66e419b1899bc27346cb2c993e12c5e5e8daba9073c1fbce33b9807abc95c306"},
 ]
 pytest-cov = [
-    {file = "pytest-cov-2.10.1.tar.gz", hash = "sha256:47bd0ce14056fdd79f93e1713f88fad7bdcc583dcd7783da86ef2f085a0bb88e"},
-    {file = "pytest_cov-2.10.1-py2.py3-none-any.whl", hash = "sha256:45ec2d5182f89a81fc3eb29e3d1ed3113b9e9a873bcddb2a71faaab066110191"},
+    {file = "pytest-cov-2.11.1.tar.gz", hash = "sha256:359952d9d39b9f822d9d29324483e7ba04a3a17dd7d05aa6beb7ea01e359e5f7"},
+    {file = "pytest_cov-2.11.1-py2.py3-none-any.whl", hash = "sha256:bdb9fdb0b85a7cc825269a4c56b48ccaa5c7e365054b6038772c32ddcdc969da"},
 ]
 python-dateutil = [
     {file = "python-dateutil-2.8.1.tar.gz", hash = "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"},
