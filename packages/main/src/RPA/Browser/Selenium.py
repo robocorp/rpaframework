@@ -419,7 +419,7 @@ class Selenium(SeleniumLibrary):
         self,
         url: str,
         use_profile: bool = False,
-        headless: Optional[bool] = None,
+        headless: bool = False,
         maximized: bool = False,
         browser_selection: Any = AUTOMATIC_BROWSER_SELECTION,
         alias: Optional[str] = None,
@@ -427,6 +427,7 @@ class Selenium(SeleniumLibrary):
         profile_path: Optional[str] = None,
         preferences: Optional[dict] = None,
         proxy: str = None,
+        download: bool = True,
     ) -> int:
         # pylint: disable=C0301
         """Opens the first available browser in the system in preferred order, or the
@@ -452,6 +453,8 @@ class Selenium(SeleniumLibrary):
 
         ``proxy`` Proxy server address (Chrome only)
 
+        ``download`` Whether to download new webdrivers as necessary, default ``True``
+
         Returns an index of the webdriver session.
 
         === Process of opening a browser ===
@@ -462,11 +465,9 @@ class Selenium(SeleniumLibrary):
 
             a. Set the webdriver options for the browser
 
-            b. Create the webdriver using existing installation
+            b1. (If download is False) Create the webdriver using existing installation
 
-            c. (If step b. failed) Download and install webdriver, try again
-
-            d. (If step c. failed) Try starting webdriver in headless mode
+            b2. (If download is True) Download and install webdriver, try again
 
         3. Open the URL
 
@@ -485,15 +486,10 @@ class Selenium(SeleniumLibrary):
         """  # noqa: E501
         # pylint: disable=redefined-argument-from-local
         browser_options = self._get_browser_order(browser_selection)
-        headless_options = [headless] if headless is not None else [False, True]
-        download_options = [False, True]
-
         # Try a combination of all options until a browser starts
         index_or_alias = None
         options = []
-        for browser, headless, download in product(
-            browser_options, headless_options, download_options
-        ):
+        for browser in browser_options:
             try:
                 self.logger.debug(
                     "Creating webdriver for '%s' (headless: %s, download: %s)",

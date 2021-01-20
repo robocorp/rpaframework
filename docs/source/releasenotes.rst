@@ -1,10 +1,19 @@
 Release notes
 =============
 
+Upcoming major release 
+---
+
+- Library **RPA.Browser**:
+
+  - Keyword ``Open Available Browser`` now has argument `download: bool` to specify if webdrivers should be downloaded
+  - Keyword ``Open Available Browser`` now obeys `headless` argument instead of testing both headful and headless execution every time
+
 Upcoming release
 ----------------
 
 - Library **RPA.Browser**:
+
   - Keyword ``Open Available Browser`` now prints table of attempts to jupyter notebook when run in such an environment.
 
 7.2.0
