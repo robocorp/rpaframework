@@ -8,6 +8,8 @@ Upcoming release
 
   - Keyword ``Open Available Browser`` now prints table of attempts to Notebooks on error
 
+- Library **RPA.JSON**: Add optional default for fetching values
+
 7.2.0
 -----
 

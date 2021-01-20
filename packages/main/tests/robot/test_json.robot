@@ -49,7 +49,7 @@ Get value from JSON
 Get value from JSON too many matches
     [Setup]    Test setup for most cases
     Run Keyword And Expect Error
-    ...    ValueError: Too many matches*
+    ...    ValueError*
     ...    Get Value from JSON    ${data}    $..password
 
 Get values from JSON
