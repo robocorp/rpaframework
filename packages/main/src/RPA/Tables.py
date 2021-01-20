@@ -1,4 +1,10 @@
 # pylint: disable=too-many-lines
+# TODO: Distinguish between range-based index and named index
+# TODO: Integers as column names? Columns forced to strings?
+# TODO: Implement column slicing
+# TODO: Index accessing through dot notation?
+# TODO: Index name conflict in exports/imports
+# TODO: Return Robot Framework DotDict instead of dict?
 import copy
 import csv
 import keyword
@@ -78,13 +84,6 @@ class Table:
     - table: An existing Table
 
     Row: a namedtuple, dictionary, list or a tuple
-
-    .. todo:: Distinguish between range-based index and named index
-    .. todo:: Integers as column names? Columns forced to strings?
-    .. todo:: Implement column slicing
-    .. todo:: Index accessing through dot notation?
-    .. todo:: Index name conflict in exports/imports
-    .. todo:: Return Robot Framework DotDict instead of dict?
 
     :param data:     values for table,  see "Supported data formats"
     :param columns:  names for columns, should match data dimensions
