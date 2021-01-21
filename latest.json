@@ -5,7 +5,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:40",
+        "generated": "2021-01-21 21:02:47",
         "inits": [],
         "keywords": [
             {
@@ -103,7 +103,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:41",
+        "generated": "2021-01-21 21:02:47",
         "inits": [
             {
                 "name": "Init",
@@ -2633,7 +2633,7 @@
         "version": "2.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:41",
+        "generated": "2021-01-21 21:02:47",
         "inits": [
             {
                 "name": "Init",
@@ -4165,7 +4165,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:41",
+        "generated": "2021-01-21 21:02:48",
         "inits": [
             {
                 "name": "Init",
@@ -6695,7 +6695,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:41",
+        "generated": "2021-01-21 21:02:48",
         "inits": [
             {
                 "name": "Init",
@@ -7048,7 +7048,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:42",
+        "generated": "2021-01-21 21:02:48",
         "inits": [
             {
                 "name": "Init",
@@ -7266,7 +7266,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:42",
+        "generated": "2021-01-21 21:02:48",
         "inits": [
             {
                 "name": "Init",
@@ -7838,7 +7838,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:43",
+        "generated": "2021-01-21 21:02:49",
         "inits": [],
         "keywords": [
             {
@@ -7947,7 +7947,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:43",
+        "generated": "2021-01-21 21:02:49",
         "inits": [],
         "keywords": [
             {
@@ -8065,7 +8065,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:43",
+        "generated": "2021-01-21 21:02:49",
         "inits": [],
         "keywords": [
             {
@@ -8405,7 +8405,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:43",
+        "generated": "2021-01-21 21:02:50",
         "inits": [],
         "keywords": [
             {
@@ -8444,7 +8444,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:43",
+        "generated": "2021-01-21 21:02:50",
         "inits": [],
         "keywords": [
             {
@@ -8551,7 +8551,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:44",
+        "generated": "2021-01-21 21:02:50",
         "inits": [
             {
                 "name": "Init",
@@ -9176,7 +9176,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:44",
+        "generated": "2021-01-21 21:02:51",
         "inits": [
             {
                 "name": "Init",
@@ -9343,7 +9343,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:45",
+        "generated": "2021-01-21 21:02:51",
         "inits": [],
         "keywords": [
             {
@@ -9472,7 +9472,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:45",
+        "generated": "2021-01-21 21:02:51",
         "inits": [
             {
                 "name": "Init",
@@ -9803,7 +9803,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:45",
+        "generated": "2021-01-21 21:02:52",
         "inits": [],
         "keywords": [
             {
@@ -9969,7 +9969,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:46",
+        "generated": "2021-01-21 21:02:52",
         "inits": [],
         "keywords": [
             {
@@ -10166,7 +10166,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:46",
+        "generated": "2021-01-21 21:02:52",
         "inits": [],
         "keywords": [
             {
@@ -10363,7 +10363,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:46",
+        "generated": "2021-01-21 21:02:53",
         "inits": [],
         "keywords": [
             {
@@ -10847,7 +10847,7 @@
         "version": "0.7.2",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:47",
+        "generated": "2021-01-21 21:02:53",
         "inits": [
             {
                 "name": "Init",
@@ -10878,7 +10878,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'HEAD', 'DELETE', 'GET', 'OPTIONS', 'PUT']"
+                    "retry_method_list=['TRACE', 'HEAD', 'PUT', 'DELETE', 'OPTIONS', 'GET']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>client_certs</code> ['client certificate', 'client key'] PEM files containing the client key and certificate</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10901,7 +10901,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'HEAD', 'DELETE', 'GET', 'OPTIONS', 'PUT']"
+                    "retry_method_list=['TRACE', 'HEAD', 'PUT', 'DELETE', 'OPTIONS', 'GET']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> A Custom Authentication object to be passed on to the requests library. <a href=\"http://docs.python-requests.org/en/master/user/advanced/#custom-authentication\">http://docs.python-requests.org/en/master/user/advanced/#custom-authentication</a></p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10924,7 +10924,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'HEAD', 'DELETE', 'GET', 'OPTIONS', 'PUT']"
+                    "retry_method_list=['TRACE', 'HEAD', 'PUT', 'DELETE', 'OPTIONS', 'GET']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10947,7 +10947,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'HEAD', 'DELETE', 'GET', 'OPTIONS', 'PUT']"
+                    "retry_method_list=['TRACE', 'HEAD', 'PUT', 'DELETE', 'OPTIONS', 'GET']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10970,7 +10970,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'HEAD', 'DELETE', 'GET', 'OPTIONS', 'PUT']"
+                    "retry_method_list=['TRACE', 'HEAD', 'PUT', 'DELETE', 'OPTIONS', 'GET']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> List of username &amp; password for HTTP Basic Auth</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -11214,7 +11214,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:47",
+        "generated": "2021-01-21 21:02:53",
         "inits": [],
         "keywords": [
             {
@@ -11329,32 +11329,32 @@
     },
     "RPA.JSON": {
         "name": "RPA.JSON",
-        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>JSON</cite> is a library for manipulating <a class=\"reference external\" href=\"http://json.org/\">JSON</a> objects.\nLocating specific elements in the structure is done using <a class=\"reference external\" href=\"http://goessner.net/articles/JsonPath/\">JSONPath</a>.</p>\n</div>\n</div>",
+        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>JSON</cite> is a library for manipulating <a class=\"reference external\" href=\"http://json.org/\">JSON</a> files and strings.</p>\n<p>JSON is a common data interchange format inspired by a subset of\nthe Javascript programming language, but these days is a de facto\nstandard in modern web APIs and is language agnostic.</p>\n<p><strong>Serialization</strong></p>\n<p>The term <cite>serialization</cite> refers to the process of converting\nRobot Framework or Python types to JSON or the other way around.</p>\n<p>Basic types can be easily converted between the domains,\nand the mapping is as follows:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"65%\" />\n<col width=\"35%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">JSON</th>\n<th class=\"head\">Python</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>object</td>\n<td>dict</td>\n</tr>\n<tr><td>array</td>\n<td>list</td>\n</tr>\n<tr><td>string</td>\n<td>str</td>\n</tr>\n<tr><td>number (int)</td>\n<td>int</td>\n</tr>\n<tr><td>number (real)</td>\n<td>float</td>\n</tr>\n<tr><td>true</td>\n<td>True</td>\n</tr>\n<tr><td>false</td>\n<td>False</td>\n</tr>\n<tr><td>null</td>\n<td>None</td>\n</tr>\n</tbody>\n</table>\n<p><strong>About JSONPath</strong></p>\n<p>Reading and writing values from/to JSON serializable objects is done\nusing <a class=\"reference external\" href=\"http://goessner.net/articles/JsonPath/\">JSONPath</a>. It's a syntax designed to quickly and easily refer to\nspecific elements in a JSON structure.</p>\n<p>Compared to Python's normal dictionary access, JSONPath expressions can\ntarget multiple elements through features such as conditionals and wildcards,\nwhich can simplify many JSON-related operations. It's analogous to XPath\nfor XML structures.</p>\n<p><strong>Syntax example</strong></p>\n<p>For this example consider the following structure:</p>\n<pre class=\"code json literal-block\">\n<span class=\"p\">{</span>\n  <span class=\"nt\">&quot;clients&quot;</span><span class=\"p\">:</span> <span class=\"p\">[</span>\n    <span class=\"p\">{</span>\n      <span class=\"nt\">&quot;name&quot;</span><span class=\"p\">:</span> <span class=\"s2\">&quot;Johnny Example&quot;</span><span class=\"p\">,</span>\n      <span class=\"nt\">&quot;email&quot;</span><span class=\"p\">:</span> <span class=\"s2\">&quot;john&#64;example.com&quot;</span><span class=\"p\">,</span>\n      <span class=\"nt\">&quot;orders&quot;</span><span class=\"p\">:</span> <span class=\"p\">[</span>\n          <span class=\"p\">{</span><span class=\"nt\">&quot;address&quot;</span><span class=\"p\">:</span> <span class=\"s2\">&quot;Streetroad 123&quot;</span><span class=\"p\">,</span> <span class=\"nt\">&quot;price&quot;</span><span class=\"p\">:</span> <span class=\"mf\">103.20</span><span class=\"p\">},</span>\n          <span class=\"p\">{</span><span class=\"nt\">&quot;address&quot;</span><span class=\"p\">:</span> <span class=\"s2\">&quot;Streetroad 123&quot;</span><span class=\"p\">,</span> <span class=\"nt\">&quot;price&quot;</span><span class=\"p\">:</span> <span class=\"mf\">98.99</span><span class=\"p\">}</span>\n      <span class=\"p\">]</span>\n    <span class=\"p\">},</span>\n    <span class=\"p\">{</span>\n      <span class=\"nt\">&quot;name&quot;</span><span class=\"p\">:</span> <span class=\"s2\">&quot;Jane Example&quot;</span><span class=\"p\">,</span>\n      <span class=\"nt\">&quot;email&quot;</span><span class=\"p\">:</span> <span class=\"s2\">&quot;jane&#64;example.com&quot;</span><span class=\"p\">,</span>\n      <span class=\"nt\">&quot;orders&quot;</span><span class=\"p\">:</span> <span class=\"p\">[</span>\n          <span class=\"p\">{</span><span class=\"nt\">&quot;address&quot;</span><span class=\"p\">:</span> <span class=\"s2\">&quot;Waypath 321&quot;</span><span class=\"p\">,</span> <span class=\"nt\">&quot;price&quot;</span><span class=\"p\">:</span> <span class=\"mf\">22.00</span><span class=\"p\">},</span>\n          <span class=\"p\">{</span><span class=\"nt\">&quot;address&quot;</span><span class=\"p\">:</span> <span class=\"s2\">&quot;Streetroad 123&quot;</span><span class=\"p\">,</span> <span class=\"nt\">&quot;price&quot;</span><span class=\"p\">:</span> <span class=\"mf\">2330.01</span><span class=\"p\">}</span>\n      <span class=\"p\">]</span>\n    <span class=\"p\">}</span>\n  <span class=\"p\">]</span>\n<span class=\"p\">}</span>\n</pre>\n<p>In the simplest case JSONPath can replace nested access:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\"># First order of first client, with direct dictionary access\n${value}=</span><span class=\"p\">    </span><span class=\"c\">Set variable</span><span class=\"p\">    </span><span class=\"c\">${json}[&quot;clients&quot;][0][&quot;orders&quot;][0]</span><span class=\"p\">\n\n</span><span class=\"c\"># JSONPath access\n${value}=</span><span class=\"p\">    </span><span class=\"c\">Get value from JSON</span><span class=\"p\">    </span><span class=\"c\">${json}</span><span class=\"p\">    </span><span class=\"c\">$.clients[0].orders[0]</span>\n</pre>\n<p>But the power comes from complicated expressions:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\"># Find delivery addresses for all orders\n${prices}=</span><span class=\"p\">        </span><span class=\"c\">Get values from JSON</span><span class=\"p\">    </span><span class=\"c\">$..address</span><span class=\"p\">\n\n</span><span class=\"c\"># Find orders that cost over 100\n${expensives}=</span><span class=\"p\">    </span><span class=\"c\">Get values from JSON</span><span class=\"p\">    </span><span class=\"c\">$..orders[?(&#64;.price&gt;100)]</span>\n</pre>\n<p><strong>Supported Expressions</strong></p>\n<p>The supported syntax elements are:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"21%\" />\n<col width=\"79%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Element</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>$</td>\n<td>Root object/element</td>\n</tr>\n<tr><td>&#64;</td>\n<td>Current object/element</td>\n</tr>\n<tr><td>. or []</td>\n<td>Child operator</td>\n</tr>\n<tr><td>..</td>\n<td>Recursive descent</td>\n</tr>\n<tr><td>*</td>\n<td>Wilcard, any element</td>\n</tr>\n<tr><td>[n]</td>\n<td>Array index</td>\n</tr>\n<tr><td>[a:b:c]</td>\n<td>Array slice (start, end, step)</td>\n</tr>\n<tr><td>[a,b]</td>\n<td>Union of indices or names</td>\n</tr>\n<tr><td>?()</td>\n<td>Apply a filter expression</td>\n</tr>\n<tr><td>()</td>\n<td>Script expression</td>\n</tr>\n</tbody>\n</table>\n<p>There are a multitude of different script expressions\nin addition to the elements listed above, which can\nbe seen in the <a class=\"reference external\" href=\"http://goessner.net/articles/JsonPath/\">aforementioned article</a>.</p>\n<p>For further library usage examples, see the individual keywords.</p>\n</div>\n</div>",
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:47",
+        "generated": "2021-01-21 21:02:53",
         "inits": [],
         "keywords": [
             {
                 "name": "Add to JSON",
                 "args": [
-                    "doc: typing.Any",
+                    "doc: typing.Union[str, int, float, bool, NoneType, typing.Dict[str, typing.Any], typing.List[typing.Any]]",
                     "expr: str",
-                    "value: str"
+                    "value: typing.Union[str, int, float, bool, NoneType, typing.Dict[str, typing.Any], typing.List[typing.Any]]"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Add items into a JSON object.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">jsonpath expression</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param value:</th><td class=\"field-body\">list to append into json or dictionary to update into json</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
-                "shortdoc": "Add items into a JSON object.",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Add items into a JSON serializable object and return the result.</p>\n<p>If the target is a list, the values are appended to the end.\nIf the target is a dict, the keys are either added or updated.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">JSON serializable object</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">JSONPath expression</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param value:</th><td class=\"field-body\">values to either append or update</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\"># Change the name value for all people\n&amp;{before}=</span><span class=\"p\">    </span><span class=\"c\">Convert string to JSON</span><span class=\"p\">   </span><span class=\"c\">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class=\"p\">\n</span><span class=\"c\">&amp;{after}=</span><span class=\"p\">     </span><span class=\"c\">Add to JSON</span><span class=\"p\">    </span><span class=\"c\">${json}</span><span class=\"p\">   </span><span class=\"c\">$.People.name</span><span class=\"p\">    </span><span class=\"c\">JohnMalkovich</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Add items into a JSON serializable object and return the result.",
                 "tags": [],
                 "matched": true
             },
             {
                 "name": "Convert JSON to String",
                 "args": [
-                    "doc: typing.Any"
+                    "doc: typing.Union[str, int, float, bool, NoneType, typing.Dict[str, typing.Any], typing.List[typing.Any]]"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Convert JSON object to a string.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">json as a string</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
-                "shortdoc": "Convert JSON object to a string.",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Convert a JSON serializable object to a string and return it.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">JSON serializable object</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${obj}=</span><span class=\"p\">    </span><span class=\"c\">Create dictionary</span><span class=\"p\">    </span><span class=\"c\">Key=Value</span><span class=\"p\">\n</span><span class=\"c\">${json}=</span><span class=\"p\">   </span><span class=\"c\">Convert JSON to string</span><span class=\"p\">    </span><span class=\"c\">${obj}</span><span class=\"p\">\n</span><span class=\"c\">Should be equal</span><span class=\"p\">    </span><span class=\"c\">${json}</span><span class=\"p\">     </span><span class=\"c\">{&quot;Key&quot;: &quot;Value&quot;}</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Convert a JSON serializable object to a string and return it.",
                 "tags": [],
                 "matched": true
             },
@@ -11363,41 +11363,42 @@
                 "args": [
                     "doc: str"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Convert a string to a JSON object.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
-                "shortdoc": "Convert a string to a JSON object.",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Convert a string to a JSON serializable object and return it.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">JSON string</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${json}=</span><span class=\"p\">    </span><span class=\"c\">Set variable</span><span class=\"p\">    </span><span class=\"c\">{&quot;Key&quot;: &quot;Value&quot;}</span><span class=\"p\">\n</span><span class=\"c\">&amp;{obj}=</span><span class=\"p\">     </span><span class=\"c\">Convert string to JSON</span><span class=\"p\">    </span><span class=\"c\">${json}</span><span class=\"p\">\n</span><span class=\"c\">Should be equal</span><span class=\"p\">    </span><span class=\"c\">${obj.Key}</span><span class=\"p\">    </span><span class=\"c\">Value</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Convert a string to a JSON serializable object and return it.",
                 "tags": [],
                 "matched": true
             },
             {
                 "name": "Delete from JSON",
                 "args": [
-                    "doc: typing.Any",
+                    "doc: typing.Union[str, int, float, bool, NoneType, typing.Dict[str, typing.Any], typing.List[typing.Any]]",
                     "expr: str"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Delete item from a JSON object.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object or a string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">jsonpath expression</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
-                "shortdoc": "Delete item from a JSON object.",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Delete values from a JSON serializable object and return the result.\nWill delete all values that match the expression.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">JSON serializable object or string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">JSONPath expression</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\"># Delete all people\n&amp;{before}=</span><span class=\"p\">    </span><span class=\"c\">Convert string to JSON</span><span class=\"p\">   </span><span class=\"c\">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class=\"p\">\n</span><span class=\"c\">&amp;{after}=</span><span class=\"p\">     </span><span class=\"c\">Delete from JSON</span><span class=\"p\">    </span><span class=\"c\">${json}</span><span class=\"p\">   </span><span class=\"c\">$.People[*]</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Delete values from a JSON serializable object and return the result. Will delete all values that match the expression.",
                 "tags": [],
                 "matched": true
             },
             {
                 "name": "Get value from JSON",
                 "args": [
-                    "doc: typing.Any",
-                    "expr: str"
+                    "doc: typing.Union[str, int, float, bool, NoneType, typing.Dict[str, typing.Any], typing.List[typing.Any]]",
+                    "expr: str",
+                    "default: typing.Any = None"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get a value from a JSON object.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object or a string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">jsonpath expression</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises ValueError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if expression matches more than one item</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">matching item</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
-                "shortdoc": "Get a value from a JSON object.",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get a single value from a JSON serializable object that matches the given expression.</p>\n<p>Raises a ValueError if there is more than one match.\nReturns the given default argument (or None) if there\nwere no matches.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">JSON serializable object or string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">jsonpath expression</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\"># Get the name value for the first person\n&amp;{people}=</span><span class=\"p\">    </span><span class=\"c\">Convert string to JSON</span><span class=\"p\">   </span><span class=\"c\">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class=\"p\">\n</span><span class=\"c\">${first}=</span><span class=\"p\">     </span><span class=\"c\">Get value from JSON</span><span class=\"p\">      </span><span class=\"c\">${people}</span><span class=\"p\">   </span><span class=\"c\">$.People[0].name</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Get a single value from a JSON serializable object that matches the given expression.",
                 "tags": [],
                 "matched": true
             },
             {
                 "name": "Get values from JSON",
                 "args": [
-                    "doc: typing.Any",
+                    "doc: typing.Union[str, int, float, bool, NoneType, typing.Dict[str, typing.Any], typing.List[typing.Any]]",
                     "expr: str"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get values from a JSON object.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object or a string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">jsonpath expression</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">list of matching values</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
-                "shortdoc": "Get values from a JSON object.",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get all values from a JSON serializable object that match the given expression.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">JSON serializable object or string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">JSONPath expression</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\"># Get all the names for all people\n&amp;{people}=</span><span class=\"p\">    </span><span class=\"c\">Convert string to JSON</span><span class=\"p\">   </span><span class=\"c\">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class=\"p\">\n</span><span class=\"c\">&#64;{names}=</span><span class=\"p\">     </span><span class=\"c\">Get values from JSON</span><span class=\"p\">     </span><span class=\"c\">${people}</span><span class=\"p\">   </span><span class=\"c\">$.People[*].name</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Get all values from a JSON serializable object that match the given expression.",
                 "tags": [],
                 "matched": true
             },
@@ -11406,31 +11407,31 @@
                 "args": [
                     "filename: str"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Load JSON data from a file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">path to file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
-                "shortdoc": "Load JSON data from a file.",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Load JSON data from a file, and return it as JSON serializable object.\nDepending on the input file the object can be either a dictionary,\na list, or a scalar value.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">path to input file</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">&amp;{auth}=</span><span class=\"p\">    </span><span class=\"c\">Load JSON from file</span><span class=\"p\">    </span><span class=\"c\">auth.json</span><span class=\"p\">\n</span><span class=\"c\">Log</span><span class=\"p\">   </span><span class=\"c\">Current auth token: ${auth.token}</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Load JSON data from a file, and return it as JSON serializable object. Depending on the input file the object can be either a dictionary, a list, or a scalar value.",
                 "tags": [],
                 "matched": true
             },
             {
                 "name": "Save JSON to file",
                 "args": [
-                    "doc: typing.Any",
+                    "doc: typing.Union[str, int, float, bool, NoneType, typing.Dict[str, typing.Any], typing.List[typing.Any]]",
                     "filename: str"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Save JSON object into a file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object or a string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">path to file</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
-                "shortdoc": "Save JSON object into a file.",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Save a JSON serializable object or a string containg\na JSON value into a file.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">JSON serializable object or string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param filename:</th><td class=\"field-body\">path to output file</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\"># Save dictionary to file\n${john}=</span><span class=\"p\">    </span><span class=\"c\">Create dictionary</span><span class=\"p\">    </span><span class=\"c\">name=John</span><span class=\"p\">    </span><span class=\"c\">mail=john&#64;example.com</span><span class=\"p\">\n</span><span class=\"c\">Save JSON to file</span><span class=\"p\">    </span><span class=\"c\">${john}</span><span class=\"p\">    </span><span class=\"c\">john.json</span><span class=\"p\">\n\n</span><span class=\"c\"># Save string to file\n${mark}=</span><span class=\"p\">    </span><span class=\"c\">Set variable</span><span class=\"p\">    </span><span class=\"c\">{&quot;name&quot;: &quot;Mark&quot;, &quot;mail&quot;: &quot;mark&#64;example.com&quot;}</span><span class=\"p\">\n</span><span class=\"c\">Save JSON to file</span><span class=\"p\">    </span><span class=\"c\">${mark}</span><span class=\"p\">    </span><span class=\"c\">mark.json</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Save a JSON serializable object or a string containg a JSON value into a file.",
                 "tags": [],
                 "matched": true
             },
             {
                 "name": "Update value to JSON",
                 "args": [
-                    "doc: typing.Any",
+                    "doc: typing.Union[str, int, float, bool, NoneType, typing.Dict[str, typing.Any], typing.List[typing.Any]]",
                     "expr: str",
-                    "value: str"
+                    "value: typing.Union[str, int, float, bool, NoneType, typing.Dict[str, typing.Any], typing.List[typing.Any]]"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Update value in a JSON object.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">json as a dictionary object or a string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">jsonpath expression</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param value:</th><td class=\"field-body\">new value for the matching item</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">json as a dictionary object</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
-                "shortdoc": "Update value in a JSON object.",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Update existing values in a JSON serializable object and return the result.\nWill change all values that match the expression.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param doc:</th><td class=\"field-body\">JSON or string</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param expr:</th><td class=\"field-body\">JSONPath expression</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param value:</th><td class=\"field-body\">New value for the matching item(s)</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\"># Change the name key for all people\n&amp;{before}=</span><span class=\"p\">    </span><span class=\"c\">Convert string to JSON</span><span class=\"p\">   </span><span class=\"c\">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class=\"p\">\n</span><span class=\"c\">&amp;{after}=</span><span class=\"p\">     </span><span class=\"c\">Update value to JSON</span><span class=\"p\">     </span><span class=\"c\">${json}</span><span class=\"p\">   </span><span class=\"c\">$.People[*].name</span><span class=\"p\">    </span><span class=\"c\">JohnMalkovich</span>\n</pre>\n</div>\n</div>",
+                "shortdoc": "Update existing values in a JSON serializable object and return the result. Will change all values that match the expression.",
                 "tags": [],
                 "matched": true
             }
@@ -11444,7 +11445,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:47",
+        "generated": "2021-01-21 21:02:53",
         "inits": [],
         "keywords": [
             {
@@ -11604,7 +11605,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:47",
+        "generated": "2021-01-21 21:02:54",
         "inits": [],
         "keywords": [
             {
@@ -11699,7 +11700,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:47",
+        "generated": "2021-01-21 21:02:54",
         "inits": [],
         "keywords": [
             {
@@ -11769,7 +11770,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:47",
+        "generated": "2021-01-21 21:02:54",
         "inits": [
             {
                 "name": "Init",
@@ -12710,7 +12711,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:48",
+        "generated": "2021-01-21 21:02:55",
         "inits": [
             {
                 "name": "Init",
@@ -12799,7 +12800,7 @@
                 "name": "Get Work Item Variable",
                 "args": [
                     "name",
-                    "default=<object object at 0x000001F4189C0460>"
+                    "default=<object object at 0x000001D409BE6570>"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a single variable value from the work item,\nor default value if defined and key does not exist.\nIf key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param key:</th><td class=\"field-body\">Name of variable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param default:</th><td class=\"field-body\">Default value if key does not exist</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${username}=</span><span class=\"p\">    </span><span class=\"c\">Get work item variable</span><span class=\"p\">    </span><span class=\"c\">username</span><span class=\"p\">    </span><span class=\"c\">default=guest</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Return a single variable value from the work item, or default value if defined and key does not exist. If key does not exist and default is not defined, raises <cite>KeyError</cite>.",
@@ -12928,7 +12929,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:48",
+        "generated": "2021-01-21 21:02:55",
         "inits": [
             {
                 "name": "Init",
@@ -12963,7 +12964,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:48",
+        "generated": "2021-01-21 21:02:55",
         "inits": [],
         "keywords": [
             {
@@ -13029,7 +13030,7 @@
         "version": "1.1",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:49",
+        "generated": "2021-01-21 21:02:55",
         "inits": [
             {
                 "name": "Init",
@@ -13446,7 +13447,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:49",
+        "generated": "2021-01-21 21:02:55",
         "inits": [
             {
                 "name": "Init",
@@ -13703,7 +13704,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:49",
+        "generated": "2021-01-21 21:02:55",
         "inits": [],
         "keywords": [
             {
@@ -13730,7 +13731,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:49",
+        "generated": "2021-01-21 21:02:55",
         "inits": [],
         "keywords": [
             {
@@ -14106,7 +14107,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:49",
+        "generated": "2021-01-21 21:02:56",
         "inits": [
             {
                 "name": "Init",
@@ -14225,7 +14226,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:49",
+        "generated": "2021-01-21 21:02:56",
         "inits": [],
         "keywords": [
             {
@@ -14348,7 +14349,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-21 20:22:50",
+        "generated": "2021-01-21 21:02:56",
         "inits": [],
         "keywords": [
             {

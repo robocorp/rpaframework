@@ -1,0 +1,127 @@
+****
+TODO
+****
+
+RPA.Browser.Selenium:
+=====================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "540", "could we include the whole options here"
+
+RPA.Cloud.Google:
+=================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "1461", "mypy should handle enum exhaustivity validation"
+
+RPA.Desktop.Windows:
+====================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "580", "Handle too compled method"
+   "1057", "return more valuable information about what should"
+   "1305", "supporting multiple search criterias at same time to identify ONE element"
+   "1331", "supporting multiple search criterias at same time to identify ONE element"
+
+RPA.Desktop.keywords.application:
+=================================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "105", "Find out way to get actual default application"
+   "108", "Find out way to get actual default application"
+
+RPA.Desktop.keywords.finder:
+============================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "304", "Add run-on-error support and maybe screenshotting matches?"
+
+RPA.Desktop.keywords.mouse:
+===========================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "73", "Clamp to screen dimensions?"
+   "106", "mypy should handle enum exhaustivity validation"
+
+RPA.Desktop.keywords.screen:
+============================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "180", "Draw a circle instead?"
+
+RPA.Email.ImapSmtp:
+===================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "649", "mypy should handle enum exhaustivity validation"
+
+RPA.FileSystem:
+===============
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "366", "glob support"
+   "386", "Should it remove all subdirectories too?"
+   "413", "glob support"
+   "544", "Convert to proper date"
+   "553", "Convert to proper date"
+   "561", "Convert to human-friendly?"
+
+RPA.JSON:
+=========
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "133", "Add more logging about affected rows, at least on debug level"
+
+RPA.Tables:
+===========
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "2", "Distinguish between range-based index and named index"
+   "3", "Integers as column names? Columns forced to strings?"
+   "4", "Implement column slicing"
+   "5", "Index accessing through dot notation?"
+   "6", "Index name conflict in exports/imports"
+   "7", "Return Robot Framework DotDict instead of dict?"
+   "794", "Ensure original index is maintained?"
+
+RPA.Tasks:
+==========
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "675", "Move all result object modifying here"
