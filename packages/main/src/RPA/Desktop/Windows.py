@@ -9,7 +9,7 @@ import re
 import subprocess
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
@@ -368,14 +368,16 @@ class Windows(OperatingSystem):
         windowtitle: str = None,
         wildcard: bool = False,
         timeout: int = 10,
-    ) -> bool:
+    ) -> Optional[int]:
         """Open associated application when opening file
+
+        Keyword `Open Dialog` is used if `windowtitle` is given.
 
         :param filename: path to file
         :param windowtitle: name of the window
         :param wildcard: set True for inclusive window title search, default False
         :param timeout: time to wait for dialog to appear
-        :return: True if application is opened, False if not
+        :return: application id or None
 
         Example:
 
@@ -392,7 +394,8 @@ class Windows(OperatingSystem):
             subprocess.call(["open", filename])
         else:
             subprocess.call(["xdg-open", filename])
-        returnvalue = True
+
+        app_instance = None
         if windowtitle:
             app_instance = self.open_dialog(
                 windowtitle, wildcard=wildcard, timeout=timeout
@@ -400,9 +403,8 @@ class Windows(OperatingSystem):
             if app_instance > 0:
                 self._apps[app_instance]["executable"] = filename
                 self._apps[app_instance]["startkeyword"] = "Open File"
-            else:
-                returnvalue = False
-        return returnvalue
+
+        return app_instance
 
     def open_executable(
         self,

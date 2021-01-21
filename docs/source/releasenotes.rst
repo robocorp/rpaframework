@@ -10,6 +10,10 @@ Upcoming release
     and warn about header and data mismatch
   - Correctly handle source data with ``NoneType`` columns
 
+- Library **RPA.Desktop.Windows**:
+
+  - Keyword ``Open File`` return type changed (*NOTE*: backwards compatibility breaking change)
+
 7.6.0
 -----
 
