@@ -52,7 +52,7 @@ install: .venv/flag ## Install development environment
 poetry.lock: pyproject.toml
 	poetry lock
 
-docs: install ## Generate documentation using Sphinx
+docs: docs-libdoc install ## Generate documentation using Sphinx
 	poetry run $(MAKE) -C docs clean
 	poetry run python ./tools/todos.py packages/main/src docs/source/contributing/todos.rst
 	poetry run python ./tools/merge.py docs/source/json/ docs/source/include/latest.json
