@@ -7,7 +7,6 @@ import platform
 import time
 import traceback
 from functools import partial
-from itertools import product
 from typing import Any, Optional
 from pathlib import Path
 import webbrowser
