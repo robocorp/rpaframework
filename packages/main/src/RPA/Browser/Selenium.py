@@ -24,7 +24,7 @@ from SeleniumLibrary.keywords import (
 )
 from selenium.webdriver import ChromeOptions
 
-from RPA.core import notebook, webdriver
+from RPA.core import webdriver, notebook
 from RPA.core.locators import LocatorsDatabase, BrowserLocator
 
 
@@ -526,17 +526,18 @@ class Selenium(SeleniumLibrary):
                 self.logger.debug(traceback.format_exc())
 
         # Log table of all attempted combinations
+        table_headers = ["Browser", "Headless", "Download", "Error"]
         try:
-            table = html_table(
-                header=["Browser", "Headless", "Download", "Error"], rows=options
-            )
+            table = html_table(header=table_headers, rows=options)
             BuiltIn().log("<p>Attempted combinations:</p>" + table, html=True)
         except RobotNotRunningError:
             pass
 
         # No webdriver was started
         if index_or_alias is None:
+            notebook.notebook_table(options, columns=table_headers)
             raise BrowserNotFoundError(
+                # TODO: could we include the whole options here
                 "No valid browser found from: {}".format(
                     ", ".join(browser for browser in browser_options)
                 )
