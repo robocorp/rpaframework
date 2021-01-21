@@ -5,6 +5,7 @@ import keyword
 import logging
 import re
 from collections import OrderedDict, namedtuple
+from typing import List, Union, NamedTuple, Dict
 
 from itertools import groupby, zip_longest
 from numbers import Number
@@ -56,15 +57,27 @@ def uniq(seq):
     return result
 
 
+Row = Union[NamedTuple, dict, list, tuple]
+Tableable = Union[
+    None,
+    List[Row],
+    Dict[str, Row],
+    "Table",
+    str,  # If it's a list or dict -like string from Robot we will auto convert it
+]
+
+
 class Table:
     """Container class for tabular data.
 
     Supported data formats:
 
     - empty: None values populated according to columns/index
-    - list: List of objects that contain values, which themselves
-      can be namedtuples, dictionaries, lists, or tuples
-    - dict: Dictionary of columns as keys and rows as values
+    - list: list of data Rows
+    - dict: Dictionary of columns as keys and Rows as values
+    - table: An existing Table
+
+    Row: a namedtuple, dictionary, list or a tuple
 
     .. todo:: Distinguish between range-based index and named index
     .. todo:: Integers as column names? Columns forced to strings?
@@ -78,7 +91,7 @@ class Table:
     :param index:    names for rows,    should match data dimensions
     """
 
-    def __init__(self, data=None, columns=None, index=None):
+    def __init__(self, data: Tableable = None, columns=None, index=None):
         self._data = []
         self._columns = []
         self._index = []
