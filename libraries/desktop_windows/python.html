@@ -450,7 +450,12 @@ documentation page.</p>
 <dd><p>Connect to application by its handle</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>handle</strong> – handle of the application</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle</strong> – handle of the application</p></li>
+<li><p><strong>windowtitle</strong> – name of the window, defaults to active window if None</p></li>
+<li><p><strong>existing_app</strong> – set True if selecting window which library has already
+accessed, default False</p></li>
+</ul>
 </dd>
 </dl>
 <p>Example:</p>
@@ -465,7 +470,10 @@ documentation page.</p>
 <dd><p>Connect to application by its pid</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>app_pid</strong> – process id of the application</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>app_pid</strong> – process id of the application</p></li>
+<li><p><strong>windowtitle</strong> – name of the window, defaults to active window if None</p></li>
+</ul>
 </dd>
 </dl>
 <p>Example:</p>
@@ -488,12 +496,14 @@ operation is MOVE operation, on CTRL down the operation is COPY operation.</p>
 <li><p><strong>target</strong> – application object or instance id</p></li>
 <li><p><strong>src_locator</strong> – elements to move</p></li>
 <li><p><strong>handle_ctrl_key</strong> – True if keyword should press CTRL down dragging</p></li>
-<li><p><strong>drop_delay</strong> – how many seconds to wait until releasing mouse drop,</p></li>
+<li><p><strong>drop_delay</strong> – how many seconds to wait until releasing mouse drop,
+default 2.0</p></li>
 </ul>
 </dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – on validation errors</p>
+</dd>
 </dl>
-<p>default 2.0
-:raises ValueError: on validation errors</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${app1}=</span><span class="p">        </span><span class="c">Open Using Run Dialog</span><span class="p">    </span><span class="c">explorer.exe{VK_SPACE}C:\workfiles\movethese</span><span class="p">   </span><span class="c">movethese</span><span class="p"></span>
 <span class="c">${app2}=</span><span class="p">        </span><span class="c">Open Using Run Dialog</span><span class="p">    </span><span class="c">wordpad.exe</span><span class="p">   </span><span class="c">Document - WordPad</span><span class="p"></span>
@@ -574,9 +584,15 @@ defaults to False</p></li>
 <dt id="RPA.Desktop.Windows.Windows.get_dialog_rectangle">
 <code class="sig-name descname">get_dialog_rectangle</code><span class="sig-paren">(</span><em class="sig-param">ctrl: Any = None</em>, <em class="sig-param">as_dict: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.get_dialog_rectangle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get dialog rectangle coordinates</p>
-<p>If <cite>ctrl</cite> is None then get coordinates from <cite>dialog</cite>
-:param ctrl: name of the window control object, defaults to None
-:return: coordinates: left, top, right, bottom</p>
+<p>If <cite>ctrl</cite> is None then get coordinates from <cite>dialog</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ctrl</strong> – name of the window control object, defaults to None</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>coordinates: left, top, right, bottom</p>
+</dd>
+</dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${left}</span><span class="p">  </span><span class="c">${top}</span><span class="p">  </span><span class="c">${right}</span><span class="p">  </span><span class="c">${bottom}=</span><span class="p">  </span><span class="c">Get Dialog Rectangle</span><span class="p"></span>
 <span class="c">&amp;{coords}</span><span class="p">  </span><span class="c">Get Dialog Rectangle</span><span class="p">  </span><span class="c">as_dict=True</span><span class="p"></span>
@@ -968,10 +984,10 @@ or <cite>criteria</cite> field in the window items.</p>
 <dd><p>Minimize window by its title</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>windowtitle</strong> – name of the window, default <cite>None</cite> means that</p>
+<dd class="field-odd"><p><strong>windowtitle</strong> – name of the window, default <cite>None</cite> means that
+active window is going to be minimized</p>
 </dd>
 </dl>
-<p>active window is going to be minimized</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Using Run Dialog</span><span class="p">  </span><span class="c">calc</span><span class="p">     </span><span class="c">Calculator</span><span class="p"></span>
 <span class="c">Open Using Run Dialog</span><span class="p">  </span><span class="c">notepad</span><span class="p">  </span><span class="c">Untitled - Notepad</span><span class="p"></span>
@@ -1105,12 +1121,12 @@ Excel, Word, Outlook and Powerpoint.</p>
 <li><p><strong>windowtitle</strong> – name of the window, defaults to active window if None</p></li>
 <li><p><strong>highlight</strong> – draw outline for window if True, default False</p></li>
 <li><p><strong>timeout</strong> – time to wait for dialog to appear</p></li>
-<li><p><strong>existing_app</strong> – set True if selecting window which library has already</p></li>
+<li><p><strong>existing_app</strong> – set True if selecting window which library has already
+accessed, default False</p></li>
+<li><p><strong>wildcard</strong> – set True for inclusive window title search, default False</p></li>
 </ul>
 </dd>
 </dl>
-<p>accessed, default False
-:param wildcard: set True for inclusive window title search, default False</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Dialog</span><span class="p">       </span><span class="c">Untitled - Notepad</span><span class="p"></span>
 <span class="c">Open Dialog</span><span class="p">       </span><span class="c">Untitled - Notepad</span><span class="p">   </span><span class="c">highlight=True</span><span class="p">   </span><span class="c">timeout=5</span><span class="p"></span>
@@ -1129,14 +1145,16 @@ to get handle on the application.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>executable</strong> – name of the executable</p></li>
 <li><p><strong>windowtitle</strong> – name of the window</p></li>
-<li><p><strong>backend</strong> – set Windows backend, default None means using</p></li>
+<li><p><strong>backend</strong> – set Windows backend, default None means using
+library default value</p></li>
+<li><p><strong>work_dir</strong> – path to working directory, default None</p></li>
+<li><p><strong>wildcard</strong> – set True for inclusive window title search, default False</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>application instance id</p>
+</dd>
 </dl>
-<p>library default value
-:param work_dir: path to working directory, default None
-:param wildcard: set True for inclusive window title search, default False
-:return: application instance id</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${app1}</span><span class="p">    </span><span class="c">Open Executable</span><span class="p">   </span><span class="c">calc.exe</span><span class="p">  </span><span class="c">Calculator</span><span class="p"></span>
 <span class="c">${app2}</span><span class="p">    </span><span class="c">Open Executable</span><span class="p">   </span><span class="c">notepad.exe</span><span class="p">  </span><span class="c">Notepad</span><span class="p">   </span><span class="c">wildcard=True</span><span class="p"></span>
@@ -1276,7 +1294,10 @@ and <cite>False</cite> does inclusive matching</p></li>
 active application if <cite>app_id</cite> is None.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>app_id</strong> – application_id, defaults to None</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>app_id</strong> – application_id, defaults to None</p></li>
+<li><p><strong>send_keys</strong> – if ALT+F4 should be used to quit, default False</p></li>
+</ul>
 </dd>
 </dl>
 <p>Example:</p>
@@ -1306,10 +1327,10 @@ Windows desktop.</p>
 <dd><p>Restore window by its title</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>windowtitle</strong> – name of the window, default <cite>None</cite> means that</p>
+<dd class="field-odd"><p><strong>windowtitle</strong> – name of the window, default <cite>None</cite> means that
+active window is going to be restored</p>
 </dd>
 </dl>
-<p>active window is going to be restored</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Using Run Dialog</span><span class="p">  </span><span class="c">notepad</span><span class="p">  </span><span class="c">Untitled - Notepad</span><span class="p"></span>
 <span class="c">Minimize Dialog</span><span class="p"></span>
@@ -1356,7 +1377,7 @@ Windows desktop.</p>
 </dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Executable</span><span class="p">  </span><span class="c">calc.exe</span><span class="p">  </span><span class="c">Calculator</span><span class="p"></span>
-<span class="c">Send Keys</span><span class="p">        </span><span class="c">2{+}3=</span><span class="p"></span>
+<span class="c">Send Keys</span><span class="p">        </span><span class="c">2{+}3{=}</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1435,6 +1456,7 @@ applications</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>locator</strong> – element locator</p></li>
 <li><p><strong>keys</strong> – list of keys to type</p></li>
+<li><p><strong>empty_field</strong> – if field should be emptied before typing, default False</p></li>
 </ul>
 </dd>
 </dl>
@@ -1473,13 +1495,13 @@ applications</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>locator</strong> – name of the locator</p></li>
 <li><p><strong>search_criteria</strong> – criteria by which element is matched</p></li>
-<li><p><strong>timeout</strong> – defines how long to wait for element to appear,</p></li>
+<li><p><strong>timeout</strong> – defines how long to wait for element to appear,
+defaults to 30.0 seconds</p></li>
+<li><p><strong>interval</strong> – how often to poll for element,
+defaults to 2.0 seconds (minimum is 0.5 seconds)</p></li>
 </ul>
 </dd>
 </dl>
-<p>defaults to 30.0 seconds
-:param interval: how often to poll for element,
-defaults to 2.0 seconds (minimum is 0.5 seconds)</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{elements}</span><span class="p">  </span><span class="c">Wait For Element</span><span class="p">  </span><span class="c">CalculatorResults</span><span class="p"></span>
 <span class="c">@{elements}</span><span class="p">  </span><span class="c">Wait For Element</span><span class="p">  </span><span class="c">Results</span><span class="p">   </span><span class="c">timeout=10</span><span class="p">  </span><span class="c">interval=1.5</span><span class="p"></span>

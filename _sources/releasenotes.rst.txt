@@ -4,6 +4,10 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Browser.Selenium**:
+
+  - Keyword ``Open Available Browser`` now prints table of attempts to Notebooks on error
+
 7.2.0
 -----
 

@@ -5,7 +5,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:53",
+        "generated": "2021-01-21 20:22:40",
         "inits": [],
         "keywords": [
             {
@@ -103,7 +103,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:54",
+        "generated": "2021-01-21 20:22:41",
         "inits": [
             {
                 "name": "Init",
@@ -2633,7 +2633,7 @@
         "version": "2.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:54",
+        "generated": "2021-01-21 20:22:41",
         "inits": [
             {
                 "name": "Init",
@@ -4165,7 +4165,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:55",
+        "generated": "2021-01-21 20:22:41",
         "inits": [
             {
                 "name": "Init",
@@ -6695,7 +6695,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:55",
+        "generated": "2021-01-21 20:22:41",
         "inits": [
             {
                 "name": "Init",
@@ -7048,7 +7048,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:55",
+        "generated": "2021-01-21 20:22:42",
         "inits": [
             {
                 "name": "Init",
@@ -7266,7 +7266,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:55",
+        "generated": "2021-01-21 20:22:42",
         "inits": [
             {
                 "name": "Init",
@@ -7838,7 +7838,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:56",
+        "generated": "2021-01-21 20:22:43",
         "inits": [],
         "keywords": [
             {
@@ -7947,7 +7947,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:56",
+        "generated": "2021-01-21 20:22:43",
         "inits": [],
         "keywords": [
             {
@@ -8065,7 +8065,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:56",
+        "generated": "2021-01-21 20:22:43",
         "inits": [],
         "keywords": [
             {
@@ -8405,7 +8405,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:56",
+        "generated": "2021-01-21 20:22:43",
         "inits": [],
         "keywords": [
             {
@@ -8444,7 +8444,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:57",
+        "generated": "2021-01-21 20:22:43",
         "inits": [],
         "keywords": [
             {
@@ -8551,7 +8551,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:57",
+        "generated": "2021-01-21 20:22:44",
         "inits": [
             {
                 "name": "Init",
@@ -8610,7 +8610,7 @@
                     "windowtitle: str = None",
                     "existing_app: bool = False"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Connect to application by its handle</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param handle:</th><td class=\"field-body\">handle of the application</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${appid}</span><span class=\"p\">  </span><span class=\"c\">Connect By Handle</span><span class=\"p\">  </span><span class=\"c\">88112</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Connect to application by its handle</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param handle:</th><td class=\"field-body\">handle of the application</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param windowtitle:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the window, defaults to active window if None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param existing_app:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">set True if selecting window which library has already\naccessed, default False</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${appid}</span><span class=\"p\">  </span><span class=\"c\">Connect By Handle</span><span class=\"p\">  </span><span class=\"c\">88112</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Connect to application by its handle",
                 "tags": [],
                 "matched": true
@@ -8621,7 +8621,7 @@
                     "app_pid: str",
                     "windowtitle: str = None"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Connect to application by its pid</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param app_pid:</th><td class=\"field-body\">process id of the application</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${appid}</span><span class=\"p\">  </span><span class=\"c\">Connect By PID</span><span class=\"p\">  </span><span class=\"c\">3231</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Connect to application by its pid</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param app_pid:</th><td class=\"field-body\">process id of the application</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param windowtitle:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the window, defaults to active window if None</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${appid}</span><span class=\"p\">  </span><span class=\"c\">Connect By PID</span><span class=\"p\">  </span><span class=\"c\">3231</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Connect to application by its pid",
                 "tags": [],
                 "matched": true
@@ -8636,7 +8636,7 @@
                     "handle_ctrl_key: bool = False",
                     "drop_delay: float = 2.0"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Drag elements from source and drop them on target.</p>\n<p>Please note that if CTRL is not pressed down during drag and drop then\noperation is MOVE operation, on CTRL down the operation is COPY operation.</p>\n<p>There will be also overwrite notification if dropping over existing files.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param src:</th><td class=\"field-body\">application object or instance id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param target:</th><td class=\"field-body\">application object or instance id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param src_locator:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">elements to move</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param handle_ctrl_key:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">True if keyword should press CTRL down dragging</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param drop_delay:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">how many seconds to wait until releasing mouse drop,</td>\n</tr>\n</tbody>\n</table>\n<div class=\"system-message\">\n<p class=\"system-message-title\">System Message: WARNING/2 (<tt class=\"docutils\">&lt;string&gt;</tt>, line 13)</p>\nField list ends without a blank line; unexpected unindent.</div>\n<p>default 2.0\n:raises ValueError: on validation errors</p>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${app1}=</span><span class=\"p\">        </span><span class=\"c\">Open Using Run Dialog</span><span class=\"p\">    </span><span class=\"c\">explorer.exe{VK_SPACE}C:\\workfiles\\movethese</span><span class=\"p\">   </span><span class=\"c\">movethese</span><span class=\"p\">\n</span><span class=\"c\">${app2}=</span><span class=\"p\">        </span><span class=\"c\">Open Using Run Dialog</span><span class=\"p\">    </span><span class=\"c\">wordpad.exe</span><span class=\"p\">   </span><span class=\"c\">Document - WordPad</span><span class=\"p\">\n</span><span class=\"c\">Drag And Drop</span><span class=\"p\">   </span><span class=\"c\">${app1}</span><span class=\"p\">   </span><span class=\"c\">${app2}</span><span class=\"p\">   </span><span class=\"c\">regexp:testfile_\\d.txt</span><span class=\"p\">  </span><span class=\"c\">name:Rich Text Window</span><span class=\"p\">   </span><span class=\"c\">handle_ctrl_key=${True}</span><span class=\"p\">\n</span><span class=\"c\">Drag And Drop</span><span class=\"p\">   </span><span class=\"c\">${app1}</span><span class=\"p\">   </span><span class=\"c\">${app1}</span><span class=\"p\">   </span><span class=\"c\">regexp:testfile_\\d.txt</span><span class=\"p\">  </span><span class=\"c\">name:subdir</span><span class=\"p\">  </span><span class=\"c\">handle_ctrl_key=${True}</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Drag elements from source and drop them on target.</p>\n<p>Please note that if CTRL is not pressed down during drag and drop then\noperation is MOVE operation, on CTRL down the operation is COPY operation.</p>\n<p>There will be also overwrite notification if dropping over existing files.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param src:</th><td class=\"field-body\">application object or instance id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param target:</th><td class=\"field-body\">application object or instance id</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param src_locator:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">elements to move</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param handle_ctrl_key:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">True if keyword should press CTRL down dragging</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param drop_delay:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">how many seconds to wait until releasing mouse drop,\ndefault 2.0</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">raises ValueError:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">on validation errors</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${app1}=</span><span class=\"p\">        </span><span class=\"c\">Open Using Run Dialog</span><span class=\"p\">    </span><span class=\"c\">explorer.exe{VK_SPACE}C:\\workfiles\\movethese</span><span class=\"p\">   </span><span class=\"c\">movethese</span><span class=\"p\">\n</span><span class=\"c\">${app2}=</span><span class=\"p\">        </span><span class=\"c\">Open Using Run Dialog</span><span class=\"p\">    </span><span class=\"c\">wordpad.exe</span><span class=\"p\">   </span><span class=\"c\">Document - WordPad</span><span class=\"p\">\n</span><span class=\"c\">Drag And Drop</span><span class=\"p\">   </span><span class=\"c\">${app1}</span><span class=\"p\">   </span><span class=\"c\">${app2}</span><span class=\"p\">   </span><span class=\"c\">regexp:testfile_\\d.txt</span><span class=\"p\">  </span><span class=\"c\">name:Rich Text Window</span><span class=\"p\">   </span><span class=\"c\">handle_ctrl_key=${True}</span><span class=\"p\">\n</span><span class=\"c\">Drag And Drop</span><span class=\"p\">   </span><span class=\"c\">${app1}</span><span class=\"p\">   </span><span class=\"c\">${app1}</span><span class=\"p\">   </span><span class=\"c\">regexp:testfile_\\d.txt</span><span class=\"p\">  </span><span class=\"c\">name:subdir</span><span class=\"p\">  </span><span class=\"c\">handle_ctrl_key=${True}</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Drag elements from source and drop them on target.",
                 "tags": [],
                 "matched": true
@@ -8679,7 +8679,7 @@
                     "ctrl: typing.Any = None",
                     "as_dict: bool = False"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get dialog rectangle coordinates</p>\n<p>If <cite>ctrl</cite> is None then get coordinates from <cite>dialog</cite>\n:param ctrl: name of the window control object, defaults to None\n:return: coordinates: left, top, right, bottom</p>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${left}</span><span class=\"p\">  </span><span class=\"c\">${top}</span><span class=\"p\">  </span><span class=\"c\">${right}</span><span class=\"p\">  </span><span class=\"c\">${bottom}=</span><span class=\"p\">  </span><span class=\"c\">Get Dialog Rectangle</span><span class=\"p\">\n</span><span class=\"c\">&amp;{coords}</span><span class=\"p\">  </span><span class=\"c\">Get Dialog Rectangle</span><span class=\"p\">  </span><span class=\"c\">as_dict=True</span><span class=\"p\">\n</span><span class=\"c\">Log</span><span class=\"p\">  </span><span class=\"c\">top=${coords.top} left=${coords.left}</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Get dialog rectangle coordinates</p>\n<p>If <cite>ctrl</cite> is None then get coordinates from <cite>dialog</cite></p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param ctrl:</th><td class=\"field-body\">name of the window control object, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">coordinates: left, top, right, bottom</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${left}</span><span class=\"p\">  </span><span class=\"c\">${top}</span><span class=\"p\">  </span><span class=\"c\">${right}</span><span class=\"p\">  </span><span class=\"c\">${bottom}=</span><span class=\"p\">  </span><span class=\"c\">Get Dialog Rectangle</span><span class=\"p\">\n</span><span class=\"c\">&amp;{coords}</span><span class=\"p\">  </span><span class=\"c\">Get Dialog Rectangle</span><span class=\"p\">  </span><span class=\"c\">as_dict=True</span><span class=\"p\">\n</span><span class=\"c\">Log</span><span class=\"p\">  </span><span class=\"c\">top=${coords.top} left=${coords.left}</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Get dialog rectangle coordinates",
                 "tags": [],
                 "matched": true
@@ -8889,7 +8889,7 @@
                 "args": [
                     "windowtitle: str = None"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Minimize window by its title</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param windowtitle:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the window, default <cite>None</cite> means that</td>\n</tr>\n</tbody>\n</table>\n<div class=\"system-message\">\n<p class=\"system-message-title\">System Message: WARNING/2 (<tt class=\"docutils\">&lt;string&gt;</tt>, line 4)</p>\nField list ends without a blank line; unexpected unindent.</div>\n<p>active window is going to be minimized</p>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Open Using Run Dialog</span><span class=\"p\">  </span><span class=\"c\">calc</span><span class=\"p\">     </span><span class=\"c\">Calculator</span><span class=\"p\">\n</span><span class=\"c\">Open Using Run Dialog</span><span class=\"p\">  </span><span class=\"c\">notepad</span><span class=\"p\">  </span><span class=\"c\">Untitled - Notepad</span><span class=\"p\">\n</span><span class=\"c\">Minimize Dialog</span><span class=\"p\">    </span><span class=\"c\"># Current window (Notepad)\nMinimize Dialog</span><span class=\"p\">    </span><span class=\"c\">Calculator</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Minimize window by its title</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param windowtitle:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the window, default <cite>None</cite> means that\nactive window is going to be minimized</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Open Using Run Dialog</span><span class=\"p\">  </span><span class=\"c\">calc</span><span class=\"p\">     </span><span class=\"c\">Calculator</span><span class=\"p\">\n</span><span class=\"c\">Open Using Run Dialog</span><span class=\"p\">  </span><span class=\"c\">notepad</span><span class=\"p\">  </span><span class=\"c\">Untitled - Notepad</span><span class=\"p\">\n</span><span class=\"c\">Minimize Dialog</span><span class=\"p\">    </span><span class=\"c\"># Current window (Notepad)\nMinimize Dialog</span><span class=\"p\">    </span><span class=\"c\">Calculator</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Minimize window by its title",
                 "tags": [],
                 "matched": true
@@ -8959,7 +8959,7 @@
                     "existing_app: bool = False",
                     "wildcard: bool = False"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Open window by its title.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param windowtitle:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the window, defaults to active window if None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param highlight:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">draw outline for window if True, default False</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param timeout:</th><td class=\"field-body\">time to wait for dialog to appear</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param existing_app:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">set True if selecting window which library has already</td>\n</tr>\n</tbody>\n</table>\n<div class=\"system-message\">\n<p class=\"system-message-title\">System Message: WARNING/2 (<tt class=\"docutils\">&lt;string&gt;</tt>, line 7)</p>\nField list ends without a blank line; unexpected unindent.</div>\n<p>accessed, default False\n:param wildcard: set True for inclusive window title search, default False</p>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Open Dialog</span><span class=\"p\">       </span><span class=\"c\">Untitled - Notepad</span><span class=\"p\">\n</span><span class=\"c\">Open Dialog</span><span class=\"p\">       </span><span class=\"c\">Untitled - Notepad</span><span class=\"p\">   </span><span class=\"c\">highlight=True</span><span class=\"p\">   </span><span class=\"c\">timeout=5</span><span class=\"p\">\n</span><span class=\"c\">Open Dialog</span><span class=\"p\">       </span><span class=\"c\">Notepad</span><span class=\"p\">   </span><span class=\"c\">wildcard=True</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Open window by its title.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param windowtitle:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the window, defaults to active window if None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param highlight:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">draw outline for window if True, default False</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param timeout:</th><td class=\"field-body\">time to wait for dialog to appear</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param existing_app:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">set True if selecting window which library has already\naccessed, default False</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param wildcard:</th><td class=\"field-body\">set True for inclusive window title search, default False</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Open Dialog</span><span class=\"p\">       </span><span class=\"c\">Untitled - Notepad</span><span class=\"p\">\n</span><span class=\"c\">Open Dialog</span><span class=\"p\">       </span><span class=\"c\">Untitled - Notepad</span><span class=\"p\">   </span><span class=\"c\">highlight=True</span><span class=\"p\">   </span><span class=\"c\">timeout=5</span><span class=\"p\">\n</span><span class=\"c\">Open Dialog</span><span class=\"p\">       </span><span class=\"c\">Notepad</span><span class=\"p\">   </span><span class=\"c\">wildcard=True</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Open window by its title.",
                 "tags": [],
                 "matched": true
@@ -8973,7 +8973,7 @@
                     "work_dir: str = None",
                     "wildcard: bool = False"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Open Windows executable. Window title name is required\nto get handle on the application.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param executable:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the executable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param windowtitle:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the window</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param backend:</th><td class=\"field-body\">set Windows backend, default None means using</td>\n</tr>\n</tbody>\n</table>\n<div class=\"system-message\">\n<p class=\"system-message-title\">System Message: WARNING/2 (<tt class=\"docutils\">&lt;string&gt;</tt>, line 7)</p>\nField list ends without a blank line; unexpected unindent.</div>\n<p>library default value\n:param work_dir: path to working directory, default None\n:param wildcard: set True for inclusive window title search, default False\n:return: application instance id</p>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${app1}</span><span class=\"p\">    </span><span class=\"c\">Open Executable</span><span class=\"p\">   </span><span class=\"c\">calc.exe</span><span class=\"p\">  </span><span class=\"c\">Calculator</span><span class=\"p\">\n</span><span class=\"c\">${app2}</span><span class=\"p\">    </span><span class=\"c\">Open Executable</span><span class=\"p\">   </span><span class=\"c\">notepad.exe</span><span class=\"p\">  </span><span class=\"c\">Notepad</span><span class=\"p\">   </span><span class=\"c\">wildcard=True</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Open Windows executable. Window title name is required\nto get handle on the application.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param executable:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the executable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param windowtitle:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the window</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param backend:</th><td class=\"field-body\">set Windows backend, default None means using\nlibrary default value</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param work_dir:</th><td class=\"field-body\">path to working directory, default None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param wildcard:</th><td class=\"field-body\">set True for inclusive window title search, default False</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">return:</th><td class=\"field-body\">application instance id</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${app1}</span><span class=\"p\">    </span><span class=\"c\">Open Executable</span><span class=\"p\">   </span><span class=\"c\">calc.exe</span><span class=\"p\">  </span><span class=\"c\">Calculator</span><span class=\"p\">\n</span><span class=\"c\">${app2}</span><span class=\"p\">    </span><span class=\"c\">Open Executable</span><span class=\"p\">   </span><span class=\"c\">notepad.exe</span><span class=\"p\">  </span><span class=\"c\">Notepad</span><span class=\"p\">   </span><span class=\"c\">wildcard=True</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Open Windows executable. Window title name is required to get handle on the application.",
                 "tags": [],
                 "matched": true
@@ -9051,7 +9051,7 @@
                     "app_id: str = None",
                     "send_keys: bool = False"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Quit an application by application id or\nactive application if <cite>app_id</cite> is None.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param app_id:</th><td class=\"field-body\">application_id, defaults to None</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${app1}</span><span class=\"p\">   </span><span class=\"c\">Open Application</span><span class=\"p\">   </span><span class=\"c\">Excel</span><span class=\"p\">\n</span><span class=\"c\">${app2}</span><span class=\"p\">   </span><span class=\"c\">Open Application</span><span class=\"p\">   </span><span class=\"c\">Word</span><span class=\"p\">\n</span><span class=\"c\">Quit Application</span><span class=\"p\">  </span><span class=\"c\">${app1}</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Quit an application by application id or\nactive application if <cite>app_id</cite> is None.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param app_id:</th><td class=\"field-body\">application_id, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param send_keys:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if ALT+F4 should be used to quit, default False</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${app1}</span><span class=\"p\">   </span><span class=\"c\">Open Application</span><span class=\"p\">   </span><span class=\"c\">Excel</span><span class=\"p\">\n</span><span class=\"c\">${app2}</span><span class=\"p\">   </span><span class=\"c\">Open Application</span><span class=\"p\">   </span><span class=\"c\">Word</span><span class=\"p\">\n</span><span class=\"c\">Quit Application</span><span class=\"p\">  </span><span class=\"c\">${app1}</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Quit an application by application id or active application if <cite>app_id</cite> is None.",
                 "tags": [],
                 "matched": true
@@ -9069,7 +9069,7 @@
                 "args": [
                     "windowtitle: str = None"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Restore window by its title</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param windowtitle:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the window, default <cite>None</cite> means that</td>\n</tr>\n</tbody>\n</table>\n<div class=\"system-message\">\n<p class=\"system-message-title\">System Message: WARNING/2 (<tt class=\"docutils\">&lt;string&gt;</tt>, line 4)</p>\nField list ends without a blank line; unexpected unindent.</div>\n<p>active window is going to be restored</p>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Open Using Run Dialog</span><span class=\"p\">  </span><span class=\"c\">notepad</span><span class=\"p\">  </span><span class=\"c\">Untitled - Notepad</span><span class=\"p\">\n</span><span class=\"c\">Minimize Dialog</span><span class=\"p\">\n</span><span class=\"c\">Sleep</span><span class=\"p\">             </span><span class=\"c\">1s</span><span class=\"p\">\n</span><span class=\"c\">Restore Dialog</span><span class=\"p\">\n</span><span class=\"c\">Sleep</span><span class=\"p\">             </span><span class=\"c\">1s</span><span class=\"p\">\n</span><span class=\"c\">Restore Dialog</span><span class=\"p\">    </span><span class=\"c\">Untitled - Notepad</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Restore window by its title</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param windowtitle:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">name of the window, default <cite>None</cite> means that\nactive window is going to be restored</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Open Using Run Dialog</span><span class=\"p\">  </span><span class=\"c\">notepad</span><span class=\"p\">  </span><span class=\"c\">Untitled - Notepad</span><span class=\"p\">\n</span><span class=\"c\">Minimize Dialog</span><span class=\"p\">\n</span><span class=\"c\">Sleep</span><span class=\"p\">             </span><span class=\"c\">1s</span><span class=\"p\">\n</span><span class=\"c\">Restore Dialog</span><span class=\"p\">\n</span><span class=\"c\">Sleep</span><span class=\"p\">             </span><span class=\"c\">1s</span><span class=\"p\">\n</span><span class=\"c\">Restore Dialog</span><span class=\"p\">    </span><span class=\"c\">Untitled - Notepad</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Restore window by its title",
                 "tags": [],
                 "matched": true
@@ -9093,7 +9093,7 @@
                 "args": [
                     "keys: str"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Send keys into active windows.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param keys:</th><td class=\"field-body\">list of keys to send</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Open Executable</span><span class=\"p\">  </span><span class=\"c\">calc.exe</span><span class=\"p\">  </span><span class=\"c\">Calculator</span><span class=\"p\">\n</span><span class=\"c\">Send Keys</span><span class=\"p\">        </span><span class=\"c\">2{+}3=</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Send keys into active windows.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param keys:</th><td class=\"field-body\">list of keys to send</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Open Executable</span><span class=\"p\">  </span><span class=\"c\">calc.exe</span><span class=\"p\">  </span><span class=\"c\">Calculator</span><span class=\"p\">\n</span><span class=\"c\">Send Keys</span><span class=\"p\">        </span><span class=\"c\">2{+}3{=}</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Send keys into active windows.",
                 "tags": [],
                 "matched": true
@@ -9138,7 +9138,7 @@
                     "keys: str",
                     "empty_field: bool = False"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Type keys into element matched by given locator.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param locator:</th><td class=\"field-body\">element locator</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param keys:</th><td class=\"field-body\">list of keys to type</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Open Executable</span><span class=\"p\">  </span><span class=\"c\">calc.exe</span><span class=\"p\">  </span><span class=\"c\">Calculator</span><span class=\"p\">\n</span><span class=\"c\">Type Into</span><span class=\"p\">        </span><span class=\"c\">CalculatorResults</span><span class=\"p\">  </span><span class=\"c\">11</span><span class=\"p\">\n</span><span class=\"c\">Type Into</span><span class=\"p\">        </span><span class=\"c\">CalculatorResults</span><span class=\"p\">  </span><span class=\"c\">22</span><span class=\"p\">  </span><span class=\"c\">empty_field=True</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Type keys into element matched by given locator.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param locator:</th><td class=\"field-body\">element locator</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param keys:</th><td class=\"field-body\">list of keys to type</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param empty_field:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">if field should be emptied before typing, default False</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Open Executable</span><span class=\"p\">  </span><span class=\"c\">calc.exe</span><span class=\"p\">  </span><span class=\"c\">Calculator</span><span class=\"p\">\n</span><span class=\"c\">Type Into</span><span class=\"p\">        </span><span class=\"c\">CalculatorResults</span><span class=\"p\">  </span><span class=\"c\">11</span><span class=\"p\">\n</span><span class=\"c\">Type Into</span><span class=\"p\">        </span><span class=\"c\">CalculatorResults</span><span class=\"p\">  </span><span class=\"c\">22</span><span class=\"p\">  </span><span class=\"c\">empty_field=True</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Type keys into element matched by given locator.",
                 "tags": [],
                 "matched": true
@@ -9161,7 +9161,7 @@
                     "timeout: float = 30.0",
                     "interval: float = 2.0"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Wait for element to appear into the window.</p>\n<p>Can return 1 or more elements matching locator, or raises\n<cite>ElementNotFoundError</cite> if element is not found within timeout.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param locator:</th><td class=\"field-body\">name of the locator</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param search_criteria:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">criteria by which element is matched</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param timeout:</th><td class=\"field-body\">defines how long to wait for element to appear,</td>\n</tr>\n</tbody>\n</table>\n<div class=\"system-message\">\n<p class=\"system-message-title\">System Message: WARNING/2 (<tt class=\"docutils\">&lt;string&gt;</tt>, line 9)</p>\nField list ends without a blank line; unexpected unindent.</div>\n<p>defaults to 30.0 seconds\n:param interval: how often to poll for element,\ndefaults to 2.0 seconds (minimum is 0.5 seconds)</p>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">&#64;{elements}</span><span class=\"p\">  </span><span class=\"c\">Wait For Element</span><span class=\"p\">  </span><span class=\"c\">CalculatorResults</span><span class=\"p\">\n</span><span class=\"c\">&#64;{elements}</span><span class=\"p\">  </span><span class=\"c\">Wait For Element</span><span class=\"p\">  </span><span class=\"c\">Results</span><span class=\"p\">   </span><span class=\"c\">timeout=10</span><span class=\"p\">  </span><span class=\"c\">interval=1.5</span>\n</pre>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Wait for element to appear into the window.</p>\n<p>Can return 1 or more elements matching locator, or raises\n<cite>ElementNotFoundError</cite> if element is not found within timeout.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param locator:</th><td class=\"field-body\">name of the locator</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param search_criteria:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">criteria by which element is matched</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param timeout:</th><td class=\"field-body\">defines how long to wait for element to appear,\ndefaults to 30.0 seconds</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param interval:</th><td class=\"field-body\">how often to poll for element,\ndefaults to 2.0 seconds (minimum is 0.5 seconds)</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">&#64;{elements}</span><span class=\"p\">  </span><span class=\"c\">Wait For Element</span><span class=\"p\">  </span><span class=\"c\">CalculatorResults</span><span class=\"p\">\n</span><span class=\"c\">&#64;{elements}</span><span class=\"p\">  </span><span class=\"c\">Wait For Element</span><span class=\"p\">  </span><span class=\"c\">Results</span><span class=\"p\">   </span><span class=\"c\">timeout=10</span><span class=\"p\">  </span><span class=\"c\">interval=1.5</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Wait for element to appear into the window.",
                 "tags": [],
                 "matched": true
@@ -9176,7 +9176,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:58",
+        "generated": "2021-01-21 20:22:44",
         "inits": [
             {
                 "name": "Init",
@@ -9343,7 +9343,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:58",
+        "generated": "2021-01-21 20:22:45",
         "inits": [],
         "keywords": [
             {
@@ -9472,7 +9472,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:58",
+        "generated": "2021-01-21 20:22:45",
         "inits": [
             {
                 "name": "Init",
@@ -9803,7 +9803,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:59",
+        "generated": "2021-01-21 20:22:45",
         "inits": [],
         "keywords": [
             {
@@ -9969,7 +9969,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:59",
+        "generated": "2021-01-21 20:22:46",
         "inits": [],
         "keywords": [
             {
@@ -10166,7 +10166,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:59",
+        "generated": "2021-01-21 20:22:46",
         "inits": [],
         "keywords": [
             {
@@ -10363,7 +10363,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:08:59",
+        "generated": "2021-01-21 20:22:46",
         "inits": [],
         "keywords": [
             {
@@ -10847,7 +10847,7 @@
         "version": "0.7.2",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:00",
+        "generated": "2021-01-21 20:22:47",
         "inits": [
             {
                 "name": "Init",
@@ -10878,7 +10878,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'GET', 'DELETE', 'OPTIONS', 'PUT', 'TRACE']"
+                    "retry_method_list=['TRACE', 'HEAD', 'DELETE', 'GET', 'OPTIONS', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>client_certs</code> ['client certificate', 'client key'] PEM files containing the client key and certificate</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10901,7 +10901,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'GET', 'DELETE', 'OPTIONS', 'PUT', 'TRACE']"
+                    "retry_method_list=['TRACE', 'HEAD', 'DELETE', 'GET', 'OPTIONS', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> A Custom Authentication object to be passed on to the requests library. <a href=\"http://docs.python-requests.org/en/master/user/advanced/#custom-authentication\">http://docs.python-requests.org/en/master/user/advanced/#custom-authentication</a></p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10924,7 +10924,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'GET', 'DELETE', 'OPTIONS', 'PUT', 'TRACE']"
+                    "retry_method_list=['TRACE', 'HEAD', 'DELETE', 'GET', 'OPTIONS', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10947,7 +10947,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'GET', 'DELETE', 'OPTIONS', 'PUT', 'TRACE']"
+                    "retry_method_list=['TRACE', 'HEAD', 'DELETE', 'GET', 'OPTIONS', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10970,7 +10970,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'GET', 'DELETE', 'OPTIONS', 'PUT', 'TRACE']"
+                    "retry_method_list=['TRACE', 'HEAD', 'DELETE', 'GET', 'OPTIONS', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> List of username &amp; password for HTTP Basic Auth</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -11214,7 +11214,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:00",
+        "generated": "2021-01-21 20:22:47",
         "inits": [],
         "keywords": [
             {
@@ -11333,7 +11333,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:00",
+        "generated": "2021-01-21 20:22:47",
         "inits": [],
         "keywords": [
             {
@@ -11444,7 +11444,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:00",
+        "generated": "2021-01-21 20:22:47",
         "inits": [],
         "keywords": [
             {
@@ -11604,7 +11604,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:00",
+        "generated": "2021-01-21 20:22:47",
         "inits": [],
         "keywords": [
             {
@@ -11699,7 +11699,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:00",
+        "generated": "2021-01-21 20:22:47",
         "inits": [],
         "keywords": [
             {
@@ -11769,7 +11769,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:01",
+        "generated": "2021-01-21 20:22:47",
         "inits": [
             {
                 "name": "Init",
@@ -12710,7 +12710,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:01",
+        "generated": "2021-01-21 20:22:48",
         "inits": [
             {
                 "name": "Init",
@@ -12799,7 +12799,7 @@
                 "name": "Get Work Item Variable",
                 "args": [
                     "name",
-                    "default=<object object at 0x000001F419F47E00>"
+                    "default=<object object at 0x000001F4189C0460>"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a single variable value from the work item,\nor default value if defined and key does not exist.\nIf key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param key:</th><td class=\"field-body\">Name of variable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param default:</th><td class=\"field-body\">Default value if key does not exist</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${username}=</span><span class=\"p\">    </span><span class=\"c\">Get work item variable</span><span class=\"p\">    </span><span class=\"c\">username</span><span class=\"p\">    </span><span class=\"c\">default=guest</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Return a single variable value from the work item, or default value if defined and key does not exist. If key does not exist and default is not defined, raises <cite>KeyError</cite>.",
@@ -12928,7 +12928,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:02",
+        "generated": "2021-01-21 20:22:48",
         "inits": [
             {
                 "name": "Init",
@@ -12963,7 +12963,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:02",
+        "generated": "2021-01-21 20:22:48",
         "inits": [],
         "keywords": [
             {
@@ -13029,7 +13029,7 @@
         "version": "1.1",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:02",
+        "generated": "2021-01-21 20:22:49",
         "inits": [
             {
                 "name": "Init",
@@ -13446,7 +13446,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:02",
+        "generated": "2021-01-21 20:22:49",
         "inits": [
             {
                 "name": "Init",
@@ -13703,7 +13703,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:02",
+        "generated": "2021-01-21 20:22:49",
         "inits": [],
         "keywords": [
             {
@@ -13730,7 +13730,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:02",
+        "generated": "2021-01-21 20:22:49",
         "inits": [],
         "keywords": [
             {
@@ -14106,7 +14106,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:03",
+        "generated": "2021-01-21 20:22:49",
         "inits": [
             {
                 "name": "Init",
@@ -14225,7 +14225,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:03",
+        "generated": "2021-01-21 20:22:49",
         "inits": [],
         "keywords": [
             {
@@ -14348,7 +14348,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-20 06:09:03",
+        "generated": "2021-01-21 20:22:50",
         "inits": [],
         "keywords": [
             {

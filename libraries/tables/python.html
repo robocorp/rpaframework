@@ -219,16 +219,17 @@
 <span id="tables"></span><h2>Tables<a class="headerlink" href="#module-RPA.Tables" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="RPA.Tables.Table">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Tables.</code><code class="sig-name descname">Table</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">columns=None</em>, <em class="sig-param">index=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Tables.</code><code class="sig-name descname">Table</code><span class="sig-paren">(</span><em class="sig-param">data: Union[None, List[Union[NamedTuple, dict, list, tuple]], Dict[str, Union[NamedTuple, dict, list, tuple]], Table, str] = None, columns=None, index=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Container class for tabular data.</p>
 <p>Supported data formats:</p>
 <ul class="simple">
 <li><p>empty: None values populated according to columns/index</p></li>
-<li><p>list: List of objects that contain values, which themselves
-can be namedtuples, dictionaries, lists, or tuples</p></li>
-<li><p>dict: Dictionary of columns as keys and rows as values</p></li>
+<li><p>list: list of data Rows</p></li>
+<li><p>dict: Dictionary of columns as keys and Rows as values</p></li>
+<li><p>table: An existing Table</p></li>
 </ul>
+<p>Row: a namedtuple, dictionary, list or a tuple</p>
 <div class="admonition-todo admonition" id="id1">
 <p class="admonition-title">Todo</p>
 <p>Distinguish between range-based index and named index</p>
