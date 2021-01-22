@@ -9,8 +9,8 @@ Upcoming release
 
 - Library ***RPA.Desktop.Windows**:
 
-  - `Open File` performs the `Open Dialog` call only if windowtitle is given
-  - Expose `timeout` parameter for `Open File` keyword
+  - ``Open File`` performs the ``Open Dialog`` call only if windowtitle is given
+  - Expose ``timeout`` parameter for ``Open File`` keyword
 
 - Library **RPA.Browser.Selenium**:
 
