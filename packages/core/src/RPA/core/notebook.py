@@ -94,14 +94,18 @@ def notebook_dir(directory, recursive=False):
 
 
 @print_precheck
-def notebook_table(table, count: int = 20):
-    """Display RPA.Table as IPython Markdown object in the notebook
+def notebook_table(table: Any, count: int = 20, columns=None, index=None):
+    """Display RPA.Table or RPA.Table shaped data as IPython Markdown object in the notebook
 
     :param table: `RPA.Table` object to print
+    :param count: How many rows of table to print
+    :param columns: Names / headers of the table columns
+    :param index: List of indices for table rows
     """
     # pylint: disable=C0415,E0611
-    from RPA.Tables import Tables  # noqa
+    from RPA.Tables import Table, Tables  # noqa
 
+    table = Table(table, columns, index)
     if count:
         table = Tables().table_head(table, count=count)
     output = _get_table_output(table)

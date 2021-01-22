@@ -530,7 +530,7 @@ class Selenium(SeleniumLibrary):
 
         # No webdriver was started
         if index_or_alias is None:
-            notebook.notebook_table_from_raw_data(options, table_headers)
+            notebook.notebook_table(options, columns=table_headers)
             raise BrowserNotFoundError(
                 # TODO: could we include the whole options here
                 "No valid browser found from: {}".format(
