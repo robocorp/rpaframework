@@ -27,10 +27,10 @@ RPA.Desktop.Windows:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "580", "Handle too compled method"
-   "1057", "return more valuable information about what should"
-   "1305", "supporting multiple search criterias at same time to identify ONE element"
-   "1331", "supporting multiple search criterias at same time to identify ONE element"
+   "589", "Handle too compled method"
+   "1066", "return more valuable information about what should"
+   "1314", "supporting multiple search criterias at same time to identify ONE element"
+   "1340", "supporting multiple search criterias at same time to identify ONE element"
 
 RPA.Desktop.keywords.application:
 =================================

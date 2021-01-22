@@ -1165,7 +1165,7 @@ library default value</p></li>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_file">
-<code class="sig-name descname">open_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">wildcard: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">wildcard: bool = False</em>, <em class="sig-param">timeout: int = 10</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open associated application when opening file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1173,6 +1173,7 @@ library default value</p></li>
 <li><p><strong>filename</strong> – path to file</p></li>
 <li><p><strong>windowtitle</strong> – name of the window</p></li>
 <li><p><strong>wildcard</strong> – set True for inclusive window title search, default False</p></li>
+<li><p><strong>timeout</strong> – time to wait for dialog to appear</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
