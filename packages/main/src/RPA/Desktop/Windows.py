@@ -341,13 +341,18 @@ class Windows(OperatingSystem):
         return self._add_app_instance(app, dialog=False, params=params)
 
     def open_file(
-        self, filename: str, windowtitle: str = None, wildcard: bool = False
+        self,
+        filename: str,
+        windowtitle: str = None,
+        wildcard: bool = False,
+        timeout: int = 10,
     ) -> bool:
         """Open associated application when opening file
 
         :param filename: path to file
         :param windowtitle: name of the window
         :param wildcard: set True for inclusive window title search, default False
+        :param timeout: time to wait for dialog to appear
         :return: True if application is opened, False if not
 
         Example:
@@ -365,13 +370,17 @@ class Windows(OperatingSystem):
             subprocess.call(["open", filename])
         else:
             subprocess.call(["xdg-open", filename])
-        app_instance = self.open_dialog(windowtitle, wildcard=wildcard)
-        if app_instance > 0:
-            self._apps[app_instance]["executable"] = filename
-            self._apps[app_instance]["startkeyword"] = "Open File"
-            return True
-        else:
-            return False
+        returnvalue = True
+        if windowtitle:
+            app_instance = self.open_dialog(
+                windowtitle, wildcard=wildcard, timeout=timeout
+            )
+            if app_instance > 0:
+                self._apps[app_instance]["executable"] = filename
+                self._apps[app_instance]["startkeyword"] = "Open File"
+            else:
+                returnvalue = False
+        return returnvalue
 
     def open_executable(
         self,

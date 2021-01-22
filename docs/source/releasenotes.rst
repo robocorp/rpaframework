@@ -4,6 +4,14 @@ Release notes
 Upcoming release
 ----------------
 
+7.3.0
+-----
+
+- Library ***RPA.Desktop.Windows**:
+
+  - `Open File` performs the `Open Dialog` call only if windowtitle is given
+  - Expose `timeout` parameter for `Open File` keyword
+
 - Library **RPA.Browser.Selenium**:
 
   - Keyword ``Open Available Browser`` now prints table of attempts to Notebooks on error
