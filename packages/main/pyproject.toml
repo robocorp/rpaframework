@@ -28,7 +28,8 @@ classifiers = [
 ]
 
 packages = [
-	{ include = "RPA", from = "src" }
+	{ include = "RPA", from = "src" },
+	{ include = "tests", format = "sdist" }
 ]
 
 [tool.poetry.dependencies]
