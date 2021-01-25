@@ -5,7 +5,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:52",
+        "generated": "2021-01-25 17:37:20",
         "inits": [],
         "keywords": [
             {
@@ -103,7 +103,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:53",
+        "generated": "2021-01-25 17:37:20",
         "inits": [
             {
                 "name": "Init",
@@ -832,6 +832,17 @@
                 ],
                 "doc": "<p>Executes asynchronous JavaScript code with possible arguments.</p>\n<p>Similar to <a href=\"#Execute%20Javascript\" class=\"name\">Execute Javascript</a> except that scripts executed with this keyword must explicitly signal they are finished by invoking the provided callback. This callback is always injected into the executed function as the last argument.</p>\n<p>Scripts must complete within the script timeout or this keyword will fail. See the <a href=\"#Timeout\" class=\"name\">Timeout</a> section for more information.</p>\n<p>Starting from SeleniumLibrary 3.2 it is possible to provide JavaScript <a href=\"https://seleniumhq.github.io/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.execute_async_script\">arguments</a> as part of <code>code</code> argument. See <a href=\"#Execute%20Javascript\" class=\"name\">Execute Javascript</a> for more details.</p>\n<p>Examples:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Execute%20Async%20Javascript\" class=\"name\">Execute Async JavaScript</a></td>\n<td>var callback = arguments[arguments.length - 1]; window.setTimeout(callback, 2000);</td>\n<td></td>\n</tr>\n<tr>\n<td><a href=\"#Execute%20Async%20Javascript\" class=\"name\">Execute Async JavaScript</a></td>\n<td>${CURDIR}/async_js_to_execute.js</td>\n<td></td>\n</tr>\n<tr>\n<td>${result} =</td>\n<td><a href=\"#Execute%20Async%20Javascript\" class=\"name\">Execute Async JavaScript</a></td>\n<td></td>\n</tr>\n<tr>\n<td>...</td>\n<td>var callback = arguments[arguments.length - 1];</td>\n<td></td>\n</tr>\n<tr>\n<td>...</td>\n<td>function answer(){callback(\"text\");};</td>\n<td></td>\n</tr>\n<tr>\n<td>...</td>\n<td>window.setTimeout(answer, 2000);</td>\n<td></td>\n</tr>\n<tr>\n<td><span class=\"name\">Should Be Equal</span></td>\n<td>${result}</td>\n<td>text</td>\n</tr>\n</table>",
                 "shortdoc": "Executes asynchronous JavaScript code with possible arguments.",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Execute Cdp",
+                "args": [
+                    "command",
+                    "parameters"
+                ],
+                "doc": "<p>Executes Chrome DevTools Protocol commands</p>\n<p>Works only with Chrome/Chromium</p>\n<p>For more information, available commands and parameters, see: <a href=\"https://chromedevtools.github.io/devtools-protocol/\">https://chromedevtools.github.io/devtools-protocol/</a></p>\n<p><code>command</code> command to execute as string</p>\n<p><code>parameters</code> parameters for command as a dictionary</p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td>Open Chrome Browser</td>\n<td>about:blank</td>\n<td>headless=True</td>\n</tr>\n<tr>\n<td>&amp;{params}</td>\n<td>Create Dictionary</td>\n<td>useragent=Chrome/83.0.4103.53</td>\n</tr>\n<tr>\n<td>Execute CDP</td>\n<td>Network.setUserAgentOverride</td>\n<td>${params}</td>\n</tr>\n<tr>\n<td>Go To</td>\n<td><a href=\"https://robocorp.com\">https://robocorp.com</a></td>\n<td></td>\n</tr>\n</table>",
+                "shortdoc": "Executes Chrome DevTools Protocol commands",
                 "tags": [],
                 "matched": true
             },
@@ -1630,9 +1641,10 @@
                     "profile_name: str = None",
                     "profile_path: str = None",
                     "preferences: dict = None",
-                    "proxy: str = None"
+                    "proxy: str = None",
+                    "user_agent: str = None"
                 ],
-                "doc": "<p>Opens the first available browser in the system in preferred order, or the given browser (<code>browser_selection</code>).</p>\n<p><code>url</code> URL to open</p>\n<p><code>use_profile</code> Set browser profile, default <code>False</code> (Chrome/Chromium only)</p>\n<p><code>headless</code> Run in headless mode, default <code>False</code></p>\n<p><code>maximized</code> Run window maximized, default <code>False</code></p>\n<p><code>browser_selection</code> browser name, default <code>AUTOMATIC_BROWSER_SELECTION</code></p>\n<p><code>alias</code> Custom name for browser</p>\n<p><code>profile_name</code> Name of profile (if profile enabled)</p>\n<p><code>profile_path</code> Path to profiles (if profile enabled)</p>\n<p><code>preferences</code> Profile preferences (Chrome/Chromium only)</p>\n<p><code>proxy</code> Proxy server address (Chrome only)</p>\n<p>Returns an index of the webdriver session.</p>\n<h4>Process of opening a browser</h4>\n<p>1. Get the order of browsers</p>\n<p>2. Loop the list of preferred browsers</p>\n<p>a. Set the webdriver options for the browser</p>\n<p>b. Create the webdriver using existing installation</p>\n<p>c. (If step b. failed) Download and install webdriver, try again</p>\n<p>d. (If step c. failed) Try starting webdriver in headless mode</p>\n<p>3. Open the URL</p>\n<p>Returns index or custom alias for the browser instance.</p>\n<p>Raises <code>BrowserNotFoundError</code> if unable to open the browser.</p>\n<p>For information about Safari webdriver setup, see <a href=\"https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari\">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td>${idx1}</td>\n<td>Open Available Browser</td>\n<td><a href=\"https://www.robocorp.com\">https://www.robocorp.com</a></td>\n<td></td>\n</tr>\n<tr>\n<td>${idx2}</td>\n<td>Open Available Browser</td>\n<td>${URL}</td>\n<td>browser_selection=opera,firefox</td>\n</tr>\n<tr>\n<td>Open Available Browser</td>\n<td>${URL}</td>\n<td>headless=True</td>\n<td>proxy=localhost:8899</td>\n</tr>\n</table>",
+                "doc": "<p>Opens the first available browser in the system in preferred order, or the given browser (<code>browser_selection</code>).</p>\n<p><code>url</code> URL to open</p>\n<p><code>use_profile</code> Set browser profile, default <code>False</code> (Chrome/Chromium only)</p>\n<p><code>headless</code> Run in headless mode, default <code>False</code></p>\n<p><code>maximized</code> Run window maximized, default <code>False</code></p>\n<p><code>browser_selection</code> browser name, default <code>AUTOMATIC_BROWSER_SELECTION</code></p>\n<p><code>alias</code> Custom name for browser</p>\n<p><code>profile_name</code> Name of profile (if profile enabled)</p>\n<p><code>profile_path</code> Path to profiles (if profile enabled)</p>\n<p><code>preferences</code> Profile preferences (Chrome/Chromium only)</p>\n<p><code>proxy</code> Proxy server address (Chrome only)</p>\n<p><code>user_agent</code> Set useragent string for browser</p>\n<p>Returns an index of the webdriver session.</p>\n<h4>Process of opening a browser</h4>\n<p>1. Get the order of browsers</p>\n<p>2. Loop the list of preferred browsers</p>\n<p>a. Set the webdriver options for the browser</p>\n<p>b. Create the webdriver using existing installation</p>\n<p>c. (If step b. failed) Download and install webdriver, try again</p>\n<p>d. (If step c. failed) Try starting webdriver in headless mode</p>\n<p>3. Open the URL</p>\n<p>Returns index or custom alias for the browser instance.</p>\n<p>Raises <code>BrowserNotFoundError</code> if unable to open the browser.</p>\n<p>For information about Safari webdriver setup, see <a href=\"https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari\">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td>${idx1}</td>\n<td>Open Available Browser</td>\n<td><a href=\"https://www.robocorp.com\">https://www.robocorp.com</a></td>\n<td></td>\n</tr>\n<tr>\n<td>${idx2}</td>\n<td>Open Available Browser</td>\n<td>${URL}</td>\n<td>browser_selection=opera,firefox</td>\n</tr>\n<tr>\n<td>Open Available Browser</td>\n<td>${URL}</td>\n<td>headless=True</td>\n<td>proxy=localhost:8899</td>\n</tr>\n</table>",
                 "shortdoc": "Opens the first available browser in the system in preferred order, or the given browser (<code>browser_selection</code>).",
                 "tags": [],
                 "matched": true
@@ -1666,7 +1678,8 @@
                     "profile_name: str = None",
                     "profile_path: str = None",
                     "preferences: dict = None",
-                    "proxy: str = None"
+                    "proxy: str = None",
+                    "user_agent: str = None"
                 ],
                 "doc": "<p>Open Chrome browser. See <code>Open Available Browser</code> for descriptions of arguments.</p>",
                 "shortdoc": "Open Chrome browser. See <code>Open Available Browser</code> for descriptions of arguments.",
@@ -2633,7 +2646,7 @@
         "version": "2.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:53",
+        "generated": "2021-01-25 17:37:20",
         "inits": [
             {
                 "name": "Init",
@@ -4165,7 +4178,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:53",
+        "generated": "2021-01-25 17:37:20",
         "inits": [
             {
                 "name": "Init",
@@ -4894,6 +4907,17 @@
                 ],
                 "doc": "<p>Executes asynchronous JavaScript code with possible arguments.</p>\n<p>Similar to <a href=\"#Execute%20Javascript\" class=\"name\">Execute Javascript</a> except that scripts executed with this keyword must explicitly signal they are finished by invoking the provided callback. This callback is always injected into the executed function as the last argument.</p>\n<p>Scripts must complete within the script timeout or this keyword will fail. See the <a href=\"#Timeout\" class=\"name\">Timeout</a> section for more information.</p>\n<p>Starting from SeleniumLibrary 3.2 it is possible to provide JavaScript <a href=\"https://seleniumhq.github.io/selenium/docs/api/py/webdriver_remote/selenium.webdriver.remote.webdriver.html#selenium.webdriver.remote.webdriver.WebDriver.execute_async_script\">arguments</a> as part of <code>code</code> argument. See <a href=\"#Execute%20Javascript\" class=\"name\">Execute Javascript</a> for more details.</p>\n<p>Examples:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Execute%20Async%20Javascript\" class=\"name\">Execute Async JavaScript</a></td>\n<td>var callback = arguments[arguments.length - 1]; window.setTimeout(callback, 2000);</td>\n<td></td>\n</tr>\n<tr>\n<td><a href=\"#Execute%20Async%20Javascript\" class=\"name\">Execute Async JavaScript</a></td>\n<td>${CURDIR}/async_js_to_execute.js</td>\n<td></td>\n</tr>\n<tr>\n<td>${result} =</td>\n<td><a href=\"#Execute%20Async%20Javascript\" class=\"name\">Execute Async JavaScript</a></td>\n<td></td>\n</tr>\n<tr>\n<td>...</td>\n<td>var callback = arguments[arguments.length - 1];</td>\n<td></td>\n</tr>\n<tr>\n<td>...</td>\n<td>function answer(){callback(\"text\");};</td>\n<td></td>\n</tr>\n<tr>\n<td>...</td>\n<td>window.setTimeout(answer, 2000);</td>\n<td></td>\n</tr>\n<tr>\n<td><span class=\"name\">Should Be Equal</span></td>\n<td>${result}</td>\n<td>text</td>\n</tr>\n</table>",
                 "shortdoc": "Executes asynchronous JavaScript code with possible arguments.",
+                "tags": [],
+                "matched": true
+            },
+            {
+                "name": "Execute Cdp",
+                "args": [
+                    "command",
+                    "parameters"
+                ],
+                "doc": "<p>Executes Chrome DevTools Protocol commands</p>\n<p>Works only with Chrome/Chromium</p>\n<p>For more information, available commands and parameters, see: <a href=\"https://chromedevtools.github.io/devtools-protocol/\">https://chromedevtools.github.io/devtools-protocol/</a></p>\n<p><code>command</code> command to execute as string</p>\n<p><code>parameters</code> parameters for command as a dictionary</p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td>Open Chrome Browser</td>\n<td>about:blank</td>\n<td>headless=True</td>\n</tr>\n<tr>\n<td>&amp;{params}</td>\n<td>Create Dictionary</td>\n<td>useragent=Chrome/83.0.4103.53</td>\n</tr>\n<tr>\n<td>Execute CDP</td>\n<td>Network.setUserAgentOverride</td>\n<td>${params}</td>\n</tr>\n<tr>\n<td>Go To</td>\n<td><a href=\"https://robocorp.com\">https://robocorp.com</a></td>\n<td></td>\n</tr>\n</table>",
+                "shortdoc": "Executes Chrome DevTools Protocol commands",
                 "tags": [],
                 "matched": true
             },
@@ -5692,9 +5716,10 @@
                     "profile_name: str = None",
                     "profile_path: str = None",
                     "preferences: dict = None",
-                    "proxy: str = None"
+                    "proxy: str = None",
+                    "user_agent: str = None"
                 ],
-                "doc": "<p>Opens the first available browser in the system in preferred order, or the given browser (<code>browser_selection</code>).</p>\n<p><code>url</code> URL to open</p>\n<p><code>use_profile</code> Set browser profile, default <code>False</code> (Chrome/Chromium only)</p>\n<p><code>headless</code> Run in headless mode, default <code>False</code></p>\n<p><code>maximized</code> Run window maximized, default <code>False</code></p>\n<p><code>browser_selection</code> browser name, default <code>AUTOMATIC_BROWSER_SELECTION</code></p>\n<p><code>alias</code> Custom name for browser</p>\n<p><code>profile_name</code> Name of profile (if profile enabled)</p>\n<p><code>profile_path</code> Path to profiles (if profile enabled)</p>\n<p><code>preferences</code> Profile preferences (Chrome/Chromium only)</p>\n<p><code>proxy</code> Proxy server address (Chrome only)</p>\n<p>Returns an index of the webdriver session.</p>\n<h4>Process of opening a browser</h4>\n<p>1. Get the order of browsers</p>\n<p>2. Loop the list of preferred browsers</p>\n<p>a. Set the webdriver options for the browser</p>\n<p>b. Create the webdriver using existing installation</p>\n<p>c. (If step b. failed) Download and install webdriver, try again</p>\n<p>d. (If step c. failed) Try starting webdriver in headless mode</p>\n<p>3. Open the URL</p>\n<p>Returns index or custom alias for the browser instance.</p>\n<p>Raises <code>BrowserNotFoundError</code> if unable to open the browser.</p>\n<p>For information about Safari webdriver setup, see <a href=\"https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari\">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td>${idx1}</td>\n<td>Open Available Browser</td>\n<td><a href=\"https://www.robocorp.com\">https://www.robocorp.com</a></td>\n<td></td>\n</tr>\n<tr>\n<td>${idx2}</td>\n<td>Open Available Browser</td>\n<td>${URL}</td>\n<td>browser_selection=opera,firefox</td>\n</tr>\n<tr>\n<td>Open Available Browser</td>\n<td>${URL}</td>\n<td>headless=True</td>\n<td>proxy=localhost:8899</td>\n</tr>\n</table>",
+                "doc": "<p>Opens the first available browser in the system in preferred order, or the given browser (<code>browser_selection</code>).</p>\n<p><code>url</code> URL to open</p>\n<p><code>use_profile</code> Set browser profile, default <code>False</code> (Chrome/Chromium only)</p>\n<p><code>headless</code> Run in headless mode, default <code>False</code></p>\n<p><code>maximized</code> Run window maximized, default <code>False</code></p>\n<p><code>browser_selection</code> browser name, default <code>AUTOMATIC_BROWSER_SELECTION</code></p>\n<p><code>alias</code> Custom name for browser</p>\n<p><code>profile_name</code> Name of profile (if profile enabled)</p>\n<p><code>profile_path</code> Path to profiles (if profile enabled)</p>\n<p><code>preferences</code> Profile preferences (Chrome/Chromium only)</p>\n<p><code>proxy</code> Proxy server address (Chrome only)</p>\n<p><code>user_agent</code> Set useragent string for browser</p>\n<p>Returns an index of the webdriver session.</p>\n<h4>Process of opening a browser</h4>\n<p>1. Get the order of browsers</p>\n<p>2. Loop the list of preferred browsers</p>\n<p>a. Set the webdriver options for the browser</p>\n<p>b. Create the webdriver using existing installation</p>\n<p>c. (If step b. failed) Download and install webdriver, try again</p>\n<p>d. (If step c. failed) Try starting webdriver in headless mode</p>\n<p>3. Open the URL</p>\n<p>Returns index or custom alias for the browser instance.</p>\n<p>Raises <code>BrowserNotFoundError</code> if unable to open the browser.</p>\n<p>For information about Safari webdriver setup, see <a href=\"https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari\">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td>${idx1}</td>\n<td>Open Available Browser</td>\n<td><a href=\"https://www.robocorp.com\">https://www.robocorp.com</a></td>\n<td></td>\n</tr>\n<tr>\n<td>${idx2}</td>\n<td>Open Available Browser</td>\n<td>${URL}</td>\n<td>browser_selection=opera,firefox</td>\n</tr>\n<tr>\n<td>Open Available Browser</td>\n<td>${URL}</td>\n<td>headless=True</td>\n<td>proxy=localhost:8899</td>\n</tr>\n</table>",
                 "shortdoc": "Opens the first available browser in the system in preferred order, or the given browser (<code>browser_selection</code>).",
                 "tags": [],
                 "matched": true
@@ -5728,7 +5753,8 @@
                     "profile_name: str = None",
                     "profile_path: str = None",
                     "preferences: dict = None",
-                    "proxy: str = None"
+                    "proxy: str = None",
+                    "user_agent: str = None"
                 ],
                 "doc": "<p>Open Chrome browser. See <code>Open Available Browser</code> for descriptions of arguments.</p>",
                 "shortdoc": "Open Chrome browser. See <code>Open Available Browser</code> for descriptions of arguments.",
@@ -6695,7 +6721,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:54",
+        "generated": "2021-01-25 17:37:21",
         "inits": [
             {
                 "name": "Init",
@@ -7048,7 +7074,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:54",
+        "generated": "2021-01-25 17:37:21",
         "inits": [
             {
                 "name": "Init",
@@ -7266,7 +7292,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:54",
+        "generated": "2021-01-25 17:37:21",
         "inits": [
             {
                 "name": "Init",
@@ -7838,7 +7864,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:55",
+        "generated": "2021-01-25 17:37:22",
         "inits": [],
         "keywords": [
             {
@@ -7947,7 +7973,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:55",
+        "generated": "2021-01-25 17:37:22",
         "inits": [],
         "keywords": [
             {
@@ -8061,11 +8087,11 @@
     },
     "RPA.Desktop": {
         "name": "RPA.Desktop",
-        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>Desktop</cite> is a cross-platform library for navigating and interacting with\ndesktop environments. It can be used to automate applications through\nthe same interfaces that are available to human users.</p>\n<p>The library includes the following features:</p>\n<ul class=\"simple\">\n<li>Mouse and keyboard input emulation</li>\n<li>Starting and stopping applications</li>\n<li>Finding elements through image template matching</li>\n<li>Scraping text from given regions</li>\n<li>Taking screenshots</li>\n<li>Clipboard management</li>\n</ul>\n<dl class=\"docutils\">\n<dt><strong>Note:</strong> Windows element selectors are not currently supported,</dt>\n<dd>and require the use of <tt class=\"docutils literal\">RPA.Desktop.Windows</tt></dd>\n</dl>\n<p><strong>Installation</strong></p>\n<p>The basic features such as mouse and keyboard input and application\ncontrol work with a default <tt class=\"docutils literal\">rpaframework</tt> install.</p>\n<p>Advanced computer-vision features such as image template matching and\nOCR require an additional library called <tt class=\"docutils literal\"><span class=\"pre\">rpaframework-recognition</span></tt>.</p>\n<p>The dependency can be either added separately or through additional\nextras with <tt class=\"docutils literal\">rpaframework[cv]</tt>. If installing recognition through\n<tt class=\"docutils literal\">pip</tt> instead of <tt class=\"docutils literal\">conda</tt>, the OCR feature also requires <tt class=\"docutils literal\">tesseract</tt>.</p>\n<p><strong>Locating elements</strong></p>\n<p>To automate actions on the desktop, a robot needs to interact with various\ngraphical elements such as buttons or input fields. The locations of these\nelements can be found using a feature called <cite>locators</cite>.</p>\n<p>A locator describes the properties or features of an element. This information\ncan be later used to locate similar elements even when window positions or\nstates change.</p>\n<p>The currently supported locator types are:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"9%\" />\n<col width=\"40%\" />\n<col width=\"51%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Name</th>\n<th class=\"head\">Arguments</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>alias</td>\n<td>name (str)</td>\n<td>A custom named locator from the locator database, the default.</td>\n</tr>\n<tr><td>image</td>\n<td>path (str)</td>\n<td>Image of an element that is matched to current screen content.</td>\n</tr>\n<tr><td>point</td>\n<td>x (int), y (int)</td>\n<td>Pixel coordinates as absolute position.</td>\n</tr>\n<tr><td>offset</td>\n<td>x (int), y (int)</td>\n<td>Pixel coordinates relative to current mouse position.</td>\n</tr>\n<tr><td>size</td>\n<td>width (int), height (int)</td>\n<td>Region of fixed size, around point or screen top-left</td>\n</tr>\n<tr><td>region</td>\n<td>left (int), top (int), right (int), bottom (int)</td>\n<td>Bounding coordinates for a rectangular region.</td>\n</tr>\n<tr><td>ocr</td>\n<td>text (str), confidence (float, optional)</td>\n<td>Text to find from the current screen.</td>\n</tr>\n</tbody>\n</table>\n<p>A locator is defined by its type and arguments, divided by a colon.\nSome example usages are shown below. Note that the prefix for <tt class=\"docutils literal\">alias</tt> can\nbe omitted as its the default type.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Click</span><span class=\"p\">       </span><span class=\"c\">point:50,100</span><span class=\"p\">\n</span><span class=\"c\">Click</span><span class=\"p\">       </span><span class=\"c\">region:20,20,100,30</span><span class=\"p\">\n\n</span><span class=\"c\">Move mouse</span><span class=\"p\">  </span><span class=\"c\">image:%{ROBOT_ROOT}/logo.png</span><span class=\"p\">\n</span><span class=\"c\">Move mouse</span><span class=\"p\">  </span><span class=\"c\">offset:200,0</span><span class=\"p\">\n</span><span class=\"c\">Click</span><span class=\"p\">\n\n</span><span class=\"c\">Click</span><span class=\"p\">       </span><span class=\"c\">alias:SpareBin.Login</span><span class=\"p\">\n</span><span class=\"c\">Click</span><span class=\"p\">       </span><span class=\"c\">SpareBin.Login</span><span class=\"p\">\n\n</span><span class=\"c\">Click</span><span class=\"p\">       </span><span class=\"c\">ocr:&quot;Create New Account&quot;</span>\n</pre>\n<p>You can also pass internal <tt class=\"docutils literal\">region</tt> objects as locators:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${region}=</span><span class=\"p\">  </span><span class=\"c\">Find Element</span><span class=\"p\">  </span><span class=\"c\">ocr:&quot;Customer name&quot;</span><span class=\"p\">\n</span><span class=\"c\">Click</span><span class=\"p\">       </span><span class=\"c\">${region}</span>\n</pre>\n<p><strong>Locator chaining</strong></p>\n<p>Often it is not enough to have one locator, but instead an element\nis defined through a relationship of various locators. For this use\ncase the library supports a special syntax, which we will call\nlocator chaining.</p>\n<p>An example of chaining:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\"># Read text from area on the right side of logo\nRead text</span><span class=\"p\">    </span><span class=\"c\">image:logo.png + offset:600,0 + size:400,200</span>\n</pre>\n<p>The supported operators are:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"20%\" />\n<col width=\"80%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Operator</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>then, +</td>\n<td>Base locator relative to the previous one</td>\n</tr>\n<tr><td>and, &amp;&amp;, &amp;</td>\n<td>Both locators should be found</td>\n</tr>\n<tr><td>or, ||, |</td>\n<td>Either of the locators should be found</td>\n</tr>\n<tr><td>not, !</td>\n<td>The locator should not be found</td>\n</tr>\n</tbody>\n</table>\n<p>Further examples:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\"># Click below either label\nClick</span><span class=\"p\">    </span><span class=\"c\">(image:name.png or image:email.png) then offset:0,300</span><span class=\"p\">\n\n</span><span class=\"c\"># Wait until dialog disappears\nWait for element</span><span class=\"p\">    </span><span class=\"c\">not image:cookie.png</span>\n</pre>\n<p><strong>Named locators</strong></p>\n<p>The library supports storing locators in a database, which contains\nall of the required fields and various bits of metadata. This enables\nhaving one source of truth, which can be updated if a website's or applications's\nUI changes. Robot Framework scripts can then only contain a reference\nto a stored locator by name.</p>\n<p>The main way to create named locators is with <a class=\"reference external\" href=\"https://robocorp.com/docs/product-manuals/robocorp-lab/robocorp-lab-overview\">Robocorp Lab</a>.</p>\n<p><strong>Keyboard and mouse</strong></p>\n<p>Keyboard keywords can emulate typing text, but also pressing various function keys.\nThe name of a key is case-insensitive and spaces will be converted to underscores,\ni.e. the key <tt class=\"docutils literal\">Page Down</tt> and <tt class=\"docutils literal\">page_down</tt> are equivalent.</p>\n<p>The following function keys are supported:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"16%\" />\n<col width=\"84%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Key</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>shift</td>\n<td>A generic Shift key. This is a modifier.</td>\n</tr>\n<tr><td>shift_l</td>\n<td>The left Shift key. This is a modifier.</td>\n</tr>\n<tr><td>shift_r</td>\n<td>The right Shift key. This is a modifier.</td>\n</tr>\n<tr><td>ctrl</td>\n<td>A generic Ctrl key. This is a modifier.</td>\n</tr>\n<tr><td>ctrl_l</td>\n<td>he left Ctrl key. This is a modifier.</td>\n</tr>\n<tr><td>ctrl_r</td>\n<td>The right Ctrl key. This is a modifier.</td>\n</tr>\n<tr><td>alt</td>\n<td>A generic Alt key. This is a modifier.</td>\n</tr>\n<tr><td>alt_l</td>\n<td>The left Alt key. This is a modifier.</td>\n</tr>\n<tr><td>alt_r</td>\n<td>The right Alt key. This is a modifier.</td>\n</tr>\n<tr><td>alt_gr</td>\n<td>The AltGr key. This is a modifier.</td>\n</tr>\n<tr><td>cmd</td>\n<td>A generic command button (Windows / Command / Super key). This may be a modifier.</td>\n</tr>\n<tr><td>cmd_l</td>\n<td>The left command button (Windows / Command / Super key). This may be a modifier.</td>\n</tr>\n<tr><td>cmd_r</td>\n<td>The right command button (Windows / Command / Super key). This may be a modifier.</td>\n</tr>\n<tr><td>up</td>\n<td>An up arrow key.</td>\n</tr>\n<tr><td>down</td>\n<td>A down arrow key.</td>\n</tr>\n<tr><td>left</td>\n<td>A left arrow key.</td>\n</tr>\n<tr><td>right</td>\n<td>A right arrow key.</td>\n</tr>\n<tr><td>enter</td>\n<td>The Enter or Return key.</td>\n</tr>\n<tr><td>space</td>\n<td>The Space key.</td>\n</tr>\n<tr><td>tab</td>\n<td>The Tab key.</td>\n</tr>\n<tr><td>backspace</td>\n<td>The Backspace key.</td>\n</tr>\n<tr><td>delete</td>\n<td>The Delete key.</td>\n</tr>\n<tr><td>esc</td>\n<td>The Esc key.</td>\n</tr>\n<tr><td>home</td>\n<td>The Home key.</td>\n</tr>\n<tr><td>end</td>\n<td>The End key.</td>\n</tr>\n<tr><td>page_down</td>\n<td>The Page Down key.</td>\n</tr>\n<tr><td>page_up</td>\n<td>The Page Up key.</td>\n</tr>\n<tr><td>caps_lock</td>\n<td>The Caps Lock key.</td>\n</tr>\n<tr><td>f1 to f20</td>\n<td>The function keys.</td>\n</tr>\n<tr><td>insert</td>\n<td>The Insert key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>menu</td>\n<td>The Menu key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>num_lock</td>\n<td>The Num Lock key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>pause</td>\n<td>The Pause / Break key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>print_screen</td>\n<td>The Print Screen key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>scroll_lock</td>\n<td>The Scroll Lock key. This may be undefined for some platforms.</td>\n</tr>\n</tbody>\n</table>\n<p>When controlling the mouse, there are different types of actions that can be\ndone. Same formatting rules as function keys apply. They are as follows:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"26%\" />\n<col width=\"74%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Action</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>click</td>\n<td>Click with left mouse button</td>\n</tr>\n<tr><td>left_click</td>\n<td>Click with left mouse button</td>\n</tr>\n<tr><td>double_click</td>\n<td>Double click with left mouse button</td>\n</tr>\n<tr><td>triple_click</td>\n<td>Triple click with left mouse button</td>\n</tr>\n<tr><td>right_click</td>\n<td>Click with right mouse button</td>\n</tr>\n</tbody>\n</table>\n<p>The supported mouse button types are <tt class=\"docutils literal\">left</tt>, <tt class=\"docutils literal\">right</tt>, and <tt class=\"docutils literal\">middle</tt>.</p>\n<p><strong>Examples</strong></p>\n<p>Both Robot Framework and Python examples follow.</p>\n<p>The library must be imported first.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.Desktop</span>\n</pre>\n<pre class=\"code python literal-block\">\n<span class=\"kn\">from</span> <span class=\"nn\">RPA.Desktop</span> <span class=\"kn\">import</span> <span class=\"n\">Desktop</span>\n<span class=\"n\">desktop</span> <span class=\"o\">=</span> <span class=\"n\">Desktop</span><span class=\"p\">()</span>\n</pre>\n<p>The library can open applications and interact with them through\nkeyboard and mouse events.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Write entry in accounting</span><span class=\"p\">\n    [</span><span class=\"kn\">Arguments</span><span class=\"p\">]    ${</span><span class=\"nv\">entry</span><span class=\"p\">}\n    </span><span class=\"nf\">Open application</span><span class=\"p\">    </span><span class=\"s\">erp_client.exe</span><span class=\"p\">\n    </span><span class=\"nf\">Click</span><span class=\"p\">         </span><span class=\"s\">image:</span><span class=\"p\">%{</span><span class=\"nv\">ROBOT_ROOT</span><span class=\"p\">}</span><span class=\"s\">/images/create.png</span><span class=\"p\">\n    </span><span class=\"nf\">Type text</span><span class=\"p\">     ${</span><span class=\"nv\">entry</span><span class=\"p\">}\n    </span><span class=\"nf\">Press keys</span><span class=\"p\">    </span><span class=\"s\">ctrl</span><span class=\"p\">    </span><span class=\"s\">s</span><span class=\"p\">\n    </span><span class=\"nf\">Press keys</span><span class=\"p\">    </span><span class=\"s\">enter</span>\n</pre>\n<pre class=\"code python literal-block\">\n<span class=\"k\">def</span> <span class=\"nf\">write_entry_in_accounting</span><span class=\"p\">(</span><span class=\"n\">entry</span><span class=\"p\">):</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">open_application</span><span class=\"p\">(</span><span class=\"s2\">&quot;erp_client.exe&quot;</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">click</span><span class=\"p\">(</span><span class=\"sa\">f</span><span class=\"s2\">&quot;image:</span><span class=\"si\">{</span><span class=\"n\">ROBOT_ROOT</span><span class=\"si\">}</span><span class=\"s2\">/images/create.png&quot;</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">type_text</span><span class=\"p\">(</span><span class=\"n\">entry</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">press_keys</span><span class=\"p\">(</span><span class=\"s2\">&quot;ctrl&quot;</span><span class=\"p\">,</span> <span class=\"s2\">&quot;s&quot;</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">press_keys</span><span class=\"p\">(</span><span class=\"s2\">&quot;enter&quot;</span><span class=\"p\">)</span>\n</pre>\n<p>Targeting can be currently done using coordinates (absolute or relative),\nbut using template matching is preferred.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Write to field</span><span class=\"p\">\n    [</span><span class=\"kn\">Arguments</span><span class=\"p\">]  ${</span><span class=\"nv\">text</span><span class=\"p\">}\n    </span><span class=\"nf\">Move mouse</span><span class=\"p\">   </span><span class=\"s\">image:input_label.png</span><span class=\"p\">\n    </span><span class=\"nf\">Move mouse</span><span class=\"p\">   </span><span class=\"s\">offset:200,0</span><span class=\"p\">\n    </span><span class=\"nf\">Click</span><span class=\"p\">\n    </span><span class=\"nf\">Type text</span><span class=\"p\">    ${</span><span class=\"nv\">text</span><span class=\"p\">}\n    </span><span class=\"nf\">Press keys</span><span class=\"p\">   </span><span class=\"s\">enter</span>\n</pre>\n<pre class=\"code python literal-block\">\n<span class=\"k\">def</span> <span class=\"nf\">write_to_field</span><span class=\"p\">(</span><span class=\"n\">text</span><span class=\"p\">):</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">move_mouse</span><span class=\"p\">(</span><span class=\"s2\">&quot;image:input_label.png&quot;</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">move_mouse</span><span class=\"p\">(</span><span class=\"s2\">&quot;offset:200,0&quot;</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">click</span><span class=\"p\">()</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">type_text</span><span class=\"p\">(</span><span class=\"n\">text</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">press_keys</span><span class=\"p\">(</span><span class=\"s2\">&quot;enter&quot;</span><span class=\"p\">)</span>\n</pre>\n<p>Elements can be found by text too.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Click New</span><span class=\"p\">\n    </span><span class=\"nf\">Click</span><span class=\"p\">       </span><span class=\"s\">ocr:New</span>\n</pre>\n<pre class=\"code python literal-block\">\n<span class=\"k\">def</span> <span class=\"nf\">click_new</span><span class=\"p\">():</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">click</span><span class=\"p\">(</span><span class=\"s1\">'ocr:&quot;New&quot;'</span><span class=\"p\">)</span>\n</pre>\n<p>It is recommended to wait for the elements to be visible before\ntrying any interaction. You can also pass <tt class=\"docutils literal\">region</tt> objects as locators.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Click New</span><span class=\"p\">\n    ${</span><span class=\"nv\">region</span><span class=\"p\">}=  </span><span class=\"nf\">Wait For element</span><span class=\"p\">  </span><span class=\"s\">ocr:New</span><span class=\"p\">\n    </span><span class=\"nf\">Click</span><span class=\"p\">       ${</span><span class=\"nv\">region</span><span class=\"p\">}</span>\n</pre>\n<pre class=\"code python literal-block\">\n<span class=\"k\">def</span> <span class=\"nf\">click_new</span><span class=\"p\">():</span>\n    <span class=\"n\">region</span> <span class=\"o\">=</span> <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">wait_for_element</span><span class=\"p\">(</span><span class=\"s2\">&quot;ocr:New&quot;</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">click</span><span class=\"p\">(</span><span class=\"n\">region</span><span class=\"p\">)</span>\n</pre>\n<p>Another way to find elements by offsetting from an anchor:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Type Notes</span><span class=\"p\">\n    [</span><span class=\"kn\">Arguments</span><span class=\"p\">]        ${</span><span class=\"nv\">text</span><span class=\"p\">}\n    </span><span class=\"nf\">Click With Offset</span><span class=\"p\">  </span><span class=\"s\">ocr:Notes</span><span class=\"p\">  </span><span class=\"s\">500</span><span class=\"p\">  </span><span class=\"s\">0</span><span class=\"p\">\n    </span><span class=\"nf\">Type Text</span><span class=\"p\">          ${</span><span class=\"nv\">text</span><span class=\"p\">}</span>\n</pre>\n<pre class=\"code python literal-block\">\n<span class=\"k\">def</span> <span class=\"nf\">type_notes</span><span class=\"p\">(</span><span class=\"n\">text</span><span class=\"p\">):</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">click_with_offset</span><span class=\"p\">(</span><span class=\"s2\">&quot;ocr:Notes&quot;</span><span class=\"p\">,</span> <span class=\"mi\">500</span><span class=\"p\">,</span> <span class=\"mi\">0</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">type_text</span><span class=\"p\">(</span><span class=\"n\">text</span><span class=\"p\">)</span>\n</pre>\n</div>\n</div>",
+        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>Desktop</cite> is a cross-platform library for navigating and interacting with\ndesktop environments. It can be used to automate applications through\nthe same interfaces that are available to human users.</p>\n<p>The library includes the following features:</p>\n<ul class=\"simple\">\n<li>Mouse and keyboard input emulation</li>\n<li>Starting and stopping applications</li>\n<li>Finding elements through image template matching</li>\n<li>Scraping text from given regions</li>\n<li>Taking screenshots</li>\n<li>Clipboard management</li>\n</ul>\n<div class=\"admonition warning\">\n<p class=\"first admonition-title\">Warning</p>\n<p class=\"last\">Windows element selectors are not currently supported, and require the use of <tt class=\"docutils literal\">RPA.Desktop.Windows</tt></p>\n</div>\n<p><strong>Installation</strong></p>\n<p>The basic features such as mouse and keyboard input and application\ncontrol work with a default <tt class=\"docutils literal\">rpaframework</tt> install.</p>\n<p>Advanced computer-vision features such as image template matching and\nOCR require an additional library called <tt class=\"docutils literal\"><span class=\"pre\">rpaframework-recognition</span></tt>.</p>\n<p>The dependency can be either added separately or through additional\nextras with <tt class=\"docutils literal\">rpaframework[cv]</tt>. If installing recognition through\n<tt class=\"docutils literal\">pip</tt> instead of <tt class=\"docutils literal\">conda</tt>, the OCR feature also requires <tt class=\"docutils literal\">tesseract</tt>.</p>\n<p><strong>Locating elements</strong></p>\n<p>To automate actions on the desktop, a robot needs to interact with various\ngraphical elements such as buttons or input fields. The locations of these\nelements can be found using a feature called <cite>locators</cite>.</p>\n<p>A locator describes the properties or features of an element. This information\ncan be later used to locate similar elements even when window positions or\nstates change.</p>\n<p>The currently supported locator types are:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"9%\" />\n<col width=\"40%\" />\n<col width=\"51%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Name</th>\n<th class=\"head\">Arguments</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>alias</td>\n<td>name (str)</td>\n<td>A custom named locator from the locator database, the default.</td>\n</tr>\n<tr><td>image</td>\n<td>path (str)</td>\n<td>Image of an element that is matched to current screen content.</td>\n</tr>\n<tr><td>point</td>\n<td>x (int), y (int)</td>\n<td>Pixel coordinates as absolute position.</td>\n</tr>\n<tr><td>offset</td>\n<td>x (int), y (int)</td>\n<td>Pixel coordinates relative to current mouse position.</td>\n</tr>\n<tr><td>size</td>\n<td>width (int), height (int)</td>\n<td>Region of fixed size, around point or screen top-left</td>\n</tr>\n<tr><td>region</td>\n<td>left (int), top (int), right (int), bottom (int)</td>\n<td>Bounding coordinates for a rectangular region.</td>\n</tr>\n<tr><td>ocr</td>\n<td>text (str), confidence (float, optional)</td>\n<td>Text to find from the current screen.</td>\n</tr>\n</tbody>\n</table>\n<p>A locator is defined by its type and arguments, divided by a colon.\nSome example usages are shown below. Note that the prefix for <tt class=\"docutils literal\">alias</tt> can\nbe omitted as its the default type.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Click</span><span class=\"p\">       </span><span class=\"c\">point:50,100</span><span class=\"p\">\n</span><span class=\"c\">Click</span><span class=\"p\">       </span><span class=\"c\">region:20,20,100,30</span><span class=\"p\">\n\n</span><span class=\"c\">Move mouse</span><span class=\"p\">  </span><span class=\"c\">image:%{ROBOT_ROOT}/logo.png</span><span class=\"p\">\n</span><span class=\"c\">Move mouse</span><span class=\"p\">  </span><span class=\"c\">offset:200,0</span><span class=\"p\">\n</span><span class=\"c\">Click</span><span class=\"p\">\n\n</span><span class=\"c\">Click</span><span class=\"p\">       </span><span class=\"c\">alias:SpareBin.Login</span><span class=\"p\">\n</span><span class=\"c\">Click</span><span class=\"p\">       </span><span class=\"c\">SpareBin.Login</span><span class=\"p\">\n\n</span><span class=\"c\">Click</span><span class=\"p\">       </span><span class=\"c\">ocr:&quot;Create New Account&quot;</span>\n</pre>\n<p>You can also pass internal <tt class=\"docutils literal\">region</tt> objects as locators:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${region}=</span><span class=\"p\">  </span><span class=\"c\">Find Element</span><span class=\"p\">  </span><span class=\"c\">ocr:&quot;Customer name&quot;</span><span class=\"p\">\n</span><span class=\"c\">Click</span><span class=\"p\">       </span><span class=\"c\">${region}</span>\n</pre>\n<p><strong>Locator chaining</strong></p>\n<p>Often it is not enough to have one locator, but instead an element\nis defined through a relationship of various locators. For this use\ncase the library supports a special syntax, which we will call\nlocator chaining.</p>\n<p>An example of chaining:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\"># Read text from area on the right side of logo\nRead text</span><span class=\"p\">    </span><span class=\"c\">image:logo.png + offset:600,0 + size:400,200</span>\n</pre>\n<p>The supported operators are:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"20%\" />\n<col width=\"80%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Operator</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>then, +</td>\n<td>Base locator relative to the previous one</td>\n</tr>\n<tr><td>and, &amp;&amp;, &amp;</td>\n<td>Both locators should be found</td>\n</tr>\n<tr><td>or, ||, |</td>\n<td>Either of the locators should be found</td>\n</tr>\n<tr><td>not, !</td>\n<td>The locator should not be found</td>\n</tr>\n</tbody>\n</table>\n<p>Further examples:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\"># Click below either label\nClick</span><span class=\"p\">    </span><span class=\"c\">(image:name.png or image:email.png) then offset:0,300</span><span class=\"p\">\n\n</span><span class=\"c\"># Wait until dialog disappears\nWait for element</span><span class=\"p\">    </span><span class=\"c\">not image:cookie.png</span>\n</pre>\n<p><strong>Named locators</strong></p>\n<p>The library supports storing locators in a database, which contains\nall of the required fields and various bits of metadata. This enables\nhaving one source of truth, which can be updated if a website's or applications's\nUI changes. Robot Framework scripts can then only contain a reference\nto a stored locator by name.</p>\n<p>The main way to create named locators is with <a class=\"reference external\" href=\"https://robocorp.com/docs/product-manuals/robocorp-lab/robocorp-lab-overview\">Robocorp Lab</a>.</p>\n<p><strong>Keyboard and mouse</strong></p>\n<p>Keyboard keywords can emulate typing text, but also pressing various function keys.\nThe name of a key is case-insensitive and spaces will be converted to underscores,\ni.e. the key <tt class=\"docutils literal\">Page Down</tt> and <tt class=\"docutils literal\">page_down</tt> are equivalent.</p>\n<p>The following function keys are supported:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"16%\" />\n<col width=\"84%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Key</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>shift</td>\n<td>A generic Shift key. This is a modifier.</td>\n</tr>\n<tr><td>shift_l</td>\n<td>The left Shift key. This is a modifier.</td>\n</tr>\n<tr><td>shift_r</td>\n<td>The right Shift key. This is a modifier.</td>\n</tr>\n<tr><td>ctrl</td>\n<td>A generic Ctrl key. This is a modifier.</td>\n</tr>\n<tr><td>ctrl_l</td>\n<td>he left Ctrl key. This is a modifier.</td>\n</tr>\n<tr><td>ctrl_r</td>\n<td>The right Ctrl key. This is a modifier.</td>\n</tr>\n<tr><td>alt</td>\n<td>A generic Alt key. This is a modifier.</td>\n</tr>\n<tr><td>alt_l</td>\n<td>The left Alt key. This is a modifier.</td>\n</tr>\n<tr><td>alt_r</td>\n<td>The right Alt key. This is a modifier.</td>\n</tr>\n<tr><td>alt_gr</td>\n<td>The AltGr key. This is a modifier.</td>\n</tr>\n<tr><td>cmd</td>\n<td>A generic command button (Windows / Command / Super key). This may be a modifier.</td>\n</tr>\n<tr><td>cmd_l</td>\n<td>The left command button (Windows / Command / Super key). This may be a modifier.</td>\n</tr>\n<tr><td>cmd_r</td>\n<td>The right command button (Windows / Command / Super key). This may be a modifier.</td>\n</tr>\n<tr><td>up</td>\n<td>An up arrow key.</td>\n</tr>\n<tr><td>down</td>\n<td>A down arrow key.</td>\n</tr>\n<tr><td>left</td>\n<td>A left arrow key.</td>\n</tr>\n<tr><td>right</td>\n<td>A right arrow key.</td>\n</tr>\n<tr><td>enter</td>\n<td>The Enter or Return key.</td>\n</tr>\n<tr><td>space</td>\n<td>The Space key.</td>\n</tr>\n<tr><td>tab</td>\n<td>The Tab key.</td>\n</tr>\n<tr><td>backspace</td>\n<td>The Backspace key.</td>\n</tr>\n<tr><td>delete</td>\n<td>The Delete key.</td>\n</tr>\n<tr><td>esc</td>\n<td>The Esc key.</td>\n</tr>\n<tr><td>home</td>\n<td>The Home key.</td>\n</tr>\n<tr><td>end</td>\n<td>The End key.</td>\n</tr>\n<tr><td>page_down</td>\n<td>The Page Down key.</td>\n</tr>\n<tr><td>page_up</td>\n<td>The Page Up key.</td>\n</tr>\n<tr><td>caps_lock</td>\n<td>The Caps Lock key.</td>\n</tr>\n<tr><td>f1 to f20</td>\n<td>The function keys.</td>\n</tr>\n<tr><td>insert</td>\n<td>The Insert key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>menu</td>\n<td>The Menu key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>num_lock</td>\n<td>The Num Lock key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>pause</td>\n<td>The Pause / Break key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>print_screen</td>\n<td>The Print Screen key. This may be undefined for some platforms.</td>\n</tr>\n<tr><td>scroll_lock</td>\n<td>The Scroll Lock key. This may be undefined for some platforms.</td>\n</tr>\n</tbody>\n</table>\n<p>When controlling the mouse, there are different types of actions that can be\ndone. Same formatting rules as function keys apply. They are as follows:</p>\n<table border=\"1\" class=\"docutils\">\n<colgroup>\n<col width=\"26%\" />\n<col width=\"74%\" />\n</colgroup>\n<thead valign=\"bottom\">\n<tr><th class=\"head\">Action</th>\n<th class=\"head\">Description</th>\n</tr>\n</thead>\n<tbody valign=\"top\">\n<tr><td>click</td>\n<td>Click with left mouse button</td>\n</tr>\n<tr><td>left_click</td>\n<td>Click with left mouse button</td>\n</tr>\n<tr><td>double_click</td>\n<td>Double click with left mouse button</td>\n</tr>\n<tr><td>triple_click</td>\n<td>Triple click with left mouse button</td>\n</tr>\n<tr><td>right_click</td>\n<td>Click with right mouse button</td>\n</tr>\n</tbody>\n</table>\n<p>The supported mouse button types are <tt class=\"docutils literal\">left</tt>, <tt class=\"docutils literal\">right</tt>, and <tt class=\"docutils literal\">middle</tt>.</p>\n<p><strong>Examples</strong></p>\n<p>Both Robot Framework and Python examples follow.</p>\n<p>The library must be imported first.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">    </span><span class=\"nn\">RPA.Desktop</span>\n</pre>\n<pre class=\"code python literal-block\">\n<span class=\"kn\">from</span> <span class=\"nn\">RPA.Desktop</span> <span class=\"kn\">import</span> <span class=\"n\">Desktop</span>\n<span class=\"n\">desktop</span> <span class=\"o\">=</span> <span class=\"n\">Desktop</span><span class=\"p\">()</span>\n</pre>\n<p>The library can open applications and interact with them through\nkeyboard and mouse events.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Write entry in accounting</span><span class=\"p\">\n    [</span><span class=\"kn\">Arguments</span><span class=\"p\">]    ${</span><span class=\"nv\">entry</span><span class=\"p\">}\n    </span><span class=\"nf\">Open application</span><span class=\"p\">    </span><span class=\"s\">erp_client.exe</span><span class=\"p\">\n    </span><span class=\"nf\">Click</span><span class=\"p\">         </span><span class=\"s\">image:</span><span class=\"p\">%{</span><span class=\"nv\">ROBOT_ROOT</span><span class=\"p\">}</span><span class=\"s\">/images/create.png</span><span class=\"p\">\n    </span><span class=\"nf\">Type text</span><span class=\"p\">     ${</span><span class=\"nv\">entry</span><span class=\"p\">}\n    </span><span class=\"nf\">Press keys</span><span class=\"p\">    </span><span class=\"s\">ctrl</span><span class=\"p\">    </span><span class=\"s\">s</span><span class=\"p\">\n    </span><span class=\"nf\">Press keys</span><span class=\"p\">    </span><span class=\"s\">enter</span>\n</pre>\n<pre class=\"code python literal-block\">\n<span class=\"k\">def</span> <span class=\"nf\">write_entry_in_accounting</span><span class=\"p\">(</span><span class=\"n\">entry</span><span class=\"p\">):</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">open_application</span><span class=\"p\">(</span><span class=\"s2\">&quot;erp_client.exe&quot;</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">click</span><span class=\"p\">(</span><span class=\"sa\">f</span><span class=\"s2\">&quot;image:</span><span class=\"si\">{</span><span class=\"n\">ROBOT_ROOT</span><span class=\"si\">}</span><span class=\"s2\">/images/create.png&quot;</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">type_text</span><span class=\"p\">(</span><span class=\"n\">entry</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">press_keys</span><span class=\"p\">(</span><span class=\"s2\">&quot;ctrl&quot;</span><span class=\"p\">,</span> <span class=\"s2\">&quot;s&quot;</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">press_keys</span><span class=\"p\">(</span><span class=\"s2\">&quot;enter&quot;</span><span class=\"p\">)</span>\n</pre>\n<p>Targeting can be currently done using coordinates (absolute or relative),\nbut using template matching is preferred.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Write to field</span><span class=\"p\">\n    [</span><span class=\"kn\">Arguments</span><span class=\"p\">]  ${</span><span class=\"nv\">text</span><span class=\"p\">}\n    </span><span class=\"nf\">Move mouse</span><span class=\"p\">   </span><span class=\"s\">image:input_label.png</span><span class=\"p\">\n    </span><span class=\"nf\">Move mouse</span><span class=\"p\">   </span><span class=\"s\">offset:200,0</span><span class=\"p\">\n    </span><span class=\"nf\">Click</span><span class=\"p\">\n    </span><span class=\"nf\">Type text</span><span class=\"p\">    ${</span><span class=\"nv\">text</span><span class=\"p\">}\n    </span><span class=\"nf\">Press keys</span><span class=\"p\">   </span><span class=\"s\">enter</span>\n</pre>\n<pre class=\"code python literal-block\">\n<span class=\"k\">def</span> <span class=\"nf\">write_to_field</span><span class=\"p\">(</span><span class=\"n\">text</span><span class=\"p\">):</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">move_mouse</span><span class=\"p\">(</span><span class=\"s2\">&quot;image:input_label.png&quot;</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">move_mouse</span><span class=\"p\">(</span><span class=\"s2\">&quot;offset:200,0&quot;</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">click</span><span class=\"p\">()</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">type_text</span><span class=\"p\">(</span><span class=\"n\">text</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">press_keys</span><span class=\"p\">(</span><span class=\"s2\">&quot;enter&quot;</span><span class=\"p\">)</span>\n</pre>\n<p>Elements can be found by text too.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Click New</span><span class=\"p\">\n    </span><span class=\"nf\">Click</span><span class=\"p\">       </span><span class=\"s\">ocr:New</span>\n</pre>\n<pre class=\"code python literal-block\">\n<span class=\"k\">def</span> <span class=\"nf\">click_new</span><span class=\"p\">():</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">click</span><span class=\"p\">(</span><span class=\"s1\">'ocr:&quot;New&quot;'</span><span class=\"p\">)</span>\n</pre>\n<p>It is recommended to wait for the elements to be visible before\ntrying any interaction. You can also pass <tt class=\"docutils literal\">region</tt> objects as locators.</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Click New</span><span class=\"p\">\n    ${</span><span class=\"nv\">region</span><span class=\"p\">}=  </span><span class=\"nf\">Wait For element</span><span class=\"p\">  </span><span class=\"s\">ocr:New</span><span class=\"p\">\n    </span><span class=\"nf\">Click</span><span class=\"p\">       ${</span><span class=\"nv\">region</span><span class=\"p\">}</span>\n</pre>\n<pre class=\"code python literal-block\">\n<span class=\"k\">def</span> <span class=\"nf\">click_new</span><span class=\"p\">():</span>\n    <span class=\"n\">region</span> <span class=\"o\">=</span> <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">wait_for_element</span><span class=\"p\">(</span><span class=\"s2\">&quot;ocr:New&quot;</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">click</span><span class=\"p\">(</span><span class=\"n\">region</span><span class=\"p\">)</span>\n</pre>\n<p>Another way to find elements by offsetting from an anchor:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Keywords ***</span><span class=\"p\">\n</span><span class=\"gu\">Type Notes</span><span class=\"p\">\n    [</span><span class=\"kn\">Arguments</span><span class=\"p\">]        ${</span><span class=\"nv\">text</span><span class=\"p\">}\n    </span><span class=\"nf\">Click With Offset</span><span class=\"p\">  </span><span class=\"s\">ocr:Notes</span><span class=\"p\">  </span><span class=\"s\">500</span><span class=\"p\">  </span><span class=\"s\">0</span><span class=\"p\">\n    </span><span class=\"nf\">Type Text</span><span class=\"p\">          ${</span><span class=\"nv\">text</span><span class=\"p\">}</span>\n</pre>\n<pre class=\"code python literal-block\">\n<span class=\"k\">def</span> <span class=\"nf\">type_notes</span><span class=\"p\">(</span><span class=\"n\">text</span><span class=\"p\">):</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">click_with_offset</span><span class=\"p\">(</span><span class=\"s2\">&quot;ocr:Notes&quot;</span><span class=\"p\">,</span> <span class=\"mi\">500</span><span class=\"p\">,</span> <span class=\"mi\">0</span><span class=\"p\">)</span>\n    <span class=\"n\">desktop</span><span class=\"o\">.</span><span class=\"n\">type_text</span><span class=\"p\">(</span><span class=\"n\">text</span><span class=\"p\">)</span>\n</pre>\n</div>\n</div>",
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:55",
+        "generated": "2021-01-25 17:37:22",
         "inits": [],
         "keywords": [
             {
@@ -8405,7 +8431,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:55",
+        "generated": "2021-01-25 17:37:22",
         "inits": [],
         "keywords": [
             {
@@ -8444,7 +8470,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:56",
+        "generated": "2021-01-25 17:37:22",
         "inits": [],
         "keywords": [
             {
@@ -8551,7 +8577,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:56",
+        "generated": "2021-01-25 17:37:22",
         "inits": [
             {
                 "name": "Init",
@@ -9177,7 +9203,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:57",
+        "generated": "2021-01-25 17:37:23",
         "inits": [
             {
                 "name": "Init",
@@ -9344,7 +9370,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:57",
+        "generated": "2021-01-25 17:37:23",
         "inits": [],
         "keywords": [
             {
@@ -9473,7 +9499,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:57",
+        "generated": "2021-01-25 17:37:24",
         "inits": [
             {
                 "name": "Init",
@@ -9804,7 +9830,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:57",
+        "generated": "2021-01-25 17:37:24",
         "inits": [],
         "keywords": [
             {
@@ -9970,7 +9996,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:58",
+        "generated": "2021-01-25 17:37:24",
         "inits": [],
         "keywords": [
             {
@@ -10167,7 +10193,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:58",
+        "generated": "2021-01-25 17:37:24",
         "inits": [],
         "keywords": [
             {
@@ -10364,7 +10390,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:58",
+        "generated": "2021-01-25 17:37:24",
         "inits": [],
         "keywords": [
             {
@@ -10848,7 +10874,7 @@
         "version": "0.7.2",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:59",
+        "generated": "2021-01-25 17:37:25",
         "inits": [
             {
                 "name": "Init",
@@ -10879,7 +10905,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'GET', 'DELETE', 'TRACE', 'HEAD', 'OPTIONS']"
+                    "retry_method_list=['GET', 'HEAD', 'OPTIONS', 'PUT', 'DELETE', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>client_certs</code> ['client certificate', 'client key'] PEM files containing the client key and certificate</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10902,7 +10928,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'GET', 'DELETE', 'TRACE', 'HEAD', 'OPTIONS']"
+                    "retry_method_list=['GET', 'HEAD', 'OPTIONS', 'PUT', 'DELETE', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> A Custom Authentication object to be passed on to the requests library. <a href=\"http://docs.python-requests.org/en/master/user/advanced/#custom-authentication\">http://docs.python-requests.org/en/master/user/advanced/#custom-authentication</a></p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10925,7 +10951,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'GET', 'DELETE', 'TRACE', 'HEAD', 'OPTIONS']"
+                    "retry_method_list=['GET', 'HEAD', 'OPTIONS', 'PUT', 'DELETE', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10948,7 +10974,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'GET', 'DELETE', 'TRACE', 'HEAD', 'OPTIONS']"
+                    "retry_method_list=['GET', 'HEAD', 'OPTIONS', 'PUT', 'DELETE', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10971,7 +10997,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['PUT', 'GET', 'DELETE', 'TRACE', 'HEAD', 'OPTIONS']"
+                    "retry_method_list=['GET', 'HEAD', 'OPTIONS', 'PUT', 'DELETE', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> List of username &amp; password for HTTP Basic Auth</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -11215,7 +11241,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:59",
+        "generated": "2021-01-25 17:37:25",
         "inits": [],
         "keywords": [
             {
@@ -11334,7 +11360,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:59",
+        "generated": "2021-01-25 17:37:25",
         "inits": [],
         "keywords": [
             {
@@ -11446,7 +11472,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:59",
+        "generated": "2021-01-25 17:37:25",
         "inits": [],
         "keywords": [
             {
@@ -11606,7 +11632,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:59",
+        "generated": "2021-01-25 17:37:25",
         "inits": [],
         "keywords": [
             {
@@ -11701,7 +11727,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:47:59",
+        "generated": "2021-01-25 17:37:25",
         "inits": [],
         "keywords": [
             {
@@ -11771,7 +11797,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:48:00",
+        "generated": "2021-01-25 17:37:25",
         "inits": [
             {
                 "name": "Init",
@@ -12712,7 +12738,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:48:00",
+        "generated": "2021-01-25 17:37:26",
         "inits": [
             {
                 "name": "Init",
@@ -12801,7 +12827,7 @@
                 "name": "Get Work Item Variable",
                 "args": [
                     "name",
-                    "default=<object object at 0x000001C0D2F2C280>"
+                    "default=<object object at 0x000001E0493E8510>"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a single variable value from the work item,\nor default value if defined and key does not exist.\nIf key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param key:</th><td class=\"field-body\">Name of variable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param default:</th><td class=\"field-body\">Default value if key does not exist</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${username}=</span><span class=\"p\">    </span><span class=\"c\">Get work item variable</span><span class=\"p\">    </span><span class=\"c\">username</span><span class=\"p\">    </span><span class=\"c\">default=guest</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Return a single variable value from the work item, or default value if defined and key does not exist. If key does not exist and default is not defined, raises <cite>KeyError</cite>.",
@@ -12930,7 +12956,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:48:01",
+        "generated": "2021-01-25 17:37:26",
         "inits": [
             {
                 "name": "Init",
@@ -12965,7 +12991,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:48:01",
+        "generated": "2021-01-25 17:37:26",
         "inits": [],
         "keywords": [
             {
@@ -13031,7 +13057,7 @@
         "version": "1.1",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:48:01",
+        "generated": "2021-01-25 17:37:26",
         "inits": [
             {
                 "name": "Init",
@@ -13448,7 +13474,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:48:01",
+        "generated": "2021-01-25 17:37:26",
         "inits": [
             {
                 "name": "Init",
@@ -13705,7 +13731,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:48:01",
+        "generated": "2021-01-25 17:37:27",
         "inits": [],
         "keywords": [
             {
@@ -13732,7 +13758,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:48:01",
+        "generated": "2021-01-25 17:37:27",
         "inits": [],
         "keywords": [
             {
@@ -14108,7 +14134,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:48:02",
+        "generated": "2021-01-25 17:37:27",
         "inits": [
             {
                 "name": "Init",
@@ -14227,7 +14253,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:48:02",
+        "generated": "2021-01-25 17:37:27",
         "inits": [],
         "keywords": [
             {
@@ -14350,7 +14376,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-22 19:48:02",
+        "generated": "2021-01-25 17:37:27",
         "inits": [],
         "keywords": [
             {

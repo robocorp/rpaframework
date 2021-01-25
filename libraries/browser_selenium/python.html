@@ -883,6 +883,24 @@ by default one or more</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Browser.Selenium.Selenium.execute_cdp">
+<code class="sig-name descname">execute_cdp</code><span class="sig-paren">(</span><em class="sig-param">command</em>, <em class="sig-param">parameters</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.execute_cdp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes Chrome DevTools Protocol commands</p>
+<p>Works only with Chrome/Chromium</p>
+<p>For more information, available commands and parameters, see:
+<a class="reference external" href="https://chromedevtools.github.io/devtools-protocol/">https://chromedevtools.github.io/devtools-protocol/</a></p>
+<p><code class="docutils literal notranslate"><span class="pre">command</span></code> command to execute as string</p>
+<p><code class="docutils literal notranslate"><span class="pre">parameters</span></code> parameters for command as a dictionary</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">Open Chrome Browser | <a class="reference external" href="about:blank">about:blank</a> | headless=True |</div>
+<div class="line">&amp;{params} | Create Dictionary | useragent=Chrome/83.0.4103.53 |</div>
+<div class="line">Execute CDP | Network.setUserAgentOverride | ${params} |</div>
+<div class="line">Go To | <a class="reference external" href="https://robocorp.com">https://robocorp.com</a> |</div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.failure_occurred">
 <code class="sig-name descname">failure_occurred</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.failure_occurred" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method that is executed when a SeleniumLibrary keyword fails.</p>
@@ -1241,7 +1259,7 @@ Fail if element does not exist</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.open_available_browser">
-<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: Optional[bool] = None</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_available_browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: Optional[bool] = None</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em>, <em class="sig-param">user_agent: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_available_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Opens the first available browser in the system in preferred order, or the
 given browser (<code class="docutils literal notranslate"><span class="pre">browser_selection</span></code>).</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open</p>
@@ -1254,6 +1272,7 @@ given browser (<code class="docutils literal notranslate"><span class="pre">brow
 <p><code class="docutils literal notranslate"><span class="pre">profile_path</span></code> Path to profiles (if profile enabled)</p>
 <p><code class="docutils literal notranslate"><span class="pre">preferences</span></code> Profile preferences (Chrome/Chromium only)</p>
 <p><code class="docutils literal notranslate"><span class="pre">proxy</span></code> Proxy server address (Chrome only)</p>
+<p><code class="docutils literal notranslate"><span class="pre">user_agent</span></code> Set useragent string for browser</p>
 <p>Returns an index of the webdriver session.</p>
 <p>=== Process of opening a browser ===</p>
 <ol class="arabic">
@@ -1284,7 +1303,7 @@ given browser (<code class="docutils literal notranslate"><span class="pre">brow
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.open_chrome_browser">
-<code class="sig-name descname">open_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: bool = False</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_chrome_browser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_chrome_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: bool = False</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em>, <em class="sig-param">user_agent: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_chrome_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open Chrome browser. See <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Available</span> <span class="pre">Browser</span></code> for
 descriptions of arguments.</p>
 </dd></dl>

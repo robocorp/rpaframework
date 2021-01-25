@@ -9,7 +9,7 @@ RPA.Browser.Selenium:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "540", "could we include the whole options here"
+   "544", "could we include the whole options here"
 
 RPA.Cloud.Google:
 =================
