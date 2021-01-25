@@ -18,7 +18,7 @@ Upcoming release
 7.3.0
 -----
 
-- Library ***RPA.Desktop.Windows**:
+- Library **RPA.Desktop.Windows**:
 
   - ``Open File`` performs the ``Open Dialog`` call only if windowtitle is given
   - Expose ``timeout`` parameter for ``Open File`` keyword
