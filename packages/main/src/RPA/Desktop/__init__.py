@@ -30,8 +30,7 @@ class Desktop(DynamicCore):
     - Taking screenshots
     - Clipboard management
 
-    **Note:** Windows element selectors are not currently supported,
-        and require the use of ``RPA.Desktop.Windows``
+    .. warning:: Windows element selectors are not currently supported, and require the use of ``RPA.Desktop.Windows``
 
     **Installation**
 
