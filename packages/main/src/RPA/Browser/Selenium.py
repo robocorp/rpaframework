@@ -427,6 +427,7 @@ class Selenium(SeleniumLibrary):
         profile_path: Optional[str] = None,
         preferences: Optional[dict] = None,
         proxy: str = None,
+        user_agent: Optional[str] = None,
     ) -> int:
         # pylint: disable=C0301
         """Opens the first available browser in the system in preferred order, or the
@@ -451,6 +452,8 @@ class Selenium(SeleniumLibrary):
         ``preferences`` Profile preferences (Chrome/Chromium only)
 
         ``proxy`` Proxy server address (Chrome only)
+
+        ``user_agent`` Set useragent string for browser
 
         Returns an index of the webdriver session.
 
@@ -510,6 +513,7 @@ class Selenium(SeleniumLibrary):
                     profile_path,
                     preferences,
                     proxy,
+                    user_agent,
                 )
                 index_or_alias = self._create_webdriver(
                     browser, alias, download, **kwargs
@@ -575,6 +579,7 @@ class Selenium(SeleniumLibrary):
         profile_path: Optional[str] = None,
         preferences: Optional[dict] = None,
         proxy: str = None,
+        user_agent: Optional[str] = None,
     ) -> dict:
         """Get browser and webdriver arguments for given options."""
         preferences = preferences or {}
@@ -594,6 +599,9 @@ class Selenium(SeleniumLibrary):
 
         if maximized:
             options.add_argument("--start-maximized")
+
+        if user_agent:
+            options.add_argument(f"user-agent={user_agent}")
 
         if browser != "chrome":
             kwargs["options"] = options
@@ -718,6 +726,7 @@ class Selenium(SeleniumLibrary):
         profile_path: Optional[str] = None,
         preferences: Optional[dict] = None,
         proxy: str = None,
+        user_agent: Optional[str] = None,
     ) -> int:
         """Open Chrome browser. See ``Open Available Browser`` for
         descriptions of arguments.
@@ -733,6 +742,7 @@ class Selenium(SeleniumLibrary):
             profile_path=profile_path,
             preferences=preferences,
             proxy=proxy,
+            user_agent=user_agent,
         )
 
     @keyword
@@ -1720,17 +1730,6 @@ class Selenium(SeleniumLibrary):
         if "chrom" not in self.driver.name:
             raise NotImplementedError("PDF printing works only with Chrome/Chromium")
 
-        def send_command_and_get_result(cmd, params):
-            resource = (
-                f"session/{self.driver.session_id}/chromium/send_command_and_get_result"
-            )
-            # pylint: disable=protected-access
-            url = f"{self.driver.command_executor._url}/{resource}"
-            body = json.dumps({"cmd": cmd, "params": params})
-            response = self.driver.command_executor._request("POST", url, body)
-
-            return response.get("value")
-
         default_params = {
             "landscape": False,
             "displayHeaderFooter": False,
@@ -1746,13 +1745,52 @@ class Selenium(SeleniumLibrary):
         output_path = output_path or default_output
 
         params = params or default_params
-        result = send_command_and_get_result("Page.printToPDF", params)
+        result = self._send_command_and_get_result("Page.printToPDF", params)
         pdf = base64.b64decode(result["data"])
 
         with open(output_path, "wb") as f:
             f.write(pdf)
 
         return output_path
+
+    @keyword
+    def execute_cdp(self, command, parameters):
+        """
+        Executes Chrome DevTools Protocol commands
+
+        Works only with Chrome/Chromium
+
+        For more information, available commands and parameters, see:
+        https://chromedevtools.github.io/devtools-protocol/
+
+        ``command`` command to execute as string
+
+        ``parameters`` parameters for command as a dictionary
+
+        Example:
+
+        | Open Chrome Browser | about:blank | headless=True |
+        | &{params} | Create Dictionary | useragent=Chrome/83.0.4103.53 |
+        | Execute CDP | Network.setUserAgentOverride | ${params} |
+        | Go To | https://robocorp.com |
+        """
+        if "chrom" not in self.driver.name:
+            raise NotImplementedError(
+                "Executing Chrome DevTools Protocol commands "
+                "works only with Chrome/Chromium"
+            )
+        return self._send_command_and_get_result(command, parameters)
+
+    def _send_command_and_get_result(self, cmd, params):
+        resource = (
+            f"session/{self.driver.session_id}/chromium/send_command_and_get_result"
+        )
+        # pylint: disable=protected-access
+        url = f"{self.driver.command_executor._url}/{resource}"
+        body = json.dumps({"cmd": cmd, "params": params})
+        response = self.driver.command_executor._request("POST", url, body)
+
+        return response.get("value")
 
 
 # For backwards compatibility,

@@ -4,6 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Browser.Selenium**:
+
+  - Add parameter ``user_agent`` for keywords ``Open Available Browser`` and ``Open Chrome Browser``
+  - Add keyword ``Execute CDP`` to execute Chrome DevTools Protocol commands
+
+
 7.3.0
 -----
 
