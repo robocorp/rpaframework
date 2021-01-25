@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "7.3.0"
+version = "7.4.0"
 description = "A collection of tools and libraries for RPA"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -83,6 +83,7 @@ cryptography = "^3.3.1"
 mss = "^6.0.0"
 chardet = "^3.0.0"
 PySocks = ">=1.5.6,!=1.5.7,<2.0.0"
+selenium = "^3.141.0"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", allow-prereleases = true }

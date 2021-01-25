@@ -4,10 +4,15 @@ Release notes
 Upcoming release
 ----------------
 
+7.4.0
+-----
+
 - Library **RPA.Browser.Selenium**:
 
   - Add parameter ``user_agent`` for keywords ``Open Available Browser`` and ``Open Chrome Browser``
   - Add keyword ``Execute CDP`` to execute Chrome DevTools Protocol commands
+
+- Fix issues with Windows library imports on Python 3.9
 
 
 7.3.0
