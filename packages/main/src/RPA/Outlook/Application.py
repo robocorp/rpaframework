@@ -124,10 +124,11 @@ class Application:
         mail = self.app.CreateItem(0)
         mail.To = mailto
         mail.Subject = subject
-        mail.Body = body
 
         if html_body:
-            mail.HTMLBody = html_body
+            mail.HTMLBody = body
+        else:
+            mail.Body = body
 
         # Add attachments
         if len(attachments) > 0:
