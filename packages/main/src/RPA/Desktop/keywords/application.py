@@ -1,9 +1,13 @@
+import os
 import re
 import subprocess
 from pathlib import Path
 from typing import List
 from RPA.Desktop import utils
 from RPA.Desktop.keywords import LibraryContext, keyword
+
+if utils.is_windows():
+    import winreg
 
 
 def output(*args):
@@ -59,6 +63,9 @@ class ApplicationKeywords(LibraryContext):
         self._apps = []
 
     def _create_app(self, name: str, args: List[str], shell: bool = False):
+        cmd = " ".join(args) if not isinstance(args, str) else args
+        self.logger.info("Starting application: %s", cmd)
+
         app = Application(name, args, shell)
         app.start()
 
@@ -96,37 +103,70 @@ class ApplicationKeywords(LibraryContext):
 
             Open file    orders.xlsx
         """
-        name = Path(path).name
+        path: Path = Path(path)
 
-        if not Path(path).exists():
+        if not path.exists():
             raise FileNotFoundError(f"File does not exist: {path}")
 
+        # TODO: Move implementations to platform-specific adapters
         if utils.is_windows():
-            # TODO: Find out way to get actual default application
-            return self._create_app(name, ["start", "/WAIT", path], shell=True)
+            return self._open_default_windows(path)
+        elif utils.is_linux():
+            return self._open_default_linux(path)
         elif utils.is_macos():
-            # TODO: Find out way to get actual default application
-            return self._create_app(name, ["open", "-W", path])
+            return self._open_default_macos(path)
         else:
-            mimetype = output("xdg-mime", "query", "filetype", path)
-            applications = output("xdg-mime", "query", "default", mimetype)
-            default = output("xdg-mime", "query", "default", "text/plain")
+            raise NotImplementedError("Not supported for current system")
 
-            def executable(app):
-                with open(Path("/usr/share/applications/") / app) as fd:
-                    matches = re.search(r"\bExec=(\S+)", fd.read(), re.MULTILINE)
-                    return matches.group(1) if matches else None
+    def _open_default_windows(self, path: Path):
+        """Open given file with the default Windows application."""
+        path = path.resolve()
 
-            for app in applications.split(";") + default.split(";"):
+        try:
+            key_root = winreg.QueryValue(winreg.HKEY_CLASSES_ROOT, path.suffix)
+            key_path = rf"{key_root}\shell\open\command"
+            with winreg.OpenKey(winreg.HKEY_CLASSES_ROOT, key_path) as key:
+                template = winreg.QueryValueEx(key, "")[0]
+        except FileNotFoundError as err:
+            raise ValueError(
+                f"No default application associated for '{path.name}'"
+            ) from err
+
+        # Substitute variables in command, might need to implement
+        # handling of more variables (or a more generic solution)
+        cmd = os.path.expandvars(template)
+        cmd = cmd.replace("%1", str(path))
+        cmd = cmd.replace("%L", str(path))
+
+        return self._create_app(path.name, cmd)
+
+    def _open_default_linux(self, path: Path):
+        """Open given file with the default Linux application."""
+        mimetype = output("xdg-mime", "query", "filetype", path)
+        applications = output("xdg-mime", "query", "default", mimetype)
+        default = output("xdg-mime", "query", "default", "text/plain")
+
+        def executable(app):
+            with open(Path("/usr/share/applications/") / app) as fd:
+                matches = re.search(r"\bExec=(\S+)", fd.read(), re.MULTILINE)
+                if not matches:
+                    raise FileNotFoundError(f"No executable for application '{app}'")
+                return matches.group(1)
+
+        for app in applications.split(";") + default.split(";"):
+            try:
                 exe = executable(app)
-                if not exe:
-                    continue
-                try:
-                    return self._create_app(name, [exe, path])
-                except FileNotFoundError:
-                    pass
+                return self._create_app(path.name, [exe, str(path)])
+            except FileNotFoundError as err:
+                self.logger.info("Launching default failed: %s", err)
 
-            raise RuntimeError(f"No default application found for {path}")
+        raise RuntimeError(f"No default application associated for '{path.name}'")
+
+    def _open_default_macos(self, path: Path):
+        """Open given file with the default MacOS application."""
+        # TODO: Find out way to get actual default application,
+        #       because open does not expose the actual PID
+        return self._create_app(path.name, ["open", "-W", str(path)])
 
     @keyword
     def close_application(self, app: Application) -> None:

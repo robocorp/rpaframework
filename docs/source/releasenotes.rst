@@ -4,8 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Desktop**: Use correct default application when opening files on Windows
 - Fix integer handling in ``Notebook Print`` core keyword
-- Library **RPA.Desktop**: Fix ``Open File`` keyword for Windows
 
 7.4.1
 -----
