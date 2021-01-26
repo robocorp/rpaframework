@@ -103,7 +103,7 @@ class ApplicationKeywords(LibraryContext):
 
         if utils.is_windows():
             # TODO: Find out way to get actual default application
-            return self._create_app(name, ["start", "/WAIT"], shell=True)
+            return self._create_app(name, ["start", "/WAIT", path], shell=True)
         elif utils.is_macos():
             # TODO: Find out way to get actual default application
             return self._create_app(name, ["open", "-W", path])

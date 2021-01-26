@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Desktop**: Fix ``Open File`` keyword for Windows
+
 7.4.1
 -----
 
