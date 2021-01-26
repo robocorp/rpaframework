@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+7.4.1
+-----
+
+- Library **RPA.Outlook.Application**: Fix HTML email body issue
+
 7.4.0
 -----
 
