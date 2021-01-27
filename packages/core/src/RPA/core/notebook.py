@@ -64,8 +64,8 @@ def notebook_print(arg=None, **kwargs) -> Any:
     """
     if arg and "text" in kwargs.keys():
         kwargs["text"] = f"{arg} {kwargs['text']}"
-    elif arg:
-        kwargs["text"] = arg
+    else:
+        kwargs["text"] = str(arg)
     output = _get_markdown(**kwargs)
 
     if output:
