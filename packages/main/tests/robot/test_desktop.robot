@@ -48,10 +48,10 @@ Take Screenshot
     Remove File  ${filename}
 
 Get Mouse Position and assert it is within display dimensions
-    ${x}  ${y}  Get Mouse Position
+    ${pos_x}  ${pos_y}  Get Mouse Position
     ${left}  ${top}  ${right}  ${bottom}  Get Display Dimensions
-    Should Be True  ${left} < ${x} and ${x} < ${right}
-    Should Be True  ${bottom} > ${y} and ${y} > ${top}
+    Should Be True  ${left} <= ${pos_x} <= ${right}
+    Should Be True  ${top} <= ${pos_y} <= ${bottom}
 
 Test Mouse keywords
     [Documentation]  Skipped for now because testing these would require mocks to not get inconsistent failures when mouse is moved during test
