@@ -39,8 +39,8 @@ RPA.Desktop.keywords.application:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "105", "Find out way to get actual default application"
-   "108", "Find out way to get actual default application"
+   "111", "Move implementations to platform-specific adapters"
+   "167", "Find out way to get actual default application,"
 
 RPA.Desktop.keywords.finder:
 ============================
