@@ -859,13 +859,13 @@ class ImapSmtp:
 
     def _parse_folders(self, folders):
         parsed_folders = []
-        folder_regex = r'\((?P<flags>.*)\)."(?P<delimiter>.*)"."(?P<name>.*)".*'
+        folder_regex = r'\((?P<flags>.*)\)\s"(?P<delimiter>.*)"\s"?(?P<name>[^"]*)"?'
         for f in folders:
-            flags, delimiter, name = re.search(folder_regex, bytes.decode(f)).groups()
-
-            parsed_folders.append(
-                {"name": name, "flags": flags, "delimiter": delimiter}
-            )
+            match = re.search(folder_regex, bytes.decode(f))
+            if not match:
+                self.logger.warning("Cannot parse folder name %s", bytes.decode(f))
+                continue
+            parsed_folders.append(match.groupdict())
         return parsed_folders
 
     @imap_connection

@@ -85,3 +85,51 @@ def test_send_message_with_attachments_and_images(mocked, library):
         images=RESOURCE_DIR / "approved.png",
     )
     assert status
+
+
+def test_parse_folders_gmail(library):
+
+    folders = [
+        b'(\\HasNoChildren) "/" "INBOX"',
+        b'(\\HasChildren \\Noselect) "/" "[Gmail]"',
+        b'(\\All \\HasNoChildren) "/" "[Gmail]/All Mail"',
+    ]
+
+    expected = [
+        {"delimiter": "/", "flags": "\\HasNoChildren", "name": "INBOX"},
+        {"delimiter": "/", "flags": "\\HasChildren \\Noselect", "name": "[Gmail]"},
+        {
+            "delimiter": "/",
+            "flags": "\\All \\HasNoChildren",
+            "name": "[Gmail]/All Mail",
+        },
+    ]
+
+    result = library._parse_folders(folders)
+
+    assert result == expected
+
+
+def test_parse_folders_outlook(library):
+    folders = [
+        b'(\\HasNoChildren) "/" Archive',
+        b'(\\HasNoChildren \\Trash) "/" Deleted',
+        b'(\\HasNoChildren \\Drafts) "/" Drafts',
+    ]
+    expected = [
+        {"delimiter": "/", "flags": "\\HasNoChildren", "name": "Archive"},
+        {"delimiter": "/", "flags": "\\HasNoChildren \\Trash", "name": "Deleted"},
+        {"delimiter": "/", "flags": "\\HasNoChildren \\Drafts", "name": "Drafts"},
+    ]
+    result = library._parse_folders(folders)
+
+    assert result == expected
+
+
+def test_parse_folders_failed(library, caplog):
+    folders = [b"Totally invalid folder_name"]
+    expected_log_text = "Cannot parse folder name Totally invalid folder_name"
+    result = library._parse_folders(folders)
+
+    assert not result
+    assert expected_log_text in caplog.text
