@@ -547,9 +547,10 @@ class ImapSmtp:
                     (html.strip(), has_attachments) if html else ("", has_attachments)
                 )
         else:
+            content_charset = message.get_content_charset()
             text = str(
                 message.get_payload(decode=True),
-                message.get_content_charset(),
+                content_charset or "utf8",
                 "ignore",
             ).encode("utf8", "replace")
             return text.strip(), has_attachments
@@ -805,7 +806,7 @@ class ImapSmtp:
             content_maintype = part.get_content_maintype()
             content_disposition = part.get("Content-Disposition")
             if content_maintype != "multipart" and content_disposition is not None:
-                filename = part.get_filename()
+                filename = Path(part.get_filename()).name
                 if bool(filename):
                     filepath = Path(target_folder) / filename
                     if not filepath.exists() or overwrite:
