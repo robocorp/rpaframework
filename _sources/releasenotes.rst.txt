@@ -4,6 +4,10 @@ Release notes
 Upcoming release
 ----------------
 
+7.4.2
+-----
+
+- Library **RPA.Email.ImapSmtp**: Fix errors in server folder handling
 - Library **RPA.Desktop**: Use correct default application when opening files on Windows
 - Fix integer handling in ``Notebook Print`` core keyword
 
