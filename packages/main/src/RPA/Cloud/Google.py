@@ -101,7 +101,7 @@ class GoogleBase:
     def _get_service(self, service_name: str = None):
         """Return client instance for servive if it has been initialized.
 
-        :param service_name: name of the AWS service
+        :param service_name: name of the Google service
         :return: client instance
         """
         if service_name not in self.clients.keys():

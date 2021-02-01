@@ -885,9 +885,9 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
         Library   RPA.Cloud.AWS
 
         *** Tasks ***
-        Init Azure services
-            Set Robocloud Vault         vault_name=aws
-            Init Textract Client  use_robocloud_vault=${TRUE}
+        Init AWS services
+            Set Robocloud Vault     vault_name=aws
+            Init Textract Client    use_robocloud_vault=${TRUE}
 
     **Requirements**
 
