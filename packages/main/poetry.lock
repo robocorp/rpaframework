@@ -133,20 +133,20 @@ d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
 
 [[package]]
 name = "boto3"
-version = "1.17.25"
+version = "1.17.27"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [package.dependencies]
-botocore = ">=1.20.25,<1.21.0"
+botocore = ">=1.20.27,<1.21.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
 [[package]]
 name = "botocore"
-version = "1.20.25"
+version = "1.20.27"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -340,17 +340,17 @@ sspi = ["requests-negotiate-sspi"]
 
 [[package]]
 name = "flake8"
-version = "3.8.4"
+version = "3.9.0"
 description = "the modular source code checker: pep8 pyflakes and co"
 category = "dev"
 optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 
 [package.dependencies]
 importlib-metadata = {version = "*", markers = "python_version < \"3.8\""}
 mccabe = ">=0.6.0,<0.7.0"
-pycodestyle = ">=2.6.0a1,<2.7.0"
-pyflakes = ">=2.2.0,<2.3.0"
+pycodestyle = ">=2.7.0,<2.8.0"
+pyflakes = ">=2.3.0,<2.4.0"
 
 [[package]]
 name = "fpdf2"
@@ -661,7 +661,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "importlib-metadata"
-version = "3.7.2"
+version = "3.7.3"
 description = "Read metadata from Python packages"
 category = "main"
 optional = false
@@ -905,7 +905,7 @@ optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
-numpy = ">=1.17.3"
+numpy = ">=1.14.5"
 
 [[package]]
 name = "openpyxl"
@@ -1046,7 +1046,7 @@ pyasn1 = ">=0.4.6,<0.5.0"
 
 [[package]]
 name = "pycodestyle"
-version = "2.6.0"
+version = "2.7.0"
 description = "Python style guide checker"
 category = "dev"
 optional = false
@@ -1062,7 +1062,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "pyflakes"
-version = "2.2.0"
+version = "2.3.0"
 description = "passive checker of Python programs"
 category = "dev"
 optional = false
@@ -1367,7 +1367,7 @@ python-versions = "*"
 
 [[package]]
 name = "robotframework"
-version = "3.2.2"
+version = "4.0"
 description = "Generic automation framework for acceptance testing and robotic process automation (RPA)"
 category = "main"
 optional = false
@@ -1428,7 +1428,7 @@ robotframework = ">=2.9"
 
 [[package]]
 name = "robotframework-seleniumlibrary"
-version = "5.1.0"
+version = "5.1.1"
 description = "Web testing library for Robot Framework"
 category = "main"
 optional = false
@@ -1466,7 +1466,7 @@ webdrivermanager = ">=0.10.0,<0.11.0"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "0.2.4"
+version = "0.3.0"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
@@ -1476,7 +1476,7 @@ python-versions = ">=3.6,<4.0"
 fpdf2 = ">=2.3.0,<3.0.0"
 "pdfminer.six" = "20201018"
 pypdf2 = ">=1.26.0,<2.0.0"
-robotframework = ">=3.2.2,<4.0.0"
+robotframework = ">=3.2.2,<5.0"
 robotframework-pythonlibcore = ">=2.1.0,<3.0.0"
 rpaframework-core = ">=6.1.0,<7.0.0"
 
@@ -1765,7 +1765,7 @@ playwright = ["grpcio", "robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "bbd69b8fd3b6f08b48f313ae383469528c98a6ae1826eaf371609c5c3bc3c2af"
+content-hash = "587fc9da784cf7f4196d5c26515d9b6dc2ddd4da6734ccf99f83e85c5b4144f3"
 
 [metadata.files]
 amazon-textract-response-parser = [
@@ -1826,12 +1826,12 @@ black = [
     {file = "black-20.8b1.tar.gz", hash = "sha256:1c02557aa099101b9d21496f8a914e9ed2222ef70336404eeeac8edba836fbea"},
 ]
 boto3 = [
-    {file = "boto3-1.17.25-py2.py3-none-any.whl", hash = "sha256:399ccbd31b7aa09d53c4e449fe575803b033fcc23ed3a1d7ae2fe7a04727a562"},
-    {file = "boto3-1.17.25.tar.gz", hash = "sha256:273e96ae2b95a6036a4c3547e76a270b17ab761cc76053823c9e361d268213ef"},
+    {file = "boto3-1.17.27-py2.py3-none-any.whl", hash = "sha256:6758751f1181b9363e4e7559dcbd5ac0fc7147b73f429c976ec5ecd1688c9ec7"},
+    {file = "boto3-1.17.27.tar.gz", hash = "sha256:fa41987f9f71368013767306d9522b627946a01b4843938a26fb19cc8adb06c0"},
 ]
 botocore = [
-    {file = "botocore-1.20.25-py2.py3-none-any.whl", hash = "sha256:f1c04a5e96944b628ae98a2975829125c0e9b99f9be7b118d42fb82cef3c420a"},
-    {file = "botocore-1.20.25.tar.gz", hash = "sha256:b80b4efe5fafb29f24a3657d1f77aa170525c876b5fd9384d5e5859d0405206e"},
+    {file = "botocore-1.20.27-py2.py3-none-any.whl", hash = "sha256:57e45c9d443163da7312cae61bcc60382e6d0b3aecda68e850d6438162fe7b5b"},
+    {file = "botocore-1.20.27.tar.gz", hash = "sha256:4477803f07649f4d80b17d054820e7a09bb2cb0792d0decc2812108bc3759c4a"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -1995,8 +1995,8 @@ exchangelib = [
     {file = "exchangelib-3.3.2.tar.gz", hash = "sha256:fd4c59576f944c2fe6af4a96a3e0f7b583080bd00a596100fde12537d8539757"},
 ]
 flake8 = [
-    {file = "flake8-3.8.4-py2.py3-none-any.whl", hash = "sha256:749dbbd6bfd0cf1318af27bf97a14e28e5ff548ef8e5b1566ccfb25a11e7c839"},
-    {file = "flake8-3.8.4.tar.gz", hash = "sha256:aadae8761ec651813c24be05c6f7b4680857ef6afaae4651a4eccaef97ce6c3b"},
+    {file = "flake8-3.9.0-py2.py3-none-any.whl", hash = "sha256:12d05ab02614b6aee8df7c36b97d1a3b2372761222b19b58621355e82acddcff"},
+    {file = "flake8-3.9.0.tar.gz", hash = "sha256:78873e372b12b093da7b5e5ed302e8ad9e988b38b063b61ad937f26ca58fc5f0"},
 ]
 fpdf2 = [
     {file = "fpdf2-2.3.1-py2.py3-none-any.whl", hash = "sha256:36562d795a121743347a77194e3c3da5177c3e65e2f58c1a3057c7868ba7f070"},
@@ -2206,8 +2206,8 @@ idna = [
     {file = "idna-2.10.tar.gz", hash = "sha256:b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6"},
 ]
 importlib-metadata = [
-    {file = "importlib_metadata-3.7.2-py3-none-any.whl", hash = "sha256:407d13f55dc6f2a844e62325d18ad7019a436c4bfcaee34cda35f2be6e7c3e34"},
-    {file = "importlib_metadata-3.7.2.tar.gz", hash = "sha256:18d5ff601069f98d5d605b6a4b50c18a34811d655c55548adc833e687289acde"},
+    {file = "importlib_metadata-3.7.3-py3-none-any.whl", hash = "sha256:b74159469b464a99cb8cc3e21973e4d96e05d3024d337313fedb618a6e86e6f4"},
+    {file = "importlib_metadata-3.7.3.tar.gz", hash = "sha256:742add720a20d0467df2f444ae41704000f50e1234f46174b51f9c6031a1bd71"},
 ]
 importlib-resources = [
     {file = "importlib_resources-5.1.2-py3-none-any.whl", hash = "sha256:ebab3efe74d83b04d6bf5cd9a17f0c5c93e60fb60f30c90f56265fce4682a469"},
@@ -2561,16 +2561,16 @@ pyasn1-modules = [
     {file = "pyasn1_modules-0.2.8-py3.7.egg", hash = "sha256:c29a5e5cc7a3f05926aff34e097e84f8589cd790ce0ed41b67aed6857b26aafd"},
 ]
 pycodestyle = [
-    {file = "pycodestyle-2.6.0-py2.py3-none-any.whl", hash = "sha256:2295e7b2f6b5bd100585ebcb1f616591b652db8a741695b3d8f5d28bdc934367"},
-    {file = "pycodestyle-2.6.0.tar.gz", hash = "sha256:c58a7d2815e0e8d7972bf1803331fb0152f867bd89adf8a01dfd55085434192e"},
+    {file = "pycodestyle-2.7.0-py2.py3-none-any.whl", hash = "sha256:514f76d918fcc0b55c6680472f0a37970994e07bbb80725808c17089be302068"},
+    {file = "pycodestyle-2.7.0.tar.gz", hash = "sha256:c389c1d06bf7904078ca03399a4816f974a1d590090fecea0c63ec26ebaf1cef"},
 ]
 pycparser = [
     {file = "pycparser-2.20-py2.py3-none-any.whl", hash = "sha256:7582ad22678f0fcd81102833f60ef8d0e57288b6b5fb00323d101be910e35705"},
     {file = "pycparser-2.20.tar.gz", hash = "sha256:2d475327684562c3a96cc71adf7dc8c4f0565175cf86b6d7a404ff4c771f15f0"},
 ]
 pyflakes = [
-    {file = "pyflakes-2.2.0-py2.py3-none-any.whl", hash = "sha256:0d94e0e05a19e57a99444b6ddcf9a6eb2e5c68d3ca1e98e90707af8152c90a92"},
-    {file = "pyflakes-2.2.0.tar.gz", hash = "sha256:35b2d75ee967ea93b55750aa9edbbf72813e06a66ba54438df2cfac9e3c27fc8"},
+    {file = "pyflakes-2.3.0-py2.py3-none-any.whl", hash = "sha256:910208209dcea632721cb58363d0f72913d9e8cf64dc6f8ae2e02a3609aba40d"},
+    {file = "pyflakes-2.3.0.tar.gz", hash = "sha256:e59fd8e750e588358f1b8885e5a4751203a0516e0ee6d34811089ac294c8806f"},
 ]
 pygments = [
     {file = "Pygments-2.8.1-py3-none-any.whl", hash = "sha256:534ef71d539ae97d4c3a4cf7d6f110f214b0e687e92f9cb9d2a3b0d3101289c8"},
@@ -2732,8 +2732,8 @@ rfc3987 = [
     {file = "rfc3987-1.3.8.tar.gz", hash = "sha256:d3c4d257a560d544e9826b38bc81db676890c79ab9d7ac92b39c7a253d5ca733"},
 ]
 robotframework = [
-    {file = "robotframework-3.2.2-py2.py3-none-any.whl", hash = "sha256:a0c325e79dc6dcdaba0398db8c3afefc337799b7b36b336f04b07be4fe4a9dd2"},
-    {file = "robotframework-3.2.2.zip", hash = "sha256:a0786a916d0572bd9d6afe26e95c6021e3df5dcafa0ece6b302e36366e58c24e"},
+    {file = "robotframework-4.0-py2.py3-none-any.whl", hash = "sha256:1f76f568293ceaaaa53f39a637811baa571f57c01e2f7131c0254ad0dd631368"},
+    {file = "robotframework-4.0.zip", hash = "sha256:a02a6f4af3b0830e4396058694c333cb63eb47f50acf6723be34f0f7a4d73ad7"},
 ]
 robotframework-browser = [
     {file = "robotframework-browser-2.5.0.tar.gz", hash = "sha256:cbf9f4cde8183fe9cd8e26543b7a62e740f0b3c9a9e5aa9846c0ff2bf800fdb8"},
@@ -2752,8 +2752,8 @@ robotframework-sapguilibrary = [
     {file = "robotframework_sapguilibrary-1.1-py2-none-any.whl", hash = "sha256:c422e23623911b2c70630f9e01fcec754bb8ae16d9f8dbab29d1ee588800daf6"},
 ]
 robotframework-seleniumlibrary = [
-    {file = "robotframework-seleniumlibrary-5.1.0.tar.gz", hash = "sha256:ef0f7271e0a72c2032281771760a47f764ef42aedcd83a5c981c2ef02cc752af"},
-    {file = "robotframework_seleniumlibrary-5.1.0-py2.py3-none-any.whl", hash = "sha256:eaa6bd832e076fc5b18bcc52fcc32b62d93ec238c8305eefbf74df8a0ff43320"},
+    {file = "robotframework-seleniumlibrary-5.1.1.tar.gz", hash = "sha256:87fd0a58af66b9e04b0450aa25692e34835f3d267db827de5d285839572cd4ff"},
+    {file = "robotframework_seleniumlibrary-5.1.1-py2.py3-none-any.whl", hash = "sha256:22373d59a7061a75ef9bd2b4d163d72af74d40a141f9391d68ae89fae441b203"},
 ]
 robotframework-seleniumtestability = [
     {file = "robotframework-seleniumtestability-1.1.0.tar.gz", hash = "sha256:18810869a0c0010cc623aea4bb382afdc9aa6fe8404c35fa58452766d0322735"},
@@ -2763,8 +2763,8 @@ rpaframework-core = [
     {file = "rpaframework_core-6.1.0-py3-none-any.whl", hash = "sha256:ada3a9e727d8e5a14532d4cae5235a90fb6fb959dce7095a880b7e600a4a6c14"},
 ]
 rpaframework-pdf = [
-    {file = "rpaframework-pdf-0.2.4.tar.gz", hash = "sha256:2e8532b0c4ceea78659d8480bd063bf530efebb83af78be2273050f3000f70cb"},
-    {file = "rpaframework_pdf-0.2.4-py3-none-any.whl", hash = "sha256:5725370a1c3930c496f3d1475b8c0eb0c00dceeba81169811c1bc79eafb2b973"},
+    {file = "rpaframework-pdf-0.3.0.tar.gz", hash = "sha256:6e44f53f8101ab44c75986d93128d8b8b1f942bd1228c33ba168d7f7bd38c5c0"},
+    {file = "rpaframework_pdf-0.3.0-py3-none-any.whl", hash = "sha256:f8ea6137ad4f533bbf00c105ee126ae5f4f3abd2d50612748383c786b5ca1302"},
 ]
 rpaframework-recognition = [
     {file = "rpaframework-recognition-0.7.0.tar.gz", hash = "sha256:664b72daa7440ba2c1cb697b6fbd2a5ea7a6ac4f696edb9db68e5e987dd2c260"},
