@@ -351,8 +351,8 @@ class Database:
                 cur = self._dbconnection.cursor(as_dict=False)
             PY3K = sys.version_info >= (3, 0)
             if not PY3K:
-                procedure = name.encode("ascii", "ignore")
-            cur.callproc(procedure, params)
+                name = name.encode("ascii", "ignore")
+            cur.callproc(name, params)
             cur.nextset()
             retVal = list()
             for row in cur:
