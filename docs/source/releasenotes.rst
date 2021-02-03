@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Database**:
+
+  - Fix bug with ``Call Stored Procedure```
+  - Hide details of ``Connect To Database`` from Robot Framework logs
+
 7.4.2
 -----
 
