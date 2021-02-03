@@ -13,14 +13,10 @@ VERSION_STRINGS = (
 )
 
 
-def as_factory(func):
-    return lambda *args, **kwargs: func
-
-
 @pytest.fixture
 def manager_mock():
     manager = mock.Mock()
-    manager.link_path = "mock/link/path"
+    manager.download_root = "mock/download/path"
     manager.get_driver_filename.return_value = "mockdriver.bin"
     return manager
 
@@ -28,53 +24,37 @@ def manager_mock():
 @pytest.fixture
 def multiname_manager_mock():
     manager = mock.Mock()
-    manager.link_path = "mock/link/path"
+    manager.download_root = "mock/download/path"
     manager.get_driver_filename.return_value = ["first.bin", "second.bin"]
     return manager
 
 
-def test_driver_path_no_download(manager_mock):
-    path = webdriver._driver_path(as_factory(manager_mock), download=False)
-    assert path == Path("mock/link/path", "mockdriver.bin")
+def test_link_paths_single(manager_mock):
+    paths = webdriver._link_paths(manager_mock)
+    assert paths == [Path("mock/download/path/mockdriver.bin")]
 
 
-def test_driver_path_download(manager_mock):
-    path = webdriver._driver_path(as_factory(manager_mock), download=True)
-    assert path == Path(webdriver.DRIVER_DIR, "mockdriver.bin")
+def test_link_paths_multiple(multiname_manager_mock):
+    paths = webdriver._link_paths(multiname_manager_mock)
+    assert paths == [
+        Path("mock/download/path/first.bin"),
+        Path("mock/download/path/second.bin"),
+    ]
 
 
-def test_driver_path_multiple(multiname_manager_mock):
-    path = webdriver._driver_path(as_factory(multiname_manager_mock), download=False)
-    assert path == Path("mock/link/path", "first.bin")
+def test_cache_path_single(manager_mock):
+    webdriver._to_manager = to_manager = mock.Mock()
+    to_manager.return_value = manager_mock
 
-    path = webdriver._driver_path(as_factory(multiname_manager_mock), download=True)
-    assert path == Path(webdriver.DRIVER_DIR, "first.bin")
-
-
-@pytest.mark.parametrize("system", ["Windows", "Linux", "Darwin"])
-@pytest.mark.parametrize("output,expected", VERSION_STRINGS)
-@mock.patch("RPA.core.webdriver._run_command")
-@mock.patch("RPA.core.webdriver.platform")
-def test_chrome_version(mock_platform, mock_run, system, output, expected):
-    mock_platform.system.return_value = system
-
-    mock_run.return_value = output
-    result = webdriver._chrome_version()
-    assert result == expected
+    path = webdriver.cache("some-browser")
+    assert to_manager.called_once_with("some-browser")
+    assert path is None
 
 
-@mock.patch("RPA.core.webdriver._run_command")
-@mock.patch("RPA.core.webdriver.platform")
-def test_chrome_version_unknown_system(mock_platform, mock_run):
-    mock_platform.system.return_value = "atari2600"
-    result = webdriver._chrome_version()
-    assert result == None
+def test_cache_path_multiple(multiname_manager_mock):
+    webdriver._to_manager = to_manager = mock.Mock()
+    to_manager.return_value = multiname_manager_mock
 
-
-@pytest.mark.parametrize("output,expected", VERSION_STRINGS)
-@mock.patch("RPA.core.webdriver._run_command")
-def test_chromedriver_version(mock_run, output, expected):
-    mock_run.return_value = output
-    result = webdriver._chromedriver_version("path/to/driver")
-    assert result == expected
-    mock_run.assert_called_once_with(["path/to/driver", "--version"])
+    path = webdriver.cache("AValue")
+    assert to_manager.called_once_with("Avalue")
+    assert path is None
