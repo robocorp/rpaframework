@@ -18,7 +18,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 def get_values_from_box():
-    values = library.get_value_from_anchor(
+    values = library.find_text(
         "coords:345,645,520,725", direction="box", only_closest=False
     )
     for item in values:
@@ -26,13 +26,13 @@ def get_values_from_box():
 
 
 def get_values_by_label():
-    LOGGER.info("Invoice Date: %s" % library.get_value_from_anchor("Invoice Date"))
-    LOGGER.info("Order Number: %s" % library.get_value_from_anchor("text:Order Number"))
+    LOGGER.info("Invoice Date: %s" % library.find_text("Invoice Date"))
+    LOGGER.info("Order Number: %s" % library.find_text("text:Order Number"))
     LOGGER.info(
         "Rate/Price: %s"
-        % library.get_value_from_anchor("text:Rate/Price", direction="down")
+        % library.find_text("text:Rate/Price", direction="down")
     )
-    LOGGER.info("Total: %s" % library.get_value_from_anchor("text:Total"))
+    LOGGER.info("Total: %s" % library.find_text("text:Total"))
 
 
 def get_text_from_pdf():
