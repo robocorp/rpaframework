@@ -5,7 +5,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:28",
+        "generated": "2021-02-03 14:20:37",
         "inits": [],
         "keywords": [
             {
@@ -103,7 +103,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:28",
+        "generated": "2021-02-03 14:20:37",
         "inits": [
             {
                 "name": "Init",
@@ -2646,7 +2646,7 @@
         "version": "2.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:28",
+        "generated": "2021-02-03 14:20:37",
         "inits": [
             {
                 "name": "Init",
@@ -4178,7 +4178,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:28",
+        "generated": "2021-02-03 14:20:38",
         "inits": [
             {
                 "name": "Init",
@@ -6717,11 +6717,11 @@
     },
     "RPA.Cloud.AWS": {
         "name": "RPA.Cloud.AWS",
-        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>AWS</cite> is a library for operating with Amazon AWS services S3, SQS,\nTextract and Comprehend.</p>\n<p>Services are initialized with keywords like <tt class=\"docutils literal\">Init S3 Client</tt> for S3.</p>\n<p><strong>AWS authentication</strong></p>\n<p>Authentication for AWS is set with <cite>key id</cite> and <cite>access key</cite> which can be given to the library\nin three different ways.</p>\n<ul class=\"simple\">\n<li>Method 1 as environment variables, <tt class=\"docutils literal\">AWS_KEY_ID</tt> and <tt class=\"docutils literal\">AWS_KEY</tt>.</li>\n<li>Method 2 as keyword parameters to <tt class=\"docutils literal\">Init Textract Client</tt> for example.</li>\n<li>Method 3 as Robocloud vault secret. The vault name needs to be given in library init or\nwith keyword <tt class=\"docutils literal\">Set Robocloud Vault</tt>. Secret keys are expected to match environment variable\nnames.</li>\n</ul>\n<p>Method 1. credentials using environment variable</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.AWS</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init AWS services</span><span class=\"p\">\n    </span><span class=\"c\"># NO parameters for client, expecting to get credentials\n</span><span class=\"p\">    </span><span class=\"c\"># with AWS_KEY and AWS_KEY_ID environment variable\n</span><span class=\"p\">    </span><span class=\"nf\">Init S3 Client</span>\n</pre>\n<p>Method 2. credentials with keyword parameter</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.AWS</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init AWS services</span><span class=\"p\">\n    </span><span class=\"nf\">Init S3 Client</span><span class=\"p\">  </span><span class=\"s\">aws_key_id=</span><span class=\"p\">${</span><span class=\"nv\">AWS_KEY_ID</span><span class=\"p\">}  </span><span class=\"s\">aws_key=</span><span class=\"p\">${</span><span class=\"nv\">AWS_KEY</span><span class=\"p\">}</span>\n</pre>\n<p>Method 3. setting Robocloud Vault in the library init</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.AWS</span><span class=\"p\">  </span><span class=\"s\">robocloud_vault_name=aws</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init AWS services</span><span class=\"p\">\n    </span><span class=\"nf\">Init S3 Client</span><span class=\"p\">  </span><span class=\"s\">use_robocloud_vault=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}</span>\n</pre>\n<p>Method 3. setting Robocloud Vault with keyword</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.AWS</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init Azure services</span><span class=\"p\">\n    </span><span class=\"nf\">Set Robocloud Vault</span><span class=\"p\">         </span><span class=\"s\">vault_name=aws</span><span class=\"p\">\n    </span><span class=\"nf\">Init Textract Client</span><span class=\"p\">  </span><span class=\"s\">use_robocloud_vault=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}</span>\n</pre>\n<p><strong>Requirements</strong></p>\n<p>The default installation depends on <a class=\"reference external\" href=\"https://boto3.amazonaws.com/v1/documentation/api/latest/index.html\">boto3</a> library. Due to the size of the\ndependency, this library has been set as an optional package for <tt class=\"docutils literal\">rpaframework</tt>.</p>\n<p>This can be installed by opting in to the <cite>aws</cite> dependency:</p>\n<p><tt class=\"docutils literal\">pip install rpaframework[aws]</tt></p>\n<p><strong>Example</strong></p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.AWS</span><span class=\"p\">   </span><span class=\"s\">region=us-east-1</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Variables ***</span><span class=\"p\">\n${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}        </span><span class=\"s\">testbucket12213123123</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Upload a file into S3 bucket</span><span class=\"p\">\n    [</span><span class=\"kn\">Setup</span><span class=\"p\">]   </span><span class=\"nf\">Init S3 Client</span><span class=\"p\">\n    </span><span class=\"nf\">Upload File</span><span class=\"p\">      ${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}   ${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">path</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">to</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">file.pdf</span><span class=\"p\">\n    &#64;{</span><span class=\"nv\">files</span><span class=\"p\">}         </span><span class=\"nf\">List Files</span><span class=\"p\">   ${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}\n    </span><span class=\"nf\">FOR</span><span class=\"p\">   ${</span><span class=\"nv\">file</span><span class=\"p\">}  </span><span class=\"s\">IN</span><span class=\"p\">   &#64;{</span><span class=\"nv\">files</span><span class=\"p\">}\n        </span><span class=\"nf\">Log</span><span class=\"p\">  ${</span><span class=\"nv\">file</span><span class=\"p\">}\n    </span><span class=\"nf\">END</span>\n</pre>\n</div>\n</div>",
+        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p><cite>AWS</cite> is a library for operating with Amazon AWS services S3, SQS,\nTextract and Comprehend.</p>\n<p>Services are initialized with keywords like <tt class=\"docutils literal\">Init S3 Client</tt> for S3.</p>\n<p><strong>AWS authentication</strong></p>\n<p>Authentication for AWS is set with <cite>key id</cite> and <cite>access key</cite> which can be given to the library\nin three different ways.</p>\n<ul class=\"simple\">\n<li>Method 1 as environment variables, <tt class=\"docutils literal\">AWS_KEY_ID</tt> and <tt class=\"docutils literal\">AWS_KEY</tt>.</li>\n<li>Method 2 as keyword parameters to <tt class=\"docutils literal\">Init Textract Client</tt> for example.</li>\n<li>Method 3 as Robocloud vault secret. The vault name needs to be given in library init or\nwith keyword <tt class=\"docutils literal\">Set Robocloud Vault</tt>. Secret keys are expected to match environment variable\nnames.</li>\n</ul>\n<p>Method 1. credentials using environment variable</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.AWS</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init AWS services</span><span class=\"p\">\n    </span><span class=\"c\"># NO parameters for client, expecting to get credentials\n</span><span class=\"p\">    </span><span class=\"c\"># with AWS_KEY and AWS_KEY_ID environment variable\n</span><span class=\"p\">    </span><span class=\"nf\">Init S3 Client</span>\n</pre>\n<p>Method 2. credentials with keyword parameter</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.AWS</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init AWS services</span><span class=\"p\">\n    </span><span class=\"nf\">Init S3 Client</span><span class=\"p\">  </span><span class=\"s\">aws_key_id=</span><span class=\"p\">${</span><span class=\"nv\">AWS_KEY_ID</span><span class=\"p\">}  </span><span class=\"s\">aws_key=</span><span class=\"p\">${</span><span class=\"nv\">AWS_KEY</span><span class=\"p\">}</span>\n</pre>\n<p>Method 3. setting Robocloud Vault in the library init</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.AWS</span><span class=\"p\">  </span><span class=\"s\">robocloud_vault_name=aws</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init AWS services</span><span class=\"p\">\n    </span><span class=\"nf\">Init S3 Client</span><span class=\"p\">  </span><span class=\"s\">use_robocloud_vault=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}</span>\n</pre>\n<p>Method 3. setting Robocloud Vault with keyword</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.AWS</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Init AWS services</span><span class=\"p\">\n    </span><span class=\"nf\">Set Robocloud Vault</span><span class=\"p\">     </span><span class=\"s\">vault_name=aws</span><span class=\"p\">\n    </span><span class=\"nf\">Init Textract Client</span><span class=\"p\">    </span><span class=\"s\">use_robocloud_vault=</span><span class=\"p\">${</span><span class=\"nv\">TRUE</span><span class=\"p\">}</span>\n</pre>\n<p><strong>Requirements</strong></p>\n<p>The default installation depends on <a class=\"reference external\" href=\"https://boto3.amazonaws.com/v1/documentation/api/latest/index.html\">boto3</a> library. Due to the size of the\ndependency, this library has been set as an optional package for <tt class=\"docutils literal\">rpaframework</tt>.</p>\n<p>This can be installed by opting in to the <cite>aws</cite> dependency:</p>\n<p><tt class=\"docutils literal\">pip install rpaframework[aws]</tt></p>\n<p><strong>Example</strong></p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"gh\">*** Settings ***</span><span class=\"p\">\n</span><span class=\"kn\">Library</span><span class=\"p\">   </span><span class=\"nn\">RPA.Cloud.AWS</span><span class=\"p\">   </span><span class=\"s\">region=us-east-1</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Variables ***</span><span class=\"p\">\n${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}        </span><span class=\"s\">testbucket12213123123</span><span class=\"p\">\n\n</span><span class=\"gh\">*** Tasks ***</span><span class=\"p\">\n</span><span class=\"gu\">Upload a file into S3 bucket</span><span class=\"p\">\n    [</span><span class=\"kn\">Setup</span><span class=\"p\">]   </span><span class=\"nf\">Init S3 Client</span><span class=\"p\">\n    </span><span class=\"nf\">Upload File</span><span class=\"p\">      ${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}   ${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">path</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">to</span><span class=\"p\">${</span><span class=\"nv\">/</span><span class=\"p\">}</span><span class=\"s\">file.pdf</span><span class=\"p\">\n    &#64;{</span><span class=\"nv\">files</span><span class=\"p\">}         </span><span class=\"nf\">List Files</span><span class=\"p\">   ${</span><span class=\"nv\">BUCKET_NAME</span><span class=\"p\">}\n    </span><span class=\"nf\">FOR</span><span class=\"p\">   ${</span><span class=\"nv\">file</span><span class=\"p\">}  </span><span class=\"s\">IN</span><span class=\"p\">   &#64;{</span><span class=\"nv\">files</span><span class=\"p\">}\n        </span><span class=\"nf\">Log</span><span class=\"p\">  ${</span><span class=\"nv\">file</span><span class=\"p\">}\n    </span><span class=\"nf\">END</span>\n</pre>\n</div>\n</div>",
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:29",
+        "generated": "2021-02-03 14:20:38",
         "inits": [
             {
                 "name": "Init",
@@ -7074,7 +7074,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:29",
+        "generated": "2021-02-03 14:20:38",
         "inits": [
             {
                 "name": "Init",
@@ -7292,7 +7292,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:29",
+        "generated": "2021-02-03 14:20:39",
         "inits": [
             {
                 "name": "Init",
@@ -7864,7 +7864,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:30",
+        "generated": "2021-02-03 14:20:39",
         "inits": [],
         "keywords": [
             {
@@ -7973,7 +7973,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:30",
+        "generated": "2021-02-03 14:20:39",
         "inits": [],
         "keywords": [
             {
@@ -7991,14 +7991,14 @@
             {
                 "name": "Connect To Database",
                 "args": [
-                    "module_name=None",
-                    "database=None",
-                    "username=None",
-                    "password=None",
-                    "host=None",
-                    "port=None",
-                    "charset=None",
-                    "config_file=db.cfg"
+                    "module_name: str = None",
+                    "database: str = None",
+                    "username: str = None",
+                    "password: str = None",
+                    "host: str = None",
+                    "port: int = None",
+                    "charset: str = None",
+                    "config_file: str = db.cfg"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Connect to database using DB API 2.0 module.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param module_name:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">database module to use</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param database:</th><td class=\"field-body\">name of the database</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param username:</th><td class=\"field-body\">of the user accessing the database</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param password:</th><td class=\"field-body\">of the user accessing the database</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param host:</th><td class=\"field-body\">SQL server address</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param port:</th><td class=\"field-body\">SQL server port</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param charset:</th><td class=\"field-body\">for example, &quot;utf-8&quot;, defaults to None</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param config_file:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">location of configuration file, defaults to &quot;db.cfg&quot;</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Connect To Database</span><span class=\"p\">  </span><span class=\"c\">pymysql</span><span class=\"p\">  </span><span class=\"c\">database</span><span class=\"p\">  </span><span class=\"c\">username</span><span class=\"p\">  </span><span class=\"c\">password</span><span class=\"p\">  </span><span class=\"c\">host</span><span class=\"p\">  </span><span class=\"c\">port</span><span class=\"p\">\n</span><span class=\"c\">Connect To Database</span><span class=\"p\">  </span><span class=\"c\">${CURDIR}${/}resources${/}dbconfig.cfg</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Connect to database using DB API 2.0 module.",
@@ -8091,7 +8091,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:30",
+        "generated": "2021-02-03 14:20:40",
         "inits": [],
         "keywords": [
             {
@@ -8431,7 +8431,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:30",
+        "generated": "2021-02-03 14:20:40",
         "inits": [],
         "keywords": [
             {
@@ -8470,7 +8470,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:30",
+        "generated": "2021-02-03 14:20:40",
         "inits": [],
         "keywords": [
             {
@@ -8577,7 +8577,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:30",
+        "generated": "2021-02-03 14:20:40",
         "inits": [
             {
                 "name": "Init",
@@ -9203,7 +9203,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:31",
+        "generated": "2021-02-03 14:20:41",
         "inits": [
             {
                 "name": "Init",
@@ -9370,7 +9370,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:31",
+        "generated": "2021-02-03 14:20:41",
         "inits": [],
         "keywords": [
             {
@@ -9499,7 +9499,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:31",
+        "generated": "2021-02-03 14:20:42",
         "inits": [
             {
                 "name": "Init",
@@ -9830,7 +9830,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:32",
+        "generated": "2021-02-03 14:20:42",
         "inits": [],
         "keywords": [
             {
@@ -9996,7 +9996,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:32",
+        "generated": "2021-02-03 14:20:42",
         "inits": [],
         "keywords": [
             {
@@ -10193,7 +10193,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:32",
+        "generated": "2021-02-03 14:20:43",
         "inits": [],
         "keywords": [
             {
@@ -10390,7 +10390,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:32",
+        "generated": "2021-02-03 14:20:43",
         "inits": [],
         "keywords": [
             {
@@ -10874,7 +10874,7 @@
         "version": "0.7.2",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:33",
+        "generated": "2021-02-03 14:20:43",
         "inits": [
             {
                 "name": "Init",
@@ -10905,7 +10905,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'OPTIONS', 'GET', 'TRACE', 'DELETE', 'PUT']"
+                    "retry_method_list=['DELETE', 'GET', 'TRACE', 'HEAD', 'OPTIONS', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>client_certs</code> ['client certificate', 'client key'] PEM files containing the client key and certificate</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10928,7 +10928,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'OPTIONS', 'GET', 'TRACE', 'DELETE', 'PUT']"
+                    "retry_method_list=['DELETE', 'GET', 'TRACE', 'HEAD', 'OPTIONS', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> A Custom Authentication object to be passed on to the requests library. <a href=\"http://docs.python-requests.org/en/master/user/advanced/#custom-authentication\">http://docs.python-requests.org/en/master/user/advanced/#custom-authentication</a></p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10951,7 +10951,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'OPTIONS', 'GET', 'TRACE', 'DELETE', 'PUT']"
+                    "retry_method_list=['DELETE', 'GET', 'TRACE', 'HEAD', 'OPTIONS', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10974,7 +10974,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'OPTIONS', 'GET', 'TRACE', 'DELETE', 'PUT']"
+                    "retry_method_list=['DELETE', 'GET', 'TRACE', 'HEAD', 'OPTIONS', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10997,7 +10997,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['HEAD', 'OPTIONS', 'GET', 'TRACE', 'DELETE', 'PUT']"
+                    "retry_method_list=['DELETE', 'GET', 'TRACE', 'HEAD', 'OPTIONS', 'PUT']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> List of username &amp; password for HTTP Basic Auth</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -11241,7 +11241,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:33",
+        "generated": "2021-02-03 14:20:43",
         "inits": [],
         "keywords": [
             {
@@ -11360,7 +11360,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:33",
+        "generated": "2021-02-03 14:20:43",
         "inits": [],
         "keywords": [
             {
@@ -11472,7 +11472,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:33",
+        "generated": "2021-02-03 14:20:44",
         "inits": [],
         "keywords": [
             {
@@ -11632,7 +11632,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:33",
+        "generated": "2021-02-03 14:20:44",
         "inits": [],
         "keywords": [
             {
@@ -11727,7 +11727,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:33",
+        "generated": "2021-02-03 14:20:44",
         "inits": [],
         "keywords": [
             {
@@ -11797,7 +11797,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:34",
+        "generated": "2021-02-03 14:20:44",
         "inits": [
             {
                 "name": "Init",
@@ -12738,7 +12738,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:34",
+        "generated": "2021-02-03 14:20:45",
         "inits": [
             {
                 "name": "Init",
@@ -12827,7 +12827,7 @@
                 "name": "Get Work Item Variable",
                 "args": [
                     "name",
-                    "default=<object object at 0x00000179E3A784E0>"
+                    "default=<object object at 0x00000271F3508530>"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a single variable value from the work item,\nor default value if defined and key does not exist.\nIf key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param key:</th><td class=\"field-body\">Name of variable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param default:</th><td class=\"field-body\">Default value if key does not exist</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${username}=</span><span class=\"p\">    </span><span class=\"c\">Get work item variable</span><span class=\"p\">    </span><span class=\"c\">username</span><span class=\"p\">    </span><span class=\"c\">default=guest</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Return a single variable value from the work item, or default value if defined and key does not exist. If key does not exist and default is not defined, raises <cite>KeyError</cite>.",
@@ -12956,7 +12956,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:34",
+        "generated": "2021-02-03 14:20:45",
         "inits": [
             {
                 "name": "Init",
@@ -12991,7 +12991,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:34",
+        "generated": "2021-02-03 14:20:45",
         "inits": [],
         "keywords": [
             {
@@ -13057,7 +13057,7 @@
         "version": "1.1",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:34",
+        "generated": "2021-02-03 14:20:45",
         "inits": [
             {
                 "name": "Init",
@@ -13474,7 +13474,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:34",
+        "generated": "2021-02-03 14:20:45",
         "inits": [
             {
                 "name": "Init",
@@ -13731,7 +13731,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:35",
+        "generated": "2021-02-03 14:20:46",
         "inits": [],
         "keywords": [
             {
@@ -13758,7 +13758,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:35",
+        "generated": "2021-02-03 14:20:46",
         "inits": [],
         "keywords": [
             {
@@ -14134,7 +14134,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:35",
+        "generated": "2021-02-03 14:20:46",
         "inits": [
             {
                 "name": "Init",
@@ -14253,7 +14253,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:35",
+        "generated": "2021-02-03 14:20:46",
         "inits": [],
         "keywords": [
             {
@@ -14376,7 +14376,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-01-29 12:25:35",
+        "generated": "2021-02-03 14:20:47",
         "inits": [],
         "keywords": [
             {
