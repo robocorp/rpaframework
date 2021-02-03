@@ -2,12 +2,20 @@ import importlib
 import logging
 import sys
 
+from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
+
+from RPA.RobotLogListener import RobotLogListener
 from RPA.Tables import Table
 
 try:
     import ConfigParser
 except ImportError:
     import configparser as ConfigParser
+
+try:
+    BuiltIn().import_library("RPA.RobotLogListener")
+except RobotNotRunningError:
+    pass
 
 
 class Configuration:
@@ -161,18 +169,20 @@ class Database:
         self._dbconnection = None
         self.db_api_module_name = None
         self.config = Configuration()
+        listener = RobotLogListener()
+        listener.register_protected_keywords(["RPA.Database.connect_to_database"])
 
     # pylint: disable=R0915
     def connect_to_database(  # noqa: C901
         self,
-        module_name=None,
-        database=None,
-        username=None,
-        password=None,
-        host=None,
-        port=None,
-        charset=None,
-        config_file="db.cfg",
+        module_name: str = None,
+        database: str = None,
+        username: str = None,
+        password: str = None,
+        host: str = None,
+        port: int = None,
+        charset: str = None,
+        config_file: str = "db.cfg",
     ):
         """Connect to database using DB API 2.0 module.
 
