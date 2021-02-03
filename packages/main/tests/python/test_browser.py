@@ -16,6 +16,7 @@ def library():
     lib.close_all_browsers()
 
 
+@pytest.mark.skip()
 class TestBrowserFunctionality:
     def test_print_to_pdf(self, library):
         testfile = RESOURCE_DIR / "browser_docs.html"
