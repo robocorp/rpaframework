@@ -10,7 +10,7 @@ from RPA.PDF.keywords import (
     keyword,
 )
 
-from RPA.PDF.keywords.model import RpaTextBox
+from RPA.PDF.keywords.model import TextBox
 
 
 class TargetObject:
@@ -39,7 +39,7 @@ class FinderKeywords(LibraryContext):
         strict: bool = False,
         regexp: str = None,
         only_closest: bool = True,
-    ) -> Union[List[RpaTextBox], RpaTextBox]:
+    ) -> Union[List[TextBox], TextBox]:
         """Get closest text (value) to the anchor element.
 
         PDF needs to be parsed before elements can be found.
@@ -224,7 +224,7 @@ class FinderKeywords(LibraryContext):
             return item
         return None
 
-    def _get_closest_from_possibles(self, direction: str, possibles: List[RpaTextBox]) -> RpaTextBox:
+    def _get_closest_from_possibles(self, direction: str, possibles: List[TextBox]) -> TextBox:
         distance = 500000
         closest = None
         (_, bottom, right, top) = self.anchor_element.bbox

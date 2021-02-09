@@ -40,7 +40,7 @@ def iterable_items_to_int(bbox) -> list:
     return list(map(int, bbox))
 
 
-class RpaFigure:
+class Figure:
     """Class for each LTFigure element in the PDF"""
 
     figure_name: str
@@ -66,7 +66,7 @@ class RpaFigure:
         )
 
 
-class RpaTextBox:
+class TextBox:
     """Class for each LTTextBox element in the PDF"""
 
     item: dict
@@ -121,7 +121,7 @@ class RpaTextBox:
         return f"{self.text} {self.bbox}"
 
 
-class RpaPdfPage:
+class Page:
     """Class for each PDF page"""
 
     bbox: list
@@ -145,10 +145,10 @@ class RpaPdfPage:
         return self.content
 
     def get_figures(self) -> OrderedDict:
-        return {k: v for k, v in self.content.items() if isinstance(v, RpaFigure)}
+        return {k: v for k, v in self.content.items() if isinstance(v, Figure)}
 
     def get_textboxes(self) -> OrderedDict:
-        return {k: v for k, v in self.content.items() if isinstance(v, RpaTextBox)}
+        return {k: v for k, v in self.content.items() if isinstance(v, TextBox)}
 
     def __str__(self) -> str:
         page_as_str = '<page id="%s" bbox="%s" rotate="%d">\n' % (
@@ -161,7 +161,7 @@ class RpaPdfPage:
         return page_as_str
 
 
-class RpaPdfDocument:
+class Document:
     """Class for parsed PDF document"""
 
     encoding: str = "utf-8"
@@ -174,20 +174,20 @@ class RpaPdfDocument:
     def append_xml(self, xml: bytes) -> None:
         self.xml_content += xml
 
-    def add_page(self, page: RpaPdfPage) -> None:
+    def add_page(self, page: Page) -> None:
         self.pages[page.pageid] = page
 
     def get_pages(self) -> OrderedDict:
         return self.pages
 
-    def get_page(self, pagenum: int) -> RpaPdfPage:
+    def get_page(self, pagenum: int) -> Page:
         return self.pages[pagenum]
 
     def dump_xml(self) -> str:
         return self.xml_content.decode("utf-8")
 
 
-class RPAConverter(PDFConverter):
+class Converter(PDFConverter):
     """Class for converting PDF into RPA classes"""
 
     CONTROL = re.compile("[\x00-\x08\x0b-\x0c\x0e-\x1f]")
@@ -204,7 +204,7 @@ class RPAConverter(PDFConverter):
         PDFConverter.__init__(
             self, rsrcmgr, sys.stdout, codec=codec, pageno=pageno, laparams=laparams
         )
-        self.rpa_pdf_document = RpaPdfDocument()
+        self.rpa_pdf_document = Document()
         self.figure = None
         self.current_page = None
         self.imagewriter = imagewriter
@@ -253,7 +253,7 @@ class RPAConverter(PDFConverter):
                     bbox2str(item.bbox),
                     item.rotate,
                 )
-                self.current_page = RpaPdfPage(item.pageid, item.bbox, item.rotate)
+                self.current_page = Page(item.pageid, item.bbox, item.rotate)
 
                 self.write(s)
                 for child in item:
@@ -285,7 +285,7 @@ class RPAConverter(PDFConverter):
                 )
                 self.write(s)
             elif isinstance(item, LTFigure):
-                self.figure = RpaFigure(item.name, item.bbox)
+                self.figure = Figure(item.name, item.bbox)
                 if self.figure:
                     s = '<figure name="%s" bbox="%s">\n' % (
                         item.name,
@@ -314,7 +314,7 @@ class RPAConverter(PDFConverter):
                     bbox2str(item.bbox),
                     wmode,
                 )
-                box = RpaTextBox(item.index, item.bbox, wmode)
+                box = TextBox(item.index, item.bbox, wmode)
                 self.write(s)
                 box.set_item(item)
                 self.current_page.add_content(box)
@@ -381,13 +381,13 @@ class ModelKeywords(LibraryContext):
             detect_vertical=True,
             all_texts=True,
         )
-        device = RPAConverter(rsrcmgr, laparams=laparams)
+        device = Converter(rsrcmgr, laparams=laparams)
         interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
 
         # Look at all (nested) objects on each page
         for _, page in enumerate(source_pages, 0):
             interpreter.process_page(page)
-        self.rpa_pdf_document = device.close()
+        self.ctx.rpa_pdf_document = device.close()
 
     @keyword
     def get_input_fields(
