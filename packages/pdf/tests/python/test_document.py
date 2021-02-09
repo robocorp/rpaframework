@@ -23,8 +23,8 @@ def test_get_number_of_pages(library, file, number_of_pages):
     (TestFiles.pytest_pdf, 9, False, False),
     (TestFiles.vero_pdf, 2, False, True),
 ])
-def test_get_info(library, file, pages, encrypted, fields):
-    info = library.get_info(file)
+def test_get_pdf_info(library, file, pages, encrypted, fields):
+    info = library.get_pdf_info(file)
 
     assert info["Pages"] == pages
     assert info["Encrypted"] == encrypted
@@ -77,7 +77,7 @@ def test_html_to_pdf(library):
         assert text in result[1]
 
 
-def test_page_rotate(library):
+def test_rotate_page(library):
     def get_source_page(pdf_file, page_num):
         reader = PyPDF2.PdfFileReader(pdf_file)
         return reader.getPage(int(page_num))
@@ -88,30 +88,30 @@ def test_page_rotate(library):
     assert page_before_rotation["/Rotate"] == 0
 
     with temp_filename() as tmp_file:
-        library.page_rotate(page_num_to_rotate, TestFiles.vero_pdf, tmp_file)
+        library.rotate_page(page_num_to_rotate, TestFiles.vero_pdf, tmp_file)
         page_after_rotation = get_source_page(tmp_file, page_num_to_rotate)
 
         assert page_after_rotation["/Rotate"] == 90
 
 
-def test_pdf_encrypt(library):
+def test_encrypt_pdf(library):
     with temp_filename() as tmp_file:
-        library.pdf_encrypt(TestFiles.vero_pdf, tmp_file)
+        library.encrypt_pdf(TestFiles.vero_pdf, tmp_file)
 
         assert not library.is_pdf_encrypted(TestFiles.vero_pdf)
         assert library.is_pdf_encrypted(tmp_file)
 
 
-def test_pdf_decrypt(library):
+def test_decrypt_pdf(library):
     passw = "secrett"
 
     with temp_filename() as tmp_file:
-        library.pdf_encrypt(TestFiles.vero_pdf, tmp_file, passw)
+        library.encrypt_pdf(TestFiles.vero_pdf, tmp_file, passw)
 
         assert library.is_pdf_encrypted(tmp_file)
 
         with temp_filename() as another_file:
-            library.pdf_decrypt(tmp_file, another_file, passw)
+            library.decrypt_pdf(tmp_file, another_file, passw)
 
             assert not library.is_pdf_encrypted(another_file)
 
@@ -121,7 +121,7 @@ def test_replace_text(library):
     library.replace_textbox_text(
         "ILMOITA VERKOSSA\nvero.fi/omavero",
         new_text,
-        source_pdf=TestFiles.vero_pdf
+        source_path=TestFiles.vero_pdf
     )
     text = library.get_text_from_pdf()
 
@@ -129,7 +129,7 @@ def test_replace_text(library):
 
 
 def test_get_all_figures(library):
-    pages = library.get_all_figures(source_pdf=TestFiles.vero_pdf)
+    pages = library.get_all_figures(source_path=TestFiles.vero_pdf)
     figure = pages[1][44]
     details = '<image src="Im0" width="45" height="45" />'
 
@@ -142,15 +142,15 @@ def test_get_all_figures(library):
     (TestFiles.big_nope),
 ])
 def test_add_watermark_image_to_pdf(library, watermark_image):
-    source_pdf = str(TestFiles.invoice_pdf)
-    figures_before = library.get_all_figures(source_pdf=source_pdf)
+    source_path = str(TestFiles.invoice_pdf)
+    figures_before = library.get_all_figures(source_path=source_path)
     with temp_filename() as tmp_file:
         library.add_watermark_image_to_pdf(
             imagefile=str(watermark_image),
             target_pdf=tmp_file,
-            source=source_pdf
+            source=source_path
         )
-        figures_after = library.get_all_figures(source_pdf=tmp_file)
+        figures_after = library.get_all_figures(source_path=tmp_file)
 
         assert len(figures_before[1]) == 1
         assert len(figures_after[1]) == 2

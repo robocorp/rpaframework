@@ -10,8 +10,6 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfparser import PDFParser
 from PIL import Image
 
-from RPA.core.helpers import required_param
-from RPA.core.notebook import notebook_print
 from RPA.PDF.keywords import (
     LibraryContext,
     keyword,
@@ -39,7 +37,7 @@ class DocumentKeywords(LibraryContext):
         self.output_directory = Path(path)
 
     @keyword
-    def open_pdf_document(self, source_path: str = None) -> None:
+    def open_pdf(self, source_path: str = None) -> None:
         """Open PDF document.
 
         :param source_path: filepath to the source pdf
@@ -62,41 +60,29 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def html_to_pdf(
         self,
-        content: str = None,
-        target_pdf: str = None,
+        content: str,
+        target_pdf: str,
         variables: dict = None,
-        create_dirs: bool = True,
-        exists_ok: bool = True,
     ) -> None:
         """Use HTML content to generate PDF file.
 
         :param content: HTML content
         :param target_pdf: filepath where to save PDF document
         :param variables: dictionary of variables to fill into template, defaults to {}
-        :param create_dirs: directory structure is created if it is missing,
-         default `True`
-        :param exists_ok: file is overwritten if it exists, default `True`
         """
-        required_param([content, target_pdf], "html_to_pdf")
         variables = variables or {}
-
         html = content
 
         for key, value in variables.items():
             html = html.replace("{{" + key + "}}", str(value))
 
         default_output = Path(self.output_directory / "html2pdf.pdf")
-        output_filepath = Path(target_pdf) if target_pdf else default_output
+        output_path = Path(target_pdf) if target_pdf else default_output
 
-        self._write_html_to_pdf(html, output_filepath, create_dirs, exists_ok)
+        self._write_html_to_pdf(html, output_path)
 
-    def _write_html_to_pdf(self, html, output_path, create_dirs, exists_ok):
-        # TODO: is this needed?
-        # if create_dirs:
-        #     Path(output_path).resolve().parent.mkdir(parents=True, exist_ok=True)
-        # if not exists_ok and Path(output_path).exists():
-        #     raise FileExistsError(output_path)
-        notebook_print(link=str(output_path))
+    def _write_html_to_pdf(self, html, output_path):
+        self.ctx.logger.info("Writing output to file %s", output_path)
         self._add_pages(1)
         self.fpdf.write_html(html)
 
@@ -115,7 +101,7 @@ class DocumentKeywords(LibraryContext):
             self.fpdf.add_page()
 
     @keyword
-    def get_info(self, source_path: str = None) -> dict:
+    def get_pdf_info(self, source_path: str = None) -> dict:
         """Get information from PDF document.
 
         Usage example:
@@ -133,7 +119,7 @@ class DocumentKeywords(LibraryContext):
         :param source_path: filepath to the source PDF.
         :return: dictionary of PDF information.
         """
-        self.switch_to_pdf_document(source_path)
+        self.switch_to_pdf(source_path)
         pdf = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
         docinfo = pdf.getDocumentInfo()
         parser = PDFParser(self.ctx.active_fileobject)
@@ -163,7 +149,7 @@ class DocumentKeywords(LibraryContext):
         :param source_path: filepath to the source pdf
         :return: True if file is encrypted
         """
-        self.switch_to_pdf_document(source_path)
+        self.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
         return reader.isEncrypted
 
@@ -174,12 +160,12 @@ class DocumentKeywords(LibraryContext):
         :param source_path: filepath to the source pdf
         :raises PdfReadError: if file is encrypted or other restrictions are in place
         """
-        self.switch_to_pdf_document(source_path)
+        self.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
         return reader.getNumPages()
 
     @keyword
-    def switch_to_pdf_document(self, source_path: str = None) -> None:
+    def switch_to_pdf(self, source_path: str = None) -> None:
         """Switch library's current fileobject to already open file
         or open file if not opened.
 
@@ -188,7 +174,7 @@ class DocumentKeywords(LibraryContext):
             file to activate
         """
         if source_path is not None and str(source_path) not in self.ctx.fileobjects.keys():
-            self.open_pdf_document(source_path)
+            self.open_pdf(source_path)
             return
         if source_path is None and self.ctx.active_fileobject is None:
             raise ValueError("No PDF is open")
@@ -215,7 +201,7 @@ class DocumentKeywords(LibraryContext):
 
         PDF needs to be parsed before text can be read.
         """
-        self.switch_to_pdf_document(source_path)
+        self.switch_to_pdf(source_path)
         if self.rpa_pdf_document is None:
             self.ctx.convert()
 
@@ -247,7 +233,7 @@ class DocumentKeywords(LibraryContext):
         :param pages: page numbers to extract from PDF (numbers start from 0)
             if None then extracts all pages
         """
-        self.switch_to_pdf_document(source_path)
+        self.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
         writer = PyPDF2.PdfFileWriter()
 
@@ -265,7 +251,7 @@ class DocumentKeywords(LibraryContext):
             writer.write(f)
 
     @keyword
-    def page_rotate(
+    def rotate_page(
         self,
         pages: int,
         source_path: str = None,
@@ -282,7 +268,7 @@ class DocumentKeywords(LibraryContext):
         :param clockwise: directorion that page will be rotated to, default True
         :param angle: number of degrees to rotate, default 90
         """
-        self.switch_to_pdf_document(source_path)
+        self.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
         writer = PyPDF2.PdfFileWriter()
 
@@ -307,7 +293,7 @@ class DocumentKeywords(LibraryContext):
             writer.write(f)
 
     @keyword
-    def pdf_encrypt(
+    def encrypt_pdf(
         self,
         source_path: str = None,
         target_pdf: str = None,
@@ -326,7 +312,7 @@ class DocumentKeywords(LibraryContext):
         :param use_128bit: whether to 128bit encryption, when false 40bit
             encryption is used, default True
         """
-        self.switch_to_pdf_document(source_path)
+        self.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
 
         default_output = Path(self.output_directory / "encrypted.pdf")
@@ -341,7 +327,7 @@ class DocumentKeywords(LibraryContext):
             writer.write(f)
 
     @keyword
-    def pdf_decrypt(
+    def decrypt_pdf(
         self, source_path: str, target_pdf: str, password: str
     ) -> bool:
         """Decrypt PDF with password.
@@ -352,7 +338,7 @@ class DocumentKeywords(LibraryContext):
         :return: True if decrypt was successful, else False or Exception
         :raises ValueError: on decryption errors
         """
-        self.switch_to_pdf_document(source_path)
+        self.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
         try:
             match_result = reader.decrypt(password)
@@ -481,7 +467,7 @@ class DocumentKeywords(LibraryContext):
             self.ctx.update_field_values(source, target, self.ctx.active_fields)
         else:
             self.logger.info("Saving PDF")
-            self.switch_to_pdf_document(source)
+            self.switch_to_pdf(source)
             if custom_reader:
                 reader = custom_reader
             else:

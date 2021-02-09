@@ -372,7 +372,7 @@ class ModelKeywords(LibraryContext):
         :param source_path: source PDF filepath.
         """
         if source_path:
-            self.ctx.switch_to_pdf_document(source_path)
+            self.ctx.switch_to_pdf(source_path)
         source_parser = PDFParser(self.ctx.active_fileobject)
         source_document = PDFDocument(source_parser)
         source_pages = PDFPage.create_pages(source_document)
@@ -408,7 +408,7 @@ class ModelKeywords(LibraryContext):
         record_fields = {}
         if not source_path and self.ctx.active_fields:
             return self.ctx.active_fields
-        self.ctx.switch_to_pdf_document(source_path)
+        self.ctx.switch_to_pdf(source_path)
         source_parser = PDFParser(self.ctx.active_fileobject)
         source_document = PDFDocument(source_parser)
 
@@ -506,7 +506,7 @@ class ModelKeywords(LibraryContext):
         :param target_pdf: updated target PDF
         :param newvals: dictionary with key values to update
         """
-        self.ctx.switch_to_pdf_document(source_path)
+        self.ctx.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject, strict=False)
         if "/AcroForm" in reader.trailer["/Root"]:
             reader.trailer["/Root"]["/AcroForm"].update(
@@ -573,7 +573,7 @@ class ModelKeywords(LibraryContext):
         :param source_path: filepath
         :return: XML content as a string.
         """
-        self.ctx.switch_to_pdf_document(source_path)
+        self.ctx.switch_to_pdf(source_path)
         if self.rpa_pdf_document is None:
             self.convert()
         return self.rpa_pdf_document.dump_xml()
