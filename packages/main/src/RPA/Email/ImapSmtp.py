@@ -111,7 +111,7 @@ class ImapSmtp:
     .. code-block:: robotframework
 
         *** Settings ***
-        Library     RPA.Email.ImapSmtp   smtp_server=smtp.gmail.com  port=587
+        Library     RPA.Email.ImapSmtp   smtp_server=smtp.gmail.com  smtp_port=587
         Task Setup  Authorize  account=${GMAIL_ACCOUNT}  password=${GMAIL_PASSWORD}
 
         *** Variables ***
@@ -151,7 +151,7 @@ class ImapSmtp:
         gmail_password = "ACCOUNT_PASSWORD"
         sender = gmail_account
 
-        mail = ImapSmtp(smtp_server="smtp.gmail.com", port=587)
+        mail = ImapSmtp(smtp_server="smtp.gmail.com", smtp_port=587)
         mail.authorize(account=gmail_account, password=gmail_password)
         mail.send_message(
             sender=gmail_account,
