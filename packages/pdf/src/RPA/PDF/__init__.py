@@ -53,9 +53,6 @@ class PDF(DynamicCore):
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.active_fields = None
-        self.active_fileobject = None
-        self.active_pdf_path = None
         self.fileobjects = {}
         self.active_pdf_document = None
 

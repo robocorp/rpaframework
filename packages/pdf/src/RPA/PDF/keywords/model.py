@@ -170,6 +170,10 @@ class Document:
 
     def __init__(self) -> None:
         self.pages = OrderedDict()
+        self.fields = None
+        self.fileobject = None
+        self.path = None
+        self.is_converted = False
 
     def append_xml(self, xml: bytes) -> None:
         self.xml_content += xml
@@ -194,6 +198,7 @@ class Converter(PDFConverter):
 
     def __init__(
         self,
+        active_document,
         rsrcmgr,
         codec="utf-8",
         pageno=1,
@@ -204,7 +209,7 @@ class Converter(PDFConverter):
         PDFConverter.__init__(
             self, rsrcmgr, sys.stdout, codec=codec, pageno=pageno, laparams=laparams
         )
-        self.active_pdf_document = Document()
+        self.active_pdf_document = active_document
         self.figure = None
         self.current_page = None
         self.imagewriter = imagewriter
@@ -371,9 +376,8 @@ class ModelKeywords(LibraryContext):
 
         :param source_path: source PDF filepath.
         """
-        if source_path:
-            self.ctx.switch_to_pdf(source_path)
-        source_parser = PDFParser(self.ctx.active_fileobject)
+        self.ctx.switch_to_pdf(source_path)
+        source_parser = PDFParser(self.ctx.active_pdf_document.fileobject)
         source_document = PDFDocument(source_parser)
         source_pages = PDFPage.create_pages(source_document)
         rsrcmgr = pdfminer.pdfinterp.PDFResourceManager()
@@ -381,13 +385,14 @@ class ModelKeywords(LibraryContext):
             detect_vertical=True,
             all_texts=True,
         )
-        device = Converter(rsrcmgr, laparams=laparams)
+        device = Converter(self.ctx.active_pdf_document, rsrcmgr, laparams=laparams)
         interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
 
         # Look at all (nested) objects on each page
         for _, page in enumerate(source_pages, 0):
             interpreter.process_page(page)
         self.ctx.active_pdf_document = device.close()
+        self.ctx.active_pdf_document.is_converted = True
 
     @keyword
     def get_input_fields(
@@ -406,10 +411,10 @@ class ModelKeywords(LibraryContext):
         Parameter `replace_none_value` is for convience to visualize fields.
         """
         record_fields = {}
-        if not source_path and self.ctx.active_fields:
-            return self.ctx.active_fields
+        if not source_path and self.ctx.active_pdf_document.fields:
+            return self.ctx.active_pdf_document.fields
         self.ctx.switch_to_pdf(source_path)
-        source_parser = PDFParser(self.ctx.active_fileobject)
+        source_parser = PDFParser(self.ctx.active_pdf_document.fileobject)
         source_document = PDFDocument(source_parser)
 
         try:
@@ -451,7 +456,7 @@ class ModelKeywords(LibraryContext):
                         "label": label.decode("iso-8859-1") if label else None,
                     }
 
-        self.ctx.active_fields = record_fields or None
+        self.ctx.active_pdf_document.fields = record_fields or None
         return record_fields
 
     @keyword
@@ -466,23 +471,23 @@ class ModelKeywords(LibraryContext):
         Exception is thrown if field can't be found or more than 1 field matches
         the given `field_name`.
         """
-        if not self.ctx.active_fields:
+        if not self.ctx.active_pdf_document.fields:
             self.get_input_fields()
-            if not self.ctx.active_fields:
+            if not self.ctx.active_pdf_document.fields:
                 raise ValueError("Document does not have input fields")
 
-        if field_name in self.ctx.active_fields.keys():
-            self.ctx.active_fields[field_name]["value"] = value  # pylint: disable=E1136
+        if field_name in self.ctx.active_pdf_document.fields.keys():
+            self.ctx.active_pdf_document.fields[field_name]["value"] = value  # pylint: disable=E1136
         else:
             label_matches = 0
             field_key = None
-            for k, _ in self.ctx.active_fields.items():
+            for k, _ in self.ctx.active_pdf_document.fields.items():
                 # pylint: disable=E1136
-                if self.ctx.active_fields[k]["label"] == field_name:
+                if self.ctx.active_pdf_document.fields[k]["label"] == field_name:
                     label_matches += 1
                     field_key = k
             if label_matches == 1:
-                self.ctx.active_fields[field_key]["value"] = value  # pylint: disable=E1136
+                self.ctx.active_pdf_document.fields[field_key]["value"] = value  # pylint: disable=E1136
             elif label_matches > 1:
                 raise ValueError(
                     "Unable to set field value - field name: '%s' matched %d fields"
@@ -494,7 +499,7 @@ class ModelKeywords(LibraryContext):
                     "not found in the document" % field_name
                 )
         if save:
-            self.update_field_values(None, None, self.ctx.active_fields)
+            self.update_field_values(None, None, self.ctx.active_pdf_document.fields)
 
     @keyword
     def update_field_values(
@@ -507,7 +512,7 @@ class ModelKeywords(LibraryContext):
         :param newvals: dictionary with key values to update
         """
         self.ctx.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject, strict=False)
+        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject, strict=False)
         if "/AcroForm" in reader.trailer["/Root"]:
             reader.trailer["/Root"]["/AcroForm"].update(
                 {PyPDF2.generic.NameObject("/NeedAppearances"): PyPDF2.generic.BooleanObject(True)}
@@ -526,10 +531,10 @@ class ModelKeywords(LibraryContext):
                         for (k, v) in newvals.items()
                     }
                     writer.updatePageFormFieldValues(page, fields=updatedFields)
-                elif self.ctx.active_fields:
+                elif self.ctx.active_pdf_document.fields:
                     updatedFields = {
                         k: v["value"] if v["value"] else ""
-                        for (k, v) in self.ctx.active_fields.items()
+                        for (k, v) in self.ctx.active_pdf_document.fields.items()
                     }
                     writer.updatePageFormFieldValues(page, fields=updatedFields)
                 writer.addPage(page)

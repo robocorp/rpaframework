@@ -63,6 +63,7 @@ class FinderKeywords(LibraryContext):
         )
         self.set_anchor_to_element(locator)
         possibles = []
+
         if self.anchor_element:
             self.logger.debug("Current anchor: %s", self.anchor_element.bbox)
             page = self.ctx.active_pdf_document.get_page(int(pagenum))
@@ -99,7 +100,7 @@ class FinderKeywords(LibraryContext):
         :return: True if element was found
         """
         self.logger.info("Set anchor to element: ('locator=%s')", locator)
-        if self.ctx.active_pdf_document is None:
+        if not self.ctx.active_pdf_document.is_converted:
             self.ctx.convert()
         if locator.startswith("text:"):
             criteria = "text"

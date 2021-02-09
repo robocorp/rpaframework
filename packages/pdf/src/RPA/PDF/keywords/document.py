@@ -14,6 +14,7 @@ from RPA.PDF.keywords import (
     LibraryContext,
     keyword,
 )
+from .model import Document
 
 
 class PDF(FPDF, HTMLMixin):
@@ -51,11 +52,10 @@ class DocumentKeywords(LibraryContext):
             raise ValueError(
                 "PDF file is already open. Please close it before opening again."
             )
-        self.ctx.active_pdf_path = str(source_path)
-        self.ctx.active_fileobject = open(source_path, "rb")
-        self.ctx.active_fields = None
-        self.ctx.fileobjects[source_path] = self.ctx.active_fileobject
-        self.ctx.active_pdf_document = None
+        self.ctx.active_pdf_document = Document()
+        self.ctx.active_pdf_document.path = str(source_path)
+        self.ctx.active_pdf_document.fileobject = open(source_path, "rb")
+        self.ctx.fileobjects[source_path] = self.ctx.active_pdf_document.fileobject
 
     @keyword
     def html_to_pdf(
@@ -120,9 +120,9 @@ class DocumentKeywords(LibraryContext):
         :return: dictionary of PDF information.
         """
         self.switch_to_pdf(source_path)
-        pdf = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
+        pdf = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         docinfo = pdf.getDocumentInfo()
-        parser = PDFParser(self.ctx.active_fileobject)
+        parser = PDFParser(self.ctx.active_pdf_document.fileobject)
         document = PDFDocument(parser)
         try:
             fields = pdfminer.pdftypes.resolve1(document.catalog["AcroForm"])["Fields"]
@@ -150,7 +150,7 @@ class DocumentKeywords(LibraryContext):
         :return: True if file is encrypted
         """
         self.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
+        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         return reader.isEncrypted
 
     @keyword
@@ -161,7 +161,7 @@ class DocumentKeywords(LibraryContext):
         :raises PdfReadError: if file is encrypted or other restrictions are in place
         """
         self.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
+        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         return reader.getNumPages()
 
     @keyword
@@ -173,20 +173,18 @@ class DocumentKeywords(LibraryContext):
         :raises ValueError: if PDF filepath is not given and there are no active
             file to activate
         """
-        if source_path is not None and str(source_path) not in self.ctx.fileobjects.keys():
-            self.open_pdf(source_path)
-            return
-        if source_path is None and self.ctx.active_fileobject is None:
+        if source_path and source_path not in self.ctx.fileobjects:
+            return self.open_pdf(source_path)
+        if not source_path and not (self.ctx.active_pdf_document or self.ctx.active_pdf_document.fileobject):
             raise ValueError("No PDF is open")
         if (
-            source_path is not None
-            and self.ctx.active_fileobject != self.ctx.fileobjects[source_path]
+            source_path
+            and self.ctx.active_pdf_document.fileobject != self.ctx.fileobjects[source_path]
         ):
             self.logger.debug("Switching to document %s", source_path)
-            self.ctx.active_pdf_path = str(source_path)
-            self.ctx.active_fileobject = self.ctx.fileobjects[str(source_path)]
-            self.ctx.active_fields = None
-            self.ctx.active_pdf_document = None
+            self.ctx.active_pdf_document.path = str(source_path)
+            self.ctx.active_pdf_document.fileobject = self.ctx.fileobjects[str(source_path)]
+            self.ctx.active_pdf_document.fields = None
 
     @keyword
     def get_text_from_pdf(
@@ -202,7 +200,7 @@ class DocumentKeywords(LibraryContext):
         PDF needs to be parsed before text can be read.
         """
         self.switch_to_pdf(source_path)
-        if self.active_pdf_document is None:
+        if not self.active_pdf_document.is_converted:
             self.ctx.convert()
 
         if pages and not isinstance(pages, list):
@@ -234,7 +232,7 @@ class DocumentKeywords(LibraryContext):
             if None then extracts all pages
         """
         self.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
+        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         writer = PyPDF2.PdfFileWriter()
 
         default_output = Path(self.output_directory / "extracted.pdf")
@@ -269,7 +267,7 @@ class DocumentKeywords(LibraryContext):
         :param angle: number of degrees to rotate, default 90
         """
         self.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
+        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         writer = PyPDF2.PdfFileWriter()
 
         default_output = Path(self.output_directory / "rotated.pdf")
@@ -313,7 +311,7 @@ class DocumentKeywords(LibraryContext):
             encryption is used, default True
         """
         self.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
+        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
 
         default_output = Path(self.output_directory / "encrypted.pdf")
         output_filepath = Path(target_pdf) if target_pdf else default_output
@@ -339,7 +337,7 @@ class DocumentKeywords(LibraryContext):
         :raises ValueError: on decryption errors
         """
         self.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject)
+        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         try:
             match_result = reader.decrypt(password)
 
@@ -407,9 +405,9 @@ class DocumentKeywords(LibraryContext):
         :param coverage: [description], defaults to 0.2
         :raises ValueError: [description]
         """
-        if source is None and self.active_pdf_path:
+        if source is None and self.ctx.active_pdf_document.fileobject.path:
             source = self.active_pdf_path
-        elif source is None and self.active_pdf_path is None:
+        elif source is None and self.ctx.active_pdf_document.fileobject.path is None:
             raise ValueError("No source PDF exists")
         temp_pdf = os.path.join(tempfile.gettempdir(), "temp.pdf")
         writer = PyPDF2.PdfFileWriter()
@@ -463,16 +461,16 @@ class DocumentKeywords(LibraryContext):
         if not custom_reader:
             self.ctx.get_input_fields(source)
 
-        if self.ctx.active_fields:
+        if self.ctx.active_pdf_document.fields:
             self.logger.info("Saving PDF with input fields")
-            self.ctx.update_field_values(source, target, self.ctx.active_fields)
+            self.ctx.update_field_values(source, target, self.ctx.active_pdf_document.fields)
         else:
             self.logger.info("Saving PDF")
             self.switch_to_pdf(source)
             if custom_reader:
                 reader = custom_reader
             else:
-                reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject, strict=False)
+                reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject, strict=False)
             writer = PyPDF2.PdfFileWriter()
 
             for i in range(reader.getNumPages()):
