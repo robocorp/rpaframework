@@ -365,14 +365,14 @@ class ModelKeywords(LibraryContext):
     """Keywords for converting PDF document into specific RPA object model"""
 
     @keyword
-    def convert(self, source_pdf: str = None) -> None:
+    def convert(self, source_path: str = None) -> None:
         """Parse source PDF into entities which can be
         used for text searches for example.
 
-        :param source_pdf: source
+        :param source_path: source PDF filepath.
         """
-        if source_pdf:
-            self.ctx.switch_to_pdf_document(source_pdf)
+        if source_path:
+            self.ctx.switch_to_pdf_document(source_path)
         source_parser = PDFParser(self.ctx.active_fileobject)
         source_document = PDFDocument(source_parser)
         source_pages = PDFPage.create_pages(source_document)
@@ -391,11 +391,11 @@ class ModelKeywords(LibraryContext):
 
     @keyword
     def get_input_fields(
-        self, source_pdf: str = None, replace_none_value: bool = False
+        self, source_path: str = None, replace_none_value: bool = False
     ) -> dict:
         """Get input fields in the PDF.
 
-        :param source_pdf: source filepath, defaults to None
+        :param source_path: source filepath, defaults to None
         :param replace_none_value: if value is None replace it with key name,
             defaults to False
         :return: dictionary of input key values or `None`
@@ -406,9 +406,9 @@ class ModelKeywords(LibraryContext):
         Parameter `replace_none_value` is for convience to visualize fields.
         """
         record_fields = {}
-        if not source_pdf and self.ctx.active_fields:
+        if not source_path and self.ctx.active_fields:
             return self.ctx.active_fields
-        self.ctx.switch_to_pdf_document(source_pdf)
+        self.ctx.switch_to_pdf_document(source_path)
         source_parser = PDFParser(self.ctx.active_fileobject)
         source_document = PDFDocument(source_parser)
 
@@ -498,15 +498,15 @@ class ModelKeywords(LibraryContext):
 
     @keyword
     def update_field_values(
-        self, source_pdf: str = None, target_pdf: str = None, newvals: dict = None
+        self, source_path: str = None, target_pdf: str = None, newvals: dict = None
     ) -> None:
         """Update field values in PDF if it has fields.
 
-        :param source_pdf: source PDF with fields to update
+        :param source_path: source PDF with fields to update
         :param target_pdf: updated target PDF
         :param newvals: dictionary with key values to update
         """
-        self.ctx.switch_to_pdf_document(source_pdf)
+        self.ctx.switch_to_pdf_document(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_fileobject, strict=False)
         if "/AcroForm" in reader.trailer["/Root"]:
             reader.trailer["/Root"]["/AcroForm"].update(
@@ -567,13 +567,13 @@ class ModelKeywords(LibraryContext):
             return writer
 
     @keyword
-    def dump_pdf_as_xml(self, source_pdf: str = None) -> str:
+    def dump_pdf_as_xml(self, source_path: str = None) -> str:
         """Get PDFMiner format XML dump of the PDF
 
-        :param source_pdf: filepath
+        :param source_path: filepath
         :return: XML content as a string.
         """
-        self.ctx.switch_to_pdf_document(source_pdf)
+        self.ctx.switch_to_pdf_document(source_path)
         if self.rpa_pdf_document is None:
             self.convert()
         return self.rpa_pdf_document.dump_xml()
