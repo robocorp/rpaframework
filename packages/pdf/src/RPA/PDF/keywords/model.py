@@ -232,6 +232,7 @@ class RPAConverter(PDFConverter):
         self.write(enc(text))
 
     def receive_layout(self, ltpage):  # noqa: C901 pylint: disable=R0915
+        # TODO: what is this?
         def show_group(item):
             if isinstance(item, LTTextBox):
                 self.write(
@@ -362,10 +363,6 @@ class RPAConverter(PDFConverter):
 
 class ModelKeywords(LibraryContext):
     """Keywords for converting PDF document into specific RPA object model"""
-
-    # def __init__(self, ctx):
-    #     super().__init__(ctx)
-        # self.active_fileobject = None
 
     @keyword
     def convert(self, source_pdf: str = None) -> None:

@@ -1,11 +1,3 @@
-try:
-    import RPA.recognition as _unused
-
-    del _unused
-    HAS_RECOGNITION = True
-except ImportError:
-    HAS_RECOGNITION = False
-
 
 class ElementNotFound(ValueError):
     """No matching elements were found."""
@@ -28,10 +20,6 @@ class LibraryContext:
     @property
     def logger(self):
         return self.ctx.logger
-
-    @property
-    def buffer(self):
-        return self.ctx.buffer
 
     @property
     def rpa_pdf_document(self):

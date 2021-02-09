@@ -4,7 +4,6 @@ from .context import (
     ElementNotFound,
     MultipleElementsFound,
     TimeoutException,
-    HAS_RECOGNITION,
 )
 
 from .document import DocumentKeywords

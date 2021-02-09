@@ -1,7 +1,6 @@
 import logging
 from robotlibcore import DynamicCore
 
-from RPA.PDF.utils import Buffer
 from RPA.PDF.keywords import DocumentKeywords, FinderKeywords, ModelKeywords
 
 
@@ -54,7 +53,6 @@ class PDF(DynamicCore):
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.buffer = Buffer(self.logger)
         self.active_fields = None
         self.active_fileobject = None
         self.active_pdf = None

@@ -38,21 +38,6 @@ class DocumentKeywords(LibraryContext):
     def output_directory(self, path: str):
         self.output_directory = Path(path)
 
-    def __del__(self):
-        self.close_all_pdf_documents()
-
-    def close_all_pdf_documents(self) -> None:
-        """Close all opened PDF file descriptors."""
-        for filename, fileobject in self.ctx.fileobjects.items():
-            fileobject.close()
-            self.logger.debug('PDF "%s" closed', filename)
-        self.ctx.anchor_element = None
-        self.ctx.fileobjects = {}
-        self.ctx.active_pdf = None
-        self.ctx.active_fileobject = None
-        self.ctx.active_fields = None
-        self.ctx.rpa_pdf_document = None
-
     @keyword
     def open_pdf_document(self, source_pdf: str = None) -> None:
         """Open PDF document.
