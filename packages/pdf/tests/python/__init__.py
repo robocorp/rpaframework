@@ -24,6 +24,7 @@ class TestFiles:
     loremipsum_pdf = RESOURCE_DIR / "LoremIpsum.pdf"
     encrypted_pdf = RESOURCE_DIR / "encrypted.pdf"
     seal_of_approval = RESOURCE_DIR / "approved.png"
+    big_nope = RESOURCE_DIR / "big_nope.png"
 
 
 @contextmanager

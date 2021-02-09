@@ -420,8 +420,6 @@ class DocumentKeywords(LibraryContext):
         :param coverage: [description], defaults to 0.2
         :raises ValueError: [description]
         """
-        # FIXME: is this working as intended? Now it adds
-        # watermark images on every page
         if source is None and self.active_pdf:
             source = self.active_pdf
         elif source is None and self.active_pdf is None:
@@ -433,15 +431,9 @@ class DocumentKeywords(LibraryContext):
         reader = PyPDF2.PdfFileReader(source)
         mediabox = reader.getPage(0).mediaBox
         im = Image.open(imagefile)
-        width, height = im.size
         max_width = int(float(mediabox.getWidth()) * coverage)
         max_height = int(float(mediabox.getHeight()) * coverage)
-        if width > max_width:
-            width = int(max_width)
-            height = int(coverage * height)
-        elif height > max_height:
-            height = max_height
-            width = int(coverage * width)
+        width, height = self.fit_dimensions_to_box(*im.size, max_width, max_height)
 
         pdf.image(name=imagefile, x=40, y=60, w=width, h=height)
         pdf.output(name=temp_pdf, dest="F")
@@ -455,6 +447,21 @@ class DocumentKeywords(LibraryContext):
 
         with open(target_pdf, "wb") as f:
             writer.write(f)
+
+    @staticmethod
+    def fit_dimensions_to_box(width, height, max_width, max_height):
+        ratio = width / height
+        if width > max_width:
+            width = max_width
+            height = int(width / ratio)
+        if height > max_height:
+            height = max_height
+            width = int(ratio * height)
+
+        if width == 0 or height == 0:
+            raise ValueError("Image has invalid dimensions.")
+
+        return width, height
 
     @keyword
     def save_pdf(

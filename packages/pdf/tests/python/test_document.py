@@ -1,6 +1,7 @@
 import PyPDF2
 import pytest
 
+from RPA.PDF.keywords.document import DocumentKeywords
 from . import (
     library,
     temp_filename,
@@ -8,7 +9,6 @@ from . import (
 )
 
 # TODO: add tests to cover more conditions
-
 
 @pytest.mark.parametrize("file, number_of_pages", [
     (TestFiles.invoice_pdf, 1),
@@ -137,12 +137,16 @@ def test_get_all_figures(library):
     assert figure.details() == details
 
 
-def test_add_watermark_image_to_pdf(library):
+@pytest.mark.parametrize("watermark_image", [
+    (TestFiles.seal_of_approval),
+    (TestFiles.big_nope),
+])
+def test_add_watermark_image_to_pdf(library, watermark_image):
     source_pdf = str(TestFiles.invoice_pdf)
     figures_before = library.get_all_figures(source_pdf=source_pdf)
     with temp_filename() as tmp_file:
         library.add_watermark_image_to_pdf(
-            imagefile=str(TestFiles.seal_of_approval),
+            imagefile=str(watermark_image),
             target_pdf=tmp_file,
             source=source_pdf
         )
@@ -150,6 +154,38 @@ def test_add_watermark_image_to_pdf(library):
 
         assert len(figures_before[1]) == 1
         assert len(figures_after[1]) == 2
+
+
+@pytest.mark.parametrize("width, height, exp_width, exp_height", [
+    (50, 50, 50, 50),
+    (200, 50, 119, 29),
+    (100, 200, 84, 168),
+    (200, 200, 119, 119),
+    (150, 1000, 25, 168),
+    (1000, 200, 119, 23),
+    (1500, 100, 119, 7),
+    (100, 1000, 16, 168),
+    (200, 2000, 16, 168),
+])
+def test_fit_dimensions_to_box(width, height, exp_width, exp_height):
+    max_width = 119
+    max_height = 168
+    fitted_width, fitted_height = DocumentKeywords.fit_dimensions_to_box(
+        width, height, max_width, max_height
+    )
+
+    def assert_ratios_more_or_less_the_same():
+        ratio = width / height
+        fitted_ratio = fitted_width / fitted_height
+        accepted_error = 0.2
+
+        assert abs(1 - ratio / fitted_ratio) < accepted_error
+
+    assert_ratios_more_or_less_the_same()
+    assert fitted_width <= max_width
+    assert fitted_height <= max_height
+    assert fitted_width == exp_width
+    assert fitted_height == exp_height
 
 
 def test_save_pdf(library):
