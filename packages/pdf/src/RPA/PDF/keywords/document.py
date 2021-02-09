@@ -182,7 +182,7 @@ class DocumentKeywords(LibraryContext):
             source_path is not None
             and self.ctx.active_fileobject != self.ctx.fileobjects[source_path]
         ):
-            self.logger.debug("Switching to another open document")
+            self.logger.debug("Switching to document %s", source_path)
             self.ctx.active_pdf = str(source_path)
             self.ctx.active_fileobject = self.ctx.fileobjects[str(source_path)]
             self.ctx.active_fields = None
@@ -370,6 +370,7 @@ class DocumentKeywords(LibraryContext):
 
         :param text: this text will be replaced
         :param replace: used to replace `text`
+        :raises ValueError: when no matching text found.
         """
         if source_path or self.rpa_pdf_document is None:
             self.ctx.convert(source_path)
@@ -378,7 +379,7 @@ class DocumentKeywords(LibraryContext):
                 if textbox.text == text:
                     textbox.text = replace
                     return
-        self.logger.warning("Did not find any matching text")
+        raise ValueError("Did not find any matching text")
 
     @keyword
     def get_all_figures(self, source_path: str = None) -> dict:
