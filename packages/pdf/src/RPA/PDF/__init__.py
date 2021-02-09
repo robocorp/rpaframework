@@ -55,9 +55,9 @@ class PDF(DynamicCore):
         self.logger = logging.getLogger(__name__)
         self.active_fields = None
         self.active_fileobject = None
-        self.active_pdf = None
+        self.active_pdf_path = None
         self.fileobjects = {}
-        self.rpa_pdf_document = None
+        self.active_pdf_document = None
 
         # Register keyword libraries to LibCore
         libraries = [
@@ -70,18 +70,3 @@ class PDF(DynamicCore):
         # TODO: how to use this RPA.main keyword library
         # listener = RobotLogListener()
         # listener.register_protected_keywords(["RPA.PDF.decrypt"])
-
-    def __del__(self):
-        self.close_all_pdf_documents()
-
-    def close_all_pdf_documents(self) -> None:
-        """Close all opened PDF file descriptors."""
-        for filename, fileobject in self.fileobjects.items():
-            fileobject.close()
-            self.logger.debug('PDF "%s" closed', filename)
-        self.active_fields = None
-        self.active_pdf = None
-        self.active_fileobject = None
-        self.anchor_element = None
-        self.fileobjects = {}
-        self.rpa_pdf_document = None

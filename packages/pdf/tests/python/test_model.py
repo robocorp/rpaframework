@@ -12,9 +12,9 @@ from . import (
 
 def test_convert(library):
     library.convert(TestFiles.vero_pdf)
-    first_paragraph = library.rpa_pdf_document.pages[1].content[0]
+    first_paragraph = library.active_pdf_document.pages[1].content[0]
 
-    assert library.rpa_pdf_document
+    assert library.active_pdf_document
     assert first_paragraph.text == 'ILMOITA VERKOSSA\nvero.fi/omavero'
 
 

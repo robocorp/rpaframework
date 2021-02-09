@@ -204,7 +204,7 @@ class Converter(PDFConverter):
         PDFConverter.__init__(
             self, rsrcmgr, sys.stdout, codec=codec, pageno=pageno, laparams=laparams
         )
-        self.rpa_pdf_document = Document()
+        self.active_pdf_document = Document()
         self.figure = None
         self.current_page = None
         self.imagewriter = imagewriter
@@ -214,7 +214,7 @@ class Converter(PDFConverter):
     def write(self, text):
         if self.codec:
             text = text.encode(self.codec)
-        self.rpa_pdf_document.append_xml(text)
+        self.active_pdf_document.append_xml(text)
 
     def write_header(self):
         if self.codec:
@@ -264,7 +264,7 @@ class Converter(PDFConverter):
                         show_group(group)
                     self.write("</layout>\n")
                 self.write("</page>\n")
-                self.rpa_pdf_document.add_page(self.current_page)
+                self.active_pdf_document.add_page(self.current_page)
             elif isinstance(item, LTLine):
                 s = '<line linewidth="%d" bbox="%s" />\n' % (
                     item.linewidth,
@@ -358,7 +358,7 @@ class Converter(PDFConverter):
 
     def close(self):
         self.write_footer()
-        return self.rpa_pdf_document
+        return self.active_pdf_document
 
 
 class ModelKeywords(LibraryContext):
@@ -387,7 +387,7 @@ class ModelKeywords(LibraryContext):
         # Look at all (nested) objects on each page
         for _, page in enumerate(source_pages, 0):
             interpreter.process_page(page)
-        self.ctx.rpa_pdf_document = device.close()
+        self.ctx.active_pdf_document = device.close()
 
     @keyword
     def get_input_fields(
@@ -416,7 +416,7 @@ class ModelKeywords(LibraryContext):
             fields = pdfminer.pdftypes.resolve1(source_document.catalog["AcroForm"])["Fields"]
         except KeyError:
             self.logger.info(
-                'PDF "%s" does not have any input fields.', self.ctx.active_pdf
+                'PDF "%s" does not have any input fields.', self.ctx.active_pdf_path
             )
             return None
 
@@ -538,7 +538,7 @@ class ModelKeywords(LibraryContext):
                 writer.addPage(page)
 
         if target_pdf is None:
-            target_pdf = self.ctx.active_pdf
+            target_pdf = self.ctx.active_pdf_path
         with open(target_pdf, "wb") as f:
             writer.write(f)
 
@@ -574,9 +574,9 @@ class ModelKeywords(LibraryContext):
         :return: XML content as a string.
         """
         self.ctx.switch_to_pdf(source_path)
-        if self.rpa_pdf_document is None:
+        if self.active_pdf_document is None:
             self.convert()
-        return self.rpa_pdf_document.dump_xml()
+        return self.active_pdf_document.dump_xml()
 
     def pdf_to_image(self, pdf_document: str = None, pages=None, target_file: str = ""):
         pass

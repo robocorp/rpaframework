@@ -65,7 +65,7 @@ class FinderKeywords(LibraryContext):
         possibles = []
         if self.anchor_element:
             self.logger.debug("Current anchor: %s", self.anchor_element.bbox)
-            page = self.ctx.rpa_pdf_document.get_page(int(pagenum))
+            page = self.ctx.active_pdf_document.get_page(int(pagenum))
             for _, item in page.get_textboxes().items():
                 possible = None
                 # Skip anchor element from matching
@@ -99,7 +99,7 @@ class FinderKeywords(LibraryContext):
         :return: True if element was found
         """
         self.logger.info("Set anchor to element: ('locator=%s')", locator)
-        if self.ctx.rpa_pdf_document is None:
+        if self.ctx.active_pdf_document is None:
             self.ctx.convert()
         if locator.startswith("text:"):
             criteria = "text"
@@ -144,7 +144,7 @@ class FinderKeywords(LibraryContext):
             "find_matching_textbox: ('criteria=%s', 'locator=%s')", criteria, locator
         )
         matches = []
-        for _, page in self.rpa_pdf_document.get_pages().items():
+        for _, page in self.active_pdf_document.get_pages().items():
             content = page.get_textboxes()
             for _, item in content.items():
                 # Only text matching at the moment

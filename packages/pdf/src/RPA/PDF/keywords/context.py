@@ -22,9 +22,9 @@ class LibraryContext:
         return self.ctx.logger
 
     @property
-    def rpa_pdf_document(self):
-        return self.ctx.rpa_pdf_document
+    def active_pdf_document(self):
+        return self.ctx.active_pdf_document
 
-    @rpa_pdf_document.setter
-    def rpa_pdf_document(self, value):
-        self.ctx.rpa_pdf_document = value
+    @active_pdf_document.setter
+    def active_pdf_document(self, value):
+        self.ctx.active_pdf_document = value

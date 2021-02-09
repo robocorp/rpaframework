@@ -51,11 +51,11 @@ class DocumentKeywords(LibraryContext):
             raise ValueError(
                 "PDF file is already open. Please close it before opening again."
             )
-        self.ctx.active_pdf = str(source_path)
+        self.ctx.active_pdf_path = str(source_path)
         self.ctx.active_fileobject = open(source_path, "rb")
         self.ctx.active_fields = None
         self.ctx.fileobjects[source_path] = self.ctx.active_fileobject
-        self.ctx.rpa_pdf_document = None
+        self.ctx.active_pdf_document = None
 
     @keyword
     def html_to_pdf(
@@ -183,10 +183,10 @@ class DocumentKeywords(LibraryContext):
             and self.ctx.active_fileobject != self.ctx.fileobjects[source_path]
         ):
             self.logger.debug("Switching to document %s", source_path)
-            self.ctx.active_pdf = str(source_path)
+            self.ctx.active_pdf_path = str(source_path)
             self.ctx.active_fileobject = self.ctx.fileobjects[str(source_path)]
             self.ctx.active_fields = None
-            self.ctx.rpa_pdf_document = None
+            self.ctx.active_pdf_document = None
 
     @keyword
     def get_text_from_pdf(
@@ -202,7 +202,7 @@ class DocumentKeywords(LibraryContext):
         PDF needs to be parsed before text can be read.
         """
         self.switch_to_pdf(source_path)
-        if self.rpa_pdf_document is None:
+        if self.active_pdf_document is None:
             self.ctx.convert()
 
         if pages and not isinstance(pages, list):
@@ -210,7 +210,7 @@ class DocumentKeywords(LibraryContext):
         if pages is not None:
             pages = list(map(int, pages))
         pdf_text = {}
-        for idx, page in self.rpa_pdf_document.get_pages().items():
+        for idx, page in self.active_pdf_document.get_pages().items():
             pdf_text[idx] = [] if details else ""
             for _, item in page.get_textboxes().items():
                 if details:
@@ -372,9 +372,9 @@ class DocumentKeywords(LibraryContext):
         :param replace: used to replace `text`
         :raises ValueError: when no matching text found.
         """
-        if source_path or self.rpa_pdf_document is None:
+        if source_path or self.active_pdf_document is None:
             self.ctx.convert(source_path)
-        for _, page in self.rpa_pdf_document.get_pages().items():
+        for _, page in self.active_pdf_document.get_pages().items():
             for _, textbox in page.get_textboxes().items():
                 if textbox.text == text:
                     textbox.text = replace
@@ -389,10 +389,10 @@ class DocumentKeywords(LibraryContext):
 
         PDF needs to be parsed before elements can be found.
         """
-        if source_path or self.rpa_pdf_document is None:
+        if source_path or self.active_pdf_document is None:
             self.ctx.convert(source_path)
         pages = {}
-        for pagenum, page in self.rpa_pdf_document.get_pages().items():
+        for pagenum, page in self.active_pdf_document.get_pages().items():
             pages[pagenum] = page.get_figures()
         return pages
 
@@ -407,9 +407,9 @@ class DocumentKeywords(LibraryContext):
         :param coverage: [description], defaults to 0.2
         :raises ValueError: [description]
         """
-        if source is None and self.active_pdf:
-            source = self.active_pdf
-        elif source is None and self.active_pdf is None:
+        if source is None and self.active_pdf_path:
+            source = self.active_pdf_path
+        elif source is None and self.active_pdf_path is None:
             raise ValueError("No source PDF exists")
         temp_pdf = os.path.join(tempfile.gettempdir(), "temp.pdf")
         writer = PyPDF2.PdfFileWriter()
@@ -484,6 +484,6 @@ class DocumentKeywords(LibraryContext):
                     writer.addPage(page)
 
             if target is None:
-                target = self.ctx.active_pdf
+                target = self.ctx.active_pdf_path
             with open(target, "wb") as f:
                 writer.write(f)
