@@ -94,8 +94,6 @@ class FinderKeywords(LibraryContext):
     def set_anchor_to_element(self, locator: str) -> bool:
         """Sets anchor point in the document for further searches.
 
-        PDF needs to be parsed before elements can be found.
-
         :param locator: element to search for
         :return: True if element was found
         """
@@ -163,12 +161,12 @@ class FinderKeywords(LibraryContext):
                 self.logger.debug("box %d bbox %s text '%s'", m.boxid, m.bbox, m.text)
         return False
 
-    def _is_within_tolerance(self, base, target):
+    def _is_within_tolerance(self, base: int, target: int) -> bool:
         max_target = target + self.PIXEL_TOLERANCE
         min_target = max(target - self.PIXEL_TOLERANCE, 0)
         return min_target <= base <= max_target
 
-    def _is_match_on_horizontal(self, direction, item, regexp):
+    def _is_match_on_horizontal(self, direction: str, item: TextBox, regexp: str) -> Union[TextBox, None]:
         (left, _, right, top) = self.anchor_element.bbox
         match = False
         direction_ok = False
@@ -188,9 +186,11 @@ class FinderKeywords(LibraryContext):
             match = True
         elif regexp is None and direction_ok and item:
             match = True
-        return item if match else None
 
-    def _is_match_on_vertical(self, direction, item, strict, regexp):
+        if match:
+            return item
+
+    def _is_match_on_vertical(self, direction: str, item: TextBox, strict: bool, regexp: str) -> Union[TextBox, None]:
         (left, bottom, right, top) = self.anchor_element.bbox
         text = None
         direction_down = direction in ["bottom", "down"]
@@ -214,7 +214,7 @@ class FinderKeywords(LibraryContext):
                 return item
         return None
 
-    def _is_match_in_box(self, item):
+    def _is_match_in_box(self, item: TextBox) -> Union[TextBox, None]:
         (left, bottom, right, top) = self.anchor_element.bbox
         if (
             left <= item.left

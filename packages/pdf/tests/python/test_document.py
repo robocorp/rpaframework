@@ -58,11 +58,10 @@ def test_get_text_from_pdf_specific_page(library):
 def test_extract_pages_from_pdf(library):
     pages = [7, 8]
     with temp_filename() as tmp_file:
-        target_pdf = tmp_file
-        library.extract_pages_from_pdf(TestFiles.pytest_pdf, target_pdf, pages)
-        text = library.get_text_from_pdf(target_pdf)
+        library.extract_pages_from_pdf(TestFiles.pytest_pdf, tmp_file, pages)
+        text = library.get_text_from_pdf(tmp_file)
 
-        assert library.get_number_of_pages(target_pdf) == 2
+        assert library.get_number_of_pages(tmp_file) == 2
         assert "Plugins for Web Development" in text[1]
 
 
@@ -70,9 +69,8 @@ def test_html_to_pdf(library):
     text = "let's do some testing ÄÄ"
     html = f"<html> <body> {text} </body></html>"
     with temp_filename() as tmp_file:
-        target_pdf = tmp_file
-        library.html_to_pdf(html, target_pdf)
-        result = library.get_text_from_pdf(target_pdf)
+        library.html_to_pdf(html, tmp_file)
+        result = library.get_text_from_pdf(tmp_file)
 
         assert text in result[1]
 
@@ -146,9 +144,9 @@ def test_add_watermark_image_to_pdf(library, watermark_image):
     figures_before = library.get_all_figures(source_path=source_path)
     with temp_filename() as tmp_file:
         library.add_watermark_image_to_pdf(
-            imagefile=str(watermark_image),
-            target_pdf=tmp_file,
-            source=source_path
+            image_path=str(watermark_image),
+            output_path=tmp_file,
+            source_path=source_path
         )
         figures_after = library.get_all_figures(source_path=tmp_file)
 

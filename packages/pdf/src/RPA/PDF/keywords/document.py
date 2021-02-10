@@ -1,7 +1,10 @@
 import os
 import tempfile
 from pathlib import Path
-from typing import Any
+from typing import (
+    Any,
+    Tuple,
+)
 
 import pdfminer
 import PyPDF2
@@ -61,13 +64,13 @@ class DocumentKeywords(LibraryContext):
     def html_to_pdf(
         self,
         content: str,
-        target_pdf: str,
+        output_path: str,
         variables: dict = None,
     ) -> None:
         """Use HTML content to generate PDF file.
 
         :param content: HTML content
-        :param target_pdf: filepath where to save PDF document
+        :param output_path: filepath where to save PDF document
         :param variables: dictionary of variables to fill into template, defaults to {}
         """
         variables = variables or {}
@@ -77,11 +80,11 @@ class DocumentKeywords(LibraryContext):
             html = html.replace("{{" + key + "}}", str(value))
 
         default_output = Path(self.output_directory / "html2pdf.pdf")
-        output_path = Path(target_pdf) if target_pdf else default_output
+        output_path = Path(output_path) if output_path else default_output
 
         self._write_html_to_pdf(html, output_path)
 
-    def _write_html_to_pdf(self, html, output_path):
+    def _write_html_to_pdf(self, html: str, output_path: str) -> None:
         self.ctx.logger.info("Writing output to file %s", output_path)
         self._add_pages(1)
         self.fpdf.write_html(html)
@@ -220,14 +223,14 @@ class DocumentKeywords(LibraryContext):
 
     @keyword
     def extract_pages_from_pdf(
-        self, source_path: str = None, target_pdf: str = None, pages: Any = None
+        self, source_path: str = None, output_path: str = None, pages: Any = None
     ) -> None:
         """Extract pages from source PDF and save to target PDF document.
 
         Page numbers start from 1.
 
         :param source_path: filepath to the source pdf
-        :param target_pdf: filepath to the target pdf, stored by default
+        :param output_path: filepath to the target pdf, stored by default
             in `output_directory`
         :param pages: page numbers to extract from PDF (numbers start from 0)
             if None then extracts all pages
@@ -237,7 +240,7 @@ class DocumentKeywords(LibraryContext):
         writer = PyPDF2.PdfFileWriter()
 
         default_output = Path(self.output_directory / "extracted.pdf")
-        output_filepath = Path(target_pdf) if target_pdf else default_output
+        output_filepath = Path(output_path) if output_path else default_output
 
         if pages and not isinstance(pages, list):
             pages = pages.split(",")
@@ -254,14 +257,14 @@ class DocumentKeywords(LibraryContext):
         self,
         pages: int,
         source_path: str = None,
-        target_pdf: str = None,
+        output_path: str = None,
         clockwise: bool = True,
         angle: int = 90,
     ) -> None:
         """Rotate pages in source PDF document and save to target PDF document.
 
         :param source_path: filepath to the source pdf
-        :param target_pdf: filepath to the target pdf, stored by default
+        :param output_path: filepath to the target pdf, stored by default
             to `output_directory`
         :param pages: page numbers to extract from PDF (numbers start from 0)
         :param clockwise: directorion that page will be rotated to, default True
@@ -272,7 +275,7 @@ class DocumentKeywords(LibraryContext):
         writer = PyPDF2.PdfFileWriter()
 
         default_output = Path(self.output_directory / "rotated.pdf")
-        output_filepath = Path(target_pdf) if target_pdf else default_output
+        output_filepath = Path(output_path) if output_path else default_output
 
         if not isinstance(pages, list):
             pagelist = [pages]
@@ -295,7 +298,7 @@ class DocumentKeywords(LibraryContext):
     def encrypt_pdf(
         self,
         source_path: str = None,
-        target_pdf: str = None,
+        output_path: str = None,
         user_pwd: str = "",
         owner_pwd: str = None,
         use_128bit: bool = True,
@@ -303,7 +306,7 @@ class DocumentKeywords(LibraryContext):
         """Encrypt PDF document.
 
         :param source_path: filepath to the source pdf
-        :param target_pdf: filepath to the target pdf, stored by default
+        :param output_path: filepath to the target pdf, stored by default
             to `output_directory`
         :param user_pwd: allows opening and reading PDF with restrictions
         :param owner_pwd: allows opening PDF without any restrictions, by
@@ -315,7 +318,7 @@ class DocumentKeywords(LibraryContext):
         reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
 
         default_output = Path(self.output_directory / "encrypted.pdf")
-        output_filepath = Path(target_pdf) if target_pdf else default_output
+        output_filepath = Path(output_path) if output_path else default_output
 
         if owner_pwd is None:
             owner_pwd = user_pwd
@@ -327,12 +330,12 @@ class DocumentKeywords(LibraryContext):
 
     @keyword
     def decrypt_pdf(
-        self, source_path: str, target_pdf: str, password: str
+        self, source_path: str, output_path: str, password: str
     ) -> bool:
         """Decrypt PDF with password.
 
         :param source_path: filepath to the source pdf
-        :param target_pdf: filepath to the decrypted pdf
+        :param output_path: filepath to the decrypted pdf
         :param password: password as a string
         :return: True if decrypt was successful, else False or Exception
         :raises ValueError: on decryption errors
@@ -351,7 +354,7 @@ class DocumentKeywords(LibraryContext):
             else:
                 return False
 
-            self.save_pdf(source=None, target=target_pdf, custom_reader=reader)
+            self.save_pdf(source_path=None, output_path=output_path, custom_reader=reader)
             return True
 
         except NotImplementedError as e:
@@ -364,11 +367,11 @@ class DocumentKeywords(LibraryContext):
         return False
 
     @keyword
-    def replace_textbox_text(self, text: str, replace: str, source_path: str = None):
+    def replace_textbox_text(self, old: str, new: str, source_path: str = None):
         """Replace text content of a textbox with something else in the PDF.
 
-        :param text: this text will be replaced
-        :param replace: used to replace `text`
+        :param old: this text will be replaced
+        :param new: used to replace `text`
         :raises ValueError: when no matching text found.
         """
         self.switch_to_pdf(source_path)
@@ -377,8 +380,8 @@ class DocumentKeywords(LibraryContext):
 
         for _, page in self.active_pdf_document.get_pages().items():
             for _, textbox in page.get_textboxes().items():
-                if textbox.text == text:
-                    textbox.text = replace
+                if textbox.text == old:
+                    textbox.text = new
                     return
         raise ValueError("Did not find any matching text")
 
@@ -399,32 +402,32 @@ class DocumentKeywords(LibraryContext):
         return pages
 
     @keyword
-    def add_watermark_image_to_pdf(self, imagefile, target_pdf, source=None, coverage=0.2):
+    def add_watermark_image_to_pdf(self, image_path: str, output_path: str, source_path: str = None, coverage: float = 0.2):
         """Add image to PDF which can be new or existing PDF.
 
-        :param imagefile: filepath to image file to add into PDF
+        :param image_path: filepath to image file to add into PDF
         :param source: filepath to source, if not given add image to currently
             active PDF
-        :param target: filepath of target PDF
+        :param output_path: filepath of target PDF
         :param coverage: [description], defaults to 0.2
         :raises ValueError: [description]
         """
-        if source is None and self.ctx.active_pdf_document.fileobject.path:
-            source = self.active_pdf_document.path
-        elif source is None and self.ctx.active_pdf_document.fileobject.path is None:
+        if source_path is None and self.ctx.active_pdf_document.fileobject.path:
+            source_path = self.active_pdf_document.path
+        elif source_path is None and self.ctx.active_pdf_document.fileobject.path is None:
             raise ValueError("No source PDF exists")
         temp_pdf = os.path.join(tempfile.gettempdir(), "temp.pdf")
         writer = PyPDF2.PdfFileWriter()
         pdf = FPDF()
         pdf.add_page()
-        reader = PyPDF2.PdfFileReader(source)
+        reader = PyPDF2.PdfFileReader(source_path)
         mediabox = reader.getPage(0).mediaBox
-        im = Image.open(imagefile)
+        im = Image.open(image_path)
         max_width = int(float(mediabox.getWidth()) * coverage)
         max_height = int(float(mediabox.getHeight()) * coverage)
         width, height = self.fit_dimensions_to_box(*im.size, max_width, max_height)
 
-        pdf.image(name=imagefile, x=40, y=60, w=width, h=height)
+        pdf.image(name=image_path, x=40, y=60, w=width, h=height)
         pdf.output(name=temp_pdf, dest="F")
 
         img = PyPDF2.PdfFileReader(temp_pdf)
@@ -434,11 +437,11 @@ class DocumentKeywords(LibraryContext):
             page.mergePage(watermark)
             writer.addPage(page)
 
-        with open(target_pdf, "wb") as f:
+        with open(output_path, "wb") as f:
             writer.write(f)
 
     @staticmethod
-    def fit_dimensions_to_box(width, height, max_width, max_height):
+    def fit_dimensions_to_box(width: int, height: int, max_width: int, max_height: int) -> Tuple[int, int]:
         ratio = width / height
         if width > max_width:
             width = max_width
@@ -454,23 +457,23 @@ class DocumentKeywords(LibraryContext):
 
     @keyword
     def save_pdf(
-        self, source: str = None, target: str = None, custom_reader: PyPDF2.PdfFileReader = None
+        self, source_path: str = None, output_path: str = None, custom_reader: PyPDF2.PdfFileReader = None
     ):
-        """Save current over itself or to `target_pdf`.
+        """Save current over itself or to `output_path`.
 
-        :param source: filepath to source PDF. If not given, the active fileobject is used.
-        :param target: filepath to target PDF
+        :param source_path: filepath to source PDF. If not given, the active fileobject is used.
+        :param output_path: filepath to target PDF
         :param custom_reader: a modified PDF reader.
         """
         if not custom_reader:
-            self.ctx.get_input_fields(source)
+            self.ctx.get_input_fields(source_path)
 
         if self.ctx.active_pdf_document.fields:
             self.logger.info("Saving PDF with input fields")
-            self.ctx.update_field_values(source, target, self.ctx.active_pdf_document.fields)
+            self.ctx.update_field_values(source_path, output_path, self.ctx.active_pdf_document.fields)
         else:
             self.logger.info("Saving PDF")
-            self.switch_to_pdf(source)
+            self.switch_to_pdf(source_path)
             if custom_reader:
                 reader = custom_reader
             else:
@@ -485,7 +488,7 @@ class DocumentKeywords(LibraryContext):
                     self.logger.warning(repr(e))
                     writer.addPage(page)
 
-            if target is None:
-                target = self.ctx.active_pdf_path
-            with open(target, "wb") as f:
+            if output_path is None:
+                output_path = self.ctx.active_pdf_path
+            with open(output_path, "wb") as f:
                 writer.write(f)

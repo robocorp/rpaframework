@@ -1,7 +1,11 @@
 import re
 import sys
 from collections import OrderedDict
-from typing import Any, Iterable
+from typing import (
+    Any,
+    Iterable,
+    Union,
+)
 
 import PyPDF2
 import pdfminer
@@ -58,7 +62,7 @@ class Figure:
         # LTImage
         self.item = item
 
-    def details(self):
+    def details(self) -> str:
         return '<image src="%s" width="%d" height="%d" />' % (
             self.image_name or self.figure_name,
             self.item.width,
@@ -198,16 +202,16 @@ class Converter(PDFConverter):
 
     def __init__(
         self,
-        active_document,
+        active_document: Document,
         rsrcmgr,
-        codec="utf-8",
-        pageno=1,
+        codec: str = "utf-8",
+        pageno: int = 1,
         laparams=None,
         imagewriter=None,
         stripcontrol=False,
     ):
-        PDFConverter.__init__(
-            self, rsrcmgr, sys.stdout, codec=codec, pageno=pageno, laparams=laparams
+        super().__init__(
+            rsrcmgr, sys.stdout, codec=codec, pageno=pageno, laparams=laparams
         )
         self.active_pdf_document = active_document
         self.figure = None
@@ -216,7 +220,7 @@ class Converter(PDFConverter):
         self.stripcontrol = stripcontrol
         self.write_header()
 
-    def write(self, text):
+    def write(self, text: str):
         if self.codec:
             text = text.encode(self.codec)
         self.active_pdf_document.append_xml(text)
@@ -231,13 +235,13 @@ class Converter(PDFConverter):
     def write_footer(self):
         self.write("</pages>\n")
 
-    def write_text(self, text):
+    def write_text(self, text: str):
         if self.stripcontrol:
             text = self.CONTROL.sub("", text)
         self.write(enc(text))
 
-    def receive_layout(self, ltpage):  # noqa: C901 pylint: disable=R0915
-        # TODO: what is this?
+    def receive_layout(self, ltpage: LTPage):  # noqa: C901 pylint: disable=R0915
+        # TODO: document this
         def show_group(item):
             if isinstance(item, LTTextBox):
                 self.write(
@@ -361,7 +365,7 @@ class Converter(PDFConverter):
 
         render(ltpage)
 
-    def close(self):
+    def close(self) -> Document:
         self.write_footer()
         return self.active_pdf_document
 
@@ -503,12 +507,12 @@ class ModelKeywords(LibraryContext):
 
     @keyword
     def update_field_values(
-        self, source_path: str = None, target_pdf: str = None, newvals: dict = None
+        self, source_path: str = None, output_path: str = None, newvals: dict = None
     ) -> None:
         """Update field values in PDF if it has fields.
 
         :param source_path: source PDF with fields to update
-        :param target_pdf: updated target PDF
+        :param output_path: updated target PDF
         :param newvals: dictionary with key values to update
         """
         self.ctx.switch_to_pdf(source_path)
@@ -542,9 +546,9 @@ class ModelKeywords(LibraryContext):
                 self.logger.warning(repr(e))
                 writer.addPage(page)
 
-        if target_pdf is None:
-            target_pdf = self.ctx.active_pdf_path
-        with open(target_pdf, "wb") as f:
+        if output_path is None:
+            output_path = self.ctx.active_pdf_path
+        with open(output_path, "wb") as f:
             writer.write(f)
 
     def _set_need_appearances_writer(self, writer: PyPDF2.PdfFileWriter):
@@ -582,6 +586,3 @@ class ModelKeywords(LibraryContext):
         if self.active_pdf_document is None:
             self.convert()
         return self.active_pdf_document.dump_xml()
-
-    def pdf_to_image(self, pdf_document: str = None, pages=None, target_file: str = ""):
-        pass
