@@ -1,4 +1,3 @@
-
 class ElementNotFound(ValueError):
     """No matching elements were found."""
 

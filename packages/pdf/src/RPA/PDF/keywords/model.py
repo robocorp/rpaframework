@@ -4,14 +4,12 @@ from collections import OrderedDict
 from typing import (
     Any,
     Iterable,
-    Union,
 )
 
 import PyPDF2
 import pdfminer
 from pdfminer.converter import PDFConverter
 from pdfminer.layout import (
-    LAParams,
     LTPage,
     LTText,
     LTTextBox,
@@ -29,8 +27,6 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfparser import PDFParser
 from pdfminer.utils import enc, bbox2str
 from pdfminer.pdfpage import PDFPage
-from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-from pdfminer.converter import PDFConverter
 
 from RPA.PDF.keywords import (
     LibraryContext,
@@ -422,7 +418,9 @@ class ModelKeywords(LibraryContext):
         source_document = PDFDocument(source_parser)
 
         try:
-            fields = pdfminer.pdftypes.resolve1(source_document.catalog["AcroForm"])["Fields"]
+            fields = pdfminer.pdftypes.resolve1(source_document.catalog["AcroForm"])[
+                "Fields"
+            ]
         except KeyError:
             self.logger.info(
                 'PDF "%s" does not have any input fields.', self.ctx.active_pdf_path
@@ -481,7 +479,9 @@ class ModelKeywords(LibraryContext):
                 raise ValueError("Document does not have input fields")
 
         if field_name in self.ctx.active_pdf_document.fields.keys():
-            self.ctx.active_pdf_document.fields[field_name]["value"] = value  # pylint: disable=E1136
+            self.ctx.active_pdf_document.fields[field_name][
+                "value"
+            ] = value  # pylint: disable=E1136
         else:
             label_matches = 0
             field_key = None
@@ -491,7 +491,9 @@ class ModelKeywords(LibraryContext):
                     label_matches += 1
                     field_key = k
             if label_matches == 1:
-                self.ctx.active_pdf_document.fields[field_key]["value"] = value  # pylint: disable=E1136
+                self.ctx.active_pdf_document.fields[field_key][
+                    "value"
+                ] = value  # pylint: disable=E1136
             elif label_matches > 1:
                 raise ValueError(
                     "Unable to set field value - field name: '%s' matched %d fields"
@@ -516,10 +518,16 @@ class ModelKeywords(LibraryContext):
         :param newvals: dictionary with key values to update
         """
         self.ctx.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject, strict=False)
+        reader = PyPDF2.PdfFileReader(
+            self.ctx.active_pdf_document.fileobject, strict=False
+        )
         if "/AcroForm" in reader.trailer["/Root"]:
             reader.trailer["/Root"]["/AcroForm"].update(
-                {PyPDF2.generic.NameObject("/NeedAppearances"): PyPDF2.generic.BooleanObject(True)}
+                {
+                    PyPDF2.generic.NameObject(
+                        "/NeedAppearances"
+                    ): PyPDF2.generic.BooleanObject(True)
+                }
             )
         writer = PyPDF2.PdfFileWriter()
 
@@ -560,7 +568,9 @@ class ModelKeywords(LibraryContext):
             if "/AcroForm" not in catalog:
                 catalog.update(
                     {
-                        PyPDF2.generic.NameObject("/AcroForm"): PyPDF2.generic.IndirectObject(
+                        PyPDF2.generic.NameObject(
+                            "/AcroForm"
+                        ): PyPDF2.generic.IndirectObject(
                             len(writer._objects), 0, writer  # pylint: disable=W0212
                         )
                     }

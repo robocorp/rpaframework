@@ -10,19 +10,26 @@ from . import (
 
 # TODO: add tests to cover more conditions
 
-@pytest.mark.parametrize("file, number_of_pages", [
-    (TestFiles.invoice_pdf, 1),
-    (TestFiles.vero_pdf, 2),
-    (TestFiles.pytest_pdf, 9),
-])
+
+@pytest.mark.parametrize(
+    "file, number_of_pages",
+    [
+        (TestFiles.invoice_pdf, 1),
+        (TestFiles.vero_pdf, 2),
+        (TestFiles.pytest_pdf, 9),
+    ],
+)
 def test_get_number_of_pages(library, file, number_of_pages):
     assert library.get_number_of_pages(file) == number_of_pages
 
 
-@pytest.mark.parametrize("file, pages, encrypted, fields", [
-    (TestFiles.pytest_pdf, 9, False, False),
-    (TestFiles.vero_pdf, 2, False, True),
-])
+@pytest.mark.parametrize(
+    "file, pages, encrypted, fields",
+    [
+        (TestFiles.pytest_pdf, 9, False, False),
+        (TestFiles.vero_pdf, 2, False, True),
+    ],
+)
 def test_get_pdf_info(library, file, pages, encrypted, fields):
     info = library.get_pdf_info(file)
 
@@ -117,9 +124,7 @@ def test_decrypt_pdf(library):
 def test_replace_text(library):
     new_text = "MORE TAXES"
     library.replace_textbox_text(
-        "ILMOITA VERKOSSA\nvero.fi/omavero",
-        new_text,
-        source_path=TestFiles.vero_pdf
+        "ILMOITA VERKOSSA\nvero.fi/omavero", new_text, source_path=TestFiles.vero_pdf
     )
     text = library.get_text_from_pdf()
 
@@ -135,10 +140,13 @@ def test_get_all_figures(library):
     assert figure.details() == details
 
 
-@pytest.mark.parametrize("watermark_image", [
-    (TestFiles.seal_of_approval),
-    (TestFiles.big_nope),
-])
+@pytest.mark.parametrize(
+    "watermark_image",
+    [
+        (TestFiles.seal_of_approval),
+        (TestFiles.big_nope),
+    ],
+)
 def test_add_watermark_image_to_pdf(library, watermark_image):
     source_path = str(TestFiles.invoice_pdf)
     figures_before = library.get_all_figures(source_path=source_path)
@@ -146,7 +154,7 @@ def test_add_watermark_image_to_pdf(library, watermark_image):
         library.add_watermark_image_to_pdf(
             image_path=str(watermark_image),
             output_path=tmp_file,
-            source_path=source_path
+            source_path=source_path,
         )
         figures_after = library.get_all_figures(source_path=tmp_file)
 
@@ -154,17 +162,20 @@ def test_add_watermark_image_to_pdf(library, watermark_image):
         assert len(figures_after[1]) == 2
 
 
-@pytest.mark.parametrize("width, height, exp_width, exp_height", [
-    (50, 50, 50, 50),
-    (200, 50, 119, 29),
-    (100, 200, 84, 168),
-    (200, 200, 119, 119),
-    (150, 1000, 25, 168),
-    (1000, 200, 119, 23),
-    (1500, 100, 119, 7),
-    (100, 1000, 16, 168),
-    (200, 2000, 16, 168),
-])
+@pytest.mark.parametrize(
+    "width, height, exp_width, exp_height",
+    [
+        (50, 50, 50, 50),
+        (200, 50, 119, 29),
+        (100, 200, 84, 168),
+        (200, 200, 119, 119),
+        (150, 1000, 25, 168),
+        (1000, 200, 119, 23),
+        (1500, 100, 119, 7),
+        (100, 1000, 16, 168),
+        (200, 2000, 16, 168),
+    ],
+)
 def test_fit_dimensions_to_box(width, height, exp_width, exp_height):
     max_width = 119
     max_height = 168

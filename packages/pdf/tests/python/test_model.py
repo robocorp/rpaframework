@@ -15,7 +15,7 @@ def test_convert(library):
     first_paragraph = library.active_pdf_document.pages[1].content[0]
 
     assert library.active_pdf_document
-    assert first_paragraph.text == 'ILMOITA VERKOSSA\nvero.fi/omavero'
+    assert first_paragraph.text == "ILMOITA VERKOSSA\nvero.fi/omavero"
 
 
 def test_get_input_fields(library):
@@ -54,7 +54,9 @@ def test_update_field_values(library):
         updated_fields = library.get_input_fields(tmp_file)
 
         assert original_fields["Puhelinnumero"]["value"] == ""
-        assert updated_fields["Puhelinnumero"]["value"] == update_fields["Puhelinnumero"]
+        assert (
+            updated_fields["Puhelinnumero"]["value"] == update_fields["Puhelinnumero"]
+        )
         assert updated_fields["Paivays"]["value"] == update_fields["Paivays"]
 
 

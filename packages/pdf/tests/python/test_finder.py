@@ -9,10 +9,13 @@ from . import (
 # TODO: add tests to cover more conditions
 
 
-@pytest.mark.parametrize("locator, expected", [
-    ("text:due date", True),
-    ("text:this doesn't exists", False),
-])
+@pytest.mark.parametrize(
+    "locator, expected",
+    [
+        ("text:due date", True),
+        ("text:this doesn't exists", False),
+    ],
+)
 def test_set_anchor_to_element(library, locator, expected):
     library.open_pdf(TestFiles.invoice_pdf)
     result = library.set_anchor_to_element(locator)

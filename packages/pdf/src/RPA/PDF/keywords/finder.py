@@ -166,7 +166,9 @@ class FinderKeywords(LibraryContext):
         min_target = max(target - self.PIXEL_TOLERANCE, 0)
         return min_target <= base <= max_target
 
-    def _is_match_on_horizontal(self, direction: str, item: TextBox, regexp: str) -> Union[TextBox, None]:
+    def _is_match_on_horizontal(
+        self, direction: str, item: TextBox, regexp: str
+    ) -> Union[TextBox, None]:
         (left, _, right, top) = self.anchor_element.bbox
         match = False
         direction_ok = False
@@ -187,10 +189,11 @@ class FinderKeywords(LibraryContext):
         elif regexp is None and direction_ok and item:
             match = True
 
-        if match:
-            return item
+        return item if match else None
 
-    def _is_match_on_vertical(self, direction: str, item: TextBox, strict: bool, regexp: str) -> Union[TextBox, None]:
+    def _is_match_on_vertical(
+        self, direction: str, item: TextBox, strict: bool, regexp: str
+    ) -> Union[TextBox, None]:
         (left, bottom, right, top) = self.anchor_element.bbox
         text = None
         direction_down = direction in ["bottom", "down"]
@@ -225,7 +228,9 @@ class FinderKeywords(LibraryContext):
             return item
         return None
 
-    def _get_closest_from_possibles(self, direction: str, possibles: List[TextBox]) -> TextBox:
+    def _get_closest_from_possibles(
+        self, direction: str, possibles: List[TextBox]
+    ) -> TextBox:
         distance = 500000
         closest = None
         (_, bottom, right, top) = self.anchor_element.bbox
