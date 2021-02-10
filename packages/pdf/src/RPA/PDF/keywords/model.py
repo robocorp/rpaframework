@@ -27,6 +27,9 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfparser import PDFParser
 from pdfminer.utils import enc, bbox2str
 from pdfminer.pdfpage import PDFPage
+from pdfminer.pdfinterp import (
+    PDFResourceManager,
+)
 
 from RPA.PDF.keywords import (
     LibraryContext,
@@ -380,7 +383,7 @@ class ModelKeywords(LibraryContext):
         source_parser = PDFParser(self.ctx.active_pdf_document.fileobject)
         source_document = PDFDocument(source_parser)
         source_pages = PDFPage.create_pages(source_document)
-        rsrcmgr = pdfminer.pdfinterp.PDFResourceManager()
+        rsrcmgr = PDFResourceManager()
         laparams = pdfminer.layout.LAParams(
             detect_vertical=True,
             all_texts=True,
