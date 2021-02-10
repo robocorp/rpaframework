@@ -89,9 +89,7 @@ class DocumentKeywords(LibraryContext):
         self._add_pages(1)
         self.fpdf.write_html(html)
 
-        pdf_content = self.fpdf.output(dest="S")
-        with open(output_path, "wb") as outfile:
-            outfile.write(pdf_content)
+        self.fpdf.output(name=output_path)
         # self.__init__()  # TODO: what should happen here exactly?
         self.fpdf = PDF()
 
@@ -428,7 +426,7 @@ class DocumentKeywords(LibraryContext):
         width, height = self.fit_dimensions_to_box(*im.size, max_width, max_height)
 
         pdf.image(name=image_path, x=40, y=60, w=width, h=height)
-        pdf.output(name=temp_pdf, dest="F")
+        pdf.output(name=temp_pdf)
 
         img = PyPDF2.PdfFileReader(temp_pdf)
         watermark = img.getPage(0)
