@@ -120,6 +120,7 @@ class DocumentKeywords(LibraryContext):
         :return: dictionary of PDF information.
         """
         self.switch_to_pdf(source_path)
+
         pdf = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         docinfo = pdf.getDocumentInfo()
         parser = PDFParser(self.ctx.active_pdf_document.fileobject)
@@ -370,8 +371,10 @@ class DocumentKeywords(LibraryContext):
         :param replace: used to replace `text`
         :raises ValueError: when no matching text found.
         """
-        if source_path or self.active_pdf_document is None:
-            self.ctx.convert(source_path)
+        self.switch_to_pdf(source_path)
+        if not self.active_pdf_document.is_converted:
+            self.ctx.convert()
+
         for _, page in self.active_pdf_document.get_pages().items():
             for _, textbox in page.get_textboxes().items():
                 if textbox.text == text:
@@ -387,8 +390,9 @@ class DocumentKeywords(LibraryContext):
 
         PDF needs to be parsed before elements can be found.
         """
-        if source_path or self.active_pdf_document is None:
-            self.ctx.convert(source_path)
+        self.switch_to_pdf(source_path)
+        if not self.active_pdf_document.is_converted:
+            self.ctx.convert()
         pages = {}
         for pagenum, page in self.active_pdf_document.get_pages().items():
             pages[pagenum] = page.get_figures()
@@ -406,7 +410,7 @@ class DocumentKeywords(LibraryContext):
         :raises ValueError: [description]
         """
         if source is None and self.ctx.active_pdf_document.fileobject.path:
-            source = self.active_pdf_path
+            source = self.active_pdf_document.path
         elif source is None and self.ctx.active_pdf_document.fileobject.path is None:
             raise ValueError("No source PDF exists")
         temp_pdf = os.path.join(tempfile.gettempdir(), "temp.pdf")
