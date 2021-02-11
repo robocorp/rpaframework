@@ -1,11 +1,23 @@
 import logging
 import platform
+import sys
+import warnings
 
 if platform.system() == "Windows":
-    import comtypes
+    # Configure comtypes to not generate DLL bindings into
+    # current environment, instead keeping them in memory.
+    # Slower, but prevents dirtying environments.
 
-    # Disable writing generated files to environment
+    # Comtypes defaults to STA threading model, override with MTA
+    # similar to what pywinauto would do.
+    sys.coinit_flags = 0x0  # COINIT_MULTITHREADED
+    import comtypes.client
+
     comtypes.client.gen_dir = None
+    # Ignore pywinauto warning about flag override
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=UserWarning)
+        import pywinauto
 
 # pylint: disable=wrong-import-position
 from robotlibcore import DynamicCore
