@@ -7,14 +7,12 @@ if platform.system() == "Windows":
     # Configure comtypes to not generate DLL bindings into
     # current environment, instead keeping them in memory.
     # Slower, but prevents dirtying environments.
-
-    # Comtypes defaults to STA threading model, override with MTA
-    # similar to what pywinauto would do.
-    sys.coinit_flags = 0x0  # COINIT_MULTITHREADED
     import comtypes.client
 
     comtypes.client.gen_dir = None
-    # Ignore pywinauto warning about flag override
+
+    # Ignore pywinauto warning about threading mode,
+    # which comtypes initializes to STA instead of MTA on import.
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=UserWarning)
         import pywinauto
