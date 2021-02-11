@@ -21,7 +21,12 @@ from .model import Document
 
 
 class PDF(FPDF, HTMLMixin):
-    """FDPF helper class."""
+    """
+    FDPF helper class.
+
+    Note that we are using FDPF2, which is a maintained fork of FPDF
+    https://github.com/PyFPDF/fpdf2
+    """
 
 
 class DocumentKeywords(LibraryContext):
@@ -61,6 +66,63 @@ class DocumentKeywords(LibraryContext):
         self.ctx.fileobjects[source_path] = self.ctx.active_pdf_document.fileobject
 
     @keyword
+    def template_html_to_pdf(
+        self,
+        template: str,
+        output_path: str,
+        variables: dict = None,
+    ) -> None:
+        """Use HTML template file to generate PDF file.
+
+        It provides an easy method of generating a PDF document from an HTML formatted
+        template file.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            *** Settings ***
+            Library    RPA.PDF
+
+            *** Variables ***
+            ${TEMPLATE}    order.template
+            ${PDF}         result.pdf
+            &{VARS}        name=Robot Generated
+            ...            email=robot@domain.com
+            ...            zip=00100
+            ...            items=Item 1, Item 2
+
+            *** Tasks ***
+            Create PDF from HTML template
+                Template HTML to PDF   ${TEMPLATE}  ${PDF}  ${VARS}
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            p = PDF()
+            orders = ["item 1", "item 2", "item 3"]
+            vars = {
+                "name": "Robot Process",
+                "email": "robot@domain.com",
+                "zip": "00100",
+                "items": "<br/>".join(orders),
+            }
+            p.template_html_to_pdf("order.template", "order.pdf", vars)
+
+        :param template: filepath to HTML template
+        :param output_path: filepath where to save PDF document
+        :param variables: dictionary of variables to fill into template, defaults to {}
+        """
+        with open(template, "r") as templatefile:
+            html = templatefile.read()
+        self.html_to_pdf(html, output_path, variables)
+
+    @keyword
     def html_to_pdf(
         self,
         content: str,
@@ -74,15 +136,13 @@ class DocumentKeywords(LibraryContext):
         :param variables: dictionary of variables to fill into template, defaults to {}
         """
         variables = variables or {}
-        html = content
 
         for key, value in variables.items():
-            html = html.replace("{{" + key + "}}", str(value))
+            content = content.replace("{{" + key + "}}", str(value))
 
         default_output = Path(self.output_directory / "html2pdf.pdf")
         output_path = Path(output_path) if output_path else default_output
-
-        self._write_html_to_pdf(html, output_path)
+        self._write_html_to_pdf(content, output_path)
 
     def _write_html_to_pdf(self, html: str, output_path: str) -> None:
         self.ctx.logger.info("Writing output to file %s", output_path)

@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "rpaframework-pdf"
 version = "0.2.0"
-description = "PDF library of by RPA Framework"
+description = "PDF library of RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
 ]
