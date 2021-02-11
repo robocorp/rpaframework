@@ -1,7 +1,15 @@
 import logging
-from robotlibcore import DynamicCore
+import platform
 
-from RPA.Desktop.utils import Buffer
+if platform.system() == "Windows":
+    import comtypes
+
+    # Disable writing generated files to environment
+    comtypes.client.gen_dir = None
+
+# pylint: disable=wrong-import-position
+from robotlibcore import DynamicCore
+from RPA.Desktop.utils import Buffer, is_windows
 from RPA.Desktop.keywords import (
     ElementNotFound,
     MultipleElementsFound,
