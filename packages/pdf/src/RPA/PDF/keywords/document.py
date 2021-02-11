@@ -3,7 +3,9 @@ import tempfile
 from pathlib import Path
 from typing import (
     Any,
+    List,
     Tuple,
+    Union,
 )
 
 import pdfminer
@@ -47,12 +49,37 @@ class DocumentKeywords(LibraryContext):
 
     @keyword
     def open_pdf(self, source_path: str = None) -> None:
-        """Open PDF document.
+        """Open a PDF document for reading.
 
-        :param source_path: filepath to the source pdf
-        :raises ValueError: if PDF is already open
+        This is called automatically in the other PDF keywords
+        when a path to the PDF file is given as an argument.
 
-        Also opens file for reading.
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                Open PDF    /tmp/sample.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                metadata = pdf.open_pdf("/tmp/sample.pdf")
+
+        :param source_path: filepath to the source pdf.
+        :raises ValueError: if PDF is already open.
         """
         if source_path is None:
             raise ValueError("Source PDF is missing")
@@ -89,14 +116,14 @@ class DocumentKeywords(LibraryContext):
             *** Variables ***
             ${TEMPLATE}    order.template
             ${PDF}         result.pdf
-            &{VARS}        name=Robot Generated
+            &{DATA}        name=Robot Generated
             ...            email=robot@domain.com
             ...            zip=00100
             ...            items=Item 1, Item 2
 
             *** Tasks ***
             Create PDF from HTML template
-                Template HTML to PDF   ${TEMPLATE}  ${PDF}  ${VARS}
+                Template HTML to PDF   ${TEMPLATE}  ${PDF}  ${DATA}
 
         **Python**
 
@@ -106,76 +133,103 @@ class DocumentKeywords(LibraryContext):
 
             p = PDF()
             orders = ["item 1", "item 2", "item 3"]
-            vars = {
+            data = {
                 "name": "Robot Process",
                 "email": "robot@domain.com",
                 "zip": "00100",
                 "items": "<br/>".join(orders),
             }
-            p.template_html_to_pdf("order.template", "order.pdf", vars)
+            p.template_html_to_pdf("order.template", "order.pdf", data)
 
-        :param template: filepath to HTML template
-        :param output_path: filepath where to save PDF document
-        :param variables: dictionary of variables to fill into template, defaults to {}
+        :param template: filepath to the HTML template.
+        :param output_path: filepath where to save PDF document.
+        :param variables: dictionary of variables to fill into template, defaults to {}.
         """
+        variables = variables or {}
+
         with open(template, "r") as templatefile:
             html = templatefile.read()
-        self.html_to_pdf(html, output_path, variables)
+        for key, value in variables.items():
+            html = html.replace("{{" + key + "}}", str(value))
+
+        self.html_to_pdf(html, output_path)
 
     @keyword
     def html_to_pdf(
         self,
         content: str,
         output_path: str,
-        variables: dict = None,
     ) -> None:
-        """Use HTML content to generate PDF file.
+        """Generate a PDF file from HTML content.
 
-        :param content: HTML content
-        :param output_path: filepath where to save PDF document
-        :param variables: dictionary of variables to fill into template, defaults to {}
+        Note that input must be well-formed and valid HTML.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                HTML to PDF    ${html_content_as_string}  /tmp/output.pdf
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                pdf.html_to_pdf(html_content_as_string, "/tmp/output.pdf")
+
+        :param content: HTML content.
+        :param output_path: filepath where to save the PDF document.
         """
-        variables = variables or {}
-
-        for key, value in variables.items():
-            content = content.replace("{{" + key + "}}", str(value))
-
         default_output = Path(self.output_directory / "html2pdf.pdf")
         output_path = Path(output_path) if output_path else default_output
         self._write_html_to_pdf(content, output_path)
 
     def _write_html_to_pdf(self, html: str, output_path: str) -> None:
-        self.ctx.logger.info("Writing output to file %s", output_path)
-        self._add_pages(1)
+        self.logger.info("Writing output to file %s", output_path)
+        self.fpdf.add_page()
         self.fpdf.write_html(html)
-
         self.fpdf.output(name=output_path)
         # self.__init__()  # TODO: what should happen here exactly?
         self.fpdf = PDF()
 
-    def _add_pages(self, pages: int = 1) -> None:
-        """Adds pages into PDF documents.
-
-        :param pages: number of pages to add, defaults to 1
-        """
-        for _ in range(int(pages)):
-            self.fpdf.add_page()
-
     @keyword
     def get_pdf_info(self, source_path: str = None) -> dict:
-        """Get information from PDF document.
+        """Get metadata from a PDF document.
 
-        Usage example:
+        If no source path given, assumes a PDF is already opened.
 
-        >>> get_info("my_document.pdf")
-        {'Author': None,
-         'Creator': None,
-         'Encrypted': False,
-         'Fields': False,
-         'Pages': 9,
-         'Producer': 'PyPDF2',
-         'Subject': None,
-         'Title': None}
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                ${metadata}=    Get PDF Info    /tmp/sample.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                metadata = pdf.get_pdf_info("/tmp/sample.pdf")
 
         :param source_path: filepath to the source PDF.
         :return: dictionary of PDF information.
@@ -208,9 +262,36 @@ class DocumentKeywords(LibraryContext):
 
         Returns True even if PDF was decrypted.
 
-        :param source_path: filepath to the source pdf
-        :return: True if file is encrypted
+        If no source path given, assumes a PDF is already opened.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                ${is_encrypted}=    Is PDF Encrypted    /tmp/sample.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                is_encrypted = pdf.is_pdf_encrypted("/tmp/sample.pdf")
+
+        :param source_path: filepath to the source pdf.
+        :return: True if file is encrypted.
         """
+        # TODO: Why "Returns True even if PDF was decrypted."??
         self.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         return reader.isEncrypted
@@ -218,6 +299,32 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def get_number_of_pages(self, source_path: str = None) -> int:
         """Get number of pages in the document.
+
+        If no source path given, assumes a PDF is already opened.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                ${page_count}=    Get Number Of Pages    /tmp/sample.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                page_count = pdf.get_number_of_pages("/tmp/sample.pdf")
 
         :param source_path: filepath to the source pdf
         :raises PdfReadError: if file is encrypted or other restrictions are in place
@@ -231,10 +338,38 @@ class DocumentKeywords(LibraryContext):
         """Switch library's current fileobject to already open file
         or open file if not opened.
 
-        :param source_path: filepath
+        This is done automatically in the PDF library keywords.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                Switch to PDF    /tmp/another.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                pdf.switch_to_pdf("/tmp/sample.pdf")
+
+
+        :param source_path: filepath to the source pdf.
         :raises ValueError: if PDF filepath is not given and there are no active
-            file to activate
+            file to activate.
         """
+        # TODO: should this be a keyword or a private method?
         if source_path and source_path not in self.ctx.fileobjects:
             self.open_pdf(source_path)
         elif not source_path and not (
@@ -259,12 +394,37 @@ class DocumentKeywords(LibraryContext):
     ) -> dict:
         """Get text from set of pages in source PDF document.
 
-        :param source_path: filepath to the source pdf
-        :param pages: page numbers to get text (numbers start from 0)
-        :param details: set to `True` to return textboxes, default `False`
-        :return: dictionary of pages and their texts
+        If no source path given, assumes a PDF is already opened.
 
-        PDF needs to be parsed before text can be read.
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                ${text}=    Get Text From PDF    /tmp/sample.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                text = pdf.get_text_from_pdf("/tmp/sample.pdf")
+
+
+        :param source_path: filepath to the source pdf.
+        :param pages: page numbers to get text (numbers start from 0).
+        :param details: set to `True` to return textboxes, default `False`.
+        :return: dictionary of pages and their texts.
         """
         self.switch_to_pdf(source_path)
         if not self.active_pdf_document.is_converted:
@@ -288,15 +448,48 @@ class DocumentKeywords(LibraryContext):
     def extract_pages_from_pdf(
         self, source_path: str = None, output_path: str = None, pages: Any = None
     ) -> None:
-        """Extract pages from source PDF and save to target PDF document.
+        """Extract pages from source PDF and save to a new PDF document.
 
         Page numbers start from 1.
 
-        :param source_path: filepath to the source pdf
+        If no source path given, assumes a PDF is already opened.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                ${pages}=    Extract Pages From PDF
+                ...          source_path=/tmp/sample.pdf
+                ...          output_path=/tmp/output.pdf
+                ...          pages=5
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                pages = pdf.extract_pages_from_pdf(
+                    source_path="/tmp/sample.pdf",
+                    output_path="/tmp/output.pdf",
+                    pages=5
+                )
+
+        :param source_path: filepath to the source pdf.
         :param output_path: filepath to the target pdf, stored by default
-            in `output_directory`
+            in `output_directory`.
         :param pages: page numbers to extract from PDF (numbers start from 0)
-            if None then extracts all pages
+            if None then extracts all pages.
         """
         self.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
@@ -318,7 +511,7 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def rotate_page(
         self,
-        pages: int,
+        pages: Union[List[int], int],
         source_path: str = None,
         output_path: str = None,
         clockwise: bool = True,
@@ -326,13 +519,47 @@ class DocumentKeywords(LibraryContext):
     ) -> None:
         """Rotate pages in source PDF document and save to target PDF document.
 
-        :param source_path: filepath to the source pdf
+        If no source path given, assumes a PDF is already opened.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                Rotate Page
+                ...          source_path=/tmp/sample.pdf
+                ...          output_path=/tmp/output.pdf
+                ...          pages=5
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def rotate_page():
+                pages = pdf.rotate_page(
+                    source_path="/tmp/sample.pdf",
+                    output_path="/tmp/output.pdf",
+                    pages=5
+                )
+
+        :param source_path: filepath to the source pdf.
         :param output_path: filepath to the target pdf, stored by default
-            to `output_directory`
-        :param pages: page numbers to extract from PDF (numbers start from 0)
-        :param clockwise: directorion that page will be rotated to, default True
-        :param angle: number of degrees to rotate, default 90
+            to `output_directory`.
+        :param pages: page numbers to extract from PDF (numbers start from 0).
+        :param clockwise: directorion that page will be rotated to, default True.
+        :param angle: number of degrees to rotate, default 90.
         """
+        # TODO: don't save to a new file every time
         self.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         writer = PyPDF2.PdfFileWriter()
@@ -366,17 +593,44 @@ class DocumentKeywords(LibraryContext):
         owner_pwd: str = None,
         use_128bit: bool = True,
     ) -> None:
-        """Encrypt PDF document.
+        """Encrypt a PDF document.
 
-        :param source_path: filepath to the source pdf
+        If no source path given, assumes a PDF is already opened.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                Encrypt PDF    /tmp/sample.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                pdf.encrypt_pdf("/tmp/sample.pdf")
+
+        :param source_path: filepath to the source pdf.
         :param output_path: filepath to the target pdf, stored by default
-            to `output_directory`
-        :param user_pwd: allows opening and reading PDF with restrictions
+            to `output_directory`.
+        :param user_pwd: allows opening and reading PDF with restrictions.
         :param owner_pwd: allows opening PDF without any restrictions, by
-            default same `user_pwd`
+            default same `user_pwd`.
         :param use_128bit: whether to 128bit encryption, when false 40bit
-            encryption is used, default True
+            encryption is used, default True.
         """
+        # TODO: don't save to a new file every time
         self.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
 
@@ -395,11 +649,37 @@ class DocumentKeywords(LibraryContext):
     def decrypt_pdf(self, source_path: str, output_path: str, password: str) -> bool:
         """Decrypt PDF with password.
 
-        :param source_path: filepath to the source pdf
-        :param output_path: filepath to the decrypted pdf
-        :param password: password as a string
-        :return: True if decrypt was successful, else False or Exception
-        :raises ValueError: on decryption errors
+        If no source path given, assumes a PDF is already opened.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                ${success}=  Decrypt PDF    /tmp/sample.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                success = pdf.decrypt_pdf("/tmp/sample.pdf")
+
+        :param source_path: filepath to the source pdf.
+        :param output_path: filepath to the decrypted pdf.
+        :param password: password as a string.
+        :return: True if decrypt was successful, else False or Exception.
+        :raises ValueError: on decryption errors.
         """
         self.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
@@ -422,7 +702,7 @@ class DocumentKeywords(LibraryContext):
 
         except NotImplementedError as e:
             raise ValueError(
-                f"Document {source_path} uses an unsupported encryption method."
+                f"Document {source_path} uses an unsupported encryption metPDFhod."
             ) from e
         except KeyError:
             self.logger.info("PDF is not encrypted")
@@ -430,11 +710,42 @@ class DocumentKeywords(LibraryContext):
         return False
 
     @keyword
-    def replace_textbox_text(self, old: str, new: str, source_path: str = None):
+    def replace_textbox_text(self, old: str, new: str, source_path: str = None) -> None:
         """Replace text content of a textbox with something else in the PDF.
 
-        :param old: this text will be replaced
-        :param new: used to replace `text`
+        If no source path given, assumes a PDF is already opened.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                Replace Textbox Text    /tmp/sample.pdf  example  my_value
+
+        **Python**
+
+        .. code-block:: pythonPDF
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                pdf.replace_textbox_text(
+                    "/tmp/sample.pdf",
+                    "example",
+                    "my_value"
+                )
+
+        :param source_path: filepath to the source pdf.
+        :param old: this text will be replaced.
+        :param new: used to replace `old`.
         :raises ValueError: when no matching text found.
         """
         self.switch_to_pdf(source_path)
@@ -452,9 +763,34 @@ class DocumentKeywords(LibraryContext):
     def get_all_figures(self, source_path: str = None) -> dict:
         """Return all figures in the PDF document.
 
-        :return: dictionary of figures divided into pages
+        If no source path given, assumes a PDF is already opened.
 
-        PDF needs to be parsed before elements can be found.
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                ${figures}=  Get All Figures    /tmp/sample.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                figures = pdf.get_all_figures("/tmp/sample.pdf")
+
+        :param source_path: filepath to the source pdf.
+        :return: dictionary of figures divided into pages.
         """
         self.switch_to_pdf(source_path)
         if not self.active_pdf_document.is_converted:
@@ -471,8 +807,41 @@ class DocumentKeywords(LibraryContext):
         output_path: str,
         source_path: str = None,
         coverage: float = 0.2,
-    ):
+    ) -> None:
         """Add image to PDF which can be new or existing PDF.
+
+        If no source path given, assumes a PDF is already opened.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                Add Watermark Image To PDF
+                ...             image_path=approved.png
+                ...             source_path=/tmp/sample.pdf
+                ...             output_path=output/output.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                pdf.add_watermark_image_to_pdf(
+                    image_path="approved.png"
+                    source_path="/tmp/sample.pdf"
+                    output_path="output/output.pdf"
+                )
 
         :param image_path: filepath to image file to add into PDF
         :param source: filepath to source, if not given add image to currently
@@ -515,6 +884,9 @@ class DocumentKeywords(LibraryContext):
     def fit_dimensions_to_box(
         width: int, height: int, max_width: int, max_height: int
     ) -> Tuple[int, int]:
+        """
+        Fit dimensions of width and height to a given box.
+        """
         ratio = width / height
         if width > max_width:
             width = max_width
@@ -536,6 +908,8 @@ class DocumentKeywords(LibraryContext):
         custom_reader: PyPDF2.PdfFileReader = None,
     ):
         """Save current over itself or to `output_path`.
+
+        If no source path given, assumes a PDF is already opened.
 
         :param source_path: filepath to source PDF.
             If not given, the active fileobject is used.

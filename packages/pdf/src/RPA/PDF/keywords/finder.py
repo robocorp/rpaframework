@@ -39,20 +39,46 @@ class FinderKeywords(LibraryContext):
         strict: bool = False,
         regexp: str = None,
         only_closest: bool = True,
-    ) -> Union[List[TextBox], TextBox]:
+    ) -> Union[Union[List[TextBox], List[None]], TextBox]:
         """Get closest text (value) to the anchor element.
 
         PDF needs to be parsed before elements can be found.
 
-        :param locator: element to set anchor to
-        :param pagenum: page number where search if performed on, default 1 (first)
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                ${value}=  Find Text    text:Invoice Number
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                value = pdf.find_text("text:Invoice Number")
+
+        :param locator: element to set anchor to. This can be prefixed with either
+            `text:` or `coords:` to find the anchor by text or coordinates.
+            Default is `text`.
+        :param pagenum: page number where search if performed on, default 1 (first).
         :param direction: in which direction to search for text,
             directions  'top'/'up', 'bottom'/'down', 'left' or 'right',
-            defaults to 'right'
+            defaults to 'right'.
         :param strict: if element margins should be used for matching points,
-            used when direction is 'top' or 'bottom', default `False`
-        :param regexp: expected format of value to match, defaults to None
-        :param only_closest: return all possible values or only the closest
+            used when direction is 'top' or 'bottom', default `False`.
+        :param regexp: expected format of value to match, defaults to None.
+        :param only_closest: return all possible values or only the closest.
         :return: all possible values, only the closest value, or an empty list.
         """
         self.logger.debug(
@@ -94,8 +120,34 @@ class FinderKeywords(LibraryContext):
     def set_anchor_to_element(self, locator: str) -> bool:
         """Sets anchor point in the document for further searches.
 
-        :param locator: element to search for
-        :return: True if element was found
+        This is used internally in the library.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                 ${success}=  Set Anchor To Element    text:Invoice Number
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                success = pdf.set_anchor_to_element("text:Invoice Number")
+
+        :param locator: element to search for.
+        :return: True if element was found.
         """
         self.logger.info("Set anchor to element: ('locator=%s')", locator)
         if not self.ctx.active_pdf_document.is_converted:

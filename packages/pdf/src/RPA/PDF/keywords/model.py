@@ -375,7 +375,33 @@ class ModelKeywords(LibraryContext):
     @keyword
     def convert(self, source_path: str = None) -> None:
         """Parse source PDF into entities which can be
-        used for text searches for example.
+        used for text searches, for example.
+
+        This is used internally in the library.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                Convert    /tmp/sample.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                pdf.convert("/tmp/sample.pdf")
 
         :param source_path: source PDF filepath.
         """
@@ -403,15 +429,41 @@ class ModelKeywords(LibraryContext):
     ) -> dict:
         """Get input fields in the PDF.
 
-        :param source_path: source filepath, defaults to None
-        :param replace_none_value: if value is None replace it with key name,
-            defaults to False
-        :return: dictionary of input key values or `None`
-
         Stores input fields internally so that they can be used without
-        parsing PDF again.
+        parsing the PDF again.
 
-        Parameter `replace_none_value` is for convience to visualize fields.
+        Parameter ``replace_none_value`` is for convience to visualize fields.
+
+        If no source path given, assumes a PDF is already opened.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                ${fields}=  Get Input Fields    /tmp/sample.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                fields = pdf.get_input_fields("/tmp/sample.pdf")
+
+        :param source_path: source filepath, defaults to None.
+        :param replace_none_value: if value is None replace it with key name,
+            defaults to False.
+        :return: dictionary of input key values or `None`.
         """
         record_fields = {}
         if not source_path and self.ctx.active_pdf_document.fields:
@@ -465,17 +517,42 @@ class ModelKeywords(LibraryContext):
         return record_fields
 
     @keyword
-    def set_field_value(self, field_name: str, value: Any, save: bool = False):
-        """Set value for field with given name.
-
-        :param field_name: field to update
-        :param value: new value for the field
+    def set_field_value(self, field_name: str, value: Any, source_path: str = None, save: bool = False) -> None:
+        """Set value for field with given name on the active document.
 
         Tries to match on field identifier and its label.
 
-        Exception is thrown if field can't be found or more than 1 field matches
-        the given `field_name`.
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                Set Field Value    phone_nr    077123123
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                pdf.set_field_value(phone_nr, 077123123)
+
+        :param field_name: field to update.
+        :param value: new value for the field.
+        :param source_path: source PDF filepath.
+        :raises ValueError: when field can't be found or more than 1 field matches
+            the given `field_name`.
         """
+        self.ctx.switch_to_pdf(source_path)
         if not self.ctx.active_pdf_document.fields:
             self.get_input_fields()
             if not self.ctx.active_pdf_document.fields:
@@ -516,9 +593,38 @@ class ModelKeywords(LibraryContext):
     ) -> None:
         """Update field values in PDF if it has fields.
 
-        :param source_path: source PDF with fields to update
-        :param output_path: updated target PDF
-        :param newvals: dictionary with key values to update
+        This is used internally in the library.
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                Update Field Values    /tmp/sample.pdf  output/edited.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                figures = pdf.update_field_values(
+                    "/tmp/sample.pdf",
+                    "/output/edited.pdf"
+                )
+
+        :param source_path: source PDF with fields to update.
+        :param output_path: updated target PDF.
+        :param newvals: dictionary with key values to update.
         """
         self.ctx.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(
@@ -592,7 +698,31 @@ class ModelKeywords(LibraryContext):
     def dump_pdf_as_xml(self, source_path: str = None) -> str:
         """Get PDFMiner format XML dump of the PDF
 
-        :param source_path: filepath
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                ${xml}=  Dump PDF as XML    /tmp/sample.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                xml = pdf.dump_pdf_as_xml("/tmp/sample.pdf")
+
+        :param source_path: filepath to the source PDF
         :return: XML content as a string.
         """
         self.ctx.switch_to_pdf(source_path)

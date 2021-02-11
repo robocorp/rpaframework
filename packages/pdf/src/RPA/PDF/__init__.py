@@ -7,8 +7,29 @@ from RPA.PDF.keywords import DocumentKeywords, FinderKeywords, ModelKeywords
 class PDF(DynamicCore):
     """`PDF` is a library for managing PDF documents.
 
-    """
+    Usage example:
 
+    **Robot Framework**
+
+    .. code-block:: robotframework
+
+        ***Settings***
+        Library    RPA.PDF
+
+        ***Tasks***
+        Demonstrate PDF library
+            ${text}=    Get Text From PDF    ./tmp/sample.pdf
+
+    .. code-block:: python
+
+        from RPA.PDF import PDF
+
+        pdf = PDF()
+
+        def demonstrate_pdf_library():
+            text = pdf.get_text_from_pdf("./tmp/sample.pdf")
+
+    """
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
