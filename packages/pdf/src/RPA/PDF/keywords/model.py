@@ -517,7 +517,9 @@ class ModelKeywords(LibraryContext):
         return record_fields
 
     @keyword
-    def set_field_value(self, field_name: str, value: Any, source_path: str = None, save: bool = False) -> None:
+    def set_field_value(
+        self, field_name: str, value: Any, source_path: str = None, save: bool = False
+    ) -> None:
         """Set value for field with given name on the active document.
 
         Tries to match on field identifier and its label.

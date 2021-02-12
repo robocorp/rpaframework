@@ -30,6 +30,7 @@ class PDF(DynamicCore):
             text = pdf.get_text_from_pdf("./tmp/sample.pdf")
 
     """
+
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
