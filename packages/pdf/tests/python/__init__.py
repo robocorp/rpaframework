@@ -41,4 +41,7 @@ def temp_filename(content=None):
     try:
         yield path
     finally:
-        os.unlink(path)
+        try:
+            os.unlink(path)
+        except PermissionError:
+            pass
