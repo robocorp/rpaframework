@@ -1,4 +1,5 @@
 import logging
+import os
 from pathlib import Path
 import time
 from typing import Any
@@ -17,6 +18,13 @@ from exchangelib import (
     Mailbox,
     Message,
 )
+
+
+def mailbox_to_email_address(mailbox):
+    return {
+        "name": mailbox.name,
+        "email_address": mailbox.email_address,
+    }
 
 
 class Exchange:
@@ -44,7 +52,7 @@ class Exchange:
         ${ATTACHMENTS}          C:${/}files${/}mydocument.pdf
 
         *** Tasks ***
-        Sending email
+        Task of sending email
             Send Message  recipients=${RECIPIENT_ADDRESS}
             ...           subject=Exchange Message from RPA Robot
             ...           body=<p>Exchange RPA Robot message body<br><img src='myimage.png'/></p>
@@ -54,6 +62,30 @@ class Exchange:
             ...           cc=EMAIL_ADDRESS
             ...           bcc=EMAIL_ADDRESS
             ...           attachments=${ATTACHMENTS}
+
+        Task of listing messages
+            # Attachments are saved specifically with a keyword Save Attachments
+            ${messages}=    List Messages
+            FOR    ${msg}    IN    @{messages}
+                Log Many    ${msg}
+                ${attachments}=    Run Keyword If    "${msg}[subject]"=="about my orders"
+                ...    Save Attachments
+                ...    ${msg}
+                ...    save_dir=${CURDIR}${/}savedir
+            END
+            # Using save_dir all attachments in listed messages are saved
+            ${messages}=    List Messages
+            ...    INBOX/Problems/sub1
+            ...    criterion=subject:about my orders
+            ...    save_dir=${CURDIR}${/}savedir2
+            FOR    ${msg}    IN    @{messages}
+                Log Many    ${msg}
+            END
+
+        Task of moving messages
+            Move Messages    criterion=subject:about my orders
+            ...    source=INBOX/Processed Purchase Invoices/sub2
+            ...    target=INBOX/Problems/sub1
 
     **Python**
 
@@ -118,24 +150,38 @@ class Exchange:
 
         self.account = Account(**kwargs)
 
-    def list_messages(self, folder_name: str = None, count: int = 100) -> list:
+    def list_messages(
+        self,
+        folder_name: str = None,
+        criterion: str = None,
+        contains: bool = False,
+        count: int = 100,
+        save_dir: str = None,
+    ) -> list:
         """List messages in the account inbox. Order by descending
         received time.
 
+        :param folder_name: name of the email folder, default INBOX
+        :param criterion: list messages matching criterion
+        :param contains: if matching should be done using `contains` matching
+         and not `equals` matching, default `False` is means `equals` matching
         :param count: number of messages to list
+        :param save_dir: set to path where attachments should be saved,
+         default None (attachments are not saved)
         """
         # pylint: disable=no-member
         messages = []
         source_folder = self._get_folder_object(folder_name)
-        for item in source_folder.all().order_by("-datetime_received")[:count]:
-            messages.append(
-                {
-                    "subject": item.subject,
-                    "sender": item.sender,
-                    "datetime_received": item.datetime_received,
-                    "body": item.body,
-                }
-            )
+        if criterion:
+            filter_dict = self._get_filter_key_value(criterion, contains)
+            items = source_folder.filter(**filter_dict)
+        else:
+            items = source_folder.all()
+        for item in items.order_by("-datetime_received")[:count]:
+            attachments = []
+            if save_dir and len(item.attachments) > 0:
+                attachments = self._save_attachments(item, save_dir)
+            messages.append(self._get_email_details(item, attachments))
         return messages
 
     def _get_all_items_in_folder(self, folder_name=None, parent_folder=None) -> list:
@@ -359,7 +405,7 @@ class Exchange:
         :param source: source folder
         :param target: target folder
         :param contains: if matching should be done using `contains` matching
-             and not `equals` matching, default `False` is means `equals` matching
+         and not `equals` matching, default `False` is means `equals` matching
         :return: boolean result of operation, True if 1+ items were moved else False
 
         Criterion examples:
@@ -372,7 +418,6 @@ class Exchange:
         target_folder = self._get_folder_object(target)
         if source_folder == target_folder:
             raise KeyError("Source folder is same as target folder")
-        self.logger.info("Move messages")
         filter_dict = self._get_filter_key_value(criterion, contains)
         items = source_folder.filter(**filter_dict)
         if items and items.count() > 0:
@@ -383,14 +428,17 @@ class Exchange:
             return False
 
     def _get_folder_object(self, folder_name):
-        if folder_name is None or folder_name == "INBOX":
-            folder_object = self.account.inbox
-        elif "INBOX" in folder_name:
-            folder_object = self.account.inbox / folder_name.replace(
-                "INBOX/", ""
-            ).replace("INBOX /", "")
-        else:
-            folder_object = self.account.inbox / folder_name
+        if not folder_name:
+            return self.account.inbox
+        folders = folder_name.split("/")
+        if "inbox" in folders[0].lower():
+            folders[0] = self.account.inbox
+        folder_object = None
+        for folder in folders:
+            if folder_object:
+                folder_object = folder_object / folder.strip()
+            else:
+                folder_object = folder
         return folder_object
 
     def _get_filter_key_value(self, criterion, contains):
@@ -413,6 +461,7 @@ class Exchange:
         timeout: float = 5.0,
         interval: float = 1.0,
         contains: bool = False,
+        save_dir: str = None,
     ) -> Any:
         """Wait for email matching `criterion` to arrive into INBOX.
 
@@ -420,7 +469,9 @@ class Exchange:
         :param timeout: total time in seconds to wait for email, defaults to 5.0
         :param interval: time in seconds for new check, defaults to 1.0
         :param contains: if matching should be done using `contains` matching
-             and not `equals` matching, default `False` is means `equals` matching
+         and not `equals` matching, default `False` is means `equals` matching
+        :param save_dir: set to path where attachments should be saved,
+         default None (attachments are not saved)
         :return: list of messages
         """
         self.logger.info("Wait for messages")
@@ -438,14 +489,71 @@ class Exchange:
             time.sleep(interval)
         messages = []
         for item in items:
-            messages.append(
-                {
-                    "subject": item.subject,
-                    "sender": item.sender,
-                    "datetime_received": item.datetime_received,
-                    "body": item.body,
-                }
-            )
+            attachments = []
+            if save_dir and len(item.attachments) > 0:
+                attachments = self._save_attachments(item, save_dir)
+            messages.append(self._get_email_details(item, attachments))
+
         if len(messages) == 0:
             self.logger.info("Did not receive any matching items")
         return messages
+
+    def _save_attachments(self, item, save_dir):
+        attachments = []
+        incoming_items = item.attachments if hasattr(item, "attachments") else item
+        for attachment in incoming_items:
+            if isinstance(attachment, FileAttachment):
+                local_path = os.path.join(save_dir, attachment.name)
+                with open(local_path, "wb") as f, attachment.fp as fp:
+                    buffer = fp.read(1024)
+                    while buffer:
+                        f.write(buffer)
+                        buffer = fp.read(1024)
+                self.logger.info("Attachment saved to: %s", local_path)
+                attachments.append(
+                    {
+                        "name": attachment.name,
+                        "content_type": attachment.content_type,
+                        "size": attachment.size,
+                        "is_contact_photo": attachment.is_contact_photo,
+                        "local_path": local_path,
+                    }
+                )
+        return attachments
+
+    def _get_email_details(self, email, attachments):
+        return {
+            "subject": email.subject,
+            "sender": mailbox_to_email_address(email.sender),
+            "datetime_received": email.datetime_received,
+            "folder": str(self._get_folder_object(email.folder)),
+            "body": email.body,
+            "text_body": email.text_body,
+            "received_by": mailbox_to_email_address(email.received_by),
+            "cc_recipients": [
+                mailbox_to_email_address(cc) for cc in email.cc_recipients
+            ]
+            if email.cc_recipients
+            else [],
+            "bcc_recipients": [
+                mailbox_to_email_address(bcc) for bcc in email.bcc_recipients
+            ]
+            if email.bcc_recipients
+            else [],
+            "is_read": email.is_read,
+            "importance": email.importance,
+            "message_id": email.message_id,
+            "size": email.size,
+            "categories": email.categories,
+            "attachments": attachments,
+            "attachments_object": email.attachments,
+        }
+
+    def save_attachments(self, message: dict, save_dir: str = None) -> list:
+        """Save attachments in message into given directory
+
+        :param message: dictionary containing message details
+        :param save_dir: filepath where attachments will be saved
+        :return: list of saved attachments
+        """
+        return self._save_attachments(message["attachments_object"], save_dir)

@@ -4,9 +4,17 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Email.Exchange**:
+
+  - Fix sub folder bug with ``Move Messages``
+  - Add keyword ``Save Attachments``
+  - Add ``criterion`` parameter to ``List Messages`` for filtering
+  - Add ``save_dir`` parameter to ``List Messages`` for saving Attachments
+  - Add more details into returned messages
+
 - Library **RPA.Database**:
 
-  - Fix bug with ``Call Stored Procedure```
+  - Fix bug with ``Call Stored Procedure``
   - Hide details of ``Connect To Database`` from Robot Framework logs
 
 7.4.2
