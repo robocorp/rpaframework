@@ -204,3 +204,27 @@ def test_save_pdf(library):
         result = library.get_text_from_pdf(tmp_file)
 
         assert result == expected
+
+
+def test_close_pdf(library):
+    library.open_pdf(TestFiles.vero_pdf)
+
+    assert library.active_pdf_document
+
+    library.close_pdf(TestFiles.vero_pdf)
+
+    assert not library.active_pdf_document
+
+
+def test_close_all_pdfs(library):
+    library.open_pdf(TestFiles.vero_pdf)
+
+    assert library.active_pdf_document.path == str(TestFiles.vero_pdf)
+
+    library.open_pdf(TestFiles.loremipsum_pdf)
+
+    assert library.active_pdf_document.path == str(TestFiles.loremipsum_pdf)
+
+    library.close_all_pdfs()
+
+    assert not library.active_pdf_document

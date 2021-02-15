@@ -48,6 +48,33 @@ class DocumentKeywords(LibraryContext):
         self.output_directory = Path(path)
 
     @keyword
+    def close_all_pdfs(self) -> None:
+        """Close all opened PDF file descriptors."""
+        file_paths = list(self.ctx.fileobjects.keys())
+        # for filename, _ in self.ctx.fileobjects.items():
+        for filename in file_paths:
+            self.close_pdf(filename)
+
+    @keyword
+    def close_pdf(self, source_pdf: str = None) -> None:
+        """Close PDF file descriptor for certain file.
+
+        :param source_pdf: filepath to the source pdf.
+        :raises ValueError: if file descriptor for the file is not found.
+        """
+        if not source_pdf and self.active_pdf_document:
+            source_pdf = self.active_pdf_document.path
+        elif not source_pdf and not self.active_pdf_document:
+            raise ValueError("No active PDF document open.")
+        if source_pdf not in self.ctx.fileobjects:
+            raise ValueError('PDF "%s" is not open' % source_pdf)
+        self.logger.info("Closing PDF document: %s", source_pdf)
+        self.ctx.fileobjects[source_pdf].close()
+        del self.ctx.fileobjects[source_pdf]
+
+        self.active_pdf_document = None
+
+    @keyword
     def open_pdf(self, source_path: str = None) -> None:
         """Open a PDF document for reading.
 
