@@ -1,0 +1,109 @@
+name: rpaframework-pdf
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'packages/pdf/**'
+      - '.github/workflows/pdf.yaml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'packages/pdf/**'
+      - '.github/workflows/pdf.yaml'
+
+defaults:
+  run:
+    working-directory: './packages/pdf'
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [
+          "windows-py36",
+          "windows-py37",
+          "windows-py38",
+
+          "ubuntu-py36",
+          "ubuntu-py37",
+          "ubuntu-py38",
+
+          "macos-py36",
+          "macos-py37",
+          "macos-py38",
+        ]
+
+        include:
+          - name: "windows-py36"
+            python: "3.6"
+            os: windows-latest
+          - name: "windows-py37"
+            python: "3.7"
+            os: windows-latest
+          - name: "windows-py38"
+            python: "3.8"
+            os: windows-latest
+          - name: "ubuntu-py36"
+            python: "3.6"
+            os: ubuntu-latest
+          - name: "ubuntu-py37"
+            python: "3.7"
+            os: ubuntu-latest
+          - name: "ubuntu-py38"
+            python: "3.8"
+            os: ubuntu-latest
+          - name: "macos-py36"
+            python: "3.6"
+            os: macos-latest
+          - name: "macos-py37"
+            python: "3.7"
+            os: macos-latest
+          - name: "macos-py38"
+            python: "3.8"
+            os: macos-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Upgrade pip
+      run: python -m pip install --upgrade pip
+    - name: Install poetry
+      run: pip install poetry
+    - name: Install
+      run: make install
+    - name: Lint
+      run: make lint
+    - name: Test
+      run: make test
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.7'
+    - name: Upgrade pip
+      run: python -m pip install --upgrade pip
+    - name: Install poetry
+      run: pip install poetry
+    - name: Install dependencies
+      run: make install
+    - name: Build and publish package
+      if: success()
+      run: |
+        poetry config repositories.devpi ${{ secrets.devpiUrl }}
+        poetry config http-basic.devpi ci ${{ secrets.devpiPassword }}
+        poetry publish --no-interaction --build --repository devpi
