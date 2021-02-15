@@ -4,12 +4,15 @@ Release notes
 Upcoming release
 ----------------
 
+7.5.0
+-----
+
 - Library **RPA.Email.Exchange**:
 
   - Fix sub folder bug with ``Move Messages``
   - Add keyword ``Save Attachments``
   - Add ``criterion`` parameter to ``List Messages`` for filtering
-  - Add ``save_dir`` parameter to ``List Messages`` for saving Attachments
+  - Add ``save_dir`` parameter to ``List Messages`` for saving attachments
   - Add more details into returned messages
 
 - Library **RPA.Database**:
