@@ -85,15 +85,18 @@ class Application:
 
     def close_document(self, save_changes: bool = False) -> None:
         """Close the active document (if open)."""
-        if self.app is not None:
+        if not self.app:
+            return
+        if hasattr(self.app, "ActiveDocument"):
             self.app.ActiveDocument.Close(save_changes)
 
     def quit_application(self, save_changes: bool = False) -> None:
         """Quit the application."""
-        if self.app is not None:
-            self.close_document(save_changes)
-            self.app.Quit()
-            self.app = None
+        if not self.app:
+            return
+        self.close_document(save_changes)
+        self.app.Quit()
+        self.app = None
 
     def send_message(
         self,
