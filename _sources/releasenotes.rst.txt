@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Outlook.Application**: Fix ``ActiveDocument`` bug when closing Outlook
+
 7.5.0
 -----
 
