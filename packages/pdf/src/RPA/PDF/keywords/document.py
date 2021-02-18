@@ -37,7 +37,8 @@ class DocumentKeywords(LibraryContext):
     def __init__(self, ctx):
         super().__init__(ctx)
         self.fpdf = PDF()
-        self._output_directory = Path(".")
+        self._output_directory = Path("./output/")
+        self.default_output = Path(self._output_directory / "output.pdf")
 
     @property
     def output_directory(self):
@@ -45,7 +46,7 @@ class DocumentKeywords(LibraryContext):
 
     @output_directory.setter
     def output_directory(self, path: str):
-        self.output_directory = Path(path)
+        self._output_directory = Path(path)
 
     @keyword
     def close_all_pdfs(self) -> None:
@@ -216,8 +217,7 @@ class DocumentKeywords(LibraryContext):
         :param content: HTML content.
         :param output_path: filepath where to save the PDF document.
         """
-        default_output = Path(self.output_directory / "html2pdf.pdf")
-        output_path = Path(output_path) if output_path else default_output
+        output_path = Path(output_path) if output_path else self.default_output
         self._write_html_to_pdf(content, output_path)
 
     def _write_html_to_pdf(self, html: str, output_path: str) -> None:
@@ -522,8 +522,7 @@ class DocumentKeywords(LibraryContext):
         reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         writer = PyPDF2.PdfFileWriter()
 
-        default_output = Path(self.output_directory / "extracted.pdf")
-        output_filepath = Path(output_path) if output_path else default_output
+        output_filepath = Path(output_path) if output_path else self.default_output
 
         if pages and not isinstance(pages, list):
             pages = pages.split(",")
@@ -591,8 +590,7 @@ class DocumentKeywords(LibraryContext):
         reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         writer = PyPDF2.PdfFileWriter()
 
-        default_output = Path(self.output_directory / "rotated.pdf")
-        output_filepath = Path(output_path) if output_path else default_output
+        output_filepath = Path(output_path) if output_path else self.default_output
 
         if not isinstance(pages, list):
             pagelist = [pages]
@@ -661,8 +659,7 @@ class DocumentKeywords(LibraryContext):
         self.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
 
-        default_output = Path(self.output_directory / "encrypted.pdf")
-        output_filepath = Path(output_path) if output_path else default_output
+        output_filepath = Path(output_path) if output_path else self.default_output
 
         if owner_pwd is None:
             owner_pwd = user_pwd
@@ -708,6 +705,8 @@ class DocumentKeywords(LibraryContext):
         :return: True if decrypt was successful, else False or Exception.
         :raises ValueError: on decryption errors.
         """
+        output_path = Path(output_path) if output_path else self.default_output
+
         self.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         try:
@@ -722,69 +721,17 @@ class DocumentKeywords(LibraryContext):
             else:
                 return False
 
-            self.save_pdf(
-                source_path=None, output_path=output_path, custom_reader=reader
-            )
+            self.save_pdf(str(output_path), reader)
             return True
 
         except NotImplementedError as e:
             raise ValueError(
-                f"Document {source_path} uses an unsupported encryption metPDFhod."
+                f"Document {source_path} uses an unsupported encryption method."
             ) from e
         except KeyError:
             self.logger.info("PDF is not encrypted")
             return False
         return False
-
-    @keyword
-    def replace_textbox_text(self, old: str, new: str, source_path: str = None) -> None:
-        """Replace text content of a textbox with something else in the PDF.
-
-        If no source path given, assumes a PDF is already opened.
-
-        **Examples**
-
-        **Robot Framework**
-
-        .. code-block:: robotframework
-
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
-            Example Keyword
-                Replace Textbox Text    /tmp/sample.pdf  example  my_value
-
-        **Python**
-
-        .. code-block:: pythonPDF
-
-            from RPA.PDF import PDF
-
-            pdf = PDF()
-
-            def example_keyword():
-                pdf.replace_textbox_text(
-                    "/tmp/sample.pdf",
-                    "example",
-                    "my_value"
-                )
-
-        :param source_path: filepath to the source pdf.
-        :param old: this text will be replaced.
-        :param new: used to replace `old`.
-        :raises ValueError: when no matching text found.
-        """
-        self.switch_to_pdf(source_path)
-        if not self.active_pdf_document.is_converted:
-            self.ctx.convert()
-
-        for _, page in self.active_pdf_document.get_pages().items():
-            for _, textbox in page.get_textboxes().items():
-                if textbox.text == old:
-                    textbox.text = new
-                    return
-        raise ValueError("Did not find any matching text")
 
     @keyword
     def get_all_figures(self, source_path: str = None) -> dict:
@@ -930,47 +877,22 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def save_pdf(
         self,
-        source_path: str = None,
-        output_path: str = None,
-        custom_reader: PyPDF2.PdfFileReader = None,
+        output_path: str,
+        reader: PyPDF2.PdfFileReader,
     ):
-        """Save current over itself or to `output_path`.
+        """Save the contents of a PyPDF2 reader to a new file.
 
-        If no source path given, assumes a PDF is already opened.
-
-        :param source_path: filepath to source PDF.
-            If not given, the active fileobject is used.
         :param output_path: filepath to target PDF
-        :param custom_reader: a modified PDF reader.
+        :param reader: a PyPDF2 reader.
         """
-        if not custom_reader:
-            self.ctx.get_input_fields(source_path)
+        writer = PyPDF2.PdfFileWriter()
+        for i in range(reader.getNumPages()):
+            page = reader.getPage(i)
+            try:
+                writer.addPage(page)
+            except Exception as e:  # pylint: disable=W0703
+                self.logger.warning(repr(e))
+                writer.addPage(page)
 
-        if self.ctx.active_pdf_document.fields:
-            self.logger.info("Saving PDF with input fields")
-            self.ctx.update_field_values(
-                source_path, output_path, self.ctx.active_pdf_document.fields
-            )
-        else:
-            self.logger.info("Saving PDF")
-            self.switch_to_pdf(source_path)
-            if custom_reader:
-                reader = custom_reader
-            else:
-                reader = PyPDF2.PdfFileReader(
-                    self.ctx.active_pdf_document.fileobject, strict=False
-                )
-            writer = PyPDF2.PdfFileWriter()
-
-            for i in range(reader.getNumPages()):
-                page = reader.getPage(i)
-                try:
-                    writer.addPage(page)
-                except Exception as e:  # pylint: disable=W0703
-                    self.logger.warning(repr(e))
-                    writer.addPage(page)
-
-            if output_path is None:
-                output_path = self.ctx.active_pdf_path
-            with open(output_path, "wb") as f:
-                writer.write(f)
+        with open(output_path, "wb") as f:
+            writer.write(f)
