@@ -384,7 +384,7 @@ class ModelKeywords(LibraryContext):
         """Parse source PDF into entities which can be
         used for text searches, for example.
 
-        This is used internally in the library.
+        This is also used inside other PDF keywords.
 
         **Examples**
 
@@ -594,15 +594,13 @@ class ModelKeywords(LibraryContext):
                     "not found in the document" % field_name
                 )
         if save:
-            self.update_field_values(None, None, self.ctx.active_pdf_document.fields)
+            self.save_field_values(None, None, self.ctx.active_pdf_document.fields)
 
     @keyword
-    def update_field_values(
+    def save_field_values(
         self, source_path: str = None, output_path: str = None, newvals: dict = None
     ) -> None:
-        """Update field values in PDF if it has fields.
-
-        This is used internally in the library.
+        """Save field values in PDF if it has fields.
 
         **Examples**
 

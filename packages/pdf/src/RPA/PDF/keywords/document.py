@@ -820,17 +820,12 @@ class DocumentKeywords(LibraryContext):
         :param coverage: [description], defaults to 0.2
         :raises ValueError: [description]
         """
-        if source_path is None and self.ctx.active_pdf_document.fileobject.path:
-            source_path = self.active_pdf_document.path
-        elif (
-            source_path is None and self.ctx.active_pdf_document.fileobject.path is None
-        ):
-            raise ValueError("No source PDF exists")
+        self.switch_to_pdf(source_path)
         temp_pdf = os.path.join(tempfile.gettempdir(), "temp.pdf")
         writer = PyPDF2.PdfFileWriter()
         pdf = FPDF()
         pdf.add_page()
-        reader = PyPDF2.PdfFileReader(source_path)
+        reader = self.ctx.active_pdf_document.reader
         mediabox = reader.getPage(0).mediaBox
         im = Image.open(image_path)
         max_width = int(float(mediabox.getWidth()) * coverage)
@@ -870,7 +865,6 @@ class DocumentKeywords(LibraryContext):
 
         return width, height
 
-    @keyword
     def save_pdf(
         self,
         output_path: str,

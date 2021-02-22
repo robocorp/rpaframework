@@ -197,17 +197,6 @@ def test_fit_dimensions_to_box(width, height, exp_width, exp_height):
     assert fitted_height == exp_height
 
 
-def test_save_pdf(library):
-    reader = PyPDF2.PdfFileReader(str(TestFiles.vero_pdf))
-
-    with temp_filename() as tmp_file:
-        library.save_pdf(tmp_file, reader)
-        expected = library.get_text_from_pdf(TestFiles.vero_pdf)
-        result = library.get_text_from_pdf(tmp_file)
-
-        assert result == expected
-
-
 def test_close_pdf(library):
     library.open_pdf(TestFiles.vero_pdf)
 
