@@ -2,7 +2,6 @@ import os
 import tempfile
 from pathlib import Path
 from typing import (
-    Any,
     List,
     Tuple,
     Union,
@@ -22,6 +21,9 @@ from RPA.PDF.keywords import (
 from .model import Document
 
 
+ListOrString = Union[List[int], List[str], str, None]
+
+
 class PDF(FPDF, HTMLMixin):
     """
     FDPF helper class.
@@ -36,7 +38,6 @@ class DocumentKeywords(LibraryContext):
 
     def __init__(self, ctx):
         super().__init__(ctx)
-        self.fpdf = PDF()
         self._output_directory = Path("./output/")
         self.default_output = Path(self._output_directory / "output.pdf")
 
@@ -52,7 +53,6 @@ class DocumentKeywords(LibraryContext):
     def close_all_pdfs(self) -> None:
         """Close all opened PDF file descriptors."""
         file_paths = list(self.ctx.fileobjects.keys())
-        # for filename, _ in self.ctx.fileobjects.items():
         for filename in file_paths:
             self.close_pdf(filename)
 
@@ -222,11 +222,11 @@ class DocumentKeywords(LibraryContext):
 
     def _write_html_to_pdf(self, html: str, output_path: str) -> None:
         self.logger.info("Writing output to file %s", output_path)
-        self.fpdf.add_page()
-        self.fpdf.write_html(html)
-        self.fpdf.output(name=output_path)
-        # self.__init__()  # TODO: what should happen here exactly?
-        self.fpdf = PDF()
+        fpdf = PDF()
+        fpdf.add_page()
+        fpdf.write_html(html)
+        fpdf.output(name=output_path)
+        fpdf = PDF()
 
     @keyword
     def get_pdf_info(self, source_path: str = None) -> dict:
@@ -417,7 +417,7 @@ class DocumentKeywords(LibraryContext):
 
     @keyword
     def get_text_from_pdf(
-        self, source_path: str = None, pages: Any = None, details: bool = False
+        self, source_path: str = None, pages: ListOrString = None, details: bool = False
     ) -> dict:
         """Get text from set of pages in source PDF document.
 
@@ -457,12 +457,12 @@ class DocumentKeywords(LibraryContext):
         if not self.active_pdf_document.is_converted:
             self.ctx.convert()
 
-        if pages and not isinstance(pages, list):
-            pages = pages.split(",")
-        if pages is not None:
-            pages = list(map(int, pages))
+        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
+        pages = self._get_page_numbers(pages, reader)
         pdf_text = {}
         for idx, page in self.active_pdf_document.get_pages().items():
+            if page.pageid not in pages:
+                continue
             pdf_text[idx] = [] if details else ""
             for _, item in page.get_textboxes().items():
                 if details:
@@ -473,7 +473,10 @@ class DocumentKeywords(LibraryContext):
 
     @keyword
     def extract_pages_from_pdf(
-        self, source_path: str = None, output_path: str = None, pages: Any = None
+        self,
+        source_path: str = None,
+        output_path: str = None,
+        pages: ListOrString = None,
     ) -> None:
         """Extract pages from source PDF and save to a new PDF document.
 
@@ -524,11 +527,7 @@ class DocumentKeywords(LibraryContext):
 
         output_filepath = Path(output_path) if output_path else self.default_output
 
-        if pages and not isinstance(pages, list):
-            pages = pages.split(",")
-        elif pages is None:
-            pages = range(reader.getNumPages())
-        pages = list(map(int, pages))
+        pages = self._get_page_numbers(pages, reader)
         for pagenum in pages:
             writer.addPage(reader.getPage(int(pagenum) - 1))
         with open(str(output_filepath), "wb") as f:
@@ -537,7 +536,7 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def rotate_page(
         self,
-        pages: Union[List[int], int],
+        pages: ListOrString,
         source_path: str = None,
         output_path: str = None,
         clockwise: bool = True,
@@ -592,13 +591,10 @@ class DocumentKeywords(LibraryContext):
 
         output_filepath = Path(output_path) if output_path else self.default_output
 
-        if not isinstance(pages, list):
-            pagelist = [pages]
-        else:
-            pagelist = pages
+        pages = self._get_page_numbers(pages, reader)
         for page in range(reader.getNumPages()):
             source_page = reader.getPage(int(page))
-            if page in pagelist:
+            if page in pages:
                 if clockwise:
                     source_page.rotateClockwise(int(angle))
                 else:
@@ -896,3 +892,22 @@ class DocumentKeywords(LibraryContext):
 
         with open(output_path, "wb") as f:
             writer.write(f)
+
+    @staticmethod
+    def _get_page_numbers(
+        pages: ListOrString = None, reader: PyPDF2.PdfFileReader = None
+    ) -> List[int]:
+        """
+        Resolve page numbers argument to a list.
+        """
+        if not pages and not reader:
+            raise ValueError("Need a reader instance or explicit page numbers")
+
+        if pages and isinstance(pages, str):
+            pages = pages.split(",")
+        elif pages and isinstance(pages, int):
+            pages = [pages]
+        elif reader and not pages:
+            pages = range(1, reader.getNumPages() + 1)
+
+        return list(map(int, pages))

@@ -1,3 +1,5 @@
+from contextlib import nullcontext as does_not_raise
+
 import PyPDF2
 import pytest
 
@@ -228,3 +230,22 @@ def test_close_all_pdfs(library):
     library.close_all_pdfs()
 
     assert not library.active_pdf_document
+
+
+@pytest.mark.parametrize(
+    "pages, reader, expected_value, expected_behaviour",
+    [
+        ([1], None, [1], does_not_raise()),
+        ([1,2,3], None, [1,2,3], does_not_raise()),
+        (1, None, [1], does_not_raise()),
+        ("1", None, [1], does_not_raise()),
+        ("1,2,3", None, [1, 2, 3], does_not_raise()),
+        (None, PyPDF2.PdfFileReader(str(TestFiles.loremipsum_pdf)), [1], does_not_raise()),
+        (None, None, None, pytest.raises(ValueError))
+    ],
+)
+def test_get_page_numbers(pages, reader, expected_value, expected_behaviour):
+    with expected_behaviour:
+        result = DocumentKeywords._get_page_numbers(pages, reader)
+
+        assert result == expected_value
