@@ -318,9 +318,9 @@ class DocumentKeywords(LibraryContext):
         :param source_path: filepath to the source pdf.
         :return: True if file is encrypted.
         """
-        # TODO: Why "Returns True even if PDF was decrypted."??
+        # TODO: Why "Returns True even if PDF was decrypted."?
         self.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
+        reader = self.ctx.active_pdf_document.reader
         return reader.isEncrypted
 
     @keyword
@@ -357,7 +357,7 @@ class DocumentKeywords(LibraryContext):
         :raises PdfReadError: if file is encrypted or other restrictions are in place
         """
         self.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
+        reader = self.ctx.active_pdf_document.reader
         return reader.getNumPages()
 
     @keyword
@@ -457,7 +457,7 @@ class DocumentKeywords(LibraryContext):
         if not self.active_pdf_document.is_converted:
             self.ctx.convert()
 
-        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
+        reader = self.ctx.active_pdf_document.reader
         pages = self._get_page_numbers(pages, reader)
         pdf_text = {}
         for idx, page in self.active_pdf_document.get_pages().items():
@@ -522,7 +522,7 @@ class DocumentKeywords(LibraryContext):
             if None then extracts all pages.
         """
         self.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
+        reader = self.ctx.active_pdf_document.reader
         writer = PyPDF2.PdfFileWriter()
 
         output_filepath = Path(output_path) if output_path else self.default_output
@@ -586,7 +586,7 @@ class DocumentKeywords(LibraryContext):
         """
         # TODO: don't save to a new file every time
         self.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
+        reader = self.ctx.active_pdf_document.reader
         writer = PyPDF2.PdfFileWriter()
 
         output_filepath = Path(output_path) if output_path else self.default_output
@@ -653,7 +653,7 @@ class DocumentKeywords(LibraryContext):
         """
         # TODO: don't save to a new file every time
         self.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
+        reader = self.ctx.active_pdf_document.reader
 
         output_filepath = Path(output_path) if output_path else self.default_output
 
@@ -704,7 +704,7 @@ class DocumentKeywords(LibraryContext):
         output_path = Path(output_path) if output_path else self.default_output
 
         self.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
+        reader = self.ctx.active_pdf_document.reader
         try:
             match_result = reader.decrypt(password)
 
