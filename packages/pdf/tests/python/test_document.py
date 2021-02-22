@@ -225,12 +225,17 @@ def test_close_all_pdfs(library):
     "pages, reader, expected_value, expected_behaviour",
     [
         ([1], None, [1], does_not_raise()),
-        ([1,2,3], None, [1,2,3], does_not_raise()),
+        ([1, 2, 3], None, [1, 2, 3], does_not_raise()),
         (1, None, [1], does_not_raise()),
         ("1", None, [1], does_not_raise()),
         ("1,2,3", None, [1, 2, 3], does_not_raise()),
-        (None, PyPDF2.PdfFileReader(str(TestFiles.loremipsum_pdf)), [1], does_not_raise()),
-        (None, None, None, pytest.raises(ValueError))
+        (
+            None,
+            PyPDF2.PdfFileReader(str(TestFiles.loremipsum_pdf)),
+            [1],
+            does_not_raise(),
+        ),
+        (None, None, None, pytest.raises(ValueError)),
     ],
 )
 def test_get_page_numbers(pages, reader, expected_value, expected_behaviour):
