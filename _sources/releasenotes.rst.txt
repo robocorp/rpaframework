@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+7.6.0
+-----
+
 - Library **RPA.Outlook.Application**: Fix ``ActiveDocument`` bug when closing Outlook
 - Library **RPA.Email.ImapSmtp**: Convert non-literal values in ``List Messages`` response to strings
 - Library **RPA.Desktop.Windows**: Add keyword ``Set Automation Speed``
