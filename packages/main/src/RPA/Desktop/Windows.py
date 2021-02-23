@@ -1,4 +1,6 @@
 # pylint: disable=c-extension-no-member
+# pylint: disable=too-many-lines
+from enum import Enum
 import json
 import logging
 import os
@@ -68,6 +70,26 @@ WINDOWS_LOCATOR_STRATEGIES = {
     "partial name": "partial name",
     "regexp": "regexp",
 }
+
+
+class Speed(Enum):
+    """Values for pywinauto Timings"""
+
+    DEFAULT = 1
+    SLOW = 2
+    FAST = 3
+
+
+def to_speed(value):
+    """Convert value to Speed enum."""
+    if isinstance(value, Speed):
+        return value
+
+    sanitized = str(value).lower().strip().replace(" ", "_")
+    try:
+        return Speed[sanitized]
+    except KeyError as err:
+        raise ValueError(f"Unknown speed: {value}") from err
 
 
 class Windows(OperatingSystem):
@@ -1965,3 +1987,17 @@ class Windows(OperatingSystem):
             locators.append(["automation_id", locator])
             locators.append([search_criteria, locator])
         return match_type, locators
+
+    def set_automation_speed(self, speed: Speed = Speed.DEFAULT):
+        """Set global automation timings
+
+        :param speed: possible values 'default', 'fast' or 'slow'
+        """
+        speed = to_speed(speed)
+
+        if speed == Speed.DEFAULT:
+            pywinauto.timings.Timings.defaults()
+        elif speed == Speed.SLOW:
+            pywinauto.timings.Timings.slow()
+        elif speed == Speed.FAST:
+            pywinauto.timings.Timings.fast()
