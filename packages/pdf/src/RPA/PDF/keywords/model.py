@@ -483,11 +483,11 @@ class ModelKeywords(LibraryContext):
             fields = pdfminer.pdftypes.resolve1(source_document.catalog["AcroForm"])[
                 "Fields"
             ]
-        except KeyError:
-            self.logger.info(
-                'PDF "%s" does not have any input fields.', self.ctx.active_pdf_path
-            )
-            return None
+        except KeyError as err:
+            raise KeyError(
+                'PDF "%s" does not have any input fields.'
+                % self.ctx.active_pdf_document.path
+            ) from err
 
         for i in fields:
             field = pdfminer.pdftypes.resolve1(i)
@@ -525,7 +525,7 @@ class ModelKeywords(LibraryContext):
 
     @keyword
     def set_field_value(
-        self, field_name: str, value: Any, source_path: str = None, save: bool = False
+        self, field_name: str, value: Any, source_path: str = None
     ) -> None:
         """Set value for field with given name on the active document.
 
@@ -542,7 +542,9 @@ class ModelKeywords(LibraryContext):
 
             ***Tasks***
             Example Keyword
+                Open PDF    ./tmp/sample.pdf
                 Set Field Value    phone_nr    077123123
+                Save Field Values    output_path=./tmp/output.pdf
 
         **Python**
 
@@ -553,7 +555,9 @@ class ModelKeywords(LibraryContext):
             pdf = PDF()
 
             def example_keyword():
-                pdf.set_field_value(phone_nr, 077123123)
+                pdf.open_pdf("./tmp/sample.pdf")
+                pdf.set_field_value("phone_nr", "077123123")
+                pdf.save_field_values(output_path="./tmp/output.pdf")
 
         :param field_name: field to update.
         :param value: new value for the field.
@@ -593,12 +597,14 @@ class ModelKeywords(LibraryContext):
                     "Unable to set field value - field name: '%s' "
                     "not found in the document" % field_name
                 )
-        if save:
-            self.save_field_values(None, None, self.ctx.active_pdf_document.fields)
 
     @keyword
     def save_field_values(
-        self, source_path: str = None, output_path: str = None, newvals: dict = None
+        self,
+        source_path: str = None,
+        output_path: str = None,
+        newvals: dict = None,
+        use_appearances_writer: bool = False,
     ) -> None:
         """Save field values in PDF if it has fields.
 
@@ -613,7 +619,17 @@ class ModelKeywords(LibraryContext):
 
             ***Tasks***
             Example Keyword
-                Update Field Values    /tmp/sample.pdf  output/edited.pdf
+                Open PDF    ./tmp/sample.pdf
+                Set Field Value    phone_nr    077123123
+                Save Field Values    output_path=./tmp/output.pdf
+
+            Multiple operations
+                &{new_fields}=       Create Dictionary
+                ...                  phone_nr=077123123
+                ...                  title=dr
+                Save Field Values    source_path=./tmp/sample.pdf
+                ...                  output_path=./tmp/output.pdf
+                ...                  newvals=${new_fields}
 
         **Python**
 
@@ -624,15 +640,30 @@ class ModelKeywords(LibraryContext):
             pdf = PDF()
 
             def example_keyword():
-                figures = pdf.update_field_values(
-                    "/tmp/sample.pdf",
-                    "/output/edited.pdf"
+                pdf.open_pdf("./tmp/sample.pdf")
+                pdf.set_field_value("phone_nr", "077123123")
+                pdf.save_field_values(output_path="./tmp/output.pdf")
+
+            def multiple_operations():
+                new_fields = {"phone_nr": "077123123", "title": "dr"}
+                pdf.save_field_values(
+                    source_path="./tmp/sample.pdf",
+                    output_path="./tmp/output.pdf",
+                    newvals=new_fields
                 )
 
         :param source_path: source PDF with fields to update.
         :param output_path: updated target PDF.
-        :param newvals: dictionary with key values to update.
+        :param newvals: new values when updating many at once.
+        :param use_appearances_writer: for some PDF documents the updated
+            fields won't show visible. Try to set this to `True` if you
+            encounter problems.
         """
+        # NOTE:
+        # The resulting PDF will be a mutated version of the original PDF,
+        # and it won't necessarily show correctly in all document viewers.
+        # It also won't show anymore as having fields at all.
+        # The tests will XFAIL for the time being.
         self.ctx.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(
             self.ctx.active_pdf_document.fileobject, strict=False
@@ -647,31 +678,28 @@ class ModelKeywords(LibraryContext):
             )
         writer = PyPDF2.PdfFileWriter()
 
-        self._set_need_appearances_writer(writer)
+        if use_appearances_writer:
+            writer = self._set_need_appearances_writer(writer)
 
         for i in range(reader.getNumPages()):
             page = reader.getPage(i)
             try:
                 if newvals:
                     self.logger.debug("Updating form field values for page %s", i)
-                    updatedFields = {
-                        k: v["value"] if v["value"] else ""
-                        for (k, v) in newvals.items()
-                    }
-                    writer.updatePageFormFieldValues(page, fields=updatedFields)
+                    updated_fields = newvals
                 elif self.ctx.active_pdf_document.fields:
-                    updatedFields = {
+                    updated_fields = {
                         k: v["value"] if v["value"] else ""
                         for (k, v) in self.ctx.active_pdf_document.fields.items()
                     }
-                    writer.updatePageFormFieldValues(page, fields=updatedFields)
+                writer.updatePageFormFieldValues(page, fields=updated_fields)
                 writer.addPage(page)
             except Exception as e:  # pylint: disable=W0703
                 self.logger.warning(repr(e))
                 writer.addPage(page)
 
         if output_path is None:
-            output_path = self.ctx.active_pdf_path
+            output_path = self.ctx.active_pdf_document.path
         with open(output_path, "wb") as f:
             writer.write(f)
 
@@ -694,11 +722,10 @@ class ModelKeywords(LibraryContext):
 
             need_appearances = PyPDF2.generic.NameObject("/NeedAppearances")
             catalog["/AcroForm"][need_appearances] = PyPDF2.generic.BooleanObject(True)
-            # del writer._root_object["/AcroForm"]['NeedAppearances']
             return writer
 
-        except Exception as e:  # pylint: disable=broad-except
-            print("set_need_appearances_writer() catch : ", repr(e))
+        except Exception:  # pylint: disable=broad-except
+            self.logger.exception()
             return writer
 
     @keyword

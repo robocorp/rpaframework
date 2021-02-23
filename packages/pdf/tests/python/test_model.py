@@ -42,22 +42,52 @@ def test_set_field_value(library):
     assert fields["Puhelinnumero"]["value"] == new_number
 
 
-@pytest.mark.xfail(reason="known issue of reading fields of already updated pdf")
-def test_update_field_values(library):
-    update_fields = {"Puhelinnumero": "10-1231233", "Paivays": "01.01.2020"}
+@pytest.mark.xfail(reason="Known issue: PDF won't show as having fields after saving")
+def test_save_field_values_fields_exist(library):
+    new_number = "12313123"
+    new_date = "01.04.2021"
 
     with temp_filename() as tmp_file:
-        original_fields = library.get_input_fields(TestFiles.vero_pdf)
-        library.update_field_values(TestFiles.vero_pdf, tmp_file, update_fields)
+        library.open_pdf(TestFiles.vero_pdf)
+        library.set_field_value("Puhelinnumero", new_number)
+        library.set_field_value("Paivays", new_date)
+        library.save_field_values(output_path=tmp_file)
+        fields = library.get_input_fields(tmp_file)
 
-        # FIXME: this returns None, but it shouldn't!
-        updated_fields = library.get_input_fields(tmp_file)
+        assert fields["Puhelinnumero"] == "12313123"
+        assert fields["Paivays"] == "01.04.2021"
 
-        assert original_fields["Puhelinnumero"]["value"] == ""
-        assert (
-            updated_fields["Puhelinnumero"]["value"] == update_fields["Puhelinnumero"]
+
+@pytest.mark.xfail(reason="Known issue: Field values won't show in text body")
+def test_save_field_values_text_exists(library):
+    new_number = "12313123"
+    new_date = "01.04.2021"
+
+    with temp_filename() as tmp_file:
+        library.open_pdf(TestFiles.vero_pdf)
+        library.set_field_value("Puhelinnumero", new_number)
+        library.set_field_value("Paivays", new_date)
+        library.save_field_values(output_path=tmp_file)
+        text = library.get_text_from_pdf(tmp_file)
+
+        assert new_number in text[2]
+        assert new_date in text[2]
+
+
+@pytest.mark.xfail(reason="Known issue: PDF won't show as having fields after saving")
+def test_save_field_values_multiple_updates_in_one_operation(library):
+    new_fields = {
+        "Puhelinnumero": "12313123",
+        "Paivays": "01.04.2021",
+    }
+    with temp_filename() as tmp_file:
+        library.save_field_values(
+            source_path=TestFiles.vero_pdf, output_path=tmp_file, newvals=new_fields
         )
-        assert updated_fields["Paivays"]["value"] == update_fields["Paivays"]
+        fields = library.get_input_fields(tmp_file)
+
+        assert fields["Puhelinnumero"] == "12313123"
+        assert fields["Paivays"] == "01.04.2021"
 
 
 def test_dump_pdf_as_xml(library):
