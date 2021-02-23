@@ -198,7 +198,10 @@ class ImapSmtp:
                 self.smtp_conn = None
 
         if self.imap_conn:
-            self.imap_conn.logout()
+            try:
+                self.imap_conn.logout()
+            except Exception:  # pylint: disable=W0703
+                pass
             self.imap_conn = None
 
     def set_credentials(self, account: str = None, password: str = None) -> None:
