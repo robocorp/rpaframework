@@ -256,6 +256,28 @@ set self.__traceback__ to tb and return self.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="RPA.Desktop.Windows.Speed">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">Speed</code><a class="headerlink" href="#RPA.Desktop.Windows.Speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Values for pywinauto Timings</p>
+<dl class="attribute">
+<dt id="RPA.Desktop.Windows.Speed.DEFAULT">
+<code class="sig-name descname">DEFAULT</code><em class="property"> = 1</em><a class="headerlink" href="#RPA.Desktop.Windows.Speed.DEFAULT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Desktop.Windows.Speed.FAST">
+<code class="sig-name descname">FAST</code><em class="property"> = 3</em><a class="headerlink" href="#RPA.Desktop.Windows.Speed.FAST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Desktop.Windows.Speed.SLOW">
+<code class="sig-name descname">SLOW</code><em class="property"> = 2</em><a class="headerlink" href="#RPA.Desktop.Windows.Speed.SLOW" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="exception">
 <dt id="RPA.Desktop.Windows.UnknownWindowsBackendError">
 <em class="property">exception </em><code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">UnknownWindowsBackendError</code><a class="headerlink" href="#RPA.Desktop.Windows.UnknownWindowsBackendError" title="Permalink to this definition">¶</a></dt>
@@ -1410,6 +1432,17 @@ At the end of ENTER there is by default 1.5 second delay.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Desktop.Windows.Windows.set_automation_speed">
+<code class="sig-name descname">set_automation_speed</code><span class="sig-paren">(</span><em class="sig-param">speed: RPA.Desktop.Windows.Speed = &lt;Speed.DEFAULT: 1&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.Windows.set_automation_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set global automation timings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>speed</strong> – possible values ‘default’, ‘fast’ or ‘slow’</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.set_windows_backend">
 <code class="sig-name descname">set_windows_backend</code><span class="sig-paren">(</span><em class="sig-param">backend: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.set_windows_backend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Windows backend which is used to interact with Windows
@@ -1511,6 +1544,12 @@ defaults to 2.0 seconds (minimum is 0.5 seconds)</p></li>
 </div>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Desktop.Windows.to_speed">
+<code class="sig-prename descclassname">RPA.Desktop.Windows.</code><code class="sig-name descname">to_speed</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Windows.to_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert value to Speed enum.</p>
 </dd></dl>
 
 <dl class="function">
