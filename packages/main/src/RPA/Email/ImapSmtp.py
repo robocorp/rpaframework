@@ -748,8 +748,18 @@ class ImapSmtp:
         result = self._do_actions_on_messages(
             criterion, source_folder=source_folder, actions=[Action.msg_list]
         )
-        self.logger.info(result)
-        return result["uids"].values()
+        values = result["uids"].values()
+        converted = []
+        for v in values:
+            converted.append(
+                {
+                    str(key): value
+                    if isinstance(value, (str, bool, int))
+                    else str(value)
+                    for key, value in v.items()
+                }
+            )
+        return converted
 
     @imap_connection
     def save_attachments(
