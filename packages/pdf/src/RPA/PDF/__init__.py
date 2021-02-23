@@ -1,6 +1,8 @@
 import logging
 from robotlibcore import DynamicCore
 
+from RPA.core.RobotLogListener import RobotLogListener
+
 from RPA.PDF.keywords import DocumentKeywords, FinderKeywords, ModelKeywords
 
 
@@ -70,6 +72,5 @@ class PDF(DynamicCore):
         ]
         super().__init__(libraries)
 
-        # TODO: how to use this RPA.main keyword library
-        # listener = RobotLogListener()
-        # listener.register_protected_keywords(["RPA.PDF.decrypt"])
+        listener = RobotLogListener()
+        listener.register_protected_keywords(["RPA.PDF.decrypt"])
