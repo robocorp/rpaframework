@@ -10,8 +10,14 @@ class PDF(DynamicCore):
     It can be used to extract text from PDFs,
     add watermarks to pages, and decrypt/encrypt documents.
 
+    There is also limited support for updating form field values.
 
-    Usage example:
+    Input PDF file can be passed as an argument to the keywords,
+    or it can be omitted if you first call `Open PDF`. Reference
+    to the current active PDF will be stored in the library instance.
+
+
+    **Examples**
 
     **Robot Framework**
 
@@ -28,7 +34,7 @@ class PDF(DynamicCore):
             Open PDF    ./tmp/sample.pdf
             Set Field Value    phone_nr   080123123
             Set Field Value    address    robot street 14
-            Save Field Values
+            Save Field Values  output_path=output.pdf
 
 
     .. code-block:: python
@@ -44,7 +50,7 @@ class PDF(DynamicCore):
             pdf.open_pdf("./tmp/sample.pdf")
             pdf.set_field_value("phone_nr", 080123123)
             pdf.set_field_value("address", "robot street 14")
-            pdf.save_field_values()
+            pdf.save_field_values(output_path="output.pdf")
 
     """
 
