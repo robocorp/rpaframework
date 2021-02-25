@@ -445,23 +445,23 @@ class ServiceTextract(AWSBase):
             self.tables[idx] = table
 
     def get_tables(self):
-        """[summary]
+        """Get parsed tables from the response
 
-        :return: [description]
+        :return: tables
         """
         return self.tables
 
     def get_words(self):
-        """[summary]
+        """Get parsed words from the response
 
-        :return: [description]
+        :return: words
         """
         return self.words
 
     def get_cells(self):
-        """[summary]
+        """Get parsed cells from the response
 
-        :return: [description]
+        :return: cells
         """
         return self.cells
 
