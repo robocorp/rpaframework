@@ -810,6 +810,8 @@ class Table:
     def filter_by_column(self, column, condition):
         """Remove rows by evaluating `condition` for all `column`
         values. All rows where it evaluates to falsy are removed.
+
+        The filtering will be done in-place.
         """
         filtered = []
         for index in self.index:
@@ -1349,7 +1351,10 @@ class Tables:
         return groups
 
     def filter_table_by_column(self, table, column, operator, value):
-        """Return all rows where the column values match the given condition.
+        """Remove all rows where the column values don't match the
+        given condition.
+
+        The filtering will be done in-place.
 
         :param table:       table to filter
         :param column:      column to filter with
@@ -1379,6 +1384,8 @@ class Tables:
 
     def filter_empty_rows(self, table):
         """Remove all rows from the table which have only None values.
+
+        The filtering will be done in-place.
 
         :param table:   table to filter
         """
