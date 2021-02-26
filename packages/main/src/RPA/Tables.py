@@ -1351,7 +1351,8 @@ class Tables:
         return groups
 
     def filter_table_by_column(self, table, column, operator, value):
-        """Find all rows where the column values match the given condition.
+        """Remove all rows where the column values don't match the
+        given condition.
 
         The filtering will be done in-place.
 
