@@ -1,3 +1,4 @@
+import atexit
 import base64
 import importlib
 import json
@@ -6,9 +7,10 @@ import os
 import platform
 import time
 import traceback
+from collections import OrderedDict
 from functools import partial
 from itertools import product
-from typing import Any, Optional
+from typing import Any, Optional, List
 from pathlib import Path
 import webbrowser
 
@@ -356,7 +358,6 @@ class Selenium(SeleniumLibrary):
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "ROBOT"
 
-    AUTOMATIC_BROWSER_SELECTION = "AUTO"
     AVAILABLE_OPTIONS = {
         "chrome": "ChromeOptions",
         "firefox": "FirefoxOptions",
@@ -365,7 +366,8 @@ class Selenium(SeleniumLibrary):
     }
 
     def __init__(self, *args, **kwargs) -> None:
-        # We need to pop this from kwargs before passing kwargs to SeleniumLibrary
+        # We need to pop our kwargs before passing kwargs to SeleniumLibrary
+        self.auto_close = kwargs.pop("auto_close", True)
         self.locators_path = kwargs.pop("locators_path", None)
 
         # Parse user-given plugins
@@ -387,13 +389,31 @@ class Selenium(SeleniumLibrary):
         # Add support for locator aliases
         self._element_finder.register("alias", self._find_by_alias, persist=True)
 
-        self._embedding_screenshots = False
-        self._previous_screenshot_directory = None
         # Embed screenshots in logs by default
         if not notebook.IPYTHON_AVAILABLE:
             self._embedding_screenshots = True
             self._previous_screenshot_directory = self.set_screenshot_directory(EMBED)
+        else:
+            self._embedding_screenshots = False
+            self._previous_screenshot_directory = None
+
         self.download_preferences = {}
+        self._close_on_exit()
+
+    def _close_on_exit(self):
+        """Register function to clean leftover webdrivers on process exit."""
+        connections = self._drivers._connections  # pylint: disable=protected-access
+
+        def stop_drivers():
+            if not self.auto_close:
+                return
+            for driver in connections:
+                try:
+                    driver.service.stop()
+                except Exception:  # pylint: disable=broad-except
+                    pass
+
+        atexit.register(stop_drivers)
 
     @property
     def location(self) -> str:
@@ -417,86 +437,132 @@ class Selenium(SeleniumLibrary):
     @keyword
     def open_available_browser(
         self,
-        url: str,
+        url: Optional[str] = None,
         use_profile: bool = False,
-        headless: Optional[bool] = None,
+        headless: Any = "AUTO",
         maximized: bool = False,
-        browser_selection: Any = AUTOMATIC_BROWSER_SELECTION,
+        browser_selection: Any = "AUTO",
         alias: Optional[str] = None,
         profile_name: Optional[str] = None,
         profile_path: Optional[str] = None,
         preferences: Optional[dict] = None,
         proxy: str = None,
         user_agent: Optional[str] = None,
+        download: Any = "AUTO",
     ) -> int:
         # pylint: disable=C0301
-        """Opens the first available browser in the system in preferred order, or the
-        given browser (``browser_selection``).
+        """Attempts to open a browser on the user's device from a set of
+        supported browsers. Automatically downloads a corresponding webdriver
+        if none is already installed.
 
-        ``url`` URL to open
+        Optionally can be given a ``url`` as the first argument,
+        to open the browser directly to the given page.
 
-        ``use_profile`` Set browser profile, default ``False`` (Chrome/Chromium only)
+        Returns either a generated index or a custom ``alias`` for the
+        browser instance. The returned value can be used to refer to that
+        specific browser instance in other keywords.
 
-        ``headless`` Run in headless mode, default ``False``
+        If the browser should start in a maximized window, this can be
+        enabled with the argument ``maximized``, but is disabled by default.
 
-        ``maximized`` Run window maximized, default ``False``
-
-        ``browser_selection`` browser name, default ``AUTOMATIC_BROWSER_SELECTION``
-
-        ``alias`` Custom name for browser
-
-        ``profile_name`` Name of profile (if profile enabled)
-
-        ``profile_path`` Path to profiles (if profile enabled)
-
-        ``preferences`` Profile preferences (Chrome/Chromium only)
-
-        ``proxy`` Proxy server address (Chrome only)
-
-        ``user_agent`` Set useragent string for browser
-
-        Returns an index of the webdriver session.
-
-        === Process of opening a browser ===
-
-        1. Get the order of browsers
-
-        2. Loop the list of preferred browsers
-
-            a. Set the webdriver options for the browser
-
-            b. Create the webdriver using existing installation
-
-            c. (If step b. failed) Download and install webdriver, try again
-
-            d. (If step c. failed) Try starting webdriver in headless mode
-
-        3. Open the URL
-
-        Returns index or custom alias for the browser instance.
-
-        Raises ``BrowserNotFoundError`` if unable to open the browser.
-
-        For information about Safari webdriver setup, see
-        https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari
+        For certain applications it might also be required to force a
+        certain user-agent string for Selenium, which can be overriden
+        with the ``user_agent`` argument.
 
         Example:
 
-        | ${idx1} | Open Available Browser | https://www.robocorp.com |
-        | ${idx2} | Open Available Browser | ${URL} | browser_selection=opera,firefox |
-        | Open Available Browser | ${URL} | headless=True | proxy=localhost:8899 |
+        | Open Available Browser | https://www.robocorp.com |
+        | ${index}= | Open Available Browser | ${URL} | browser_selection=opera,firefox |
+        | Open Available Browser | ${URL} | headless=True | alias=HeadlessBrowser |
+
+        == Browser order ==
+
+        The default order of supported browsers is based on the operating system
+        and is as follows:
+
+        | Platform    | Default order                    |
+        | ``Windows`` | Chrome, Firefox, Edge, IE, Opera |
+        | ``Linux``   | Chrome, Firefox, Opera           |
+        | ``Darwin``  | Chrome, Safari, Firefox, Opera   |
+
+        The order can be overriden with a custom list with using the argument
+        ``browser_selection``. The argument can be either a comma-separated
+        string or a list object.
+
+        == Webdriver download ==
+
+        The library can (if requested) automatically download webdrivers
+        for all used browsers. This can be controlled with the argument
+        ``download``.
+
+        If the value is ``False``, it will only attempt to start
+        webdrivers found from the system PATH.
+
+        If the value is ``True``, it will download a webdriver that matches
+        the current browser.
+
+        By default the argument has the value ``AUTO``, which means it
+        first attempts to use webdrivers found in PATH and if that fails
+        forces a webdriver download.
+
+        == Opening process ==
+
+        1. Parse list of preferred browser order. If not given, use values
+           from above table.
+
+        2. Loop through listed browsers:
+
+            a. Set the webdriver options for the browser.
+
+            b. Download webdriver (if requested).
+
+            c. Attempt to launch the webdriver and stop the loop if successful.
+
+        3. Return index/alias if webdriver was created, or raise an exception
+           if no browsers were successfully opened.
+
+        == Headless mode ==
+
+        If required, the browser can also run `headless`, which means that
+        it does not create a visible window. Generally a headless browser is
+        slightly faster, but might not support all features a normal browser does.
+
+        One typical use-case for headless mode is in cloud containers,
+        where there is no display available. It also prevents manual interaction
+        with the browser, which can be either a benefit or a drawback depending on
+        the context.
+
+        It can be explicitly enabled or disabled with the argument ``headless``.
+        By default it will be disabled, unless it detects that it is running
+        in a Linux environment without a display, i.e. a container.
+
+        == Chrome options ==
+
+        Some features are currently available for Chrome/Chromium.
+        This includes using an existing user profile. By default Selenium
+        uses a new profile for each session, but it can use the an existing
+        one by enabling the ``use_profile`` argument.
+
+        If a custom profile is stored somewhere outside of the default location,
+        the path to the profiles directory and the name of the profile can
+        be controlled with ``profile_path`` and ``profile_name`` respectively.
+
+        Profile preferences can be further overriden with the ``preferences``
+        argument by giving a dictionary of key/value pairs.
+
+        Chrome can additionally connect through a ``proxy``, which
+        should be given as either local or remote address.
         """  # noqa: E501
         # pylint: disable=redefined-argument-from-local
-        browser_options = self._get_browser_order(browser_selection)
-        headless_options = [headless] if headless is not None else [False, True]
-        download_options = [False, True]
+        browsers = self._arg_browser_selection(browser_selection)
+        downloads = self._arg_download(download)
+        headless = self._arg_headless(headless)
 
-        # Try a combination of all options until a browser starts
+        attempts = []
         index_or_alias = None
-        options = []
-        for browser, headless, download in product(
-            browser_options, headless_options, download_options
-        ):
+
+        # Try all browsers in preferred order
+        for browser, download in product(browsers, downloads):
             try:
                 self.logger.debug(
                     "Creating webdriver for '%s' (headless: %s, download: %s)",
@@ -518,7 +584,7 @@ class Selenium(SeleniumLibrary):
                 index_or_alias = self._create_webdriver(
                     browser, alias, download, **kwargs
                 )
-                options.append((browser, headless, download, ""))
+                attempts.append((browser, download, ""))
                 self.logger.info(
                     "Created %s browser with arguments: %s",
                     browser,
@@ -526,48 +592,66 @@ class Selenium(SeleniumLibrary):
                 )
                 break
             except Exception as error:  # pylint: disable=broad-except
-                options.append((browser, headless, download, error))
+                attempts.append((browser, download, error))
                 self.logger.debug(traceback.format_exc())
 
         # Log table of all attempted combinations
-        table_headers = ["Browser", "Headless", "Download", "Error"]
+        table_headers = ["Browser", "Download", "Error"]
         try:
-            table = html_table(header=table_headers, rows=options)
+            table = html_table(header=table_headers, rows=attempts)
             BuiltIn().log("<p>Attempted combinations:</p>" + table, html=True)
         except RobotNotRunningError:
             pass
 
         # No webdriver was started
         if index_or_alias is None:
-            notebook.notebook_table(options, columns=table_headers)
-            raise BrowserNotFoundError(
-                # TODO: could we include the whole options here
-                "No valid browser found from: {}".format(
-                    ", ".join(browser for browser in browser_options)
-                )
-            )
+            errors = OrderedDict((browser, error) for browser, _, error in attempts)
 
-        self.go_to(url)
+            msg = "Failed to start a browser:\n"
+            for browser, error in errors.items():
+                msg += f"- {browser}: {error}\n"
+
+            notebook.notebook_table(attempts, columns=table_headers)
+            raise BrowserNotFoundError(msg)
+
+        if url is not None:
+            self.go_to(url)
+
         return index_or_alias
 
-    def _get_browser_order(self, browser_selection: Any) -> list:
-        """Get a list of browsers that will be used for open browser
-        keywords. Will be one or many.
-
-        ``browser_selection`` ``AUTOMATIC_BROWSER_SELECTION`` will be OS-specific list,
-            or one named browser, eg. "Chrome"
-        """
-        if browser_selection == self.AUTOMATIC_BROWSER_SELECTION:
-            preferable_browser_order = webdriver.DRIVER_PREFERENCE.get(
+    def _arg_browser_selection(self, browser_selection: Any) -> List:
+        """Parse argument for browser selection."""
+        if str(browser_selection).strip().lower() == "auto":
+            order = webdriver.DRIVER_PREFERENCE.get(
                 platform.system(), webdriver.DRIVER_PREFERENCE["default"]
             )
         else:
-            preferable_browser_order = (
+            order = (
                 browser_selection
                 if isinstance(browser_selection, list)
                 else browser_selection.split(",")
             )
-        return preferable_browser_order
+        return order
+
+    def _arg_download(self, download: Any) -> List:
+        """Parse argument for webdriver download."""
+        if str(download).strip().lower() == "auto":
+            return [False, True]
+        else:
+            return [bool(download)]
+
+    def _arg_headless(self, headless: Any) -> bool:
+        """Parse argument for headless mode."""
+        if str(headless).strip().lower() == "auto":
+            # If in Linux and with no valid display, we can assume we are in a container
+            headless = platform.system() == "Linux" and not (
+                os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY")
+            )
+            if headless:
+                self.logger.info("Autodetected headless environment")
+            return headless
+        else:
+            return bool(headless)
 
     def _get_driver_args(
         self,
@@ -699,20 +783,43 @@ class Selenium(SeleniumLibrary):
         if profile_name is not None:
             options.add_argument(f"--profile-directory={profile_name}")
 
-    def _create_webdriver(self, browser, alias, download, **kwargs):
-        """Create a webdriver instance for the given browser.
+    def _create_webdriver(
+        self, browser: str, alias: Optional[str], download: bool, **kwargs
+    ):
+        """Create a webdriver instance with given options.
 
-        Returns an index/alias of the webdriver session,
-        or ``None`` if a webdriver was not initialized.
+        If webdriver download is requested, try using a cached
+        version first and if that fails force a re-download.
         """
-        executable = webdriver.executable(browser, download)
-        if executable:
-            kwargs.setdefault("executable_path", executable)
+        browser = browser.lower()
 
-        library = BrowserManagementKeywords(self)
-        browser = browser.lower().capitalize()
+        def _create_driver(path=None):
+            options = dict(kwargs)
+            if path is not None:
+                options["executable_path"] = path
 
-        return library.create_webdriver(browser, alias, **kwargs)
+            lib = BrowserManagementKeywords(self)
+            return lib.create_webdriver(browser.capitalize(), alias, **options)
+
+        # No download requested
+        if not download:
+            return _create_driver()
+
+        # Try to use webdriver already in cache
+        path_cache = webdriver.cache(browser)
+        if path_cache:
+            try:
+                return _create_driver(path_cache)
+            except Exception:  # pylint: disable=broad-except
+                pass
+
+        # Try to download webdriver
+        path_download = webdriver.download(browser)
+        if path_download:
+            return _create_driver(path_download)
+
+        # No webdriver required
+        return _create_driver()
 
     @keyword
     def open_chrome_browser(
@@ -1791,8 +1898,3 @@ class Selenium(SeleniumLibrary):
         response = self.driver.command_executor._request("POST", url, body)
 
         return response.get("value")
-
-
-# For backwards compatibility,
-# remove in next major version
-Browser = Selenium

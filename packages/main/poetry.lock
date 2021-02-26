@@ -125,20 +125,20 @@ d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
 
 [[package]]
 name = "boto3"
-version = "1.17.18"
+version = "1.17.20"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [package.dependencies]
-botocore = ">=1.20.18,<1.21.0"
+botocore = ">=1.20.20,<1.21.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
 [[package]]
 name = "botocore"
-version = "1.20.18"
+version = "1.20.20"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -264,7 +264,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*"
 
 [[package]]
 name = "defusedxml"
-version = "0.6.0"
+version = "0.7.0"
 description = "XML bomb protection for Python stdlib modules"
 category = "main"
 optional = false
@@ -343,14 +343,6 @@ importlib-metadata = {version = "*", markers = "python_version < \"3.8\""}
 mccabe = ">=0.6.0,<0.7.0"
 pycodestyle = ">=2.6.0a1,<2.7.0"
 pyflakes = ">=2.2.0,<2.3.0"
-
-[[package]]
-name = "fpdf"
-version = "1.7.2"
-description = "Simple PDF generation for Python"
-category = "main"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "furl"
@@ -947,23 +939,6 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
-name = "pdfminer.six"
-version = "20201018"
-description = "PDF parser and analyzer"
-category = "main"
-optional = false
-python-versions = ">=3.4"
-
-[package.dependencies]
-chardet = {version = "*", markers = "python_version > \"3.0\""}
-cryptography = "*"
-sortedcontainers = "*"
-
-[package.extras]
-dev = ["nose", "tox"]
-docs = ["sphinx", "sphinx-argparse"]
-
-[[package]]
 name = "pillow"
 version = "8.1.1"
 description = "Python Imaging Library (Fork)"
@@ -1145,14 +1120,6 @@ description = "Python parsing module"
 category = "main"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
-
-[[package]]
-name = "pypdf2"
-version = "1.26.0"
-description = "PDF toolkit"
-category = "main"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "pyperclip"
@@ -1452,7 +1419,7 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "5.3.1"
+version = "6.0.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -1460,11 +1427,11 @@ python-versions = ">=3.6,<4.0"
 
 [package.dependencies]
 selenium = ">=3.141.0,<4.0.0"
-webdrivermanager = ">=0.9.0,<0.10.0"
+webdrivermanager = ">=0.10.0,<0.11.0"
 
 [[package]]
 name = "rpaframework-recognition"
-version = "0.6.0"
+version = "0.7.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = true
@@ -1475,7 +1442,7 @@ numpy = "1.19.3"
 opencv-python = ">=4.4.0,<5.0.0"
 pillow = ">=8.0.1,<9.0.0"
 pytesseract = ">=0.3.6,<0.4.0"
-rpaframework-core = ">=5.0.0,<6.0.0"
+rpaframework-core = ">=6.0.0,<7.0.0"
 
 [[package]]
 name = "rsa"
@@ -1529,14 +1496,6 @@ description = "Python 2 and 3 compatibility utilities"
 category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
-
-[[package]]
-name = "sortedcontainers"
-version = "2.3.0"
-description = "Sorted Containers -- Sorted List, Sorted Dict, Sorted Set"
-category = "main"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "soupsieve"
@@ -1641,7 +1600,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "webdrivermanager"
-version = "0.9.0"
+version = "0.10.0"
 description = "Module for facilitating download and deploy of WebDriver binaries."
 category = "main"
 optional = false
@@ -1746,7 +1705,7 @@ playwright = ["robotframework-browser", "grpcio"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "5b11272051e32042a56d190f5751e961160aa40e2dc47a7a69d53ac3c22c2247"
+content-hash = "5ae56e122293c7e7e34f1432eb5dced44e592020312ea421a4b9395e2bbe8a17"
 
 [metadata.files]
 appdirs = [
@@ -1803,12 +1762,12 @@ black = [
     {file = "black-20.8b1.tar.gz", hash = "sha256:1c02557aa099101b9d21496f8a914e9ed2222ef70336404eeeac8edba836fbea"},
 ]
 boto3 = [
-    {file = "boto3-1.17.18-py2.py3-none-any.whl", hash = "sha256:ceff2f32ba05acc9ee35a6dd82e29ea285d63e889bed39a6ba7a700146f43749"},
-    {file = "boto3-1.17.18.tar.gz", hash = "sha256:3570a3c0fbd80bcb30449f87cf9d2f7abb67fac2a5e317d002f9921c59be9b17"},
+    {file = "boto3-1.17.20-py2.py3-none-any.whl", hash = "sha256:c0d51f344b71656c2d395d2168600d91bea252a64fb5d503a955ea96426cde8b"},
+    {file = "boto3-1.17.20.tar.gz", hash = "sha256:2219f1ebe88d266afa5516f993983eba8742b957fa4fd6854f3c73aa3030e931"},
 ]
 botocore = [
-    {file = "botocore-1.20.18-py2.py3-none-any.whl", hash = "sha256:b181f32d9075e5419a89fa9636ce95946c15459c9bfadfabb53ca902fc8072b8"},
-    {file = "botocore-1.20.18.tar.gz", hash = "sha256:51900b10da4ae45be4b16045e5b2ff7d1158a7955d9d7cc5e5a9ba3170f10586"},
+    {file = "botocore-1.20.20-py2.py3-none-any.whl", hash = "sha256:e9e724b59278ebf5caf032be1e32bde0990d79e8052e3bbbb97b6c1d32feba28"},
+    {file = "botocore-1.20.20.tar.gz", hash = "sha256:80c32a81fb1ee8bdfa074a79bfb885bb2006e8a9782f2353c0c9f6392704e13a"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -1950,8 +1909,8 @@ decorator = [
     {file = "decorator-4.4.2.tar.gz", hash = "sha256:e3a62f0520172440ca0dcc823749319382e377f37f140a0b99ef45fecb84bfe7"},
 ]
 defusedxml = [
-    {file = "defusedxml-0.6.0-py2.py3-none-any.whl", hash = "sha256:6687150770438374ab581bb7a1b327a847dd9c5749e396102de3fad4e8a3ef93"},
-    {file = "defusedxml-0.6.0.tar.gz", hash = "sha256:f684034d135af4c6cbb949b8a4d2ed61634515257a67299e5f940fbaa34377f5"},
+    {file = "defusedxml-0.7.0-py2.py3-none-any.whl", hash = "sha256:a290cad10346ed366c8a0133d868eaf6585ec6afdd0c511286cdb11f5fc3d285"},
+    {file = "defusedxml-0.7.0.tar.gz", hash = "sha256:86b15d9e3c639de79f4cb38aeffea3281f62aff78dde7d798e1352c63bfa6ea0"},
 ]
 dnspython = [
     {file = "dnspython-2.1.0-py3-none-any.whl", hash = "sha256:95d12f6ef0317118d2a1a6fc49aac65ffec7eb8087474158f42f26a639135216"},
@@ -1971,11 +1930,6 @@ exchangelib = [
 flake8 = [
     {file = "flake8-3.8.4-py2.py3-none-any.whl", hash = "sha256:749dbbd6bfd0cf1318af27bf97a14e28e5ff548ef8e5b1566ccfb25a11e7c839"},
     {file = "flake8-3.8.4.tar.gz", hash = "sha256:aadae8761ec651813c24be05c6f7b4680857ef6afaae4651a4eccaef97ce6c3b"},
-]
-fpdf = [
-    {file = "fpdf-1.7.2.tar.gz", hash = "sha256:125840783289e7d12552b1e86ab692c37322e7a65b96a99e0ea86cca041b6779"},
-    {file = "fpdf-1.7.2.win-amd64.exe", hash = "sha256:9542f6ad0791d673955da954a0cf3554a0affac79deab87bee06b9b4d4e60990"},
-    {file = "fpdf-1.7.2.win32.exe", hash = "sha256:0a94eb783ee933e32a44ad949a1aa6c3ca6fb35b608db53f8b216aec52fc1fb5"},
 ]
 furl = [
     {file = "furl-2.1.0-py2.py3-none-any.whl", hash = "sha256:f4d6f1e5479c376a5b7bdc62795d736d8c1b2a754f366a2ad2816e46e946e22e"},
@@ -2406,10 +2360,6 @@ pathspec = [
     {file = "pathspec-0.8.1-py2.py3-none-any.whl", hash = "sha256:aa0cb481c4041bf52ffa7b0d8fa6cd3e88a2ca4879c533c9153882ee2556790d"},
     {file = "pathspec-0.8.1.tar.gz", hash = "sha256:86379d6b86d75816baba717e64b1a3a3469deb93bb76d613c9ce79edc5cb68fd"},
 ]
-"pdfminer.six" = [
-    {file = "pdfminer.six-20201018-py3-none-any.whl", hash = "sha256:d78877ba8d8bf957f3bb636c4f73f4f6f30f56c461993877ac22c39c20837509"},
-    {file = "pdfminer.six-20201018.tar.gz", hash = "sha256:b9aac0ebeafb21c08bf65f2039f4b2c5f78a3449d0a41df711d72445649e952a"},
-]
 pillow = [
     {file = "Pillow-8.1.1-cp36-cp36m-macosx_10_10_x86_64.whl", hash = "sha256:14415e9e28410232370615dbde0cf0a00e526f522f665460344a5b96973a3086"},
     {file = "Pillow-8.1.1-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:924fc33cb4acaf6267b8ca3b8f1922620d57a28470d5e4f49672cea9a841eb08"},
@@ -2587,9 +2537,6 @@ pyparsing = [
     {file = "pyparsing-2.4.7-py2.py3-none-any.whl", hash = "sha256:ef9d7589ef3c200abe66653d3f1ab1033c3c419ae9b9bdb1240a85b024efc88b"},
     {file = "pyparsing-2.4.7.tar.gz", hash = "sha256:c203ec8783bf771a155b207279b9bccb8dea02d8f0c9e5f8ead507bc3246ecc1"},
 ]
-pypdf2 = [
-    {file = "PyPDF2-1.26.0.tar.gz", hash = "sha256:e28f902f2f0a1603ea95ebe21dff311ef09be3d0f0ef29a3e44a932729564385"},
-]
 pyperclip = [
     {file = "pyperclip-1.8.2.tar.gz", hash = "sha256:105254a8b04934f0bc84e9c24eb360a591aaf6535c9def5f29d92af107a9bf57"},
 ]
@@ -2736,12 +2683,12 @@ robotframework-seleniumtestability = [
     {file = "robotframework-seleniumtestability-1.1.0.tar.gz", hash = "sha256:18810869a0c0010cc623aea4bb382afdc9aa6fe8404c35fa58452766d0322735"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-5.3.1.tar.gz", hash = "sha256:3da17586f1317cbe50ef3f780170d513bdb3996cbba97d87d26322e0b8e7e85c"},
-    {file = "rpaframework_core-5.3.1-py3-none-any.whl", hash = "sha256:f96a0ce454eb4889a0c95fb82c64a1b7f9dc9933c0fe42d445988097193735f0"},
+    {file = "rpaframework-core-6.0.0.tar.gz", hash = "sha256:d3a9b8927efeda4225db2054282fd5bb52e30d61b7f93221dd84d085a3efb408"},
+    {file = "rpaframework_core-6.0.0-py3-none-any.whl", hash = "sha256:74bded4d8b3972b1ee0aa0815e1bbc08eaad220c9f3db4cad2e8b50b48d49a0c"},
 ]
 rpaframework-recognition = [
-    {file = "rpaframework-recognition-0.6.0.tar.gz", hash = "sha256:7c6c480b156fa9ada6360fd482569796880b56812dcb94b38db6403cf8b6afee"},
-    {file = "rpaframework_recognition-0.6.0-py3-none-any.whl", hash = "sha256:0bdb7b9019ded7ebc4bc5bda20ceea8cc25980d0318efe5ff3df63902ebf4643"},
+    {file = "rpaframework-recognition-0.7.0.tar.gz", hash = "sha256:664b72daa7440ba2c1cb697b6fbd2a5ea7a6ac4f696edb9db68e5e987dd2c260"},
+    {file = "rpaframework_recognition-0.7.0-py3-none-any.whl", hash = "sha256:a71f7a0717de640076b8187136e2ffabaaa8875582ff0de761c22370c13a20a8"},
 ]
 rsa = [
     {file = "rsa-4.7.2-py3-none-any.whl", hash = "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2"},
@@ -2762,10 +2709,6 @@ simple-salesforce = [
 six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
     {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
-]
-sortedcontainers = [
-    {file = "sortedcontainers-2.3.0-py2.py3-none-any.whl", hash = "sha256:37257a32add0a3ee490bb170b599e93095eed89a55da91fa9f48753ea12fd73f"},
-    {file = "sortedcontainers-2.3.0.tar.gz", hash = "sha256:59cc937650cf60d677c16775597c89a960658a09cf7c1a668f86e1e4464b10a1"},
 ]
 soupsieve = [
     {file = "soupsieve-2.2-py3-none-any.whl", hash = "sha256:d3a5ea5b350423f47d07639f74475afedad48cf41c0ad7a82ca13a3928af34f6"},
@@ -2837,7 +2780,7 @@ urllib3 = [
     {file = "urllib3-1.26.3.tar.gz", hash = "sha256:de3eedaad74a2683334e282005cd8d7f22f4d55fa690a2a1020a416cb0a47e73"},
 ]
 webdrivermanager = [
-    {file = "webdrivermanager-0.9.0.tar.gz", hash = "sha256:fdd0305be5e6f18edb48afb8e738e2d622ec7817ccd98b3a939c1e443f540cc2"},
+    {file = "webdrivermanager-0.10.0.tar.gz", hash = "sha256:c313a71340f0bb7bfef8b03763a0b1b323473e1cc3945a86f3230e78529af067"},
 ]
 wrapt = [
     {file = "wrapt-1.12.1.tar.gz", hash = "sha256:b62ffa81fb85f4332a4f609cab4ac40709470da05643a082ec1eb88e6d9b97d7"},
