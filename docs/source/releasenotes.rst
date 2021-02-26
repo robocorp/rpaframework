@@ -4,15 +4,28 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Browser.Selenium**:
+
+  - Keyword ``Open Available Browser`` has the default option 'AUTO' for
+    arguments ``headless`` and ``download``. See keyword documentation
+    for details.
+  - Webdrivers for Chrome/Chromium and Firefox are automatically matched
+    to the currently installed browser version.
+  - Webdrivers which are still running on Python process exit are closed
+    automatically to prevent hanging subprocesses.
+  - Webdrivers are stored in the user's home folder, to speed
+    up browser start-up times between reboots.
+
+- Library **RPA.Desktop.Windows**:
+
+  - Keyword ``Open File`` return type changed from boolean to integer,
+    to indicate the opened application ID
+
 - Library **RPA.Tables**:
 
   - Add option to define column name for unknown CSV fields,
     and warn about header and data mismatch
   - Correctly handle source data with ``NoneType`` columns
-
-- Library **RPA.Desktop.Windows**:
-
-  - Keyword ``Open File`` return type changed (*NOTE*: backwards compatibility breaking change)
 
 7.6.0
 -----
@@ -58,7 +71,6 @@ Upcoming release
   - Add keyword ``Execute CDP`` to execute Chrome DevTools Protocol commands
 
 - Fix issues with Windows library imports on Python 3.9
-
 
 7.3.0
 -----
