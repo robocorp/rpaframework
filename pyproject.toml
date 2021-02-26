@@ -9,6 +9,7 @@ authors = [
 [tool.poetry.dependencies]
 python = "^3.6"
 rpaframework = { path = "packages/main/", extras = ["cv", "playwright", "aws", "google"] }
+rpaframework-pdf = { path = "packages/pdf/" }
 
 [tool.poetry.dev-dependencies]
 robotframeworklexer = "^1.1"
