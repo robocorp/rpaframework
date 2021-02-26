@@ -161,6 +161,30 @@ class Selenium(SeleniumLibrary):
     | `Click Element` | //div[@id="foo"]//h1 |
     | `Click Element` | (//div)[2]           |
 
+    === Chaining locators ===
+
+    It's possible to chain multiple locators together as a single locator. Each chained locator must start
+    with a locator strategy. Chained locators must be separated with a single space, two greater than characters,
+    and followed with a space. It's also possible to mix different locator strategies, such as css or xpath.
+    Also, a list can also be used to specify multiple locators, for instance when the chaining separator
+    would conflict with the actual locator, or when an existing web element is used as a base.
+
+    Although all locators support chaining, some locator strategies don't chain properly with previous values.
+    This is because some locator strategies use JavaScript to find elements and JavaScript is executed
+    for the whole browser context and not for the element found by the previous locator. Locator strategies
+    that support chaining are the ones that are based on the Selenium API, such as `xpath` or `css`, but for example
+    chaining is not supported by `sizzle` or `jquery`.
+
+    Examples:
+    | `Click Element` | css:.bar >> xpath://a | # To find a link which is present inside an element with class "bar" |
+
+    List examples:
+    | ${locator_list} =             | `Create List`   | css:div#div_id            | xpath://*[text(), " >> "] |
+    | `Page Should Contain Element` | ${locator_list} |                           |                           |
+    | ${element} =                  | Get WebElement  | xpath://*[text(), " >> "] |                           |
+    | ${locator_list} =             | `Create List`   | css:div#div_id            | ${element}                |
+    | `Page Should Contain Element` | ${locator_list} |                           |                           |
+
     == Using WebElements ==
 
     In addition to specifying a locator as a string, it is possible to use
@@ -328,31 +352,6 @@ class Selenium(SeleniumLibrary):
     The run-on-failure functionality can be disabled by using a special value
     ``NOTHING`` or anything considered false (see `Boolean arguments`)
     such as ``NONE``.
-
-    = Boolean arguments =
-
-    Some keywords accept arguments that are handled as Boolean values true or
-    false. If such an argument is given as a string, it is considered false if
-    it is either empty or case-insensitively equal to ``false``, ``no``, ``off``,
-     ``0`` or ``none``. Other strings are considered true regardless of their value and
-    other argument types are tested using the same
-    [https://docs.python.org/3/library/stdtypes.html#truth-value-testing|rules as in Python].
-
-    True examples:
-
-    | `Set Screenshot Directory` | ${RESULTS} | persist=True    | # Strings are generally true.    |
-    | `Set Screenshot Directory` | ${RESULTS} | persist=yes     | # Same as the above.             |
-    | `Set Screenshot Directory` | ${RESULTS} | persist=${TRUE} | # Python True is true.           |
-    | `Set Screenshot Directory` | ${RESULTS} | persist=${42}   | # Numbers other than 0 are true. |
-
-    False examples:
-
-    | `Set Screenshot Directory` | ${RESULTS} | persist=False    | # String false is false.        |
-    | `Set Screenshot Directory` | ${RESULTS} | persist=no       | # Also string no is false.      |
-    | `Set Screenshot Directory` | ${RESULTS} | persist=NONE     | # String NONE is false.         |
-    | `Set Screenshot Directory` | ${RESULTS} | persist=${EMPTY} | # Empty string is false.        |
-    | `Set Screenshot Directory` | ${RESULTS} | persist=${FALSE} | # Python False is false.        |
-    | `Set Screenshot Directory` | ${RESULTS} | persist=${NONE}  | # Python None is false.         |
     """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -485,14 +484,14 @@ class Selenium(SeleniumLibrary):
         | ``Linux``   | Chrome, Firefox, Opera           |
         | ``Darwin``  | Chrome, Safari, Firefox, Opera   |
 
-        The order can be overriden with a custom list with using the argument
+        The order can be overriden with a custom list by using the argument
         ``browser_selection``. The argument can be either a comma-separated
         string or a list object.
 
         == Webdriver download ==
 
         The library can (if requested) automatically download webdrivers
-        for all used browsers. This can be controlled with the argument
+        for all supported browsers. This can be controlled with the argument
         ``download``.
 
         If the value is ``False``, it will only attempt to start
@@ -538,9 +537,9 @@ class Selenium(SeleniumLibrary):
 
         == Chrome options ==
 
-        Some features are currently available for Chrome/Chromium.
+        Some features are currently available only for Chrome/Chromium.
         This includes using an existing user profile. By default Selenium
-        uses a new profile for each session, but it can use the an existing
+        uses a new profile for each session, but it can use an existing
         one by enabling the ``use_profile`` argument.
 
         If a custom profile is stored somewhere outside of the default location,
