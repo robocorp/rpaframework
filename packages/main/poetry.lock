@@ -1393,11 +1393,11 @@ robotframework = ">=2.9"
 
 [[package]]
 name = "robotframework-seleniumlibrary"
-version = "4.5.0"
+version = "5.1.0"
 description = "Web testing library for Robot Framework"
 category = "main"
 optional = false
-python-versions = ">=2.7.*, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, <4"
+python-versions = ">=3.6, <4"
 
 [package.dependencies]
 robotframework = ">=3.1.2"
@@ -1705,7 +1705,7 @@ playwright = ["robotframework-browser", "grpcio"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "5ae56e122293c7e7e34f1432eb5dced44e592020312ea421a4b9395e2bbe8a17"
+content-hash = "e3d88c275ced08b403b4450ea34eb1c1a9aed45968c16795a375813b36a5d683"
 
 [metadata.files]
 appdirs = [
@@ -2676,8 +2676,8 @@ robotframework-sapguilibrary = [
     {file = "robotframework_sapguilibrary-1.1-py2-none-any.whl", hash = "sha256:c422e23623911b2c70630f9e01fcec754bb8ae16d9f8dbab29d1ee588800daf6"},
 ]
 robotframework-seleniumlibrary = [
-    {file = "robotframework-seleniumlibrary-4.5.0.tar.gz", hash = "sha256:a0a571642f54dabb481ff1ea7dc6195b82c69d241d0e01de79de64fcbfa69e44"},
-    {file = "robotframework_seleniumlibrary-4.5.0-py2.py3-none-any.whl", hash = "sha256:737fcdcf71777fd805762fdbb4b1b021b7719e7d34f820edc5545bdba85242c4"},
+    {file = "robotframework-seleniumlibrary-5.1.0.tar.gz", hash = "sha256:ef0f7271e0a72c2032281771760a47f764ef42aedcd83a5c981c2ef02cc752af"},
+    {file = "robotframework_seleniumlibrary-5.1.0-py2.py3-none-any.whl", hash = "sha256:eaa6bd832e076fc5b18bcc52fcc32b62d93ec238c8305eefbf74df8a0ff43320"},
 ]
 robotframework-seleniumtestability = [
     {file = "robotframework-seleniumtestability-1.1.0.tar.gz", hash = "sha256:18810869a0c0010cc623aea4bb382afdc9aa6fe8404c35fa58452766d0322735"},
