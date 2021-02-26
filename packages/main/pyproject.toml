@@ -36,7 +36,8 @@ packages = [
 python = "^3.6"
 docutils = "*"
 dataclasses = { version = "^0.7", python=">=3.6,<3.7" }
-rpaframework-core = "^5.3.1"
+# rpaframework-core = "^5.3.2"
+rpaframework-core = { path = "../core", develop = true}
 rpaframework-recognition = { version = "^0.6.0", optional = true }
 jsonpath-ng = "^1.5.2"
 robotframework = "^3.2.2"
@@ -54,7 +55,6 @@ python-xlib = { version = ">=0.17", platform = "linux" }
 psutil = { version = "^5.7.0", platform = "win32" }
 pyperclip = "^1.8.0"
 exchangelib = "^3.1.1"
-fpdf = "^1.7.2"
 xlrd = "^2.0.1"
 xlwt = "^1.3.0"
 xlutils = "^2.0.0"
@@ -62,8 +62,6 @@ openpyxl = "^3.0.3"
 pillow = "^8.0.1"
 simple_salesforce = "^1.0.0"
 netsuitesdk = "^1.1.0"
-"pdfminer.six" = "20201018"
-pypdf2 = "^1.26.0"
 tweepy = "^3.8.0"
 boto3 = { version = "^1.13.4", optional = true }
 google-api-python-client = { version = "^1.12.3", optional = true }
