@@ -22,10 +22,10 @@ jobs:
       - name: Set pip version
         run: python -m pip install --force-reinstall pip==${{matrix.pip-version}}
       - name: install rpafw
-        run: python -m pip install rpaframework rpaframework-recognition
+        run: python -m pip install rpaframework[cv,playwright,aws,google]
       - name: test install is correct
         run: |
           python -m pip check
-          python -c "import RPA;"
+          python -c "import RPA"
           # TODO: run whole test suite here
 
