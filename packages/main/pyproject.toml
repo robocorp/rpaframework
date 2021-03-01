@@ -55,7 +55,7 @@ psutil = { version = "^5.7.0", platform = "win32" }
 pyperclip = "^1.8.0"
 exchangelib = "^3.1.1"
 fpdf = "^1.7.2"
-xlrd = "^1.2.0"
+xlrd = "^2.0.1"
 xlwt = "^1.3.0"
 xlutils = "^2.0.0"
 openpyxl = "^3.0.3"

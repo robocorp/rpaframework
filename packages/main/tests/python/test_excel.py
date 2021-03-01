@@ -50,15 +50,19 @@ def test_open_missing(filename):
         lib.open_workbook(filename)
 
 
-@pytest.mark.parametrize(
-    "filename",
-    [r"tests/resources/wrong_extension.xlsx", r"tests/resources/wrong_extension.xls"],
-)
-def test_wrong_extension_fallback(filename):
+def test_wrong_extension_fallback_xlsx():
+    # openpyxl does not support xls (actual format) but xlrd will succeed
     library = Files()
-    library.open_workbook(filename)
+    library.open_workbook("tests/resources/wrong_extension.xlsx")
     assert library.workbook is not None
-    library.close_workbook()
+
+
+def test_wrong_extension_fallback_xls():
+    # openpyxl will refuse to read wrong extension and xlrd does not support xlsx
+    library = Files()
+    with pytest.raises(ValueError, match=".*wrong_extension.xls.*path.*extension.*"):
+        library.open_workbook("tests/resources/wrong_extension.xls")
+    assert library.workbook is None
 
 
 def test_extension_property(library):

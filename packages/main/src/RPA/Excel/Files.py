@@ -6,6 +6,7 @@ from io import BytesIO
 
 import openpyxl
 from openpyxl.utils import get_column_letter
+from openpyxl.utils.exceptions import InvalidFileException
 
 import xlrd
 import xlwt
@@ -178,22 +179,24 @@ class Files:
             book = XlsxWorkbook(path)
             book.open()
             return book
-        except Exception as err:
-            self.logger.debug(err)
-
-        self.logger.info(
-            "Failed to open in Office Open XML (.xlsx) format, "
-            "trying Excel Binary Format (.xls)"
-        )
+        except InvalidFileException as exc:
+            self.logger.debug(exc)  # Unsupported extension, silently try xlrd
+        except Exception as exc:
+            self.logger.info(
+                "Failed to open as Office Open XML (.xlsx) format: %s", exc
+            )
 
         try:
             book = XlsWorkbook(path)
             book.open()
             return book
-        except Exception as err:
-            self.logger.debug(err)
+        except Exception as exc:
+            self.logger.info("Failed to open as Excel Binary Format (.xls): %s", exc)
 
-        raise ValueError(f"Not a valid Excel file: {path}")
+        raise ValueError(
+            f"Failed to open Excel file ({path}), "
+            "verify that the path and extension are correct"
+        )
 
     def create_workbook(self, path=None, fmt="xlsx"):
         """Create and open a new Excel workbook.
