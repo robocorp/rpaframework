@@ -696,17 +696,7 @@ class XlsWorkbook:
             options["filename"] = path_or_file
             extension = pathlib.Path(path_or_file).suffix
 
-        try:
-            self._book = xlrd.open_workbook(**options)
-        except NotImplementedError:
-            del options["formatting_info"]
-            self._book = xlrd.open_workbook(**options)
-
-            if extension == ".xls":
-                self.logger.warning(
-                    "Workbook '%s' file extension does not match content", path_or_file
-                )
-
+        self._book = xlrd.open_workbook(**options)
         self._extension = extension
         self._images = []
 
