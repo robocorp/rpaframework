@@ -4,6 +4,22 @@ Release notes
 Upcoming release
 ----------------
 
+8.0.0
+-----
+
+- Library **RPA.PDF**:
+
+  - Refactor library into a separate package.
+  - Rename keyword ``Get Value From Anchor`` to ``Find Text``.
+  - Rename ``Page Rotate`` to ``Rotate Page``.
+  - Rename ``PDF Decrypt`` to ``Decrypt PDF``.
+  - Rename ``PDF Encrypt`` to ``Encrypt PDF``.
+  - Rename ``Update Field Values`` to ``Save Field Values``.
+  - Unify keyword signatures, now keywords can be given an input and output paths.
+    If no input path given, the library assumes a PDF is already opened by some
+    other keyword. If no output path given, the library will output the file
+    to ``output/output.pdf``.
+
 7.6.0
 -----
 
