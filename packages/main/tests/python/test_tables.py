@@ -403,7 +403,9 @@ def test_keyword_read_table_from_csv(library):
 
 
 def test_keyword_read_table_from_csv_extra(library):
-    table = library.read_table_from_csv(RESOURCES / "extra.csv", column_unknown="whoknows")
+    table = library.read_table_from_csv(
+        RESOURCES / "extra.csv", column_unknown="whoknows"
+    )
     assert len(table) == 4
     assert table.columns == ["first", "second", "third", "whoknows"]
     assert table[0] == ["1", "2", "3", None]
