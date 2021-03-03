@@ -110,11 +110,6 @@ def test_table_named_columns():
     assert table[4] == [2, 4]
 
 
-def test_table_none_columns():
-    with pytest.raises(ValueError):
-        Table([{"one": 1, "two": 2, None: 3}, {"one": 1, None: 3, "four": 4}])
-
-
 def test_table_iterate_tuples():
     table = Table(
         [{"valid_key": 1, "invalid-key1": 2, "invalid/key2": 3, "123invalidkey3": 4}]
@@ -400,11 +395,19 @@ def test_keyword_trim_empty_rows(library, table):
     assert table[-2] == [None, None, None, None]
 
 
-def test_keyword_read_table_from_csv_automatic(library):
+def test_keyword_read_table_from_csv(library):
     table = library.read_table_from_csv(RESOURCES / "easy.csv")
     assert len(table) == 3
     assert table.columns == ["first", "second", "third"]
     assert table[0] == ["1", "2", "3"]
+
+
+def test_keyword_read_table_from_csv_extra(library):
+    table = library.read_table_from_csv(RESOURCES / "extra.csv", column_unknown="whoknows")
+    assert len(table) == 4
+    assert table.columns == ["first", "second", "third", "whoknows"]
+    assert table[0] == ["1", "2", "3", None]
+    assert table[2] == ["7", "8", "9", ["11", "12"]]
 
 
 def test_keyword_read_table_from_csv_manual(library):
@@ -519,3 +522,22 @@ def test_columns_and_index_without_data():
     index = ["one", "two", "three"]
     table = Table(data, columns=columns, index=index)
     assert table.dimensions == (3, 3)
+
+
+def test_data_with_nonetype():
+    data = [
+        {"one": 1, "two": 2},
+        {"one": 1, "two": 2, None: 3},
+        {"two": 2},
+        {"four": 4, None: 3},
+    ]
+
+    table = Table(data)
+    assert len(table) == 4
+    assert table.columns == ["one", "two", 2, "four"]
+    assert table.data == [
+        [1, 2, None, None],
+        [1, 2, 3, None],
+        [None, 2, None, None],
+        [None, None, 3, 4],
+    ]

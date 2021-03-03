@@ -135,6 +135,7 @@ class Table:
         obj = data[0]
         column_names = self._column_name_getter(obj)
         column_values = self._column_value_getter(obj)
+        column_map = {}
 
         # Do not update columns or index if predefined
         add_columns = not bool(self._columns)
@@ -143,19 +144,26 @@ class Table:
         for idx, obj in enumerate(data):
             row = [None] * len(self._columns)
 
-            for column in column_names(obj):
+            for column_src in column_names(obj):
+                # Check if column has been added with different name
+                column_dst = column_map.get(column_src, column_src)
+
                 # Dictionaries and namedtuples can
                 # contain unknown columns
-                if column not in self._columns:
+                if column_dst not in self._columns:
                     if not add_columns:
                         continue
 
-                    self._add_column(column)
+                    # Store map of source column name to created name
+                    col = self._add_column(column_dst)
+                    column_dst = self._columns[col]
+                    column_map[column_src] = column_dst
+
                     while len(row) < len(self._columns):
                         row.append(None)
 
-                col = self.column_location(column)
-                row[col] = column_values(obj, column)
+                col = self.column_location(column_dst)
+                row[col] = column_values(obj, column_src)
 
             self._data.append(row)
 
@@ -1424,15 +1432,22 @@ class Tables:
         ]
 
     def read_table_from_csv(
-        self, path, header=None, columns=None, dialect=None, delimiters=None
+        self,
+        path,
+        header=None,
+        columns=None,
+        dialect=None,
+        delimiters=None,
+        column_unknown="Unknown",
     ):
         """Read a CSV file as a table.
 
-        :param path:        path to CSV file
-        :param header:      CSV file includes header
-        :param columns:     names of columns in resulting table
-        :param dialect:     format of CSV file
-        :param delimiters:  string of possible delimiters
+        :param path:            path to CSV file
+        :param header:          CSV file includes header
+        :param columns:         names of columns in resulting table
+        :param dialect:         format of CSV file
+        :param delimiters:      string of possible delimiters
+        :param column_unknown:  column name for unknown fields
 
         By default attempts to deduce the CSV format and headers
         from a sample of the input file. If it's unable to determine
@@ -1446,6 +1461,22 @@ class Tables:
         The ``columns`` argument can be used to override the names of columns
         in the resulting table. The amount of columns must match the input
         data.
+
+        If the source data has a header and rows have more fields than
+        the header defines, the remaining values are put into the column
+        given by ``column_unknown``. By default it has the value "Unknown".
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # Source dialect is deduced automatically
+            ${table}=    Read table from CSV    export.csv
+            Log   Found columns: ${table.columns}
+
+            # Source dialect is known and given explicitly
+            ${table}=    Read table from CSV    export-excel.csv    dialect=excel
+            Log   Found columns: ${table.columns}
         """
         sniffer = csv.Sniffer()
         with open(path, newline="") as fd:
@@ -1458,13 +1489,23 @@ class Tables:
 
         with open(path, newline="") as fd:
             if header:
-                reader = csv.DictReader(fd, dialect=dialect)
+                reader = csv.DictReader(
+                    fd, dialect=dialect, restkey=str(column_unknown)
+                )
             else:
                 reader = csv.reader(fd, dialect=dialect)
             rows = list(reader)
 
         table = Table(rows, columns)
         notebook_table(self.table_head(table, 10))
+
+        if header and column_unknown in table.columns:
+            self.logger.warning(
+                "CSV file (%s) had fields not defined in header, "
+                "which can be the result of a wrong dialect",
+                path,
+            )
+
         return table
 
     def write_table_to_csv(self, table, path, header=True, dialect="excel"):
@@ -1476,7 +1517,6 @@ class Tables:
         :param dialect: the format of output CSV
 
         Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``.
-
         """
         self._requires_table(table)
 
