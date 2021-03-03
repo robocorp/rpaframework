@@ -115,7 +115,7 @@ RPA.Tables:
    "5", "Index accessing through dot notation?"
    "6", "Index name conflict in exports/imports"
    "7", "Return Robot Framework DotDict instead of dict?"
-   "794", "Ensure original index is maintained?"
+   "802", "Ensure original index is maintained?"
 
 RPA.Tasks:
 ==========

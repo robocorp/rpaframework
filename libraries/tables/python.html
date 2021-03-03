@@ -312,6 +312,7 @@
 <code class="sig-name descname">filter_by_column</code><span class="sig-paren">(</span><em class="sig-param">column</em>, <em class="sig-param">condition</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Table.filter_by_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove rows by evaluating <cite>condition</cite> for all <cite>column</cite>
 values. All rows where it evaluates to falsy are removed.</p>
+<p>The filtering will be done in-place.</p>
 </dd></dl>
 
 <dl class="method">
@@ -685,6 +686,7 @@ default <cite>False</cite></p></li>
 <dt id="RPA.Tables.Tables.filter_empty_rows">
 <code class="sig-name descname">filter_empty_rows</code><span class="sig-paren">(</span><em class="sig-param">table</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.filter_empty_rows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all rows from the table which have only None values.</p>
+<p>The filtering will be done in-place.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>table</strong> – table to filter</p>
@@ -695,7 +697,9 @@ default <cite>False</cite></p></li>
 <dl class="method">
 <dt id="RPA.Tables.Tables.filter_table_by_column">
 <code class="sig-name descname">filter_table_by_column</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">column</em>, <em class="sig-param">operator</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.filter_table_by_column" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return all rows where the column values match the given condition.</p>
+<dd><p>Remove all rows where the column values don’t match the
+given condition.</p>
+<p>The filtering will be done in-place.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -915,7 +919,7 @@ instead of appending multiple copies of the same name.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.read_table_from_csv">
-<code class="sig-name descname">read_table_from_csv</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">header=None</em>, <em class="sig-param">columns=None</em>, <em class="sig-param">dialect=None</em>, <em class="sig-param">delimiters=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.read_table_from_csv" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_table_from_csv</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">header=None</em>, <em class="sig-param">columns=None</em>, <em class="sig-param">dialect=None</em>, <em class="sig-param">delimiters=None</em>, <em class="sig-param">column_unknown='Unknown'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.read_table_from_csv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a CSV file as a table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -925,6 +929,7 @@ instead of appending multiple copies of the same name.</p>
 <li><p><strong>columns</strong> – names of columns in resulting table</p></li>
 <li><p><strong>dialect</strong> – format of CSV file</p></li>
 <li><p><strong>delimiters</strong> – string of possible delimiters</p></li>
+<li><p><strong>column_unknown</strong> – column name for unknown fields</p></li>
 </ul>
 </dd>
 </dl>
@@ -938,6 +943,19 @@ set of valid <code class="docutils literal notranslate"><span class="pre">delimi
 <p>The <code class="docutils literal notranslate"><span class="pre">columns</span></code> argument can be used to override the names of columns
 in the resulting table. The amount of columns must match the input
 data.</p>
+<p>If the source data has a header and rows have more fields than
+the header defines, the remaining values are put into the column
+given by <code class="docutils literal notranslate"><span class="pre">column_unknown</span></code>. By default it has the value “Unknown”.</p>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Source dialect is deduced automatically</span>
+<span class="c">${table}=</span><span class="p">    </span><span class="c">Read table from CSV</span><span class="p">    </span><span class="c">export.csv</span><span class="p"></span>
+<span class="c">Log</span><span class="p">   </span><span class="c">Found columns: ${table.columns}</span><span class="p"></span>
+
+<span class="c"># Source dialect is known and given explicitly</span>
+<span class="c">${table}=</span><span class="p">    </span><span class="c">Read table from CSV</span><span class="p">    </span><span class="c">export-excel.csv</span><span class="p">    </span><span class="c">dialect=excel</span><span class="p"></span>
+<span class="c">Log</span><span class="p">   </span><span class="c">Found columns: ${table.columns}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">

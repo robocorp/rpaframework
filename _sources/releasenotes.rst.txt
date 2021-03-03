@@ -4,6 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Tables**:
+
+  - Add option to define column name for unknown CSV fields,
+    and warn about header and data mismatch
+  - Correctly handle source data with ``NoneType`` columns
+
 7.6.0
 -----
 

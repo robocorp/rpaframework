@@ -5,7 +5,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:45",
+        "generated": "2021-03-03 11:42:19",
         "inits": [],
         "keywords": [
             {
@@ -103,7 +103,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:46",
+        "generated": "2021-03-03 11:42:19",
         "inits": [
             {
                 "name": "Init",
@@ -2646,7 +2646,7 @@
         "version": "2.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:46",
+        "generated": "2021-03-03 11:42:19",
         "inits": [
             {
                 "name": "Init",
@@ -4178,7 +4178,7 @@
         "version": "4.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:46",
+        "generated": "2021-03-03 11:42:20",
         "inits": [
             {
                 "name": "Init",
@@ -6721,7 +6721,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:47",
+        "generated": "2021-03-03 11:42:20",
         "inits": [
             {
                 "name": "Init",
@@ -7074,7 +7074,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:47",
+        "generated": "2021-03-03 11:42:20",
         "inits": [
             {
                 "name": "Init",
@@ -7292,7 +7292,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:47",
+        "generated": "2021-03-03 11:42:21",
         "inits": [
             {
                 "name": "Init",
@@ -7860,11 +7860,11 @@
     },
     "RPA.Crypto": {
         "name": "RPA.Crypto",
-        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Library for common encryption and hashing operations.</p>\n<p>It uses the <a class=\"reference external\" href=\"https://github.com/fernet/spec/blob/master/Spec.md\">Fernet</a>\nformat for encryption. More specifically, it uses AES in\nCBC mode with a 128-bit key for encryption and HMAC with SHA256 for\nauthentication.</p>\n<p>To use the encryption features, generate a key with the command line\nutility <tt class=\"docutils literal\"><span class=\"pre\">rpa-crypto</span></tt> or with the keyword <tt class=\"docutils literal\">Generate Key</tt>. Store\nthe key in a secure place, such as Robocorp Vault, and load it within\nthe execution before calling encryption/decryption keywords.</p>\n<p><strong>Example usage with Robocorp Vault</strong></p>\n<p>Create an encryption key with the CLI utility:</p>\n<pre class=\"code console literal-block\">\n<span class=\"gp\">&gt;</span> rpa-crypto key\n<span class=\"go\">rGx1edA07yz7uD08ChiPSunn8vaauRxw0pAbsal9zjM=</span>\n</pre>\n<p>Store the key in Robocorp Vault, in this case with the name <tt class=\"docutils literal\">EncryptionKey</tt>.</p>\n<p>Load the key from the vault before encryption operations:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Use encryption key from vault</span><span class=\"p\">    </span><span class=\"c\">EncryptionKey</span><span class=\"p\">\n</span><span class=\"c\">${encrypted}=</span><span class=\"p\">   </span><span class=\"c\">Encrypt file</span><span class=\"p\">    </span><span class=\"c\">orders.xlsx</span><span class=\"p\">\n</span><span class=\"c\">Add work item file</span><span class=\"p\">    </span><span class=\"c\">${encrypted}</span><span class=\"p\">    </span><span class=\"c\">name=Orders</span>\n</pre>\n<p>In another task, this same key can be used to decrypt the file:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Use encryption key from vault</span><span class=\"p\">    </span><span class=\"c\">EncryptionKey</span><span class=\"p\">\n</span><span class=\"c\">${encrypted}=</span><span class=\"p\">    </span><span class=\"c\">Get work item file</span><span class=\"p\">    </span><span class=\"c\">Orders</span><span class=\"p\">\n</span><span class=\"c\">${orders}=</span><span class=\"p\">   </span><span class=\"c\">Decrypt file</span><span class=\"p\">    </span><span class=\"c\">${encrypted}</span>\n</pre>\n</div>\n</div>",
+        "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Library for common encryption and hashing operations.</p>\n<p>It uses the <a class=\"reference external\" href=\"https://github.com/fernet/spec/blob/master/Spec.md\">Fernet</a>\nformat for encryption. More specifically, it uses AES in\nCBC mode with a 128-bit key for encryption and HMAC with SHA256 for\nauthentication.</p>\n<p>To use the encryption features, generate a key with the command line\nutility <tt class=\"docutils literal\"><span class=\"pre\">rpa-crypto</span></tt> or with the keyword <tt class=\"docutils literal\">Generate Key</tt>. Store\nthe key in a secure place, such as Robocorp Vault, and load it within\nthe execution before calling encryption/decryption keywords.</p>\n<p><strong>Example usage with Robocorp Vault</strong></p>\n<p>Create an encryption key with the CLI utility:</p>\n<pre class=\"code console literal-block\">\n<span class=\"go\">&gt; rpa-crypto key\nrGx1edA07yz7uD08ChiPSunn8vaauRxw0pAbsal9zjM=</span>\n</pre>\n<p>Store the key in Robocorp Vault, in this case with the name <tt class=\"docutils literal\">EncryptionKey</tt>.</p>\n<p>Load the key from the vault before encryption operations:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Use encryption key from vault</span><span class=\"p\">    </span><span class=\"c\">EncryptionKey</span><span class=\"p\">\n</span><span class=\"c\">${encrypted}=</span><span class=\"p\">   </span><span class=\"c\">Encrypt file</span><span class=\"p\">    </span><span class=\"c\">orders.xlsx</span><span class=\"p\">\n</span><span class=\"c\">Add work item file</span><span class=\"p\">    </span><span class=\"c\">${encrypted}</span><span class=\"p\">    </span><span class=\"c\">name=Orders</span>\n</pre>\n<p>In another task, this same key can be used to decrypt the file:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">Use encryption key from vault</span><span class=\"p\">    </span><span class=\"c\">EncryptionKey</span><span class=\"p\">\n</span><span class=\"c\">${encrypted}=</span><span class=\"p\">    </span><span class=\"c\">Get work item file</span><span class=\"p\">    </span><span class=\"c\">Orders</span><span class=\"p\">\n</span><span class=\"c\">${orders}=</span><span class=\"p\">   </span><span class=\"c\">Decrypt file</span><span class=\"p\">    </span><span class=\"c\">${encrypted}</span>\n</pre>\n</div>\n</div>",
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:48",
+        "generated": "2021-03-03 11:42:21",
         "inits": [],
         "keywords": [
             {
@@ -7973,7 +7973,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:48",
+        "generated": "2021-03-03 11:42:21",
         "inits": [],
         "keywords": [
             {
@@ -8091,7 +8091,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:48",
+        "generated": "2021-03-03 11:42:22",
         "inits": [],
         "keywords": [
             {
@@ -8431,7 +8431,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:49",
+        "generated": "2021-03-03 11:42:22",
         "inits": [],
         "keywords": [
             {
@@ -8470,7 +8470,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:49",
+        "generated": "2021-03-03 11:42:22",
         "inits": [],
         "keywords": [
             {
@@ -8577,7 +8577,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:49",
+        "generated": "2021-03-03 11:42:22",
         "inits": [
             {
                 "name": "Init",
@@ -9213,7 +9213,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:50",
+        "generated": "2021-03-03 11:42:23",
         "inits": [
             {
                 "name": "Init",
@@ -9380,7 +9380,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:50",
+        "generated": "2021-03-03 11:42:23",
         "inits": [],
         "keywords": [
             {
@@ -9524,7 +9524,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:50",
+        "generated": "2021-03-03 11:42:24",
         "inits": [
             {
                 "name": "Init",
@@ -9855,7 +9855,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:51",
+        "generated": "2021-03-03 11:42:24",
         "inits": [],
         "keywords": [
             {
@@ -10021,7 +10021,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:51",
+        "generated": "2021-03-03 11:42:24",
         "inits": [],
         "keywords": [
             {
@@ -10218,7 +10218,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:51",
+        "generated": "2021-03-03 11:42:24",
         "inits": [],
         "keywords": [
             {
@@ -10415,7 +10415,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:52",
+        "generated": "2021-03-03 11:42:25",
         "inits": [],
         "keywords": [
             {
@@ -10899,7 +10899,7 @@
         "version": "0.7.2",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:52",
+        "generated": "2021-03-03 11:42:25",
         "inits": [
             {
                 "name": "Init",
@@ -10930,7 +10930,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'DELETE', 'GET', 'PUT']"
+                    "retry_method_list=['OPTIONS', 'GET', 'PUT', 'DELETE', 'HEAD', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>client_certs</code> ['client certificate', 'client key'] PEM files containing the client key and certificate</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10953,7 +10953,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'DELETE', 'GET', 'PUT']"
+                    "retry_method_list=['OPTIONS', 'GET', 'PUT', 'DELETE', 'HEAD', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> A Custom Authentication object to be passed on to the requests library. <a href=\"http://docs.python-requests.org/en/master/user/advanced/#custom-authentication\">http://docs.python-requests.org/en/master/user/advanced/#custom-authentication</a></p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10976,7 +10976,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'DELETE', 'GET', 'PUT']"
+                    "retry_method_list=['OPTIONS', 'GET', 'PUT', 'DELETE', 'HEAD', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10999,7 +10999,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'DELETE', 'GET', 'PUT']"
+                    "retry_method_list=['OPTIONS', 'GET', 'PUT', 'DELETE', 'HEAD', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -11022,7 +11022,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'DELETE', 'GET', 'PUT']"
+                    "retry_method_list=['OPTIONS', 'GET', 'PUT', 'DELETE', 'HEAD', 'TRACE']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> List of username &amp; password for HTTP Basic Auth</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -11266,7 +11266,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:52",
+        "generated": "2021-03-03 11:42:25",
         "inits": [],
         "keywords": [
             {
@@ -11385,7 +11385,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:52",
+        "generated": "2021-03-03 11:42:25",
         "inits": [],
         "keywords": [
             {
@@ -11497,7 +11497,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:52",
+        "generated": "2021-03-03 11:42:25",
         "inits": [],
         "keywords": [
             {
@@ -11657,7 +11657,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:53",
+        "generated": "2021-03-03 11:42:26",
         "inits": [],
         "keywords": [
             {
@@ -11752,7 +11752,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:53",
+        "generated": "2021-03-03 11:42:26",
         "inits": [],
         "keywords": [
             {
@@ -11822,7 +11822,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:53",
+        "generated": "2021-03-03 11:42:26",
         "inits": [
             {
                 "name": "Init",
@@ -12763,7 +12763,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:54",
+        "generated": "2021-03-03 11:42:27",
         "inits": [
             {
                 "name": "Init",
@@ -12852,7 +12852,7 @@
                 "name": "Get Work Item Variable",
                 "args": [
                     "name",
-                    "default=<object object at 0x0000025E007E6340>"
+                    "default=<object object at 0x000001F58D949FC0>"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a single variable value from the work item,\nor default value if defined and key does not exist.\nIf key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param key:</th><td class=\"field-body\">Name of variable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param default:</th><td class=\"field-body\">Default value if key does not exist</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${username}=</span><span class=\"p\">    </span><span class=\"c\">Get work item variable</span><span class=\"p\">    </span><span class=\"c\">username</span><span class=\"p\">    </span><span class=\"c\">default=guest</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Return a single variable value from the work item, or default value if defined and key does not exist. If key does not exist and default is not defined, raises <cite>KeyError</cite>.",
@@ -12981,7 +12981,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:54",
+        "generated": "2021-03-03 11:42:27",
         "inits": [
             {
                 "name": "Init",
@@ -13016,7 +13016,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:54",
+        "generated": "2021-03-03 11:42:27",
         "inits": [],
         "keywords": [
             {
@@ -13082,7 +13082,7 @@
         "version": "1.1",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:54",
+        "generated": "2021-03-03 11:42:27",
         "inits": [
             {
                 "name": "Init",
@@ -13499,7 +13499,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:54",
+        "generated": "2021-03-03 11:42:27",
         "inits": [
             {
                 "name": "Init",
@@ -13756,7 +13756,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:54",
+        "generated": "2021-03-03 11:42:27",
         "inits": [],
         "keywords": [
             {
@@ -13783,7 +13783,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:55",
+        "generated": "2021-03-03 11:42:27",
         "inits": [],
         "keywords": [
             {
@@ -13860,7 +13860,7 @@
                 "args": [
                     "table"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Remove all rows from the table which have only None values.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param table:</th><td class=\"field-body\">table to filter</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Remove all rows from the table which have only None values.</p>\n<p>The filtering will be done in-place.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param table:</th><td class=\"field-body\">table to filter</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
                 "shortdoc": "Remove all rows from the table which have only None values.",
                 "tags": [],
                 "matched": true
@@ -13873,8 +13873,8 @@
                     "operator",
                     "value"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return all rows where the column values match the given condition.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param table:</th><td class=\"field-body\">table to filter</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param column:</th><td class=\"field-body\">column to filter with</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param operator:</th><td class=\"field-body\">filtering operator, e.g. &gt;, &lt;, ==, contains</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param value:</th><td class=\"field-body\">value to compare column to (using operator)</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
-                "shortdoc": "Return all rows where the column values match the given condition.",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Remove all rows where the column values don't match the\ngiven condition.</p>\n<p>The filtering will be done in-place.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param table:</th><td class=\"field-body\">table to filter</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param column:</th><td class=\"field-body\">column to filter with</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param operator:</th><td class=\"field-body\">filtering operator, e.g. &gt;, &lt;, ==, contains</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param value:</th><td class=\"field-body\">value to compare column to (using operator)</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>",
+                "shortdoc": "Remove all rows where the column values don't match the given condition.",
                 "tags": [],
                 "matched": true
             },
@@ -14002,9 +14002,10 @@
                     "header=None",
                     "columns=None",
                     "dialect=None",
-                    "delimiters=None"
+                    "delimiters=None",
+                    "column_unknown=Unknown"
                 ],
-                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Read a CSV file as a table.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to CSV file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param header:</th><td class=\"field-body\">CSV file includes header</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param columns:</th><td class=\"field-body\">names of columns in resulting table</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param dialect:</th><td class=\"field-body\">format of CSV file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param delimiters:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">string of possible delimiters</td>\n</tr>\n</tbody>\n</table>\n<p>By default attempts to deduce the CSV format and headers\nfrom a sample of the input file. If it's unable to determine\nthe format automatically, the dialect and header will\nhave to be defined manually.</p>\n<p>Valid <tt class=\"docutils literal\">dialect</tt> values are <tt class=\"docutils literal\">excel</tt>, <tt class=\"docutils literal\"><span class=\"pre\">excel-tab</span></tt>, and <tt class=\"docutils literal\">unix</tt>,\nand <tt class=\"docutils literal\">header</tt> is boolean argument (<tt class=\"docutils literal\">True</tt>/<tt class=\"docutils literal\">False</tt>). Optionally a\nset of valid <tt class=\"docutils literal\">delimiters</tt> can be given as a string.</p>\n<p>The <tt class=\"docutils literal\">columns</tt> argument can be used to override the names of columns\nin the resulting table. The amount of columns must match the input\ndata.</p>\n</div>\n</div>",
+                "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Read a CSV file as a table.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param path:</th><td class=\"field-body\">path to CSV file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param header:</th><td class=\"field-body\">CSV file includes header</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param columns:</th><td class=\"field-body\">names of columns in resulting table</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param dialect:</th><td class=\"field-body\">format of CSV file</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param delimiters:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">string of possible delimiters</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\" colspan=\"2\">param column_unknown:</th></tr>\n<tr class=\"field\"><td>&nbsp;</td><td class=\"field-body\">column name for unknown fields</td>\n</tr>\n</tbody>\n</table>\n<p>By default attempts to deduce the CSV format and headers\nfrom a sample of the input file. If it's unable to determine\nthe format automatically, the dialect and header will\nhave to be defined manually.</p>\n<p>Valid <tt class=\"docutils literal\">dialect</tt> values are <tt class=\"docutils literal\">excel</tt>, <tt class=\"docutils literal\"><span class=\"pre\">excel-tab</span></tt>, and <tt class=\"docutils literal\">unix</tt>,\nand <tt class=\"docutils literal\">header</tt> is boolean argument (<tt class=\"docutils literal\">True</tt>/<tt class=\"docutils literal\">False</tt>). Optionally a\nset of valid <tt class=\"docutils literal\">delimiters</tt> can be given as a string.</p>\n<p>The <tt class=\"docutils literal\">columns</tt> argument can be used to override the names of columns\nin the resulting table. The amount of columns must match the input\ndata.</p>\n<p>If the source data has a header and rows have more fields than\nthe header defines, the remaining values are put into the column\ngiven by <tt class=\"docutils literal\">column_unknown</tt>. By default it has the value &quot;Unknown&quot;.</p>\n<p>Examples:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\"># Source dialect is deduced automatically\n${table}=</span><span class=\"p\">    </span><span class=\"c\">Read table from CSV</span><span class=\"p\">    </span><span class=\"c\">export.csv</span><span class=\"p\">\n</span><span class=\"c\">Log</span><span class=\"p\">   </span><span class=\"c\">Found columns: ${table.columns}</span><span class=\"p\">\n\n</span><span class=\"c\"># Source dialect is known and given explicitly\n${table}=</span><span class=\"p\">    </span><span class=\"c\">Read table from CSV</span><span class=\"p\">    </span><span class=\"c\">export-excel.csv</span><span class=\"p\">    </span><span class=\"c\">dialect=excel</span><span class=\"p\">\n</span><span class=\"c\">Log</span><span class=\"p\">   </span><span class=\"c\">Found columns: ${table.columns}</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Read a CSV file as a table.",
                 "tags": [],
                 "matched": true
@@ -14159,7 +14160,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:55",
+        "generated": "2021-03-03 11:42:28",
         "inits": [
             {
                 "name": "Init",
@@ -14278,7 +14279,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:55",
+        "generated": "2021-03-03 11:42:28",
         "inits": [],
         "keywords": [
             {
@@ -14401,7 +14402,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-02-23 11:25:55",
+        "generated": "2021-03-03 11:42:28",
         "inits": [],
         "keywords": [
             {
