@@ -1,6 +1,10 @@
 import logging
 from typing import Any
-from robot.libraries.BuiltIn import BuiltIn
+
+try:
+    from robot.libraries.BuiltIn import BuiltIn
+except ModuleNotFoundError:
+    BuiltIn = None
 
 from RPA.core.helpers import required_param
 
@@ -187,6 +191,9 @@ class RobotLogListener:
         on failure, but this can be set to override `SeleniumLibrary`
         default behaviour for a set of keywords.
         """
+        if BuiltIn is None:
+            raise RuntimeError("Not supported outside Robot Framework")
+
         required_param(keywords, "mute_run_on_failure")
         if not isinstance(keywords, list):
             keywords = [keywords]
@@ -212,6 +219,9 @@ class RobotLogListener:
         If `name` exists in the protected keywords list then log level is
         temporarily set to NONE.
         """
+        if BuiltIn is None:
+            return
+
         robotized_keyword = self._robotize_keyword(name)
 
         if any(kw in robotized_keyword for kw in self.KEYWORDS_TO_PROTECT):
@@ -243,6 +253,9 @@ class RobotLogListener:
         If `name` exists in the protected keywords list then log level is
         restored back to level it was before settings to NONE.
         """
+        if BuiltIn is None:
+            return
+
         robotized_keyword = self._robotize_keyword(name)
 
         if any(kw in robotized_keyword for kw in self.KEYWORDS_TO_PROTECT):

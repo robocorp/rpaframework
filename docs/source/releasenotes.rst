@@ -4,6 +4,18 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Browser.Selenium**:
+
+  - Keyword ``Open Available Browser`` has the default option 'AUTO' for
+    arguments ``headless`` and ``download``. See keyword documentation
+    for details.
+  - Webdrivers for Chrome/Chromium and Firefox are automatically matched
+    to the currently installed browser version.
+  - Webdrivers which are still running on Python process exit are closed
+    automatically to prevent hanging subprocesses.
+  - Webdrivers are stored in the user's home folder, to speed
+    up browser start-up times between reboots.
+
 - Library **RPA.PDF**:
 
   - Refactor library into a separate package.
@@ -17,19 +29,6 @@ Upcoming release
     If no input path given, the library assumes a PDF is already opened by some
     other keyword. If no output path given, the library will output the file
     to ``output/output.pdf``.
-
-
-- Library **RPA.Browser.Selenium**:
-
-  - Keyword ``Open Available Browser`` has the default option 'AUTO' for
-    arguments ``headless`` and ``download``. See keyword documentation
-    for details.
-  - Webdrivers for Chrome/Chromium and Firefox are automatically matched
-    to the currently installed browser version.
-  - Webdrivers which are still running on Python process exit are closed
-    automatically to prevent hanging subprocesses.
-  - Webdrivers are stored in the user's home folder, to speed
-    up browser start-up times between reboots.
 
 - Library **RPA.Desktop.Windows**:
 
