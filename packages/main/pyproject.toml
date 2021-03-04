@@ -36,7 +36,7 @@ packages = [
 python = "^3.6"
 docutils = "*"
 dataclasses = { version = "^0.7", python=">=3.6,<3.7" }
-rpaframework-core = "^6.0.0"
+rpaframework-core = "^6.1.0"
 rpaframework-recognition = { version = "^0.7.0", optional = true }
 jsonpath-ng = "^1.5.2"
 robotframework = "^3.2.2"
@@ -97,9 +97,10 @@ rpa-crypto = 'RPA.scripts.crypto:main'
 
 [tool.poetry.extras]
 cv = ["rpaframework-recognition"]
-playwright = ["robotframework-browser", "grpcio"]
+playwright = ["grpcio", "robotframework-browser"]
 aws = ["boto3"]
 google = [
+	"grpcio",
 	"google-api-python-client",
 	"google-auth-httplib2",
 	"google-auth-oauthlib",
@@ -110,7 +111,6 @@ google = [
 	"google-cloud-translate",
 	"google-cloud-videointelligence",
 	"google-cloud-vision",
-	"grpcio"
 ]
 
 [tool.black]
