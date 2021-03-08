@@ -41,6 +41,8 @@ Upcoming release
     and warn about header and data mismatch
   - Correctly handle source data with ``NoneType`` columns
 
+- Library **RPA.Word.Application**: Fix saving with Office 2007 and older
+
 7.6.0
 -----
 
