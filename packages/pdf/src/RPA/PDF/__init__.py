@@ -1,7 +1,7 @@
 import logging
 from robotlibcore import DynamicCore
 
-from RPA.core.RobotLogListener import RobotLogListener
+from RPA.core.logger import RobotLogListener
 
 from RPA.PDF.keywords import DocumentKeywords, FinderKeywords, ModelKeywords
 

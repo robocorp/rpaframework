@@ -33,8 +33,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
-# rpaframework-core = "^5.3.2"
-rpaframework-core = { path = "../core", develop = true}
+rpaframework-core = "^6.1.0"
 robotframework = "^3.2.2"
 robotframework-pythonlibcore = "^2.1.0"
 "pdfminer.six" = "20201018"
