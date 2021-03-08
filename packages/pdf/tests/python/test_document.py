@@ -1,16 +1,15 @@
-from contextlib import nullcontext as does_not_raise
+from contextlib import contextmanager
 
 import PyPDF2
 import pytest
 
 from RPA.PDF.keywords.document import DocumentKeywords
-from . import (
-    library,
-    temp_filename,
-    TestFiles,
-)
+from . import library, temp_filename, TestFiles
 
-# TODO: add tests to cover more conditions
+
+@contextmanager
+def does_not_raise():
+    yield
 
 
 @pytest.mark.parametrize(
