@@ -121,9 +121,9 @@ class Application:
 
         :param filename: PDF to export WORD into
         """
-        absolute_filepath = str(Path(filename).resolve())
+        path = str(Path(filename).resolve())
         self.app.ActiveDocument.ExportAsFixedFormat(
-            OutputFileName=absolute_filepath, ExportFormat=constants.wdExportFormatPDF
+            OutputFileName=path, ExportFormat=constants.wdExportFormatPDF
         )
 
     def write_text(self, text: str, newline: bool = True) -> None:
@@ -171,6 +171,7 @@ class Application:
         # Delete all comments
         if self.app.ActiveDocument.Comments.Count >= 1:
             self.app.ActiveDocument.DeleteAllComments()
+
         self.app.ActiveDocument.Save()
 
     def save_document_as(self, filename: str, fileformat: str = None) -> None:
@@ -180,25 +181,27 @@ class Application:
         :param fileformat: see @FILEFORMATS dictionary for possible format,
             defaults to None
         """
-        absolute_filepath = str(Path(filename).resolve())
+        path = str(Path(filename).resolve())
+
         # Accept all revisions
         self.app.ActiveDocument.Revisions.AcceptAll()
         # Delete all comments
         if self.app.ActiveDocument.Comments.Count >= 1:
             self.app.ActiveDocument.DeleteAllComments()
-        self.logger.info("Saving file to absolute path: %s", absolute_filepath)
+
         if fileformat and fileformat.upper() in FILEFORMATS.keys():
             self.logger.debug("Saving with file format: %s", fileformat)
             format_name = FILEFORMATS[fileformat.upper()]
             format_type = getattr(constants, format_name)
-            self.app.ActiveDocument.SaveAs2(
-                FileName=absolute_filepath, FileFormat=format_type
-            )
         else:
-            self.app.ActiveDocument.SaveAs2(
-                absolute_filepath, FileFormat=constants.wdFormatDocumentDefault
-            )
-        self.logger.info("File saved to: %s", absolute_filepath)
+            format_type = constants.wdFormatDocumentDefault
+
+        try:
+            self.app.ActiveDocument.SaveAs2(path, FileFormat=format_type)
+        except AttributeError:
+            self.app.ActiveDocument.SaveAs(path, FileFormat=format_type)
+
+        self.logger.info("File saved to: %s", path)
 
     def get_all_texts(self) -> str:
         """Get all texts from active document
