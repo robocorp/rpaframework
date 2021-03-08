@@ -804,6 +804,10 @@ class Selenium(SeleniumLibrary):
         if not download:
             return _create_driver()
 
+        # Check if webdriver is available for given browser
+        if browser not in webdriver.AVAILABLE_DRIVERS:
+            raise ValueError(f"Webdriver download not available for {browser.title()}")
+
         # Try to use webdriver already in cache
         path_cache = webdriver.cache(browser)
         if path_cache:
