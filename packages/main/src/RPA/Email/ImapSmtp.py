@@ -477,7 +477,8 @@ class ImapSmtp:
                         encoders.encode_base64(part)
                     part.add_header(
                         "Content-Disposition",
-                        f"attachment; filename= {Path(filename).name}",
+                        "attachment",
+                        filename=Path(filename).name,
                     )
                     msg.attach(part)
 
