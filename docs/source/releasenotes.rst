@@ -12,13 +12,13 @@ Upcoming release
   - Webdrivers for Chrome/Chromium and Firefox are automatically matched
     to the currently installed browser version.
   - Webdrivers which are still running on Python process exit are closed
-    automatically to prevent hanging subprocesses.
+    automatically to prevent hanging subprocesses. (:issue:`94`)
   - Webdrivers are stored in the user's home folder, to speed
     up browser start-up times between reboots.
 
 - Library **RPA.PDF**:
 
-  - Refactor library into a separate package.
+  - Refactor library into a separate package. (:issue:`97`)
   - Rename keyword ``Add Image to PDF`` to ``Add Watermark Image to PDF``.
   - Rename ``Get Value From Anchor`` to ``Find Text``.
   - Rename ``Page Rotate`` to ``Rotate Page``.
@@ -41,7 +41,7 @@ Upcoming release
     and warn about header and data mismatch
   - Correctly handle source data with ``NoneType`` columns
 
-- Library **RPA.Word.Application**: Fix saving with Office 2007 and older
+- Library **RPA.Word.Application**: Fix saving with Office 2007 and older (:issue:`146`)
 
 7.6.0
 -----

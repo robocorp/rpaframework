@@ -14,20 +14,23 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('../../src/rpa'))
 
-
 # -- Project information -----------------------------------------------------
 
 project = "RPA Framework"
 copyright = "2020 Robocorp Technologies, Inc."
 author = "Ossi Rajuvaara, Mika Hänninen"
 
-
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.todo", "sphinx_markdown_builder"]
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.todo",
+    "sphinx_markdown_builder",
+    "sphinx_issues",
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -40,6 +43,8 @@ exclude_patterns = []
 # Render todo and todolist directives
 todo_include_todos = True
 
+# Github project for issue / pr directives
+issues_github_path = "robocorp/rpaframework"
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -55,7 +60,6 @@ html_static_path = ["_static"]
 html_extra_path = ["include"]
 html_css_files = ["custom.css"]
 html_js_files = ["custom.js"]
-
 
 # -- Override Robot Framework lexer ------------------------------------------
 from robotframeworklexer import RobotFrameworkLexer

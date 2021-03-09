@@ -82,6 +82,9 @@ category = "main"
 optional = false
 python-versions = ">=3.6.0"
 
+[package.dependencies]
+typing = {version = ">=3.6", markers = "python_version < \"3.7\""}
+
 [[package]]
 name = "backports.zoneinfo"
 version = "0.2.1"
@@ -308,12 +311,15 @@ kerberos = ["requests-gssapi"]
 sspi = ["requests-negotiate-sspi"]
 
 [[package]]
-name = "fpdf"
-version = "1.7.2"
+name = "fpdf2"
+version = "2.3.1"
 description = "Simple PDF generation for Python"
 category = "main"
 optional = false
 python-versions = "*"
+
+[package.dependencies]
+Pillow = "*"
 
 [[package]]
 name = "furl"
@@ -1313,11 +1319,11 @@ robotframework = ">=2.9"
 
 [[package]]
 name = "robotframework-seleniumlibrary"
-version = "4.5.0"
+version = "5.1.0"
 description = "Web testing library for Robot Framework"
 category = "main"
 optional = false
-python-versions = ">=2.7.*, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, <4"
+python-versions = ">=3.6, <4"
 
 [package.dependencies]
 robotframework = ">=3.1.2"
@@ -1347,7 +1353,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "7.6.0"
+version = "8.0.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1362,7 +1368,6 @@ cryptography = "^3.3.1"
 dataclasses = {version = "^0.7", markers = "python_version >= \"3.6\" and python_version < \"3.7\""}
 docutils = "*"
 exchangelib = "^3.1.1"
-fpdf = "^1.7.2"
 google-api-python-client = {version = "^1.12.3", optional = true}
 google-auth-httplib2 = {version = "^0.0.4", optional = true}
 google-auth-oauthlib = {version = "^0.4.1", optional = true}
@@ -1380,11 +1385,9 @@ mss = "^6.0.0"
 netsuitesdk = "^1.1.0"
 notifiers = "^1.2.1"
 openpyxl = "^3.0.3"
-"pdfminer.six" = "20201018"
 pillow = "^8.0.1"
 psutil = {version = "^5.7.0", markers = "sys_platform == \"win32\""}
 pynput-robocorp-fork = "^2.0.0"
-pypdf2 = "^1.26.0"
 pyperclip = "^1.8.0"
 PySocks = ">=1.5.6,!=1.5.7,<2.0.0"
 python-xlib = {version = ">=0.17", markers = "sys_platform == \"linux\""}
@@ -1395,10 +1398,10 @@ robotframework-browser = {version = "^2.5.0", optional = true, markers = "python
 robotframework-pythonlibcore = "^2.1.0"
 robotframework-requests = "^0.7.0"
 robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"win32\""}
-robotframework-seleniumlibrary = "^4.5.0"
+robotframework-seleniumlibrary = "^5.1.0"
 robotframework-seleniumtestability = "^1.1.0"
-rpaframework-core = "^5.3.1"
-rpaframework-recognition = {version = "^0.6.0", optional = true}
+rpaframework-core = "^6.1.0"
+rpaframework-recognition = {version = "^0.7.0", optional = true}
 selenium = "^3.141.0"
 simple_salesforce = "^1.0.0"
 tweepy = "^3.8.0"
@@ -1407,10 +1410,10 @@ xlutils = "^2.0.0"
 xlwt = "^1.3.0"
 
 [package.extras]
-cv = ["rpaframework-recognition (>=0.6.0,<0.7.0)"]
-playwright = ["robotframework-browser (>=2.5.0,<3.0.0)", "grpcio (==1.33.2)"]
+cv = ["rpaframework-recognition (>=0.7.0,<0.8.0)"]
+playwright = ["grpcio (==1.33.2)", "robotframework-browser (>=2.5.0,<3.0.0)"]
 aws = ["boto3 (>=1.13.4,<2.0.0)"]
-google = ["google-api-python-client (>=1.12.3,<2.0.0)", "google-auth-httplib2 (>=0.0.4,<0.0.5)", "google-auth-oauthlib (>=0.4.1,<0.5.0)", "google-cloud-language (>=1.3.0,<2.0.0)", "google-cloud-speech (>=1.3.2,<2.0.0)", "google-cloud-storage (>=1.28.1,<2.0.0)", "google-cloud-texttospeech (>=1.0.1,<2.0.0)", "google-cloud-translate (>=2.0.1,<3.0.0)", "google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-cloud-vision (>=1.0.0,<2.0.0)", "grpcio (==1.33.2)"]
+google = ["grpcio (==1.33.2)", "google-api-python-client (>=1.12.3,<2.0.0)", "google-auth-httplib2 (>=0.0.4,<0.0.5)", "google-auth-oauthlib (>=0.4.1,<0.5.0)", "google-cloud-language (>=1.3.0,<2.0.0)", "google-cloud-speech (>=1.3.2,<2.0.0)", "google-cloud-storage (>=1.28.1,<2.0.0)", "google-cloud-texttospeech (>=1.0.1,<2.0.0)", "google-cloud-translate (>=2.0.1,<3.0.0)", "google-cloud-videointelligence (>=1.14.0,<2.0.0)", "google-cloud-vision (>=1.0.0,<2.0.0)"]
 
 [package.source]
 type = "directory"
@@ -1418,7 +1421,7 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-core"
-version = "5.3.1"
+version = "6.1.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -1426,11 +1429,32 @@ python-versions = ">=3.6,<4.0"
 
 [package.dependencies]
 selenium = ">=3.141.0,<4.0.0"
-webdrivermanager = ">=0.9.0,<0.10.0"
+webdrivermanager = ">=0.10.0,<0.11.0"
+
+[[package]]
+name = "rpaframework-pdf"
+version = "0.2.4"
+description = "PDF library of RPA Framework"
+category = "main"
+optional = false
+python-versions = "^3.6"
+develop = false
+
+[package.dependencies]
+fpdf2 = "^2.3.0"
+"pdfminer.six" = "20201018"
+pypdf2 = "^1.26.0"
+robotframework = "^3.2.2"
+robotframework-pythonlibcore = "^2.1.0"
+rpaframework-core = "^6.1.0"
+
+[package.source]
+type = "directory"
+url = "packages/pdf"
 
 [[package]]
 name = "rpaframework-recognition"
-version = "0.6.0"
+version = "0.7.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -1441,7 +1465,7 @@ numpy = "1.19.3"
 opencv-python = ">=4.4.0,<5.0.0"
 pillow = ">=8.0.1,<9.0.0"
 pytesseract = ">=0.3.6,<0.4.0"
-rpaframework-core = ">=5.0.0,<6.0.0"
+rpaframework-core = ">=6.0.0,<7.0.0"
 
 [[package]]
 name = "rsa"
@@ -1549,6 +1573,22 @@ sphinxcontrib-serializinghtml = "*"
 [package.extras]
 docs = ["sphinxcontrib-websupport"]
 test = ["pytest (<5.3.3)", "pytest-cov", "html5lib", "flake8 (>=3.5.0)", "flake8-import-order", "mypy (>=0.761)", "docutils-stubs"]
+
+[[package]]
+name = "sphinx-issues"
+version = "1.2.0"
+description = "A Sphinx extension for linking to your project's issue tracker"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+sphinx = "*"
+
+[package.extras]
+dev = ["pytest", "flake8 (==3.6.0)", "pre-commit (==1.13.0)", "tox", "mock", "flake8-bugbear (==18.8.0)"]
+lint = ["flake8 (==3.6.0)", "pre-commit (==1.13.0)", "flake8-bugbear (==18.8.0)"]
+tests = ["pytest", "mock"]
 
 [[package]]
 name = "sphinx-markdown-builder"
@@ -1693,6 +1733,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "typing"
+version = "3.7.4.3"
+description = "Type Hints for Python"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[[package]]
 name = "typing-extensions"
 version = "3.7.4.3"
 description = "Backported and Experimental Type Hints for Python 3.5+"
@@ -1761,7 +1809,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "webdrivermanager"
-version = "0.9.0"
+version = "0.10.0"
 description = "Module for facilitating download and deploy of WebDriver binaries."
 category = "main"
 optional = false
@@ -1868,7 +1916,7 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "b14cf7e3f3a54b3abbdb57a5eae4a5b46a39daff219bc0c9c9cf968b4210a01c"
+content-hash = "217e8a52bc978be3f1db81871df6390abd0cde223468292fc121cbffbf04843a"
 
 [metadata.files]
 alabaster = [
@@ -2040,10 +2088,9 @@ exchangelib = [
     {file = "exchangelib-3.3.2-py2.py3-none-any.whl", hash = "sha256:92f5328c91b4cc77170bafc55bdd6c7bc52457b29815100a0f53fbbade7bc67c"},
     {file = "exchangelib-3.3.2.tar.gz", hash = "sha256:fd4c59576f944c2fe6af4a96a3e0f7b583080bd00a596100fde12537d8539757"},
 ]
-fpdf = [
-    {file = "fpdf-1.7.2.tar.gz", hash = "sha256:125840783289e7d12552b1e86ab692c37322e7a65b96a99e0ea86cca041b6779"},
-    {file = "fpdf-1.7.2.win-amd64.exe", hash = "sha256:9542f6ad0791d673955da954a0cf3554a0affac79deab87bee06b9b4d4e60990"},
-    {file = "fpdf-1.7.2.win32.exe", hash = "sha256:0a94eb783ee933e32a44ad949a1aa6c3ca6fb35b608db53f8b216aec52fc1fb5"},
+fpdf2 = [
+    {file = "fpdf2-2.3.1-py2.py3-none-any.whl", hash = "sha256:36562d795a121743347a77194e3c3da5177c3e65e2f58c1a3057c7868ba7f070"},
+    {file = "fpdf2-2.3.1.tar.gz", hash = "sha256:e9f7e74669cfee4f7d6e778f708e5843bb95c967b7d9d4a03c728a19c5677792"},
 ]
 furl = [
     {file = "furl-2.1.0-py2.py3-none-any.whl", hash = "sha256:f4d6f1e5479c376a5b7bdc62795d736d8c1b2a754f366a2ad2816e46e946e22e"},
@@ -2753,8 +2800,8 @@ robotframework-sapguilibrary = [
     {file = "robotframework_sapguilibrary-1.1-py2-none-any.whl", hash = "sha256:c422e23623911b2c70630f9e01fcec754bb8ae16d9f8dbab29d1ee588800daf6"},
 ]
 robotframework-seleniumlibrary = [
-    {file = "robotframework-seleniumlibrary-4.5.0.tar.gz", hash = "sha256:a0a571642f54dabb481ff1ea7dc6195b82c69d241d0e01de79de64fcbfa69e44"},
-    {file = "robotframework_seleniumlibrary-4.5.0-py2.py3-none-any.whl", hash = "sha256:737fcdcf71777fd805762fdbb4b1b021b7719e7d34f820edc5545bdba85242c4"},
+    {file = "robotframework-seleniumlibrary-5.1.0.tar.gz", hash = "sha256:ef0f7271e0a72c2032281771760a47f764ef42aedcd83a5c981c2ef02cc752af"},
+    {file = "robotframework_seleniumlibrary-5.1.0-py2.py3-none-any.whl", hash = "sha256:eaa6bd832e076fc5b18bcc52fcc32b62d93ec238c8305eefbf74df8a0ff43320"},
 ]
 robotframework-seleniumtestability = [
     {file = "robotframework-seleniumtestability-1.1.0.tar.gz", hash = "sha256:18810869a0c0010cc623aea4bb382afdc9aa6fe8404c35fa58452766d0322735"},
@@ -2765,12 +2812,13 @@ robotframeworklexer = [
 ]
 rpaframework = []
 rpaframework-core = [
-    {file = "rpaframework-core-5.3.1.tar.gz", hash = "sha256:3da17586f1317cbe50ef3f780170d513bdb3996cbba97d87d26322e0b8e7e85c"},
-    {file = "rpaframework_core-5.3.1-py3-none-any.whl", hash = "sha256:f96a0ce454eb4889a0c95fb82c64a1b7f9dc9933c0fe42d445988097193735f0"},
+    {file = "rpaframework-core-6.1.0.tar.gz", hash = "sha256:51e1bbcfa092bc540fe8b3389942c55d97ffc48339401e4b928c1e8ff62f8e93"},
+    {file = "rpaframework_core-6.1.0-py3-none-any.whl", hash = "sha256:ada3a9e727d8e5a14532d4cae5235a90fb6fb959dce7095a880b7e600a4a6c14"},
 ]
+rpaframework-pdf = []
 rpaframework-recognition = [
-    {file = "rpaframework-recognition-0.6.0.tar.gz", hash = "sha256:7c6c480b156fa9ada6360fd482569796880b56812dcb94b38db6403cf8b6afee"},
-    {file = "rpaframework_recognition-0.6.0-py3-none-any.whl", hash = "sha256:0bdb7b9019ded7ebc4bc5bda20ceea8cc25980d0318efe5ff3df63902ebf4643"},
+    {file = "rpaframework-recognition-0.7.0.tar.gz", hash = "sha256:664b72daa7440ba2c1cb697b6fbd2a5ea7a6ac4f696edb9db68e5e987dd2c260"},
+    {file = "rpaframework_recognition-0.7.0-py3-none-any.whl", hash = "sha256:a71f7a0717de640076b8187136e2ffabaaa8875582ff0de761c22370c13a20a8"},
 ]
 rsa = [
     {file = "rsa-4.7.2-py3-none-any.whl", hash = "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2"},
@@ -2807,6 +2855,10 @@ soupsieve = [
 sphinx = [
     {file = "Sphinx-2.4.4-py3-none-any.whl", hash = "sha256:fc312670b56cb54920d6cc2ced455a22a547910de10b3142276495ced49231cb"},
     {file = "Sphinx-2.4.4.tar.gz", hash = "sha256:b4c750d546ab6d7e05bdff6ac24db8ae3e8b8253a3569b754e445110a0a12b66"},
+]
+sphinx-issues = [
+    {file = "sphinx-issues-1.2.0.tar.gz", hash = "sha256:845294736c7ac4c09c706f13431f709e1164037cbb00f6bf623ae16eccf509f3"},
+    {file = "sphinx_issues-1.2.0-py2.py3-none-any.whl", hash = "sha256:1208e1869742b7800a45b3c47ab987b87b2ad2024cbc36e0106e8bba3549dd22"},
 ]
 sphinx-markdown-builder = [
     {file = "sphinx-markdown-builder-0.5.4.tar.gz", hash = "sha256:41def076a9647b3e4412b92084a37f56fe933de62d294a59d148206049fd3f14"},
@@ -2884,6 +2936,10 @@ typed-ast = [
     {file = "typed_ast-1.4.2-cp39-cp39-win_amd64.whl", hash = "sha256:7147e2a76c75f0f64c4319886e7639e490fee87c9d25cb1d4faef1d8cf83a440"},
     {file = "typed_ast-1.4.2.tar.gz", hash = "sha256:9fc0b3cb5d1720e7141d103cf4819aea239f7d136acf9ee4a69b047b7986175a"},
 ]
+typing = [
+    {file = "typing-3.7.4.3-py2-none-any.whl", hash = "sha256:283d868f5071ab9ad873e5e52268d611e851c870a2ba354193026f2dfb29d8b5"},
+    {file = "typing-3.7.4.3.tar.gz", hash = "sha256:1187fb9c82fd670d10aa07bbb6cfcfe4bdda42d6fab8d5134f04e8c4d0b71cc9"},
+]
 typing-extensions = [
     {file = "typing_extensions-3.7.4.3-py2-none-any.whl", hash = "sha256:dafc7639cde7f1b6e1acc0f457842a83e722ccca8eef5270af2d74792619a89f"},
     {file = "typing_extensions-3.7.4.3-py3-none-any.whl", hash = "sha256:7cb407020f00f7bfc3cb3e7881628838e69d8f3fcab2f64742a5e76b2f841918"},
@@ -2912,7 +2968,7 @@ urllib3 = [
     {file = "urllib3-1.26.3.tar.gz", hash = "sha256:de3eedaad74a2683334e282005cd8d7f22f4d55fa690a2a1020a416cb0a47e73"},
 ]
 webdrivermanager = [
-    {file = "webdrivermanager-0.9.0.tar.gz", hash = "sha256:fdd0305be5e6f18edb48afb8e738e2d622ec7817ccd98b3a939c1e443f540cc2"},
+    {file = "webdrivermanager-0.10.0.tar.gz", hash = "sha256:c313a71340f0bb7bfef8b03763a0b1b323473e1cc3945a86f3230e78529af067"},
 ]
 wrapt = [
     {file = "wrapt-1.12.1.tar.gz", hash = "sha256:b62ffa81fb85f4332a4f609cab4ac40709470da05643a082ec1eb88e6d9b97d7"},
