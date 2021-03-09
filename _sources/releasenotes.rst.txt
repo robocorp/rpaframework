@@ -4,11 +4,44 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Browser.Selenium**:
+
+  - Keyword ``Open Available Browser`` has the default option 'AUTO' for
+    arguments ``headless`` and ``download``. See keyword documentation
+    for details.
+  - Webdrivers for Chrome/Chromium and Firefox are automatically matched
+    to the currently installed browser version.
+  - Webdrivers which are still running on Python process exit are closed
+    automatically to prevent hanging subprocesses. (:issue:`94`)
+  - Webdrivers are stored in the user's home folder, to speed
+    up browser start-up times between reboots.
+
+- Library **RPA.PDF**:
+
+  - Refactor library into a separate package. (:issue:`97`)
+  - Rename keyword ``Add Image to PDF`` to ``Add Watermark Image to PDF``.
+  - Rename ``Get Value From Anchor`` to ``Find Text``.
+  - Rename ``Page Rotate`` to ``Rotate Page``.
+  - Rename ``PDF Decrypt`` to ``Decrypt PDF``.
+  - Rename ``PDF Encrypt`` to ``Encrypt PDF``.
+  - Rename ``Update Field Values`` to ``Save Field Values``.
+  - Unify keyword signatures, now keywords can be given an input and output paths.
+    If no input path given, the library assumes a PDF is already opened by some
+    other keyword. If no output path given, the library will output the file
+    to ``output/output.pdf``.
+
+- Library **RPA.Desktop.Windows**:
+
+  - Keyword ``Open File`` return type changed from boolean to integer,
+    to indicate the opened application ID
+
 - Library **RPA.Tables**:
 
   - Add option to define column name for unknown CSV fields,
     and warn about header and data mismatch
   - Correctly handle source data with ``NoneType`` columns
+
+- Library **RPA.Word.Application**: Fix saving with Office 2007 and older (:issue:`146`)
 
 7.6.0
 -----
@@ -54,7 +87,6 @@ Upcoming release
   - Add keyword ``Execute CDP`` to execute Chrome DevTools Protocol commands
 
 - Fix issues with Windows library imports on Python 3.9
-
 
 7.3.0
 -----

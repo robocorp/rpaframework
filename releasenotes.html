@@ -214,6 +214,40 @@
 <div class="section" id="upcoming-release">
 <h2>Upcoming release<a class="headerlink" href="#upcoming-release" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li><p>Library <strong>RPA.Browser.Selenium</strong>:</p>
+<ul>
+<li><p>Keyword <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Available</span> <span class="pre">Browser</span></code> has the default option ‘AUTO’ for
+arguments <code class="docutils literal notranslate"><span class="pre">headless</span></code> and <code class="docutils literal notranslate"><span class="pre">download</span></code>. See keyword documentation
+for details.</p></li>
+<li><p>Webdrivers for Chrome/Chromium and Firefox are automatically matched
+to the currently installed browser version.</p></li>
+<li><p>Webdrivers which are still running on Python process exit are closed
+automatically to prevent hanging subprocesses. (<a class="reference external" href="https://github.com/robocorp/rpaframework/issues/94">#94</a>)</p></li>
+<li><p>Webdrivers are stored in the user’s home folder, to speed
+up browser start-up times between reboots.</p></li>
+</ul>
+</li>
+<li><p>Library <strong>RPA.PDF</strong>:</p>
+<ul>
+<li><p>Refactor library into a separate package. (<a class="reference external" href="https://github.com/robocorp/rpaframework/issues/97">#97</a>)</p></li>
+<li><p>Rename keyword <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">Image</span> <span class="pre">to</span> <span class="pre">PDF</span></code> to <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">Watermark</span> <span class="pre">Image</span> <span class="pre">to</span> <span class="pre">PDF</span></code>.</p></li>
+<li><p>Rename <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Value</span> <span class="pre">From</span> <span class="pre">Anchor</span></code> to <code class="docutils literal notranslate"><span class="pre">Find</span> <span class="pre">Text</span></code>.</p></li>
+<li><p>Rename <code class="docutils literal notranslate"><span class="pre">Page</span> <span class="pre">Rotate</span></code> to <code class="docutils literal notranslate"><span class="pre">Rotate</span> <span class="pre">Page</span></code>.</p></li>
+<li><p>Rename <code class="docutils literal notranslate"><span class="pre">PDF</span> <span class="pre">Decrypt</span></code> to <code class="docutils literal notranslate"><span class="pre">Decrypt</span> <span class="pre">PDF</span></code>.</p></li>
+<li><p>Rename <code class="docutils literal notranslate"><span class="pre">PDF</span> <span class="pre">Encrypt</span></code> to <code class="docutils literal notranslate"><span class="pre">Encrypt</span> <span class="pre">PDF</span></code>.</p></li>
+<li><p>Rename <code class="docutils literal notranslate"><span class="pre">Update</span> <span class="pre">Field</span> <span class="pre">Values</span></code> to <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Field</span> <span class="pre">Values</span></code>.</p></li>
+<li><p>Unify keyword signatures, now keywords can be given an input and output paths.
+If no input path given, the library assumes a PDF is already opened by some
+other keyword. If no output path given, the library will output the file
+to <code class="docutils literal notranslate"><span class="pre">output/output.pdf</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Library <strong>RPA.Desktop.Windows</strong>:</p>
+<ul>
+<li><p>Keyword <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">File</span></code> return type changed from boolean to integer,
+to indicate the opened application ID</p></li>
+</ul>
+</li>
 <li><p>Library <strong>RPA.Tables</strong>:</p>
 <ul>
 <li><p>Add option to define column name for unknown CSV fields,
@@ -221,6 +255,7 @@ and warn about header and data mismatch</p></li>
 <li><p>Correctly handle source data with <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> columns</p></li>
 </ul>
 </li>
+<li><p>Library <strong>RPA.Word.Application</strong>: Fix saving with Office 2007 and older (<a class="reference external" href="https://github.com/robocorp/rpaframework/issues/146">#146</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id1">

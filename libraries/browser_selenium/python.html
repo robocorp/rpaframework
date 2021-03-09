@@ -218,12 +218,6 @@
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-RPA.Browser.Selenium">
 <span id="browser-selenium"></span><h2>Browser.Selenium<a class="headerlink" href="#module-RPA.Browser.Selenium" title="Permalink to this headline">¶</a></h2>
-<dl class="attribute">
-<dt id="RPA.Browser.Selenium.Browser">
-<code class="sig-prename descclassname">RPA.Browser.Selenium.</code><code class="sig-name descname">Browser</code><a class="headerlink" href="#RPA.Browser.Selenium.Browser" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#RPA.Browser.Selenium.Selenium" title="RPA.Browser.Selenium.Selenium"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Browser.Selenium.Selenium</span></code></a></p>
-</dd></dl>
-
 <dl class="exception">
 <dt id="RPA.Browser.Selenium.BrowserNotFoundError">
 <em class="property">exception </em><code class="sig-prename descclassname">RPA.Browser.Selenium.</code><code class="sig-name descname">BrowserNotFoundError</code><a class="headerlink" href="#RPA.Browser.Selenium.BrowserNotFoundError" title="Permalink to this definition">¶</a></dt>
@@ -348,6 +342,25 @@ to using explicit <code class="docutils literal notranslate"><span class="pre">x
 <div class="line"><cite>Click Element</cite> | //div[&#64;id=”foo”]//h1 |</div>
 <div class="line"><cite>Click Element</cite> | (//div)[2]           |</div>
 </div>
+<p>=== Chaining locators ===</p>
+<p>It’s possible to chain multiple locators together as a single locator. Each chained locator must start
+with a locator strategy. Chained locators must be separated with a single space, two greater than characters,
+and followed with a space. It’s also possible to mix different locator strategies, such as css or xpath.
+Also, a list can also be used to specify multiple locators, for instance when the chaining separator
+would conflict with the actual locator, or when an existing web element is used as a base.</p>
+<p>Although all locators support chaining, some locator strategies don’t chain properly with previous values.
+This is because some locator strategies use JavaScript to find elements and JavaScript is executed
+for the whole browser context and not for the element found by the previous locator. Locator strategies
+that support chaining are the ones that are based on the Selenium API, such as <cite>xpath</cite> or <cite>css</cite>, but for example
+chaining is not supported by <cite>sizzle</cite> or <cite>jquery</cite>.</p>
+<p>Examples:
+| <cite>Click Element</cite> | css:.bar &gt;&gt; xpath://a | # To find a link which is present inside an element with class “bar” |</p>
+<p>List examples:
+| ${locator_list} =             | <cite>Create List</cite>   | css:div#div_id            | xpath://<a href="#id3"><span class="problematic" id="id4">*</span></a>[text(), ” &gt;&gt; “] |
+| <cite>Page Should Contain Element</cite> | ${locator_list} |                           |                           |
+| ${element} =                  | Get WebElement  | xpath://<a href="#id5"><span class="problematic" id="id6">*</span></a>[text(), ” &gt;&gt; “] |                           |
+| ${locator_list} =             | <cite>Create List</cite>   | css:div#div_id            | ${element}                |
+| <cite>Page Should Contain Element</cite> | ${locator_list} |                           |                           |</p>
 <p>== Using WebElements ==</p>
 <p>In addition to specifying a locator as a string, it is possible to use
 Selenium’s WebElement objects. This requires first getting a WebElement,
@@ -490,36 +503,6 @@ possible to use any keyword from any imported library or resource file.</p>
 <p>The run-on-failure functionality can be disabled by using a special value
 <code class="docutils literal notranslate"><span class="pre">NOTHING</span></code> or anything considered false (see <cite>Boolean arguments</cite>)
 such as <code class="docutils literal notranslate"><span class="pre">NONE</span></code>.</p>
-<p>= Boolean arguments =</p>
-<p>Some keywords accept arguments that are handled as Boolean values true or
-false. If such an argument is given as a string, it is considered false if
-it is either empty or case-insensitively equal to <code class="docutils literal notranslate"><span class="pre">false</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">off</span></code>,</p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">none</span></code>. Other strings are considered true regardless of their value and</p>
-</div></blockquote>
-<p>other argument types are tested using the same
-[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#truth-value">https://docs.python.org/3/library/stdtypes.html#truth-value</a>-testing|rules as in Python].</p>
-<p>True examples:</p>
-<div class="line-block">
-<div class="line"><cite>Set Screenshot Directory</cite> | ${RESULTS} | persist=True    | # Strings are generally true.    |</div>
-<div class="line"><cite>Set Screenshot Directory</cite> | ${RESULTS} | persist=yes     | # Same as the above.             |</div>
-<div class="line"><cite>Set Screenshot Directory</cite> | ${RESULTS} | persist=${TRUE} | # Python True is true.           |</div>
-<div class="line"><cite>Set Screenshot Directory</cite> | ${RESULTS} | persist=${42}   | # Numbers other than 0 are true. |</div>
-</div>
-<p>False examples:</p>
-<div class="line-block">
-<div class="line"><cite>Set Screenshot Directory</cite> | ${RESULTS} | persist=False    | # String false is false.        |</div>
-<div class="line"><cite>Set Screenshot Directory</cite> | ${RESULTS} | persist=no       | # Also string no is false.      |</div>
-<div class="line"><cite>Set Screenshot Directory</cite> | ${RESULTS} | persist=NONE     | # String NONE is false.         |</div>
-<div class="line"><cite>Set Screenshot Directory</cite> | ${RESULTS} | persist=${EMPTY} | # Empty string is false.        |</div>
-<div class="line"><cite>Set Screenshot Directory</cite> | ${RESULTS} | persist=${FALSE} | # Python False is false.        |</div>
-<div class="line"><cite>Set Screenshot Directory</cite> | ${RESULTS} | persist=${NONE}  | # Python None is false.         |</div>
-</div>
-<dl class="attribute">
-<dt id="RPA.Browser.Selenium.Selenium.AUTOMATIC_BROWSER_SELECTION">
-<code class="sig-name descname">AUTOMATIC_BROWSER_SELECTION</code><em class="property"> = 'AUTO'</em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.AUTOMATIC_BROWSER_SELECTION" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="attribute">
 <dt id="RPA.Browser.Selenium.Selenium.AVAILABLE_OPTIONS">
 <code class="sig-name descname">AVAILABLE_OPTIONS</code><em class="property"> = {'chrome': 'ChromeOptions', 'firefox': 'FirefoxOptions'}</em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.AVAILABLE_OPTIONS" title="Permalink to this definition">¶</a></dt>
@@ -537,7 +520,7 @@ it is either empty or case-insensitively equal to <code class="docutils literal 
 
 <dl class="attribute">
 <dt id="RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION">
-<code class="sig-name descname">ROBOT_LIBRARY_VERSION</code><em class="property"> = '4.5.0'</em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ROBOT_LIBRARY_VERSION</code><em class="property"> = '5.1.0'</em><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.ROBOT_LIBRARY_VERSION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -911,7 +894,7 @@ method if they want to provide custom functionality instead.</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.find_element">
-<code class="sig-name descname">find_element</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_element" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">find_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">parent: Optional[selenium.webdriver.remote.webelement.WebElement] = None</em><span class="sig-paren">)</span> &#x2192; selenium.webdriver.remote.webelement.WebElement<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find element matching <cite>locator</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -936,7 +919,7 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.find_elements">
-<code class="sig-name descname">find_elements</code><span class="sig-paren">(</span><em class="sig-param">locator</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_elements" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">find_elements</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">parent: selenium.webdriver.remote.webelement.WebElement = None</em><span class="sig-paren">)</span> &#x2192; List[selenium.webdriver.remote.webelement.WebElement]<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.find_elements" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find all elements matching <cite>locator</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -996,7 +979,7 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.get_keyword_documentation">
-<code class="sig-name descname">get_keyword_documentation</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_keyword_documentation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_keyword_documentation</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_keyword_documentation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1011,7 +994,7 @@ from. By default, search starts from the root using <cite>WebDriver</cite>.</p><
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.get_keyword_tags">
-<code class="sig-name descname">get_keyword_tags</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_keyword_tags" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_keyword_tags</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.get_keyword_tags" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1259,46 +1242,88 @@ Fail if element does not exist</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.open_available_browser">
-<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: Optional[bool] = None</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em>, <em class="sig-param">user_agent: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_available_browser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Opens the first available browser in the system in preferred order, or the
-given browser (<code class="docutils literal notranslate"><span class="pre">browser_selection</span></code>).</p>
-<p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open</p>
-<p><code class="docutils literal notranslate"><span class="pre">use_profile</span></code> Set browser profile, default <code class="docutils literal notranslate"><span class="pre">False</span></code> (Chrome/Chromium only)</p>
-<p><code class="docutils literal notranslate"><span class="pre">headless</span></code> Run in headless mode, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">maximized</span></code> Run window maximized, default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">browser_selection</span></code> browser name, default <code class="docutils literal notranslate"><span class="pre">AUTOMATIC_BROWSER_SELECTION</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Custom name for browser</p>
-<p><code class="docutils literal notranslate"><span class="pre">profile_name</span></code> Name of profile (if profile enabled)</p>
-<p><code class="docutils literal notranslate"><span class="pre">profile_path</span></code> Path to profiles (if profile enabled)</p>
-<p><code class="docutils literal notranslate"><span class="pre">preferences</span></code> Profile preferences (Chrome/Chromium only)</p>
-<p><code class="docutils literal notranslate"><span class="pre">proxy</span></code> Proxy server address (Chrome only)</p>
-<p><code class="docutils literal notranslate"><span class="pre">user_agent</span></code> Set useragent string for browser</p>
-<p>Returns an index of the webdriver session.</p>
-<p>=== Process of opening a browser ===</p>
+<code class="sig-name descname">open_available_browser</code><span class="sig-paren">(</span><em class="sig-param">url: Optional[str] = None</em>, <em class="sig-param">use_profile: bool = False</em>, <em class="sig-param">headless: Any = 'AUTO'</em>, <em class="sig-param">maximized: bool = False</em>, <em class="sig-param">browser_selection: Any = 'AUTO'</em>, <em class="sig-param">alias: Optional[str] = None</em>, <em class="sig-param">profile_name: Optional[str] = None</em>, <em class="sig-param">profile_path: Optional[str] = None</em>, <em class="sig-param">preferences: Optional[dict] = None</em>, <em class="sig-param">proxy: str = None</em>, <em class="sig-param">user_agent: Optional[str] = None</em>, <em class="sig-param">download: Any = 'AUTO'</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_available_browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to open a browser on the user’s device from a set of
+supported browsers. Automatically downloads a corresponding webdriver
+if none is already installed.</p>
+<p>Optionally can be given a <code class="docutils literal notranslate"><span class="pre">url</span></code> as the first argument,
+to open the browser directly to the given page.</p>
+<p>Returns either a generated index or a custom <code class="docutils literal notranslate"><span class="pre">alias</span></code> for the
+browser instance. The returned value can be used to refer to that
+specific browser instance in other keywords.</p>
+<p>If the browser should start in a maximized window, this can be
+enabled with the argument <code class="docutils literal notranslate"><span class="pre">maximized</span></code>, but is disabled by default.</p>
+<p>For certain applications it might also be required to force a
+certain user-agent string for Selenium, which can be overriden
+with the <code class="docutils literal notranslate"><span class="pre">user_agent</span></code> argument.</p>
+<p>Example:</p>
+<div class="line-block">
+<div class="line">Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> |</div>
+<div class="line">${index}= | Open Available Browser | ${URL} | browser_selection=opera,firefox |</div>
+<div class="line">Open Available Browser | ${URL} | headless=True | alias=HeadlessBrowser |</div>
+</div>
+<p>== Browser order ==</p>
+<p>The default order of supported browsers is based on the operating system
+and is as follows:</p>
+<div class="line-block">
+<div class="line">Platform    | Default order                    |</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Windows</span></code> | Chrome, Firefox, Edge, IE, Opera |</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Linux</span></code>   | Chrome, Firefox, Opera           |</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Darwin</span></code>  | Chrome, Safari, Firefox, Opera   |</div>
+</div>
+<p>The order can be overriden with a custom list by using the argument
+<code class="docutils literal notranslate"><span class="pre">browser_selection</span></code>. The argument can be either a comma-separated
+string or a list object.</p>
+<p>== Webdriver download ==</p>
+<p>The library can (if requested) automatically download webdrivers
+for all supported browsers. This can be controlled with the argument
+<code class="docutils literal notranslate"><span class="pre">download</span></code>.</p>
+<p>If the value is <code class="docutils literal notranslate"><span class="pre">False</span></code>, it will only attempt to start
+webdrivers found from the system PATH.</p>
+<p>If the value is <code class="docutils literal notranslate"><span class="pre">True</span></code>, it will download a webdriver that matches
+the current browser.</p>
+<p>By default the argument has the value <code class="docutils literal notranslate"><span class="pre">AUTO</span></code>, which means it
+first attempts to use webdrivers found in PATH and if that fails
+forces a webdriver download.</p>
+<p>== Opening process ==</p>
 <ol class="arabic">
-<li><p>Get the order of browsers</p></li>
-<li><p>Loop the list of preferred browsers</p>
+<li><p>Parse list of preferred browser order. If not given, use values
+from above table.</p></li>
+<li><p>Loop through listed browsers:</p>
 <blockquote>
 <div><ol class="loweralpha simple">
-<li><p>Set the webdriver options for the browser</p></li>
-<li><p>Create the webdriver using existing installation</p></li>
-<li><p>(If step b. failed) Download and install webdriver, try again</p></li>
-<li><p>(If step c. failed) Try starting webdriver in headless mode</p></li>
+<li><p>Set the webdriver options for the browser.</p></li>
+<li><p>Download webdriver (if requested).</p></li>
+<li><p>Attempt to launch the webdriver and stop the loop if successful.</p></li>
 </ol>
 </div></blockquote>
 </li>
-<li><p>Open the URL</p></li>
+<li><p>Return index/alias if webdriver was created, or raise an exception
+if no browsers were successfully opened.</p></li>
 </ol>
-<p>Returns index or custom alias for the browser instance.</p>
-<p>Raises <code class="docutils literal notranslate"><span class="pre">BrowserNotFoundError</span></code> if unable to open the browser.</p>
-<p>For information about Safari webdriver setup, see
-<a class="reference external" href="https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari">https://developer.apple.com/documentation/webkit/testing_with_webdriver_in_safari</a></p>
-<p>Example:</p>
-<div class="line-block">
-<div class="line">${idx1} | Open Available Browser | <a class="reference external" href="https://www.robocorp.com">https://www.robocorp.com</a> |</div>
-<div class="line">${idx2} | Open Available Browser | ${URL} | browser_selection=opera,firefox |</div>
-<div class="line">Open Available Browser | ${URL} | headless=True | proxy=localhost:8899 |</div>
-</div>
+<p>== Headless mode ==</p>
+<p>If required, the browser can also run <cite>headless</cite>, which means that
+it does not create a visible window. Generally a headless browser is
+slightly faster, but might not support all features a normal browser does.</p>
+<p>One typical use-case for headless mode is in cloud containers,
+where there is no display available. It also prevents manual interaction
+with the browser, which can be either a benefit or a drawback depending on
+the context.</p>
+<p>It can be explicitly enabled or disabled with the argument <code class="docutils literal notranslate"><span class="pre">headless</span></code>.
+By default it will be disabled, unless it detects that it is running
+in a Linux environment without a display, i.e. a container.</p>
+<p>== Chrome options ==</p>
+<p>Some features are currently available only for Chrome/Chromium.
+This includes using an existing user profile. By default Selenium
+uses a new profile for each session, but it can use an existing
+one by enabling the <code class="docutils literal notranslate"><span class="pre">use_profile</span></code> argument.</p>
+<p>If a custom profile is stored somewhere outside of the default location,
+the path to the profiles directory and the name of the profile can
+be controlled with <code class="docutils literal notranslate"><span class="pre">profile_path</span></code> and <code class="docutils literal notranslate"><span class="pre">profile_name</span></code> respectively.</p>
+<p>Profile preferences can be further overriden with the <code class="docutils literal notranslate"><span class="pre">preferences</span></code>
+argument by giving a dictionary of key/value pairs.</p>
+<p>Chrome can additionally connect through a <code class="docutils literal notranslate"><span class="pre">proxy</span></code>, which
+should be given as either local or remote address.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1347,7 +1372,7 @@ descriptions of arguments.</p>
 </dl>
 <p><code class="docutils literal notranslate"><span class="pre">params</span></code> parameters for the Chrome print method. By default uses values:</p>
 <dl class="simple">
-<dt><a href="#id3"><span class="problematic" id="id4">``</span></a>{</dt><dd><p>“landscape”: False,
+<dt><a href="#id7"><span class="problematic" id="id8">``</span></a>{</dt><dd><p>“landscape”: False,
 “displayHeaderFooter”: False,
 “printBackground”: True,
 “preferCSSPageSize”: True,</p>
@@ -1358,7 +1383,7 @@ descriptions of arguments.</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.register_driver">
-<code class="sig-name descname">register_driver</code><span class="sig-paren">(</span><em class="sig-param">driver</em>, <em class="sig-param">alias</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.register_driver" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">register_driver</code><span class="sig-paren">(</span><em class="sig-param">driver: selenium.webdriver.remote.webdriver.WebDriver</em>, <em class="sig-param">alias: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.register_driver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add’s a <cite>driver</cite> to the library WebDriverCache.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1378,7 +1403,7 @@ descriptions of arguments.</p>
 
 <dl class="method">
 <dt id="RPA.Browser.Selenium.Selenium.run_keyword">
-<code class="sig-name descname">run_keyword</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">args</em>, <em class="sig-param">kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.run_keyword" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_keyword</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">args: tuple</em>, <em class="sig-param">kwargs: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Browser.Selenium.Selenium.run_keyword" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

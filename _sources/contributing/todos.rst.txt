@@ -2,15 +2,6 @@
 TODO
 ****
 
-RPA.Browser.Selenium:
-=====================
-
-.. csv-table::
-   :header: "Line", "Message"
-   :widths: 10, 40
-
-   "544", "could we include the whole options here"
-
 RPA.Cloud.Google:
 =================
 
@@ -27,10 +18,10 @@ RPA.Desktop.Windows:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "611", "Handle too compled method"
-   "1088", "return more valuable information about what should"
-   "1336", "supporting multiple search criterias at same time to identify ONE element"
-   "1362", "supporting multiple search criterias at same time to identify ONE element"
+   "613", "Handle too compled method"
+   "1090", "return more valuable information about what should"
+   "1338", "supporting multiple search criterias at same time to identify ONE element"
+   "1364", "supporting multiple search criterias at same time to identify ONE element"
 
 RPA.Desktop.keywords.application:
 =================================

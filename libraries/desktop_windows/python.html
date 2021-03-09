@@ -1187,8 +1187,9 @@ library default value</p></li>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_file">
-<code class="sig-name descname">open_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">wildcard: bool = False</em>, <em class="sig-param">timeout: int = 10</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">wildcard: bool = False</em>, <em class="sig-param">timeout: int = 10</em><span class="sig-paren">)</span> &#x2192; Optional[int]<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open associated application when opening file</p>
+<p>Keyword <cite>Open Dialog</cite> is used if <cite>windowtitle</cite> is given.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1199,7 +1200,7 @@ library default value</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if application is opened, False if not</p>
+<dd class="field-even"><p>application id or None</p>
 </dd>
 </dl>
 <p>Example:</p>
