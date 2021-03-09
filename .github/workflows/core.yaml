@@ -86,6 +86,8 @@ jobs:
       run: make test
 
   publish:
+    # Only publish on master workflow runs
+    if: github.ref == 'refs/heads/master'
     needs: test
     runs-on: ubuntu-latest
 
