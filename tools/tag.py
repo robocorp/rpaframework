@@ -8,6 +8,11 @@ def run(*args):
 
 
 def main():
+    branch = run("git", "rev-parse", "--abbrev-ref", "HEAD")
+    if branch != "master":
+        print("Current branch not 'master', skipping tag")
+        return
+
     name = Path.cwd().name
     version = run("poetry", "version", "-s")
     tag = f"{name}_{version}"
