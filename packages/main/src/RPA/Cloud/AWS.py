@@ -4,6 +4,7 @@ import logging
 from functools import wraps
 from pathlib import Path
 from typing import Any
+from RPA.Cloud.objects import TextractDocument
 
 try:
     import boto3
@@ -358,14 +359,33 @@ class ServiceTextract(AWSBase):
 
     @aws_dependency_required
     def analyze_document(
-        self, image_file: str = None, json_file: str = None, bucket_name: str = None
+        self,
+        image_file: str = None,
+        json_file: str = None,
+        bucket_name: str = None,
+        model: bool = False,
     ) -> bool:
         """Analyzes an input document for relationships between detected items
 
         :param image_file: filepath (or object name) of image file
         :param json_file: filepath to resulting json file
         :param bucket_name: if given then using `image_file` from the bucket
-        :return: analysis response in json
+        :param model: set `True` to return Textract Document model, default `False`
+        :return: analysis response in json or TextractDocument model
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${response}    Analyze Document    ${filename}    model=True
+            FOR    ${page}    IN    @{response.pages}
+                Log Many    ${page.tables}
+                Log Many    ${page.form}
+                Log Lines    ${page.lines}
+                Log Many    ${page}
+                Log    ${page}
+                Log    ${page.form}
+            END
         """
         client = self._get_client_for_service("textract")
         if bucket_name:
@@ -383,7 +403,7 @@ class ServiceTextract(AWSBase):
         if json_file:
             with open(json_file, "w") as f:
                 json.dump(response, f)
-        return response
+        return self.convert_textract_response_to_model(response) if model else response
 
     def _parse_response_blocks(self, response):
         if "Blocks" not in response:
@@ -666,6 +686,48 @@ class ServiceTextract(AWSBase):
 
         response = client.get_document_text_detection(**method_arguments)
         return response
+
+    def convert_textract_response_to_model(self, response):
+        """Convert AWS Textract JSON response into TextractDocument object,
+        which has following structure:
+
+            - Document
+            - Page
+            - Tables
+            - Rows
+            - Cells
+            - Lines
+            - Words
+            - Form
+            - Field
+
+        :param response: JSON response from AWS Textract service
+        :return: `TextractDocument` object
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${response}    Analyze Document    ${filename}
+            ${model}=    Convert Textract Response To Model    ${response}
+            FOR    ${page}    IN    @{model.pages}
+                Log Many    ${page.tables}
+                Log Many    ${page.form}
+                Log Lines    ${page.lines}
+                Log Many    ${page}
+                Log    ${page}
+                Log    ${page.form}
+            END
+        """
+        doc = None
+        try:
+            doc = TextractDocument(response)
+            self.logger.info(response.keys())
+        except Exception as e:
+            self.logger.warning(
+                "Textract response could not be converted into model: %s", str(e)
+            )
+        return doc
 
 
 class ServiceComprehend(AWSBase):
