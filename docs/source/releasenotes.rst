@@ -43,6 +43,18 @@ Upcoming release
 
 - Library **RPA.Word.Application**: Fix saving with Office 2007 and older (:issue:`146`)
 
+- Library **RPA.Desktop.Windows**:
+
+  - Add ``object`` key into ``Get Window List`` return data (allows advanced usage)
+  - Change how field is emptied with ``Type Into`` parameter ``empty_field=True``
+
+- Library **RPA.Cloud.AWS**:
+
+  - Add keyword `Convert Textract Response To Model`
+  - Add ``model`` parameter to Keyword ``Analyze Document`` for getting modeled response object
+
+- Library **RPA.Email.ImapSmtp**: Set attachment header correctly (:issue:`148`)
+
 7.6.0
 -----
 
