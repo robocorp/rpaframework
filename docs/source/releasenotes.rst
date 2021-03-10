@@ -50,7 +50,7 @@ Upcoming release
 
 - Library **RPA.Cloud.AWS**:
 
-  - Add keyword `Convert Textract Response To Model`
+  - Add keyword ``Convert Textract Response To Model``
   - Add ``model`` parameter to Keyword ``Analyze Document`` for getting modeled response object
 
 - Library **RPA.Email.ImapSmtp**: Set attachment header correctly (:issue:`148`)
