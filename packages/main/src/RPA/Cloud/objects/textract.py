@@ -1,3 +1,4 @@
+# pylint: skip-file
 # -*- coding: utf-8 -*-
 """Top-level package for amazon-textract-response-parser."""
 
@@ -501,10 +502,10 @@ class Page:
                 self._geometry = Geometry(item["Geometry"])
                 self._id = item["Id"]
             elif item["BlockType"] == "LINE":
-                l = Line(item, blockMap)
-                self._lines.append(l)
-                self._content.append(l)
-                self._text = self._text + l.text + "\n"
+                line = Line(item, blockMap)
+                self._lines.append(line)
+                self._content.append(line)
+                self._text = self._text + line.text + "\n"
             elif item["BlockType"] == "TABLE":
                 t = Table(item, blockMap)
                 self._tables.append(t)
@@ -515,12 +516,13 @@ class Page:
                     if f.key:
                         self._form.addField(f)
                         self._content.append(f)
-                    else:
-                        print(
-                            "WARNING: Detected K/V where key does not have content. Excluding key from output."
-                        )
-                        print(f)
-                        print(item)
+                        # TODO. report error if key can't be found
+                        # print(
+                        #     "WARNING: Detected K/V where key does not have content.
+                        # Excluding key from output."
+                        # )
+                        # print(f)
+                        # print(item)
 
     def getLinesInReadingOrder(self):
         columns = []

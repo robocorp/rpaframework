@@ -4,7 +4,6 @@ import logging
 from functools import wraps
 from pathlib import Path
 from typing import Any
-from RPA.Cloud.objects import TextractDocument
 
 try:
     import boto3
@@ -17,6 +16,7 @@ except ImportError:
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
+from RPA.Cloud.objects import TextractDocument
 from RPA.Robocloud.Secrets import Secrets
 from RPA.RobotLogListener import RobotLogListener
 from RPA.Tables import Tables
@@ -723,7 +723,7 @@ class ServiceTextract(AWSBase):
         try:
             doc = TextractDocument(response)
             self.logger.info(response.keys())
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             self.logger.warning(
                 "Textract response could not be converted into model: %s", str(e)
             )
