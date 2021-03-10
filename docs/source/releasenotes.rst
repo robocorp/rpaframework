@@ -34,6 +34,8 @@ Upcoming release
 
   - Keyword ``Open File`` return type changed from boolean to integer,
     to indicate the opened application ID
+  - Add ``object`` key into ``Get Window List`` return data (allows advanced usage)
+  - Change how field is emptied with ``Type Into`` parameter ``empty_field=True``
 
 - Library **RPA.Tables**:
 
@@ -42,11 +44,6 @@ Upcoming release
   - Correctly handle source data with ``NoneType`` columns
 
 - Library **RPA.Word.Application**: Fix saving with Office 2007 and older (:issue:`146`)
-
-- Library **RPA.Desktop.Windows**:
-
-  - Add ``object`` key into ``Get Window List`` return data (allows advanced usage)
-  - Change how field is emptied with ``Type Into`` parameter ``empty_field=True``
 
 - Library **RPA.Cloud.AWS**:
 
