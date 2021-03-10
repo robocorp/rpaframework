@@ -19,9 +19,9 @@ RPA.Desktop.Windows:
    :widths: 10, 40
 
    "613", "Handle too compled method"
-   "1090", "return more valuable information about what should"
-   "1338", "supporting multiple search criterias at same time to identify ONE element"
-   "1364", "supporting multiple search criterias at same time to identify ONE element"
+   "1089", "return more valuable information about what should"
+   "1337", "supporting multiple search criterias at same time to identify ONE element"
+   "1363", "supporting multiple search criterias at same time to identify ONE element"
 
 RPA.Desktop.keywords.application:
 =================================
@@ -68,7 +68,7 @@ RPA.Email.ImapSmtp:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "653", "mypy should handle enum exhaustivity validation"
+   "654", "mypy should handle enum exhaustivity validation"
 
 RPA.FileSystem:
 ===============

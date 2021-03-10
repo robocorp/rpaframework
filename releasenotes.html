@@ -246,6 +246,8 @@ to <code class="docutils literal notranslate"><span class="pre">output/output.pd
 <ul>
 <li><p>Keyword <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">File</span></code> return type changed from boolean to integer,
 to indicate the opened application ID</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">object</span></code> key into <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Window</span> <span class="pre">List</span></code> return data (allows advanced usage)</p></li>
+<li><p>Change how field is emptied with <code class="docutils literal notranslate"><span class="pre">Type</span> <span class="pre">Into</span></code> parameter <code class="docutils literal notranslate"><span class="pre">empty_field=True</span></code></p></li>
 </ul>
 </li>
 <li><p>Library <strong>RPA.Tables</strong>:</p>
@@ -256,6 +258,13 @@ and warn about header and data mismatch</p></li>
 </ul>
 </li>
 <li><p>Library <strong>RPA.Word.Application</strong>: Fix saving with Office 2007 and older (<a class="reference external" href="https://github.com/robocorp/rpaframework/issues/146">#146</a>)</p></li>
+<li><p>Library <strong>RPA.Cloud.AWS</strong>:</p>
+<ul>
+<li><p>Add keyword <code class="docutils literal notranslate"><span class="pre">Convert</span> <span class="pre">Textract</span> <span class="pre">Response</span> <span class="pre">To</span> <span class="pre">Model</span></code></p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">model</span></code> parameter to Keyword <code class="docutils literal notranslate"><span class="pre">Analyze</span> <span class="pre">Document</span></code> for getting modeled response object</p></li>
+</ul>
+</li>
+<li><p>Library <strong>RPA.Email.ImapSmtp</strong>: Set attachment header correctly (<a class="reference external" href="https://github.com/robocorp/rpaframework/issues/148">#148</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="id1">
