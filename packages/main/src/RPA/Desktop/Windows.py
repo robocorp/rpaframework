@@ -855,9 +855,8 @@ class Windows(OperatingSystem):
         elements, _ = self.find_element(locator)
         if elements and len(elements) == 1:
             ctrl = elements[0]["control"]
-            if empty_field:
-                ctrl.type_keys("{VK_LBUTTON down}{VK_CLEAR}{VK_LBUTTON up}")
-            ctrl.type_keys(keys)
+            empty_method = "^a{BACKSPACE}" if empty_field else ""
+            ctrl.type_keys(f"{empty_method}{keys}")
         else:
             raise ValueError(f"Could not find unique element for '{locator}'")
 
@@ -1944,6 +1943,7 @@ class Windows(OperatingSystem):
                         "is_active": w.is_active(),
                         "keyboard_focus": w.has_keyboard_focus(),
                         "rectangle": [left, top, right, bottom],
+                        "object": w,
                     }
                 )
             except Exception as e:  # pylint: disable=broad-except
