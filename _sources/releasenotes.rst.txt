@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+8.0.0
+-----
+
 - Library **RPA.Browser.Selenium**:
 
   - Keyword ``Open Available Browser`` has the default option 'AUTO' for
