@@ -4,9 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+8.1.0
+-----
+
 - Library **RPA.Email.Exchange**:
 
-  - Add keyword `` List Unread Messages``
+  - Add keyword ``List Unread Messages``
   - Add keyword ``Move Message``
 
 8.0.1
