@@ -8,6 +8,7 @@ import platform
 import time
 import traceback
 from collections import OrderedDict
+from contextlib import contextmanager
 from functools import partial
 from itertools import product
 from typing import Any, Optional, List
@@ -38,6 +39,19 @@ def html_table(header, rows):
         output += "<tr>" + "".join(f"<td>{name}</td>" for name in row) + "</tr>"
     output += "</table></div>"
     return output
+
+
+@contextmanager
+def suppress_logging():
+    """Suppress webdrivermanager warnings and errors in scope."""
+    logger = logging.getLogger("webdrivermanager.misc")
+    logger_warning, logger_error = logger.warning, logger.error
+
+    try:
+        logger.warning = logger.error = logger.info
+        yield
+    finally:
+        logger.warning, logger.error = logger_warning, logger_error
 
 
 class BrowserNotFoundError(ValueError):
@@ -795,7 +809,7 @@ class Selenium(SeleniumLibrary):
         def _create_driver(path=None):
             options = dict(kwargs)
             if path is not None:
-                options["executable_path"] = path
+                options["executable_path"] = str(path)
 
             lib = BrowserManagementKeywords(self)
             return lib.create_webdriver(browser.capitalize(), alias, **options)
@@ -817,7 +831,8 @@ class Selenium(SeleniumLibrary):
                 pass
 
         # Try to download webdriver
-        path_download = webdriver.download(browser)
+        with suppress_logging():
+            path_download = webdriver.download(browser)
         if path_download:
             return _create_driver(path_download)
 
