@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+8.0.1
+-----
+
 - Library **RPA.Browser.Selenium**: Fix webdriver creation on Windows
 
 8.0.0
