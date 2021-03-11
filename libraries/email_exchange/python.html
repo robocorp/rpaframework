@@ -393,6 +393,54 @@ default None (attachments are not saved)</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Email.Exchange.Exchange.list_unread_messages">
+<code class="sig-name descname">list_unread_messages</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = None</em>, <em class="sig-param">criterion: str = None</em>, <em class="sig-param">contains: bool = False</em>, <em class="sig-param">count: int = 100</em>, <em class="sig-param">save_dir: str = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.list_unread_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>List unread messages in the account inbox. Order by descending
+received time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_name</strong> – name of the email folder, default INBOX</p></li>
+<li><p><strong>criterion</strong> – list messages matching criterion</p></li>
+<li><p><strong>contains</strong> – if matching should be done using <cite>contains</cite> matching
+and not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>equals</cite> matching</p></li>
+<li><p><strong>count</strong> – number of messages to list</p></li>
+<li><p><strong>save_dir</strong> – set to path where attachments should be saved,
+default None (attachments are not saved)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.Exchange.Exchange.move_message">
+<code class="sig-name descname">move_message</code><span class="sig-paren">(</span><em class="sig-param">msg: dict</em>, <em class="sig-param">target: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.Exchange.Exchange.move_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move a message into target folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> – dictionary of the message</p></li>
+<li><p><strong>target</strong> – path to target folder</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>AttributeError</strong> – if <cite>msg</cite> is not a dictionary containing
+<cite>id</cite> and <cite>changekey</cite> attributes</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${messages}=</span><span class="p">    </span><span class="c">List Messages</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">INBOX</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">criterion=subject:about my orders</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${msg}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{messages}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Run Keyword If</span><span class="p">    </span><span class="c">&quot;${msg}[sender][email_address]&quot;==&quot;${priority_account}&quot;</span><span class="p"></span>
+<span class="p">    </span><span class="c">...</span><span class="p">    </span><span class="c">Move Message</span><span class="p">    </span><span class="c">${msg}</span><span class="p">    </span><span class="c">target=INBOX / Problems / priority</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.move_messages">
 <code class="sig-name descname">move_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">source: str = None</em>, <em class="sig-param">target: str = None</em>, <em class="sig-param">contains: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.Exchange.Exchange.move_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move message(s) from source folder to target folder</p>
