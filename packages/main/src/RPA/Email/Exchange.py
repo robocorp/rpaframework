@@ -184,6 +184,28 @@ class Exchange:
             messages.append(self._get_email_details(item, attachments))
         return messages
 
+    def list_unread_messages(
+        self,
+        folder_name: str = None,
+        criterion: str = None,
+        contains: bool = False,
+        count: int = 100,
+        save_dir: str = None,
+    ) -> list:
+        """List unread messages in the account inbox. Order by descending
+        received time.
+
+        :param folder_name: name of the email folder, default INBOX
+        :param criterion: list messages matching criterion
+        :param contains: if matching should be done using `contains` matching
+         and not `equals` matching, default `False` is means `equals` matching
+        :param count: number of messages to list
+        :param save_dir: set to path where attachments should be saved,
+         default None (attachments are not saved)
+        """
+        messages = self.list_messages(folder_name, criterion, contains, count, save_dir)
+        return [m for m in messages if not m["is_read"]]
+
     def _get_all_items_in_folder(self, folder_name=None, parent_folder=None) -> list:
         if parent_folder is None or parent_folder is self.account.inbox:
             target_folder = self.account.inbox / folder_name
@@ -427,6 +449,39 @@ class Exchange:
             self.logger.warning("No items match criterion '%s'", criterion)
             return False
 
+    def move_message(
+        self,
+        msg: dict,
+        target: str,
+    ):
+        """Move a message into target folder
+
+        :param msg: dictionary of the message
+        :param target: path to target folder
+        :raises AttributeError: if `msg` is not a dictionary containing
+         `id` and `changekey` attributes
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${messages}=    List Messages
+            ...    INBOX
+            ...    criterion=subject:about my orders
+            FOR    ${msg}    IN    @{messages}
+                Run Keyword If    "${msg}[sender][email_address]"=="${priority_account}"
+                ...    Move Message    ${msg}    target=INBOX / Problems / priority
+            END
+        """
+        if not all(k in msg for k in ["id", "changekey"]):
+            raise AttributeError(
+                "Move Message keyword expects message dictionary "
+                'containing "id" and "changekey" attributes'
+            )
+        message_id = [(msg["id"], msg["changekey"])]
+        target_folder = self._get_folder_object(target)
+        self.account.bulk_move(ids=message_id, to_folder=target_folder)
+
     def _get_folder_object(self, folder_name):
         if not folder_name:
             return self.account.inbox
@@ -547,6 +602,8 @@ class Exchange:
             "categories": email.categories,
             "attachments": attachments,
             "attachments_object": email.attachments,
+            "id": email.id,
+            "changekey": email.changekey,
         }
 
     def save_attachments(self, message: dict, save_dir: str = None) -> list:
