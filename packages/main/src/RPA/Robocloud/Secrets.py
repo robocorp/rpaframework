@@ -87,7 +87,7 @@ class BaseSecretManager(metaclass=ABCMeta):
         """Return ``Secret`` object with given name."""
 
     @abstractmethod
-    def set_secret(self, modified_secret: Secret):
+    def set_secret(self, secret: Secret):
         """Set a secret with a new value."""
 
 
@@ -141,7 +141,7 @@ class FileSecrets(BaseSecretManager):
                     raise ValueError("Invalid content format")
                 json.dump(self.data, f, indent=4)
         except (IOError, ValueError) as err:
-            self.logger.error("Failed to load secrets file: %s", err)
+            self.logger.error("Failed to save secrets file: %s", err)
 
     def get_secret(self, secret_name):
         """Get secret defined with given name from file.
@@ -156,14 +156,14 @@ class FileSecrets(BaseSecretManager):
 
         return Secret(secret_name, "", values)
 
-    def set_secret(self, modified_secret: Secret) -> None:
+    def set_secret(self, secret: Secret) -> None:
         """Set the secret value in the local Vault
         with the given ``Secret`` object.
 
         :param secret:                 A ``Secret`` object.
         :raises IOError, ValueError:   Writing the local vault failed.
         """
-        self.data[modified_secret.name] = dict(modified_secret)
+        self.data[secret.name] = dict(secret)
         self.save()
 
 
@@ -298,36 +298,31 @@ class RobocloudVault(BaseSecretManager):
 
         return payload
 
-    def set_secret(self, modified_secret: Secret) -> None:
-        """
-        Set the secret value in the Vault. Note that the secret possibly
+    def set_secret(self, secret: Secret) -> None:
+        """Set the secret value in the Vault. Note that the secret possibly
         consists of multiple key-value pairs, which will all be overwritten
         with the values given here. So don't try to update only one item
         of the secret, update all of them.
 
-        :param modified_secret: A ``Secret`` object which has the new values.
+        :param secret: A ``Secret`` object
         """
-        secret_name = modified_secret.name
-        description = modified_secret.description
-        new_value = dict(modified_secret)
-
-        value, aes_iv, aes_key, aes_tag = self._encrypt_secret_value_with_aes(new_value)
+        value, aes_iv, aes_key, aes_tag = self._encrypt_secret_value_with_aes(secret)
         pub_key = self.get_publickey()
         aes_enc = self._encrypt_aes_key_with_public_rsa(aes_key, pub_key)
 
         payload = {
-            "description": description,
+            "description": secret.description,
             "encryption": {
                 "authTag": aes_tag.decode(),
                 "encryptedAES": aes_enc.decode(),
                 "encryptionScheme": self.ENCRYPTION_SCHEME,
                 "iv": aes_iv.decode(),
             },
-            "name": secret_name,
+            "name": secret.name,
             "value": value.decode(),
         }
 
-        url = self.create_secret_url(secret_name)
+        url = self.create_secret_url(secret.name)
         try:
             response = requests.put(url, headers=self.headers, json=payload)
             response.raise_for_status()
@@ -355,11 +350,8 @@ class RobocloudVault(BaseSecretManager):
 
     @staticmethod
     def _encrypt_secret_value_with_aes(
-        secret_value: dict,
+        secret: Secret,
     ) -> Tuple[bytes, bytes, bytes, bytes]:
-        def convert_dict_to_json_bytes(data: dict) -> bytes:
-            return json.dumps(data).encode()
-
         def generate_aes_key() -> Tuple[bytes, bytes]:
             aes_key = AESGCM.generate_key(bit_length=256)
             aes_iv = os.urandom(16)
@@ -368,17 +360,17 @@ class RobocloudVault(BaseSecretManager):
         def split_auth_tag_from_encrypted_value(
             encrypted_value: bytes,
         ) -> Tuple[bytes, bytes]:
-            """
-            AES auth tag is the last 16 bytes of the AES encrypted value.
+            """AES auth tag is the last 16 bytes of the AES encrypted value.
             Split the tag from the value, Cloud needs that.
             """
             aes_tag = encrypted_value[-16:]
             trimmed_encrypted_value = encrypted_value[:-16]
             return trimmed_encrypted_value, aes_tag
 
-        secret_value = convert_dict_to_json_bytes(secret_value)
+        value = json.dumps(dict(secret)).encode()
+
         aes_key, aes_iv = generate_aes_key()
-        encrypted_value = AESGCM(aes_key).encrypt(aes_iv, secret_value, b"")
+        encrypted_value = AESGCM(aes_key).encrypt(aes_iv, value, b"")
         encrypted_value, aes_tag = split_auth_tag_from_encrypted_value(encrypted_value)
 
         return (
@@ -531,11 +523,12 @@ class Secrets:
         """
         return self.adapter.get_secret(secret_name)
 
-    def set_secret(self, modified_secret: Secret) -> None:
-        """Set the secret value with the given (dict-like)
-        ``Secret`` object. Note that all the items of the secret
-        will be overwritten.
+    def set_secret(self, secret: Secret) -> None:
+        """Overwrite an existing secret with new values.
 
-        :param secret: Modified secret as a ``Secret`` object.
+        Note: Only allows modifying existing secrets, and replaces
+              all values contained within it.
+
+        :param secret: Secret as a ``Secret`` object, from e.g. ``Get Secret``
         """
-        self.adapter.set_secret(modified_secret)
+        self.adapter.set_secret(secret)
