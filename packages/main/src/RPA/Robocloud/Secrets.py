@@ -53,8 +53,14 @@ class Secret(collections.abc.Mapping):
     def description(self):
         return self._desc
 
+    def update(self, kvpairs):
+        self._dict.update(kvpairs)
+
     def __getitem__(self, key):
         return self._dict[key]
+
+    def __setitem__(self, key, value):
+        self._dict[key] = value
 
     def __contains__(self, key):
         return key in self._dict
@@ -157,7 +163,7 @@ class FileSecrets(BaseSecretManager):
         :param secret:                 A ``Secret`` object.
         :raises IOError, ValueError:   Writing the local vault failed.
         """
-        self.data[secret.name] = dict(secret)
+        self.data[modified_secret.name] = dict(modified_secret)
         self.save()
 
 
@@ -433,6 +439,7 @@ class Secrets:
     .. code-block:: robotframework
 
         *** Settings ***
+        Library    Collections
         Library    RPA.Robocloud.Secrets
 
         *** Tasks ***
@@ -441,8 +448,10 @@ class Secrets:
             Log Many      ${secret}
 
         Modifying secrets
-            ${secret}=          Get Secret    swaglabs
-            Set To Dictionary   ${secret}     username    nobody
+            ${secret}=          Get Secret      swaglabs
+            ${level}=           Set Log Level   NONE
+            Set To Dictionary   ${secret}       username    nobody
+            Set Log Level       ${level}
             Set Secret          ${secret}
 
 
@@ -465,6 +474,8 @@ class Secrets:
             secrets.set_secret(secret)
 
     """
+
+    # TODO: set to dictionary WILL log the values to log.html!
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"

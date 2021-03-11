@@ -42,6 +42,10 @@ class MockAdapter(BaseSecretManager):
         MockAdapter.name = secret_name
         return MockAdapter.value
 
+    def set_secret(self, secret):
+        MockAdapter.name = secret.name
+        MockAdapter.value = dict(secret)
+
 
 @pytest.fixture
 def mock_env_default(monkeypatch):
@@ -115,6 +119,39 @@ def test_secret_get():
         _ = secret["key_invalid"]
 
 
+def test_secret_set():
+    secret = Secret(
+        name="name-value",
+        description="description-value",
+        values={"key_one": "value_one", "key_two": "value_two"},
+    )
+
+    secret["key_one"] = "one"
+    secret["key_two"] = "two"
+
+    assert secret["key_one"] == "one"
+    assert secret["key_two"] == "two"
+    with pytest.raises(KeyError):
+        _ = secret["key_invalid"]
+
+
+def test_secret_update():
+    secret = Secret(
+        name="name-value",
+        description="description-value",
+        values={"key_one": "value_one", "key_two": "value_two"},
+    )
+
+    secret.update({"key_three": "value_three"})
+    expected = {
+        "key_one": "value_one",
+        "key_two": "value_two",
+        "key_three": "value_three",
+    }
+
+    assert secret == expected
+
+
 def test_secret_iterate():
     secret = Secret(
         name="name-value",
@@ -149,23 +186,6 @@ def test_secret_print():
     str_string = str(secret)
     assert "value_one" not in str_string
     assert "value_two" not in str_string
-
-
-def test_secret_immutable():
-    secret = Secret(
-        name="name",
-        description="desc",
-        values={"key": "value"},
-    )
-
-    with pytest.raises(AttributeError):
-        secret.name = "test"
-
-    with pytest.raises(AttributeError):
-        secret.description = "test"
-
-    with pytest.raises(TypeError):
-        secret["key"] = "test"
 
 
 def test_adapter_filesecrets_from_arg(monkeypatch):
