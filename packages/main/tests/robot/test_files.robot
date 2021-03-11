@@ -1,8 +1,8 @@
 *** Settings ***
-Suite setup     Create mock files
-Library         FilePreparer
-Library         Process
-Library         RPA.FileSystem
+Suite Setup       Create mock files
+Library           FilePreparer
+Library           Process
+Library           RPA.FileSystem
 
 *** Variables ***
 ${MOCK_WORKSPACE}    ${OUTPUT_DIR}${/}workspace
@@ -24,47 +24,47 @@ Test Log Directory Tree
     Log directory tree
 
 Test Does File Exist
-    Verify true     Does file exist    subfolder/second/stuff.ext
+    Verify true    Does file exist    subfolder/second/stuff.ext
     Verify false    Does file exist    subfolder/second/notexist
 
 Test Does File Exist Glob
-    Verify true     Does file exist    **/*.ext
+    Verify true    Does file exist    **/*.ext
     Verify false    Does file exist    **/*.noexist
 
 Test Does File Exist Absolute
-    Verify true     Does file exist    ${MOCK_WORKSPACE}/subfolder/second/stuff.ext
+    Verify true    Does file exist    ${MOCK_WORKSPACE}/subfolder/second/stuff.ext
     Verify false    Does file exist    ${MOCK_WORKSPACE}/subfolder/second/notexist
 
 Test Does File Not Exist
-    Verify true     Does file not exist    subfolder/first/imaginary
+    Verify true    Does file not exist    subfolder/first/imaginary
     Verify false    Does file not exist    subfolder/first/stuff.ext
 
 Test Does Directory Exist
-    Verify true     Does directory exist    another/second
+    Verify true    Does directory exist    another/second
     Verify false    Does directory exist    another/third
 
 Test Does Directory Exist Glob
-    Verify true     Does directory exist    */first
+    Verify true    Does directory exist    */first
     Verify false    Does directory exist    */third
 
 Test Does Directory Not Exist
-    Verify true     Does directory not exist    madeup
+    Verify true    Does directory not exist    madeup
     Verify false    Does directory not exist    empty
 
 Test Is Directory Empty
-    Verify true     Is directory empty    empty
+    Verify true    Is directory empty    empty
     Verify false    Is directory empty    subfolder
 
 Test Is Directory Not Empty
-    Verify true     Is directory not empty    another
+    Verify true    Is directory not empty    another
     Verify false    Is directory not empty    empty
 
 Test Is File Empty
-    Verify true     Is file empty    emptyfile
+    Verify true    Is file empty    emptyfile
     Verify false    Is file empty    notemptyfile
 
 Test Is File Not Empty
-    Verify true     Is file not empty    notemptyfile
+    Verify true    Is file not empty    notemptyfile
     Verify false    Is file not empty    emptyfile
 
 Test Read File
@@ -112,7 +112,7 @@ Test Create And Remove Directory
     Verify true    Does directory not exist    temp_folder
 
 Test Remove File
-    Touch file     wont_be_missed
+    Touch file    wont_be_missed
     Verify true    Does file exist    wont_be_missed
     Remove file    wont_be_missed
     Verify true    Does file not exist    wont_be_missed
@@ -126,9 +126,9 @@ Test Remove Files
     Touch file    two.tmp
     Touch file    three.tmp
     Touch file    four.tmp
-    Verify length    4    Find files   *.tmp
-    Remove files    one.tmp  two.tmp  three.tmp  four.tmp
-    Verify length    0    Find files   *.tmp
+    Verify length    4    Find files    *.tmp
+    Remove files    one.tmp    two.tmp    three.tmp    four.tmp
+    Verify length    0    Find files    *.tmp
 
 Test Empty Directory
     Create directory    temp_dir
@@ -143,7 +143,7 @@ Test Empty Directory
 Test Copy File
     Copy file    notemptyfile    temptarget
     Verify true    Does file exist    temptarget
-    Verify equal   some content here    Read file    temptarget
+    Verify equal    some content here    Read file    temptarget
     [Teardown]    Remove file    temptarget
 
 Test Copy Files
@@ -151,15 +151,15 @@ Test Copy Files
     Touch file    one.tmp
     Touch file    two.tmp
     Touch file    three.tmp
-    ${files}=     Find files   *.tmp
+    ${files}=    Find files    *.tmp
     Copy files    ${files}    destdir
-    ${src}=    Find files   *.tmp
-    ${dst}=    List files in directory   destdir
+    ${src}=    Find files    *.tmp
+    ${dst}=    List files in directory    destdir
     # Compare filenames only, not paths
     ${src}=    Evaluate    [p.name for p in $src]
     ${dst}=    Evaluate    [p.name for p in $dst]
     Length should be    ${src}    3
-    Should be equal     ${src}    ${dst}
+    Should be equal    ${src}    ${dst}
     [Teardown]    Remove directory    destdir    recursive=${TRUE}
 
 Test Copy Directory
@@ -171,8 +171,8 @@ Test Copy Directory
 Test Move File
     Touch file    movable
     Move file    movable    moved
-    Verify true    Does file not exist   movable
-    Verify true    Does file exist       moved
+    Verify true    Does file not exist    movable
+    Verify true    Does file exist    moved
     [Teardown]    Remove file    moved
 
 Test Move Files
@@ -180,31 +180,31 @@ Test Move Files
     Touch file    one.tmp
     Touch file    two.tmp
     Touch file    three.tmp
-    ${files}=     Find files   *.tmp
+    ${files}=    Find files    *.tmp
     Move files    ${files}    destdir
-    ${src}=    Find files   *.tmp
-    ${dst}=    List files in directory   destdir
+    ${src}=    Find files    *.tmp
+    ${dst}=    List files in directory    destdir
     Length should be    ${src}    0
     Length should be    ${dst}    3
     [Teardown]    Remove directory    destdir    recursive=${TRUE}
 
 Test Move Directory
     Create directory    movable
-    Move directory      movable    moved
-    Verify true    Does directory not exist   movable
-    Verify true    Does directory exist       moved
+    Move directory    movable    moved
+    Verify true    Does directory not exist    movable
+    Verify true    Does directory exist    moved
     [Teardown]    Remove directory    moved
 
 Test Change File Extension
     Touch file    subfolder/tmpfile.old
     Change file extension    subfolder/tmpfile.old    .new
-    Verify true    Does file not exist   subfolder/tmpfile.old
-    Verify true    Does file exist       subfolder/tmpfile.new
+    Verify true    Does file not exist    subfolder/tmpfile.old
+    Verify true    Does file exist    subfolder/tmpfile.new
     [Teardown]    Remove file    subfolder/tmpfile.new
 
 Test Join Path
     Verify equal    ${/}home${/}user${/}folder${/}test${/}file.ext
-    ...    Join path    ${/}    home  user  folder  test  file.ext
+    ...    Join path    ${/}    home    user    folder    test    file.ext
 
 Test Absolute Path
     Verify equal    ${MOCK_WORKSPACE}${/}subfolder${/}first${/}stuff.ext
@@ -229,20 +229,21 @@ Test Get File Extension
     Should be equal    ${result}    ${EMPTY}
 
 Test Get File Modified Date
-    ${before}=    Get file modified date   another/second/one
+    ${before}=    Get file modified date    another/second/one
     Touch file    another/second/one
-    ${after}=    Get file modified date   another/second/one
+    ${after}=    Get file modified date    another/second/one
     Should be true    0.0 < (${after} - ${before}) < 10.0
 
 Test Get File Creation Date
+    [Tags]    skip
     ${now}=    Evaluate    time.time()    time
-    ${result}=    Get file creation date   subfolder/first/stuff.ext
+    ${result}=    Get file creation date    subfolder/first/stuff.ext
     Should be true    0.0 < (${now} - ${result}) < 10.0
 
 Test Get File Size
-    ${result}=   Get file size    notemptyfile
+    ${result}=    Get file size    notemptyfile
     Should be equal as integers    ${result}    17
-    ${result}=   Get file size    emptyfile
+    ${result}=    Get file size    emptyfile
     Should be equal as integers    ${result}    0
 
 Test Get File Owner
@@ -250,14 +251,14 @@ Test Get File Owner
     Should not be empty    ${result}
 
 Test Wait Until Created
-    [Tags]   skip
+    [Tags]    skip
     Execute deferred    touch will_exist    timeout=1.0
     Run keyword and expect error    *TimeoutException*    Wait until created    will_exist    timeout=0.5
     Wait until created    will_exist    timeout=1.0
     [Teardown]    Remove file    will_exist
 
 Test Wait Until Removed
-    Touch file   will_be_removed
+    Touch file    will_be_removed
     Execute deferred    rm will_be_removed    timeout=2.0
     Run keyword and expect error    *TimeoutException*    Wait until removed    will_be_removed    timeout=0.5
     Wait until removed    will_be_removed    timeout=4.0
@@ -279,7 +280,7 @@ Test Run Keyword If File Exists
 
 *** Keywords ***
 Create mock files
-    Prepare Files For Tests   root=${MOCK_WORKSPACE}
+    Prepare Files For Tests    root=${MOCK_WORKSPACE}
 
 Execute deferred
     [Arguments]    ${command}    ${timeout}
@@ -303,4 +304,4 @@ Verify length
 Verify equal
     [Arguments]    ${value}    ${keyword}    @{args}
     ${result}=    Run keyword    ${keyword}    @{args}
-    Should be equal   ${result}    ${value}
+    Should be equal    ${result}    ${value}
