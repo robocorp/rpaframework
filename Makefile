@@ -17,10 +17,12 @@ ifeq ($(OS),Windows_NT)
 rm = -rmdir /s /q
 mkdir = mkdir
 sync = @cd .
+copy = copy
 else
 rm = rm -fr
 mkdir = mkdir -p
 sync = @sync
+copy = cp
 endif
 
 define make_each
@@ -61,6 +63,7 @@ docs: docs-libdoc install ## Generate documentation using Sphinx
 docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 	# TODO: Remove excludes when non-importables are _private
 	poetry run docgen\
+		--template docs/source/template/libdoc/libdoc.html\
 		--format html\
 		--output docs/source/include/libdoc/\
 		--exclude RPA.core*\
@@ -71,6 +74,10 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 		--exclude RPA.PDF.keywords*\
 		--exclude RPA.Cloud.objects*\
 		rpaframework
+
+	$(copy)\
+		docs/source/template/iframeResizer.contentWindow.map\
+		docs/source/include/libdoc/
 
 	poetry run docgen\
 		--no-patches\
