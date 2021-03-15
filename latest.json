@@ -5,7 +5,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:15",
+        "generated": "2021-03-15 09:40:00",
         "inits": [],
         "keywords": [
             {
@@ -100,10 +100,10 @@
     "RPA.Browser": {
         "name": "RPA.Browser",
         "doc": "<p>Browser is a web testing library for Robot Framework, based on the popular SeleniumLibrary.</p>\n<p>It uses the Selenium WebDriver modules internally to control a web browser. See <a href=\"http://seleniumhq.org\">http://seleniumhq.org</a> for more information about Selenium in general.</p>\n<h2 id=\"Locating elements\">Locating elements</h2>\n<p>All keywords in the browser library that need to interact with an element on a web page take an argument typically named <code>locator</code> that specifies how to find the element. Most often the locator is given as a string using the locator syntax described below, but <a href=\"#Using%20WebElements\" class=\"name\">using WebElements</a> is possible too.</p>\n<h3 id=\"Locator syntax\">Locator syntax</h3>\n<p>Finding elements can be done using different strategies such as the element id, XPath expressions, or CSS selectors. The strategy can either be explicitly specified with a prefix or the strategy can be implicit.</p>\n<h4 id=\"Default locator strategy\">Default locator strategy</h4>\n<p>By default, locators are considered to use the keyword specific default locator strategy. All keywords support finding elements based on <code>id</code> and <code>name</code> attributes, but some keywords support additional attributes or other values that make sense in their context. For example, <a href=\"#Click%20Link\" class=\"name\">Click Link</a> supports the <code>href</code> attribute and the link text and addition to the normal <code>id</code> and <code>name</code>.</p>\n<p>Examples:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>example</td>\n<td># Match based on <code>id</code> or <code>name</code>.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Link\" class=\"name\">Click Link</a></td>\n<td>example</td>\n<td># Match also based on link text and <code>href</code>.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Button\" class=\"name\">Click Button</a></td>\n<td>example</td>\n<td># Match based on <code>id</code>, <code>name</code> or <code>value</code>.</td>\n</tr>\n</table>\n<p>If a locator accidentally starts with a prefix recognized as <a href=\"#Explicit%20locator%20strategy\" class=\"name\">explicit locator strategy</a> or <a href=\"#Implicit%20XPath%20strategy\" class=\"name\">implicit XPath strategy</a>, it is possible to use the explicit <code>default</code> prefix to enable the default strategy.</p>\n<p>Examples:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>name:foo</td>\n<td># Find element with name <code>foo</code>.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>default:name:foo</td>\n<td># Use default strategy with value <code>name:foo</code>.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>//foo</td>\n<td># Find element using XPath <code>//foo</code>.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>default: //foo</td>\n<td># Use default strategy with value <code>//foo</code>.</td>\n</tr>\n</table>\n<h4 id=\"Explicit locator strategy\">Explicit locator strategy</h4>\n<p>The explicit locator strategy is specified with a prefix using either syntax <code>strategy:value</code> or <code>strategy=value</code>. The former syntax is preferred because the latter is identical to Robot Framework's <a href=\"http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument-syntax\">named argument syntax</a> and that can cause problems. Spaces around the separator are ignored, so <code>id:foo</code>, <code>id: foo</code> and <code>id : foo</code> are all equivalent.</p>\n<p>Locator strategies that are supported by default are listed in the table below. In addition to them, it is possible to register <a href=\"#Custom%20locators\" class=\"name\">custom locators</a>.</p>\n<table border=\"1\">\n<tr>\n<th>Strategy</th>\n<th>Match based on</th>\n<th>Example</th>\n</tr>\n<tr>\n<td>id</td>\n<td>Element <code>id</code>.</td>\n<td><code>id:example</code></td>\n</tr>\n<tr>\n<td>name</td>\n<td><code>name</code> attribute.</td>\n<td><code>name:example</code></td>\n</tr>\n<tr>\n<td>identifier</td>\n<td>Either <code>id</code> or <code>name</code>.</td>\n<td><code>identifier:example</code></td>\n</tr>\n<tr>\n<td>class</td>\n<td>Element <code>class</code>.</td>\n<td><code>class:example</code></td>\n</tr>\n<tr>\n<td>tag</td>\n<td>Tag name.</td>\n<td><code>tag:div</code></td>\n</tr>\n<tr>\n<td>xpath</td>\n<td>XPath expression.</td>\n<td><code>xpath://div[@id=\"example\"]</code></td>\n</tr>\n<tr>\n<td>css</td>\n<td>CSS selector.</td>\n<td><code>css:div#example</code></td>\n</tr>\n<tr>\n<td>dom</td>\n<td>DOM expression.</td>\n<td><code>dom:document.images[5]</code></td>\n</tr>\n<tr>\n<td>link</td>\n<td>Exact text a link has.</td>\n<td><code>link:The example</code></td>\n</tr>\n<tr>\n<td>partial link</td>\n<td>Partial link text.</td>\n<td><code>partial link:he ex</code></td>\n</tr>\n<tr>\n<td>sizzle</td>\n<td>Sizzle selector deprecated.</td>\n<td><code>sizzle:div.example</code></td>\n</tr>\n<tr>\n<td>jquery</td>\n<td>jQuery expression.</td>\n<td><code>jquery:div.example</code></td>\n</tr>\n<tr>\n<td>default</td>\n<td>Keyword specific default behavior.</td>\n<td><code>default:example</code></td>\n</tr>\n</table>\n<p>See the <a href=\"#Default%20locator%20strategy\" class=\"name\">Default locator strategy</a> section below for more information about how the default strategy works. Using the explicit <code>default</code> prefix is only necessary if the locator value itself accidentally matches some of the explicit strategies.</p>\n<p>Different locator strategies have different pros and cons. Using ids, either explicitly like <code>id:foo</code> or by using the <a href=\"#Default%20locator%20strategy\" class=\"name\">default locator strategy</a> simply like <code>foo</code>, is recommended when possible, because the syntax is simple and locating elements by id is fast for browsers. If an element does not have an id or the id is not stable, other solutions need to be used. If an element has a unique tag name or class, using <code>tag</code>, <code>class</code> or <code>css</code> strategy like <code>tag:h1</code>, <code>class:example</code> or <code>css:h1.example</code> is often an easy solution. In more complex cases using XPath expressions is typically the best approach. They are very powerful but a downside is that they can also get complex.</p>\n<p>Examples:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>id:foo</td>\n<td># Element with id 'foo'.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>css:div#foo h1</td>\n<td># h1 element under div with id 'foo'.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>xpath: //div[@id=\"foo\"]//h1</td>\n<td># Same as the above using XPath, not CSS.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>xpath: //*[contains(text(), \"example\")]</td>\n<td># Element containing text 'example'.</td>\n</tr>\n</table>\n<p><b>NOTE:</b></p>\n<ul>\n<li>Using the <code>sizzle</code> strategy or its alias <code>jquery</code> requires that the system under test contains the jQuery library.</li>\n</ul>\n<h4 id=\"Implicit XPath strategy\">Implicit XPath strategy</h4>\n<p>If the locator starts with <code>//</code> or <code>(//</code>, the locator is considered to be an XPath expression. In other words, using <code>//div</code> is equivalent to using explicit <code>xpath://div</code>.</p>\n<p>Examples:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>//div[@id=\"foo\"]//h1</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>(//div)[2]</td>\n</tr>\n</table>\n<h4 id=\"Chaining locators\">Chaining locators</h4>\n<p>It's possible to chain multiple locators together as a single locator. Each chained locator must start with a locator strategy. Chained locators must be separated with a single space, two greater than characters, and followed with a space. It's also possible to mix different locator strategies, such as css or xpath. Also, a list can also be used to specify multiple locators, for instance when the chaining separator would conflict with the actual locator, or when an existing web element is used as a base.</p>\n<p>Although all locators support chaining, some locator strategies don't chain properly with previous values. This is because some locator strategies use JavaScript to find elements and JavaScript is executed for the whole browser context and not for the element found by the previous locator. Locator strategies that support chaining are the ones that are based on the Selenium API, such as <span class=\"name\">xpath</span> or <span class=\"name\">css</span>, but for example chaining is not supported by <span class=\"name\">sizzle</span> or <span class=\"name\">jquery</span>.</p>\n<p>Examples:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>css:.bar &gt;&gt; <a href=\"xpath://a\">xpath://a</a></td>\n<td># To find a link which is present inside an element with class \"bar\"</td>\n</tr>\n</table>\n<p>List examples:</p>\n<table border=\"1\">\n<tr>\n<td>${locator_list} =</td>\n<td><span class=\"name\">Create List</span></td>\n<td>css:div#div_id</td>\n<td><a href=\"xpath://*[text(\">xpath://*[text(</a>), \" &gt;&gt; \"]</td>\n</tr>\n<tr>\n<td><a href=\"#Page%20Should%20Contain%20Element\" class=\"name\">Page Should Contain Element</a></td>\n<td>${locator_list}</td>\n<td></td>\n<td></td>\n</tr>\n<tr>\n<td>${element} =</td>\n<td>Get WebElement</td>\n<td><a href=\"xpath://*[text(\">xpath://*[text(</a>), \" &gt;&gt; \"]</td>\n<td></td>\n</tr>\n<tr>\n<td>${locator_list} =</td>\n<td><span class=\"name\">Create List</span></td>\n<td>css:div#div_id</td>\n<td>${element}</td>\n</tr>\n<tr>\n<td><a href=\"#Page%20Should%20Contain%20Element\" class=\"name\">Page Should Contain Element</a></td>\n<td>${locator_list}</td>\n<td></td>\n<td></td>\n</tr>\n</table>\n<h3 id=\"Using WebElements\">Using WebElements</h3>\n<p>In addition to specifying a locator as a string, it is possible to use Selenium's WebElement objects. This requires first getting a WebElement, for example, by using the <a href=\"#Get%20WebElement\" class=\"name\">Get WebElement</a> keyword.</p>\n<table border=\"1\">\n<tr>\n<td>${elem} =</td>\n<td><a href=\"#Get%20WebElement\" class=\"name\">Get WebElement</a></td>\n<td>id:example</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>${elem}</td>\n<td></td>\n</tr>\n</table>\n<h3 id=\"Custom locators\">Custom locators</h3>\n<p>If more complex lookups are required than what is provided through the default locators, custom lookup strategies can be created. Using custom locators is a two part process. First, create a keyword that returns a WebElement that should be acted on:</p>\n<table border=\"1\">\n<tr>\n<td>Custom Locator Strategy</td>\n<td>[Arguments]</td>\n<td>${browser}</td>\n<td>${locator}</td>\n<td>${tag}</td>\n<td>${constraints}</td>\n</tr>\n<tr>\n<td></td>\n<td>${element}=</td>\n<td>Execute Javascript</td>\n<td>return window.document.getElementById('${locator}');</td>\n<td></td>\n<td></td>\n</tr>\n<tr>\n<td></td>\n<td>[Return]</td>\n<td>${element}</td>\n<td></td>\n<td></td>\n<td></td>\n</tr>\n</table>\n<p>This keyword is a reimplementation of the basic functionality of the <code>id</code> locator where <code>${browser}</code> is a reference to a WebDriver instance and <code>${locator}</code> is the name of the locator strategy. To use this locator, it must first be registered by using the <a href=\"#Add%20Location%20Strategy\" class=\"name\">Add Location Strategy</a> keyword:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Add%20Location%20Strategy\" class=\"name\">Add Location Strategy</a></td>\n<td>custom</td>\n<td>Custom Locator Strategy</td>\n</tr>\n</table>\n<p>The first argument of <a href=\"#Add%20Location%20Strategy\" class=\"name\">Add Location Strategy</a> specifies the name of the strategy and it must be unique. After registering the strategy, the usage is the same as with other locators:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>custom:example</td>\n</tr>\n</table>\n<p>See the <a href=\"#Add%20Location%20Strategy\" class=\"name\">Add Location Strategy</a> keyword for more details.</p>\n<h2 id=\"Browser and Window\">Browser and Window</h2>\n<p>There is different conceptual meaning when this library talks about windows or browsers. This chapter explains those differences.</p>\n<h3 id=\"Browser\">Browser</h3>\n<p>When <a href=\"#Open%20Browser\" class=\"name\">Open Browser</a> or <a href=\"#Create%20Webdriver\" class=\"name\">Create WebDriver</a> keyword is called, it will create a new Selenium WebDriver instance by using the <a href=\"https://www.seleniumhq.org/docs/03_webdriver.jsp\">Selenium WebDriver</a> API. In this library's terms, a new browser is created. It is possible to start multiple independent browsers (Selenium Webdriver instances) at the same time, by calling <a href=\"#Open%20Browser\" class=\"name\">Open Browser</a> or <a href=\"#Create%20Webdriver\" class=\"name\">Create WebDriver</a> multiple times. These browsers are usually independent of each other and do not share data like cookies, sessions or profiles. Typically when the browser starts, it creates a single window which is shown to the user.</p>\n<h3 id=\"Window\">Window</h3>\n<p>Windows are the part of a browser that loads the web site and presents it to the user. All content of the site is the content of the window. Windows are children of a browser. In this context a browser is a synonym for WebDriver instance. One browser may have multiple windows. Windows can appear as tabs, as separate windows or pop-ups with different position and size. Windows belonging to the same browser typically share the sessions detail, like cookies. If there is a need to separate sessions detail, example login with two different users, two browsers (Selenium WebDriver instances) must be created. New windows can be opened example by the application under test or by example <a href=\"#Execute%20Javascript\" class=\"name\">Execute Javascript</a> keyword:</p>\n<pre>\n<a href=\"#Execute%20Javascript\" class=\"name\">Execute Javascript</a>    window.open()    # Opens a new window with location about:blank\n</pre>\n<p>The example below opens multiple browsers and windows, to demonstrate how the different keywords can be used to interact with browsers, and windows attached to these browsers.</p>\n<p>Structure:</p>\n<pre>\nBrowserA\n           Window 1  (location=https://robotframework.org/)\n           Window 2  (location=https://robocon.io/)\n           Window 3  (location=https://github.com/robotframework/)\n\nBrowserB\n           Window 1  (location=https://github.com/)\n</pre>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Open%20Browser\" class=\"name\">Open Browser</a></td>\n<td><a href=\"https://robotframework.org\">https://robotframework.org</a></td>\n<td>${BROWSER}</td>\n<td>alias=BrowserA</td>\n<td># BrowserA with first window is opened.</td>\n</tr>\n<tr>\n<td><a href=\"#Execute%20Javascript\" class=\"name\">Execute Javascript</a></td>\n<td>window.open()</td>\n<td></td>\n<td></td>\n<td># In BrowserA second window is opened.</td>\n</tr>\n<tr>\n<td><a href=\"#Switch%20Window\" class=\"name\">Switch Window</a></td>\n<td>locator=NEW</td>\n<td></td>\n<td></td>\n<td># Switched to second window in BrowserA</td>\n</tr>\n<tr>\n<td><a href=\"#Go%20To\" class=\"name\">Go To</a></td>\n<td><a href=\"https://robocon.io\">https://robocon.io</a></td>\n<td></td>\n<td></td>\n<td># Second window navigates to robocon site.</td>\n</tr>\n<tr>\n<td><a href=\"#Execute%20Javascript\" class=\"name\">Execute Javascript</a></td>\n<td>window.open()</td>\n<td></td>\n<td></td>\n<td># In BrowserA third window is opened.</td>\n</tr>\n<tr>\n<td>${handle}</td>\n<td><a href=\"#Switch%20Window\" class=\"name\">Switch Window</a></td>\n<td>locator=NEW</td>\n<td></td>\n<td># Switched to third window in BrowserA</td>\n</tr>\n<tr>\n<td><a href=\"#Go%20To\" class=\"name\">Go To</a></td>\n<td><a href=\"https://github.com/robotframework/\">https://github.com/robotframework/</a></td>\n<td></td>\n<td></td>\n<td># Third windows goes to robot framework github site.</td>\n</tr>\n<tr>\n<td><a href=\"#Open%20Browser\" class=\"name\">Open Browser</a></td>\n<td><a href=\"https://github.com\">https://github.com</a></td>\n<td>${BROWSER}</td>\n<td>alias=BrowserB</td>\n<td># BrowserB with first windows is opened.</td>\n</tr>\n<tr>\n<td>${location}</td>\n<td><a href=\"#Get%20Location\" class=\"name\">Get Location</a></td>\n<td></td>\n<td></td>\n<td># ${location} is: <a href=\"https://www.github.com\">https://www.github.com</a></td>\n</tr>\n<tr>\n<td><a href=\"#Switch%20Window\" class=\"name\">Switch Window</a></td>\n<td>${handle}</td>\n<td>browser=BrowserA</td>\n<td></td>\n<td># BrowserA second windows is selected.</td>\n</tr>\n<tr>\n<td>${location}</td>\n<td><a href=\"#Get%20Location\" class=\"name\">Get Location</a></td>\n<td></td>\n<td></td>\n<td># ${location} = <a href=\"https://robocon.io/\">https://robocon.io/</a></td>\n</tr>\n<tr>\n<td>@{locations 1}</td>\n<td><a href=\"#Get%20Locations\" class=\"name\">Get Locations</a></td>\n<td></td>\n<td></td>\n<td># By default, lists locations under the currectly active browser (BrowserA).</td>\n</tr>\n<tr>\n<td>@{locations 2}</td>\n<td><a href=\"#Get%20Locations\" class=\"name\">Get Locations</a></td>\n<td>browser=ALL</td>\n<td></td>\n<td># By using browser=ALL argument keyword list all locations from all browsers.</td>\n</tr>\n</table>\n<p>The above example, @{locations 1} contains the following items: <a href=\"https://robotframework.org/\">https://robotframework.org/</a>, <a href=\"https://robocon.io/\">https://robocon.io/</a> and <a href=\"https://github.com/robotframework/\">https://github.com/robotframework/</a>'. The @{locations 2} contains the following items: <a href=\"https://robotframework.org/\">https://robotframework.org/</a>, <a href=\"https://robocon.io/\">https://robocon.io/</a>, <a href=\"https://github.com/robotframework/\">https://github.com/robotframework/</a>' and '<a href=\"https://github.com/\">https://github.com/</a>.</p>\n<h2 id=\"Timeouts, waits, and delays\">Timeouts, waits, and delays</h2>\n<p>This section discusses different ways how to wait for elements to appear on web pages and to slow down execution speed otherwise. It also explains the <a href=\"#Time%20format\" class=\"name\">time format</a> that can be used when setting various timeouts, waits, and delays.</p>\n<h3 id=\"Timeout\">Timeout</h3>\n<p>This library contains various keywords that have an optional <code>timeout</code> argument that specifies how long these keywords should wait for certain events or actions. These keywords include, for example, <code>Wait ...</code> keywords and keywords related to alerts. Additionally <a href=\"#Execute%20Async%20Javascript\" class=\"name\">Execute Async Javascript</a>. Although it does not have <code>timeout</code>, argument, uses a timeout to define how long asynchronous JavaScript can run.</p>\n<p>The default timeout these keywords use can be set globally either by using the <a href=\"#Set%20Selenium%20Timeout\" class=\"name\">Set Selenium Timeout</a> keyword or with the <code>timeout</code> argument when <a href=\"#Importing\" class=\"name\">importing</a> the library. See <a href=\"#Time%20format\" class=\"name\">time format</a> below for supported timeout syntax.</p>\n<h3 id=\"Implicit wait\">Implicit wait</h3>\n<p>Implicit wait specifies the maximum time how long Selenium waits when searching for elements. It can be set by using the <a href=\"#Set%20Selenium%20Implicit%20Wait\" class=\"name\">Set Selenium Implicit Wait</a> keyword or with the <code>implicit_wait</code> argument when <a href=\"#Importing\" class=\"name\">importing</a> the library. See <a href=\"https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp\">Selenium documentation</a> for more information about this functionality.</p>\n<p>See <a href=\"#Time%20format\" class=\"name\">time format</a> below for supported syntax.</p>\n<h3 id=\"Selenium speed\">Selenium speed</h3>\n<p>Selenium execution speed can be slowed down globally by using <a href=\"#Set%20Selenium%20Speed\" class=\"name\">Set Selenium speed</a> keyword. This functionality is designed to be used for demonstrating or debugging purposes. Using it to make sure that elements appear on a page is not a good idea. The above-explained timeouts and waits should be used instead.</p>\n<p>See <a href=\"#Time%20format\" class=\"name\">time format</a> below for supported syntax.</p>\n<h3 id=\"Time format\">Time format</h3>\n<p>All timeouts and waits can be given as numbers considered seconds (e.g. <code>0.5</code> or <code>42</code>) or in Robot Framework's time syntax (e.g. <code>1.5 seconds</code> or <code>1 min 30 s</code>). For more information about the time syntax see the <a href=\"http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time-format\">Robot Framework User Guide</a>.</p>\n<h2 id=\"Run-on-failure functionality\">Run-on-failure functionality</h2>\n<p>This library has a handy feature that it can automatically execute a keyword if any of its own keywords fails. By default, it uses the <a href=\"#Capture%20Page%20Screenshot\" class=\"name\">Capture Page Screenshot</a> keyword, but this can be changed either by using the <a href=\"#Register%20Keyword%20To%20Run%20On%20Failure\" class=\"name\">Register Keyword To Run On Failure</a> keyword or with the <code>run_on_failure</code> argument when <a href=\"#Importing\" class=\"name\">importing</a> the library. It is possible to use any keyword from any imported library or resource file.</p>\n<p>The run-on-failure functionality can be disabled by using a special value <code>NOTHING</code> or anything considered false (see <span class=\"name\">Boolean arguments</span>) such as <code>NONE</code>.</p>",
-        "version": "5.1.0",
+        "version": "5.1.1",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:15",
+        "generated": "2021-03-15 09:40:01",
         "inits": [
             {
                 "name": "Init",
@@ -1645,7 +1645,7 @@
                     "alias: str = None",
                     "remote_url: typing.Union[bool, str] = False",
                     "desired_capabilities: typing.Union[dict, NoneType, str] = None",
-                    "ff_profile_dir: str = None",
+                    "ff_profile_dir: typing.Union[selenium.webdriver.firefox.firefox_profile.FirefoxProfile, str, NoneType] = None",
                     "options: typing.Any = None",
                     "service_log_path: str = None",
                     "executable_path: str = None"
@@ -2623,7 +2623,7 @@
         "version": "2.5.0",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:16",
+        "generated": "2021-03-15 09:40:01",
         "inits": [
             {
                 "name": "Init",
@@ -4152,10 +4152,10 @@
     "RPA.Browser.Selenium": {
         "name": "RPA.Browser.Selenium",
         "doc": "<p>Browser is a web testing library for Robot Framework, based on the popular SeleniumLibrary.</p>\n<p>It uses the Selenium WebDriver modules internally to control a web browser. See <a href=\"http://seleniumhq.org\">http://seleniumhq.org</a> for more information about Selenium in general.</p>\n<h2 id=\"Locating elements\">Locating elements</h2>\n<p>All keywords in the browser library that need to interact with an element on a web page take an argument typically named <code>locator</code> that specifies how to find the element. Most often the locator is given as a string using the locator syntax described below, but <a href=\"#Using%20WebElements\" class=\"name\">using WebElements</a> is possible too.</p>\n<h3 id=\"Locator syntax\">Locator syntax</h3>\n<p>Finding elements can be done using different strategies such as the element id, XPath expressions, or CSS selectors. The strategy can either be explicitly specified with a prefix or the strategy can be implicit.</p>\n<h4 id=\"Default locator strategy\">Default locator strategy</h4>\n<p>By default, locators are considered to use the keyword specific default locator strategy. All keywords support finding elements based on <code>id</code> and <code>name</code> attributes, but some keywords support additional attributes or other values that make sense in their context. For example, <a href=\"#Click%20Link\" class=\"name\">Click Link</a> supports the <code>href</code> attribute and the link text and addition to the normal <code>id</code> and <code>name</code>.</p>\n<p>Examples:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>example</td>\n<td># Match based on <code>id</code> or <code>name</code>.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Link\" class=\"name\">Click Link</a></td>\n<td>example</td>\n<td># Match also based on link text and <code>href</code>.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Button\" class=\"name\">Click Button</a></td>\n<td>example</td>\n<td># Match based on <code>id</code>, <code>name</code> or <code>value</code>.</td>\n</tr>\n</table>\n<p>If a locator accidentally starts with a prefix recognized as <a href=\"#Explicit%20locator%20strategy\" class=\"name\">explicit locator strategy</a> or <a href=\"#Implicit%20XPath%20strategy\" class=\"name\">implicit XPath strategy</a>, it is possible to use the explicit <code>default</code> prefix to enable the default strategy.</p>\n<p>Examples:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>name:foo</td>\n<td># Find element with name <code>foo</code>.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>default:name:foo</td>\n<td># Use default strategy with value <code>name:foo</code>.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>//foo</td>\n<td># Find element using XPath <code>//foo</code>.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>default: //foo</td>\n<td># Use default strategy with value <code>//foo</code>.</td>\n</tr>\n</table>\n<h4 id=\"Explicit locator strategy\">Explicit locator strategy</h4>\n<p>The explicit locator strategy is specified with a prefix using either syntax <code>strategy:value</code> or <code>strategy=value</code>. The former syntax is preferred because the latter is identical to Robot Framework's <a href=\"http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#named-argument-syntax\">named argument syntax</a> and that can cause problems. Spaces around the separator are ignored, so <code>id:foo</code>, <code>id: foo</code> and <code>id : foo</code> are all equivalent.</p>\n<p>Locator strategies that are supported by default are listed in the table below. In addition to them, it is possible to register <a href=\"#Custom%20locators\" class=\"name\">custom locators</a>.</p>\n<table border=\"1\">\n<tr>\n<th>Strategy</th>\n<th>Match based on</th>\n<th>Example</th>\n</tr>\n<tr>\n<td>id</td>\n<td>Element <code>id</code>.</td>\n<td><code>id:example</code></td>\n</tr>\n<tr>\n<td>name</td>\n<td><code>name</code> attribute.</td>\n<td><code>name:example</code></td>\n</tr>\n<tr>\n<td>identifier</td>\n<td>Either <code>id</code> or <code>name</code>.</td>\n<td><code>identifier:example</code></td>\n</tr>\n<tr>\n<td>class</td>\n<td>Element <code>class</code>.</td>\n<td><code>class:example</code></td>\n</tr>\n<tr>\n<td>tag</td>\n<td>Tag name.</td>\n<td><code>tag:div</code></td>\n</tr>\n<tr>\n<td>xpath</td>\n<td>XPath expression.</td>\n<td><code>xpath://div[@id=\"example\"]</code></td>\n</tr>\n<tr>\n<td>css</td>\n<td>CSS selector.</td>\n<td><code>css:div#example</code></td>\n</tr>\n<tr>\n<td>dom</td>\n<td>DOM expression.</td>\n<td><code>dom:document.images[5]</code></td>\n</tr>\n<tr>\n<td>link</td>\n<td>Exact text a link has.</td>\n<td><code>link:The example</code></td>\n</tr>\n<tr>\n<td>partial link</td>\n<td>Partial link text.</td>\n<td><code>partial link:he ex</code></td>\n</tr>\n<tr>\n<td>sizzle</td>\n<td>Sizzle selector deprecated.</td>\n<td><code>sizzle:div.example</code></td>\n</tr>\n<tr>\n<td>jquery</td>\n<td>jQuery expression.</td>\n<td><code>jquery:div.example</code></td>\n</tr>\n<tr>\n<td>default</td>\n<td>Keyword specific default behavior.</td>\n<td><code>default:example</code></td>\n</tr>\n</table>\n<p>See the <a href=\"#Default%20locator%20strategy\" class=\"name\">Default locator strategy</a> section below for more information about how the default strategy works. Using the explicit <code>default</code> prefix is only necessary if the locator value itself accidentally matches some of the explicit strategies.</p>\n<p>Different locator strategies have different pros and cons. Using ids, either explicitly like <code>id:foo</code> or by using the <a href=\"#Default%20locator%20strategy\" class=\"name\">default locator strategy</a> simply like <code>foo</code>, is recommended when possible, because the syntax is simple and locating elements by id is fast for browsers. If an element does not have an id or the id is not stable, other solutions need to be used. If an element has a unique tag name or class, using <code>tag</code>, <code>class</code> or <code>css</code> strategy like <code>tag:h1</code>, <code>class:example</code> or <code>css:h1.example</code> is often an easy solution. In more complex cases using XPath expressions is typically the best approach. They are very powerful but a downside is that they can also get complex.</p>\n<p>Examples:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>id:foo</td>\n<td># Element with id 'foo'.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>css:div#foo h1</td>\n<td># h1 element under div with id 'foo'.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>xpath: //div[@id=\"foo\"]//h1</td>\n<td># Same as the above using XPath, not CSS.</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>xpath: //*[contains(text(), \"example\")]</td>\n<td># Element containing text 'example'.</td>\n</tr>\n</table>\n<p><b>NOTE:</b></p>\n<ul>\n<li>Using the <code>sizzle</code> strategy or its alias <code>jquery</code> requires that the system under test contains the jQuery library.</li>\n</ul>\n<h4 id=\"Implicit XPath strategy\">Implicit XPath strategy</h4>\n<p>If the locator starts with <code>//</code> or <code>(//</code>, the locator is considered to be an XPath expression. In other words, using <code>//div</code> is equivalent to using explicit <code>xpath://div</code>.</p>\n<p>Examples:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>//div[@id=\"foo\"]//h1</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>(//div)[2]</td>\n</tr>\n</table>\n<h4 id=\"Chaining locators\">Chaining locators</h4>\n<p>It's possible to chain multiple locators together as a single locator. Each chained locator must start with a locator strategy. Chained locators must be separated with a single space, two greater than characters, and followed with a space. It's also possible to mix different locator strategies, such as css or xpath. Also, a list can also be used to specify multiple locators, for instance when the chaining separator would conflict with the actual locator, or when an existing web element is used as a base.</p>\n<p>Although all locators support chaining, some locator strategies don't chain properly with previous values. This is because some locator strategies use JavaScript to find elements and JavaScript is executed for the whole browser context and not for the element found by the previous locator. Locator strategies that support chaining are the ones that are based on the Selenium API, such as <span class=\"name\">xpath</span> or <span class=\"name\">css</span>, but for example chaining is not supported by <span class=\"name\">sizzle</span> or <span class=\"name\">jquery</span>.</p>\n<p>Examples:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>css:.bar &gt;&gt; <a href=\"xpath://a\">xpath://a</a></td>\n<td># To find a link which is present inside an element with class \"bar\"</td>\n</tr>\n</table>\n<p>List examples:</p>\n<table border=\"1\">\n<tr>\n<td>${locator_list} =</td>\n<td><span class=\"name\">Create List</span></td>\n<td>css:div#div_id</td>\n<td><a href=\"xpath://*[text(\">xpath://*[text(</a>), \" &gt;&gt; \"]</td>\n</tr>\n<tr>\n<td><a href=\"#Page%20Should%20Contain%20Element\" class=\"name\">Page Should Contain Element</a></td>\n<td>${locator_list}</td>\n<td></td>\n<td></td>\n</tr>\n<tr>\n<td>${element} =</td>\n<td>Get WebElement</td>\n<td><a href=\"xpath://*[text(\">xpath://*[text(</a>), \" &gt;&gt; \"]</td>\n<td></td>\n</tr>\n<tr>\n<td>${locator_list} =</td>\n<td><span class=\"name\">Create List</span></td>\n<td>css:div#div_id</td>\n<td>${element}</td>\n</tr>\n<tr>\n<td><a href=\"#Page%20Should%20Contain%20Element\" class=\"name\">Page Should Contain Element</a></td>\n<td>${locator_list}</td>\n<td></td>\n<td></td>\n</tr>\n</table>\n<h3 id=\"Using WebElements\">Using WebElements</h3>\n<p>In addition to specifying a locator as a string, it is possible to use Selenium's WebElement objects. This requires first getting a WebElement, for example, by using the <a href=\"#Get%20WebElement\" class=\"name\">Get WebElement</a> keyword.</p>\n<table border=\"1\">\n<tr>\n<td>${elem} =</td>\n<td><a href=\"#Get%20WebElement\" class=\"name\">Get WebElement</a></td>\n<td>id:example</td>\n</tr>\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>${elem}</td>\n<td></td>\n</tr>\n</table>\n<h3 id=\"Custom locators\">Custom locators</h3>\n<p>If more complex lookups are required than what is provided through the default locators, custom lookup strategies can be created. Using custom locators is a two part process. First, create a keyword that returns a WebElement that should be acted on:</p>\n<table border=\"1\">\n<tr>\n<td>Custom Locator Strategy</td>\n<td>[Arguments]</td>\n<td>${browser}</td>\n<td>${locator}</td>\n<td>${tag}</td>\n<td>${constraints}</td>\n</tr>\n<tr>\n<td></td>\n<td>${element}=</td>\n<td>Execute Javascript</td>\n<td>return window.document.getElementById('${locator}');</td>\n<td></td>\n<td></td>\n</tr>\n<tr>\n<td></td>\n<td>[Return]</td>\n<td>${element}</td>\n<td></td>\n<td></td>\n<td></td>\n</tr>\n</table>\n<p>This keyword is a reimplementation of the basic functionality of the <code>id</code> locator where <code>${browser}</code> is a reference to a WebDriver instance and <code>${locator}</code> is the name of the locator strategy. To use this locator, it must first be registered by using the <a href=\"#Add%20Location%20Strategy\" class=\"name\">Add Location Strategy</a> keyword:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Add%20Location%20Strategy\" class=\"name\">Add Location Strategy</a></td>\n<td>custom</td>\n<td>Custom Locator Strategy</td>\n</tr>\n</table>\n<p>The first argument of <a href=\"#Add%20Location%20Strategy\" class=\"name\">Add Location Strategy</a> specifies the name of the strategy and it must be unique. After registering the strategy, the usage is the same as with other locators:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Click%20Element\" class=\"name\">Click Element</a></td>\n<td>custom:example</td>\n</tr>\n</table>\n<p>See the <a href=\"#Add%20Location%20Strategy\" class=\"name\">Add Location Strategy</a> keyword for more details.</p>\n<h2 id=\"Browser and Window\">Browser and Window</h2>\n<p>There is different conceptual meaning when this library talks about windows or browsers. This chapter explains those differences.</p>\n<h3 id=\"Browser\">Browser</h3>\n<p>When <a href=\"#Open%20Browser\" class=\"name\">Open Browser</a> or <a href=\"#Create%20Webdriver\" class=\"name\">Create WebDriver</a> keyword is called, it will create a new Selenium WebDriver instance by using the <a href=\"https://www.seleniumhq.org/docs/03_webdriver.jsp\">Selenium WebDriver</a> API. In this library's terms, a new browser is created. It is possible to start multiple independent browsers (Selenium Webdriver instances) at the same time, by calling <a href=\"#Open%20Browser\" class=\"name\">Open Browser</a> or <a href=\"#Create%20Webdriver\" class=\"name\">Create WebDriver</a> multiple times. These browsers are usually independent of each other and do not share data like cookies, sessions or profiles. Typically when the browser starts, it creates a single window which is shown to the user.</p>\n<h3 id=\"Window\">Window</h3>\n<p>Windows are the part of a browser that loads the web site and presents it to the user. All content of the site is the content of the window. Windows are children of a browser. In this context a browser is a synonym for WebDriver instance. One browser may have multiple windows. Windows can appear as tabs, as separate windows or pop-ups with different position and size. Windows belonging to the same browser typically share the sessions detail, like cookies. If there is a need to separate sessions detail, example login with two different users, two browsers (Selenium WebDriver instances) must be created. New windows can be opened example by the application under test or by example <a href=\"#Execute%20Javascript\" class=\"name\">Execute Javascript</a> keyword:</p>\n<pre>\n<a href=\"#Execute%20Javascript\" class=\"name\">Execute Javascript</a>    window.open()    # Opens a new window with location about:blank\n</pre>\n<p>The example below opens multiple browsers and windows, to demonstrate how the different keywords can be used to interact with browsers, and windows attached to these browsers.</p>\n<p>Structure:</p>\n<pre>\nBrowserA\n           Window 1  (location=https://robotframework.org/)\n           Window 2  (location=https://robocon.io/)\n           Window 3  (location=https://github.com/robotframework/)\n\nBrowserB\n           Window 1  (location=https://github.com/)\n</pre>\n<p>Example:</p>\n<table border=\"1\">\n<tr>\n<td><a href=\"#Open%20Browser\" class=\"name\">Open Browser</a></td>\n<td><a href=\"https://robotframework.org\">https://robotframework.org</a></td>\n<td>${BROWSER}</td>\n<td>alias=BrowserA</td>\n<td># BrowserA with first window is opened.</td>\n</tr>\n<tr>\n<td><a href=\"#Execute%20Javascript\" class=\"name\">Execute Javascript</a></td>\n<td>window.open()</td>\n<td></td>\n<td></td>\n<td># In BrowserA second window is opened.</td>\n</tr>\n<tr>\n<td><a href=\"#Switch%20Window\" class=\"name\">Switch Window</a></td>\n<td>locator=NEW</td>\n<td></td>\n<td></td>\n<td># Switched to second window in BrowserA</td>\n</tr>\n<tr>\n<td><a href=\"#Go%20To\" class=\"name\">Go To</a></td>\n<td><a href=\"https://robocon.io\">https://robocon.io</a></td>\n<td></td>\n<td></td>\n<td># Second window navigates to robocon site.</td>\n</tr>\n<tr>\n<td><a href=\"#Execute%20Javascript\" class=\"name\">Execute Javascript</a></td>\n<td>window.open()</td>\n<td></td>\n<td></td>\n<td># In BrowserA third window is opened.</td>\n</tr>\n<tr>\n<td>${handle}</td>\n<td><a href=\"#Switch%20Window\" class=\"name\">Switch Window</a></td>\n<td>locator=NEW</td>\n<td></td>\n<td># Switched to third window in BrowserA</td>\n</tr>\n<tr>\n<td><a href=\"#Go%20To\" class=\"name\">Go To</a></td>\n<td><a href=\"https://github.com/robotframework/\">https://github.com/robotframework/</a></td>\n<td></td>\n<td></td>\n<td># Third windows goes to robot framework github site.</td>\n</tr>\n<tr>\n<td><a href=\"#Open%20Browser\" class=\"name\">Open Browser</a></td>\n<td><a href=\"https://github.com\">https://github.com</a></td>\n<td>${BROWSER}</td>\n<td>alias=BrowserB</td>\n<td># BrowserB with first windows is opened.</td>\n</tr>\n<tr>\n<td>${location}</td>\n<td><a href=\"#Get%20Location\" class=\"name\">Get Location</a></td>\n<td></td>\n<td></td>\n<td># ${location} is: <a href=\"https://www.github.com\">https://www.github.com</a></td>\n</tr>\n<tr>\n<td><a href=\"#Switch%20Window\" class=\"name\">Switch Window</a></td>\n<td>${handle}</td>\n<td>browser=BrowserA</td>\n<td></td>\n<td># BrowserA second windows is selected.</td>\n</tr>\n<tr>\n<td>${location}</td>\n<td><a href=\"#Get%20Location\" class=\"name\">Get Location</a></td>\n<td></td>\n<td></td>\n<td># ${location} = <a href=\"https://robocon.io/\">https://robocon.io/</a></td>\n</tr>\n<tr>\n<td>@{locations 1}</td>\n<td><a href=\"#Get%20Locations\" class=\"name\">Get Locations</a></td>\n<td></td>\n<td></td>\n<td># By default, lists locations under the currectly active browser (BrowserA).</td>\n</tr>\n<tr>\n<td>@{locations 2}</td>\n<td><a href=\"#Get%20Locations\" class=\"name\">Get Locations</a></td>\n<td>browser=ALL</td>\n<td></td>\n<td># By using browser=ALL argument keyword list all locations from all browsers.</td>\n</tr>\n</table>\n<p>The above example, @{locations 1} contains the following items: <a href=\"https://robotframework.org/\">https://robotframework.org/</a>, <a href=\"https://robocon.io/\">https://robocon.io/</a> and <a href=\"https://github.com/robotframework/\">https://github.com/robotframework/</a>'. The @{locations 2} contains the following items: <a href=\"https://robotframework.org/\">https://robotframework.org/</a>, <a href=\"https://robocon.io/\">https://robocon.io/</a>, <a href=\"https://github.com/robotframework/\">https://github.com/robotframework/</a>' and '<a href=\"https://github.com/\">https://github.com/</a>.</p>\n<h2 id=\"Timeouts, waits, and delays\">Timeouts, waits, and delays</h2>\n<p>This section discusses different ways how to wait for elements to appear on web pages and to slow down execution speed otherwise. It also explains the <a href=\"#Time%20format\" class=\"name\">time format</a> that can be used when setting various timeouts, waits, and delays.</p>\n<h3 id=\"Timeout\">Timeout</h3>\n<p>This library contains various keywords that have an optional <code>timeout</code> argument that specifies how long these keywords should wait for certain events or actions. These keywords include, for example, <code>Wait ...</code> keywords and keywords related to alerts. Additionally <a href=\"#Execute%20Async%20Javascript\" class=\"name\">Execute Async Javascript</a>. Although it does not have <code>timeout</code>, argument, uses a timeout to define how long asynchronous JavaScript can run.</p>\n<p>The default timeout these keywords use can be set globally either by using the <a href=\"#Set%20Selenium%20Timeout\" class=\"name\">Set Selenium Timeout</a> keyword or with the <code>timeout</code> argument when <a href=\"#Importing\" class=\"name\">importing</a> the library. See <a href=\"#Time%20format\" class=\"name\">time format</a> below for supported timeout syntax.</p>\n<h3 id=\"Implicit wait\">Implicit wait</h3>\n<p>Implicit wait specifies the maximum time how long Selenium waits when searching for elements. It can be set by using the <a href=\"#Set%20Selenium%20Implicit%20Wait\" class=\"name\">Set Selenium Implicit Wait</a> keyword or with the <code>implicit_wait</code> argument when <a href=\"#Importing\" class=\"name\">importing</a> the library. See <a href=\"https://www.seleniumhq.org/docs/04_webdriver_advanced.jsp\">Selenium documentation</a> for more information about this functionality.</p>\n<p>See <a href=\"#Time%20format\" class=\"name\">time format</a> below for supported syntax.</p>\n<h3 id=\"Selenium speed\">Selenium speed</h3>\n<p>Selenium execution speed can be slowed down globally by using <a href=\"#Set%20Selenium%20Speed\" class=\"name\">Set Selenium speed</a> keyword. This functionality is designed to be used for demonstrating or debugging purposes. Using it to make sure that elements appear on a page is not a good idea. The above-explained timeouts and waits should be used instead.</p>\n<p>See <a href=\"#Time%20format\" class=\"name\">time format</a> below for supported syntax.</p>\n<h3 id=\"Time format\">Time format</h3>\n<p>All timeouts and waits can be given as numbers considered seconds (e.g. <code>0.5</code> or <code>42</code>) or in Robot Framework's time syntax (e.g. <code>1.5 seconds</code> or <code>1 min 30 s</code>). For more information about the time syntax see the <a href=\"http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#time-format\">Robot Framework User Guide</a>.</p>\n<h2 id=\"Run-on-failure functionality\">Run-on-failure functionality</h2>\n<p>This library has a handy feature that it can automatically execute a keyword if any of its own keywords fails. By default, it uses the <a href=\"#Capture%20Page%20Screenshot\" class=\"name\">Capture Page Screenshot</a> keyword, but this can be changed either by using the <a href=\"#Register%20Keyword%20To%20Run%20On%20Failure\" class=\"name\">Register Keyword To Run On Failure</a> keyword or with the <code>run_on_failure</code> argument when <a href=\"#Importing\" class=\"name\">importing</a> the library. It is possible to use any keyword from any imported library or resource file.</p>\n<p>The run-on-failure functionality can be disabled by using a special value <code>NOTHING</code> or anything considered false (see <span class=\"name\">Boolean arguments</span>) such as <code>NONE</code>.</p>",
-        "version": "5.1.0",
+        "version": "5.1.1",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:16",
+        "generated": "2021-03-15 09:40:01",
         "inits": [
             {
                 "name": "Init",
@@ -5697,7 +5697,7 @@
                     "alias: str = None",
                     "remote_url: typing.Union[bool, str] = False",
                     "desired_capabilities: typing.Union[dict, NoneType, str] = None",
-                    "ff_profile_dir: str = None",
+                    "ff_profile_dir: typing.Union[selenium.webdriver.firefox.firefox_profile.FirefoxProfile, str, NoneType] = None",
                     "options: typing.Any = None",
                     "service_log_path: str = None",
                     "executable_path: str = None"
@@ -6675,7 +6675,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:16",
+        "generated": "2021-03-15 09:40:02",
         "inits": [
             {
                 "name": "Init",
@@ -7039,7 +7039,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:17",
+        "generated": "2021-03-15 09:40:02",
         "inits": [
             {
                 "name": "Init",
@@ -7257,7 +7257,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:17",
+        "generated": "2021-03-15 09:40:03",
         "inits": [
             {
                 "name": "Init",
@@ -7829,7 +7829,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:18",
+        "generated": "2021-03-15 09:40:04",
         "inits": [],
         "keywords": [
             {
@@ -7938,7 +7938,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:18",
+        "generated": "2021-03-15 09:40:04",
         "inits": [],
         "keywords": [
             {
@@ -8056,7 +8056,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:18",
+        "generated": "2021-03-15 09:40:04",
         "inits": [],
         "keywords": [
             {
@@ -8396,7 +8396,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:19",
+        "generated": "2021-03-15 09:40:04",
         "inits": [],
         "keywords": [
             {
@@ -8435,7 +8435,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:19",
+        "generated": "2021-03-15 09:40:05",
         "inits": [],
         "keywords": [
             {
@@ -8542,7 +8542,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:19",
+        "generated": "2021-03-15 09:40:05",
         "inits": [
             {
                 "name": "Init",
@@ -9178,7 +9178,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:20",
+        "generated": "2021-03-15 09:40:06",
         "inits": [
             {
                 "name": "Init",
@@ -9345,7 +9345,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:20",
+        "generated": "2021-03-15 09:40:06",
         "inits": [],
         "keywords": [
             {
@@ -9514,7 +9514,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:20",
+        "generated": "2021-03-15 09:40:06",
         "inits": [
             {
                 "name": "Init",
@@ -9845,7 +9845,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:21",
+        "generated": "2021-03-15 09:40:07",
         "inits": [],
         "keywords": [
             {
@@ -10011,7 +10011,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:21",
+        "generated": "2021-03-15 09:40:07",
         "inits": [],
         "keywords": [
             {
@@ -10208,7 +10208,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:21",
+        "generated": "2021-03-15 09:40:07",
         "inits": [],
         "keywords": [
             {
@@ -10405,7 +10405,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:21",
+        "generated": "2021-03-15 09:40:07",
         "inits": [],
         "keywords": [
             {
@@ -10889,7 +10889,7 @@
         "version": "0.7.2",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:22",
+        "generated": "2021-03-15 09:40:08",
         "inits": [
             {
                 "name": "Init",
@@ -10920,7 +10920,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'DELETE', 'GET', 'HEAD', 'PUT', 'OPTIONS']"
+                    "retry_method_list=['OPTIONS', 'PUT', 'DELETE', 'GET', 'TRACE', 'HEAD']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>client_certs</code> ['client certificate', 'client key'] PEM files containing the client key and certificate</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10943,7 +10943,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'DELETE', 'GET', 'HEAD', 'PUT', 'OPTIONS']"
+                    "retry_method_list=['OPTIONS', 'PUT', 'DELETE', 'GET', 'TRACE', 'HEAD']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> A Custom Authentication object to be passed on to the requests library. <a href=\"http://docs.python-requests.org/en/master/user/advanced/#custom-authentication\">http://docs.python-requests.org/en/master/user/advanced/#custom-authentication</a></p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10966,7 +10966,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'DELETE', 'GET', 'HEAD', 'PUT', 'OPTIONS']"
+                    "retry_method_list=['OPTIONS', 'PUT', 'DELETE', 'GET', 'TRACE', 'HEAD']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -10989,7 +10989,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'DELETE', 'GET', 'HEAD', 'PUT', 'OPTIONS']"
+                    "retry_method_list=['OPTIONS', 'PUT', 'DELETE', 'GET', 'TRACE', 'HEAD']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> ['DOMAIN', 'username', 'password'] for NTLM Authentication</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided. Defaults to False.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -11012,7 +11012,7 @@
                     "backoff_factor=0.1",
                     "disable_warnings=0",
                     "retry_status_list=[]",
-                    "retry_method_list=['TRACE', 'DELETE', 'GET', 'HEAD', 'PUT', 'OPTIONS']"
+                    "retry_method_list=['OPTIONS', 'PUT', 'DELETE', 'GET', 'TRACE', 'HEAD']"
                 ],
                 "doc": "<p>Create Session: create a HTTP session to a server</p>\n<p><code>alias</code> Robot Framework alias to identify the session</p>\n<p><code>url</code> Base url of the server</p>\n<p><code>headers</code> Dictionary of default headers</p>\n<p><code>cookies</code> Dictionary of cookies</p>\n<p><code>auth</code> List of username &amp; password for HTTP Basic Auth</p>\n<p><code>timeout</code> Connection timeout</p>\n<p><code>proxies</code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>\n<p><code>verify</code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>\n<p><code>debug</code> Enable http verbosity option more information <a href=\"https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel\">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>\n<p><code>max_retries</code> Number of maximum retries each connection should attempt. By default it will retry 3 times in case of connection errors only. A 0 value will disable any kind of retries regardless of other retry settings. In case the number of retries is reached a retry exception is raised.</p>\n<p><code>disable_warnings</code> Disable requests warning useful when you have large number of testcases</p>\n<p><code>backoff_factor</code> Introduces a delay time between retries that is longer after each retry. eg. if backoff_factor is set to 0.1 the sleep between attemps will be: 0.0, 0.2, 0.4 More info here: <a href=\"https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html\">https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html</a></p>\n<p><code>retry_method_list</code> List of uppercased HTTP method verbs where retries are allowed. By default retries are allowed only on HTTP requests methods that are considered to be idempotent (multiple requests with the same parameters end with the same state). eg. set to ['POST', 'GET'] to retry only those kind of requests.</p>\n<p><code>retry_status_list</code> List of integer HTTP status codes that, if returned, a retry is attempted. eg. set to [502, 503] to retry requests if those status are returned. Note that max_retries must be greater than 0.</p>",
                 "shortdoc": "Create Session: create a HTTP session to a server",
@@ -11256,7 +11256,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:22",
+        "generated": "2021-03-15 09:40:08",
         "inits": [],
         "keywords": [
             {
@@ -11375,7 +11375,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:22",
+        "generated": "2021-03-15 09:40:08",
         "inits": [],
         "keywords": [
             {
@@ -11487,7 +11487,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:22",
+        "generated": "2021-03-15 09:40:08",
         "inits": [],
         "keywords": [
             {
@@ -11647,7 +11647,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:23",
+        "generated": "2021-03-15 09:40:09",
         "inits": [],
         "keywords": [
             {
@@ -11742,7 +11742,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:23",
+        "generated": "2021-03-15 09:40:09",
         "inits": [],
         "keywords": [
             {
@@ -11812,7 +11812,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:23",
+        "generated": "2021-03-15 09:40:09",
         "inits": [],
         "keywords": [
             {
@@ -12084,7 +12084,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:23",
+        "generated": "2021-03-15 09:40:09",
         "inits": [
             {
                 "name": "Init",
@@ -12173,7 +12173,7 @@
                 "name": "Get Work Item Variable",
                 "args": [
                     "name",
-                    "default=<object object at 0x000001AB50E82AC0>"
+                    "default=<object object at 0x000002CFEA58EF30>"
                 ],
                 "doc": "<div style=\"margin: 0\"><div class=\"document\">\n<p>Return a single variable value from the work item,\nor default value if defined and key does not exist.\nIf key does not exist and default is not defined, raises <cite>KeyError</cite>.</p>\n<table class=\"docutils field-list\" frame=\"void\" rules=\"none\">\n<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n<tr class=\"field\"><th class=\"field-name\">param key:</th><td class=\"field-body\">Name of variable</td>\n</tr>\n<tr class=\"field\"><th class=\"field-name\">param default:</th><td class=\"field-body\">Default value if key does not exist</td>\n</tr>\n</tbody>\n</table>\n<p>Example:</p>\n<pre class=\"code robotframework literal-block\">\n<span class=\"c\">${username}=</span><span class=\"p\">    </span><span class=\"c\">Get work item variable</span><span class=\"p\">    </span><span class=\"c\">username</span><span class=\"p\">    </span><span class=\"c\">default=guest</span>\n</pre>\n</div>\n</div>",
                 "shortdoc": "Return a single variable value from the work item, or default value if defined and key does not exist. If key does not exist and default is not defined, raises <cite>KeyError</cite>.",
@@ -12302,7 +12302,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:24",
+        "generated": "2021-03-15 09:40:10",
         "inits": [
             {
                 "name": "Init",
@@ -12347,7 +12347,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:24",
+        "generated": "2021-03-15 09:40:10",
         "inits": [],
         "keywords": [
             {
@@ -12413,7 +12413,7 @@
         "version": "1.1",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:24",
+        "generated": "2021-03-15 09:40:10",
         "inits": [
             {
                 "name": "Init",
@@ -12830,7 +12830,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:24",
+        "generated": "2021-03-15 09:40:10",
         "inits": [
             {
                 "name": "Init",
@@ -13087,7 +13087,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:24",
+        "generated": "2021-03-15 09:40:10",
         "inits": [],
         "keywords": [
             {
@@ -13114,7 +13114,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:24",
+        "generated": "2021-03-15 09:40:10",
         "inits": [],
         "keywords": [
             {
@@ -13491,7 +13491,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:25",
+        "generated": "2021-03-15 09:40:11",
         "inits": [
             {
                 "name": "Init",
@@ -13610,7 +13610,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:25",
+        "generated": "2021-03-15 09:40:11",
         "inits": [],
         "keywords": [
             {
@@ -13733,7 +13733,7 @@
         "version": "",
         "named_args": true,
         "scope": "GLOBAL",
-        "generated": "2021-03-15 09:08:25",
+        "generated": "2021-03-15 09:40:11",
         "inits": [],
         "keywords": [
             {
