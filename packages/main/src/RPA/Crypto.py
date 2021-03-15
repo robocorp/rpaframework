@@ -200,7 +200,7 @@ class Crypto:
         digest = context.finalize()
         return base64.b64encode(digest).decode("utf-8")
 
-    def encrypt_string(self, text: Union[str, bytes], encoding="utf-8") -> bytes:
+    def encrypt_string(self, text: Union[bytes, str], encoding="utf-8") -> bytes:
         """Encrypt a string.
 
         :param text: Source text to encrypt
@@ -223,7 +223,7 @@ class Crypto:
         return token
 
     def decrypt_string(
-        self, data: Union[str, bytes], encoding="utf-8"
+        self, data: Union[bytes, str], encoding="utf-8"
     ) -> Union[str, bytes]:
         """Decrypt a string.
 
