@@ -47,7 +47,7 @@ hr {
     max-width: 1200px !important;
     background: #fff;
 }
-.libdoc {
+#libdoc {
 	width: 100%;
 	min-height: 100vh;
 	border: none;

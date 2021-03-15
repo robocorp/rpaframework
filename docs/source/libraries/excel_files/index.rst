@@ -19,4 +19,4 @@ Keywords
 
 .. raw:: html
 
-   <iframe scrolling="no" class="libdoc" src="../../libdoc/RPA_Excel_Files.html"></iframe>
+   <iframe scrolling="no" id="libdoc" src="../../libdoc/RPA_Excel_Files.html"></iframe>

@@ -59,7 +59,7 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 html_extra_path = ["include"]
 html_css_files = ["custom.css"]
-html_js_files = ["custom.js"]
+html_js_files = ["iframeResizer.min.js", "custom.js"]
 
 # -- Override Robot Framework lexer ------------------------------------------
 from robotframeworklexer import RobotFrameworkLexer
