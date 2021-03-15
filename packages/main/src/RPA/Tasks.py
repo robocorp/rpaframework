@@ -266,12 +266,12 @@ class Schema:
             return False
 
         result.message = f"Transition: message = {pattern}"
-        result.status = "PASS"
+        result.status = result.PASS
         return True
 
     def _action_condition(self, condition, result):
         """Schema action: evaluate Robot Framework expression."""
-        if not result.passed and result.critical:
+        if not result.passed:
             return False
 
         if not BuiltIn().evaluate(condition):
@@ -286,6 +286,7 @@ class Schema:
             return False
 
         result.message = f"Transition: status == {status}"
+        result.status = result.PASS
         return True
 
     def resolve_reference(self, name):
@@ -617,8 +618,6 @@ class Tasks:
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
     ROBOT_LISTENER_API_VERSION = 3
 
-    TAG_NONCRITICAL = "tasks-schema-noncritical"
-
     def __init__(
         self, execution_limit=1024, schema=None, graph=True, graph_inline=True
     ):
@@ -682,7 +681,6 @@ class Tasks:
             elif self.schema:
                 task = self.schema.evaluate_actions(self.current.name, result)
                 task = self._task_by_name(task) if task else None
-                result.tags.add(self.TAG_NONCRITICAL)  # Schema overrides status
 
             if self.schema:
                 name = task.name if task else "end"
@@ -690,7 +688,7 @@ class Tasks:
 
         except SchemaError as err:
             logging.error(err)
-            result.status = "FAIL"
+            result.status = result.FAIL
 
         finally:
             self.next = None
@@ -714,6 +712,8 @@ class Tasks:
         """Robot listener method, called on suite start.
         Copies original tasks to be used as source for scheduling.
         """
+        del result
+
         self.count = 0
         self.next = None
         self.suite = data
@@ -732,13 +732,6 @@ class Tasks:
             self._append_task(self._task_by_name(self.schema.start))
         else:
             self._append_task(self.tasks[0])
-
-        # Set a unique non-critical tag to be used when
-        # execution should continue after a FAIL status
-        root = result
-        while root.parent:
-            root = root.parent
-        root.set_criticality(non_critical_tags=[self.TAG_NONCRITICAL])
 
     def _end_suite(self, data, result):
         """Render graph of suite execution to the documentation field."""
@@ -773,18 +766,17 @@ class Tasks:
         """
         del data
 
+        # Schema actions override status, store original result for graph
+        status = result.status
         task, result = self._find_next_task(result)
 
-        if not result.passed:
+        if status != result.PASS:
             self.graph.set_result("fail")
-            if result.critical:
-                return
         else:
             self.graph.set_result("pass")
 
         if not task:
             self.graph.set_end()
-            return
         else:
             self._append_task(task)
 
