@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+8.2.0
+-----
+
 - Library **RPA.Robocloud.Secrets**:
 
   - Add keyword ``Set Secret`` for updating stored secrets
