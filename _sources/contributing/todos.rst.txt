@@ -93,6 +93,15 @@ RPA.JSON:
 
    "133", "Add more logging about affected rows, at least on debug level"
 
+RPA.Robocloud.Secrets:
+======================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "470", "set to dictionary WILL log the values to log.html!"
+
 RPA.Tables:
 ===========
 

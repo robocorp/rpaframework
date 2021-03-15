@@ -15,6 +15,11 @@ Keywords
 
 🔗 Direct link to `keyword documentation <../../libdoc/RPA_Robocloud_Secrets.html>`_.
 
+.. warning::
+
+   Currently only cloud containers have the ability to update
+   Robocorp Vault's secrets while running robots (as of 2021-03-15).
+
 -------
 
 .. raw:: html
