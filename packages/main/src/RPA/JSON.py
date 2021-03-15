@@ -8,7 +8,7 @@ from jsonpath_ng.ext import parse
 from robot.api.deco import keyword
 
 
-JSONType = Union[str, int, float, bool, None, Dict[str, Any], List[Any]]
+JSONType = Union[Dict[str, Any], List[Any], str, int, float, bool, None]
 
 
 class JSON:
