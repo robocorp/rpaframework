@@ -61,7 +61,6 @@ docs: docs-libdoc install ## Generate documentation using Sphinx
 	poetry run $(MAKE) -C docs html
 
 docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
-	# TODO: Remove excludes when non-importables are _private
 	poetry run docgen\
 		--template docs/source/template/libdoc/libdoc.html\
 		--format html\
@@ -75,9 +74,7 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 		--exclude RPA.Cloud.objects*\
 		rpaframework
 
-	$(copy)\
-		docs/source/template/iframeResizer.contentWindow.map\
-		docs/source/include/libdoc/
+	poetry run python -c "import shutil; shutil.copy2('docs/source/template/iframeResizer.contentWindow.map', 'docs/source/include/libdoc/')"
 
 	poetry run docgen\
 		--no-patches\
