@@ -39,6 +39,7 @@ dataclasses = { version = "^0.7", python=">=3.6,<3.7" }
 rpaframework-pdf = "^0.5.0"
 rpaframework-core = "^6.2.0"
 rpaframework-recognition = { version = "^0.7.0", optional = true }
+rpaframework-google = { version = "^0.1.0", optional = true }
 jsonpath-ng = "^1.5.2"
 robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
 robotframework-sapguilibrary = { version = "^1.1", platform = "win32" }
@@ -64,17 +65,6 @@ simple_salesforce = "^1.0.0"
 netsuitesdk = "^1.1.0"
 tweepy = "^3.8.0"
 boto3 = { version = "^1.13.4", optional = true }
-google-api-python-client = { version = "^1.12.3", optional = true }
-google-auth-httplib2 = { version = "^0.0.4", optional = true }
-google-auth-oauthlib = { version = "^0.4.1", optional = true }
-google-cloud-language = { version = "^1.3.0", optional = true }
-google-cloud-speech = { version = "^1.3.2", optional = true }
-google-cloud-storage = { version = "^1.28.1", optional = true }
-google-cloud-texttospeech = { version = "^1.0.1", optional = true }
-google-cloud-translate = { version = "^2.0.1", optional = true }
-google-cloud-videointelligence = { version = "^1.14.0", optional = true }
-google-cloud-vision = { version = "^1.0.0", optional = true }
-grpcio = { version = "1.37.0", optional = true }
 graphviz = "^0.13.2"
 notifiers = "^1.2.1"
 cryptography = "^3.3.1"
@@ -103,19 +93,7 @@ use-robocorp-vault = 'RPA.scripts.robocorp_cloud:main'
 cv = ["rpaframework-recognition"]
 playwright = ["grpcio", "robotframework-browser"]
 aws = ["boto3", "amazon-textract-response-parser"]
-google = [
-	"grpcio",
-	"google-api-python-client",
-	"google-auth-httplib2",
-	"google-auth-oauthlib",
-	"google-cloud-language",
-	"google-cloud-speech",
-	"google-cloud-storage",
-	"google-cloud-texttospeech",
-	"google-cloud-translate",
-	"google-cloud-videointelligence",
-	"google-cloud-vision",
-]
+google = ["rpaframework-google"]
 
 [tool.black]
 target-version = ["py36", "py37", "py38"]
