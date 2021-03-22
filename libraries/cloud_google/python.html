@@ -468,6 +468,25 @@ defaults to [“LABEL_DETECTION”, “SHOT_CHANGE_DETECTION”]</p></li>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.Google.copy_sheet">
+<code class="sig-name descname">copy_sheet</code><span class="sig-paren">(</span><em class="sig-param">spreadsheet_id</em>, <em class="sig-param">target_sheet_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.copy_sheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy spreadsheet to target spreadsheet</p>
+<p><em>NOTE:</em> service account user must have access to
+target sheet also</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spreadsheet_id</strong> – ID of the sheet to copy</p></li>
+<li><p><strong>target_sheet_id</strong> – ID of the target sheet</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>request response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.Google.create_bucket">
 <code class="sig-name descname">create_bucket</code><span class="sig-paren">(</span><em class="sig-param">bucket_name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.Google.create_bucket" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Google Cloud Storage bucket</p>
@@ -875,7 +894,7 @@ trying to upload directory</p>
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.Google.get_values">
-<code class="sig-name descname">get_values</code><span class="sig-paren">(</span><em class="sig-param">sheet_id: str</em>, <em class="sig-param">sheet_range: str</em>, <em class="sig-param">value_render_option: str = 'UNFORMATTED_VALUE'</em>, <em class="sig-param">datetime_render_option: str = 'FORMATTED_STRING'</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.Google.Google.get_values" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_values</code><span class="sig-paren">(</span><em class="sig-param">sheet_id: str</em>, <em class="sig-param">sheet_range: str</em>, <em class="sig-param">value_render_option: str = 'UNFORMATTED_VALUE'</em>, <em class="sig-param">datetime_render_option: str = 'FORMATTED_STRING'</em>, <em class="sig-param">default_value_for_empty: Union[int</em>, <em class="sig-param">float</em>, <em class="sig-param">str] = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.Google.Google.get_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get values from the range in the sheet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -886,6 +905,8 @@ trying to upload directory</p>
 in the output defaults to “UNFORMATTED_VALUE”</p></li>
 <li><p><strong>datetime_render_option</strong> – how dates, times, and durations should be
 represented in the output, defaults to “FORMATTED_STRING”</p></li>
+<li><p><strong>default_value_for_empty</strong> – value for empty field if it does not
+have any in Sheets, default <cite>None</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -1225,6 +1246,24 @@ defaults to “synthesized.mp3”</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>translated text</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.update_values">
+<code class="sig-name descname">update_values</code><span class="sig-paren">(</span><em class="sig-param">sheet_id: str</em>, <em class="sig-param">sheet_range: str</em>, <em class="sig-param">values: list</em>, <em class="sig-param">major_dimension: str = 'COLUMNS'</em>, <em class="sig-param">value_input_option: str = 'USER_ENTERED'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.update_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update values in the sheet cells</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_id</strong> – target sheet</p></li>
+<li><p><strong>sheet_range</strong> – target sheet range</p></li>
+<li><p><strong>values</strong> – list of values to insert into sheet</p></li>
+<li><p><strong>major_dimension</strong> – major dimension of the values, default <cite>COLUMNS</cite></p></li>
+<li><p><strong>value_input_option</strong> – controls whether input strings are parsed or not,
+default <cite>USER_ENTERED</cite></p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1977,6 +2016,25 @@ Google Sheets API. The IAM page in the console is here:
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.ServiceSheets.copy_sheet">
+<code class="sig-name descname">copy_sheet</code><span class="sig-paren">(</span><em class="sig-param">spreadsheet_id</em>, <em class="sig-param">target_sheet_id</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.copy_sheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy spreadsheet to target spreadsheet</p>
+<p><em>NOTE:</em> service account user must have access to
+target sheet also</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spreadsheet_id</strong> – ID of the sheet to copy</p></li>
+<li><p><strong>target_sheet_id</strong> – ID of the target sheet</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>request response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.ServiceSheets.create_sheet">
 <code class="sig-name descname">create_sheet</code><span class="sig-paren">(</span><em class="sig-param">title: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.create_sheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create empty sheet with a title</p>
@@ -1992,7 +2050,7 @@ Google Sheets API. The IAM page in the console is here:
 
 <dl class="method">
 <dt id="RPA.Cloud.Google.ServiceSheets.get_values">
-<code class="sig-name descname">get_values</code><span class="sig-paren">(</span><em class="sig-param">sheet_id: str</em>, <em class="sig-param">sheet_range: str</em>, <em class="sig-param">value_render_option: str = 'UNFORMATTED_VALUE'</em>, <em class="sig-param">datetime_render_option: str = 'FORMATTED_STRING'</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.get_values" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_values</code><span class="sig-paren">(</span><em class="sig-param">sheet_id: str</em>, <em class="sig-param">sheet_range: str</em>, <em class="sig-param">value_render_option: str = 'UNFORMATTED_VALUE'</em>, <em class="sig-param">datetime_render_option: str = 'FORMATTED_STRING'</em>, <em class="sig-param">default_value_for_empty: Union[int</em>, <em class="sig-param">float</em>, <em class="sig-param">str] = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.get_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get values from the range in the sheet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2003,6 +2061,8 @@ Google Sheets API. The IAM page in the console is here:
 in the output defaults to “UNFORMATTED_VALUE”</p></li>
 <li><p><strong>datetime_render_option</strong> – how dates, times, and durations should be
 represented in the output, defaults to “FORMATTED_STRING”</p></li>
+<li><p><strong>default_value_for_empty</strong> – value for empty field if it does not
+have any in Sheets, default <cite>None</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -2091,6 +2151,24 @@ default <cite>USER_ENTERED</cite></p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vault_name</strong> – Robocloud Vault name</p></li>
 <li><p><strong>vault_secret_key</strong> – Rococloud Vault secret key name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceSheets.update_values">
+<code class="sig-name descname">update_values</code><span class="sig-paren">(</span><em class="sig-param">sheet_id: str</em>, <em class="sig-param">sheet_range: str</em>, <em class="sig-param">values: list</em>, <em class="sig-param">major_dimension: str = 'COLUMNS'</em>, <em class="sig-param">value_input_option: str = 'USER_ENTERED'</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceSheets.update_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update values in the sheet cells</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_id</strong> – target sheet</p></li>
+<li><p><strong>sheet_range</strong> – target sheet range</p></li>
+<li><p><strong>values</strong> – list of values to insert into sheet</p></li>
+<li><p><strong>major_dimension</strong> – major dimension of the values, default <cite>COLUMNS</cite></p></li>
+<li><p><strong>value_input_option</strong> – controls whether input strings are parsed or not,
+default <cite>USER_ENTERED</cite></p></li>
 </ul>
 </dd>
 </dl>
