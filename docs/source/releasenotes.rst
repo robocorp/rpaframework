@@ -4,6 +4,23 @@ Release notes
 Upcoming release
 ----------------
 
+9.0.0
+-----
+
+Update to **Robot Framework 4.0**.
+
+Feature highlights:
+
+- Native IF/ELSE syntax
+- Ability to skip tasks dynamically
+- Argument auto-conversion improvements
+- Documentation generation improvements
+- Removal of task criticality
+
+To see the full list of changes see
+`the official release notes <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-4.0.rst>`_.
+
+
 8.2.0
 -----
 
