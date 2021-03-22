@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 import base64
 from enum import Enum
 from functools import wraps
@@ -10,7 +11,7 @@ import pickle
 import shutil
 import tempfile
 import time
-from typing import Any
+from typing import Any, Union
 
 
 try:
@@ -1038,69 +1039,179 @@ class ServiceSheets(GoogleBase):
         :param values: list of values to insert into sheet
         :param major_dimension: major dimension of the values, default `COLUMNS`
         :param value_input_option: controls whether input strings are parsed or not,
-                                   default `USER_ENTERED`
+         default `USER_ENTERED`
         """
-        if not sheet_id or not sheet_range:
-            raise KeyError(
-                "sheet_id and sheet_range are required for kw: insert_values"
-            )
-        if not values:
-            raise ValueError("Please provide list of values to insert into sheet")
+        return self._sheet_values_action(
+            sheet_id,
+            sheet_range,
+            values=values,
+            major_dimension=major_dimension,
+            value_input_option=value_input_option,
+        )
 
-        service = self._get_service(self._service_name)
+    @google_dependency_required
+    def update_values(
+        self,
+        sheet_id: str,
+        sheet_range: str,
+        values: list,
+        major_dimension: str = "COLUMNS",
+        value_input_option: str = "USER_ENTERED",
+    ) -> None:
+        """Update values in the sheet cells
 
-        datavalues = []
-        for val in values:
-            datavalues.append([val])
-        resource = {"majorDimension": major_dimension, "values": datavalues}
-        service.spreadsheets().values().append(
-            spreadsheetId=sheet_id,
-            range=sheet_range,
-            body=resource,
-            valueInputOption=value_input_option,
-        ).execute()
+        :param sheet_id: target sheet
+        :param sheet_range: target sheet range
+        :param values: list of values to insert into sheet
+        :param major_dimension: major dimension of the values, default `COLUMNS`
+        :param value_input_option: controls whether input strings are parsed or not,
+         default `USER_ENTERED`
+        """
+        return self._sheet_values_action(
+            sheet_id,
+            sheet_range,
+            values=values,
+            major_dimension=major_dimension,
+            value_input_option=value_input_option,
+            action="update",
+        )
 
+    @google_dependency_required
     def get_values(
         self,
         sheet_id: str,
         sheet_range: str,
         value_render_option: str = "UNFORMATTED_VALUE",
         datetime_render_option: str = "FORMATTED_STRING",
+        default_value_for_empty: Union[int, float, str] = None,
     ) -> list:
         """Get values from the range in the sheet
 
         :param sheet_id: target sheet
         :param sheet_range: target sheet range
         :param value_render_option: how values should be represented
-                                    in the output defaults to "UNFORMATTED_VALUE"
+         in the output defaults to "UNFORMATTED_VALUE"
         :param datetime_render_option: how dates, times, and durations should be
-                                       represented in the output, defaults to "FORMATTED_STRING"
+         represented in the output, defaults to "FORMATTED_STRING"
+        :param default_value_for_empty: value for empty field if it does not
+         have any in Sheets, default `None`
         """  # noqa: E501
-        service = self._get_service(self._service_name)
-        values = (
-            service.spreadsheets()
-            .values()
-            .get(
-                spreadsheetId=sheet_id,
-                range=sheet_range,
-                valueRenderOption=value_render_option,
-                dateTimeRenderOption=datetime_render_option,
-            )
-            .execute()
+        return self._sheet_values_action(
+            sheet_id,
+            sheet_range,
+            value_render_option=value_render_option,
+            datetime_render_option=datetime_render_option,
+            default_value_for_empty=default_value_for_empty,
+            action="get",
         )
-        return values
 
+    @google_dependency_required
     def clear_values(self, sheet_id: str, sheet_range: str) -> None:
         """Clear cell values for range of cells within a sheet
 
         :param sheet_id: target sheet
         :param sheet_range: target sheet range
         """
+        return self._sheet_values_action(
+            sheet_id,
+            sheet_range,
+            action="clear",
+        )
+
+    def copy_sheet(self, spreadsheet_id, target_sheet_id):
+        """Copy spreadsheet to target spreadsheet
+
+        *NOTE:* service account user must have access to
+        target sheet also
+
+        :param spreadsheet_id: ID of the sheet to copy
+        :param target_sheet_id: ID of the target sheet
+        :return: request response
+        """
         service = self._get_service(self._service_name)
-        service.spreadsheets().values().clear(
-            spreadsheetId=sheet_id,
-            range=sheet_range,
-        ).execute()
+        body = {
+            "destination_spreadsheet_id": target_sheet_id,
+        }
+        return (
+            service.spreadsheets()
+            .sheets()
+            .copyTo(
+                spreadsheetId=spreadsheet_id,
+                sheetId=0,
+                body=body,
+            )
+            .execute()
+        )
+
+    def _sheet_values_action(
+        self,
+        sheet_id,
+        sheet_range,
+        values=None,
+        major_dimension="COLUMNS",
+        value_input_option="USER_ENTERED",
+        value_render_option="UNFORMATTED_VALUE",
+        datetime_render_option="FORMATTED_STRING",
+        default_value_for_empty=None,
+        action="insert",
+    ) -> None:
+        """Insert values into sheet cells
+
+        :param sheet_id: target sheet
+        :param sheet_range: target sheet range
+        :param values: list of values to insert into sheet
+        :param major_dimension: major dimension of the values, default `COLUMNS`
+        :param value_input_option: controls whether input strings are parsed or not,
+         default `USER_ENTERED`
+        :param value_render_option: how values should be represented
+         in the output defaults to "UNFORMATTED_VALUE"
+        :param datetime_render_option: how dates, times, and durations should be
+         represented in the output, defaults to "FORMATTED_STRING"
+        """
+        if action in ["insert", "update"] and not values:
+            raise ValueError("Please provide list of values to insert into sheet")
+
+        service = self._get_service(self._service_name)
+        returnable = None
+
+        sheet_values = service.spreadsheets().values()
+        if action == "insert":
+            resource = {"majorDimension": major_dimension, "values": values}
+            returnable = sheet_values.append(
+                spreadsheetId=sheet_id,
+                range=sheet_range,
+                body=resource,
+                valueInputOption=value_input_option,
+            ).execute()
+        elif action == "update":
+            resource = {"majorDimension": "ROWS", "values": values}
+            returnable = sheet_values.update(
+                spreadsheetId=sheet_id,
+                range=sheet_range,
+                body=resource,
+                valueInputOption=value_input_option,
+            ).execute()
+        elif action == "get":
+            self.logger.info(
+                "Default value for empty (type): %s" % type(default_value_for_empty)
+            )
+            returnable = sheet_values.get(
+                spreadsheetId=sheet_id,
+                range=sheet_range,
+                valueRenderOption=value_render_option,
+                dateTimeRenderOption=datetime_render_option,
+            ).execute()
+            max_len = max(len(item) for item in returnable["values"])
+            for item in returnable["values"]:
+                if len(item) < max_len:
+                    item.extend([default_value_for_empty] * (max_len - len(item)))
+        elif action == "clear":
+            returnable = sheet_values.clear(
+                spreadsheetId=sheet_id,
+                range=sheet_range,
+            ).execute()
+
+        return returnable
 
 
 class ServiceAppsScript(GoogleBase):
