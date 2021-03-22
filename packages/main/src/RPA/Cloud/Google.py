@@ -1118,6 +1118,7 @@ class ServiceSheets(GoogleBase):
             action="clear",
         )
 
+    @google_dependency_required
     def copy_sheet(self, spreadsheet_id, target_sheet_id):
         """Copy spreadsheet to target spreadsheet
 
@@ -1210,6 +1211,8 @@ class ServiceSheets(GoogleBase):
                 spreadsheetId=sheet_id,
                 range=sheet_range,
             ).execute()
+        else:
+            raise AttributeError('Unsupported Google Sheets action: "%s"' % action)
 
         return returnable
 

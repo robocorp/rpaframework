@@ -4,6 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Cloud.Google**:
+
+  - Add Sheets keyword ``Update Values``
+  - Add Sheets keyword ``Copy Sheet``
+  - Return responses from all Sheets keywords
+
 9.0.0
 -----
 
