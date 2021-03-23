@@ -12,6 +12,7 @@ Upcoming release
   - Restore path create feature for keyword ``HTML To PDF``
   - Fix keyword annotation of ``Save PDF``, which caused unavailability of the keyword
   - Update changes to this library in release notes of  ``8.0.0``
+  - Known issue about viewing PDF with form checkbox fields (:issue:`156`)
 
 - Library **RPA.Cloud.Google**:
 
