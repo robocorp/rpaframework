@@ -4,6 +4,15 @@ Release notes
 Upcoming release
 ----------------
 
+9.1.0
+-----
+
+- Library **RPA.PDF**:
+
+  - Restore path create feature for keyword ``HTML To PDF``
+  - Fix keyword annotation of ``Save PDF``, which caused unavailability of the keyword
+  - Update changes to this library in release notes of  ``8.0.0``
+
 - Library **RPA.Cloud.Google**:
 
   - Add Sheets keyword ``Update Values``
@@ -71,6 +80,8 @@ To see the full list of changes see
   - Rename ``PDF Decrypt`` to ``Decrypt PDF``.
   - Rename ``PDF Encrypt`` to ``Encrypt PDF``.
   - Rename ``Update Field Values`` to ``Save Field Values``.
+  - Rename ``Open PDF Document`` to ``Open PDF``.
+  - Rename ``Close PDF Document`` to ``Close PDF``.
   - Unify keyword signatures, now keywords can be given an input and output paths.
     If no input path given, the library assumes a PDF is already opened by some
     other keyword. If no output path given, the library will output the file
