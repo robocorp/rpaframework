@@ -222,6 +222,7 @@ class DocumentKeywords(LibraryContext):
 
     def _write_html_to_pdf(self, html: str, output_path: str) -> None:
         self.logger.info("Writing output to file %s", output_path)
+        Path(output_path).resolve().parent.mkdir(parents=True, exist_ok=True)
         fpdf = PDF()
         fpdf.add_page()
         fpdf.write_html(html)
@@ -865,6 +866,7 @@ class DocumentKeywords(LibraryContext):
 
         return width, height
 
+    @keyword
     def save_pdf(
         self,
         output_path: str,
