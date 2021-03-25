@@ -1,7 +1,9 @@
-import click
 from datetime import datetime, timedelta
 import json
 import os
+
+import click
+
 from robot.libraries.OperatingSystem import OperatingSystem
 
 
@@ -18,12 +20,12 @@ def does_dev_access_account_exist():
 
 def check_for_environment_variables():
     variables = OperatingSystem().get_environment_variables()
-    vars = {
+    env_vars = {
         "RC_API_SECRET_HOST": variables.get("RC_API_SECRET_HOST", None),
         "RC_WORKSPACE_ID": variables.get("RC_WORKSPACE_ID", None),
         "RC_API_SECRET_TOKEN": variables.get("RC_API_SECRET_TOKEN", None),
     }
-    return vars
+    return env_vars
 
 
 def ask_for_access_credentials():
@@ -34,7 +36,8 @@ def ask_for_access_credentials():
     if open_url:
         click.launch(credentials_url)
     access_credentials = click.prompt(
-        "Create access credentials in https://cloud.robocorp.com and paste that here to create DEV account",
+        "Create access credentials in https://cloud.robocorp.com "
+        "and paste that here to create DEV account",
     )
     ret = run_command(f"rcc configure credentials {access_credentials} -a DEV")
     if "Error: " in ret:
@@ -50,8 +53,8 @@ def cli() -> None:
     """
 
 
-@cli.command()
-def set():
+@cli.command(name="set")
+def set_command():
     """Access Robocorp Vault in development enviroment """
     click.secho("Use Robocorp Vault", fg="white", bold=True, underline=True)
     dev_account_exist = does_dev_access_account_exist()
@@ -59,9 +62,11 @@ def set():
         click.echo("DEV access account already exists")
     else:
         ask_for_access_credentials()
-    vars = check_for_environment_variables()
+    env_vars = check_for_environment_variables()
     workspace = click.prompt(
-        "What is your workspace ID?", default=vars["RC_WORKSPACE_ID"], show_default=True
+        "What is your workspace ID?",
+        default=env_vars["RC_WORKSPACE_ID"],
+        show_default=True,
     )
 
     # token_validity = click.prompt(
@@ -90,42 +95,42 @@ def set():
             content["RC_API_SECRET_HOST"] = "https://api.eu1.robocloud.eu"
             with open("devdata/env.json", "w") as fout:
                 fout.write(json.dumps(content, sort_keys=False, indent=4))
-    except RuntimeError as e:
+    except RuntimeError:
         response = click.confirm(
             "devdata/env.json does not exist - do you want to create it ?", default=True
         )
         if response:
-            vars["RC_WORKSPACE_ID"] = workspace
-            vars["RC_API_SECRET_TOKEN"] = ret["token"]
-            vars["RC_API_SECRET_HOST"] = "https://api.eu1.robocloud.eu"
+            env_vars["RC_WORKSPACE_ID"] = workspace
+            env_vars["RC_API_SECRET_TOKEN"] = ret["token"]
+            env_vars["RC_API_SECRET_HOST"] = "https://api.eu1.robocloud.eu"
             OperatingSystem().create_file(
-                os.path.join(".", "devdata/env.json"), json.dumps(vars)
+                os.path.join(".", "devdata/env.json"), json.dumps(env_vars)
             )
 
     click.echo(f"Token expires at {datetime.fromtimestamp(expiry_time)}")
 
 
-@cli.command()
-def clear():
+@cli.command(name="clear")
+def clear_command():
     """Clear DEV access account"""
     dev_account_exist = does_dev_access_account_exist()
     if dev_account_exist:
         response = click.confirm("Do you want to delete DEV account", default=True)
         if response:
-            ret = run_command("rcc configure credentials --delete -a DEV")
+            run_command("rcc configure credentials --delete -a DEV")
             click.echo("DEV account deleted")
     else:
         click.echo("DEV access account does not exist.")
 
 
-@cli.command()
-def list():
+@cli.command(name="list")
+def list_command():
     """List workspaces"""
     dev_account_exist = does_dev_access_account_exist()
     if dev_account_exist:
         response = run_command("rcc cloud workspace -a DEV")
         response = json.loads(response)
-        click.secho(f"Workspace name / ID", fg="white", bold=True, underline=True)
+        click.secho("Workspace name / ID", fg="white", bold=True, underline=True)
         for r in response:
             click.secho(f"{r['name']}", fg="bright_blue", nl=False)
             click.echo(" / ", nl=False)
