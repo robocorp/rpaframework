@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+9.2.1
+-----
+
+  - Library **Email.ImapSmtp**: Fix issue with saving attachments
+
 9.2.0
 -----
 
