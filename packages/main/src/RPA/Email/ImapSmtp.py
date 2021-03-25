@@ -10,6 +10,7 @@ import time
 # email package declares these properties in the __all__ definition but
 # pylint ignores that
 from email import encoders, message_from_bytes  # pylint: disable=E0611
+from email.message import Message  # pylint: disable=E0611
 from email.charset import add_charset, QP  # pylint: disable=E0611
 from email.generator import Generator  # pylint: disable=E0611
 from email.header import Header, decode_header, make_header  # pylint: disable=E0611
@@ -460,7 +461,6 @@ class ImapSmtp:
             for filename in attachments:
                 if os.path.dirname(filename) == "":
                     filename = str(Path.cwd() / filename)
-                self.logger.debug("Adding attachment: %s", filename)
                 with open(filename, "rb") as attachment:
                     _, ext = filename.lower().rsplit(".", 1)
                     if ext in IMAGE_FORMATS:
@@ -490,7 +490,6 @@ class ImapSmtp:
             if data[0] is None:
                 self.logger.debug("Data was none for : %s", mail_id)
                 continue
-            self.logger.debug(data)
             message = message_from_bytes(data[0][1])
             message_dict = {"Mail-Id": mail_id, "Message": message}
             for k, v in message.items():
@@ -590,7 +589,6 @@ class ImapSmtp:
                 )
                 if status:
                     result["actions_done"] += 1
-        self.logger.debug(result)
         return result
 
     def _search_message(self, criterion, folder_name, actions, limit, result):
@@ -634,7 +632,6 @@ class ImapSmtp:
 
         for act in actions:
             action = to_action(act)
-            self.logger.debug("Performing %s Action", action)
             if action in store_params.keys():
                 m_op, m_param = store_params[action]
                 action_status, _ = self.imap_conn.uid("STORE", mail_uid, m_op, m_param)
@@ -755,7 +752,7 @@ class ImapSmtp:
             converted.append(
                 {
                     str(key): value
-                    if isinstance(value, (str, bool, int))
+                    if isinstance(value, (str, bool, int, Message))
                     else str(value)
                     for key, value in v.items()
                 }
@@ -779,7 +776,7 @@ class ImapSmtp:
 
         .. code-block:: robotframework
 
-            ${numsaved}  Save Attachments   SUBJECT \"rpa task\"
+            ${numsaved}  Save Attachments   SUBJECT "rpa task"
             ...          target_folder=${CURDIR}${/}messages  overwrite=True
         """  # noqa: E501
         attachments_saved = []
@@ -1102,8 +1099,7 @@ class ImapSmtp:
     def _fetch_uid_and_body(self, folder_name, mail_id, actions):
         body = None
         self.select_folder(folder_name)
-        status, data = self.imap_conn.fetch(mail_id, "(UID RFC822)")
-        self.logger.debug("fetch uid for mail_id: %s result: %s", mail_id, status)
+        _, data = self.imap_conn.fetch(mail_id, "(UID RFC822)")
         pattern_uid = re.compile(r"\d+ \(UID (?P<uid>\d+) RFC822")
         uid = (
             None
