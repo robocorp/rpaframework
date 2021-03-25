@@ -76,6 +76,9 @@ def set_command():
     # )
     token_validity = 1440
     ret = run_command(f"rcc cloud authorize -a DEV -w {workspace} -m {token_validity}")
+    if "Error:" in ret:
+        print(ret)
+        return
     ret = json.loads(ret)
     expiry_time = ret["when"] + timedelta(minutes=token_validity).total_seconds()
 
