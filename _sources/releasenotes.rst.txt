@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+9.2.0
+-----
+
+  - Add new script **use-robocorp-vault**, which helps to setup local development run to use Robocorp Vault
+
 9.1.0
 -----
 
