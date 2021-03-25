@@ -97,7 +97,7 @@ mypy = "^0.782"
 [tool.poetry.scripts]
 rpa-google-oauth = 'RPA.scripts.google_authenticate:main'
 rpa-crypto = 'RPA.scripts.crypto:main'
-use-robocorp-cloud = 'RPA.scripts.robocorp_cloud:main'
+use-robocorp-vault = 'RPA.scripts.robocorp_cloud:main'
 
 [tool.poetry.extras]
 cv = ["rpaframework-recognition"]
