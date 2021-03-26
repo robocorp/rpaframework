@@ -113,6 +113,13 @@ class Handler(BaseHTTPRequestHandler):
             f"<label for=\"{item['name']}\">{item['label']}</label><br>"
             f"<input type=\"text\" name=\"{item['name']}\" value=\"{value}\"><br>"
         )
+    
+    def get_password(self, item):
+        value = item["value"] if "value" in item else ""
+        return (
+            f"<label for=\"{item['name']}\">{item['label']}</label><br>"
+            f"<input type=\"password\" name=\"{item['name']}\" value=\"{value}\"><br>"
+        )
 
     def get_hiddeninput(self, item):
         return (
@@ -462,6 +469,19 @@ class Dialogs:
         """
         element = {"type": "textinput", "label": label, "name": name, "value": value}
         self.custom_form["form"].append(element)
+                               
+    def add_password_input(self, label: str, name: str, value: str = None) -> None:
+        """Add password input element
+
+        :param label: input element label
+        :param name: input element name attribute
+        :param value: input element value attribute
+
+        Example:
+
+        """
+        element = {"type": "password", "label": label, "name": name, "value": value}
+        self.custom_form["form"].append(element)                      
 
     def add_hidden_input(self, name: str, value: str) -> None:
         """Add hidden input element
