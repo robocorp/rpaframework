@@ -249,13 +249,16 @@ class RobocorpAdapter(BaseAdapter):
         except ValueError:
             response.raise_for_status()
 
-        status_code = fields.get("status", response.status_code)
-        status_msg = fields.get("error", {}).get("code", "Error")
-        reason = fields.get("message") or fields.get("error", {}).get(
-            "message", response.reason
-        )
+        try:
+            status_code = fields.get("status", response.status_code)
+            status_msg = fields.get("error", {}).get("code", "Error")
+            reason = fields.get("message") or fields.get("error", {}).get(
+                "message", response.reason
+            )
 
-        raise HTTPError(f"{status_code} {status_msg}: {reason}")
+            raise HTTPError(f"{status_code} {status_msg}: {reason}")
+        except Exception as err:  # pylint: disable=broad-except
+            raise HTTPError(str(fields)) from err
 
 
 class FileAdapter(BaseAdapter):
