@@ -33,6 +33,7 @@ try:
 except RobotNotRunningError:
     pass
 
+
 class Handler(BaseHTTPRequestHandler):
     """Server request handler class"""
 
