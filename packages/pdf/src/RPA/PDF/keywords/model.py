@@ -182,7 +182,7 @@ class Document:
     def reader(self):
         """Get a PyPDF reader instance for the PDF."""
         if self.fileobject:
-            return PyPDF2.PdfFileReader(self.fileobject)
+            return PyPDF2.PdfFileReader(self.fileobject, strict=False)
         return None
 
     def append_xml(self, xml: bytes) -> None:
