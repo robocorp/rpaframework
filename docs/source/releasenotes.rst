@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Dialogs**:
+
+  - Add new keyword ``Add Password Input``, see (:pr:`161`)
+  - Logging from keyword ``Request Response`` is now suppressed in Robot Framework logs
+
 9.2.1
 -----
 
