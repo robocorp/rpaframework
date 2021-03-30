@@ -249,6 +249,11 @@ specifies the elements that form should include.</p></li>
 </ol>
 <p>The keyword has optional parameters to specify form window <strong>width</strong> and <strong>height</strong>.
 The default size is 600px wide and 1000px high.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Request</span> <span class="pre">Response</span></code> logging is set as protected so that information is not
+visible in the Robot Framework log. The output of the keyword will be visible if
+<code class="docutils literal notranslate"><span class="pre">Request</span> <span class="pre">Response</span></code> is called within <strong>User Keyword</strong>, which returns the response,
+unless that is also protected with <code class="docutils literal notranslate"><span class="pre">RPA.RobotLogListener</span></code> library keyword
+<code class="docutils literal notranslate"><span class="pre">Register</span> <span class="pre">Protected</span> <span class="pre">Keywords</span></code> (see more at the library documentation).</p>
 <p><strong>Setting library arguments</strong></p>
 <p>Library has arguments <code class="docutils literal notranslate"><span class="pre">server_port</span></code> and <code class="docutils literal notranslate"><span class="pre">stylesheet</span></code>. The <code class="docutils literal notranslate"><span class="pre">server_port</span></code> argument
 takes integer value, which defines port where HTTP server will be run. By default port is 8105.
@@ -267,6 +272,7 @@ which is shown to the user. Defaults to built-in Robocorp stylesheet.</p>
 <li><p>dropdown (<code class="docutils literal notranslate"><span class="pre">&lt;select&gt;</span></code>)</p></li>
 <li><p>textarea (<code class="docutils literal notranslate"><span class="pre">&lt;textarea&gt;</span></code>)</p></li>
 <li><p>textinput (<code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type='text'&gt;</span></code>)</p></li>
+<li><p>password (<code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type='password'&gt;</span></code>)</p></li>
 <li><p>fileinput (<code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type='file'&gt;</span></code>)</p></li>
 <li><p>hiddeninput (<code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type='hidden'&gt;</span></code>)</p></li>
 <li><p>submit (<code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type='submit'&gt;</span></code>)</p></li>
@@ -310,7 +316,7 @@ to accept all files. Multiple types are separated with comma <code class="docuti
     <span class="n">d</span> <span class="o">=</span> <span class="n">Dialogs</span><span class="p">()</span>
     <span class="n">d</span><span class="o">.</span><span class="n">create_form</span><span class="p">(</span><span class="s1">&#39;questions&#39;</span><span class="p">)</span>
     <span class="n">d</span><span class="o">.</span><span class="n">add_text_input</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">attribute</span><span class="p">)</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">request_response</span><span class="p">()</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">request_response</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">response</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">ask_question_from_user</span><span class="p">(</span><span class="s1">&#39;What is your name ?&#39;</span><span class="p">,</span> <span class="s1">&#39;username&#39;</span><span class="p">)</span>
@@ -426,6 +432,22 @@ to accept all files. Multiple types are separated with comma <code class="docuti
 <span class="c">Add Hidden Input</span><span class="p">    </span><span class="c">form-id</span><span class="p">   </span><span class="c">${uuid}</span><span class="p"></span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Dialogs.add_password_input">
+<code class="sig-name descname">add_password_input</code><span class="sig-paren">(</span><em class="sig-param">label: str</em>, <em class="sig-param">name: str</em>, <em class="sig-param">value: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Dialogs.Dialogs.add_password_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add password input element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> – input element label</p></li>
+<li><p><strong>name</strong> – input element name attribute</p></li>
+<li><p><strong>value</strong> – input element value attribute</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
 </dd></dl>
 
 <dl class="method">
@@ -680,6 +702,11 @@ to accept all files. Multiple types are separated with comma <code class="docuti
 <dl class="method">
 <dt id="RPA.Dialogs.Handler.get_hiddeninput">
 <code class="sig-name descname">get_hiddeninput</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.get_hiddeninput" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Dialogs.Handler.get_password">
+<code class="sig-name descname">get_password</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Dialogs.Handler.get_password" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
