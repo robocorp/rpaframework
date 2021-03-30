@@ -16,7 +16,10 @@ from typing import Any, Dict, Optional
 from urllib.parse import unquote_plus
 
 import requests
+
+from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.Browser.Selenium import Selenium
+from RPA.RobotLogListener import RobotLogListener
 
 try:
     from importlib import import_module
@@ -25,6 +28,10 @@ except ImportError:
     # Try backported to PY<37 `importlib_resources`.
     import importlib_resources as pkg_resources
 
+try:
+    BuiltIn().import_library("RPA.RobotLogListener")
+except RobotNotRunningError:
+    pass
 
 class Handler(BaseHTTPRequestHandler):
     """Server request handler class"""
@@ -113,7 +120,7 @@ class Handler(BaseHTTPRequestHandler):
             f"<label for=\"{item['name']}\">{item['label']}</label><br>"
             f"<input type=\"text\" name=\"{item['name']}\" value=\"{value}\"><br>"
         )
-    
+
     def get_password(self, item):
         value = item["value"] if "value" in item else ""
         return (
@@ -278,6 +285,12 @@ class Dialogs:
     The keyword has optional parameters to specify form window **width** and **height**.
     The default size is 600px wide and 1000px high.
 
+    The ``Request Response`` logging is set as protected so that information is not
+    visible in the Robot Framework log. The output of the keyword will be visible if
+    ``Request Response`` is called within **User Keyword**, which returns the response,
+    unless that is also protected with ``RPA.RobotLogListener`` library keyword
+    ``Register Protected Keywords`` (see more at the library documentation).
+
     **Setting library arguments**
 
     Library has arguments ``server_port`` and ``stylesheet``. The ``server_port`` argument
@@ -300,6 +313,7 @@ class Dialogs:
     - dropdown (``<select>``)
     - textarea (``<textarea>``)
     - textinput (``<input type='text'>``)
+    - password (``<input type='password'>``)
     - fileinput (``<input type='file'>``)
     - hiddeninput (``<input type='hidden'>``)
     - submit (``<input type='submit'>``)
@@ -354,7 +368,7 @@ class Dialogs:
             d = Dialogs()
             d.create_form('questions')
             d.add_text_input(label=question, name=attribute)
-            response = request_response()
+            response = d.request_response()
             return response
 
         response = ask_question_from_user('What is your name ?', 'username')
@@ -384,6 +398,9 @@ class Dialogs:
             includes = import_module("RPA.includes")
             with pkg_resources.path(includes, "dialog_styles.css") as path:
                 self.stylesheet = path
+
+        listener = RobotLogListener()
+        listener.register_protected_keywords("Request Response")
 
     def _start_server_thread(self):
         """Start a server which will server form html and
@@ -469,7 +486,7 @@ class Dialogs:
         """
         element = {"type": "textinput", "label": label, "name": name, "value": value}
         self.custom_form["form"].append(element)
-                               
+
     def add_password_input(self, label: str, name: str, value: str = None) -> None:
         """Add password input element
 
@@ -481,7 +498,7 @@ class Dialogs:
 
         """
         element = {"type": "password", "label": label, "name": name, "value": value}
-        self.custom_form["form"].append(element)                      
+        self.custom_form["form"].append(element)
 
     def add_hidden_input(self, name: str, value: str) -> None:
         """Add hidden input element
