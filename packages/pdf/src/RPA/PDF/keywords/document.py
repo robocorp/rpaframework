@@ -224,6 +224,7 @@ class DocumentKeywords(LibraryContext):
         self.logger.info("Writing output to file %s", output_path)
         Path(output_path).resolve().parent.mkdir(parents=True, exist_ok=True)
         fpdf = PDF()
+        fpdf.set_margin(0)
         fpdf.add_page()
         fpdf.write_html(html)
         fpdf.output(name=output_path)
