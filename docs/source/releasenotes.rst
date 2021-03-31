@@ -4,6 +4,15 @@ Release notes
 Upcoming release
 ----------------
 
+9.3.0
+-----
+
+- Library **RPA.PDF**:
+
+  - Add keywords ``Save Figure As Image`` and ``Save Figures As Images`` to save PDF Figure objects
+  - Add keyword ``Add Files To PDF`` to combine images and/or a PDFs (or pages from PDF) to new PDF
+  - Improved performance by setting pdfminer log level to INFO 
+
 - Library **RPA.Dialogs**:
 
   - Add new keyword ``Add Password Input``, see (:pr:`161`)
