@@ -1,3 +1,4 @@
+import imghdr
 import os
 import tempfile
 from pathlib import Path
@@ -18,7 +19,8 @@ from RPA.PDF.keywords import (
     LibraryContext,
     keyword,
 )
-from .model import Document
+
+from .model import Document, Figure
 
 
 ListOrString = Union[List[int], List[str], str, None]
@@ -579,10 +581,10 @@ class DocumentKeywords(LibraryContext):
                     pages=5
                 )
 
+        :param pages: page numbers to extract from PDF (numbers start from 0).
         :param source_path: filepath to the source pdf.
         :param output_path: filepath to the target pdf, stored by default
             to `output_directory`.
-        :param pages: page numbers to extract from PDF (numbers start from 0).
         :param clockwise: directorion that page will be rotated to, default True.
         :param angle: number of degrees to rotate, default 90.
         """
@@ -819,8 +821,8 @@ class DocumentKeywords(LibraryContext):
         :param source: filepath to source, if not given add image to currently
             active PDF
         :param output_path: filepath of target PDF
-        :param coverage: [description], defaults to 0.2
-        :raises ValueError: [description]
+        :param coverage: how the watermark image should be scaled on page,
+         defaults to 0.2
         """
         self.switch_to_pdf(source_path)
         temp_pdf = os.path.join(tempfile.gettempdir(), "temp.pdf")
@@ -908,3 +910,198 @@ class DocumentKeywords(LibraryContext):
             pages = range(1, reader.getNumPages() + 1)
 
         return list(map(int, pages))
+
+    @keyword
+    def save_figure_as_image(
+        self, figure: Figure, images_folder: str = ".", file_prefix: str = ""
+    ):
+        """Try to save the image data from Figure object, and return
+        the file name, if successful.
+
+        Figure needs to have byte `stream` and that needs to be recognized
+        as image format for successful save.
+
+        :param figure: PDF Figure object which will be saved as an image
+        :param images_folder: directory where image files will be created
+        :param file_prefix: image filename prefix
+        :return: image filepath or None
+        """
+        result = None
+        images_folder = Path(images_folder)
+        lt_image = figure.item
+        if hasattr(lt_image, "stream") and lt_image.stream:
+            file_stream = lt_image.stream.get_rawdata()
+            file_ext = imghdr.what("", file_stream)
+            if file_ext:
+                filename = "".join([str(file_prefix), lt_image.name, ".", file_ext])
+                imagepath = images_folder / filename
+                with open(imagepath, "wb") as fout:
+                    fout.write(file_stream)
+                    result = str(imagepath)
+            else:
+                self.logger.info("Unable to determine image type for a figure")
+        else:
+            self.logger.info(
+                "Image object does not have stream and can't be saved as an image"
+            )
+        return result
+
+    @keyword
+    def save_figures_as_images(
+        self,
+        source_path: str = None,
+        images_folder: str = ".",
+        pages: str = None,
+        file_prefix: str = "",
+    ) -> list:
+        """Save figures from given PDF document as image files.
+
+        If no source path given, assumes a PDF is already opened.
+
+        :param source_path: filepath to PDF document
+        :param images_folder: directory where image files will be created
+        :param pages: target figures in the pages, can be single page or range,
+         default `None` means that all pages are scanned for figures to save
+        :param file_prefix: image filename prefix
+        :return: list of image filenames created
+        """
+        figures = self.get_all_figures(source_path)
+        pagecount = self.get_number_of_pages(source_path)
+        page_list = self._get_pages(pagecount, pages)
+        image_files = []
+        for n in page_list:
+            for _, figure in figures[n].items():
+                image_file = self.save_figure_as_image(
+                    figure, images_folder, file_prefix
+                )
+                if image_file:
+                    image_files.append(image_file)
+        return image_files
+
+    @keyword
+    def add_files_to_pdf(
+        self,
+        files: list = None,
+        target_document: str = None,
+    ) -> None:
+        """Add images and/or pdfs to new PDF document
+
+        Image formats supported are JPEG, PNG and GIF.
+
+        The file can be added with extra properties by
+        denoting `:` at the end of the filename.add()
+
+        Supported extra properties are:
+
+        - for PDF, the page numbers to be included in the new PDF document
+        - for images, the position of the image in the new PDF document
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Add files to pdf
+                ${files}=    Create List
+                ...    ${TESTDATA_DIR}${/}invoice.pdf
+                ...    ${TESTDATA_DIR}${/}approved.png:center
+                ...    ${TESTDATA_DIR}${/}robot.pdf:1
+                ...    ${TESTDATA_DIR}${/}approved.png:x=0,y=0
+                ...    ${TESTDATA_DIR}${/}robot.pdf:2-10,15
+                ...    ${TESTDATA_DIR}${/}approved.png
+                Add Files To PDF    ${files}    newdoc.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            list_of_files = [
+                'invoice.pdf',
+                'approved.png:center',
+                'robot.pdf:1',
+                'approved.png:x=0,y=0',
+            ]
+            def example_keyword():
+                pdf.add_files_to_pdf(
+                    files=list_of_files,
+                    target_document="output/output.pdf"
+                )
+
+        :param files: list of filepaths to add into PDF (can be either images or PDFs)
+        :param target_document: filepath of target PDF
+        """
+        writer = PyPDF2.PdfFileWriter()
+
+        for f in files:
+            file_to_add = Path(f)
+            namesplit = file_to_add.name.rsplit(":", 1)
+            basename = namesplit[0]
+            parameters = namesplit[1] if len(namesplit) == 2 else None
+            file_to_add = file_to_add.parent / basename
+            image_filetype = imghdr.what(str(file_to_add))
+            self.logger.info("File %s type: %s" % (str(file_to_add), image_filetype))
+            if basename.endswith(".pdf"):
+                reader = PyPDF2.PdfFileReader(str(file_to_add), strict=False)
+                pagecount = reader.getNumPages()
+                pages = self._get_pages(pagecount, parameters)
+                for n in pages:
+                    try:
+                        page = reader.getPage(n - 1)
+                        writer.addPage(page)
+                    except IndexError:
+                        self.logger.warning(
+                            "File %s does not have page %d" % (file_to_add, n)
+                        )
+            elif image_filetype in ["png", "jpg", "jpeg", "gif"]:
+                temp_pdf = os.path.join(tempfile.gettempdir(), "temp.pdf")
+                pdf = FPDF()
+                pdf.set_margin(0)
+                pdf.add_page()
+                x, y, width, height = self._get_image_coordinates(
+                    str(file_to_add), parameters
+                )
+                pdf.image(name=file_to_add, x=x, y=y, w=width, h=height)
+                pdf.output(name=temp_pdf)
+
+                reader = PyPDF2.PdfFileReader(temp_pdf)
+                writer.addPage(reader.getPage(0))
+
+        with open(target_document, "wb") as f:
+            writer.write(f)
+
+    def _get_pages(self, pagecount, page_reference):
+        page_reference = f"1-{pagecount}" if page_reference is None else page_reference
+        temp = [
+            (lambda sub: range(sub[0], sub[-1] + 1))(
+                list(map(int, ele.strip().split("-")))
+            )
+            for ele in page_reference.split(",")
+        ]
+        return [b for a in temp for b in a]
+
+    def _get_image_coordinates(self, imagepath, parameters):
+        im = Image.open(imagepath)
+        image_parameters = (
+            [ele.lower().strip() for ele in parameters.split(",")] if parameters else []
+        )
+
+        max_width = 188
+        max_height = 244
+        width, height = self.fit_dimensions_to_box(*im.size, max_width, max_height)
+        x_elems = [elem for elem in image_parameters if "x=" in elem]
+        y_elems = [elem for elem in image_parameters if "y=" in elem]
+        x = int(x_elems[0].split("x=")[-1]) if len(x_elems) > 0 else 10
+        y = int(y_elems[0].split("y=")[-1]) if len(y_elems) > 0 else 10
+        if "center" in image_parameters:
+            x = int((max_width / 2) - (width / 2)) + 10
+            y = int((max_height / 2) - (height / 2)) + 10
+        return (x, y, width, height)
