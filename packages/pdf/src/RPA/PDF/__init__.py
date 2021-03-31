@@ -74,3 +74,5 @@ class PDF(DynamicCore):
 
         listener = RobotLogListener()
         listener.register_protected_keywords(["RPA.PDF.decrypt"])
+
+        logging.getLogger("pdfminer").setLevel(logging.INFO)
