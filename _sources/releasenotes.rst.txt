@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+9.3.3
+-----
+
+- Library **RPA.Cloud.Google**: Fix mimetype error with ``Drive Upload File``
+
 9.3.2
 -----
 
