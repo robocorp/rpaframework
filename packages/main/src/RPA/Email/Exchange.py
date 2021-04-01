@@ -407,11 +407,11 @@ class Exchange:
         """
         if folder_name is None:
             raise KeyError("'folder_name' is required for empty folder")
-        if parent_folder is None or parent_folder is self.account.inbox:
-            empty_folder = self.account.inbox / folder_name
+        if parent_folder is None:
+            empty_folder = self._get_folder_object(folder_name)
         else:
-            empty_folder = self.account.inbox / parent_folder / folder_name
-        self.logger.info("Empty folder '%s'", folder_name)
+            empty_folder = self._get_folder_object(f"{parent_folder} / {folder_name}")
+        self.logger.info("Empty folder '%s'", empty_folder)
         empty_folder.empty(delete_sub_folders=delete_sub_folders)
 
     def move_messages(
