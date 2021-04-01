@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+9.3.2
+-----
+
+- Library **RPA.Email.Exchange**: Fix ``Empty Folder`` keyword
+
 9.3.1
 -----
 
