@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+9.3.1
+-----
+
+- Library **RPA.Cloud.Google**: Add missing service account support for ``Drive`` and ``Apps Script``
+
 9.3.0
 -----
 

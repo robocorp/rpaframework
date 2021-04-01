@@ -133,20 +133,20 @@ d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
 
 [[package]]
 name = "boto3"
-version = "1.17.41"
+version = "1.17.42"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [package.dependencies]
-botocore = ">=1.20.41,<1.21.0"
+botocore = ">=1.20.42,<1.21.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
 [[package]]
 name = "botocore"
-version = "1.20.41"
+version = "1.20.42"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -1533,7 +1533,7 @@ urllib3 = "*"
 
 [[package]]
 name = "simple-salesforce"
-version = "1.10.1"
+version = "1.11.1"
 description = "A basic Salesforce.com REST API client."
 category = "main"
 optional = false
@@ -1829,12 +1829,12 @@ black = [
     {file = "black-20.8b1.tar.gz", hash = "sha256:1c02557aa099101b9d21496f8a914e9ed2222ef70336404eeeac8edba836fbea"},
 ]
 boto3 = [
-    {file = "boto3-1.17.41-py2.py3-none-any.whl", hash = "sha256:8544878fa8c9cad6972d9c9aae1db1d8fa7a3bb0adabe2fa39e4842d182bb4d7"},
-    {file = "boto3-1.17.41.tar.gz", hash = "sha256:d85b0e05d7de96169b0024b76b292be62b01ef6f5ca853a512506346b82d2abb"},
+    {file = "boto3-1.17.42-py2.py3-none-any.whl", hash = "sha256:8ee7909771535f582cc4842f5695776725a9f80b7205786a8453d59b978f4e49"},
+    {file = "boto3-1.17.42.tar.gz", hash = "sha256:bc7217eb0b4fbdaddffd8169a6b339d883468d925dba0eed49e99dc26d371a1a"},
 ]
 botocore = [
-    {file = "botocore-1.20.41-py2.py3-none-any.whl", hash = "sha256:5e88d19a1406ff92d52518ac70a1531582d7af537dc18c8ebc7ab54282c2fa23"},
-    {file = "botocore-1.20.41.tar.gz", hash = "sha256:63f650fc96bce141e8194a761e6890fea2fba6e01253aefa31ae69f145015c21"},
+    {file = "botocore-1.20.42-py2.py3-none-any.whl", hash = "sha256:58ac95e801fb02023927abd03280277616137c50cfdef39a69b97a08a64417d2"},
+    {file = "botocore-1.20.42.tar.gz", hash = "sha256:724fb32ccfe903e5a37860890a6da6b56ea3ecda28a324549f2baedd3c4e4e30"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2783,8 +2783,8 @@ selenium = [
     {file = "selenium-3.141.0.tar.gz", hash = "sha256:deaf32b60ad91a4611b98d8002757f29e6f2c2d5fcaf202e1c9ad06d6772300d"},
 ]
 simple-salesforce = [
-    {file = "simple-salesforce-1.10.1.tar.gz", hash = "sha256:20fd66cf40da732b9cdcb2f7160dde7bb298ef0c31702d1fdd767d1fc68cfe1b"},
-    {file = "simple_salesforce-1.10.1-py2.py3-none-any.whl", hash = "sha256:ecbf4f612bb6a4a1897306537c9065d98098ada56e2de6be9ed52b39b3d056e5"},
+    {file = "simple-salesforce-1.11.1.tar.gz", hash = "sha256:558ce417c9d2d14074065cfba2316125758b22458164e2bba884a818c87ae75f"},
+    {file = "simple_salesforce-1.11.1-py2.py3-none-any.whl", hash = "sha256:3ff6743f4bb4d2518fd440bea1cfeb6b3f99ce25a4d2cd1b1005420ddad589d8"},
 ]
 six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
