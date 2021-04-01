@@ -131,7 +131,12 @@ class GoogleBase:
         vault = Secrets()
 
         vault_items = vault.get_secret(self.robocloud_vault_name)
-        secret = json.loads(vault_items[self.robocloud_vault_secret_key].strip())
+        secret_dict = vault_items[self.robocloud_vault_secret_key]
+        secret = (
+            secret_dict
+            if isinstance(secret_dict, dict)
+            else json.loads(secret_dict.strip())
+        )
         with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_filedesc:
             json.dump(secret, temp_filedesc, ensure_ascii=False)
 
@@ -212,17 +217,15 @@ class GoogleBase:
             if os.path.exists(token_file_location):
                 with open(token_file_location, "rb") as token:
                     credentials = pickle.loads(token)
-        if scopes:
-            self._scopes = self._scopes + [
-                f"https://www.googleapis.com/auth/{scope}" for scope in scopes
-            ]
+
+        scopes = [f"https://www.googleapis.com/auth/{scope}" for scope in scopes]
 
         if not credentials or not credentials.valid:
             if credentials and credentials.expired and credentials.refresh_token:
                 credentials.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    credentials_file, self._scopes
+                    credentials_file, scopes
                 )
                 credentials = flow.run_local_server()
             if save_token:
@@ -243,10 +246,10 @@ class ServiceVision(GoogleBase):
     .. _Vision PyPI: https://pypi.org/project/google-cloud-vision/
     """
 
-    _service_name = "vision"
+    __service_name = "vision"
 
     def __init__(self) -> None:
-        self.services.append(self._service_name)
+        self.services.append(self.__service_name)
         self.logger.debug("ServiceVision init")
 
     @google_dependency_required
@@ -262,7 +265,7 @@ class ServiceVision(GoogleBase):
         """
         self._init_service(
             vision.ImageAnnotatorClient,
-            self._service_name,
+            self.__service_name,
             service_credentials_file,
             use_robocloud_vault,
         )
@@ -283,7 +286,7 @@ class ServiceVision(GoogleBase):
         :param json_file: json target to save result, defaults to None
         :return: detection response
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         image = self._get_google_image(image_file)
         response = service.label_detection(image=image)
         self._write_json(json_file, response)
@@ -297,7 +300,7 @@ class ServiceVision(GoogleBase):
         :param json_file: json target to save result, defaults to None
         :return: detection response
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         image = self._get_google_image(image_file)
         response = service.text_detection(image=image)
         self._write_json(json_file, response)
@@ -311,7 +314,7 @@ class ServiceVision(GoogleBase):
         :param json_file: json target to save result, defaults to None
         :return: detection response
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         image = self._get_google_image(image_file)
         response = service.document_text_detection(image=image)
         self._write_json(json_file, response)
@@ -325,7 +328,7 @@ class ServiceVision(GoogleBase):
         :param json_file: json target to save result, defaults to None
         :return: detection response
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         response = service.annotate_image(
             {"image": {"source": {"image_uri": image_uri}}}
         )
@@ -340,7 +343,7 @@ class ServiceVision(GoogleBase):
         :param json_file: json target to save result, defaults to None
         :return: detection response
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         response = service.face_detection({"source": {"image_uri": image_uri}})
         self._write_json(json_file, response)
         return response
@@ -354,10 +357,10 @@ class ServiceNaturalLanguage(GoogleBase):
     .. _Natural Language PyPI: https://pypi.org/project/google-cloud-language/
     """
 
-    _service_name = "natural-language"
+    __service_name = "natural-language"
 
     def __init__(self) -> None:
-        self.services.append(self._service_name)
+        self.services.append(self.__service_name)
         self.logger.debug("ServiceNaturalLanguage init")
 
     @google_dependency_required
@@ -371,7 +374,7 @@ class ServiceNaturalLanguage(GoogleBase):
         """
         self._init_service(
             language_v1.LanguageServiceClient,
-            self._service_name,
+            self.__service_name,
             service_credentials_file,
             use_robocloud_vault,
         )
@@ -387,7 +390,7 @@ class ServiceNaturalLanguage(GoogleBase):
         :param lang: language code of the source, defaults to None
         :return: analysis response
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         with open(text_file, "r") as f:
             text_content = f.read()
         # Available types: PLAIN_TEXT, HTML
@@ -416,7 +419,7 @@ class ServiceNaturalLanguage(GoogleBase):
         :param lang: language code of the source, defaults to None
         :return: classify response
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         with open(text_file, "r") as f:
             text_content = f.read()
         # Available types: PLAIN_TEXT, HTML
@@ -443,10 +446,10 @@ class ServiceVideoIntelligence(GoogleBase):
     .. _Google Cloud Storages: https://cloud.google.com/storage/
     """
 
-    _service_name = "video-intelligence"
+    __service_name = "video-intelligence"
 
     def __init__(self) -> None:
-        self.services.append(self._service_name)
+        self.services.append(self.__service_name)
         self.logger.debug("ServiceVideoIntelligence init")
 
     @google_dependency_required
@@ -462,7 +465,7 @@ class ServiceVideoIntelligence(GoogleBase):
         """
         self._init_service(
             videointelligence.VideoIntelligenceServiceClient,
-            self._service_name,
+            "video-intelligence",
             service_credentials_file,
             use_robocloud_vault,
         )
@@ -497,7 +500,7 @@ class ServiceVideoIntelligence(GoogleBase):
             defaults to ["LABEL_DETECTION", "SHOT_CHANGE_DETECTION"]
         :return: annotate result
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         response = None
         if features is None:
             features = ["LABEL_DETECTION", "SHOT_CHANGE_DETECTION"]
@@ -522,10 +525,10 @@ class ServiceTranslation(GoogleBase):
     .. _Translation PyPI: https://pypi.org/project/google-cloud-translate/
     """
 
-    _service_name = "translation"
+    __service_name = "translation"
 
     def __init__(self) -> None:
-        self.services.append(self._service_name)
+        self.services.append(self.__service_name)
         self.logger.debug("ServiceTranslation init")
         self._project_id = ""
 
@@ -544,7 +547,7 @@ class ServiceTranslation(GoogleBase):
         """
         self._init_service(
             translate_v3.TranslationServiceClient,
-            self._service_name,
+            "translation",
             service_credentials_file,
             use_robocloud_vault,
         )
@@ -561,7 +564,7 @@ class ServiceTranslation(GoogleBase):
         :param target_language: language code, defaults to None
         :return: translated text
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         if not text and not target_language:
             raise KeyError("text and target_language are required parameters")
         parent = service.location_path(self._project_id, "global")
@@ -584,10 +587,10 @@ class ServiceTextToSpeech(GoogleBase):
     .. _Text To Speech PyPI: https://pypi.org/project/google-cloud-texttospeech/
     """
 
-    _service_name = "text-to-speech"
+    __service_name = "text-to-speech"
 
     def __init__(self) -> None:
-        self.services.append(self._service_name)
+        self.services.append(self.__service_name)
         self.logger.debug("ServiceTextToSpeech init")
 
     @google_dependency_required
@@ -601,7 +604,7 @@ class ServiceTextToSpeech(GoogleBase):
         """
         self._init_service(
             texttospeech_v1.TextToSpeechClient,
-            self._service_name,
+            "text-to-speech",
             service_credentials_file,
             use_robocloud_vault,
         )
@@ -613,7 +616,7 @@ class ServiceTextToSpeech(GoogleBase):
         :param language_code: voice languages to list, defaults to None (all)
         :return: list of supported voices
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         if language_code:
             voices = service.list_voices(language_code)
         else:
@@ -643,7 +646,7 @@ class ServiceTextToSpeech(GoogleBase):
         """
         if not text:
             raise KeyError("text is required for kw: synthesize_speech")
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         synth_input = SynthesisInput(text=text)
         voice_selection = VoiceSelectionParams(
             language_code=language, name=name, ssml_gender=gender
@@ -675,7 +678,7 @@ class ServiceSpeechToText(GoogleBase):
     .. _Speech To Text PyPI: https://pypi.org/project/google-cloud-speech/
     """
 
-    _service_name = "speech-to-text"
+    __service_name = "speech-to-text"
     if not GOOGLECLOUD_IMPORT_ERROR:
         _encodings = {
             "AMR": speech.enums.RecognitionConfig.AudioEncoding.AMR,
@@ -691,7 +694,7 @@ class ServiceSpeechToText(GoogleBase):
         _encodings = {}
 
     def __init__(self) -> None:
-        self.services.append(self._service_name)
+        self.services.append(self.__service_name)
         self.logger.debug("ServiceSpeechToText init")
 
     @google_dependency_required
@@ -707,7 +710,7 @@ class ServiceSpeechToText(GoogleBase):
         """
         self._init_service(
             speech.SpeechClient,
-            self._service_name,
+            "speech-to-text",
             service_credentials_file,
             use_robocloud_vault,
         )
@@ -726,7 +729,7 @@ class ServiceSpeechToText(GoogleBase):
         :return: recognized texts
         """
         # flac or wav, does not require encoding type
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         audio = speech.types.RecognitionAudio(  # pylint: disable=E1101
             uri=audio_file_uri
         )
@@ -756,10 +759,10 @@ class ServiceStorage(GoogleBase):
     .. _Google Storage PyPI: https://pypi.org/project/google-cloud-storage/
     """
 
-    _service_name = "storage"
+    __service_name = "storage"
 
     def __init__(self) -> None:
-        self.services.append(self._service_name)
+        self.services.append(self.__service_name)
         self.logger.debug("ServiceStorage init")
 
     @google_dependency_required
@@ -775,7 +778,7 @@ class ServiceStorage(GoogleBase):
         """
         self._init_service(
             storage.Client,
-            self._service_name,
+            "storage",
             service_credentials_file,
             use_robocloud_vault,
         )
@@ -787,7 +790,7 @@ class ServiceStorage(GoogleBase):
         :param bucket_name: name as string
         :return: bucket
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         bucket = service.create_bucket(bucket_name)
         return bucket
 
@@ -814,7 +817,7 @@ class ServiceStorage(GoogleBase):
         """
         if not bucket_name:
             raise KeyError("bucket_name is required for kw: get_bucket")
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         bucket = service.get_bucket(bucket_name)
         return bucket
 
@@ -824,7 +827,7 @@ class ServiceStorage(GoogleBase):
 
         :return: list of buckets
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         buckets = list(service.list_buckets())
         return buckets
 
@@ -964,10 +967,10 @@ class ServiceSheets(GoogleBase):
     .. _link: https://developers.google.com/sheets/api/quickstart/python
     """
 
-    _service_name = "sheets"
+    __service_name = "sheets"
 
     def __init__(self) -> None:
-        self.services.append(self._service_name)
+        self.services.append(self.__service_name)
 
     @google_dependency_required
     def init_sheets_client(
@@ -980,7 +983,7 @@ class ServiceSheets(GoogleBase):
         :param service_credentials_file: filepath to credentials JSON
         :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
-        self._scopes = [
+        scopes = [
             "https://www.googleapis.com/auth/drive",
             "https://www.googleapis.com/auth/drive.file",
             "https://www.googleapis.com/auth/spreadsheets",
@@ -993,7 +996,7 @@ class ServiceSheets(GoogleBase):
             service_account_file = service_credentials_file
         try:
             credentials = service_account.Credentials.from_service_account_file(
-                service_account_file, scopes=self._scopes
+                service_account_file, scopes=scopes
             )
             service = discovery.build(
                 "sheets", "v4", credentials=credentials, cache_discovery=False
@@ -1004,7 +1007,7 @@ class ServiceSheets(GoogleBase):
             if use_robocloud_vault:
                 os.remove(service_account_file)
 
-        self._set_service(self._service_name, service)
+        self._set_service(self.__service_name, service)
 
     @google_dependency_required
     def create_sheet(self, title: str) -> str:
@@ -1016,7 +1019,7 @@ class ServiceSheets(GoogleBase):
         if not title:
             raise KeyError("title is required for kw: create_sheet")
 
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         data = {"properties": {"title": title}}
         spreadsheet = (
             service.spreadsheets().create(body=data, fields="spreadsheetId").execute()
@@ -1129,7 +1132,7 @@ class ServiceSheets(GoogleBase):
         :param target_sheet_id: ID of the target sheet
         :return: request response
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         body = {
             "destination_spreadsheet_id": target_sheet_id,
         }
@@ -1172,7 +1175,7 @@ class ServiceSheets(GoogleBase):
         if action in ["insert", "update"] and not values:
             raise ValueError("Please provide list of values to insert into sheet")
 
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         returnable = None
 
         sheet_values = service.spreadsheets().values()
@@ -1238,10 +1241,10 @@ class ServiceAppsScript(GoogleBase):
     .. _link: https://developers.google.com/apps-script/api
     """
 
-    _service_name = "apps_script"
+    __service_name = "apps_script"
 
     def __init__(self) -> None:
-        self.services.append(self._service_name)
+        self.services.append(self.__service_name)
 
     @google_dependency_required
     def init_apps_script_client(
@@ -1260,13 +1263,47 @@ class ServiceAppsScript(GoogleBase):
         :param scopes: authenticated scopes, for example. ['forms', 'spreadsheets']
         :param save_token: set to `True` if token should be saved to local file
         """
-        self._scopes = ["https://www.googleapis.com/auth/script.projects"]
+        apps_scopes = ["script.projects"] + scopes
         credentials = self._get_credentials_with_oauth_token(
-            use_robocloud_vault, token_file, credentials_file, scopes, save_token
+            use_robocloud_vault, token_file, credentials_file, apps_scopes, save_token
         )
 
         service = build("script", "v1", credentials=credentials, cache_discovery=False)
-        self._set_service(self._service_name, service)
+        self._set_service(self.__service_name, service)
+
+    @google_dependency_required
+    def init_apps_script_client_service_account(
+        self,
+        service_credentials_file: str = None,
+        use_robocloud_vault: bool = False,
+        scopes: list = None,
+    ) -> None:
+        """Initialize Google Apps Script client with service account
+
+        :param service_credentials_file: filepath to credentials JSON
+        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        """
+        apps_scopes = ["script.projects"] + scopes
+        service_account_file = None
+        service = None
+        if use_robocloud_vault:
+            service_account_file = self._get_service_account_from_robocloud()
+        elif service_credentials_file:
+            service_account_file = service_credentials_file
+        try:
+            credentials = service_account.Credentials.from_service_account_file(
+                service_account_file, scopes=apps_scopes
+            )
+            service = build(
+                "script", "v1", credentials=credentials, cache_discovery=False
+            )
+        except OSError as e:
+            self.logger.warn(str(e))
+            raise AssertionError from e
+        finally:
+            if use_robocloud_vault:
+                os.remove(service_account_file)
+        self._set_service(self.__service_name, service)
 
     def run_script(self, script_id: str, function_name: str, parameters: dict) -> None:
         """Run the Google Apps Script
@@ -1288,7 +1325,7 @@ class ServiceAppsScript(GoogleBase):
             "function": function_name,
             "parameters": [parameters],
         }
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         response = (
             service.scripts()
             .run(
@@ -1320,10 +1357,10 @@ class ServiceDrive(GoogleBase):
     .. _link: https://developers.google.com/drive/api
     """
 
-    _service_name = "drive"
+    __service_name = "drive"
 
     def __init__(self) -> None:
-        self.services.append(self._service_name)
+        self.services.append(self.__service_name)
 
     @google_dependency_required
     def init_drive_client(
@@ -1342,17 +1379,53 @@ class ServiceDrive(GoogleBase):
         :param scopes: authenticated scopes, for example. ['forms', 'spreadsheets']
         :param save_token: set to `True` if token should be saved to local file
         """
-        self._scopes = [
+        drive_scopes = [
+            "drive",
+            "drive.appdata",
+            "drive.file",
+            "drive.install",
+        ] + scopes
+        credentials = self._get_credentials_with_oauth_token(
+            use_robocloud_vault, token_file, credentials_file, drive_scopes, save_token
+        )
+        service = build("drive", "v3", credentials=credentials, cache_discovery=False)
+        self._set_service(self.__service_name, service)
+
+    @google_dependency_required
+    def init_drive_client_service_account(
+        self, service_credentials_file: str = None, use_robocloud_vault: bool = False
+    ) -> None:
+        """Initialize Google Drive client with service account
+
+        :param service_credentials_file: filepath to credentials JSON
+        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        """
+        scopes = [
+            "https://www.googleapis.com/auth/drive",
             "https://www.googleapis.com/auth/drive.appdata",
             "https://www.googleapis.com/auth/drive.file",
             "https://www.googleapis.com/auth/drive.install",
         ]
-        credentials = self._get_credentials_with_oauth_token(
-            use_robocloud_vault, token_file, credentials_file, scopes, save_token
-        )
-        service = build("drive", "v3", credentials=credentials, cache_discovery=False)
-        self.logger.info(service)
-        self._set_service(self._service_name, service)
+        service_account_file = None
+        service = None
+        if use_robocloud_vault:
+            service_account_file = self._get_service_account_from_robocloud()
+        elif service_credentials_file:
+            service_account_file = service_credentials_file
+        try:
+            credentials = service_account.Credentials.from_service_account_file(
+                service_account_file, scopes=scopes
+            )
+            service = build(
+                "drive", "v3", credentials=credentials, cache_discovery=False
+            )
+        except OSError as e:
+            self.logger.warn(str(e))
+            raise AssertionError from e
+        finally:
+            if use_robocloud_vault:
+                os.remove(service_account_file)
+        self._set_service(self.__service_name, service)
 
     def drive_upload_file(
         self,
@@ -1379,7 +1452,7 @@ class ServiceDrive(GoogleBase):
             ${file2_id}=  Drive Upload File   newdata.json  new_folder  make_dir=True
             ${file3_id}=  Drive Upload File   data.json  overwrite=True
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
 
         folder_id = self.drive_get_folder_id(folder)
         if folder_id is None and make_dir:
@@ -1431,7 +1504,7 @@ class ServiceDrive(GoogleBase):
             return file.get("id", None)
 
     def _download_with_fileobject(self, file_object):
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         request = service.files().get_media(fileId=file_object["id"])
         fh = BytesIO()
         downloader = MediaIoBaseDownload(fh, request)
@@ -1561,7 +1634,7 @@ class ServiceDrive(GoogleBase):
         return target_files
 
     def _drive_files_update(self, file_id: str, action: Update):
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         body = None
         if action == Update.trash:
             body = {"trashed": True}
@@ -1604,7 +1677,7 @@ class ServiceDrive(GoogleBase):
             ${deleted}=    Drive Delete File   query=name contains '.json' and '${folder_id}' in parents
             ...            multiple_ok=True
         """  # noqa: E501
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         target_files = self._get_target_file(file_id, file_dict, query, multiple_ok)
 
         delete_count = 0
@@ -1627,7 +1700,7 @@ class ServiceDrive(GoogleBase):
             ${root_id}=    Drive Get Folder Id   # returns Drive root folder id
             ${folder_id}=  Drive Get Folder Id  subdir
         """
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         mime_folder_type = "application/vnd.google-apps.folder"
         folder_id = None
         if folder is None:
@@ -1640,7 +1713,7 @@ class ServiceDrive(GoogleBase):
                 folder_id = folders[0].get("id", None)
             else:
                 self.logger.info(
-                    "Found '%s' directories with name '%s'", (len(folders), folder)
+                    "Found %s directories with name '%s'" % (len(folders), folder)
                 )
         return folder_id
 
@@ -1676,7 +1749,7 @@ class ServiceDrive(GoogleBase):
             ${files}=      Drive Move File  query=${query}  folder=target_folder  multiple_ok=True
         """  # noqa: E501
         result_files = []
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         target_files = self._get_target_file(file_id, file_dict, query, multiple_ok)
         if len(target_files) == 0:
             raise GoogleDriveError("Did not find any files to move")
@@ -1726,11 +1799,14 @@ class ServiceDrive(GoogleBase):
             ${files}=  Drive Search Files   query=name contains '.yaml'  recurse=True
             ${files}=  Drive Search Files   query=name contains '.yaml'  folder_name=datadirectory
         """  # noqa: E501
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         page_token = None
         filelist = []
-        parameters = {"fields": "nextPageToken, files", "spaces": "drive", "q": ""}
-        query_string = [query] if query else []
+        parameters = {
+            "fields": "nextPageToken, files(id, name)",
+            "spaces": "drive",
+            "q": query,
+        }
 
         if not recurse:
             folder_id = (
@@ -1738,38 +1814,38 @@ class ServiceDrive(GoogleBase):
             )
             if folder_id is None:
                 return []
-            query_string.append(f"'{folder_id}' in parents")
-
-        parameters["q"] = " and ".join(query_string)
+            parameters["q"] += f" and '{folder_id}' in parents"
 
         while True:
-            parameters["pageToken"] = page_token
+            if page_token:
+                parameters["pageToken"] = page_token
             try:
                 response = service.files().list(**parameters).execute()
+                self.logger.info(response)
+                for file in response.get("files", []):
+                    filesize = file.get("size")
+                    filelist.append(
+                        {
+                            "name": file.get("name"),
+                            "id": file.get("id"),
+                            "size": int(filesize) if filesize else None,
+                            "kind": file.get("kind"),
+                            "parents": file.get("parents"),
+                            "starred": file.get("starred"),
+                            "trashed": file.get("trashed"),
+                            "shared": file.get("shared"),
+                            "mimeType": file.get("mimeType"),
+                            "spaces": file.get("spaces", None),
+                            "exportLinks": file.get("exportLinks"),
+                            "createdTime": file.get("createdTime"),
+                            "modifiedTime": file.get("modifiedTime"),
+                        }
+                    )
+                page_token = response.get("nextPageToken", None)
+                if page_token is None:
+                    break
             except HttpError as e:
                 raise GoogleDriveError(str(e)) from e
-            for file in response.get("files", []):
-                filesize = file.get("size")
-                filelist.append(
-                    {
-                        "name": file.get("name"),
-                        "id": file.get("id"),
-                        "size": int(filesize) if filesize else None,
-                        "kind": file.get("kind"),
-                        "parents": file.get("parents"),
-                        "starred": file.get("starred"),
-                        "trashed": file.get("trashed"),
-                        "shared": file.get("shared"),
-                        "mimeType": file.get("mimeType"),
-                        "spaces": file.get("spaces", None),
-                        "exportLinks": file.get("exportLinks"),
-                        "createdTime": file.get("createdTime"),
-                        "modifiedTime": file.get("modifiedTime"),
-                    }
-                )
-            page_token = response.get("nextPageToken", None)
-            if page_token is None:
-                break
         return filelist
 
     def drive_create_directory(self, folder: str = None):
@@ -1787,7 +1863,7 @@ class ServiceDrive(GoogleBase):
             self.logger.info("Folder '%s' already exists. Not creating new one.")
             return None
 
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         file_metadata = {
             "name": folder,
             "mimeType": "application/vnd.google-apps.folder",
@@ -1821,7 +1897,7 @@ class ServiceDrive(GoogleBase):
             raise AttributeError("The target_file is required parameter for export")
         if file_id is None and file_dict is None:
             raise AttributeError("Either file_id or file_dict is required for export")
-        service = self._get_service(self._service_name)
+        service = self._get_service(self.__service_name)
         target_files = self._get_target_file(file_id, file_dict, None, False)
         if len(target_files) != 1:
             raise ValueError("Did not find the Google Drive file to export")
