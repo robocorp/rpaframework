@@ -9,7 +9,7 @@ RPA.Cloud.Google:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "1575", "mypy should handle enum exhaustivity validation"
+   "1648", "mypy should handle enum exhaustivity validation"
 
 RPA.Desktop.Windows:
 ====================

@@ -935,6 +935,20 @@ have any in Sheets, default <cite>None</cite></p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Cloud.Google.Google.init_apps_script_client_service_account">
+<code class="sig-name descname">init_apps_script_client_service_account</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_apps_script_client_service_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Apps Script client with service account</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Cloud.Google.Google.init_drive_client">
 <code class="sig-name descname">init_drive_client</code><span class="sig-paren">(</span><em class="sig-param">credentials_file: str = 'credentials.json'</em>, <em class="sig-param">token_file: str = 'oauth.token'</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">scopes: list = None</em>, <em class="sig-param">save_token: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_drive_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize Google Drive client</p>
@@ -946,6 +960,20 @@ have any in Sheets, default <cite>None</cite></p></li>
 <li><p><strong>use_robocloud_vault</strong> – if <cite>True</cite> the token is read from Robocloud</p></li>
 <li><p><strong>scopes</strong> – authenticated scopes, for example. [‘forms’, ‘spreadsheets’]</p></li>
 <li><p><strong>save_token</strong> – set to <cite>True</cite> if token should be saved to local file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.Google.init_drive_client_service_account">
+<code class="sig-name descname">init_drive_client_service_account</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.Google.init_drive_client_service_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Drive client with service account</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
@@ -1452,6 +1480,20 @@ to initialize service and run scripts</p></li>
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceAppsScript.init_apps_script_client_service_account">
+<code class="sig-name descname">init_apps_script_client_service_account</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em>, <em class="sig-param">scopes: list = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript.init_apps_script_client_service_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Apps Script client with service account</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="RPA.Cloud.Google.ServiceAppsScript.logger">
 <code class="sig-name descname">logger</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Cloud.Google.ServiceAppsScript.logger" title="Permalink to this definition">¶</a></dt>
@@ -1809,6 +1851,20 @@ trying to upload directory</p>
 <li><p><strong>use_robocloud_vault</strong> – if <cite>True</cite> the token is read from Robocloud</p></li>
 <li><p><strong>scopes</strong> – authenticated scopes, for example. [‘forms’, ‘spreadsheets’]</p></li>
 <li><p><strong>save_token</strong> – set to <cite>True</cite> if token should be saved to local file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Cloud.Google.ServiceDrive.init_drive_client_service_account">
+<code class="sig-name descname">init_drive_client_service_account</code><span class="sig-paren">(</span><em class="sig-param">service_credentials_file: str = None</em>, <em class="sig-param">use_robocloud_vault: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Cloud.Google.ServiceDrive.init_drive_client_service_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Google Drive client with service account</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service_credentials_file</strong> – filepath to credentials JSON</p></li>
+<li><p><strong>use_robocloud_vault</strong> – use json stored into <cite>Robocloud Vault</cite></p></li>
 </ul>
 </dd>
 </dl>
