@@ -1473,14 +1473,16 @@ class ServiceDrive(GoogleBase):
 
         query_string = f"name = '{filepath.name}' and '{folder_id}' in parents"
         target_file = self.drive_search_files(query=query_string, recurse=True)
+        guess_mimetype = mimetypes.guess_type(str(filepath.absolute()))
+        file_mimetype = guess_mimetype[0] if guess_mimetype else "*/*"
+        media = MediaFileUpload(
+            filepath.absolute(), mimetype=file_mimetype, resumable=True
+        )
         file_metadata = {
             "name": filepath.name,
             "parents": [folder_id],
-            "mimeType": "*/*",
+            "mimeType": file_mimetype,
         }
-        guess_mimetype = mimetypes.guess_type(str(filepath.absolute()))
-        mimetype = guess_mimetype[0] if guess_mimetype else "*/*"
-        media = MediaFileUpload(filepath.absolute(), mimetype=mimetype, resumable=True)
         if len(target_file) == 1 and overwrite:
             self.logger.info("Overwriting file '%s' with new content", filename)
             file = (
@@ -1490,10 +1492,10 @@ class ServiceDrive(GoogleBase):
             )
             return file.get("id", None)
         elif len(target_file) == 1 and not overwrite:
-            self.logger.info("Not uploading new copy of file '%s'", filepath.name)
+            self.logger.warn("Not uploading new copy of file '%s'", filepath.name)
             return None
         elif len(target_file) > 1:
-            self.logger.warning(
+            self.logger.warn(
                 "Drive already contains '%s' copies of file '%s'. Not uploading again."
                 % (len(target_file), filepath.name)
             )
@@ -1503,7 +1505,6 @@ class ServiceDrive(GoogleBase):
                 service.files()
                 .create(
                     body=file_metadata,
-                    name=filepath.name,
                     media_body=media,
                     fields="id",
                 )
