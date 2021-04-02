@@ -4,6 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+9.3.4
+-----
+
+- Library **RPA.PDF**: Add orientation, rotate and format image properties for ``Add Files To PDF``
+- Library **RPA.Cloud.Google**: Fix bug in create file properties and set initial mimetype correctly
+
 9.3.3
 -----
 
