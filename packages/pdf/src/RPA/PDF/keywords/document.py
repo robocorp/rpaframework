@@ -1039,7 +1039,7 @@ class DocumentKeywords(LibraryContext):
 
             list_of_files = [
                 'invoice.pdf',
-                'approved.png:center',
+                'approved.png:align=center',
                 'robot.pdf:1',
                 'approved.png:x=0,y=0',
             ]
