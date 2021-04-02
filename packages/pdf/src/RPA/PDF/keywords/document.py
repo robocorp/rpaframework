@@ -989,12 +989,23 @@ class DocumentKeywords(LibraryContext):
         Image formats supported are JPEG, PNG and GIF.
 
         The file can be added with extra properties by
-        denoting `:` at the end of the filename.add()
+        denoting `:` at the end of the filename. Each
+        property should be separated by comma.
 
-        Supported extra properties are:
+        Supported extra properties for PDFs are:
 
-        - for PDF, the page numbers to be included in the new PDF document
-        - for images, the position of the image in the new PDF document
+        - page and/or page ranges
+        - no extras means that all source PDF pages are added
+          into new PDF
+
+        Supported extra properties for images are:
+
+        - format, the PDF page format, for example. Letter or A4
+        - rotate, how many degrees image is rotated counter-clockwise
+        - align, only possible value at the moment is center
+        - orientation, the PDF page orientation for the image, possible
+          values P (portrait) or L (landscape)
+        - x/y, coordinates for adjusting image position on the page
 
         **Examples**
 
@@ -1009,11 +1020,13 @@ class DocumentKeywords(LibraryContext):
             Add files to pdf
                 ${files}=    Create List
                 ...    ${TESTDATA_DIR}${/}invoice.pdf
-                ...    ${TESTDATA_DIR}${/}approved.png:center
+                ...    ${TESTDATA_DIR}${/}approved.png:align=center
                 ...    ${TESTDATA_DIR}${/}robot.pdf:1
                 ...    ${TESTDATA_DIR}${/}approved.png:x=0,y=0
                 ...    ${TESTDATA_DIR}${/}robot.pdf:2-10,15
                 ...    ${TESTDATA_DIR}${/}approved.png
+                ...    ${TESTDATA_DIR}${/}landscape_image.png:rotate=-90,orientation=L
+                ...    ${TESTDATA_DIR}${/}landscape_image.png:format=Letter
                 Add Files To PDF    ${files}    newdoc.pdf
 
         **Python**
@@ -1063,13 +1076,21 @@ class DocumentKeywords(LibraryContext):
                         )
             elif image_filetype in ["png", "jpg", "jpeg", "gif"]:
                 temp_pdf = os.path.join(tempfile.gettempdir(), "temp.pdf")
-                pdf = FPDF()
-                pdf.set_margin(0)
+                settings = self._get_image_settings(str(file_to_add), parameters)
+                if settings["format"]:
+                    pdf = FPDF(
+                        format=settings["format"], orientation=settings["orientation"]
+                    )
+                else:
+                    pdf = FPDF(orientation=settings["orientation"])
                 pdf.add_page()
-                x, y, width, height = self._get_image_coordinates(
-                    str(file_to_add), parameters
+                pdf.image(
+                    name=settings["name"],
+                    x=settings["x"],
+                    y=settings["y"],
+                    w=settings["width"],
+                    h=settings["height"],
                 )
-                pdf.image(name=file_to_add, x=x, y=y, w=width, h=height)
                 pdf.output(name=temp_pdf)
 
                 reader = PyPDF2.PdfFileReader(temp_pdf)
@@ -1088,20 +1109,53 @@ class DocumentKeywords(LibraryContext):
         ]
         return [b for a in temp for b in a]
 
-    def _get_image_coordinates(self, imagepath, parameters):
-        im = Image.open(imagepath)
-        image_parameters = (
-            [ele.lower().strip() for ele in parameters.split(",")] if parameters else []
-        )
+    def _get_image_settings(self, imagepath, parameters):
+        if isinstance(parameters, str):
+            image_parameters = (
+                dict(ele.lower().strip().split("=") for ele in parameters.split(","))
+                if parameters
+                else {}
+            )
+        else:
+            image_parameters = parameters
+        self.logger.info("Image parameters: %s" % image_parameters)
+        settings = {
+            "x": int(image_parameters.get("x", 10)),
+            "y": int(image_parameters.get("y", 10)),
+            "format": image_parameters.get("format", None),
+            "orientation": str(image_parameters.get("orientation", "P")).upper(),
+            "width": None,
+            "height": None,
+            "name": imagepath,
+        }
+        rotate = image_parameters.get("rotate", None)
+        align = image_parameters.get("align", None)
 
-        max_width = 188
-        max_height = 244
-        width, height = self.fit_dimensions_to_box(*im.size, max_width, max_height)
-        x_elems = [elem for elem in image_parameters if "x=" in elem]
-        y_elems = [elem for elem in image_parameters if "y=" in elem]
-        x = int(x_elems[0].split("x=")[-1]) if len(x_elems) > 0 else 10
-        y = int(y_elems[0].split("y=")[-1]) if len(y_elems) > 0 else 10
-        if "center" in image_parameters:
-            x = int((max_width / 2) - (width / 2)) + 10
-            y = int((max_height / 2) - (height / 2)) + 10
-        return (x, y, width, height)
+        max_width = 188 if settings["orientation"] == "P" else 244
+        max_height = 244 if settings["orientation"] == "P" else 188
+
+        im = Image.open(settings["name"])
+
+        if rotate:
+            rotate = int(rotate)
+            file_ext = Path(settings["name"]).suffix
+            temp_image = os.path.join(tempfile.gettempdir(), f"temp{file_ext}")
+            rotated = im.rotate(rotate, expand=True)
+            rotated.save(temp_image)
+            settings["name"] = temp_image
+            del image_parameters["rotate"]
+            im.close()
+            rotated.close()
+            return self._get_image_settings(temp_image, image_parameters)
+        elif align and align == "center":
+            width, height = self.fit_dimensions_to_box(*im.size, max_width, max_height)
+            settings["width"] = width
+            settings["height"] = height
+            settings["x"] = int((max_width / 2) - (width / 2)) + 10
+            settings["y"] = int((max_height / 2) - (height / 2)) + 10
+        if not settings["width"] or not settings["height"]:
+            width, height = self.fit_dimensions_to_box(*im.size, max_width, max_height)
+            settings["width"] = width
+            settings["height"] = height
+        im.close()
+        return settings
