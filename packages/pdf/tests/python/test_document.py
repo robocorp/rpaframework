@@ -47,7 +47,7 @@ def test_get_text_from_pdf_all_one_page(library):
     pages = library.get_text_from_pdf(TestFiles.loremipsum_pdf)
 
     assert len(pages) == 1
-    assert len(pages[1]) == 3622
+    assert len(pages[1]) == 3556
 
 
 def test_get_text_from_pdf_all_two_pages(library):
@@ -132,7 +132,7 @@ def test_replace_text(library):
 
 def test_get_all_figures(library):
     pages = library.get_all_figures(source_path=TestFiles.vero_pdf)
-    figure = pages[1][44]
+    figure = pages[1][53]
     details = '<image src="Im0" width="45" height="45" />'
 
     assert len(pages) == 2
