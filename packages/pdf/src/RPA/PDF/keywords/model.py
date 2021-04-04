@@ -418,8 +418,7 @@ class ModelKeywords(LibraryContext):
         source_pages = PDFPage.create_pages(source_document)
         rsrcmgr = PDFResourceManager()
         laparams = pdfminer.layout.LAParams(
-            detect_vertical=True,
-            all_texts=True,
+            detect_vertical=True, all_texts=True, line_margin=0.00000001
         )
         device = Converter(self.ctx.active_pdf_document, rsrcmgr, laparams=laparams)
         interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
