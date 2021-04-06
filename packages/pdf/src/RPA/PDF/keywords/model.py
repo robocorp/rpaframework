@@ -412,14 +412,14 @@ class ModelKeywords(LibraryContext):
 
         :param source_path: source PDF filepath.
         """
+        if not self.ctx.convert_settings:
+            self.set_convert_settings()
         self.ctx.switch_to_pdf(source_path)
         source_parser = PDFParser(self.ctx.active_pdf_document.fileobject)
         source_document = PDFDocument(source_parser)
         source_pages = PDFPage.create_pages(source_document)
         rsrcmgr = PDFResourceManager()
-        laparams = pdfminer.layout.LAParams(
-            detect_vertical=True, all_texts=True, line_margin=0.00000001
-        )
+        laparams = pdfminer.layout.LAParams(**self.ctx.convert_settings)
         device = Converter(self.ctx.active_pdf_document, rsrcmgr, laparams=laparams)
         interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
 
@@ -762,3 +762,60 @@ class ModelKeywords(LibraryContext):
         if self.active_pdf_document is None:
             self.convert()
         return self.active_pdf_document.dump_xml()
+
+    @keyword
+    def set_convert_settings(
+        self,
+        line_margin: float = None,
+        word_margin: float = None,
+        char_margin: float = None,
+    ):
+        """Change settings for PDFMiner document conversion.
+
+        `line_margin` controls how textboxes are grouped - if conversion results in
+        texts grouped into one group then set this to lower value
+
+        `word_margin` controls how spaces are inserted between words - if conversion
+        results in text without spaces then set this to lower value
+
+        `char_margin` controls how characters are grouped into words - if conversion
+        results in individual characters instead of then set this to higher value
+
+        :param line_margin: relative margin between bounding lines, default 0.5
+        :param word_margin: relative margin between words, default 0.1
+        :param char_margin: relative margin between characters, default 2.0
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ***Settings***
+            Library    RPA.PDF
+
+            ***Tasks***
+            Example Keyword
+                Set Convert Settings  line_margin=0.00000001
+                ${texts}=  Get Text From PDF  /tmp/sample.pdf
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.PDF import PDF
+
+            pdf = PDF()
+
+            def example_keyword():
+                pdf.set_convert_settings(line_margin=)
+                texts = pdf.get_text_from_pdf("/tmp/sample.pdf")
+        """
+        self.ctx.convert_settings["detect_vertical"] = True
+        self.ctx.convert_settings["all_texts"] = True
+        if line_margin:
+            self.ctx.convert_settings["line_margin"] = line_margin
+        if char_margin:
+            self.ctx.convert_settings["char_margin"] = char_margin
+        if word_margin:
+            self.ctx.convert_settings["word_margin"] = word_margin

@@ -63,6 +63,7 @@ class PDF(DynamicCore):
         self.logger = logging.getLogger(__name__)
         self.fileobjects = {}
         self.active_pdf_document = None
+        self.convert_settings = {}
 
         # Register keyword libraries to LibCore
         libraries = [
