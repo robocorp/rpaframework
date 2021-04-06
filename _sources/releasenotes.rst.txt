@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Tables**: Add ``encoding`` option for CSV reading and writing
+
 9.4.0
 -----
 

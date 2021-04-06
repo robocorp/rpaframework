@@ -921,7 +921,7 @@ instead of appending multiple copies of the same name.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.read_table_from_csv">
-<code class="sig-name descname">read_table_from_csv</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">header=None</em>, <em class="sig-param">columns=None</em>, <em class="sig-param">dialect=None</em>, <em class="sig-param">delimiters=None</em>, <em class="sig-param">column_unknown='Unknown'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.read_table_from_csv" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_table_from_csv</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">header=None</em>, <em class="sig-param">columns=None</em>, <em class="sig-param">dialect=None</em>, <em class="sig-param">delimiters=None</em>, <em class="sig-param">column_unknown='Unknown'</em>, <em class="sig-param">encoding=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.read_table_from_csv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a CSV file as a table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -932,6 +932,8 @@ instead of appending multiple copies of the same name.</p>
 <li><p><strong>dialect</strong> – format of CSV file</p></li>
 <li><p><strong>delimiters</strong> – string of possible delimiters</p></li>
 <li><p><strong>column_unknown</strong> – column name for unknown fields</p></li>
+<li><p><strong>encoding</strong> – text encoding for input file,
+uses system encoding by default</p></li>
 </ul>
 </dd>
 </dl>
@@ -1116,7 +1118,7 @@ which have only None values.</p>
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.write_table_to_csv">
-<code class="sig-name descname">write_table_to_csv</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">path</em>, <em class="sig-param">header=True</em>, <em class="sig-param">dialect='excel'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.write_table_to_csv" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_table_to_csv</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">path</em>, <em class="sig-param">header=True</em>, <em class="sig-param">dialect='excel'</em>, <em class="sig-param">encoding=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.write_table_to_csv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a table as a CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1125,6 +1127,8 @@ which have only None values.</p>
 <li><p><strong>table</strong> – table to write</p></li>
 <li><p><strong>header</strong> – write columns as header to CSV file</p></li>
 <li><p><strong>dialect</strong> – the format of output CSV</p></li>
+<li><p><strong>encoding</strong> – text encoding for output file,
+uses system encoding by default</p></li>
 </ul>
 </dd>
 </dl>
