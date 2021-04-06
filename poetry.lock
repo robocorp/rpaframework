@@ -121,20 +121,20 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.17.43"
+version = "1.17.45"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [package.dependencies]
-botocore = ">=1.20.43,<1.21.0"
+botocore = ">=1.20.45,<1.21.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
 [[package]]
 name = "botocore"
-version = "1.20.43"
+version = "1.20.45"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -244,7 +244,7 @@ python-versions = ">=3.6, <3.7"
 
 [[package]]
 name = "decorator"
-version = "5.0.1"
+version = "5.0.5"
 description = "Decorators for Humans"
 category = "main"
 optional = false
@@ -275,7 +275,7 @@ trio = ["trio (>=0.14.0)", "sniffio (>=1.1)"]
 
 [[package]]
 name = "docutils"
-version = "0.16"
+version = "0.17"
 description = "Docutils -- Python Documentation Utilities"
 category = "main"
 optional = false
@@ -466,7 +466,7 @@ google-api-core = {version = ">=1.14.0,<2.0.0dev", extras = ["grpc"]}
 
 [[package]]
 name = "google-cloud-storage"
-version = "1.37.0"
+version = "1.37.1"
 description = "Google Cloud Storage API client library"
 category = "main"
 optional = false
@@ -797,7 +797,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "netsuitesdk"
-version = "1.16.0"
+version = "1.18.1"
 description = "Python SDK for accessing the NetSuite SOAP webservice"
 category = "main"
 optional = false
@@ -1352,7 +1352,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "9.3.4"
+version = "9.4.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1402,7 +1402,7 @@ robotframework-sapguilibrary = {version = "^1.1", markers = "sys_platform == \"w
 robotframework-seleniumlibrary = "^5.1.0"
 robotframework-seleniumtestability = "^1.1.0"
 rpaframework-core = "^6.1.0"
-rpaframework-pdf = "^0.4.1"
+rpaframework-pdf = "^0.5.0"
 rpaframework-recognition = {version = "^0.7.0", optional = true}
 selenium = "^3.141.0"
 simple_salesforce = "^1.0.0"
@@ -1435,7 +1435,7 @@ webdrivermanager = ">=0.10.0,<0.11.0"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "0.4.1"
+version = "0.5.0"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
@@ -1694,7 +1694,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "tqdm"
-version = "4.59.0"
+version = "4.60.0"
 description = "Fast, Extensible Progress Meter"
 category = "main"
 optional = false
@@ -1968,12 +1968,12 @@ beautifulsoup4 = [
     {file = "beautifulsoup4-4.9.3.tar.gz", hash = "sha256:84729e322ad1d5b4d25f805bfa05b902dd96450f43842c4e99067d5e1369eb25"},
 ]
 boto3 = [
-    {file = "boto3-1.17.43-py2.py3-none-any.whl", hash = "sha256:66c5581ae0746a41b8e119522a5c2434cffca0ef2620d49f15f350d0b14e2dd0"},
-    {file = "boto3-1.17.43.tar.gz", hash = "sha256:b86aaa96ccbdba1aaca0a321dbe4be480a39b7d6fe85dcd7ee5d7c44c9b32726"},
+    {file = "boto3-1.17.45-py2.py3-none-any.whl", hash = "sha256:17cf883424a9f7b53a46159e7cd094248da24232bc51dad76b73f23574489a35"},
+    {file = "boto3-1.17.45.tar.gz", hash = "sha256:edd3042eba5e21914a7d099cb8a25f009c0c42a9529c9ac4f5b852ad5b3acacf"},
 ]
 botocore = [
-    {file = "botocore-1.20.43-py2.py3-none-any.whl", hash = "sha256:7d0326fd8f8d7b3b7d2e8ecc4edb5a39ecd5537072bd0f088767ca53dd34818a"},
-    {file = "botocore-1.20.43.tar.gz", hash = "sha256:7630d734260babdc34dc53c704d937f53c362bb15ccd3863ccf1b1b26be04df8"},
+    {file = "botocore-1.20.45-py2.py3-none-any.whl", hash = "sha256:64ffef8ea333f9baf9cb1f2b915d317f6d0359dc4d649279da683c27367c2fff"},
+    {file = "botocore-1.20.45.tar.gz", hash = "sha256:b3a59b21c6f404d2c5dcb1a21698484a5ac1bbe639ca97b2e0f0e19c52c2ebe1"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2060,8 +2060,8 @@ dataclasses = [
     {file = "dataclasses-0.7.tar.gz", hash = "sha256:494a6dcae3b8bcf80848eea2ef64c0cc5cd307ffc263e17cdf42f3e5420808e6"},
 ]
 decorator = [
-    {file = "decorator-5.0.1-py2.py3-none-any.whl", hash = "sha256:2ec6e8cce2d71850b0af58ceceeab83f4bbaf60e1cc23d96db08c9d1425b7ac0"},
-    {file = "decorator-5.0.1.tar.gz", hash = "sha256:1e53162e016f317a61d93848f00e80e7109ca9ed06846c7f2930cf0ebede7c6c"},
+    {file = "decorator-5.0.5-py3-none-any.whl", hash = "sha256:b7157d62ea3c2c0c57b81a05e4569853e976a3dda5dd7a1cb86be78978c3c5f8"},
+    {file = "decorator-5.0.5.tar.gz", hash = "sha256:acda948ffcfe4bd0c4a57834b74ad968b91925b8201b740ca9d46fb8c5c618ce"},
 ]
 defusedxml = [
     {file = "defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61"},
@@ -2072,8 +2072,8 @@ dnspython = [
     {file = "dnspython-2.1.0.zip", hash = "sha256:e4a87f0b573201a0f3727fa18a516b055fd1107e0e5477cded4a2de497df1dd4"},
 ]
 docutils = [
-    {file = "docutils-0.16-py2.py3-none-any.whl", hash = "sha256:0c5b78adfbf7762415433f5515cd5c9e762339e23369dbe8000d84a4bf4ab3af"},
-    {file = "docutils-0.16.tar.gz", hash = "sha256:c2de3a60e9e7d07be26b7f2b00ca0309c207e06c100f9cc2a94931fc75a478fc"},
+    {file = "docutils-0.17-py2.py3-none-any.whl", hash = "sha256:a71042bb7207c03d5647f280427f14bfbd1a65c9eb84f4b341d85fafb6bb4bdf"},
+    {file = "docutils-0.17.tar.gz", hash = "sha256:e2ffeea817964356ba4470efba7c2f42b6b0de0b04e66378507e3e2504bbff4c"},
 ]
 et-xmlfile = [
     {file = "et_xmlfile-1.0.1.tar.gz", hash = "sha256:614d9722d572f6246302c4491846d2c393c199cfa4edc9af593437691683335b"},
@@ -2123,8 +2123,8 @@ google-cloud-speech = [
     {file = "google_cloud_speech-1.3.2-py2.py3-none-any.whl", hash = "sha256:3aa7bd9148c1dd02ab343ad5048d859cb4d17e950c7d506727743a780f748409"},
 ]
 google-cloud-storage = [
-    {file = "google-cloud-storage-1.37.0.tar.gz", hash = "sha256:2003c5ed473f9b37d045f30c4c8be7d30d7d0eb8a97bcd2c58b3a8bc549c4ccc"},
-    {file = "google_cloud_storage-1.37.0-py2.py3-none-any.whl", hash = "sha256:d82a3e22cd3114188ad88004f950bb00af29dacd6ad02460af1d681a31146c50"},
+    {file = "google-cloud-storage-1.37.1.tar.gz", hash = "sha256:e06a4797c87ac73c4a74801539fdf0a91761c3014281ff58b7b29f15b34c206e"},
+    {file = "google_cloud_storage-1.37.1-py2.py3-none-any.whl", hash = "sha256:63a9dab155bf81c51354db3d11f3e83a1db7d58eff453f1ce51ffa565d32617b"},
 ]
 google-cloud-texttospeech = [
     {file = "google-cloud-texttospeech-1.0.1.tar.gz", hash = "sha256:c5c66c148f6f47a213c8d53827c1dbf08cdf41f8047868433da0009e406e201e"},
@@ -2454,8 +2454,8 @@ mss = [
     {file = "mss-6.1.0.tar.gz", hash = "sha256:aebd069f3e05667fe9c7b9fa4b1771fe42a4710ce1058ce0236936ce06fa5394"},
 ]
 netsuitesdk = [
-    {file = "netsuitesdk-1.16.0-py3-none-any.whl", hash = "sha256:c0b93f2e3165b4ea06bc8297a68c4a5a090a0ab7b4fd4e09eab69ccaa5aa54fc"},
-    {file = "netsuitesdk-1.16.0.tar.gz", hash = "sha256:3dfc8c4735434fd788e2840c05edfde2e40283b697b8a255a4395760844e47fd"},
+    {file = "netsuitesdk-1.18.1-py3-none-any.whl", hash = "sha256:10251a7b263b4cf1543b6c7674e39300733f7988aa24362fbde50e025929b088"},
+    {file = "netsuitesdk-1.18.1.tar.gz", hash = "sha256:920bd693a9384e80b5f75aa6d893440fbe709b20a2765bdf2a7cc7dabb28883b"},
 ]
 notifiers = [
     {file = "notifiers-1.2.1-py3-none-any.whl", hash = "sha256:171ae79215fcf119e34992ad7e1f95f0709f93997203b3fc6f115b5cedd780a6"},
@@ -2824,8 +2824,8 @@ rpaframework-core = [
     {file = "rpaframework_core-6.1.0-py3-none-any.whl", hash = "sha256:ada3a9e727d8e5a14532d4cae5235a90fb6fb959dce7095a880b7e600a4a6c14"},
 ]
 rpaframework-pdf = [
-    {file = "rpaframework-pdf-0.4.1.tar.gz", hash = "sha256:ad3dc6c4f1f0c03fbb0ebcf5c13bb70507f07e2c3b293b4b253187eb876a7ac0"},
-    {file = "rpaframework_pdf-0.4.1-py3-none-any.whl", hash = "sha256:5c0542b7e0a06f11cfa4d0f9ca62f7a465454e4de85d6475820aef93ed048972"},
+    {file = "rpaframework-pdf-0.5.0.tar.gz", hash = "sha256:028baac42ecc7500f6ed3da9a7c91c097b05dfd511292bdfde2f4f533fa57c32"},
+    {file = "rpaframework_pdf-0.5.0-py3-none-any.whl", hash = "sha256:13448fbd83ab482a6d14a6c4fcc2fc25b562b20d46964c94d3a2448c1fc51738"},
 ]
 rpaframework-recognition = [
     {file = "rpaframework-recognition-0.7.0.tar.gz", hash = "sha256:664b72daa7440ba2c1cb697b6fbd2a5ea7a6ac4f696edb9db68e5e987dd2c260"},
@@ -2908,8 +2908,8 @@ toml = [
     {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
 ]
 tqdm = [
-    {file = "tqdm-4.59.0-py2.py3-none-any.whl", hash = "sha256:9fdf349068d047d4cfbe24862c425883af1db29bcddf4b0eeb2524f6fbdb23c7"},
-    {file = "tqdm-4.59.0.tar.gz", hash = "sha256:d666ae29164da3e517fcf125e41d4fe96e5bb375cd87ff9763f6b38b5592fe33"},
+    {file = "tqdm-4.60.0-py2.py3-none-any.whl", hash = "sha256:daec693491c52e9498632dfbe9ccfc4882a557f5fa08982db1b4d3adbe0887c3"},
+    {file = "tqdm-4.60.0.tar.gz", hash = "sha256:ebdebdb95e3477ceea267decfc0784859aa3df3e27e22d23b83e9b272bf157ae"},
 ]
 tweepy = [
     {file = "tweepy-3.10.0-py2.py3-none-any.whl", hash = "sha256:5e22003441a11f6f4c2ea4d05ec5532f541e9f5d874c3908270f0c28e649b53a"},
