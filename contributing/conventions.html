@@ -5,7 +5,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Project conventions &mdash; RPA Framework  documentation</title>
@@ -100,7 +101,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">Libraries</span></p>
+              <p><span class="caption-text">Libraries</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/archive/index.html">Archive</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/browser/index.html">Browser</a></li>
@@ -139,7 +140,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../libraries/twitter/index.html">Twitter</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../libraries/word_application/index.html">Word.Application</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Project</span></p>
+<p><span class="caption-text">Project</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../releasenotes.html">Release notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guide.html">Contribution guide</a></li>
@@ -210,13 +211,13 @@
 	
            <div itemprop="articleBody">
             
-  <div class="section" id="project-conventions">
+  <section id="project-conventions">
 <h1>Project conventions<a class="headerlink" href="#project-conventions" title="Permalink to this headline">¶</a></h1>
 <p>This document describes the common conventions for all projects contained
 in RPA Framework. All repositories and libraries which are
 part of the project should follow the conventions to make maintenance
 and bootstrapping easier.</p>
-<div class="section" id="naming">
+<section id="naming">
 <h2>Naming<a class="headerlink" href="#naming" title="Permalink to this headline">¶</a></h2>
 <p>All libraries in the framework are named with a shared convention. This convention
 is the prefix <code class="docutils literal notranslate"><span class="pre">rpaframework-*</span></code>, for example <code class="docutils literal notranslate"><span class="pre">rpaframework-secrets</span></code> for
@@ -224,14 +225,14 @@ a secrets management library. This name is used for both the git repository
 and PyPI package.</p>
 <p>Packages released under the framework will be in a shared Python namespace,
 which is currently <code class="docutils literal notranslate"><span class="pre">RPA</span></code>.</p>
-</div>
-<div class="section" id="version-control">
+</section>
+<section id="version-control">
 <h2>Version Control<a class="headerlink" href="#version-control" title="Permalink to this headline">¶</a></h2>
 <p>All sources, i.e. code, documentation, examples, will be hosted in Github.
 These repositories will be public and available for inspection and forking
 by other users. They will be contained in Robocorp’s Github organization.</p>
-</div>
-<div class="section" id="availability">
+</section>
+<section id="availability">
 <h2>Availability<a class="headerlink" href="#availability" title="Permalink to this headline">¶</a></h2>
 <p>The primary source for RPA Framework libraries is the Python Package Index (PyPI).
 Packages should be reserved according to the <a class="reference internal" href="#naming">Naming</a> policy. Packages should
@@ -241,8 +242,8 @@ to make finding them easier.</p>
 can be handled in either pip interop mode (in Conda) or by releasing
 into completely new packages into a Conda channel. The maintenance burden for
 the latter can be eased by having a separate Robocorp channel.</p>
-</div>
-<div class="section" id="documentation">
+</section>
+<section id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
 <p>All libraries will have public documentation that includes both technical
 API documentation and (simple) usage instructions.</p>
@@ -253,8 +254,8 @@ source files. The primary docstring format for libraries is reStructuredText.</p
 <p>The documentation will also include examples usages for both Python
 and Robot Framework. In-depth guides will be available separately in Robohub.</p>
 <p>Creating documentation will be the responsibility of the library developer.</p>
-</div>
-<div class="section" id="code-formatting">
+</section>
+<section id="code-formatting">
 <h2>Code Formatting<a class="headerlink" href="#code-formatting" title="Permalink to this headline">¶</a></h2>
 <p>All Python code should be automatically formatted using the
 <a class="reference external" href="https://github.com/psf/black">Black</a> tool. For convention issues which are
@@ -263,8 +264,8 @@ not strictly formatting, <a class="reference external" href="https://github.com/
 probably offer a pre-commit hook which checks them automatically.</p>
 <p>Reasons why auto-formatting is a good idea, from a similar Javascript tool:
 <a class="reference external" href="https://prettier.io/docs/en/why-prettier.html">Why Prettier?</a></p>
-</div>
-<div class="section" id="testing">
+</section>
+<section id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
 <p>All libraries should have decent test coverage through unittests. The main
 tool for creating unittests is pytest. Coverage should also be tracked
@@ -274,8 +275,8 @@ that use the provided keywords. These examples can be used in the
 documentation, but they should also act as runnable acceptance tests.</p>
 <p>In addition to functional testing, libraries should be validated according
 to common <a class="reference external" href="#code-formatting">coding conventions</a>.</p>
-</div>
-<div class="section" id="continuous-integration">
+</section>
+<section id="continuous-integration">
 <h2>Continuous Integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h2>
 <p>All commits and pull requests should be validated automatically. The current
 best tooling option is Github Actions.</p>
@@ -301,8 +302,8 @@ best tooling option is Github Actions.</p>
 </div></blockquote>
 </li>
 </ul>
-</div>
-<div class="section" id="change-log">
+</section>
+<section id="change-log">
 <h2>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h2>
 <p>All packages should keep track of changes. This includes all additions,
 removals, changes, bug fixes, etc. that affect users. All created releases
@@ -310,8 +311,8 @@ should contain a change log entry.</p>
 <p>Change logs are meant to be human-readable and generating them from git log
 entries is not an acceptable method. The process can be entirely manual or
 rely on tools such as <code class="docutils literal notranslate"><span class="pre">towncrier</span></code>.</p>
-</div>
-<div class="section" id="versioning">
+</section>
+<section id="versioning">
 <h2>Versioning<a class="headerlink" href="#versioning" title="Permalink to this headline">¶</a></h2>
 <p>Semantic versioning is used when creating packages. The gist of it is as follows:</p>
 <p>Given a version number MAJOR.MINOR.PATCH, increment the:</p>
@@ -320,10 +321,10 @@ rely on tools such as <code class="docutils literal notranslate"><span class="pr
 <li><p>MINOR version when you add functionality in a backwards compatible manner, and</p></li>
 <li><p>PATCH version when you make backwards compatible bug fixes.</p></li>
 </ul>
-</div>
-<div class="section" id="other-issues">
+</section>
+<section id="other-issues">
 <h2>Other issues<a class="headerlink" href="#other-issues" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="type-hinting">
+<section id="type-hinting">
 <h3>Type hinting<a class="headerlink" href="#type-hinting" title="Permalink to this headline">¶</a></h3>
 <p>Type hinting is supported since Python 3.6 and improves the maintainability
 of projects after they reach a certain size. Hints are also used by
@@ -336,16 +337,16 @@ be validated with a tool such as <code class="docutils literal notranslate"><spa
 The RPA Framework project aims to support versions 3.6 and newer, but
 if required, the hinting features are available through a backport package.</p>
 </div>
-</div>
-<div class="section" id="ipython-notebook-support">
+</section>
+<section id="ipython-notebook-support">
 <h3>IPython / Notebook support<a class="headerlink" href="#ipython-notebook-support" title="Permalink to this headline">¶</a></h3>
 <p>Robocode Lab is based on the IPython / Jupyter Notebook project, which allows
 libraries to visualize output and create interactive widgets. This is an
 integral part of explorative RPA workflow, and should be taken into account
 while developing libraries.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

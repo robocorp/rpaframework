@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+9.4.0
+-----
+
+- Library **RPA.PDF**: Add ``Set Convert Settings`` keyword to adjust document analysis settings from default values
+
 9.3.4
 -----
 
