@@ -1439,6 +1439,7 @@ class Tables:
         dialect=None,
         delimiters=None,
         column_unknown="Unknown",
+        encoding=None,
     ):
         """Read a CSV file as a table.
 
@@ -1448,6 +1449,8 @@ class Tables:
         :param dialect:         format of CSV file
         :param delimiters:      string of possible delimiters
         :param column_unknown:  column name for unknown fields
+        :param encoding:        text encoding for input file,
+                                uses system encoding by default
 
         By default attempts to deduce the CSV format and headers
         from a sample of the input file. If it's unable to determine
@@ -1479,7 +1482,7 @@ class Tables:
             Log   Found columns: ${table.columns}
         """
         sniffer = csv.Sniffer()
-        with open(path, newline="") as fd:
+        with open(path, newline="", encoding=encoding) as fd:
             sample = fd.read(1024)
 
         if dialect is None:
@@ -1508,19 +1511,23 @@ class Tables:
 
         return table
 
-    def write_table_to_csv(self, table, path, header=True, dialect="excel"):
+    def write_table_to_csv(
+        self, table, path, header=True, dialect="excel", encoding=None
+    ):
         """Write a table as a CSV file.
 
-        :param path:    path to write to
-        :param table:   table to write
-        :param header:  write columns as header to CSV file
-        :param dialect: the format of output CSV
+        :param path:     path to write to
+        :param table:    table to write
+        :param header:   write columns as header to CSV file
+        :param dialect:  the format of output CSV
+        :param encoding: text encoding for output file,
+                         uses system encoding by default
 
         Valid ``dialect`` values are ``excel``, ``excel-tab``, and ``unix``.
         """
         self._requires_table(table)
 
-        with open(path, mode="w", newline="") as fd:
+        with open(path, mode="w", newline="", encoding=encoding) as fd:
             writer = csv.DictWriter(fd, fieldnames=table.columns, dialect=dialect)
 
             if header:
