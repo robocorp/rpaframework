@@ -159,7 +159,7 @@ class JSON:
             return json.load(json_file)
 
     @keyword("Save JSON to file")
-    def save_json_to_file(self, doc: JSONType, filename: str):
+    def save_json_to_file(self, doc: JSONType, filename: str, indent: int = None):
         """Save a JSON serializable object or a string containg
         a JSON value into a file.
 
@@ -180,9 +180,12 @@ class JSON:
 
         """
         self.logger.info("Saving JSON to file: %s", filename)
+        extra_args = {}
+        if indent:
+            extra_args["indent"] = indent
         doc = self.convert_string_to_json(doc) if isinstance(doc, str) else doc
         with open(filename, "w") as outfile:
-            json.dump(doc, outfile)
+            json.dump(doc, outfile, **extra_args)
 
     @keyword("Convert JSON to String")
     def convert_json_to_string(self, doc: JSONType) -> str:
