@@ -11,6 +11,7 @@ Upcoming release
 
 - Library **RPA.JSON**: Add indent option to ``Save JSON To File``
 - Library **RPA.Excel.Files**: Add keyword ``Get worksheet value``
+- Library **RPA.HTTP**: Allow string as ``verify`` parameter to give path to CA_BUNDLE
 
 9.4.0
 -----
