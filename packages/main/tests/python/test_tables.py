@@ -382,6 +382,19 @@ def test_keyword_filter_table_by_column_in(library, table):
     assert all(row["two"] != 2 for row in table)
 
 
+def test_keyword_filter_table_by_column_not_contains(library):
+    table = Table(
+        [
+            {"type": "Something", "value": 1},
+            {"type": "Test", "value": 2},
+            {"type": "Whatever", "value": 3},
+            {"type": "Nothing", "value": 4},
+        ]
+    )
+    library.filter_table_by_column(table, "type", "not contains", "thing")
+    assert table.data == [["Test", 2], ["Whatever", 3]]
+
+
 def test_keyword_filter_empty_rows(library, table):
     library.filter_empty_rows(table)
     assert len(table) == 4

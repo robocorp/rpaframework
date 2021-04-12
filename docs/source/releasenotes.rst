@@ -4,7 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
-- Library **RPA.Tables**: Add ``encoding`` option for CSV reading and writing
+- Library **RPA.Tables**:
+
+  - Add ``encoding`` option for CSV reading and writing
+  - Add ``not contains`` and ``not in`` operators for filtering
+
 - Library **RPA.JSON**: Add indent option to ``Save JSON To File``
 
 9.4.0

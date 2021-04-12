@@ -1362,7 +1362,35 @@ class Tables:
         """Remove all rows where the column values don't match the
         given condition.
 
+        Supported operators:
+
+        ============ ========================================
+        Operator     Description
+        ============ ========================================
+        >            Cell value is larger than
+        <            Cell value is smaller than
+        >=           Cell value is larger or equal than
+        <=           Cell value is smaller or equal than
+        ==           Cell value is equal to
+        !=           Cell value is not equal to
+        contains     Cell value contains given value
+        not contains Cell value does not contain given value
+        in           Cell value is in given value
+        not in       Cell value is not in given value
+        ============ ========================================
+
         The filtering will be done in-place.
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # Only accept prices that are non-zero
+            Filter table by column    ${table}   price  !=  ${0}
+
+            # Remove uwnanted product types
+            @{types}=    Create list    Unknown    Removed
+            Filter table by column    ${table}   product_type  not in  ${types}
 
         :param table:       table to filter
         :param column:      column to filter with
@@ -1380,7 +1408,9 @@ class Tables:
             "==": lambda x: x is not None and x == value,
             "!=": lambda x: x is not None and x != value,
             "contains": lambda x: x is not None and value in x,
+            "not contains": lambda x: x is not None and value not in x,
             "in": lambda x: x in value,
+            "not in": lambda x: x not in value,
         }.get(operator)
 
         if not condition:
