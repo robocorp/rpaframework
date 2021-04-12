@@ -5,6 +5,7 @@ Upcoming release
 ----------------
 
 - Library **RPA.Tables**: Add ``encoding`` option for CSV reading and writing
+- Library **RPA.JSON**: Add indent option to ``Save JSON To File``
 
 9.4.0
 -----
