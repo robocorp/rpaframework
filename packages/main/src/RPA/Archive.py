@@ -5,7 +5,7 @@ import os
 import os.path
 from pathlib import Path
 import tarfile
-from typing import Any
+from typing import Union, List
 import zipfile
 
 
@@ -189,7 +189,7 @@ class Archive:
 
     def add_to_archive(
         self,
-        files: Any,
+        files: Union[str, List],
         archive_name: str,
         folder: str = None,
     ) -> None:
@@ -328,7 +328,7 @@ class Archive:
         return archive_info
 
     def extract_archive(
-        self, archive_name: str, path: str = None, members: Any = None
+        self, archive_name: str, path: str = None, members: Union[str, List] = None
     ) -> None:
         """Extract files from archive into local directory
 
