@@ -10,6 +10,7 @@ Upcoming release
   - Add ``not contains`` and ``not in`` operators for filtering
 
 - Library **RPA.JSON**: Add indent option to ``Save JSON To File``
+- Library **RPA.Excel.Files**: Add keyword ``Get worksheet value``
 
 9.4.0
 -----

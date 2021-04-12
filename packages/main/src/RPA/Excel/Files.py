@@ -365,13 +365,23 @@ class Files:
         assert self.workbook, "No active workbook"
         return self.workbook.find_empty_row(name)
 
+    def get_worksheet_value(self, row, column, name=None):
+        """Get a cell value in the given worksheet.
+
+        :param row:     Index of row to read, e.g. 3
+        :param column:  Name or index of column, e.g. C or 7
+        :param name:    Name of worksheet (optional)
+        """
+        assert self.workbook, "No active workbook"
+        return self.workbook.get_cell_value(row, column, name)
+
     def set_worksheet_value(self, row, column, value, name=None):
         """Set a cell value in the given worksheet.
 
         :param row:     Index of row to write, e.g. 3
         :param column:  Name or index of column, e.g. C or 7
         :param value:   New value of cell
-        :param name:    Name of worksheet
+        :param name:    Name of worksheet (optional)
         """
         assert self.workbook, "No active workbook"
         self.workbook.set_cell_value(row, column, value, name)
@@ -576,6 +586,13 @@ class XlsxWorkbook:
                 return idx + 1  # Return first empty row
 
         return 1
+
+    def get_cell_value(self, row, column, name=None):
+        name = self._get_sheetname(name)
+        sheet = self._book[name]
+        cell = self._get_cellname(row, column)
+
+        return sheet[cell].value
 
     def set_cell_value(self, row, column, value, name=None):
         name = self._get_sheetname(name)
@@ -843,6 +860,13 @@ class XlsWorkbook:
                 return row + 2
 
         return 1
+
+    def get_cell_value(self, row, column, name=None):
+        name = self._get_sheetname(name)
+        sheet = self._book.sheet_by_name(name)
+        row, column = self._get_cell(row, column)
+
+        return sheet.cell_value(row, column)
 
     def set_cell_value(self, row, column, value, name=None):
         name = self._get_sheetname(name)
