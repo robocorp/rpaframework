@@ -189,7 +189,7 @@ class Archive:
 
     def add_to_archive(
         self,
-        files: Union[str, List],
+        files: Union[List, str],
         archive_name: str,
         folder: str = None,
     ) -> None:
@@ -328,7 +328,7 @@ class Archive:
         return archive_info
 
     def extract_archive(
-        self, archive_name: str, path: str = None, members: Union[str, List] = None
+        self, archive_name: str, path: str = None, members: Union[List, str] = None
     ) -> None:
         """Extract files from archive into local directory
 
@@ -351,6 +351,7 @@ class Archive:
             Extract Archive    archive.tar   C:${/}myfiles${/}  ${files}
         """  # noqa: E501
         root = Path(path) if path else Path.cwd()
+        self.logger.info("got type %s" % type(members))
         if members and not isinstance(members, list):
             members = [members]
         if zipfile.is_zipfile(archive_name):
