@@ -391,6 +391,21 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Excel.Files.Files.get_worksheet_value">
+<code class="sig-name descname">get_worksheet_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.get_worksheet_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a cell value in the given worksheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row</strong> – Index of row to read, e.g. 3</p></li>
+<li><p><strong>column</strong> – Name or index of column, e.g. C or 7</p></li>
+<li><p><strong>name</strong> – Name of worksheet (optional)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Excel.Files.Files.insert_image_to_worksheet">
 <code class="sig-name descname">insert_image_to_worksheet</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">path</em>, <em class="sig-param">scale=1.0</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.insert_image_to_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Insert an image into the given cell.</p>
@@ -517,7 +532,7 @@ when opened or created.</p>
 <li><p><strong>row</strong> – Index of row to write, e.g. 3</p></li>
 <li><p><strong>column</strong> – Name or index of column, e.g. C or 7</p></li>
 <li><p><strong>value</strong> – New value of cell</p></li>
-<li><p><strong>name</strong> – Name of worksheet</p></li>
+<li><p><strong>name</strong> – Name of worksheet (optional)</p></li>
 </ul>
 </dd>
 </dl>
@@ -569,6 +584,11 @@ when opened or created.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.find_empty_row">
 <code class="sig-name descname">find_empty_row</code><span class="sig-paren">(</span><em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.find_empty_row" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsWorkbook.get_cell_value">
+<code class="sig-name descname">get_cell_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.get_cell_value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -651,6 +671,11 @@ when opened or created.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.find_empty_row">
 <code class="sig-name descname">find_empty_row</code><span class="sig-paren">(</span><em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.find_empty_row" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsxWorkbook.get_cell_value">
+<code class="sig-name descname">get_cell_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.get_cell_value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
