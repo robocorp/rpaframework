@@ -1,5 +1,5 @@
 import logging
-from typing import Any
+from typing import Union, List
 
 try:
     from robot.libraries.BuiltIn import BuiltIn
@@ -140,7 +140,7 @@ class RobotLogListener:
         self.muted_optionals = []
         self.muted_previous = {}
 
-    def only_info_level(self, names: Any = None):
+    def only_info_level(self, names: Union[str, List] = None):
         """Register keywords that are allowed only INFO level logging
 
         :param names: list of keywords to protect
@@ -154,7 +154,7 @@ class RobotLogListener:
             if robotized_keyword not in self.INFO_LEVEL_KEYWORDS:
                 self.INFO_LEVEL_KEYWORDS.append(robotized_keyword)
 
-    def register_protected_keywords(self, names: Any = None) -> None:
+    def register_protected_keywords(self, names: Union[str, List] = None) -> None:
         """Register keywords that are not going to be logged into Robot Framework logs.
 
         :param names: list of keywords to protect
@@ -169,7 +169,7 @@ class RobotLogListener:
                 self.KEYWORDS_TO_PROTECT.append(robotized_keyword)
 
     def mute_run_on_failure(
-        self, keywords: Any = None, optional_keyword_to_run: str = None
+        self, keywords: Union[str, List] = None, optional_keyword_to_run: str = None
     ) -> None:
         """Set keywords which should not execute `SeleniumLibrary`
         default behaviour of running keyword on failure.
