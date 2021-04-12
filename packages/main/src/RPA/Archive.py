@@ -351,7 +351,6 @@ class Archive:
             Extract Archive    archive.tar   C:${/}myfiles${/}  ${files}
         """  # noqa: E501
         root = Path(path) if path else Path.cwd()
-        self.logger.info("got type %s" % type(members))
         if members and not isinstance(members, list):
             members = [members]
         if zipfile.is_zipfile(archive_name):
