@@ -40,7 +40,7 @@ rpaframework-pdf = "^0.5.0"
 rpaframework-core = "^6.1.0"
 rpaframework-recognition = { version = "^0.7.0", optional = true }
 jsonpath-ng = "^1.5.2"
-robotframework = "^4.0"
+robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
 robotframework-sapguilibrary = { version = "^1.1", platform = "win32" }
 robotframework-seleniumlibrary = "^5.1.0"
 robotframework-seleniumtestability = "^1.1.0"
