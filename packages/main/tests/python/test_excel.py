@@ -272,3 +272,14 @@ def test_set_worksheet_value(library):
 def test_insert_image_to_worksheet(library):
     library.insert_image_to_worksheet(10, "B", "tests/resources/faces.jpeg", scale=4)
     library.save_workbook(BytesIO())
+
+
+@pytest.mark.parametrize("fmt", ("xlsx", "xls"))
+def test_create_workbook_default_sheet(fmt):
+    library = Files()
+
+    library.create_workbook(fmt=fmt)
+    assert library.list_worksheets() == ["Sheet"]
+
+    library.create_worksheet("Test")
+    assert library.list_worksheets() == ["Sheet", "Test"]
