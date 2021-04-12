@@ -864,7 +864,7 @@ optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-numpy = ">=1.14.5"
+numpy = ">=1.17.3"
 
 [[package]]
 name = "openpyxl"
@@ -1352,7 +1352,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "9.4.0"
+version = "9.5.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
