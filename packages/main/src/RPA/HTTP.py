@@ -1,6 +1,6 @@
 import logging
 from urllib.parse import urlparse
-from typing import Any
+from typing import Any, Union
 from pathlib import Path
 
 from RequestsLibrary import RequestsLibrary
@@ -28,7 +28,7 @@ class HTTP(RequestsLibrary):
         url: str,
         target_file: str = None,
         binary: bool = True,
-        verify: bool = True,
+        verify: Union[bool, str] = True,
         force_new_session: bool = False,
         overwrite: bool = False,
     ) -> dict:
@@ -45,7 +45,8 @@ class HTTP(RequestsLibrary):
 
         ``binary`` if file is saved as binary, default ``True``
 
-        ``verify`` if SSL verification should be done, default ``True``
+        ``verify`` if SSL verification should be done, default ``True``,
+        a CA_BUNDLE path can also be provided
 
         ``force_new_session`` if new HTTP session should be created, default ``False``
 
@@ -102,7 +103,7 @@ class HTTP(RequestsLibrary):
         url: str,
         target_file: str = None,
         binary: bool = True,
-        verify: bool = True,
+        verify: Union[bool, str] = True,
         force_new_session: bool = False,
         overwrite: bool = False,
     ) -> dict:
@@ -119,7 +120,8 @@ class HTTP(RequestsLibrary):
 
         ``binary`` if file is saved as binary, default ``True``
 
-        ``verify`` if SSL verification should be done, default ``True``
+        ``verify`` if SSL verification should be done, default ``True``,
+        a CA_BUNDLE path can also be provided
 
         ``force_new_session`` if new HTTP session should be created, default ``False``
 
