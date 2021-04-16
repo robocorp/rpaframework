@@ -782,7 +782,7 @@ class ImapSmtp:
         attachments_saved = []
         messages = self.list_messages(criterion)
         for msg in messages:
-            attachments_saved.append(
+            attachments_saved.extend(
                 self.save_attachment(msg, target_folder, overwrite)
             )
         return attachments_saved if len(attachments_saved) > 0 else False
@@ -808,7 +808,7 @@ class ImapSmtp:
         """  # noqa: E501
         if target_folder is None:
             target_folder = os.path.expanduser("~")
-        self._save_attachment(message, target_folder, overwrite)
+        return self._save_attachment(message, target_folder, overwrite)
 
     def _save_attachment(self, message, target_folder, overwrite):
         attachments_saved = []
@@ -827,9 +827,10 @@ class ImapSmtp:
                         )
                         with open(filepath, "wb") as f:
                             f.write(part.get_payload(decode=True))
-                            attachments_saved.append(filepath)
+                            attachments_saved.append(str(filepath))
                     elif filepath.exists() and not overwrite:
                         self.logger.warning("Did not overwrite file: %s", filepath)
+        return attachments_saved
 
     def _save_eml_file(self, message, target_folder, overwrite):
         emlfile = Path(target_folder) / f"{message['Mail-Id']}.eml"
