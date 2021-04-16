@@ -3,7 +3,20 @@ from robotlibcore import DynamicCore
 
 from RPA.core.logger import RobotLogListener
 
-from RPA.Cloud.Google.keywords import SheetsKeywords
+
+from .keywords import (
+    AppsScriptKeywords,
+    BaseKeywords,
+    DriveKeywords,
+    NaturalLanguageKeywords,
+    SheetsKeywords,
+    SpeechToTextKeywords,
+    StorageKeywords,
+    TextToSpeechKeywords,
+    TranslationKeywords,
+    VideoIntelligenceKeywords,
+    VisionKeywords,
+)
 
 
 class Google(DynamicCore):
@@ -178,16 +191,28 @@ class Google(DynamicCore):
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(
-        self, robocloud_vault_name: str = None, robocloud_vault_secret_key: str = None
+        self,
+        service_account: str = None,
+        robocloud_vault_name: str = None,
+        robocloud_vault_secret_key: str = None,
     ):
         self.logger = logging.getLogger(__name__)
+        self.service_account_file = service_account
         self.robocloud_vault_name = robocloud_vault_name
         self.robocloud_vault_secret_key = robocloud_vault_secret_key
-
         # Register keyword libraries to LibCore
         libraries = [
+            AppsScriptKeywords(self),
+            BaseKeywords(self),
+            DriveKeywords(self),
+            NaturalLanguageKeywords(self),
             SheetsKeywords(self),
+            SpeechToTextKeywords(self),
+            StorageKeywords(self),
+            TextToSpeechKeywords(self),
+            TranslationKeywords(self),
+            VideoIntelligenceKeywords(self),
+            VisionKeywords(self),
         ]
         super().__init__(libraries)
-
         # listener = RobotLogListener()

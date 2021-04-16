@@ -1,14 +1,4 @@
-from apiclient import discovery
-from google.oauth2 import service_account
-import os
-from typing import (
-    List,
-    Union,
-)
-from RPA.Cloud.Google.keywords import (
-    LibraryContext,
-    keyword,
-)
+from RPA.Cloud.Google.keywords import LibraryContext, keyword
 
 
 class SheetsKeywords(LibraryContext):
@@ -19,9 +9,9 @@ class SheetsKeywords(LibraryContext):
         self.service = None
 
     @keyword
-    def init_sheets_client(
+    def init_sheets(
         self,
-        service_credentials_file: str = None,
+        service_account: str = None,
         use_robocloud_vault: bool = False,
     ) -> None:
         """Initialize Google Sheets client
@@ -29,28 +19,14 @@ class SheetsKeywords(LibraryContext):
         :param service_credentials_file: filepath to credentials JSON
         :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
-        self._scopes = [
+        scopes = [
             "https://www.googleapis.com/auth/drive",
             "https://www.googleapis.com/auth/drive.file",
             "https://www.googleapis.com/auth/spreadsheets",
         ]
-        service_account_file = None
-        if use_robocloud_vault:
-            service_account_file = self._get_service_account_from_robocloud()
-        elif service_credentials_file:
-            service_account_file = service_credentials_file
-        try:
-            credentials = service_account.Credentials.from_service_account_file(
-                service_account_file, scopes=self._scopes
-            )
-            self.service = discovery.build(
-                "sheets", "v4", credentials=credentials, cache_discovery=False
-            )
-        except OSError as e:
-            raise AssertionError from e
-        finally:
-            if use_robocloud_vault:
-                os.remove(service_account_file)
+        self.service = self.init_service(
+            "sheets", "v4", scopes, service_account, use_robocloud_vault
+        )
 
     @keyword
     def create_sheet(self, title: str) -> str:
@@ -131,9 +107,6 @@ class SheetsKeywords(LibraryContext):
         if not values:
             raise ValueError("Please provide list of values to insert into sheet")
 
-        datavalues = []
-        # for val in values:
-        #    datavalues.append([val])
         resource = {"majorDimension": major_dimension, "values": values}
         self.service.spreadsheets().values().update(
             spreadsheetId=sheet_id,
@@ -183,3 +156,99 @@ class SheetsKeywords(LibraryContext):
             spreadsheetId=sheet_id,
             range=sheet_range,
         ).execute()
+
+    @keyword
+    def copy_sheet(self, spreadsheet_id, target_sheet_id):
+        """Copy spreadsheet to target spreadsheet
+
+        *NOTE:* service account user must have access to
+        target sheet also
+
+        :param spreadsheet_id: ID of the sheet to copy
+        :param target_sheet_id: ID of the target sheet
+        :return: request response
+        """
+        body = {
+            "destination_spreadsheet_id": target_sheet_id,
+        }
+        return (
+            self.service.spreadsheets()
+            .sheets()
+            .copyTo(
+                spreadsheetId=spreadsheet_id,
+                sheetId=0,
+                body=body,
+            )
+            .execute()
+        )
+
+    def _sheet_values_action(
+        self,
+        sheet_id,
+        sheet_range,
+        values=None,
+        major_dimension="COLUMNS",
+        value_input_option="USER_ENTERED",
+        value_render_option="UNFORMATTED_VALUE",
+        datetime_render_option="FORMATTED_STRING",
+        default_value_for_empty=None,
+        action="insert",
+    ) -> None:
+        """Insert values into sheet cells
+
+        :param sheet_id: target sheet
+        :param sheet_range: target sheet range
+        :param values: list of values to insert into sheet
+        :param major_dimension: major dimension of the values, default `COLUMNS`
+        :param value_input_option: controls whether input strings are parsed or not,
+         default `USER_ENTERED`
+        :param value_render_option: how values should be represented
+         in the output defaults to "UNFORMATTED_VALUE"
+        :param datetime_render_option: how dates, times, and durations should be
+         represented in the output, defaults to "FORMATTED_STRING"
+        """
+        if action in ["insert", "update"] and not values:
+            raise ValueError("Please provide list of values to insert into sheet")
+
+        returnable = None
+
+        sheet_values = self.service.spreadsheets().values()
+        if action == "insert":
+            resource = {"majorDimension": major_dimension, "values": values}
+            returnable = sheet_values.append(
+                spreadsheetId=sheet_id,
+                range=sheet_range,
+                body=resource,
+                valueInputOption=value_input_option,
+            ).execute()
+        elif action == "update":
+            resource = {"majorDimension": "ROWS", "values": values}
+            returnable = sheet_values.update(
+                spreadsheetId=sheet_id,
+                range=sheet_range,
+                body=resource,
+                valueInputOption=value_input_option,
+            ).execute()
+        elif action == "get":
+            self.logger.info(
+                "Default value for empty (type): %s" % type(default_value_for_empty)
+            )
+            returnable = sheet_values.get(
+                spreadsheetId=sheet_id,
+                range=sheet_range,
+                valueRenderOption=value_render_option,
+                dateTimeRenderOption=datetime_render_option,
+            ).execute()
+            max_len = max(len(item) for item in returnable["values"])
+            for item in returnable["values"]:
+                if len(item) < max_len:
+                    item.extend([default_value_for_empty] * (max_len - len(item)))
+        elif action == "clear":
+            returnable = sheet_values.clear(
+                spreadsheetId=sheet_id,
+                range=sheet_range,
+            ).execute()
+        else:
+            raise AttributeError('Unsupported Google Sheets action: "%s"' % action)
+
+        return returnable
