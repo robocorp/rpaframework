@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Email.ImapSmtp**: Return filepaths of saved attachments
+
 9.5.0
 -----
 
