@@ -201,6 +201,8 @@ class Files:
     def create_workbook(self, path=None, fmt="xlsx"):
         """Create and open a new Excel workbook.
 
+        Automatically also creates a new worksheet with the name "Sheet".
+
         :param path: Default save path for workbook
         :param fmt:  Format of workbook, i.e. xlsx or xls
         """
