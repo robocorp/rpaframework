@@ -96,20 +96,24 @@ class Application:
             self.app.Quit()
             self.app = None
 
-    def open_file(self, filename: str = None) -> None:
+    def open_file(self, filename: str, read_only: bool = True) -> None:
         """Open Word document with filename.
 
-        :param filename: Word document filepath, defaults to None
+        :param filename: Word document path
         """
-        if filename is not None:
-            word_filepath = str(Path(filename).resolve())
-            self.logger.info("Opening document: %s", word_filepath)
-            doc = self.app.Documents.Open(word_filepath, False, True, None)
-            doc.Activate()
-            self.app.ActiveWindow.View.ReadingLayout = False
-            self.filename = word_filepath
-        else:
-            self.logger.warning("Filename was not given.")
+        path = str(Path(filename).resolve())
+        self.logger.info("Opening document: %s", path)
+
+        doc = self.app.Documents.Open(
+            FileName=path,
+            ConfirmConversions=False,
+            ReadOnly=read_only,
+            AddToRecentFiles=False,
+        )
+
+        doc.Activate()
+        self.app.ActiveWindow.View.ReadingLayout = False
+        self.filename = path
 
     def create_new_document(self) -> None:
         """Create new document for Word application"""
