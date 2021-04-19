@@ -1,3 +1,4 @@
+import importlib
 import logging
 from robotlibcore import DynamicCore
 
@@ -195,11 +196,23 @@ class Google(DynamicCore):
         service_account: str = None,
         robocloud_vault_name: str = None,
         robocloud_vault_secret_key: str = None,
+        robocloud_auth_type: str = "serviceaccount",
     ):
         self.logger = logging.getLogger(__name__)
         self.service_account_file = service_account
         self.robocloud_vault_name = robocloud_vault_name
         self.robocloud_vault_secret_key = robocloud_vault_secret_key
+        self.robocloud_auth_type = robocloud_auth_type
+        self.use_robocloud_vault = False
+        if robocloud_vault_name and robocloud_vault_secret_key:
+            self.use_robocloud_vault = True
+
+        try:
+            secrets_library = importlib.import_module("RPA.Robocloud.Secrets")
+            self.secrets_library = getattr(secrets_library, "Secrets")
+
+        except ModuleNotFoundError:
+            self.secrets_library = None
         # Register keyword libraries to LibCore
         libraries = [
             AppsScriptKeywords(self),

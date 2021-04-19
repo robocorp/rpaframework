@@ -1,8 +1,8 @@
-from typing import Any
+from typing import Any, Optional
 
 from google.cloud import storage
 
-from RPA.Cloud.Google.keywords import (
+from . import (
     LibraryContext,
     keyword,
 )
@@ -30,14 +30,14 @@ class StorageKeywords(LibraryContext):
     def init_storage(
         self,
         service_account: str = None,
-        use_robocloud_vault: bool = False,
+        use_robocloud_vault: Optional[bool] = None,
     ) -> None:
         """Initialize Google Cloud Storage client
 
         :param service_credentials_file: filepath to credentials JSON
         :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
-        self.init_service_with_object(
+        self.service = self.init_service_with_object(
             storage.Client,
             service_account,
             use_robocloud_vault,
@@ -49,6 +49,14 @@ class StorageKeywords(LibraryContext):
 
         :param bucket_name: name as string
         :return: bucket
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${result}=   Create Bucket   visionfolder
         """
         bucket = self.service.create_bucket(bucket_name)
         return bucket
@@ -60,6 +68,14 @@ class StorageKeywords(LibraryContext):
         Bucket needs to be empty before it can be deleted.
 
         :param bucket_name: name as string
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${result}=   Delete Bucket   visionfolder
         """
         bucket = self.get_bucket(bucket_name)
         try:
@@ -73,9 +89,15 @@ class StorageKeywords(LibraryContext):
 
         :param bucket_name: name as string
         :return: bucket
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${result}=   Get Bucket   visionfolder
         """
-        if not bucket_name:
-            raise KeyError("bucket_name is required for kw: get_bucket")
         bucket = self.service.get_bucket(bucket_name)
         return bucket
 
@@ -84,6 +106,17 @@ class StorageKeywords(LibraryContext):
         """List Google Cloud Storage buckets
 
         :return: list of buckets
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${buckets}=   List Buckets
+            FOR  ${bucket}  IN   @{buckets}
+                Log  ${bucket}
+            END
         """
         buckets = list(self.service.list_buckets())
         return buckets
@@ -99,9 +132,15 @@ class StorageKeywords(LibraryContext):
             comma separated list of files
         :return: list of files which could not be deleted,
             or True if all were deleted
+
+         **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${result}=   Delete Files   ${BUCKET_NAME}   file1,file2
         """
-        if not bucket_name or not files:
-            raise KeyError("bucket_name and files are required for kw: delete_files")
         if not isinstance(files, list):
             files = files.split(",")
         bucket = self.get_bucket(bucket_name)
@@ -121,12 +160,24 @@ class StorageKeywords(LibraryContext):
 
         :param bucket_name: name as string
         :return: list of object names in the bucket
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${files}=   List Files   ${BUCKET_NAME}
+            FOR  ${bucket}  IN   @{files}
+                Log  ${file}
+            END
         """
-        if not bucket_name:
-            raise KeyError("bucket_name is required for kw: list_files")
         bucket = self.get_bucket(bucket_name)
         all_blobs = bucket.list_blobs()
-        return sorted(blob.name for blob in all_blobs)
+        sorted_blobs = sorted(blob.name for blob in all_blobs)
+        return [
+            {"name": name, "uri": f"gs://{bucket_name}/{name}"} for name in sorted_blobs
+        ]
 
     @keyword
     def upload_file(self, bucket_name: str, filename: str, target_name: str):
@@ -135,11 +186,16 @@ class StorageKeywords(LibraryContext):
         :param bucket_name: name as string
         :param filename: filepath to upload file
         :param target_name: target object name
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            Upload File   ${BUCKET_NAME}
+            ...   ${CURDIR}${/}test.txt    test.txt
         """
-        if not bucket_name or not filename or not target_name:
-            raise KeyError(
-                "bucket_name, filename and target_name are required for kw: upload_file"
-            )
         bucket = self.get_bucket(bucket_name)
         blob = bucket.blob(target_name)
         with open(filename, "rb") as f:
@@ -154,9 +210,18 @@ class StorageKeywords(LibraryContext):
 
         :param bucket_name: name as string
         :param files: dictionary of object names and filepaths
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${files}=   Create Dictionary
+            ...   test1.txt   ${CURDIR}${/}test1.txt
+            ...   test2.txt   ${CURDIR}${/}test2.txt
+            Upload Files   ${BUCKET_NAME}   ${files}
         """
-        if not bucket_name or not files:
-            raise KeyError("bucket_name and files are required for kw: upload_files")
         if not isinstance(files, dict):
             raise ValueError("files needs to be an dictionary")
         bucket = self.get_bucket(bucket_name)
@@ -176,6 +241,14 @@ class StorageKeywords(LibraryContext):
             object names and target files
         :return: list of files which could not be downloaded, or
             True if all were downloaded
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${result}=  Download Files   ${BUCKET_NAME}   test1.txt,test2.txt
         """
         if isinstance(files, str):
             files = files.split(",")

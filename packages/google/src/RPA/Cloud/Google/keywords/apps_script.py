@@ -1,4 +1,6 @@
-from RPA.Cloud.Google.keywords import (
+from typing import Optional
+
+from . import (
     LibraryContext,
     keyword,
 )
@@ -35,7 +37,7 @@ class AppsScriptKeywords(LibraryContext):
         scopes: list = None,
         token_file: str = None,
         service_account: str = None,
-        use_robocloud_vault: bool = False,
+        use_robocloud_vault: Optional[bool] = None,
     ) -> None:
         """Initialize Google Sheets client
 
@@ -43,17 +45,20 @@ class AppsScriptKeywords(LibraryContext):
         :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
         apps_scopes = ["script.projects"] + scopes if scopes else []
+        self.logger.info("Scopes: %s", apps_scopes)
         self.service = self.init_service(
             "script",
             "v1",
             apps_scopes,
-            service_account,
-            use_robocloud_vault,
-            token_file,
+            service_account_file=service_account,
+            use_robocloud_vault=use_robocloud_vault,
+            token_file=token_file,
         )
 
     @keyword
-    def run_script(self, script_id: str, function_name: str, parameters: dict) -> None:
+    def run_script(
+        self, script_id: str, function_name: str, parameters: dict = None
+    ) -> None:
         """Run the Google Apps Script
 
         :param script_id: Google Script identifier
@@ -71,8 +76,9 @@ class AppsScriptKeywords(LibraryContext):
         """
         request = {
             "function": function_name,
-            "parameters": [parameters],
         }
+        if parameters:
+            request["parameters"] = [parameters]
         response = (
             self.service.scripts()
             .run(
