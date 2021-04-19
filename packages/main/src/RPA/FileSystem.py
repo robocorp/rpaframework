@@ -25,7 +25,7 @@ class File(NamedTuple):
     path: str
     name: str
     size: int
-    mtime: str
+    mtime: float
 
     def __str__(self):
         return self.path
@@ -158,6 +158,7 @@ class FileSystem:
 
         :param path:    base directory for search, defaults to current working dir
         """
+        path = path or Path.cwd()
         return self.find_files(Path(path, "*"), include_dirs=False)
 
     def list_directories_in_directory(self, path=None):
@@ -165,6 +166,7 @@ class FileSystem:
 
         :param path:    base directory for search, defaults to current working dir
         """
+        path = path or Path.cwd()
         return self.find_files(Path(path, "*"), include_files=False)
 
     def log_directory_tree(self, path=None):
@@ -227,6 +229,7 @@ class FileSystem:
 
         :param path:    path to inspected directory
         """
+        path = path or Path.cwd()
         if self.does_directory_not_exist(path):
             raise NotADirectoryError(f"Not a valid directory: {path}")
 

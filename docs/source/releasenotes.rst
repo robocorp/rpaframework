@@ -5,6 +5,7 @@ Upcoming release
 ----------------
 
 - Library **RPA.Email.ImapSmtp**: Return filepaths of saved attachments
+- Library **RPA.FileSystem**: Fix default argument handling (:issue:`170`)
 
 9.5.0
 -----
