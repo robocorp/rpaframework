@@ -8,6 +8,10 @@ Library    RPA.Excel.Files
 ${ORDERS_FILE}    ${CURDIR}${/}..${/}resources${/}example.xlsx
 
 *** Tasks ***
+Create table literal
+    ${table}=    Create table    [[1,2,3],[4,5,6]]
+    Should be true    $table.size == 2
+
 Files to Table
     ${files}=    List files in directory    ${CURDIR}
     ${files}=    Create table    ${files}

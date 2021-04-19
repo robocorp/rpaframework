@@ -1,10 +1,11 @@
 import os
 import tempfile
 from collections import namedtuple, OrderedDict
+from contextlib import contextmanager
 from pathlib import Path
 
 import pytest
-from RPA.Tables import Table, Tables
+from RPA.Tables import Table, Tables, Dialect
 
 
 RESOURCES = Path(__file__).parent / ".." / "resources"
@@ -25,7 +26,14 @@ DATA_NAMEDTUPLE = [
     TUPLE_EMPTY(),
 ]
 
-DATA_DICT = [
+DATA_DICT_LIST = {
+    "one": [1, "a", 1, None, 1, None],
+    "two": [2, "b", 2, None, 2],
+    "three": [3, "c", None, None, 3, None],
+    "four": [None, None, 4, None, 4],
+}
+
+DATA_LIST_DICT = [
     {"one": 1, "two": 2, "three": 3},
     {"one": "a", "two": "b", "three": "c"},
     {"one": 1, "two": 2, "four": 4},
@@ -34,13 +42,24 @@ DATA_DICT = [
     {},
 ]
 
-DATA_LIST = [[1, 2, 3], ["a", "b", "c"], [1, 2, None, 4], [], [1, 2, 3, 4], []]
+DATA_LIST_LIST = [[1, 2, 3], ["a", "b", "c"], [1, 2, None, 4], [], [1, 2, 3, 4], []]
 
 DATA_FIXTURE = {
-    "dict": (DATA_DICT, None),
-    "list": (DATA_LIST, DATA_COLUMNS),
+    "dict-list": (DATA_DICT_LIST, None),
+    "list-dict": (DATA_LIST_DICT, None),
+    "list-list": (DATA_LIST_LIST, DATA_COLUMNS),
     "namedtuple": (DATA_NAMEDTUPLE, None),
 }
+
+
+@contextmanager
+def temppath():
+    with tempfile.NamedTemporaryFile() as fd:
+        path = fd.name
+    try:
+        yield path
+    finally:
+        os.unlink(path)
 
 
 @pytest.fixture
@@ -52,6 +71,40 @@ def library():
 def table(request):
     data, columns = DATA_FIXTURE[request.param]
     return Table(data, columns)
+
+
+def test_table_repr(table):
+    assert str(table) == "Table(columns=['one', 'two', 'three', 'four'], rows=6)"
+
+
+def test_table_compare(table):
+    assert table == Table(DATA_NAMEDTUPLE)
+    assert table != "not-comparable"
+
+
+def test_table_from_table(table):
+    copy = Table(table)
+    assert copy.columns == table.columns
+    assert copy.data == table.data
+
+    copy = Table(table, columns=["first", "second", "third", "fourth"])
+    assert copy.columns == ["first", "second", "third", "fourth"]
+    assert copy.data == table.data
+
+
+def test_table_from_dict():
+    copy = Table(DATA_DICT_LIST)
+    assert copy.columns == ["one", "two", "three", "four"]
+    assert len(copy.data) == 6
+
+    copy = Table(DATA_DICT_LIST, columns=["one", "two"])
+    assert copy.columns == ["one", "two"]
+    assert copy.data == Table(DATA_DICT_LIST).get(columns=["one", "two"]).data
+
+
+def test_table_invalid_data():
+    with pytest.raises(TypeError):
+        Table("cool")
 
 
 def test_table_columns(table):
@@ -74,22 +127,24 @@ def test_table_empty_row(table):
     assert table[3] == [None, None, None, None]
 
 
-def test_table_negative_index(table):
+def test_table_negative_row_index(table):
     assert table[-1] == [None, None, None, None]
     assert table[-2] == [1, 2, 3, 4]
     assert table[-3] == [None, None, None, None]
 
 
+def test_table_negative_column_index(table):
+    assert table[0, 1] == 2
+    assert table[0, -1] == None
+    assert table[0, -2] == 3
+
+
+def test_table_slice_index(table):
+    assert table[1:3] == [["a", "b", "c", None], [1, 2, None, 4]]
+
+
 def test_table_length(table):
     assert len(table) == 6
-
-
-def test_table_append_rows_index(table):
-    table.append_rows(["first", "second", "third"], indexes=["new_one", "new_two"])
-    assert len(table) == 9
-    assert table.index[-3] == "new_one"
-    assert table.index[-2] == "new_two"
-    assert table.index[-1] == 8
 
 
 def test_table_invalid_column(table):
@@ -98,7 +153,7 @@ def test_table_invalid_column(table):
 
 
 def test_table_range_columns():
-    table = Table(DATA_LIST)
+    table = Table(DATA_LIST_LIST)
     assert table.columns == [0, 1, 2, 3]
 
 
@@ -108,6 +163,16 @@ def test_table_named_columns():
     assert table.index == [0, 1, 2, 3, 4, 5]
     assert table[0] == [2, None]
     assert table[4] == [2, 4]
+
+
+def test_table_too_short_columns():
+    with pytest.raises(ValueError):
+        Table(DATA_LIST_LIST, columns=["two", "four"])
+
+
+def test_table_duplicate_columns():
+    with pytest.raises(ValueError):
+        Table(DATA_NAMEDTUPLE, columns=["two", "four", "two"])
 
 
 def test_table_iterate_tuples():
@@ -133,13 +198,25 @@ def test_table_iterate_tuples():
     )
 
 
+def test_table_iterate_tuples_invalid():
+    table = Table([{"one": 1, "two": 2, "assert": 3, "": 4}])
+    assert table.columns == [
+        "one",
+        "two",
+        "assert",
+        "",
+    ]
+
+    with pytest.raises(ValueError):
+        list(table.iter_tuples(with_index=False))
+
+
 @pytest.mark.parametrize(
     "data, columns", DATA_FIXTURE.values(), ids=DATA_FIXTURE.keys()
 )
 def test_keyword_create_table(data, columns, library):
-    table = library.create_table(data, columns=["yx", "kax", "kol", "nel"])
+    table = library.create_table(data)
     assert len(table) == 6
-    assert table.columns == ["yx", "kax", "kol", "nel"]
 
 
 def test_keyword_export_table_as_list(library, table):
@@ -239,14 +316,17 @@ def test_keyword_add_table_rows_too_long(library, table):
     assert table[-1] == ["x", "y", "z", "i"]
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_keyword_get_table_row(library, table):
-    library.get_table_row(table, index)
+    assert library.get_table_row(table, 0) == {
+        "one": 1,
+        "two": 2,
+        "three": 3,
+        "four": None,
+    }
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_keyword_get_table_column(library, table):
-    library.get_table_column(table, column)
+    assert library.get_table_column(table, 0) == [1, "a", 1, None, 1, None]
 
 
 def test_keyword_set_table_row(library, table):
@@ -265,16 +345,18 @@ def test_keyword_pop_table_row(library, table):
     assert len(table) == 6
     assert table[0] == [1, 2, 3, None]
 
-    row = library.pop_table_row(table, index=0, as_list=True)
+    row = library.pop_table_row(table, row=0, as_list=True)
 
     assert len(table) == 5
     assert table[0] == ["a", "b", "c", None]
     assert row == [1, 2, 3, None]
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_keyword_pop_table_column(library, table):
-    library.pop_table_column(table, column=None)
+    library.pop_table_column(table, "two")
+    assert table.columns == ["one", "three", "four"]
+    assert len(table) == 6
+    assert table[0] == [1, 3, None]
 
 
 def test_keyword_get_table_slice(library, table):
@@ -285,23 +367,24 @@ def test_keyword_get_table_slice(library, table):
     assert len(result) == 3
 
     result = library.get_table_slice(table, end=2)
-    assert len(result) == 3
+    assert len(result) == 2
 
-    result = library.get_table_slice(table, start=2, end=2)
+    result = library.get_table_slice(table, end=-1)
+    assert len(result) == 5
+
+    result = library.get_table_slice(table, start=2, end=3)
     assert len(result) == 1
 
-    with pytest.raises(ValueError):
-        library.get_table_slice(table, start=3, end=2)
+    result = library.get_table_slice(table, start=3, end=2)
+    assert len(result) == 0
 
 
 def test_keyword_find_table_rows(library, table):
-    matches = library.find_table_rows(table, "three", 3)
+    matches = library.find_table_rows(table, "three", "==", 3)
     assert len(matches) == 2
-    assert all(match["two"] == 2 for match in matches)
 
-    matches = library.find_table_rows(table, "four", None, as_list=True)
+    matches = library.find_table_rows(table, "four", "is", None)
     assert len(matches) == 4
-    assert [row[0] for row in matches] == [1, "a", None, None]
 
 
 def test_keyword_set_row_as_column_names(library, table):
@@ -311,12 +394,6 @@ def test_keyword_set_row_as_column_names(library, table):
     library.set_row_as_column_names(table, 4)
     assert table.columns == [1, 2, 3, 4]
     assert len(table) == 5
-
-
-def test_keyword_set_column_as_index(library, table):
-    # Should raise because of duplicate indexes
-    with pytest.raises(ValueError):
-        library.set_column_as_index(table, "two")
 
 
 def test_keyword_table_head(library, table):
@@ -335,14 +412,15 @@ def test_keyword_table_head_list(library, table):
     assert head[-1] == table[2]
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_keyword_table_tail(library, table):
-    library.table_tail(table, count=5)
+    tail = library.table_tail(table, count=2)
+    assert len(tail) == 2
+    assert tail[-1] == table[-1]
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_keyword_get_table_cell(library, table):
-    library.get_table_cell(table, row, column)
+    assert library.get_table_cell(table, 0, 0) == 1
+    assert library.get_table_cell(table, 2, 3) == 4
 
 
 def test_keyword_set_table_cell_existing(library, table):
@@ -362,12 +440,15 @@ def test_keyword_set_table_cell_new(library, table):
 def test_keyword_sort_table_by_column(library, table):
     library.sort_table_by_column(table, "three")
     values = library.get_table_column(table, "three", as_list=True)
-    assert values == ["c", 3, 3, None, None, None]
+    assert values == [None, None, None, 3, 3, "c"]
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_keyword_group_table_by_column(library, table):
-    library.group_table_by_column(table, column)
+    groups = library.group_table_by_column(table, "three")
+    assert len(groups) == 3
+    for group in groups:
+        column = library.get_table_column(group, "three")
+        assert len(set(column)) == 1
 
 
 def test_keyword_filter_table_by_column(library, table):
@@ -408,11 +489,37 @@ def test_keyword_trim_empty_rows(library, table):
     assert table[-2] == [None, None, None, None]
 
 
+def test_trim_column_names(library, table):
+    library.rename_table_columns(table, ["a ", "b", "  c", " d "])
+    assert table.columns == ["a ", "b", "  c", " d "]
+
+    before = table.dimensions
+    library.trim_column_names(table)
+    after = table.dimensions
+
+    assert before == after
+    assert table.columns == ["a", "b", "c", "d"]
+
+
 def test_keyword_read_table_from_csv(library):
     table = library.read_table_from_csv(RESOURCES / "easy.csv")
     assert len(table) == 3
     assert table.columns == ["first", "second", "third"]
     assert table[0] == ["1", "2", "3"]
+
+
+def test_keyword_read_table_from_csv_no_header(library):
+    table = library.read_table_from_csv(RESOURCES / "easy.csv", header=False)
+    assert len(table) == 4
+    assert table.columns == [0, 1, 2]
+    assert table[0] == ["first", "second", "third"]
+
+
+def test_keyword_read_table_from_csv_dialect_string(library):
+    table = library.read_table_from_csv(
+        RESOURCES / "hard.csv", dialect="excel", header=True
+    )
+    assert len(table) == 100
 
 
 def test_keyword_read_table_from_csv_encoding(library):
@@ -434,7 +541,7 @@ def test_keyword_read_table_from_csv_extra(library):
 
 def test_keyword_read_table_from_csv_manual(library):
     table = library.read_table_from_csv(
-        RESOURCES / "hard.csv", dialect="excel", header=True
+        RESOURCES / "hard.csv", dialect=Dialect.Excel, header=True
     )
     assert len(table) == 100
     assert table.columns == [
@@ -472,39 +579,36 @@ def test_keyword_read_table_from_csv_manual(library):
 
 
 def test_keyword_write_table_to_csv(library, table):
-    path = None
-    data = None
-
-    with tempfile.NamedTemporaryFile() as fd:
-        path = fd.name
-
-    try:
+    with temppath() as path:
         library.write_table_to_csv(table, path)
         with open(path) as fd:
             data = fd.readlines()
-    finally:
-        os.unlink(path)
 
     assert len(data) == 7
     assert data[0] == "one,two,three,four\n"
 
 
 def test_keyword_write_table_to_csv_encoding(library, table):
-    path = None
-    data = None
-
-    with tempfile.NamedTemporaryFile() as fd:
-        path = fd.name
-
-    try:
+    with temppath() as path:
         library.write_table_to_csv(table, path, encoding="utf-8")
         with open(path) as fd:
             data = fd.readlines()
-    finally:
-        os.unlink(path)
 
     assert len(data) == 7
     assert data[0] == "one,two,three,four\n"
+
+
+def test_keyword_write_table_to_csv_columns_range(library):
+    table = Table([[1, 2, 3], [4, 5, 6]])
+
+    with temppath() as path:
+        library.write_table_to_csv(table, path)
+        with open(path) as fd:
+            data = fd.readlines()
+
+    assert len(data) == 3
+    assert data[0] == "0,1,2\n"
+    assert data[1] == "1,2,3\n"
 
 
 def test_import_with_integer_keys():
@@ -547,21 +651,6 @@ def test_columns_without_data():
     columns = ["one", "two", "three"]
     table = Table(data, columns=columns)
     assert table.dimensions == (0, 3)
-
-
-def test_index_without_data():
-    data = []
-    index = ["one", "two", "three"]
-    table = Table(data, index=index)
-    assert table.dimensions == (3, 0)
-
-
-def test_columns_and_index_without_data():
-    data = []
-    columns = ["one", "two", "three"]
-    index = ["one", "two", "three"]
-    table = Table(data, columns=columns, index=index)
-    assert table.dimensions == (3, 3)
 
 
 def test_data_with_nonetype():
