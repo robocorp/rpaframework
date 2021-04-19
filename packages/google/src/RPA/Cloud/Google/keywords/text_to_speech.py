@@ -1,3 +1,5 @@
+from typing import Optional
+
 from google.cloud import texttospeech_v1
 from google.cloud.texttospeech_v1.types import (
     AudioConfig,
@@ -5,7 +7,7 @@ from google.cloud.texttospeech_v1.types import (
     SynthesisInput,
 )
 
-from RPA.Cloud.Google.keywords import (
+from . import (
     LibraryContext,
     keyword,
 )
@@ -25,14 +27,16 @@ class TextToSpeechKeywords(LibraryContext):
 
     @keyword
     def init_text_to_speech(
-        self, service_account: str = None, use_robocloud_vault: bool = False
+        self,
+        service_account: str = None,
+        use_robocloud_vault: Optional[bool] = None,
     ) -> None:
         """Initialize Google Cloud Text to Speech client
 
         :param service_credentials_file: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param use_robocloud_vault: use json stored into Robocloud Vault
         """
-        self.init_service_with_object(
+        self.service = self.init_service_with_object(
             texttospeech_v1.TextToSpeechClient,
             service_account,
             use_robocloud_vault,
@@ -44,6 +48,14 @@ class TextToSpeechKeywords(LibraryContext):
 
         :param language_code: voice languages to list, defaults to None (all)
         :return: list of supported voices
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${result}=   List Supported Voices   en-US
         """
         if language_code:
             voices = self.service.list_voices(language_code)
@@ -71,9 +83,15 @@ class TextToSpeechKeywords(LibraryContext):
         :param target_file: save synthesized output to file,
             defaults to "synthesized.mp3"
         :return: synthesized output in bytes
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${result}=   Synthesize Speech   ${text}
         """
-        if not text:
-            raise KeyError("text is required for kw: synthesize_speech")
         synth_input = SynthesisInput(text=text)
         voice_selection = VoiceSelectionParams(
             language_code=language, name=name, ssml_gender=gender

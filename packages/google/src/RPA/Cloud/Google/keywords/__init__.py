@@ -10,13 +10,13 @@ from .context import (
 )
 
 from .base import BaseKeywords
-from .services.sheets import SheetsKeywords
-from .services.vision import VisionKeywords
-from .services.drive import DriveKeywords
-from .services.translation import TranslationKeywords
-from .services.video_intelligence import VideoIntelligenceKeywords
-from .services.natural_language import NaturalLanguageKeywords
-from .services.apps_script import AppsScriptKeywords
-from .services.speech_to_text import SpeechToTextKeywords
-from .services.text_to_speech import TextToSpeechKeywords
-from .services.storage import StorageKeywords
+from .sheets import SheetsKeywords
+from .vision import VisionKeywords
+from .drive import DriveKeywords
+from .translation import TranslationKeywords
+from .video_intelligence import VideoIntelligenceKeywords
+from .natural_language import NaturalLanguageKeywords
+from .apps_script import AppsScriptKeywords
+from .speech_to_text import SpeechToTextKeywords
+from .text_to_speech import TextToSpeechKeywords
+from .storage import StorageKeywords
