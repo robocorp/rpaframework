@@ -4,7 +4,7 @@ import os
 import pickle
 import sys
 
-from RPA.Cloud import Google
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 
 DESCRIPTION = """
@@ -27,7 +27,10 @@ Copy these credentials into Robocorp Vault:
 
 SERVICE_SCOPES = {
     "drive": ["drive.appdata", "drive.file", "drive.install", "drive"],
+    "natural-language": ["cloud-language", "cloud-platform"],
+    "sheets": ["spreadsheets"],
     "apps-script": ["script.projects"],
+    "vision": ["cloud-vision", "cloud-platform"],
 }
 
 
@@ -49,7 +52,6 @@ def create_parser():
     parser.add_argument(
         "--service",
         dest="service",
-        choices=SERVICE_SCOPES.keys(),
         help="set authentication scopes for the given service",
     )
     parser.add_argument(
@@ -70,11 +72,11 @@ def main():
         print(f"\nERROR: {msg}\n")
         sys.exit(1)
 
-    if Google.GOOGLECLOUD_IMPORT_ERROR:
-        error(
-            "Please install the 'google' optional extra to use this script:\n"
-            "> pip install rpaframework[google]"
-        )
+    # if Google.GOOGLECLOUD_IMPORT_ERROR:
+    #     error(
+    #         "Please install the 'google' optional extra to use this script:\n"
+    #         "> pip install rpaframework[google]"
+    #     )
 
     if (
         not os.path.exists(args.credentials_file)
@@ -83,18 +85,24 @@ def main():
         error(f"Credentials file '{args.credentials_file}' does not exist or is empty")
 
     scopes = []
-    if args.service and args.service in SERVICE_SCOPES:
-        scopes.extend(SERVICE_SCOPES[args.service])
+
+    if args.service:  # and args.service in SERVICE_SCOPES:
+        services = args.service.split(",")
+        for service in services:
+            if service in SERVICE_SCOPES.keys():
+                scopes += SERVICE_SCOPES[service]
+
     if args.scopes:
         scopes.extend(args.scopes.split(","))
 
     if not scopes:
         error("No authentication scopes have been defined")
 
+    print(scopes)
     uris = [f"https://www.googleapis.com/auth/{scope}" for scope in scopes]
     print("Google OAuth Flow for scopes: {}".format(", ".join(scopes)))
 
-    flow = Google.InstalledAppFlow.from_client_secrets_file(args.credentials_file, uris)
+    flow = InstalledAppFlow.from_client_secrets_file(args.credentials_file, uris)
     if args.console_flow:
         credentials = flow.run_console()
     else:

@@ -1,0 +1,125 @@
+from typing import Optional
+from google.cloud import language_v1
+
+
+from . import (
+    LibraryContext,
+    keyword,
+)
+from .base import TextType, to_texttype
+
+
+class NaturalLanguageKeywords(LibraryContext):
+    """Keywords for Google Cloud Natural Language API"""
+
+    def __init__(self, ctx):
+        super().__init__(ctx)
+        self.service = None
+
+    @keyword
+    def init_natural_language(
+        self,
+        service_account: str = None,
+        use_robocloud_vault: Optional[bool] = None,
+    ) -> None:
+        """Initialize Google Cloud Natural Language client
+
+        :param service_credentials_file: filepath to credentials JSON
+        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        """
+        self.service = self.init_service_with_object(
+            language_v1.LanguageServiceClient,
+            service_account,
+            use_robocloud_vault,
+        )
+
+    @keyword
+    def analyze_sentiment(
+        self,
+        text: str = None,
+        text_file: str = None,
+        file_type: TextType = TextType.TEXT,
+        json_file: str = None,
+        lang: str = None,
+    ) -> dict:
+        """Analyze sentiment in a text file
+
+        :param text: source text
+        :param text_file: source text file
+        :param file_type: type of text, PLAIN_TEXT (default) or HTML
+        :param json_file: json target to save result, defaults to None
+        :param lang: language code of the source, defaults to None
+        :return: analysis response
+
+        # For list of supported languages:
+        # https://cloud.google.com/natural-language/docs/languages
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${result}=   Analyze Sentiment  ${text}
+            ${result}=   Analyze Sentiment  text_file=${CURDIR}${/}test.txt
+        """
+        return self._analyze_handler(
+            text, text_file, file_type, json_file, lang, "sentiment"
+        )
+
+    @keyword
+    def classify_text(
+        self,
+        text: str = None,
+        text_file: str = None,
+        file_type: TextType = TextType.TEXT,
+        json_file: str = None,
+        lang: str = None,
+    ) -> dict:
+        """Classify text
+
+        :param text: source text
+        :param text_file: source text file
+        :param file_type: type of text, PLAIN_TEXT (default) or HTML
+        :param json_file: json target to save result, defaults to None
+        :param lang: language code of the source, defaults to None
+        :return: classify response
+
+        # For list of supported languages:
+        # https://cloud.google.com/natural-language/docs/languages
+
+        **Examples**
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            ${result}=   Classify Text  ${text}
+            ${result}=   Classify Text  text_file=${CURDIR}${/}test.txt
+        """
+        return self._analyze_handler(
+            text, text_file, file_type, json_file, lang, "classify"
+        )
+
+    def _analyze_handler(
+        self, text, text_file, file_type, json_file, lang, analyze_method
+    ):
+        file_type = to_texttype(file_type)
+        if text:
+            text_content = text
+        elif text_file:
+            with open(text_file, "r") as f:
+                text_content = f.read()
+        else:
+            raise AttributeError("Either 'text' or 'text_file' must be given")
+        document = {"content": text_content, "type": file_type}
+        if lang is not None:
+            document["language"] = lang
+        if analyze_method == "classify":
+            response = self.service.classify_text(document)
+        elif analyze_method == "sentiment":
+            # Available values: NONE, UTF8, UTF16, UTF32
+            # encoding_type = enums.EncodingType.UTF8
+            response = self.service.analyze_sentiment(document, encoding_type="utf8")
+        self.write_json(json_file, response)
+        return response
