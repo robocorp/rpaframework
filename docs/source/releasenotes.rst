@@ -4,9 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+9.6.0
+-----
+
 - Library **RPA.Email.ImapSmtp**:
 
-  - Return filepaths of saved attachments
+  - Return file paths of saved attachments
   - Fix problem with non-ASCII attachment filenames
 
 - Library **RPA.FileSystem**: Fix default argument handling (:issue:`170`)

@@ -25,7 +25,7 @@ from imaplib import IMAP4_SSL
 from smtplib import SMTP, SMTP_SSL, ssl
 from smtplib import SMTPConnectError, SMTPNotSupportedError, SMTPServerDisconnected
 
-from typing import Any
+from typing import Any, Union
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.RobotLogListener import RobotLogListener
@@ -786,9 +786,11 @@ class ImapSmtp:
             attachments_saved.extend(
                 self.save_attachment(msg, target_folder, overwrite)
             )
-        return attachments_saved if len(attachments_saved) > 0 else False
+        return attachments_saved
 
-    def save_attachment(self, message, target_folder, overwrite):
+    def save_attachment(
+        self, message: Union[dict, Message], target_folder: str, overwrite: bool
+    ):
         # pylint: disable=C0301
         """Save mail attachment into local folder
 
