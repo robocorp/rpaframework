@@ -1,3 +1,4 @@
+import base64
 from enum import Enum
 from functools import wraps
 
@@ -817,9 +818,16 @@ class ImapSmtp:
             content_maintype = part.get_content_maintype()
             content_disposition = part.get("Content-Disposition")
             if content_maintype != "multipart" and content_disposition is not None:
-                filename = Path(part.get_filename()).name
-                if bool(filename):
-                    filepath = Path(target_folder) / filename
+                filename = part.get_filename()
+                if filename:
+                    transfer_encoding = part.get_all("Content-Transfer-Encoding")
+                    if transfer_encoding and transfer_encoding[0] == "base64":
+                        filename_parts = filename.split("?")
+                        if len(filename_parts) > 1:
+                            filename = base64.b64decode(filename_parts[3]).decode(
+                                filename_parts[1]
+                            )
+                    filepath = Path(target_folder) / Path(filename).name
                     if not filepath.exists() or overwrite:
                         self.logger.info(
                             "Saving attachment: %s",

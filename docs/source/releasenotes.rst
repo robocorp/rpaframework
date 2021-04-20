@@ -4,7 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
-- Library **RPA.Email.ImapSmtp**: Return filepaths of saved attachments
+- Library **RPA.Email.ImapSmtp**:
+
+  - Return filepaths of saved attachments
+  - Fix problem with non-ASCII attachment filenames
+
 - Library **RPA.FileSystem**: Fix default argument handling (:issue:`170`)
 - Library **RPA.Word.Application**: Add option to control opening documents in ReadOnly mode (:issue:`171`)
 
