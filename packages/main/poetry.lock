@@ -1,6 +1,6 @@
 [[package]]
 name = "amazon-textract-response-parser"
-version = "0.1.2"
+version = "0.1.3"
 description = "Easily parse JSON returned by Amazon Textract."
 category = "main"
 optional = true
@@ -665,7 +665,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "importlib-metadata"
-version = "4.0.0"
+version = "4.0.1"
 description = "Read metadata from Python packages"
 category = "main"
 optional = false
@@ -1788,8 +1788,8 @@ content-hash = "e5c29933202d0c98c17df53065b4c2dd672043cd7e409544ca91e667c210d967
 
 [metadata.files]
 amazon-textract-response-parser = [
-    {file = "amazon-textract-response-parser-0.1.2.tar.gz", hash = "sha256:898f5e6c3657c31a13e8756afa34f4d226987b535f878db1b5b5f3ef0dd34789"},
-    {file = "amazon_textract_response_parser-0.1.2-py2.py3-none-any.whl", hash = "sha256:eaba15bcb941acae126aa1f94ba72a9f35e1b5994457d2a9a0857ace512ab8a9"},
+    {file = "amazon-textract-response-parser-0.1.3.tar.gz", hash = "sha256:7301885efa8c58eb8888241151e7968c30bb55b1f28673b2f8149ffebb06d34d"},
+    {file = "amazon_textract_response_parser-0.1.3-py2.py3-none-any.whl", hash = "sha256:4a10cd0762b315f50c2bcb48fe97449b2fe3cf92bc86a6eb79cd4616fbb8236e"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
@@ -2233,8 +2233,8 @@ idna = [
     {file = "idna-2.10.tar.gz", hash = "sha256:b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6"},
 ]
 importlib-metadata = [
-    {file = "importlib_metadata-4.0.0-py3-none-any.whl", hash = "sha256:19192b88d959336bfa6bdaaaef99aeafec179eca19c47c804e555703ee5f07ef"},
-    {file = "importlib_metadata-4.0.0.tar.gz", hash = "sha256:2e881981c9748d7282b374b68e759c87745c25427b67ecf0cc67fb6637a1bff9"},
+    {file = "importlib_metadata-4.0.1-py3-none-any.whl", hash = "sha256:d7eb1dea6d6a6086f8be21784cc9e3bcfa55872b52309bc5fad53a8ea444465d"},
+    {file = "importlib_metadata-4.0.1.tar.gz", hash = "sha256:8c501196e49fb9df5df43833bdb1e4328f64847763ec8a50703148b73784d581"},
 ]
 importlib-resources = [
     {file = "importlib_resources-5.1.2-py3-none-any.whl", hash = "sha256:ebab3efe74d83b04d6bf5cd9a17f0c5c93e60fb60f30c90f56265fce4682a469"},

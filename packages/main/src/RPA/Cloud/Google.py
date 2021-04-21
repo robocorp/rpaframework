@@ -1181,7 +1181,10 @@ class ServiceSheets(GoogleBase):
 
         sheet_values = service.spreadsheets().values()
         if action == "insert":
-            resource = {"majorDimension": major_dimension, "values": values}
+            datavalues = []
+            for val in values:
+                datavalues.append([val])
+            resource = {"majorDimension": major_dimension, "values": datavalues}
             returnable = sheet_values.append(
                 spreadsheetId=sheet_id,
                 range=sheet_range,
