@@ -4,6 +4,8 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Cloud.Google**: Fix regression bug with Sheets keyword `Insert Values`
+
 9.6.0
 -----
 
