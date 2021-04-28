@@ -2,7 +2,7 @@ from typing import Dict, Optional
 
 from google.cloud import videointelligence
 
-from . import LibraryContext, keyword, VideoFeature, to_feature
+from . import LibraryContext, keyword, to_feature
 
 
 class VideoIntelligenceKeywords(LibraryContext):
