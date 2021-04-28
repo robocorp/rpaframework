@@ -1,12 +1,8 @@
-from typing import Union, Optional
+from typing import Dict, Union, Optional
 
 from google.cloud import translate_v3
 
-from . import (
-    LibraryContext,
-    keyword,
-)
-from .base import TextType, to_texttype
+from . import LibraryContext, keyword, TextType, to_texttype
 
 
 class TranslationKeywords(LibraryContext):
@@ -52,7 +48,7 @@ class TranslationKeywords(LibraryContext):
         source_language: str = None,
         target_language: str = None,
         mime_type: TextType = None,
-    ) -> dict:
+    ) -> Dict:
         """Translate text
 
         :param text: text to translate

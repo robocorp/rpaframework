@@ -1,27 +1,14 @@
-from enum import Enum
 from io import BytesIO
 import mimetypes
 from pathlib import Path
 import shutil
 import time
-from typing import Optional
+from typing import Dict, List, Optional
 
 from apiclient.errors import HttpError
 from apiclient.http import MediaFileUpload, MediaIoBaseDownload
 
-from . import (
-    LibraryContext,
-    keyword,
-)
-
-
-class Update(Enum):
-    """Possible file update actions."""
-
-    trash = 1
-    untrash = 2
-    star = 3
-    unstar = 4
+from . import LibraryContext, keyword, UpdateAction
 
 
 class GoogleDriveError(Exception):
@@ -87,7 +74,7 @@ class DriveKeywords(LibraryContext):
         )
 
     @keyword
-    def drive_upload_file(
+    def upload_drive_file(
         self,
         filename: str = None,
         folder: str = None,
@@ -106,13 +93,13 @@ class DriveKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${file1_id}=  Drive Upload File   data.json  # Upload file to drive root
-            ${file2_id}=  Drive Upload File   newdata.json  new_folder  make_dir=True
-            ${file3_id}=  Drive Upload File   data.json  overwrite=True
+            ${file1_id}=  Upload Drive File  data.json  # Upload file to drive root
+            ${file2_id}=  Upload Drive File  newdata.json  new_folder  make_dir=True
+            ${file3_id}=  Upload Drive File  data.json  overwrite=True
         """
-        folder_id = self.drive_get_folder_id(folder)
+        folder_id = self.get_drive_folder_id(folder)
         if folder_id is None and make_dir:
-            folder_id = self.drive_create_directory(folder)
+            folder_id = self.create_drive_directory(folder)
         if folder_id is None:
             raise GoogleDriveError(
                 "Target folder '%s' does not exist or could not be created" % folder
@@ -127,7 +114,7 @@ class DriveKeywords(LibraryContext):
             raise GoogleDriveError("Filename '%s' does not exist" % filename)
 
         query_string = f"name = '{filepath.name}' and '{folder_id}' in parents"
-        target_file = self.drive_search_files(query=query_string, recurse=True)
+        target_file = self.search_drive_files(query=query_string, recurse=True)
         guess_mimetype = mimetypes.guess_type(str(filepath.absolute()))
         file_mimetype = guess_mimetype[0] if guess_mimetype else "*/*"
         media = MediaFileUpload(
@@ -180,20 +167,20 @@ class DriveKeywords(LibraryContext):
             shutil.copyfileobj(fh, f, length=downloader._total_size)
 
     @keyword
-    def drive_download_files(
+    def download_drive_files(
         self,
         file_dict: dict = None,
         query: str = None,
         source: str = None,
         limit: int = None,
         timeout: float = None,
-    ) -> list:
+    ) -> List:
         """Download files specified by file dictionary or query string
 
         Parameters `start`, `limit` and `timeout` are used only when
         downloading files defined by `query` parameter.
 
-        :param file_dict: file dictionary returned by `Drive Search Files`
+        :param file_dict: file dictionary returned by `Search Drive Files`
         :param query: drive query string to find target files, defaults to None
         :param source: source directory where query is executed
         :param limit: maximum amount of files that are downloaded, defaults to None
@@ -204,16 +191,18 @@ class DriveKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${files}=    Drive Search Files    query=name contains '.json'
+            ${files}=    Search Drive Files    query=name contains '.json'
             FOR    ${f}    IN    @{files}
-                Run Keyword If  ${f}[size] < 2000  Drive Download Files  file_dict=${f}
+                IF  ${f}[size] < 2000
+                    Download Drive Files  file_dict=${f}
+                END
             END
 
-            ${folder_id}=   Drive Get Folder Id   datafolder
-            Drive Download Files  query=name contains '.json' and '${folder_id}' in parents  recurse=True
+            ${folder_id}=   Get Drive Folder Id   datafolder
+            Download Drive Files  query=name contains '.json' and '${folder_id}' in parents  recurse=True
         """  # noqa: E501
         if query:
-            filelist = self.drive_search_files(query, source=source)
+            filelist = self.search_drive_files(query, source=source)
             files_downloaded = []
             start_time = time.time()
 
@@ -241,13 +230,13 @@ class DriveKeywords(LibraryContext):
         return []
 
     @keyword
-    def drive_update_file(
+    def update_drive_file(
         self,
         file_id: str = None,
         file_dict: dict = None,
         query: str = None,
         source: str = None,
-        action: Update = Update.star,
+        action: UpdateAction = UpdateAction.star,
         multiple_ok: bool = False,
     ) -> int:
         """Update file specified by id, file dictionary or query string
@@ -271,8 +260,8 @@ class DriveKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${folder_id}=  Drive Get Folder Id   datafolder
-            ${updated}=    Drive Update File   query=name contains '.json' and '${folder_id}' in parents
+            ${folder_id}=  Get Drive Folder Id   datafolder
+            ${updated}=    Update Drive File  query=name contains '.json' and '${folder_id}' in parents
             ...            action=star
             ...            multiple_ok=True
         """  # noqa: E501
@@ -292,7 +281,7 @@ class DriveKeywords(LibraryContext):
         elif file_dict:
             target_files.append(file_dict.get("id", None))
         else:
-            files = self.drive_search_files(query, source=source, recurse=True)
+            files = self.search_drive_files(query, source=source, recurse=True)
             target_files = [tf.get("id", None) for tf in files]
             if not multiple_ok and len(target_files) > 1:
                 raise GoogleDriveError(
@@ -302,15 +291,15 @@ class DriveKeywords(LibraryContext):
 
         return target_files
 
-    def _drive_files_update(self, file_id: str, action: Update):
+    def _drive_files_update(self, file_id: str, action: UpdateAction):
         body = None
-        if action == Update.trash:
+        if action == UpdateAction.trash:
             body = {"trashed": True}
-        elif action == Update.untrash:
+        elif action == UpdateAction.untrash:
             body = {"trashed": False}
-        elif action == Update.star:
+        elif action == UpdateAction.star:
             body = {"starred": True}
-        elif action == Update.unstar:
+        elif action == UpdateAction.unstar:
             body = {"starred": False}
         else:
             # TODO: mypy should handle enum exhaustivity validation
@@ -320,7 +309,7 @@ class DriveKeywords(LibraryContext):
         return updated_file
 
     @keyword
-    def drive_delete_file(
+    def delete_drive_file(
         self,
         file_id: str = None,
         file_dict: dict = None,
@@ -332,7 +321,7 @@ class DriveKeywords(LibraryContext):
         Note. Be extra careful when calling this keyword!
 
         :param file_id: drive file id
-        :param file_dict: file dictionary returned by `Drive Search Files`
+        :param file_dict: file dictionary returned by `Search Drive Files`
         :param query: drive query string to find target file, needs to match 1 file
          unless parameter `multiple_ok` is set to `True`
         :param multiple_ok: set to `True` if it is ok to perform delete
@@ -343,8 +332,8 @@ class DriveKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${folder_id}=  Drive Get Folder Id   datafolder
-            ${deleted}=    Drive Delete File   query=name contains '.json' and '${folder_id}' in parents
+            ${folder_id}=  Get Drive Folder Id   datafolder
+            ${deleted}=    Delete Drive File  query=name contains '.json' and '${folder_id}' in parents
             ...            multiple_ok=True
         """  # noqa: E501
         target_files = self._get_target_file(file_id, file_dict, query, multiple_ok)
@@ -356,7 +345,7 @@ class DriveKeywords(LibraryContext):
         return delete_count
 
     @keyword
-    def drive_get_folder_id(self, folder: str = None) -> str:
+    def get_drive_folder_id(self, folder: str = None) -> str:
         """Get file id for the folder
 
         :param folder: name of the folder to identify, by default returns drive's
@@ -367,8 +356,8 @@ class DriveKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${root_id}=    Drive Get Folder Id   # returns Drive root folder id
-            ${folder_id}=  Drive Get Folder Id  subdir
+            ${root_id}=    Get Drive Folder Id   # returns Drive root folder id
+            ${folder_id}=  Get Drive Folder Id  subdir
         """
         mime_folder_type = "application/vnd.google-apps.folder"
         folder_id = None
@@ -377,7 +366,7 @@ class DriveKeywords(LibraryContext):
             folder_id = file.get("id", None)
         else:
             query_string = f"name = '{folder}' AND mimeType = '{mime_folder_type}'"
-            folders = self.drive_search_files(query=query_string, recurse=True)
+            folders = self.search_drive_files(query=query_string, recurse=True)
             if len(folders) == 1:
                 folder_id = folders[0].get("id", None)
             else:
@@ -387,7 +376,7 @@ class DriveKeywords(LibraryContext):
         return folder_id
 
     @keyword
-    def drive_move_file(
+    def move_drive_file(
         self,
         file_id: str = None,
         file_dict: dict = None,
@@ -395,11 +384,11 @@ class DriveKeywords(LibraryContext):
         source: str = None,
         target: str = None,
         multiple_ok: bool = False,
-    ) -> list:
+    ) -> List:
         """Move file specified by id, file dictionary or query string into target folder
 
         :param file_id: drive file id
-        :param file_dict: file dictionary returned by `Drive Search Files`
+        :param file_dict: file dictionary returned by `Search Drive Files`
         :param query: drive query string to find target file, needs to match 1 file
         :param source: name of the folder to move file from, is by default drive's
          `root` folder id
@@ -412,20 +401,20 @@ class DriveKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${source_id}=  Drive Get Folder Id  sourcefolder
+            ${source_id}=  Get Drive Folder Id  sourcefolder
             ${query}=      Set Variable  name contains '.json' and '${sourceid}' in parents
-            ${files}=      Drive Move File  query=${query}  folder=target_folder  multiple_ok=True
+            ${files}=      Move Drive File  query=${query}  folder=target_folder  multiple_ok=True
         """  # noqa: E501
         result_files = []
         if file_id or file_dict:
             target_files = self._get_target_file(file_id, file_dict, query, multiple_ok)
         else:
-            target_files = self.drive_search_files(query, source=source)
+            target_files = self.search_drive_files(query, source=source)
         target_parent = None
         if len(target_files) == 0:
             raise GoogleDriveError("Did not find any files to move")
         if target:
-            target_parent = self.drive_get_folder_id(target)
+            target_parent = self.get_drive_folder_id(target)
         if target_parent is None:
             raise GoogleDriveError(
                 "Unable to find target folder: '%s'" % (target if target else "root")
@@ -447,9 +436,9 @@ class DriveKeywords(LibraryContext):
         return result_files
 
     @keyword
-    def drive_search_files(
+    def search_drive_files(
         self, query: str = None, recurse: bool = False, source: str = None
-    ) -> list:
+    ) -> List:
         """Search Google Drive for files matching query string
 
         :param query: search string, defaults to None which means that all files
@@ -462,11 +451,11 @@ class DriveKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${files}=  Drive Search Files   query=name contains 'hello'
-            ${files}=  Drive Search Files   query=modifiedTime > '2020-06-04T12:00:00'
-            ${files}=  Drive Search Files   query=mimeType contains 'image/' or mimeType contains 'video/'
-            ${files}=  Drive Search Files   query=name contains '.yaml'  recurse=True
-            ${files}=  Drive Search Files   query=name contains '.yaml'  source=datadirectory
+            ${files}=  Search Drive Files   query=name contains 'hello'
+            ${files}=  Search Drive Files   query=modifiedTime > '2020-06-04T12:00:00'
+            ${files}=  Search Drive Files   query=mimeType contains 'image/' or mimeType contains 'video/'
+            ${files}=  Search Drive Files   query=name contains '.yaml'  recurse=True
+            ${files}=  Search Drive Files   query=name contains '.yaml'  source=datadirectory
         """  # noqa: E501
         page_token = None
         filelist = []
@@ -476,7 +465,7 @@ class DriveKeywords(LibraryContext):
         }
 
         if not recurse:
-            folder_id = "root" if not source else self.drive_get_folder_id(source)
+            folder_id = "root" if not source else self.get_drive_folder_id(source)
             if folder_id is None:
                 return []
             parameters["q"] += f" and '{folder_id}' in parents"
@@ -514,9 +503,9 @@ class DriveKeywords(LibraryContext):
         return filelist
 
     @keyword
-    def drive_create_directory(
+    def create_drive_directory(
         self, folder: str = None, parent_folder: str = None
-    ) -> dict:
+    ) -> Dict:
         """Create new directory to Google Drive
 
         :param folder: name for the new directory
@@ -526,7 +515,7 @@ class DriveKeywords(LibraryContext):
         if not folder or len(folder) == 0:
             raise GoogleDriveError("Can't create Drive directory with empty name")
 
-        folder_id = self.drive_get_folder_id(folder)  # , parent_folder)
+        folder_id = self.get_drive_folder_id(folder)  # , parent_folder)
         if folder_id:
             self.logger.info(
                 "Folder '%s' already exists. Not creating new one.", folder_id
@@ -539,7 +528,7 @@ class DriveKeywords(LibraryContext):
         }
 
         if parent_folder:
-            parent_folder_id = self.drive_get_folder_id(parent_folder)
+            parent_folder_id = self.get_drive_folder_id(parent_folder)
             file_metadata["parents"] = [parent_folder_id]
         added_folder = (
             self.service.files().create(body=file_metadata, fields="id").execute()
@@ -547,17 +536,17 @@ class DriveKeywords(LibraryContext):
         return added_folder
 
     @keyword
-    def drive_export_file(
+    def export_drive_file(
         self,
         file_id: str = None,
         file_dict: dict = None,
         target_file: str = None,
         mimetype: str = "application/pdf",
-    ):
+    ) -> str:
         """Export Google Drive file using Drive export links
 
         :param file_id: drive file id
-        :param file_dict: file dictionary returned by `Drive Search Files`
+        :param file_dict: file dictionary returned by `Search Drive Files`
         :param target_file: name for the exported file
         :param mimetype: export mimetype, defaults to "application/pdf"
         :return: file path to the exported file
@@ -567,7 +556,7 @@ class DriveKeywords(LibraryContext):
         .. code-block:: robotframework
 
             ${files}=  Drive Search Files  query=name contains 'my example worksheet'
-            Drive Export File  file_dict=${files}[0]
+            Export Drive File  file_dict=${files}[0]
         """
         if target_file is None or len(target_file) == 0:
             raise AttributeError("The target_file is required parameter for export")

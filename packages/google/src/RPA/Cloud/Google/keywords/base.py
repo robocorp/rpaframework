@@ -1,28 +1,7 @@
-from enum import Enum
-
 from . import (
     LibraryContext,
     keyword,
 )
-
-
-class TextType(Enum):
-    """Possible text types."""
-
-    TEXT = "text/plain"
-    HTML = "text/html"
-
-
-def to_texttype(value):
-    """Convert value to TextType enum."""
-    if isinstance(value, TextType):
-        return value
-
-    sanitized = str(value).upper().strip().replace(" ", "_")
-    try:
-        return TextType[sanitized]
-    except KeyError as err:
-        raise ValueError(f"Unknown text type: {value}") from err
 
 
 class BaseKeywords(LibraryContext):
@@ -45,4 +24,4 @@ class BaseKeywords(LibraryContext):
             self.robocorp_vault_secret_key = vault_secret_key
         if self.robocorp_vault_name and self.robocorp_vault_secret_key:
             self.use_robocorp_vault = True
-        self.robocloud_auth_type = auth_type
+        self.cloud_auth_type = auth_type

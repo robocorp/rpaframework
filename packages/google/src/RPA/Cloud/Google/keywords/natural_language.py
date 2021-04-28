@@ -1,12 +1,8 @@
-from typing import Optional
+from typing import Dict, Optional
 from google.cloud import language_v1
 
 
-from . import (
-    LibraryContext,
-    keyword,
-)
-from .base import TextType, to_texttype
+from . import LibraryContext, keyword, TextType, to_texttype
 
 
 class NaturalLanguageKeywords(LibraryContext):
@@ -44,7 +40,7 @@ class NaturalLanguageKeywords(LibraryContext):
         file_type: TextType = TextType.TEXT,
         json_file: str = None,
         lang: str = None,
-    ) -> dict:
+    ) -> Dict:
         """Analyze sentiment in a text file
 
         :param text: source text
@@ -78,7 +74,7 @@ class NaturalLanguageKeywords(LibraryContext):
         file_type: TextType = TextType.TEXT,
         json_file: str = None,
         lang: str = None,
-    ) -> dict:
+    ) -> Dict:
         """Classify text
 
         :param text: source text

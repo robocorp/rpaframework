@@ -162,10 +162,6 @@ class LibraryContext:
                 "Either 'service_credentials_file' "
                 "or 'use_robocorp_vault' needs to be set"
             )
-        if credentials is None:
-            raise AssertionError(
-                "Failed to create credentials for service '%s'" % service_name
-            )
         try:
             service = discovery.build(
                 service_name,
@@ -227,8 +223,7 @@ class LibraryContext:
         else:
             self.logger.info("Authenticating with default client object")
             service = client_object()
-        if service is None:
-            raise AssertionError("Failed to create client: '%s'" % client_object)
+
         return service
 
     def write_json(self, json_file, response):

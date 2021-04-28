@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional
+from typing import Dict, Optional
 
 from google.cloud import videointelligence
 
@@ -70,7 +70,7 @@ class VideoIntelligenceKeywords(LibraryContext):
         output_uri: str = None,
         json_file: str = None,
         timeout: int = 300,
-    ) -> dict:
+    ) -> Dict:
         """Annotate video
 
         Possible values for features:
