@@ -1,0 +1,10 @@
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.7.5
+  - pip=20.1
+  - pip:
+    #- rpaframework==9.5.0
+    - rpaframework_google-0.2.0-py3-none-any.whl
+    - rpaframework-9.5.0-py3-none-any.whl

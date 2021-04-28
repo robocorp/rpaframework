@@ -67,6 +67,7 @@ class SpeechToTextKeywords(LibraryContext):
         encoding: str = None,
         language_code: str = "en_US",
         audio_channel_count: int = 2,
+        sample_rate: int = None,
     ) -> Dict:
         """Recognize text in the audio file
 
@@ -75,6 +76,7 @@ class SpeechToTextKeywords(LibraryContext):
         :param encoding: audio file encoding
         :param language_code: language in the audio
         :param audio_channel_count: number of audio channel
+        :param sample_rate: rate in hertz, for example 16000
         :return: recognized texts
 
         **Examples**
@@ -86,16 +88,17 @@ class SpeechToTextKeywords(LibraryContext):
             ${result}=  Recognize Text From Audio   audio_file=${CURDIR}${/}test.mp3
         """
         audio = self.set_audio_type(audio_file, audio_uri)
-        audio_encoding = ENCODING["UNSPECIFIED"]
+        parameters = {"use_enhanced": True}
+        # audio_encoding = ENCODING["UNSPECIFIED"]
         if encoding and encoding.upper() in ENCODING.keys():
-            audio_encoding = ENCODING[encoding.upper()]
-        config = RecognitionConfig(  # pylint: disable=E1101
-            encoding=audio_encoding,
-            language_code=language_code,
-            sample_rate_hertz=16000,
-            audio_channel_count=audio_channel_count,
-            use_enhanced=True,
-        )
+            parameters["encoding"] = ENCODING[encoding.upper()]
+        if sample_rate:
+            parameters["sample_rate_hertz"] = sample_rate
+        if language_code:
+            parameters["language_code"] = language_code
+        if audio_channel_count:
+            parameters["audio_channel_count"] = audio_channel_count
+        config = RecognitionConfig(**parameters)  # pylint: disable=E1101
         rec = self.service.recognize(config=config, audio=audio)
         return rec.results
 

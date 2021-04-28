@@ -104,21 +104,26 @@ class NaturalLanguageKeywords(LibraryContext):
         self, text, text_file, file_type, json_file, lang, analyze_method
     ):
         file_type = to_texttype(file_type)
+        parameters = {"type_": file_type}
         if text:
-            text_content = text
+            parameters["content"] = text
         elif text_file:
             with open(text_file, "r") as f:
-                text_content = f.read()
+                parameters["content"] = f.read()
         else:
             raise AttributeError("Either 'text' or 'text_file' must be given")
-        document = {"content": text_content, "type": file_type}
+
         if lang is not None:
-            document["language"] = lang
+            parameters["language"] = lang
+
+        document = language_v1.Document(**parameters)
         if analyze_method == "classify":
-            response = self.service.classify_text(document)
+            response = self.service.classify_text(document=document)
         elif analyze_method == "sentiment":
             # Available values: NONE, UTF8, UTF16, UTF32
             # encoding_type = enums.EncodingType.UTF8
-            response = self.service.analyze_sentiment(document, encoding_type="utf8")
+            response = self.service.analyze_sentiment(
+                document=document, encoding_type="UTF8"
+            )
         self.write_json(json_file, response)
         return response
