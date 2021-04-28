@@ -1,9 +1,5 @@
 *** Settings ***
 Documentation     Test script for RPA.Cloud.Google
-Library           RPA.Cloud.Google
-...               vault_name=${VAULT_NAME}
-...               vault_secret_key=${VAULT_KEY}
-...               cloud_auth_type=${AUTH_TYPE}
 Library           RPA.Robocloud.Secrets
 Library           Collections
 Suite Setup       Init all Google Services
@@ -19,10 +15,14 @@ ${STORAGE_BUCKET}    %{GOOGLE_TEST_STORAGE_BUCKET}
 ${VAULT_NAME}     %{GOOGLE_TEST_VAULT_NAME}
 ${VAULT_KEY}      %{GOOGLE_TEST_VAULT_KEY}
 ${AUTH_TYPE}      %{GOOGLE_TEST_AUTH_TYPE}
-${RESOURCES}      ${CURDIR}${/}..${/}resources
+${RESOURCES}      %{GOOGLE_TEST_RESOURCE_DIR=${CURDIR}${/}..${/}resources}
 
 *** Keywords ***
 Init all Google services
+    Import Library    RPA.Cloud.Google
+    ...    vault_name=${VAULT_NAME}
+    ...    vault_secret_key=${VAULT_KEY}
+    ...    cloud_auth_type=${AUTH_TYPE}
     Init Apps Script
     Init Drive
     Init Natural Language

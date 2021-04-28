@@ -9,7 +9,7 @@ from .context import (
     GoogleOAuthAuthenticationError,
 )
 
-from .enums import TextType, to_texttype, UpdateAction
+from .enums import TextType, to_texttype, UpdateAction, VideoFeature, to_feature
 from .base import BaseKeywords
 from .sheets import SheetsKeywords
 from .vision import VisionKeywords

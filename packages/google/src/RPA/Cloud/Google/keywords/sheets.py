@@ -70,7 +70,7 @@ class SheetsKeywords(LibraryContext):
         return spreadsheet.get("spreadsheetId")
 
     @keyword
-    def insert_values_into_sheet(
+    def insert_sheet_values(
         self,
         sheet_id: str,
         sheet_range: str,
@@ -95,8 +95,8 @@ class SheetsKeywords(LibraryContext):
         .. code-block:: robotframework
 
             ${values}   Evaluate   [[11, 12, 13], ['aa', 'bb', 'cc']]
-            ${result}=  Insert Values Into Sheet   ${SHEET_ID}  A:B  ${values}
-            ${result}=  Insert Values Into Sheet   ${SHEET_ID}  A:B  ${values}  ROWS
+            ${result}=  Insert Sheet Values   ${SHEET_ID}  A:B  ${values}
+            ${result}=  Insert Sheet Values   ${SHEET_ID}  A:B  ${values}  ROWS
         """
         resource = {"majorDimension": major_dimension, "values": values}
         return (
@@ -112,7 +112,7 @@ class SheetsKeywords(LibraryContext):
         )
 
     @keyword
-    def update_values_to_sheet(
+    def update_sheet_values(
         self,
         sheet_id: str,
         sheet_range: str,
@@ -137,7 +137,7 @@ class SheetsKeywords(LibraryContext):
         .. code-block:: robotframework
 
             ${row}  Evaluate   [[22, 33 ,44]]
-            ${result}=  Update Values To Sheet  ${SHEET_ID}  A6:C6  ${row}   ROWS
+            ${result}=  Update Sheet Values  ${SHEET_ID}  A6:C6  ${row}   ROWS
         """
         resource = {"majorDimension": major_dimension, "values": values}
         return (
@@ -153,7 +153,7 @@ class SheetsKeywords(LibraryContext):
         )
 
     @keyword
-    def get_values_from_sheet(
+    def get_sheet_values(
         self,
         sheet_id: str,
         sheet_range: str,
@@ -176,7 +176,7 @@ class SheetsKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${values}=  Get Values From Sheet  ${SHEET_ID}  A1:C1
+            ${values}=  Get Sheet Values  ${SHEET_ID}  A1:C1
         """  # noqa: E501
         return (
             self.service.spreadsheets()
@@ -191,7 +191,7 @@ class SheetsKeywords(LibraryContext):
         )
 
     @keyword
-    def clear_values_from_sheet(self, sheet_id: str, sheet_range: str) -> Dict:
+    def clear_sheet_values(self, sheet_id: str, sheet_range: str) -> Dict:
         """Clear cell values for range of cells within a sheet
 
         :param sheet_id: target sheet
@@ -204,7 +204,7 @@ class SheetsKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${result}=  Clear Values From Sheet  ${SHEET_ID}  A1:C1
+            ${result}=  Clear Sheet Values  ${SHEET_ID}  A1:C1
         """
         return (
             self.service.spreadsheets()

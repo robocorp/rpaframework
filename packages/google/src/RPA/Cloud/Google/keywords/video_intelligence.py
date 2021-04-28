@@ -1,37 +1,8 @@
-from enum import Enum
 from typing import Dict, Optional
 
 from google.cloud import videointelligence
 
-from . import (
-    LibraryContext,
-    keyword,
-)
-
-
-class VideoFeature(Enum):
-    """Possible video features."""
-
-    FEATURE_UNSPECIFIED = videointelligence.Feature.FEATURE_UNSPECIFIED
-    LABEL_DETECTION = videointelligence.Feature.LABEL_DETECTION
-    SHOT_CHANGE_DETECTION = videointelligence.Feature.SHOT_CHANGE_DETECTION
-    EXPLICIT_CONTENT_DETECTION = videointelligence.Feature.EXPLICIT_CONTENT_DETECTION
-    SPEECH_TRANSCRIPTION = videointelligence.Feature.SPEECH_TRANSCRIPTION
-    TEXT_DETECTION = videointelligence.Feature.TEXT_DETECTION
-    OBJECT_TRACKING = videointelligence.Feature.OBJECT_TRACKING
-    LOGO_RECOGNITION = videointelligence.Feature.LOGO_RECOGNITION
-
-
-def to_feature(value):
-    """Convert value to VideoFeature enum."""
-    if isinstance(value, VideoFeature):
-        return int(value.value)
-
-    sanitized = str(value).upper().strip().replace(" ", "_")
-    try:
-        return int(VideoFeature[sanitized].value)
-    except KeyError as err:
-        raise ValueError(f"Unknown video feature: {value}") from err
+from . import LibraryContext, keyword, VideoFeature, to_feature
 
 
 class VideoIntelligenceKeywords(LibraryContext):
