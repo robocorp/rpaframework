@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Dict, Optional
 from google.cloud import speech
 from google.cloud.speech_v1.types import RecognitionConfig, RecognitionAudio
 
@@ -60,14 +60,14 @@ class SpeechToTextKeywords(LibraryContext):
         )
 
     @keyword
-    def recognize(
+    def recognize_text_from_audio(
         self,
         audio_file: str = None,
         audio_uri: str = None,
         encoding: str = None,
         language_code: str = "en_US",
         audio_channel_count: int = 2,
-    ) -> dict:
+    ) -> Dict:
         """Recognize text in the audio file
 
         :param audio_file: local audio file path
@@ -83,9 +83,8 @@ class SpeechToTextKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${result}=  Recognize   audio_file=${CURDIR}${/}test.mp3
+            ${result}=  Recognize Text From Audio   audio_file=${CURDIR}${/}test.mp3
         """
-
         audio = self.set_audio_type(audio_file, audio_uri)
         audio_encoding = ENCODING["UNSPECIFIED"]
         if encoding and encoding.upper() in ENCODING.keys():

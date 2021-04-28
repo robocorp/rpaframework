@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from google.cloud import texttospeech_v1
 from google.cloud.texttospeech_v1.types import (
@@ -46,7 +46,7 @@ class TextToSpeechKeywords(LibraryContext):
         )
 
     @keyword
-    def list_supported_voices(self, language_code: str = None) -> list:
+    def list_supported_voices(self, language_code: str = None) -> List:
         """List supported voices for the speech
 
         :param language_code: voice languages to list, defaults to None (all)
@@ -75,7 +75,7 @@ class TextToSpeechKeywords(LibraryContext):
         gender: str = "MALE",
         encoding: str = "MP3",
         target_file: str = "synthesized.mp3",
-    ) -> bytes:
+    ) -> List:
         """Synthesize speech synchronously
 
         :param text: input text to synthesize

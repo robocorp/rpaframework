@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Dict, List, Optional
 
 from . import (
     LibraryContext,
@@ -70,14 +70,14 @@ class SheetsKeywords(LibraryContext):
         return spreadsheet.get("spreadsheetId")
 
     @keyword
-    def insert_values(
+    def insert_values_into_sheet(
         self,
         sheet_id: str,
         sheet_range: str,
         values: list,
         major_dimension: str = "COLUMNS",
         value_input_option: str = "USER_ENTERED",
-    ) -> dict:
+    ) -> Dict:
         """Insert values into sheet cells
 
         :param sheet_id: target sheet
@@ -95,8 +95,8 @@ class SheetsKeywords(LibraryContext):
         .. code-block:: robotframework
 
             ${values}   Evaluate   [[11, 12, 13], ['aa', 'bb', 'cc']]
-            ${result}=  Insert Values   ${SHEET_ID}  A:B  ${values}
-            ${result}=  Insert Values   ${SHEET_ID}  A:B  ${values}  ROWS
+            ${result}=  Insert Values Into Sheet   ${SHEET_ID}  A:B  ${values}
+            ${result}=  Insert Values Into Sheet   ${SHEET_ID}  A:B  ${values}  ROWS
         """
         resource = {"majorDimension": major_dimension, "values": values}
         return (
@@ -112,14 +112,14 @@ class SheetsKeywords(LibraryContext):
         )
 
     @keyword
-    def update_values(
+    def update_values_to_sheet(
         self,
         sheet_id: str,
         sheet_range: str,
         values: list,
         major_dimension: str = "COLUMNS",
         value_input_option: str = "USER_ENTERED",
-    ) -> dict:
+    ) -> Dict:
         """Insert values into sheet cells
 
         :param sheet_id: target sheet
@@ -137,7 +137,7 @@ class SheetsKeywords(LibraryContext):
         .. code-block:: robotframework
 
             ${row}  Evaluate   [[22, 33 ,44]]
-            ${result}=  Update Values   ${SHEET_ID}  A6:C6  ${row}   ROWS
+            ${result}=  Update Values To Sheet  ${SHEET_ID}  A6:C6  ${row}   ROWS
         """
         resource = {"majorDimension": major_dimension, "values": values}
         return (
@@ -153,13 +153,13 @@ class SheetsKeywords(LibraryContext):
         )
 
     @keyword
-    def get_values(
+    def get_values_from_sheet(
         self,
         sheet_id: str,
         sheet_range: str,
         value_render_option: str = "UNFORMATTED_VALUE",
         datetime_render_option: str = "FORMATTED_STRING",
-    ) -> list:
+    ) -> List:
         """Get values from the range in the sheet
 
         :param sheet_id: target sheet
@@ -176,7 +176,7 @@ class SheetsKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${values}=  Get Values   ${SHEET_ID}  A1:C1
+            ${values}=  Get Values From Sheet  ${SHEET_ID}  A1:C1
         """  # noqa: E501
         return (
             self.service.spreadsheets()
@@ -191,7 +191,7 @@ class SheetsKeywords(LibraryContext):
         )
 
     @keyword
-    def clear_values(self, sheet_id: str, sheet_range: str) -> dict:
+    def clear_values_from_sheet(self, sheet_id: str, sheet_range: str) -> Dict:
         """Clear cell values for range of cells within a sheet
 
         :param sheet_id: target sheet
@@ -204,7 +204,7 @@ class SheetsKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${result}=  Clear Values   ${SHEET_ID}  A1:C1
+            ${result}=  Clear Values From Sheet  ${SHEET_ID}  A1:C1
         """
         return (
             self.service.spreadsheets()
@@ -217,7 +217,7 @@ class SheetsKeywords(LibraryContext):
         )
 
     @keyword
-    def copy_sheet(self, sheet_id: str, target_sheet_id: str) -> dict:
+    def copy_sheet(self, sheet_id: str, target_sheet_id: str) -> Dict:
         """Copy spreadsheet to target spreadsheet
 
         *NOTE:* service account user must have access to
