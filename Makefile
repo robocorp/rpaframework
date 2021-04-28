@@ -72,6 +72,7 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 		--exclude RPA.Desktop.utils*\
 		--exclude RPA.PDF.keywords*\
 		--exclude RPA.Cloud.objects*\
+		--exclude RPA.Cloud.Google.keywords*\
 		rpaframework
 
 	poetry run python -c "import shutil; shutil.copy2('docs/source/template/iframeResizer.contentWindow.map', 'docs/source/include/libdoc/')"
@@ -87,6 +88,7 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 		--exclude RPA.Desktop.utils*\
 		--exclude RPA.PDF.keywords*\
 		--exclude RPA.Cloud.objects*\
+		--exclude RPA.Cloud.Google.keywords*\
 		rpaframework
 
 changelog: ## Print changes in latest release
