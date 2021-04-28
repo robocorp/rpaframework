@@ -2,8 +2,6 @@ import importlib
 import logging
 from robotlibcore import DynamicCore
 
-from RPA.core.logger import RobotLogListener
-
 
 from .keywords import (
     AppsScriptKeywords,
@@ -40,8 +38,8 @@ class Google(DynamicCore):
 
     - Method 1 as environment variables, ``GOOGLE_APPLICATION_CREDENTIALS`` with path to JSON file.
     - Method 2 as keyword parameter to ``Init Storage Client`` for example.
-    - Method 3 as Robocloud vault secret. The vault name and secret key name needs to be given in library init
-      or with keyword ``Set Robocloud Vault``. Secret value should contain JSON file contents.
+    - Method 3 as Robocorp vault secret. The vault name and secret key name needs to be given in library init
+      or with keyword ``Set Robocorp Vault``. Secret value should contain JSON file contents.
 
     Method 1. service credentials using environment variable
 
@@ -194,18 +192,18 @@ class Google(DynamicCore):
     def __init__(
         self,
         service_account: str = None,
-        robocloud_vault_name: str = None,
-        robocloud_vault_secret_key: str = None,
-        robocloud_auth_type: str = "serviceaccount",
+        vault_name: str = None,
+        vault_secret_key: str = None,
+        cloud_auth_type: str = "serviceaccount",
     ):
         self.logger = logging.getLogger(__name__)
         self.service_account_file = service_account
-        self.robocloud_vault_name = robocloud_vault_name
-        self.robocloud_vault_secret_key = robocloud_vault_secret_key
-        self.robocloud_auth_type = robocloud_auth_type
+        self.robocorp_vault_name = vault_name
+        self.robocorp_vault_secret_key = vault_secret_key
+        self.cloud_auth_type = cloud_auth_type
         self.use_robocloud_vault = False
-        if robocloud_vault_name and robocloud_vault_secret_key:
-            self.use_robocloud_vault = True
+        if self.robocorp_vault_name and self.robocorp_vault_secret_key:
+            self.use_robocorp_vault = True
 
         try:
             secrets_library = importlib.import_module("RPA.Robocloud.Secrets")
@@ -228,4 +226,3 @@ class Google(DynamicCore):
             VisionKeywords(self),
         ]
         super().__init__(libraries)
-        # listener = RobotLogListener()

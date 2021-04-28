@@ -17,24 +17,30 @@ class SheetsKeywords(LibraryContext):
     def init_sheets(
         self,
         service_account: str = None,
-        use_robocloud_vault: Optional[bool] = None,
+        credentials: str = None,
+        use_robocorp_vault: Optional[bool] = None,
+        scopes: list = None,
+        token_file: str = None,
     ) -> None:
         """Initialize Google Sheets client
 
-        :param service_credentials_file: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_account: file path to service account file
+        :param credentials: file path to credentials file
+        :param use_robocorp_vault: use credentials in `Robocorp Vault`
+        :param scopes: list of extra authentication scopes
+        :param token_file: file path to token file
         """
-        scopes = [
-            "https://www.googleapis.com/auth/drive",
-            "https://www.googleapis.com/auth/drive.file",
-            "https://www.googleapis.com/auth/spreadsheets",
-        ]
+        sheets_scopes = ["drive", "drive.file", "spreadsheets"]
+        if scopes:
+            sheets_scopes += scopes
         self.service = self.init_service(
-            "sheets",
-            "v4",
-            scopes,
+            service_name="sheets",
+            api_version="v4",
+            scopes=sheets_scopes,
             service_account_file=service_account,
-            use_robocloud_vault=use_robocloud_vault,
+            credentials_file=credentials,
+            use_robocorp_vault=use_robocorp_vault,
+            token_file=token_file,
         )
 
     @keyword
@@ -71,7 +77,7 @@ class SheetsKeywords(LibraryContext):
         values: list,
         major_dimension: str = "COLUMNS",
         value_input_option: str = "USER_ENTERED",
-    ) -> None:
+    ) -> dict:
         """Insert values into sheet cells
 
         :param sheet_id: target sheet
@@ -80,6 +86,7 @@ class SheetsKeywords(LibraryContext):
         :param major_dimension: major dimension of the values, default `COLUMNS`
         :param value_input_option: controls whether input strings are parsed or not,
          default `USER_ENTERED`
+        :return: operation result
 
         **Examples**
 
@@ -112,7 +119,7 @@ class SheetsKeywords(LibraryContext):
         values: list,
         major_dimension: str = "COLUMNS",
         value_input_option: str = "USER_ENTERED",
-    ) -> None:
+    ) -> dict:
         """Insert values into sheet cells
 
         :param sheet_id: target sheet
@@ -121,6 +128,7 @@ class SheetsKeywords(LibraryContext):
         :param major_dimension: major dimension of the values, default `COLUMNS`
         :param value_input_option: controls whether input strings are parsed or not,
          default `USER_ENTERED`
+        :return: operation result
 
         **Examples**
 
@@ -160,6 +168,7 @@ class SheetsKeywords(LibraryContext):
          in the output defaults to "UNFORMATTED_VALUE"
         :param datetime_render_option: how dates, times, and durations should be
          represented in the output, defaults to "FORMATTED_STRING"
+        :return: operation result
 
         **Examples**
 
@@ -182,11 +191,12 @@ class SheetsKeywords(LibraryContext):
         )
 
     @keyword
-    def clear_values(self, sheet_id: str, sheet_range: str) -> None:
+    def clear_values(self, sheet_id: str, sheet_range: str) -> dict:
         """Clear cell values for range of cells within a sheet
 
         :param sheet_id: target sheet
         :param sheet_range: target sheet range
+        :return: operation result
 
         **Examples**
 
@@ -207,7 +217,7 @@ class SheetsKeywords(LibraryContext):
         )
 
     @keyword
-    def copy_sheet(self, sheet_id: str, target_sheet_id: str):
+    def copy_sheet(self, sheet_id: str, target_sheet_id: str) -> dict:
         """Copy spreadsheet to target spreadsheet
 
         *NOTE:* service account user must have access to
@@ -215,7 +225,7 @@ class SheetsKeywords(LibraryContext):
 
         :param sheet_id: ID of the sheet to copy
         :param target_sheet_id: ID of the target sheet
-        :return: request response
+        :return: operation result
 
         **Examples**
 
@@ -223,7 +233,7 @@ class SheetsKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            Copy Sheet   ${SHEET_ID}  ${NEW_SHEET}
+            ${result}=  Copy Sheet   ${SHEET_ID}  ${NEW_SHEET}
         """
         body = {
             "destination_spreadsheet_id": target_sheet_id,

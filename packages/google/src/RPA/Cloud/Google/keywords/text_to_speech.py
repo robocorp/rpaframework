@@ -29,21 +29,24 @@ class TextToSpeechKeywords(LibraryContext):
     def init_text_to_speech(
         self,
         service_account: str = None,
-        use_robocloud_vault: Optional[bool] = None,
+        use_robocorp_vault: Optional[bool] = None,
+        token_file: str = None,
     ) -> None:
         """Initialize Google Cloud Text to Speech client
 
-        :param service_credentials_file: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into Robocloud Vault
+        :param service_account: file path to service account file
+        :param use_robocorp_vault: use credentials in `Robocorp Vault`
+        :param token_file: file path to token file
         """
         self.service = self.init_service_with_object(
             texttospeech_v1.TextToSpeechClient,
             service_account,
-            use_robocloud_vault,
+            use_robocorp_vault,
+            token_file,
         )
 
     @keyword
-    def list_supported_voices(self, language_code: str = None):
+    def list_supported_voices(self, language_code: str = None) -> list:
         """List supported voices for the speech
 
         :param language_code: voice languages to list, defaults to None (all)
@@ -66,13 +69,13 @@ class TextToSpeechKeywords(LibraryContext):
     @keyword
     def synthesize_speech(
         self,
-        text,
-        language="en-US",
-        name="en-US-Standard-B",
-        gender="MALE",
-        encoding="MP3",
-        target_file="synthesized.mp3",
-    ):
+        text: str,
+        language: str = "en-US",
+        name: str = "en-US-Standard-B",
+        gender: str = "MALE",
+        encoding: str = "MP3",
+        target_file: str = "synthesized.mp3",
+    ) -> bytes:
         """Synthesize speech synchronously
 
         :param text: input text to synthesize

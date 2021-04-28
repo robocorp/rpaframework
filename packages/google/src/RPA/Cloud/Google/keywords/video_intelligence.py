@@ -2,7 +2,6 @@ from enum import Enum
 from typing import Optional
 
 from google.cloud import videointelligence
-from google.protobuf.json_format import MessageToJson
 
 from . import (
     LibraryContext,
@@ -46,17 +45,20 @@ class VideoIntelligenceKeywords(LibraryContext):
     def init_video_intelligence(
         self,
         service_account: str = None,
-        use_robocloud_vault: Optional[bool] = None,
+        use_robocorp_vault: Optional[bool] = None,
+        token_file: str = None,
     ) -> None:
         """Initialize Google Cloud Video Intelligence client
 
-        :param service_account: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_account: file path to service account file
+        :param use_robocorp_vault: use credentials in `Robocorp Vault`
+        :param token_file: file path to token file
         """
         self.service = self.init_service_with_object(
             videointelligence.VideoIntelligenceServiceClient,
             service_account,
-            use_robocloud_vault,
+            use_robocorp_vault,
+            token_file,
         )
 
     @keyword
@@ -68,7 +70,7 @@ class VideoIntelligenceKeywords(LibraryContext):
         output_uri: str = None,
         json_file: str = None,
         timeout: int = 300,
-    ):
+    ) -> dict:
         """Annotate video
 
         Possible values for features:
@@ -84,8 +86,8 @@ class VideoIntelligenceKeywords(LibraryContext):
 
         If `video_uri` is given then that is used even if `video_file` is given.
 
-        :param video_uri: Google Cloud Storage URI to input video
         :param video_file: local file path to input video
+        :param video_uri: Google Cloud Storage URI to input video
         :param features: list of annotation features to detect,
             defaults to LABEL_DETECTION,SHOT_CHANGE_DETECTION
         :param output_uri: Google Cloud Storage URI to store response json

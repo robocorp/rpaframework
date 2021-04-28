@@ -20,17 +20,20 @@ class NaturalLanguageKeywords(LibraryContext):
     def init_natural_language(
         self,
         service_account: str = None,
-        use_robocloud_vault: Optional[bool] = None,
+        use_robocorp_vault: Optional[bool] = None,
+        token_file: str = None,
     ) -> None:
         """Initialize Google Cloud Natural Language client
 
-        :param service_credentials_file: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_account: file path to service account file
+        :param use_robocorp_vault: use credentials in `Robocorp Vault`
+        :param token_file: file path to token file
         """
         self.service = self.init_service_with_object(
             language_v1.LanguageServiceClient,
             service_account,
-            use_robocloud_vault,
+            use_robocorp_vault,
+            token_file,
         )
 
     @keyword

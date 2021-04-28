@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "rpaframework-google"
 version = "0.1.0"
-description = "Core utilities used by RPA Framework"
+description = "Google library for RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
 ]
@@ -12,7 +12,7 @@ homepage = "https://rpaframework.org/"
 documentation = "https://rpaframework.org/"
 repository = "https://github.com/robocorp/rpaframework"
 
-keywords = ["robotframework", "rpa", "automation"]
+keywords = ["robotframework", "rpa", "automation", "google"]
 classifiers = [
 	"License :: OSI Approved :: Apache Software License",
 	"Development Status :: 3 - Alpha",
