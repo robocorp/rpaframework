@@ -18,17 +18,20 @@ class VisionKeywords(LibraryContext):
     def init_vision(
         self,
         service_account: str = None,
-        use_robocloud_vault: Optional[bool] = None,
+        use_robocorp_vault: Optional[bool] = None,
+        token_file: str = None,
     ) -> None:
         """Initialize Google Cloud Vision client
 
-        :param service_account: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_account: file path to service account file
+        :param use_robocorp_vault: use credentials in `Robocorp Vault`
+        :param token_file: file path to token file
         """
         self.service = self.init_service_with_object(
             vision.ImageAnnotatorClient,
             service_account,
-            use_robocloud_vault,
+            use_robocorp_vault,
+            token_file,
         )
 
     def set_image_type(self, image_file: str = None, image_uri: str = None):

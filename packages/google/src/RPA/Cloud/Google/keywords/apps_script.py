@@ -34,24 +34,30 @@ class AppsScriptKeywords(LibraryContext):
     @keyword
     def init_apps_script(
         self,
+        service_account: str = None,
+        credentials: str = None,
+        use_robocorp_vault: Optional[bool] = None,
         scopes: list = None,
         token_file: str = None,
-        service_account: str = None,
-        use_robocloud_vault: Optional[bool] = None,
     ) -> None:
-        """Initialize Google Sheets client
+        """Initialize Google Apps Script client
 
-        :param service_credentials_file: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_account: file path to service account file
+        :param credentials: file path to credentials file
+        :param use_robocorp_vault: use credentials in `Robocorp Vault`
+        :param scopes: list of extra authentication scopes
+        :param token_file: file path to token file
         """
-        apps_scopes = ["script.projects"] + scopes if scopes else []
-        self.logger.info("Scopes: %s", apps_scopes)
+        apps_scopes = ["script.projects"]
+        if scopes:
+            apps_scopes += scopes
         self.service = self.init_service(
-            "script",
-            "v1",
-            apps_scopes,
+            service_name="script",
+            api_version="v1",
+            scopes=apps_scopes,
             service_account_file=service_account,
-            use_robocloud_vault=use_robocloud_vault,
+            credentials_file=credentials,
+            use_robocorp_vault=use_robocorp_vault,
             token_file=token_file,
         )
 
@@ -59,7 +65,7 @@ class AppsScriptKeywords(LibraryContext):
     def run_script(
         self, script_id: str, function_name: str, parameters: dict = None
     ) -> None:
-        """Run the Google Apps Script
+        """Run the Google Apps Script function
 
         :param script_id: Google Script identifier
         :param function_name: name of the script function
