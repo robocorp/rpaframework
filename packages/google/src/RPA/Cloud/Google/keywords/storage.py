@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any, Dict, List, Optional
 
 from google.cloud import storage
 
@@ -44,7 +44,7 @@ class StorageKeywords(LibraryContext):
         )
 
     @keyword
-    def create_bucket(self, bucket_name: str) -> dict:
+    def create_storage_bucket(self, bucket_name: str) -> Dict:
         """Create Google Cloud Storage bucket
 
         :param bucket_name: name as string
@@ -56,13 +56,13 @@ class StorageKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${result}=   Create Bucket   visionfolder
+            ${result}=   Create Storage Bucket   visionfolder
         """
         bucket = self.service.create_bucket(bucket_name)
         return bucket
 
     @keyword
-    def delete_bucket(self, bucket_name: str):
+    def delete_storage_bucket(self, bucket_name: str):
         """Delete Google Cloud Storage bucket
 
         Bucket needs to be empty before it can be deleted.
@@ -75,16 +75,16 @@ class StorageKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${result}=   Delete Bucket   visionfolder
+            ${result}=   Delete Storage Bucket   visionfolder
         """
-        bucket = self.get_bucket(bucket_name)
+        bucket = self.get_storage_bucket(bucket_name)
         try:
             bucket.delete()
         except Exception as e:
             raise ValueError("The bucket you tried to delete was not empty") from e
 
     @keyword
-    def get_bucket(self, bucket_name: str) -> dict:
+    def get_storage_bucket(self, bucket_name: str) -> Dict:
         """Get Google Cloud Storage bucket
 
         :param bucket_name: name as string
@@ -102,7 +102,7 @@ class StorageKeywords(LibraryContext):
         return bucket
 
     @keyword
-    def list_buckets(self) -> list:
+    def list_storage_buckets(self) -> List:
         """List Google Cloud Storage buckets
 
         :return: list of buckets
@@ -113,7 +113,7 @@ class StorageKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${buckets}=   List Buckets
+            ${buckets}=   List Storage Buckets
             FOR  ${bucket}  IN   @{buckets}
                 Log  ${bucket}
             END
@@ -121,14 +121,13 @@ class StorageKeywords(LibraryContext):
         return list(self.service.list_buckets())
 
     @keyword
-    def delete_files(self, bucket_name: str, files: Any):
+    def delete_storage_files(self, bucket_name: str, files: Any) -> List:
         """Delete files in the bucket
 
         Files need to be object name in the bucket.
 
         :param bucket_name: name as string
-        :param files: single file, list of files or
-            comma separated list of files
+        :param files: single file, list of files or comma separated list of files
         :return: list of files which could not be deleted
 
          **Examples**
@@ -137,11 +136,11 @@ class StorageKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${result}=   Delete Files   ${BUCKET_NAME}   file1,file2
+            ${result}=   Delete Storage Files   ${BUCKET_NAME}   file1,file2
         """
         if not isinstance(files, list):
             files = files.split(",")
-        bucket = self.get_bucket(bucket_name)
+        bucket = self.get_storage_bucket(bucket_name)
         notfound = []
         for filename in files:
             filename = filename.strip()
@@ -153,7 +152,7 @@ class StorageKeywords(LibraryContext):
         return notfound if len(notfound) > 0 else True
 
     @keyword
-    def list_files(self, bucket_name: str) -> list:
+    def list_storage_files(self, bucket_name: str) -> List:
         """List files in the bucket
 
         :param bucket_name: name as string
@@ -165,12 +164,12 @@ class StorageKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${files}=   List Files   ${BUCKET_NAME}
+            ${files}=   List Storage Files  ${BUCKET_NAME}
             FOR  ${bucket}  IN   @{files}
                 Log  ${file}
             END
         """
-        bucket = self.get_bucket(bucket_name)
+        bucket = self.get_storage_bucket(bucket_name)
         all_blobs = bucket.list_blobs()
         sorted_blobs = sorted(blob.name for blob in all_blobs)
         return [
@@ -178,7 +177,9 @@ class StorageKeywords(LibraryContext):
         ]
 
     @keyword
-    def upload_file(self, bucket_name: str, filename: str, target_name: str) -> None:
+    def upload_storage_file(
+        self, bucket_name: str, filename: str, target_name: str
+    ) -> None:
         """Upload a file into a bucket
 
         :param bucket_name: name as string
@@ -191,16 +192,16 @@ class StorageKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            Upload File   ${BUCKET_NAME}
+            Upload Storage File  ${BUCKET_NAME}
             ...   ${CURDIR}${/}test.txt    test.txt
         """
-        bucket = self.get_bucket(bucket_name)
+        bucket = self.get_storage_bucket(bucket_name)
         blob = bucket.blob(target_name)
         with open(filename, "rb") as f:
             blob.upload_from_file(f)
 
     @keyword
-    def upload_files(self, bucket_name: str, files: dict) -> None:
+    def upload_storage_files(self, bucket_name: str, files: dict) -> None:
         """Upload files into a bucket
 
         Example `files`:
@@ -218,17 +219,17 @@ class StorageKeywords(LibraryContext):
             ${files}=   Create Dictionary
             ...   test1.txt   ${CURDIR}${/}test1.txt
             ...   test2.txt   ${CURDIR}${/}test2.txt
-            Upload Files   ${BUCKET_NAME}   ${files}
+            Upload Storage Files   ${BUCKET_NAME}   ${files}
         """
         if not isinstance(files, dict):
             raise ValueError("files needs to be an dictionary")
-        bucket = self.get_bucket(bucket_name)
+        bucket = self.get_storage_bucket(bucket_name)
         for target_name, filename in files.items():
             blob = bucket.blob(target_name)
             blob.upload_from_filename(filename)
 
     @keyword
-    def download_files(self, bucket_name: str, files: Any) -> list:
+    def download_storage_files(self, bucket_name: str, files: Any) -> List:
         """Download files from a bucket
 
         Example `files`:
@@ -245,11 +246,11 @@ class StorageKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${result}=  Download Files   ${BUCKET_NAME}   test1.txt,test2.txt
+            ${result}=  Download Storage Files  ${BUCKET_NAME}   test1.txt,test2.txt
         """
         if isinstance(files, str):
             files = files.split(",")
-        bucket = self.get_bucket(bucket_name)
+        bucket = self.get_storage_bucket(bucket_name)
         notfound = []
         if isinstance(files, dict):
             for object_name, filename in files.items():

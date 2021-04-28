@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Dict, Optional
 from google.cloud import vision
 
 from . import (
@@ -47,7 +47,7 @@ class VisionKeywords(LibraryContext):
     @keyword
     def detect_labels(
         self, image_file: str = None, image_uri: str = None, json_file: str = None
-    ) -> dict:
+    ) -> Dict:
         """Detect labels in the image
 
         :param image_file: source image file path
@@ -72,7 +72,7 @@ class VisionKeywords(LibraryContext):
     @keyword
     def detect_text(
         self, image_file: str = None, image_uri: str = None, json_file: str = None
-    ):
+    ) -> Dict:
         """Detect text in the image
 
         :param image_file: source image file path
@@ -97,7 +97,7 @@ class VisionKeywords(LibraryContext):
     @keyword
     def detect_document(
         self, image_file: str = None, image_uri: str = None, json_file: str = None
-    ):
+    ) -> Dict:
         """Detect document
 
         :param image_file: source image file path
@@ -122,7 +122,7 @@ class VisionKeywords(LibraryContext):
     @keyword
     def annotate_image(
         self, image_file: str, image_uri: str, json_file: str = None
-    ) -> dict:
+    ) -> Dict:
         """Annotate image
 
         :param image_file: source image file path
@@ -147,7 +147,7 @@ class VisionKeywords(LibraryContext):
     @keyword
     def face_detection(
         self, image_file: str = None, image_uri: str = None, json_file: str = None
-    ) -> dict:
+    ) -> Dict:
         """Detect faces
 
         :param image_file: source image file path
