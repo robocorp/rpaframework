@@ -30,21 +30,21 @@ class StorageKeywords(LibraryContext):
     def init_storage(
         self,
         service_account: str = None,
-        use_robocloud_vault: Optional[bool] = None,
+        use_robocorp_vault: Optional[bool] = None,
+        token_file: str = None,
     ) -> None:
         """Initialize Google Cloud Storage client
 
-        :param service_credentials_file: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_account: file path to service account file
+        :param use_robocorp_vault: use credentials in `Robocorp Vault`
+        :param token_file: file path to token file
         """
         self.service = self.init_service_with_object(
-            storage.Client,
-            service_account,
-            use_robocloud_vault,
+            storage.Client, service_account, use_robocorp_vault, token_file
         )
 
     @keyword
-    def create_bucket(self, bucket_name: str):
+    def create_bucket(self, bucket_name: str) -> dict:
         """Create Google Cloud Storage bucket
 
         :param bucket_name: name as string
@@ -84,7 +84,7 @@ class StorageKeywords(LibraryContext):
             raise ValueError("The bucket you tried to delete was not empty") from e
 
     @keyword
-    def get_bucket(self, bucket_name: str):
+    def get_bucket(self, bucket_name: str) -> dict:
         """Get Google Cloud Storage bucket
 
         :param bucket_name: name as string
@@ -118,8 +118,7 @@ class StorageKeywords(LibraryContext):
                 Log  ${bucket}
             END
         """
-        buckets = list(self.service.list_buckets())
-        return buckets
+        return list(self.service.list_buckets())
 
     @keyword
     def delete_files(self, bucket_name: str, files: Any):
@@ -130,8 +129,7 @@ class StorageKeywords(LibraryContext):
         :param bucket_name: name as string
         :param files: single file, list of files or
             comma separated list of files
-        :return: list of files which could not be deleted,
-            or True if all were deleted
+        :return: list of files which could not be deleted
 
          **Examples**
 
@@ -155,7 +153,7 @@ class StorageKeywords(LibraryContext):
         return notfound if len(notfound) > 0 else True
 
     @keyword
-    def list_files(self, bucket_name: str):
+    def list_files(self, bucket_name: str) -> list:
         """List files in the bucket
 
         :param bucket_name: name as string
@@ -180,7 +178,7 @@ class StorageKeywords(LibraryContext):
         ]
 
     @keyword
-    def upload_file(self, bucket_name: str, filename: str, target_name: str):
+    def upload_file(self, bucket_name: str, filename: str, target_name: str) -> None:
         """Upload a file into a bucket
 
         :param bucket_name: name as string
@@ -202,7 +200,7 @@ class StorageKeywords(LibraryContext):
             blob.upload_from_file(f)
 
     @keyword
-    def upload_files(self, bucket_name: str, files: dict):
+    def upload_files(self, bucket_name: str, files: dict) -> None:
         """Upload files into a bucket
 
         Example `files`:
@@ -230,7 +228,7 @@ class StorageKeywords(LibraryContext):
             blob.upload_from_filename(filename)
 
     @keyword
-    def download_files(self, bucket_name: str, files: Any):
+    def download_files(self, bucket_name: str, files: Any) -> list:
         """Download files from a bucket
 
         Example `files`:
@@ -239,8 +237,7 @@ class StorageKeywords(LibraryContext):
         :param bucket_name: name as string
         :param files: list of object names or dictionary of
             object names and target files
-        :return: list of files which could not be downloaded, or
-            True if all were downloaded
+        :return: list of files which could not be downloaded
 
         **Examples**
 
@@ -281,4 +278,4 @@ class StorageKeywords(LibraryContext):
                         )
                 else:
                     notfound.append(filename)
-        return notfound if len(notfound) > 0 else True
+        return notfound

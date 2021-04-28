@@ -46,17 +46,17 @@ class SpeechToTextKeywords(LibraryContext):
     def init_speech_to_text(
         self,
         service_account: str = None,
-        use_robocloud_vault: Optional[bool] = None,
+        use_robocorp_vault: Optional[bool] = None,
+        token_file: str = None,
     ) -> None:
         """Initialize Google Cloud Speech to Text client
 
-        :param service_account: filepath to credentials JSON
-        :param use_robocloud_vault: use json stored into `Robocloud Vault`
+        :param service_account: file path to service account file
+        :param use_robocorp_vault: use credentials in `Robocorp Vault`
+        :param token_file: file path to token file
         """
         self.service = self.init_service_with_object(
-            speech.SpeechClient,
-            service_account,
-            use_robocloud_vault,
+            speech.SpeechClient, service_account, use_robocorp_vault, token_file
         )
 
     @keyword
@@ -66,11 +66,15 @@ class SpeechToTextKeywords(LibraryContext):
         audio_uri: str = None,
         encoding: str = None,
         language_code: str = "en_US",
-        audio_channel_count=2,
-    ):
+        audio_channel_count: int = 2,
+    ) -> dict:
         """Recognize text in the audio file
 
-        :param audio_file_uri: Google Cloud Storage URI
+        :param audio_file: local audio file path
+        :param audio_uri: Google Cloud Storage URI
+        :param encoding: audio file encoding
+        :param language_code: language in the audio
+        :param audio_channel_count: number of audio channel
         :return: recognized texts
 
         **Examples**
