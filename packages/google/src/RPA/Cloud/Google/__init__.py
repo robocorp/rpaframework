@@ -1,5 +1,6 @@
 import importlib
 import logging
+import os
 from robotlibcore import DynamicCore
 
 
@@ -27,16 +28,16 @@ class Google(DynamicCore):
     - Create a service account key file (JSON) and save it to a place the robot
       can use it
     - Enable APIs
-    - Install rpaframework[google]
+    - Install rpaframework-google package
 
     **Google authentication**
 
-    Authentication for Google is set with `service credentials JSON file` which can be given to the library
+    Authentication for Google is set with `service account JSON file` which can be given to the library
     in three different ways or with `credentials.json`, which is used for OAuth authentication.
 
     Methods when using service credentials:
 
-    - Method 1 as environment variables, ``GOOGLE_APPLICATION_CREDENTIALS`` with path to JSON file.
+    - Method 1 as environment variables, ``GOOGLE_APPLICATION_CREDENTIALS`` with path to service account file.
     - Method 2 as keyword parameter to ``Init Storage Client`` for example.
     - Method 3 as Robocorp vault secret. The vault name and secret key name needs to be given in library init
       or with keyword ``Set Robocorp Vault``. Secret value should contain JSON file contents.
@@ -52,33 +53,9 @@ class Google(DynamicCore):
         Init Google services
             # NO parameters for Vision Client, expecting to get JSON
             # with GOOGLE_APPLICATION_CREDENTIALS environment variable
-            Init Vision Client
+            Init Vision
 
-    Method 2. service credentials with keyword parameter
-
-    .. code-block:: robotframework
-
-        *** Settings ***
-        Library   RPA.Cloud.Google
-
-        *** Tasks ***
-        Init Google services
-            Init Speech To Text Client  /path/to/service_credentials.json
-
-    Method 3. setting Robocloud Vault in the library init
-
-    .. code-block:: robotframework
-
-        *** Settings ***
-        Library   RPA.Cloud.Google
-        ...       robocloud_vault_name=googlecloud
-        ...       robocloud_vault_secret_key=servicecreds
-
-        *** Tasks ***
-        Init Google services
-            Init Storage Client   use_robocloud_vault=${TRUE}
-
-    Method 3. setting Robocloud Vault with keyword
+    Method 2. service account with keyword parameter
 
     .. code-block:: robotframework
 
@@ -87,8 +64,32 @@ class Google(DynamicCore):
 
         *** Tasks ***
         Init Google services
-            Set Robocloud Vault   vault_name=googlecloud  vault_secret_key=servicecreds
-            Init Storage Client   use_robocloud_vault=${TRUE}
+            Init Speech To Text   /path/to/service_account.json
+
+    Method 3. setting Robocorp Vault in the library init
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library   RPA.Cloud.Google
+        ...       vault_name=googlecloud
+        ...       vault_secret_key=servicecreds
+
+        *** Tasks ***
+        Init Google services
+            Init Storage
+
+    Method 3. setting Robocorp Vault with keyword
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library   RPA.Cloud.Google
+
+        *** Tasks ***
+        Init Google services
+            Set Robocorp Vault   vault_name=googlecloud  vault_secret_key=servicecreds
+            Init Storage    use_robocorp_vault=${TRUE}
 
     Method when using OAuth credentials.json:
 
@@ -104,7 +105,7 @@ class Google(DynamicCore):
 
         *** Tasks ***
         Init Google OAuth services
-            Init Apps Script Client   /path/to/credentials.json   ${SCRIPT_SCOPES}
+            Init Apps Script    /path/to/credentials.json   ${SCRIPT_SCOPES}
 
     **Creating and using OAuth token file**
 
@@ -131,19 +132,10 @@ class Google(DynamicCore):
         *** Keywords ***
         Set up Google Drive authentication
             Set Robocloud Vault    vault_name=googlecloud
-            Init Drive Client    use_robocloud_vault=True
+            Init Drive     use_robocorp_vault=True
 
 
-    **Requirements**
-
-    Due to number of dependencies related to Google Cloud services this library has been set as
-    an optional package for ``rpaframework``.
-
-    This can be installed by opting in to the `google` dependency:
-
-    ``pip install rpaframework[google]``
-
-    or as a separate package:
+    **Installation**
 
     ``pip install rpaframework-google``
 
@@ -157,12 +149,12 @@ class Google(DynamicCore):
         Library   RPA.Cloud.Google
 
         *** Variables ***
-        ${SERVICE CREDENTIALS}    ${/}path${/}to${/}service_credentials.json
+        ${SERVICE_ACCOUNT}    ${/}path${/}to${/}service_account.json
         ${BUCKET_NAME}            testbucket12213123123
 
         *** Tasks ***
         Upload a file into a new storage bucket
-            [Setup]   Init Storage Client   ${SERVICE CREDENTIALS}
+            [Setup]   Init Storage    ${SERVICE_ACCOUNT}
             Create Bucket    ${BUCKET_NAME}
             Upload File      ${BUCKET_NAME}   ${/}path${/}to${/}file.pdf  myfile.pdf
             @{files}         List Files   ${BUCKET_NAME}
@@ -177,10 +169,10 @@ class Google(DynamicCore):
         from RPA.Cloud.Google import Google
 
         library = Google
-        service_credentials = '/path/to/service_credentials.json'
+        service_account = '/path/to/service_account.json'
 
-        library.init_vision_client(service_credentials)
-        library.init_text_to_speech(service_credentials)
+        library.init_vision(service_account)
+        library.init_text_to_speech(service_account)
 
         response = library.detect_text('imagefile.png', 'result.json')
         library.synthesize_speech('I want this said aloud', target_file='said.mp3')
@@ -201,10 +193,11 @@ class Google(DynamicCore):
         self.robocorp_vault_name = vault_name
         self.robocorp_vault_secret_key = vault_secret_key
         self.cloud_auth_type = cloud_auth_type
-        self.use_robocloud_vault = False
+        self.use_robocorp_vault = False
         if self.robocorp_vault_name and self.robocorp_vault_secret_key:
             self.use_robocorp_vault = True
-
+        if self.service_account_file is None:
+            self.service_account_file = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
         try:
             secrets_library = importlib.import_module("RPA.Robocloud.Secrets")
             self.secrets_library = getattr(secrets_library, "Secrets")
