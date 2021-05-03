@@ -48,7 +48,7 @@ class AppsScriptKeywords(LibraryContext):
         :param scopes: list of extra authentication scopes
         :param token_file: file path to token file
         """
-        apps_scopes = ["script.projects"]
+        apps_scopes = ["script.projects", "drive.scripts", "script.external_request"]
         if scopes:
             apps_scopes += scopes
         self.service = self.init_service(
