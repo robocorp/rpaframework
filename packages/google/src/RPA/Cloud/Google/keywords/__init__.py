@@ -9,10 +9,11 @@ from .context import (
     GoogleOAuthAuthenticationError,
 )
 
-from .apps_script import AppsScriptKeywords
-from .base import BaseKeywords
-from .drive import DriveKeywords
 from .enums import TextType, to_texttype, UpdateAction, VideoFeature, to_feature
+from .base import BaseKeywords
+
+from .apps_script import AppsScriptKeywords
+from .drive import DriveKeywords
 from .gmail import GmailKeywords
 from .natural_language import NaturalLanguageKeywords
 from .sheets import SheetsKeywords

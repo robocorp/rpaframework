@@ -1,5 +1,6 @@
 import base64
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 from typing import Optional
 
@@ -46,9 +47,7 @@ class GmailKeywords(LibraryContext):
         :param scopes: list of extra authentication scopes
         :param token_file: file path to token file
         """
-        gmail_scopes = [
-            "gmail.readonly",
-        ]
+        gmail_scopes = ["gmail.send", "gmail.compose", "gmail.modify", "gmail.labels"]
         if scopes:
             gmail_scopes += scopes
         self.service = self.init_service(
@@ -63,7 +62,6 @@ class GmailKeywords(LibraryContext):
 
     def create_message(
         self,
-        sender: str,
         to: str,
         subject: str,
         message_text: str,
@@ -72,7 +70,6 @@ class GmailKeywords(LibraryContext):
         """Create a message for an email.
 
         Args:
-            sender: Email address of the sender.
             to: Email address of the receiver.
             subject: The subject of the email message.
             message_text: The text of the email message.
@@ -81,11 +78,12 @@ class GmailKeywords(LibraryContext):
         Returns:
             An object containing a base64url encoded email object.
         """
-        message = MIMEText(message_text)
-        message["to"] = to
-        message["from"] = sender
-        message["subject"] = subject
-        return {"raw": base64.urlsafe_b64encode(message.as_string())}
+        mimeMessage = MIMEMultipart()
+        mimeMessage["to"] = to
+        mimeMessage["subject"] = subject
+        mimeMessage.attach(MIMEText(message_text, "plain"))
+
+        return {"raw": base64.urlsafe_b64encode(mimeMessage.as_bytes()).decode()}
 
     @keyword
     def send_message(
@@ -107,7 +105,7 @@ class GmailKeywords(LibraryContext):
             Sent Message.
         """
 
-        message = self.create_message(sender, to, subject, message_text)
+        message = self.create_message(to, subject, message_text)
         response = (
             self.service.users().messages().send(userId=sender, body=message).execute()
         )

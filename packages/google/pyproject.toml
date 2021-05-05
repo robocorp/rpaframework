@@ -34,7 +34,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.6"
 rpaframework-core = "^6.1.0"
-robotframework = ">=3.2.2,<5.0"
+robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
 robotframework-pythonlibcore = "^2.1.0"
 google-api-python-client = "^2.2.0"
 google-auth-httplib2 = "^0.1.0"

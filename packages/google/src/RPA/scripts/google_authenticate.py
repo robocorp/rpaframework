@@ -31,6 +31,7 @@ SERVICE_SCOPES = {
     "sheets": ["spreadsheets"],
     "apps-script": ["script.projects"],
     "vision": ["cloud-vision", "cloud-platform"],
+    "gmail": ["gmail.send", "gmail.compose", "gmail.modify", "gmail.labels"],
 }
 
 
