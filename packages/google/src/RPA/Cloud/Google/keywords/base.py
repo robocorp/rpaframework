@@ -14,14 +14,14 @@ class BaseKeywords(LibraryContext):
         vault_secret_key: str = None,
         auth_type: str = "serviceaccount",
     ):
-        """Set Robocloud Vault name and secret key name
-        :param vault_name: Robocloud Vault name
-        :param vault_secret_key: Rococloud Vault secret key name
+        """Set Robocorp Vault name and secret key name
+        :param vault_name: Robocorp Vault name
+        :param vault_secret_key: Robocorp Vault secret key name
         """
         if vault_name:
-            self.robocorp_vault_name = vault_name
+            self.ctx.robocorp_vault_name = vault_name
         if vault_secret_key:
-            self.robocorp_vault_secret_key = vault_secret_key
-        if self.robocorp_vault_name and self.robocorp_vault_secret_key:
-            self.use_robocorp_vault = True
-        self.cloud_auth_type = auth_type
+            self.ctx.robocorp_vault_secret_key = vault_secret_key
+        if self.ctx.robocorp_vault_name and self.ctx.robocorp_vault_secret_key:
+            self.ctx.use_robocorp_vault = True
+        self.ctx.cloud_auth_type = auth_type
