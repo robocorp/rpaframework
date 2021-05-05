@@ -46,7 +46,7 @@ class DriveKeywords(LibraryContext):
         scopes: list = None,
         token_file: str = None,
     ) -> None:
-        """Initialize Google Cloud Vision client
+        """Initialize Google Drive client
 
         :param service_account: file path to service account file
         :param credentials: file path to credentials file

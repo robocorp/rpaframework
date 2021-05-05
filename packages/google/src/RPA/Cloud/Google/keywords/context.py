@@ -16,7 +16,7 @@ except ModuleNotFoundError:
     BuiltIn = None
 
 try:
-    from RPA.Robocloud.Secrets import Secrets
+    from RPA.Robocloud.Secrets import Secrets  # pylint: disable=no-name-in-module
 except ModuleNotFoundError:
     Secrets = None
 
