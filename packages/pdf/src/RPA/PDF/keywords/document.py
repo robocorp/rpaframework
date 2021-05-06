@@ -119,6 +119,7 @@ class DocumentKeywords(LibraryContext):
             )
         self.ctx.active_pdf_document = Document()
         self.ctx.active_pdf_document.path = str(source_path)
+        # pylint: disable=consider-using-with
         self.ctx.active_pdf_document.fileobject = open(source_path, "rb")
         self.ctx.fileobjects[source_path] = self.ctx.active_pdf_document.fileobject
 
@@ -1117,7 +1118,7 @@ class DocumentKeywords(LibraryContext):
                 else {}
             )
         else:
-            image_parameters = parameters
+            image_parameters = parameters or {}
         self.logger.info("Image parameters: %s" % image_parameters)
         settings = {
             "x": int(image_parameters.get("x", 10)),
