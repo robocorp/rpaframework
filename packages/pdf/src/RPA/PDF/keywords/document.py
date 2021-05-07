@@ -981,9 +981,7 @@ class DocumentKeywords(LibraryContext):
 
     @keyword
     def add_files_to_pdf(
-        self,
-        files: list = None,
-        target_document: str = None,
+        self, files: list = None, target_document: str = None, append: bool = False
     ) -> None:
         """Add images and/or pdfs to new PDF document
 
@@ -1052,8 +1050,12 @@ class DocumentKeywords(LibraryContext):
 
         :param files: list of filepaths to add into PDF (can be either images or PDFs)
         :param target_document: filepath of target PDF
+        :param append: appends files to existing document if `append` is `True`
         """
         writer = PyPDF2.PdfFileWriter()
+
+        if append:
+            self._add_pages_to_writer(writer, target_document)
 
         for f in files:
             file_to_add = Path(f)
@@ -1063,7 +1065,7 @@ class DocumentKeywords(LibraryContext):
             file_to_add = file_to_add.parent / basename
             image_filetype = imghdr.what(str(file_to_add))
             self.logger.info("File %s type: %s" % (str(file_to_add), image_filetype))
-            if basename.endswith(".pdf"):
+            if basename.lower().endswith(".pdf"):
                 reader = PyPDF2.PdfFileReader(str(file_to_add), strict=False)
                 pagecount = reader.getNumPages()
                 pages = self._get_pages(pagecount, parameters)
@@ -1099,6 +1101,20 @@ class DocumentKeywords(LibraryContext):
 
         with open(target_document, "wb") as f:
             writer.write(f)
+
+    def _add_pages_to_writer(self, writer, target_document):
+        if not Path(target_document).exists():
+            self.logger.warn(
+                "Trying to append files to document '%s' which does not exist."
+                "Creating document instead." % target_document
+            )
+        else:
+            reader = PyPDF2.PdfFileReader(str(target_document), strict=False)
+            pagecount = reader.getNumPages()
+            for n in range(pagecount):
+                page = reader.getPage(n)
+                self.logger.info("Adding page: %s" % n)
+                writer.addPage(page)
 
     def _get_pages(self, pagecount, page_reference):
         page_reference = f"1-{pagecount}" if page_reference is None else page_reference
