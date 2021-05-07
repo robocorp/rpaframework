@@ -25,18 +25,6 @@ CLEAN_PATTERNS = [
     "**/*.egg-info",
 ]
 
-NPMRC = """\
-registry=https://registry.npmjs.org/
-@robocorp:registry=https://npm.pkg.github.com/
-//npm.pkg.github.com/:_authToken={}
-"""
-
-
-def npmrc(token):
-    with open(".npmrc", "w") as fd:
-        fd.write(NPMRC.format(token))
-
-
 def yarn(ctx, command, **kwargs):
     kwargs.setdefault("echo", True)
     if platform.system() != "Windows":
@@ -64,12 +52,9 @@ def clean(ctx):
     yarn(ctx, "clean")
 
 
-@task(help={"token": "Auth token for local .npmrc"})
-def install(ctx, token=""):
+@task
+def install(ctx):
     """Install development environment"""
-    if token:
-        npmrc(token)
-
     poetry(ctx, "install")
     yarn(ctx, "install --immutable")
 
