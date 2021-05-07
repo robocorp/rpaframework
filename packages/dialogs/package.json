@@ -1,0 +1,72 @@
+{
+  "name": "rpaframework-dialogs",
+  "description": "Dialogs library of RPA Framework",
+  "version": "0.1.0",
+  "author": "RPA Framework",
+  "license": "Apache-2.0",
+  "homepage": "https://rpaframework.org/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robocorp/rpaframework.git"
+  },
+  "bugs": {
+    "url": "https://github.com/robocorp/rpaframework/issues"
+  },
+  "keywords": [
+    "pywebview",
+    "react",
+    "javascript"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf RPA/Dialogs/static",
+    "lint": "eslint frontend --ext .js,.jsx,.ts,.tsx",
+    "test": "jest",
+    "pretty": "prettier --write frontend",
+    "typecheck": "tsc --noEmit",
+    "build": "parcel build frontend/*.html --no-source-maps --public-url . --out-dir RPA/Dialogs/static",
+    "build-dev": "cross-env NODE_ENV=development parcel build frontend/*.html --no-minify --public-url . --out-dir RPA/Dialogs/static",
+    "check": "yarn clean && yarn typecheck && yarn test && yarn build",
+    "storybook": "start-storybook -p 6006"
+  },
+  "dependencies": {
+    "@robocorp/ds": "^5.1.0",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/plugin-proposal-private-property-in-object": "^7.14.0",
+    "@babel/preset-react": "^7.12.10",
+    "@mdx-js/react": "^1.6.22",
+    "@storybook/addon-actions": "^6.1.16",
+    "@storybook/addon-docs": "^6.1.16",
+    "@storybook/addon-essentials": "^6.1.16",
+    "@storybook/addon-links": "^6.1.16",
+    "@storybook/react": "^6.1.16",
+    "@testing-library/react": "^11.2.3",
+    "@types/jest": "^26.0.20",
+    "@types/mocha": "^8.2.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-test-renderer": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.13.0",
+    "@typescript-eslint/parser": "^4.13.0",
+    "babel-jest": "^26.6.3",
+    "babel-loader": "^8.2.2",
+    "caniuse-lite": "1.0.30001173",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.17.0",
+    "jest": "^26.6.3",
+    "jest-fetch-mock": "^3.0.3",
+    "parcel-bundler": "1.12.3",
+    "prettier": "^2.2.1",
+    "react-test-renderer": "^17.0.1",
+    "rimraf": "^3.0.2",
+    "run-script-os": "1.1.4",
+    "sass": "1.32.2",
+    "ts-jest": "^26.4.4",
+    "typescript": "^4.1.3"
+  }
+}
