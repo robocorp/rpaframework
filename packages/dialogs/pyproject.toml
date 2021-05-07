@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "rpaframework-dialogs"
+version = "0.2.0"
+description = "Dialogs library of RPA Framework"
+authors = [
+	"RPA Framework <rpafw@robocorp.com>",
+]
+license = "Apache-2.0"
+readme = "README.rst"
+
+homepage = "https://rpaframework.org/"
+documentation = "https://rpaframework.org/"
+repository = "https://github.com/robocorp/rpaframework"
+
+packages = [
+	{ include = "RPA" }
+]
+include = ["RPA/Dialogs/static/**/*"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pywebview = "^3.4"
+rpaframework-core = "^6.1.0"
+robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
+PyQt5 = {version = "^5.15.2", platform = "linux"}
+PyQtWebEngine = {version = "^5.15.2", platform = "linux"}
+
+[tool.poetry.dev-dependencies]
+black = { version = "*", allow-prereleases = true }
+pylint = "^2.6.0"
+flake8 = "^3.8.4"
+pytest = "^6.2.1"
+setuptools = "^51.1.2"
+PyYAML = "^5.4.1"
+mypy = "^0.800"
+pytest-cov = "^2.11.1"
+
+[tool.black]
+target-version = ["py36", "py37", "py38"]
+
+[build-system]
+requires = ["poetry>=1.1.4"]
+build-backend = "poetry.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = "-v --cov=RPA --cov-report term-missing --cov-branch"
+testpaths = ["tests"]
