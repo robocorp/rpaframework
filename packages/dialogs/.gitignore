@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Javascript
+node_modules/
+RPA/Dialogs/static/
+
+# Packaging
+rpaframework_dialogs.egg-info/
+dist/
+build/
+sdist/
+
+# Tests
+.pytest_cache/
+.cache/
+coverage/
+tests/robot/output/
+*.log
+
+# IDE
+.idea/
+
+# Yarn
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# Storybook
+storybook-static/
