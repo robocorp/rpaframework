@@ -439,7 +439,7 @@ def test_keyword_set_table_cell_new(library, table):
 
 def test_keyword_sort_table_by_column(library, table):
     library.sort_table_by_column(table, "three")
-    values = library.get_table_column(table, "three", as_list=True)
+    values = library.get_table_column(table, "three")
     assert values == [None, None, None, 3, 3, "c"]
 
 
@@ -670,3 +670,9 @@ def test_data_with_nonetype():
         [None, 2, None, None],
         [None, None, 3, 4],
     ]
+
+
+def test_table_append_row():
+    data = {"a": [1], "b": [2], "c": [3]}
+    table = Table(data)
+    table.append_row()
