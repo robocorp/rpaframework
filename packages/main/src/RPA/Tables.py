@@ -1,8 +1,5 @@
 # pylint: disable=too-many-lines
-# TODO: Distinguish between range-based index and named index
-# TODO: Integers as column names? Columns forced to strings?
 # TODO: Implement column slicing
-# TODO: Index accessing through dot notation?
 # TODO: Index name conflict in exports/imports
 # TODO: Return Robot Framework DotDict instead of dict?
 import copy
@@ -103,7 +100,7 @@ def uniq(seq: Iterable):
     return result
 
 
-class Dialect(str, Enum):
+class Dialect(Enum):
     """CSV dialect"""
 
     Excel = "excel"
@@ -187,8 +184,9 @@ class Table:
                     if not add_columns:
                         continue
 
-                    # Store map of source column name to created name
                     col = self._add_column(column_dst)
+
+                    # Store map of source column name to created name
                     column_dst = self._columns[col]
                     column_map[column_src] = column_dst
 
@@ -350,6 +348,23 @@ class Table:
             if len(head) != len(self._columns):
                 raise ValueError("Columns length does not match data")
 
+    def index_location(self, value):
+        try:
+            value = int(value)
+        except ValueError as err:
+            raise ValueError(f"Index is not a number: {value}") from err
+
+        if value < 0:
+            value += self.size
+
+        if self.size == 0:
+            raise IndexError("No rows in table")
+
+        if (value < 0) or (value >= self.size):
+            raise IndexError(f"Index ({value}) out of range (0..{self.size - 1})")
+
+        return value
+
     def column_location(self, value):
         """Find location for column value."""
         if isinstance(value, int):
@@ -360,14 +375,21 @@ class Table:
             else:
                 location = value
 
-            if location >= len(self._columns):
-                raise IndexError("Column out of of range")
+            size = len(self._columns)
+            if size == 0:
+                raise IndexError("No columns in table")
+
+            if location >= size:
+                raise IndexError(f"Column ({location}) out of range (0..{size - 1})")
 
         else:
             try:
                 location = self._columns.index(value)
             except ValueError as e:
-                raise ValueError(f"Unknown column name: {value}") from e
+                options = ", ".join(str(col) for col in self._columns)
+                raise ValueError(
+                    f"Unknown column name: {value}, current columns: {options}"
+                ) from e
 
         return location
 
@@ -375,9 +397,9 @@ class Table:
         """Helper method for accessing items in the Table.
 
         Examples:
-            table[:10]              First 10 rows
-            table[0,1]              Value in first row and second column
-            table[2:10,"email"]     Values in "email" column for rows 3 to 11
+            table[:10]           First 10 rows
+            table[0,1]           Value in first row and second column
+            table[2:10,"email"]  Values in "email" column for rows 3 to 11
         """
         # Both row index and columns given
         if isinstance(key, tuple):
@@ -439,7 +461,7 @@ class Table:
 
     def clear(self):
         """Remove all rows from this table."""
-        self.delete_rows(self.index)
+        self._data = []
 
     def head(self, rows, as_list=False):
         """Return first n rows of table."""
@@ -480,8 +502,10 @@ class Table:
 
     def get_cell(self, index, column):
         """Get single cell value."""
+        idx = self.index_location(index)
         col = self.column_location(column)
-        return self._data[index][col]
+
+        return self._data[idx][col]
 
     def get_row(self, index, columns=None, as_list=False):
         """Get column values from row.
@@ -491,18 +515,19 @@ class Table:
         :param as_list: return row as dictionary, instead of list
         """
         columns = if_none(columns, self._columns)
+        idx = self.index_location(index)
 
         if as_list:
             row = []
             for column in columns:
                 col = self.column_location(column)
-                row.append(self._data[index][col])
+                row.append(self._data[idx][col])
             return row
         else:
             row = {}
             for column in columns:
                 col = self.column_location(column)
-                row[self._columns[col]] = self._data[index][col]
+                row[self._columns[col]] = self._data[idx][col]
             return row
 
     def get_column(self, column, indexes=None, as_list=False):
@@ -518,12 +543,14 @@ class Table:
         if as_list:
             column = []
             for index in indexes:
-                column.append(self._data[index][col])
+                idx = self.index_location(index)
+                column.append(self._data[idx][col])
             return column
         else:
             column = {}
             for index in indexes:
-                column[index] = self._data[index][col]
+                idx = self.index_location(index)
+                column[idx] = self._data[idx][col]
             return column
 
     def get_table(self, indexes=None, columns=None, as_list=False):
@@ -534,8 +561,9 @@ class Table:
         if indexes == self.index and columns == self._columns:
             return self.copy()
 
+        idxs = [self.index_location(index) for index in indexes]
         cols = [self.column_location(column) for column in columns]
-        data = [[self._data[idx][col] for col in cols] for idx in indexes]
+        data = [[self._data[idx][col] for col in cols] for idx in idxs]
 
         if as_list:
             return data
@@ -601,33 +629,38 @@ class Table:
             raise ValueError("Values size does not match indexes and columns")
 
         for index in indexes:
+            idx = self.index_location(index)
             for column in columns:
                 col = self.column_location(column)
-                self.set_cell(index, column, values[index + col])
+                self.set_cell(index, column, values[idx + col])
 
     def set_cell(self, index, column, value):
         """Set individual cell value.
         If either index or column is missing, they are created.
         """
-        if index >= self.size:
-            self._add_row(index)
+        try:
+            idx = self.index_location(index)
+        except (IndexError, ValueError):
+            idx = self._add_row(index)
 
         try:
             col = self.column_location(column)
         except (IndexError, ValueError):
             col = self._add_column(column)
 
-        self._data[index][col] = value
+        self._data[idx][col] = value
 
     def set_row(self, index, values):
         """Set values in row. If index is missing, it is created."""
-        if index >= self.size:
-            self._add_row(index)
+        try:
+            idx = self.index_location(index)
+        except (IndexError, ValueError):
+            idx = self._add_row(index)
 
         column_values = self._column_value_getter(values)
         row = [column_values(values, column) for column in self._columns]
 
-        self._data[index] = row
+        self._data[idx] = row
 
     def set_column(self, column, values):
         """Set values in column. If column is missing, it is created."""
@@ -682,8 +715,8 @@ class Table:
 
         for column in columns:
             col = self.column_location(column)
-            for index in self.index:
-                del self._data[index][col]
+            for idx in self.index:
+                del self._data[idx][col]
             del self._columns[col]
 
     def append_table(self, table):

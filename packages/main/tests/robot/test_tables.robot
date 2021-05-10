@@ -3,7 +3,6 @@ Library    RPA.Tables
 Library    RPA.FileSystem
 Library    RPA.Excel.Files
 
-
 *** Variables ***
 ${ORDERS_FILE}    ${CURDIR}${/}..${/}resources${/}example.xlsx
 
@@ -39,9 +38,34 @@ Table With Non-identifier Columns
         Log    ${row}[cool key]
     END
 
+Get Table Cell Errors
+    ${table}=    Create table   [[1,2,3], [4,5,6]]    columns=['One','Two','Three']
+
+    Assert cell value    ${table}    0     0        1
+    Assert cell value    ${table}    1     1        5
+    Assert cell value    ${table}    1     Three    6
+
+    Assert cell error    ${table}    5     0       *out of range*
+    Assert cell error    ${table}    1     3       *out of range*
+    Assert cell error    ${table}    1     Four    *Unknown column name*
+    Assert cell error    ${table}    Test  0       *integer*
+
+
+
 *** Keywords ***
 List group IDs
     [Arguments]    ${rows}
     FOR    ${row}    IN    @{rows}
         Log    ${row}[Id]
     END
+
+Assert cell value
+    [Arguments]    ${table}  ${row}  ${column}  ${value}
+    ${result}=    Get table cell   ${table}  ${row}  ${column}
+    Should be equal as integers    ${result}    ${value}
+
+
+Assert cell error
+    [Arguments]    ${table}  ${row}  ${column}    ${error}
+    Run keyword and expect error     ${error}
+    ...    Get table cell   ${table}  ${row}  ${column}
