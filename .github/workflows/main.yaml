@@ -95,14 +95,24 @@ jobs:
       run: python -m pip install --upgrade pip
     - name: Install poetry
       run: pip install poetry
-    - name: Install
+    - name: Get python version
+      id: full-python-version
+      shell: bash
+      run: |
+        echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info[:3]))")
+    - name: Set up cache
+      uses: actions/cache@v1
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
+    - name: Install dependencies
       run: make install
     - name: Lint
       run: make lint
-    - name: Test on non-linux
+    - name: Test (non-linux)
       if: matrix.os != 'ubuntu-latest'
       run: make test
-    - name: Test on linux
+    - name: Test (linux)
       if: matrix.os == 'ubuntu-latest'
       run: |
         export XDG_SESSION_TYPE=x11
