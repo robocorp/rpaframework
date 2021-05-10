@@ -92,7 +92,7 @@ exports: install ## Create setup.py and requirements.txt files
 	poetry export --dev --without-hashes -f requirements.txt -o requirements-dev.txt
 	$(tools)/setup.py
 
-build: lint test ## Build distribution packages
+build: lint #test ## Build distribution packages
 	# poetry build -vv
 	# running these separately works around relative path problem
 	# https://github.com/python-poetry/poetry/issues/266#issuecomment-636627858
