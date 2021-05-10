@@ -29,15 +29,19 @@ jobs:
           "windows-py36",
           "windows-py37",
           "windows-py38",
+          "windows-py39",
 
           "ubuntu-py36",
           "ubuntu-py37",
           "ubuntu-py38",
+          "ubuntu-py39",
 
           "macos-py36",
           "macos-py37",
           "macos-py38",
+          "macos-py39",
         ]
+
         include:
           - name: "windows-py36"
             python: "3.6"
@@ -48,6 +52,9 @@ jobs:
           - name: "windows-py38"
             python: "3.8"
             os: windows-latest
+          - name: "windows-py39"
+            python: "3.9"
+            os: windows-latest
           - name: "ubuntu-py36"
             python: "3.6"
             os: ubuntu-latest
@@ -57,6 +64,9 @@ jobs:
           - name: "ubuntu-py38"
             python: "3.8"
             os: ubuntu-latest
+          - name: "ubuntu-py39"
+            python: "3.9"
+            os: ubuntu-latest
           - name: "macos-py36"
             python: "3.6"
             os: macos-latest
@@ -65,6 +75,9 @@ jobs:
             os: macos-latest
           - name: "macos-py38"
             python: "3.8"
+            os: macos-latest
+          - name: "macos-py39"
+            python: "3.9"
             os: macos-latest
 
     steps:

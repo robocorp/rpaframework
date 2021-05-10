@@ -1,6 +1,11 @@
 name: pip installation tests
 
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/pip.yaml'
   schedule:
     - cron: '0 6 * * *'
 
@@ -12,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu-latest", "windows-latest", "macos-latest"]
-        python-version: [3.7]
+        python-version: [3.6, 3.7, 3.8, 3.9]
         pip-version: [20.2.4, 20.3.3]
     steps:
       - name: Set up Python ${{ matrix.python-version }}
@@ -28,4 +33,3 @@ jobs:
           python -m pip check
           python -c "import RPA"
           # TODO: run whole test suite here
-
