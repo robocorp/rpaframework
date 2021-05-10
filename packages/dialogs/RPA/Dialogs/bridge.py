@@ -9,7 +9,7 @@ from threading import Timer
 from typing import Optional, List, Dict
 
 import webview  # type: ignore
-from .types import Element, Elements, Result
+from .dialog_types import Element, Elements, Result
 
 
 def fatal(method):

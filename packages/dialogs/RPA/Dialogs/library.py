@@ -11,7 +11,7 @@ from robot.api.deco import library, keyword  # type: ignore
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError  # type: ignore
 
 from .dialog import Dialog, TimeoutException
-from .types import Elements, Result, Options, Size, Icon
+from .dialog_types import Elements, Result, Options, Size, Icon
 from .utils import to_options, optional_str, optional_int, int_or_auto, is_input
 
 
@@ -376,15 +376,15 @@ class Dialogs:
         The keyword uses Unix-style glob patterns for finding matching files,
         and the supported pattern expressions are as follow:
 
-        ======= ================================================
-        Pattern Meaning
-        ======= ================================================
-        *       Match everything
-        ?       Match any single character
-        [seq]   Match any character in seq
-        [!seq]  Match any character not in seq
-        **      Match all files, directories, and subdirectories
-        ======= ================================================
+        ========== ================================================
+        Pattern    Meaning
+        ========== ================================================
+        ``*``      Match everything
+        ``?``      Match any single character
+        ``[seq]``  Match any character in seq
+        ``[!seq]`` Match any character not in seq
+        ``**``     Match all files, directories, and subdirectories
+        ========== ================================================
 
         If a filename has any of these special characters, they
         can be escaped by wrapping them with square brackets.
@@ -761,7 +761,7 @@ class Dialogs:
         The selection will be available in the ``name`` field of the result,
         and the ``label`` text will be shown next to the checkbox.
 
-        The boolean ``default`` value will defined the initial checked
+        The boolean ``default`` value will define the initial checked
         state of the element.
 
         Example:
@@ -773,7 +773,7 @@ class Dialogs:
             Add checkbox    name=triggers     label=Enable triggers    default=False
             Add checkbox    name=assistants   label=Enable assistants  default=True
             ${result}=      Run dialog
-            IF    ${result.vault}
+            IF    $result.vault
                 Enable vault
             END
         """
@@ -805,7 +805,7 @@ class Dialogs:
         multiple options to choose from  when submitting, this keyword can
         be used to replace the automatically generated ones.
 
-        The result field will always be called ``submit``` and will contain
+        The result field will always be called ``submit`` and will contain
         the pressed button text as a value.
 
         If one of the custom ``options`` should be the preferred option,
@@ -820,7 +820,7 @@ class Dialogs:
             Add heading   Delete user ${username}?
             Add submit buttons    buttons=No,Yes    default=Yes
             ${result}=    Run dialog
-            IF   ${result.submit} == "Yes"
+            IF   $result.submit == "Yes"
                 Delete user    ${username}
             END
         """
