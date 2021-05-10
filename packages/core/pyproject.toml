@@ -46,7 +46,7 @@ mock = "^4.0.2"
 mypy = "^0.790"
 
 [tool.black]
-target-version = ["py36", "py37", "py38"]
+target-version = ["py36", "py37", "py38", "py39"]
 
 [build-system]
 requires = ["poetry>=0.12"]
