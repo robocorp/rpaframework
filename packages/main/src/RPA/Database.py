@@ -427,17 +427,14 @@ class Database:
             Execute SQL Script   script.sql
 
         """
-        sql_script_file = open(filename)
+        with open(filename) as script_file:
+            sql_script = script_file.readlines()
 
         cur = None
         try:
             cur = self._dbconnection.cursor()
             sqlStatement = ""
-            for line in sql_script_file:
-                PY3K = sys.version_info >= (3, 0)
-                if not PY3K:
-                    # spName = spName.encode('ascii', 'ignore')
-                    line = line.strip().decode("utf-8")
+            for line in sql_script:
                 if line.startswith("#") or line.startswith("--"):
                     continue
 
