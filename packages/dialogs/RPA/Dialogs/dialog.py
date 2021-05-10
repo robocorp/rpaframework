@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Union, Optional
 
 from robot.utils import DotDict  # type: ignore
-from .types import Elements, Result
+from .dialog_types import Elements, Result
 from .utils import is_input, is_submit
 
 
