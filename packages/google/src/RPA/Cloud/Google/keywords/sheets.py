@@ -13,7 +13,7 @@ class SheetsKeywords(LibraryContext):
         super().__init__(ctx)
         self.service = None
 
-    @keyword
+    @keyword(tags=["init", "sheets"])
     def init_sheets(
         self,
         service_account: str = None,
@@ -43,7 +43,7 @@ class SheetsKeywords(LibraryContext):
             token_file=token_file,
         )
 
-    @keyword
+    @keyword(tags=["sheets"])
     def create_sheet(self, title: str) -> str:
         """Create empty sheet with a title
 
@@ -69,7 +69,7 @@ class SheetsKeywords(LibraryContext):
         )
         return spreadsheet.get("spreadsheetId")
 
-    @keyword
+    @keyword(tags=["sheets"])
     def insert_sheet_values(
         self,
         sheet_id: str,
@@ -111,7 +111,7 @@ class SheetsKeywords(LibraryContext):
             .execute()
         )
 
-    @keyword
+    @keyword(tags=["sheets"])
     def update_sheet_values(
         self,
         sheet_id: str,
@@ -152,7 +152,7 @@ class SheetsKeywords(LibraryContext):
             .execute()
         )
 
-    @keyword
+    @keyword(tags=["sheets"])
     def get_sheet_values(
         self,
         sheet_id: str,
@@ -190,7 +190,7 @@ class SheetsKeywords(LibraryContext):
             .execute()
         )
 
-    @keyword
+    @keyword(tags=["sheets"])
     def clear_sheet_values(self, sheet_id: str, sheet_range: str) -> Dict:
         """Clear cell values for range of cells within a sheet
 
@@ -216,7 +216,7 @@ class SheetsKeywords(LibraryContext):
             .execute()
         )
 
-    @keyword
+    @keyword(tags=["sheets"])
     def copy_sheet(self, sheet_id: str, target_sheet_id: str) -> Dict:
         """Copy spreadsheet to target spreadsheet
 

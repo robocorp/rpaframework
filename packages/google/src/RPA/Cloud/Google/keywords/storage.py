@@ -12,11 +12,6 @@ class StorageKeywords(LibraryContext):
     """Class for Google Cloud Storage API
      and Google Cloud Storage JSON API
 
-    You will have to grant the appropriate permissions to the
-    service account you are using to authenticate with
-    @google-cloud/storage. The IAM page in the console is here:
-    https://console.cloud.google.com/iam-admin/iam/project
-
     Link to `Google Storage PyPI`_ page.
 
     .. _Google Storage PyPI: https://pypi.org/project/google-cloud-storage/
@@ -26,7 +21,7 @@ class StorageKeywords(LibraryContext):
         super().__init__(ctx)
         self.service = None
 
-    @keyword
+    @keyword(tags=["init", "storage"])
     def init_storage(
         self,
         service_account: str = None,
@@ -43,7 +38,7 @@ class StorageKeywords(LibraryContext):
             storage.Client, service_account, use_robocorp_vault, token_file
         )
 
-    @keyword
+    @keyword(tags=["storage"])
     def create_storage_bucket(self, bucket_name: str) -> Dict:
         """Create Google Cloud Storage bucket
 
@@ -61,7 +56,7 @@ class StorageKeywords(LibraryContext):
         bucket = self.service.create_bucket(bucket_name)
         return bucket
 
-    @keyword
+    @keyword(tags=["storage"])
     def delete_storage_bucket(self, bucket_name: str):
         """Delete Google Cloud Storage bucket
 
@@ -83,7 +78,7 @@ class StorageKeywords(LibraryContext):
         except Exception as e:
             raise ValueError("The bucket you tried to delete was not empty") from e
 
-    @keyword
+    @keyword(tags=["storage"])
     def get_storage_bucket(self, bucket_name: str) -> Dict:
         """Get Google Cloud Storage bucket
 
@@ -101,7 +96,7 @@ class StorageKeywords(LibraryContext):
         bucket = self.service.get_bucket(bucket_name)
         return bucket
 
-    @keyword
+    @keyword(tags=["storage"])
     def list_storage_buckets(self) -> List:
         """List Google Cloud Storage buckets
 
@@ -120,7 +115,7 @@ class StorageKeywords(LibraryContext):
         """
         return list(self.service.list_buckets())
 
-    @keyword
+    @keyword(tags=["storage"])
     def delete_storage_files(self, bucket_name: str, files: Any) -> List:
         """Delete files in the bucket
 
@@ -151,7 +146,7 @@ class StorageKeywords(LibraryContext):
                 notfound.append(filename)
         return notfound if len(notfound) > 0 else True
 
-    @keyword
+    @keyword(tags=["storage"])
     def list_storage_files(self, bucket_name: str) -> List:
         """List files in the bucket
 
@@ -176,7 +171,7 @@ class StorageKeywords(LibraryContext):
             {"name": name, "uri": f"gs://{bucket_name}/{name}"} for name in sorted_blobs
         ]
 
-    @keyword
+    @keyword(tags=["storage"])
     def upload_storage_file(
         self, bucket_name: str, filename: str, target_name: str
     ) -> None:
@@ -200,7 +195,7 @@ class StorageKeywords(LibraryContext):
         with open(filename, "rb") as f:
             blob.upload_from_file(f)
 
-    @keyword
+    @keyword(tags=["storage"])
     def upload_storage_files(self, bucket_name: str, files: dict) -> None:
         """Upload files into a bucket
 
@@ -228,7 +223,7 @@ class StorageKeywords(LibraryContext):
             blob = bucket.blob(target_name)
             blob.upload_from_filename(filename)
 
-    @keyword
+    @keyword(tags=["storage"])
     def download_storage_files(self, bucket_name: str, files: Any) -> List:
         """Download files from a bucket
 

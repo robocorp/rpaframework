@@ -25,7 +25,7 @@ class TextToSpeechKeywords(LibraryContext):
         super().__init__(ctx)
         self.service = None
 
-    @keyword
+    @keyword(tags=["init", "text to speech"])
     def init_text_to_speech(
         self,
         service_account: str = None,
@@ -45,7 +45,7 @@ class TextToSpeechKeywords(LibraryContext):
             token_file,
         )
 
-    @keyword
+    @keyword(tags=["text to speech"])
     def list_supported_voices(self, language_code: str = None) -> List:
         """List supported voices for the speech
 
@@ -66,7 +66,7 @@ class TextToSpeechKeywords(LibraryContext):
             voices = self.service.list_voices()
         return voices.voices
 
-    @keyword
+    @keyword(tags=["text to speech"])
     def synthesize_speech(
         self,
         text: str,

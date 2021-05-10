@@ -12,7 +12,7 @@ class VideoIntelligenceKeywords(LibraryContext):
         super().__init__(ctx)
         self.service = None
 
-    @keyword
+    @keyword(tags=["init", "video intelligence"])
     def init_video_intelligence(
         self,
         service_account: str = None,
@@ -32,7 +32,7 @@ class VideoIntelligenceKeywords(LibraryContext):
             token_file,
         )
 
-    @keyword
+    @keyword(tags=["video intelligence"])
     def annotate_video(
         self,
         video_file: str = None,

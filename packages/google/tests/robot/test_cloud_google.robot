@@ -25,6 +25,7 @@ Init all Google services
     ...    cloud_auth_type=${AUTH_TYPE}
     Init Apps Script
     Init Drive
+    Init Gmail
     Init Natural Language
     Init Sheets
     Init Speech To Text
@@ -100,7 +101,7 @@ Using video intelligence
     ...    json_file=${CURDIR}${/}videoannotations.json
     Log Many    ${result}
 
-Test cloud storage
+Using cloud storage
     ${files}    Create List    movie_annons.json
     Download Storage Files    ${STORAGE_BUCKET}    ${files}
     ${result}=    Delete Storage Files    ${STORAGE_BUCKET}    movie_annons.json,movie.mp4
@@ -111,3 +112,10 @@ Using Apps Script
     ${result}=    Insert Sheet Values    ${SHEET_ID}    Settings!A2:B2    ${values}    ROWS
     ${response}=    Run Script    ${SCRIPT_ID}    generateStepByStep
     Log Many    ${response}
+
+Using Gmail
+    Send Message    me
+    ...    mika@robocorp.com
+    ...    viesti
+    ...    viestin body
+    ...    ["${CURDIR}${/}synthesized.mp3"]

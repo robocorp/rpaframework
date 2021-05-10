@@ -14,7 +14,7 @@ class VisionKeywords(LibraryContext):
         super().__init__(ctx)
         self.service = None
 
-    @keyword
+    @keyword(tags=["init", "vision"])
     def init_vision(
         self,
         service_account: str = None,
@@ -44,7 +44,7 @@ class VisionKeywords(LibraryContext):
         else:
             raise KeyError("'image_file' or 'image_uri' is required")
 
-    @keyword
+    @keyword(tags=["vision"])
     def detect_labels(
         self, image_file: str = None, image_uri: str = None, json_file: str = None
     ) -> Dict:
@@ -69,7 +69,7 @@ class VisionKeywords(LibraryContext):
         self.write_json(json_file, response)
         return response
 
-    @keyword
+    @keyword(tags=["vision"])
     def detect_text(
         self, image_file: str = None, image_uri: str = None, json_file: str = None
     ) -> Dict:
@@ -94,7 +94,7 @@ class VisionKeywords(LibraryContext):
         self.write_json(json_file, response)
         return response
 
-    @keyword
+    @keyword(tags=["vision"])
     def detect_document(
         self, image_file: str = None, image_uri: str = None, json_file: str = None
     ) -> Dict:
@@ -119,7 +119,7 @@ class VisionKeywords(LibraryContext):
         self.write_json(json_file, response)
         return response
 
-    @keyword
+    @keyword(tags=["vision"])
     def annotate_image(
         self, image_file: str, image_uri: str, json_file: str = None
     ) -> Dict:
@@ -144,7 +144,7 @@ class VisionKeywords(LibraryContext):
         self.write_json(json_file, response)
         return response
 
-    @keyword
+    @keyword(tags=["vision"])
     def face_detection(
         self, image_file: str = None, image_uri: str = None, json_file: str = None
     ) -> Dict:

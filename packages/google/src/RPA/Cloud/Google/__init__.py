@@ -26,24 +26,23 @@ class Google(DynamicCore):
     Usage requires the following steps:
 
     - Create a GCP project
-    - Create a service account key file (JSON) and save it to a place the robot
-      can use it
-    - Enable APIs
+    - Enable approriate APIs
+    - Create credentials (OAuth or service account)
     - Install rpaframework-google package
 
     **Google authentication**
 
     Authentication for Google is set with `service account JSON file` which can be given to the library
-    in three different ways or with `credentials.json`, which is used for OAuth authentication.
+    in three different ways or with `OAuth2 token`, which is used for OAuth authentication.
 
-    Methods when using service credentials:
+    Methods when using service account:
 
     - Method 1 as environment variables, ``GOOGLE_APPLICATION_CREDENTIALS`` with path to service account file.
-    - Method 2 as keyword parameter to ``Init Storage Client`` for example.
+    - Method 2 as keyword parameter to ``Init Storage`` for example.
     - Method 3 as Robocorp vault secret. The vault name and secret key name needs to be given in library init
       or with keyword ``Set Robocorp Vault``. Secret value should contain JSON file contents.
 
-    Method 1. service credentials using environment variable
+    Method 1. service account using environment variable
 
     .. code-block:: robotframework
 
@@ -92,7 +91,7 @@ class Google(DynamicCore):
             Set Robocorp Vault   vault_name=googlecloud  vault_secret_key=servicecreds
             Init Storage    use_robocorp_vault=${TRUE}
 
-    Method when using OAuth credentials.json:
+    Method when using OAuth token:
 
     The Google Apps Script and Google Drive services are authenticated using this method.
 
@@ -116,7 +115,7 @@ class Google(DynamicCore):
     ``rpa-google-oauth --scopes drive.appdata,drive.file,drive.install``
 
     This will start web based authentication process, which outputs the token at the end.
-    Token could be stored into ``Robocorp Vault`` where it needs to be in variable ``google-oauth``.
+    Token could be stored into ``Robocorp Vault``.
 
     Example Vault content.
 
@@ -132,8 +131,10 @@ class Google(DynamicCore):
 
         *** Keywords ***
         Set up Google Drive authentication
-            Set Robocloud Vault    vault_name=googlecloud
-            Init Drive     use_robocorp_vault=True
+            Set Robocorp Vault   vault_name=googlecloud
+            ...  vault_secret_key=oauth-token
+            ...  cloud_auth_type=token
+            Init Drive
 
 
     **Installation**

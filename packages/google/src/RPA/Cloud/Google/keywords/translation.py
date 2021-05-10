@@ -18,7 +18,7 @@ class TranslationKeywords(LibraryContext):
         self.service = None
         self.project_id = None
 
-    @keyword
+    @keyword(tags=["init", "translation"])
     def init_translation(
         self,
         project_identifier: str,
@@ -41,7 +41,7 @@ class TranslationKeywords(LibraryContext):
             token_file,
         )
 
-    @keyword
+    @keyword(tags=["translation"])
     def translate(
         self,
         text: Union[list, str],
