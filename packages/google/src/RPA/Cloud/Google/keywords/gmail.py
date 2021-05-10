@@ -1,14 +1,15 @@
 import base64
+import mimetypes
+import os
+from pathlib import Path
+from typing import Optional
+
 from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from googleapiclient import errors
-import mimetypes
-import os
-from pathlib import Path
-from typing import Optional
 
 
 from . import LibraryContext, keyword
@@ -172,6 +173,85 @@ class GmailKeywords(LibraryContext):
             raise he
         return response
 
+    def set_list_parameters(self, user_id, query, label_ids, max_results, include_spam):
+        parameters = {"userId": user_id, "q": query}
+        if label_ids:
+            parameters["labelIds"] = ",".join(label_ids)
+        if max_results:
+            parameters["maxResults"] = max_results
+        if include_spam:
+            parameters["includeSpamTrash"] = include_spam
+        return parameters
+
+    def set_headers_to_message_dict(self, payload, message_id, response):
+        headers = payload.get("headers")
+        message_dict = {"id": message_id, "label_ids": response["labelIds"]}
+        for header in headers:
+            name = header.get("name")
+            value = header.get("value")
+            if name.lower() == "from":
+                message_dict["from"] = value
+            if name.lower() == "to":
+                message_dict["to"] = value
+            if name.lower() == "subject":
+                message_dict["subject"] = value
+            if name.lower() == "date":
+                message_dict["date"] = value
+        return message_dict
+
+    def handle_mimetypes(self, parsed_parts, part, msg, folder_name):
+        filename = part.get("filename")
+        mimetype = part.get("mimeType")
+        body = part.get("body")
+        data = body.get("data")
+        filesize = body.get("size")
+        part_headers = part.get("headers")
+        if mimetype == "text/plain":
+            if data:
+                text = base64.urlsafe_b64decode(data).decode()
+                parsed_parts.append({"text/plain": text})
+        elif mimetype == "text/html":
+            if not filename:
+                filename = "message.html"
+            filepath = os.path.join(folder_name, filename)
+
+            with open(filepath, "wb") as f:
+                data = base64.urlsafe_b64decode(data)
+                parsed_parts.append({"text/html": data, "path": filepath})
+                f.write(data)
+        else:
+            for part_header in part_headers:
+                part_header_name = part_header.get("name")
+                part_header_value = part_header.get("value")
+                if part_header_name == "Content-Disposition":
+                    if "attachment" in part_header_value:
+                        # we get the attachment ID
+                        # and make another request to get the attachment itself
+                        self.logger.info(
+                            "Saving the file: %s, size:%s"
+                            % (filename, get_size_format(filesize))
+                        )
+                        attachment_id = body.get("attachmentId")
+                        attachment = (
+                            self.service.users()
+                            .messages()
+                            .attachments()
+                            .get(
+                                id=attachment_id,
+                                userId="me",
+                                messageId=msg["id"],
+                            )
+                            .execute()
+                        )
+                        data = attachment.get("data")
+                        filepath = os.path.join(folder_name, filename)
+                        if data:
+                            parsed_parts.append(
+                                {"attachment": filepath, "id": attachment_id}
+                            )
+                            with open(filepath, "wb") as f:
+                                f.write(base64.urlsafe_b64decode(data))
+
     @keyword(tags=["gmail"])
     def list_messages(
         self,
@@ -208,15 +288,11 @@ class GmailKeywords(LibraryContext):
                 Log Many    ${msg}
             END
         """
-        parameters = {"userId": user_id, "q": query}
+        parameters = self.set_list_parameters(
+            user_id, query, label_ids, max_results, include_spam
+        )
         folder_name = Path(folder_name) if folder_name else Path().absolute()
         messages = []
-        if label_ids:
-            parameters["labelIds" : ",".join(label_ids)]
-        if max_results:
-            parameters["maxResults":max_results]
-        if include_spam:
-            parameters["includeSpamTrash":include_spam]
         try:
             response = self.service.users().messages().list(**parameters).execute()
             message_ids = [
@@ -230,22 +306,11 @@ class GmailKeywords(LibraryContext):
                     .execute()
                 )
                 payload = response["payload"]
-                headers = payload.get("headers")
-                message_dict = {"id": message_id, "label_ids": response["labelIds"]}
+                message_dict = self.set_headers_to_message_dict(
+                    payload, message_id, response
+                )
                 if include_json:
                     message_dict["json"] = response
-                for header in headers:
-                    name = header.get("name")
-                    value = header.get("value")
-                    if name.lower() == "from":
-                        message_dict["from"] = value
-                    if name.lower() == "to":
-                        message_dict["to"] = value
-                    if name.lower() == "subject":
-                        message_dict["subject"] = value
-                    if name.lower() == "date":
-                        message_dict["date"] = value
-
                 parts = payload.get("parts")
                 parsed_parts = self.parse_parts(
                     message_id, response, parts, folder_name
@@ -271,59 +336,10 @@ class GmailKeywords(LibraryContext):
         parsed_parts = []
         if parts:
             for part in parts:
-                filename = part.get("filename")
-                mimeType = part.get("mimeType")
-                body = part.get("body")
-                data = body.get("data")
-                file_size = body.get("size")
-                part_headers = part.get("headers")
                 if part.get("parts"):
                     # recursively call this function when we see that a part
                     # has parts inside
                     self.parse_parts(None, msg, part.get("parts"), folder_name)
-                if mimeType == "text/plain":
-                    if data:
-                        text = base64.urlsafe_b64decode(data).decode()
-                        parsed_parts.append({"text/plain": text})
-                elif mimeType == "text/html":
-                    if not filename:
-                        filename = "message.html"
-                    filepath = os.path.join(folder_name, filename)
+                self.handle_mimetypes(parsed_parts, part, msg, folder_name)
 
-                    with open(filepath, "wb") as f:
-                        data = base64.urlsafe_b64decode(data)
-                        parsed_parts.append({"text/html": data, "path": filepath})
-                        f.write(data)
-                else:
-                    for part_header in part_headers:
-                        part_header_name = part_header.get("name")
-                        part_header_value = part_header.get("value")
-                        if part_header_name == "Content-Disposition":
-                            if "attachment" in part_header_value:
-                                # we get the attachment ID
-                                # and make another request to get the attachment itself
-                                self.logger.info(
-                                    "Saving the file: %s, size:%s"
-                                    % (filename, get_size_format(file_size))
-                                )
-                                attachment_id = body.get("attachmentId")
-                                attachment = (
-                                    self.service.users()
-                                    .messages()
-                                    .attachments()
-                                    .get(
-                                        id=attachment_id,
-                                        userId="me",
-                                        messageId=msg["id"],
-                                    )
-                                    .execute()
-                                )
-                                data = attachment.get("data")
-                                filepath = os.path.join(folder_name, filename)
-                                if data:
-                                    parsed_parts.append(
-                                        {"attachment": filepath, "id": attachment_id}
-                                    )
-                                    with open(filepath, "wb") as f:
-                                        f.write(base64.urlsafe_b64decode(data))
         return parsed_parts
