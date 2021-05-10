@@ -18,7 +18,7 @@ packages = [
 include = ["RPA/Dialogs/static/**/*"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.6.2"
 pywebview = "^3.4"
 rpaframework-core = "^6.1.0"
 robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
@@ -26,7 +26,7 @@ PyQt5 = {version = "^5.15.2", platform = "linux"}
 PyQtWebEngine = {version = "^5.15.2", platform = "linux"}
 
 [tool.poetry.dev-dependencies]
-black = { version = "*", allow-prereleases = true }
+black = {version = "^21.5b0", allow-prereleases = true}
 pylint = "^2.6.0"
 flake8 = "^3.8.4"
 pytest = "^6.2.1"

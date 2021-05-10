@@ -55,7 +55,7 @@ def cli() -> None:
 
 @cli.command(name="set")
 def set_command():
-    """Access Robocorp Vault in development enviroment """
+    """Access Robocorp Vault in development enviroment"""
     click.secho("Use Robocorp Vault", fg="white", bold=True, underline=True)
     dev_account_exist = does_dev_access_account_exist()
     if dev_account_exist:
