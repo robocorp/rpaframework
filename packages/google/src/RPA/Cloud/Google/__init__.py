@@ -52,7 +52,7 @@ class Google(DynamicCore):
 
         *** Tasks ***
         Init Google services
-            # NO parameters for Vision Client, expecting to get JSON
+            # NO parameters for Init Vision, expecting to get JSON
             # with GOOGLE_APPLICATION_CREDENTIALS environment variable
             Init Vision
 
