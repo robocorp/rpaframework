@@ -4,7 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
-- Library **RPA.Cloud.Google**: Fix regression bug with Sheets keyword `Insert Values`
+- Library **RPA.Cloud.Google**:
+
+  - Available now as `rpaframework-google` package instead of rpaframework extra
+  - Added basic support for ``Gmail API``
+  - Added keyword tags to identify keywords by service in the documentation
+  - Fix regression bug with Sheets keyword `Insert Values`
 
 9.6.0
 -----
