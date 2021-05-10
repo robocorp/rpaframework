@@ -42,6 +42,7 @@ class Application:
         if self._proc:
             raise RuntimeError("Application already started")
 
+        # pylint: disable=consider-using-with
         self._proc = subprocess.Popen(self._args, shell=self._shell)
 
     def stop(self):

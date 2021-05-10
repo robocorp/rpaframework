@@ -137,14 +137,14 @@ class Archive:
         filelist = list_files_in_directory(folder, recursive, include, exclude)
         if len(filelist) == 0:
             raise ValueError("No files found to archive")
-        zip_archive = zipfile.ZipFile(
+
+        with zipfile.ZipFile(
             file=archive_name,
             mode="w",
             compression=comp_method,
-        )
-        for archive_absolute, archive_relative in filelist:
-            zip_archive.write(archive_absolute, arcname=archive_relative)
-        zip_archive.close()
+        ) as archive:
+            for archive_absolute, archive_relative in filelist:
+                archive.write(archive_absolute, arcname=archive_relative)
 
     def archive_folder_with_tar(
         self,
@@ -182,10 +182,10 @@ class Archive:
         filelist = list_files_in_directory(folder, recursive, include, exclude)
         if len(filelist) == 0:
             raise ValueError("No files found to archive")
-        tar_archive = tarfile.TarFile(archive_name, "w")
-        for archive_absolute, archive_relative in filelist:
-            tar_archive.add(archive_absolute, arcname=archive_relative)
-        tar_archive.close()
+
+        with tarfile.TarFile(archive_name, "w") as archive:
+            for archive_absolute, archive_relative in filelist:
+                archive.add(archive_absolute, arcname=archive_relative)
 
     def add_to_archive(
         self,
