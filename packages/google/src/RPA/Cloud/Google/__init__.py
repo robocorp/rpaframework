@@ -91,28 +91,50 @@ class Google(DynamicCore):
             Set Robocorp Vault   vault_name=googlecloud  vault_secret_key=servicecreds
             Init Storage    use_robocorp_vault=${TRUE}
 
-    Method when using OAuth token:
+    Methods when using service account:
 
-    The Google Apps Script and Google Drive services are authenticated using this method.
+    - Method 1 as keyword parameter ``token_file`` to ``Init Storage`` for example.
+    - Method 2 as Robocorp vault secret. The vault name and secret key name needs to be given in library init
+      or with keyword ``Set Robocorp Vault``. Secret value should contain JSON file contents.
+
+    Method 1. The Google Apps Script and Google Drive services are authenticated using this method.
 
     .. code-block:: robotframework
 
         *** Settings ***
         Library   RPA.Cloud.Google
+        Library   RPA.Cloud.Google
+        ...       vault_name=googlecloud
+        ...       vault_secret_key=oauth
+        ...       cloud_auth_type=token
 
         *** Variables ***
         @{SCRIPT_SCOPES}     forms   spreadsheets
 
         *** Tasks ***
         Init Google OAuth services
-            Init Apps Script    /path/to/credentials.json   ${SCRIPT_SCOPES}
+            Init Apps Script    token_file=oauth_token   ${SCRIPT_SCOPES}
+
+    Method 2. setting Robocorp Vault in the library init
+
+    .. code-block:: robotframework
+
+        *** Settings ***
+        Library   RPA.Cloud.Google
+        ...       vault_name=googlecloud
+        ...       vault_secret_key=servicecreds
+
+        *** Tasks ***
+        Init Google services
+            Init Storage
+
 
     **Creating and using OAuth token file**
 
     The token file can be created using `credentials.json` by running command:
 
-    ``rpa-google-oauth --service drive`` or
-    ``rpa-google-oauth --scopes drive.appdata,drive.file,drive.install``
+    ``rpa-google-oauth --credentials <filepath> --service drive`` or
+    ``rpa-google-oauth --credentials <filepath> --scopes drive.appdata,drive.file,drive.install``
 
     This will start web based authentication process, which outputs the token at the end.
     Token could be stored into ``Robocorp Vault``.
@@ -190,6 +212,14 @@ class Google(DynamicCore):
         vault_secret_key: str = None,
         cloud_auth_type: str = "serviceaccount",
     ):
+        """Library initialization
+
+        :param service_account: path to service account
+        :param vault_name: Robocorp vault name
+        :param vault_secret_key: Robocorp secret key
+        :param cloud_auth_type: "serviceaccount" or "token",
+         defaults to "serviceaccount"
+        """
         self.logger = logging.getLogger(__name__)
         self.service_account_file = service_account
         self.robocorp_vault_name = vault_name
