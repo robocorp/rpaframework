@@ -2,7 +2,7 @@
 Dialogs
 #######
 
-Request user input during executions.
+Display information to a user and request input.
 
 .. toctree::
    :maxdepth: 1
