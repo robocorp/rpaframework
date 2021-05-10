@@ -18,16 +18,6 @@ class GoogleDriveError(Exception):
 class DriveKeywords(LibraryContext):
     """Class for Google Drive API
 
-    **Note:** The Drive API does not work with _service accounts_
-
-    Following steps are needed to authenticate and use the service:
-
-    1. enable Drive API in the Cloud Platform project (GCP)
-    2. create OAuth credentials so API can be authorized (download ``credentials.json``
-       which is needed to initialize service)
-    3. necessary authentication scopes and credentials.json are needed
-       to initialize service
-
     For more information about Google Drive API link_.
 
     .. _link: https://developers.google.com/drive/api
@@ -37,7 +27,7 @@ class DriveKeywords(LibraryContext):
         super().__init__(ctx)
         self.service = None
 
-    @keyword
+    @keyword(tags=["init", "drive"])
     def init_drive(
         self,
         service_account: str = None,
@@ -73,7 +63,7 @@ class DriveKeywords(LibraryContext):
             token_file=token_file,
         )
 
-    @keyword
+    @keyword(tags=["drive"])
     def upload_drive_file(
         self,
         filename: str = None,
@@ -166,7 +156,7 @@ class DriveKeywords(LibraryContext):
             # pylint: disable=protected-access
             shutil.copyfileobj(fh, f, length=downloader._total_size)
 
-    @keyword
+    @keyword(tags=["drive"])
     def download_drive_files(
         self,
         file_dict: dict = None,
@@ -229,7 +219,7 @@ class DriveKeywords(LibraryContext):
             return [file_dict]
         return []
 
-    @keyword
+    @keyword(tags=["drive"])
     def update_drive_file(
         self,
         file_id: str = None,
@@ -308,7 +298,7 @@ class DriveKeywords(LibraryContext):
         updated_file = self.service.files().update(fileId=file_id, body=body).execute()
         return updated_file
 
-    @keyword
+    @keyword(tags=["drive"])
     def delete_drive_file(
         self,
         file_id: str = None,
@@ -344,7 +334,7 @@ class DriveKeywords(LibraryContext):
             delete_count += 1
         return delete_count
 
-    @keyword
+    @keyword(tags=["drive"])
     def get_drive_folder_id(self, folder: str = None) -> str:
         """Get file id for the folder
 
@@ -375,7 +365,7 @@ class DriveKeywords(LibraryContext):
                 )
         return folder_id
 
-    @keyword
+    @keyword(tags=["drive"])
     def move_drive_file(
         self,
         file_id: str = None,
@@ -435,7 +425,7 @@ class DriveKeywords(LibraryContext):
             result_files.append(result_file)
         return result_files
 
-    @keyword
+    @keyword(tags=["drive"])
     def search_drive_files(
         self, query: str = None, recurse: bool = False, source: str = None
     ) -> List:
@@ -502,7 +492,7 @@ class DriveKeywords(LibraryContext):
                 raise GoogleDriveError(str(e)) from e
         return filelist
 
-    @keyword
+    @keyword(tags=["drive"])
     def create_drive_directory(
         self, folder: str = None, parent_folder: str = None
     ) -> Dict:
@@ -535,7 +525,7 @@ class DriveKeywords(LibraryContext):
         )
         return added_folder
 
-    @keyword
+    @keyword(tags=["drive"])
     def export_drive_file(
         self,
         file_id: str = None,

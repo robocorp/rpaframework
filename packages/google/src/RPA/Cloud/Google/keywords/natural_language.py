@@ -12,7 +12,7 @@ class NaturalLanguageKeywords(LibraryContext):
         super().__init__(ctx)
         self.service = None
 
-    @keyword
+    @keyword(tags=["init", "natural language"])
     def init_natural_language(
         self,
         service_account: str = None,
@@ -32,7 +32,7 @@ class NaturalLanguageKeywords(LibraryContext):
             token_file,
         )
 
-    @keyword
+    @keyword(tags=["natural language"])
     def analyze_sentiment(
         self,
         text: str = None,
@@ -66,7 +66,7 @@ class NaturalLanguageKeywords(LibraryContext):
             text, text_file, file_type, json_file, lang, "sentiment"
         )
 
-    @keyword
+    @keyword(tags=["natural language"])
     def classify_text(
         self,
         text: str = None,

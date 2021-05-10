@@ -9,19 +9,6 @@ from . import (
 class AppsScriptKeywords(LibraryContext):
     """Class for Google Apps Script API
 
-    **Note:** The Apps Script API does not work with _service accounts_
-
-    Following steps are needed to authenticate and use the service:
-
-    1. enable Apps Script API in the Cloud Platform project (GCP)
-    2. create OAuth credentials so API can be authorized (download ``credentials.json``
-       which is needed to initialize service)
-    3. the Google Script needs to be linked to Cloud Platform project number
-    4. Google Script needs to have necessary OAuth scopes to access app
-       which is being scripted
-    5. necessary authentication scopes and credentials.json are needed
-       to initialize service and run scripts
-
     For more information about Google Apps Script API link_.
 
     .. _link: https://developers.google.com/apps-script/api
@@ -31,7 +18,7 @@ class AppsScriptKeywords(LibraryContext):
         super().__init__(ctx)
         self.service = None
 
-    @keyword
+    @keyword(tags=["init", "apps script"])
     def init_apps_script(
         self,
         service_account: str = None,
@@ -61,7 +48,7 @@ class AppsScriptKeywords(LibraryContext):
             token_file=token_file,
         )
 
-    @keyword
+    @keyword(tags=["apps script"])
     def run_script(
         self, script_id: str, function_name: str, parameters: dict = None
     ) -> None:

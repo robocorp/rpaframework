@@ -2,7 +2,7 @@
 Cloud.Google
 ############
 
-Use Google Cloud services.
+Library for Google Cloud services.
 
 .. toctree::
    :maxdepth: 1

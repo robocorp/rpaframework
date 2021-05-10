@@ -42,7 +42,7 @@ class SpeechToTextKeywords(LibraryContext):
         super().__init__(ctx)
         self.service = None
 
-    @keyword
+    @keyword(tags=["init", "speech to text"])
     def init_speech_to_text(
         self,
         service_account: str = None,
@@ -59,7 +59,7 @@ class SpeechToTextKeywords(LibraryContext):
             speech.SpeechClient, service_account, use_robocorp_vault, token_file
         )
 
-    @keyword
+    @keyword(tags=["speech to text"])
     def recognize_text_from_audio(
         self,
         audio_file: str = None,

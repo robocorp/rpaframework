@@ -1,25 +1,42 @@
 import base64
-from email.mime.text import MIMEText
+from email.mime.audio import MIMEAudio
+from email.mime.base import MIMEBase
+from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
-
+from email.mime.text import MIMEText
+from googleapiclient import errors
+import mimetypes
+import os
+from pathlib import Path
 from typing import Optional
 
 
 from . import LibraryContext, keyword
 
 
+def get_size_format(b, factor=1024, suffix="B"):
+    """
+    Scale bytes to its proper byte format
+    e.g:
+        1253656 => '1.20MB'
+        1253656678 => '1.17GB'
+    """
+    for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
+        if b < factor:
+            return f"{b:.2f}{unit}{suffix}"
+        b /= factor
+    return f"{b:.2f}Y{suffix}"
+
+
+def clean(text):
+    # clean text for creating a folder
+    return "".join(c if c.isalnum() else "_" for c in text)
+
+
 class GmailKeywords(LibraryContext):
     """Class for Google Gmail API
 
     **Note:** The Gmail API does not work with _service accounts_
-
-    Following steps are needed to authenticate and use the service:
-
-    1. enable Drive API in the Cloud Platform project (GCP)
-    2. create OAuth credentials so API can be authorized (download ``credentials.json``
-       which is needed to initialize service)
-    3. necessary authentication scopes and credentials.json are needed
-       to initialize service
 
     For more information about Google Gmail API link_.
 
@@ -30,7 +47,7 @@ class GmailKeywords(LibraryContext):
         super().__init__(ctx)
         self.service = None
 
-    @keyword
+    @keyword(tags=["init", "gmail"])
     def init_gmail(
         self,
         service_account: str = None,
@@ -65,49 +82,248 @@ class GmailKeywords(LibraryContext):
         to: str,
         subject: str,
         message_text: str,
-        # attachments: list = None,
+        attachments: list = None,
     ):
         """Create a message for an email.
 
-        Args:
-            to: Email address of the receiver.
-            subject: The subject of the email message.
-            message_text: The text of the email message.
-            attachments: list of attachments to send
-
-        Returns:
-            An object containing a base64url encoded email object.
+        :param to: message recipient
+        :param subject: message subject
+        :param message_text: message body text
+        :param attachment: list of files to add as message attachments
+        :return: An object containing a base64url encoded email object
         """
         mimeMessage = MIMEMultipart()
         mimeMessage["to"] = to
         mimeMessage["subject"] = subject
         mimeMessage.attach(MIMEText(message_text, "plain"))
 
+        for at in attachments:
+            self.add_attachment_to_message(mimeMessage, at)
         return {"raw": base64.urlsafe_b64encode(mimeMessage.as_bytes()).decode()}
 
-    @keyword
+    def add_attachment_to_message(self, mimeMessage, attachment):
+        content_type, encoding = mimetypes.guess_type(attachment)
+
+        if content_type is None or encoding is not None:
+            content_type = "application/octet-stream"
+        main_type, sub_type = content_type.split("/", 1)
+        if main_type == "text":
+            with open(attachment, "r") as fp:
+                msg = MIMEText(fp.read(), _subtype=sub_type)
+        elif main_type == "image":
+            with open(attachment, "rb") as fp:
+                msg = MIMEImage(fp.read(), _subtype=sub_type)
+        elif main_type == "audio":
+            with open(attachment, "rb") as fp:
+                msg = MIMEAudio(fp.read(), _subtype=sub_type)
+        else:
+            with open(attachment, "rb") as fp:
+                msg = MIMEBase(main_type, sub_type)
+                msg.set_payload(fp.read())
+        filename = os.path.basename(attachment)
+        msg.add_header("Content-Disposition", "attachment", filename=filename)
+        mimeMessage.attach(msg)
+
+    @keyword(tags=["gmail"])
     def send_message(
         self,
         sender: str,
         to: str,
         subject: str,
         message_text: str,
-        # attachments: list = None,
+        attachments: list = None,
     ):
         """Send an email message.
 
-        Args:
-            sender: User's email address. The special value "me"
-            can be used to indicate the authenticated user.
-            message: Message to be sent.
+        :param sender: message sender
+        :param to: message recipient
+        :param subject: message subject
+        :param message_text: message body text
+        :param attachment: list of files to add as message attachments
+        :return: sent message
 
-        Returns:
-            Sent Message.
+        Example:
+
+        .. code-block:: robotframework
+
+            ${attachments}=  Create List
+            ...  ${CURDIR}${/}random.txt
+            ...  ${CURDIR}${/}source.png
+            Send Message    me
+            ...    mika@robocorp.com
+            ...    message subject
+            ...    body of the message
+            ...    ${attachments}
         """
-
-        message = self.create_message(to, subject, message_text)
-        response = (
-            self.service.users().messages().send(userId=sender, body=message).execute()
-        )
-        print("Message Id: %s" % response["id"])
+        if not self.service:
+            raise AssertionError("Gmail service has not been initialized")
+        attachments = attachments or []
+        message = self.create_message(to, subject, message_text, attachments)
+        try:
+            response = (
+                self.service.users()
+                .messages()
+                .send(userId=sender, body=message)
+                .execute()
+            )
+            self.logger.debug("Message Id: %s" % response["id"])
+        except errors.HttpError as he:
+            self.logger.warning(str(he))
+            raise he
         return response
+
+    @keyword(tags=["gmail"])
+    def list_messages(
+        self,
+        user_id: str,
+        query: str,
+        folder_name: str = None,
+        label_ids: list = None,
+        max_results: int = None,
+        include_json: bool = False,
+        include_spam: bool = False,
+    ):
+        """List messages
+
+        :param user_id: user's email address. The special value me can
+         be used to indicate the authenticated user.
+        :param query: message query
+        :param folder_name: path where attachments are saved, default current
+         directory
+        :param label_ids: message label ids
+        :param max_results: maximum number of message to return
+        :param include_json: include original response json
+        :param include_spam: include messages from SPAM and TRASH
+        :return: messages
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${messages}=    List Messages    me
+            ...    from:mika@robocorp.com
+            ...    folder_name=${CURDIR}${/}target
+            ...    include_json=True
+            FOR    ${msg}    IN    @{messages}
+                Log Many    ${msg}
+            END
+        """
+        parameters = {"userId": user_id, "q": query}
+        folder_name = Path(folder_name) if folder_name else Path().absolute()
+        messages = []
+        if label_ids:
+            parameters["labelIds" : ",".join(label_ids)]
+        if max_results:
+            parameters["maxResults":max_results]
+        if include_spam:
+            parameters["includeSpamTrash":include_spam]
+        try:
+            response = self.service.users().messages().list(**parameters).execute()
+            message_ids = [
+                m["id"] for m in response["messages"] if "messages" in response.keys()
+            ]
+            for message_id in message_ids:
+                response = (
+                    self.service.users()
+                    .messages()
+                    .get(userId=user_id, id=message_id)
+                    .execute()
+                )
+                payload = response["payload"]
+                headers = payload.get("headers")
+                message_dict = {"id": message_id, "label_ids": response["labelIds"]}
+                if include_json:
+                    message_dict["json"] = response
+                for header in headers:
+                    name = header.get("name")
+                    value = header.get("value")
+                    if name.lower() == "from":
+                        message_dict["from"] = value
+                    if name.lower() == "to":
+                        message_dict["to"] = value
+                    if name.lower() == "subject":
+                        message_dict["subject"] = value
+                    if name.lower() == "date":
+                        message_dict["date"] = value
+
+                parts = payload.get("parts")
+                parsed_parts = self.parse_parts(
+                    message_id, response, parts, folder_name
+                )
+                message_dict["parts"] = parsed_parts
+                messages.append(message_dict)
+        except errors.HttpError as he:
+            self.logger.warning(str(he))
+            raise he
+        return messages
+
+    def parse_parts(self, msg_id, msg, parts, folder_name):
+        """
+        Utility function that parses the content of an email partition
+        """
+        if msg_id and msg_id not in str(folder_name):
+            try:
+                folder_name = folder_name / msg_id
+                folder_name.mkdir(parents=True, exist_ok=True)
+            except FileExistsError:
+                pass
+
+        parsed_parts = []
+        if parts:
+            for part in parts:
+                filename = part.get("filename")
+                mimeType = part.get("mimeType")
+                body = part.get("body")
+                data = body.get("data")
+                file_size = body.get("size")
+                part_headers = part.get("headers")
+                if part.get("parts"):
+                    # recursively call this function when we see that a part
+                    # has parts inside
+                    self.parse_parts(None, msg, part.get("parts"), folder_name)
+                if mimeType == "text/plain":
+                    if data:
+                        text = base64.urlsafe_b64decode(data).decode()
+                        parsed_parts.append({"text/plain": text})
+                elif mimeType == "text/html":
+                    if not filename:
+                        filename = "message.html"
+                    filepath = os.path.join(folder_name, filename)
+
+                    with open(filepath, "wb") as f:
+                        data = base64.urlsafe_b64decode(data)
+                        parsed_parts.append({"text/html": data, "path": filepath})
+                        f.write(data)
+                else:
+                    for part_header in part_headers:
+                        part_header_name = part_header.get("name")
+                        part_header_value = part_header.get("value")
+                        if part_header_name == "Content-Disposition":
+                            if "attachment" in part_header_value:
+                                # we get the attachment ID
+                                # and make another request to get the attachment itself
+                                self.logger.info(
+                                    "Saving the file: %s, size:%s"
+                                    % (filename, get_size_format(file_size))
+                                )
+                                attachment_id = body.get("attachmentId")
+                                attachment = (
+                                    self.service.users()
+                                    .messages()
+                                    .attachments()
+                                    .get(
+                                        id=attachment_id,
+                                        userId="me",
+                                        messageId=msg["id"],
+                                    )
+                                    .execute()
+                                )
+                                data = attachment.get("data")
+                                filepath = os.path.join(folder_name, filename)
+                                if data:
+                                    parsed_parts.append(
+                                        {"attachment": filepath, "id": attachment_id}
+                                    )
+                                    with open(filepath, "wb") as f:
+                                        f.write(base64.urlsafe_b64decode(data))
+        return parsed_parts
