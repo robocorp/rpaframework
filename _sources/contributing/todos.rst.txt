@@ -2,15 +2,6 @@
 TODO
 ****
 
-RPA.Cloud.Google:
-=================
-
-.. csv-table::
-   :header: "Line", "Message"
-   :widths: 10, 40
-
-   "1660", "mypy should handle enum exhaustivity validation"
-
 RPA.Desktop.Windows:
 ====================
 
@@ -30,8 +21,8 @@ RPA.Desktop.keywords.application:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "111", "Move implementations to platform-specific adapters"
-   "167", "Find out way to get actual default application,"
+   "112", "Move implementations to platform-specific adapters"
+   "168", "Find out way to get actual default application,"
 
 RPA.Desktop.keywords.finder:
 ============================
@@ -109,13 +100,10 @@ RPA.Tables:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "2", "Distinguish between range-based index and named index"
-   "3", "Integers as column names? Columns forced to strings?"
-   "4", "Implement column slicing"
-   "5", "Index accessing through dot notation?"
-   "6", "Index name conflict in exports/imports"
-   "7", "Return Robot Framework DotDict instead of dict?"
-   "802", "Ensure original index is maintained?"
+   "2", "Implement column slicing"
+   "3", "Index name conflict in exports/imports"
+   "4", "Return Robot Framework DotDict instead of dict?"
+   "779", "Ensure original index is maintained?"
 
 RPA.Tasks:
 ==========
