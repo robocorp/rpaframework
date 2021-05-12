@@ -7,7 +7,7 @@ Upcoming release
 10.0.1
 ------
 
-- Fix ``TypeError``s when creating Tables inside Robocorp Lab
+- Fix ``TypeError`` errors when creating Tables inside Robocorp Lab
 
 10.0.0
 ------
