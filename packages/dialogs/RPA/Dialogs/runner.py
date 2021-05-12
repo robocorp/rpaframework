@@ -42,7 +42,9 @@ def main() -> None:
     try:
         elements = json.loads(args.elements)
 
-        bridge = Bridge(elements, args.auto_height)
+        bridge = Bridge(
+            elements=elements, auto_height=args.auto_height, on_top=args.on_top
+        )
         window = webview.create_window(
             url=os.path.join(static(), "index.html"),
             js_api=bridge,
@@ -52,7 +54,7 @@ def main() -> None:
             title=args.title,
             width=args.width,
             height=args.height,
-            on_top=args.on_top,
+            on_top=True,
         )
         bridge.window = window
 

@@ -32,13 +32,18 @@ class Bridge:
     """
 
     def __init__(
-        self, elements: Elements, auto_height: bool = False, max_height: int = 800
+        self,
+        elements: Elements,
+        auto_height: bool = False,
+        max_height: int = 800,
+        on_top: bool = False,
     ):
         self.logger = logging.getLogger(__name__)
         self.elements: Elements = elements
 
         self.auto_height = auto_height
         self.max_height = max_height
+        self.on_top = on_top
 
         self.files: Dict[str, List[str]] = {}
         self.result: Optional[Result] = None
@@ -85,13 +90,16 @@ class Bridge:
 
     @fatal
     def setHeight(self, height: int) -> None:
-        if not self.auto_height:
+        if not self.window:
             return
 
-        if self.window:
+        if self.auto_height:
             height = min(int(height), self.max_height)
             self.logger.debug("Auto-resizing dialog height to %dpx", height)
             self.window.resize(self.window.width, height)
+
+        if not self.on_top:
+            self.window.on_top = False
 
     def openFile(self, path: str) -> None:
         self.logger.info("Opening local file: %s", path)
