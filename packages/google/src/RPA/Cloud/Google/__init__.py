@@ -91,7 +91,7 @@ class Google(DynamicCore):
             Set Robocorp Vault   vault_name=googlecloud  vault_secret_key=servicecreds
             Init Storage    use_robocorp_vault=${TRUE}
 
-    Methods when using service account:
+    Methods when using OAuth token:
 
     - Method 1 as keyword parameter ``token_file`` to ``Init Storage`` for example.
     - Method 2 as Robocorp vault secret. The vault name and secret key name needs to be given in library init
@@ -103,10 +103,6 @@ class Google(DynamicCore):
 
         *** Settings ***
         Library   RPA.Cloud.Google
-        Library   RPA.Cloud.Google
-        ...       vault_name=googlecloud
-        ...       vault_secret_key=oauth
-        ...       cloud_auth_type=token
 
         *** Variables ***
         @{SCRIPT_SCOPES}     forms   spreadsheets
@@ -122,7 +118,8 @@ class Google(DynamicCore):
         *** Settings ***
         Library   RPA.Cloud.Google
         ...       vault_name=googlecloud
-        ...       vault_secret_key=servicecreds
+        ...       vault_secret_key=oauth
+        ...       cloud_auth_type=token
 
         *** Tasks ***
         Init Google services
