@@ -50,8 +50,6 @@ Get Table Cell Errors
     Assert cell error    ${table}    1     Four    *Unknown column name*
     Assert cell error    ${table}    Test  0       *integer*
 
-
-
 *** Keywords ***
 List group IDs
     [Arguments]    ${rows}

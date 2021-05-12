@@ -368,7 +368,17 @@ class Table:
 
     def column_location(self, value):
         """Find location for column value."""
-        if isinstance(value, int):
+
+        # Try to use as-is
+        try:
+            return self._columns.index(value)
+        except ValueError:
+            pass
+
+        # Try as integer index
+        try:
+            value = int(value)
+
             if value in self._columns:
                 location = self._columns.index(value)
             elif value < 0:
@@ -383,16 +393,13 @@ class Table:
             if location >= size:
                 raise IndexError(f"Column ({location}) out of range (0..{size - 1})")
 
-        else:
-            try:
-                location = self._columns.index(value)
-            except ValueError as e:
-                options = ", ".join(str(col) for col in self._columns)
-                raise ValueError(
-                    f"Unknown column name: {value}, current columns: {options}"
-                ) from e
+            return location
+        except ValueError:
+            pass
 
-        return location
+        # No matches
+        options = ", ".join(str(col) for col in self._columns)
+        raise ValueError(f"Unknown column name: {value}, current columns: {options}")
 
     def __getitem__(self, key):
         """Helper method for accessing items in the Table.
