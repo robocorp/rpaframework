@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+10.0.1
+------
+
+- Fix ``TypeError``s when creating Tables inside Robocorp Lab
+
 10.0.0
 ------
 
