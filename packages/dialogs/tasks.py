@@ -114,8 +114,6 @@ def publish(ctx, ci=False):
     else:
         poetry(ctx, "publish -v")
 
-    ctx.run(TOOLS / "tag.py")
-
 
 @task(install)
 def storybook(ctx):
