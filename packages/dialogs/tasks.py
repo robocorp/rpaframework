@@ -14,6 +14,7 @@ def _git_root():
 
 GIT_ROOT = _git_root()
 CONFIG = GIT_ROOT / "config"
+TOOLS = GIT_ROOT / "tools"
 
 CLEAN_PATTERNS = [
     "coverage",
@@ -112,6 +113,8 @@ def publish(ctx, ci=False):
         poetry(ctx, "publish -v --no-interaction --repository devpi")
     else:
         poetry(ctx, "publish -v")
+
+    ctx.run(TOOLS / "tag.py")
 
 
 @task(install)
