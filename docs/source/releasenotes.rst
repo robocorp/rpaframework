@@ -4,12 +4,28 @@ Release notes
 Upcoming release
 ----------------
 
+10.0.0
+------
+
 - Library **RPA.Cloud.Google**:
 
   - Available now as ``rpaframework-google`` package instead of rpaframework extra
   - Added basic support for ``Gmail API``
   - Added keyword tags to identify keywords by service in the documentation
   - Fix regression bug with Sheets keyword ``Insert Values``
+
+- Library **RPA.Dialogs**:
+
+  - Open dialogs as native OS windows instead of new browser instances
+  - Renamed multiple keywords and arguments, added type hints for all arguments
+  - Visual upgrade to all components
+  - Available separately as ``rpaframework-dialogs`` package, but still part of main release
+
+- Library **RPA.Tables**:
+
+  - Removed support for named rows, which caused confusion and had several shortcomings
+  - Added automatic argument conversion for all keywords
+  - Added examples for all keywords
 
 9.6.0
 -----
