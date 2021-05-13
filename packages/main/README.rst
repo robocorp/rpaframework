@@ -54,7 +54,7 @@ Links
    :target: http://www.apache.org/licenses/LICENSE-2.0.html
    :alt: License
 
-Packages:
+.. packages::
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-dialogs.svg?label=rpaframework-dialogs
    :target: https://pypi.python.org/pypi/rpaframework-dialogs
@@ -194,8 +194,11 @@ To install all extra packages, you can use:
 Other packages that can be installed separately are:
 
 ``pip install rpaframework-dialogs``  (included in the rpaframework by default)
+
 ``pip install rpaframework-google``
+
 ``pip install rpaframework-pdf`` (included in the rpaframework by default)
+
 ``pip install rpaframework-recognition``
 
 .. note:: Python 3.6 or higher is required
