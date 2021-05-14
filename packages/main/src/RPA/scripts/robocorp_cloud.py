@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 import json
-import os
 import sys
 import click
 
