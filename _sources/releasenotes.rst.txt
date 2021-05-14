@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+10.0.2
+------
+
+- Fix ``use-robocorp-vault`` script error when creating ``devdata/env.json`` file
+
 10.0.1
 ------
 
