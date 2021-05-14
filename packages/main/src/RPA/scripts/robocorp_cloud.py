@@ -1,16 +1,29 @@
 from datetime import datetime, timedelta
 import json
 import os
-
+import sys
 import click
 
 from robot.libraries.OperatingSystem import OperatingSystem
+from RPA.FileSystem import FileSystem
 
+PROD_API_URL = "https://api.eu1.robocloud.eu"
 
 def run_command(command):
     ret = OperatingSystem().run(command)
     return ret
 
+def output_and_exit(message, level="error"):
+    bg_color = "red"
+    fg_color = "white"
+    msg_prefix = "Error"
+    if level == "warn":
+        bg_color = "yellow"
+        fg_color = "black"
+        msg_prefix = "Warning"
+    click.secho(f"{msg_prefix}:", bg=bg_color, fg=fg_color, nl=False)
+    click.echo(f" {message}")
+    sys.exit(0)
 
 def does_dev_access_account_exist():
     creds = run_command("rcc configure credentials --json")
@@ -45,6 +58,39 @@ def ask_for_access_credentials():
     else:
         click.echo("OK")
 
+def update_env_json(workspace, token):
+    response = click.confirm(
+        "Do you want to update environment variables in devdata/env.json ?",
+        default=True,
+    )
+    if response:
+        content = OperatingSystem().get_file("devdata/env.json")
+        if len(content)==0:
+            content = {}
+        else:
+            try:
+                content = json.loads(content)
+            except json.decoder.JSONDecodeError:
+                output_and_exit("Can't parse env.json contents. Check the file structure.")
+
+        content["RC_WORKSPACE_ID"] = workspace
+        content["RC_API_SECRET_TOKEN"] = token
+        content["RC_API_SECRET_HOST"] = PROD_API_URL
+        with open("devdata/env.json", "w") as fout:
+            fout.write(json.dumps(content, sort_keys=False, indent=4))
+
+def create_env_json(workspace, token):
+    response = click.confirm(
+        "devdata/env.json does not exist - do you want to create it ?", default=True
+    )
+    if response:
+        OperatingSystem().create_file('devdata/env.json')
+        content = {}
+        content["RC_WORKSPACE_ID"] = workspace
+        content["RC_API_SECRET_TOKEN"] = token
+        content["RC_API_SECRET_HOST"] = PROD_API_URL
+        with open("devdata/env.json", "w") as fout:
+            fout.write(json.dumps(content, sort_keys=False, indent=4))
 
 @click.group()
 def cli() -> None:
@@ -77,38 +123,15 @@ def set_command():
     token_validity = 1440
     ret = run_command(f"rcc cloud authorize -a DEV -w {workspace} -m {token_validity}")
     if "Error:" in ret:
-        click.echo(ret)
-        return
+        output_and_exit(ret)
     ret = json.loads(ret)
     expiry_time = ret["when"] + timedelta(minutes=token_validity).total_seconds()
 
-    try:
-        OperatingSystem().count_files_in_directory(
-            os.path.join(".", "devdata"), "env.json"
-        )
-        response = click.confirm(
-            "Do you want to update environment variables in devdata/env.json ?",
-            default=True,
-        )
-        if response:
-            content = OperatingSystem().get_file("devdata/env.json")
-            content = json.loads(content)
-            content["RC_WORKSPACE_ID"] = workspace
-            content["RC_API_SECRET_TOKEN"] = ret["token"]
-            content["RC_API_SECRET_HOST"] = "https://api.eu1.robocloud.eu"
-            with open("devdata/env.json", "w") as fout:
-                fout.write(json.dumps(content, sort_keys=False, indent=4))
-    except RuntimeError:
-        response = click.confirm(
-            "devdata/env.json does not exist - do you want to create it ?", default=True
-        )
-        if response:
-            env_vars["RC_WORKSPACE_ID"] = workspace
-            env_vars["RC_API_SECRET_TOKEN"] = ret["token"]
-            env_vars["RC_API_SECRET_HOST"] = "https://api.eu1.robocloud.eu"
-            OperatingSystem().create_file(
-                os.path.join(".", "devdata/env.json"), json.dumps(env_vars)
-            )
+    json_exists = FileSystem().does_file_exist("devdata/env.json")
+    if json_exists:
+        update_env_json(workspace, ret["token"])
+    else:
+        create_env_json(workspace, ret["token"])
 
     click.echo(f"Token expires at {datetime.fromtimestamp(expiry_time)}")
 
@@ -139,7 +162,7 @@ def list_command():
             click.echo(" / ", nl=False)
             click.secho(f"{r['id']}", fg="green")
     else:
-        click.echo("DEV access account does not exist. Cannot list workspaces.")
+        output_and_exit("DEV access account does not exist. Cannot list workspaces.", level="warn")
 
 
 def main():
