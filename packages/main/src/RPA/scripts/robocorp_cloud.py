@@ -9,9 +9,11 @@ from RPA.FileSystem import FileSystem
 
 PROD_API_URL = "https://api.eu1.robocloud.eu"
 
+
 def run_command(command):
     ret = OperatingSystem().run(command)
     return ret
+
 
 def output_and_exit(message, level="error"):
     bg_color = "red"
@@ -24,6 +26,7 @@ def output_and_exit(message, level="error"):
     click.secho(f"{msg_prefix}:", bg=bg_color, fg=fg_color, nl=False)
     click.echo(f" {message}")
     sys.exit(0)
+
 
 def does_dev_access_account_exist():
     creds = run_command("rcc configure credentials --json")
@@ -58,6 +61,7 @@ def ask_for_access_credentials():
     else:
         click.echo("OK")
 
+
 def update_env_json(workspace, token):
     response = click.confirm(
         "Do you want to update environment variables in devdata/env.json ?",
@@ -65,32 +69,36 @@ def update_env_json(workspace, token):
     )
     if response:
         content = OperatingSystem().get_file("devdata/env.json")
-        if len(content)==0:
+        if len(content) == 0:
             content = {}
         else:
             try:
                 content = json.loads(content)
             except json.decoder.JSONDecodeError:
-                output_and_exit("Can't parse env.json contents. Check the file structure.")
+                output_and_exit(
+                    "Can't parse env.json contents. Check the file structure."
+                )
 
         content["RC_WORKSPACE_ID"] = workspace
         content["RC_API_SECRET_TOKEN"] = token
         content["RC_API_SECRET_HOST"] = PROD_API_URL
         with open("devdata/env.json", "w") as fout:
             fout.write(json.dumps(content, sort_keys=False, indent=4))
+
 
 def create_env_json(workspace, token):
     response = click.confirm(
         "devdata/env.json does not exist - do you want to create it ?", default=True
     )
     if response:
-        OperatingSystem().create_file('devdata/env.json')
+        OperatingSystem().create_file("devdata/env.json")
         content = {}
         content["RC_WORKSPACE_ID"] = workspace
         content["RC_API_SECRET_TOKEN"] = token
         content["RC_API_SECRET_HOST"] = PROD_API_URL
         with open("devdata/env.json", "w") as fout:
             fout.write(json.dumps(content, sort_keys=False, indent=4))
+
 
 @click.group()
 def cli() -> None:
@@ -162,7 +170,9 @@ def list_command():
             click.echo(" / ", nl=False)
             click.secho(f"{r['id']}", fg="green")
     else:
-        output_and_exit("DEV access account does not exist. Cannot list workspaces.", level="warn")
+        output_and_exit(
+            "DEV access account does not exist. Cannot list workspaces.", level="warn"
+        )
 
 
 def main():
