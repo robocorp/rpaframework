@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+10.0.3
+------
+
+- Update ``rpaframework-pdf`` version to ``0.6.0``
+
 10.0.2
 ------
 
