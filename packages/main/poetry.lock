@@ -138,20 +138,20 @@ python2 = ["typed-ast (>=1.4.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.17.72"
+version = "1.17.73"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [package.dependencies]
-botocore = ">=1.20.72,<1.21.0"
+botocore = ">=1.20.73,<1.21.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.4.0,<0.5.0"
 
 [[package]]
 name = "botocore"
-version = "1.20.72"
+version = "1.20.73"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -267,7 +267,7 @@ python-versions = ">=3.6, <3.7"
 
 [[package]]
 name = "decorator"
-version = "5.0.7"
+version = "5.0.8"
 description = "Decorators for Humans"
 category = "main"
 optional = false
@@ -1356,7 +1356,7 @@ rpaframework-core = ">=6.1.0,<7.0.0"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "0.5.1"
+version = "0.6.0"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
@@ -1649,7 +1649,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "bdfeb3341c8dccef809f0a3434ba33fdad39ce07e8ca2d2b173a774281e18132"
+content-hash = "ffdab86ef55ae6289210aca70947925c393707b8445131bc1eefed1291d0fc50"
 
 [metadata.files]
 amazon-textract-response-parser = [
@@ -1711,12 +1711,12 @@ black = [
     {file = "black-21.5b1.tar.gz", hash = "sha256:23695358dbcb3deafe7f0a3ad89feee5999a46be5fec21f4f1d108be0bcdb3b1"},
 ]
 boto3 = [
-    {file = "boto3-1.17.72-py2.py3-none-any.whl", hash = "sha256:ee3317fd79b443ef102469fac393a1ffb650ea51ac4fc27464013872c5e1ce31"},
-    {file = "boto3-1.17.72.tar.gz", hash = "sha256:3317722a1e9acbfc0d30cdf273d1708c823ceb19309e9cd91cac8a3604762341"},
+    {file = "boto3-1.17.73-py2.py3-none-any.whl", hash = "sha256:ce08b88a2d7a0ad8edb385f84ea4914296fee6813c66ebf0def956d5278de793"},
+    {file = "boto3-1.17.73.tar.gz", hash = "sha256:13cfe0e3ae1bdc7baf4272b1814a7e760fbb508b19d6ac3f472a6bbd64baad61"},
 ]
 botocore = [
-    {file = "botocore-1.20.72-py2.py3-none-any.whl", hash = "sha256:2aaf439e3683e4ac7e0a4f5fc3cd6779418456f3bd6f40b3e474cb151bbceab9"},
-    {file = "botocore-1.20.72.tar.gz", hash = "sha256:0fa93a2e2daad5791c63ee526ada66896cc483d04cb2d32bfcadfeb881203453"},
+    {file = "botocore-1.20.73-py2.py3-none-any.whl", hash = "sha256:4b4aa58c61d4b125bc6ec1597924b2749e19de8f2c9a374ac087aa2561e71828"},
+    {file = "botocore-1.20.73.tar.gz", hash = "sha256:69dc0b6fdc0855f5a4f8b1d29c96b9cec44e71054fea0f968e5904d6ccfd4fd9"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -1853,8 +1853,8 @@ dataclasses = [
     {file = "dataclasses-0.7.tar.gz", hash = "sha256:494a6dcae3b8bcf80848eea2ef64c0cc5cd307ffc263e17cdf42f3e5420808e6"},
 ]
 decorator = [
-    {file = "decorator-5.0.7-py3-none-any.whl", hash = "sha256:945d84890bb20cc4a2f4a31fc4311c0c473af65ea318617f13a7257c9a58bc98"},
-    {file = "decorator-5.0.7.tar.gz", hash = "sha256:6f201a6c4dac3d187352661f508b9364ec8091217442c9478f1f83c003a0f060"},
+    {file = "decorator-5.0.8-py3-none-any.whl", hash = "sha256:77a3141f7f5837b5de43569c35508ca4570022ba501db8c8a2a8b292bd35772a"},
+    {file = "decorator-5.0.8.tar.gz", hash = "sha256:bff00cfb18698f9a19fa6400451fd7ea894f3845cedd7b8b7b0ce9c53171fefb"},
 ]
 defusedxml = [
     {file = "defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61"},
@@ -2598,8 +2598,8 @@ rpaframework-dialogs = [
     {file = "rpaframework_dialogs-0.2.2-py3-none-any.whl", hash = "sha256:725ccc965f844b10793c966425cc7e2c40bf67b0003cf7d5d86d40eea7c6b2bf"},
 ]
 rpaframework-pdf = [
-    {file = "rpaframework-pdf-0.5.1.tar.gz", hash = "sha256:3145b39eb2db40ac17efd0e4c676599c2b8bf7f20b16390a2e45cd56c3115d5a"},
-    {file = "rpaframework_pdf-0.5.1-py3-none-any.whl", hash = "sha256:7c612bb07f7cccd44ca6942f5da07332a3679bd7061de2503ef1a4a6f01438d4"},
+    {file = "rpaframework-pdf-0.6.0.tar.gz", hash = "sha256:75c65835b3b7997103115ba2a403615efa69a426e2a8a7c10f1ca41f25e91d7c"},
+    {file = "rpaframework_pdf-0.6.0-py3-none-any.whl", hash = "sha256:8b31b9d0841a88a02ea50713e5c342cca782ffaa7b95dcb9e62dd80ec53ca913"},
 ]
 rpaframework-recognition = [
     {file = "rpaframework-recognition-0.7.0.tar.gz", hash = "sha256:664b72daa7440ba2c1cb697b6fbd2a5ea7a6ac4f696edb9db68e5e987dd2c260"},
