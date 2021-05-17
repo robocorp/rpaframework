@@ -4,6 +4,20 @@ Release notes
 Upcoming release
 ----------------
 
+10.0.4
+------
+
+- Library **RPA.Dialogs**:
+
+  - Fix automatic height calculation on Windows
+  - Fix element clearing if dialog throws exception
+  - Fix errors in keyword examples
+
+10.0.3
+------
+
+- Updated ``rpaframework-pdf`` dependency
+
 10.0.2
 ------
 
