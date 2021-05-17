@@ -155,7 +155,7 @@ class Dialogs:
 
         .. code-block:: robotframework
 
-            Add title     Please input user information
+            Add heading     Please input user information
             FOR    ${user}   IN    @{users}
                 Run dialog    clear=False
                 Process page
