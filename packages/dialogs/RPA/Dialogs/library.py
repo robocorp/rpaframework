@@ -937,12 +937,12 @@ class Dialogs:
             debug=debug,
         )
 
+        if clear:
+            self.clear_elements()
+
         dialog.start()
         self.dialogs.append(dialog)
         atexit.register(dialog.stop)
-
-        if clear:
-            self.clear_elements()
 
         return dialog
 
