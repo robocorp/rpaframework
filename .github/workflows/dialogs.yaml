@@ -5,13 +5,13 @@ on:
     branches:
       - master
     paths:
-      - packages/dialogs/**'
+      - 'packages/dialogs/**'
       - '.github/workflows/dialogs.yaml'
   pull_request:
     branches:
       - master
     paths:
-      - packages/dialogs/**'
+      - 'packages/dialogs/**'
       - '.github/workflows/dialogs.yaml'
 
 defaults:
