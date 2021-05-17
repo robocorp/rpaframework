@@ -58,6 +58,22 @@ class Bridge:
                 return element
         raise ValueError(f"Unknown element: {name}")
 
+    def _set_height(self, height: int) -> None:
+        if not self.window:
+            return
+
+        height = min(int(height), self.max_height)
+        self.logger.debug("Auto-resizing dialog height to %dpx", height)
+
+        # Resize adjusts outer frame, but we care about content
+        # TODO: Figure out some more robust solution
+        if platform.system() == "Windows":
+            height += 40
+        elif platform.system() == "Linux":
+            height += 1
+
+        self.window.resize(self.window.width, height)
+
     @fatal
     def getElements(self) -> Elements:
         return self.elements
@@ -94,9 +110,7 @@ class Bridge:
             return
 
         if self.auto_height:
-            height = min(int(height), self.max_height)
-            self.logger.debug("Auto-resizing dialog height to %dpx", height)
-            self.window.resize(self.window.width, height)
+            self._set_height(height)
 
         if not self.on_top:
             self.window.on_top = False
