@@ -25,7 +25,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Set pip version
-        run: python -m pip install --force-reinstall pip==${{matrix.pip-version}}
+        run: python -m pip install --force-reinstall pip==${{matrix.pip-version}} wheel
       - name: install rpafw
         run: python -m pip install rpaframework[cv,playwright,aws,google]
       - name: test install is correct
