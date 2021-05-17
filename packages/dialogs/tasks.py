@@ -91,6 +91,12 @@ def test(ctx):
     yarn(ctx, "test --passWithNoTests")
 
 
+@task(install)
+def test_robot(ctx):
+    """Run Robot Framework tests"""
+    poetry(ctx, "run robot -d tests/output -L TRACE tests/test_dialogs.robot")
+
+
 @task(install, help={"dev": "Development build of front-end"})
 def build_js(ctx, dev=False):
     """Build javascript files"""

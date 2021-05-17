@@ -16,7 +16,7 @@ sdist/
 .pytest_cache/
 .cache/
 coverage/
-tests/robot/output/
+tests/output/
 *.log
 
 # IDE
