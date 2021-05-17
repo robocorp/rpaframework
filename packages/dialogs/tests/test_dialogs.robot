@@ -1,6 +1,9 @@
 *** Settings ***
 Library    RPA.Dialogs
 
+*** Variables ***
+@{EMPTY_LIST}
+
 *** Test Cases ***
 Failure dialog
     Add icon       Failure
@@ -46,19 +49,19 @@ All elements
     Add file input      file-field-2    label=File input   source=~/Downloads    destination=/tmp/not-exist
     Add file input      file-field-3    label=File input   source=/home/ossi/Downloads/    multiple=True    file_type=Log files (*.log;*.txt)
 
-    Add drop-down       dropdown-field-1   ['one', 'two', 'three']
-    Add drop-down       dropdown-field-2   ['one', 'two', 'three']    default=three
-    Add drop-down       dropdown-field-3   []    label=Empty
+    Add drop-down       dropdown-field-1   one,two,three
+    Add drop-down       dropdown-field-2   one,two,three    default=three
+    Add drop-down       dropdown-field-3   ${EMPTY_LIST}    label=Empty
 
-    Add radio buttons   radio-field-1      ['one', 'two', 'three']
-    Add radio buttons   radio-field-2      ['one', 'two', 'three']    default=three
-    Add radio buttons   radio-field-3      []    label=Empty
+    Add radio buttons   radio-field-1      one,two,three
+    Add radio buttons   radio-field-2      one,two,three    default=three
+    Add radio buttons   radio-field-3      ${EMPTY_LIST}    label=Empty
 
     Add checkbox        checkbox-field-1   Checkbox label
     Add checkbox        checkbox-field-2   Checkbox label    default=True
 
-    Add submit buttons  ['one', 'two']
-    Add submit buttons  []
+    Add submit buttons  one,two
+    Add submit buttons  ${EMPTY_LIST}
 
     &{result}=    Run dialog
     Log many    &{result}
