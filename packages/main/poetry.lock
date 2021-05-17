@@ -267,7 +267,7 @@ python-versions = ">=3.6, <3.7"
 
 [[package]]
 name = "decorator"
-version = "5.0.8"
+version = "5.0.9"
 description = "Decorators for Humans"
 category = "main"
 optional = false
@@ -1071,7 +1071,7 @@ six = ">=1.5"
 
 [[package]]
 name = "python-xlib"
-version = "0.29"
+version = "0.30"
 description = "Python X Library"
 category = "main"
 optional = false
@@ -1341,7 +1341,7 @@ webdrivermanager = ">=0.10.0,<0.11.0"
 
 [[package]]
 name = "rpaframework-dialogs"
-version = "0.2.2"
+version = "0.2.3"
 description = "Dialogs library of RPA Framework"
 category = "main"
 optional = false
@@ -1432,7 +1432,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "sortedcontainers"
-version = "2.3.0"
+version = "2.4.0"
 description = "Sorted Containers -- Sorted List, Sorted Dict, Sorted Set"
 category = "main"
 optional = false
@@ -1649,7 +1649,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "ffdab86ef55ae6289210aca70947925c393707b8445131bc1eefed1291d0fc50"
+content-hash = "40295e157732782cb78162e453283f963f204d2d52b3a2983fb1567723e0fcd6"
 
 [metadata.files]
 amazon-textract-response-parser = [
@@ -1853,8 +1853,8 @@ dataclasses = [
     {file = "dataclasses-0.7.tar.gz", hash = "sha256:494a6dcae3b8bcf80848eea2ef64c0cc5cd307ffc263e17cdf42f3e5420808e6"},
 ]
 decorator = [
-    {file = "decorator-5.0.8-py3-none-any.whl", hash = "sha256:77a3141f7f5837b5de43569c35508ca4570022ba501db8c8a2a8b292bd35772a"},
-    {file = "decorator-5.0.8.tar.gz", hash = "sha256:bff00cfb18698f9a19fa6400451fd7ea894f3845cedd7b8b7b0ce9c53171fefb"},
+    {file = "decorator-5.0.9-py3-none-any.whl", hash = "sha256:6e5c199c16f7a9f0e3a61a4a54b3d27e7dad0dbdde92b944426cb20914376323"},
+    {file = "decorator-5.0.9.tar.gz", hash = "sha256:72ecfba4320a893c53f9706bebb2d55c270c1e51a28789361aa93e4a21319ed5"},
 ]
 defusedxml = [
     {file = "defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61"},
@@ -2450,8 +2450,8 @@ python-dateutil = [
     {file = "python_dateutil-2.8.1-py2.py3-none-any.whl", hash = "sha256:75bb3f31ea686f1197762692a9ee6a7550b59fc6ca3a1f4b5d7e32fb98e2da2a"},
 ]
 python-xlib = [
-    {file = "python-xlib-0.29.tar.gz", hash = "sha256:e4bcb756f4aa05be7b82ee21de0ba04d73414018727b42ebd9fbcf409ea75d13"},
-    {file = "python_xlib-0.29-py2.py3-none-any.whl", hash = "sha256:044095d1b1a5eab5a79f8d0b66f811a9ac6acd038dd3bae00cb3dbe90b32a7e3"},
+    {file = "python-xlib-0.30.tar.gz", hash = "sha256:74131418faf9e7b83178c71d9d80297fbbd678abe99ae9258f5a20cd027acb5f"},
+    {file = "python_xlib-0.30-py2.py3-none-any.whl", hash = "sha256:c4c92cd47e07588b2cbc7d52de18407b2902c3812d7cdec39cd2177b060828e2"},
 ]
 pythonnet = [
     {file = "pythonnet-2.5.2-cp27-cp27m-win32.whl", hash = "sha256:d519bbc7b1cd3999651efc594d91cb67c46d1d8466dad3d83b578102e58d05bd"},
@@ -2594,8 +2594,8 @@ rpaframework-core = [
     {file = "rpaframework_core-6.2.1-py3-none-any.whl", hash = "sha256:a4cea819acace4379a0c24e95154f1839040a6e29976c7e0a2f72b9252ec15a5"},
 ]
 rpaframework-dialogs = [
-    {file = "rpaframework-dialogs-0.2.2.tar.gz", hash = "sha256:6cd20d60a5e28c48495e670b250a028a2665ee817631cce44486839e1342fe0b"},
-    {file = "rpaframework_dialogs-0.2.2-py3-none-any.whl", hash = "sha256:725ccc965f844b10793c966425cc7e2c40bf67b0003cf7d5d86d40eea7c6b2bf"},
+    {file = "rpaframework-dialogs-0.2.3.tar.gz", hash = "sha256:70a3303fa5d02d209aa07bfae4c694335bcef262e356de29c63453a18bc1494c"},
+    {file = "rpaframework_dialogs-0.2.3-py3-none-any.whl", hash = "sha256:545edcf0dedff0455ea0998db05e48130a7d16d670ccb314cc643406624b6194"},
 ]
 rpaframework-pdf = [
     {file = "rpaframework-pdf-0.6.0.tar.gz", hash = "sha256:75c65835b3b7997103115ba2a403615efa69a426e2a8a7c10f1ca41f25e91d7c"},
@@ -2622,8 +2622,8 @@ six = [
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
 sortedcontainers = [
-    {file = "sortedcontainers-2.3.0-py2.py3-none-any.whl", hash = "sha256:37257a32add0a3ee490bb170b599e93095eed89a55da91fa9f48753ea12fd73f"},
-    {file = "sortedcontainers-2.3.0.tar.gz", hash = "sha256:59cc937650cf60d677c16775597c89a960658a09cf7c1a668f86e1e4464b10a1"},
+    {file = "sortedcontainers-2.4.0-py2.py3-none-any.whl", hash = "sha256:a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0"},
+    {file = "sortedcontainers-2.4.0.tar.gz", hash = "sha256:25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88"},
 ]
 soupsieve = [
     {file = "soupsieve-2.2.1-py3-none-any.whl", hash = "sha256:c2c1c2d44f158cdbddab7824a9af8c4f83c76b1e23e049479aa432feb6c4c23b"},
