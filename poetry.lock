@@ -125,20 +125,20 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.17.73"
+version = "1.17.74"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [package.dependencies]
-botocore = ">=1.20.73,<1.21.0"
+botocore = ">=1.20.74,<1.21.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.4.0,<0.5.0"
 
 [[package]]
 name = "botocore"
-version = "1.20.73"
+version = "1.20.74"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -347,7 +347,7 @@ six = ">=1.8.0"
 
 [[package]]
 name = "google-api-core"
-version = "1.26.3"
+version = "1.27.0"
 description = "Google API client core library"
 category = "main"
 optional = false
@@ -855,7 +855,7 @@ python-versions = "*"
 
 [[package]]
 name = "netsuitesdk"
-version = "1.23.0"
+version = "1.24.0"
 description = "Python SDK for accessing the NetSuite SOAP webservice"
 category = "main"
 optional = false
@@ -1089,22 +1089,22 @@ toml = ">=0.7.1"
 
 [[package]]
 name = "pynput-robocorp-fork"
-version = "2.0.0"
+version = "3.0.0"
 description = "Monitor and control user input devices"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-pyobjc-core = {version = ">=6.0,<7.0", markers = "sys_platform == \"darwin\""}
-pyobjc-framework-Cocoa = {version = ">=6.0,<7.0", markers = "sys_platform == \"darwin\""}
-pyobjc-framework-Quartz = {version = ">=6.0,<7.0", markers = "sys_platform == \"darwin\""}
+pyobjc-core = {version = ">=7.0,<8.0", markers = "sys_platform == \"darwin\""}
+pyobjc-framework-Cocoa = {version = ">=7.0,<8.0", markers = "sys_platform == \"darwin\""}
+pyobjc-framework-Quartz = {version = ">=7.0,<8.0", markers = "sys_platform == \"darwin\""}
 python-xlib = {version = ">=0.17", markers = "sys_platform in \"linux\""}
 six = "*"
 
 [[package]]
 name = "pyobjc-core"
-version = "6.2.2"
+version = "7.2"
 description = "Python<->ObjC Interoperability Module"
 category = "main"
 optional = false
@@ -1112,38 +1112,38 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "pyobjc-framework-cocoa"
-version = "6.2.2"
+version = "7.2"
 description = "Wrappers for the Cocoa frameworks on macOS"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-pyobjc-core = ">=6.2.2"
+pyobjc-core = ">=7.2"
 
 [[package]]
 name = "pyobjc-framework-quartz"
-version = "6.2.2"
+version = "7.2"
 description = "Wrappers for the Quartz frameworks on macOS"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-pyobjc-core = ">=6.2.2"
-pyobjc-framework-Cocoa = ">=6.2.2"
+pyobjc-core = ">=7.2"
+pyobjc-framework-Cocoa = ">=7.2"
 
 [[package]]
 name = "pyobjc-framework-webkit"
-version = "6.2.2"
+version = "7.2"
 description = "Wrappers for the framework WebKit on macOS"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-pyobjc-core = ">=6.2.2"
-pyobjc-framework-Cocoa = ">=6.2.2"
+pyobjc-core = ">=7.2"
+pyobjc-framework-Cocoa = ">=7.2"
 
 [[package]]
 name = "pyparsing"
@@ -1534,7 +1534,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "10.0.4"
+version = "10.0.5"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1559,7 +1559,7 @@ notifiers = "^1.2.1"
 openpyxl = "^3.0.3"
 pillow = "^8.0.1"
 psutil = {version = "^5.7.0", markers = "sys_platform == \"win32\""}
-pynput-robocorp-fork = "^2.0.0"
+pynput-robocorp-fork = "^3.0.0"
 pyperclip = "^1.8.0"
 PySocks = ">=1.5.6,!=1.5.7,<2.0.0"
 python-xlib = {version = ">=0.17", markers = "sys_platform == \"linux\""}
@@ -1606,13 +1606,16 @@ webdrivermanager = ">=0.10.0,<0.11.0"
 
 [[package]]
 name = "rpaframework-dialogs"
-version = "0.2.3"
+version = "0.2.4"
 description = "Dialogs library of RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.6.2,<4.0.0"
 
 [package.dependencies]
+pyobjc-core = {version = ">=7.0,<8.0", markers = "sys_platform == \"darwin\""}
+pyobjc-framework-cocoa = {version = ">=7.0,<8.0", markers = "sys_platform == \"darwin\""}
+pyobjc-framework-webkit = {version = ">=7.0,<8.0", markers = "sys_platform == \"darwin\""}
 PyQt5 = {version = ">=5.15.2,<6.0.0", markers = "sys_platform == \"linux\""}
 PyQtWebEngine = {version = ">=5.15.2,<6.0.0", markers = "sys_platform == \"linux\""}
 pywebview = ">=3.4,<4.0"
@@ -2198,12 +2201,12 @@ beautifulsoup4 = [
     {file = "beautifulsoup4-4.9.3.tar.gz", hash = "sha256:84729e322ad1d5b4d25f805bfa05b902dd96450f43842c4e99067d5e1369eb25"},
 ]
 boto3 = [
-    {file = "boto3-1.17.73-py2.py3-none-any.whl", hash = "sha256:ce08b88a2d7a0ad8edb385f84ea4914296fee6813c66ebf0def956d5278de793"},
-    {file = "boto3-1.17.73.tar.gz", hash = "sha256:13cfe0e3ae1bdc7baf4272b1814a7e760fbb508b19d6ac3f472a6bbd64baad61"},
+    {file = "boto3-1.17.74-py2.py3-none-any.whl", hash = "sha256:c83a33fff7d20027386552967355508ce71fb7406ab0cc8e627e257c94754d43"},
+    {file = "boto3-1.17.74.tar.gz", hash = "sha256:0a21893db156c0938d0a06b622c3dd3d2da2dcd9d06d343c8f9536ac9de4ec7f"},
 ]
 botocore = [
-    {file = "botocore-1.20.73-py2.py3-none-any.whl", hash = "sha256:4b4aa58c61d4b125bc6ec1597924b2749e19de8f2c9a374ac087aa2561e71828"},
-    {file = "botocore-1.20.73.tar.gz", hash = "sha256:69dc0b6fdc0855f5a4f8b1d29c96b9cec44e71054fea0f968e5904d6ccfd4fd9"},
+    {file = "botocore-1.20.74-py2.py3-none-any.whl", hash = "sha256:2061cf3d17615aa4114c91dbed8917adc5287a88354a7693c96aa8e9f9dedd6e"},
+    {file = "botocore-1.20.74.tar.gz", hash = "sha256:6937954ce6dabc00eb157e9fbd21edd45b4dfe3de738e68dbca4c042bfda0954"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2322,8 +2325,8 @@ furl = [
     {file = "furl-2.1.2.tar.gz", hash = "sha256:f7dba33eafbee7dbc83963534b25e72f816cced48ac53191ee60bfcc62933918"},
 ]
 google-api-core = [
-    {file = "google-api-core-1.26.3.tar.gz", hash = "sha256:b914345c7ea23861162693a27703bab804a55504f7e6e9abcaff174d80df32ac"},
-    {file = "google_api_core-1.26.3-py2.py3-none-any.whl", hash = "sha256:099762d4b4018cd536bcf85136bf337957da438807572db52f21dc61251be089"},
+    {file = "google-api-core-1.27.0.tar.gz", hash = "sha256:407e3e52435a44f6d59d4fef7b5e115bed7b20d77cbdab79e00232bfff7bf912"},
+    {file = "google_api_core-1.27.0-py2.py3-none-any.whl", hash = "sha256:edfca00d76081f359bed7b2efa2dc3a057309e55bf0a91628a0639730e31c357"},
 ]
 google-api-python-client = [
     {file = "google-api-python-client-2.4.0.tar.gz", hash = "sha256:72f69e67238e38b0da41b5a2e352dc39b4b5891d88f3db082aae7775da8fe58b"},
@@ -2606,30 +2609,40 @@ lxml = [
     {file = "lxml-4.6.3-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:4bff24dfeea62f2e56f5bab929b4428ae6caba2d1eea0c2d6eb618e30a71e6d4"},
     {file = "lxml-4.6.3-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:74f7d8d439b18fa4c385f3f5dfd11144bb87c1da034a466c5b5577d23a1d9b51"},
     {file = "lxml-4.6.3-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:f90ba11136bfdd25cae3951af8da2e95121c9b9b93727b1b896e3fa105b2f586"},
+    {file = "lxml-4.6.3-cp35-cp35m-manylinux2010_i686.whl", hash = "sha256:4c61b3a0db43a1607d6264166b230438f85bfed02e8cff20c22e564d0faff354"},
+    {file = "lxml-4.6.3-cp35-cp35m-manylinux2014_x86_64.whl", hash = "sha256:5c8c163396cc0df3fd151b927e74f6e4acd67160d6c33304e805b84293351d16"},
     {file = "lxml-4.6.3-cp35-cp35m-win32.whl", hash = "sha256:f2380a6376dfa090227b663f9678150ef27543483055cc327555fb592c5967e2"},
     {file = "lxml-4.6.3-cp35-cp35m-win_amd64.whl", hash = "sha256:c4f05c5a7c49d2fb70223d0d5bcfbe474cf928310ac9fa6a7c6dddc831d0b1d4"},
     {file = "lxml-4.6.3-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:d2e35d7bf1c1ac8c538f88d26b396e73dd81440d59c1ef8522e1ea77b345ede4"},
     {file = "lxml-4.6.3-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:289e9ca1a9287f08daaf796d96e06cb2bc2958891d7911ac7cae1c5f9e1e0ee3"},
     {file = "lxml-4.6.3-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:bccbfc27563652de7dc9bdc595cb25e90b59c5f8e23e806ed0fd623755b6565d"},
+    {file = "lxml-4.6.3-cp36-cp36m-manylinux2010_i686.whl", hash = "sha256:d916d31fd85b2f78c76400d625076d9124de3e4bda8b016d25a050cc7d603f24"},
     {file = "lxml-4.6.3-cp36-cp36m-manylinux2014_aarch64.whl", hash = "sha256:820628b7b3135403540202e60551e741f9b6d3304371712521be939470b454ec"},
+    {file = "lxml-4.6.3-cp36-cp36m-manylinux2014_x86_64.whl", hash = "sha256:c47ff7e0a36d4efac9fd692cfa33fbd0636674c102e9e8d9b26e1b93a94e7617"},
     {file = "lxml-4.6.3-cp36-cp36m-win32.whl", hash = "sha256:5a0a14e264069c03e46f926be0d8919f4105c1623d620e7ec0e612a2e9bf1c04"},
     {file = "lxml-4.6.3-cp36-cp36m-win_amd64.whl", hash = "sha256:92e821e43ad382332eade6812e298dc9701c75fe289f2a2d39c7960b43d1e92a"},
     {file = "lxml-4.6.3-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:efd7a09678fd8b53117f6bae4fa3825e0a22b03ef0a932e070c0bdbb3a35e654"},
     {file = "lxml-4.6.3-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:efac139c3f0bf4f0939f9375af4b02c5ad83a622de52d6dfa8e438e8e01d0eb0"},
     {file = "lxml-4.6.3-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:0fbcf5565ac01dff87cbfc0ff323515c823081c5777a9fc7703ff58388c258c3"},
+    {file = "lxml-4.6.3-cp37-cp37m-manylinux2010_i686.whl", hash = "sha256:36108c73739985979bf302006527cf8a20515ce444ba916281d1c43938b8bb96"},
     {file = "lxml-4.6.3-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:122fba10466c7bd4178b07dba427aa516286b846b2cbd6f6169141917283aae2"},
+    {file = "lxml-4.6.3-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:cdaf11d2bd275bf391b5308f86731e5194a21af45fbaaaf1d9e8147b9160ea92"},
     {file = "lxml-4.6.3-cp37-cp37m-win32.whl", hash = "sha256:3439c71103ef0e904ea0a1901611863e51f50b5cd5e8654a151740fde5e1cade"},
     {file = "lxml-4.6.3-cp37-cp37m-win_amd64.whl", hash = "sha256:4289728b5e2000a4ad4ab8da6e1db2e093c63c08bdc0414799ee776a3f78da4b"},
     {file = "lxml-4.6.3-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:b007cbb845b28db4fb8b6a5cdcbf65bacb16a8bd328b53cbc0698688a68e1caa"},
     {file = "lxml-4.6.3-cp38-cp38-manylinux1_i686.whl", hash = "sha256:76fa7b1362d19f8fbd3e75fe2fb7c79359b0af8747e6f7141c338f0bee2f871a"},
     {file = "lxml-4.6.3-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:26e761ab5b07adf5f555ee82fb4bfc35bf93750499c6c7614bd64d12aaa67927"},
+    {file = "lxml-4.6.3-cp38-cp38-manylinux2010_i686.whl", hash = "sha256:e1cbd3f19a61e27e011e02f9600837b921ac661f0c40560eefb366e4e4fb275e"},
     {file = "lxml-4.6.3-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:66e575c62792c3f9ca47cb8b6fab9e35bab91360c783d1606f758761810c9791"},
+    {file = "lxml-4.6.3-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:1b38116b6e628118dea5b2186ee6820ab138dbb1e24a13e478490c7db2f326ae"},
     {file = "lxml-4.6.3-cp38-cp38-win32.whl", hash = "sha256:89b8b22a5ff72d89d48d0e62abb14340d9e99fd637d046c27b8b257a01ffbe28"},
     {file = "lxml-4.6.3-cp38-cp38-win_amd64.whl", hash = "sha256:2a9d50e69aac3ebee695424f7dbd7b8c6d6eb7de2a2eb6b0f6c7db6aa41e02b7"},
     {file = "lxml-4.6.3-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:ce256aaa50f6cc9a649c51be3cd4ff142d67295bfc4f490c9134d0f9f6d58ef0"},
     {file = "lxml-4.6.3-cp39-cp39-manylinux1_i686.whl", hash = "sha256:7610b8c31688f0b1be0ef882889817939490a36d0ee880ea562a4e1399c447a1"},
     {file = "lxml-4.6.3-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:f8380c03e45cf09f8557bdaa41e1fa7c81f3ae22828e1db470ab2a6c96d8bc23"},
+    {file = "lxml-4.6.3-cp39-cp39-manylinux2010_i686.whl", hash = "sha256:3082c518be8e97324390614dacd041bb1358c882d77108ca1957ba47738d9d59"},
     {file = "lxml-4.6.3-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:884ab9b29feaca361f7f88d811b1eea9bfca36cf3da27768d28ad45c3ee6f969"},
+    {file = "lxml-4.6.3-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:6f12e1427285008fd32a6025e38e977d44d6382cf28e7201ed10d6c1698d2a9a"},
     {file = "lxml-4.6.3-cp39-cp39-win32.whl", hash = "sha256:33bb934a044cf32157c12bfcfbb6649807da20aa92c062ef51903415c704704f"},
     {file = "lxml-4.6.3-cp39-cp39-win_amd64.whl", hash = "sha256:542d454665a3e277f76954418124d67516c5f88e51a900365ed54a9806122b83"},
     {file = "lxml-4.6.3.tar.gz", hash = "sha256:39b78571b3b30645ac77b95f7c69d1bffc4cf8c3b157c435a34da72e78c82468"},
@@ -2687,8 +2700,8 @@ mypy-extensions = [
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
 ]
 netsuitesdk = [
-    {file = "netsuitesdk-1.23.0-py3-none-any.whl", hash = "sha256:93b7fbc9ef62975b3e946b157128a7e003be98fd7a8267cf94168798d310c45e"},
-    {file = "netsuitesdk-1.23.0.tar.gz", hash = "sha256:d2c2389853b829fcc7a29b622c65a3a1e90af2e1dd7dd345613aff816f4cb508"},
+    {file = "netsuitesdk-1.24.0-py3-none-any.whl", hash = "sha256:1e7318cf7d33cbdc6ca78188a52443bc7ec0f4c58a8b2f02d3b3870c231dfa8c"},
+    {file = "netsuitesdk-1.24.0.tar.gz", hash = "sha256:72ceab6ed315546cea985db4f2193d499c27c9aee4a8f3b695f84373d7bc9139"},
 ]
 notifiers = [
     {file = "notifiers-1.2.1-py3-none-any.whl", hash = "sha256:171ae79215fcf119e34992ad7e1f95f0709f93997203b3fc6f115b5cedd780a6"},
@@ -2914,34 +2927,37 @@ pylint = [
     {file = "pylint-2.8.2.tar.gz", hash = "sha256:586d8fa9b1891f4b725f587ef267abe2a1bad89d6b184520c7f07a253dd6e217"},
 ]
 pynput-robocorp-fork = [
-    {file = "pynput-robocorp-fork-2.0.0.tar.gz", hash = "sha256:3d748e8c049b647ca2b93841d835d3339e47dd9760eabacf0cf7f3d4a8effad2"},
-    {file = "pynput_robocorp_fork-2.0.0-py2.py3-none-any.whl", hash = "sha256:f79b827c6835dddd42058c06392f0c520d5fdc95334b8c875dfc06ddd670ee8b"},
-    {file = "pynput_robocorp_fork-2.0.0-py3.7.egg", hash = "sha256:81f86ac6d743cc7345e8d287e88209ef767fafaa3015b69ac47f990263dc8f09"},
+    {file = "pynput-robocorp-fork-3.0.0.tar.gz", hash = "sha256:e7da30652f482d2d4e355f06e1709c943604a0b8d78c612931cdeb92c6002a9d"},
+    {file = "pynput_robocorp_fork-3.0.0-py2.py3-none-any.whl", hash = "sha256:849f82347140602273c31c0a16fff48ad57892d6ea488b2d6ceac7d24aec7ca6"},
 ]
 pyobjc-core = [
-    {file = "pyobjc-core-6.2.2.tar.gz", hash = "sha256:38e7b15a042439dadd18b28b78229e52fb882460fc16ddbae342b9972d5a827c"},
-    {file = "pyobjc_core-6.2.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:73938398559b718595076fce4921022f21983dd85ebace3ecbe6182697abe164"},
-    {file = "pyobjc_core-6.2.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:60d0c57de915b6ed91a9a26e3bdefdcaeb1288623c69f291338208c5a227d190"},
-    {file = "pyobjc_core-6.2.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:be312b7a0edb45dd8ea68e70f2b411b59677d4ceb513c48eace73cb78dbfd85f"},
-    {file = "pyobjc_core-6.2.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:47a89171d218905dbf13011b1a7d698c246cb66fb5f14119bc0d9e039d0486fa"},
+    {file = "pyobjc-core-7.2.tar.gz", hash = "sha256:9e9ec482d80ea030cdb1613d05a247f31eedabe6666d884d42dd890cc5fb0e05"},
+    {file = "pyobjc_core-7.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:94b4d9de9d228db52dd35012096d63bdf8c1ace58ea3be1d5f6f39313cd502f2"},
+    {file = "pyobjc_core-7.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:971cbd7189ae1aa03ef0d16124aa5bcd053779e0e6b6011a41c3dbd5b4ea7e88"},
+    {file = "pyobjc_core-7.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:9d93b20394008373d6d2856d49aaff26f4b97ff42d924a14516c8a82313ec8c0"},
+    {file = "pyobjc_core-7.2-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:860183540d1be792c26426018139ac8ba75e85f675c59ba080ccdc52d8e74c7a"},
+    {file = "pyobjc_core-7.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:ffe61d3c2a404354daf2d895e34e38c5044453353581b3c396bf5365de26250c"},
 ]
 pyobjc-framework-cocoa = [
-    {file = "pyobjc-framework-Cocoa-6.2.2.tar.gz", hash = "sha256:75821b98fb789d240bea7034c4f96396b2eac3e7b02428b4be9101fc899b7fc3"},
-    {file = "pyobjc_framework_Cocoa-6.2.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:779299f73b8b5a1dd0973b3b16bd706e1f67df44edfb3f3ca6e5e873591c0efc"},
-    {file = "pyobjc_framework_Cocoa-6.2.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:45e3011efbd8ab4eb4c7ee1f55a8b5ecb41cf66fa797aff0e9454060781645a0"},
-    {file = "pyobjc_framework_Cocoa-6.2.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:2a5ab2e33cafe577592c31b2663f3b23f6e142fd717c8cf3826394a380cc4353"},
-    {file = "pyobjc_framework_Cocoa-6.2.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:6f5e1d59f6e1f4be40dedf051925b8d90c561657c9ec2453652af033fe5c2bf0"},
+    {file = "pyobjc-framework-Cocoa-7.2.tar.gz", hash = "sha256:c8b23f03dc3f4436d36c0fd006a8a084835c4f6015187df7c3aa5de8ecd5c653"},
+    {file = "pyobjc_framework_Cocoa-7.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:8e5dd5daa0096755937ec24c345a4b07c3fa131a457f99e0fdeeb01979178ec7"},
+    {file = "pyobjc_framework_Cocoa-7.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:828d183947fc7746953fd0c9b1092cc423745ba0b49719e7b7d1e1614aaa20ec"},
+    {file = "pyobjc_framework_Cocoa-7.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:7e4c6d7baa0c2ab5ea5efb8836ad0b3b3976cffcfc6195c1f195e826c6eb5744"},
+    {file = "pyobjc_framework_Cocoa-7.2-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:c9a9d1d49cc5a810773c88d6de821e60c8cc41d01113cf1b9e7662938f5f7d66"},
+    {file = "pyobjc_framework_Cocoa-7.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:506c2cd09f421eac92b9008a0142174c3d1d70ecd4b0e3fa2b924767995fd14e"},
 ]
 pyobjc-framework-quartz = [
-    {file = "pyobjc-framework-Quartz-6.2.2.tar.gz", hash = "sha256:5a56cfc0289061eaf33f04e3c73e749e04f177b0c1ee8749aa46e87d1e897cda"},
-    {file = "pyobjc_framework_Quartz-6.2.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:56d183dc32b11f15ceb0833a2a24953d1212264f07c274e2b8878e691eb72472"},
-    {file = "pyobjc_framework_Quartz-6.2.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:a57c7f50286d96ee7b9051c657a8607f0449949891cf0697be3efac76a97be7e"},
-    {file = "pyobjc_framework_Quartz-6.2.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:552b15eb409f87d34870345feabe6695375a031d8c4063f175dbaa3422005160"},
-    {file = "pyobjc_framework_Quartz-6.2.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:15f3c7b50d0543f66b927e28cd336c1a6962d58c9808799f49dcf30e4a1a13c2"},
+    {file = "pyobjc-framework-Quartz-7.2.tar.gz", hash = "sha256:ea554e5697bc6747a4ce793c0b0036da16622b44ff75196d6124603008922afa"},
+    {file = "pyobjc_framework_Quartz-7.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:dc61fe61d26f797e4335f3ffc891bcef64624c728c2603e3307b3910580b2cb8"},
+    {file = "pyobjc_framework_Quartz-7.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:ad8103cc38923f2708904db11a0992ea960125ce6adf7b4c7a77d8fdafd412c4"},
+    {file = "pyobjc_framework_Quartz-7.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:4549d17ca41f0bf62792d5bc4b4293ba9a6cc560014b3e18ba22c65e4a5030d2"},
+    {file = "pyobjc_framework_Quartz-7.2-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:da16e4f1e13cb7b02e30fa538cbb3a356e4a694bbc2bb26d2bd100ca12a54ff6"},
+    {file = "pyobjc_framework_Quartz-7.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:c1f6471177a39535cd0358ae29b8f3d31fe778a21deb74105c448c4e726619d7"},
 ]
 pyobjc-framework-webkit = [
-    {file = "pyobjc-framework-WebKit-6.2.2.tar.gz", hash = "sha256:87e9409ace6d2e29c776bd76df75fe922a1f2a225eef815640c6047d25da8dab"},
-    {file = "pyobjc_framework_WebKit-6.2.2-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:b04e08ad08720a87934ba57005fb561d081fbb7f4c12b20e78d0e740e433d06f"},
+    {file = "pyobjc-framework-WebKit-7.2.tar.gz", hash = "sha256:b25e2fbc0e04c72eab7d1def9408611411a435ec48e47e2b055a46389e470626"},
+    {file = "pyobjc_framework_WebKit-7.2-cp36-abi3-macosx_10_9_universal2.whl", hash = "sha256:5bc53e56c4f4c76706106b21ca56e7c73bfde5b50c5596df82bac3165b93a815"},
+    {file = "pyobjc_framework_WebKit-7.2-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:02021efac2abde3f6282ca58d944867b0f50b810e7dd8ca703cfe8631e43ef93"},
 ]
 pyparsing = [
     {file = "pyparsing-2.4.7-py2.py3-none-any.whl", hash = "sha256:ef9d7589ef3c200abe66653d3f1ab1033c3c419ae9b9bdb1240a85b024efc88b"},
@@ -3151,8 +3167,8 @@ rpaframework-core = [
     {file = "rpaframework_core-6.2.1-py3-none-any.whl", hash = "sha256:a4cea819acace4379a0c24e95154f1839040a6e29976c7e0a2f72b9252ec15a5"},
 ]
 rpaframework-dialogs = [
-    {file = "rpaframework-dialogs-0.2.3.tar.gz", hash = "sha256:70a3303fa5d02d209aa07bfae4c694335bcef262e356de29c63453a18bc1494c"},
-    {file = "rpaframework_dialogs-0.2.3-py3-none-any.whl", hash = "sha256:545edcf0dedff0455ea0998db05e48130a7d16d670ccb314cc643406624b6194"},
+    {file = "rpaframework-dialogs-0.2.4.tar.gz", hash = "sha256:4931ed563c977dd0c2b78e696f8cc017912a7ddf3785d89061cd2b5cdb6f20a4"},
+    {file = "rpaframework_dialogs-0.2.4-py3-none-any.whl", hash = "sha256:04d9ccb312db5d6c531ce0f0b8a10e6a4e2180dfa3f519cec9789930de4307fe"},
 ]
 rpaframework-google = []
 rpaframework-pdf = [
