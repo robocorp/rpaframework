@@ -66,12 +66,8 @@ class Bridge:
         self.logger.debug("Auto-resizing dialog height to %dpx", height)
 
         # Resize adjusts outer frame, but we care about content
-        # TODO: Figure out some more robust solution
-        if platform.system() == "Windows":
-            height += 40
-        elif platform.system() == "Linux":
-            height += 1
-
+        # TODO: Read border size from OS-specific API and calculate correct height
+        height += 40
         self.window.resize(self.window.width, height)
 
     @fatal
