@@ -22,6 +22,11 @@ python = "^3.6.2"
 pywebview = "^3.4"
 rpaframework-core = "^6.1.0"
 robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
+
+pyobjc-core = { version = ">=7.0,<8.0", platform = "darwin" }
+pyobjc-framework-cocoa = { version = ">=7.0,<8.0", platform = "darwin" }
+pyobjc-framework-webkit = { version = ">=7.0,<8.0", platform = "darwin" }
+
 PyQt5 = {version = "^5.15.2", platform = "linux"}
 PyQtWebEngine = {version = "^5.15.2", platform = "linux"}
 
