@@ -51,7 +51,7 @@ pywinauto = { version = "^0.6.8", platform = "win32", python = "!=3.8.1,!=3.7.6"
 pywin32 = { version = "^300", platform = "win32", python = "!=3.8.1,!=3.7.6" }
 comtypes = { version = "1.1.7", platform = "win32" }
 robotframework-pythonlibcore = "^2.1.0"
-pynput-robocorp-fork = "^2.0.0"
+pynput-robocorp-fork = "^3.0.0"
 python-xlib = { version = ">=0.17", platform = "linux" }
 psutil = { version = "^5.7.0", platform = "win32" }
 pyperclip = "^1.8.0"
