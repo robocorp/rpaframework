@@ -4,6 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+10.0.5
+------
+
+- Bump PyObjC versions from 6.x to 7.x,
+  to fix possible API version errors with MacOS
+
 10.0.4
 ------
 
