@@ -1,11 +1,10 @@
 import json
 import logging
 import subprocess
-import sys
 import time
-from pathlib import Path
 from typing import Union, Optional
 
+import robocorp_dialog  # type: ignore
 from robot.utils import DotDict  # type: ignore
 from .dialog_types import Elements, Result
 from .utils import is_input, is_submit
@@ -60,8 +59,7 @@ class Dialog:
             raise RuntimeError("Process already started")
 
         cmd = [
-            sys.executable,
-            str(Path(__file__).parent / "runner.py"),
+            robocorp_dialog.executable(),
             json.dumps(self._elements),
         ]
 
@@ -173,11 +171,16 @@ class Dialog:
         if self._process is None:
             raise RuntimeError("Process not started")
 
-        out = stdout.decode()
-        err = stderr.decode()
+        out = stdout.decode().strip()
+        err = stderr.decode().strip()
 
         if self._process.returncode != 0:
             self._result = {"error": str(err)}
+            return
+
+        if not out:
+            # Process exited without calling any exception handlers
+            self._result = {"error": "Closed abruptly"}
             return
 
         try:
