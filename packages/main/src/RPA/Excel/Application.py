@@ -62,6 +62,10 @@ class Application:
             Open Workbook   orders_with_macro.xlsm
             Run Macro       Sheet1.CommandButton1_Click
 
+        Export Workbook as PDF
+            Open Workbook           workbook.xlsx
+            Export as PDF           workbook.pdf
+
     **Python**
 
     .. code-block:: python
@@ -379,3 +383,15 @@ class Application:
 
         with catch_com_error():
             self.app.Application.Run(f"{self.workbook.Name}!{macro_name}", *args)
+
+    def export_as_pdf(self, filename: str):
+        """Export Excel as PDF file
+
+        :param filename: PDF filename to save
+        """
+        if not self.workbook:
+            self.logger.warn("No workbook open. Can't export PDF.")
+            return
+        with catch_com_error():
+            path = str(Path(filename).resolve())
+            self.workbook.ExportAsFixedFormat(0, path)
