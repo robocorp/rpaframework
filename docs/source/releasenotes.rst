@@ -1,8 +1,13 @@
 Release notes
 =============
 
-Upcoming release
-----------------
+10.0.6
+------
+
+- Library **RPA.Dialogs**:
+
+  - Add unique name and icon for dialog window
+  - Fix MacOS keyboard focus and dock icon issues
 
 10.0.5
 ------
