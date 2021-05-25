@@ -46,7 +46,7 @@ google-cloud-texttospeech = "^2.3.0"
 google-cloud-translate = "^3.1.0"
 google-cloud-videointelligence = "^2.1.0"
 google-cloud-vision = "^2.3.1"
-grpcio = "1.37.0"
+grpcio = "^1.37.0"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.5b0", allow-prereleases = true}
