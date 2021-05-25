@@ -21,9 +21,11 @@ CLEAN_PATTERNS = [
     "dist",
     ".cache",
     ".pytest_cache",
+    ".mypy_cache",
     "**/__pycache__",
     "**/*.pyc",
     "**/*.egg-info",
+    "tests/output",
 ]
 
 
@@ -53,22 +55,22 @@ def install(ctx):
 @task(install)
 def lint(ctx):
     """Run format checks and static analysis"""
-    poetry(ctx, "run black --check RPA")
-    poetry(ctx, f'run flake8 --config {CONFIG / "flake8"} RPA')
-    poetry(ctx, f'run pylint --rcfile {CONFIG / "pylint"} RPA')
+    poetry(ctx, "run black --check src")
+    poetry(ctx, f'run flake8 --config {CONFIG / "flake8"} src')
+    poetry(ctx, f'run pylint --rcfile {CONFIG / "pylint"} src')
 
 
 @task(install)
 def pretty(ctx):
     """Run code formatter on source files"""
-    poetry(ctx, "run black RPA")
+    poetry(ctx, "run black src")
 
 
 @task(install)
 def typecheck(ctx):
     """Run static type checks"""
     # TODO: Add --strict mode
-    poetry(ctx, "run mypy RPA")
+    poetry(ctx, "run mypy src")
 
 
 @task(install)

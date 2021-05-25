@@ -13,9 +13,8 @@ documentation = "https://rpaframework.org/"
 repository = "https://github.com/robocorp/rpaframework"
 
 packages = [
-	{ include = "RPA" }
+	{ include = "RPA", from = "src" }
 ]
-include = ["RPA/Dialogs/static/**/*"]
 
 [tool.poetry.dependencies]
 python = "^3.6.2"
@@ -41,5 +40,5 @@ requires = ["poetry>=1.1.4"]
 build-backend = "poetry.masonry.api"
 
 [tool.pytest.ini_options]
-addopts = "-v --cov=RPA --cov-report term-missing --cov-branch"
+addopts = "-v --cov=src --cov-report term-missing --cov-branch"
 testpaths = ["tests"]
