@@ -101,7 +101,11 @@ class TextToSpeechKeywords(LibraryContext):
         )
         audio_config = AudioConfig(audio_encoding=encoding)
         response = self.service.synthesize_speech(
-            synth_input, voice_selection, audio_config
+            request={
+                "input": synth_input,
+                "voice": voice_selection,
+                "audio_config": audio_config,
+            }
         )
         if target_file:
             with open(target_file, "wb") as f:
