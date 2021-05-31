@@ -87,7 +87,7 @@ class Dialog:
         if not self.is_started:
             raise RuntimeError("Process not started")
 
-        if self._result:
+        if self.poll():
             self.logger.debug("Process already finished")
             return
 
@@ -96,7 +96,7 @@ class Dialog:
 
         try:
             self._process.communicate(timeout=timeout)
-        except (subprocess.TimeoutExpired):
+        except subprocess.TimeoutExpired:
             self._process.kill()
             self._process.communicate()
 
