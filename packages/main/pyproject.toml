@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "10.0.6"
+version = "10.0.7"
 description = "A collection of tools and libraries for RPA"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -38,7 +38,7 @@ docutils = "*"
 dataclasses = { version = "^0.7", python=">=3.6,<3.7" }
 rpaframework-core = "^6.2.1"
 rpaframework-pdf = "^0.6.0"
-rpaframework-dialogs = "^0.3.0"
+rpaframework-dialogs = "^0.3.1"
 rpaframework-recognition = { version = "^0.7.0", optional = true }
 jsonpath-ng = "^1.5.2"
 robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
