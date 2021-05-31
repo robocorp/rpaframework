@@ -1,7 +1,9 @@
 import time
+import platform
 import pytest
 from RPA.Dialogs.dialog import Dialog
 
+IS_LINUX = platform.system() == "Linux"
 ELEMENTS = []
 
 
@@ -38,6 +40,7 @@ def test_not_started(dialog):
         dialog.result()
 
 
+@pytest.mark.skipif(IS_LINUX, reason="Not possible to run in Linux CI")
 def test_start(dialog):
     dialog.start()
 
@@ -46,6 +49,7 @@ def test_start(dialog):
         assert not dialog.poll()
 
 
+@pytest.mark.skipif(IS_LINUX, reason="Not possible to run in Linux CI")
 def test_stop(dialog):
     dialog.start()
     dialog.stop()
