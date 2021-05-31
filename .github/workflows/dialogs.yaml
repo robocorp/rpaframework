@@ -127,16 +127,9 @@ jobs:
       run: pip install invoke
     - name: Install dependencies
       run: invoke install
-    - name: Build and publish (non-linux)
-      if: matrix.os != 'ubuntu-latest'
+    - name: Build and publish package
+      if: ${{ success() }}
       run: |
         poetry config repositories.devpi ${{ secrets.devpiUrl }}
         poetry config http-basic.devpi ci ${{ secrets.devpiPassword }}
         invoke publish --ci
-    - name: Build and publish (linux)
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        export XDG_SESSION_TYPE=x11
-        poetry config repositories.devpi ${{ secrets.devpiUrl }}
-        poetry config http-basic.devpi ci ${{ secrets.devpiPassword }}
-        xvfb-run --server-args="-screen 0 1280x720x24" invoke publish --ci
