@@ -51,11 +51,15 @@ class Dialog:
         self._process: Optional[subprocess.Popen] = None
 
     @property
+    def is_started(self):
+        return self._process is not None
+
+    @property
     def is_pending(self):
         return self._is_pending
 
     def start(self) -> None:
-        if self._process is not None:
+        if self.is_started:
             raise RuntimeError("Process already started")
 
         cmd = [
@@ -80,26 +84,24 @@ class Dialog:
         )
 
     def stop(self, timeout: int = 15) -> None:
-        if self._process is None:
+        if not self.is_started:
             raise RuntimeError("Process not started")
 
-        if self._process.poll() is None:
-            self._process.terminate()
+        if self._result:
+            self.logger.debug("Process already finished")
+            return
+
+        self._result = {"error": "Stopped by execution"}
+        self._process.terminate()
 
         try:
-            stdout, stderr = self._process.communicate(timeout=timeout)
-            self._to_result(stdout, stderr)
-        except (subprocess.TimeoutExpired, ValueError):
-            pass
-
-        if self._process.poll() is None:
+            self._process.communicate(timeout=timeout)
+        except (subprocess.TimeoutExpired):
             self._process.kill()
-
-        if not self._result:
-            self._result = {"error": "Stopped by execution"}
+            self._process.communicate()
 
     def poll(self) -> bool:
-        if self._process is None:
+        if not self.is_started:
             raise RuntimeError("Process not started")
 
         if self._result is not None:
@@ -114,7 +116,7 @@ class Dialog:
         return True
 
     def wait(self, timeout: int = 180) -> None:
-        if self._process is None:
+        if not self.is_started:
             raise RuntimeError("Process not started")
 
         if self._result is not None:
@@ -128,7 +130,7 @@ class Dialog:
         self._to_result(stdout, stderr)
 
     def result(self) -> Result:
-        if self._process is None:
+        if not self.is_started:
             raise RuntimeError("Process not started")
 
         if self._result is None:
@@ -168,7 +170,7 @@ class Dialog:
         return elements
 
     def _to_result(self, stdout: bytes, stderr: bytes) -> None:
-        if self._process is None:
+        if not self.is_started:
             raise RuntimeError("Process not started")
 
         out = stdout.decode().strip()
