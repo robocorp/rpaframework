@@ -20,12 +20,12 @@ def dialog():
     try:
         yield d
     finally:
-        if d.is_started:
+        if d._process is not None:
             d.stop()
 
 
 def test_not_started(dialog):
-    assert not dialog.is_started
+    assert dialog._process is None
 
     with pytest.raises(RuntimeError):
         dialog.stop()
