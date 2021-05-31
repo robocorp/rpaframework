@@ -179,7 +179,9 @@ class Dialog:
             return
 
         if not out:
-            # Process exited without calling any exception handlers
+            # Process didn't have non-zero exit code, but also didn't
+            # print JSON output. Possibly flushing issue,
+            # unhandled code path, or killed by OS.
             self._result = {"error": "Closed abruptly"}
             return
 
