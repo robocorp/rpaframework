@@ -1,6 +1,12 @@
 Release notes
 =============
 
+10.0.7
+------
+
+- Library **RPA.Dialogs**: Print full traceback from errors when opening dialog
+- Update optional ``numpy`` and ``opencv`` dependencies
+
 10.0.6
 ------
 
