@@ -1,6 +1,18 @@
 Release notes
 =============
 
+10.1.0
+------
+
+- Library **RPA.Excel.Files**:
+
+  - Add keyword ``Set cell format`` for adjusting cell number formatting
+  - Add new keyword aliases ``Get cell value`` and ``Set cell value``
+  - Improve keyword documentation
+
+- Library **RPA.Excel.Application**: Add option to save in legacy formats
+- Library **RPA.Desktop**: Fix issues with ``Press keys`` on Windows
+
 10.0.7
 ------
 
