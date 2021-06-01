@@ -22,7 +22,8 @@ def to_key(key: str) -> Any:
     # Check for individual character
     if len(value) == 1:
         try:
-            return KeyCode.from_char(value)
+            KeyCode.from_char(value)
+            return value
         except ValueError:
             pass
 
