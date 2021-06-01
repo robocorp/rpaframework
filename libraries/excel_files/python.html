@@ -642,6 +642,34 @@ Microsoft Excel or LibreOffice Calc.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">fmt</span></code> argument accepts all format code values that
 are supported by the aforementioned applications.</p>
 <p>Some examples of valid values:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Format</p></th>
+<th class="head"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0.00</p></td>
+<td><p>Number with two decimal precision</p></td>
+</tr>
+<tr class="row-odd"><td><p>0%</p></td>
+<td><p>Percentage without decimals</p></td>
+</tr>
+<tr class="row-even"><td><p>MM/DD/YY</p></td>
+<td><p>Date with month, day, and year</p></td>
+</tr>
+<tr class="row-odd"><td><p>&#64;</p></td>
+<td><p>Text value</p></td>
+</tr>
+<tr class="row-even"><td><p>BOOLEAN</p></td>
+<td><p>Boolean value</p></td>
+</tr>
+</tbody>
+</table>
 <p>Examples:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Set value to have one decimal precision</span>
 <span class="c">Set cell value</span><span class="p">    </span><span class="c">2</span><span class="p">  </span><span class="c">B</span><span class="p">    </span><span class="c">${value}</span><span class="p"></span>
