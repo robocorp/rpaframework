@@ -323,7 +323,9 @@ class Application:
         with catch_com_error():
             self.workbook.Save()
 
-    def save_excel_as(self, filename: str, autofit: bool = False, file_format=None) -> None:
+    def save_excel_as(
+        self, filename: str, autofit: bool = False, file_format=None
+    ) -> None:
         """Save Excel with name if workbook is open
 
         :param filename: where to save file
