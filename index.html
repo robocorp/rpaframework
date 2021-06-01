@@ -251,11 +251,11 @@ actively maintained core libraries for Software Robot Developers.</p>
 <a class="reference external image-reference" href="https://github.com/robocorp/rpaframework/actions?query=workflow%3Amain"><img alt="Status" src="https://github.com/robocorp/rpaframework/workflows/main/badge.svg" /></a>
 <a class="reference external image-reference" href="https://pypi.python.org/pypi/rpaframework"><img alt="rpaframework latest version" src="https://img.shields.io/pypi/v/rpaframework.svg?label=version" /></a>
 <a class="reference external image-reference" href="http://www.apache.org/licenses/LICENSE-2.0.html"><img alt="License" src="https://img.shields.io/pypi/l/rpaframework.svg" /></a>
-<hr class="docutils" />
-<a class="reference external image-reference" href="https://pypi.python.org/pypi/rpaframework-dialogs"><img alt="rpaframework-dialogs latest version" src="https://img.shields.io/pypi/v/rpaframework-dialogs.svg?label=rpaframework-dialogs" /></a>
+<br/><a class="reference external image-reference" href="https://pypi.python.org/pypi/rpaframework-dialogs"><img alt="rpaframework-dialogs latest version" src="https://img.shields.io/pypi/v/rpaframework-dialogs.svg?label=rpaframework-dialogs" /></a>
 <a class="reference external image-reference" href="https://pypi.python.org/pypi/rpaframework-google"><img alt="rpaframework-google latest version" src="https://img.shields.io/pypi/v/rpaframework-google.svg?label=rpaframework-google" /></a>
 <a class="reference external image-reference" href="https://pypi.python.org/pypi/rpaframework-pdf"><img alt="rpaframework-pdf latest version" src="https://img.shields.io/pypi/v/rpaframework-pdf.svg?label=rpaframework-pdf" /></a>
 <a class="reference external image-reference" href="https://pypi.python.org/pypi/rpaframework-recognition"><img alt="rpaframework-recognition latest version" src="https://img.shields.io/pypi/v/rpaframework-recognition.svg?label=rpaframework-recognition" /></a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/rpaframework-core"><img alt="rpaframework-core latest version" src="https://img.shields.io/pypi/v/rpaframework-core.svg?label=rpaframework-core" /></a>
 </div>
 </div>
 <div class="section" id="libraries">
@@ -373,14 +373,20 @@ actively maintained core libraries for Software Robot Developers.</p>
 <h2><a class="toc-backref" href="#id3">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>If you already have <a class="reference external" href="https://python.org">Python</a> and <a class="reference external" href="http://pip-installer.org">pip</a> installed,
 you can use:</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpaframework</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install rpaframework</span>
+</pre></div>
+</div>
 <p>To install all extra packages, you can use:</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpaframework[aws,cv]</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install rpaframework[aws,cv]</span>
+</pre></div>
+</div>
 <p>Other packages that can be installed separately are:</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpaframework-dialogs</span></code>  (included in the rpaframework by default)</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpaframework-google</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpaframework-pdf</span></code> (included in the rpaframework by default)</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rpaframework-recognition</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install rpaframework-dialogs  # included in the rpaframework by default</span>
+<span class="go">pip install rpaframework-google</span>
+<span class="go">pip install rpaframework-pdf  # included in the rpaframework by default</span>
+<span class="go">pip install rpaframework-recognition</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Python 3.6 or higher is required</p>
