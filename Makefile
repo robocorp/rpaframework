@@ -104,3 +104,6 @@ lint-each: packages/*
 
 install-hooks: ## Install git hooks
 	git config core.hooksPath ./config/git-hooks/
+
+local: ## Serve docs from local http server
+	poetry run python -m http.server -d docs/build/html/
