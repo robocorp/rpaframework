@@ -536,15 +536,15 @@ class Files:
 
         Some examples of valid values:
 
-        ======    =====
-        Format    Explanation
-        ======    =====
-        0.00      Number with two decimal precision
-        0%        Percentage without decimals
-        MM/DD/YY  Date with month, day, and year
-        @         Text value
-        BOOLEAN   Boolean value
-        ======    =====
+        ======== ===========
+        Format   Explanation
+        ======== ===========
+        0.00     Number with two decimal precision
+        0%       Percentage without decimals
+        MM/DD/YY Date with month, day, and year
+        @        Text value
+        BOOLEAN  Boolean value
+        ======== ===========
 
         Examples:
 
