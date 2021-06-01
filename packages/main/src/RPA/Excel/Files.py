@@ -62,9 +62,9 @@ class Files:
     """The `Excel.Files` library can be used to read and write Excel
     files without the need to start the actual Excel application.
 
-    It supports both legacy .xls files and modern .xlsx files.
+    It supports both legacy ``.xls`` files and modern ``.xlsx`` files.
 
-    Note: To run macros or load password protected worksheets,
+    **Note:** To run macros or load password protected worksheets,
     please use the Excel application library.
 
     **Examples**
@@ -223,7 +223,20 @@ class Files:
     def open_workbook(self, path):
         """Open an existing Excel workbook.
 
+        Opens the workbook in memory and sets it as the active workbook.
+        This library can only have one workbook open at a time, and
+        any previously opened workbooks are closed first.
+
+        The file can be in either ``.xlsx`` or ``.xlsx`` format.
+
         :param path: path to Excel file
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Open workbook    path/to/file.xlsx
+            ${table}=    Read worksheet as table
         """
         if self.workbook:
             self.close_workbook()
@@ -241,6 +254,9 @@ class Files:
 
     def save_workbook(self, path=None):
         """Save the active workbook.
+
+        **Note:** No changes to the workbook are saved to the actual file unless
+        this keyword is called.
 
         :param path: Path to save to. If not given, uses path given
                      when opened or created.
@@ -283,7 +299,19 @@ class Files:
     def set_active_worksheet(self, value):
         """Set the active worksheet.
 
+        This keyword can be used to set the default worksheet for keywords,
+        which removes the need to specify the worksheet name for each keyword.
+        It can always be overridden on a per-keyword basis.
+
         :param value: Index or name of worksheet
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Open workbook    complex.xlsx
+            Set active worksheet    Customers
+            Append rows to worksheet    ${rows}
         """
         assert self.workbook, "No active workbook"
         self.workbook.active = value
@@ -295,6 +323,13 @@ class Files:
         :param content:  Optional content for worksheet
         :param exist_ok: If `False`, raise an error if name is already in use
         :param header:   If content is provided, write headers to worksheet
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Open workbook       customers.xlsx
+            Create worksheet    Orders
         """
         assert self.workbook, "No active workbook"
         if name in self.workbook.sheetnames and not exist_ok:
@@ -313,19 +348,35 @@ class Files:
         :param name:   Name of worksheet to read
         :param header: If `True`, use the first row of the worksheet
                        as headers for the rest of the rows.
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Open Workbook   orders.xlsx
+            ${rows}=        Read Worksheet     header=True
+            Close Workbook
         """
         assert self.workbook, "No active workbook"
         return self.workbook.read_worksheet(name, header, start)
 
     def read_worksheet_as_table(self, name=None, header=False, trim=True, start=None):
         """Read the content of a worksheet into a Table container. Allows
-        sorting/filtering/manipulating using the `RPA.Tables` library.
+        sorting/filtering/manipulating using the ``RPA.Tables`` library.
 
         :param name:   Name of worksheet to read
         :param header: If `True`, use the first row of the worksheet
                        as headers for the rest of the rows.
         :param trim:   Remove all empty rows from the end of the worksheet
         :param start:  Row index to start reading data from (1-indexed)
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Open Workbook   orders.xlsx
+            ${table}=       Read Worksheet As Table     header=True
+            Close Workbook
         """
         tables = Tables()
         sheet = self.read_worksheet(name, header, start)
@@ -338,6 +389,29 @@ class Files:
         :param name:    Name of worksheet to append to
         :param header:  Set rows according to existing header row
         :param start:   Start of data, NOTE: Only required when headers is True
+
+        The ``content`` argument can be of any tabular format. Typically
+        this is a Table object created by the ``RPA.Tables`` library,
+        but it can also be a list of lists, or a list of dictionaries.
+
+        If the ``header`` flag is enabled, the existing header in the worksheet
+        is used to insert values in the correct columns. This assumes that
+        that source data has this data available.
+
+        If the header is not on the first row of the worksheet,
+        the ``start`` argument can be used to give the correct row index.
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # Append an existing Table object
+            Open workbook    orders.xls
+            Append rows to worksheet    ${table}
+
+            # Append to a worksheet with headers on row 5
+            Open workbook    customers.xlsx
+            Append rows to worksheet    ${table}    header=${TRUE}   start=5
         """
         assert self.workbook, "No active workbook"
         return self.workbook.append_worksheet(name, content, header, start)
@@ -346,6 +420,15 @@ class Files:
         """Remove a worksheet from the active workbook.
 
         :param name: Name of worksheet to remove
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # Remove last worksheet
+            Open workbook    orders.xlsx
+            ${sheets}=       List worksheets
+            Remove worksheet    ${sheets}[-1]
         """
         assert self.workbook, "No active workbook"
         self.workbook.remove_worksheet(name)
@@ -355,47 +438,136 @@ class Files:
 
         :param src_name: Current name of worksheet
         :param dst_name: Future name of worksheet
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Create workbook
+            Rename worksheet    Sheet    Orders
         """
         assert self.workbook, "No active workbook"
         self.workbook.rename_worksheet(dst_name, src_name)
 
     def find_empty_row(self, name=None):
-        """Find the first empty row after existing content.
+        """Find the first empty row after existing content,
+        and return the row number.
 
         :param name:    Name of worksheet
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Append rows to worksheet     ${rows}
+            ${next}=    Find empty row
+            Insert image to worksheet    ${next}    A    screenshot.png
         """
         assert self.workbook, "No active workbook"
         return self.workbook.find_empty_row(name)
 
-    def get_worksheet_value(self, row, column, name=None):
+    def get_cell_value(self, row, column, name=None):
         """Get a cell value in the given worksheet.
 
         :param row:     Index of row to read, e.g. 3
         :param column:  Name or index of column, e.g. C or 7
         :param name:    Name of worksheet (optional)
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # Read header names
+            ${column1}=    Get cell value    1    A
+            ${column2}=    Get cell value    1    B
+            ${column3}=    Get cell value    1    C
         """
         assert self.workbook, "No active workbook"
         return self.workbook.get_cell_value(row, column, name)
 
-    def set_worksheet_value(self, row, column, value, name=None):
+    def set_cell_value(self, row, column, value, name=None, fmt=None):
         """Set a cell value in the given worksheet.
 
         :param row:     Index of row to write, e.g. 3
         :param column:  Name or index of column, e.g. C or 7
         :param value:   New value of cell
         :param name:    Name of worksheet (optional)
+        :param fmt:     Format code for cell (optional)
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # Set a value in the first row and column
+            Set cell value    1    1    Some value
+            Set cell value    1    A    Some value
+
+            # Set a value with cell formatting
+            Set cell value    2    B    ${value}    fmt=0%
         """
         assert self.workbook, "No active workbook"
+
         self.workbook.set_cell_value(row, column, value, name)
+
+        if fmt is not None:
+            self.workbook.set_cell_format(row, column, fmt, name)
+
+    def set_cell_format(self, row, column, fmt, name=None):
+        """Set number format for cell.
+
+        Does not affect the values themselves, but changes how the values
+        are displayed when opening with an external application such as
+        Microsoft Excel or LibreOffice Calc.
+
+        The ``fmt`` argument accepts all format code values that
+        are supported by the aforementioned applications.
+
+        Some examples of valid values:
+
+        ======    =====
+        Format    Explanation
+        ======    =====
+        0.00      Number with two decimal precision
+        0%        Percentage without decimals
+        MM/DD/YY  Date with month, day, and year
+        @         Text value
+        BOOLEAN   Boolean value
+        ======    =====
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # Set value to have one decimal precision
+            Set cell value    2  B    ${value}
+            Set cell format   2  B    00.0
+        """
+        assert self.workbook, "No active workbook"
+        self.workbook.set_cell_format(row, column, fmt, name)
 
     def insert_image_to_worksheet(self, row, column, path, scale=1.0, name=None):
         """Insert an image into the given cell.
 
+        The ``path`` argument should be a local file path to the image file.
+
+        By default the image is inserted in the original size, but it can
+        be scaled with the ``scale`` argument. It's scaled with a factor
+        where the value ``1.0`` is the default.
+
         :param row:     Index of row to write
         :param column:  Name or index of column
-        :param image:   Path to image file
+        :param path:    Path to image file
         :param scale:   Scale of image
         :param name:    Name of worksheet
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            Create worksheet    Order
+            Append rows to worksheet     ${details}
+            ${last_row}=    Find empty row
+            Insert image to worksheet    ${last_row}    A    screenshot.png
         """
         assert self.workbook, "No active workbook"
         image = Image.open(path)
@@ -408,6 +580,20 @@ class Files:
             image.format = fmt
 
         self.workbook.insert_image(row, column, image, name)
+
+    # Old keyword names, deprecate at some point:
+
+    def get_worksheet_value(self, row, column, name=None):
+        """Alias for keyword ``Get cell value``, see the original keyword
+        for documentation.
+        """
+        return self.get_cell_value(row, column, name)
+
+    def set_worksheet_value(self, row, column, value, name=None, fmt=None):
+        """Alias for keyword ``Set cell value``, see the original keyword
+        for documentation.
+        """
+        return self.set_cell_value(row, column, value, name, fmt)
 
 
 class XlsxWorkbook:
@@ -601,7 +787,14 @@ class XlsxWorkbook:
         sheet = self._book[name]
         cell = self._get_cellname(row, column)
 
-        sheet[cell] = value
+        sheet[cell].value = value
+
+    def set_cell_format(self, row, column, fmt, name=None):
+        name = self._get_sheetname(name)
+        sheet = self._book[name]
+        cell = self._get_cellname(row, column)
+
+        sheet[cell].number_format = str(fmt)
 
     def insert_image(self, row, column, image, name=None):
         name = self._get_sheetname(name)
@@ -877,6 +1070,19 @@ class XlsWorkbook:
         with self._book_write() as book:
             sheet = book.get_sheet(name)
             sheet.write(row, column, value)
+
+    def set_cell_format(self, row, column, fmt, name=None):
+        name = self._get_sheetname(name)
+        sheet = self._book.sheet_by_name(name)
+        row, column = self._get_cell(row, column)
+
+        value = sheet.cell_value(row, column)
+        style = xlwt.XFStyle()
+        style.num_format_str = str(fmt)
+
+        with self._book_write() as book:
+            sheet = book.get_sheet(name)
+            sheet.write(row, column, value, style)
 
     def insert_image(self, row, column, image, name=None):
         name = self._get_sheetname(name)

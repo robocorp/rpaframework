@@ -276,6 +276,76 @@ def test_set_worksheet_value(library):
     assert row["C"] == "Third"
 
 
+def test_get_worksheet_value(library):
+    assert library.get_cell_value(5, "A") == 4
+    assert library.get_cell_value(5, "C") == 3549
+    assert library.get_cell_value(3, 3) == 1582
+    assert library.get_cell_value(9, "E", "First") == "United States"
+
+
+def test_set_worksheet_value(library):
+    library.set_cell_value(11, "A", "First")
+    library.set_cell_value(11, 2, "Second")
+    library.set_cell_value(11, "3", "Third", fmt="00.0")
+
+    data = library.read_worksheet()
+
+    row = data[-1]
+    assert row["A"] == "First"
+    assert row["B"] == "Second"
+    assert row["C"] == "Third"
+
+
+def test_cell_format(library):
+    fmts = [
+        "general",
+        "0",
+        "0.00",
+        "#,##0",
+        "#,##0.00",
+        '"$"#,##0_);("$"#,##',
+        '"$"#,##0_);[Red]("$"#,##',
+        '"$"#,##0.00_);("$"#,##',
+        '"$"#,##0.00_);[Red]("$"#,##',
+        "0%",
+        "0.00%",
+        "0.00E+00",
+        "# ?/?",
+        "# ??/??",
+        "M/D/YY",
+        "D-MMM-YY",
+        "D-MMM",
+        "MMM-YY",
+        "h:mm AM/PM",
+        "h:mm:ss AM/PM",
+        "h:mm",
+        "h:mm:ss",
+        "M/D/YY h:mm",
+        "_(#,##0_);(#,##0)",
+        "_(#,##0_);[Red](#,##0)",
+        "_(#,##0.00_);(#,##0.00)",
+        "_(#,##0.00_);[Red](#,##0.00)",
+        '_("$"* #,##0_);_("$"* (#,##0);_("$"* "-"_);_(@_)',
+        '_(* #,##0_);_(* (#,##0);_(* "-"_);_(@_)',
+        '_("$"* #,##0.00_);_("$"* (#,##0.00);_("$"* "-"??_);_(@_)',
+        '_(* #,##0.00_);_(* (#,##0.00);_(* "-"??_);_(@_)',
+        "mm:ss",
+        "[h]:mm:ss",
+        "mm:ss.0",
+        "##0.0E+0",
+        "@",
+        "BOOLEAN",
+    ]
+
+    value = -1278.9078
+    library.create_worksheet("Formats")
+
+    for idx, fmt in enumerate(fmts, 1):
+        library.set_cell_value(idx, "A", fmt)
+        library.set_cell_value(idx, "B", value)
+        library.set_cell_format(idx, "B", fmt)
+
+
 def test_insert_image_to_worksheet(library):
     library.insert_image_to_worksheet(10, "B", "tests/resources/faces.jpeg", scale=4)
     library.save_workbook(BytesIO())
