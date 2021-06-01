@@ -54,7 +54,9 @@ Links
    :target: http://www.apache.org/licenses/LICENSE-2.0.html
    :alt: License
 
-------------
+.. raw:: html
+
+    <br/>
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-dialogs.svg?label=rpaframework-dialogs
    :target: https://pypi.python.org/pypi/rpaframework-dialogs
@@ -71,6 +73,10 @@ Links
 .. image:: https://img.shields.io/pypi/v/rpaframework-recognition.svg?label=rpaframework-recognition
    :target: https://pypi.python.org/pypi/rpaframework-recognition
    :alt: rpaframework-recognition latest version
+
+.. image:: https://img.shields.io/pypi/v/rpaframework-core.svg?label=rpaframework-core
+   :target: https://pypi.python.org/pypi/rpaframework-core
+   :alt: rpaframework-core latest version
 
 Libraries
 ---------
@@ -185,21 +191,24 @@ Installation
 If you already have Python_ and `pip <http://pip-installer.org>`_ installed,
 you can use:
 
-``pip install rpaframework``
+.. code-block:: console
+
+    pip install rpaframework
 
 To install all extra packages, you can use:
 
-``pip install rpaframework[aws,cv]``
+.. code-block:: console
+
+    pip install rpaframework[aws,cv]
 
 Other packages that can be installed separately are:
 
-``pip install rpaframework-dialogs``  (included in the rpaframework by default)
+.. code-block:: console
 
-``pip install rpaframework-google``
-
-``pip install rpaframework-pdf`` (included in the rpaframework by default)
-
-``pip install rpaframework-recognition``
+    pip install rpaframework-dialogs  # included in the rpaframework by default
+    pip install rpaframework-google
+    pip install rpaframework-pdf  # included in the rpaframework by default
+    pip install rpaframework-recognition
 
 .. note:: Python 3.6 or higher is required
 
