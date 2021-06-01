@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "10.0.7"
+version = "10.1.0"
 description = "A collection of tools and libraries for RPA"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
