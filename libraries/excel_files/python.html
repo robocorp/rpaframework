@@ -225,8 +225,8 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>The <cite>Excel.Files</cite> library can be used to read and write Excel
 files without the need to start the actual Excel application.</p>
-<p>It supports both legacy .xls files and modern .xlsx files.</p>
-<p>Note: To run macros or load password protected worksheets,
+<p>It supports both legacy <code class="docutils literal notranslate"><span class="pre">.xls</span></code> files and modern <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> files.</p>
+<p><strong>Note:</strong> To run macros or load password protected worksheets,
 please use the Excel application library.</p>
 <p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
@@ -335,6 +335,24 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 </ul>
 </dd>
 </dl>
+<p>The <code class="docutils literal notranslate"><span class="pre">content</span></code> argument can be of any tabular format. Typically
+this is a Table object created by the <code class="docutils literal notranslate"><span class="pre">RPA.Tables</span></code> library,
+but it can also be a list of lists, or a list of dictionaries.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">header</span></code> flag is enabled, the existing header in the worksheet
+is used to insert values in the correct columns. This assumes that
+that source data has this data available.</p>
+<p>If the header is not on the first row of the worksheet,
+the <code class="docutils literal notranslate"><span class="pre">start</span></code> argument can be used to give the correct row index.</p>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Append an existing Table object</span>
+<span class="c">Open workbook</span><span class="p">    </span><span class="c">orders.xls</span><span class="p"></span>
+<span class="c">Append rows to worksheet</span><span class="p">    </span><span class="c">${table}</span><span class="p"></span>
+
+<span class="c"># Append to a worksheet with headers on row 5</span>
+<span class="c">Open workbook</span><span class="p">    </span><span class="c">customers.xlsx</span><span class="p"></span>
+<span class="c">Append rows to worksheet</span><span class="p">    </span><span class="c">${table}</span><span class="p">    </span><span class="c">header=${TRUE}</span><span class="p">   </span><span class="c">start=5</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -356,6 +374,16 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 </ul>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Create modern format workbook</span>
+<span class="c">Create workbook</span><span class="p">    </span><span class="c">fmt=xlsx</span><span class="p"></span>
+<span class="c">Save workbook</span><span class="p">    </span><span class="c">orders.xlsx</span><span class="p"></span>
+
+<span class="c"># Create legacy format workbook</span>
+<span class="c">Create workbook</span><span class="p">    </span><span class="c">fmt=xls</span><span class="p"></span>
+<span class="c">Save workbook</span><span class="p">    </span><span class="c">orders.xls</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -372,17 +400,29 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 </ul>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open workbook</span><span class="p">       </span><span class="c">customers.xlsx</span><span class="p"></span>
+<span class="c">Create worksheet</span><span class="p">    </span><span class="c">Orders</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.find_empty_row">
 <code class="sig-name descname">find_empty_row</code><span class="sig-paren">(</span><em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.find_empty_row" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find the first empty row after existing content.</p>
+<dd><p>Find the first empty row after existing content,
+and return the row number.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>name</strong> – Name of worksheet</p>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Append rows to worksheet</span><span class="p">     </span><span class="c">${rows}</span><span class="p"></span>
+<span class="c">${next}=</span><span class="p">    </span><span class="c">Find empty row</span><span class="p"></span>
+<span class="c">Insert image to worksheet</span><span class="p">    </span><span class="c">${next}</span><span class="p">    </span><span class="c">A</span><span class="p">    </span><span class="c">screenshot.png</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -392,8 +432,8 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Excel.Files.Files.get_worksheet_value">
-<code class="sig-name descname">get_worksheet_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.get_worksheet_value" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Excel.Files.Files.get_cell_value">
+<code class="sig-name descname">get_cell_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.get_cell_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a cell value in the given worksheet.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -404,23 +444,48 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 </ul>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Read header names</span>
+<span class="c">${column1}=</span><span class="p">    </span><span class="c">Get cell value</span><span class="p">    </span><span class="c">1</span><span class="p">    </span><span class="c">A</span><span class="p"></span>
+<span class="c">${column2}=</span><span class="p">    </span><span class="c">Get cell value</span><span class="p">    </span><span class="c">1</span><span class="p">    </span><span class="c">B</span><span class="p"></span>
+<span class="c">${column3}=</span><span class="p">    </span><span class="c">Get cell value</span><span class="p">    </span><span class="c">1</span><span class="p">    </span><span class="c">C</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.Files.get_worksheet_value">
+<code class="sig-name descname">get_worksheet_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.get_worksheet_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">cell</span> <span class="pre">value</span></code>, see the original keyword
+for documentation.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.insert_image_to_worksheet">
 <code class="sig-name descname">insert_image_to_worksheet</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">path</em>, <em class="sig-param">scale=1.0</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.insert_image_to_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Insert an image into the given cell.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">path</span></code> argument should be a local file path to the image file.</p>
+<p>By default the image is inserted in the original size, but it can
+be scaled with the <code class="docutils literal notranslate"><span class="pre">scale</span></code> argument. It’s scaled with a factor
+where the value <code class="docutils literal notranslate"><span class="pre">1.0</span></code> is the default.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>row</strong> – Index of row to write</p></li>
 <li><p><strong>column</strong> – Name or index of column</p></li>
-<li><p><strong>image</strong> – Path to image file</p></li>
+<li><p><strong>path</strong> – Path to image file</p></li>
 <li><p><strong>scale</strong> – Scale of image</p></li>
 <li><p><strong>name</strong> – Name of worksheet</p></li>
 </ul>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create worksheet</span><span class="p">    </span><span class="c">Order</span><span class="p"></span>
+<span class="c">Append rows to worksheet</span><span class="p">     </span><span class="c">${details}</span><span class="p"></span>
+<span class="c">${last_row}=</span><span class="p">    </span><span class="c">Find empty row</span><span class="p"></span>
+<span class="c">Insert image to worksheet</span><span class="p">    </span><span class="c">${last_row}</span><span class="p">    </span><span class="c">A</span><span class="p">    </span><span class="c">screenshot.png</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -433,11 +498,20 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 <dt id="RPA.Excel.Files.Files.open_workbook">
 <code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.open_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open an existing Excel workbook.</p>
+<p>Opens the workbook in memory and sets it as the active workbook.
+This library can only have one workbook open at a time, and
+any previously opened workbooks are closed first.</p>
+<p>The file can be in either <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> or <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> – path to Excel file</p>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open workbook</span><span class="p">    </span><span class="c">path/to/file.xlsx</span><span class="p"></span>
+<span class="c">${table}=</span><span class="p">    </span><span class="c">Read worksheet as table</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -455,13 +529,19 @@ as headers for the rest of the rows.</p></li>
 </ul>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Workbook</span><span class="p">   </span><span class="c">orders.xlsx</span><span class="p"></span>
+<span class="c">${rows}=</span><span class="p">        </span><span class="c">Read Worksheet</span><span class="p">     </span><span class="c">header=True</span><span class="p"></span>
+<span class="c">Close Workbook</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.read_worksheet_as_table">
 <code class="sig-name descname">read_worksheet_as_table</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">header=False</em>, <em class="sig-param">trim=True</em>, <em class="sig-param">start=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.read_worksheet_as_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the content of a worksheet into a Table container. Allows
-sorting/filtering/manipulating using the <cite>RPA.Tables</cite> library.</p>
+sorting/filtering/manipulating using the <code class="docutils literal notranslate"><span class="pre">RPA.Tables</span></code> library.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -473,6 +553,12 @@ as headers for the rest of the rows.</p></li>
 </ul>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open Workbook</span><span class="p">   </span><span class="c">orders.xlsx</span><span class="p"></span>
+<span class="c">${table}=</span><span class="p">       </span><span class="c">Read Worksheet As Table</span><span class="p">     </span><span class="c">header=True</span><span class="p"></span>
+<span class="c">Close Workbook</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -484,6 +570,13 @@ as headers for the rest of the rows.</p></li>
 <dd class="field-odd"><p><strong>name</strong> – Name of worksheet to remove</p>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Remove last worksheet</span>
+<span class="c">Open workbook</span><span class="p">    </span><span class="c">orders.xlsx</span><span class="p"></span>
+<span class="c">${sheets}=</span><span class="p">       </span><span class="c">List worksheets</span><span class="p"></span>
+<span class="c">Remove worksheet</span><span class="p">    </span><span class="c">${sheets}[-1]</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -498,12 +591,19 @@ as headers for the rest of the rows.</p></li>
 </ul>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create workbook</span><span class="p"></span>
+<span class="c">Rename worksheet</span><span class="p">    </span><span class="c">Sheet</span><span class="p">    </span><span class="c">Orders</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.save_workbook">
 <code class="sig-name descname">save_workbook</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.save_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the active workbook.</p>
+<p><strong>Note:</strong> No changes to the workbook are saved to the actual file unless
+this keyword is called.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>path</strong> – Path to save to. If not given, uses path given
@@ -516,16 +616,43 @@ when opened or created.</p>
 <dt id="RPA.Excel.Files.Files.set_active_worksheet">
 <code class="sig-name descname">set_active_worksheet</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_active_worksheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the active worksheet.</p>
+<p>This keyword can be used to set the default worksheet for keywords,
+which removes the need to specify the worksheet name for each keyword.
+It can always be overridden on a per-keyword basis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>value</strong> – Index or name of worksheet</p>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Open workbook</span><span class="p">    </span><span class="c">complex.xlsx</span><span class="p"></span>
+<span class="c">Set active worksheet</span><span class="p">    </span><span class="c">Customers</span><span class="p"></span>
+<span class="c">Append rows to worksheet</span><span class="p">    </span><span class="c">${rows}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Excel.Files.Files.set_worksheet_value">
-<code class="sig-name descname">set_worksheet_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">value</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_worksheet_value" title="Permalink to this definition">¶</a></dt>
+<dt id="RPA.Excel.Files.Files.set_cell_format">
+<code class="sig-name descname">set_cell_format</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">fmt</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_cell_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set number format for cell.</p>
+<p>Does not affect the values themselves, but changes how the values
+are displayed when opening with an external application such as
+Microsoft Excel or LibreOffice Calc.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">fmt</span></code> argument accepts all format code values that
+are supported by the aforementioned applications.</p>
+<p>Some examples of valid values:</p>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Set value to have one decimal precision</span>
+<span class="c">Set cell value</span><span class="p">    </span><span class="c">2</span><span class="p">  </span><span class="c">B</span><span class="p">    </span><span class="c">${value}</span><span class="p"></span>
+<span class="c">Set cell format</span><span class="p">   </span><span class="c">2</span><span class="p">  </span><span class="c">B</span><span class="p">    </span><span class="c">00.0</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.Files.set_cell_value">
+<code class="sig-name descname">set_cell_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">value</em>, <em class="sig-param">name=None</em>, <em class="sig-param">fmt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_cell_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a cell value in the given worksheet.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -534,9 +661,26 @@ when opened or created.</p>
 <li><p><strong>column</strong> – Name or index of column, e.g. C or 7</p></li>
 <li><p><strong>value</strong> – New value of cell</p></li>
 <li><p><strong>name</strong> – Name of worksheet (optional)</p></li>
+<li><p><strong>fmt</strong> – Format code for cell (optional)</p></li>
 </ul>
 </dd>
 </dl>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Set a value in the first row and column</span>
+<span class="c">Set cell value</span><span class="p">    </span><span class="c">1</span><span class="p">    </span><span class="c">1</span><span class="p">    </span><span class="c">Some value</span><span class="p"></span>
+<span class="c">Set cell value</span><span class="p">    </span><span class="c">1</span><span class="p">    </span><span class="c">A</span><span class="p">    </span><span class="c">Some value</span><span class="p"></span>
+
+<span class="c"># Set a value with cell formatting</span>
+<span class="c">Set cell value</span><span class="p">    </span><span class="c">2</span><span class="p">    </span><span class="c">B</span><span class="p">    </span><span class="c">${value}</span><span class="p">    </span><span class="c">fmt=0%</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.Files.set_worksheet_value">
+<code class="sig-name descname">set_worksheet_value</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">value</em>, <em class="sig-param">name=None</em>, <em class="sig-param">fmt=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.set_worksheet_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">cell</span> <span class="pre">value</span></code>, see the original keyword
+for documentation.</p>
 </dd></dl>
 
 <dl class="method">
@@ -620,6 +764,11 @@ when opened or created.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.save">
 <code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsWorkbook.set_cell_format">
+<code class="sig-name descname">set_cell_format</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">fmt</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.set_cell_format" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -707,6 +856,11 @@ when opened or created.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.save">
 <code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsxWorkbook.set_cell_format">
+<code class="sig-name descname">set_cell_format</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">fmt</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.set_cell_format" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

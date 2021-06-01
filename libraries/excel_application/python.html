@@ -409,16 +409,29 @@ it does not exist.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Application.Application.save_excel_as">
-<code class="sig-name descname">save_excel_as</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">autofit: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.save_excel_as" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_excel_as</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">autofit: bool = False</em>, <em class="sig-param">file_format=None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.save_excel_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save Excel with name if workbook is open</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>filename</strong> – where to save file</p></li>
 <li><p><strong>autofit</strong> – autofit cell widths if True, defaults to False</p></li>
+<li><p><strong>file_format</strong> – format of file</p></li>
 </ul>
 </dd>
 </dl>
+<p><strong>Note:</strong> Changing the file extension for the path does not
+affect the actual format. To use an older format, use
+the <code class="docutils literal notranslate"><span class="pre">file_format</span></code> argument with one of the following values:</p>
+<p><a class="reference external" href="https://docs.microsoft.com/en-us/office/vba/api/excel.xlfileformat">https://docs.microsoft.com/en-us/office/vba/api/excel.xlfileformat</a></p>
+<p>Examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Save workbook in modern format</span>
+<span class="c">Save excel as</span><span class="p">    </span><span class="c">orders.xlsx</span><span class="p"></span>
+
+<span class="c"># Save workbook in Excel 97 format (format from above URL)</span>
+<span class="c">Save excel as</span><span class="p">    </span><span class="c">legacy.xls</span><span class="p">   </span><span class="c">file_format=${56}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
