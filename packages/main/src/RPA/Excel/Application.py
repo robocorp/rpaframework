@@ -323,11 +323,28 @@ class Application:
         with catch_com_error():
             self.workbook.Save()
 
-    def save_excel_as(self, filename: str, autofit: bool = False) -> None:
+    def save_excel_as(self, filename: str, autofit: bool = False, file_format=None) -> None:
         """Save Excel with name if workbook is open
 
         :param filename: where to save file
         :param autofit: autofit cell widths if True, defaults to False
+        :param file_format: format of file
+
+        **Note:** Changing the file extension for the path does not
+        affect the actual format. To use an older format, use
+        the ``file_format`` argument with one of the following values:
+
+        https://docs.microsoft.com/en-us/office/vba/api/excel.xlfileformat
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # Save workbook in modern format
+            Save excel as    orders.xlsx
+
+            # Save workbook in Excel 97 format (format from above URL)
+            Save excel as    legacy.xls   file_format=${56}
         """
         if not self.workbook:
             # Doesn't raise error for backwards compatibility
@@ -340,7 +357,11 @@ class Application:
                 self.worksheet.Columns.AutoFit()
 
             path = str(Path(filename).resolve())
-            self.workbook.SaveAs(path)
+
+            if file_format is not None:
+                self.workbook.SaveAs(path, FileFormat=file_format)
+            else:
+                self.workbook.SaveAs(path)
 
     def run_macro(self, macro_name: str, *args: Any):
         """Run Excel macro with given name

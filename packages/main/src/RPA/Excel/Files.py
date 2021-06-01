@@ -205,6 +205,18 @@ class Files:
 
         :param path: Default save path for workbook
         :param fmt:  Format of workbook, i.e. xlsx or xls
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # Create modern format workbook
+            Create workbook    fmt=xlsx
+            Save workbook    orders.xlsx
+
+            # Create legacy format workbook
+            Create workbook    fmt=xls
+            Save workbook    orders.xls
         """
         if self.workbook:
             self.close_workbook()
