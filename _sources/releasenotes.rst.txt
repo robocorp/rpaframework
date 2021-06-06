@@ -1,6 +1,23 @@
 Release notes
 =============
 
+10.2.0
+------
+
+- Library **RPA.Excel.Application**:
+
+  - Add keyword ``Export As PDF``
+  - Add automatic document and application closing to prevent file being locked
+
+- Library **RPA.FTP**: Add keyword parameters to support FTP over TLS/SSL (FTPS)
+- Library **RPA.Desktop.Windows**: Add point of ``origin`` parameter to ``Drag and Drop``
+
+rpaframework-google: 0.2.3
+--------------------------
+
+  - Fix authentication issue when using Robocorp Vault
+  - Fix keyword ``Synthesize Speech``
+
 10.1.0
 ------
 
