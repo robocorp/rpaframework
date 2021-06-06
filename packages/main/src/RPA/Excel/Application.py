@@ -331,17 +331,12 @@ class Application:
             self.workbook.Save()
 
     def save_excel_as(
-<<<<<<< HEAD
         self, filename: str, autofit: bool = False, file_format=None
-=======
-        self, filename: str, autofit: bool = False, overwrite: bool = False
->>>>>>> 1715069a (excel.application: add keyword export_to_pdf and autoexit)
     ) -> None:
         """Save Excel with name if workbook is open
 
         :param filename: where to save file
         :param autofit: autofit cell widths if True, defaults to False
-<<<<<<< HEAD
         :param file_format: format of file
 
         **Note:** Changing the file extension for the path does not
@@ -359,9 +354,6 @@ class Application:
 
             # Save workbook in Excel 97 format (format from above URL)
             Save excel as    legacy.xls   file_format=${56}
-=======
-        :param overwrite: set to True if existing file should be overwritten
->>>>>>> 1715069a (excel.application: add keyword export_to_pdf and autoexit)
         """
         if not self.workbook:
             # Doesn't raise error for backwards compatibility
@@ -373,22 +365,12 @@ class Application:
                 self.worksheet.Rows.AutoFit()
                 self.worksheet.Columns.AutoFit()
 
-<<<<<<< HEAD
             path = str(Path(filename).resolve())
 
             if file_format is not None:
                 self.workbook.SaveAs(path, FileFormat=file_format)
             else:
                 self.workbook.SaveAs(path)
-=======
-            filepath = Path(filename)
-            if filepath.exists() and not overwrite:
-                raise FileExistsError(
-                    "Not overwriting existing file: %s (overwrite False)"
-                    % str(filepath)
-                )
-            self.workbook.SaveAs(str(filepath))
->>>>>>> 1715069a (excel.application: add keyword export_to_pdf and autoexit)
 
     def run_macro(self, macro_name: str, *args: Any):
         """Run Excel macro with given name
