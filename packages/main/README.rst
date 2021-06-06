@@ -54,9 +54,7 @@ Links
    :target: http://www.apache.org/licenses/LICENSE-2.0.html
    :alt: License
 
-.. raw:: html
-
-    <br/>
+------------
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-dialogs.svg?label=rpaframework-dialogs
    :target: https://pypi.python.org/pypi/rpaframework-dialogs
