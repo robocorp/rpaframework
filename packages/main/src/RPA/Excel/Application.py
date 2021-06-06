@@ -1,3 +1,4 @@
+import atexit
 import logging
 import platform
 import struct
@@ -85,7 +86,7 @@ class Application:
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
-    def __init__(self) -> None:
+    def __init__(self, autoexit: bool = True) -> None:
         self.logger = logging.getLogger(__name__)
         self.app = None
         self.workbook = None
@@ -95,6 +96,8 @@ class Application:
             self.logger.warning(
                 "Excel application library requires Windows dependencies to work."
             )
+        if autoexit:
+            atexit.register(self.quit_application)
 
     def open_application(
         self, visible: bool = False, display_alerts: bool = False
@@ -328,12 +331,17 @@ class Application:
             self.workbook.Save()
 
     def save_excel_as(
+<<<<<<< HEAD
         self, filename: str, autofit: bool = False, file_format=None
+=======
+        self, filename: str, autofit: bool = False, overwrite: bool = False
+>>>>>>> 1715069a (excel.application: add keyword export_to_pdf and autoexit)
     ) -> None:
         """Save Excel with name if workbook is open
 
         :param filename: where to save file
         :param autofit: autofit cell widths if True, defaults to False
+<<<<<<< HEAD
         :param file_format: format of file
 
         **Note:** Changing the file extension for the path does not
@@ -351,6 +359,9 @@ class Application:
 
             # Save workbook in Excel 97 format (format from above URL)
             Save excel as    legacy.xls   file_format=${56}
+=======
+        :param overwrite: set to True if existing file should be overwritten
+>>>>>>> 1715069a (excel.application: add keyword export_to_pdf and autoexit)
         """
         if not self.workbook:
             # Doesn't raise error for backwards compatibility
@@ -362,12 +373,22 @@ class Application:
                 self.worksheet.Rows.AutoFit()
                 self.worksheet.Columns.AutoFit()
 
+<<<<<<< HEAD
             path = str(Path(filename).resolve())
 
             if file_format is not None:
                 self.workbook.SaveAs(path, FileFormat=file_format)
             else:
                 self.workbook.SaveAs(path)
+=======
+            filepath = Path(filename)
+            if filepath.exists() and not overwrite:
+                raise FileExistsError(
+                    "Not overwriting existing file: %s (overwrite False)"
+                    % str(filepath)
+                )
+            self.workbook.SaveAs(str(filepath))
+>>>>>>> 1715069a (excel.application: add keyword export_to_pdf and autoexit)
 
     def run_macro(self, macro_name: str, *args: Any):
         """Run Excel macro with given name
@@ -384,14 +405,20 @@ class Application:
         with catch_com_error():
             self.app.Application.Run(f"{self.workbook.Name}!{macro_name}", *args)
 
-    def export_as_pdf(self, filename: str):
+    def export_as_pdf(self, pdf_filename: str, excel_filename: str = None):
         """Export Excel as PDF file
 
-        :param filename: PDF filename to save
+        If Excel filename is not given, the currently open workbook
+        will be exported as PDF.
+
+        :param pdf_filename: PDF filename to save
+        :param excel_filename: Excel filename to open
         """
-        if not self.workbook:
-            self.logger.warn("No workbook open. Can't export PDF.")
-            return
+        if excel_filename:
+            self.open_workbook(excel_filename)
+        else:
+            if not self.workbook:
+                raise ValueError("No workbook open. Can't export PDF.")
         with catch_com_error():
-            path = str(Path(filename).resolve())
+            path = str(Path(pdf_filename).resolve())
             self.workbook.ExportAsFixedFormat(0, path)
