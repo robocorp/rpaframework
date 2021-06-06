@@ -183,7 +183,7 @@ class LibraryContext:
 
         cloud_auth_type = auth_type or self.ctx.cloud_auth_type
         if robocloud:
-            self.get_service_from_robocorp_vault(
+            service = self.get_service_from_robocorp_vault(
                 client_object, cloud_auth_type, service_account_file
             )
         elif service_account_file:
@@ -204,6 +204,9 @@ class LibraryContext:
         else:
             self.logger.info("Authenticating with default client object")
             service = client_object()
+
+        if service is None:
+            raise AssertionError("Failed to create service")
 
         return service
 
