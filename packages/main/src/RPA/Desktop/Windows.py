@@ -1685,11 +1685,11 @@ class Windows(OperatingSystem):
             else None
         )
         element_dict["object"] = element
-        child_id = (
-            f"[{element_dict['legacy']['ChildId']}]"
-            if (element_dict["legacy"] and element_dict["legacy"]["ChildId"] > 0)
-            else ""
-        )
+        # child_id = (
+        #     f"[{element_dict['legacy']['ChildId']}]"
+        #     if (element_dict["legacy"] and element_dict["legacy"]["ChildId"] > 0)
+        #     else ""
+        # )
         # element_dict[
         #     "xpath"
         # ] = f"/{element_dict['parent']}/{element_dict['control_type']}{child_id}"
