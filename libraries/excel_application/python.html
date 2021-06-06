@@ -221,7 +221,7 @@
 <span id="excel-application"></span><h2>Excel.Application<a class="headerlink" href="#module-RPA.Excel.Application" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="RPA.Excel.Application.Application">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Excel.Application.</code><code class="sig-name descname">Application</code><a class="headerlink" href="#RPA.Excel.Application.Application" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Excel.Application.</code><code class="sig-name descname">Application</code><span class="sig-paren">(</span><em class="sig-param">autoexit: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p><cite>Excel.Application</cite> is a library for controlling an Excel application.</p>
 <p><strong>Examples</strong></p>
@@ -243,6 +243,10 @@
 <span class="gu">Run Excel Macro</span><span class="p"></span>
 <span class="p">    </span><span class="nf">Open Workbook</span><span class="p">   </span><span class="s">orders_with_macro.xlsm</span><span class="p"></span>
 <span class="p">    </span><span class="nf">Run Macro</span><span class="p">       </span><span class="s">Sheet1.CommandButton1_Click</span><span class="p"></span>
+
+<span class="gu">Export Workbook as PDF</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Open Workbook</span><span class="p">           </span><span class="s">workbook.xlsx</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Export as PDF</span><span class="p">           </span><span class="s">workbook.pdf</span><span class="p"></span>
 </pre></div>
 </div>
 <p><strong>Python</strong></p>
@@ -298,6 +302,22 @@ it does not exist.</p>
 <dt id="RPA.Excel.Application.Application.close_document">
 <code class="sig-name descname">close_document</code><span class="sig-paren">(</span><em class="sig-param">save_changes: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Excel.Application.Application.close_document" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close the active document (if open).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Application.Application.export_as_pdf">
+<code class="sig-name descname">export_as_pdf</code><span class="sig-paren">(</span><em class="sig-param">pdf_filename: str</em>, <em class="sig-param">excel_filename: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Application.Application.export_as_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export Excel as PDF file</p>
+<p>If Excel filename is not given, the currently open workbook
+will be exported as PDF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdf_filename</strong> – PDF filename to save</p></li>
+<li><p><strong>excel_filename</strong> – Excel filename to open</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
