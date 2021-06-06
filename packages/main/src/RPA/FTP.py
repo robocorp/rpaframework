@@ -4,6 +4,7 @@ from ftplib import all_errors, error_perm
 from functools import wraps
 import logging
 import os
+from typing import Tuple
 from RPA.core.notebook import notebook_file
 
 
@@ -22,7 +23,7 @@ def ftpcommand(f):
             raise FTPException("No FTP connection")
         try:
             ret = f(*args, **kwargs)
-            return ret if ret else True
+            return ret
         except FileNotFoundError as e:
             args[0].logger.warning(str(e))
             return False
@@ -94,6 +95,10 @@ class FTP:
         password: str = None,
         tls: bool = False,
         transfer: str = "passive",
+        keyfile: str = None,
+        certfile: str = None,
+        timeout: int = None,
+        source_address: Tuple[str, int] = None,
     ):
         """Connect to FTP server
 
@@ -103,18 +108,29 @@ class FTP:
         :param password: login password, defaults to None
         :param tls: connect using TLS support, defaults to False
         :param transfer: mode of the transfer, defaults to "passive"
+        :param keyfile: path to private key file
+        :param certfile: path to certificate file
+        :param timeout: a timeout in seconds for the connection attempt
+        :param source_address: socket to bind to as its source address before connecting
         :raises AuthenticationException: on authentication error with the server
         """
         try:
             if tls:
-                self.instance = TLSconn()
+                self.instance = TLSconn(
+                    keyfile=keyfile,
+                    certfile=certfile,
+                    timeout=timeout,
+                    source_address=source_address,
+                )
             else:
-                self.instance = FTPconn()
+                self.instance = FTPconn(timeout=timeout, source_address=source_address)
             self.instance.connect(host, port)
             if user and password:
                 self.instance.login(user=user, passwd=password)
             else:
                 self.instance.login()
+            if tls:
+                self.instance.prot_p()
             if transfer != "passive":
                 self.instance.set_pasv(False)
         except error_perm as e:
@@ -208,17 +224,15 @@ class FTP:
         self.instance.rmd(dirname)
 
     @ftpcommand
-    def list_files(self, dirname: str = None) -> dict:
+    def list_files(self, dirname: str = "") -> list:
         """List files on the server directory
 
         :param dirname: name of the directory
         """
         try:
-            files = list(self.instance.mlsd(path=dirname))
-            return files
+            return list(self.instance.mlsd(path=dirname))
         except all_errors:
-            files = self.instance.nlst()
-            return files
+            return list(self.instance.nlst())
 
     @ftpcommand
     def delete(self, filepath: str) -> bool:
