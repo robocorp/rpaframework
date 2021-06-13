@@ -1,6 +1,12 @@
 Release notes
 =============
 
+10.3.0
+------
+
+- Library **RPA.Database**: Return rows for ``SHOW`` and ``EXPLAIN`` statements
+- Library **RPA.Desktop.Windows**: Add ``parent`` as possible locator
+
 10.2.0
 ------
 
