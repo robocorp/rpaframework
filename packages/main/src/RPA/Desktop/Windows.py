@@ -69,6 +69,7 @@ WINDOWS_LOCATOR_STRATEGIES = {
     "id": "automation_id",
     "partial name": "partial name",
     "regexp": "regexp",
+    "parent": "parent",
 }
 
 
