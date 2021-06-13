@@ -463,7 +463,13 @@ class Database:
                 if not sanstran:
                     self._dbconnection.rollback()
 
-    def query(self, statement, assertion=None, sanstran=False, as_table=True):
+    def query(
+        self,
+        statement: str,
+        assertion: str = None,
+        sanstran: bool = False,
+        as_table: bool = True,
+    ):
         """Make a SQL query.
 
         :param statement: SQL statement to execute
@@ -496,27 +502,10 @@ class Database:
             cursor = self._dbconnection.cursor()
             self.logger.info("Executing : Query  |  %s ", statement)
             result = self.__execute_sql(cursor, statement)
-
-            if statement.lower().startswith("select") or statement.lower().startswith(
-                "describe"
-            ):
+            if self._is_returnable_statement(statement):
                 rows = cursor.fetchall()
                 columns = [c[0] for c in cursor.description]
-                # pylint: disable=unused-variable
-                row_count = len(rows)  # noqa: F841
-                if assertion:
-                    available_locals = {
-                        "row_count": row_count,
-                        "columns": columns,
-                    }
-                    # pylint: disable=W0123
-                    valid = eval(assertion, {"__builtins__": None}, available_locals)
-
-                    if not valid:
-                        raise AssertionError(
-                            "Query assertion %s failed. Facts: %s"
-                            % (assertion, available_locals)
-                        )
+                self._result_assertion(rows, columns, assertion)
                 if as_table:
                     return Table(rows, columns)
                 return rows
@@ -531,6 +520,27 @@ class Database:
                 if not sanstran:
                     self._dbconnection.rollback()
         return result
+
+    def _is_returnable_statement(self, statement):
+        starts_with = statement.lower().split(" ")[0]
+        return starts_with in ["select", "describe", "show", "explain"]
+
+    def _result_assertion(self, rows, columns, assertion):
+        if assertion:
+            # pylint: disable=unused-variable
+            row_count = len(rows)  # noqa: F841
+            available_locals = {
+                "row_count": row_count,
+                "columns": columns,
+            }
+            # pylint: disable=W0123
+            valid = eval(assertion, {"__builtins__": None}, available_locals)
+
+            if not valid:
+                raise AssertionError(
+                    "Query assertion %s failed. Facts: %s"
+                    % (assertion, available_locals)
+                )
 
     def __execute_sql(self, cursor, sqlStatement):
         return cursor.execute(sqlStatement)
