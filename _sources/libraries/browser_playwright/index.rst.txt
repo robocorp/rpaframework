@@ -28,15 +28,15 @@ Example ``conda.yaml``:
 .. code-block:: yaml
 
   channels:
-    - defaults
     - conda-forge
+
   dependencies:
     - python=3.7.5
     - pip=20.1
-    - nodejs=14.2.0
+    - nodejs=14.15.4
     - pip:
-      - rpaframework==6.7.1
-      - robotframework-browser==2.3.3
+      - robotframework-browser==5.0.1
+      - rpaframework==10.2.0
   rccPostInstall:
     - rfbrowser init
 

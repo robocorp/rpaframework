@@ -225,15 +225,15 @@ this means that some extra steps are required to install it for use in a project
 <p>Add <code class="docutils literal notranslate"><span class="pre">nodejs</span></code>, <code class="docutils literal notranslate"><span class="pre">robotframework-browser</span></code> and <code class="docutils literal notranslate"><span class="pre">rccPostInstall:</span> <span class="pre">rfbrowser</span> <span class="pre">init</span></code> to <code class="docutils literal notranslate"><span class="pre">conda.yaml</span></code>.</p>
 <p>Example <code class="docutils literal notranslate"><span class="pre">conda.yaml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">defaults</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
+
 <span class="nt">dependencies</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pip=20.1</span>
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">nodejs=14.2.0</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">nodejs=14.15.4</span>
   <span class="p p-Indicator">-</span> <span class="nt">pip</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework==6.7.1</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">robotframework-browser==2.3.3</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">robotframework-browser==5.0.1</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework==10.2.0</span>
 <span class="nt">rccPostInstall</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rfbrowser init</span>
 </pre></div>
