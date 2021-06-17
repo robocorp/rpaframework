@@ -232,8 +232,10 @@ class RobotLogListener:
             old = BuiltIn().set_log_level("NONE")
             self.stack.append((normalized, old))
         elif any(name in normalized for name in self.INFO_LEVEL_KEYWORDS):
-            old = BuiltIn().set_log_level("INFO")
-            self.stack.append((normalized, old))
+            current = BuiltIn().get_variable_value("${LOG_LEVEL}")
+            if current not in ("WARN", "ERROR", "NONE"):
+                old = BuiltIn().set_log_level("INFO")
+                self.stack.append((normalized, old))
 
         # Run-on-failure
 
