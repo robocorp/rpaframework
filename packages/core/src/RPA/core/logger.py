@@ -3,8 +3,10 @@ from typing import Union, List
 
 try:
     from robot.libraries.BuiltIn import BuiltIn
+    from robot.running.context import EXECUTION_CONTEXTS
 except ModuleNotFoundError:
     BuiltIn = None
+    EXECUTION_CONTEXTS = None
 
 from RPA.core.helpers import required_param
 
@@ -134,8 +136,9 @@ class RobotLogListener:
     def __init__(self) -> None:
         self.ROBOT_LIBRARY_LISTENER = self
         self.logger = logging.getLogger(__name__)
-        self.previous_level = None
+        self.stack = []
 
+        # Run-on-failure
         self.muted_keyword = None
         self.muted_optionals = []
         self.muted_previous = {}
@@ -150,9 +153,9 @@ class RobotLogListener:
             names = [names]
 
         for name in names:
-            robotized_keyword = self._robotize_keyword(name)
-            if robotized_keyword not in self.INFO_LEVEL_KEYWORDS:
-                self.INFO_LEVEL_KEYWORDS.append(robotized_keyword)
+            normalized = self._normalize(name)
+            if normalized not in self.INFO_LEVEL_KEYWORDS:
+                self.INFO_LEVEL_KEYWORDS.append(normalized)
 
     def register_protected_keywords(self, names: Union[str, List] = None) -> None:
         """Register keywords that are not going to be logged into Robot Framework logs.
@@ -164,9 +167,9 @@ class RobotLogListener:
             names = [names]
 
         for name in names:
-            robotized_keyword = self._robotize_keyword(name)
-            if robotized_keyword not in self.KEYWORDS_TO_PROTECT:
-                self.KEYWORDS_TO_PROTECT.append(robotized_keyword)
+            normalized = self._normalize(name)
+            if normalized not in self.KEYWORDS_TO_PROTECT:
+                self.KEYWORDS_TO_PROTECT.append(normalized)
 
     def mute_run_on_failure(
         self, keywords: Union[str, List] = None, optional_keyword_to_run: str = None
@@ -191,7 +194,7 @@ class RobotLogListener:
         on failure, but this can be set to override `SeleniumLibrary`
         default behaviour for a set of keywords.
         """
-        if BuiltIn is None:
+        if not self._is_robot_running():
             raise RuntimeError("Not supported outside Robot Framework")
 
         required_param(keywords, "mute_run_on_failure")
@@ -199,9 +202,9 @@ class RobotLogListener:
             keywords = [keywords]
 
         for keyword in keywords:
-            robotized_keyword = self._robotize_keyword(keyword)
-            if robotized_keyword not in self.KEYWORDS_TO_MUTE:
-                self.KEYWORDS_TO_MUTE.append(robotized_keyword)
+            normalized = self._normalize(keyword)
+            if normalized not in self.KEYWORDS_TO_MUTE:
+                self.KEYWORDS_TO_MUTE.append(normalized)
 
         for library in ("RPA.Browser", "RPA.Browser.Selenium"):
             status, instance = BuiltIn().run_keyword_and_ignore_error(
@@ -219,30 +222,34 @@ class RobotLogListener:
         If `name` exists in the protected keywords list then log level is
         temporarily set to NONE.
         """
-        if BuiltIn is None:
+        if not self._is_robot_running():
             return
 
-        robotized_keyword = self._robotize_keyword(name)
+        normalized = self._normalize(name)
 
-        if any(kw in robotized_keyword for kw in self.KEYWORDS_TO_PROTECT):
-            self.logger.info("Protecting keyword: %s", robotized_keyword)
-            self.previous_level = BuiltIn().set_log_level("NONE")
-        elif any(kw in robotized_keyword for kw in self.INFO_LEVEL_KEYWORDS):
-            self.previous_level = BuiltIn().set_log_level("INFO")
+        if any(name in normalized for name in self.KEYWORDS_TO_PROTECT):
+            self.logger.info("Protecting keyword: %s", name)
+            old = BuiltIn().set_log_level("NONE")
+            self.stack.append((normalized, old))
+        elif any(name in normalized for name in self.INFO_LEVEL_KEYWORDS):
+            old = BuiltIn().set_log_level("INFO")
+            self.stack.append((normalized, old))
+
+        # Run-on-failure
 
         if self.muted_keyword:
             return
 
-        keywords = {}
+        previous = {}
         for library, optional in self.muted_optionals:
-            if any(kw in robotized_keyword for kw in self.KEYWORDS_TO_MUTE):
-                previous = library.register_keyword_to_run_on_failure(optional)
-                keywords[library.__class__.__name__] = previous
+            if any(name in normalized for name in self.KEYWORDS_TO_MUTE):
+                keyword = library.register_keyword_to_run_on_failure(optional)
+                previous[library.__class__.__name__] = keyword
 
-        if keywords:
+        if previous:
             self.logger.debug("Muting failures before keyword: %s", name)
-            self.muted_keyword = robotized_keyword
-            self.muted_previous = keywords
+            self.muted_keyword = normalized
+            self.muted_previous = previous
 
     def end_keyword(self, name, attributes):  # pylint: disable=W0613
         """Listener method for keyword end.
@@ -253,15 +260,18 @@ class RobotLogListener:
         If `name` exists in the protected keywords list then log level is
         restored back to level it was before settings to NONE.
         """
-        if BuiltIn is None:
+        if not self._is_robot_running():
             return
 
-        robotized_keyword = self._robotize_keyword(name)
+        normalized = self._normalize(name)
 
-        if any(kw in robotized_keyword for kw in self.KEYWORDS_TO_PROTECT):
-            BuiltIn().set_log_level(self.previous_level)
+        if self.stack and self.stack[-1][0] == normalized:
+            _, old = self.stack.pop()
+            BuiltIn().set_log_level(old)
 
-        if robotized_keyword != self.muted_keyword:
+        # Run-on-failure
+
+        if normalized != self.muted_keyword:
             return
 
         self.logger.debug("Un-muting failures after keyword: %s", name)
@@ -273,12 +283,15 @@ class RobotLogListener:
         self.muted_keyword = None
         self.muted_previous = {}
 
-    def _robotize_keyword(self, kw_name: str) -> str:
+    def _normalize(self, name: str) -> str:
         """Modifies keyword name for programmatic use.
 
         Keyword is lowercased and spaces are replaced by underscores.
 
-        :param kw_name: keyword name to robotize
-        :return: robotized keyword
+        :param name: keyword name to normalize
+        :return: normalized keyword
         """
-        return kw_name.lower().replace(" ", "_")
+        return name.lower().replace(" ", "_")
+
+    def _is_robot_running(self):
+        return BuiltIn is not None and EXECUTION_CONTEXTS.current is not None
