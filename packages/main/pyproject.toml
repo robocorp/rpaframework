@@ -36,7 +36,7 @@ packages = [
 python = "^3.6.2"
 docutils = "*"
 dataclasses = { version = "^0.7", python=">=3.6,<3.7" }
-rpaframework-core = "^6.2.1"
+rpaframework-core = "^6.2.2"
 rpaframework-pdf = "^0.6.0"
 rpaframework-dialogs = "^0.3.1"
 rpaframework-recognition = { version = "^0.7.0", optional = true }
