@@ -146,9 +146,7 @@ class JavaAccessBridge:
         self.context_info_tree = None
         self.pumper_thread = None
         self.refresh_counter = 1
-        self.display_scale_factor = (
-            ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
-        )
+        self.display_scale_factor = ScalingFactor
 
     def _initialize(self):
         pipe = queue.Queue()
