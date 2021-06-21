@@ -361,7 +361,6 @@ class ImapSmtp:
         if self.smtp_conn:
             self.smtp_conn.ehlo()
 
-    @smtp_connection
     def send_message(
         self,
         sender: str,
