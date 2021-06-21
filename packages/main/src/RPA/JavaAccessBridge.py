@@ -159,7 +159,7 @@ class JavaAccessBridge:
             raise Exception("Failed to initialize Java Access Bridge Wrapper")
         time.sleep(1)
         atexit.register(self._handle_shutdown)
-        self.logger.info('Java Access Bridge Wrapper initialized')
+        self.logger.info("Java Access Bridge Wrapper initialized")
 
     def _handle_shutdown(self):
         if self.jab_wrapper:
@@ -310,7 +310,7 @@ class JavaAccessBridge:
                 Desktop().press_keys("ctrl", "a")
                 Desktop().press_keys("delete")
                 try:
-                    self.wait_until_element_text_equals(element[0], '')
+                    self.wait_until_element_text_equals(element[0], "")
                     element_cleared = True
                 except ValueError:
                     pass
@@ -328,7 +328,9 @@ class JavaAccessBridge:
         return self._find_elements(locator)
 
     @keyword
-    def wait_until_element_text_contains(self, locator: LocatorType, text: str, index: int = 0, timeout: float = 0.5):
+    def wait_until_element_text_contains(
+        self, locator: LocatorType, text: str, index: int = 0, timeout: float = 0.5
+    ):
         """Wait until element text contains expected text
 
         :param locator: target element
@@ -346,7 +348,9 @@ class JavaAccessBridge:
         raise ValueError(f"Text={text} not found in element={matching}")
 
     @keyword
-    def wait_until_element_text_equals(self, locator: LocatorType, text: str, index: int = 0, timeout: float = 0.5):
+    def wait_until_element_text_equals(
+        self, locator: LocatorType, text: str, index: int = 0, timeout: float = 0.5
+    ):
         """Wait until element text equals expected text
 
         :param locator: target element
@@ -364,7 +368,9 @@ class JavaAccessBridge:
         raise ValueError(f"Text={text} not found in element={matching}")
 
     @keyword
-    def wait_until_element_is_focused(self, locator: LocatorType, index: int = 0, timeout: float = 0.5):
+    def wait_until_element_is_focused(
+        self, locator: LocatorType, index: int = 0, timeout: float = 0.5
+    ):
         """Wait until element is focused
 
         :param locator: target element
