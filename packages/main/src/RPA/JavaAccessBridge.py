@@ -39,10 +39,10 @@ if platform.system() == "Windows":
     TranslateMessage = ctypes.windll.user32.TranslateMessage
     DispatchMessage = ctypes.windll.user32.DispatchMessageW
     ScalingFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
+    LocatorType = Union[ContextNode, str]
 else:
     ScalingFactor = 1.0
-
-LocatorType = Union[ContextNode, str]
+    LocatorType = str
 
 
 class ElementNotFound(ValueError):
