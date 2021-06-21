@@ -38,7 +38,7 @@ robotframework = ">=3.2.2,<5.0"
 robotframework-pythonlibcore = "^2.1.0"
 "pdfminer.six" = "20201018"
 pypdf2 = "^1.26.0"
-fpdf2 = "^2.4.1"
+fpdf2 = "^2.3.0"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.5b0", allow-prereleases = true}
