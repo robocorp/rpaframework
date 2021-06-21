@@ -1,6 +1,4 @@
 import atexit
-import ctypes
-from ctypes import wintypes, byref
 import logging
 import platform
 import queue
@@ -18,6 +16,9 @@ from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
 from RPA.Desktop import Desktop
 
 if platform.system() == "Windows":
+    import ctypes
+    from ctypes import wintypes, byref
+
     # Configure comtypes to not generate DLL bindings into
     # current environment, instead keeping them in memory.
     # Slower, but prevents dirtying environments.
@@ -36,7 +37,9 @@ if platform.system() == "Windows":
     GetMessage = ctypes.windll.user32.GetMessageW
     TranslateMessage = ctypes.windll.user32.TranslateMessage
     DispatchMessage = ctypes.windll.user32.DispatchMessageW
-
+    ScalingFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
+else:
+    ScalingFactor = 1.0
 
 LocatorType = Union[ContextNode, str]
 
