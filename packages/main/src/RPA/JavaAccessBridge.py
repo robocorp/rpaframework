@@ -43,6 +43,7 @@ if platform.system() == "Windows":
 else:
     ScalingFactor = 1.0
     LocatorType = str
+    ContextNode = object
 
 
 class ElementNotFound(ValueError):
