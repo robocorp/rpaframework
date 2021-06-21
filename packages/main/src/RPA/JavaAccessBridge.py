@@ -13,6 +13,7 @@ from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn
 
 from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
+from JABWrapper.jab_types import JavaObject
 from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
 
 from RPA.Desktop import Desktop
@@ -58,22 +59,17 @@ class JavaAccessBridge:
     **Steps to enable**
 
         1. Enable the Java Access Bridge in Windows
+        2. Set environment variable `WindowsAccessBridge` as an absolute path to `WindowsAccessBridge-64.dll`
 
         .. code-block:: console
 
-            C:\path\to\java\bin\jabswitch -enable
-
-        2. Set environment variable `WindowsAccessBridge` as an absolute path to
-         `WindowsAccessBridge-64.dll`.
-
-        .. code-block:: console
-
-            set WindowsAccessBridge=C:\Program Files\Java\jre1.8.0_261\bin\WindowsAccessBridge-64.dll
+            C:\\path\\to\\java\\bin\\jabswitch -enable
+            set WindowsAccessBridge=C:\\Program Files\\Java\\jre1.8.0_261\\bin\WindowsAccessBridge-64.dll
 
     .. _Java Access Bridge technology: https://www.oracle.com/java/technologies/javase/javase-tech-access-bridge.html
     .. _java-access-bridge-wrapper: https://github.com/robocorp/java-access-bridge-wrapper
 
-    ** Locating elements **
+    **Locating elements**
 
     To automate actions on the Java application, the robot needs locations to various elements
     using a feature called `locators`. Locator describes properties of an element.
@@ -96,7 +92,7 @@ class JavaAccessBridge:
 
     Some keywords accept element as an parameter in place of locator.
 
-    ** Interacting with elements **
+    **Interacting with elements**
 
     By default application elements are interacted with Actions supported by the element.
     Most common example is `click` action supported by an button element.
@@ -105,7 +101,7 @@ class JavaAccessBridge:
     possible to opt for interaction elements by their coordinates by giving keyword parameter
     ``action=False`` if parameter is available.
 
-    ** Inspecting elements **
+    **Inspecting elements**
 
     The Google's `Access Bridge Explorer`_ can be used for inspecting Java application elements.
 
@@ -147,7 +143,6 @@ class JavaAccessBridge:
         self.jab_wrapper = None
         self.context_info_tree = None
         self.pumper_thread = None
-        self._initialize()
         self.refresh_counter = 1
         self.display_scale_factor = (
             ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
@@ -164,6 +159,7 @@ class JavaAccessBridge:
             raise Exception("Failed to initialize Java Access Bridge Wrapper")
         time.sleep(1)
         atexit.register(self._handle_shutdown)
+        self.logger.info('Java Access Bridge Wrapper initialized')
 
     def _handle_shutdown(self):
         if self.jab_wrapper:
@@ -195,6 +191,8 @@ class JavaAccessBridge:
         :param bring_foreground: if application is brought to foreground or not
         :param timeout: selection timeout
         """
+        if self.jab_wrapper is None:
+            self._initialize()
         window_found = False
         interval = float(0.5)
         end_time = time.time() + float(timeout)
@@ -251,7 +249,7 @@ class JavaAccessBridge:
 
     def _find_elements(self, locator: str, index: int = None):
         searches = self._parse_locator(locator)
-        self.logger.info("SEARCHES: %s", searches)
+        self.logger.info("Searches: %s", searches)
         elements = []
         for lvl, search in enumerate(searches):
             search_elements = []
@@ -288,7 +286,7 @@ class JavaAccessBridge:
     @keyword
     def type_text(
         self,
-        locator: LocatorType,
+        locator: str,
         text: str,
         index: int = 0,
         clear: bool = False,
@@ -306,9 +304,20 @@ class JavaAccessBridge:
         self._click_element_middle(element[0])
         element[0].request_focus()
         if clear:
-            time.sleep(0.5)
-            self.press_keys("ctrl", "a", "delete")
+            self.wait_until_element_is_focused(element[0])
+            element_cleared = False
+            for _ in range(10):
+                Desktop().press_keys("ctrl", "a")
+                Desktop().press_keys("delete")
+                try:
+                    self.wait_until_element_text_equals(element[0], '')
+                    element_cleared = True
+                except ValueError:
+                    pass
+            if not element_cleared:
+                raise ValueError(f"Element={element} not cleared")
         Desktop().type_text(text, enter=enter)
+        self.wait_until_element_text_contains(element[0], text)
 
     @keyword
     def get_elements(self, locator: str):
@@ -319,22 +328,80 @@ class JavaAccessBridge:
         return self._find_elements(locator)
 
     @keyword
-    def get_element_text(self, target: LocatorType, index: int = 0):
+    def wait_until_element_text_contains(self, locator: LocatorType, text: str, index: int = 0, timeout: float = 0.5):
+        """Wait until element text contains expected text
+
+        :param locator: target element
+        :param text: element text should contain this
+        :param index: target element index if multiple are returned
+        :param timeout: timeout in seconds to wait, default 0.5 seconds
+        """
+        matching = self._get_matching_element(locator, index)
+        end_time = time.time() + float(timeout)
+        while time.time() <= end_time:
+            if text in matching.atp.items.sentence:
+                return
+            time.sleep(0.05)
+
+        raise ValueError(f"Text={text} not found in element={matching}")
+
+    @keyword
+    def wait_until_element_text_equals(self, locator: LocatorType, text: str, index: int = 0, timeout: float = 0.5):
+        """Wait until element text equals expected text
+
+        :param locator: target element
+        :param text: element text should match this
+        :param index: target element index if multiple are returned
+        :param timeout: timeout in seconds to wait, default 0.5 seconds
+        """
+        matching = self._get_matching_element(locator, index)
+        end_time = time.time() + float(timeout)
+        while time.time() <= end_time:
+            if text == matching.atp.items.sentence:
+                return
+            time.sleep(0.05)
+
+        raise ValueError(f"Text={text} not found in element={matching}")
+
+    @keyword
+    def wait_until_element_is_focused(self, locator: LocatorType, index: int = 0, timeout: float = 0.5):
+        """Wait until element is focused
+
+        :param locator: target element
+        :param index: target element index if multiple are returned
+        :param timeout: timeout in seconds to wait, default 0.5 seconds
+        """
+        matching = self._get_matching_element(locator, index)
+        end_time = time.time() + float(timeout)
+        while time.time() <= end_time:
+            if matching.state == "focused":
+                return
+            time.sleep(0.05)
+
+        raise ValueError(f"Element={matching} not focused")
+
+    @keyword
+    def get_element_text(self, locator: LocatorType, index: int = 0):
         """Get element text
 
-        :param target: target element
-        :param index: target element if multiple are returned
+        :param locator: target element
+        :param index: target element index if multiple are returned
         """
-        if isinstance(target, str):
-            elements = self._find_elements(target)
+        matching = self._get_matching_element(locator, index)
+        return matching.atp.items.sentence
+
+    def _get_matching_element(self, locator: LocatorType, index: int = 0):
+        matching = None
+        if isinstance(locator, str):
+            elements = self._find_elements(locator)
             if len(elements) < (index + 1):
                 raise ElementNotFound(
-                    "Locator '%s' matched only %s elements" % (target, len(elements))
+                    "Locator '%s' matched only %s elements" % (locator, len(elements))
                 )
             matching = elements[index]
         else:
-            matching = target
-        return matching.atp.items.sentence
+            matching = locator
+        return matching
 
     @keyword
     def get_element_actions(self, locator: str):
@@ -351,21 +418,13 @@ class JavaAccessBridge:
             BuiltIn().log_to_console(str(elem).strip())
 
     @keyword
-    def highlight_element(self, target: LocatorType, index: int = 0):
+    def highlight_element(self, locator: LocatorType, index: int = 0):
         """Highlight an element
 
-        :param target: element to highlight
-        :param index: target element if multiple are returned
+        :param locator: element to highlight
+        :param index: target element index if multiple are returned
         """
-        if isinstance(target, str):
-            elements = self._find_elements(target)
-            if len(elements) < (index + 1):
-                raise ElementNotFound(
-                    "Locator '%s' matched only %s elements" % (target, len(elements))
-                )
-            matching = elements[index]
-        else:
-            matching = target
+        matching = self._get_matching_element(locator, index)
         self.logger.info("Highlighting element: %s", repr(matching))
         region_locator = self._get_region_locator(matching)
         Desktop().highlight_elements(region_locator)
@@ -386,7 +445,7 @@ class JavaAccessBridge:
     @keyword
     def click_element(
         self,
-        target: LocatorType,
+        locator: LocatorType,
         index: int = 0,
         action: bool = True,
         timeout: int = 10,
@@ -394,16 +453,16 @@ class JavaAccessBridge:
         """Click element
 
         :param target: element to click
-        :param index: target element if multiple are returned
+        :param index: target element index if multiple are returned
         :param action: call click action on element (default), or use coordinates
         :param timeout: timeout in seconds to find element
         """
-        if isinstance(target, str):
+        if isinstance(locator, str):
             interval = float(0.2)
             end_time = time.time() + float(timeout)
             while time.time() <= end_time:
                 start = time.time()
-                elements = self._find_elements(target)
+                elements = self._find_elements(locator)
                 if len(elements) > 0:
                     break
                 duration = time.time() - start
@@ -412,14 +471,14 @@ class JavaAccessBridge:
 
             if len(elements) < (index + 1):
                 raise ElementNotFound(
-                    "Locator '%s' matched only %s elements" % (target, len(elements))
+                    "Locator '%s' matched only %s elements" % (locator, len(elements))
                 )
             matching = elements[index]
         else:
-            matching = target
+            matching = locator
         try:
             if action:
-                self.logger.info("Element click action")
+                self.logger.info("Element click action type:%s", type(matching))
                 matching.do_action("click")
             else:
                 self._click_element_middle(matching)
@@ -455,7 +514,7 @@ class JavaAccessBridge:
         """Toggle dropdown action on element
 
         :param locator: element locator
-        :param index: target element if multiple are returned
+        :param index: target element index if multiple are returned
         """
         elements = self._find_elements(locator)
         matching = elements[index]
@@ -512,7 +571,8 @@ class JavaAccessBridge:
 
         :param button_name: name of the button to click
         """
-        self.click_element(f"role:push button and name:{button_name}")
+        locator = f"role:push button and name:{button_name}"
+        self.click_element(locator)
 
     @keyword
     def shutdown_jab(self):

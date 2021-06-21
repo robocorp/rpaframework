@@ -29,7 +29,6 @@ Clear chat frame
 Task setup actions
     Select Window    Chat Frame
     Clear chat frame
-    #Application Refresh
 
 *** Tasks ***
 Click element
