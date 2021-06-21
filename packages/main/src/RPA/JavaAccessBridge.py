@@ -10,8 +10,6 @@ import warnings
 from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn
 
-from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
-from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
 
 from RPA.Desktop import Desktop
 
@@ -23,6 +21,9 @@ if platform.system() == "Windows":
     # current environment, instead keeping them in memory.
     # Slower, but prevents dirtying environments.
     import comtypes.client
+
+    from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
+    from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
 
     comtypes.client.gen_dir = None
 
@@ -141,6 +142,10 @@ class JavaAccessBridge:
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
+        if platform.system() != "Windows":
+            self.logger.warning(
+                "JavaAccessBridge library requires Windows dependencies to work"
+            )
         self.version_printed = False
         self.jab_wrapper = None
         self.context_info_tree = None
