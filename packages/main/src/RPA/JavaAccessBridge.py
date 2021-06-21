@@ -13,7 +13,6 @@ from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn
 
 from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
-from JABWrapper.jab_types import JavaObject
 from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
 
 from RPA.Desktop import Desktop
