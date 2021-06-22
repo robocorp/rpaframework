@@ -201,7 +201,7 @@ class JavaAccessBridge:
             target=self._pump_background, daemon=True, args=[pipe]
         )
         self.pumper_thread.start()
-        self.jab_wrapper = pipe.get()
+        self.jab_wrapper = pipe.get(timeout=10)
         if not self.jab_wrapper:
             raise Exception("Failed to initialize Java Access Bridge Wrapper")
         time.sleep(1)
