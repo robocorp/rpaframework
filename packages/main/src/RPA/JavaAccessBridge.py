@@ -171,7 +171,7 @@ class JavaAccessBridge:
             clear=True
         )
         jab.click_element("role:push button and name:Send")
-        
+
     """  # noqa: E501, W605
 
     # TODO: add keyword for taking screenshots of elements and window
