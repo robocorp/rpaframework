@@ -1,5 +1,6 @@
 import atexit
 import logging
+import os
 import platform
 import queue
 import threading
@@ -9,7 +10,6 @@ import warnings
 
 from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn
-
 
 from RPA.Desktop import Desktop
 
@@ -182,6 +182,11 @@ class JavaAccessBridge:
         if platform.system() != "Windows":
             self.logger.warning(
                 "JavaAccessBridge library requires Windows dependencies to work"
+            )
+        if "WindowsAccessBridge" not in os.environ.keys():
+            self.logger.warning(
+                "Environment variable `WindowsAccessBridge` needs to be set to "
+                "absolute path of `WindowsAccessBridge-64.dll`"
             )
         self.version_printed = False
         self.jab_wrapper = None
@@ -548,6 +553,15 @@ class JavaAccessBridge:
         matching.do_action(action)
 
     def _click_element_middle(self, element):
+        # TODO. change to use RPA.core.geometry Region/Point
+        # region = Region.from_size(
+        # element.left,
+        # element.top,
+        # element.width,
+        # element.height
+        # )
+        # region.scale(self.scale_factor)
+        # Desktop().click(region.center)
         self.logger.info("Element click coordinates")
         left, top, right, bottom = self._get_scaled_coordinates(element)
         if left == -1 or top == -1:

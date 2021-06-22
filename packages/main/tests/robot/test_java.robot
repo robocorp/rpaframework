@@ -31,17 +31,17 @@ Task setup actions
     Clear chat frame
 
 *** Tasks ***
-Click element
+Test click element
     Click Element    role:push button and name:Send
 
-Click push button
+Test click push button
     Click Push Button    Send
     Click Push Button    Clear
 
-Print Element Tree
+Test print element tree
     ${tree}=    Print Element Tree
 
-Typing text
+Test typing text
     Type Text    role:text    textarea text
     Type Text    role:text    input field text    index=1    clear=${TRUE}
     ${area_text}=    Get Element Text    role:text    0
@@ -49,7 +49,7 @@ Typing text
     Should Contain    ${area_text}    textarea text
     Should Be Equal As Strings    input field text    ${input_text}
 
-Get elements
+Test get elements
     ${elements}=    Get Elements    role:text
     ${len}=    Get Length    ${elements}
     Should Be Equal As Integers    ${len}    2
