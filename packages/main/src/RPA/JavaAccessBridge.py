@@ -107,9 +107,16 @@ class JavaAccessBridge:
 
     **Inspecting elements**
 
-    The Google's `Access Bridge Explorer`_ can be used for inspecting Java application elements.
+    Inspecting Java application elements depends on what kind of Java UI framework the application
+    has been built with.
+
+    The `Accessibility Insights for Windows` can show element properties if application framework
+    supports Windows UI Automation (UIA), see more at `using Accessibility Insights`_.
+
+    The Google's `Access Bridge Explorer`_ can also be used for inspecting Java application elements.
 
     .. _Access Bridge Explorer: https://github.com/google/access-bridge-explorer
+    .. _using Accessibility Insights: https://accessibilityinsights.io/docs/en/windows/reference/faq/#can-i-use-accessibility-insights-for-windows-on-a-windows-app-written-with-java
 
     **Examples**
 
@@ -140,6 +147,9 @@ class JavaAccessBridge:
         jab.type_text("role:text", "text for the input field", index=1, clear=True)
         jab.click_element("role:push button and name:Send")
     """  # noqa: E501, W605
+
+    # TODO: add keyword for taking screenshots of elements and window
+    # TODO. implement proper XPath syntax support
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
