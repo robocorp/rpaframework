@@ -125,20 +125,20 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.17.97"
+version = "1.17.98"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [package.dependencies]
-botocore = ">=1.20.97,<1.21.0"
+botocore = ">=1.20.98,<1.21.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.4.0,<0.5.0"
 
 [[package]]
 name = "botocore"
-version = "1.20.97"
+version = "1.20.98"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -386,7 +386,7 @@ uritemplate = ">=3.0.0,<4dev"
 
 [[package]]
 name = "google-auth"
-version = "1.31.0"
+version = "1.32.0"
 description = "Google Authentication Library"
 category = "main"
 optional = false
@@ -479,7 +479,7 @@ proto-plus = ">=1.4.0"
 
 [[package]]
 name = "google-cloud-storage"
-version = "1.38.0"
+version = "1.39.0"
 description = "Google Cloud Storage API client library"
 category = "main"
 optional = false
@@ -488,7 +488,7 @@ python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*"
 [package.dependencies]
 google-auth = ">=1.11.0,<2.0dev"
 google-cloud-core = ">=1.4.1,<2.0dev"
-google-resumable-media = ">=1.2.0,<2.0dev"
+google-resumable-media = ">=1.3.0,<2.0dev"
 requests = ">=2.18.0,<3.0.0dev"
 
 [[package]]
@@ -506,7 +506,7 @@ proto-plus = ">=1.4.0"
 
 [[package]]
 name = "google-cloud-translate"
-version = "3.2.0"
+version = "3.2.1"
 description = "Google Cloud Translation API client library"
 category = "main"
 optional = false
@@ -712,7 +712,7 @@ six = "*"
 
 [[package]]
 name = "isort"
-version = "5.9.0"
+version = "5.9.1"
 description = "A Python utility / library to sort Python imports."
 category = "dev"
 optional = false
@@ -726,7 +726,7 @@ plugins = ["setuptools"]
 
 [[package]]
 name = "java-access-bridge-wrapper"
-version = "0.1.3"
+version = "0.3.1"
 description = "Python wrapper for the Windows Java Access Bridge"
 category = "main"
 optional = false
@@ -1594,7 +1594,7 @@ dataclasses = {version = "^0.7", markers = "python_version >= \"3.6\" and python
 docutils = "*"
 exchangelib = "^3.1.1"
 graphviz = "^0.13.2"
-java-access-bridge-wrapper = "^0.1.3"
+java-access-bridge-wrapper = "^0.3.1"
 jsonpath-ng = "^1.5.2"
 mss = "^6.0.0"
 netsuitesdk = "^1.1.0"
@@ -2250,12 +2250,12 @@ beautifulsoup4 = [
     {file = "beautifulsoup4-4.9.3.tar.gz", hash = "sha256:84729e322ad1d5b4d25f805bfa05b902dd96450f43842c4e99067d5e1369eb25"},
 ]
 boto3 = [
-    {file = "boto3-1.17.97-py2.py3-none-any.whl", hash = "sha256:77ea9ff6ce1d4a64839c358a713be80256584f478289a13562d1e0c1b9c362cc"},
-    {file = "boto3-1.17.97.tar.gz", hash = "sha256:0ab5afc51461c30f27aebef944211d16f47697b98ff8d2e2f6e49e59584853bb"},
+    {file = "boto3-1.17.98-py2.py3-none-any.whl", hash = "sha256:2c2f70608934b03f9c08f4cd185de223b5abd18245dd4d4800e1fbc2a2523e31"},
+    {file = "boto3-1.17.98.tar.gz", hash = "sha256:fccfa81cda69bb2317ed97e7149d7d84d19e6ec3bfbe3f721139e7ac0c407c73"},
 ]
 botocore = [
-    {file = "botocore-1.20.97-py2.py3-none-any.whl", hash = "sha256:000cf4a3670ab47e14ddb5bd68fe050c6136029a478cf0b18a78779897d4175c"},
-    {file = "botocore-1.20.97.tar.gz", hash = "sha256:f7e119cf3e0f4a36100f0e983583afa91a84fb27c479a1716820aee4f2e190ab"},
+    {file = "botocore-1.20.98-py2.py3-none-any.whl", hash = "sha256:b955b23fe2fbdbbc8e66f37fe2970de6b5d8169f940b200bcf434751709d38f6"},
+    {file = "botocore-1.20.98.tar.gz", hash = "sha256:b2a49de4ee04b690142c8e7240f0f5758e3f7673dd39cf398efe893bf5e11c3f"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2382,8 +2382,8 @@ google-api-python-client = [
     {file = "google_api_python_client-2.9.0-py2.py3-none-any.whl", hash = "sha256:fb5c28b61327392891bf79ccd0a4edc54c76f6d1f3c10e3821dbdf8a7287f691"},
 ]
 google-auth = [
-    {file = "google-auth-1.31.0.tar.gz", hash = "sha256:154f7889c5d679a6f626f36adb12afbd4dbb0a9a04ec575d989d6ba79c4fd65e"},
-    {file = "google_auth-1.31.0-py2.py3-none-any.whl", hash = "sha256:6d47c79b5d09fbc7e8355fd9594cc4cf65fdde5d401c63951eaac4baa1ba2ae1"},
+    {file = "google-auth-1.32.0.tar.gz", hash = "sha256:e34e5f5de5610b202f9b40ebd9f8b27571d5c5537db9afed3a72b2db5a345039"},
+    {file = "google_auth-1.32.0-py2.py3-none-any.whl", hash = "sha256:b3a67fa9ba5b768861dacf374c2135eb09fa14a0e40c851c3b8ea7abe6fc8fef"},
 ]
 google-auth-httplib2 = [
     {file = "google-auth-httplib2-0.1.0.tar.gz", hash = "sha256:a07c39fd632becacd3f07718dfd6021bf396978f03ad3ce4321d060015cc30ac"},
@@ -2406,16 +2406,16 @@ google-cloud-speech = [
     {file = "google_cloud_speech-2.4.0-py2.py3-none-any.whl", hash = "sha256:c267a728ecb44c6c7f40e560e6dcc624296db9f8a69c2fb69c975f0515cb23c1"},
 ]
 google-cloud-storage = [
-    {file = "google-cloud-storage-1.38.0.tar.gz", hash = "sha256:162011d66f64b8dc5d7936609a5daf0066cc521231546aea02c126a5559446c4"},
-    {file = "google_cloud_storage-1.38.0-py2.py3-none-any.whl", hash = "sha256:69499560ec8234339ce831704419a2288c409a422f6e9ed1facc9345412ee637"},
+    {file = "google-cloud-storage-1.39.0.tar.gz", hash = "sha256:e9ba9e0486b385fa0b9f16a0c3bfa4cbb7001a2285adb65374de4415588cdb2d"},
+    {file = "google_cloud_storage-1.39.0-py2.py3-none-any.whl", hash = "sha256:89a5f5290e61990a5ae138d8ba8895bc3fe1e00fbc2e3b6beb7fb8378ca7a2f1"},
 ]
 google-cloud-texttospeech = [
     {file = "google-cloud-texttospeech-2.4.0.tar.gz", hash = "sha256:c50cc21b5df88b696680d8aac3ab6c86820c0e4d071d6a5dcd9b634a456cf59f"},
     {file = "google_cloud_texttospeech-2.4.0-py2.py3-none-any.whl", hash = "sha256:329ddab4bf590f6922f39e54b87a31581ea0d23f1f7d9fbc34c86eafd426934c"},
 ]
 google-cloud-translate = [
-    {file = "google-cloud-translate-3.2.0.tar.gz", hash = "sha256:8cd957f4b29a8c7a983e0a427c2712533c41bb7007b76a8cc88d6c65075c679a"},
-    {file = "google_cloud_translate-3.2.0-py2.py3-none-any.whl", hash = "sha256:d13254f0b7c0008a23df7331b62448b1fa096fede434b185fa0392a69e1dcc79"},
+    {file = "google-cloud-translate-3.2.1.tar.gz", hash = "sha256:e3900958fa00853b6a446eff7dbd5f437adca9ae1ae21c58569fa5e26bc55c76"},
+    {file = "google_cloud_translate-3.2.1-py2.py3-none-any.whl", hash = "sha256:c69de4304c7d67296d560a022c827d387dd21c266272fd010d84ea93523924f2"},
 ]
 google-cloud-videointelligence = [
     {file = "google-cloud-videointelligence-2.2.0.tar.gz", hash = "sha256:08106ddeec90a27f4bc706f7267ec1c52f2bff745bafd4710bc6898460c8e9a6"},
@@ -2603,12 +2603,12 @@ isodate = [
     {file = "isodate-0.6.0.tar.gz", hash = "sha256:2e364a3d5759479cdb2d37cce6b9376ea504db2ff90252a2e5b7cc89cc9ff2d8"},
 ]
 isort = [
-    {file = "isort-5.9.0-py3-none-any.whl", hash = "sha256:e6b6111242682a9082738d0ba71a48ba5db0fa6fdabb169db9de13b48ad51840"},
-    {file = "isort-5.9.0.tar.gz", hash = "sha256:8fd40deb804e5ce21dbbb92d0a9a79907209a0f2ba42be571c2963499c0d4829"},
+    {file = "isort-5.9.1-py3-none-any.whl", hash = "sha256:8e2c107091cfec7286bc0f68a547d0ba4c094d460b732075b6fba674f1035c0c"},
+    {file = "isort-5.9.1.tar.gz", hash = "sha256:83510593e07e433b77bd5bff0f6f607dbafa06d1a89022616f02d8b699cfcd56"},
 ]
 java-access-bridge-wrapper = [
-    {file = "java-access-bridge-wrapper-0.1.3.tar.gz", hash = "sha256:24a04baa85706a31988dcca5759e2c494ad598c1e8ed92e76bb55566edfb3de0"},
-    {file = "java_access_bridge_wrapper-0.1.3-py3-none-any.whl", hash = "sha256:c13cee8a3b4dedc8882c19759977d3b6ccc168f35946d8ddbb7d09d87125e2eb"},
+    {file = "java-access-bridge-wrapper-0.3.1.tar.gz", hash = "sha256:daba614c813c3c8f04582d35f3678307719fa2e6c256d5cfddf1020134b03581"},
+    {file = "java_access_bridge_wrapper-0.3.1-py3-none-any.whl", hash = "sha256:9661c25391a8d057f7feef0c65995258478915d59e6f3a430d75e67f0e571e07"},
 ]
 jinja2 = [
     {file = "Jinja2-3.0.1-py3-none-any.whl", hash = "sha256:1f06f2da51e7b56b8f238affdd6b4e2c61e39598a378cc49345bc1bd42a978a4"},

@@ -110,15 +110,18 @@ class JavaAccessBridge:
     Inspecting Java application elements depends on what kind of Java UI framework the application
     has been built with.
 
-    The `Accessibility Insights for Windows` can show element properties if application framework
+    The `Accessibility Insights for Windows`_ can show element properties if application framework
     supports Windows UI Automation (UIA), see more at `using Accessibility Insights`_.
 
     The Google's `Access Bridge Explorer`_ can also be used for inspecting Java application elements.
 
+    .. _Accessibility Insights for Windows: https://accessibilityinsights.io/en/downloads/
     .. _Access Bridge Explorer: https://github.com/google/access-bridge-explorer
     .. _using Accessibility Insights: https://accessibilityinsights.io/docs/en/windows/reference/faq/#can-i-use-accessibility-insights-for-windows-on-a-windows-app-written-with-java
 
     **Examples**
+
+    *robotframework*
 
     .. code:: robotframework
 
@@ -128,11 +131,19 @@ class JavaAccessBridge:
 
         *** Tasks ***
         Write text into Swing application
-            Start Process    java -jar BasicSwing.jar    shell=${TRUE}    cwd=${CURDIR}
+            Start Process    java -jar BasicSwing.jar
+            ...              shell=${TRUE}
+            ...              cwd=${CURDIR}
             Select Window    Chat Frame
-            Type Text    role:text    text for the textarea
-            Type Text    role:text    text for the input field  index=1  clear=${TRUE}
+            Type Text    role:text
+            ...          text for the textarea
+            Type Text    role:text
+            ...          text for the input field
+            ...          index=1
+            ...          clear=${TRUE}
             Click Element    role:push button and name:Send
+
+    *Python*
 
     .. code:: python
 
@@ -141,11 +152,26 @@ class JavaAccessBridge:
 
         jab = JavaAccessBridge()
 
-        subprocess.Popen(["java", "-jar", "BasicSwing.jar"], shell=True, cwd=".", close_fds=True)
+        subprocess.Popen(
+            ["java", "-jar", "BasicSwing.jar"],
+            shell=True,
+            cwd=".",
+            close_fds=True
+        )
         jab.select_window("Chat Frame")
-        jab.type_text("role:text", "text for the textarea", enter=True)
-        jab.type_text("role:text", "text for the input field", index=1, clear=True)
+        jab.type_text(
+            "role:text",
+            "text for the textarea",
+            enter=True
+        )
+        jab.type_text(
+            "role:text",
+            "text for the input field",
+            index=1,
+            clear=True
+        )
         jab.click_element("role:push button and name:Send")
+        
     """  # noqa: E501, W605
 
     # TODO: add keyword for taking screenshots of elements and window
