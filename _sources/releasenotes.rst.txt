@@ -2,7 +2,19 @@ Release notes
 =============
 
 10.4.0
---------------
+------
+
+- New experimental library **RPA.JavaAccessBridge**
+
+Library requirements:
+
+- Windows only
+- Java Access Bridge is enabled
+- Environment variable pointing to the Access Bridge DLL file is set
+
+See more details in library documentation.
+
+Feedback is highly appreciated via Slack or Github issues!
 
 - Library **RPA.Email.ImapSmtp**: Allow sending message with empty account and password
 

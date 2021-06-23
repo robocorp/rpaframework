@@ -93,7 +93,7 @@ RPA.JavaAccessBridge:
 
    "177", "add keyword for taking screenshots of elements and window"
    "178", "implement proper XPath syntax support"
-   "556", "change to use RPA.core.geometry Region/Point"
+   "558", "change to use RPA.core.geometry Region/Point"
 
 RPA.Robocloud.Secrets:
 ======================
