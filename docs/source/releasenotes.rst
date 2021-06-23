@@ -1,7 +1,7 @@
 Release notes
 =============
 
-To be released
+10.4.0
 --------------
 
 - Library **RPA.Email.ImapSmtp**: Allow sending message with empty account and password

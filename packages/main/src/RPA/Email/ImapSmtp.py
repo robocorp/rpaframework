@@ -265,9 +265,7 @@ class ImapSmtp:
             if account and password:
                 self.smtp_conn.login(account, password)
         else:
-            self.logger.warning(
-                "SMTP server address is needed for authentication"
-            )
+            self.logger.warning("SMTP server address is needed for authentication")
         if self.smtp_conn is None:
             self.logger.warning("Not able to establish SMTP connection")
 
