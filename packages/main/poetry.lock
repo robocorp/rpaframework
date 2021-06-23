@@ -1,6 +1,6 @@
 [[package]]
 name = "amazon-textract-response-parser"
-version = "0.1.11"
+version = "0.1.13"
 description = "Easily parse JSON returned by Amazon Textract."
 category = "main"
 optional = true
@@ -139,20 +139,20 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.17.96"
+version = "1.17.98"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [package.dependencies]
-botocore = ">=1.20.96,<1.21.0"
+botocore = ">=1.20.98,<1.21.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.4.0,<0.5.0"
 
 [[package]]
 name = "botocore"
-version = "1.20.96"
+version = "1.20.98"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -475,16 +475,25 @@ six = "*"
 
 [[package]]
 name = "isort"
-version = "5.8.0"
+version = "5.9.1"
 description = "A Python utility / library to sort Python imports."
 category = "dev"
 optional = false
-python-versions = ">=3.6,<4.0"
+python-versions = ">=3.6.1,<4.0"
 
 [package.extras]
 pipfile_deprecated_finder = ["pipreqs", "requirementslib"]
 requirements_deprecated_finder = ["pipreqs", "pip-api"]
 colors = ["colorama (>=0.4.3,<0.5.0)"]
+plugins = ["setuptools"]
+
+[[package]]
+name = "java-access-bridge-wrapper"
+version = "0.3.1"
+description = "Python wrapper for the Windows Java Access Bridge"
+category = "main"
+optional = false
+python-versions = ">=3.6.2,<4.0.0"
 
 [[package]]
 name = "jmespath"
@@ -1659,12 +1668,12 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "5c95336e420df0ee70b4c602ce94d0615c152d47e9852184ebca1e9a87965ece"
+content-hash = "a3badd12ab2ae03371834cb022dccba1a9e1911cce465c0ec228f8662499bc43"
 
 [metadata.files]
 amazon-textract-response-parser = [
-    {file = "amazon-textract-response-parser-0.1.11.tar.gz", hash = "sha256:c2fd75c3691e9cd7ea8c7a5b759a47a61fd33356044f55bd8d471bb7b718dba0"},
-    {file = "amazon_textract_response_parser-0.1.11-py2.py3-none-any.whl", hash = "sha256:dea3179513b3477a4f3aa8fe59e42825eccab00e0e9934f40224181cc492d048"},
+    {file = "amazon-textract-response-parser-0.1.13.tar.gz", hash = "sha256:cc97d83afe3d0f33f2385c8e3d4567793c16af8b6f178f5785a443381b5931c6"},
+    {file = "amazon_textract_response_parser-0.1.13-py2.py3-none-any.whl", hash = "sha256:da14cdde2134388318345bfa8e9c2507debdc891799a00ffe75eb79ca9d61ed5"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
@@ -1721,12 +1730,12 @@ black = [
     {file = "black-21.6b0.tar.gz", hash = "sha256:dc132348a88d103016726fe360cb9ede02cecf99b76e3660ce6c596be132ce04"},
 ]
 boto3 = [
-    {file = "boto3-1.17.96-py2.py3-none-any.whl", hash = "sha256:c7d6f3f09081440ca80500e679fec19f0b7597648ee380ae940ed29ad5c3768f"},
-    {file = "boto3-1.17.96.tar.gz", hash = "sha256:67a4b0578944f061fbfa05206eb5b10c5250374e9849743413739c539584b60e"},
+    {file = "boto3-1.17.98-py2.py3-none-any.whl", hash = "sha256:2c2f70608934b03f9c08f4cd185de223b5abd18245dd4d4800e1fbc2a2523e31"},
+    {file = "boto3-1.17.98.tar.gz", hash = "sha256:fccfa81cda69bb2317ed97e7149d7d84d19e6ec3bfbe3f721139e7ac0c407c73"},
 ]
 botocore = [
-    {file = "botocore-1.20.96-py2.py3-none-any.whl", hash = "sha256:b18d2d016b371b769a88cb080088ce75582748b4a7efa5748e9ced4f23bdbc99"},
-    {file = "botocore-1.20.96.tar.gz", hash = "sha256:204f7403bfe1ab837784421ddd069fd880be99d946cb59cbf31c72296ea9507a"},
+    {file = "botocore-1.20.98-py2.py3-none-any.whl", hash = "sha256:b955b23fe2fbdbbc8e66f37fe2970de6b5d8169f940b200bcf434751709d38f6"},
+    {file = "botocore-1.20.98.tar.gz", hash = "sha256:b2a49de4ee04b690142c8e7240f0f5758e3f7673dd39cf398efe893bf5e11c3f"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2029,8 +2038,12 @@ isodate = [
     {file = "isodate-0.6.0.tar.gz", hash = "sha256:2e364a3d5759479cdb2d37cce6b9376ea504db2ff90252a2e5b7cc89cc9ff2d8"},
 ]
 isort = [
-    {file = "isort-5.8.0-py3-none-any.whl", hash = "sha256:2bb1680aad211e3c9944dbce1d4ba09a989f04e238296c87fe2139faa26d655d"},
-    {file = "isort-5.8.0.tar.gz", hash = "sha256:0a943902919f65c5684ac4e0154b1ad4fac6dcaa5d9f3426b732f1c8b5419be6"},
+    {file = "isort-5.9.1-py3-none-any.whl", hash = "sha256:8e2c107091cfec7286bc0f68a547d0ba4c094d460b732075b6fba674f1035c0c"},
+    {file = "isort-5.9.1.tar.gz", hash = "sha256:83510593e07e433b77bd5bff0f6f607dbafa06d1a89022616f02d8b699cfcd56"},
+]
+java-access-bridge-wrapper = [
+    {file = "java-access-bridge-wrapper-0.3.1.tar.gz", hash = "sha256:daba614c813c3c8f04582d35f3678307719fa2e6c256d5cfddf1020134b03581"},
+    {file = "java_access_bridge_wrapper-0.3.1-py3-none-any.whl", hash = "sha256:9661c25391a8d057f7feef0c65995258478915d59e6f3a430d75e67f0e571e07"},
 ]
 jmespath = [
     {file = "jmespath-0.10.0-py2.py3-none-any.whl", hash = "sha256:cdf6525904cc597730141d61b36f2e4b8ecc257c420fa2f4549bac2c2d0cb72f"},
