@@ -370,7 +370,7 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.9.0"
+version = "2.10.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
@@ -726,7 +726,7 @@ plugins = ["setuptools"]
 
 [[package]]
 name = "java-access-bridge-wrapper"
-version = "0.3.1"
+version = "0.3.2"
 description = "Python wrapper for the Windows Java Access Bridge"
 category = "main"
 optional = false
@@ -1576,7 +1576,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "10.3.0"
+version = "10.4.0"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1594,7 +1594,7 @@ dataclasses = {version = "^0.7", markers = "python_version >= \"3.6\" and python
 docutils = "*"
 exchangelib = "^3.1.1"
 graphviz = "^0.13.2"
-java-access-bridge-wrapper = "^0.3.1"
+java-access-bridge-wrapper = "^0.3.2"
 jsonpath-ng = "^1.5.2"
 mss = "^6.0.0"
 netsuitesdk = "^1.1.0"
@@ -2378,8 +2378,8 @@ google-api-core = [
     {file = "google_api_core-1.30.0-py2.py3-none-any.whl", hash = "sha256:92cd9e9f366e84bfcf2524e34d2dc244906c645e731962617ba620da1620a1e0"},
 ]
 google-api-python-client = [
-    {file = "google-api-python-client-2.9.0.tar.gz", hash = "sha256:2b5274f06799d80222fd3f20fd4ebcd19f57c009703bd4cf7b00492e7e05e15a"},
-    {file = "google_api_python_client-2.9.0-py2.py3-none-any.whl", hash = "sha256:fb5c28b61327392891bf79ccd0a4edc54c76f6d1f3c10e3821dbdf8a7287f691"},
+    {file = "google-api-python-client-2.10.0.tar.gz", hash = "sha256:58424d263344625dcf4dc08e7639a6714737102ab4ae83e5f043e3db08d9965f"},
+    {file = "google_api_python_client-2.10.0-py2.py3-none-any.whl", hash = "sha256:6da20ca5f56be8c104c31de49153c5c97af57470a4ab19322534d7483dcfa727"},
 ]
 google-auth = [
     {file = "google-auth-1.32.0.tar.gz", hash = "sha256:e34e5f5de5610b202f9b40ebd9f8b27571d5c5537db9afed3a72b2db5a345039"},
@@ -2607,8 +2607,8 @@ isort = [
     {file = "isort-5.9.1.tar.gz", hash = "sha256:83510593e07e433b77bd5bff0f6f607dbafa06d1a89022616f02d8b699cfcd56"},
 ]
 java-access-bridge-wrapper = [
-    {file = "java-access-bridge-wrapper-0.3.1.tar.gz", hash = "sha256:daba614c813c3c8f04582d35f3678307719fa2e6c256d5cfddf1020134b03581"},
-    {file = "java_access_bridge_wrapper-0.3.1-py3-none-any.whl", hash = "sha256:9661c25391a8d057f7feef0c65995258478915d59e6f3a430d75e67f0e571e07"},
+    {file = "java-access-bridge-wrapper-0.3.2.tar.gz", hash = "sha256:dc68937f51b640a54d27b1408c506ddc0515177a9d41356e3c6e7867e2c422fd"},
+    {file = "java_access_bridge_wrapper-0.3.2-py3-none-any.whl", hash = "sha256:431fc2588d7f09adcf96a212544be47535a1a131e6364c42b2f7ad5baafe17b7"},
 ]
 jinja2 = [
     {file = "Jinja2-3.0.1-py3-none-any.whl", hash = "sha256:1f06f2da51e7b56b8f238affdd6b4e2c61e39598a378cc49345bc1bd42a978a4"},

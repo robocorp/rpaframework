@@ -489,7 +489,7 @@ plugins = ["setuptools"]
 
 [[package]]
 name = "java-access-bridge-wrapper"
-version = "0.3.1"
+version = "0.3.2"
 description = "Python wrapper for the Windows Java Access Bridge"
 category = "main"
 optional = false
@@ -1668,7 +1668,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "a3badd12ab2ae03371834cb022dccba1a9e1911cce465c0ec228f8662499bc43"
+content-hash = "44a0fa3e056f41f010d4aafce3f35dc9cf42401ce383229011a642a10f08106c"
 
 [metadata.files]
 amazon-textract-response-parser = [
@@ -2042,8 +2042,8 @@ isort = [
     {file = "isort-5.9.1.tar.gz", hash = "sha256:83510593e07e433b77bd5bff0f6f607dbafa06d1a89022616f02d8b699cfcd56"},
 ]
 java-access-bridge-wrapper = [
-    {file = "java-access-bridge-wrapper-0.3.1.tar.gz", hash = "sha256:daba614c813c3c8f04582d35f3678307719fa2e6c256d5cfddf1020134b03581"},
-    {file = "java_access_bridge_wrapper-0.3.1-py3-none-any.whl", hash = "sha256:9661c25391a8d057f7feef0c65995258478915d59e6f3a430d75e67f0e571e07"},
+    {file = "java-access-bridge-wrapper-0.3.2.tar.gz", hash = "sha256:dc68937f51b640a54d27b1408c506ddc0515177a9d41356e3c6e7867e2c422fd"},
+    {file = "java_access_bridge_wrapper-0.3.2-py3-none-any.whl", hash = "sha256:431fc2588d7f09adcf96a212544be47535a1a131e6364c42b2f7ad5baafe17b7"},
 ]
 jmespath = [
     {file = "jmespath-0.10.0-py2.py3-none-any.whl", hash = "sha256:cdf6525904cc597730141d61b36f2e4b8ecc257c420fa2f4549bac2c2d0cb72f"},

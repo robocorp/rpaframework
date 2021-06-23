@@ -63,12 +63,12 @@ class JavaAccessBridge:
     **Steps to enable**
 
         1. Enable the Java Access Bridge in Windows
-        2. Set environment variable `WindowsAccessBridge` as an absolute path to `WindowsAccessBridge-64.dll`
+        2. Set environment variable `RC_JAVA_ACCESS_BRIDGE_DLL` as an absolute path to `WindowsAccessBridge-64.dll`
 
         .. code-block:: console
 
             C:\\path\\to\\java\\bin\\jabswitch -enable
-            set WindowsAccessBridge=C:\\Program Files\\Java\\jre1.8.0_261\\bin\WindowsAccessBridge-64.dll
+            set RC_JAVA_ACCESS_BRIDGE_DLL=C:\\Program Files\\Java\\jre1.8.0_261\\bin\WindowsAccessBridge-64.dll
 
     .. _Java Access Bridge technology: https://www.oracle.com/java/technologies/javase/javase-tech-access-bridge.html
     .. _java-access-bridge-wrapper: https://github.com/robocorp/java-access-bridge-wrapper
@@ -183,9 +183,9 @@ class JavaAccessBridge:
             self.logger.warning(
                 "JavaAccessBridge library requires Windows dependencies to work"
             )
-        if "WindowsAccessBridge" not in os.environ.keys():
+        if "RC_JAVA_ACCESS_BRIDGE_DLL" not in os.environ.keys():
             self.logger.warning(
-                "Environment variable `WindowsAccessBridge` needs to be set to "
+                "Environment variable `RC_JAVA_ACCESS_BRIDGE_DLL` needs to be set to "
                 "absolute path of `WindowsAccessBridge-64.dll`"
             )
         self.version_printed = False
@@ -295,6 +295,8 @@ class JavaAccessBridge:
         return searches
 
     def _find_elements(self, locator: str, index: int = None):
+        if not self.context_info_tree:
+            raise ValueError("ContextTree has not been initialized")
         searches = self._parse_locator(locator)
         self.logger.info("Searches: %s", searches)
         elements = []
