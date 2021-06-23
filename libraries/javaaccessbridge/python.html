@@ -1,0 +1,687 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/iframeResizer.min.js"></script>
+        <script src="../../_static/custom.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="JSON" href="../json/index.html" />
+    <link rel="prev" title="JavaAccessBridge" href="index.html" />
+	<!-- Cookie consent -->
+<link async rel="stylesheet" type="text/css" href="../../_static/cookie.css"/>
+<script async src="../../_static/cookie.js"></script>
+<!-- Robocorp banner -->
+<link async rel="stylesheet" type="text/css" href="../../_static/robocorp.css"/>
+<script async src="../../_static/robocorp.js"></script>
+<!--            -->
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../archive/index.html">Archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_playwright/index.html">Browser.Playwright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_selenium/index.html">Browser.Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_azure/index.html">Cloud.Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_google/index.html">Cloud.Google</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop/index.html">Desktop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ftp/index.html">FTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">JavaAccessBridge</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">JSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notifier/index.html">Notifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter/index.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/todos.html">TODO</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">JavaAccessBridge</a> &raquo;</li>
+        
+      <li>Python API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/javaaccessbridge/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+	
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-api">
+<h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.JavaAccessBridge">
+<span id="javaaccessbridge"></span><h2>JavaAccessBridge<a class="headerlink" href="#module-RPA.JavaAccessBridge" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="RPA.JavaAccessBridge.ElementNotFound">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.JavaAccessBridge.</code><code class="sig-name descname">ElementNotFound</code><a class="headerlink" href="#RPA.JavaAccessBridge.ElementNotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+<p>No matching elements were found.</p>
+<dl class="attribute">
+<dt id="RPA.JavaAccessBridge.ElementNotFound.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.JavaAccessBridge.ElementNotFound.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.ElementNotFound.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.ElementNotFound.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.JavaAccessBridge.</code><code class="sig-name descname">JavaAccessBridge</code><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Java application UI automation library using <a class="reference external" href="https://www.oracle.com/java/technologies/javase/javase-tech-access-bridge.html">Java Access Bridge technology</a>.</p>
+<p>Library is at the beta level at the moment so feedback is highly appreciated.</p>
+<p>The library utilizes <a class="reference external" href="https://github.com/robocorp/java-access-bridge-wrapper">java-access-bridge-wrapper</a> package to interact with
+Java UI. Currently only the 64-bit Windows OS is supported.</p>
+<p><strong>Steps to enable</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Enable the Java Access Bridge in Windows</p></li>
+<li><p>Set environment variable <cite>WindowsAccessBridge</cite> as an absolute path to <cite>WindowsAccessBridge-64.dll</cite></p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">C:\path\to\java\bin\jabswitch -enable</span>
+<span class="go">set WindowsAccessBridge=C:\Program Files\Java\jre1.8.0_261\bin\WindowsAccessBridge-64.dll</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><strong>Locating elements</strong></p>
+<p>To automate actions on the Java application, the robot needs locations to various elements
+using a feature called <cite>locators</cite>. Locator describes properties of an element.</p>
+<p>At the moment library contains basic level support for locators.</p>
+<p>The common locator types are <cite>name</cite> and <cite>role</cite>.</p>
+<p>To identify element with more than one property <cite>and</cite> can be used, for example:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">role:push button and name:Clear</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>To address element within parent element <cite>&gt;</cite> can be used, for example:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">name:Find Purchase Orders &gt; name:NumberField</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Some keywords accept element as an parameter in place of locator.</p>
+<p><strong>Interacting with elements</strong></p>
+<p>By default application elements are interacted with Actions supported by the element.
+Most common example is <cite>click</cite> action supported by an button element.</p>
+<p>But because application and technology support for the actions might be limited, it is also
+possible to opt for interaction elements by their coordinates by giving keyword parameter
+<code class="docutils literal notranslate"><span class="pre">action=False</span></code> if parameter is available.</p>
+<p><strong>Inspecting elements</strong></p>
+<p>Inspecting Java application elements depends on what kind of Java UI framework the application
+has been built with.</p>
+<p>The <a class="reference external" href="https://accessibilityinsights.io/en/downloads/">Accessibility Insights for Windows</a> can show element properties if application framework
+supports Windows UI Automation (UIA), see more at <a class="reference external" href="https://accessibilityinsights.io/docs/en/windows/reference/faq/#can-i-use-accessibility-insights-for-windows-on-a-windows-app-written-with-java">using Accessibility Insights</a>.</p>
+<p>The Google’s <a class="reference external" href="https://github.com/google/access-bridge-explorer">Access Bridge Explorer</a> can also be used for inspecting Java application elements.</p>
+<p><strong>Examples</strong></p>
+<p><em>robotframework</em></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.JavaAccessBridge</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">Process</span><span class="p"></span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Write text into Swing application</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Start Process</span><span class="p">    </span><span class="s">java -jar BasicSwing.jar</span><span class="p"></span>
+<span class="p">    ...              </span><span class="s">shell=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+<span class="p">    ...              </span><span class="s">cwd=</span><span class="p">${</span><span class="nv">CURDIR</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Select Window</span><span class="p">    </span><span class="s">Chat Frame</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Type Text</span><span class="p">    </span><span class="s">role:text</span><span class="p"></span>
+<span class="p">    ...          </span><span class="s">text for the textarea</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Type Text</span><span class="p">    </span><span class="s">role:text</span><span class="p"></span>
+<span class="p">    ...          </span><span class="s">text for the input field</span><span class="p"></span>
+<span class="p">    ...          </span><span class="s">index=1</span><span class="p"></span>
+<span class="p">    ...          </span><span class="s">clear=</span><span class="p">${</span><span class="nv">TRUE</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Click Element</span><span class="p">    </span><span class="s">role:push button and name:Send</span><span class="p"></span>
+</pre></div>
+</div>
+<p><em>Python</em></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.JavaAccessBridge</span> <span class="kn">import</span> <span class="n">JavaAccessBridge</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="n">jab</span> <span class="o">=</span> <span class="n">JavaAccessBridge</span><span class="p">()</span>
+
+<span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;java&quot;</span><span class="p">,</span> <span class="s2">&quot;-jar&quot;</span><span class="p">,</span> <span class="s2">&quot;BasicSwing.jar&quot;</span><span class="p">],</span>
+    <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cwd</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
+    <span class="n">close_fds</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">jab</span><span class="o">.</span><span class="n">select_window</span><span class="p">(</span><span class="s2">&quot;Chat Frame&quot;</span><span class="p">)</span>
+<span class="n">jab</span><span class="o">.</span><span class="n">type_text</span><span class="p">(</span>
+    <span class="s2">&quot;role:text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;text for the textarea&quot;</span><span class="p">,</span>
+    <span class="n">enter</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">jab</span><span class="o">.</span><span class="n">type_text</span><span class="p">(</span>
+    <span class="s2">&quot;role:text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;text for the input field&quot;</span><span class="p">,</span>
+    <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">clear</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">jab</span><span class="o">.</span><span class="n">click_element</span><span class="p">(</span><span class="s2">&quot;role:push button and name:Send&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.ROBOT_AUTO_KEYWORDS">
+<code class="sig-name descname">ROBOT_AUTO_KEYWORDS</code><em class="property"> = False</em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.ROBOT_AUTO_KEYWORDS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.ROBOT_LIBRARY_DOC_FORMAT">
+<code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.application_refresh">
+<code class="sig-name descname">application_refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.application_refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh application element tree</p>
+<p>Might be required action after application element
+structure changes after window refresh.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.call_element_action">
+<code class="sig-name descname">call_element_action</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">action: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.call_element_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call element action</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – target element</p></li>
+<li><p><strong>action</strong> – name of the element action to call</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.click_element">
+<code class="sig-name descname">click_element</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], index: int = 0, action: bool = True, timeout: int = 10</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.click_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Click element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target</strong> – element to click</p></li>
+<li><p><strong>index</strong> – target element index if multiple are returned</p></li>
+<li><p><strong>action</strong> – call click action on element (default), or use coordinates</p></li>
+<li><p><strong>timeout</strong> – timeout in seconds to find element</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.click_push_button">
+<code class="sig-name descname">click_push_button</code><span class="sig-paren">(</span><em class="sig-param">button_name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.click_push_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Click element of role <cite>push button</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>button_name</strong> – name of the button to click</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.get_element_actions">
+<code class="sig-name descname">get_element_actions</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_element_actions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of possible element actions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>locator</strong> – target element</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.get_element_text">
+<code class="sig-name descname">get_element_text</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], index: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_element_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get element text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – target element</p></li>
+<li><p><strong>index</strong> – target element index if multiple are returned</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.get_elements">
+<code class="sig-name descname">get_elements</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get matching elements</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>locator</strong> – elements to get</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.highlight_element">
+<code class="sig-name descname">highlight_element</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], index: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.highlight_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Highlight an element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – element to highlight</p></li>
+<li><p><strong>index</strong> – target element index if multiple are returned</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.press_keys">
+<code class="sig-name descname">press_keys</code><span class="sig-paren">(</span><em class="sig-param">*keys</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.press_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Press multiple keys down simultaneously</p>
+<p>See <a class="reference external" href="https://rpaframework.org/libraries/desktop/index.html">Desktop</a> library documentation for supported keys</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>keys</strong> – keys to press</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.print_element_tree">
+<code class="sig-name descname">print_element_tree</code><span class="sig-paren">(</span><em class="sig-param">filename: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.print_element_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print current element into log and possibly into a file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> – filepath to save element tree</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.select_menu">
+<code class="sig-name descname">select_menu</code><span class="sig-paren">(</span><em class="sig-param">menu: str</em>, <em class="sig-param">menuitem: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.select_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select menu by clicking menu elements</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>menu</strong> – name of the menu</p></li>
+<li><p><strong>menuitem</strong> – name of the menu item</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.select_window">
+<code class="sig-name descname">select_window</code><span class="sig-paren">(</span><em class="sig-param">title: str</em>, <em class="sig-param">bring_foreground: bool = True</em>, <em class="sig-param">timeout: int = 30</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.select_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects Java application window as target for the automation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> – application window title</p></li>
+<li><p><strong>bring_foreground</strong> – if application is brought to foreground or not</p></li>
+<li><p><strong>timeout</strong> – selection timeout</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.set_mouse_position">
+<code class="sig-name descname">set_mouse_position</code><span class="sig-paren">(</span><em class="sig-param">element: JABWrapper.context_tree.ContextNode</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.set_mouse_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set mouse position to element center</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>element</strong> – target element</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.shutdown_jab">
+<code class="sig-name descname">shutdown_jab</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.shutdown_jab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call Java Access Bridge process shutdown</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.toggle_drop_down">
+<code class="sig-name descname">toggle_drop_down</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">index: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.toggle_drop_down" title="Permalink to this definition">¶</a></dt>
+<dd><p>Toggle dropdown action on element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – element locator</p></li>
+<li><p><strong>index</strong> – target element index if multiple are returned</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.type_text">
+<code class="sig-name descname">type_text</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">text: str</em>, <em class="sig-param">index: int = 0</em>, <em class="sig-param">clear: bool = False</em>, <em class="sig-param">enter: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.type_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type text into coordinates defined by locator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – target element</p></li>
+<li><p><strong>text</strong> – text to write</p></li>
+<li><p><strong>index</strong> – target element if multiple are returned</p></li>
+<li><p><strong>clear</strong> – should element be cleared before typing</p></li>
+<li><p><strong>enter</strong> – should enter key be pressed after typing</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_is_focused">
+<code class="sig-name descname">wait_until_element_is_focused</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], index: int = 0, timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_is_focused" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait until element is focused</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – target element</p></li>
+<li><p><strong>index</strong> – target element index if multiple are returned</p></li>
+<li><p><strong>timeout</strong> – timeout in seconds to wait, default 0.5 seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_contains">
+<code class="sig-name descname">wait_until_element_text_contains</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], text: str, index: int = 0, timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait until element text contains expected text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – target element</p></li>
+<li><p><strong>text</strong> – element text should contain this</p></li>
+<li><p><strong>index</strong> – target element index if multiple are returned</p></li>
+<li><p><strong>timeout</strong> – timeout in seconds to wait, default 0.5 seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_equals">
+<code class="sig-name descname">wait_until_element_text_equals</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], text: str, index: int = 0, timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_equals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait until element text equals expected text</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>locator</strong> – target element</p></li>
+<li><p><strong>text</strong> – element text should match this</p></li>
+<li><p><strong>index</strong> – target element index if multiple are returned</p></li>
+<li><p><strong>timeout</strong> – timeout in seconds to wait, default 0.5 seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+	<div id="cookieConsentContainer">
+  <div class="cookieDesc">
+    <p>
+      This website uses cookies to enhance the user experience.
+      By using the website you accept the use of cookies.
+      You can check our <a href="https://robocorp.com/privacy-policy">Privacy Policy</a> to learn more.
+    </p>
+  </div>
+  <div class="cookieButton">
+    <a onClick="cookieDismiss();">
+      I understand
+    </a>
+  </div>
+</div>
+	<div id="robocorpBanner">
+  <div id="bannerContent">
+    <div id="bannerDismiss">
+      <a onClick="bannerDismiss();">
+        <img src="/_static/icon_cross.svg"/>
+      </a>
+    </div>
+    <a href="https://robocorp.com">
+      <img id="bannerLogo" src="https://cdn.robocorp.com/brand/Logo/Negative logo transparent/Negative logo transparent.svg"/>
+    </a>
+    <span id="bannerText">
+      The automation stack for RPA Framework.
+    </span>
+    <a id="bannerButton" href="https://robocorp.com/get-started">
+      Get started <img src="/_static/icon_arrow.svg"/>
+    </a>
+  </div>
+</div>
+
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../json/index.html" class="btn btn-neutral float-right" title="JSON" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="JavaAccessBridge" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
