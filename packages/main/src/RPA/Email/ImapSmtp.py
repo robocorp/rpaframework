@@ -219,10 +219,9 @@ class ImapSmtp:
             Set Credentials   ${username}   ${password}
             Authorize
         """
-        if account:
-            self.account = account
-        if password:
-            self.password = password
+
+        self.account = account
+        self.password = password
 
     def authorize_smtp(
         self,
@@ -248,16 +247,11 @@ class ImapSmtp:
 
             Authorize SMTP    ${username}   ${password}  smtp.gmail.com  587
         """
-        if account is None and password is None:
-            account = self.account
-            password = self.password
-        if smtp_server is None:
-            smtp_server = self.smtp_server
-        if smtp_port is None:
-            smtp_port = self.smtp_port
-        else:
-            smtp_port = int(smtp_port)
-        if smtp_server and account and password:
+        account = account or self.account
+        password = password or self.password
+        smtp_server = smtp_server or self.smtp_server
+        smtp_port = smtp_port or self.smtp_port
+        if smtp_server:
             try:
                 self.smtp_conn = SMTP(smtp_server, smtp_port)
                 self.send_smtp_hello()
@@ -268,11 +262,11 @@ class ImapSmtp:
             except SMTPConnectError:
                 context = ssl.create_default_context()
                 self.smtp_conn = SMTP_SSL(smtp_server, smtp_port, context=context)
-            self.smtp_conn.login(account, password)
+            if account and password:
+                self.smtp_conn.login(account, password)
         else:
             self.logger.warning(
-                "Server address, account and password are needed for "
-                "authentication with SMTP"
+                "SMTP server address is needed for authentication"
             )
         if self.smtp_conn is None:
             self.logger.warning("Not able to establish SMTP connection")
@@ -438,6 +432,8 @@ class ImapSmtp:
         g.flatten(msg)
 
         try:
+            if self.smtp_conn is None:
+                self.authorize_smtp()
             self.smtp_conn.sendmail(sender, recipients, str_io.getvalue())
         except Exception as err:
             raise ValueError(f"Send Message failed: {err}") from err
