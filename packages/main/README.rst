@@ -124,6 +124,8 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `Images`_                  | Manipulate images                            |
 +----------------------------+----------------------------------------------+
+| `JavaAccessBridge`_        | Control Java applications                    |
++----------------------------+----------------------------------------------+
 | `JSON`_                    | Manipulate JSON objects                      |
 +----------------------------+----------------------------------------------+
 | `Notifier`_                | Notify messages using different services     |
