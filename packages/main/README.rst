@@ -170,6 +170,7 @@ The RPA Framework project currently includes the following libraries:
 .. _FTP: https://rpaframework.org/libraries/ftp/
 .. _HTTP: https://rpaframework.org/libraries/http/
 .. _Images: https://rpaframework.org/libraries/images/
+.. _JavaAccessBridge: https://rpaframework.org/libraries/javaaccessbridge/
 .. _JSON: https://rpaframework.org/libraries/json/
 .. _Notifier: https://rpaframework.org/libraries/notifier/
 .. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
