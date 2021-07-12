@@ -1722,6 +1722,15 @@ class Selenium(SeleniumLibrary):
     def open_user_browser(self, url: str, tab=True) -> None:
         """Open URL with user's default browser
 
+        The browser opened with this keyword is not accessible
+        with selenium. To interact with the opened browser it is
+        possible to use ``Desktop`` library keywords.
+
+        The keyword `Attach Chrome Browser` can be used to
+        access already open browser with selenium keywords.
+
+        Read more: https://robocorp.com/docs/development-guide/browser/how-to-attach-to-running-chrome-browser
+
         ``url`` URL to open
         ``tab`` defines is url is opened in a tab (default `True`) or
                 in new window (`False`)
@@ -1730,7 +1739,7 @@ class Selenium(SeleniumLibrary):
 
         | Open User Browser  | https://www.google.com?q=rpa |
         | Open User Browser  | https://www.google.com?q=rpa | tab=False |
-        """
+        """  # noqa: E501
         browser_method = webbrowser.open_new_tab if tab else webbrowser.open_new
         browser_method(url)
 
