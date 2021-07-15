@@ -1,6 +1,11 @@
 Release notes
 =============
 
+Upcoming features
+-----------------
+
+- Library **RPA.JavaAccessBridge**: Bump ``java-access-bridge-wrapper`` to latest version
+
 10.4.0
 ------
 

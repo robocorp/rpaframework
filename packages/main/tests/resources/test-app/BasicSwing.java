@@ -8,17 +8,18 @@ import java.awt.event.*;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
-class BasicSwing extends JFrame implements WindowListener, ActionListener {
+class BasicSwing extends JFrame implements WindowListener, ActionListener, ItemListener {
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
     TextField text = new TextField(20);
     String defaultText = "default text";
     JMenuBar mb;
     JTextArea ta;
+    JComboBox comboBox;
 
     public static void main(String[] args) {
         BasicSwing myWindow = new BasicSwing("Chat Frame");
         myWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        myWindow.setSize(600, 450);
+        myWindow.setSize(800, 350);
         myWindow.setLocation(50, 100);
         myWindow.setVisible(true);
     }
@@ -27,7 +28,7 @@ class BasicSwing extends JFrame implements WindowListener, ActionListener {
         super(title);
         addWindowListener(this);
         addMenus();
-        JPanel panel = new JPanel();
+        JPanel taButtonPanel = new JPanel();
         JButton send = new JButton("Send1");
         JButton clear = new JButton("Clear2");
 
@@ -37,19 +38,38 @@ class BasicSwing extends JFrame implements WindowListener, ActionListener {
         label.setVerticalTextPosition(JLabel.CENTER);
 
         text.setText(defaultText);
-
         ta = new JTextArea();
         ta.setFont(ta.getFont().deriveFont(24.0f));
         send.addActionListener(this);
         clear.addActionListener(this);
-        panel.add(send);
-        panel.add(label);
-        panel.add(text);
-        panel.add(clear);
+        taButtonPanel.add(send);
+        taButtonPanel.add(label);
+        taButtonPanel.add(text);
+        taButtonPanel.add(clear);
+
+        String[] columnNames = { "Column1", "Column2" };
+        Object[][] data = { { "Cell11", "Cell12" }, { "Cell21", "Cell22" }, { "Cell31", "Cell32" } };
+        JTable table = new JTable(data, columnNames);
+        table.setFillsViewportHeight(true);
+
+        String comboBoxOptions[] = { "Hello", "World" };
+        this.comboBox = new JComboBox(comboBoxOptions);
+        this.comboBox.addItemListener(this);
+
+        JPanel leftPanel = new JPanel(new GridLayout(2, 1));
+        leftPanel.add(table);
+        leftPanel.add(this.comboBox);
+
+        JPanel rightPanel = new JPanel(new GridLayout(2, 1));
+        rightPanel.add(ta);
+        rightPanel.add(taButtonPanel);
+
+        JPanel contextPanel = new JPanel(new GridLayout(1, 2));
+        contextPanel.add(leftPanel);
+        contextPanel.add(rightPanel);
 
         this.getContentPane().add(BorderLayout.NORTH, mb);
-        this.getContentPane().add(BorderLayout.CENTER, ta);
-        this.getContentPane().add(BorderLayout.SOUTH, panel);
+        this.getContentPane().add(BorderLayout.CENTER, contextPanel);
     }
 
     public void createFrame() {
@@ -132,5 +152,12 @@ class BasicSwing extends JFrame implements WindowListener, ActionListener {
 
     @Override
     public void windowDeactivated(WindowEvent arg0) {
+    }
+
+    public void itemStateChanged(ItemEvent e) {
+        // if the state combobox is changed
+        if (e.getSource() == this.comboBox) {
+            ta.append(this.comboBox.getSelectedItem() + "\n");
+        }
     }
 }

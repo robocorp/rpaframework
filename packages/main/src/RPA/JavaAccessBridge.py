@@ -390,7 +390,7 @@ class JavaAccessBridge:
         matching = self._get_matching_element(locator, index)
         end_time = time.time() + float(timeout)
         while time.time() <= end_time:
-            if text in matching.atp.items.sentence:
+            if text in matching.text._items.sentence:
                 return
             time.sleep(0.05)
 
@@ -410,7 +410,7 @@ class JavaAccessBridge:
         matching = self._get_matching_element(locator, index)
         end_time = time.time() + float(timeout)
         while time.time() <= end_time:
-            if text == matching.atp.items.sentence:
+            if text == matching.text._items.sentence:
                 return
             time.sleep(0.05)
 
@@ -443,7 +443,7 @@ class JavaAccessBridge:
         :param index: target element index if multiple are returned
         """
         matching = self._get_matching_element(locator, index)
-        return matching.atp.items.sentence
+        return matching.text._items.sentence
 
     def _get_matching_element(self, locator: LocatorType, index: int = 0):
         matching = None
@@ -485,10 +485,10 @@ class JavaAccessBridge:
         Desktop().highlight_elements(region_locator)
 
     def _get_scaled_coordinates(self, element):
-        left = int(self.display_scale_factor * (element.aci.x))
-        top = int(self.display_scale_factor * (element.aci.y))
-        width = int(self.display_scale_factor * (element.aci.width))
-        height = int(self.display_scale_factor * (element.aci.height))
+        left = int(self.display_scale_factor * (element.context_info.x))
+        top = int(self.display_scale_factor * (element.context_info.y))
+        width = int(self.display_scale_factor * (element.context_info.width))
+        height = int(self.display_scale_factor * (element.context_info.height))
         right = left + width
         bottom = top + height
         return left, top, right, bottom
