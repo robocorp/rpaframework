@@ -1350,6 +1350,12 @@ descriptions of arguments.</p>
 <dt id="RPA.Browser.Selenium.Selenium.open_user_browser">
 <code class="sig-name descname">open_user_browser</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">tab=True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Browser.Selenium.Selenium.open_user_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open URL with user’s default browser</p>
+<p>The browser opened with this keyword is not accessible
+with selenium. To interact with the opened browser it is
+possible to use <code class="docutils literal notranslate"><span class="pre">Desktop</span></code> library keywords.</p>
+<p>The keyword <cite>Attach Chrome Browser</cite> can be used to
+access already open browser with selenium keywords.</p>
+<p>Read more: <a class="reference external" href="https://robocorp.com/docs/development-guide/browser/how-to-attach-to-running-chrome-browser">https://robocorp.com/docs/development-guide/browser/how-to-attach-to-running-chrome-browser</a></p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> URL to open
 <code class="docutils literal notranslate"><span class="pre">tab</span></code> defines is url is opened in a tab (default <cite>True</cite>) or</p>
 <blockquote>

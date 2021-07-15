@@ -2,6 +2,15 @@
 TODO
 ****
 
+RPA.Database:
+=============
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "208", "take autocommit into use for all database modules"
+
 RPA.Desktop.Windows:
 ====================
 
@@ -10,9 +19,9 @@ RPA.Desktop.Windows:
    :widths: 10, 40
 
    "614", "Handle too compled method"
-   "1093", "return more valuable information about what should"
-   "1341", "supporting multiple search criterias at same time to identify ONE element"
-   "1367", "supporting multiple search criterias at same time to identify ONE element"
+   "1094", "return more valuable information about what should"
+   "1342", "supporting multiple search criterias at same time to identify ONE element"
+   "1368", "supporting multiple search criterias at same time to identify ONE element"
 
 RPA.Desktop.keywords.application:
 =================================
@@ -93,7 +102,7 @@ RPA.JavaAccessBridge:
 
    "177", "add keyword for taking screenshots of elements and window"
    "178", "implement proper XPath syntax support"
-   "558", "change to use RPA.core.geometry Region/Point"
+   "561", "change to use RPA.core.geometry Region/Point"
 
 RPA.Robocloud.Secrets:
 ======================

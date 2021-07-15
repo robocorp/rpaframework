@@ -338,7 +338,7 @@ defaults to False</p></li>
 
 <dl class="method">
 <dt id="RPA.Database.Database.connect_to_database">
-<code class="sig-name descname">connect_to_database</code><span class="sig-paren">(</span><em class="sig-param">module_name: str = None</em>, <em class="sig-param">database: str = None</em>, <em class="sig-param">username: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">host: str = None</em>, <em class="sig-param">port: int = None</em>, <em class="sig-param">charset: str = None</em>, <em class="sig-param">config_file: str = 'db.cfg'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Database.Database.connect_to_database" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">connect_to_database</code><span class="sig-paren">(</span><em class="sig-param">module_name: str = None</em>, <em class="sig-param">database: str = None</em>, <em class="sig-param">username: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">host: str = None</em>, <em class="sig-param">port: int = None</em>, <em class="sig-param">charset: str = None</em>, <em class="sig-param">config_file: str = 'db.cfg'</em>, <em class="sig-param">autocommit: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Database.Database.connect_to_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to database using DB API 2.0 module.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -351,6 +351,7 @@ defaults to False</p></li>
 <li><p><strong>port</strong> – SQL server port</p></li>
 <li><p><strong>charset</strong> – for example, “utf-8”, defaults to None</p></li>
 <li><p><strong>config_file</strong> – location of configuration file, defaults to “db.cfg”</p></li>
+<li><p><strong>autocommit</strong> – set autocommit value for connect (only with pymssql atm)</p></li>
 </ul>
 </dd>
 </dl>
