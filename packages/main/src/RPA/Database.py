@@ -68,7 +68,7 @@ class Configuration:
         )
         self.configuration["port"] = port or (
             int(config.get("default", "port"))
-            if config.has_option("default", "host")
+            if config.has_option("default", "port")
             else None
         )
         self.configuration["charset"] = charset or (
@@ -183,6 +183,7 @@ class Database:
         port: int = None,
         charset: str = None,
         config_file: str = "db.cfg",
+        autocommit: bool = False,
     ):
         """Connect to database using DB API 2.0 module.
 
@@ -194,6 +195,7 @@ class Database:
         :param port: SQL server port
         :param charset: for example, "utf-8", defaults to None
         :param config_file: location of configuration file, defaults to "db.cfg"
+        :param autocommit: set autocommit value for connect (only with pymssql atm)
 
         Example:
 
@@ -203,6 +205,7 @@ class Database:
             Connect To Database  ${CURDIR}${/}resources${/}dbconfig.cfg
 
         """
+        # TODO. take autocommit into use for all database modules
         self.config.parse_arguments(
             module_name, database, username, password, host, port, charset, config_file
         )
@@ -330,6 +333,7 @@ class Database:
                 database=self.config.get("database"),
                 port=self.config.get("port"),
                 host=self.config.get("host", "."),
+                autocommit=autocommit,
             )
         else:
             conf = self.config.all_but_empty()

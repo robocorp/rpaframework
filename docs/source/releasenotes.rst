@@ -5,6 +5,7 @@ Upcoming features
 -----------------
 
 - Library **RPA.JavaAccessBridge**: Bump ``java-access-bridge-wrapper`` to latest version
+- Library **RPA.Database**: Add parameter ``autocommit`` to ``connect_to_database`` keyword (now only used with pymssql module)
 
 10.4.0
 ------
