@@ -932,6 +932,7 @@ class Selenium(SeleniumLibrary):
         screenshot_keywords = ScreenshotKeywords(self)
         default_filename_prefix = f"screenshot-{int(time.time())}"
 
+        # pylint: disable=unused-private-member
         def __save_base64_screenshot_to_file(base64_string, filename):
             path = screenshot_keywords._get_screenshot_path(filename)
             screenshot_keywords._create_directory(path)

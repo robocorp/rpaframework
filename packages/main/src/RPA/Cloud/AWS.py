@@ -442,6 +442,7 @@ class ServiceTextract(AWSBase):
             content = ""
             for cid in cell["Childs"]:
                 content += "{} ".format(self.words[cid])
+            # pylint: disable=unnecessary-dict-index-lookup
             self.cells[idx]["Content"] = content
 
     def _process_tables(self, raw_tables):

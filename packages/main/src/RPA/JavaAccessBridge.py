@@ -390,6 +390,7 @@ class JavaAccessBridge:
         matching = self._get_matching_element(locator, index)
         end_time = time.time() + float(timeout)
         while time.time() <= end_time:
+            # pylint: disable=protected-access
             if text in matching.text._items.sentence:
                 return
             time.sleep(0.05)
@@ -410,6 +411,7 @@ class JavaAccessBridge:
         matching = self._get_matching_element(locator, index)
         end_time = time.time() + float(timeout)
         while time.time() <= end_time:
+            # pylint: disable=protected-access
             if text == matching.text._items.sentence:
                 return
             time.sleep(0.05)
@@ -443,6 +445,7 @@ class JavaAccessBridge:
         :param index: target element index if multiple are returned
         """
         matching = self._get_matching_element(locator, index)
+        # pylint: disable=protected-access
         return matching.text._items.sentence
 
     def _get_matching_element(self, locator: LocatorType, index: int = 0):
