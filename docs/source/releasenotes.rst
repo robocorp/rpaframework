@@ -6,6 +6,7 @@ Upcoming features
 
 - Library **RPA.JavaAccessBridge**: Bump ``java-access-bridge-wrapper`` to latest version
 - Library **RPA.Database**: Add parameter ``autocommit`` to ``connect_to_database`` keyword (now only used with pymssql module)
+- Library **RPA.Email.Exchange**: Fix ``List Messages`` when ``received_by`` is missing from the email
 
 10.4.0
 ------

@@ -22,8 +22,10 @@ from exchangelib import (
 
 def mailbox_to_email_address(mailbox):
     return {
-        "name": mailbox.name,
-        "email_address": mailbox.email_address,
+        "name": mailbox.name if hasattr(mailbox, "name") else "",
+        "email_address": mailbox.email_address
+        if hasattr(mailbox, "email_address")
+        else "",
     }
 
 
