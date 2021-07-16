@@ -606,6 +606,7 @@ class Exchange:
             "attachments_object": email.attachments,
             "id": email.id,
             "changekey": email.changekey,
+            "mime_content": email.mime_content,
         }
 
     def save_attachments(self, message: dict, save_dir: str = None) -> list:
@@ -616,3 +617,15 @@ class Exchange:
         :return: list of saved attachments
         """
         return self._save_attachments(message["attachments_object"], save_dir)
+
+    def save_message(self, message: dict, filename: str) -> list:
+        """Save email as .eml file
+
+        :param message: dictionary containing message details
+        :param filename:
+        """
+        absolute_filepath = Path(filename).resolve()
+        if absolute_filepath.suffix != ".eml":
+            raise ValueError("Filename extension needs to be '.eml'")
+        with open(absolute_filepath, "wb") as message_out:
+            message_out.write(message["mime_content"])

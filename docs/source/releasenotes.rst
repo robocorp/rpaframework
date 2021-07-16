@@ -1,6 +1,11 @@
 Release notes
 =============
 
+10.6.0
+------
+
+- Library **RPA.Email.Exchange**: Add keyword ``Save Message`` to save message in EML format
+
 10.5.0
 ------
 
