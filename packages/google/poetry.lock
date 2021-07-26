@@ -812,11 +812,11 @@ python-versions = "*"
 
 [[package]]
 name = "robotframework-pythonlibcore"
-version = "2.2.1"
+version = "3.0.0"
 description = "Tools to ease creating larger test libraries for Robot Framework using Python."
 category = "main"
 optional = false
-python-versions = ">=2.7.*, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, <4"
+python-versions = ">=3.6, <4"
 
 [[package]]
 name = "rpaframework-core"
@@ -987,7 +987,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "9078a14c6ca88e0bed6259aca30d964d643e7cb78e96437cce9c9e072af85be0"
+content-hash = "de7c0d7be36ee80cfe18b28bff1e8f7c5af7427fecc22c678803ec442696c70b"
 
 [metadata.files]
 appdirs = [
@@ -1599,8 +1599,8 @@ robotframework = [
     {file = "robotframework-4.1.zip", hash = "sha256:567f2a21f0906635e21d45fe3cb84a4809a12980c9f2706a8a5f65f40f6b4ccd"},
 ]
 robotframework-pythonlibcore = [
-    {file = "robotframework-pythonlibcore-2.2.1.tar.gz", hash = "sha256:1b311764721b6117d85b0702ab95a7f1d0525d9d3e3433cca02cdbc0010edb55"},
-    {file = "robotframework_pythonlibcore-2.2.1-py2.py3-none-any.whl", hash = "sha256:b5b30239086b656e2fb6adbc91e988b9745636bd0d3ff7db2ab0cab43b0621a9"},
+    {file = "robotframework-pythonlibcore-3.0.0.tar.gz", hash = "sha256:1bce3b8dfcb7519789ee3a89320f6402e126f6d0a02794184a1ab8cee0e46b5d"},
+    {file = "robotframework_pythonlibcore-3.0.0-py2.py3-none-any.whl", hash = "sha256:af10c2403cd38834988c4ce68ffb6ec6f9b14bd2cd39ecf836d443377c59b7c4"},
 ]
 rpaframework-core = [
     {file = "rpaframework-core-6.2.2.tar.gz", hash = "sha256:00d546749f9fb7857d4a92efe8560ac407f98a7d0ac7625b1382209063fe456e"},
