@@ -117,6 +117,7 @@ class LibraryContext:
         :param use_robocloud_vault: use json stored into `Robocloud Vault`
         """
         service = None
+        credentials = None
         self.logger.debug("Init service with scopes: %s", scopes)
         scopes = [f"https://www.googleapis.com/auth/{scope}" for scope in scopes]
         if use_robocorp_vault is not None:
