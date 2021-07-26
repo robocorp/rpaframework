@@ -1302,11 +1302,11 @@ wrapt = ">=1.12.1"
 
 [[package]]
 name = "robotframework-pythonlibcore"
-version = "2.2.1"
+version = "3.0.0"
 description = "Tools to ease creating larger test libraries for Robot Framework using Python."
 category = "main"
 optional = false
-python-versions = ">=2.7.*, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, <4"
+python-versions = ">=3.6, <4"
 
 [[package]]
 name = "robotframework-requests"
@@ -1388,18 +1388,18 @@ rpaframework-core = ">=6.1.0,<7.0.0"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "0.6.0"
+version = "0.7.0"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
-python-versions = ">=3.6,<4.0"
+python-versions = ">=3.6.2,<4.0.0"
 
 [package.dependencies]
 fpdf2 = ">=2.3.0,<3.0.0"
 "pdfminer.six" = "20201018"
 pypdf2 = ">=1.26.0,<2.0.0"
 robotframework = ">=3.2.2,<5.0"
-robotframework-pythonlibcore = ">=2.1.0,<3.0.0"
+robotframework-pythonlibcore = ">=3.0.0,<4.0.0"
 rpaframework-core = ">=6.1.0,<7.0.0"
 
 [[package]]
@@ -1692,7 +1692,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "2a17f8d395523bd5d00344d9d877a39e9b76d10923f9963769d6bc26860bac02"
+content-hash = "c970bf7480a50ff9e21a3c0f2f5ddaf258a47e44b6b7dcffb2749c61fd8f8cf2"
 
 [metadata.files]
 amazon-textract-response-parser = [
@@ -2685,8 +2685,8 @@ robotframework-browser = [
     {file = "robotframework_browser-4.5.2-py3-none-any.whl", hash = "sha256:368102fbab19dc45e0f37438b6f1e0f968040b2dc7810434dc6e2319cf67fc49"},
 ]
 robotframework-pythonlibcore = [
-    {file = "robotframework-pythonlibcore-2.2.1.tar.gz", hash = "sha256:1b311764721b6117d85b0702ab95a7f1d0525d9d3e3433cca02cdbc0010edb55"},
-    {file = "robotframework_pythonlibcore-2.2.1-py2.py3-none-any.whl", hash = "sha256:b5b30239086b656e2fb6adbc91e988b9745636bd0d3ff7db2ab0cab43b0621a9"},
+    {file = "robotframework-pythonlibcore-3.0.0.tar.gz", hash = "sha256:1bce3b8dfcb7519789ee3a89320f6402e126f6d0a02794184a1ab8cee0e46b5d"},
+    {file = "robotframework_pythonlibcore-3.0.0-py2.py3-none-any.whl", hash = "sha256:af10c2403cd38834988c4ce68ffb6ec6f9b14bd2cd39ecf836d443377c59b7c4"},
 ]
 robotframework-requests = [
     {file = "robotframework-requests-0.7.2.tar.gz", hash = "sha256:662e0ce5036a55bcb4cb46ff9741f40c78c670f4fb64cd37714cf83d5fd31774"},
@@ -2712,8 +2712,8 @@ rpaframework-dialogs = [
     {file = "rpaframework_dialogs-0.3.1-py3-none-any.whl", hash = "sha256:601693b3355b1b1c3ec21f54e070b326675e4f15dda14dfd803798ad2f4a1fe6"},
 ]
 rpaframework-pdf = [
-    {file = "rpaframework-pdf-0.6.0.tar.gz", hash = "sha256:75c65835b3b7997103115ba2a403615efa69a426e2a8a7c10f1ca41f25e91d7c"},
-    {file = "rpaframework_pdf-0.6.0-py3-none-any.whl", hash = "sha256:8b31b9d0841a88a02ea50713e5c342cca782ffaa7b95dcb9e62dd80ec53ca913"},
+    {file = "rpaframework-pdf-0.7.0.tar.gz", hash = "sha256:c4736a35356927132df976774c37a559acba72a1704e2f71b7e9a56973c50c1f"},
+    {file = "rpaframework_pdf-0.7.0-py3-none-any.whl", hash = "sha256:7d651cdce97ce5796b5f93000ddc3373fee4d855b831892e6d1a3eb07d37ae43"},
 ]
 rpaframework-recognition = [
     {file = "rpaframework-recognition-0.7.2.tar.gz", hash = "sha256:67555b9711eac68f7207ab6e33ab5292ab76124d53e7044b6c9b29179b6a6f66"},
