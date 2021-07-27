@@ -27,10 +27,11 @@ class HTTP(RequestsLibrary):
         self,
         url: str,
         target_file: str = None,
-        binary: bool = True,
         verify: Union[bool, str] = True,
         force_new_session: bool = False,
         overwrite: bool = False,
+        stream: bool = False,
+        **kwargs,
     ) -> dict:
         """
         A helper method for ``Get Request`` that will create a session, perform GET
@@ -43,8 +44,6 @@ class HTTP(RequestsLibrary):
 
         ``target_file`` filepath to save request content, default ``None``
 
-        ``binary`` if file is saved as binary, default ``True``
-
         ``verify`` if SSL verification should be done, default ``True``,
         a CA_BUNDLE path can also be provided
 
@@ -52,6 +51,8 @@ class HTTP(RequestsLibrary):
 
         ``overwrite`` used together with ``target_file``, if ``True`` will overwrite
         the target file, default ``False``
+
+        ``stream`` if ``False``, the response content will be immediately downloaded
 
         Returns request response.
         """
@@ -68,11 +69,11 @@ class HTTP(RequestsLibrary):
             self.logger.info("Using already existing HTTP session")
 
         self.current_session_alias = request_alias
-        response = self.get_request(request_alias, url_path)
+        response = self.get_on_session(request_alias, url_path, stream=stream, **kwargs)
 
         if target_file is not None:
             self._create_or_overwrite_target_file(
-                target_file, response.content, binary, overwrite
+                target_file, response.content, overwrite
             )
 
         return response
@@ -80,15 +81,17 @@ class HTTP(RequestsLibrary):
     def _create_or_overwrite_target_file(
         self,
         path: str,
-        content: Any,
-        binary: bool,
+        response: Any,
         overwrite: bool,
     ) -> None:
+        CHUNK_SIZE = 32768
         Path(path).parent.mkdir(parents=True, exist_ok=True)
-        if binary:
-            self.fs.create_binary_file(path, content, overwrite)
-        else:
-            self.fs.create_file(path, content, overwrite)
+        file_exists = Path(path).is_file()
+        if not file_exists or (file_exists and overwrite):
+            with open(path, "wb") as f:
+                for chunk in response.iter_content(CHUNK_SIZE):
+                    if chunk:  # filter out keep-alive new chunks
+                        f.write(chunk)
         notebook_file(path)
 
     def get_current_session_alias(self) -> str:
@@ -102,10 +105,11 @@ class HTTP(RequestsLibrary):
         self,
         url: str,
         target_file: str = None,
-        binary: bool = True,
         verify: Union[bool, str] = True,
         force_new_session: bool = False,
         overwrite: bool = False,
+        stream: bool = False,
+        **kwargs,
     ) -> dict:
         """An alias for the ``HTTP Get`` keyword.
 
@@ -118,8 +122,6 @@ class HTTP(RequestsLibrary):
 
         ``target_file`` filepath to save request content, default ``None``
 
-        ``binary`` if file is saved as binary, default ``True``
-
         ``verify`` if SSL verification should be done, default ``True``,
         a CA_BUNDLE path can also be provided
 
@@ -127,9 +129,16 @@ class HTTP(RequestsLibrary):
 
         ``overwrite`` used together with ``target_file``, if ``True`` will overwrite
         the target file, default ``False``
+
+        ``stream`` if ``False``, the response content will be immediately downloaded
         """
         response = self.http_get(
-            url, verify=verify, force_new_session=force_new_session
+            url,
+            verify=verify,
+            force_new_session=force_new_session,
+            overwrite=overwrite,
+            stream=stream,
+            **kwargs,
         )
 
         dirname = Path()
@@ -146,8 +155,6 @@ class HTTP(RequestsLibrary):
         if filename is None:
             filename = urlparse(url).path.rsplit("/", 1)[-1] or "downloaded.html"
 
-        self._create_or_overwrite_target_file(
-            dirname / filename, response.content, binary, overwrite
-        )
+        self._create_or_overwrite_target_file(dirname / filename, response, overwrite)
 
         return response
