@@ -1,6 +1,19 @@
 Release notes
 =============
 
+10.8.0
+------
+
+- Library **RPA.HTTP**:
+
+  - Fix downloading of big files
+  - Bump robotframework-requests version to 0.9.1
+
+10.7.1
+------
+
+- Bump robotframework-pythonlibcore version to 3.0.0
+
 10.6.0
 ------
 
