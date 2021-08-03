@@ -284,7 +284,7 @@ class Database:
                     self.config.get("database"),
                     self.config.get("host"),
                     self.config.get("port"),
-                    self.config.get("usernamme"),
+                    self.config.get("username"),
                     self.config.get("password"),
                 ),
             )
