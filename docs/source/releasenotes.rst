@@ -4,6 +4,7 @@ Release notes
 10.9.0
 ------
 
+- Library **RPA.Desktop.Windows**: Add COMError protection to keyword ``Open From Search``
 - Library **RPA.Email.ImapSmtp**: Fix possible `None` error when reading email body
 - Library **RPA.Database**: Fix typo in ibm_db connection
 - Library **RPA.JavaAccessBridge**:
