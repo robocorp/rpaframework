@@ -18,10 +18,10 @@ RPA.Desktop.Windows:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "614", "Handle too compled method"
-   "1094", "return more valuable information about what should"
-   "1342", "supporting multiple search criterias at same time to identify ONE element"
-   "1368", "supporting multiple search criterias at same time to identify ONE element"
+   "633", "Handle too compled method"
+   "1113", "return more valuable information about what should"
+   "1361", "supporting multiple search criterias at same time to identify ONE element"
+   "1387", "supporting multiple search criterias at same time to identify ONE element"
 
 RPA.Desktop.keywords.application:
 =================================
@@ -100,9 +100,9 @@ RPA.JavaAccessBridge:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "177", "add keyword for taking screenshots of elements and window"
-   "178", "implement proper XPath syntax support"
-   "561", "change to use RPA.core.geometry Region/Point"
+   "202", "add keyword for taking screenshots of elements and window"
+   "203", "implement proper XPath syntax support"
+   "589", "change to use RPA.core.geometry Region/Point"
 
 RPA.Robocloud.Secrets:
 ======================

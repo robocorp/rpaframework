@@ -241,7 +241,7 @@ set self.__traceback__ to tb and return self.</p>
 
 <dl class="class">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.JavaAccessBridge.</code><code class="sig-name descname">JavaAccessBridge</code><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.JavaAccessBridge.</code><code class="sig-name descname">JavaAccessBridge</code><span class="sig-paren">(</span><em class="sig-param">ignore_callbacks: bool = False</em>, <em class="sig-param">access_bridge_path: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Java application UI automation library using <a class="reference external" href="https://www.oracle.com/java/technologies/javase/javase-tech-access-bridge.html">Java Access Bridge technology</a>.</p>
 <p>Library is at the beta level at the moment so feedback is highly appreciated.</p>
@@ -251,13 +251,33 @@ Java UI. Currently only the 64-bit Windows OS is supported.</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>Enable the Java Access Bridge in Windows</p></li>
-<li><p>Set environment variable <cite>RC_JAVA_ACCESS_BRIDGE_DLL</cite> as an absolute path to <cite>WindowsAccessBridge-64.dll</cite></p></li>
+<li><p>Set environment variable <cite>RC_JAVA_ACCESS_BRIDGE_DLL</cite> as an absolute path to <cite>WindowsAccessBridge-64.dll</cite>.
+It is also possible to give DLL location as library initialization parameter <cite>access_bridge_path</cite>.</p></li>
 </ol>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">C:\path\to\java\bin\jabswitch -enable</span>
-<span class="go">set RC_JAVA_ACCESS_BRIDGE_DLL=C:\Program Files\Java\jre1.8.0_261\bin\WindowsAccessBridge-64.dll</span>
+<span class="go">set RC_JAVA_ACCESS_BRIDGE_DLL=C:\path\to\Java\bin\WindowsAccessBridge-64.dll</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.JavaAccessBridge</span><span class="p">   </span><span class="s">access_bridge_path=C:\path\to\Java\bin\WindowsAccessBridge-64.dll</span><span class="p"></span>
 </pre></div>
 </div>
 </div></blockquote>
+<p><strong>About Java wrapper callbacks and actions</strong></p>
+<p>There might be a compability issue with callbacks and actions on target Java application. Possible reasons:</p>
+<ul class="simple">
+<li><p>target application is executed with 32-bit Java</p></li>
+<li><p>target application does not support callbacks and/or actions</p></li>
+</ul>
+<p>Workaround for this situation is to initialize <cite>JavaAccessBridge</cite> library with parameter <cite>ignore_callbacks=True</cite>.
+Then application’s element information is still accessible and any actions on those elements can be performed
+with <cite>RPA.Desktop</cite> library.</p>
+<p><em>Note.</em> There are still keywords, for example. <cite>Call Element Action</cite>, which will cause error if used in this situation.
+To be fixed in future release.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">   </span><span class="nn">RPA.JavaAccessBridge</span><span class="p">   </span><span class="s">ignore_callbacks=True</span><span class="p"></span>
+</pre></div>
+</div>
 <p><strong>Locating elements</strong></p>
 <p>To automate actions on the Java application, the robot needs locations to various elements
 using a feature called <cite>locators</cite>. Locator describes properties of an element.</p>
@@ -434,6 +454,12 @@ structure changes after window refresh.</p>
 <dd class="field-odd"><p><strong>locator</strong> – elements to get</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.get_version_info">
+<code class="sig-name descname">get_version_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_version_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Java Access Bridge version information</p>
 </dd></dl>
 
 <dl class="method">

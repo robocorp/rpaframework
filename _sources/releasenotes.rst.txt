@@ -1,6 +1,16 @@
 Release notes
 =============
 
+10.9.0
+------
+
+- Library **RPA.Email.ImapSmtp**: Fix possible `None` error when reading email body
+- Library **RPA.Database**: Fix typo in ibm_db connection
+- Library **RPA.JavaAccessBridge**:
+
+  - Add new library init parameters: ``ignore_callbacks`` and ``access_bridge_path``
+  - Bump java-access-bridge-wrapper version to 0.7.4
+
 10.8.0
 ------
 
