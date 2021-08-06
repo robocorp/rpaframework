@@ -63,15 +63,40 @@ class JavaAccessBridge:
     **Steps to enable**
 
         1. Enable the Java Access Bridge in Windows
-        2. Set environment variable `RC_JAVA_ACCESS_BRIDGE_DLL` as an absolute path to `WindowsAccessBridge-64.dll`
+        2. Set environment variable `RC_JAVA_ACCESS_BRIDGE_DLL` as an absolute path to `WindowsAccessBridge-64.dll`.
+           It is also possible to give DLL location as library initialization parameter `access_bridge_path`.
 
         .. code-block:: console
 
             C:\\path\\to\\java\\bin\\jabswitch -enable
-            set RC_JAVA_ACCESS_BRIDGE_DLL=C:\\Program Files\\Java\\jre1.8.0_261\\bin\WindowsAccessBridge-64.dll
+            set RC_JAVA_ACCESS_BRIDGE_DLL=C:\\path\\to\\Java\\bin\\WindowsAccessBridge-64.dll
+
+        .. code:: robotframework
+
+            *** Settings ***
+            Library   RPA.JavaAccessBridge   access_bridge_path=C:\\path\\to\\Java\\bin\\WindowsAccessBridge-64.dll
 
     .. _Java Access Bridge technology: https://www.oracle.com/java/technologies/javase/javase-tech-access-bridge.html
     .. _java-access-bridge-wrapper: https://github.com/robocorp/java-access-bridge-wrapper
+
+    **About Java wrapper callbacks and actions**
+
+    There might be a compability issue with callbacks and actions on target Java application. Possible reasons:
+
+    - target application is executed with 32-bit Java
+    - target application does not support callbacks and/or actions
+
+    Workaround for this situation is to initialize `JavaAccessBridge` library with parameter `ignore_callbacks=True`.
+    Then application's element information is still accessible and any actions on those elements can be performed
+    with `RPA.Desktop` library.
+
+    *Note.* There are still keywords, for example. `Call Element Action`, which will cause error if used in this situation.
+    To be fixed in future release.
+
+    .. code:: robotframework
+
+        *** Settings ***
+        Library   RPA.JavaAccessBridge   ignore_callbacks=True
 
     **Locating elements**
 
@@ -177,12 +202,15 @@ class JavaAccessBridge:
     # TODO: add keyword for taking screenshots of elements and window
     # TODO. implement proper XPath syntax support
 
-    def __init__(self):
+    def __init__(self, ignore_callbacks: bool = False, access_bridge_path: str = None):
         self.logger = logging.getLogger(__name__)
+        self.desktop = Desktop()
         if platform.system() != "Windows":
             self.logger.warning(
                 "JavaAccessBridge library requires Windows dependencies to work"
             )
+        if access_bridge_path:
+            os.environ["RC_JAVA_ACCESS_BRIDGE_DLL"] = access_bridge_path
         if "RC_JAVA_ACCESS_BRIDGE_DLL" not in os.environ.keys():
             self.logger.warning(
                 "Environment variable `RC_JAVA_ACCESS_BRIDGE_DLL` needs to be set to "
@@ -194,6 +222,7 @@ class JavaAccessBridge:
         self.pumper_thread = None
         self.refresh_counter = 1
         self.display_scale_factor = ScalingFactor
+        self.ignore_callbacks = ignore_callbacks
 
     def _initialize(self):
         pipe = queue.Queue()
@@ -214,7 +243,9 @@ class JavaAccessBridge:
 
     def _pump_background(self, pipe: queue.Queue):
         try:
-            jab_wrapper = JavaAccessBridgeWrapper()
+            jab_wrapper = JavaAccessBridgeWrapper(
+                ignore_callbacks=self.ignore_callbacks
+            )
             pipe.put(jab_wrapper)
             message = byref(wintypes.MSG())
             while GetMessage(message, 0, 0, 0) > 0:
@@ -260,14 +291,7 @@ class JavaAccessBridge:
             raise ValueError("Did not find window '%s'" % title)
 
         if not self.version_printed:
-            version_info = self.jab_wrapper.get_version_info()
-            self.logger.info(
-                "VMversion=%s; BridgeJavaClassVersion=%s; BridgeJavaDLLVersion=%s; BridgeWinDLLVersion=%s",  # noqa: E501
-                version_info.VMversion,
-                version_info.bridgeJavaClassVersion,
-                version_info.bridgeJavaDLLVersion,
-                version_info.bridgeWinDLLVersion,
-            )
+            self.get_version_info()
             self.version_printed = True
 
         if bring_foreground:
@@ -330,7 +354,7 @@ class JavaAccessBridge:
         middle_x = int((left + right) / 2)
         middle_y = int((top + bottom) / 2)
         point = f"point:{middle_x},{middle_y}"
-        Desktop().move_mouse(point)
+        self.desktop.move_mouse(point)
 
     @keyword
     def type_text(
@@ -350,23 +374,27 @@ class JavaAccessBridge:
         :param enter: should enter key be pressed after typing
         """
         element = self._find_elements(locator, index)
-        self._click_element_middle(element[0])
-        element[0].request_focus()
+        self._click_element_middle(element[0], "double click")
+        if not self.ignore_callbacks:
+            element[0].request_focus()
         if clear:
-            self.wait_until_element_is_focused(element[0])
-            element_cleared = False
-            for _ in range(10):
-                Desktop().press_keys("ctrl", "a")
-                Desktop().press_keys("delete")
-                try:
-                    self.wait_until_element_text_equals(element[0], "")
-                    element_cleared = True
-                except ValueError:
-                    pass
-            if not element_cleared:
-                raise ValueError(f"Element={element} not cleared")
-        Desktop().type_text(text, enter=enter)
-        self.wait_until_element_text_contains(element[0], text)
+            self.desktop.press_keys("ctrl", "a")
+            self.desktop.press_keys("delete")
+        self.desktop.type_text(text, enter=enter)
+
+    def _clear_element(self, element):
+        self.wait_until_element_is_focused(element)
+        element_cleared = False
+        for _ in range(10):
+            self.desktop.press_keys("ctrl", "a")
+            self.desktop.press_keys("delete")
+            try:
+                self.wait_until_element_text_equals(element, "")
+                element_cleared = True
+            except ValueError:
+                pass
+        if not element_cleared:
+            raise ValueError(f"Element={element} not cleared")
 
     @keyword
     def get_elements(self, locator: str):
@@ -485,20 +513,20 @@ class JavaAccessBridge:
         matching = self._get_matching_element(locator, index)
         self.logger.info("Highlighting element: %s", repr(matching))
         region_locator = self._get_region_locator(matching)
-        Desktop().highlight_elements(region_locator)
+        self.desktop.highlight_elements(region_locator)
 
     def _get_scaled_coordinates(self, element):
-        left = int(self.display_scale_factor * (element.context_info.x))
-        top = int(self.display_scale_factor * (element.context_info.y))
-        width = int(self.display_scale_factor * (element.context_info.width))
-        height = int(self.display_scale_factor * (element.context_info.height))
+        left = int(element.context_info.x / self.display_scale_factor)
+        top = int(element.context_info.y / self.display_scale_factor)
+        width = int(element.context_info.width / self.display_scale_factor)
+        height = int(element.context_info.height / self.display_scale_factor)
         right = left + width
         bottom = top + height
         return left, top, right, bottom
 
     def _get_region_locator(self, element):
         left, top, right, bottom = self._get_scaled_coordinates(element)
-        return Desktop().define_region(left, top, right, bottom)
+        return self.desktop.define_region(left, top, right, bottom)
 
     @keyword
     def click_element(
@@ -557,7 +585,7 @@ class JavaAccessBridge:
         self.logger.info("Element '%s' action", action)
         matching.do_action(action)
 
-    def _click_element_middle(self, element):
+    def _click_element_middle(self, element, click_type="click"):
         # TODO. change to use RPA.core.geometry Region/Point
         # region = Region.from_size(
         # element.left,
@@ -568,13 +596,11 @@ class JavaAccessBridge:
         # region.scale(self.scale_factor)
         # Desktop().click(region.center)
         self.logger.info("Element click coordinates")
-        left, top, right, bottom = self._get_scaled_coordinates(element)
-        if left == -1 or top == -1:
-            raise AttributeError("Can't click on negative coordinates")
-        middle_x = int((left + right) / 2)
-        middle_y = int((top + bottom) / 2)
-        point = f"point:{middle_x},{middle_y}"
-        Desktop().click(point)
+        middle_x = element.context_info.x + int(element.context_info.width / 2)
+        middle_y = element.context_info.y + int(element.context_info.height / 2)
+        locator = f"coordinates:{middle_x},{middle_y}"
+        self.desktop.click(locator, action=click_type)
+        time.sleep(0.5)
 
     @keyword
     def toggle_drop_down(self, locator: str, index: int = 0):
@@ -606,7 +632,7 @@ class JavaAccessBridge:
 
         :param keys: keys to press
         """
-        Desktop().press_keys(*keys)
+        self.desktop.press_keys(*keys)
 
     @keyword
     def print_element_tree(self, filename: str = None):
@@ -645,3 +671,16 @@ class JavaAccessBridge:
     def shutdown_jab(self):
         """Call Java Access Bridge process shutdown"""
         self.jab_wrapper.shutdown()
+
+    @keyword
+    def get_version_info(self):
+        """Get Java Access Bridge version information"""
+        version_info = self.jab_wrapper.get_version_info()
+        self.logger.info(
+            "VMversion=%s; BridgeJavaClassVersion=%s; BridgeJavaDLLVersion=%s; BridgeWinDLLVersion=%s",  # noqa: E501
+            version_info.VMversion,
+            version_info.bridgeJavaClassVersion,
+            version_info.bridgeJavaDLLVersion,
+            version_info.bridgeWinDLLVersion,
+        )
+        return version_info
