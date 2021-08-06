@@ -58,6 +58,10 @@ class UnknownWindowsBackendError(Exception):
     """Raised when unknown Windows backend is set"""
 
 
+class ApplicationNotStarted(Exception):
+    """Raised when application fails to start"""
+
+
 SUPPORTED_BACKENDS = ["uia", "win32"]
 WINDOWS_LOCATOR_STRATEGIES = {
     "name": "name",
@@ -511,9 +515,24 @@ class Windows(OperatingSystem):
 
         self.send_keys_to_input(executable)
 
-        app_instance = self.open_dialog(windowtitle, timeout=timeout, wildcard=wildcard)
-        self._apps[app_instance]["executable"] = executable
-        self._apps[app_instance]["startkeyword"] = "Open From Search"
+        app_instance = None
+        for _ in range(10):
+            try:
+                app_instance = self.open_dialog(
+                    windowtitle, timeout=timeout, wildcard=wildcard
+                )
+            except AttributeError:
+                pass
+            except COMError:
+                pass
+            if app_instance:
+                self._apps[app_instance]["executable"] = executable
+                self._apps[app_instance]["startkeyword"] = "Open From Search"
+                break
+            else:
+                time.sleep(0.5)
+        if not app_instance:
+            raise ApplicationNotStarted("Unable to get application instance")
         return app_instance
 
     def get_spaced_string(self, text):
