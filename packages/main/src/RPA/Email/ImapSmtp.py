@@ -1105,11 +1105,10 @@ class ImapSmtp:
         self.select_folder(folder_name)
         _, data = self.imap_conn.fetch(mail_id, "(UID RFC822)")
         pattern_uid = re.compile(r"\d+ \(UID (?P<uid>\d+) RFC822")
-        uid = (
-            None
-            if data[0] is None
-            else pattern_uid.match(bytes.decode(data[0][0])).group("uid")
+        match_result = (
+            None if data[0] is None else pattern_uid.match(bytes.decode(data[0][0]))
         )
+        uid = None if match_result is None else match_result.group("uid")
         if uid:
             body = self._fetch_body(mail_id, data, actions)
         return uid, body
