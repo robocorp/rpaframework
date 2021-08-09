@@ -48,7 +48,7 @@ robotframework-seleniumtestability = "^1.1.0"
 robotframework-requests = "^0.9.1"
 robotframework-browser = { version = "^4.3.0", optional = true,  python = ">=3.7,<4.0" }
 pywinauto = { version = "^0.6.8", platform = "win32", python = "!=3.8.1,!=3.7.6" }
-pywin32 = { version = "^300", platform = "win32", python = "!=3.8.1,!=3.7.6" }
+pywin32 = { version = ">=300,<302", platform = "win32", python = "!=3.8.1,!=3.7.6" }
 comtypes = { version = "1.1.7", platform = "win32" }
 robotframework-pythonlibcore = "^3.0.0"
 pynput-robocorp-fork = "^3.0.0"
