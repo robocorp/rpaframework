@@ -1120,7 +1120,7 @@ class ImapSmtp:
     def _fetch_uid_and_body(self, mail_id, actions):
         body = None
         _, data = self.imap_conn.fetch(mail_id, "(UID RFC822)")
-        pattern_uid = re.compile(r".*?UID (\d+). RFC822")
+        pattern_uid = re.compile(r".*UID (\d+) RFC822")
         decoded_data = bytes.decode(data[0][0]) if data[0] else None
         match_result = pattern_uid.match(decoded_data) if decoded_data else None
         uid = match_result.group(1) if match_result else None

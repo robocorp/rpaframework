@@ -1,7 +1,7 @@
 Release notes
 =============
 
-10.9.1
+10.9.2
 ------
 
 - Library **RPA.Email.ImapSmtp**:
