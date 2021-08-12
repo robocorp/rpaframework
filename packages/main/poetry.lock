@@ -1,6 +1,6 @@
 [[package]]
 name = "amazon-textract-response-parser"
-version = "0.1.14"
+version = "0.1.16"
 description = "Easily parse JSON returned by Amazon Textract."
 category = "main"
 optional = true
@@ -140,14 +140,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.18.15"
+version = "1.18.19"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.21.15,<1.22.0"
+botocore = ">=1.21.19,<1.22.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -156,7 +156,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.21.15"
+version = "1.21.19"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -1708,8 +1708,8 @@ content-hash = "ed814257c59757003dea2908a6fb6cc4121a1fe7b2601b327d75b658294aed9a
 
 [metadata.files]
 amazon-textract-response-parser = [
-    {file = "amazon-textract-response-parser-0.1.14.tar.gz", hash = "sha256:733eebf10d0b3deb45401fa05c6fbfe7fe1bf8d1271c2412dd847f6400b4f8f8"},
-    {file = "amazon_textract_response_parser-0.1.14-py2.py3-none-any.whl", hash = "sha256:6c3d2b9a0290c95c04675f4c9b95d1588dbeb844c62ee417112cb15345efc309"},
+    {file = "amazon-textract-response-parser-0.1.16.tar.gz", hash = "sha256:4ed3e66ecc1ed19a4a83cc33de98bdfc30be39e076370ea8192a51f6ab14e9f4"},
+    {file = "amazon_textract_response_parser-0.1.16-py2.py3-none-any.whl", hash = "sha256:8ee87ffc210c5442fcdea98279ccde406986c195bdac211949603c1d3568dfcc"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
@@ -1766,12 +1766,12 @@ black = [
     {file = "black-21.7b0.tar.gz", hash = "sha256:c8373c6491de9362e39271630b65b964607bc5c79c83783547d76c839b3aa219"},
 ]
 boto3 = [
-    {file = "boto3-1.18.15-py3-none-any.whl", hash = "sha256:dc44be94fa03245fd0cfff8a3fcc17d79283cfda9a39ae2e5cdedcd75749e089"},
-    {file = "boto3-1.18.15.tar.gz", hash = "sha256:48241d2ca6074dd35411e1e72a4ca8ae5043e8e4aba0a9975a94af66382995da"},
+    {file = "boto3-1.18.19-py3-none-any.whl", hash = "sha256:72b1f70a5a42dff0a9c26a71486d3dcb3e098fac5b36126bc8fdcdec8c4d3cf4"},
+    {file = "boto3-1.18.19.tar.gz", hash = "sha256:096f771c259484dc7140af2b7a9078e9c3efba28e2a298d1e8e40fed404fa38e"},
 ]
 botocore = [
-    {file = "botocore-1.21.15-py3-none-any.whl", hash = "sha256:5f9686f42fcc6df0eb3ca5804113135f06ae92a6010347665ca7670f1397bff1"},
-    {file = "botocore-1.21.15.tar.gz", hash = "sha256:90b50e321278223c794032ae1ded7dfebdc73c54cc3cbbf72648e4cfdf060529"},
+    {file = "botocore-1.21.19-py3-none-any.whl", hash = "sha256:2fa40a39b338888c9492dc1e36734d8807f9e1c6f5dd3514247338e97f4da0f6"},
+    {file = "botocore-1.21.19.tar.gz", hash = "sha256:7dce88db827e9b5c88701c978df00742c854d2b751fbda8db7656fb9a571afc5"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},

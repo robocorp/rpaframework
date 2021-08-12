@@ -174,6 +174,7 @@ class ImapSmtp:
         imap_port: int = 993,
         account: str = None,
         password: str = None,
+        encoding: str = "utf-8",
     ) -> None:
         listener = RobotLogListener()
         listener.register_protected_keywords(
@@ -189,6 +190,7 @@ class ImapSmtp:
         self.smtp_conn = None
         self.imap_conn = None
         self.selected_folder = None
+        self.encoding = encoding
 
     def __del__(self) -> None:
         if self.smtp_conn:
@@ -387,7 +389,7 @@ class ImapSmtp:
             ...           body=${email_body}
             ...           attachments=${CURDIR}${/}report.pdf
         """
-        add_charset("utf-8", QP, QP, "utf-8")
+        add_charset(self.encoding, QP, QP, self.encoding)
         recipients, attachments, images = self._handle_message_parameters(
             recipients, attachments, images
         )
@@ -397,7 +399,7 @@ class ImapSmtp:
 
         msg["From"] = sender
         msg["To"] = ",".join(recipients)
-        msg["Subject"] = Header(subject, "utf-8")
+        msg["Subject"] = Header(subject, self.encoding)
 
         if html:
             for im in images:
@@ -408,10 +410,10 @@ class ImapSmtp:
                     img = MIMEImage(f.read())
                     img.add_header("Content-ID", f"<{imname}>")
                     msg.attach(img)
-            htmlpart = MIMEText(body, "html", "UTF-8")
+            htmlpart = MIMEText(body, "html", self.encoding)
             msg.attach(htmlpart)
         else:
-            textpart = MIMEText(body, "plain", "UTF-8")
+            textpart = MIMEText(body, "plain", self.encoding)
             msg.attach(textpart)
             for im in images:
                 im = im.strip()
@@ -528,12 +530,12 @@ class ImapSmtp:
                 if part.get_content_type() == "text/plain":
                     text = str(
                         part.get_payload(decode=True), str(charset), "ignore"
-                    ).encode("utf8", "replace")
+                    ).encode(self.encoding, "replace")
 
                 if part.get_content_type() == "text/html":
                     html = str(
                         part.get_payload(decode=True), str(charset), "ignore"
-                    ).encode("utf8", "replace")
+                    ).encode(self.encoding, "replace")
 
             if text:
                 return (
@@ -547,9 +549,9 @@ class ImapSmtp:
             content_charset = message.get_content_charset()
             text = str(
                 message.get_payload(decode=True),
-                content_charset or "utf8",
+                content_charset or self.encoding,
                 "ignore",
-            ).encode("utf8", "replace")
+            ).encode(self.encoding, "replace")
             return text.strip(), has_attachments
 
     @imap_connection
@@ -562,6 +564,7 @@ class ImapSmtp:
         target_folder: str = None,
         limit: int = None,
         overwrite: bool = False,
+        readonly: bool = False,
     ) -> list:
         selected_folder = source_folder or self.selected_folder
         folders = self.get_folder_list(subdirectory=selected_folder)
@@ -569,8 +572,8 @@ class ImapSmtp:
         for f in folders:
             if "Noselect" in f["flags"]:
                 continue
-            self.select_folder(f["name"])
-            self._search_message(criterion, f["name"], actions, limit, result)
+            self.select_folder(f["name"], readonly)
+            self._search_message(criterion, actions, limit, result)
 
         if limit is None or len(result["uids"]) <= limit:
             for mail in result["uids"].items():
@@ -585,7 +588,7 @@ class ImapSmtp:
                     result["actions_done"] += 1
         return result
 
-    def _search_message(self, criterion, folder_name, actions, limit, result):
+    def _search_message(self, criterion, actions, limit, result):
         status, data = self.imap_conn.search(None, "(" + criterion + ")")
         if status == "OK":
             mail_id_data = bytes.decode(data[0])
@@ -596,9 +599,7 @@ class ImapSmtp:
                 result["message_count"] += len(mail_ids)
                 result["ids"].extend(mail_ids)
                 for mail_id in mail_ids:
-                    mail_uid, message = self._fetch_uid_and_body(
-                        folder_name, mail_id, actions
-                    )
+                    mail_uid, message = self._fetch_uid_and_body(mail_id, actions)
                     if mail_uid is None or mail_uid in result["uids"].keys():
                         continue
                     result["uids"][mail_uid] = message
@@ -716,11 +717,15 @@ class ImapSmtp:
         return result["actions_done"] == result["message_count"]
 
     @imap_connection
-    def list_messages(self, criterion: str = "", source_folder: str = None) -> Any:
+    def list_messages(
+        self, criterion: str = "", source_folder: str = None, readonly: bool = True
+    ) -> Any:
         """Return list of messages matching criterion.
 
         :param criterion: list emails matching this, defaults to ""
-        :return: list of messages or False
+        :param source_folder: list messages from this folder
+        :param readonly: set False if you want to mark matching messages as read
+        :return: list of messages
 
         Example:
 
@@ -738,7 +743,10 @@ class ImapSmtp:
         """
         self.logger.info("List messages: %s", criterion)
         result = self._do_actions_on_messages(
-            criterion, source_folder=source_folder, actions=[Action.msg_list]
+            criterion,
+            source_folder=source_folder,
+            actions=[Action.msg_list],
+            readonly=readonly,
         )
         values = result["uids"].values()
         converted = []
@@ -845,14 +853,19 @@ class ImapSmtp:
 
     @imap_connection
     def wait_for_message(
-        self, criterion: str = "", timeout: float = 5.0, interval: float = 1.0
+        self,
+        criterion: str = "",
+        timeout: float = 5.0,
+        interval: float = 1.0,
+        readonly: bool = True,
     ) -> Any:
         """Wait for email matching `criterion` to arrive into mailbox.
 
         :param criterion: message filter to wait for, defaults to ""
         :param timeout: total time in seconds to wait for email, defaults to 5.0
         :param interval: time in seconds for new check, defaults to 1.0
-        :return: list of messages or False
+        :param readonly: set False if you want to mark matching messages as read
+        :return: list of messages
 
         Example:
 
@@ -863,14 +876,17 @@ class ImapSmtp:
         self._validate_criterion(criterion)
         end_time = time.time() + float(timeout)
         while time.time() < end_time:
-            self.imap_conn.select("inbox")
+            self.imap_conn.select("inbox", readonly)
             result = self._do_actions_on_messages(
-                criterion, actions=[Action.msg_list], source_folder="INBOX"
+                criterion,
+                actions=[Action.msg_list],
+                source_folder="INBOX",
+                readonly=readonly,
             )
             if result["message_count"] > 0:
                 return result["uids"].values()
             time.sleep(interval)
-        return False
+        return []
 
     def _parse_folders(self, folders):
         parsed_folders = []
@@ -912,10 +928,11 @@ class ImapSmtp:
             return []
 
     @imap_connection
-    def select_folder(self, folder_name: str = "INBOX") -> int:
+    def select_folder(self, folder_name: str = "INBOX", readonly: bool = False) -> int:
         """Select folder by name
 
         :param folder_name: name of the folder to select
+        :param readonly: if set to True then message flags are not modified
         :return: message count in the selected folder
 
         Returns number of messages in the folder or
@@ -928,7 +945,7 @@ class ImapSmtp:
             Select Folder   subfolder
         """
         status_code, data = self.imap_conn.select(
-            mailbox=f'"{folder_name}"', readonly=False
+            mailbox=f'"{folder_name}"', readonly=readonly
         )
         if status_code == "OK":
             message_count = bytes.decode(data[0])
@@ -1100,15 +1117,13 @@ class ImapSmtp:
         if criterion is None or len(criterion) < 1:
             raise KeyError("Criterion is required parameter")
 
-    def _fetch_uid_and_body(self, folder_name, mail_id, actions):
+    def _fetch_uid_and_body(self, mail_id, actions):
         body = None
-        self.select_folder(folder_name)
         _, data = self.imap_conn.fetch(mail_id, "(UID RFC822)")
-        pattern_uid = re.compile(r"\d+ \(UID (?P<uid>\d+) RFC822")
-        match_result = (
-            None if data[0] is None else pattern_uid.match(bytes.decode(data[0][0]))
-        )
-        uid = None if match_result is None else match_result.group("uid")
+        pattern_uid = re.compile(r".*?UID (\d+). RFC822")
+        decoded_data = bytes.decode(data[0][0]) if data[0] else None
+        match_result = pattern_uid.match(decoded_data) if decoded_data else None
+        uid = match_result.group(1) if match_result else None
         if uid:
             body = self._fetch_body(mail_id, data, actions)
         return uid, body
