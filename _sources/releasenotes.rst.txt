@@ -1,6 +1,17 @@
 Release notes
 =============
 
+10.9.1
+------
+
+- Library **RPA.Email.ImapSmtp**:
+
+  - Fix ``List Messages`` error not returning matching emails
+  - Fix marking emails as SEEN when using ``List Messages`` or ``Wait For Message``
+  - Add ``encoding`` library initialization parameter (default is ``utf-8`` as it used to be)
+  - Add ``readonly`` parameter to keywords ``List Messages`` (True), ``Wait For Message`` (True) and ``Select Folder`` (False)
+    default values are in the parenthesis
+
 10.9.0
 ------
 

@@ -284,7 +284,7 @@
 
 <dl class="class">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">ImapSmtp</code><span class="sig-paren">(</span><em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">smtp_port: int = 587</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">imap_port: int = 993</em>, <em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Email.ImapSmtp.</code><code class="sig-name descname">ImapSmtp</code><span class="sig-paren">(</span><em class="sig-param">smtp_server: str = None</em>, <em class="sig-param">smtp_port: int = 587</em>, <em class="sig-param">imap_server: str = None</em>, <em class="sig-param">imap_port: int = 993</em>, <em class="sig-param">account: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">encoding: str = 'utf-8'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p><cite>ImapSmtp</cite> is a library for sending, reading, and deleting emails.
 <cite>ImapSmtp</cite> is interfacing with SMTP and IMAP protocols.</p>
@@ -632,14 +632,18 @@ source folder</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.list_messages">
-<code class="sig-name descname">list_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">source_folder: str = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.list_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">list_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">source_folder: str = None</em>, <em class="sig-param">readonly: bool = True</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.list_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return list of messages matching criterion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>criterion</strong> – list emails matching this, defaults to “”</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>criterion</strong> – list emails matching this, defaults to “”</p></li>
+<li><p><strong>source_folder</strong> – list messages from this folder</p></li>
+<li><p><strong>readonly</strong> – set False if you want to mark matching messages as read</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of messages or False</p>
+<dd class="field-even"><p>list of messages</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -840,11 +844,14 @@ with attachment files.</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.select_folder">
-<code class="sig-name descname">select_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = 'INBOX'</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.select_folder" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">select_folder</code><span class="sig-paren">(</span><em class="sig-param">folder_name: str = 'INBOX'</em>, <em class="sig-param">readonly: bool = False</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.select_folder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select folder by name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>folder_name</strong> – name of the folder to select</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_name</strong> – name of the folder to select</p></li>
+<li><p><strong>readonly</strong> – if set to True then message flags are not modified</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>message count in the selected folder</p>
@@ -935,7 +942,7 @@ exception if folder does not exist on the server.</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.wait_for_message">
-<code class="sig-name descname">wait_for_message</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">timeout: float = 5.0</em>, <em class="sig-param">interval: float = 1.0</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.wait_for_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wait_for_message</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">timeout: float = 5.0</em>, <em class="sig-param">interval: float = 1.0</em>, <em class="sig-param">readonly: bool = True</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.wait_for_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait for email matching <cite>criterion</cite> to arrive into mailbox.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -943,10 +950,11 @@ exception if folder does not exist on the server.</p>
 <li><p><strong>criterion</strong> – message filter to wait for, defaults to “”</p></li>
 <li><p><strong>timeout</strong> – total time in seconds to wait for email, defaults to 5.0</p></li>
 <li><p><strong>interval</strong> – time in seconds for new check, defaults to 1.0</p></li>
+<li><p><strong>readonly</strong> – set False if you want to mark matching messages as read</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of messages or False</p>
+<dd class="field-even"><p>list of messages</p>
 </dd>
 </dl>
 <p>Example:</p>
