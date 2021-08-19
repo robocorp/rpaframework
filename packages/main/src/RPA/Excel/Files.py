@@ -673,9 +673,8 @@ class XlsxWorkbook:
         self._book = openpyxl.Workbook()
         self._extension = None
 
-    def open(self, path=None):
+    def open(self, path=None, read_only=False, write_only=False):
         path = path or self.path
-
         if not path:
             raise ValueError("No path defined for workbook")
 
@@ -684,11 +683,20 @@ class XlsxWorkbook:
         except TypeError:
             extension = None
 
-        if extension in (".xlsm", ".xltm"):
-            self._book = openpyxl.load_workbook(filename=path, keep_vba=True)
-        else:
-            self._book = openpyxl.load_workbook(filename=path)
+        options = {"filename": path}
 
+        # Only set mode arguments if truthy, otherwise openpyxl complains
+        if read_only and write_only:
+            raise ValueError("Unable to use both write_only and read_only mode")
+        elif read_only:
+            options["read_only"] = True
+        elif write_only:
+            options["write_only"] = True
+
+        if extension in (".xlsm", ".xltm"):
+            options["keep_vba"] = True
+
+        self._book = openpyxl.load_workbook(**options)
         self._extension = extension
 
     def close(self):
@@ -911,17 +919,25 @@ class XlsWorkbook:
 
         self._extension = None
 
-    def open(self, path_or_file=None):
-        path_or_file = path_or_file or self.path
+    def open(self, path=None, read_only=False, write_only=False):
+        path = path or self.path
+        if not path:
+            raise ValueError("No path defined for workbook")
+
+        try:
+            extension = pathlib.Path(path).suffix
+        except TypeError:
+            extension = None
 
         options = {"on_demand": True, "formatting_info": True}
 
-        if hasattr(path_or_file, "read"):
-            options["file_contents"] = path_or_file.read()
-            extension = None
+        if read_only or write_only:
+            self.logger.info("Modes read_only/write_only not supported with .xls")
+
+        if hasattr(path, "read"):
+            options["file_contents"] = path.read()
         else:
-            options["filename"] = path_or_file
-            extension = pathlib.Path(path_or_file).suffix
+            options["filename"] = path
 
         self._book = xlrd.open_workbook(**options)
         self._extension = extension
