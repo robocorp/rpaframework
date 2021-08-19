@@ -730,6 +730,7 @@ class XlsxWorkbook:
         else:
             columns = [get_column_letter(i + 1) for i in range(sheet.max_column)]
 
+        columns = [str(value) if value is not None else value for value in columns]
         columns = ensure_unique(columns)
 
         data = []
@@ -988,13 +989,13 @@ class XlsWorkbook:
             return []
 
         if header:
-            columns = [
-                cell.value if cell.value != "" else None for cell in sheet.row(start)
-            ]
+            columns = [self._parse_type(cell) for cell in sheet.row(start)]
             start += 1
         else:
             columns = [get_column_letter(i + 1) for i in range(sheet.ncols)]
 
+        columns = [value if value != "" else None for value in columns]
+        columns = [str(value) if value is not None else value for value in columns]
         columns = ensure_unique(columns)
 
         data = []
