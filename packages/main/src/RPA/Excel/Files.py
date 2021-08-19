@@ -713,6 +713,9 @@ class XlsxWorkbook:
         sheet = self._book[name]
         start = self._to_index(start)
 
+        if start >= sheet.max_row:
+            return []
+
         if header:
             columns = [cell.value for cell in sheet[start]]
             start += 1
@@ -964,6 +967,9 @@ class XlsWorkbook:
         name = self._get_sheetname(name)
         sheet = self._book.sheet_by_name(name)
         start = self._to_index(start)
+
+        if start >= sheet.nrows:
+            return []
 
         if header:
             columns = [

@@ -183,6 +183,22 @@ def test_read_worksheet_as_table_start_offset_and_header(library):
     assert table[0, 2] == "Hashimoto"
 
 
+def test_read_worksheet_empty(library):
+    library.create_worksheet("Empty")
+
+    data = library.read_worksheet(header=False)
+    assert data == []
+
+    data_header = library.read_worksheet(header=True)
+    assert data_header == []
+
+    table = library.read_worksheet_as_table(header=False)
+    assert table.dimensions == (0, 0)
+
+    table_header = library.read_worksheet_as_table(header=True)
+    assert table_header.dimensions == (0, 0)
+
+
 def test_append_to_worksheet_headers(library):
     table = Table(
         [
