@@ -1,6 +1,14 @@
 Release notes
 =============
 
+10.9.3
+------
+
+- Library **RPA.Excel.Files**:
+
+  - Return empty list when reading empty worksheet (:issue:`203`)
+  - Correctly handle header names with non-string values
+
 10.9.2
 ------
 
