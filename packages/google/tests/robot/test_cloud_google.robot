@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation     Test script for RPA.Cloud.Google
-Library           RPA.Robocloud.Secrets
+Library           RPA.Robocorp.Vault
 Library           Collections
 Suite Setup       Init all Google Services
 Force Tags        skip

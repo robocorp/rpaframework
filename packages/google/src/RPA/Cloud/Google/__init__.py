@@ -20,6 +20,23 @@ from .keywords import (
 )
 
 
+def import_vault():
+    """Try to import Vault/Secrets library, with old and new name."""
+    try:
+        module = importlib.import_module("RPA.Robocorp.Vault")
+        return getattr(module, "Vault")
+    except ModuleNotFoundError:
+        pass
+
+    try:
+        module = importlib.import_module("RPA.Robocloud.Secrets")
+        return getattr(module, "Secrets")
+    except ModuleNotFoundError:
+        pass
+
+    return None
+
+
 class Google(DynamicCore):
     """`Google` is a library for operating with Google API endpoints.
 
@@ -227,12 +244,8 @@ class Google(DynamicCore):
             self.use_robocorp_vault = True
         if self.service_account_file is None:
             self.service_account_file = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-        try:
-            secrets_library = importlib.import_module("RPA.Robocloud.Secrets")
-            self.secrets_library = getattr(secrets_library, "Secrets")
+        self.secrets_library = import_vault()
 
-        except ModuleNotFoundError:
-            self.secrets_library = None
         # Register keyword libraries to LibCore
         libraries = [
             AppsScriptKeywords(self),

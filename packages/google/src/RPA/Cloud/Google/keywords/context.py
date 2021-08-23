@@ -16,9 +16,9 @@ except ModuleNotFoundError:
     BuiltIn = None
 
 try:
-    from RPA.Robocloud.Secrets import Secrets  # pylint: disable=no-name-in-module
+    from RPA.Robocorp.Vault import Vault  # pylint: disable=no-name-in-module
 except ModuleNotFoundError:
-    Secrets = None
+    Vault = None
 
 
 class ElementNotFound(ValueError):
@@ -68,13 +68,13 @@ class LibraryContext:
         return self.ctx.cloud_auth_type
 
     def get_secret_from_robocorp_vault(self, secret_type="serviceaccount"):
-        secret_library = Secrets
+        secret_library = Vault
         try:
             if secret_library is None and BuiltIn:
-                secret_library = BuiltIn().get_library_instance("RPA.Robocloud.Secrets")
+                secret_library = BuiltIn().get_library_instance("RPA.Robocorp.Vault")
         except RuntimeError as runtime_error:
             raise KeyError(
-                "RPA.Robocloud.Secrets library is required use Vault"
+                "RPA.Robocorp.Vault library is required to use Vault"
             ) from runtime_error
         temp_filedesc = None
         if (
@@ -83,7 +83,7 @@ class LibraryContext:
         ):
             raise KeyError(
                 "Both 'robocorp_vault_name' and 'robocorp_vault_secret_key' "
-                "are required to access Robocloud Vault. Set them in library "
+                "are required to access Robocorp Vault. Set them in library "
                 "init or with `set_robocloud_vault` keyword."
             )
         vault_items = secret_library().get_secret(self.ctx.robocorp_vault_name)
@@ -284,7 +284,7 @@ class LibraryContext:
         if cloud_auth_type == "serviceaccount":
             try:
                 self.logger.info(
-                    "Authenticating with service account file from Robocloud"
+                    "Authenticating with service account file from Robocorp Vault"
                 )
                 service_account_file = self.get_secret_from_robocorp_vault(
                     "serviceaccount"
@@ -294,7 +294,7 @@ class LibraryContext:
                 if service_account_file:
                     os.remove(service_account_file)
         else:
-            self.logger.info("Authenticating with oauth token file from Robocloud")
+            self.logger.info("Authenticating with oauth token file from Robocorp Vault")
             token = self.get_secret_from_robocorp_vault("token")
             credentials = pickle.loads(base64.b64decode(token))
             service = client_object(credentials=credentials)

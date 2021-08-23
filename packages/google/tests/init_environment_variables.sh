@@ -8,6 +8,6 @@ export GOOGLE_TEST_VAULT_NAME=<VAULT_NAME>
 export GOOGLE_TEST_VAULT_KEY=<VAULT_KEY>
 # token or serviceaccount
 export GOOGLE_TEST_AUTH_TYPE=<TYPE>
-export RPA_SECRET_MANAGER=RPA.Robocloud.Secrets.FileSecrets
+export RPA_SECRET_MANAGER=RPA.Robocorp.Vault.FileSecrets
 export RPA_SECRET_FILE=/Users/<USER>/secrets.json
 export GOOGLE_TEST_RESOURCE_DIR=/Users/<USER>/testdata
