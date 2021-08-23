@@ -9,7 +9,7 @@ from cryptography.hazmat.backends import default_backend
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 from RPA.RobotLogListener import RobotLogListener
-from RPA.Robocloud.Secrets import Secrets
+from RPA.Robocorp.Vault import Vault
 
 try:
     BuiltIn().import_library("RPA.RobotLogListener")
@@ -85,7 +85,7 @@ class Crypto:
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self):
-        self._secrets = Secrets()
+        self._vault = Vault()
         self._key = None
         listener = RobotLogListener()
         listener.register_protected_keywords(
@@ -139,7 +139,7 @@ class Crypto:
             # Secret with multiple values
             Use encryption key from vault    name=Encryption    key=CryptoKey
         """
-        secret = self._secrets.get_secret(name)
+        secret = self._vault.get_secret(name)
 
         if key:
             value = secret[key]

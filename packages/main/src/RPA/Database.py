@@ -144,7 +144,7 @@ class Database:
     .. code-block:: python
 
         from RPA.Database import Database
-        from RPA.Robocloud.Secrets import FileSecrets
+        from RPA.Robocorp.Vault import FileSecrets
 
         filesecrets = FileSecrets("secrets.json")
         secrets = filesecrets.get_secret("databasesecrets")

@@ -1,7 +1,7 @@
 *** Settings ***
 Library       RPA.Email.ImapSmtp
 Library       RPA.HTTP
-Library       RPA.Robocloud.Secrets
+Library       RPA.Robocorp.Vault
 Library       RPA.Tables
 Force tags    skip
 Task Setup    Init GMail

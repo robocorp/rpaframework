@@ -5,7 +5,7 @@ import time
 from typing import Any
 import requests
 
-from RPA.Robocloud.Secrets import Secrets
+from RPA.Robocorp.Vault import Vault
 
 DEFAULT_REGION = "northeurope"
 
@@ -99,7 +99,7 @@ class AzureBase:
         service_key = f"AZURE_{service_name.upper()}_KEY"
         sub_key = None
         if use_robocloud_vault:
-            vault = Secrets()
+            vault = Vault()
             vault_items = vault.get_secret(self.robocloud_vault_name)
             vault_items = {k.upper(): v for (k, v) in vault_items.items()}
             if service_key in vault_items and vault_items[service_key].strip() != "":
@@ -109,7 +109,7 @@ class AzureBase:
             if sub_key is None:
                 raise KeyError(
                     "The 'robocloud_vault_name' is required to access "
-                    "Robocloud Vault. Set them in library "
+                    "Robocorp Vault. Set them in library "
                     "init or with `set_robocloud_vault` keyword."
                 )
         else:
@@ -172,9 +172,9 @@ class AzureBase:
             raise KeyError("Parameter 'image_url' or 'image_file' must be given.")
 
     def set_robocloud_vault(self, vault_name):
-        """Set Robocloud Vault name
+        """Set Robocorp Vault name
 
-        :param vault_name: Robocloud Vault name
+        :param vault_name: Robocorp Vault name
         """
         if vault_name:
             self.robocloud_vault_name = vault_name
@@ -195,7 +195,7 @@ class ServiceTextAnalytics(AzureBase):
         """Initialize Azure Text Analyticts
 
         :param region: identifier for service region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocloud_vault: use secret stored into `Robocorp Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
@@ -286,7 +286,7 @@ class ServiceFace(AzureBase):
         """Initialize Azure Face
 
         :param region: identifier for service region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocloud_vault: use secret stored into `Robocorp Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
@@ -363,7 +363,7 @@ class ServiceComputerVision(AzureBase):
         """Initialize Azure Computer Vision
 
         :param region: identifier for service region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocloud_vault: use secret stored into `Robocorp Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
@@ -482,7 +482,7 @@ class ServiceSpeech(AzureBase):
         """Initialize Azure Speech
 
         :param region: identifier for service region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        :param use_robocloud_vault: use secret stored into `Robocorp Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.tts.speech.microsoft.com"
@@ -607,7 +607,7 @@ class Azure(ServiceTextAnalytics, ServiceFace, ServiceComputerVision, ServiceSpe
     - Method 1 as environment variables, either service specific environment variable
       for example ``AZURE_TEXTANALYTICS_KEY`` or with common key ``AZURE_SUBSCRIPTION_KEY`` which
       will be used for all the services.
-    - Method 2 as Robocloud vault secret. The vault name needs to be given in library init or
+    - Method 2 as Robocorp Vault secret. The vault name needs to be given in library init or
       with keyword ``Set Robocloud Vault``. Secret keys are expected to match environment variable
       names.
 

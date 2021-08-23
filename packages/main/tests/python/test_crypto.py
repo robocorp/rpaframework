@@ -7,7 +7,7 @@ from contextlib import contextmanager
 import mock
 import pytest
 from RPA.Crypto import Crypto, Hash
-from RPA.Robocloud.Secrets import Secret
+from RPA.Robocorp.Vault import Secret
 
 
 @contextmanager
@@ -164,53 +164,53 @@ def test_encrypt_file_suffix():
 
 def test_set_key_vault_no_key():
     lib = Crypto()
-    lib._secrets = mock_secrets = mock.Mock()
+    lib._vault = mock_vault = mock.Mock()
 
     key = lib.generate_key()
-    mock_secrets.get_secret.return_value = Secret("MockSecret", "", {"key": key})
+    mock_vault.get_secret.return_value = Secret("MockSecret", "", {"key": key})
 
     lib.use_encryption_key_from_vault("SomeKeyValue")
-    assert mock_secrets.get_secret.called_once_with("SomeKeyValue")
+    assert mock_vault.get_secret.called_once_with("SomeKeyValue")
     assert lib._key is not None
 
 
 def test_set_key_vault_key():
     lib = Crypto()
-    lib._secrets = mock_secrets = mock.Mock()
+    lib._vault = mock_vault = mock.Mock()
 
     key = lib.generate_key()
-    mock_secrets.get_secret.return_value = Secret(
+    mock_vault.get_secret.return_value = Secret(
         "MockSecret", "", {"first": "something", "second": key}
     )
 
     lib.use_encryption_key_from_vault("SomeKeyValue", "second")
-    assert mock_secrets.get_secret.called_once_with("SomeKeyValue")
+    assert mock_vault.get_secret.called_once_with("SomeKeyValue")
     assert lib._key is not None
 
 
 def test_set_key_vault_error_multiple():
     lib = Crypto()
-    lib._secrets = mock_secrets = mock.Mock()
+    lib._vault = mock_vault = mock.Mock()
 
     key = lib.generate_key()
-    mock_secrets.get_secret.return_value = Secret(
+    mock_vault.get_secret.return_value = Secret(
         "MockSecret", "", {"first": "something", "second": key}
     )
 
     with pytest.raises(ValueError):
         lib.use_encryption_key_from_vault("SomeKeyValue")
-    assert mock_secrets.get_secret.called_once_with("SomeKeyValue")
+    assert mock_vault.get_secret.called_once_with("SomeKeyValue")
     assert lib._key is None
 
 
 def test_set_key_vault_error_empty():
     lib = Crypto()
-    lib._secrets = mock_secrets = mock.Mock()
+    lib._vault = mock_vault = mock.Mock()
 
     key = lib.generate_key()
-    mock_secrets.get_secret.return_value = Secret("MockSecret", "", {})
+    mock_vault.get_secret.return_value = Secret("MockSecret", "", {})
 
     with pytest.raises(ValueError):
         lib.use_encryption_key_from_vault("SomeKeyValue")
-    assert mock_secrets.get_secret.called_once_with("SomeKeyValue")
+    assert mock_vault.get_secret.called_once_with("SomeKeyValue")
     assert lib._key is None

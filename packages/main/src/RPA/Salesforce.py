@@ -132,7 +132,7 @@ class Salesforce:
 
         import pprint
         from RPA.Salesforce import Salesforce
-        from RPA.Robocloud.Secrets import FileSecrets
+        from RPA.Robocorp.Vault import FileSecrets
 
         pp = pprint.PrettyPrinter(indent=4)
         filesecrets = FileSecrets("secrets.json")

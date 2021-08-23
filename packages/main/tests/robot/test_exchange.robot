@@ -1,6 +1,6 @@
 *** Settings ***
 Library       RPA.Email.Exchange
-Library       RPA.Robocloud.Secrets
+Library       RPA.Robocorp.Vault
 Library       RPA.Tables
 Force tags    skip
 

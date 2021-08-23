@@ -104,8 +104,9 @@ class ImapSmtp:
     **Robot Framework**
 
     It is highly recommended to secure your passwords and take care
-    that they are not stored in the version control by mistake.
-    See ``RPA.Robocloud.Secrets`` how to store RPA Secrets into Robocloud.
+    that they are not stored in version control by mistake.
+    See ``RPA.Robocorp.Vault`` to see how to store secrets in
+    Robocorp Vault.
 
     When sending HTML content with IMG tags, the ``src`` filenames must match
     the base image name given with the ``images`` parameter.
