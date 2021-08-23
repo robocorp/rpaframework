@@ -73,6 +73,7 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 		--exclude RPA.PDF.keywords*\
 		--exclude RPA.Cloud.objects*\
 		--exclude RPA.Cloud.Google.keywords*\
+		--exclude RPA.Robocorp.utils*\
 		--exclude RPA.Dialogs.*\
 		rpaframework
 
@@ -90,6 +91,7 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 		--exclude RPA.PDF.keywords*\
 		--exclude RPA.Cloud.objects*\
 		--exclude RPA.Cloud.Google.keywords*\
+		--exclude RPA.Robocorp.utils*\
 		--exclude RPA.Dialogs.*\
 		rpaframework
 
