@@ -2,11 +2,7 @@
 Python API
 ##########
 
-********
-Secrets
-********
-
-.. automodule:: RPA.Robocloud.Secrets
+.. automodule:: RPA.Robocorp.WorkItems
    :members:
    :inherited-members:
    :undoc-members:
