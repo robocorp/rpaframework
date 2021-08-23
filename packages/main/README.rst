@@ -21,7 +21,7 @@ Learn more about RPA at `Robocorp Documentation`_.
 
 - 100% Open Source
 - Sponsored by Robocorp_
-- Optimized for `Robocorp Cloud`_ and `Robocorp Lab`_
+- Optimized for Robocorp `Control Room`_ and `Developer Tools`_
 - Accepting external contributions
 
 .. _Robot Framework: https://robotframework.org
@@ -29,8 +29,8 @@ Learn more about RPA at `Robocorp Documentation`_.
 .. _Python: https://python.org
 .. _Robocorp: https://robocorp.com
 .. _Robocorp Documentation: https://robocorp.com/docs/
-.. _Robocorp Cloud: https://robocorp.com/docs/product-manuals/robocorp-cloud/robocorp-cloud
-.. _Robocorp Lab: https://robocorp.com/docs/product-manuals/robocorp-lab/robocorp-lab-overview
+.. _Control Room: https://robocorp.com/docs/control-room
+.. _Developer Tools: https://robocorp.com/docs/developer-tools
 
 Links
 ^^^^^
@@ -134,9 +134,9 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `PDF`_                     | Read and create PDF documents                |
 +----------------------------+----------------------------------------------+
-| `Robocloud.Items`_         | Use the Robocloud Work Items API             |
+| `Robocorp.WorkItems`_      | Use the Robocorp Work Items API              |
 +----------------------------+----------------------------------------------+
-| `Robocloud.Secrets`_       | Use the Robocloud Secrets API                |
+| `Robocorp.Vault`_          | Use the Robocorp Secrets API                 |
 +----------------------------+----------------------------------------------+
 | `Salesforce`_              | Salesforce operations                        |
 +----------------------------+----------------------------------------------+
@@ -177,8 +177,8 @@ The RPA Framework project currently includes the following libraries:
 .. _Notifier: https://rpaframework.org/libraries/notifier/
 .. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
 .. _PDF: https://rpaframework.org/libraries/pdf/
-.. _Robocloud.Items: https://rpaframework.org/libraries/robocloud_items/
-.. _Robocloud.Secrets: https://rpaframework.org/libraries/robocloud_secrets/
+.. _Robocorp.WorkItems: https://rpaframework.org/libraries/robocorp_workitems/
+.. _Robocorp.Vault: https://rpaframework.org/libraries/robocorp_vault/
 .. _Salesforce: https://rpaframework.org/libraries/salesforce/
 .. _SAP: https://rpaframework.org/libraries/sap/
 .. _Tables: https://rpaframework.org/libraries/tables/
