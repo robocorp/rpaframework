@@ -129,7 +129,7 @@ class RobotLogListener:
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
     ROBOT_LISTENER_API_VERSION = 2
 
-    KEYWORDS_TO_PROTECT = ["rpa.robocloud.secrets."]
+    KEYWORDS_TO_PROTECT = ["rpa.robocloud.secrets.", "rpa.robocorp.vault."]
     KEYWORDS_TO_MUTE = []
     INFO_LEVEL_KEYWORDS = []
 

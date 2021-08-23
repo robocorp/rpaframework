@@ -68,7 +68,7 @@ def required_param(param_name: Any = None, method_name: str = None):
 def import_by_name(name: str, caller: str = None) -> Any:
     """Import module (or attribute) by name.
 
-    :param name: Import path, e.g. RPA.WorkItems.RobocloudAdapter
+    :param name: Import path, e.g. RPA.Robocorp.WorkItems.RobocorpAdapter
     """
     name = str(name)
 
