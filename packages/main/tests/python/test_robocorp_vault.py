@@ -13,13 +13,13 @@ from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.serialization import load_der_public_key
 
-from RPA.Robocloud.Secrets import (
-    Secrets,
+from RPA.Robocorp.Vault import (
+    Vault,
     Secret,
-    RobocloudVault,
+    RobocorpVault,
     FileSecrets,
     BaseSecretManager,
-    RobocloudVaultError,
+    RobocorpVaultError,
 )
 
 RESOURCES = Path(__file__).parent / ".." / "resources"
@@ -60,26 +60,26 @@ def mock_env_vault(monkeypatch):
 
 
 def test_secrets_vault_as_default(mock_env_default, mock_env_vault):
-    library = Secrets()
-    assert isinstance(library.adapter, RobocloudVault)
+    library = Vault()
+    assert isinstance(library.adapter, RobocorpVault)
 
 
 def test_secrets_vault_missing_token(mock_env_default, mock_env_vault, monkeypatch):
     monkeypatch.delenv("RC_API_SECRET_TOKEN", raising=False)
-    library = Secrets()
+    library = Vault()
     with pytest.raises(KeyError):
         _ = library.adapter
 
 
 def test_secrets_custom_adapter_arguments(mock_env_default):
-    library = Secrets("pos-value", key="key-value", default_adapter=MockAdapter)
+    library = Vault("pos-value", key="key-value", default_adapter=MockAdapter)
     library.get_secret("not-relevant")  # Adapter created on first request
     assert MockAdapter.args == (("pos-value",), {"key": "key-value"})
 
 
 def test_secrets_custom_adapter_get_secret(mock_env_default):
     MockAdapter.value = "mock-secret"
-    library = Secrets(default_adapter=MockAdapter)
+    library = Vault(default_adapter=MockAdapter)
     assert library.get_secret("mock-name") == "mock-secret"
     assert MockAdapter.name == "mock-name"
 
@@ -87,12 +87,12 @@ def test_secrets_custom_adapter_get_secret(mock_env_default):
 def test_secrets_adapter_missing_import(monkeypatch):
     monkeypatch.setenv("RPA_SECRET_MANAGER", "RPA.AdapterNotExist")
     with pytest.raises(ValueError):
-        Secrets()
+        Vault()
 
 
 def test_secrets_adapter_invalid_baseclass(mock_env_default):
     with pytest.raises(ValueError):
-        Secrets(default_adapter=InvalidBaseClass)
+        Vault(default_adapter=InvalidBaseClass)
 
 
 def test_secret_properties():
@@ -224,7 +224,7 @@ def test_adapter_filesecrets_unknown_secret(monkeypatch):
         secret = adapter.get_secret("not-exist")
 
 
-@mock.patch("RPA.Robocloud.Secrets.requests")
+@mock.patch("RPA.Robocorp.Vault.requests")
 def test_adapter_vault_request(mock_requests, mock_env_default, mock_env_vault):
     mock_requests.get.return_value.json.return_value = {
         "name": "mock-name",
@@ -239,7 +239,7 @@ def test_adapter_vault_request(mock_requests, mock_env_default, mock_env_vault):
         payload["values"] = payload.pop("value")
         return payload
 
-    adapter = RobocloudVault()
+    adapter = RobocorpVault()
     adapter._decrypt_payload = mock_decrypt
 
     secret = adapter.get_secret("mock-name")
@@ -257,12 +257,12 @@ def test_adapter_vault_request(mock_requests, mock_env_default, mock_env_vault):
     )
 
 
-@mock.patch("RPA.Robocloud.Secrets.requests")
+@mock.patch("RPA.Robocorp.Vault.requests")
 def test_adapter_vault_error(mock_requests, mock_env_vault):
     mock_requests.get.side_effect = RuntimeError("Some request error")
 
-    adapter = RobocloudVault()
-    with pytest.raises(RobocloudVaultError):
+    adapter = RobocorpVault()
+    with pytest.raises(RobocorpVaultError):
         adapter.get_secret("mock-name")
 
 
@@ -276,7 +276,7 @@ def test_adapter_vault_encryption(mock_env_vault):
     ct_data = aesgcm.encrypt(binascii.hexlify(nonce), data, b"")
 
     # Cloud uses client-supplied public key to encrypt symmetric key
-    adapter = RobocloudVault()
+    adapter = RobocorpVault()
     public_key = load_der_public_key(
         base64.b64decode(adapter._public_bytes), default_backend()
     )
