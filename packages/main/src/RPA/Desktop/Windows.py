@@ -13,10 +13,12 @@ from typing import Any, Optional
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
+from RPA.Desktop import Desktop
 from RPA.Desktop.Clipboard import Clipboard
 from RPA.Desktop.OperatingSystem import OperatingSystem
-from RPA.Images import Images
 from RPA.core.helpers import delay, clean_filename
+from RPA.core.geometry import Region
+from RPA.core.locators import ImageLocator
 
 
 if platform.system() == "Windows":
@@ -944,7 +946,7 @@ class Windows(OperatingSystem):
         method: str = "locator",
         ctype: str = "click",
         focus: str = "center",
-        **kwargs,
+        tolerance: Optional[int] = None,
     ) -> None:
         # pylint: disable=C0301
         """Mouse click `locator`, `coordinates`, or `image`
@@ -968,10 +970,7 @@ class Windows(OperatingSystem):
         :param ctype: type of mouse click
         :param focus: default point for element click is 'center', can be set to 'topleft'
          to click top left corner of the element
-        :param kwargs: these keyword arguments can be used to pass arguments
-         to underlying `Images` library to finetune image template matching,
-         for example. `tolerance=0.5` would adjust image tolerance for the image
-         matching
+        :param tolerance: image matching tolerance between 0 and 1
 
         Example:
 
@@ -1012,7 +1011,7 @@ class Windows(OperatingSystem):
         elif method == "coordinates":
             self.mouse_click_coords(x, y, ctype)
         elif method == "image":
-            self.mouse_click_image(image, off_x, off_y, ctype, **kwargs)
+            self.mouse_click_image(image, off_x, off_y, ctype, tolerance)
 
     def mouse_click_image(
         self,
@@ -1020,7 +1019,7 @@ class Windows(OperatingSystem):
         off_x: int = 0,
         off_y: int = 0,
         ctype: str = "click",
-        **kwargs,
+        tolerance: Optional[float] = None,
     ) -> None:
         """Click at template image on desktop
 
@@ -1028,10 +1027,7 @@ class Windows(OperatingSystem):
         :param off_x: horizontal offset from top left corner to click on
         :param off_y: vertical offset from top left corner to click on
         :param ctype: type of mouse click
-        :param kwargs: these keyword arguments can be used to pass arguments
-         to underlying `Images` library to finetune image template matching,
-         for example. `tolerance=0.5` would adjust image tolerance for the image
-         matching
+        :param tolerance: matching tolerance between 0 and 1
 
         Example:
 
@@ -1041,12 +1037,13 @@ class Windows(OperatingSystem):
             Mouse Click  image=myimage.png  tolerance=0.8
 
         """
-        matches = Images().find_template_on_screen(template, limit=1, **kwargs)
+        confidence = tolerance * 100.0 if tolerance is not None else None
+        locator = ImageLocator(template, confidence=confidence)
 
-        center_x = matches[0].center.x + int(off_x)
-        center_y = matches[0].center.y + int(off_y)
+        match = Desktop().find_element(locator)
 
-        self.click_type(center_x, center_y, ctype)
+        target = match.center.move(off_x, off_y)
+        self.click_type(target.x, target.y, ctype)
 
     def mouse_click_coords(
         self, x: int, y: int, ctype: str = "click", delay_time: float = None
@@ -1592,7 +1589,7 @@ class Windows(OperatingSystem):
         element: dict = None,
         ctrl: Any = None,
         desktop: bool = False,
-        overwrite: bool = False,
+        overwrite: bool = True,
     ) -> None:
         """Save screenshot into filename.
 
@@ -1600,7 +1597,7 @@ class Windows(OperatingSystem):
         :param element: take element screenshot, defaults to None
         :param ctrl: take control screenshot, defaults to None
         :param desktop: take desktop screenshot if True, defaults to False
-        :param overwrite: file is overwritten if True, defaults to False
+        :param overwrite: overwrite existing image (deprecated, always True)
 
         Example:
 
@@ -1612,6 +1609,8 @@ class Windows(OperatingSystem):
             Screenshot   desktop.png   desktop=True  overwrite=True
 
         """
+        del overwrite  # Always overwrite
+
         if desktop:
             region = None
         elif element:
@@ -1621,23 +1620,16 @@ class Windows(OperatingSystem):
         else:
             region = self.get_dialog_rectangle()
 
-        if region:
-            left, top, right, bottom = region
-            if right - left == 0 or bottom - top == 0:
-                self.logger.info(
-                    "Unable to take screenshot, because regions was: %s", region
-                )
-                return
+        if region is not None:
+            region = Region(*region)
+
         try:
-            output_dir = BuiltIn().get_variable_value("${OUTPUT_DIR}")
+            dirname = BuiltIn().get_variable_value("${OUTPUT_DIR}")
         except (ModuleNotFoundError, RobotNotRunningError):
-            output_dir = Path.cwd()
+            dirname = Path.cwd()
 
-        filename = Path(output_dir, "images", clean_filename(filename))
-        os.makedirs(filename.parent, exist_ok=overwrite)
-        Images().take_screenshot(filename=filename, region=region)
-
-        self.logger.info("Saved screenshot as '%s'", filename)
+        path = Path(dirname, "images", clean_filename(filename))
+        path = Desktop().take_screenshot(path=path, region=region)
 
     def _parse_element_attributes(self, element: dict) -> dict:
         """Return filtered element dictionary for an element.
