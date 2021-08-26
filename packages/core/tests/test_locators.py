@@ -32,13 +32,13 @@ def to_stream(data):
 
 @contextmanager
 def temp_cwd():
-    cwd = os.getcwd()
-    try:
-        with tempfile.TemporaryDirectory() as tmp:
+    with tempfile.TemporaryDirectory() as tmp:
+        cwd = os.getcwd()
+        try:
             os.chdir(tmp)
             yield tmp
-    finally:
-        os.chdir(cwd)
+        finally:
+            os.chdir(cwd)
 
 
 LEGACY = [
