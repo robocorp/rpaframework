@@ -17,7 +17,8 @@ def open_stream(obj, *args, **kwargs):
     try:
         is_open = False
         if not isinstance(obj, io.IOBase):
-            # pylint: disable=consider-using-with
+            # pylint: disable=consider-using-with,unspecified-encoding
+            kwargs.setdefault("encoding", "utf-8")
             obj = open(obj, *args, **kwargs)
             is_open = True
 
