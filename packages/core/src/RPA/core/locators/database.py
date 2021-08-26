@@ -74,7 +74,6 @@ class LocatorsDatabase:
         database.load()
 
         if database.error:
-            assert False
             error_msg, error_args = database.error
             raise ValueError(error_msg % error_args)
 
