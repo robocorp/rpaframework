@@ -1,7 +1,10 @@
 import copy
 import io
 import json
+import os
+import tempfile
 import pytest
+from contextlib import contextmanager
 from pathlib import Path
 
 from RPA.core.locators import (
@@ -25,6 +28,17 @@ from RPA.core.locators import (
 
 def to_stream(data):
     return io.StringIO(json.dumps(data))
+
+
+@contextmanager
+def temp_cwd():
+    cwd = os.getcwd()
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            os.chdir(tmp)
+            yield tmp
+    finally:
+        os.chdir(cwd)
 
 
 LEGACY = [
@@ -368,3 +382,70 @@ class TestDatabase:
             "/example/root/path/relative/locator/path.png"
         )
         assert Path(locator.source) == Path("/absolute/locator/path.png")
+
+    def test_migrate_screenshot(self):
+        content = copy.deepcopy(CURRENT)
+        content["RobotSpareBin.Username"]["screenshot"] = "not-exist.png"
+        content["RobotSpareBin.Password"]["screenshot"] = (
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAA"
+            "AACklEQVR42mMAAQAABQABoIJXOQAAAABJRU5ErkJggg=="
+        )
+
+        with temp_cwd() as cwd:
+            images = Path(cwd) / ".images"
+            screenshot_username = images / "robotsparebin-username-screenshot.png"
+            screenshot_password = images / "robotsparebin-password-screenshot.png"
+
+            database = LocatorsDatabase(to_stream(content))
+            database.load()
+
+            assert database.error is None
+            assert len(database.locators) == 4
+
+            assert images.is_dir()
+            assert not (screenshot_username).is_file()
+            assert (screenshot_password).is_file()
+
+            username = database.locators["RobotSpareBin.Username"]
+            assert username.screenshot == "not-exist.png"
+
+            password = database.locators["RobotSpareBin.Password"]
+            assert password.screenshot == str(screenshot_password.relative_to(cwd))
+
+    def test_load_by_name(self):
+        with temp_cwd() as cwd:
+            path = Path(cwd) / "locators.json"
+            with open(path, "w") as fd:
+                fd.write(json.dumps(CURRENT))
+
+            locator = LocatorsDatabase.load_by_name("RobotSpareBin.Password")
+            assert isinstance(locator, BrowserLocator)
+            assert locator.strategy == "id"
+            assert locator.value == "password"
+
+    def test_load_by_name_invalid_path(self):
+        with pytest.raises(ValueError):
+            LocatorsDatabase.load_by_name("RobotSpareBin.Password", "no-exist.json")
+
+    def test_load_by_name_invalid_name(self):
+        with temp_cwd() as cwd:
+            path = Path(cwd) / "locators.json"
+            with open(path, "w") as fd:
+                fd.write(json.dumps(CURRENT))
+
+            with pytest.raises(ValueError):
+                LocatorsDatabase.load_by_name("RobotSpareBin.Paswerd")
+
+    def test_save(self):
+        stream = to_stream(CURRENT)
+        database = LocatorsDatabase(stream)
+        database.load()
+
+        stream.truncate(0)
+        stream.seek(0)
+        database.locators["RobotSpareBin.Password"].value = "paswerd"
+        database.save()
+
+        data = stream.getvalue()
+        content = json.loads(data)
+        assert content["RobotSpareBin.Password"]["value"] == "paswerd"
