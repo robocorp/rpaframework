@@ -203,14 +203,17 @@ class LocatorsDatabase:
         if not isinstance(locator, BrowserLocator) or not locator.screenshot:
             return
 
-        path = self._resolve_path(locator.screenshot)
-        if Path(path).is_file():
-            return
+        try:
+            path = self._resolve_path(locator.screenshot)
+            if Path(path).is_file():
+                return
+        except Exception:  # pylint: disable=broad-except
+            pass
 
         try:
             content = base64.b64decode(locator.screenshot)
-        except Exception as exc:  # pylint: disable=broad-except
-            self.logger.info("Invalid screenshot: %s", exc)
+        except Exception:  # pylint: disable=broad-except
+            self.logger.info("Invalid screenshot: %s", locator.screenshot)
             return
 
         images = self.parent / ".images"
