@@ -270,6 +270,10 @@ class DocumentKeywords(LibraryContext):
 
         pdf = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         docinfo = pdf.getDocumentInfo()
+
+        def optional(attr):
+            return getattr(docinfo, attr) if docinfo is not None else None
+
         parser = PDFParser(self.ctx.active_pdf_document.fileobject)
         document = PDFDocument(parser)
         try:
@@ -278,11 +282,11 @@ class DocumentKeywords(LibraryContext):
             fields = None
 
         return {
-            "Author": docinfo.author,
-            "Creator": docinfo.creator,
-            "Producer": docinfo.producer,
-            "Subject": docinfo.subject,
-            "Title": docinfo.title,
+            "Author": optional("author"),
+            "Creator": optional("creator"),
+            "Producer": optional("producer"),
+            "Subject": optional("subject"),
+            "Title": optional("title"),
             "Pages": pdf.getNumPages(),
             "Encrypted": self.is_pdf_encrypted(source_path),
             "Fields": bool(fields),
