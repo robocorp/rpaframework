@@ -895,6 +895,8 @@ class ImapSmtp:
         return []
 
     def _parse_folders(self, folders):
+        if folders and len(folders) == 1 and folders[0] == None:
+            return []
         parsed_folders = []
         folder_regex = r'\((?P<flags>.*)\)\s"(?P<delimiter>.*)"\s"?(?P<name>[^"]*)"?'
         for f in folders:
