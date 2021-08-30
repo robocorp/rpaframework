@@ -133,8 +133,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../notifier/index.html">Notifier</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_vault/index.html">Robocorp.Vault</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_workitems/index.html">Robocorp.WorkItems</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
@@ -500,13 +500,16 @@ were no matches.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.load_json_from_file">
-<code class="sig-name descname">load_json_from_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; Union[Dict[str, Any], List[Any], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.load_json_from_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_json_from_file</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">encoding='utf-8'</em><span class="sig-paren">)</span> &#x2192; Union[Dict[str, Any], List[Any], str, int, float, bool, None]<a class="headerlink" href="#RPA.JSON.JSON.load_json_from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load JSON data from a file, and return it as JSON serializable object.
 Depending on the input file the object can be either a dictionary,
 a list, or a scalar value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> – path to input file</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – path to input file</p></li>
+<li><p><strong>encoding</strong> – file character encoding</p></li>
+</ul>
 </dd>
 </dl>
 <p>Example:</p>
@@ -518,7 +521,7 @@ a list, or a scalar value.</p>
 
 <dl class="method">
 <dt id="RPA.JSON.JSON.save_json_to_file">
-<code class="sig-name descname">save_json_to_file</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], filename: str, indent: int = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.JSON.save_json_to_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_json_to_file</code><span class="sig-paren">(</span><em class="sig-param">doc: Union[Dict[str, Any], List[Any], str, int, float, bool, None], filename: str, indent: int = None, encoding='utf-8'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JSON.JSON.save_json_to_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a JSON serializable object or a string containg
 a JSON value into a file.</p>
 <dl class="field-list simple">
@@ -526,6 +529,7 @@ a JSON value into a file.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>doc</strong> – JSON serializable object or string</p></li>
 <li><p><strong>filename</strong> – path to output file</p></li>
+<li><p><strong>encoding</strong> – file character encoding</p></li>
 </ul>
 </dd>
 </dl>

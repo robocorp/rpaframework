@@ -133,8 +133,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../notifier/index.html">Notifier</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../robocloud_items/index.html">Robocloud.Items</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../robocloud_secrets/index.html">Robocloud.Secrets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_vault/index.html">Robocorp.Vault</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_workitems/index.html">Robocorp.WorkItems</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
@@ -392,7 +392,7 @@ defaults to False</p></li>
 
 <dl class="method">
 <dt id="RPA.Database.Database.execute_sql_script">
-<code class="sig-name descname">execute_sql_script</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">sanstran=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Database.Database.execute_sql_script" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">execute_sql_script</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">sanstran=False</em>, <em class="sig-param">encoding='utf-8'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Database.Database.execute_sql_script" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute content of SQL script as SQL commands.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -400,6 +400,7 @@ defaults to False</p></li>
 <li><p><strong>filename</strong> – filepath to SQL script to execute</p></li>
 <li><p><strong>sanstran</strong> – run command without an explicit transaction commit or rollback,
 defaults to False</p></li>
+<li><p><strong>encoding</strong> – character encoding of file</p></li>
 </ul>
 </dd>
 </dl>
