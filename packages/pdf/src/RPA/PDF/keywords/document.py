@@ -2,11 +2,7 @@ import imghdr
 import os
 import tempfile
 from pathlib import Path
-from typing import (
-    List,
-    Tuple,
-    Union,
-)
+from typing import List, Tuple, Union, Optional
 
 import pdfminer
 import PyPDF2
@@ -14,12 +10,9 @@ from fpdf import FPDF, HTMLMixin
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfparser import PDFParser
 from PIL import Image
+from robot.libraries.BuiltIn import BuiltIn
 
-from RPA.PDF.keywords import (
-    LibraryContext,
-    keyword,
-)
-
+from RPA.PDF.keywords import LibraryContext, keyword
 from .model import Document, Figure
 
 
@@ -38,18 +31,23 @@ class PDF(FPDF, HTMLMixin):
 class DocumentKeywords(LibraryContext):
     """Keywords for basic PDF operations"""
 
-    def __init__(self, ctx):
-        super().__init__(ctx)
-        self._output_directory = Path("./output/")
-        self.default_output = Path(self._output_directory / "output.pdf")
+    def resolve_output(self, path: Optional[str] = None) -> str:
+        if path is None:
+            try:
+                output_dir = BuiltIn().get_variable_value("${OUTPUT_DIR}")
+            except Exception:  # pylint: disable=broad-except
+                output_dir = None
 
-    @property
-    def output_directory(self):
-        return self._output_directory
+            if output_dir is None:
+                output_dir = "output"
 
-    @output_directory.setter
-    def output_directory(self, path: str):
-        self._output_directory = Path(path)
+            output = Path(output_dir) / "output.pdf"
+            output = output.resolve()
+        else:
+            output = Path(path).resolve()
+
+        output.parent.mkdir(parents=True, exist_ok=True)
+        return str(output)
 
     @keyword
     def close_all_pdfs(self) -> None:
@@ -220,16 +218,13 @@ class DocumentKeywords(LibraryContext):
         :param content: HTML content.
         :param output_path: filepath where to save the PDF document.
         """
-        output_path = Path(output_path) if output_path else self.default_output
-        self._write_html_to_pdf(content, output_path)
-
-    def _write_html_to_pdf(self, html: str, output_path: str) -> None:
+        output_path = self.resolve_output(output_path)
         self.logger.info("Writing output to file %s", output_path)
-        Path(output_path).resolve().parent.mkdir(parents=True, exist_ok=True)
+
         fpdf = PDF()
         fpdf.set_margin(0)
         fpdf.add_page()
-        fpdf.write_html(html)
+        fpdf.write_html(content)
         fpdf.output(name=output_path)
         fpdf = PDF()
 
@@ -526,7 +521,7 @@ class DocumentKeywords(LibraryContext):
 
         :param source_path: filepath to the source pdf.
         :param output_path: filepath to the target pdf, stored by default
-            in `output_directory`.
+            in the robot output directory as ``output.pdf``
         :param pages: page numbers to extract from PDF (numbers start from 0)
             if None then extracts all pages.
         """
@@ -534,12 +529,12 @@ class DocumentKeywords(LibraryContext):
         reader = self.ctx.active_pdf_document.reader
         writer = PyPDF2.PdfFileWriter()
 
-        output_filepath = Path(output_path) if output_path else self.default_output
+        output_path = self.resolve_output(output_path)
 
         pages = self._get_page_numbers(pages, reader)
         for pagenum in pages:
             writer.addPage(reader.getPage(int(pagenum) - 1))
-        with open(str(output_filepath), "wb") as f:
+        with open(output_path, "wb") as f:
             writer.write(f)
 
     @keyword
@@ -589,7 +584,7 @@ class DocumentKeywords(LibraryContext):
         :param pages: page numbers to extract from PDF (numbers start from 0).
         :param source_path: filepath to the source pdf.
         :param output_path: filepath to the target pdf, stored by default
-            to `output_directory`.
+            in the robot output directory as ``output.pdf``
         :param clockwise: directorion that page will be rotated to, default True.
         :param angle: number of degrees to rotate, default 90.
         """
@@ -598,7 +593,7 @@ class DocumentKeywords(LibraryContext):
         reader = self.ctx.active_pdf_document.reader
         writer = PyPDF2.PdfFileWriter()
 
-        output_filepath = Path(output_path) if output_path else self.default_output
+        output_path = self.resolve_output(output_path)
 
         pages = self._get_page_numbers(pages, reader)
         for page in range(reader.getNumPages()):
@@ -611,7 +606,7 @@ class DocumentKeywords(LibraryContext):
             else:
                 source_page = reader.getPage(int(page))
             writer.addPage(source_page)
-        with open(str(output_filepath), "wb") as f:
+        with open(output_path, "wb") as f:
             writer.write(f)
 
     @keyword
@@ -653,7 +648,7 @@ class DocumentKeywords(LibraryContext):
 
         :param source_path: filepath to the source pdf.
         :param output_path: filepath to the target pdf, stored by default
-            to `output_directory`.
+            in the robot output directory as ``output.pdf``
         :param user_pwd: allows opening and reading PDF with restrictions.
         :param owner_pwd: allows opening PDF without any restrictions, by
             default same `user_pwd`.
@@ -664,14 +659,14 @@ class DocumentKeywords(LibraryContext):
         self.switch_to_pdf(source_path)
         reader = self.ctx.active_pdf_document.reader
 
-        output_filepath = Path(output_path) if output_path else self.default_output
+        output_path = self.resolve_output(output_path)
 
         if owner_pwd is None:
             owner_pwd = user_pwd
         writer = PyPDF2.PdfFileWriter()
         writer.appendPagesFromReader(reader)
         writer.encrypt(user_pwd, owner_pwd, use_128bit)
-        with open(str(output_filepath), "wb") as f:
+        with open(output_path, "wb") as f:
             writer.write(f)
 
     @keyword
@@ -710,7 +705,7 @@ class DocumentKeywords(LibraryContext):
         :return: True if decrypt was successful, else False or Exception.
         :raises ValueError: on decryption errors.
         """
-        output_path = Path(output_path) if output_path else self.default_output
+        output_path = self.resolve_output(output_path)
 
         self.switch_to_pdf(source_path)
         reader = self.ctx.active_pdf_document.reader
@@ -726,7 +721,7 @@ class DocumentKeywords(LibraryContext):
             else:
                 return False
 
-            self.save_pdf(str(output_path), reader)
+            self.save_pdf(output_path, reader)
             return True
 
         except NotImplementedError as e:
@@ -736,7 +731,6 @@ class DocumentKeywords(LibraryContext):
         except KeyError:
             self.logger.info("PDF is not encrypted")
             return False
-        return False
 
     @keyword
     def get_all_figures(self, source_path: str = None) -> dict:
@@ -851,6 +845,7 @@ class DocumentKeywords(LibraryContext):
             page.mergePage(watermark)
             writer.addPage(page)
 
+        output_path = self.resolve_output(output_path)
         with open(output_path, "wb") as f:
             writer.write(f)
 
@@ -894,6 +889,7 @@ class DocumentKeywords(LibraryContext):
                 self.logger.warning(repr(e))
                 writer.addPage(page)
 
+        output_path = self.resolve_output(output_path)
         with open(output_path, "wb") as f:
             writer.write(f)
 
