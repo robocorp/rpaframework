@@ -570,6 +570,7 @@ class ImapSmtp:
         selected_folder = source_folder or self.selected_folder
         folders = self.get_folder_list(subdirectory=selected_folder)
         result = {"actions_done": 0, "message_count": 0, "ids": [], "uids": {}}
+
         for f in folders:
             if "Noselect" in f["flags"]:
                 continue
@@ -603,6 +604,7 @@ class ImapSmtp:
                     mail_uid, message = self._fetch_uid_and_body(mail_id, actions)
                     if mail_uid is None or mail_uid in result["uids"].keys():
                         continue
+                    message["uid"] = mail_uid
                     result["uids"][mail_uid] = message
 
     def _perform_actions(
@@ -728,6 +730,8 @@ class ImapSmtp:
         :param readonly: set False if you want to mark matching messages as read
         :return: list of messages
 
+        *Note.* listing messages without `source_folder` might take a long time
+
         Example:
 
         .. code-block:: robotframework
@@ -740,6 +744,7 @@ class ImapSmtp:
                 Log  ${email}[Delivered-To]
                 Log  ${email}[Received]
                 Log  ${email}[Has-Attachments]
+                Log  ${email}[uid]
             END
         """
         self.logger.info("List messages: %s", criterion)
