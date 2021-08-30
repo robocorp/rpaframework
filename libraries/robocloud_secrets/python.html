@@ -221,262 +221,26 @@
 <div class="section" id="module-RPA.Robocloud.Secrets">
 <span id="secrets"></span><h2>Secrets<a class="headerlink" href="#module-RPA.Robocloud.Secrets" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="RPA.Robocloud.Secrets.BaseSecretManager">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">BaseSecretManager</code><a class="headerlink" href="#RPA.Robocloud.Secrets.BaseSecretManager" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Abstract class for secrets management. Should be used as a
-base-class for any adapter implementation.</p>
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.BaseSecretManager.get_secret">
-<em class="property">abstract </em><code class="sig-name descname">get_secret</code><span class="sig-paren">(</span><em class="sig-param">secret_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.BaseSecretManager.get_secret" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return <code class="docutils literal notranslate"><span class="pre">Secret</span></code> object with given name.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.BaseSecretManager.set_secret">
-<em class="property">abstract </em><code class="sig-name descname">set_secret</code><span class="sig-paren">(</span><em class="sig-param">secret: RPA.Robocloud.Secrets.Secret</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.BaseSecretManager.set_secret" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set a secret with a new value.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="RPA.Robocloud.Secrets.FileSecrets">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">FileSecrets</code><span class="sig-paren">(</span><em class="sig-param">secret_file='secrets.json'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.FileSecrets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#RPA.Robocloud.Secrets.BaseSecretManager" title="RPA.Robocloud.Secrets.BaseSecretManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Robocloud.Secrets.BaseSecretManager</span></code></a></p>
-<p>Adapter for secrets stored in a JSON file. Supports only
-plaintext secrets, and should be used mainly for debugging.</p>
-<p>The path to the secrets file can be set with the
-environment variable <code class="docutils literal notranslate"><span class="pre">RPA_SECRET_FILE</span></code>, or as
-an argument to the library.</p>
-<p>The format of the secrets file should be the following:</p>
-<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;name1&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;key1&quot;</span><span class="p">:</span> <span class="s2">&quot;value1&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;key2&quot;</span><span class="p">:</span> <span class="s2">&quot;value2&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;name2&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;key1&quot;</span><span class="p">:</span> <span class="s2">&quot;value1&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.FileSecrets.get_secret">
-<code class="sig-name descname">get_secret</code><span class="sig-paren">(</span><em class="sig-param">secret_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.FileSecrets.get_secret" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get secret defined with given name from file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>secret_name</strong> – Name of secret to fetch</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Secret object</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>KeyError</strong> – No secret with given name</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.FileSecrets.load">
-<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.FileSecrets.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load secrets file.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.FileSecrets.save">
-<code class="sig-name descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.FileSecrets.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save the secrets JSON to disk.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.FileSecrets.set_secret">
-<code class="sig-name descname">set_secret</code><span class="sig-paren">(</span><em class="sig-param">secret: RPA.Robocloud.Secrets.Secret</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Robocloud.Secrets.FileSecrets.set_secret" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the secret value in the local Vault
-with the given <code class="docutils literal notranslate"><span class="pre">Secret</span></code> object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>secret</strong> – A <code class="docutils literal notranslate"><span class="pre">Secret</span></code> object.</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>IOError</strong><strong>, </strong><strong>ValueError</strong> – Writing the local vault failed.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="RPA.Robocloud.Secrets.RobocloudVault">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">RobocloudVault</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#RPA.Robocloud.Secrets.BaseSecretManager" title="RPA.Robocloud.Secrets.BaseSecretManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Robocloud.Secrets.BaseSecretManager</span></code></a></p>
-<p>Adapter for secrets stored in Robocloud Vault.</p>
-<p>The following environment variables should exist:</p>
-<ul class="simple">
-<li><p>RC_API_SECRET_HOST:   URL to Robocloud Vault API</p></li>
-<li><p>RC_API_SECRET_TOKEN:  API token with access to Robocloud Vault API</p></li>
-<li><p>RC_WORKSPACE_ID:      Robocloud Workspace ID</p></li>
-</ul>
-<dl class="attribute">
-<dt id="RPA.Robocloud.Secrets.RobocloudVault.ENCRYPTION_SCHEME">
-<code class="sig-name descname">ENCRYPTION_SCHEME</code><em class="property"> = 'robocloud-vault-transit-v2'</em><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault.ENCRYPTION_SCHEME" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.RobocloudVault.create_public_key_url">
-<code class="sig-name descname">create_public_key_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault.create_public_key_url" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.RobocloudVault.create_secret_url">
-<code class="sig-name descname">create_secret_url</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault.create_secret_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a URL for a specific secret.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.RobocloudVault.get_publickey">
-<code class="sig-name descname">get_publickey</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bytes<a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault.get_publickey" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the public key for AES encryption with the existing token.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.RobocloudVault.get_secret">
-<code class="sig-name descname">get_secret</code><span class="sig-paren">(</span><em class="sig-param">secret_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault.get_secret" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get secret defined with given name from Robocloud Vault.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>secret_name</strong> – Name of secret to fetch</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Secret object</p>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#RPA.Robocloud.Secrets.RobocloudVaultError" title="RPA.Robocloud.Secrets.RobocloudVaultError"><strong>RobocloudVaultError</strong></a> – Error with API request or response payload</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.RobocloudVault.headers">
-<em class="property">property </em><code class="sig-name descname">headers</code><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault.headers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Default request headers.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.RobocloudVault.params">
-<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault.params" title="Permalink to this definition">¶</a></dt>
-<dd><p>Default request parameters.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.RobocloudVault.set_secret">
-<code class="sig-name descname">set_secret</code><span class="sig-paren">(</span><em class="sig-param">secret: RPA.Robocloud.Secrets.Secret</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVault.set_secret" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the secret value in the Vault. Note that the secret possibly
-consists of multiple key-value pairs, which will all be overwritten
-with the values given here. So don’t try to update only one item
-of the secret, update all of them.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>secret</strong> – A <code class="docutils literal notranslate"><span class="pre">Secret</span></code> object</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="exception">
-<dt id="RPA.Robocloud.Secrets.RobocloudVaultError">
-<em class="property">exception </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">RobocloudVaultError</code><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVaultError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Raised when there’s problem with reading from Robocloud Vault.</p>
-<dl class="attribute">
-<dt id="RPA.Robocloud.Secrets.RobocloudVaultError.args">
-<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVaultError.args" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.RobocloudVaultError.with_traceback">
-<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.RobocloudVaultError.with_traceback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="RPA.Robocloud.Secrets.Secret">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">Secret</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">description</em>, <em class="sig-param">values</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.Secret" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.abc.Mapping</span></code></p>
-<p>Container for a secret with name, description, and
-multiple key-value pairs. Immutable and avoids logging
-internal values when possible.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – Name of secret</p></li>
-<li><p><strong>description</strong> – Human-friendly description for secret</p></li>
-<li><p><strong>values</strong> – Dictionary of key-value pairs stored in secret</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.Secret.description">
-<em class="property">property </em><code class="sig-name descname">description</code><a class="headerlink" href="#RPA.Robocloud.Secrets.Secret.description" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.Secret.get">
-<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">k</em><span class="optional">[</span>, <em class="sig-param">d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; D[k] if k in D, else d.  d defaults to None.<a class="headerlink" href="#RPA.Robocloud.Secrets.Secret.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.Secret.items">
-<code class="sig-name descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's items<a class="headerlink" href="#RPA.Robocloud.Secrets.Secret.items" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.Secret.keys">
-<code class="sig-name descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's keys<a class="headerlink" href="#RPA.Robocloud.Secrets.Secret.keys" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.Secret.name">
-<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#RPA.Robocloud.Secrets.Secret.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.Secret.update">
-<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">kvpairs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.Secret.update" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocloud.Secrets.Secret.values">
-<code class="sig-name descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#RPA.Robocloud.Secrets.Secret.values" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="RPA.Robocloud.Secrets.Secrets">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">Secrets</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.Secrets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p><cite>Secrets</cite> is a library for interfacing secrets set in the Robocloud Vault
-(used by default) or file-based secrets, which can be taken into use
-by setting two environment variables below.</p>
-<p>Robocloud Vault works together with Robocloud Worker or Robocode CLI.
-Following three environment variables need to exist (these are set by
-Robocloud Worker automatically and can be set manually with Robocode CLI).</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Robocorp.Vault.Vault</span></code></p>
+<p><cite>Vault</cite> is a library for interacting with secrets stored in Robocorp
+Vault (by default) or file-based secrets, which can be taken into use
+by setting some environment variables.</p>
+<p>Robocorp Vault works together with Robocorp Worker or Robocorp CLI (RCC).
+The following three environment variables need to exist, and are set by
+Robocorp Worker automatically and can be set manually with Robocorp CLI.</p>
 <ul class="simple">
-<li><p>RC_API_SECRET_HOST : URL to Robocloud Secrets API</p></li>
-<li><p>RC_API_SECRET_TOKEN : API Token for Robocloud Secrets API</p></li>
-<li><p>RC_WORKSPACE_ID : Robocloud Workspace ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RC_API_SECRET_HOST</span></code>: URL to Robocorp Vault API</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RC_API_SECRET_TOKEN</span></code>: API Token for Robocorp Vault API</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RC_WORKSPACE_ID</span></code>: Control Room Workspace ID</p></li>
 </ul>
-<p>File based secrets can be set by defining two environment variables.</p>
+<p>File-based secrets can be set by defining two environment variables.</p>
 <ul class="simple">
-<li><p>RPA_SECRET_MANAGER : ‘RPA.Robocloud.Secrets.FileSecrets’</p></li>
-<li><p>RPA_SECRET_FILE : Absolute path to the secrets JSON file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RPA_SECRET_MANAGER</span></code>: RPA.Robocorp.Vault.FileSecrets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RPA_SECRET_FILE</span></code>: Absolute path to the secrets JSON file</p></li>
 </ul>
+<p>Example content of local secrets file:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;swaglabs&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;standard_user&quot;</span><span class="p">,</span>
@@ -489,7 +253,7 @@ Robocloud Worker automatically and can be set manually with Robocode CLI).</p>
 <p><strong>Robot Framework</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">    </span><span class="nn">Collections</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocloud.Secrets</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocorp.Vault</span><span class="p"></span>
 
 <span class="gh">*** Tasks ***</span><span class="p"></span>
 <span class="gu">Reading secrets</span><span class="p"></span>
@@ -505,14 +269,12 @@ Robocloud Worker automatically and can be set manually with Robocode CLI).</p>
 </pre></div>
 </div>
 <p><strong>Python</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocloud.Secrets</span> <span class="kn">import</span> <span class="n">Secrets</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">Secrets</span>
 
 <span class="n">SECRETS</span> <span class="o">=</span> <span class="n">Secrets</span><span class="p">()</span>
 
-
 <span class="k">def</span> <span class="nf">reading_secrets</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;My secrets: </span><span class="si">{</span><span class="n">SECRETS</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s1">&#39;swaglabs&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
 
 <span class="k">def</span> <span class="nf">modifying_secrets</span><span class="p">():</span>
     <span class="n">secret</span> <span class="o">=</span> <span class="n">SECRETS</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;swaglabs&quot;</span><span class="p">)</span>
@@ -537,8 +299,8 @@ Robocloud Worker automatically and can be set manually with Robocode CLI).</p>
 
 <dl class="method">
 <dt id="RPA.Robocloud.Secrets.Secrets.get_secret">
-<code class="sig-name descname">get_secret</code><span class="sig-paren">(</span><em class="sig-param">secret_name: str</em><span class="sig-paren">)</span> &#x2192; RPA.Robocloud.Secrets.Secret<a class="headerlink" href="#RPA.Robocloud.Secrets.Secrets.get_secret" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read a secret from the configured source, e.g. Robocloud Vault,
+<code class="sig-name descname">get_secret</code><span class="sig-paren">(</span><em class="sig-param">secret_name: str</em><span class="sig-paren">)</span> &#x2192; RPA.Robocorp.Vault.Secret<a class="headerlink" href="#RPA.Robocloud.Secrets.Secrets.get_secret" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a secret from the configured source, e.g. Robocorp Vault,
 and return it as a <code class="docutils literal notranslate"><span class="pre">Secret</span></code> object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -549,7 +311,7 @@ and return it as a <code class="docutils literal notranslate"><span class="pre">
 
 <dl class="method">
 <dt id="RPA.Robocloud.Secrets.Secrets.set_secret">
-<code class="sig-name descname">set_secret</code><span class="sig-paren">(</span><em class="sig-param">secret: RPA.Robocloud.Secrets.Secret</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Robocloud.Secrets.Secrets.set_secret" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_secret</code><span class="sig-paren">(</span><em class="sig-param">secret: RPA.Robocorp.Vault.Secret</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Robocloud.Secrets.Secrets.set_secret" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overwrite an existing secret with new values.</p>
 <dl class="simple">
 <dt>Note: Only allows modifying existing secrets, and replaces</dt><dd><p>all values contained within it.</p>
@@ -563,11 +325,6 @@ and return it as a <code class="docutils literal notranslate"><span class="pre">
 </dd></dl>
 
 </dd></dl>
-
-<dl class="function">
-<dt id="RPA.Robocloud.Secrets.url_join">
-<code class="sig-prename descclassname">RPA.Robocloud.Secrets.</code><code class="sig-name descname">url_join</code><span class="sig-paren">(</span><em class="sig-param">*parts</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocloud.Secrets.url_join" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </div>
 </div>

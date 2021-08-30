@@ -299,8 +299,9 @@
 <p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
 <p>It is highly recommended to secure your passwords and take care
-that they are not stored in the version control by mistake.
-See <code class="docutils literal notranslate"><span class="pre">RPA.Robocloud.Secrets</span></code> how to store RPA Secrets into Robocloud.</p>
+that they are not stored in version control by mistake.
+See <code class="docutils literal notranslate"><span class="pre">RPA.Robocorp.Vault</span></code> to see how to store secrets in
+Robocorp Vault.</p>
 <p>When sending HTML content with IMG tags, the <code class="docutils literal notranslate"><span class="pre">src</span></code> filenames must match
 the base image name given with the <code class="docutils literal notranslate"><span class="pre">images</span></code> parameter.</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
@@ -646,6 +647,7 @@ source folder</p>
 <dd class="field-even"><p>list of messages</p>
 </dd>
 </dl>
+<p><em>Note.</em> listing messages without <cite>source_folder</cite> might take a long time</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">@{emails}</span><span class="p">  </span><span class="c">List Messages</span><span class="p">  </span><span class="c">SUBJECT &quot;rpa task&quot;</span><span class="p"></span>
 <span class="c">FOR</span><span class="p">  </span><span class="c">${email}</span><span class="p">  </span><span class="c">IN</span><span class="p">  </span><span class="c">@{EMAILS}</span><span class="p"></span>
@@ -655,6 +657,7 @@ source folder</p>
 <span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${email}[Delivered-To]</span><span class="p"></span>
 <span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${email}[Received]</span><span class="p"></span>
 <span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${email}[Has-Attachments]</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log</span><span class="p">  </span><span class="c">${email}[uid]</span><span class="p"></span>
 <span class="c">END</span><span class="p"></span>
 </pre></div>
 </div>

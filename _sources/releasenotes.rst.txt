@@ -1,6 +1,15 @@
 Release notes
 =============
 
+Upcoming release
+----------------
+
+- Library **RPA.Email.ImapSmtp**:
+
+  - Add `uid` into email dictionary
+  - Fix email body decoding
+  - Fix folder list problem when requesting non-existing folder
+
 10.9.3
 ------
 

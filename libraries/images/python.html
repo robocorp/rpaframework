@@ -286,15 +286,12 @@ desktop library, i.e. <code class="docutils literal notranslate"><span class="pr
 <p><strong>Python</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Images</span> <span class="kn">import</span> <span class="n">Images</span>
 
-<span class="k">def</span> <span class="nf">draw_matches_on_desktop</span><span class="p">(</span><span class="n">template</span><span class="p">):</span>
-    <span class="n">lib</span> <span class="o">=</span> <span class="n">Images</span><span class="p">()</span>
-    <span class="n">screenshot</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">take_screenshot</span><span class="p">()</span>
-
-    <span class="n">matches</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">find_template_in_image</span><span class="p">(</span><span class="n">screenshot</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">draw_matches_on_image</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">template</span><span class="p">):</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">find_template_in_image</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
-        <span class="n">lib</span><span class="o">.</span><span class="n">show_region_in_image</span><span class="p">(</span><span class="n">screenshot</span><span class="p">,</span> <span class="n">match</span><span class="p">)</span>
+        <span class="n">lib</span><span class="o">.</span><span class="n">show_region_in_image</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">match</span><span class="p">)</span>
 
-    <span class="n">screenshot</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;matches.png&quot;</span><span class="p">)</span>
+    <span class="n">source</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;matches.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="attribute">
@@ -325,8 +322,7 @@ desktop library, i.e. <code class="docutils literal notranslate"><span class="pr
 <dl class="method">
 <dt id="RPA.Images.Images.find_template_in_image">
 <code class="sig-name descname">find_template_in_image</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">template</em>, <em class="sig-param">region=None</em>, <em class="sig-param">limit=None</em>, <em class="sig-param">tolerance=None</em><span class="sig-paren">)</span> &#x2192; List[RPA.core.geometry.Region]<a class="headerlink" href="#RPA.Images.Images.find_template_in_image" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>DEPRECATED</em> Use keyword <cite>Find</cite> from library <cite>RPA.Recognition</cite> instead
-Attempt to find the template from the given image.</p>
+<dd><p>Attempt to find the template from the given image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -347,14 +343,6 @@ Attempt to find the template from the given image.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Images.Images.find_template_on_screen">
-<code class="sig-name descname">find_template_on_screen</code><span class="sig-paren">(</span><em class="sig-param">template</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; List[RPA.core.geometry.Region]<a class="headerlink" href="#RPA.Images.Images.find_template_on_screen" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>DEPRECATED!!</em> use <cite>RPA.Desktop.Find Element</cite> instead
-Attempt to find the template image from the current desktop.
-For argument descriptions, see <code class="docutils literal notranslate"><span class="pre">find_template_in_image()</span></code></p>
-</dd></dl>
-
-<dl class="method">
 <dt id="RPA.Images.Images.get_pixel_color_in_image">
 <code class="sig-name descname">get_pixel_color_in_image</code><span class="sig-paren">(</span><em class="sig-param">image</em>, <em class="sig-param">point</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Images.get_pixel_color_in_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the RGB value of a pixel in the image.</p>
@@ -364,17 +352,6 @@ For argument descriptions, see <code class="docutils literal notranslate"><span 
 <li><p><strong>image</strong> – image to get pixel from</p></li>
 <li><p><strong>point</strong> – coordinates for pixel or Point object</p></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Images.Images.get_pixel_color_on_screen">
-<code class="sig-name descname">get_pixel_color_on_screen</code><span class="sig-paren">(</span><em class="sig-param">point</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Images.get_pixel_color_on_screen" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the RGB value of a pixel currently on screen.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>point</strong> – coordinates for pixel or Point object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -391,49 +368,6 @@ For argument descriptions, see <code class="docutils literal notranslate"><span 
 <li><p><strong>color</strong> – color of rectangle</p></li>
 <li><p><strong>width</strong> – line width of rectangle</p></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Images.Images.show_region_on_screen">
-<code class="sig-name descname">show_region_on_screen</code><span class="sig-paren">(</span><em class="sig-param">region</em>, <em class="sig-param">color='red'</em>, <em class="sig-param">width=5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Images.show_region_on_screen" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw a rectangle around the given region on the current desktop.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>region</strong> – coordinates for region or Region object</p></li>
-<li><p><strong>color</strong> – color of rectangle</p></li>
-<li><p><strong>width</strong> – line width of rectangle</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Images.Images.take_screenshot">
-<code class="sig-name descname">take_screenshot</code><span class="sig-paren">(</span><em class="sig-param">filename=None</em>, <em class="sig-param">region=None</em><span class="sig-paren">)</span> &#x2192; PIL.Image.Image<a class="headerlink" href="#RPA.Images.Images.take_screenshot" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>DEPRECATED</em> Use keyword <cite>RPA.Desktop.Take Screenshot</cite> instead
-Take a screenshot of the current desktop.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> – Save screenshot to filename</p></li>
-<li><p><strong>region</strong> – Region to crop screenshot to</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Images.Images.wait_template_on_screen">
-<code class="sig-name descname">wait_template_on_screen</code><span class="sig-paren">(</span><em class="sig-param">template</em>, <em class="sig-param">timeout=5</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.Images.wait_template_on_screen" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>DEPRECATED!!</em> use <cite>RPA.Desktop.Wait For Element</cite> instead
-Wait for template image to appear on current desktop.
-For further argument descriptions, see <code class="docutils literal notranslate"><span class="pre">find_template_in_image()</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>timeout</strong> – Time to wait for template (in seconds)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -476,7 +410,7 @@ For further argument descriptions, see <code class="docutils literal notranslate
 
 <dl class="class">
 <dt id="RPA.Images.TemplateMatcher">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Images.</code><code class="sig-name descname">TemplateMatcher</code><span class="sig-paren">(</span><em class="sig-param">opencv=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Images.TemplateMatcher" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Images.</code><code class="sig-name descname">TemplateMatcher</code><a class="headerlink" href="#RPA.Images.TemplateMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Container class for different template matching methods.</p>
 <dl class="attribute">

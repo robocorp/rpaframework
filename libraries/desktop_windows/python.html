@@ -1043,7 +1043,7 @@ active window is going to be minimized</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.mouse_click">
-<code class="sig-name descname">mouse_click</code><span class="sig-paren">(</span><em class="sig-param">locator: str = None</em>, <em class="sig-param">x: int = 0</em>, <em class="sig-param">y: int = 0</em>, <em class="sig-param">off_x: int = 0</em>, <em class="sig-param">off_y: int = 0</em>, <em class="sig-param">image: str = None</em>, <em class="sig-param">method: str = 'locator'</em>, <em class="sig-param">ctype: str = 'click'</em>, <em class="sig-param">focus: str = 'center'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mouse_click</code><span class="sig-paren">(</span><em class="sig-param">locator: str = None</em>, <em class="sig-param">x: int = 0</em>, <em class="sig-param">y: int = 0</em>, <em class="sig-param">off_x: int = 0</em>, <em class="sig-param">off_y: int = 0</em>, <em class="sig-param">image: str = None</em>, <em class="sig-param">method: str = 'locator'</em>, <em class="sig-param">ctype: str = 'click'</em>, <em class="sig-param">focus: str = 'center'</em>, <em class="sig-param">tolerance: Optional[int] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mouse click <cite>locator</cite>, <cite>coordinates</cite>, or <cite>image</cite></p>
 <p>When using method <cite>locator</cite>,`image` or <cite>ocr</cite> mouse is clicked by default at
 center coordinates.</p>
@@ -1066,10 +1066,7 @@ center coordinates.</p>
 <li><p><strong>ctype</strong> – type of mouse click</p></li>
 <li><p><strong>focus</strong> – default point for element click is ‘center’, can be set to ‘topleft’
 to click top left corner of the element</p></li>
-<li><p><strong>kwargs</strong> – these keyword arguments can be used to pass arguments
-to underlying <cite>Images</cite> library to finetune image template matching,
-for example. <cite>tolerance=0.5</cite> would adjust image tolerance for the image
-matching</p></li>
+<li><p><strong>tolerance</strong> – image matching tolerance between 0 and 1</p></li>
 </ul>
 </dd>
 </dl>
@@ -1111,7 +1108,7 @@ matching</p></li>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.mouse_click_image">
-<code class="sig-name descname">mouse_click_image</code><span class="sig-paren">(</span><em class="sig-param">template: str</em>, <em class="sig-param">off_x: int = 0</em>, <em class="sig-param">off_y: int = 0</em>, <em class="sig-param">ctype: str = 'click'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_image" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mouse_click_image</code><span class="sig-paren">(</span><em class="sig-param">template: str</em>, <em class="sig-param">off_x: int = 0</em>, <em class="sig-param">off_y: int = 0</em>, <em class="sig-param">ctype: str = 'click'</em>, <em class="sig-param">tolerance: Optional[float] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.mouse_click_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click at template image on desktop</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1120,10 +1117,7 @@ matching</p></li>
 <li><p><strong>off_x</strong> – horizontal offset from top left corner to click on</p></li>
 <li><p><strong>off_y</strong> – vertical offset from top left corner to click on</p></li>
 <li><p><strong>ctype</strong> – type of mouse click</p></li>
-<li><p><strong>kwargs</strong> – these keyword arguments can be used to pass arguments
-to underlying <cite>Images</cite> library to finetune image template matching,
-for example. <cite>tolerance=0.5</cite> would adjust image tolerance for the image
-matching</p></li>
+<li><p><strong>tolerance</strong> – matching tolerance between 0 and 1</p></li>
 </ul>
 </dd>
 </dl>
@@ -1390,7 +1384,7 @@ active window is going to be restored</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.screenshot">
-<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">element: dict = None</em>, <em class="sig-param">ctrl: Any = None</em>, <em class="sig-param">desktop: bool = False</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.screenshot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">screenshot</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">element: dict = None</em>, <em class="sig-param">ctrl: Any = None</em>, <em class="sig-param">desktop: bool = False</em>, <em class="sig-param">overwrite: bool = True</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Desktop.Windows.Windows.screenshot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save screenshot into filename.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1399,7 +1393,7 @@ active window is going to be restored</p>
 <li><p><strong>element</strong> – take element screenshot, defaults to None</p></li>
 <li><p><strong>ctrl</strong> – take control screenshot, defaults to None</p></li>
 <li><p><strong>desktop</strong> – take desktop screenshot if True, defaults to False</p></li>
-<li><p><strong>overwrite</strong> – file is overwritten if True, defaults to False</p></li>
+<li><p><strong>overwrite</strong> – overwrite existing image (deprecated, always True)</p></li>
 </ul>
 </dd>
 </dl>

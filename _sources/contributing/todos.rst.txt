@@ -18,10 +18,10 @@ RPA.Desktop.Windows:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "633", "Handle too compled method"
-   "1113", "return more valuable information about what should"
-   "1361", "supporting multiple search criterias at same time to identify ONE element"
-   "1387", "supporting multiple search criterias at same time to identify ONE element"
+   "635", "Handle too compled method"
+   "1110", "return more valuable information about what should"
+   "1358", "supporting multiple search criterias at same time to identify ONE element"
+   "1384", "supporting multiple search criterias at same time to identify ONE element"
 
 RPA.Desktop.keywords.application:
 =================================
@@ -68,7 +68,7 @@ RPA.Email.ImapSmtp:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "646", "mypy should handle enum exhaustivity validation"
+   "643", "mypy should handle enum exhaustivity validation"
 
 RPA.FileSystem:
 ===============
@@ -103,15 +103,6 @@ RPA.JavaAccessBridge:
    "202", "add keyword for taking screenshots of elements and window"
    "203", "implement proper XPath syntax support"
    "589", "change to use RPA.core.geometry Region/Point"
-
-RPA.Robocloud.Secrets:
-======================
-
-.. csv-table::
-   :header: "Line", "Message"
-   :widths: 10, 40
-
-   "470", "set to dictionary WILL log the values to log.html!"
 
 RPA.Tables:
 ===========
