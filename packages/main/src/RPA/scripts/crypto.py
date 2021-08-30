@@ -46,7 +46,7 @@ def load_key(args):
     if args.text:
         lib.use_encryption_key(args.text)
     elif args.file:
-        with open(args.file) as infile:
+        with open(args.file, encoding="utf-8") as infile:
             lib.use_encryption_key(infile.read())
     elif args.secret:
         name, _, key = args.secret.partition(".")

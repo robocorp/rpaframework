@@ -368,12 +368,12 @@ class Database:
                 name = name.encode("ascii", "ignore")
             cur.callproc(name, params)
             cur.nextset()
-            retVal = list()
+            value = []
             for row in cur:
-                retVal.append(row)
+                value.append(row)
             if not sanstran:
                 self._dbconnection.commit()
-            return retVal
+            return value
         finally:
             if cur:
                 if not sanstran:
@@ -417,12 +417,15 @@ class Database:
             self._dbconnection.close()
 
     # pylint: disable=R0912
-    def execute_sql_script(self, filename, sanstran=False):  # noqa: C901
+    def execute_sql_script(
+        self, filename, sanstran=False, encoding="utf-8"
+    ):  # noqa: C901
         """Execute content of SQL script as SQL commands.
 
         :param filename: filepath to SQL script to execute
         :param sanstran: run command without an explicit transaction commit or rollback,
          defaults to False
+        :param encoding: character encoding of file
 
         Example:
 
@@ -431,7 +434,7 @@ class Database:
             Execute SQL Script   script.sql
 
         """
-        with open(filename) as script_file:
+        with open(filename, encoding=encoding) as script_file:
             sql_script = script_file.readlines()
 
         cur = None

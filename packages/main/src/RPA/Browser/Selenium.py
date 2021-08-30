@@ -1706,7 +1706,7 @@ class Selenium(SeleniumLibrary):
         | Log     | ${res.disabled} |
         | Log     | ${res.focused} |
         """
-        status_object = dict()
+        status_object = {}
         status_object["visible"] = self.is_element_visible(locator)
         status_object["enabled"] = self.is_element_enabled(locator)
         status_object["disabled"] = self.is_element_disabled(locator)

@@ -119,7 +119,7 @@ class FileSecrets(BaseSecretManager):
     def load(self):
         """Load secrets file."""
         try:
-            with open(self.path) as fd:
+            with open(self.path, encoding="utf-8") as fd:
                 data = json.load(fd)
 
             if not isinstance(data, dict):
@@ -133,7 +133,7 @@ class FileSecrets(BaseSecretManager):
     def save(self):
         """Save the secrets JSON to disk."""
         try:
-            with open(self.path, "w") as f:
+            with open(self.path, "w", encoding="utf-8") as f:
                 if not isinstance(self.data, dict):
                     raise ValueError("Invalid content format")
                 json.dump(self.data, f, indent=4)

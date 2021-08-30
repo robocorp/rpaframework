@@ -139,12 +139,13 @@ class JSON:
         self.logger = logging.getLogger(__name__)
 
     @keyword("Load JSON from file")
-    def load_json_from_file(self, filename: str) -> JSONType:
+    def load_json_from_file(self, filename: str, encoding="utf-8") -> JSONType:
         """Load JSON data from a file, and return it as JSON serializable object.
         Depending on the input file the object can be either a dictionary,
         a list, or a scalar value.
 
         :param filename: path to input file
+        :param encoding: file character encoding
 
         Example:
 
@@ -155,16 +156,19 @@ class JSON:
 
         """
         self.logger.info("Loading JSON from file: %s", filename)
-        with open(filename) as json_file:
+        with open(filename, "r", encoding=encoding) as json_file:
             return json.load(json_file)
 
     @keyword("Save JSON to file")
-    def save_json_to_file(self, doc: JSONType, filename: str, indent: int = None):
+    def save_json_to_file(
+        self, doc: JSONType, filename: str, indent: int = None, encoding="utf-8"
+    ):
         """Save a JSON serializable object or a string containg
         a JSON value into a file.
 
         :param doc: JSON serializable object or string
         :param filename: path to output file
+        :param encoding: file character encoding
 
         Example:
 
@@ -184,7 +188,7 @@ class JSON:
         if indent:
             extra_args["indent"] = indent
         doc = self.convert_string_to_json(doc) if isinstance(doc, str) else doc
-        with open(filename, "w") as outfile:
+        with open(filename, "w", encoding=encoding) as outfile:
             json.dump(doc, outfile, **extra_args)
 
     @keyword("Convert JSON to String")

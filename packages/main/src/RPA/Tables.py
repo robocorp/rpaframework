@@ -1812,7 +1812,7 @@ class Tables:
         if header is None:
             header = sniffer.has_header(sample)
 
-        with open(path, newline="") as fd:
+        with open(path, newline="", encoding=encoding) as fd:
             if header:
                 reader = csv.DictReader(
                     fd, dialect=dialect_name, restkey=str(column_unknown)

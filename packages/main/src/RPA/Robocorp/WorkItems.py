@@ -335,7 +335,7 @@ class FileAdapter(BaseAdapter):
         logging.debug("Payload: %s", json_dumps(payload, indent=4))
 
         path = self.path.with_suffix(".output.json")
-        with open(path, "w") as fd:
+        with open(path, "w", encoding="utf-8") as fd:
             fd.write(json_dumps(self.outputs, indent=4))
 
         logging.info("Saved into file: %s", path)
@@ -358,7 +358,7 @@ class FileAdapter(BaseAdapter):
             path = self.path.with_suffix(".output.json")
             data = self.outputs
 
-        with open(path, "w") as fd:
+        with open(path, "w", encoding="utf-8") as fd:
             fd.write(json_dumps(data, indent=4))
 
         logging.info("Saved into file: %s", path)
@@ -401,7 +401,7 @@ class FileAdapter(BaseAdapter):
 
     def load_database(self) -> List:
         try:
-            with open(self.path, "r") as infile:
+            with open(self.path, "r", encoding="utf-8") as infile:
                 data = json.load(infile)
 
             if isinstance(data, list):

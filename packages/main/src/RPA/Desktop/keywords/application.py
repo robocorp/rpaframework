@@ -148,7 +148,7 @@ class ApplicationKeywords(LibraryContext):
         default = output("xdg-mime", "query", "default", "text/plain")
 
         def executable(app):
-            with open(Path("/usr/share/applications/") / app) as fd:
+            with open(Path("/usr/share/applications/") / app, encoding="utf-8") as fd:
                 matches = re.search(r"\bExec=(\S+)", fd.read(), re.MULTILINE)
                 if not matches:
                     raise FileNotFoundError(f"No executable for application '{app}'")

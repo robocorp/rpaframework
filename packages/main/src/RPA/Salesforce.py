@@ -7,7 +7,6 @@ import requests
 from simple_salesforce import Salesforce as SimpleSalesforce
 from simple_salesforce import SFType
 
-
 from RPA.Tables import Table
 
 
@@ -397,12 +396,12 @@ class Salesforce:
         :return: file content as dictionary
         """
         mapping = None
-        with open(mapping_file, "r") as mf:
+        with open(mapping_file, "r", encoding="utf-8") as mf:
             mapping = json.loads(mf.read())
         return mapping
 
     def _get_input_iterable(self, input_object):
-        input_iterable = dict()
+        input_iterable = {}
         if isinstance(input_object, dict):
             input_iterable = input_object.items
         elif isinstance(input_object, Table):

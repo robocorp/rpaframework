@@ -638,7 +638,7 @@ class Tasks:
         #: Current suite running model
         self.suite = None
         #: Original task running models
-        self.tasks = None
+        self.tasks = []
         #: Current running task
         self.current = None
         #: Next scheduled task
@@ -656,7 +656,7 @@ class Tasks:
         if not self.schema_path:
             return
 
-        with open(self.schema_path) as fd:
+        with open(self.schema_path, encoding="utf-8") as fd:
             data = json.load(fd)
             names = [task.name for task in self.tasks]
             self.schema = Schema(data, names)

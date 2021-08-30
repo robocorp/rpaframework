@@ -643,7 +643,7 @@ class JavaAccessBridge:
         tree = repr(self.context_info_tree)
         self.logger.info(tree)
         if filename:
-            with open(filename, "w") as f:
+            with open(filename, "w", encoding="utf-8") as f:
                 f.write(tree)
             self.logger.info("Context tree written to file '%s'", filename)
         return tree

@@ -44,7 +44,7 @@ def write_element_info_as_json(
     elements = elements if isinstance(elements, list) else [elements]
     filename = Path(f"{path}/{filename}.json")
     os.makedirs(filename.parent, exist_ok=True)
-    with open(filename, "w") as outfile:
+    with open(filename, "w", encoding="utf-8") as outfile:
         json.dump(elements, outfile, indent=4, sort_keys=True)
 
 

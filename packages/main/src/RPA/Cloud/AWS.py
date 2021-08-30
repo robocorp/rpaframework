@@ -401,7 +401,7 @@ class ServiceTextract(AWSBase):
         self.pages = response["DocumentMetadata"]["Pages"]
         self._parse_response_blocks(response)
         if json_file:
-            with open(json_file, "w") as f:
+            with open(json_file, "w", encoding="utf-8") as f:
                 json.dump(response, f)
         return self.convert_textract_response_to_model(response) if model else response
 
@@ -509,7 +509,7 @@ class ServiceTextract(AWSBase):
                 )
         self._parse_response_blocks(response)
         if json_file:
-            with open(json_file, "w") as f:
+            with open(json_file, "w", encoding="utf-8") as f:
                 json.dump(response, f)
         return response
 
@@ -828,7 +828,7 @@ class ServiceSQS(AWSBase):
         required_param(message, "send_message")
         client = self._get_client_for_service("sqs")
         if message_attributes is None:
-            message_attributes = dict()
+            message_attributes = {}
         response = client.send_message(
             QueueUrl=self.queue_url,
             DelaySeconds=10,

@@ -156,7 +156,7 @@ class Application:
         return True
 
     def _message_to_dictionary(self, message):
-        msg = dict()
+        msg = {}
         msg["Subject"] = getattr(message, "Subject", "<UNKNOWN>")
         rt = getattr(message, "ReceivedTime", "<UNKNOWN>")
         msg["ReceivedTime"] = rt.isoformat()

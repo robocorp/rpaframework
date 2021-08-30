@@ -81,7 +81,7 @@ def update_env_json(workspace, token):
         content["RC_WORKSPACE_ID"] = workspace
         content["RC_API_SECRET_TOKEN"] = token
         content["RC_API_SECRET_HOST"] = PROD_API_URL
-        with open("devdata/env.json", "w") as fout:
+        with open("devdata/env.json", "w", encoding="utf-8") as fout:
             fout.write(json.dumps(content, sort_keys=False, indent=4))
 
 
@@ -95,7 +95,7 @@ def create_env_json(workspace, token):
         content["RC_WORKSPACE_ID"] = workspace
         content["RC_API_SECRET_TOKEN"] = token
         content["RC_API_SECRET_HOST"] = PROD_API_URL
-        with open("devdata/env.json", "w") as fout:
+        with open("devdata/env.json", "w", encoding="utf-8") as fout:
             fout.write(json.dumps(content, sort_keys=False, indent=4))
 
 

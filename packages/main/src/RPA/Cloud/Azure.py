@@ -91,7 +91,7 @@ class AzureBase:
 
     def _write_json(self, json_filepath, response_json):
         if json_filepath and response_json:
-            with open(json_filepath, "w") as f:
+            with open(json_filepath, "w", encoding="utf-8") as f:
                 json.dump(response_json, f)
 
     def _set_subscription_key(self, service_name, use_robocloud_vault):
