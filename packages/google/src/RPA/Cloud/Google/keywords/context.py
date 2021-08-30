@@ -10,16 +10,6 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account as oauth_service_account
 
-try:
-    from robot.libraries.BuiltIn import BuiltIn
-except ModuleNotFoundError:
-    BuiltIn = None
-
-try:
-    from RPA.Robocorp.Vault import Vault  # pylint: disable=no-name-in-module
-except ModuleNotFoundError:
-    Vault = None
-
 
 class ElementNotFound(ValueError):
     """No matching elements were found."""
@@ -68,15 +58,9 @@ class LibraryContext:
         return self.ctx.cloud_auth_type
 
     def get_secret_from_robocorp_vault(self, secret_type="serviceaccount"):
-        secret_library = Vault
-        try:
-            if secret_library is None and BuiltIn:
-                secret_library = BuiltIn().get_library_instance("RPA.Robocorp.Vault")
-        except RuntimeError as runtime_error:
-            raise KeyError(
-                "RPA.Robocorp.Vault library is required to use Vault"
-            ) from runtime_error
-        temp_filedesc = None
+        if self.ctx.secrets_library is None:
+            raise KeyError("RPA.Robocorp.Vault library is required to use Vault")
+
         if (
             self.ctx.robocorp_vault_name is None
             or self.ctx.robocorp_vault_secret_key is None
@@ -86,7 +70,10 @@ class LibraryContext:
                 "are required to access Robocorp Vault. Set them in library "
                 "init or with `set_robocloud_vault` keyword."
             )
-        vault_items = secret_library().get_secret(self.ctx.robocorp_vault_name)
+
+        vault_items = self.ctx.secrets_library().get_secret(
+            self.ctx.robocorp_vault_name
+        )
         secret = vault_items[self.ctx.robocorp_vault_secret_key]
         if secret_type == "serviceaccount":
             secret_obj = (
@@ -94,8 +81,7 @@ class LibraryContext:
             )
             with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_filedesc:
                 json.dump(secret_obj, temp_filedesc, ensure_ascii=False)
-
-            return temp_filedesc.name
+                return temp_filedesc.name
         else:
             return secret
 
