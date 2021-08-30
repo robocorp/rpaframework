@@ -276,7 +276,7 @@ class FinderKeywords(LibraryContext):
         self.logger.info("Resolving locator: %s", locator)
 
         if isinstance(locator, (Locator, Region, Point)):
-            return self._find(Undefined, locator)
+            return self._find(Undefined(), locator)
         else:
             return self._resolver.dispatch(str(locator))
 
