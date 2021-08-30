@@ -527,16 +527,10 @@ class ImapSmtp:
                     continue
 
                 charset = part.get_content_charset()
-
                 if part.get_content_type() == "text/plain":
-                    text = str(
-                        part.get_payload(decode=True), str(charset), "ignore"
-                    ).encode(self.encoding, "replace")
-
+                    text = str(part.get_payload(decode=True), str(charset), "ignore")
                 if part.get_content_type() == "text/html":
-                    html = str(
-                        part.get_payload(decode=True), str(charset), "ignore"
-                    ).encode(self.encoding, "replace")
+                    html = str(part.get_payload(decode=True), str(charset), "ignore")
 
             if text:
                 return (
@@ -552,7 +546,7 @@ class ImapSmtp:
                 message.get_payload(decode=True),
                 content_charset or self.encoding,
                 "ignore",
-            ).encode(self.encoding, "replace")
+            )
             return text.strip(), has_attachments
 
     @imap_connection
