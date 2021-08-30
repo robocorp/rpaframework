@@ -199,7 +199,7 @@ class LibraryContext:
 
     def write_json(self, json_file, response):
         if json_file and response:
-            with open(json_file, "w") as f:
+            with open(json_file, "w") as f:  # pylint: disable=unspecified-encoding
                 f.write(response.__class__.to_json(response))
 
     def get_credentials_with_oauth_token(
@@ -212,7 +212,9 @@ class LibraryContext:
         else:
             token_file_location = Path(token_file).absolute()
             if os.path.exists(token_file_location):
-                with open(token_file_location, "r") as token:
+                with open(  # pylint: disable=unspecified-encoding
+                    token_file_location, "r"
+                ) as token:
                     credentials = pickle.loads(base64.b64decode(token.read()))
         if not credentials or not credentials.valid:
             if credentials and credentials.expired and credentials.refresh_token:

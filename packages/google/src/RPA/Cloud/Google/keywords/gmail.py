@@ -109,7 +109,7 @@ class GmailKeywords(LibraryContext):
             content_type = "application/octet-stream"
         main_type, sub_type = content_type.split("/", 1)
         if main_type == "text":
-            with open(attachment, "r") as fp:
+            with open(attachment, "r") as fp:  # pylint: disable=unspecified-encoding
                 msg = MIMEText(fp.read(), _subtype=sub_type)
         elif main_type == "image":
             with open(attachment, "rb") as fp:

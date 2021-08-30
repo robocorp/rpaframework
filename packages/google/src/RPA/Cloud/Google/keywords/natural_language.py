@@ -108,7 +108,7 @@ class NaturalLanguageKeywords(LibraryContext):
         if text:
             parameters["content"] = text
         elif text_file:
-            with open(text_file, "r") as f:
+            with open(text_file, "r") as f:  # pylint: disable=unspecified-encoding
                 parameters["content"] = f.read()
         else:
             raise AttributeError("Either 'text' or 'text_file' must be given")
