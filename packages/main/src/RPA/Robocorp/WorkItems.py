@@ -717,8 +717,14 @@ class WorkItems:
         #: Auto-load first input item
         self.autoload: bool = autoload
         #: Adapter for reading/writing items
-        klass = self._load_adapter(default_adapter)
-        self.adapter = klass()
+        self._adapter_class = self._load_adapter(default_adapter)
+        self._adapter: Optional[BaseAdapter] = None
+
+    @property
+    def adapter(self):
+        if self._adapter is None:
+            self._adapter = self._adapter_class()
+        return self._adapter
 
     @property
     def current(self):
