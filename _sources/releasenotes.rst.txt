@@ -4,11 +4,39 @@ Release notes
 Upcoming release
 ----------------
 
+11.0.0
+------
+
+- Terminology fixes for Robocorp Control Room
+- Renamed library **RPA.Robocloud.Items** to **RPA.Robocorp.WorkItems**:
+
+  - Previous import works as before, with deprecation warning
+  - Removed keywords ``Load work item`` and ``Load work item from environment``
+  - Added keywords ``Get input work item`` and ``Create output work item``
+  - Added support for variables and home directory in local database path
+  - Changed local work items format
+
+- Renamed library **RPA.Robocloud.Secrets** to **RPA.Robocorp.Vault**:
+
+  - Previous import works as before, with deprecation warning
+  - Added support for variables and home directory in local vault path
+
 - Library **RPA.Email.ImapSmtp**:
 
   - Add `uid` into email dictionary
   - Fix email body decoding
   - Fix folder list problem when requesting non-existing folder
+
+- Library **RPA.PDF**:
+
+  - Handle missing document information
+  - Always create output directory when writing to disk
+
+- Library **RPA.Windows**: Fix exception from empty parent attribute
+- Library **RPA.Images**:
+
+  - Deprecate screenshot keywords, use ``rpaframework-recognition`` for template matching
+  - Use the library **RPA.Desktop** for image-based automation going forward
 
 10.9.3
 ------
