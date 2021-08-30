@@ -39,7 +39,7 @@ from RPA.PDF.keywords import (
 
 def iterable_items_to_int(bbox) -> list:
     if bbox is None:
-        return list()
+        return []
     return list(map(int, bbox))
 
 

@@ -178,7 +178,7 @@ class DocumentKeywords(LibraryContext):
         """
         variables = variables or {}
 
-        with open(template, "r") as templatefile:
+        with open(template, "r", encoding="utf-8") as templatefile:
             html = templatefile.read()
         for key, value in variables.items():
             html = html.replace("{{" + key + "}}", str(value))
