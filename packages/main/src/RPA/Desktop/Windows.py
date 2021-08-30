@@ -1679,7 +1679,7 @@ class Windows(OperatingSystem):
             try:
                 attr_value = getattr(element_info, attr)
                 if attr == "parent":
-                    element_dict["parent"] = attr_value.control_type
+                    element_dict["parent"] = getattr(attr_value, "control_type", None)
                 else:
                     element_dict[attr] = (
                         attr_value() if callable(attr_value) else str(attr_value)
