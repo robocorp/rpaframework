@@ -20,7 +20,7 @@ python-versions = "*"
 
 [[package]]
 name = "astroid"
-version = "2.7.2"
+version = "2.7.3"
 description = "An abstract syntax tree for Python with inference support."
 category = "dev"
 optional = false
@@ -1301,7 +1301,7 @@ python-versions = "*"
 
 [[package]]
 name = "robocorp-dialog"
-version = "0.2.2"
+version = "0.2.3"
 description = "Dialog for querying user input"
 category = "main"
 optional = false
@@ -1310,7 +1310,7 @@ python-versions = ">=3.6.2,<4.0.0"
 [package.dependencies]
 PyQt5 = {version = ">=5.15.2,<6.0.0", markers = "sys_platform == \"linux\""}
 PyQtWebEngine = {version = ">=5.15.2,<6.0.0", markers = "sys_platform == \"linux\""}
-pywebview = ">=3.4,<4.0"
+pywebview = ">=3.5,<4.0"
 
 [[package]]
 name = "robotframework"
@@ -1426,20 +1426,20 @@ webdrivermanager = ">=0.10.0,<0.11.0"
 
 [[package]]
 name = "rpaframework-dialogs"
-version = "0.3.1"
+version = "0.3.2"
 description = "Dialogs library of RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.6.2,<4.0.0"
 
 [package.dependencies]
-robocorp-dialog = ">=0.2.2,<0.3.0"
+robocorp-dialog = ">=0.2.3,<0.3.0"
 robotframework = ">=4.0.0,<4.0.1 || >4.0.1,<5.0.0"
 rpaframework-core = ">=6.1.0,<7.0.0"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "0.7.0"
+version = "0.8.0"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
@@ -1746,7 +1746,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "00a32677e8f2265224ede8f9e690c640af703a0b3c0f84a3825ab9a5d2b8a970"
+content-hash = "f1110b82869155419ebe5506938ad536168a66fa41257e28de10f682c2743be1"
 
 [metadata.files]
 amazon-textract-response-parser = [
@@ -1758,8 +1758,8 @@ appdirs = [
     {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
 ]
 astroid = [
-    {file = "astroid-2.7.2-py3-none-any.whl", hash = "sha256:ecc50f9b3803ebf8ea19aa2c6df5622d8a5c31456a53c741d3be044d96ff0948"},
-    {file = "astroid-2.7.2.tar.gz", hash = "sha256:b6c2d75cd7c2982d09e7d41d70213e863b3ba34d3bd4014e08f167cee966e99e"},
+    {file = "astroid-2.7.3-py3-none-any.whl", hash = "sha256:dc1e8b28427d6bbef6b8842b18765ab58f558c42bb80540bd7648c98412af25e"},
+    {file = "astroid-2.7.3.tar.gz", hash = "sha256:3b680ce0419b8a771aba6190139a3998d14b413852506d99aff8dc2bf65ee67c"},
 ]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
@@ -2738,8 +2738,8 @@ rfc3987 = [
     {file = "rfc3987-1.3.8.tar.gz", hash = "sha256:d3c4d257a560d544e9826b38bc81db676890c79ab9d7ac92b39c7a253d5ca733"},
 ]
 robocorp-dialog = [
-    {file = "robocorp-dialog-0.2.2.tar.gz", hash = "sha256:1475ec965a530117923eef535f41959bbd28a9e4b73d47ec4e818e3e9110681a"},
-    {file = "robocorp_dialog-0.2.2-py3-none-any.whl", hash = "sha256:c43628672a60af40c8c6870c80e53cbada8981e72203b1d41d97f7d13dc1c91f"},
+    {file = "robocorp-dialog-0.2.3.tar.gz", hash = "sha256:89eeaa3a6debd175ae873c9d3f039162549e6ec7947e9c2663e87fc115fccd00"},
+    {file = "robocorp_dialog-0.2.3-py3-none-any.whl", hash = "sha256:516c8af366ec85ed10633202587867d2283014220adf1dccbcf7d930b983ba8c"},
 ]
 robotframework = [
     {file = "robotframework-4.1-py2.py3-none-any.whl", hash = "sha256:dd57b66ee4f059cfb72596b19016e37f40c0fd3f1e45f53726ae7ed07e05e4a3"},
@@ -2777,12 +2777,12 @@ rpaframework-core = [
     {file = "rpaframework_core-6.4.0-py3-none-any.whl", hash = "sha256:3f065f552d8b729321d60cced745e680d0925bf71730949029248e203e48ff4a"},
 ]
 rpaframework-dialogs = [
-    {file = "rpaframework-dialogs-0.3.1.tar.gz", hash = "sha256:6cacc4eccf040f359b2a09711d28551a71032eb8bf0ef97b5073deb2f977951d"},
-    {file = "rpaframework_dialogs-0.3.1-py3-none-any.whl", hash = "sha256:601693b3355b1b1c3ec21f54e070b326675e4f15dda14dfd803798ad2f4a1fe6"},
+    {file = "rpaframework-dialogs-0.3.2.tar.gz", hash = "sha256:a11de43638eaebe267b1708e539f1ae0ac44512c18136102caaf4ddcf3932ab1"},
+    {file = "rpaframework_dialogs-0.3.2-py3-none-any.whl", hash = "sha256:3edc5381b82a66d327d1c1a95490740fe6492074afd232a82d82eec4f985feb6"},
 ]
 rpaframework-pdf = [
-    {file = "rpaframework-pdf-0.7.0.tar.gz", hash = "sha256:c4736a35356927132df976774c37a559acba72a1704e2f71b7e9a56973c50c1f"},
-    {file = "rpaframework_pdf-0.7.0-py3-none-any.whl", hash = "sha256:7d651cdce97ce5796b5f93000ddc3373fee4d855b831892e6d1a3eb07d37ae43"},
+    {file = "rpaframework-pdf-0.8.0.tar.gz", hash = "sha256:9109f945e91ec76df797b6a9da5a10721dfc12013613db949b4643d0434cf57c"},
+    {file = "rpaframework_pdf-0.8.0-py3-none-any.whl", hash = "sha256:7e591a89a0aecbca72d0e6ede375b4e8b6cb3ea473afefde50b10e7ef1b399b3"},
 ]
 rpaframework-recognition = [
     {file = "rpaframework-recognition-0.7.2.tar.gz", hash = "sha256:67555b9711eac68f7207ab6e33ab5292ab76124d53e7044b6c9b29179b6a6f66"},
