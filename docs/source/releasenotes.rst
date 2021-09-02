@@ -4,6 +4,14 @@ Release notes
 Upcoming release
 ----------------
 
+11.1.0
+------
+
+- Library **RPA.Email.ImapSmtp**:
+
+  - Add support for IMAP literal search
+  - Add support for Gmail advanced search
+
 11.0.0
 ------
 
