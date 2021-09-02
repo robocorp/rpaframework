@@ -585,7 +585,30 @@ class ImapSmtp:
         return result
 
     def _search_message(self, criterion, actions, limit, result):
-        status, data = self.imap_conn.search(None, "(" + criterion + ")")
+        search_encoding = None
+        search_command = "(%s)" % criterion
+        literal_search = criterion.startswith("literal:")
+        gmail_search = criterion.startswith("gmail:")
+        if literal_search:
+            search_encoding = "utf-8"
+            search_term = criterion.replace("literal:", "")
+            search_command, search_literal = search_term.split(" ", 1)
+
+            self.imap_conn.literal = b"%s" % search_literal.encode("utf-8")
+        elif gmail_search:
+            search_encoding = "utf-8"
+            search_command = "X-GM-RAW"
+            self.imap_conn.literal = b"%s" % criterion.replace("gmail:", "").encode(
+                "utf-8"
+            )
+        self.logger.debug("email search encoding: %s", search_encoding)
+        self.logger.debug("email search command: %s", search_command)
+        self.logger.debug("email search literal: %s", self.imap_conn.literal)
+        try:
+            status, data = self.imap_conn.search(search_encoding, search_command)
+        except Exception as err:  # pylint: disable=broad-except
+            self.logger.warning("Email search returned: %s", str(err))
+            return
         if status == "OK":
             mail_id_data = bytes.decode(data[0])
             mail_ids = mail_id_data.split() if len(mail_id_data) > 0 else []
