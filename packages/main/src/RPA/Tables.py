@@ -768,7 +768,7 @@ class Table:
 
         # Store original index order using enumerate() before sort,
         # and use it to sort data later
-        values = sorted(enumerate(values), key=sorter, reverse=ascending)
+        values = sorted(enumerate(values), key=sorter, reverse=not ascending)
         idxs = [value[0] for value in values]
 
         # Re-order data
@@ -776,7 +776,6 @@ class Table:
 
     def group_by_column(self, column):
         """Group rows by column value and return as list of tables."""
-        # TODO: Ensure original index is maintained?
         ref = self.copy()
         ref.sort_by_column(column)
 
@@ -1599,7 +1598,7 @@ class Tables:
         return table.get_table(matches)
 
     def sort_table_by_column(
-        self, table: Table, column: Column, ascending: bool = False
+        self, table: Table, column: Column, ascending: bool = True
     ):
         """Sort a table in-place according to ``column``.
 

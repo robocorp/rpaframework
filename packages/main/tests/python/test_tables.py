@@ -438,9 +438,15 @@ def test_keyword_set_table_cell_new(library, table):
 
 
 def test_keyword_sort_table_by_column(library, table):
-    library.sort_table_by_column(table, "three")
-    values = library.get_table_column(table, "three")
-    assert values == [None, None, None, 3, 3, "c"]
+    library.add_table_column(table, name="five", values=["bbb", 2, 3, 1, 3, "aaa"])
+
+    library.sort_table_by_column(table, "five", ascending=True)
+    assert library.get_table_column(table, "five") == [1, 2, 3, 3, "aaa", "bbb"]
+    assert library.get_table_column(table, "one") == [None, "a", 1, 1, None, 1]
+
+    library.sort_table_by_column(table, "five", ascending=False)
+    assert library.get_table_column(table, "five") == ["bbb", "aaa", 3, 3, 2, 1]
+    assert library.get_table_column(table, "one") == [1, None, 1, 1, "a", None]
 
 
 def test_keyword_group_table_by_column(library, table):
