@@ -404,7 +404,7 @@ class FileAdapter(BaseAdapter):
             try:
                 with open(self.path, "r", encoding="utf-8") as infile:
                     data = json.load(infile)
-            except FileNotFoundError as err:
+            except FileNotFoundError:
                 logging.warning("No work items file found: %s", self.path)
                 data = []
 
