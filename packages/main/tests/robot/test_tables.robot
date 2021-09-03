@@ -7,6 +7,12 @@ Library    RPA.Excel.Files
 ${ORDERS_FILE}    ${CURDIR}${/}..${/}resources${/}example.xlsx
 
 *** Tasks ***
+Table object getter
+    ${table}=    Create table
+    ${data}=     Evaluate    [{"A": 1, "B": 2, "C": 3}, {"A": 4, "B": 5, "C": 6}]
+    ${table}=    Create table    ${data}
+    Should be equal    ${table}[1][B]    5
+
 Create table literal
     ${table}=    Create table    [[1,2,3],[4,5,6]]
     Should be true    $table.size == 2

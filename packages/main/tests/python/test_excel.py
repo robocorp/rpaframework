@@ -209,7 +209,7 @@ def test_append_to_worksheet_headers(library):
 
     result = library.read_worksheet_as_table(header=True)
     assert len(result) == 11
-    assert result[-1] == [99, "tomorrow", "another_value"]
+    assert result[-1] == {"Index": 99, "Date": "tomorrow", "Id": "another_value"}
 
 
 @pytest.mark.parametrize("fmt", ("xlsx", "xls"))
@@ -224,9 +224,9 @@ def test_append_to_worksheet_empty(fmt):
     library.create_workbook(fmt=fmt)
     library.append_rows_to_worksheet(table)
 
-    result = library.read_worksheet_as_table()
+    result = library.read_worksheet_as_table(header=False)
     assert len(result) == 2
-    assert result[0] == [98, "today", "some_value"]
+    assert result[0] == {"A": 98, "B": "today", "C": "some_value"}
 
 
 @pytest.mark.parametrize("fmt", ("xlsx", "xls"))
@@ -243,7 +243,7 @@ def test_append_to_worksheet_empty_with_headers(fmt):
 
     result = library.read_worksheet_as_table()
     assert len(result) == 3
-    assert result[0] == ["Index", "Date", "Id"]
+    assert result[0] == {"A": "Index", "B": "Date", "C": "Id"}
 
 
 def test_remove_worksheet(library):

@@ -413,13 +413,13 @@ class Table:
         if isinstance(key, tuple):
             index, column = key
             index = self._slice_index(index) if isinstance(index, slice) else index
-            return self.get(indexes=index, columns=column, as_list=True)
+            return self.get(indexes=index, columns=column)
         # Row indexed with slice, all columns
         elif isinstance(key, slice):
-            return self.get(indexes=self._slice_index(key), as_list=True)
+            return self.get(indexes=self._slice_index(key))
         # Single row
         else:
-            return self.get(indexes=key, as_list=True)
+            return self.get(indexes=key)
 
     def __setitem__(self, key, value):
         """Helper method for setting items in the Table.
@@ -1717,7 +1717,7 @@ class Tables:
 
         empty = []
         for idx in reversed(table.index):
-            row = table[idx]
+            row = table.get(indexes=idx, as_list=True)
             if any(value is not None for value in row):
                 break
             empty.append(idx)

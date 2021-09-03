@@ -116,21 +116,21 @@ def test_table_index(table):
 
 
 def test_table_pad_short(table):
-    assert table[0] == [1, 2, 3, None]
+    assert table[0] == {"one": 1, "two": 2, "three": 3, "four": None}
 
 
 def test_table_pad_sparse(table):
-    assert table[2] == [1, 2, None, 4]
+    assert table[2] == {"one": 1, "two": 2, "three": None, "four": 4}
 
 
 def test_table_empty_row(table):
-    assert table[3] == [None, None, None, None]
+    assert table[3] == {"one": None, "two": None, "three": None, "four": None}
 
 
 def test_table_negative_row_index(table):
-    assert table[-1] == [None, None, None, None]
-    assert table[-2] == [1, 2, 3, 4]
-    assert table[-3] == [None, None, None, None]
+    assert table[-1] == {"one": None, "two": None, "three": None, "four": None}
+    assert table[-2] == {"one": 1, "two": 2, "three": 3, "four": 4}
+    assert table[-3] == {"one": None, "two": None, "three": None, "four": None}
 
 
 def test_table_negative_column_index(table):
@@ -140,7 +140,9 @@ def test_table_negative_column_index(table):
 
 
 def test_table_slice_index(table):
-    assert table[1:3] == [["a", "b", "c", None], [1, 2, None, 4]]
+    result = table[1:3]
+    expected = Table([["a", "b", "c", None], [1, 2, None, 4]], columns=table.columns)
+    assert result == expected
 
 
 def test_table_length(table):
@@ -161,8 +163,8 @@ def test_table_named_columns():
     table = Table(DATA_NAMEDTUPLE, columns=["two", "four"])
     assert table.columns == ["two", "four"]
     assert table.index == [0, 1, 2, 3, 4, 5]
-    assert table[0] == [2, None]
-    assert table[4] == [2, 4]
+    assert table[0] == {"two": 2, "four": None}
+    assert table[4] == {"two": 2, "four": 4}
 
 
 def test_table_too_short_columns():
@@ -263,7 +265,7 @@ def test_merge_tables(library):
     merged = library.merge_tables(Table(prices), Table(stock))
     assert len(merged) == 7
     assert merged.columns == ["Name", "Price", "Stock"]
-    assert merged[None, "Name"] == [
+    assert merged.get_column("Name", as_list=True) == [
         "Egg",
         "Cheese",
         "Ham",
@@ -299,21 +301,21 @@ def test_keyword_rename_table_columns(library, table):
 def test_keyword_add_table_column(library, table):
     library.add_table_column(table, name="five")
     assert table.columns == ["one", "two", "three", "four", "five"]
-    assert table[0] == [1, 2, 3, None, None]
+    assert table[0] == {"one": 1, "two": 2, "three": 3, "four": None, "five": None}
 
 
 def test_keyword_add_table_rows(library, table):
     library.add_table_row(table, ["x", "y", "z"])
     assert len(table) == 7
     assert table.index[-2] == 5
-    assert table[-1] == ["x", "y", "z", None]
+    assert table[-1] == {"one": "x", "two": "y", "three": "z", "four": None}
 
 
 def test_keyword_add_table_rows_too_long(library, table):
     library.add_table_row(table, ["x", "y", "z", "i", "j", "k"])
     assert len(table) == 7
     assert table.index[-2] == 5
-    assert table[-1] == ["x", "y", "z", "i"]
+    assert table[-1] == {"one": "x", "two": "y", "three": "z", "four": "i"}
 
 
 def test_keyword_get_table_row(library, table):
@@ -330,9 +332,9 @@ def test_keyword_get_table_column(library, table):
 
 
 def test_keyword_set_table_row(library, table):
-    assert table[1] == ["a", "b", "c", None]
+    assert table[1] == {"one": "a", "two": "b", "three": "c", "four": None}
     library.set_table_row(table, 1, ["w", "x", "y", "z"])
-    assert table[1] == ["w", "x", "y", "z"]
+    assert table[1] == {"one": "w", "two": "x", "three": "y", "four": "z"}
 
 
 def test_keyword_set_table_column(library, table):
@@ -343,20 +345,20 @@ def test_keyword_set_table_column(library, table):
 
 def test_keyword_pop_table_row(library, table):
     assert len(table) == 6
-    assert table[0] == [1, 2, 3, None]
+    assert table[0] == {"one": 1, "two": 2, "three": 3, "four": None}
 
-    row = library.pop_table_row(table, row=0, as_list=True)
+    row = library.pop_table_row(table, row=0, as_list=False)
 
     assert len(table) == 5
-    assert table[0] == ["a", "b", "c", None]
-    assert row == [1, 2, 3, None]
+    assert table[0] == {"one": "a", "two": "b", "three": "c", "four": None}
+    assert row == {"one": 1, "two": 2, "three": 3, "four": None}
 
 
 def test_keyword_pop_table_column(library, table):
     library.pop_table_column(table, "two")
     assert table.columns == ["one", "three", "four"]
     assert len(table) == 6
-    assert table[0] == [1, 3, None]
+    assert table[0] == {"one": 1, "three": 3, "four": None}
 
 
 def test_keyword_get_table_slice(library, table):
@@ -408,8 +410,8 @@ def test_keyword_table_head_list(library, table):
     head = library.table_head(table, count=3, as_list=True)
     assert isinstance(head, list)
     assert len(head) == 3
-    assert head[0] == table[0]
-    assert head[-1] == table[2]
+    assert head[0] == table.get(indexes=0, as_list=True)
+    assert head[-1] == table.get(indexes=2, as_list=True)
 
 
 def test_keyword_table_tail(library, table):
@@ -485,14 +487,14 @@ def test_keyword_filter_table_by_column_not_contains(library):
 def test_keyword_filter_empty_rows(library, table):
     library.filter_empty_rows(table)
     assert len(table) == 4
-    assert table[-1] == [1, 2, 3, 4]
+    assert table[-1] == {"one": 1, "two": 2, "three": 3, "four": 4}
 
 
 def test_keyword_trim_empty_rows(library, table):
     library.trim_empty_rows(table)
     assert len(table) == 5
-    assert table[-1] == [1, 2, 3, 4]
-    assert table[-2] == [None, None, None, None]
+    assert table[-1] == {"one": 1, "two": 2, "three": 3, "four": 4}
+    assert table[-2] == {"one": None, "two": None, "three": None, "four": None}
 
 
 def test_trim_column_names(library, table):
@@ -510,15 +512,13 @@ def test_trim_column_names(library, table):
 def test_keyword_read_table_from_csv(library):
     table = library.read_table_from_csv(RESOURCES / "easy.csv")
     assert len(table) == 3
-    assert table.columns == ["first", "second", "third"]
-    assert table[0] == ["1", "2", "3"]
+    assert table[0] == {"first": "1", "second": "2", "third": "3"}
 
 
 def test_keyword_read_table_from_csv_no_header(library):
     table = library.read_table_from_csv(RESOURCES / "easy.csv", header=False)
     assert len(table) == 4
-    assert table.columns == [0, 1, 2]
-    assert table[0] == ["first", "second", "third"]
+    assert table[0] == {0: "first", 1: "second", 2: "third"}
 
 
 def test_keyword_read_table_from_csv_dialect_string(library):
@@ -532,7 +532,7 @@ def test_keyword_read_table_from_csv_encoding(library):
     table = library.read_table_from_csv(RESOURCES / "easy.csv", encoding="utf-8")
     assert len(table) == 3
     assert table.columns == ["first", "second", "third"]
-    assert table[0] == ["1", "2", "3"]
+    assert table[0] == {"first": "1", "second": "2", "third": "3"}
 
 
 def test_keyword_read_table_from_csv_extra(library):
@@ -541,8 +541,13 @@ def test_keyword_read_table_from_csv_extra(library):
     )
     assert len(table) == 4
     assert table.columns == ["first", "second", "third", "whoknows"]
-    assert table[0] == ["1", "2", "3", None]
-    assert table[2] == ["7", "8", "9", ["11", "12"]]
+    assert table[0] == {"first": "1", "second": "2", "third": "3", "whoknows": None}
+    assert table[2] == {
+        "first": "7",
+        "second": "8",
+        "third": "9",
+        "whoknows": ["11", "12"],
+    }
 
 
 def test_keyword_read_table_from_csv_manual(library):
@@ -550,38 +555,22 @@ def test_keyword_read_table_from_csv_manual(library):
         RESOURCES / "hard.csv", dialect=Dialect.Excel, header=True
     )
     assert len(table) == 100
-    assert table.columns == [
-        "Region",
-        "Country",
-        "Item Type",
-        "Sales Channel",
-        "Order Priority",
-        "Order Date",
-        "Order ID",
-        "Ship Date",
-        "Units Sold",
-        "Unit Price",
-        "Unit Cost",
-        "Total Revenue",
-        "Total Cost",
-        "Total Profit",
-    ]
-    assert table[-1] == [
-        "Sub-Saharan Africa",
-        "Mozambique",
-        "Household",
-        "Offline",
-        "L",
-        "2/10/2012",
-        "665095412",
-        "2/15/2012",
-        "5367",
-        "668.27",
-        "502.54",
-        "3586605.09",
-        "2697132.18",
-        "889472.91",
-    ]
+    assert table[-1] == {
+        "Region": "Sub-Saharan Africa",
+        "Country": "Mozambique",
+        "Item Type": "Household",
+        "Sales Channel": "Offline",
+        "Order Priority": "L",
+        "Order Date": "2/10/2012",
+        "Order ID": "665095412",
+        "Ship Date": "2/15/2012",
+        "Units Sold": "5367",
+        "Unit Price": "668.27",
+        "Unit Cost": "502.54",
+        "Total Revenue": "3586605.09",
+        "Total Cost": "2697132.18",
+        "Total Profit": "889472.91",
+    }
 
 
 def test_keyword_write_table_to_csv(library, table):
