@@ -144,9 +144,7 @@ class TestLibrary:
         for key, value in modified.items():
             MockAdapter.validate(item, key, value)
 
-    def test_no_active_item(
-        self,
-    ):
+    def test_no_active_item(self):
         library = WorkItems(default_adapter=MockAdapter)
         with pytest.raises(RuntimeError) as err:
             library.save_work_item()
@@ -515,3 +513,28 @@ class TestFileAdapter:
         with open(output) as fd:
             data = json.load(fd)
             assert data == [{"payload": {"key": "value"}, "files": {}}]
+
+    def test_missing_file(self, monkeypatch):
+        monkeypatch.setenv("RPA_WORKITEMS_PATH", "not-exist.json")
+        adapter = FileAdapter()
+        assert adapter.inputs == [{"payload": {}}]
+
+    def test_empty_queue(self, monkeypatch):
+        with tempfile.TemporaryDirectory() as datadir:
+            items = os.path.join(datadir, "items.json")
+            with open(items, "w") as fd:
+                json.dump([], fd)
+
+            monkeypatch.setenv("RPA_WORKITEMS_PATH", items)
+            adapter = FileAdapter()
+            assert adapter.inputs == [{"payload": {}}]
+
+    def test_malformed_queue(self, monkeypatch):
+        with tempfile.TemporaryDirectory() as datadir:
+            items = os.path.join(datadir, "items.json")
+            with open(items, "w") as fd:
+                json.dump(["not-an-item"], fd)
+
+            monkeypatch.setenv("RPA_WORKITEMS_PATH", items)
+            adapter = FileAdapter()
+            assert adapter.inputs == [{"payload": {}}]

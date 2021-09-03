@@ -401,13 +401,19 @@ class FileAdapter(BaseAdapter):
 
     def load_database(self) -> List:
         try:
-            with open(self.path, "r", encoding="utf-8") as infile:
-                data = json.load(infile)
+            try:
+                with open(self.path, "r", encoding="utf-8") as infile:
+                    data = json.load(infile)
+            except FileNotFoundError as err:
+                logging.warning("No work items file found: %s", self.path)
+                data = []
 
             if isinstance(data, list):
                 assert all(
                     isinstance(d, dict) for d in data
                 ), "Items should be dictionaries"
+                if len(data) == 0:
+                    data.append({"payload": {}})
                 return data
 
             def first(d: Dict[str, Any]) -> str:
@@ -421,7 +427,7 @@ class FileAdapter(BaseAdapter):
             return [{"payload": work_item}]
         except Exception as exc:  # pylint: disable=broad-except
             logging.error("Invalid work items file: %s", exc)
-            return []
+            return [{"payload": {}}]
 
 
 class WorkItem:
