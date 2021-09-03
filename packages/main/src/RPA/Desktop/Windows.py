@@ -1629,7 +1629,7 @@ class Windows(OperatingSystem):
             dirname = Path.cwd()
 
         path = Path(dirname, "images", clean_filename(filename))
-        path = Desktop().take_screenshot(path=path, region=region)
+        path = Desktop().take_screenshot(path=path, locator=region)
 
     def _parse_element_attributes(self, element: dict) -> dict:
         """Return filtered element dictionary for an element.
