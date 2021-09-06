@@ -352,10 +352,5 @@ class JSON:
 
         """  # noqa: E501
         self.logger.info('Delete from JSON with expression: "%s"', expr)
-        for match in parse(expr).find(doc):
-            path = match.path
-            if isinstance(path, Index):
-                del match.context.value[match.path.index]
-            elif isinstance(path, Fields):
-                del match.context.value[match.path.fields[0]]
+        parse(expr).filter(lambda _: True, doc)
         return doc
