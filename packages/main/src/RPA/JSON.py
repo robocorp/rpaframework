@@ -168,6 +168,7 @@ class JSON:
 
         :param doc: JSON serializable object or string
         :param filename: path to output file
+        :param indent: if given this value is used for json file indent
         :param encoding: file character encoding
 
         Example:
