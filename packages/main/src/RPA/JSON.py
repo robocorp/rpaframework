@@ -243,7 +243,8 @@ class JSON:
 
            # Change the name value for all people
            &{before}=    Convert string to JSON   {"People": [{"Name": "Mark"}, {"Name": "Jane"}]}
-           &{after}=     Add to JSON    ${json}   $.People.name    JohnMalkovich
+           &{person}=    Create dictionary      Name=John
+           &{after}=     Add to JSON    ${before}   $.People    ${person}
 
         """  # noqa: E501
         self.logger.info('Add to JSON with expression: "%s"', expr)
@@ -271,7 +272,7 @@ class JSON:
 
            # Get the name value for the first person
            &{people}=    Convert string to JSON   {"People": [{"Name": "Mark"}, {"Name": "Jane"}]}
-           ${first}=     Get value from JSON      ${people}   $.People[0].name
+           ${first}=     Get value from JSON      ${people}   $.People[0].Name
 
         """  # noqa: E501
         self.logger.info('Get value from JSON with expression: "%s"', expr)
@@ -300,7 +301,7 @@ class JSON:
 
            # Get all the names for all people
            &{people}=    Convert string to JSON   {"People": [{"Name": "Mark"}, {"Name": "Jane"}]}
-           @{names}=     Get values from JSON     ${people}   $.People[*].name
+           @{names}=     Get values from JSON     ${people}   $.People[*].Name
 
         """  # noqa: E501
         self.logger.info('Get values from JSON with expression: "%s"', expr)
@@ -321,7 +322,7 @@ class JSON:
 
            # Change the name key for all people
            &{before}=    Convert string to JSON   {"People": [{"Name": "Mark"}, {"Name": "Jane"}]}
-           &{after}=     Update value to JSON     ${json}   $.People[*].name    JohnMalkovich
+           &{after}=     Update value to JSON     ${before}   $.People[*].Name    JohnMalkovich
 
         """  # noqa: E501
         self.logger.info('Update JSON with expression: "%s"', expr)
@@ -347,7 +348,8 @@ class JSON:
 
            # Delete all people
            &{before}=    Convert string to JSON   {"People": [{"Name": "Mark"}, {"Name": "Jane"}]}
-           &{after}=     Delete from JSON    ${json}   $.People[*]
+           &{after}=     Delete from JSON    ${before}   $.People[*]
+
         """  # noqa: E501
         self.logger.info('Delete from JSON with expression: "%s"', expr)
         for match in parse(expr).find(doc):
