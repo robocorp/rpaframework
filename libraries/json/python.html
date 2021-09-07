@@ -395,7 +395,8 @@ If the target is a dict, the keys are either added or updated.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Change the name value for all people</span>
 <span class="c">&amp;{before}=</span><span class="p">    </span><span class="c">Convert string to JSON</span><span class="p">   </span><span class="c">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
-<span class="c">&amp;{after}=</span><span class="p">     </span><span class="c">Add to JSON</span><span class="p">    </span><span class="c">${json}</span><span class="p">   </span><span class="c">$.People.name</span><span class="p">    </span><span class="c">JohnMalkovich</span><span class="p"></span>
+<span class="c">&amp;{person}=</span><span class="p">    </span><span class="c">Create dictionary</span><span class="p">      </span><span class="c">Name=John</span><span class="p"></span>
+<span class="c">&amp;{after}=</span><span class="p">     </span><span class="c">Add to JSON</span><span class="p">    </span><span class="c">${before}</span><span class="p">   </span><span class="c">$.People</span><span class="p">    </span><span class="c">${person}</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -450,7 +451,7 @@ Will delete all values that match the expression.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Delete all people</span>
 <span class="c">&amp;{before}=</span><span class="p">    </span><span class="c">Convert string to JSON</span><span class="p">   </span><span class="c">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
-<span class="c">&amp;{after}=</span><span class="p">     </span><span class="c">Delete from JSON</span><span class="p">    </span><span class="c">${json}</span><span class="p">   </span><span class="c">$.People[*]</span><span class="p"></span>
+<span class="c">&amp;{after}=</span><span class="p">     </span><span class="c">Delete from JSON</span><span class="p">    </span><span class="c">${before}</span><span class="p">   </span><span class="c">$.People[*]</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -473,7 +474,7 @@ were no matches.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Get the name value for the first person</span>
 <span class="c">&amp;{people}=</span><span class="p">    </span><span class="c">Convert string to JSON</span><span class="p">   </span><span class="c">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
-<span class="c">${first}=</span><span class="p">     </span><span class="c">Get value from JSON</span><span class="p">      </span><span class="c">${people}</span><span class="p">   </span><span class="c">$.People[0].name</span><span class="p"></span>
+<span class="c">${first}=</span><span class="p">     </span><span class="c">Get value from JSON</span><span class="p">      </span><span class="c">${people}</span><span class="p">   </span><span class="c">$.People[0].Name</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -493,7 +494,7 @@ were no matches.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Get all the names for all people</span>
 <span class="c">&amp;{people}=</span><span class="p">    </span><span class="c">Convert string to JSON</span><span class="p">   </span><span class="c">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
-<span class="c">@{names}=</span><span class="p">     </span><span class="c">Get values from JSON</span><span class="p">     </span><span class="c">${people}</span><span class="p">   </span><span class="c">$.People[*].name</span><span class="p"></span>
+<span class="c">@{names}=</span><span class="p">     </span><span class="c">Get values from JSON</span><span class="p">     </span><span class="c">${people}</span><span class="p">   </span><span class="c">$.People[*].Name</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -563,7 +564,7 @@ Will change all values that match the expression.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Change the name key for all people</span>
 <span class="c">&amp;{before}=</span><span class="p">    </span><span class="c">Convert string to JSON</span><span class="p">   </span><span class="c">{&quot;People&quot;: [{&quot;Name&quot;: &quot;Mark&quot;}, {&quot;Name&quot;: &quot;Jane&quot;}]}</span><span class="p"></span>
-<span class="c">&amp;{after}=</span><span class="p">     </span><span class="c">Update value to JSON</span><span class="p">     </span><span class="c">${json}</span><span class="p">   </span><span class="c">$.People[*].name</span><span class="p">    </span><span class="c">JohnMalkovich</span><span class="p"></span>
+<span class="c">&amp;{after}=</span><span class="p">     </span><span class="c">Update value to JSON</span><span class="p">     </span><span class="c">${before}</span><span class="p">   </span><span class="c">$.People[*].Name</span><span class="p">    </span><span class="c">JohnMalkovich</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
