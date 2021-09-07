@@ -4,10 +4,13 @@ Release notes
 Upcoming release
 ----------------
 
-11.1.1
+11.1.2
 ------
 
-- Library **RPA.Email.ImapSmtp**: Remove newline and carriage return chars from attachment filenames
+- Library **RPA.Email.ImapSmtp**:
+
+  - Remove newline and carriage return chars from attachment filenames
+  - Fix problem with saving attachments which do not have payload
 
 11.1.0
 ------
