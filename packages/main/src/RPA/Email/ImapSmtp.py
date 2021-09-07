@@ -844,7 +844,7 @@ class ImapSmtp:
             content_maintype = part.get_content_maintype()
             content_disposition = part.get("Content-Disposition")
             if content_maintype != "multipart" and content_disposition is not None:
-                filename = part.get_filename()
+                filename = part.get_filename().replace("\r", "").replace("\n", "")
                 if filename:
                     transfer_encoding = part.get_all("Content-Transfer-Encoding")
                     if transfer_encoding and transfer_encoding[0] == "base64":
