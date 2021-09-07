@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+11.1.1
+------
+
+- Library **RPA.Email.ImapSmtp**: Remove newline and carriage return chars from attachment filenames
+
 11.1.0
 ------
 
