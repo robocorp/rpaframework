@@ -789,7 +789,7 @@ class ImapSmtp:
         self, criterion: str = "", target_folder: str = None, overwrite: bool = False
     ) -> Any:
         # pylint: disable=C0301
-        """Save mail attachments into local folder.
+        """Save mail attachments of emails matching criterion into local folder.
 
         :param criterion: attachments are saved for mails matching this, defaults to ""
         :param target_folder: local folder for saving attachments to (needs to exist),
@@ -816,7 +816,7 @@ class ImapSmtp:
         self, message: Union[dict, Message], target_folder: str, overwrite: bool
     ):
         # pylint: disable=C0301
-        """Save mail attachment into local folder
+        """Save mail attachment of single given email into local folder
 
         :param message: message item
         :param target_folder: local folder for saving attachments to (needs to exist),
