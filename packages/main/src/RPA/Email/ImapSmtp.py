@@ -601,9 +601,6 @@ class ImapSmtp:
             self.imap_conn.literal = b"%s" % criterion.replace("gmail:", "").encode(
                 "utf-8"
             )
-        self.logger.debug("email search encoding: %s", search_encoding)
-        self.logger.debug("email search command: %s", search_command)
-        self.logger.debug("email search literal: %s", self.imap_conn.literal)
         try:
             status, data = self.imap_conn.search(search_encoding, search_command)
         except Exception as err:  # pylint: disable=broad-except
@@ -855,13 +852,20 @@ class ImapSmtp:
                             )
                     filepath = Path(target_folder) / Path(filename).name
                     if not filepath.exists() or overwrite:
-                        self.logger.info(
-                            "Saving attachment: %s",
-                            filename,
-                        )
-                        with open(filepath, "wb") as f:
-                            f.write(part.get_payload(decode=True))
-                            attachments_saved.append(str(filepath))
+                        payload = part.get_payload(decode=True)
+                        if payload:
+                            self.logger.info(
+                                "Saving attachment: %s",
+                                filename,
+                            )
+                            with open(filepath, "wb") as f:
+                                f.write(payload)
+                                attachments_saved.append(str(filepath))
+                        else:
+                            self.logger.debug(
+                                "Attachment '%s' did not have payload to write",
+                                filename,
+                            )
                     elif filepath.exists() and not overwrite:
                         self.logger.warning("Did not overwrite file: %s", filepath)
         return attachments_saved
