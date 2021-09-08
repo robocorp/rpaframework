@@ -1098,3 +1098,26 @@ class Dialogs:
             time.sleep(0.1)
 
         raise TimeoutException("Reached timeout while waiting for dialogs")
+
+    @keyword("Add Datepicker Input", tags=["input"])
+    def add_datepicker_input(
+        self, name: str, label: str, value: str = None, min: str = None, max: str = None
+    ):
+        """[summary]
+
+        :param name: [description]
+        :param label: [description]
+        :param value: [description], defaults to None
+        :param min: [description], defaults to None
+        :param max: [description], defaults to None
+        """
+        element = {
+            "type": "date",
+            "name": str(name),
+            "label": optional_str(label),
+            "value": optional_str(value),
+            "min": optional_str(min),
+            "max": optional_str(max),
+        }
+
+        self.add_element(element)
