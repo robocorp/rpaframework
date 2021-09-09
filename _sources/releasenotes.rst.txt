@@ -12,6 +12,14 @@ Upcoming release
   - Remove newline and carriage return chars from attachment filenames
   - Fix problem with saving attachments which do not have payload
 
+11.1.1
+------
+
+- Library **RPA.Robocorp.WorkItems**: Ensure file-based database has at least one item
+- Library **RPA.Tables**: Fix reversed sort ordering
+- Library **RPA.Windows**: Fix internal argument for ``Screenshot`` keyword
+- Library **RPA.JSON**: Fix docstring examples
+
 11.1.0
 ------
 
