@@ -4,6 +4,7 @@ import glob
 import logging
 import mimetypes
 import time
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Union, Any, Generator
 
@@ -696,6 +697,53 @@ class Dialogs:
 
         self.add_element(element)
 
+    @keyword("Add date-picker", tags=["input"])
+    def add_date_picker(
+            self,
+            name: str,
+            default: Optional[str] = None,
+            label: Optional[str] = None,
+    ) -> None:
+        """Add a date-picker element
+
+        :param name:    Name of result field
+        :param default: The default date
+        :param label:   Label for input field
+
+        Displays a date picker widget. The selection the user makes will be available
+        in the ``name`` field of the result.
+        The ``default`` argument can be a pre-set date in DD/MM/YYYY format, otherwise
+        the current date is used.
+        A custom ``label`` text can also be added.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Add heading     Enter your birthdate
+            Add date-picker
+            ...    name=birthdate
+            ${result}=      Run dialog
+            Log    User birthdate should be: ${result.birthdate}
+        """
+        format = "%d/%m/%Y"
+        if default:
+            try:
+                datetime.strptime(default, format)
+            except Exception as exc:
+                raise ValueError(f"Invalid default date with value {default!r}") from exc
+        else:
+            default = datetime.utcnow().strftime(format)
+
+        element = {
+            "type": "input-datepicker",
+            "name": str(name),
+            "default": default,
+            "label": optional_str(label),
+        }
+
+        self.add_element(element)
+
     @keyword("Add radio buttons", tags=["input"])
     def add_radio_buttons(
         self,
@@ -1098,26 +1146,3 @@ class Dialogs:
             time.sleep(0.1)
 
         raise TimeoutException("Reached timeout while waiting for dialogs")
-
-    @keyword("Add Datepicker Input", tags=["input"])
-    def add_datepicker_input(
-        self, name: str, label: str, value: str = None, min: str = None, max: str = None
-    ):
-        """[summary]
-
-        :param name: [description]
-        :param label: [description]
-        :param value: [description], defaults to None
-        :param min: [description], defaults to None
-        :param max: [description], defaults to None
-        """
-        element = {
-            "type": "date",
-            "name": str(name),
-            "label": optional_str(label),
-            "value": optional_str(value),
-            "min": optional_str(min),
-            "max": optional_str(max),
-        }
-
-        self.add_element(element)
