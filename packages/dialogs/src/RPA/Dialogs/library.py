@@ -697,20 +697,20 @@ class Dialogs:
 
         self.add_element(element)
 
-    @keyword("Add date-picker", tags=["input"])
-    def add_date_picker(
+    @keyword("Add Date Input", tags=["input"])
+    def add_date_input(
             self,
             name: str,
             default: Optional[str] = None,
             label: Optional[str] = None,
     ) -> None:
-        """Add a date-picker element
+        """Add a date input element
 
         :param name:    Name of result field
         :param default: The default date
         :param label:   Label for input field
 
-        Displays a date picker widget. The selection the user makes will be available
+        Displays a date input widget. The selection the user makes will be available
         in the ``name`` field of the result.
         The ``default`` argument can be a pre-set date in DD/MM/YYYY format, otherwise
         the current date is used.
@@ -721,19 +721,20 @@ class Dialogs:
         .. code-block:: robotframework
 
             Add heading     Enter your birthdate
-            Add date-picker
+            Add Date Input
             ...    name=birthdate
             ${result}=      Run dialog
             Log    User birthdate should be: ${result.birthdate}
         """
-        format = "%d/%m/%Y"
+
+        date_format = "%d/%m/%Y"
         if default:
             try:
-                datetime.strptime(default, format)
+                datetime.strptime(default, date_format)
             except Exception as exc:
                 raise ValueError(f"Invalid default date with value {default!r}") from exc
         else:
-            default = datetime.utcnow().strftime(format)
+            default = datetime.utcnow().strftime(date_format)
 
         element = {
             "type": "input-datepicker",
