@@ -24,7 +24,7 @@ def run(*args):
 
 
 def get_git_tags():
-    command = 'git log --tags --simplify-by-decoration --pretty="format:%ai %d" | grep "tag: main"'
+    command = 'git log --tags --simplify-by-decoration --pretty="format:%ai %d"'
     result = run(command)
     matches = PATTERN_GIT_TAG.findall(result)
     git_releases = {}
