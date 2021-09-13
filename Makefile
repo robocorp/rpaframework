@@ -59,6 +59,7 @@ docs: docs-libdoc install ## Generate documentation using Sphinx
 	poetry run python ./tools/todos.py packages/main/src docs/source/contributing/todos.rst
 	poetry run python ./tools/merge.py docs/source/json/ docs/source/include/latest.json
 	poetry run $(MAKE) -C docs html
+	poetry run python ./tools/rss.py
 
 docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 	poetry run docgen\
