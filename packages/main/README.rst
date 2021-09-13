@@ -39,6 +39,7 @@ Links
 - Documentation: `<https://rpaframework.org/>`_
 - PyPI: `<https://pypi.org/project/rpaframework/>`_
 - Release notes: `<https://rpaframework.org/releasenotes.html>`_
+- RSS feed: `<https://rpaframework.org/releases.xml>`_
 
 ------------
 
