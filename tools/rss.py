@@ -20,17 +20,24 @@ RSSFEED = Path(
 
 
 def run(*args):
-    return subprocess.check_output(args, shell=True).decode().strip()
+    return subprocess.check_output(*args, stderr=subprocess.STDOUT).decode().strip()
 
 
 def get_git_tags():
-    command = 'git log --tags --simplify-by-decoration --pretty="format:%ai %d"'
+    command = [
+        "git",
+        "log",
+        "--tags",
+        "--simplify-by-decoration",
+        "--pretty=%ai %d",
+    ]
     result = run(command)
     matches = PATTERN_GIT_TAG.findall(result)
     git_releases = {}
     for m in matches:
         reldate = datetime.datetime.strptime(
-            m[0].strip(), "%Y-%m-%d %H:%M:%S %z"
+            m[0].strip(),
+            "%Y-%m-%d %H:%M:%S %z",
         ).strftime("%a, %d %b %Y %H:%M:%S %z")
         git_releases[m[1]] = reldate
     return git_releases
