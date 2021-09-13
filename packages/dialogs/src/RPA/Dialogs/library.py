@@ -699,10 +699,10 @@ class Dialogs:
 
     @keyword("Add Date Input", tags=["input"])
     def add_date_input(
-            self,
-            name: str,
-            default: Optional[str] = None,
-            label: Optional[str] = None,
+        self,
+        name: str,
+        default: Optional[str] = None,
+        label: Optional[str] = None,
     ) -> None:
         """Add a date input element
 
@@ -732,7 +732,9 @@ class Dialogs:
             try:
                 datetime.strptime(default, date_format)
             except Exception as exc:
-                raise ValueError(f"Invalid default date with value {default!r}") from exc
+                raise ValueError(
+                    f"Invalid default date with value {default!r}"
+                ) from exc
         else:
             default = datetime.utcnow().strftime(date_format)
 
