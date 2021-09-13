@@ -4,5 +4,513 @@
 	<title>Recent updates for rpaframework</title>
 	<link>https://rpaframework.org/releasenotes.html</link>
 	<description>Recent updates to the Python Package Index for rpaframework</description>
-	<language>en</language>	</channel>
+	<language>en</language>
+	<item>
+		<title>Release 11.1.2</title>
+		<link>https://pypi.org/project/rpaframework/11.1.2/</link>
+		<description>- Library &lt;b&gt;RPA.Email.ImapSmtp&lt;/b&gt;:
+&lt;br&gt;      - Remove newline and carriage return chars from attachment filenames
+&lt;br&gt;      - Fix problem with saving attachments which do not have payload
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Tue, 07 Sep 2021 14:52:19 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 11.1.1</title>
+		<link>https://pypi.org/project/rpaframework/11.1.1/</link>
+		<description>- Library &lt;b&gt;RPA.Robocorp.WorkItems&lt;/b&gt;: Ensure file-based database has at least one item
+&lt;br&gt;    - Library &lt;b&gt;RPA.Tables&lt;/b&gt;: Fix reversed sort ordering
+&lt;br&gt;    - Library &lt;b&gt;RPA.Windows&lt;/b&gt;: Fix internal argument for `Screenshot` keyword
+&lt;br&gt;    - Library &lt;b&gt;RPA.JSON&lt;/b&gt;: Fix docstring examples
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Tue, 07 Sep 2021 14:14:41 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 11.1.0</title>
+		<link>https://pypi.org/project/rpaframework/11.1.0/</link>
+		<description>- Library &lt;b&gt;RPA.Email.ImapSmtp&lt;/b&gt;:
+&lt;br&gt;      - Add support for IMAP literal search
+&lt;br&gt;      - Add support for Gmail advanced search
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Thu, 02 Sep 2021 12:51:56 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 11.0.0</title>
+		<link>https://pypi.org/project/rpaframework/11.0.0/</link>
+		<description>- Terminology fixes for Robocorp Control Room
+&lt;br&gt;    - Renamed library RPA.Robocloud.Items to &lt;b&gt;RPA.Robocorp.WorkItems&lt;/b&gt;:
+&lt;br&gt;      - Previous import works as before, with deprecation warning
+&lt;br&gt;      - Removed keywords `Load work item` and `Load work item from environment`
+&lt;br&gt;      - Added keywords `Get input work item` and `Create output work item`
+&lt;br&gt;      - Added support for variables and home directory in local database path
+&lt;br&gt;      - Changed local work items format
+&lt;br&gt;    - Renamed library RPA.Robocloud.Secrets to &lt;b&gt;RPA.Robocorp.Vault&lt;/b&gt;:
+&lt;br&gt;      - Previous import works as before, with deprecation warning
+&lt;br&gt;      - Added support for variables and home directory in local vault path
+&lt;br&gt;    - Library &lt;b&gt;RPA.Email.ImapSmtp&lt;/b&gt;:
+&lt;br&gt;      - Add `uid` into email dictionary
+&lt;br&gt;      - Fix email body decoding
+&lt;br&gt;      - Fix folder list problem when requesting non-existing folder
+&lt;br&gt;    - Library &lt;b&gt;RPA.PDF&lt;/b&gt;:
+&lt;br&gt;      - Handle missing document information
+&lt;br&gt;      - Always create output directory when writing to disk
+&lt;br&gt;    - Library &lt;b&gt;RPA.Windows&lt;/b&gt;: Fix exception from empty parent attribute
+&lt;br&gt;    - Library &lt;b&gt;RPA.Images&lt;/b&gt;:
+&lt;br&gt;      - Deprecate screenshot keywords, use `rpaframework-recognition` for template matching
+&lt;br&gt;      - Use the library &lt;b&gt;RPA.Desktop&lt;/b&gt; for image-based automation going forward
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Mon, 30 Aug 2021 21:18:47 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.9.3</title>
+		<link>https://pypi.org/project/rpaframework/10.9.3/</link>
+		<description>- Library &lt;b&gt;RPA.Excel.Files&lt;/b&gt;:
+&lt;br&gt;      - Return empty list when reading empty worksheet (:issue:`203`)
+&lt;br&gt;      - Correctly handle header names with non-string values
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Thu, 19 Aug 2021 19:19:27 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.9.2</title>
+		<link>https://pypi.org/project/rpaframework/10.9.2/</link>
+		<description>- Library &lt;b&gt;RPA.Email.ImapSmtp&lt;/b&gt;:
+&lt;br&gt;      - Fix `List Messages` error not returning matching emails
+&lt;br&gt;      - Fix marking emails as SEEN when using `List Messages` or `Wait For Message`
+&lt;br&gt;      - Add `encoding` library initialization parameter (default is `utf-8` as it used to be)
+&lt;br&gt;      - Add `readonly` parameter to keywords `List Messages` (True), `Wait For Message` (True) and `Select Folder` (False).
+&lt;br&gt;        Default values are in the parenthesis.
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Thu, 12 Aug 2021 21:15:14 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.9.0</title>
+		<link>https://pypi.org/project/rpaframework/10.9.0/</link>
+		<description>- Library &lt;b&gt;RPA.Desktop.Windows&lt;/b&gt;: Add COMError protection to keyword `Open From Search`
+&lt;br&gt;    - Library &lt;b&gt;RPA.Email.ImapSmtp&lt;/b&gt;: Fix possible `None` error when reading email body
+&lt;br&gt;    - Library &lt;b&gt;RPA.Database&lt;/b&gt;: Fix typo in ibm_db connection
+&lt;br&gt;    - Library &lt;b&gt;RPA.JavaAccessBridge&lt;/b&gt;:
+&lt;br&gt;      - Add new library init parameters: `ignore_callbacks` and `access_bridge_path`
+&lt;br&gt;      - Bump java-access-bridge-wrapper version to 0.7.4
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Fri, 06 Aug 2021 12:49:59 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.8.0</title>
+		<link>https://pypi.org/project/rpaframework/10.8.0/</link>
+		<description>- Library &lt;b&gt;RPA.HTTP&lt;/b&gt;:
+&lt;br&gt;      - Fix downloading of big files
+&lt;br&gt;      - Bump robotframework-requests version to 0.9.1
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Tue, 27 Jul 2021 16:15:11 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.7.1</title>
+		<link>https://pypi.org/project/rpaframework/10.7.1/</link>
+		<description>- Bump robotframework-pythonlibcore version to 3.0.0
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Mon, 26 Jul 2021 17:59:41 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.6.0</title>
+		<link>https://pypi.org/project/rpaframework/10.6.0/</link>
+		<description>- Library &lt;b&gt;RPA.Email.Exchange&lt;/b&gt;: Add keyword `Save Message` to save message in EML format
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Fri, 16 Jul 2021 16:42:54 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.5.0</title>
+		<link>https://pypi.org/project/rpaframework/10.5.0/</link>
+		<description>- Library &lt;b&gt;RPA.JavaAccessBridge&lt;/b&gt;: Bump `java-access-bridge-wrapper` to latest version
+&lt;br&gt;    - Library &lt;b&gt;RPA.Database&lt;/b&gt;: Add parameter `autocommit` to `connect_to_database` keyword (now only used with pymssql module)
+&lt;br&gt;    - Library &lt;b&gt;RPA.Email.Exchange&lt;/b&gt;: Fix `List Messages` when `received_by` is missing from the email
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Fri, 16 Jul 2021 11:52:21 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.4.0</title>
+		<link>https://pypi.org/project/rpaframework/10.4.0/</link>
+		<description>- New experimental library &lt;b&gt;RPA.JavaAccessBridge&lt;/b&gt;
+&lt;br&gt;    Library requirements:
+&lt;br&gt;    - Windows only
+&lt;br&gt;    - Java Access Bridge is enabled
+&lt;br&gt;    - Environment variable pointing to the Access Bridge DLL file is set
+&lt;br&gt;    See more details in library documentation.
+&lt;br&gt;    Feedback is highly appreciated via Slack or Github issues!
+&lt;br&gt;    - Library &lt;b&gt;RPA.Email.ImapSmtp&lt;/b&gt;: Allow sending message with empty account and password
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Wed, 23 Jun 2021 14:19:16 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.3.0</title>
+		<link>https://pypi.org/project/rpaframework/10.3.0/</link>
+		<description>- Library &lt;b&gt;RPA.Database&lt;/b&gt;: Return rows for `SHOW` and `EXPLAIN` statements
+&lt;br&gt;    - Library &lt;b&gt;RPA.Desktop.Windows&lt;/b&gt;: Add `parent` as possible locator
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Sun, 13 Jun 2021 17:29:13 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.2.0</title>
+		<link>https://pypi.org/project/rpaframework/10.2.0/</link>
+		<description>- Library &lt;b&gt;RPA.Excel.Application&lt;/b&gt;:
+&lt;br&gt;      - Add keyword `Export As PDF`
+&lt;br&gt;      - Add automatic document and application closing to prevent file being locked
+&lt;br&gt;    - Library &lt;b&gt;RPA.FTP&lt;/b&gt;: Add keyword parameters to support FTP over TLS/SSL (FTPS)
+&lt;br&gt;    - Library &lt;b&gt;RPA.Desktop.Windows&lt;/b&gt;: Add point of `origin` parameter to `Drag and Drop`
+&lt;br&gt;    rpaframework-google: 0.2.3
+&lt;br&gt;    --------------------------
+&lt;br&gt;      - Fix authentication issue when using Robocorp Vault
+&lt;br&gt;      - Fix keyword `Synthesize Speech`
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Sun, 06 Jun 2021 19:33:24 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.1.0</title>
+		<link>https://pypi.org/project/rpaframework/10.1.0/</link>
+		<description>- Library &lt;b&gt;RPA.Excel.Files&lt;/b&gt;:
+&lt;br&gt;      - Add keyword `Set cell format` for adjusting cell number formatting
+&lt;br&gt;      - Add new keyword aliases `Get cell value` and `Set cell value`
+&lt;br&gt;      - Improve keyword documentation
+&lt;br&gt;    - Library &lt;b&gt;RPA.Excel.Application&lt;/b&gt;: Add option to save in legacy formats
+&lt;br&gt;    - Library &lt;b&gt;RPA.Desktop&lt;/b&gt;: Fix issues with `Press keys` on Windows
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Tue, 01 Jun 2021 23:44:31 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.0.7</title>
+		<link>https://pypi.org/project/rpaframework/10.0.7/</link>
+		<description>- Library &lt;b&gt;RPA.Dialogs&lt;/b&gt;: Print full traceback from errors when opening dialog
+&lt;br&gt;    - Update optional `numpy` and `opencv` dependencies
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Mon, 31 May 2021 16:34:33 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.0.6</title>
+		<link>https://pypi.org/project/rpaframework/10.0.6/</link>
+		<description>- Library &lt;b&gt;RPA.Dialogs&lt;/b&gt;:
+&lt;br&gt;      - Add unique name and icon for dialog window
+&lt;br&gt;      - Fix MacOS keyboard focus and dock icon issues
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Tue, 25 May 2021 23:46:48 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.0.5</title>
+		<link>https://pypi.org/project/rpaframework/10.0.5/</link>
+		<description>- Bump PyObjC versions from 6.x to 7.x,
+&lt;br&gt;      to fix possible API version errors with MacOS
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Tue, 18 May 2021 18:39:14 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.0.4</title>
+		<link>https://pypi.org/project/rpaframework/10.0.4/</link>
+		<description>- Library &lt;b&gt;RPA.Dialogs&lt;/b&gt;:
+&lt;br&gt;      - Fix automatic height calculation on Windows
+&lt;br&gt;      - Fix element clearing if dialog throws exception
+&lt;br&gt;      - Fix errors in keyword examples
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Mon, 17 May 2021 21:08:48 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.0.3</title>
+		<link>https://pypi.org/project/rpaframework/10.0.3/</link>
+		<description>- Updated `rpaframework-pdf` dependency
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Sat, 15 May 2021 18:47:50 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.0.2</title>
+		<link>https://pypi.org/project/rpaframework/10.0.2/</link>
+		<description>- Fix `use-robocorp-vault` script error when creating `devdata/env.json` file
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Fri, 14 May 2021 21:34:46 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.0.1</title>
+		<link>https://pypi.org/project/rpaframework/10.0.1/</link>
+		<description>- Fix `TypeError` errors when creating Tables inside Robocorp Lab
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Wed, 12 May 2021 18:44:31 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 10.0.0</title>
+		<link>https://pypi.org/project/rpaframework/10.0.0/</link>
+		<description>- Library &lt;b&gt;RPA.Cloud.Google&lt;/b&gt;:
+&lt;br&gt;      - Available now as `rpaframework-google` package instead of rpaframework extra
+&lt;br&gt;      - Added basic support for `Gmail API`
+&lt;br&gt;      - Added keyword tags to identify keywords by service in the documentation
+&lt;br&gt;      - Fix regression bug with Sheets keyword `Insert Values`
+&lt;br&gt;    - Library &lt;b&gt;RPA.Dialogs&lt;/b&gt;:
+&lt;br&gt;      - Open dialogs as native OS windows instead of new browser instances
+&lt;br&gt;      - Renamed multiple keywords and arguments, added type hints for all arguments
+&lt;br&gt;      - Visual upgrade to all components
+&lt;br&gt;      - Available separately as `rpaframework-dialogs` package, but still part of main release
+&lt;br&gt;    - Library &lt;b&gt;RPA.Tables&lt;/b&gt;:
+&lt;br&gt;      - Removed support for named rows, which caused confusion and had several shortcomings
+&lt;br&gt;      - Added automatic argument conversion for all keywords
+&lt;br&gt;      - Added examples for all keywords
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Mon, 10 May 2021 17:29:33 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 9.6.0</title>
+		<link>https://pypi.org/project/rpaframework/9.6.0/</link>
+		<description>- Library &lt;b&gt;RPA.Email.ImapSmtp&lt;/b&gt;:
+&lt;br&gt;      - Return file paths of saved attachments
+&lt;br&gt;      - Fix problem with non-ASCII attachment filenames
+&lt;br&gt;    - Library &lt;b&gt;RPA.FileSystem&lt;/b&gt;: Fix default argument handling (:issue:`170`)
+&lt;br&gt;    - Library &lt;b&gt;RPA.Word.Application&lt;/b&gt;: Add option to control opening documents in ReadOnly mode (:issue:`171`)
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Tue, 20 Apr 2021 15:19:30 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 9.5.0</title>
+		<link>https://pypi.org/project/rpaframework/9.5.0/</link>
+		<description>- Library &lt;b&gt;RPA.Tables&lt;/b&gt;:
+&lt;br&gt;      - Add `encoding` option for CSV reading and writing
+&lt;br&gt;      - Add `not contains` and `not in` operators for filtering
+&lt;br&gt;    - Library &lt;b&gt;RPA.JSON&lt;/b&gt;: Add indent option to `Save JSON To File`
+&lt;br&gt;    - Library &lt;b&gt;RPA.Excel.Files&lt;/b&gt;: Add keyword `Get worksheet value`
+&lt;br&gt;    - Library &lt;b&gt;RPA.HTTP&lt;/b&gt;: Allow string as `verify` parameter to give path to CA_BUNDLE
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Mon, 12 Apr 2021 14:58:40 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 9.4.0</title>
+		<link>https://pypi.org/project/rpaframework/9.4.0/</link>
+		<description>- Library &lt;b&gt;RPA.PDF&lt;/b&gt;: Add `Set Convert Settings` keyword to adjust document analysis settings from default values
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Tue, 06 Apr 2021 12:00:58 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 9.3.4</title>
+		<link>https://pypi.org/project/rpaframework/9.3.4/</link>
+		<description>- Library &lt;b&gt;RPA.PDF&lt;/b&gt;: Add orientation, rotate and format image properties for `Add Files To PDF`
+&lt;br&gt;    - Library &lt;b&gt;RPA.Cloud.Google&lt;/b&gt;: Fix bug in create file properties and set initial mimetype correctly
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Fri, 02 Apr 2021 18:16:42 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 9.3.3</title>
+		<link>https://pypi.org/project/rpaframework/9.3.3/</link>
+		<description>- Library &lt;b&gt;RPA.Cloud.Google&lt;/b&gt;: Fix mimetype error with `Drive Upload File`
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Thu, 01 Apr 2021 22:09:28 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 9.3.2</title>
+		<link>https://pypi.org/project/rpaframework/9.3.2/</link>
+		<description>- Library &lt;b&gt;RPA.Email.Exchange&lt;/b&gt;: Fix `Empty Folder` keyword
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Thu, 01 Apr 2021 15:55:20 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 9.3.1</title>
+		<link>https://pypi.org/project/rpaframework/9.3.1/</link>
+		<description>- Library &lt;b&gt;RPA.Cloud.Google&lt;/b&gt;: Add missing service account support for `Drive` and `Apps Script`
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Thu, 01 Apr 2021 11:01:41 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 9.3.0</title>
+		<link>https://pypi.org/project/rpaframework/9.3.0/</link>
+		<description>- Library &lt;b&gt;RPA.PDF&lt;/b&gt;:
+&lt;br&gt;      - Add keywords `Save Figure As Image` and `Save Figures As Images` to save PDF Figure objects
+&lt;br&gt;      - Add keyword `Add Files To PDF` to combine images and/or a PDFs (or pages from PDF) to new PDF
+&lt;br&gt;      - Improved performance by setting pdfminer log level to INFO
+&lt;br&gt;    - Library &lt;b&gt;RPA.Dialogs&lt;/b&gt;:
+&lt;br&gt;      - Add new keyword `Add Password Input`, see (:pr:`161`)
+&lt;br&gt;      - Logging from keyword `Request Response` is now suppressed in Robot Framework logs
+&lt;br&gt;    Thank you https://github.com/antusystem for submitting the pull request!
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Wed, 31 Mar 2021 15:44:56 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 9.2.1</title>
+		<link>https://pypi.org/project/rpaframework/9.2.1/</link>
+		<description>  - Library &lt;b&gt;Email.ImapSmtp&lt;/b&gt;: Fix issue with saving attachments
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Fri, 26 Mar 2021 00:07:10 +0200</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 9.2.0</title>
+		<link>https://pypi.org/project/rpaframework/9.2.0/</link>
+		<description>  - Add new script &lt;b&gt;use-robocorp-vault&lt;/b&gt;, which helps to setup local development run to use Robocorp Vault
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Thu, 25 Mar 2021 12:10:26 +0200</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 9.1.0</title>
+		<link>https://pypi.org/project/rpaframework/9.1.0/</link>
+		<description>- Library &lt;b&gt;RPA.PDF&lt;/b&gt;:
+&lt;br&gt;      - Restore path create feature for keyword `HTML To PDF`
+&lt;br&gt;      - Fix keyword annotation of `Save PDF`, which caused unavailability of the keyword
+&lt;br&gt;      - Update changes to this library in release notes of  `8.0.0`
+&lt;br&gt;      - Known issue about viewing PDF with form checkbox fields, see (:issue:`156`)
+&lt;br&gt;    - Library &lt;b&gt;RPA.Cloud.Google&lt;/b&gt;:
+&lt;br&gt;      - Add Sheets keyword `Update Values`
+&lt;br&gt;      - Add Sheets keyword `Copy Sheet`
+&lt;br&gt;      - Return responses from all Sheets keywords
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Tue, 23 Mar 2021 10:46:27 +0200</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 9.0.0</title>
+		<link>https://pypi.org/project/rpaframework/9.0.0/</link>
+		<description>Update to &lt;b&gt;Robot Framework 4.0&lt;/b&gt;.
+&lt;br&gt;    Feature highlights:
+&lt;br&gt;    - Native IF/ELSE syntax
+&lt;br&gt;    - Ability to skip tasks dynamically
+&lt;br&gt;    - Argument auto-conversion improvements
+&lt;br&gt;    - Documentation generation improvements
+&lt;br&gt;    - Removal of task criticality
+&lt;br&gt;    To see the full list of changes see
+&lt;br&gt;    `the official release notes https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-4.0.rst`_.
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Mon, 22 Mar 2021 13:46:41 +0200</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 8.2.0</title>
+		<link>https://pypi.org/project/rpaframework/8.2.0/</link>
+		<description>- Library &lt;b&gt;RPA.Robocloud.Secrets&lt;/b&gt;:
+&lt;br&gt;      - Add keyword `Set Secret` for updating stored secrets
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Mon, 15 Mar 2021 11:02:30 +0200</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 8.1.0</title>
+		<link>https://pypi.org/project/rpaframework/8.1.0/</link>
+		<description>- Library &lt;b&gt;RPA.Email.Exchange&lt;/b&gt;:
+&lt;br&gt;      - Add keyword `List Unread Messages`
+&lt;br&gt;      - Add keyword `Move Message`
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Thu, 11 Mar 2021 20:50:59 +0200</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 8.0.1</title>
+		<link>https://pypi.org/project/rpaframework/8.0.1/</link>
+		<description>- Library &lt;b&gt;RPA.Browser.Selenium&lt;/b&gt;: Fix webdriver creation on Windows
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Thu, 11 Mar 2021 11:35:45 +0200</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
+		<title>Release 8.0.0</title>
+		<link>https://pypi.org/project/rpaframework/8.0.0/</link>
+		<description>- Library &lt;b&gt;RPA.Browser.Selenium&lt;/b&gt;:
+&lt;br&gt;      - Keyword `Open Available Browser` has the default option &#x27;AUTO&#x27; for
+&lt;br&gt;        arguments `headless` and `download`. See keyword documentation
+&lt;br&gt;        for details.
+&lt;br&gt;      - Webdrivers for Chrome/Chromium and Firefox are automatically matched
+&lt;br&gt;        to the currently installed browser version.
+&lt;br&gt;      - Webdrivers which are still running on Python process exit are closed
+&lt;br&gt;        automatically to prevent hanging subprocesses. (:issue:`94`)
+&lt;br&gt;      - Webdrivers are stored in the user&#x27;s home folder, to speed
+&lt;br&gt;        up browser start-up times between reboots.
+&lt;br&gt;    - Library &lt;b&gt;RPA.PDF&lt;/b&gt;:
+&lt;br&gt;      - Refactor library into a separate package. (:issue:`97`)
+&lt;br&gt;      - Rename keyword `Add Image to PDF` to `Add Watermark Image to PDF`.
+&lt;br&gt;      - Rename `Get Value From Anchor` to `Find Text`.
+&lt;br&gt;      - Rename `Page Rotate` to `Rotate Page`.
+&lt;br&gt;      - Rename `PDF Decrypt` to `Decrypt PDF`.
+&lt;br&gt;      - Rename `PDF Encrypt` to `Encrypt PDF`.
+&lt;br&gt;      - Rename `Update Field Values` to `Save Field Values`.
+&lt;br&gt;      - Rename `Open PDF Document` to `Open PDF`.
+&lt;br&gt;      - Rename `Close PDF Document` to `Close PDF`.
+&lt;br&gt;      - Unify keyword signatures, now keywords can be given an input and output paths.
+&lt;br&gt;        If no input path given, the library assumes a PDF is already opened by some
+&lt;br&gt;        other keyword. If no output path given, the library will output the file
+&lt;br&gt;        to `output/output.pdf`.
+&lt;br&gt;    - Library &lt;b&gt;RPA.Desktop.Windows&lt;/b&gt;:
+&lt;br&gt;      - Keyword `Open File` return type changed from boolean to integer,
+&lt;br&gt;        to indicate the opened application ID
+&lt;br&gt;      - Add `object` key into `Get Window List` return data (allows advanced usage)
+&lt;br&gt;      - Change how field is emptied with `Type Into` parameter `empty_field=True`
+&lt;br&gt;    - Library &lt;b&gt;RPA.Tables&lt;/b&gt;:
+&lt;br&gt;      - Add option to define column name for unknown CSV fields,
+&lt;br&gt;        and warn about header and data mismatch
+&lt;br&gt;      - Correctly handle source data with `NoneType` columns
+&lt;br&gt;    - Library &lt;b&gt;RPA.Word.Application&lt;/b&gt;: Fix saving with Office 2007 and older (:issue:`146`)
+&lt;br&gt;    - Library &lt;b&gt;RPA.Cloud.AWS&lt;/b&gt;:
+&lt;br&gt;      - Add keyword `Convert Textract Response To Model`
+&lt;br&gt;      - Add `model` parameter to Keyword `Analyze Document` for getting modeled response object
+&lt;br&gt;    - Library &lt;b&gt;RPA.Email.ImapSmtp&lt;/b&gt;: Set attachment header correctly (:issue:`148`)
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Wed, 10 Mar 2021 21:11:27 +0200</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>	</channel>
 </rss>
