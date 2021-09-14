@@ -1,6 +1,7 @@
 name: docs
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -18,6 +19,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
