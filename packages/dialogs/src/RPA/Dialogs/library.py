@@ -727,21 +727,24 @@ class Dialogs:
             Log    User birthdate should be: ${result.birthdate}
         """
 
-        date_format = "%d/%m/%Y"
+        # TODO(cmiN): Be flexible on date formats. (provide it as parameter)
+        py_date_format = "%d/%m/%Y"
+        js_date_format = "dd/MM/yyyy"
         if default:
             try:
-                datetime.strptime(default, date_format)
+                datetime.strptime(default, py_date_format)
             except Exception as exc:
                 raise ValueError(
                     f"Invalid default date with value {default!r}"
                 ) from exc
         else:
-            default = datetime.utcnow().strftime(date_format)
+            default = datetime.utcnow().strftime(py_date_format)
 
         element = {
             "type": "input-datepicker",
             "name": str(name),
-            "default": default,
+            "format": js_date_format,
+            "default": optional_str(default),
             "label": optional_str(label),
         }
 
