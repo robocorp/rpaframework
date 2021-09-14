@@ -708,7 +708,7 @@ class Dialogs:
 
         :param name:    Name of result field
         :param default: The default date
-        :param label:   Label for input field
+        :param label:   Label for input field (not supported yet)
 
         Displays a date input widget. The selection the user makes will be available
         in the ``name`` field of the result.
