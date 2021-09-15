@@ -1,4 +1,7 @@
-from contextlib import nullcontext as does_not_raise
+try:
+    from contextlib import nullcontext as does_not_raise
+except ImportError:
+    from contextlib import ExitStack as does_not_raise
 from pathlib import Path
 
 import pytest
