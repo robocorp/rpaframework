@@ -1,5 +1,7 @@
-import pytest
+from contextlib import nullcontext as does_not_raise
 from pathlib import Path
+
+import pytest
 from RPA.Dialogs import Dialogs
 
 
@@ -155,6 +157,34 @@ def test_add_drop_down(library):
         "default": None,
         "label": None,
     }
+
+
+@pytest.mark.parametrize(
+    "default,expect",
+    [
+        ("06/09/2021", does_not_raise()),
+        ("33/09/2021", pytest.raises(ValueError)),
+        ("06/13/2021", pytest.raises(ValueError)),
+        (None, does_not_raise()),  # uses the current date as default
+    ]
+)
+@pytest.mark.freeze_time("2021-09-06")
+def test_add_date_input(library, default, expect):
+    with expect:
+        library.add_date_input("datepicker-field", default=default)
+
+    default = default or "06/09/2021"  # for the current date case
+    elems_count = len(library.elements)
+    assert elems_count in (0, 1)
+
+    if elems_count:
+        assert library.elements[0] == {
+            "type": "input-datepicker",
+            "name": "datepicker-field",
+            "format": "dd/MM/yyyy",
+            "default": default,
+            "label": None,
+        }
 
 
 def test_add_radio_buttons(library):
