@@ -215,7 +215,7 @@ class Process:
         return response.json()["data"]
 
     @keyword(tags=["process", "get", "workitems"])
-    def list_process_workitems(
+    def list_process_work_items(
         self, process_id: str = None, include_data: bool = False, item_state: str = None
     ):
         response = self.http.session_less_get(
@@ -232,7 +232,7 @@ class Process:
         )
 
     @keyword(tags=["process", "get", "workitem"])
-    def get_workitem(
+    def get_work_item(
         self, workitem_id: str, process_id: str = None, include_data: bool = False
     ):
         response = self.http.session_less_get(
