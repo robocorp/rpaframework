@@ -601,11 +601,14 @@ Stores operation errors into <cite>Salesforce.dataloader_errors</cite>.</p>
 
 <dl class="method">
 <dt id="RPA.Salesforce.Salesforce.salesforce_query">
-<code class="sig-name descname">salesforce_query</code><span class="sig-paren">(</span><em class="sig-param">sql_string: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">salesforce_query</code><span class="sig-paren">(</span><em class="sig-param">sql_string: str</em>, <em class="sig-param">as_table: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Salesforce.Salesforce.salesforce_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform SQL query.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>sql_string</strong> – SQL clause to perform</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sql_string</strong> – SQL clause to perform</p></li>
+<li><p><strong>as_table</strong> – set to <cite>True</cite> if result should be <cite>RPA.Tables.Table</cite></p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>result of the SQL query</p>

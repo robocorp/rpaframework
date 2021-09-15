@@ -4,6 +4,14 @@ Release notes
 Upcoming release
 ----------------
 
+11.1.3
+------
+
+- Library **RPA.Salesforce**:
+
+  - Fix ``Salesforce Query`` result being limited to 250 objects
+  - Add parameter to ``Salesforce Query`` to return result as ``Table``
+
 11.1.2
 ------
 
