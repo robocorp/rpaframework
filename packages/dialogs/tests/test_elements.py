@@ -59,13 +59,13 @@ def test_add_image_url(library):
 
 
 def test_add_image_local(library):
-    library.add_image(str(RESOURCES / "cat.jpeg"))
+    path = str(RESOURCES / "cat.jpeg")
+    library.add_image(path)
     assert len(library.elements) == 1
 
     element = library.elements[0]
     assert element["type"] == "image"
-    assert element["value"].startswith("data:image/jpeg;base64")
-    assert len(element["value"]) > 100
+    assert element["value"] == path
 
 
 def test_add_file(library):
