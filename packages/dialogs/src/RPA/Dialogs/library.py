@@ -1,8 +1,6 @@
 import atexit
-import base64
 import glob
 import logging
-import mimetypes
 import time
 from datetime import date, datetime
 from pathlib import Path
@@ -296,25 +294,9 @@ class Dialogs:
             Add submit buttons    Continue
             Run dialog
         """
-        try:
-            is_file = Path(url_or_path).is_file()
-        except OSError:
-            is_file = False
-
-        if is_file:
-            # Serve local files as data-uri, since the webview component
-            # most likely can't serve the file directly
-            mime, _ = mimetypes.guess_type(url_or_path)
-            with open(url_or_path, "rb") as fd:
-                data = base64.b64encode(fd.read()).decode()
-                value = f"data:{mime};base64,{data}"
-        else:
-            # Assume image is a remote URL, which can be used as-is
-            value = url_or_path
-
         element = {
             "type": "image",
-            "value": str(value),
+            "value": str(url_or_path),
             "width": optional_int(width),
             "height": optional_int(height),
         }
