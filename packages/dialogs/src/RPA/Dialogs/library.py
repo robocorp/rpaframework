@@ -4,7 +4,7 @@ import glob
 import logging
 import mimetypes
 import time
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Union, Any, Generator
 
@@ -701,7 +701,7 @@ class Dialogs:
     def add_date_input(
         self,
         name: str,
-        default: Optional[str] = None,
+        default: Optional[Union[date, str]] = None,
     ) -> None:
         """Add a date input element
 
@@ -709,9 +709,9 @@ class Dialogs:
         :param default: The default date
 
         Displays a date input widget. The selection the user makes will be available
-        in the ``name`` field of the result.
-        The ``default`` argument can be a pre-set date in DD/MM/YYYY format, otherwise
-        the current date is used.
+        as a ``date`` object in the ``name`` field of the result.
+        The ``default`` argument can be a pre-set date as object or string in
+        DD/MM/YYYY format, otherwise the current date is used.
 
         Example:
 
@@ -720,29 +720,30 @@ class Dialogs:
             Add heading       Enter your birthdate
             Add Date Input    birthdate    default=26/04/1993
             ${result} =       Run dialog
-            Log    User birthdate should be: ${result.birthdate}
+            Log To Console    User birthdate year should be: ${result.birthdate.year}
         """
 
         # TODO(cmin764): Be flexible on date formats. (provide it as parameter)
         py_date_format = "%d/%m/%Y"
         js_date_format = "dd/MM/yyyy"
-        if default:
+        default = default or datetime.utcnow().date()
+        if isinstance(default, date):  # recognizes both `date` and `datetime`
+            default = default.strftime(py_date_format)
+        else:
             try:
                 datetime.strptime(default, py_date_format)
             except Exception as exc:
                 raise ValueError(
                     f"Invalid default date with value {default!r}"
                 ) from exc
-        else:
-            default = datetime.utcnow().strftime(py_date_format)
 
         element = {
             "type": "input-datepicker",
             "name": str(name),
+            "_format": py_date_format,
             "format": js_date_format,
             "default": optional_str(default),
         }
-
         self.add_element(element)
 
     @keyword("Add radio buttons", tags=["input"])

@@ -2,11 +2,12 @@ import json
 import logging
 import subprocess
 import time
-from typing import Union, Optional
+from datetime import datetime
+from typing import Any, Union, Optional
 
 import robocorp_dialog  # type: ignore
 from robot.utils import DotDict  # type: ignore
-from .dialog_types import Elements, Result
+from .dialog_types import Element, Elements, Result
 from .utils import is_input, is_submit
 
 
@@ -16,6 +17,13 @@ class TimeoutException(RuntimeError):
 
 class Dialog:
     """Container for a dialog running in a separate subprocess."""
+
+    # Post-process received result's values.
+    POST_PROCESS_MAP = {
+        "input-datepicker": lambda value, *, _format, **__: datetime.strptime(
+            value, _format  # converts date strings to objects
+        ).date(),
+    }
 
     def __init__(
         self,
@@ -144,7 +152,7 @@ class Dialog:
             if is_input(element):
                 key = element["name"]
                 assert key in fields, f"Missing input value for '{key}'"
-                result[key] = fields[key]
+                result[key] = self._post_process_value(fields[key], element=element)
             elif is_submit(element):
                 result["submit"] = fields["submit"]
 
@@ -187,3 +195,11 @@ class Dialog:
             self._result = json.loads(out)
         except ValueError:
             self._result = {"error": f"Malformed response:\n{out}"}
+
+    @classmethod
+    def _post_process_value(cls, value: Any, *, element: Element) -> Any:
+        func = cls.POST_PROCESS_MAP.get(element["type"])
+        if func:
+            value = func(value, **element)
+
+        return value
