@@ -53,7 +53,7 @@ All elements
     Add drop-down       dropdown-field-2   one,two,three    default=three
     Add drop-down       dropdown-field-3   ${EMPTY_LIST}    label=Empty
 
-    Add Date Input      dateinput-field-1   default=06/09/2021  label=Not Used
+    Add Date Input      dateinput-field-1   default=06/09/2021
 
     Add radio buttons   radio-field-1      one,two,three
     Add radio buttons   radio-field-2      one,two,three    default=three

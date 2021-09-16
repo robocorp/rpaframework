@@ -186,7 +186,6 @@ def test_add_date_input(library, default, expect):
             "name": "datepicker-field",
             "format": "dd/MM/yyyy",
             "default": default,
-            "label": None,
         }
 
 
