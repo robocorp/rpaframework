@@ -8,7 +8,9 @@ import subprocess
 PATTERN_VERSION = re.compile(r"^([0-9]+)\.([0-9]+)\.([0-9]+)")
 PATTERN_CONTEXT = re.compile(r"- (\S+):")
 PATTERN_BOLD_TEXT = re.compile(r".*\*(.*)\*.*")
-PATTERN_GIT_TAG = re.compile(r"(.*)\(.*tag: main_(.*)\)")
+PATTERN_GIT_TAG = re.compile(
+    r"(.*)\(.*tag: main_([0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}).*\)"
+)
 
 RELEASENOTES = Path(
     Path(__file__).resolve().parent, "..", "docs", "source", "releasenotes.rst"
