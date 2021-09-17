@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+11.2.0
+------
+
+- Library **RPA.Dialogs**: ``Add Date Input`` keyword
+
 11.1.3
 ------
 
