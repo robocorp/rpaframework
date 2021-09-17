@@ -1,0 +1,668 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python API &mdash; RPA Framework  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/iframeResizer.min.js"></script>
+        <script src="../../_static/custom.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Robocorp.Vault" href="../robocorp_vault/index.html" />
+    <link rel="prev" title="Robocorp.Process" href="index.html" />
+	<!-- Cookie consent -->
+<link async rel="stylesheet" type="text/css" href="../../_static/cookie.css"/>
+<script async src="../../_static/cookie.js"></script>
+<!-- Robocorp banner -->
+<link async rel="stylesheet" type="text/css" href="../../_static/robocorp.css"/>
+<script async src="../../_static/robocorp.js"></script>
+<!--            -->
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-151433780-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-151433780-3');
+</script>
+<!--            -->
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RPA Framework
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Libraries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../archive/index.html">Archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser/index.html">Browser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_playwright/index.html">Browser.Playwright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../browser_selenium/index.html">Browser.Selenium</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_aws/index.html">Cloud.AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_azure/index.html">Cloud.Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cloud_google/index.html">Cloud.Google</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../crypto/index.html">Crypto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database/index.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop/index.html">Desktop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_clipboard/index.html">Desktop.Clipboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_operatingsystem/index.html">Desktop.OperatingSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../desktop_windows/index.html">Desktop.Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_exchange/index.html">Email.Exchange</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../email_imapsmtp/index.html">Email.ImapSmtp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_application/index.html">Excel.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../excel_files/index.html">Excel.Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filesystem/index.html">FileSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ftp/index.html">FTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../http/index.html">HTTP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../images/index.html">Images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../javaaccessbridge/index.html">JavaAccessBridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../json/index.html">JSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../netsuite/index.html">Netsuite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notifier/index.html">Notifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../outlook_application/index.html">Outlook.Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdf/index.html">PDF</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Robocorp.Process</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Python API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_vault/index.html">Robocorp.Vault</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robocorp_workitems/index.html">Robocorp.WorkItems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robotloglistener/index.html">RobotLogListener</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../salesforce/index.html">Salesforce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sap/index.html">SAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Tasks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter/index.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releasenotes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/guide.html">Contribution guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/conventions.html">Project conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/todos.html">TODO</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RPA Framework</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Robocorp.Process</a> &raquo;</li>
+        
+      <li>Python API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/libraries/robocorp_process/python.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+	
+           <div itemprop="articleBody">
+            
+  <div class="section" id="python-api">
+<h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RPA.Robocorp.Process">
+<span id="process"></span><h2>Process<a class="headerlink" href="#module-RPA.Robocorp.Process" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Robocorp.Process.ConfigurationType">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.Process.</code><code class="sig-name descname">ConfigurationType</code><a class="headerlink" href="#RPA.Robocorp.Process.ConfigurationType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Possible configuration types</p>
+<dl class="attribute">
+<dt id="RPA.Robocorp.Process.ConfigurationType.default">
+<code class="sig-name descname">default</code><em class="property"> = 'default'</em><a class="headerlink" href="#RPA.Robocorp.Process.ConfigurationType.default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Robocorp.Process.ConfigurationType.work_items">
+<code class="sig-name descname">work_items</code><em class="property"> = 'workItemIds'</em><a class="headerlink" href="#RPA.Robocorp.Process.ConfigurationType.work_items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Robocorp.Process.Process">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.Process.</code><code class="sig-name descname">Process</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: str = None</em>, <em class="sig-param">process_id: str = None</em>, <em class="sig-param">workspace_api_key: str = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A library for interacting with Control Room (CR) Process API endpoints.</p>
+<p>See <a class="reference external" href="https://robocorp.com/docs/control-room/operating-workforce">https://robocorp.com/docs/control-room/operating-workforce</a> for information
+about process run, step run and work item states.</p>
+<p>See <a class="reference external" href="https://robocorp.com/docs/control-room/apis-and-webhooks">https://robocorp.com/docs/control-room/apis-and-webhooks</a> for information
+about Control Room APIs.</p>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<p>In the following example a task creates two input work items,
+and starts a process with those items. This results in 2 different
+process runs in the Control Room.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocorp.Process</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Robocorp.Vault</span><span class="p"></span>
+
+<span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Initialize Process Library</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">secrets</span><span class="p">}=  </span><span class="nf">Get Secret</span><span class="p">  </span><span class="s">ProcessAPI</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Set Credentials</span><span class="p"></span>
+<span class="p">    ...   ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">workspace_id</span><span class="p">]</span>
+<span class="p">    ...   ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">process_id</span><span class="p">]</span>
+<span class="p">    ...   ${</span><span class="nv">secrets</span><span class="p">}[</span><span class="nv">apikey</span><span class="p">]</span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Start process with work items</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Setup</span><span class="p">]   </span><span class="nf">Initialize Process Library</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">item1</span><span class="p">}=  </span><span class="nf">Create Dictionary</span><span class="p">  </span><span class="s">fname=Mark</span><span class="p">  </span><span class="s">lname=Monkey</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">item2</span><span class="p">}=  </span><span class="nf">Create Dictionary</span><span class="p">  </span><span class="s">fname=John</span><span class="p">  </span><span class="s">lname=Doe</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">items</span><span class="p">}=  </span><span class="nf">Create List</span><span class="p">  ${</span><span class="nv">item1</span><span class="p">}   ${</span><span class="nv">item2</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Start Process</span><span class="p">  </span><span class="s">work_items=</span><span class="p">${</span><span class="nv">items</span><span class="p">}  </span><span class="s">batch=True</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Robot Framework</strong></p>
+<p>In the following example a task creates work item with files.
+To include files in a work item, the item needs to be created
+before starting the process (note. different start keyword than above).</p>
+<p>In this example I am using same keywords and settings from above example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Start process with work items</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Setup</span><span class="p">]   </span><span class="nf">Initialize Process Library</span><span class="p"></span>
+<span class="p">    &amp;{</span><span class="nv">data</span><span class="p">}=  </span><span class="nf">Create Dictionary</span><span class="p">  </span><span class="s">fname=Mark</span><span class="p">  </span><span class="s">lname=Monkey</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">files</span><span class="p">}=  </span><span class="nf">Create List</span><span class="p"></span>
+<span class="p">    ...   ${</span><span class="nv">CURDIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">workdata.xlsx</span><span class="p"></span>
+<span class="p">    ...   ${</span><span class="nv">CURDIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">other.csv</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">item_id</span><span class="p">}=    </span><span class="nf">Create Input Work Item</span><span class="p"></span>
+<span class="p">    ...   </span><span class="s">payload=</span><span class="p">${</span><span class="nv">data</span><span class="p">}</span>
+<span class="p">    ...   </span><span class="s">files=</span><span class="p">${</span><span class="nv">files</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Start Configured Process</span><span class="p"></span>
+<span class="p">    ...  </span><span class="s">config_type=work_items</span><span class="p"></span>
+<span class="p">    ...  </span><span class="s">extra_info=</span><span class="p">${</span><span class="nv">item_id</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<p>List work items in Control Room and retry failed items.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.Process</span> <span class="kn">import</span> <span class="n">Process</span>
+<span class="kn">from</span> <span class="nn">RPA.Robocorp.Vault</span> <span class="kn">import</span> <span class="n">Vault</span>
+
+<span class="n">secrets</span> <span class="o">=</span> <span class="n">Vault</span><span class="p">()</span><span class="o">.</span><span class="n">get_secret</span><span class="p">(</span><span class="s2">&quot;ProcessAPI&quot;</span><span class="p">)</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span>
+    <span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;workspace_id&quot;</span><span class="p">],</span>
+    <span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;process_id&quot;</span><span class="p">],</span>
+    <span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;apikey&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">retry_failed_items</span><span class="p">():</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">list_process_work_items</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;FAILED&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;FAILED work item: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">retry_work_item</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">retry_failed_items</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="RPA.Robocorp.Process.Process.ROBOT_AUTO_KEYWORDS">
+<code class="sig-name descname">ROBOT_AUTO_KEYWORDS</code><em class="property"> = False</em><a class="headerlink" href="#RPA.Robocorp.Process.Process.ROBOT_AUTO_KEYWORDS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Robocorp.Process.Process.ROBOT_LIBRARY_DOC_FORMAT">
+<code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Robocorp.Process.Process.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Robocorp.Process.Process.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Robocorp.Process.Process.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.base_api">
+<em class="property">property </em><code class="sig-name descname">base_api</code><a class="headerlink" href="#RPA.Robocorp.Process.Process.base_api" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.create_input_work_item">
+<code class="sig-name descname">create_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">payload: Any = None</em>, <em class="sig-param">files: Union[str</em>, <em class="sig-param">List</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.create_input_work_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an input work item for a process</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>payload</strong> – work item data</p></li>
+<li><p><strong>files</strong> – absolute filepaths as single string or list</p></li>
+<li><p><strong>process_id</strong> – specific process to which item belongs to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.get_process_id_by_name">
+<code class="sig-name descname">get_process_id_by_name</code><span class="sig-paren">(</span><em class="sig-param">process_name: str</em>, <em class="sig-param">workspace_id: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.get_process_id_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a process id of the process by name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process_name</strong> – name of the process in the Control Room</p></li>
+<li><p><strong>workspace_id</strong> – specific Control Room workspace to which process belongs to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.get_process_run_status">
+<code class="sig-name descname">get_process_run_status</code><span class="sig-paren">(</span><em class="sig-param">process_run_id: str</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.get_process_run_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a process run status by run id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process_run_id</strong> – id of the process run</p></li>
+<li><p><strong>process_id</strong> – specific process to which runs belongs to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.get_work_item">
+<code class="sig-name descname">get_work_item</code><span class="sig-paren">(</span><em class="sig-param">workitem_id: str</em>, <em class="sig-param">include_data: bool = False</em>, <em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.get_work_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get work item from Control Room</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workitem_id</strong> – id of the work item</p></li>
+<li><p><strong>include_data</strong> – include work item payload and files in
+the response (default False)</p></li>
+<li><p><strong>process_id</strong> – specific process to which runs belongs to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.headers">
+<em class="property">property </em><code class="sig-name descname">headers</code><a class="headerlink" href="#RPA.Robocorp.Process.Process.headers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.list_process_runs">
+<code class="sig-name descname">list_process_runs</code><span class="sig-paren">(</span><em class="sig-param">run_state: Optional[str] = None</em>, <em class="sig-param">limit: Optional[int] = 10</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.list_process_runs" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of runs related to a process</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run_state</strong> – state of runs to return (default all)</p></li>
+<li><p><strong>limit</strong> – number of runs to return (default 10)</p></li>
+<li><p><strong>process_id</strong> – specific process to which runs belongs to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.list_process_runs_in_workspace">
+<code class="sig-name descname">list_process_runs_in_workspace</code><span class="sig-paren">(</span><em class="sig-param">run_state: Optional[str] = None</em>, <em class="sig-param">limit: Optional[int] = 10</em>, <em class="sig-param">workspace_id: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.list_process_runs_in_workspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all process runs in a workspace</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>run_state</strong> – state of runs to return (default all)</p></li>
+<li><p><strong>limit</strong> – number of runs to return (default 10)</p></li>
+<li><p><strong>workspace_id</strong> – specific Control Room workspace to which process belongs to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.list_process_work_items">
+<code class="sig-name descname">list_process_work_items</code><span class="sig-paren">(</span><em class="sig-param">process_id: str = None</em>, <em class="sig-param">include_data: bool = False</em>, <em class="sig-param">item_state: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.list_process_work_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>List work items belonging to a process</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>include_data</strong> – include work item payload and files in
+the response (default False)</p></li>
+<li><p><strong>item_state</strong> – state of work items to return (default all)</p></li>
+<li><p><strong>process_id</strong> – specific process to which items belongs to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.list_processes">
+<code class="sig-name descname">list_processes</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.list_processes" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all processes in a workspace</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>workspace_id</strong> – specific Control Room workspace to which process belongs to</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.process_api">
+<code class="sig-name descname">process_api</code><span class="sig-paren">(</span><em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.process_api" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.register_file_upload">
+<code class="sig-name descname">register_file_upload</code><span class="sig-paren">(</span><em class="sig-param">filepath: str</em>, <em class="sig-param">workitem_filename: str</em>, <em class="sig-param">workitem_id: str</em>, <em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.register_file_upload" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.retry_work_item">
+<code class="sig-name descname">retry_work_item</code><span class="sig-paren">(</span><em class="sig-param">work_item_id: str</em>, <em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.retry_work_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retry processing of work item in FAILED state</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>work_item_id</strong> – ID of the work item to retry</p></li>
+<li><p><strong>process_id</strong> – specific process to start</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.set_apikey">
+<code class="sig-name descname">set_apikey</code><span class="sig-paren">(</span><em class="sig-param">apikey: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.set_apikey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Workspace API access key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>apikey</strong> – workspace API access key</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.set_credentials">
+<code class="sig-name descname">set_credentials</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: str = None</em>, <em class="sig-param">process_id: str = None</em>, <em class="sig-param">apikey: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.set_credentials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set credentials needed by the Process API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workspace_id</strong> – ID of the Control Room workspace</p></li>
+<li><p><strong>process_id</strong> – ID of the Control Room process</p></li>
+<li><p><strong>apikey</strong> – workspace API access key</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.set_process_id">
+<code class="sig-name descname">set_process_id</code><span class="sig-paren">(</span><em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.set_process_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Control Room process ID</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>process_id</strong> – ID of the Control Room process</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.set_workspace_id">
+<code class="sig-name descname">set_workspace_id</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.set_workspace_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Control Room workspace ID</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>workspace_id</strong> – ID of the Control Room workspace</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.start_configured_process">
+<code class="sig-name descname">start_configured_process</code><span class="sig-paren">(</span><em class="sig-param">config_type: RPA.Robocorp.Process.ConfigurationType = &lt;ConfigurationType.default: 'default'&gt;</em>, <em class="sig-param">extra_info: Union[str</em>, <em class="sig-param">List</em>, <em class="sig-param">None] = None</em>, <em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.start_configured_process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start a Control Room process with the provided configuration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_type</strong> – type of the start, (ConfigurationType.default)</p></li>
+<li><p><strong>extra_info</strong> – data to be sent with the start, for example. work item IDs</p></li>
+<li><p><strong>process_id</strong> – specific process to start</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.start_process">
+<code class="sig-name descname">start_process</code><span class="sig-paren">(</span><em class="sig-param">work_items: Union[Dict</em>, <em class="sig-param">List[Dict]] = None</em>, <em class="sig-param">batch: bool = False</em>, <em class="sig-param">process_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.start_process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start a Control Room process</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>work_items</strong> – input work items for the process (default empty)</p></li>
+<li><p><strong>batch</strong> – set to True if sending list of workitems to start each
+as a separate run</p></li>
+<li><p><strong>process_id</strong> – specific process to start</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.upload_file_to_s3">
+<code class="sig-name descname">upload_file_to_s3</code><span class="sig-paren">(</span><em class="sig-param">filepath</em>, <em class="sig-param">workitem_filename</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.upload_file_to_s3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.workspace_api">
+<code class="sig-name descname">workspace_api</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.workspace_api" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="RPA.Robocorp.Process.to_configuration_type">
+<code class="sig-prename descclassname">RPA.Robocorp.Process.</code><code class="sig-name descname">to_configuration_type</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.to_configuration_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert value to ConfigurationType enum.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+	<div id="cookieConsentContainer">
+  <div class="cookieDesc">
+    <p>
+      This website uses cookies to enhance the user experience.
+      By using the website you accept the use of cookies.
+      You can check our <a href="https://robocorp.com/privacy-policy">Privacy Policy</a> to learn more.
+    </p>
+  </div>
+  <div class="cookieButton">
+    <a onClick="cookieDismiss();">
+      I understand
+    </a>
+  </div>
+</div>
+	<div id="robocorpBanner">
+  <div id="bannerContent">
+    <div id="bannerDismiss">
+      <a onClick="bannerDismiss();">
+        <img src="/_static/icon_cross.svg"/>
+      </a>
+    </div>
+    <a href="https://robocorp.com">
+      <img id="bannerLogo" src="https://cdn.robocorp.com/brand/Logo/Negative logo transparent/Negative logo transparent.svg"/>
+    </a>
+    <span id="bannerText">
+      The automation stack for RPA Framework.
+    </span>
+    <a id="bannerButton" href="https://robocorp.com/get-started">
+      Get started <img src="/_static/icon_arrow.svg"/>
+    </a>
+  </div>
+</div>
+
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../robocorp_vault/index.html" class="btn btn-neutral float-right" title="Robocorp.Vault" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Robocorp.Process" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Robocorp Technologies, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
