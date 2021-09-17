@@ -6,6 +6,16 @@
 	<description>Recent updates to the Python Package Index for rpaframework</description>
 	<language>en</language>
 	<item>
+		<title>Release 11.2.0</title>
+		<link>https://pypi.org/project/rpaframework/11.2.0/</link>
+		<description>- Library &lt;b&gt;RPA.Dialogs&lt;/b&gt;: `Add Date Input` keyword
+&lt;br&gt;    - New library &lt;b&gt;RPA.Robocorp.Process&lt;/b&gt;: Library support for Control Room Process API
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Fri, 17 Sep 2021 13:06:39 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
 		<title>Release 11.1.3</title>
 		<link>https://pypi.org/project/rpaframework/11.1.3/</link>
 		<description>- Library &lt;b&gt;RPA.Salesforce&lt;/b&gt;:

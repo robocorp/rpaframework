@@ -104,6 +104,15 @@ RPA.JavaAccessBridge:
    "203", "implement proper XPath syntax support"
    "589", "change to use RPA.core.geometry Region/Point"
 
+RPA.Robocorp.Process:
+=====================
+
+.. csv-table::
+   :header: "Line", "Message"
+   :widths: 10, 40
+
+   "136", "Add support for all Process API endpoints"
+
 RPA.Tables:
 ===========
 

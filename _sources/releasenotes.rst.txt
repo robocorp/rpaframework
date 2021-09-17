@@ -4,6 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+11.2.0
+------
+
+- Library **RPA.Dialogs**: ``Add Date Input`` keyword
+- New library **RPA.Robocorp.Process**: Library support for Control Room Process API
+
 11.1.3
 ------
 
