@@ -135,6 +135,8 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `PDF`_                     | Read and create PDF documents                |
 +----------------------------+----------------------------------------------+
+| `Robocorp.Process`_        | Use the Robocorp Process API                 |
++----------------------------+----------------------------------------------+
 | `Robocorp.WorkItems`_      | Use the Robocorp Work Items API              |
 +----------------------------+----------------------------------------------+
 | `Robocorp.Vault`_          | Use the Robocorp Secrets API                 |
@@ -178,6 +180,7 @@ The RPA Framework project currently includes the following libraries:
 .. _Notifier: https://rpaframework.org/libraries/notifier/
 .. _Outlook.Application: https://rpaframework.org/libraries/outlook_application/
 .. _PDF: https://rpaframework.org/libraries/pdf/
+.. _Robocorp.Process: https://rpaframework.org/libraries/robocorp_process/
 .. _Robocorp.WorkItems: https://rpaframework.org/libraries/robocorp_workitems/
 .. _Robocorp.Vault: https://rpaframework.org/libraries/robocorp_vault/
 .. _Salesforce: https://rpaframework.org/libraries/salesforce/
