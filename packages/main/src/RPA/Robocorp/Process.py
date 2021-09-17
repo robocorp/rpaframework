@@ -226,7 +226,7 @@ class Process:
     ):
         """Start a Control Room process
 
-        :param workitems: input work items for the process (default empty)
+        :param work_items: input work items for the process (default empty)
         :param batch: set to True if sending list of workitems to start each
          as a separate run
         :param process_id: specific process to start
