@@ -55,7 +55,7 @@ All elements
     Add drop-down       dropdown-field-3   ${EMPTY_LIST}    label=Empty
 
     Add Date Input      dateinput-field-1
-    Add Date Input      dateinput-field-2   default=06/09/2021
+    Add Date Input      dateinput-field-2   default=2021-9-6
     ${date_obj} =       Convert Date    26/04/1993    date_format=%d/%m/%Y    result_format=datetime
     Add Date Input      dateinput-field-3   default=${date_obj}
 

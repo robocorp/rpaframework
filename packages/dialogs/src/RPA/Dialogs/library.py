@@ -687,27 +687,27 @@ class Dialogs:
     ) -> None:
         """Add a date input element
 
-        :param name:    Name of result field
-        :param default: The default date
+        :param name:    Name of the result field
+        :param default: The default set date
 
         Displays a date input widget. The selection the user makes will be available
         as a ``date`` object in the ``name`` field of the result.
         The ``default`` argument can be a pre-set date as object or string in
-        DD/MM/YYYY format, otherwise the current date is used.
+        "YYYY-MM-DD" format, otherwise the current date is used.
 
         Example:
 
         .. code-block:: robotframework
 
             Add heading       Enter your birthdate
-            Add Date Input    birthdate    default=26/04/1993
+            Add Date Input    birthdate    default=1993-04-26
             ${result} =       Run dialog
             Log To Console    User birthdate year should be: ${result.birthdate.year}
         """
 
         # TODO(cmin764): Be flexible on date formats. (provide it as parameter)
-        py_date_format = "%d/%m/%Y"
-        js_date_format = "dd/MM/yyyy"
+        py_date_format = "%Y-%m-%d"
+        js_date_format = "yyyy-MM-dd"
         default = default or datetime.utcnow().date()
         if isinstance(default, date):  # recognizes both `date` and `datetime`
             default = default.strftime(py_date_format)
