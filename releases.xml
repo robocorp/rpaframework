@@ -6,6 +6,17 @@
 	<description>Recent updates to the Python Package Index for rpaframework</description>
 	<language>en</language>
 	<item>
+		<title>Release 11.2.1</title>
+		<link>https://pypi.org/project/rpaframework/11.2.1/</link>
+		<description>- Library &lt;b&gt;RPA.Robocorp.WorkItems&lt;/b&gt;: Handle payloads with non-ascii characters
+&lt;br&gt;    - Library &lt;b&gt;RPA.Dialogs&lt;/b&gt;: Date ISO format for `Add Date Input` keyword
+&lt;br&gt;    - Library &lt;b&gt;RPA.Desktop&lt;/b&gt;: Always write unicode with `Type text`
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Mon, 20 Sep 2021 15:19:47 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
 		<title>Release 11.2.0</title>
 		<link>https://pypi.org/project/rpaframework/11.2.0/</link>
 		<description>- Library &lt;b&gt;RPA.Dialogs&lt;/b&gt;: `Add Date Input` keyword
