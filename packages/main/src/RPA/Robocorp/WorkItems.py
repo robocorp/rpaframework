@@ -114,7 +114,7 @@ class RobocorpAdapter(BaseAdapter):
         url = self.process_url(parent_id, "output")
         logging.info("Creating output item: %s", url)
 
-        data = json_dumps({"payload": payload})
+        data = json_dumps({"payload": payload}).encode("utf-8")
         response = requests.post(url, headers=self.process_headers, data=data)
         self.handle_error(response)
 
@@ -140,7 +140,7 @@ class RobocorpAdapter(BaseAdapter):
         url = self.workitem_url(item_id, "data")
         logging.info("Saving work item payload: %s", url)
 
-        data = json_dumps(payload)
+        data = json_dumps(payload).encode("utf-8")
         response = requests.put(url, headers=self.workitem_headers, data=data)
         self.handle_error(response)
 
