@@ -1698,7 +1698,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "a383e181ac851ecd0b95f1f15b33d9831c57ab25581cae264099618b7eb5fe29"
+content-hash = "dc05e3c80f06c97aa9a2a0b821d93a20210aa87c5feeac2e7af996d1877bedc6"
 
 [metadata.files]
 amazon-textract-response-parser = [
