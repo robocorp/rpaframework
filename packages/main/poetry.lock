@@ -915,7 +915,7 @@ typing-extensions = {version = ">=3.10.0", markers = "python_version < \"3.10\""
 
 [[package]]
 name = "pynput-robocorp-fork"
-version = "3.0.0"
+version = "4.0.0"
 description = "Monitor and control user input devices"
 category = "main"
 optional = false
@@ -1698,7 +1698,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "d248c6b431d625ad6e7a254308dcf65b442ac83b01d174988d81d96f8aaa0c54"
+content-hash = "dc05e3c80f06c97aa9a2a0b821d93a20210aa87c5feeac2e7af996d1877bedc6"
 
 [metadata.files]
 amazon-textract-response-parser = [
@@ -2462,8 +2462,9 @@ pylint = [
     {file = "pylint-2.11.1.tar.gz", hash = "sha256:2c9843fff1a88ca0ad98a256806c82c5a8f86086e7ccbdb93297d86c3f90c436"},
 ]
 pynput-robocorp-fork = [
-    {file = "pynput-robocorp-fork-3.0.0.tar.gz", hash = "sha256:e7da30652f482d2d4e355f06e1709c943604a0b8d78c612931cdeb92c6002a9d"},
-    {file = "pynput_robocorp_fork-3.0.0-py2.py3-none-any.whl", hash = "sha256:849f82347140602273c31c0a16fff48ad57892d6ea488b2d6ceac7d24aec7ca6"},
+    {file = "pynput-robocorp-fork-4.0.0.tar.gz", hash = "sha256:92131856267268d57ca2d7861aa692eecefa0827408940091321b14606d3c04c"},
+    {file = "pynput_robocorp_fork-4.0.0-py2.py3-none-any.whl", hash = "sha256:b26719535048853d018836a242f5d300a8bcc4ba4fed19df7f9732e6d29b7282"},
+    {file = "pynput_robocorp_fork-4.0.0-py3.7.egg", hash = "sha256:3df8c7f0cac96e1e7649d882bf9ea39b0406e8e451b4b65e0bb27003e9d63b4d"},
 ]
 pyobjc-core = [
     {file = "pyobjc-core-7.3.tar.gz", hash = "sha256:5081aedf8bb40aac1a8ad95adac9e44e148a882686ded614adf46bb67fd67574"},
