@@ -7,7 +7,9 @@ Upcoming release
 11.2.1
 ------
 
+- Library **RPA.Robocorp.WorkItems**: Handle payloads with non-ascii characters
 - Library **RPA.Dialogs**: Date ISO format for ``Add Date Input`` keyword
+- Library **RPA.Desktop**: Always write unicode with ``Type text``
 
 11.2.0
 ------
