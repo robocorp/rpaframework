@@ -166,9 +166,10 @@ def test_add_drop_down(library):
 @pytest.mark.parametrize(
     "default,expect",
     [
-        ("06/09/2021", does_not_raise()),
-        ("33/09/2021", pytest.raises(ValueError)),
-        ("06/13/2021", pytest.raises(ValueError)),
+        ("2021-09-6", does_not_raise()),
+        ("2021-09-06", does_not_raise()),
+        ("2021-09-33", pytest.raises(ValueError)),
+        ("2021-13-06", pytest.raises(ValueError)),
         (None, does_not_raise()),  # uses the current date as default
         (datetime.utcnow(), does_not_raise()),
         (datetime.utcnow().date(), does_not_raise()),
@@ -180,8 +181,8 @@ def test_add_date_input(library, default, expect):
     with expect:
         library.add_date_input("datepicker-field", default=default)
 
-    py_date_format = "%d/%m/%Y"
-    default = default or "06/09/2021"  # for the current date case
+    py_date_format = "%Y-%m-%d"
+    default = default or "2021-09-06"  # for the current date case
     if isinstance(default, date):
         default = default.strftime(py_date_format)
 
@@ -192,7 +193,7 @@ def test_add_date_input(library, default, expect):
             "type": "input-datepicker",
             "name": "datepicker-field",
             "_format": py_date_format,
-            "format": "dd/MM/yyyy",
+            "format": "yyyy-MM-dd",
             "default": default,
         }
 
