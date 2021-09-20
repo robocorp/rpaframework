@@ -3,7 +3,7 @@ from RPA.core.locators import LocatorType
 from RPA.Desktop.keywords import LibraryContext, keyword
 
 
-def to_key(key: str) -> Any:
+def to_key(key: str, escaped=False) -> Any:
     """Convert key string to correct enum value."""
     # pylint: disable=C0415
     from pynput_robocorp.keyboard import Key, KeyCode
@@ -22,8 +22,7 @@ def to_key(key: str) -> Any:
     # Check for individual character
     if len(value) == 1:
         try:
-            KeyCode.from_char(value)
-            return value
+            return KeyCode.from_char(value, escaped=escaped)
         except ValueError:
             pass
 
@@ -90,7 +89,7 @@ class KeyboardKeywords(LibraryContext):
         if self._error:
             raise self._error
 
-        keys = [to_key(key) for key in keys]
+        keys = [to_key(key, escaped=True) for key in keys]
         self.logger.info("Pressing keys: %s", ", ".join(str(key) for key in keys))
 
         with self.buffer():
