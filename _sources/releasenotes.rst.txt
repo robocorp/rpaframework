@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+11.2.1
+------
+
+- Library **RPA.Dialogs**: Date ISO format for ``Add Date Input`` keyword
+
 11.2.0
 ------
 
