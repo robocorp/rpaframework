@@ -649,6 +649,28 @@ class WorkItems:
     variable. The library has a built-in alternative adapter called FileAdapter for
     storing work items to disk.
 
+    The FileAdapter uses a local JSON file for input work items.
+    It's a list of work items, each of which has a data payload and files.
+
+    An example of a local file with one work item:
+
+    .. code-block:: json
+
+        [
+            {
+                "payload": {
+                    "variable1": "a-string-value",
+                    "variable2": ["a", "list", "value"]
+                },
+                "files": {
+                    "file1": "path/to/file.ext"
+                }
+            }
+        ]
+
+    Output work items (if any) are saved to an adjacent file
+    with the same name, but with the extension ``.output.json``.
+
     **Examples**
 
     **Robot Framework**
