@@ -551,7 +551,7 @@ use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
 name = "robocorp-dialog"
-version = "0.4.0"
+version = "0.4.1"
 description = "Dialog for querying user input"
 category = "main"
 optional = false
@@ -627,7 +627,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "tqdm"
-version = "4.62.2"
+version = "4.62.3"
 description = "Fast, Extensible Progress Meter"
 category = "main"
 optional = false
@@ -708,7 +708,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "ba9789a8efb891d985f3465a68768694e199fd4006c92ab5677b5745622f7872"
+content-hash = "3cca5363b751e0c8fbfd11790064a75d1cd3f325cf01d8a8b5c2748370c0f570"
 
 [metadata.files]
 appdirs = [
@@ -1125,8 +1125,8 @@ requests = [
     {file = "requests-2.26.0.tar.gz", hash = "sha256:b8aa58f8cf793ffd8782d3d8cb19e66ef36f7aba4353eec859e74678b01b07a7"},
 ]
 robocorp-dialog = [
-    {file = "robocorp-dialog-0.4.0.tar.gz", hash = "sha256:dc31dd686f132db67445097f4caed8d6a3f4c14aacf041f7fcc3ac76374f0824"},
-    {file = "robocorp_dialog-0.4.0-py3-none-any.whl", hash = "sha256:f861989cc7c0bb2c25ea9f0cbfd01b394d6b51fc78ffb9a070638fee02377f2d"},
+    {file = "robocorp-dialog-0.4.1.tar.gz", hash = "sha256:caebcc6c9d05e0ab39506e8451077ee25ff31f121806d09516696fc5c5fbc526"},
+    {file = "robocorp_dialog-0.4.1-py3-none-any.whl", hash = "sha256:db3867bf5bd843bdc0d768bcd8d81335de0724b37388e6cb67596b631d37b3b9"},
 ]
 robotframework = [
     {file = "robotframework-4.1.1-py2.py3-none-any.whl", hash = "sha256:5a805410b7ee44dc6537a2b937e315b03c76ba178a46865cf1d649a036a44cb5"},
@@ -1157,8 +1157,8 @@ tomli = [
     {file = "tomli-1.2.1.tar.gz", hash = "sha256:a5b75cb6f3968abb47af1b40c1819dc519ea82bcc065776a866e8d74c5ca9442"},
 ]
 tqdm = [
-    {file = "tqdm-4.62.2-py2.py3-none-any.whl", hash = "sha256:80aead664e6c1672c4ae20dc50e1cdc5e20eeff9b14aa23ecd426375b28be588"},
-    {file = "tqdm-4.62.2.tar.gz", hash = "sha256:a4d6d112e507ef98513ac119ead1159d286deab17dffedd96921412c2d236ff5"},
+    {file = "tqdm-4.62.3-py2.py3-none-any.whl", hash = "sha256:8dd278a422499cd6b727e6ae4061c40b48fce8b76d1ccbf5d34fca9b7f925b0c"},
+    {file = "tqdm-4.62.3.tar.gz", hash = "sha256:d359de7217506c9851b7869f3708d8ee53ed70a1b8edbba4dbcb47442592920d"},
 ]
 typed-ast = [
     {file = "typed_ast-1.4.3-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:2068531575a125b87a41802130fa7e29f26c09a2833fea68d9a40cf33902eba6"},
