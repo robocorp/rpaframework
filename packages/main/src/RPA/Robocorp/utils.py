@@ -35,7 +35,8 @@ def truncate(text: str, size: int):
 def resolve_path(path: str) -> Path:
     """Resolve a string-based path, and replace variables."""
     try:
-        path = BuiltIn().replace_variables(path)
+        safe = str(path).replace("\\", "\\\\")
+        path = BuiltIn().replace_variables(safe)
     except RobotNotRunningError:
         pass
 
