@@ -179,7 +179,9 @@ def test_add_drop_down(library):
 @pytest.mark.freeze_time("2021-09-06")
 def test_add_date_input(library, default, expect):
     with expect:
-        library.add_date_input("datepicker-field", default=default)
+        library.add_date_input(
+            "datepicker-field", default=default, label="My Date Picker"
+        )
 
     py_date_format = "%Y-%m-%d"
     default = default or "2021-09-06"  # for the current date case
@@ -195,6 +197,7 @@ def test_add_date_input(library, default, expect):
             "_format": py_date_format,
             "format": "yyyy-MM-dd",
             "default": default,
+            "label": "My Date Picker",
         }
 
 

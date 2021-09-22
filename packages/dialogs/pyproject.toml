@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-dialogs"
-version = "0.4.1"
+version = "0.4.2"
 description = "Dialogs library of RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -19,7 +19,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.6.2"
 rpaframework-core = "^6.1.0"
-robocorp-dialog = "^0.4.0"
+robocorp-dialog = "^0.4.1"
 robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
 
 [tool.poetry.dev-dependencies]

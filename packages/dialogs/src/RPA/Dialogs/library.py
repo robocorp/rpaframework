@@ -684,11 +684,13 @@ class Dialogs:
         self,
         name: str,
         default: Optional[Union[date, str]] = None,
+        label: Optional[str] = None,
     ) -> None:
         """Add a date input element
 
         :param name:    Name of the result field
         :param default: The default set date
+        :param label:   Label for the date input field
 
         Displays a date input widget. The selection the user makes will be available
         as a ``date`` object in the ``name`` field of the result.
@@ -725,6 +727,7 @@ class Dialogs:
             "_format": py_date_format,
             "format": js_date_format,
             "default": optional_str(default),
+            "label": optional_str(label),
         }
         self.add_element(element)
 
