@@ -14,7 +14,7 @@ from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn
 
 from RPA.FileSystem import FileSystem
-from RPA.core.helpers import import_by_name, required_env
+from RPA.core.helpers import UNDEFINED as UNDEFINED_VAR, import_by_name, required_env
 from RPA.core.notebook import notebook_print
 from .utils import JSONType, url_join, json_dumps, is_json_equal, truncate, resolve_path
 
@@ -288,21 +288,27 @@ class FileAdapter(BaseAdapter):
 
     Reads inputs from the given database file, and writes
     all created output items into an adjacent file
-    with the suffix ``<filename>.output.json``.
+    with the suffix ``<filename>.output.json``. If the output path is provided by an
+    env var explicitly, then the file will be saved with the provided path and name.
 
     Reads and writes all work item files from/to the same parent
     folder as the given input database.
 
     Required environment variables:
 
-    * RPA_WORKITEMS_PATH:   Path to work items database file
+    * RPA_INPUT_WORKITEM_PATH:   Path to work items database file
     """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        path = required_env("RPA_WORKITEMS_PATH")
+        old_path = os.getenv("RPA_WORKITEMS_PATH", UNDEFINED_VAR)
+        if old_path is not UNDEFINED_VAR:
+            logging.warning("Work items old path style usage detected (deprecated)")
+        path = required_env("RPA_INPUT_WORKITEM_PATH", default=old_path)
         logging.info("Resolving path: %s", path)
+        # TODO(cmin764): Fix Windows path bug - https://linear.app/robocorp/issue/LIB-9/fix-windows-paths
         self.path = resolve_path(path)
+        self._output_path = None
 
         self.inputs: List[Dict[str, Any]] = self.load_database()
         self.outputs: List[Dict[str, Any]] = []
@@ -326,6 +332,22 @@ class FileAdapter(BaseAdapter):
         except IndexError as err:
             raise EmptyQueue("No work items in input queue") from err
 
+    @property
+    def output_path(self):
+        if not self._output_path:
+            # This is usually set once per loaded input work item.
+            new_path = os.getenv("RPA_OUTPUT_WORKITEM_PATH")
+            if new_path:
+                self._output_path = resolve_path(new_path)
+                self._output_path.parent.mkdir(parents=True, exist_ok=True)
+            else:
+                logging.warning(
+                    "Work items old path style usage detected (deprecated)"
+                )
+                self._output_path = self.path.with_suffix(".output.json")
+
+        return self._output_path
+
     def create_output(self, parent_id: str, payload: Optional[JSONType] = None) -> str:
         del parent_id
 
@@ -334,7 +356,7 @@ class FileAdapter(BaseAdapter):
 
         logging.debug("Payload: %s", json_dumps(payload, indent=4))
 
-        path = self.path.with_suffix(".output.json")
+        path = self.output_path
         with open(path, "w", encoding="utf-8") as fd:
             fd.write(json_dumps(self.outputs, indent=4))
 
@@ -355,7 +377,7 @@ class FileAdapter(BaseAdapter):
             path = self.path
             data = self.inputs
         else:
-            path = self.path.with_suffix(".output.json")
+            path = self.output_path
             data = self.outputs
 
         with open(path, "w", encoding="utf-8") as fd:
@@ -396,6 +418,7 @@ class FileAdapter(BaseAdapter):
 
         path = files[name]
         logging.info("Would remove file: %s", path)
+        # Note that the file doesn't get removed from disk as well.
 
         del files[name]
 
@@ -669,7 +692,9 @@ class WorkItems:
         ]
 
     Output work items (if any) are saved to an adjacent file
-    with the same name, but with the extension ``.output.json``.
+    with the same name, but with the extension ``.output.json``. You can specify
+    through the "RPA_OUTPUT_WORKITEM_PATH" env var a different path and name for this
+    file.
 
     **Examples**
 
