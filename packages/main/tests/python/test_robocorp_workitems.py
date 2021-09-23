@@ -465,7 +465,7 @@ class TestFileAdapter:
     """Tests the local dev env `FileAdapter` on Work Items."""
 
     @contextmanager
-    def _input_work_item(self):
+    def _input_work_items(self):
         with tempfile.TemporaryDirectory() as datadir:
             items_in = os.path.join(datadir, "items.json")
             items_out = os.path.join(datadir, "output_dir", "items-out.json")
@@ -483,7 +483,7 @@ class TestFileAdapter:
         ]
     )
     def adapter(self, monkeypatch, request):
-        with self._input_work_item() as (items_in, items_out):
+        with self._input_work_items() as (items_in, items_out):
             monkeypatch.setenv(request.param[0], items_in)
             monkeypatch.setenv(request.param[1], items_out)
             yield FileAdapter()
