@@ -479,7 +479,7 @@ class TestFileAdapter:
     @pytest.fixture(
         params=[
             ("RPA_WORKITEMS_PATH", "N/A"),
-            ("RPA_INPUT_WORKITEM_PATH", "RPA_OUTPUT_WORKITEM_PATH")
+            ("RPA_INPUT_WORKITEM_PATH", "RPA_OUTPUT_WORKITEM_PATH"),
         ]
     )
     def adapter(self, monkeypatch, request):
