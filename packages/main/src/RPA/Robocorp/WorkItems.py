@@ -15,6 +15,7 @@ from robot.libraries.BuiltIn import BuiltIn
 
 from RPA.FileSystem import FileSystem
 from RPA.core.helpers import UNDEFINED as UNDEFINED_VAR, import_by_name, required_env
+from RPA.core.logger import deprecation
 from RPA.core.notebook import notebook_print
 from .utils import JSONType, url_join, json_dumps, is_json_equal, truncate, resolve_path
 
@@ -303,7 +304,7 @@ class FileAdapter(BaseAdapter):
         super().__init__(*args, **kwargs)
         old_path = os.getenv("RPA_WORKITEMS_PATH", UNDEFINED_VAR)
         if old_path is not UNDEFINED_VAR:
-            logging.warning("Work items old path style usage detected (deprecated)")
+            deprecation("Work items load - Old path style usage detected")
         path = required_env("RPA_INPUT_WORKITEM_PATH", default=old_path)
         logging.info("Resolving path: %s", path)
         # TODO(cmin764): Fix Windows path bug - https://linear.app/robocorp/issue/LIB-9/fix-windows-paths
@@ -341,9 +342,7 @@ class FileAdapter(BaseAdapter):
                 self._output_path = resolve_path(new_path)
                 self._output_path.parent.mkdir(parents=True, exist_ok=True)
             else:
-                logging.warning(
-                    "Work items old path style usage detected (deprecated)"
-                )
+                deprecation("Work items save - Old path style usage detected")
                 self._output_path = self.path.with_suffix(".output.json")
 
         return self._output_path
@@ -444,7 +443,7 @@ class FileAdapter(BaseAdapter):
 
             # Attempt to migrate from old format
             assert isinstance(data, dict), "Not a list or dictionary"
-            logging.warning("Work items file as mapping is deprecated")
+            deprecation("Work items file as mapping is deprecated")
             workspace = data[first(data)]
             work_item = workspace[first(workspace)]
             return [{"payload": work_item}]

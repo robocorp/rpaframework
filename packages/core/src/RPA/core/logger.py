@@ -1,4 +1,5 @@
 import logging
+import warnings
 from typing import Union, List
 
 try:
@@ -9,6 +10,14 @@ except ModuleNotFoundError:
     EXECUTION_CONTEXTS = None
 
 from RPA.core.helpers import required_param
+
+
+logging.captureWarnings(True)
+
+
+def deprecation(message):
+    """Emits once a deprecation warning log given the provided `message`."""
+    warnings.warn(message, FutureWarning, stacklevel=2)
 
 
 class RobotLogListener:
