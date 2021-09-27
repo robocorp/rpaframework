@@ -462,16 +462,30 @@ class TestLibrary:
 
 
 class TestFileAdapter:
-    @pytest.fixture
-    def adapter(self, monkeypatch):
+    """Tests the local dev env `FileAdapter` on Work Items."""
+
+    @contextmanager
+    def _input_work_items(self):
         with tempfile.TemporaryDirectory() as datadir:
-            items = os.path.join(datadir, "items.json")
-            with open(items, "w") as fd:
+            items_in = os.path.join(datadir, "items.json")
+            items_out = os.path.join(datadir, "output_dir", "items-out.json")
+            with open(items_in, "w") as fd:
                 json.dump(ITEMS_JSON, fd)
             with open(os.path.join(datadir, "file.txt"), "w") as fd:
                 fd.write("some mock content")
 
-            monkeypatch.setenv("RPA_WORKITEMS_PATH", items)
+            yield items_in, items_out
+
+    @pytest.fixture(
+        params=[
+            ("RPA_WORKITEMS_PATH", "N/A"),
+            ("RPA_INPUT_WORKITEM_PATH", "RPA_OUTPUT_WORKITEM_PATH"),
+        ]
+    )
+    def adapter(self, monkeypatch, request):
+        with self._input_work_items() as (items_in, items_out):
+            monkeypatch.setenv(request.param[0], items_in)
+            monkeypatch.setenv(request.param[1], items_out)
             yield FileAdapter()
 
     def test_load_data(self, adapter):
@@ -508,7 +522,12 @@ class TestFileAdapter:
         item_id = adapter.create_output(0, {})
         adapter.save_payload(item_id, {"key": "value"})
 
-        output = Path(adapter.path).with_suffix(".output.json")
+        output = os.getenv("RPA_OUTPUT_WORKITEM_PATH")
+        if output:
+            assert "output_dir" in output  # checks automatic dir creation
+        else:
+            output = Path(adapter.path).with_suffix(".output.json")
+
         assert os.path.isfile(output)
         with open(output) as fd:
             data = json.load(fd)
