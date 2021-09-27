@@ -306,6 +306,7 @@ class FileAdapter(BaseAdapter):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # pylint: disable=invalid-envvar-default
         old_path = os.getenv("RPA_WORKITEMS_PATH", UNDEFINED_VAR)
         if old_path is not UNDEFINED_VAR:
             deprecation(
