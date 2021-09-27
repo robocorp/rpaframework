@@ -4,7 +4,7 @@ Library        OperatingSystem
 
 *** Variables ***
 ${RESOURCES}    ${CURDIR}/../resources
-${RESULTS}    ${CURDIR}/../results
+${RESULTS}      ${CURDIR}/../results
 ${temp_in}      ${RESOURCES}/temp_items.json
 ${temp_out}     ${RESULTS}/output_dir/temp_items.json
 
