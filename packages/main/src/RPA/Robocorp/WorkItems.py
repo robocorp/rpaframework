@@ -297,11 +297,11 @@ class FileAdapter(BaseAdapter):
 
     Required environment variables:
 
-    * RPA_INPUT_WORKITEM_PATH:   Path to work items input database file
+    * RPA_INPUT_WORKITEM_PATH:  Path to work items input database file
 
     Optional environment variables:
 
-    * RPA_OUTPUT_WORKITEM_PATH:   Path to work items output database file
+    * RPA_OUTPUT_WORKITEM_PATH:  Path to work items output database file
     """
 
     def __init__(self, *args, **kwargs):
@@ -316,7 +316,6 @@ class FileAdapter(BaseAdapter):
             )
         path = required_env("RPA_INPUT_WORKITEM_PATH", default=old_path)
         logging.info("Resolving path: %s", path)
-        # TODO(cmin764): Fix Windows path bug - https://linear.app/robocorp/issue/LIB-9/fix-windows-paths  # noqa: E501
         self.path = resolve_path(path)
         self._output_path = None
 
