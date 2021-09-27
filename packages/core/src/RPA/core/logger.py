@@ -12,12 +12,13 @@ except ModuleNotFoundError:
 from RPA.core.helpers import required_param
 
 
-logging.captureWarnings(True)
-
-
 def deprecation(message):
     """Emits once a deprecation warning log given the provided `message`."""
-    warnings.warn(message, FutureWarning, stacklevel=2)
+    logging.captureWarnings(True)
+    try:
+        warnings.warn(message, FutureWarning, stacklevel=2)
+    finally:
+        logging.captureWarnings(True)
 
 
 class RobotLogListener:
