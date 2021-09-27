@@ -18,7 +18,7 @@ def deprecation(message):
     try:
         warnings.warn(message, FutureWarning, stacklevel=2)
     finally:
-        logging.captureWarnings(True)
+        logging.captureWarnings(False)
 
 
 class RobotLogListener:

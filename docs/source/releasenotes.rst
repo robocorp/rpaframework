@@ -4,6 +4,11 @@ Release notes
 Upcoming release
 ----------------
 
+11.3.0
+------
+
+- Library **RPA.Robocorp.WorkItems**: New environment variables for work items I/O during local dev ("RPA_INPUT_WORKITEM_PATH", "RPA_OUTPUT_WORKITEM_PATH")
+
 11.2.1
 ------
 

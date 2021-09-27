@@ -1366,7 +1366,7 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "6.5.0"
+version = "6.5.1"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -1698,7 +1698,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "8279452579354b92fb7517f70a0f8b657121cb78df44e34b319c222a52276118"
+content-hash = "9a0ec2711b451a6869d777c3d4465324965cf111e93c66c02bee59ffe855ddb4"
 
 [metadata.files]
 amazon-textract-response-parser = [
@@ -2722,8 +2722,8 @@ robotframework-seleniumtestability = [
     {file = "robotframework-seleniumtestability-1.1.0.tar.gz", hash = "sha256:18810869a0c0010cc623aea4bb382afdc9aa6fe8404c35fa58452766d0322735"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-6.5.0.tar.gz", hash = "sha256:4d28e51dff921561d4f3cad9b605e9624f194d4180e5d009ae9de505d8d2f9b5"},
-    {file = "rpaframework_core-6.5.0-py3-none-any.whl", hash = "sha256:7b208cfa0a103b1358abc5fa1dc6b98fbdf6395a9f191c167852e1fd89e8ff4b"},
+    {file = "rpaframework-core-6.5.1.tar.gz", hash = "sha256:367443560836dbab97ed1362226cbc4a6dc663b212fcf456d4eaa07f8d286f8d"},
+    {file = "rpaframework_core-6.5.1-py3-none-any.whl", hash = "sha256:53963178008548ab585c2ca9358a726f855b68c592067bfcfdc9b77a994d1082"},
 ]
 rpaframework-dialogs = [
     {file = "rpaframework-dialogs-0.4.2.tar.gz", hash = "sha256:c32fba721d5af0515348a4615b8f36c033ec0361775876810955ffbee4622c5c"},
