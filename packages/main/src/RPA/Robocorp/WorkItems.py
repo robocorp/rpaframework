@@ -297,17 +297,25 @@ class FileAdapter(BaseAdapter):
 
     Required environment variables:
 
-    * RPA_INPUT_WORKITEM_PATH:   Path to work items database file
+    * RPA_INPUT_WORKITEM_PATH:   Path to work items input database file
+
+    Optional environment variables:
+
+    * RPA_OUTPUT_WORKITEM_PATH:   Path to work items output database file
     """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         old_path = os.getenv("RPA_WORKITEMS_PATH", UNDEFINED_VAR)
         if old_path is not UNDEFINED_VAR:
-            deprecation("Work items load - Old path style usage detected")
+            deprecation(
+                "Work items load - Old path style usage detected, please use the "
+                "'RPA_INPUT_WORKITEM_PATH' env var "
+                "(more details under documentation: https://robocorp.com/docs/development-guide/control-room/data-pipeline#developing-with-work-items-locally)"  # noqa: E501
+            )
         path = required_env("RPA_INPUT_WORKITEM_PATH", default=old_path)
         logging.info("Resolving path: %s", path)
-        # TODO(cmin764): Fix Windows path bug - https://linear.app/robocorp/issue/LIB-9/fix-windows-paths
+        # TODO(cmin764): Fix Windows path bug - https://linear.app/robocorp/issue/LIB-9/fix-windows-paths  # noqa: E501
         self.path = resolve_path(path)
         self._output_path = None
 
@@ -342,7 +350,11 @@ class FileAdapter(BaseAdapter):
                 self._output_path = resolve_path(new_path)
                 self._output_path.parent.mkdir(parents=True, exist_ok=True)
             else:
-                deprecation("Work items save - Old path style usage detected")
+                deprecation(
+                    "Work items save - Old path style usage detected, please use the "
+                    "'RPA_OUTPUT_WORKITEM_PATH' env var "
+                    "(more details under documentation: https://robocorp.com/docs/development-guide/control-room/data-pipeline#developing-with-work-items-locally)"  # noqa: E501
+                )
                 self._output_path = self.path.with_suffix(".output.json")
 
         return self._output_path
