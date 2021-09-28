@@ -39,6 +39,7 @@ class FinderKeywords(LibraryContext):
         strict: bool = False,
         regexp: str = None,
         only_closest: bool = True,
+        trim: bool = True,
     ) -> Union[Union[List[TextBox], List[None]], TextBox]:
         """Get closest text (value) to the anchor element.
 
@@ -79,6 +80,8 @@ class FinderKeywords(LibraryContext):
             used when direction is 'top' or 'bottom', default `False`.
         :param regexp: expected format of value to match, defaults to None.
         :param only_closest: return all possible values or only the closest.
+        :param trim: set to `False` to match on raw texts, default `True`
+            means whitespace is trimmed from the text
         :return: all possible values, only the closest value, or an empty list.
         """
         self.logger.debug(
@@ -87,7 +90,7 @@ class FinderKeywords(LibraryContext):
             direction,
             regexp,
         )
-        self.set_anchor_to_element(locator)
+        self.set_anchor_to_element(locator, trim=trim)
         possibles = []
 
         if self.anchor_element:
@@ -117,7 +120,7 @@ class FinderKeywords(LibraryContext):
         return possibles
 
     @keyword
-    def set_anchor_to_element(self, locator: str) -> bool:
+    def set_anchor_to_element(self, locator: str, trim: bool = True) -> bool:
         """Sets anchor point in the document for further searches.
 
         This is used internally in the library.
@@ -146,12 +149,14 @@ class FinderKeywords(LibraryContext):
             def example_keyword():
                 success = pdf.set_anchor_to_element("text:Invoice Number")
 
-        :param locator: element to search for.
+        :param locator: element to search for
+        :param trim: set to `False` to match on raw texts, default `True`
+            means whitespace is trimmed from the text
         :return: True if element was found.
         """
         self.logger.info("Set anchor to element: ('locator=%s')", locator)
         if not self.ctx.active_pdf_document.is_converted:
-            self.ctx.convert()
+            self.ctx.convert(trim=trim)
         if locator.startswith("text:"):
             criteria = "text"
             _, locator = locator.split(":", 1)

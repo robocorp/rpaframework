@@ -421,7 +421,11 @@ class DocumentKeywords(LibraryContext):
 
     @keyword
     def get_text_from_pdf(
-        self, source_path: str = None, pages: ListOrString = None, details: bool = False
+        self,
+        source_path: str = None,
+        pages: ListOrString = None,
+        details: bool = False,
+        trim: bool = True,
     ) -> dict:
         """Get text from set of pages in source PDF document.
 
@@ -455,11 +459,13 @@ class DocumentKeywords(LibraryContext):
         :param source_path: filepath to the source pdf.
         :param pages: page numbers to get text (numbers start from 0).
         :param details: set to `True` to return textboxes, default `False`.
+        :param trim: set to `False` to return raw texts, default `True`
+            means whitespace is trimmed from the text
         :return: dictionary of pages and their texts.
         """
         self.switch_to_pdf(source_path)
         if not self.active_pdf_document.is_converted:
-            self.ctx.convert()
+            self.ctx.convert(trim=trim)
 
         reader = self.ctx.active_pdf_document.reader
         pages = self._get_page_numbers(pages, reader)

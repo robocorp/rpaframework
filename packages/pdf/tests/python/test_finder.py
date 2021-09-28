@@ -10,32 +10,36 @@ from . import (
 
 
 @pytest.mark.parametrize(
-    "locator, expected",
+    "locator, trim, expected",
     [
-        ("text:due date", True),
-        ("text:this doesn't exists", False),
+        ("text:due date", True, True),
+        ("text:due date\n", False, True),
+        ("text:this doesn't exists", True, False),
     ],
 )
-def test_set_anchor_to_element(library, locator, expected):
+def test_set_anchor_to_element(library, locator, trim, expected):
     library.open_pdf(TestFiles.invoice_pdf)
-    result = library.set_anchor_to_element(locator)
+    result = library.set_anchor_to_element(locator, trim=trim)
 
     assert result is expected
 
 
-def test_find_text_default_right(library):
+@pytest.mark.parametrize(
+    "locator, trim, expected",
+    [
+        ("text:invoice number", True, "INV-3337"),
+        ("text:order number", True, "12345"),
+        ("text:invoice date", True, "January 25, 2016"),
+        ("text:due date", True, "January 31, 2016"),
+        ("text:total due", True, "$93.50"),
+        ("text:invoice number\n", False, "INV-3337\n"),
+    ],
+)
+def test_find_text_default_right(library, locator, trim, expected):
     library.open_pdf(TestFiles.invoice_pdf)
-    invoice_number = library.find_text("text:invoice number")
-    order_number = library.find_text("text:order number")
-    invoice_date = library.find_text("text:invoice date")
-    due_date = library.find_text("text:due date")
-    total_due = library.find_text("text:total due")
+    result = library.find_text(locator, trim=trim)
 
-    assert invoice_number.text == "INV-3337"
-    assert order_number.text == "12345"
-    assert invoice_date.text == "January 25, 2016"
-    assert due_date.text == "January 31, 2016"
-    assert total_due.text == "$93.50"
+    assert result.text == expected
 
 
 def test_find_text_left(library):

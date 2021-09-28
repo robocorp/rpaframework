@@ -77,15 +77,19 @@ class TextBox:
     textbox_id: int
     textbox_wmode: str
 
-    def __init__(self, boxid: int, bbox: Iterable, wmode: str) -> None:
+    def __init__(
+        self, boxid: int, bbox: Iterable, wmode: str, trim: bool = True
+    ) -> None:
         self.textbox_id = boxid
         self.textbox_bbox = iterable_items_to_int(bbox)
         self.textbox_wmode = wmode
+        self.trim = trim
 
     def set_item(self, item: Any):
+        text = item.get_text()
         self.item = {
             "bbox": iterable_items_to_int(item.bbox),
-            "text": item.get_text().strip(),
+            "text": text.strip() if self.trim else text,
         }
 
     @property
@@ -215,6 +219,7 @@ class Converter(PDFConverter):
         laparams=None,
         imagewriter=None,
         stripcontrol=False,
+        trim=True,
     ):
         super().__init__(
             rsrcmgr, sys.stdout, codec=codec, pageno=pageno, laparams=laparams
@@ -224,6 +229,7 @@ class Converter(PDFConverter):
         self.current_page = None
         self.imagewriter = imagewriter
         self.stripcontrol = stripcontrol
+        self.trim = trim
         self.write_header()
 
     def write(self, text: str):
@@ -329,7 +335,7 @@ class Converter(PDFConverter):
                     bbox2str(item.bbox),
                     wmode,
                 )
-                box = TextBox(item.index, item.bbox, wmode)
+                box = TextBox(item.index, item.bbox, wmode, self.trim)
                 self.write(s)
                 box.set_item(item)
                 self.current_page.add_content(box)
@@ -380,7 +386,7 @@ class ModelKeywords(LibraryContext):
     """Keywords for converting PDF document into specific RPA object model"""
 
     @keyword
-    def convert(self, source_path: str = None) -> None:
+    def convert(self, source_path: str = None, trim: bool = True) -> None:
         """Parse source PDF into entities which can be
         used for text searches, for example.
 
@@ -420,7 +426,9 @@ class ModelKeywords(LibraryContext):
         source_pages = PDFPage.create_pages(source_document)
         rsrcmgr = PDFResourceManager()
         laparams = pdfminer.layout.LAParams(**self.ctx.convert_settings)
-        device = Converter(self.ctx.active_pdf_document, rsrcmgr, laparams=laparams)
+        device = Converter(
+            self.ctx.active_pdf_document, rsrcmgr, laparams=laparams, trim=trim
+        )
         interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
 
         # Look at all (nested) objects on each page
