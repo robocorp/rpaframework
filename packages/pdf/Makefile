@@ -73,7 +73,7 @@ poetry.lock: pyproject.toml
 
 lint: install ## Verify code formatting and conventions
 	$(call title,"Verifying black")
-	poetry run black --check src/RPA tests/
+	poetry run black --check --diff src/RPA tests/
 
 	$(call title,"Verifying flake8")
 	poetry run flake8 --config $(configs)/flake8 src/RPA
