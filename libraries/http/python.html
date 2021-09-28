@@ -229,7 +229,7 @@
 for more information see: <a class="reference external" href="https://github.com/MarketSquare/robotframework-requests">https://github.com/MarketSquare/robotframework-requests</a></p>
 <dl class="attribute">
 <dt id="RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST">
-<code class="sig-name descname">DEFAULT_RETRY_METHOD_LIST</code><em class="property"> = ['TRACE', 'OPTIONS', 'HEAD', 'DELETE', 'PUT', 'GET']</em><a class="headerlink" href="#RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">DEFAULT_RETRY_METHOD_LIST</code><em class="property"> = ['GET', 'TRACE', 'OPTIONS', 'PUT', 'DELETE', 'HEAD']</em><a class="headerlink" href="#RPA.HTTP.HTTP.DEFAULT_RETRY_METHOD_LIST" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -244,7 +244,7 @@ for more information see: <a class="reference external" href="https://github.com
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_client_cert_session">
-<code class="sig-name descname">create_client_cert_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'DELETE', 'PUT', 'GET']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_client_cert_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_client_cert_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, client_certs=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['GET', 'TRACE', 'OPTIONS', 'PUT', 'DELETE', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_client_cert_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -252,8 +252,9 @@ for more information see: <a class="reference external" href="https://github.com
 <p><code class="docutils literal notranslate"><span class="pre">cookies</span></code> Dictionary of cookies</p>
 <p><code class="docutils literal notranslate"><span class="pre">client_certs</span></code> [‘client certificate’, ‘client key’] PEM files containing the client key and certificate</p>
 <p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> Connection timeout</p>
-<p><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>
 <dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary mapping protocol or protocol and host to the URL of the proxy</dt><dd><p>(e.g. {‘http’: ‘foo.bar:3128’, ‘http://host.name’: ‘foo.bar:4012’})</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">verify</span></code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</dt><dd><p>Defaults to False.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">debug</span></code> Enable http verbosity option more information</dt><dd><p><a class="reference external" href="https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>
@@ -281,7 +282,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_custom_session">
-<code class="sig-name descname">create_custom_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'DELETE', 'PUT', 'GET']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_custom_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_custom_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['GET', 'TRACE', 'OPTIONS', 'PUT', 'DELETE', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_custom_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -292,8 +293,9 @@ Note that max_retries must be greater than 0.</p>
 </dd>
 </dl>
 <p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> Connection timeout</p>
-<p><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>
 <dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary mapping protocol or protocol and host to the URL of the proxy</dt><dd><p>(e.g. {‘http’: ‘foo.bar:3128’, ‘http://host.name’: ‘foo.bar:4012’})</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">verify</span></code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</dt><dd><p>Defaults to False.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">debug</span></code> Enable http verbosity option more information</dt><dd><p><a class="reference external" href="https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>
@@ -321,7 +323,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_digest_session">
-<code class="sig-name descname">create_digest_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'DELETE', 'PUT', 'GET']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_digest_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_digest_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['GET', 'TRACE', 'OPTIONS', 'PUT', 'DELETE', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_digest_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -329,8 +331,9 @@ Note that max_retries must be greater than 0.</p>
 <p><code class="docutils literal notranslate"><span class="pre">cookies</span></code> Dictionary of cookies</p>
 <p><code class="docutils literal notranslate"><span class="pre">auth</span></code> [‘DOMAIN’, ‘username’, ‘password’] for NTLM Authentication</p>
 <p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> Connection timeout</p>
-<p><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>
 <dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary mapping protocol or protocol and host to the URL of the proxy</dt><dd><p>(e.g. {‘http’: ‘foo.bar:3128’, ‘http://host.name’: ‘foo.bar:4012’})</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">verify</span></code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</dt><dd><p>Defaults to False.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">debug</span></code> Enable http verbosity option more information</dt><dd><p><a class="reference external" href="https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>
@@ -358,7 +361,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_ntlm_session">
-<code class="sig-name descname">create_ntlm_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'DELETE', 'PUT', 'GET']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_ntlm_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_ntlm_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, auth, headers={}, cookies={}, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['GET', 'TRACE', 'OPTIONS', 'PUT', 'DELETE', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_ntlm_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
@@ -366,8 +369,9 @@ Note that max_retries must be greater than 0.</p>
 <p><code class="docutils literal notranslate"><span class="pre">cookies</span></code> Dictionary of cookies</p>
 <p><code class="docutils literal notranslate"><span class="pre">auth</span></code> [‘DOMAIN’, ‘username’, ‘password’] for NTLM Authentication</p>
 <p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> Connection timeout</p>
-<p><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>
 <dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary mapping protocol or protocol and host to the URL of the proxy</dt><dd><p>(e.g. {‘http’: ‘foo.bar:3128’, ‘http://host.name’: ‘foo.bar:4012’})</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">verify</span></code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</dt><dd><p>Defaults to False.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">debug</span></code> Enable http verbosity option more information</dt><dd><p><a class="reference external" href="https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>
@@ -395,7 +399,7 @@ Note that max_retries must be greater than 0.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.create_session">
-<code class="sig-name descname">create_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['TRACE', 'OPTIONS', 'HEAD', 'DELETE', 'PUT', 'GET']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_session</code><span class="sig-paren">(</span><em class="sig-param">alias, url, headers={}, cookies={}, auth=None, timeout=None, proxies=None, verify=False, debug=0, max_retries=3, backoff_factor=0.1, disable_warnings=0, retry_status_list=[], retry_method_list=['GET', 'TRACE', 'OPTIONS', 'PUT', 'DELETE', 'HEAD']</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.create_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create Session: create a HTTP session to a server</p>
 <p><code class="docutils literal notranslate"><span class="pre">alias</span></code> Robot Framework alias to identify the session</p>
 <p><code class="docutils literal notranslate"><span class="pre">url</span></code> Base url of the server</p>
@@ -403,7 +407,10 @@ Note that max_retries must be greater than 0.</p>
 <p><code class="docutils literal notranslate"><span class="pre">cookies</span></code> Dictionary of cookies</p>
 <p><code class="docutils literal notranslate"><span class="pre">auth</span></code> List of username &amp; password for HTTP Basic Auth</p>
 <p><code class="docutils literal notranslate"><span class="pre">timeout</span></code> Connection timeout</p>
-<p><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary that contains proxy urls for HTTP and HTTPS communication</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">proxies</span></code> Dictionary mapping protocol or protocol and host to the URL of the proxy</dt><dd><p>(e.g. {‘http’: ‘foo.bar:3128’, ‘http://host.name’: ‘foo.bar:4012’})</p>
+</dd>
+</dl>
 <p><code class="docutils literal notranslate"><span class="pre">verify</span></code> Whether the SSL cert will be verified. A CA_BUNDLE path can also be provided.</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">debug</span></code> Enable http verbosity option more information</dt><dd><p><a class="reference external" href="https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel">https://docs.python.org/2/library/httplib.html#httplib.HTTPConnection.set_debuglevel</a></p>
@@ -758,7 +765,7 @@ If omitted the last response will be used.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.session_less_delete">
-<code class="sig-name descname">session_less_delete</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">expected_status=None</em>, <em class="sig-param">msg=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_delete" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">session_less_delete</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends a DELETE request.</p>
 <p>The endpoint used to send the request is the <code class="docutils literal notranslate"><span class="pre">url</span></code> parameter.</p>
 <p>By default this keyword fails if a status code with error values is returned in the response,
@@ -772,7 +779,7 @@ see the <cite>GET</cite> keyword for the complete list.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.session_less_get">
-<code class="sig-name descname">session_less_get</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">params=None</em>, <em class="sig-param">expected_status=None</em>, <em class="sig-param">msg=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">session_less_get</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends a GET request.</p>
 <p>The endpoint used to retrieve the resource is the <code class="docutils literal notranslate"><span class="pre">url</span></code>, while query
 string parameters can be passed as string, dictionary (or list of tuples or bytes)
@@ -793,7 +800,7 @@ In order to disable this implicit assert mechanism you can pass as <code class="
 <div class="line"><code class="docutils literal notranslate"><span class="pre">auth</span></code> | Auth tuple to enable Basic/Digest/Custom HTTP Auth. |</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">timeout</span></code> | How many seconds to wait for the server to send data before giving up, as a float, or a <code class="docutils literal notranslate"><span class="pre">(connect</span> <span class="pre">timeout,</span> <span class="pre">read</span> <span class="pre">timeout)</span></code> tuple. |</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">allow_redirects</span></code> | Boolean. Enable/disable GET/OPTIONS/POST/PUT/PATCH/DELETE/HEAD redirection. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>. |</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">proxies</span></code> | Dictionary mapping protocol to the URL of the proxy. |</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">proxies</span></code> | Dictionary mapping protocol or protocol and host to the URL of the proxy (e.g. {‘http’: ‘foo.bar:3128’, ‘http://host.name’: ‘foo.bar:4012’}) |</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">verify</span></code>  | Either a boolean, in which case it controls whether we verify the server’s TLS certificate, or a string, in which case it must be a path to a CA bundle to use. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>. Warning: if a session has been created with <code class="docutils literal notranslate"><span class="pre">verify=False</span></code> any other requests will not verify the SSL certificate. |</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">stream</span></code> | if <code class="docutils literal notranslate"><span class="pre">False</span></code>, the response content will be immediately downloaded. |</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">cert</span></code> | if String, path to ssl client cert file (.pem). If Tuple, (‘cert’, ‘key’) pair. |</div>
@@ -804,7 +811,7 @@ In order to disable this implicit assert mechanism you can pass as <code class="
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.session_less_head">
-<code class="sig-name descname">session_less_head</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">expected_status=None</em>, <em class="sig-param">msg=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_head" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">session_less_head</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_head" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends a HEAD request.</p>
 <p>The endpoint used to retrieve the HTTP headers is the <code class="docutils literal notranslate"><span class="pre">url</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">allow_redirects</span></code> parameter is not provided, it will be set to <cite>False</cite> (as
@@ -820,7 +827,7 @@ see the <cite>GET</cite> keyword for the complete list.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.session_less_options">
-<code class="sig-name descname">session_less_options</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">expected_status=None</em>, <em class="sig-param">msg=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_options" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">session_less_options</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends a OPTIONS request.</p>
 <p>The endpoint used to retrieve the resource is the <code class="docutils literal notranslate"><span class="pre">url</span></code>.</p>
 <p>By default this keyword fails if a status code with error values is returned in the response,
@@ -834,7 +841,7 @@ see the <cite>GET</cite> keyword for the complete list.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.session_less_patch">
-<code class="sig-name descname">session_less_patch</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">data=None</em>, <em class="sig-param">json=None</em>, <em class="sig-param">expected_status=None</em>, <em class="sig-param">msg=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_patch" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">session_less_patch</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_patch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends a PUT request.</p>
 <p>The endpoint used to send the request is the <code class="docutils literal notranslate"><span class="pre">url</span></code> parameter, while its body
 can be passed using <code class="docutils literal notranslate"><span class="pre">data</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> parameters.</p>
@@ -851,7 +858,7 @@ see the <cite>GET</cite> keyword for the complete list.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.session_less_post">
-<code class="sig-name descname">session_less_post</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">data=None</em>, <em class="sig-param">json=None</em>, <em class="sig-param">expected_status=None</em>, <em class="sig-param">msg=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_post" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">session_less_post</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_post" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends a POST request.</p>
 <p>The endpoint used to send the request is the <code class="docutils literal notranslate"><span class="pre">url</span></code> parameter, while its body
 can be passed using <code class="docutils literal notranslate"><span class="pre">data</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> parameters.</p>
@@ -868,7 +875,7 @@ see the <cite>GET</cite> keyword for the complete list.</p>
 
 <dl class="method">
 <dt id="RPA.HTTP.HTTP.session_less_put">
-<code class="sig-name descname">session_less_put</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">data=None</em>, <em class="sig-param">json=None</em>, <em class="sig-param">expected_status=None</em>, <em class="sig-param">msg=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_put" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">session_less_put</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.HTTP.HTTP.session_less_put" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends a PUT request.</p>
 <p>The endpoint used to send the request is the <code class="docutils literal notranslate"><span class="pre">url</span></code> parameter, while its body
 can be passed using <code class="docutils literal notranslate"><span class="pre">data</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> parameters.</p>
