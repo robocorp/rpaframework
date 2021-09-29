@@ -3,6 +3,7 @@ import binascii
 import copy
 import json
 import os
+import yaml
 from pathlib import Path
 
 import mock
@@ -239,14 +240,24 @@ def test_adapter_filesecrets_unknown_secret(monkeypatch, secrets_file):
         secret = adapter.get_secret("not-exist")
 
 
-def test_adapter_filesecrets_saving(monkeypatch, secrets_file):
-    monkeypatch.setenv("RPA_SECRET_FILE", str(RESOURCES / secrets_file))
+def test_adapter_filesecrets_saving(monkeypatch, tmp_path, secrets_file):
+    tmp_file = tmp_path / secrets_file
+    tmp_file.write_text((RESOURCES / secrets_file).read_text())
+    monkeypatch.setenv("RPA_SECRET_FILE", str(tmp_file))
 
     adapter = FileSecrets()
     secret = adapter.get_secret("credentials")
-    secret["sap"]["password"] = "secret"
+    secret["sap"]["password"] = "my-different-secret"
     adapter.set_secret(secret)
     adapter.save()
+
+    assert tmp_file.suffix in (".json", ".yaml")
+    if tmp_file.suffix == ".json":
+        loader = json.load
+    else:
+        loader = yaml.full_load
+    secret_dict = loader(tmp_file.open())
+    secret_dict["credentials"]["sap"]["password"] = "my-different-secret"
 
 
 @mock.patch("RPA.Robocorp.Vault.requests")
