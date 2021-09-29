@@ -120,28 +120,31 @@ class FileSecrets(BaseSecretManager):
         key1: value1
     """
 
-    LOADERS = {
-        ".json": json.load,
-        ".yaml": yaml.full_load,
+    SERIALIZERS = {
+        ".json": (json.load, json.dump),
+        ".yaml": (yaml.full_load, yaml.dump),
     }
 
     def __init__(self, secret_file="secrets.json"):
-        path = required_env("RPA_SECRET_FILE", secret_file)
         self.logger = logging.getLogger(__name__)
+
+        path = required_env("RPA_SECRET_FILE", secret_file)
         self.logger.info("Resolving path: %s", path)
         self.path = resolve_path(path)
+
+        extension = self.path.suffix
+        serializer = self.SERIALIZERS.get(extension)
+        if not serializer:
+            raise ValueError(f"Not supported local vault extension {extension!r}")
+        self._loader, self._dumper = serializer
+
         self.data = self.load()
 
     def load(self):
         """Load secrets file."""
         try:
-            extension = self.path.suffix
-            loader = self.LOADERS.get(extension)
-            if not loader:
-                raise ValueError(f"Not supported extension {extension!r}")
-
             with open(self.path, encoding="utf-8") as fd:
-                data = loader(fd)
+                data = self._loader(fd)
 
             if not isinstance(data, dict):
                 raise ValueError("Invalid content format")
@@ -157,7 +160,7 @@ class FileSecrets(BaseSecretManager):
             with open(self.path, "w", encoding="utf-8") as f:
                 if not isinstance(self.data, dict):
                     raise ValueError("Invalid content format")
-                json.dump(self.data, f, indent=4)
+                self._dumper(self.data, f, indent=4)
         except (IOError, ValueError) as err:
             self.logger.error("Failed to save secrets file: %s", err)
 
