@@ -4,9 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Robocorp.Vault**: Supports both .yaml/.json local vault secrets file
 - Library **RPA.Robocorp.WorkItems**: New environment variables for work items I/O
   during local dev ("RPA_INPUT_WORKITEM_PATH", "RPA_OUTPUT_WORKITEM_PATH" - :pr:`234`)
-- Library **RPA.Robocorp.Vault**: Supports both .yaml/.json local vault secrets file
 
 11.2.1
 ------
