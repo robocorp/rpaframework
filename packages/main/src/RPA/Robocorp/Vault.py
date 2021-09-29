@@ -88,14 +88,14 @@ class BaseSecretManager(metaclass=ABCMeta):
 
 
 class FileSecrets(BaseSecretManager):
-    """Adapter for secrets stored in a JSON file. Supports only
+    """Adapter for secrets stored in a database file. Supports only
     plaintext secrets, and should be used mainly for debugging.
 
     The path to the secrets file can be set with the
     environment variable ``RPA_SECRET_FILE``, or as
     an argument to the library.
 
-    The format of the secrets file should be the following:
+    The format of the secrets file should be one of the following:
 
     .. code-block:: JSON
 
@@ -108,6 +108,16 @@ class FileSecrets(BaseSecretManager):
           "key1": "value1"
         }
       }
+
+    OR
+
+    .. code-block:: YAML
+
+      name1:
+        key1: value1
+        key2: value2
+      name2:
+        key1: value1
     """
 
     LOADERS = {
@@ -422,7 +432,7 @@ class Vault:
     File-based secrets can be set by defining two environment variables.
 
     - ``RPA_SECRET_MANAGER``: RPA.Robocorp.Vault.FileSecrets
-    - ``RPA_SECRET_FILE``: Absolute path to the secrets JSON file
+    - ``RPA_SECRET_FILE``: Absolute path to the secrets database file
 
     Example content of local secrets file:
 
@@ -434,6 +444,14 @@ class Vault:
                 "password": "secret_sauce"
             }
         }
+
+    OR
+
+    .. code-block:: YAML
+
+        swaglabs:
+            username: standard_user
+            password: secret_sauce
 
     **Examples**
 
