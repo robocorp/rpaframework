@@ -159,7 +159,7 @@ class FileSecrets(BaseSecretManager):
             return {}
 
     def save(self):
-        """Save the secrets JSON to disk."""
+        """Save the secrets content to disk."""
         try:
             with open(self.path, "w", encoding="utf-8") as f:
                 if not isinstance(self.data, dict):
