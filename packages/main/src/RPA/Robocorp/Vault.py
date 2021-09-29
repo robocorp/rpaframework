@@ -10,6 +10,7 @@ from abc import abstractmethod, ABCMeta
 from typing import Tuple
 
 import requests
+import yaml
 from cryptography.exceptions import InvalidTag
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
@@ -109,6 +110,11 @@ class FileSecrets(BaseSecretManager):
       }
     """
 
+    LOADERS = {
+        ".json": json.load,
+        ".yaml": yaml.full_load,
+    }
+
     def __init__(self, secret_file="secrets.json"):
         path = required_env("RPA_SECRET_FILE", secret_file)
         self.logger = logging.getLogger(__name__)
@@ -119,8 +125,13 @@ class FileSecrets(BaseSecretManager):
     def load(self):
         """Load secrets file."""
         try:
+            extension = self.path.suffix
+            loader = self.LOADERS.get(extension)
+            if not loader:
+                raise ValueError(f"Not supported extension {extension!r}")
+
             with open(self.path, encoding="utf-8") as fd:
-                data = json.load(fd)
+                data = loader(fd)
 
             if not isinstance(data, dict):
                 raise ValueError("Invalid content format")
