@@ -257,7 +257,7 @@ def test_adapter_filesecrets_saving(monkeypatch, tmp_path, secrets_file):
     else:
         loader = yaml.full_load
     secret_dict = loader(tmp_file.open())
-    secret_dict["credentials"]["sap"]["password"] = "my-different-secret"
+    assert secret_dict["credentials"]["sap"]["password"] == "my-different-secret"
 
 
 @mock.patch("RPA.Robocorp.Vault.requests")
