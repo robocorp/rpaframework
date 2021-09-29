@@ -134,8 +134,12 @@ class FileSecrets(BaseSecretManager):
 
         extension = self.path.suffix
         serializer = self.SERIALIZERS.get(extension)
+        # NOTE(cmin764): This will raise instead of returning an empty secrets object
+        #  because it is wrong starting from the "env.json" configuration level.
         if not serializer:
-            raise ValueError(f"Not supported local vault extension {extension!r}")
+            raise ValueError(
+                f"Not supported local vault secrets file extension {extension!r}"
+            )
         self._loader, self._dumper = serializer
 
         self.data = self.load()
