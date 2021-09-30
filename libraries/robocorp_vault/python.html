@@ -245,12 +245,12 @@ base-class for any adapter implementation.</p>
 <dt id="RPA.Robocorp.Vault.FileSecrets">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.Vault.</code><code class="sig-name descname">FileSecrets</code><span class="sig-paren">(</span><em class="sig-param">secret_file='secrets.json'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.FileSecrets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Robocorp.Vault.BaseSecretManager" title="RPA.Robocorp.Vault.BaseSecretManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Robocorp.Vault.BaseSecretManager</span></code></a></p>
-<p>Adapter for secrets stored in a JSON file. Supports only
+<p>Adapter for secrets stored in a database file. Supports only
 plaintext secrets, and should be used mainly for debugging.</p>
 <p>The path to the secrets file can be set with the
 environment variable <code class="docutils literal notranslate"><span class="pre">RPA_SECRET_FILE</span></code>, or as
 an argument to the library.</p>
-<p>The format of the secrets file should be the following:</p>
+<p>The format of the secrets file should be one of the following:</p>
 <div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;name1&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;key1&quot;</span><span class="p">:</span> <span class="s2">&quot;value1&quot;</span><span class="p">,</span>
@@ -262,6 +262,19 @@ an argument to the library.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>OR</p>
+<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">name1</span><span class="p">:</span>
+  <span class="nt">key1</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">value1</span>
+  <span class="nt">key2</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">value2</span>
+<span class="nt">name2</span><span class="p">:</span>
+  <span class="nt">key1</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">value1</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="RPA.Robocorp.Vault.FileSecrets.SERIALIZERS">
+<code class="sig-name descname">SERIALIZERS</code><em class="property"> = {'.json': (&lt;function load&gt;, &lt;function dump&gt;), '.yaml': (&lt;function full_load&gt;, &lt;function dump&gt;)}</em><a class="headerlink" href="#RPA.Robocorp.Vault.FileSecrets.SERIALIZERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="RPA.Robocorp.Vault.FileSecrets.get_secret">
 <code class="sig-name descname">get_secret</code><span class="sig-paren">(</span><em class="sig-param">secret_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.FileSecrets.get_secret" title="Permalink to this definition">¶</a></dt>
@@ -288,7 +301,7 @@ an argument to the library.</p>
 <dl class="method">
 <dt id="RPA.Robocorp.Vault.FileSecrets.save">
 <code class="sig-name descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Vault.FileSecrets.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save the secrets JSON to disk.</p>
+<dd><p>Save the secrets content to disk.</p>
 </dd></dl>
 
 <dl class="method">
@@ -477,7 +490,7 @@ Robocorp Worker automatically and can be set manually with Robocorp CLI.</p>
 <p>File-based secrets can be set by defining two environment variables.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">RPA_SECRET_MANAGER</span></code>: RPA.Robocorp.Vault.FileSecrets</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">RPA_SECRET_FILE</span></code>: Absolute path to the secrets JSON file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RPA_SECRET_FILE</span></code>: Absolute path to the secrets database file</p></li>
 </ul>
 <p>Example content of local secrets file:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -486,6 +499,12 @@ Robocorp Worker automatically and can be set manually with Robocorp CLI.</p>
         <span class="nt">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;secret_sauce&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
+</pre></div>
+</div>
+<p>OR</p>
+<div class="highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">swaglabs</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">standard_user</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">secret_sauce</span>
 </pre></div>
 </div>
 <p><strong>Examples</strong></p>
