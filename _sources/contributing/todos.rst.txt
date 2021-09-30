@@ -68,7 +68,7 @@ RPA.Email.ImapSmtp:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "663", "mypy should handle enum exhaustivity validation"
+   "699", "mypy should handle enum exhaustivity validation"
 
 RPA.FileSystem:
 ===============

@@ -262,6 +262,11 @@
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.Action.msg_move">
+<code class="sig-name descname">msg_move</code><em class="property"> = 10</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.msg_move" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Email.ImapSmtp.Action.msg_read">
 <code class="sig-name descname">msg_read</code><em class="property"> = 6</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.msg_read" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -715,6 +720,9 @@ source folder</p>
 <li><p><strong>target_folder</strong> – where messages should be move into</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if all move operations succeeded, False if not</p>
+</dd>
 </dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${result}=</span><span class="p">    </span><span class="c">Move Messages</span><span class="p"></span>
@@ -727,6 +735,26 @@ source folder</p>
 <span class="c">...</span><span class="p">    </span><span class="c">target_folder=XXX</span><span class="p"></span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.move_messages_by_ids">
+<code class="sig-name descname">move_messages_by_ids</code><span class="sig-paren">(</span><em class="sig-param">message_ids: Union[str, List], target_folder: str, source_folder: str, use_gmail_search: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.move_messages_by_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move message by their Message-ID’s from source folder to target folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message_ids</strong> – one Message-ID as string or list of Message-IDs</p></li>
+<li><p><strong>source_folder</strong> – location of the messages, default <cite>INBOX</cite></p></li>
+<li><p><strong>target_folder</strong> – where messages should be move into</p></li>
+<li><p><strong>use_gmail_search</strong> – set to True to use <cite>Rfc822msgid</cite> search, default
+is <cite>HEADER Message-ID</cite> search</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if all move operations succeeded, False if not</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -801,7 +829,7 @@ defaults to user’s home directory if None</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.save_attachments">
-<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachments" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; List<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save mail attachments of emails matching criterion into local folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -813,7 +841,7 @@ defaults to user’s home directory if None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of saved attachments or False</p>
+<dd class="field-even"><p>list of saved attachments</p>
 </dd>
 </dl>
 <p>Example:</p>

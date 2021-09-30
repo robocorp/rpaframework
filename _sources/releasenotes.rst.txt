@@ -8,6 +8,11 @@ Upcoming release
 - Library **RPA.PDF**: Add possibility to preserve whitespacing in PDF textboxes - :issue:`235`
 - Library **RPA.Robocorp.WorkItems**: New environment variables for work items I/O
   during local dev ("RPA_INPUT_WORKITEM_PATH", "RPA_OUTPUT_WORKITEM_PATH" - :pr:`234`)
+- Library **RPA.Email.ImapSmtp**:
+
+  - Fix `Move Messages` issue (:issue:`237`)
+  - Add keyword `Move Messages By IDs`
+  - Fix boolean return values for keywords doing definite actions (like Mark As Read, Delete Messages..)
 
 11.2.1
 ------
