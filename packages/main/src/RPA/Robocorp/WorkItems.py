@@ -31,6 +31,9 @@ class EmptyQueue(IndexError):
 class BaseAdapter(ABC):
     """Abstract base class for work item adapters."""
 
+    def __init__(self, lib: "WorkItems"):
+        self._lib = lib
+
     @abstractmethod
     def get_input(self) -> str:
         """Get next work item ID from input queue."""
@@ -89,7 +92,9 @@ class RobocorpAdapter(BaseAdapter):
     * RC_WORKITEM_ID:           Control room work item ID (input)
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
         #: Endpoint for old work items API
         self.workitem_host = required_env("RC_API_WORKITEM_HOST")
         self.workitem_token = required_env("RC_API_WORKITEM_TOKEN")
@@ -107,6 +112,8 @@ class RobocorpAdapter(BaseAdapter):
         self.input_queue = [required_env("RC_WORKITEM_ID")]
 
     def get_input(self) -> str:
+        self._lib.raise_under_iteration("get more than one input item in the cloud")
+
         try:
             return self.input_queue.pop()
         except IndexError as err:
@@ -307,6 +314,7 @@ class FileAdapter(BaseAdapter):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         # pylint: disable=invalid-envvar-default
         old_path = os.getenv("RPA_WORKITEMS_PATH", UNDEFINED_VAR)
         if old_path is not UNDEFINED_VAR:
@@ -773,7 +781,7 @@ class WorkItems:
     ):
         self.ROBOT_LIBRARY_LISTENER = self
 
-        #: Current selected worok item
+        #: Current selected work item
         self._current: Optional[WorkItem] = None
         #: Input work items
         self.inputs: List[WorkItem] = []
@@ -787,12 +795,13 @@ class WorkItems:
         self._adapter_class = self._load_adapter(default_adapter)
         self._adapter: Optional[BaseAdapter] = None
 
+        # Know when we're iterating (and consuming) all the work items in the queue.
         self._under_iteration = Event()
 
     @property
     def adapter(self):
         if self._adapter is None:
-            self._adapter = self._adapter_class()
+            self._adapter = self._adapter_class(self)
         return self._adapter
 
     @property
@@ -879,7 +888,7 @@ class WorkItems:
                   by Control Room.
         """
         if not _internal_call:
-            self._check_iteration_set("get input work item")
+            self.raise_under_iteration("get input work item")
 
         item_id = self.adapter.get_input()
         item = WorkItem(item_id=item_id, parent_id=None, adapter=self.adapter)
@@ -1263,7 +1272,7 @@ class WorkItems:
         logging.info("Removed %d file(s)", len(names))
         return names
 
-    def _check_iteration_set(self, action: str) -> None:
+    def raise_under_iteration(self, action: str) -> None:
         if self._under_iteration.is_set():
             raise RuntimeError(f"Can't {action} while iterating input work items")
 
@@ -1275,7 +1284,7 @@ class WorkItems:
         """
 
         outputs = []
-        self._check_iteration_set("iterate input work items")
+        self.raise_under_iteration("iterate input work items")
         self._under_iteration.set()
 
         try:
