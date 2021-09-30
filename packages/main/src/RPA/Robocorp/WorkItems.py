@@ -6,6 +6,7 @@ import os
 from abc import ABC, abstractmethod
 from pathlib import Path
 from shutil import copy2
+from threading import Event
 from typing import Type, Any, Optional, Union, Dict, List, Tuple
 
 import requests
@@ -786,6 +787,8 @@ class WorkItems:
         self._adapter_class = self._load_adapter(default_adapter)
         self._adapter: Optional[BaseAdapter] = None
 
+        self._under_iteration = Event()
+
     @property
     def adapter(self):
         if self._adapter is None:
@@ -864,7 +867,7 @@ class WorkItems:
         self.current = item
 
     @keyword
-    def get_input_work_item(self):
+    def get_input_work_item(self, _internal_call: bool = False):
         """Load the next work item from the input queue,
         and set it as the active work item.
 
@@ -875,8 +878,10 @@ class WorkItems:
         **NOTE**: Currently only one input work item per execution is supported
                   by Control Room.
         """
-        item_id = self.adapter.get_input()
+        if not _internal_call:
+            self._check_iteration_set("get input work item")
 
+        item_id = self.adapter.get_input()
         item = WorkItem(item_id=item_id, parent_id=None, adapter=self.adapter)
         item.load()
 
@@ -1258,6 +1263,10 @@ class WorkItems:
         logging.info("Removed %d file(s)", len(names))
         return names
 
+    def _check_iteration_set(self, action: str) -> None:
+        if self._under_iteration.is_set():
+            raise RuntimeError(f"Can't {action} while iterating input work items")
+
     @keyword
     def for_each_input_work_item(self, keyword, *args, **kwargs):
         """Run a keyword for each work item in the input queue.
@@ -1266,13 +1275,19 @@ class WorkItems:
         """
 
         outputs = []
-        while True:
-            output = BuiltIn().run_keyword(keyword, *args, **kwargs)
-            outputs.append(output)
+        self._check_iteration_set("iterate input work items")
+        self._under_iteration.set()
 
-            try:
-                self.get_input_work_item()
-            except EmptyQueue:
-                break
+        try:
+            while True:
+                output = BuiltIn().run_keyword(keyword, *args, **kwargs)
+                outputs.append(output)
+
+                try:
+                    self.get_input_work_item(_internal_call=True)
+                except EmptyQueue:
+                    break
+        finally:
+            self._under_iteration.clear()
 
         return outputs
