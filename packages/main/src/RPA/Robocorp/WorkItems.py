@@ -327,19 +327,21 @@ class FileAdapter(BaseAdapter):
         idx = int(item_id)
         if idx < len(self.inputs):
             return "input", self.inputs[idx]
-        elif idx < (len(self.inputs) + len(self.outputs)):
+
+        if idx < (len(self.inputs) + len(self.outputs)):
             return "output", self.outputs[idx - len(self.inputs)]
-        else:
-            raise ValueError(f"Unknown work item ID: {item_id}")
+
+        raise ValueError(f"Unknown work item ID: {item_id}")
 
     def get_input(self) -> str:
+        idx = self.index
         try:
-            idx = self.index
             _ = self.inputs[idx]
-            self.index += 1
-            return str(idx)
         except IndexError as err:
             raise EmptyQueue("No work items in input queue") from err
+        else:
+            self.index += 1
+            return str(idx)
 
     @property
     def output_path(self):
@@ -450,14 +452,14 @@ class FileAdapter(BaseAdapter):
                     data.append({"payload": {}})
                 return data
 
-            def first(d: Dict[str, Any]) -> str:
+            def first_key(d: Dict[str, Any]) -> str:
                 return list(d.keys())[0]
 
             # Attempt to migrate from old format
             assert isinstance(data, dict), "Not a list or dictionary"
             deprecation("Work items file as mapping is deprecated")
-            workspace = data[first(data)]
-            work_item = workspace[first(workspace)]
+            workspace = data[first_key(data)]
+            work_item = workspace[first_key(workspace)]
             return [{"payload": work_item}]
         except Exception as exc:  # pylint: disable=broad-except
             logging.error("Invalid work items file: %s", exc)
@@ -1255,3 +1257,22 @@ class WorkItems:
 
         logging.info("Removed %d file(s)", len(names))
         return names
+
+    @keyword
+    def for_each_input_work_item(self, keyword, *args, **kwargs):
+        """Run a keyword for each work item in the input queue.
+
+        Returns a list of results.
+        """
+        outputs = []
+
+        while True:
+            output = BuiltIn().run_keyword(keyword, *args, **kwargs)
+            outputs.append(output)
+
+            try:
+                self.get_input_work_item()
+            except EmptyQueue:
+                break
+
+        return outputs
