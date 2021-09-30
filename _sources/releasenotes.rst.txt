@@ -16,6 +16,7 @@ Upcoming release
   - Fix `Move Messages` issue (:issue:`237`)
   - Add keyword `Move Messages By IDs`
   - Fix boolean return values for keywords doing definite actions (like Mark As Read, Delete Messages..)
+
 - Library **RPA.Email.Exchange**: Update `exchangelib` dependency to 4.5.1 and pin `tzlocal` dependency to 2.1
 
 11.2.1
