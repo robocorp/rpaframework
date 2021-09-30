@@ -84,9 +84,6 @@ category = "main"
 optional = true
 python-versions = ">=3.6.0"
 
-[package.dependencies]
-typing = {version = ">=3.6", markers = "python_version < \"3.7\""}
-
 [[package]]
 name = "backports.zoneinfo"
 version = "0.2.1"
@@ -147,14 +144,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.18.48"
+version = "1.18.51"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.21.48,<1.22.0"
+botocore = ">=1.21.51,<1.22.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -163,7 +160,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.21.48"
+version = "1.21.51"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -388,7 +385,7 @@ Pillow = "*"
 
 [[package]]
 name = "furl"
-version = "2.1.2"
+version = "2.1.3"
 description = "URL manipulation made simple."
 category = "main"
 optional = false
@@ -541,7 +538,7 @@ six = "*"
 
 [[package]]
 name = "jsonschema"
-version = "3.2.0"
+version = "4.0.0"
 description = "An implementation of JSON Schema validation for Python"
 category = "main"
 optional = false
@@ -550,12 +547,11 @@ python-versions = "*"
 [package.dependencies]
 attrs = ">=17.4.0"
 importlib-metadata = {version = "*", markers = "python_version < \"3.8\""}
-pyrsistent = ">=0.14.0"
-six = ">=1.11.0"
+pyrsistent = ">=0.14.0,<0.17.0 || >0.17.0,<0.17.1 || >0.17.1,<0.17.2 || >0.17.2"
 
 [package.extras]
-format = ["idna", "jsonpointer (>1.13)", "rfc3987", "strict-rfc3339", "webcolors"]
-format_nongpl = ["idna", "jsonpointer (>1.13)", "webcolors", "rfc3986-validator (>0.1.0)", "rfc3339-validator"]
+format = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3987", "uri-template", "webcolors (>=1.11)"]
+format_nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3986-validator (>0.1.0)", "uri-template", "webcolors (>=1.11)"]
 
 [[package]]
 name = "lazy-object-proxy"
@@ -963,18 +959,6 @@ pyobjc-core = ">=7.3"
 pyobjc-framework-Cocoa = ">=7.3"
 
 [[package]]
-name = "pyobjc-framework-webkit"
-version = "7.3"
-description = "Wrappers for the framework WebKit on macOS"
-category = "main"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-pyobjc-core = ">=7.3"
-pyobjc-framework-Cocoa = ">=7.3"
-
-[[package]]
 name = "pyparsing"
 version = "2.4.7"
 description = "Python parsing module"
@@ -1135,17 +1119,6 @@ python-versions = "*"
 six = ">=1.10.0"
 
 [[package]]
-name = "pythonnet"
-version = "2.5.2"
-description = ".Net and Mono integration for Python"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-pycparser = "*"
-
-[[package]]
 name = "pytz"
 version = "2021.1"
 description = "World timezone definitions, modern and historical"
@@ -1164,11 +1137,6 @@ python-versions = "*"
 [package.dependencies]
 importlib_resources = {version = "*", markers = "python_version < \"3.7\""}
 proxy_tools = "*"
-pyobjc-core = {version = "*", markers = "sys_platform == \"darwin\""}
-pyobjc-framework-Cocoa = {version = "*", markers = "sys_platform == \"darwin\""}
-pyobjc-framework-WebKit = {version = "*", markers = "sys_platform == \"darwin\""}
-PyQt5 = {version = "*", markers = "sys_platform == \"openbsd6\""}
-pythonnet = {version = "*", markers = "sys_platform == \"win32\""}
 
 [package.extras]
 cef = ["cefpython3"]
@@ -1430,7 +1398,7 @@ rpaframework-core = ">=6.1.0,<7.0.0"
 
 [[package]]
 name = "rpaframework-pdf"
-version = "0.8.0"
+version = "0.9.0"
 description = "PDF library of RPA Framework"
 category = "main"
 optional = false
@@ -1578,14 +1546,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "typing"
-version = "3.7.4.3"
-description = "Type Hints for Python"
-category = "main"
-optional = true
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-
-[[package]]
 name = "typing-extensions"
 version = "3.10.0.2"
 description = "Backported and Experimental Type Hints for Python 3.5+"
@@ -1727,7 +1687,7 @@ xmlsec = ["xmlsec (>=0.6.1)"]
 
 [[package]]
 name = "zipp"
-version = "3.5.0"
+version = "3.6.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "main"
 optional = false
@@ -1745,7 +1705,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "5ba20f4daf78deb02721ab0f8aa04af85c3fd0dd5fc8de5ef146736e23f4557a"
+content-hash = "7792bacf0a8692c730d1fc0b16478e6d5286b436a735dfb1ea243713589402b9"
 
 [metadata.files]
 amazon-textract-response-parser = [
@@ -1806,12 +1766,12 @@ black = [
     {file = "black-21.9b0.tar.gz", hash = "sha256:7de4cfc7eb6b710de325712d40125689101d21d25283eed7e9998722cf10eb91"},
 ]
 boto3 = [
-    {file = "boto3-1.18.48-py3-none-any.whl", hash = "sha256:c388da7dc1a596755f39de990a72e05cee558d098e81de63de55bd9598cc5134"},
-    {file = "boto3-1.18.48.tar.gz", hash = "sha256:7b45b224442c479de4bc6e6e9cb0557b642fc7a77edc8702e393ccaa2e0aa128"},
+    {file = "boto3-1.18.51-py3-none-any.whl", hash = "sha256:83d6f539e0f0e0f0c532bb2b11d1e9c5055d1d806d64a61aff4f49399c294ee7"},
+    {file = "boto3-1.18.51.tar.gz", hash = "sha256:98279095b1d08ee6d8d587f2c66fda6d560ad3046e98cd140c1aa8e1ed018c70"},
 ]
 botocore = [
-    {file = "botocore-1.21.48-py3-none-any.whl", hash = "sha256:9d5b70be2f417d0aa30788049fd20473ad27218eccd05e71f545b4b4e09c79a0"},
-    {file = "botocore-1.21.48.tar.gz", hash = "sha256:2c25a76f09223b2f00ad578df34492b7b84cd4828fc90c08ccbdd1d70abbd7eb"},
+    {file = "botocore-1.21.51-py3-none-any.whl", hash = "sha256:2089f9fa36a59d8c02435c49d58ccc7b3ceb9c0c054ea4f71631c3c3a1c5245e"},
+    {file = "botocore-1.21.51.tar.gz", hash = "sha256:17a10dd33334e7e3aaa4e12f66317284f96bb53267e20bc877a187c442681772"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -1997,8 +1957,8 @@ fpdf2 = [
     {file = "fpdf2-2.4.3.tar.gz", hash = "sha256:453e81453244bca8cf90a150ed32136ec7d4c0bbc57010e7b082c9864de4d01b"},
 ]
 furl = [
-    {file = "furl-2.1.2-py2.py3-none-any.whl", hash = "sha256:a2c6adb472fc5faba2e18b6c28b83464b80201f168fd10b81997895a7cb5d5a6"},
-    {file = "furl-2.1.2.tar.gz", hash = "sha256:f7dba33eafbee7dbc83963534b25e72f816cced48ac53191ee60bfcc62933918"},
+    {file = "furl-2.1.3-py2.py3-none-any.whl", hash = "sha256:9ab425062c4217f9802508e45feb4a83e54324273ac4b202f1850363309666c0"},
+    {file = "furl-2.1.3.tar.gz", hash = "sha256:5a6188fe2666c484a12159c18be97a1977a71d632ef5bb867ef15f54af39cc4e"},
 ]
 graphviz = [
     {file = "graphviz-0.13.2-py2.py3-none-any.whl", hash = "sha256:241fb099e32b8e8c2acca747211c8237e40c0b89f24b1622860075d59f4c4b25"},
@@ -2148,8 +2108,8 @@ jsonpath-ng = [
     {file = "jsonpath_ng-1.5.3-py3-none-any.whl", hash = "sha256:292a93569d74029ba75ac2dc3d3630fc0e17b2df26119a165fa1d498ca47bf65"},
 ]
 jsonschema = [
-    {file = "jsonschema-3.2.0-py2.py3-none-any.whl", hash = "sha256:4e5b3cf8216f577bee9ce139cbe72eca3ea4f292ec60928ff24758ce626cd163"},
-    {file = "jsonschema-3.2.0.tar.gz", hash = "sha256:c8a85b28d377cc7737e46e2d9f2b4f44ee3c0e1deac6bf46ddefc7187d30797a"},
+    {file = "jsonschema-4.0.0-py3-none-any.whl", hash = "sha256:c773028c649441ab980015b5b622f4cd5134cf563daaf0235ca4b73cc3734f20"},
+    {file = "jsonschema-4.0.0.tar.gz", hash = "sha256:bc51325b929171791c42ebc1c70b9713eb134d3bb8ebd5474c8b659b15be6d86"},
 ]
 lazy-object-proxy = [
     {file = "lazy-object-proxy-1.6.0.tar.gz", hash = "sha256:489000d368377571c6f982fba6497f2aa13c6d1facc40660963da62f5c379726"},
@@ -2540,11 +2500,6 @@ pyobjc-framework-quartz = [
     {file = "pyobjc_framework_Quartz-7.3-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:8ddbca6b466584c3dc0e5b701b1c2a9b5d97ddc1d79a949927499ebb1be1f210"},
     {file = "pyobjc_framework_Quartz-7.3-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:7aba3cd966a0768dd58a35680742820f0c5ac596a9cd11014e2057818e65b0af"},
 ]
-pyobjc-framework-webkit = [
-    {file = "pyobjc-framework-WebKit-7.3.tar.gz", hash = "sha256:bec3a985c0f5e4263d6e28e2c551c1b5ec7b63950e0e3cb5409abdbf61f11f01"},
-    {file = "pyobjc_framework_WebKit-7.3-cp36-abi3-macosx_10_9_universal2.whl", hash = "sha256:cd388df8fde96db724a42745395998b6d5a98740fb29bac95f76884e2fa6bf27"},
-    {file = "pyobjc_framework_WebKit-7.3-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:89e0fcc10eb09e4203b1ace02808ae9b1882b6c8a55bbfaff20213e2a62ce974"},
-]
 pyparsing = [
     {file = "pyparsing-2.4.7-py2.py3-none-any.whl", hash = "sha256:ef9d7589ef3c200abe66653d3f1ab1033c3c419ae9b9bdb1240a85b024efc88b"},
     {file = "pyparsing-2.4.7.tar.gz", hash = "sha256:c203ec8783bf771a155b207279b9bccb8dea02d8f0c9e5f8ead507bc3246ecc1"},
@@ -2646,19 +2601,6 @@ python-dateutil = [
 python-xlib = [
     {file = "python-xlib-0.31.tar.gz", hash = "sha256:74d83a081f532bc07f6d7afcd6416ec38403d68f68b9b9dc9e1f28fbf2d799e9"},
     {file = "python_xlib-0.31-py2.py3-none-any.whl", hash = "sha256:1ec6ce0de73d9e6592ead666779a5732b384e5b8fb1f1886bd0a81cafa477759"},
-]
-pythonnet = [
-    {file = "pythonnet-2.5.2-cp27-cp27m-win32.whl", hash = "sha256:d519bbc7b1cd3999651efc594d91cb67c46d1d8466dad3d83b578102e58d05bd"},
-    {file = "pythonnet-2.5.2-cp27-cp27m-win_amd64.whl", hash = "sha256:c02f53d0e61b202cddf3198fac9553d5b4ee0ea0cc4fe658c2ed69ab24def276"},
-    {file = "pythonnet-2.5.2-cp35-cp35m-win32.whl", hash = "sha256:840bdef89b378663d73f74f18895b6d8630d1f5671457a1db5ffb68179d85582"},
-    {file = "pythonnet-2.5.2-cp35-cp35m-win_amd64.whl", hash = "sha256:d8e5b27de1e2cfb69b88782ac5cdf605b1a73598a85d86570e46961126628dbb"},
-    {file = "pythonnet-2.5.2-cp36-cp36m-win32.whl", hash = "sha256:62645c29840c4a877d66e047f3e065b2e5a1a66431a99bce8d42a5af3a093ee1"},
-    {file = "pythonnet-2.5.2-cp36-cp36m-win_amd64.whl", hash = "sha256:058e536062d1585d07ec5f2cf16aefcfc8eb8179faa90e5db0063d358469d025"},
-    {file = "pythonnet-2.5.2-cp37-cp37m-win32.whl", hash = "sha256:cc77fc63e2afb0a80199ab44ced4fdfb78c19d8030063c345c80740d15380dd9"},
-    {file = "pythonnet-2.5.2-cp37-cp37m-win_amd64.whl", hash = "sha256:80c8f5c9bd10440a73eb6aedbbacb2f3dd7701b474816f5ef7636f529d838d38"},
-    {file = "pythonnet-2.5.2-cp38-cp38-win32.whl", hash = "sha256:41a607b7304e9efc6d4d8db438d6018a17c6637e8b8998848ff5c2a7a1b4687c"},
-    {file = "pythonnet-2.5.2-cp38-cp38-win_amd64.whl", hash = "sha256:00a4fed9fc05b4efbe8947c79dc0799cffbca4c89e3e068e70b6618f20c906f2"},
-    {file = "pythonnet-2.5.2.tar.gz", hash = "sha256:b7287480a1f6ae4b6fc80d775446d8af00e051ca1646b6cc3d32c5d3a461ede3"},
 ]
 pytz = [
     {file = "pytz-2021.1-py2.py3-none-any.whl", hash = "sha256:eb10ce3e7736052ed3623d49975ce333bcd712c7bb19a58b9e2089d4057d0798"},
@@ -2826,8 +2768,8 @@ rpaframework-dialogs = [
     {file = "rpaframework_dialogs-0.4.2-py3-none-any.whl", hash = "sha256:057f4a05532663d5fad50ceaf6e35812aaba5fb50cb583a3f35653323f3329d0"},
 ]
 rpaframework-pdf = [
-    {file = "rpaframework-pdf-0.8.0.tar.gz", hash = "sha256:9109f945e91ec76df797b6a9da5a10721dfc12013613db949b4643d0434cf57c"},
-    {file = "rpaframework_pdf-0.8.0-py3-none-any.whl", hash = "sha256:7e591a89a0aecbca72d0e6ede375b4e8b6cb3ea473afefde50b10e7ef1b399b3"},
+    {file = "rpaframework-pdf-0.9.0.tar.gz", hash = "sha256:b2e79428b6db6b36ab7bbc57eee0f587c861087c5947edf675a456b43a8b65aa"},
+    {file = "rpaframework_pdf-0.9.0-py3-none-any.whl", hash = "sha256:efc4424bdaa59dd85768e52471c1640b3ee5175be468d7df9a7eeaf4bfc5dec9"},
 ]
 rpaframework-recognition = [
     {file = "rpaframework-recognition-0.7.2.tar.gz", hash = "sha256:67555b9711eac68f7207ab6e33ab5292ab76124d53e7044b6c9b29179b6a6f66"},
@@ -2905,10 +2847,6 @@ typed-ast = [
     {file = "typed_ast-1.4.3-cp39-cp39-win_amd64.whl", hash = "sha256:9c6d1a54552b5330bc657b7ef0eae25d00ba7ffe85d9ea8ae6540d2197a3788c"},
     {file = "typed_ast-1.4.3.tar.gz", hash = "sha256:fb1bbeac803adea29cedd70781399c99138358c26d05fcbd23c13016b7f5ec65"},
 ]
-typing = [
-    {file = "typing-3.7.4.3-py2-none-any.whl", hash = "sha256:283d868f5071ab9ad873e5e52268d611e851c870a2ba354193026f2dfb29d8b5"},
-    {file = "typing-3.7.4.3.tar.gz", hash = "sha256:1187fb9c82fd670d10aa07bbb6cfcfe4bdda42d6fab8d5134f04e8c4d0b71cc9"},
-]
 typing-extensions = [
     {file = "typing_extensions-3.10.0.2-py2-none-any.whl", hash = "sha256:d8226d10bc02a29bcc81df19a26e56a9647f8b0a6d4a83924139f4a8b01f17b7"},
     {file = "typing_extensions-3.10.0.2-py3-none-any.whl", hash = "sha256:f1d25edafde516b146ecd0613dabcc61409817af4766fbbcfb8d1ad4ec441a34"},
@@ -2953,6 +2891,6 @@ zeep = [
     {file = "zeep-4.1.0.tar.gz", hash = "sha256:5867f2eadd6b028d9751f4155af590d3aaf9280e3a0ed5e15a53343921c956e5"},
 ]
 zipp = [
-    {file = "zipp-3.5.0-py3-none-any.whl", hash = "sha256:957cfda87797e389580cb8b9e3870841ca991e2125350677b2ca83a0e99390a3"},
-    {file = "zipp-3.5.0.tar.gz", hash = "sha256:f5812b1e007e48cff63449a5e9f4e7ebea716b4111f9c4f9a645f91d579bf0c4"},
+    {file = "zipp-3.6.0-py3-none-any.whl", hash = "sha256:9fe5ea21568a0a70e50f273397638d39b03353731e6cbbb3fd8502a33fec40bc"},
+    {file = "zipp-3.6.0.tar.gz", hash = "sha256:71c644c5369f4a6e07636f0aa966270449561fcea2e3d6747b8d23efaa9d7832"},
 ]
