@@ -1264,8 +1264,8 @@ class WorkItems:
 
         Returns a list of results.
         """
-        outputs = []
 
+        outputs = []
         while True:
             output = BuiltIn().run_keyword(keyword, *args, **kwargs)
             outputs.append(output)
