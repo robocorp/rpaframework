@@ -6,6 +6,23 @@
 	<description>Recent updates to the Python Package Index for rpaframework</description>
 	<language>en</language>
 	<item>
+		<title>Release 11.3.0</title>
+		<link>https://pypi.org/project/rpaframework/11.3.0/</link>
+		<description>- Library &lt;b&gt;RPA.Robocorp.Vault&lt;/b&gt;: Supports both .yaml/.json local vault secrets file formats (:issue:`225`)
+&lt;br&gt;    - Library &lt;b&gt;RPA.PDF&lt;/b&gt;: Add possibility to preserve whitespacing in PDF textboxes - :issue:`235`
+&lt;br&gt;    - Library &lt;b&gt;RPA.Robocorp.WorkItems&lt;/b&gt;: New environment variables for work items I/O
+&lt;br&gt;      during local dev (&quot;RPA_INPUT_WORKITEM_PATH&quot;, &quot;RPA_OUTPUT_WORKITEM_PATH&quot; - :pr:`234`)
+&lt;br&gt;    - Library &lt;b&gt;RPA.Email.ImapSmtp&lt;/b&gt;:
+&lt;br&gt;      - Fix `Move Messages` issue (:issue:`237`)
+&lt;br&gt;      - Add keyword `Move Messages By IDs`
+&lt;br&gt;      - Fix boolean return values for keywords doing definite actions (like Mark As Read, Delete Messages..)
+&lt;br&gt;    - Library &lt;b&gt;RPA.Email.Exchange&lt;/b&gt;: Update `exchangelib` dependency to 4.5.1 and pin `tzlocal` dependency to 2.1
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Thu, 30 Sep 2021 21:12:43 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
 		<title>Release 11.2.1</title>
 		<link>https://pypi.org/project/rpaframework/11.2.1/</link>
 		<description>- Library &lt;b&gt;RPA.Robocorp.WorkItems&lt;/b&gt;: Handle payloads with non-ascii characters
