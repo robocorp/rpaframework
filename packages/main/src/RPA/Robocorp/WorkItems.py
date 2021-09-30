@@ -380,12 +380,7 @@ class FileAdapter(BaseAdapter):
         _, item = self._get_item(item_id)
         return item.get("payload", {})
 
-    def save_payload(self, item_id: str, payload: JSONType):
-        source, item = self._get_item(item_id)
-
-        item["payload"] = payload
-        logging.debug("Payload: %s", json_dumps(payload, indent=4))
-
+    def _save_to_disk(self, source: str) -> None:
         if source == "input":
             path = self.path
             data = self.inputs
@@ -397,6 +392,14 @@ class FileAdapter(BaseAdapter):
             fd.write(json_dumps(data, indent=4))
 
         logging.info("Saved into file: %s", path)
+
+    def save_payload(self, item_id: str, payload: JSONType):
+        source, item = self._get_item(item_id)
+
+        item["payload"] = payload
+        logging.debug("Payload: %s", json_dumps(payload, indent=4))
+
+        self._save_to_disk(source)
 
     def list_files(self, item_id: str) -> List[str]:
         _, item = self._get_item(item_id)
@@ -415,15 +418,17 @@ class FileAdapter(BaseAdapter):
             return infile.read()
 
     def add_file(self, item_id: str, name: str, content: bytes):
-        _, item = self._get_item(item_id)
+        source, item = self._get_item(item_id)
         files = item.setdefault("files", {})
 
         path = self.path.parent / name
         with open(path, "wb") as fd:
             fd.write(content)
-
         logging.info("Created file: %s", path)
-        files[name] = name
+        files[name] = str(path)
+
+        self._save_to_disk(source)
+
 
     def remove_file(self, item_id: str, name: str):
         _, item = self._get_item(item_id)
@@ -1161,7 +1166,7 @@ class WorkItems:
             Save work item
         """
         logging.info("Adding file: %s", path)
-        return self.current.add_file(path, name)
+        return self.current.add_file(path, name=name)
 
     @keyword
     def remove_work_item_file(self, name, missing_ok=True):
