@@ -361,25 +361,6 @@ class FileAdapter(BaseAdapter):
 
         return self._output_path
 
-    def create_output(self, parent_id: str, payload: Optional[JSONType] = None) -> str:
-        del parent_id
-
-        item: Dict[str, Any] = {"payload": payload, "files": {}}
-        self.outputs.append(item)
-
-        logging.debug("Payload: %s", json_dumps(payload, indent=4))
-
-        path = self.output_path
-        with open(path, "w", encoding="utf-8") as fd:
-            fd.write(json_dumps(self.outputs, indent=4))
-
-        logging.info("Saved into file: %s", path)
-        return str(len(self.inputs) + len(self.outputs) - 1)
-
-    def load_payload(self, item_id: str) -> JSONType:
-        _, item = self._get_item(item_id)
-        return item.get("payload", {})
-
     def _save_to_disk(self, source: str) -> None:
         if source == "input":
             path = self.path
@@ -392,6 +373,18 @@ class FileAdapter(BaseAdapter):
             fd.write(json_dumps(data, indent=4))
 
         logging.info("Saved into file: %s", path)
+
+    def create_output(self, _: str, payload: Optional[JSONType] = None) -> str:
+        logging.debug("Payload: %s", json_dumps(payload, indent=4))
+        item: Dict[str, Any] = {"payload": payload, "files": {}}
+        self.outputs.append(item)
+
+        self._save_to_disk("output")
+        return str(len(self.inputs) + len(self.outputs) - 1)  # new output work item ID
+
+    def load_payload(self, item_id: str) -> JSONType:
+        _, item = self._get_item(item_id)
+        return item.get("payload", {})
 
     def save_payload(self, item_id: str, payload: JSONType):
         source, item = self._get_item(item_id)
@@ -432,14 +425,15 @@ class FileAdapter(BaseAdapter):
         self._save_to_disk(source)
 
     def remove_file(self, item_id: str, name: str):
-        _, item = self._get_item(item_id)
+        source, item = self._get_item(item_id)
         files = item.get("files", {})
 
         path = files[name]
         logging.info("Would remove file: %s", path)
         # Note that the file doesn't get removed from disk as well.
-
         del files[name]
+
+        self._save_to_disk(source)
 
     def load_database(self) -> List:
         try:
@@ -539,7 +533,7 @@ class WorkItem:
     def save(self):
         """Save data payload and attach/remove files."""
         if self.id is None:
-            self.id = self.adapter.create_output(self.parent_id, self.payload)
+            self.id = self.adapter.create_output(self.parent_id, payload=self.payload)
         else:
             self.adapter.save_payload(self.id, self.payload)
 
