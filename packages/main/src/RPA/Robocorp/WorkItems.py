@@ -407,12 +407,13 @@ class FileAdapter(BaseAdapter):
         return list(files.keys())
 
     def get_file(self, item_id: str, name: str) -> bytes:
-        _, item = self._get_item(item_id)
+        source, item = self._get_item(item_id)
         files = item.get("files", {})
 
         path = files[name]
         if not Path(path).is_absolute():
-            path = self.path.parent / path
+            parent = self.path.parent if source == "input" else self.output_path.parent
+            path = parent / path
 
         with open(path, "rb") as infile:
             return infile.read()
@@ -421,14 +422,14 @@ class FileAdapter(BaseAdapter):
         source, item = self._get_item(item_id)
         files = item.setdefault("files", {})
 
-        path = self.path.parent / name
+        parent = self.path.parent if source == "input" else self.output_path.parent
+        path = parent / name
         with open(path, "wb") as fd:
             fd.write(content)
         logging.info("Created file: %s", path)
         files[name] = str(path)
 
         self._save_to_disk(source)
-
 
     def remove_file(self, item_id: str, name: str):
         _, item = self._get_item(item_id)
