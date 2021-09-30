@@ -3,6 +3,7 @@ import binascii
 import copy
 import json
 import os
+import yaml
 from pathlib import Path
 
 import mock
@@ -57,6 +58,11 @@ def mock_env_vault(monkeypatch):
     monkeypatch.setenv("RC_API_SECRET_HOST", "mock-url")
     monkeypatch.setenv("RC_API_SECRET_TOKEN", "mock-token")
     monkeypatch.setenv("RC_WORKSPACE_ID", "mock-workspace")
+
+
+@pytest.fixture(params=["secrets.json", "secrets.yaml"])
+def secrets_file(request):
+    return request.param
 
 
 def test_secrets_vault_as_default(mock_env_default, mock_env_vault):
@@ -188,18 +194,18 @@ def test_secret_print():
     assert "value_two" not in str_string
 
 
-def test_adapter_filesecrets_from_arg(monkeypatch):
+def test_adapter_filesecrets_from_arg(monkeypatch, secrets_file):
     monkeypatch.delenv("RPA_SECRET_FILE", raising=False)
 
-    adapter = FileSecrets(RESOURCES / "secrets.json")
+    adapter = FileSecrets(RESOURCES / secrets_file)
     secret = adapter.get_secret("windows")
     assert isinstance(secret, Secret)
     assert "password" in secret
     assert secret["password"] == "secret"
 
 
-def test_adapter_filesecrets_from_env(monkeypatch):
-    monkeypatch.setenv("RPA_SECRET_FILE", str(RESOURCES / "secrets.json"))
+def test_adapter_filesecrets_from_env(monkeypatch, secrets_file):
+    monkeypatch.setenv("RPA_SECRET_FILE", str(RESOURCES / secrets_file))
 
     adapter = FileSecrets()
     secret = adapter.get_secret("windows")
@@ -216,12 +222,42 @@ def test_adapter_filesecrets_invalid_file(monkeypatch):
     assert adapter.data == {}
 
 
-def test_adapter_filesecrets_unknown_secret(monkeypatch):
-    monkeypatch.setenv("RPA_SECRET_FILE", str(RESOURCES / "secrets.json"))
+def test_adapter_filesecrets_invalid_file_extension(monkeypatch):
+    # Note the invalid ".yamla" extension not recognized by the serializers.
+    monkeypatch.setenv("RPA_SECRET_FILE", str(RESOURCES / "secrets.yamla"))
+
+    # Should raise immediately, because this is invalid straight from the
+    # configuration. Only certain extensions (formats) are accepted.
+    with pytest.raises(ValueError):
+        FileSecrets()
+
+
+def test_adapter_filesecrets_unknown_secret(monkeypatch, secrets_file):
+    monkeypatch.setenv("RPA_SECRET_FILE", str(RESOURCES / secrets_file))
 
     adapter = FileSecrets()
     with pytest.raises(KeyError):
         secret = adapter.get_secret("not-exist")
+
+
+def test_adapter_filesecrets_saving(monkeypatch, tmp_path, secrets_file):
+    tmp_file = tmp_path / secrets_file
+    tmp_file.write_text((RESOURCES / secrets_file).read_text())
+    monkeypatch.setenv("RPA_SECRET_FILE", str(tmp_file))
+
+    adapter = FileSecrets()
+    secret = adapter.get_secret("credentials")
+    secret["sap"]["password"] = "my-different-secret"
+    adapter.set_secret(secret)
+    adapter.save()
+
+    assert tmp_file.suffix in (".json", ".yaml")
+    if tmp_file.suffix == ".json":
+        loader = json.load
+    else:
+        loader = yaml.full_load
+    secret_dict = loader(tmp_file.open())
+    assert secret_dict["credentials"]["sap"]["password"] == "my-different-secret"
 
 
 @mock.patch("RPA.Robocorp.Vault.requests")

@@ -10,6 +10,7 @@ from abc import abstractmethod, ABCMeta
 from typing import Tuple
 
 import requests
+import yaml
 from cryptography.exceptions import InvalidTag
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
@@ -87,14 +88,14 @@ class BaseSecretManager(metaclass=ABCMeta):
 
 
 class FileSecrets(BaseSecretManager):
-    """Adapter for secrets stored in a JSON file. Supports only
+    """Adapter for secrets stored in a database file. Supports only
     plaintext secrets, and should be used mainly for debugging.
 
     The path to the secrets file can be set with the
     environment variable ``RPA_SECRET_FILE``, or as
     an argument to the library.
 
-    The format of the secrets file should be the following:
+    The format of the secrets file should be one of the following:
 
     .. code-block:: JSON
 
@@ -107,20 +108,47 @@ class FileSecrets(BaseSecretManager):
           "key1": "value1"
         }
       }
+
+    OR
+
+    .. code-block:: YAML
+
+      name1:
+        key1: value1
+        key2: value2
+      name2:
+        key1: value1
     """
 
+    SERIALIZERS = {
+        ".json": (json.load, json.dump),
+        ".yaml": (yaml.full_load, yaml.dump),
+    }
+
     def __init__(self, secret_file="secrets.json"):
-        path = required_env("RPA_SECRET_FILE", secret_file)
         self.logger = logging.getLogger(__name__)
+
+        path = required_env("RPA_SECRET_FILE", secret_file)
         self.logger.info("Resolving path: %s", path)
         self.path = resolve_path(path)
+
+        extension = self.path.suffix
+        serializer = self.SERIALIZERS.get(extension)
+        # NOTE(cmin764): This will raise instead of returning an empty secrets object
+        #  because it is wrong starting from the "env.json" configuration level.
+        if not serializer:
+            raise ValueError(
+                f"Not supported local vault secrets file extension {extension!r}"
+            )
+        self._loader, self._dumper = serializer
+
         self.data = self.load()
 
     def load(self):
         """Load secrets file."""
         try:
             with open(self.path, encoding="utf-8") as fd:
-                data = json.load(fd)
+                data = self._loader(fd)
 
             if not isinstance(data, dict):
                 raise ValueError("Invalid content format")
@@ -131,12 +159,12 @@ class FileSecrets(BaseSecretManager):
             return {}
 
     def save(self):
-        """Save the secrets JSON to disk."""
+        """Save the secrets content to disk."""
         try:
             with open(self.path, "w", encoding="utf-8") as f:
                 if not isinstance(self.data, dict):
                     raise ValueError("Invalid content format")
-                json.dump(self.data, f, indent=4)
+                self._dumper(self.data, f, indent=4)
         except (IOError, ValueError) as err:
             self.logger.error("Failed to save secrets file: %s", err)
 
@@ -411,7 +439,7 @@ class Vault:
     File-based secrets can be set by defining two environment variables.
 
     - ``RPA_SECRET_MANAGER``: RPA.Robocorp.Vault.FileSecrets
-    - ``RPA_SECRET_FILE``: Absolute path to the secrets JSON file
+    - ``RPA_SECRET_FILE``: Absolute path to the secrets database file
 
     Example content of local secrets file:
 
@@ -423,6 +451,14 @@ class Vault:
                 "password": "secret_sauce"
             }
         }
+
+    OR
+
+    .. code-block:: YAML
+
+        swaglabs:
+            username: standard_user
+            password: secret_sauce
 
     **Examples**
 
