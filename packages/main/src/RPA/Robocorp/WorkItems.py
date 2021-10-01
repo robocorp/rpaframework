@@ -65,7 +65,7 @@ class BaseAdapter(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def add_file(self, item_id: str, name: str, content: bytes):
+    def add_file(self, item_id: str, name: str, original_name: str, content: bytes):
         """Attach file to work item."""
         raise NotImplementedError
 
@@ -180,7 +180,7 @@ class RobocorpAdapter(BaseAdapter):
 
         return response.content
 
-    def add_file(self, item_id: str, name: str, content: bytes):
+    def add_file(self, item_id: str, name: str, _: str, content: bytes):
         # Robocorp API returns pre-signed POST details for S3 upload
         url = self.workitem_url(item_id, "files")
         info = {"fileName": str(name), "fileSize": len(content)}
@@ -420,16 +420,16 @@ class FileAdapter(BaseAdapter):
         with open(path, "rb") as infile:
             return infile.read()
 
-    def add_file(self, item_id: str, name: str, content: bytes):
+    def add_file(self, item_id: str, name: str, original_name: str, content: bytes):
         source, item = self._get_item(item_id)
         files = item.setdefault("files", {})
 
         parent = self.path.parent if source == "input" else self.output_path.parent
-        path = parent / name
+        path = parent / original_name  # the file on disk will keep its original name
         with open(path, "wb") as fd:
             fd.write(content)
         logging.info("Created file: %s", path)
-        files[name] = str(path)
+        files[name] = original_name  # file path relative to the work item
 
         self._save_to_disk(source)
 
@@ -551,7 +551,7 @@ class WorkItem:
 
         for name, path in self._files_to_add.items():
             with open(path, "rb") as infile:
-                self.adapter.add_file(self.id, name, infile.read())
+                self.adapter.add_file(self.id, name, path.name, infile.read())
 
         # Empty unsaved values
         self._payload = self._payload_cache
