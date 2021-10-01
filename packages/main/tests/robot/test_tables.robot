@@ -1,4 +1,5 @@
 *** Settings ***
+Library           Collections
 Library           RPA.Tables
 Library           RPA.FileSystem
 Library           RPA.Excel.Files
@@ -39,14 +40,31 @@ Table With Non-identifier Columns
     END
 
 Get Table Cell Errors
-    ${table}=    Create table    [[1,2,3], [4,5,6]]    columns=['One','Two','Three']
-    Assert cell value    ${table}    0    0    1
-    Assert cell value    ${table}    1    1    5
-    Assert cell value    ${table}    1    Three    6
-    Assert cell error    ${table}    5    0    *out of range*
-    Assert cell error    ${table}    1    3    *out of range*
-    Assert cell error    ${table}    1    Four    *Unknown column name*
-    Assert cell error    ${table}    Test    0    *integer*
+    ${table}=    Create table
+    ...   [[1,2,3], [4,5,6]]
+    ...   columns=["One","Two","Three"]
+
+    Assert cell value    ${table}    0     0        ${1}
+    Assert cell value    ${table}    1     1        ${5}
+    Assert cell value    ${table}    1     Three    ${6}
+
+    Assert cell error    ${table}    5     0       *out of range*
+    Assert cell error    ${table}    1     3       *out of range*
+    Assert cell error    ${table}    1     Four    *Unknown column name*
+    Assert cell error    ${table}    Test  0       *integer*
+
+Map Column Values
+    ${table}=    Create table
+    ...   [[1,"one","45"],[2,"two","102"],[3,"three",100]]
+    ...   columns=["ID","User","Price"]
+
+    Map column values    ${table}    Price    Convert to integer
+    Map column values    ${table}    User     Find user name
+
+    Assert cell value    ${table}    0     Price    ${45}
+    Assert cell value    ${table}    2     Price    ${100}
+    Assert cell value    ${table}    0     User     Teppo
+    Assert cell value    ${table}    2     User     Cosmin
 
 *** Keywords ***
 List group IDs
@@ -58,9 +76,18 @@ List group IDs
 Assert cell value
     [Arguments]    ${table}    ${row}    ${column}    ${value}
     ${result}=    Get table cell    ${table}    ${row}    ${column}
-    Should be equal as integers    ${result}    ${value}
+    Should be equal    ${result}    ${value}
 
 Assert cell error
     [Arguments]    ${table}    ${row}    ${column}    ${error}
     Run keyword and expect error    ${error}
     ...    Get table cell    ${table}    ${row}    ${column}
+
+Find user name
+    [Arguments]    ${key}
+    ${mapping}=    Create dictionary
+    ...    one=Teppo
+    ...    two=Mika
+    ...    three=Cosmin
+    ${output}=     Get from dictionary    ${mapping}    ${key}
+    [Return]     ${output}

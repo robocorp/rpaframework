@@ -26,6 +26,7 @@ from numbers import Number
 from operator import itemgetter
 
 from robot.api.deco import keyword
+from robot.libraries.BuiltIn import BuiltIn
 from RPA.core.types import is_dict_like, is_list_like, is_namedtuple
 from RPA.core.notebook import notebook_table, notebook_print
 
@@ -1674,6 +1675,40 @@ class Tables:
         after = len(table)
 
         self.logger.info("Filtered %d rows", after - before)
+
+    def map_column_values(self, table: Table, column: Column, name: str, **kwargs):
+        """Run a keyword for each cell in a given column, and replace
+        its contents with the return value.
+
+        Can be used to easily transform column types or values in-place.
+
+        :param table:     Table to modify
+        :param column:    Column to modify
+        :param name:      Mapping keyword name
+        :param kwargs:    Additional keyword arguments (optional)
+
+        The cell value will be given as the first argument to the
+        mapping keyword.
+
+        Examples:
+
+        .. code-block:: robotframework
+
+            # Convert all columns values to a different type
+            Map column values    ${table}    Price    Convert to integer
+
+            # Look up values with a custom keyword
+            Map column values    ${table}    User     Map user ID to name
+        """
+        self._requires_table(table)
+
+        values = []
+        for index in table.index:
+            cell = table.get_cell(index, column)
+            output = BuiltIn().run_keyword(name, cell, **kwargs)
+            values.append(output)
+
+        table.set_column(column, values)
 
     def filter_empty_rows(self, table: Table):
         """Remove all rows from a table which have only ``None`` values.
