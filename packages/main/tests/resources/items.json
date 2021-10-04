@@ -4,5 +4,11 @@
             "workspace": "Example workspace",
             "user_id": "Example user id"
         }
+    },
+    {
+        "payload": {
+            "workspace": "Another example workspace",
+            "user_id": "Another example user id"
+        }
     }
 ]

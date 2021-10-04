@@ -849,6 +849,7 @@ class WorkItems:
                     "%s has unsaved changes that will be discarded", self.current
                 )
 
+    @keyword
     def set_current_work_item(self, item: WorkItem):
         """Set the currently active work item.
 
