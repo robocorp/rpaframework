@@ -1275,7 +1275,7 @@ class WorkItems:
 
     @keyword
     def for_each_input_work_item(
-            self, keyword_or_func: Union[str, Callable], *args, **kwargs
+        self, keyword_or_func: Union[str, Callable], *args, **kwargs
     ) -> List[Any]:
         """Run a keyword or function for each work item in the input queue.
 
@@ -1325,9 +1325,11 @@ class WorkItems:
         self.raise_under_iteration("iterate input work items")
 
         if isinstance(keyword_or_func, str):
-            to_call = lambda: BuiltIn().run_keyword(keyword_or_func, *args, **kwargs)
+            to_call = lambda: BuiltIn().run_keyword(  # noqa: E731
+                keyword_or_func, *args, **kwargs
+            )
         else:
-            to_call = lambda: keyword_or_func(*args, **kwargs)
+            to_call = lambda: keyword_or_func(*args, **kwargs)  # noqa: E731
         outputs = []
 
         try:
