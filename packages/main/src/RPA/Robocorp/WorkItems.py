@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from shutil import copy2
 from threading import Event
-from typing import Type, Any, Optional, Union, Dict, List, Tuple
+from typing import Callable, Type, Any, Optional, Union, Dict, List, Tuple
 
 import requests
 from requests.exceptions import HTTPError
@@ -1277,21 +1277,63 @@ class WorkItems:
             raise RuntimeError(f"Can't {action} while iterating input work items")
 
     @keyword
-    def for_each_input_work_item(self, keyword, *args, **kwargs):
-        """Run a keyword for each work item in the input queue.
+    def for_each_input_work_item(
+            self, keyword_or_func: Union[str, Callable], *args, **kwargs
+    ) -> List[Any]:
+        """Run a keyword or function for each work item in the input queue.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Log Payload
+                ${payload} =     Get Work Item Payload
+                Log To Console    ${payload}
+                ${len} =     Get Length    ${payload}
+                [Return]    ${len}
+
+            *** Tasks ***
+            Log Payloads
+                @{results} =     For Each Input Work Item    Log Payload
+                Log   Items keys length: @{results}
+
+        OR
+
+        .. code-block:: python
+
+            import logging
+            from RPA.Robocorp.WorkItems import WorkItems
+
+            library = WorkItems()
+
+            def log_payload():
+                payload = library.get_work_item_payload()
+                print(payload)
+                return len(payload)
+
+            def log_payloads():
+                library.get_input_work_item()
+                results = library.for_each_input_work_item(log_payload)
+                logging.info("Items keys length: %s", results)
+
+            log_payloads()
 
         Returns a list of results.
         """
 
-        outputs = []
         self.raise_under_iteration("iterate input work items")
-        self._under_iteration.set()
+
+        if isinstance(keyword_or_func, str):
+            to_call = lambda: BuiltIn().run_keyword(keyword_or_func, *args, **kwargs)
+        else:
+            to_call = lambda: keyword_or_func(*args, **kwargs)
+        outputs = []
 
         try:
+            self._under_iteration.set()
             while True:
-                output = BuiltIn().run_keyword(keyword, *args, **kwargs)
-                outputs.append(output)
-
+                outputs.append(to_call())
                 try:
                     self.get_input_work_item(_internal_call=True)
                 except EmptyQueue:
