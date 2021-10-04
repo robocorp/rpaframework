@@ -1,75 +1,76 @@
 *** Settings ***
-Library       RPA.Email.ImapSmtp
-Library       RPA.HTTP
-Library       RPA.Robocorp.Vault
-Library       RPA.Tables
-Force tags    skip
-Task Setup    Init GMail
+Library           RPA.Email.ImapSmtp
+Library           RPA.HTTP
+Library           RPA.Robocorp.Vault
+Library           RPA.Tables
+Library           Collections
+Force Tags        skip
+Task Setup        Init GMail
 
 *** Variables ***
 ${BODY_IMG1}      ${CURDIR}${/}..${/}resources${/}approved.png
 ${BODY_IMG2}      ${CURDIR}${/}..${/}resources${/}invoice.png
 ${EMAIL_BODY}     <h1>Heading</h1><p>Status: <img src='approved.png' alt='approved image'/></p>
 ...               <p>INVOICE: <img src='invoice.png' alt='invoice image'/></p>
-${IMAGE_URL}     https://static1.squarespace.com/static/5c37bbd23e2d090f4652b5b9/t/5e6b5afca55453445ebc451b/1586254429285/?format=1500w
+${IMAGE_URL}      https://static1.squarespace.com/static/5c37bbd23e2d090f4652b5b9/t/5e6b5afca55453445ebc451b/1586254429285/?format=1500w
 
 *** Tasks ***
 Sending HTML Email With Downloaded Image
-    [Documentation]     Sending email with HTML content and attachment
-    Download            ${IMAGE_URL}  target_file=logo.png  overwrite=${TRUE}
+    [Documentation]    Sending email with HTML content and attachment
+    Download    ${IMAGE_URL}    target_file=logo.png    overwrite=${TRUE}
     Send Message
-    ...                 sender=Robocorporation <robocorp.tester@gmail.com>
-    ...                 recipients=mika@robocorp.com
-    ...                 subject=HTML email with body images (2) plus one attachment
-    ...                 body=${EMAIL_BODY}
-    ...                 html=${TRUE}
-    ...                 images=${BODY_IMG1}, ${BODY_IMG2}
-    ...                 attachments=logo.png
+    ...    sender=Robocorporation <robocorp.tester@gmail.com>
+    ...    recipients=mika@robocorp.com
+    ...    subject=HTML email with body images (2) plus one attachment
+    ...    body=${EMAIL_BODY}
+    ...    html=${TRUE}
+    ...    images=${BODY_IMG1}, ${BODY_IMG2}
+    ...    attachments=logo.png
 
 Sending HTML Email With Image
-    [Documentation]     Sending email with HTML content and attachment
+    [Documentation]    Sending email with HTML content and attachment
     Send Message
-    ...                 sender=Robocorporation <robocorp.tester@gmail.com>
-    ...                 recipients=mika@robocorp.com
-    ...                 subject=HTML email with body images (2) plus one attachment
-    ...                 body=${EMAIL_BODY}
-    ...                 html=${TRUE}
-    ...                 images=${BODY_IMG1}, ${BODY_IMG2}
-    ...                 attachments=/Users/mika/koodi/syntax_example.png
+    ...    sender=Robocorporation <robocorp.tester@gmail.com>
+    ...    recipients=mika@robocorp.com
+    ...    subject=HTML email with body images (2) plus one attachment
+    ...    body=${EMAIL_BODY}
+    ...    html=${TRUE}
+    ...    images=${BODY_IMG1}, ${BODY_IMG2}
+    ...    attachments=/Users/mika/koodi/syntax_example.png
 
 Sending email with inline images
-    [Documentation]     Sending email with inline images
+    [Documentation]    Sending email with inline images
     Send Message
-    ...                 sender=Robocorporation <robocorp.tester@gmail.com>
-    ...                 recipients=mika@robocorp.com
-    ...                 subject=11 Email with inline images and attachment
-    ...                 body=Normal body content
-    ...                 images=${BODY_IMG1}, ${BODY_IMG2}
-    ...                 attachments=/Users/mika/koodi/syntax_example.png
+    ...    sender=Robocorporation <robocorp.tester@gmail.com>
+    ...    recipients=mika@robocorp.com
+    ...    subject=11 Email with inline images and attachment
+    ...    body=Normal body content
+    ...    images=${BODY_IMG1}, ${BODY_IMG2}
+    ...    attachments=/Users/mika/koodi/syntax_example.png
 
 Sending Email
-    [Documentation]     Sending email with GMail account
+    [Documentation]    Sending email with GMail account
     Send Message
-    ...                 sender=Robocorporation <robocorp.tester@gmail.com>
-    ...                 recipients=mika@robocorp.com
-    ...                 subject=Order confirmationäöäöä
-    ...                 body=Thank you for the order!
+    ...    sender=Robocorporation <robocorp.tester@gmail.com>
+    ...    recipients=mika@robocorp.com
+    ...    subject=Order confirmationäöäöä
+    ...    body=Thank you for the order!
 
 Filtering emails
-    [Documentation]     Filter emails by some criteria
-    ${messages}=        List messages   SUBJECT "rpa"
-    ${msgs}=            Create table    ${messages}
-    Filter table by column    ${msgs}    From  contains  mika@robocorp.com
+    [Documentation]    Filter emails by some criteria
+    ${messages}=    List messages    SUBJECT "rpa"
+    ${msgs}=    Create table    ${messages}
+    Filter table by column    ${msgs}    From    contains    mika@robocorp.com
     FOR    ${msg}    IN    @{msgs}
         Log    ${msg}[Subject]
         Log    ${msg}[From]
     END
 
 Getting emails
-    List messages       criterion=SUBJECT "rpa"
+    List messages    criterion=SUBJECT "rpa"
 
 Saving attachments
-    Save attachments    criterion=SUBJECT "rpa"  target_folder=../temp
+    Save attachments    criterion=SUBJECT "rpa"    target_folder=../temp
 
 Move messages empty criterion
     Run Keyword And Expect Error    KeyError*    Move Messages    ${EMPTY}
@@ -96,8 +97,20 @@ Performing message actions
     ...    target_folder=${CURDIR}
     ...    overwrite=True
 
+Move messages by their IDS
+    [Documentation]    Use case could be one task parsing emails and then passing
+    ...    the Message-IDS to another task to process further
+    # task 1
+    ${messages}=    List Messages    SUBJECT "incoming orders"
+    @{idlist}=    Create List
+    FOR    ${msg}    IN    @{messages}
+        Append To List    ${idlist}    ${msg}[Message-ID]
+    END
+    # task 2
+    Move Messages By IDs    ${idlist}    target_folder
+
 *** Keywords ***
 Init GMail
-    ${email}=           Get secret     gmail
-    Authorize SMTP      ${email}[account]   ${email}[password]  ${email}[smtpserver]
-    Authorize IMAP      ${email}[account]   ${email}[password]  ${email}[imapserver]
+    ${email}=    Get secret    gmail
+    Authorize SMTP    ${email}[account]    ${email}[password]    ${email}[smtpserver]
+    Authorize IMAP    ${email}[account]    ${email}[password]    ${email}[imapserver]
