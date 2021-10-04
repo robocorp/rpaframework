@@ -84,7 +84,7 @@ class MockAdapter(BaseAdapter):
     def get_file(self, item_id, name):
         return self.FILES[item_id][name]
 
-    def add_file(self, item_id, name, content):
+    def add_file(self, item_id, name, *, original_name, content):
         self.FILES[item_id][name] = content
 
     def remove_file(self, item_id, name):
@@ -505,7 +505,12 @@ class TestFileAdapter:
 
     def test_add_file(self, adapter):
         item_id = adapter.get_input()
-        adapter.add_file(item_id, "secondfile2.txt", b"somedata")
+        adapter.add_file(
+            item_id,
+            "secondfile2.txt",
+            original_name="secondfile2.txt",
+            content=b"somedata"
+        )
         assert adapter.inputs[0]["files"]["secondfile2.txt"] == "secondfile2.txt"
         assert os.path.isfile(Path(adapter.path).parent / "secondfile2.txt")
 
