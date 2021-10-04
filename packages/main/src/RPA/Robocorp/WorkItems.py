@@ -31,9 +31,6 @@ class EmptyQueue(IndexError):
 class BaseAdapter(ABC):
     """Abstract base class for work item adapters."""
 
-    def __init__(self, lib: "WorkItems"):
-        self._lib = lib
-
     @abstractmethod
     def get_input(self) -> str:
         """Get next work item ID from input queue."""
@@ -112,8 +109,6 @@ class RobocorpAdapter(BaseAdapter):
         self.input_queue = [required_env("RC_WORKITEM_ID")]
 
     def get_input(self) -> str:
-        self._lib.raise_under_iteration("get more than one input item in the cloud")
-
         try:
             return self.input_queue.pop()
         except IndexError as err:
@@ -798,7 +793,7 @@ class WorkItems:
     @property
     def adapter(self):
         if self._adapter is None:
-            self._adapter = self._adapter_class(self)
+            self._adapter = self._adapter_class()
         return self._adapter
 
     @property
@@ -885,7 +880,9 @@ class WorkItems:
                   by Control Room.
         """
         if not _internal_call:
-            self.raise_under_iteration("get input work item")
+            self._raise_under_iteration("get input work item")
+        if isinstance(self.adapter, RobocorpAdapter):
+            self._raise_under_iteration("get more than one input item in the cloud")
 
         item_id = self.adapter.get_input()
         item = WorkItem(item_id=item_id, parent_id=None, adapter=self.adapter)
@@ -1269,7 +1266,7 @@ class WorkItems:
         logging.info("Removed %d file(s)", len(names))
         return names
 
-    def raise_under_iteration(self, action: str) -> None:
+    def _raise_under_iteration(self, action: str) -> None:
         if self._under_iteration.is_set():
             raise RuntimeError(f"Can't {action} while iterating input work items")
 
@@ -1322,7 +1319,7 @@ class WorkItems:
         Returns a list of results.
         """
 
-        self.raise_under_iteration("iterate input work items")
+        self._raise_under_iteration("iterate input work items")
 
         if isinstance(keyword_or_func, str):
             to_call = lambda: BuiltIn().run_keyword(  # noqa: E731
