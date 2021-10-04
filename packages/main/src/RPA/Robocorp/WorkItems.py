@@ -343,14 +343,13 @@ class FileAdapter(BaseAdapter):
         raise ValueError(f"Unknown work item ID: {item_id}")
 
     def get_input(self) -> str:
-        idx = self.index
+        if self.index >= len(self.inputs):
+            raise EmptyQueue("No work items in the input queue")
+
         try:
-            _ = self.inputs[idx]
-        except IndexError as err:
-            raise EmptyQueue("No work items in input queue") from err
-        else:
+            return str(self.index)
+        finally:
             self.index += 1
-            return str(idx)
 
     @property
     def output_path(self):
@@ -384,6 +383,7 @@ class FileAdapter(BaseAdapter):
         logging.info("Saved into file: %s", path)
 
     def create_output(self, _: str, payload: Optional[JSONType] = None) -> str:
+        # Note that the `parent_id` is not used during local development.
         logging.debug("Payload: %s", json_dumps(payload, indent=4))
         item: Dict[str, Any] = {"payload": payload, "files": {}}
         self.outputs.append(item)
@@ -461,14 +461,11 @@ class FileAdapter(BaseAdapter):
                     data.append({"payload": {}})
                 return data
 
-            def first_key(d: Dict[str, Any]) -> str:
-                return list(d.keys())[0]
-
             # Attempt to migrate from old format
             assert isinstance(data, dict), "Not a list or dictionary"
             deprecation("Work items file as mapping is deprecated")
-            workspace = data[first_key(data)]
-            work_item = workspace[first_key(workspace)]
+            workspace = next(iter(data.values()))
+            work_item = next(iter(workspace.values()))
             return [{"payload": work_item}]
         except Exception as exc:  # pylint: disable=broad-except
             logging.error("Invalid work items file: %s", exc)
@@ -1281,6 +1278,9 @@ class WorkItems:
             self, keyword_or_func: Union[str, Callable], *args, **kwargs
     ) -> List[Any]:
         """Run a keyword or function for each work item in the input queue.
+
+        :param keyword_or_func: The RF keyword or Py function you want to map through
+            all the work items
 
         Example:
 
