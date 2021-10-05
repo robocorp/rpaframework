@@ -226,7 +226,7 @@
 <p>Abstract base class for work item adapters.</p>
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.BaseAdapter.add_file">
-<em class="property">abstract </em><code class="sig-name descname">add_file</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">name: str</em>, <em class="sig-param">content: bytes</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.add_file" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">add_file</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">name: str</em>, <em class="sig-param">*</em>, <em class="sig-param">original_name: str</em>, <em class="sig-param">content: bytes</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.add_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attach file to work item.</p>
 </dd></dl>
 
@@ -314,13 +314,13 @@ folder as the given input database.</p>
 </ul>
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.FileAdapter.add_file">
-<code class="sig-name descname">add_file</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">name: str</em>, <em class="sig-param">content: bytes</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.add_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_file</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">name: str</em>, <em class="sig-param">*</em>, <em class="sig-param">original_name: str</em>, <em class="sig-param">content: bytes</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.add_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attach file to work item.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.FileAdapter.create_output">
-<code class="sig-name descname">create_output</code><span class="sig-paren">(</span><em class="sig-param">parent_id: str, payload: Union[Dict[str, Any], List[Any], str, int, float, bool, None] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.create_output" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_output</code><span class="sig-paren">(</span><em class="sig-param">_: str, payload: Union[Dict[str, Any], List[Any], str, int, float, bool, None] = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.create_output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create new output for work item, and return created ID.</p>
 </dd></dl>
 
@@ -374,7 +374,7 @@ folder as the given input database.</p>
 
 <dl class="class">
 <dt id="RPA.Robocorp.WorkItems.RobocorpAdapter">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.WorkItems.</code><code class="sig-name descname">RobocorpAdapter</code><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.WorkItems.</code><code class="sig-name descname">RobocorpAdapter</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RPA.Robocorp.WorkItems.BaseAdapter" title="RPA.Robocorp.WorkItems.BaseAdapter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RPA.Robocorp.WorkItems.BaseAdapter</span></code></a></p>
 <p>Adapter for saving/loading work items from Robocorp Control Room.</p>
 <p>Required environment variables:</p>
@@ -389,7 +389,7 @@ folder as the given input database.</p>
 </ul>
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.add_file">
-<code class="sig-name descname">add_file</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">name: str</em>, <em class="sig-param">content: bytes</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.add_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_file</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">name: str</em>, <em class="sig-param">*</em>, <em class="sig-param">original_name: str</em>, <em class="sig-param">content: bytes</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.add_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attach file to work item.</p>
 </dd></dl>
 
@@ -828,8 +828,54 @@ to the output queue after the keyword <code class="docutils literal notranslate"
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Robocorp.WorkItems.WorkItems.for_each_input_work_item">
+<code class="sig-name descname">for_each_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">keyword_or_func: Union[str, Callable], *args, **kwargs</em><span class="sig-paren">)</span> &#x2192; List[Any]<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.for_each_input_work_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a keyword or function for each work item in the input queue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>keyword_or_func</strong> – The RF keyword or Py function you want to map through
+all the work items</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Keywords ***</span><span class="p"></span>
+<span class="gu">Log Payload</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">payload</span><span class="p">} =     </span><span class="nf">Get Work Item Payload</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log To Console</span><span class="p">    ${</span><span class="nv">payload</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">len</span><span class="p">} =     </span><span class="nf">Get Length</span><span class="p">    ${</span><span class="nv">payload</span><span class="p">}</span>
+<span class="p">    [</span><span class="kn">Return</span><span class="p">]    ${</span><span class="nv">len</span><span class="p">}</span>
+
+<span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Log Payloads</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">results</span><span class="p">} =     </span><span class="nf">For Each Input Work Item</span><span class="p">    </span><span class="s">Log Payload</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">   </span><span class="s">Items keys length: </span><span class="p">@{</span><span class="nv">results</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>OR</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="n">library</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">log_payload</span><span class="p">():</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">get_work_item_payload</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">log_payloads</span><span class="p">():</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">for_each_input_work_item</span><span class="p">(</span><span class="n">log_payload</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Items keys length: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+
+<span class="n">log_payloads</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Returns a list of results.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.get_input_work_item">
-<code class="sig-name descname">get_input_work_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_input_work_item" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">_internal_call: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_input_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the next work item from the input queue,
 and set it as the active work item.</p>
 <p>If the library import argument <code class="docutils literal notranslate"><span class="pre">autoload</span></code> is truthy (default),
