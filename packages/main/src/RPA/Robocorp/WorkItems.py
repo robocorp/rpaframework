@@ -6,7 +6,8 @@ import os
 from abc import ABC, abstractmethod
 from pathlib import Path
 from shutil import copy2
-from typing import Type, Any, Optional, Union, Dict, List, Tuple
+from threading import Event
+from typing import Callable, Type, Any, Optional, Union, Dict, List, Tuple
 
 import requests
 from requests.exceptions import HTTPError
@@ -61,7 +62,7 @@ class BaseAdapter(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def add_file(self, item_id: str, name: str, content: bytes):
+    def add_file(self, item_id: str, name: str, *, original_name: str, content: bytes):
         """Attach file to work item."""
         raise NotImplementedError
 
@@ -88,7 +89,9 @@ class RobocorpAdapter(BaseAdapter):
     * RC_WORKITEM_ID:           Control room work item ID (input)
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
         #: Endpoint for old work items API
         self.workitem_host = required_env("RC_API_WORKITEM_HOST")
         self.workitem_token = required_env("RC_API_WORKITEM_TOKEN")
@@ -172,7 +175,9 @@ class RobocorpAdapter(BaseAdapter):
 
         return response.content
 
-    def add_file(self, item_id: str, name: str, content: bytes):
+    def add_file(self, item_id: str, name: str, *, original_name: str, content: bytes):
+        # Note that here the `original_name` is useless thus not used.
+        del original_name
         # Robocorp API returns pre-signed POST details for S3 upload
         url = self.workitem_url(item_id, "files")
         info = {"fileName": str(name), "fileSize": len(content)}
@@ -306,6 +311,7 @@ class FileAdapter(BaseAdapter):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         # pylint: disable=invalid-envvar-default
         old_path = os.getenv("RPA_WORKITEMS_PATH", UNDEFINED_VAR)
         if old_path is not UNDEFINED_VAR:
@@ -327,19 +333,20 @@ class FileAdapter(BaseAdapter):
         idx = int(item_id)
         if idx < len(self.inputs):
             return "input", self.inputs[idx]
-        elif idx < (len(self.inputs) + len(self.outputs)):
+
+        if idx < (len(self.inputs) + len(self.outputs)):
             return "output", self.outputs[idx - len(self.inputs)]
-        else:
-            raise ValueError(f"Unknown work item ID: {item_id}")
+
+        raise ValueError(f"Unknown work item ID: {item_id}")
 
     def get_input(self) -> str:
+        if self.index >= len(self.inputs):
+            raise EmptyQueue("No work items in the input queue")
+
         try:
-            idx = self.index
-            _ = self.inputs[idx]
+            return str(self.index)
+        finally:
             self.index += 1
-            return str(idx)
-        except IndexError as err:
-            raise EmptyQueue("No work items in input queue") from err
 
     @property
     def output_path(self):
@@ -359,20 +366,27 @@ class FileAdapter(BaseAdapter):
 
         return self._output_path
 
-    def create_output(self, parent_id: str, payload: Optional[JSONType] = None) -> str:
-        del parent_id
+    def _save_to_disk(self, source: str) -> None:
+        if source == "input":
+            path = self.path
+            data = self.inputs
+        else:
+            path = self.output_path
+            data = self.outputs
 
+        with open(path, "w", encoding="utf-8") as fd:
+            fd.write(json_dumps(data, indent=4))
+
+        logging.info("Saved into %s file: %s", source, path)
+
+    def create_output(self, _: str, payload: Optional[JSONType] = None) -> str:
+        # Note that the `parent_id` is not used during local development.
+        logging.debug("Payload: %s", json_dumps(payload, indent=4))
         item: Dict[str, Any] = {"payload": payload, "files": {}}
         self.outputs.append(item)
 
-        logging.debug("Payload: %s", json_dumps(payload, indent=4))
-
-        path = self.output_path
-        with open(path, "w", encoding="utf-8") as fd:
-            fd.write(json_dumps(self.outputs, indent=4))
-
-        logging.info("Saved into file: %s", path)
-        return str(len(self.inputs) + len(self.outputs) - 1)
+        self._save_to_disk("output")
+        return str(len(self.inputs) + len(self.outputs) - 1)  # new output work item ID
 
     def load_payload(self, item_id: str) -> JSONType:
         _, item = self._get_item(item_id)
@@ -384,17 +398,7 @@ class FileAdapter(BaseAdapter):
         item["payload"] = payload
         logging.debug("Payload: %s", json_dumps(payload, indent=4))
 
-        if source == "input":
-            path = self.path
-            data = self.inputs
-        else:
-            path = self.output_path
-            data = self.outputs
-
-        with open(path, "w", encoding="utf-8") as fd:
-            fd.write(json_dumps(data, indent=4))
-
-        logging.info("Saved into file: %s", path)
+        self._save_to_disk(source)
 
     def list_files(self, item_id: str) -> List[str]:
         _, item = self._get_item(item_id)
@@ -402,36 +406,40 @@ class FileAdapter(BaseAdapter):
         return list(files.keys())
 
     def get_file(self, item_id: str, name: str) -> bytes:
-        _, item = self._get_item(item_id)
+        source, item = self._get_item(item_id)
         files = item.get("files", {})
 
         path = files[name]
         if not Path(path).is_absolute():
-            path = self.path.parent / path
+            parent = self.path.parent if source == "input" else self.output_path.parent
+            path = parent / path
 
         with open(path, "rb") as infile:
             return infile.read()
 
-    def add_file(self, item_id: str, name: str, content: bytes):
-        _, item = self._get_item(item_id)
+    def add_file(self, item_id: str, name: str, *, original_name: str, content: bytes):
+        source, item = self._get_item(item_id)
         files = item.setdefault("files", {})
 
-        path = self.path.parent / name
+        parent = self.path.parent if source == "input" else self.output_path.parent
+        path = parent / original_name  # the file on disk will keep its original name
         with open(path, "wb") as fd:
             fd.write(content)
-
         logging.info("Created file: %s", path)
-        files[name] = name
+        files[name] = original_name  # file path relative to the work item
+
+        self._save_to_disk(source)
 
     def remove_file(self, item_id: str, name: str):
-        _, item = self._get_item(item_id)
+        source, item = self._get_item(item_id)
         files = item.get("files", {})
 
         path = files[name]
         logging.info("Would remove file: %s", path)
         # Note that the file doesn't get removed from disk as well.
-
         del files[name]
+
+        self._save_to_disk(source)
 
     def load_database(self) -> List:
         try:
@@ -450,14 +458,11 @@ class FileAdapter(BaseAdapter):
                     data.append({"payload": {}})
                 return data
 
-            def first(d: Dict[str, Any]) -> str:
-                return list(d.keys())[0]
-
             # Attempt to migrate from old format
             assert isinstance(data, dict), "Not a list or dictionary"
             deprecation("Work items file as mapping is deprecated")
-            workspace = data[first(data)]
-            work_item = workspace[first(workspace)]
+            workspace = next(iter(data.values()))
+            work_item = next(iter(workspace.values()))
             return [{"payload": work_item}]
         except Exception as exc:  # pylint: disable=broad-except
             logging.error("Invalid work items file: %s", exc)
@@ -531,7 +536,7 @@ class WorkItem:
     def save(self):
         """Save data payload and attach/remove files."""
         if self.id is None:
-            self.id = self.adapter.create_output(self.parent_id, self.payload)
+            self.id = self.adapter.create_output(self.parent_id, payload=self.payload)
         else:
             self.adapter.save_payload(self.id, self.payload)
 
@@ -540,7 +545,9 @@ class WorkItem:
 
         for name, path in self._files_to_add.items():
             with open(path, "rb") as infile:
-                self.adapter.add_file(self.id, name, infile.read())
+                self.adapter.add_file(
+                    self.id, name, original_name=path.name, content=infile.read()
+                )
 
         # Empty unsaved values
         self._payload = self._payload_cache
@@ -770,7 +777,7 @@ class WorkItems:
     ):
         self.ROBOT_LIBRARY_LISTENER = self
 
-        #: Current selected worok item
+        #: Current selected work item
         self._current: Optional[WorkItem] = None
         #: Input work items
         self.inputs: List[WorkItem] = []
@@ -783,6 +790,9 @@ class WorkItems:
         #: Adapter for reading/writing items
         self._adapter_class = self._load_adapter(default_adapter)
         self._adapter: Optional[BaseAdapter] = None
+
+        # Know when we're iterating (and consuming) all the work items in the queue.
+        self._under_iteration = Event()
 
     @property
     def adapter(self):
@@ -839,6 +849,7 @@ class WorkItems:
                     "%s has unsaved changes that will be discarded", self.current
                 )
 
+    @keyword
     def set_current_work_item(self, item: WorkItem):
         """Set the currently active work item.
 
@@ -862,7 +873,7 @@ class WorkItems:
         self.current = item
 
     @keyword
-    def get_input_work_item(self):
+    def get_input_work_item(self, _internal_call: bool = False):
         """Load the next work item from the input queue,
         and set it as the active work item.
 
@@ -873,8 +884,12 @@ class WorkItems:
         **NOTE**: Currently only one input work item per execution is supported
                   by Control Room.
         """
-        item_id = self.adapter.get_input()
+        if not _internal_call:
+            self._raise_under_iteration("get input work item")
+        if isinstance(self.adapter, RobocorpAdapter):
+            self._raise_under_iteration("get more than one input item in the cloud")
 
+        item_id = self.adapter.get_input()
         item = WorkItem(item_id=item_id, parent_id=None, adapter=self.adapter)
         item.load()
 
@@ -1159,7 +1174,7 @@ class WorkItems:
             Save work item
         """
         logging.info("Adding file: %s", path)
-        return self.current.add_file(path, name)
+        return self.current.add_file(path, name=name)
 
     @keyword
     def remove_work_item_file(self, name, missing_ok=True):
@@ -1255,3 +1270,79 @@ class WorkItems:
 
         logging.info("Removed %d file(s)", len(names))
         return names
+
+    def _raise_under_iteration(self, action: str) -> None:
+        if self._under_iteration.is_set():
+            raise RuntimeError(f"Can't {action} while iterating input work items")
+
+    @keyword
+    def for_each_input_work_item(
+        self, keyword_or_func: Union[str, Callable], *args, **kwargs
+    ) -> List[Any]:
+        """Run a keyword or function for each work item in the input queue.
+
+        :param keyword_or_func: The RF keyword or Py function you want to map through
+            all the work items
+
+        Example:
+
+        .. code-block:: robotframework
+
+            *** Keywords ***
+            Log Payload
+                ${payload} =     Get Work Item Payload
+                Log To Console    ${payload}
+                ${len} =     Get Length    ${payload}
+                [Return]    ${len}
+
+            *** Tasks ***
+            Log Payloads
+                @{results} =     For Each Input Work Item    Log Payload
+                Log   Items keys length: @{results}
+
+        OR
+
+        .. code-block:: python
+
+            import logging
+            from RPA.Robocorp.WorkItems import WorkItems
+
+            library = WorkItems()
+
+            def log_payload():
+                payload = library.get_work_item_payload()
+                print(payload)
+                return len(payload)
+
+            def log_payloads():
+                library.get_input_work_item()
+                results = library.for_each_input_work_item(log_payload)
+                logging.info("Items keys length: %s", results)
+
+            log_payloads()
+
+        Returns a list of results.
+        """
+
+        self._raise_under_iteration("iterate input work items")
+
+        if isinstance(keyword_or_func, str):
+            to_call = lambda: BuiltIn().run_keyword(  # noqa: E731
+                keyword_or_func, *args, **kwargs
+            )
+        else:
+            to_call = lambda: keyword_or_func(*args, **kwargs)  # noqa: E731
+        outputs = []
+
+        try:
+            self._under_iteration.set()
+            while True:
+                outputs.append(to_call())
+                try:
+                    self.get_input_work_item(_internal_call=True)
+                except EmptyQueue:
+                    break
+        finally:
+            self._under_iteration.clear()
+
+        return outputs

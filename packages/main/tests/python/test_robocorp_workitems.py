@@ -5,7 +5,7 @@ import pytest
 import tempfile
 from contextlib import contextmanager
 from pathlib import Path
-from RPA.Robocorp.WorkItems import BaseAdapter, FileAdapter, WorkItems
+from RPA.Robocorp.WorkItems import BaseAdapter, EmptyQueue, FileAdapter, WorkItems
 
 
 VARIABLES_FIRST = {"username": "testguy", "address": "guy@company.com"}
@@ -58,16 +58,31 @@ class MockAdapter(BaseAdapter):
     FILES = {}
     INDEX = 0
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self._data_keys = []
+
     @classmethod
     def validate(cls, item, key, val):
         data = cls.DATA.get(item.id)
         assert data is not None
         assert data[key] == val
 
+    @property
+    def data_keys(self):
+        if not self._data_keys:
+            self._data_keys = list(self.DATA.keys())
+        return self._data_keys
+
     def get_input(self) -> str:
-        idx = self.INDEX
-        self.INDEX += 1
-        return list(self.DATA.keys())[idx]
+        if self.INDEX >= len(self.data_keys):
+            raise EmptyQueue("No work items in the input queue")
+
+        try:
+            return self.data_keys[self.INDEX]
+        finally:
+            self.INDEX += 1
 
     def create_output(self, parent_id, payload=None) -> str:
         raise NotImplementedError
@@ -84,7 +99,7 @@ class MockAdapter(BaseAdapter):
     def get_file(self, item_id, name):
         return self.FILES[item_id][name]
 
-    def add_file(self, item_id, name, content):
+    def add_file(self, item_id, name, *, original_name, content):
         self.FILES[item_id][name] = content
 
     def remove_file(self, item_id, name):
@@ -460,6 +475,27 @@ class TestLibrary:
             "vars": {"cool": "beans", "yeah": "boi"},
         }
 
+    def test_iter_work_items(self, library):
+        usernames = []
+
+        def func():
+            # Collects the "username" variable from the payload if provided and returns
+            #   True if found, False otherwise.
+            payload = library.get_work_item_payload()
+            if not isinstance(payload, dict):
+                return False
+
+            username = payload.get("username")
+            if username:
+                usernames.append(username)
+            return username is not None
+
+        library.get_input_work_item()
+        results = library.for_each_input_work_item(func)
+
+        assert usernames == ["testguy", "another"]
+        assert results == [True, True, False]
+
 
 class TestFileAdapter:
     """Tests the local dev env `FileAdapter` on Work Items."""
@@ -505,8 +541,13 @@ class TestFileAdapter:
 
     def test_add_file(self, adapter):
         item_id = adapter.get_input()
-        adapter.add_file(item_id, "secondfile2.txt", b"somedata")
-        assert adapter.inputs[0]["files"]["secondfile2.txt"] == "secondfile2.txt"
+        adapter.add_file(
+            item_id,
+            "secondfile.txt",
+            original_name="secondfile2.txt",
+            content=b"somedata",
+        )
+        assert adapter.inputs[0]["files"]["secondfile.txt"] == "secondfile2.txt"
         assert os.path.isfile(Path(adapter.path).parent / "secondfile2.txt")
 
     def test_save_data_input(self, adapter):
