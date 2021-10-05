@@ -377,7 +377,7 @@ class FileAdapter(BaseAdapter):
         with open(path, "w", encoding="utf-8") as fd:
             fd.write(json_dumps(data, indent=4))
 
-        logging.info("Saved into file: %s", path)
+        logging.info("Saved into %s file: %s", source, path)
 
     def create_output(self, _: str, payload: Optional[JSONType] = None) -> str:
         # Note that the `parent_id` is not used during local development.
