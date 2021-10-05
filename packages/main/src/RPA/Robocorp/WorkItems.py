@@ -28,8 +28,8 @@ UNDEFINED = object()  # Undefined default value
 class State(Enum):
     """Work item state. (set when released)"""
 
-    SUCCESS = "success"
-    FAILURE = "failure"
+    SUCCESS = "COMPLETED"
+    FAILED = "FAILED"
 
 
 class EmptyQueue(IndexError):
