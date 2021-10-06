@@ -53,5 +53,7 @@ Consume queue
     Length should be    ${results}  2
 
 Explicit state set
-    Set Work Item State     FAILED
+    ${payload} =     Get Work Item Payload
+    Log     ${payload}
+    Set Work Item State     SUCCESS
     Run Keyword And Expect Error    ${already_set_state_error}     Create Output Work Item

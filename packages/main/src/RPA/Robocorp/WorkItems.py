@@ -1410,6 +1410,33 @@ class WorkItems:
 
         After this has been called, no more output work items can be created
         unless a new input work item has been loaded.
+
+        :param state: The status on the currently processed input work item
+
+        Example:
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Explicit state set
+                ${payload} =     Get Work Item Payload
+                Log     ${payload}
+                Set Work Item State     SUCCESS
+
+        OR
+
+        .. code-block:: python
+
+            from RPA.Robocorp.WorkItems import State, WorkItems
+
+            library = WorkItems()
+
+            def process_and_set_state():
+                library.get_input_work_item()
+                library.set_work_item_state(State.SUCCESS)
+                print(library.current.state.value)  # would print "COMPLETED"
+
+            process_and_set_state()
         """
 
         if self.current.parent_id is not None:
