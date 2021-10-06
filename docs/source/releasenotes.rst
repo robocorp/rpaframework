@@ -4,8 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
-- Library **RPA.Robocorp.WorkItems**: Add keyword `For Each Input Work Item` for applying a keyword over
-  all input work items in the local development queue (not supported yet in the cloud - :pr:`241`)
+- Library **RPA.Robocorp.WorkItems** support for both local development and in the cloud:
+
+  - Add keyword `For Each Input Work Item` for applying a keyword over
+    all input work items in the local development queue (not supported yet in the cloud - :pr:`241`)
+
+  - Add keyword `Set Work Item State` for setting the state of the currently processed input work item
 
 11.3.0
 ------
