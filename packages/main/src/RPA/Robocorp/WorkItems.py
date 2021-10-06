@@ -1448,3 +1448,26 @@ class WorkItems:
         assert self.current.id is not None  # input work items always have IDs
         self.adapter.release_input(self.current.id, state)
         self.current.state = state
+
+    @keyword
+    def get_current_work_item(self) -> WorkItem:
+        """Get the currently active work item.
+
+        The current work item is used as the target by other keywords
+        in this library.
+
+        Keywords ``Get input work item`` and ``Create output work item``
+        set the active work item automatically, and return the created
+        instance.
+
+        With this keyword the active work item can be retrieved manually.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${input} =    Get Current Work Item
+            ${output} =   Create Output Work Item
+            Set Current Work Item    ${input}
+        """
+        return self.current

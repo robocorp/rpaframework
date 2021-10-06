@@ -41,19 +41,26 @@ Read input and write output
     Save work item
 
     Create output work item
-    Set work item variables    use=Another    mail=another@company.com
+    Set work item variables    user=Another    mail=another@company.com
     Save work item
     File should exist    ${temp_out}
 
     [Teardown]  Remove file     ${temp_out}
 
+Explicit state set
+    ${payload} =     Get Work Item Payload
+    Log     ${payload}
+    ${input} =      Get Current Work Item
+
+    Create Output Work Item
+    Set Work Item Variables    user=Another2    mail=another2@company.com
+    Save work item
+
+    Set Current Work Item   ${input}
+    Set Work Item State     SUCCESS
+    Run Keyword And Expect Error    ${already_set_state_error}     Create Output Work Item
+
 Consume queue
     @{results} =     For Each Input Work Item    Log Payload
     Log   Items keys length: @{results}
     Length should be    ${results}  2
-
-Explicit state set
-    ${payload} =     Get Work Item Payload
-    Log     ${payload}
-    Set Work Item State     SUCCESS
-    Run Keyword And Expect Error    ${already_set_state_error}     Create Output Work Item

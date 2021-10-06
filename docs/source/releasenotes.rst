@@ -10,8 +10,8 @@ Upcoming release
   - Add keyword `For Each Input Work Item` for applying a keyword over all input work
     items (:pr:`241`)
 
-  - Add keyword `Set Work Item State` for setting the state of the currently processed
-    input work item (:pr:`245`)
+  - Add keywords `Get Current Work Item` and `Set Work Item State` for setting the
+    state of the currently processed input work item (:pr:`245`)
 
 11.3.0
 ------
