@@ -11,7 +11,7 @@ Upcoming release
     items (:pr:`241`)
 
   - Add keyword `Set Work Item State` for setting the state of the currently processed
-    input work item
+    input work item (:pr:`245`)
 
 11.3.0
 ------
