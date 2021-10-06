@@ -9,6 +9,7 @@ ${RESULTS}      ${CURDIR}/../results
 ${temp_in}      ${RESOURCES}/temp_items.json
 ${temp_out}     ${RESULTS}/output_dir/temp_items.json
 ${first_item}   None
+${already_set_state_error}    Can't create any more output work items since a state was set, get a new input work item first
 
 
 *** Keywords ***
@@ -50,3 +51,7 @@ Consume queue
     @{results} =     For Each Input Work Item    Log Payload
     Log   Items keys length: @{results}
     Length should be    ${results}  2
+
+Explicit state set
+    Set Work Item State     FAILED
+    Run Keyword And Expect Error    ${already_set_state_error}     Create Output Work Item

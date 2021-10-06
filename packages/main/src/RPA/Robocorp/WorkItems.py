@@ -977,8 +977,13 @@ class WorkItems:
             )
 
         parent = self.inputs[-1]
-        item = WorkItem(item_id=None, parent_id=parent.id, adapter=self.adapter)
+        if parent.state is not None:
+            raise RuntimeError(
+                "Can't create any more output work items since a state was set, "
+                "get a new input work item first"
+            )
 
+        item = WorkItem(item_id=None, parent_id=parent.id, adapter=self.adapter)
         self.outputs.append(item)
         self.current = item
         return self.current
