@@ -4,12 +4,14 @@ Release notes
 Upcoming release
 ----------------
 
-- Library **RPA.Robocorp.WorkItems** support for both local development and in the cloud:
+- Library **RPA.Robocorp.WorkItems** support on iterating work items for both local
+  development and in the cloud:
 
-  - Add keyword `For Each Input Work Item` for applying a keyword over
-    all input work items in the local development queue (not supported yet in the cloud - :pr:`241`)
+  - Add keyword `For Each Input Work Item` for applying a keyword over all input work
+    items (:pr:`241`)
 
-  - Add keyword `Set Work Item State` for setting the state of the currently processed input work item
+  - Add keyword `Set Work Item State` for setting the state of the currently processed
+    input work item
 
 11.3.0
 ------
