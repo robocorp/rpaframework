@@ -243,12 +243,6 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Robocorp.WorkItems.BaseAdapter.get_input">
-<em class="property">abstract </em><code class="sig-name descname">get_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.get_input" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get next work item ID from input queue.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="RPA.Robocorp.WorkItems.BaseAdapter.list_files">
 <em class="property">abstract </em><code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.list_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>List attached files in work item.</p>
@@ -261,9 +255,21 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Robocorp.WorkItems.BaseAdapter.release_input">
+<em class="property">abstract </em><code class="sig-name descname">release_input</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">state: RPA.Robocorp.WorkItems.State</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.release_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the state for an input work item, then release it.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Robocorp.WorkItems.BaseAdapter.remove_file">
 <em class="property">abstract </em><code class="sig-name descname">remove_file</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.remove_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove attached file from work item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.WorkItems.BaseAdapter.reserve_input">
+<em class="property">abstract </em><code class="sig-name descname">reserve_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.reserve_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get next work item ID from the input queue and reserve it.</p>
 </dd></dl>
 
 <dl class="method">
@@ -331,12 +337,6 @@ folder as the given input database.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Robocorp.WorkItems.FileAdapter.get_input">
-<code class="sig-name descname">get_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.get_input" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get next work item ID from input queue.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="RPA.Robocorp.WorkItems.FileAdapter.list_files">
 <code class="sig-name descname">list_files</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.list_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>List attached files in work item.</p>
@@ -359,9 +359,21 @@ folder as the given input database.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Robocorp.WorkItems.FileAdapter.release_input">
+<code class="sig-name descname">release_input</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">state: RPA.Robocorp.WorkItems.State</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.release_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the state for an input work item, then release it.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Robocorp.WorkItems.FileAdapter.remove_file">
 <code class="sig-name descname">remove_file</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.remove_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove attached file from work item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.WorkItems.FileAdapter.reserve_input">
+<code class="sig-name descname">reserve_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.reserve_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get next work item ID from the input queue and reserve it.</p>
 </dd></dl>
 
 <dl class="method">
@@ -383,8 +395,10 @@ folder as the given input database.</p>
 <li><p>RC_API_WORKITEM_TOKEN:    Work item API access token</p></li>
 <li><p>RC_API_PROCESS_HOST:      Process API hostname</p></li>
 <li><p>RC_API_PROCESS_TOKEN:     Process API access token</p></li>
-<li><p>RC_WORKSPACE_ID:          Control room worksapce ID</p></li>
+<li><p>RC_WORKSPACE_ID:          Control room workspace ID</p></li>
 <li><p>RC_PROCESS_ID:            Control room process ID</p></li>
+<li><p>RC_PROCESS_RUN_ID:        Control room process run ID</p></li>
+<li><p>RC_ROBOT_RUN_ID:          Control room robot run ID</p></li>
 <li><p>RC_WORKITEM_ID:           Control room work item ID (input)</p></li>
 </ul>
 <dl class="method">
@@ -411,22 +425,9 @@ folder as the given input database.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.get_input">
-<code class="sig-name descname">get_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.get_input" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get next work item ID from input queue.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.handle_error">
 <code class="sig-name descname">handle_error</code><span class="sig-paren">(</span><em class="sig-param">response: requests.models.Response</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.handle_error" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="attribute">
-<dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.input_queue">
-<code class="sig-name descname">input_queue</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.input_queue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Input queue of work items
-NOTE: Only one input item currently supported, through runtime env</p>
-</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.list_files">
@@ -453,13 +454,25 @@ NOTE: Only one input item currently supported, through runtime env</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.process_url">
-<code class="sig-name descname">process_url</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">*parts: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.process_url" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">process_url</code><span class="sig-paren">(</span><em class="sig-param">*parts: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.process_url" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.release_input">
+<code class="sig-name descname">release_input</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">state: RPA.Robocorp.WorkItems.State</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.release_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the state for an input work item, then release it.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.remove_file">
 <code class="sig-name descname">remove_file</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.remove_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove attached file from work item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.reserve_input">
+<code class="sig-name descname">reserve_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.reserve_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get next work item ID from the input queue and reserve it.</p>
 </dd></dl>
 
 <dl class="method">
@@ -489,6 +502,23 @@ NOTE: Only one input item currently supported, through runtime env</p>
 <code class="sig-name descname">workspace_id</code><em class="property"> = None</em><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.workspace_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Current execution IDs</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="RPA.Robocorp.WorkItems.State">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.WorkItems.</code><code class="sig-name descname">State</code><a class="headerlink" href="#RPA.Robocorp.WorkItems.State" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Work item state. (set when released)</p>
+<dl class="attribute">
+<dt id="RPA.Robocorp.WorkItems.State.DONE">
+<code class="sig-name descname">DONE</code><em class="property"> = 'COMPLETED'</em><a class="headerlink" href="#RPA.Robocorp.WorkItems.State.DONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Robocorp.WorkItems.State.FAILED">
+<code class="sig-name descname">FAILED</code><em class="property"> = 'FAILED'</em><a class="headerlink" href="#RPA.Robocorp.WorkItems.State.FAILED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -555,7 +585,7 @@ excluding files pending removal.</p>
 <dl class="attribute">
 <dt id="RPA.Robocorp.WorkItems.WorkItem.id">
 <code class="sig-name descname">id</code><em class="property">: Optional[str]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItem.id" title="Permalink to this definition">¶</a></dt>
-<dd><p>This item’s ID, if created</p>
+<dd><p>This item’s and/or parent’s ID</p>
 </dd></dl>
 
 <dl class="method">
@@ -591,6 +621,12 @@ until <code class="docutils literal notranslate"><span class="pre">save()</span>
 <dt id="RPA.Robocorp.WorkItems.WorkItem.save">
 <code class="sig-name descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItem.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save data payload and attach/remove files.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Robocorp.WorkItems.WorkItem.state">
+<code class="sig-name descname">state</code><em class="property">: Optional[State]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItem.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Item’s state on release; can be set once</p>
 </dd></dl>
 
 </dd></dl>
@@ -874,6 +910,24 @@ all the work items</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Robocorp.WorkItems.WorkItems.get_current_work_item">
+<code class="sig-name descname">get_current_work_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; RPA.Robocorp.WorkItems.WorkItem<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_current_work_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the currently active work item.</p>
+<p>The current work item is used as the target by other keywords
+in this library.</p>
+<p>Keywords <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">input</span> <span class="pre">work</span> <span class="pre">item</span></code> and <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">output</span> <span class="pre">work</span> <span class="pre">item</span></code>
+set the active work item automatically, and return the created
+instance.</p>
+<p>With this keyword the active work item can be retrieved manually.</p>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${input} =</span><span class="p">    </span><span class="c">Get Current Work Item</span><span class="p"></span>
+<span class="c">${output} =</span><span class="p">   </span><span class="c">Create Output Work Item</span><span class="p"></span>
+<span class="c">Set Current Work Item</span><span class="p">    </span><span class="c">${input}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.get_input_work_item">
 <code class="sig-name descname">get_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">_internal_call: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_input_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the next work item from the input queue,
@@ -881,10 +935,6 @@ and set it as the active work item.</p>
 <p>If the library import argument <code class="docutils literal notranslate"><span class="pre">autoload</span></code> is truthy (default),
 this is called automatically when the Robot Framework suite
 starts.</p>
-<dl class="simple">
-<dt><strong>NOTE</strong>: Currently only one input work item per execution is supported</dt><dd><p>by Control Room.</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
@@ -951,7 +1001,7 @@ or default value if defined and key does not exist.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>key</strong> – Name of variable</p></li>
+<li><p><strong>name</strong> – Name of variable</p></li>
 <li><p><strong>default</strong> – Default value if key does not exist</p></li>
 </ul>
 </dd>
@@ -1006,6 +1056,40 @@ return their names and values as a dictionary.</p>
 <dt id="RPA.Robocorp.WorkItems.WorkItems.outputs">
 <code class="sig-name descname">outputs</code><em class="property">: List[WorkItem]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.outputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output work items</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.WorkItems.WorkItems.release_input_work_item">
+<code class="sig-name descname">release_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">state: RPA.Robocorp.WorkItems.State</em>, <em class="sig-param">_auto_release: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.release_input_work_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the result state for the current input work item, then release it.</p>
+<p>After this has been called, no more output work items can be created
+unless a new input work item has been loaded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> – The status on the currently processed input work item</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Explicit state set</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">payload</span><span class="p">} =     </span><span class="nf">Get Work Item Payload</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">     ${</span><span class="nv">payload</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Set Work Item State</span><span class="p">     </span><span class="s">SUCCESS</span><span class="p"></span>
+</pre></div>
+</div>
+<p>OR</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">State</span><span class="p">,</span> <span class="n">WorkItems</span>
+
+<span class="n">library</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">process_and_set_state</span><span class="p">():</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">release_input_work_item</span><span class="p">(</span><span class="n">State</span><span class="o">.</span><span class="n">DONE</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">library</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>  <span class="c1"># would print &quot;State.DONE&quot;</span>
+
+<span class="n">process_and_set_state</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -1115,7 +1199,7 @@ Robot Framework task variables.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>key</strong> – Name of variable</p></li>
+<li><p><strong>name</strong> – Name of variable</p></li>
 <li><p><strong>value</strong> – Value of variable</p></li>
 </ul>
 </dd>
