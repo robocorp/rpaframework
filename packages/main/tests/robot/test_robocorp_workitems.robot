@@ -57,7 +57,7 @@ Explicit state set
     Save work item
 
     Set Current Work Item   ${input}
-    Set Work Item State     SUCCESS
+    Set Work Item State     COMPLETED
     Run Keyword And Expect Error    ${already_set_state_error}     Create Output Work Item
 
 Consume queue

@@ -28,7 +28,7 @@ UNDEFINED = object()  # Undefined default value
 class State(Enum):
     """Work item state. (set when released)"""
 
-    SUCCESS = "COMPLETED"
+    COMPLETED = "COMPLETED"
     FAILED = "FAILED"
 
 
@@ -122,7 +122,7 @@ class RobocorpAdapter(BaseAdapter):
         self.robot_run_id = required_env("RC_ROBOT_RUN_ID")
 
         #: Input queue of work items
-        self._initial_item: Optional[str] = required_env("RC_WORKITEM_ID")
+        self._initial_item_id: Optional[str] = required_env("RC_WORKITEM_ID")
 
     def _pop_item(self):
         # Get the next input work item from the cloud queue.
@@ -139,11 +139,10 @@ class RobocorpAdapter(BaseAdapter):
         return response.json()["workItemId"]
 
     def reserve_input(self) -> str:
-        if self._initial_item:
-            try:
-                return self._initial_item
-            finally:
-                self._initial_item = None
+        if self._initial_item_id:
+            item_id = self._initial_item_id
+            self._initial_item_id = None
+            return item_id
 
         item_id = self._pop_item()
         if not item_id:
@@ -938,8 +937,8 @@ class WorkItems:
         if self.inputs:
             previous = self.inputs[-1]
             if previous.state is None and previous.id is not None:
-                self.adapter.release_input(previous.id, State.SUCCESS)
-                previous.state = State.SUCCESS
+                self.adapter.release_input(previous.id, State.COMPLETED)
+                previous.state = State.COMPLETED
 
         item_id = self.adapter.reserve_input()
         item = WorkItem(item_id=item_id, parent_id=None, adapter=self.adapter)
