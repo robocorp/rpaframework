@@ -28,7 +28,7 @@ UNDEFINED = object()  # Undefined default value
 class State(Enum):
     """Work item state. (set when released)"""
 
-    COMPLETED = "COMPLETED"
+    DONE = "COMPLETED"
     FAILED = "FAILED"
 
 
@@ -934,7 +934,7 @@ class WorkItems:
 
         # Automatically release (with success) the lastly retrieved input work item
         # when asking for the next one.
-        self.release_input_work_item(State.COMPLETED, _auto_release=True)
+        self.release_input_work_item(State.DONE, _auto_release=True)
 
         item_id = self.adapter.reserve_input()
         item = WorkItem(item_id=item_id, parent_id=None, adapter=self.adapter)
@@ -1428,8 +1428,8 @@ class WorkItems:
 
             def process_and_set_state():
                 library.get_input_work_item()
-                library.release_input_work_item(State.COMPLETED)
-                print(library.current.state.value)  # would print "COMPLETED"
+                library.release_input_work_item(State.DONE)
+                print(library.current.state.value)  # would print "State.DONE"
 
             process_and_set_state()
         """

@@ -519,7 +519,7 @@ class TestLibrary:
         library.get_input_work_item()  # this automatically sets the state of the last
 
         assert library.current.state is None  # because the previous one has a state
-        assert library.adapter.releases == [("workitem-id-first", State.COMPLETED)]
+        assert library.adapter.releases == [("workitem-id-first", State.DONE)]
 
 
 class TestFileAdapter:

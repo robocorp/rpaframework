@@ -57,9 +57,9 @@ Explicit state set
     Set Work Item Variables    user=Another2    mail=another2@company.com
     Save work item
 
-    Release Input Work Item     COMPLETED
+    Release Input Work Item     DONE
     Run Keyword And Expect Error    ${err_state_set}        Create Output Work Item
-    Run Keyword And Expect Error    ${err_item_released}    Release Input Work Item     COMPLETED
+    Run Keyword And Expect Error    ${err_item_released}    Release Input Work Item     DONE
 
 Consume queue
     @{results} =     For Each Input Work Item    Log Payload
