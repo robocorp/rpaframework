@@ -9,7 +9,9 @@ ${RESULTS}      ${CURDIR}/../results
 ${temp_in}      ${RESOURCES}/temp_items.json
 ${temp_out}     ${RESULTS}/output_dir/temp_items.json
 ${first_item}   None
-${already_set_state_error}    Can't create any more output work items since a state was set, get a new input work item first
+
+${err_state_set}        Can't create any more output work items since the last input was released, get a new input work item first
+${err_item_released}    Input work item already released
 
 
 *** Keywords ***
@@ -50,15 +52,14 @@ Read input and write output
 Explicit state set
     ${payload} =     Get Work Item Payload
     Log     ${payload}
-    ${input} =      Get Current Work Item
 
     Create Output Work Item
     Set Work Item Variables    user=Another2    mail=another2@company.com
     Save work item
 
-    Set Current Work Item   ${input}
-    Set Work Item State     COMPLETED
-    Run Keyword And Expect Error    ${already_set_state_error}     Create Output Work Item
+    Release Input Work Item     COMPLETED
+    Run Keyword And Expect Error    ${err_state_set}        Create Output Work Item
+    Run Keyword And Expect Error    ${err_item_released}    Release Input Work Item     COMPLETED
 
 Consume queue
     @{results} =     For Each Input Work Item    Log Payload

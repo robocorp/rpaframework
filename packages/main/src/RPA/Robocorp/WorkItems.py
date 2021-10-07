@@ -934,11 +934,7 @@ class WorkItems:
 
         # Automatically release (with success) the lastly retrieved input work item
         # when asking for the next one.
-        if self.inputs:
-            previous = self.inputs[-1]
-            if previous.state is None and previous.id is not None:
-                self.adapter.release_input(previous.id, State.COMPLETED)
-                previous.state = State.COMPLETED
+        self.release_input_work_item(State.COMPLETED, _auto_release=True)
 
         item_id = self.adapter.reserve_input()
         item = WorkItem(item_id=item_id, parent_id=None, adapter=self.adapter)
@@ -972,14 +968,14 @@ class WorkItems:
         if not self.inputs:
             raise RuntimeError(
                 "Unable to create output work item without an input, "
-                "call `Get input work item` first"
+                "call `Get Input Work Item` first"
             )
 
         parent = self.inputs[-1]
         if parent.state is not None:
             raise RuntimeError(
-                "Can't create any more output work items since a state was set, "
-                "get a new input work item first"
+                "Can't create any more output work items since the last input was "
+                "released, get a new input work item first"
             )
 
         item = WorkItem(item_id=None, parent_id=parent.id, adapter=self.adapter)
@@ -1404,7 +1400,7 @@ class WorkItems:
         return outputs
 
     @keyword
-    def set_work_item_state(self, state: State):
+    def release_input_work_item(self, state: State, _auto_release: bool = False):
         """Set the result state for the current input work item, then release it.
 
         After this has been called, no more output work items can be created
@@ -1432,21 +1428,36 @@ class WorkItems:
 
             def process_and_set_state():
                 library.get_input_work_item()
-                library.set_work_item_state(State.SUCCESS)
+                library.release_input_work_item(State.COMPLETED)
                 print(library.current.state.value)  # would print "COMPLETED"
 
             process_and_set_state()
         """
+        # Note that `_auto_release` here is True when automatically releasing items.
+        # (internal call)
 
-        if self.current.parent_id is not None:
-            raise ValueError("You can't set a state for the output work item")
+        last_input = self.inputs[-1] if self.inputs else None
+        if not last_input:
+            if _auto_release:
+                # Have nothing to release and that's normal (reserving for the first
+                # time).
+                return
+            raise RuntimeError(
+                "Can't release without reserving first an input work item"
+            )
+        if last_input.state is not None:
+            if _auto_release:
+                # Item already released and that's normal when reaching an empty queue
+                # and we ask for another item again. We don't want to set states twice.
+                return
+            raise RuntimeError("Input work item already released")
+        assert last_input.parent_id is None, "set state on output item"
+        assert last_input.id is not None, "set state on input item with null ID"
 
         if not isinstance(state, State):
             state = State(state)
-
-        assert self.current.id is not None  # input work items always have IDs
-        self.adapter.release_input(self.current.id, state)
-        self.current.state = state
+        self.adapter.release_input(last_input.id, state)
+        last_input.state = state
 
     @keyword
     def get_current_work_item(self) -> WorkItem:

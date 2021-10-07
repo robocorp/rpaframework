@@ -509,7 +509,7 @@ class TestLibrary:
 
     def test_release_work_item(self, library):
         library.get_input_work_item()
-        library.set_work_item_state("FAILED")  # intentionally provide a string
+        library.release_input_work_item("FAILED")  # intentionally provide a string
 
         assert library.current.state == State.FAILED
         assert library.adapter.releases == [("workitem-id-first", State.FAILED)]
