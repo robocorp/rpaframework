@@ -5,7 +5,14 @@ import pytest
 import tempfile
 from contextlib import contextmanager
 from pathlib import Path
-from RPA.Robocorp.WorkItems import BaseAdapter, EmptyQueue, FileAdapter, WorkItems
+
+from RPA.Robocorp.WorkItems import (
+    BaseAdapter,
+    EmptyQueue,
+    FileAdapter,
+    State,
+    WorkItems,
+)
 
 
 VARIABLES_FIRST = {"username": "testguy", "address": "guy@company.com"}
@@ -62,6 +69,7 @@ class MockAdapter(BaseAdapter):
         super().__init__(*args, **kwargs)
 
         self._data_keys = []
+        self.releases = []
 
     @classmethod
     def validate(cls, item, key, val):
@@ -75,7 +83,7 @@ class MockAdapter(BaseAdapter):
             self._data_keys = list(self.DATA.keys())
         return self._data_keys
 
-    def get_input(self) -> str:
+    def reserve_input(self) -> str:
         if self.INDEX >= len(self.data_keys):
             raise EmptyQueue("No work items in the input queue")
 
@@ -83,6 +91,9 @@ class MockAdapter(BaseAdapter):
             return self.data_keys[self.INDEX]
         finally:
             self.INDEX += 1
+
+    def release_input(self, item_id: str, state: State):
+        self.releases.append((item_id, state))  # purely for testing purposes
 
     def create_output(self, parent_id, payload=None) -> str:
         raise NotImplementedError
@@ -496,6 +507,20 @@ class TestLibrary:
         assert usernames == ["testguy", "another"]
         assert results == [True, True, False]
 
+    def test_release_work_item(self, library):
+        library.get_input_work_item()
+        library.release_input_work_item("FAILED")  # intentionally provide a string
+
+        assert library.current.state == State.FAILED
+        assert library.adapter.releases == [("workitem-id-first", State.FAILED)]
+
+    def test_auto_release_work_item(self, library):
+        library.get_input_work_item()
+        library.get_input_work_item()  # this automatically sets the state of the last
+
+        assert library.current.state is None  # because the previous one has a state
+        assert library.adapter.releases == [("workitem-id-first", State.DONE)]
+
 
 class TestFileAdapter:
     """Tests the local dev env `FileAdapter` on Work Items."""
@@ -525,22 +550,22 @@ class TestFileAdapter:
             yield FileAdapter()
 
     def test_load_data(self, adapter):
-        item_id = adapter.get_input()
+        item_id = adapter.reserve_input()
         data = adapter.load_payload(item_id)
         assert data == {"a-key": "a-value"}
 
     def test_list_files(self, adapter):
-        item_id = adapter.get_input()
+        item_id = adapter.reserve_input()
         files = adapter.list_files(item_id)
         assert files == ["a-file"]
 
     def test_get_file(self, adapter):
-        item_id = adapter.get_input()
+        item_id = adapter.reserve_input()
         content = adapter.get_file(item_id, "a-file")
         assert content == b"some mock content"
 
     def test_add_file(self, adapter):
-        item_id = adapter.get_input()
+        item_id = adapter.reserve_input()
         adapter.add_file(
             item_id,
             "secondfile.txt",
@@ -551,7 +576,7 @@ class TestFileAdapter:
         assert os.path.isfile(Path(adapter.path).parent / "secondfile2.txt")
 
     def test_save_data_input(self, adapter):
-        item_id = adapter.get_input()
+        item_id = adapter.reserve_input()
         adapter.save_payload(item_id, {"key": "value"})
         with open(adapter.path) as fd:
             data = json.load(fd)

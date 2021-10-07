@@ -10,6 +10,9 @@ ${temp_in}      ${RESOURCES}/temp_items.json
 ${temp_out}     ${RESULTS}/output_dir/temp_items.json
 ${first_item}   None
 
+${err_state_set}        Can't create any more output work items since the last input was released, get a new input work item first
+${err_item_released}    Input work item already released
+
 
 *** Keywords ***
 Load mock library
@@ -40,11 +43,23 @@ Read input and write output
     Save work item
 
     Create output work item
-    Set work item variables    use=Another    mail=another@company.com
+    Set work item variables    user=Another    mail=another@company.com
     Save work item
     File should exist    ${temp_out}
 
     [Teardown]  Remove file     ${temp_out}
+
+Explicit state set
+    ${payload} =     Get Work Item Payload
+    Log     ${payload}
+
+    Create Output Work Item
+    Set Work Item Variables    user=Another2    mail=another2@company.com
+    Save work item
+
+    Release Input Work Item     DONE
+    Run Keyword And Expect Error    ${err_state_set}        Create Output Work Item
+    Run Keyword And Expect Error    ${err_item_released}    Release Input Work Item     DONE
 
 Consume queue
     @{results} =     For Each Input Work Item    Log Payload

@@ -4,6 +4,7 @@ import json
 import logging
 import os
 from abc import ABC, abstractmethod
+from enum import Enum
 from pathlib import Path
 from shutil import copy2
 from threading import Event
@@ -24,6 +25,13 @@ from .utils import JSONType, url_join, json_dumps, is_json_equal, truncate, reso
 UNDEFINED = object()  # Undefined default value
 
 
+class State(Enum):
+    """Work item state. (set when released)"""
+
+    DONE = "COMPLETED"
+    FAILED = "FAILED"
+
+
 class EmptyQueue(IndexError):
     """Raised when trying to load an input item and none available."""
 
@@ -32,8 +40,13 @@ class BaseAdapter(ABC):
     """Abstract base class for work item adapters."""
 
     @abstractmethod
-    def get_input(self) -> str:
-        """Get next work item ID from input queue."""
+    def reserve_input(self) -> str:
+        """Get next work item ID from the input queue and reserve it."""
+        raise NotImplementedError
+
+    @abstractmethod
+    def release_input(self, item_id: str, state: State):
+        """Set the state for an input work item, then release it."""
         raise NotImplementedError
 
     @abstractmethod
@@ -83,8 +96,10 @@ class RobocorpAdapter(BaseAdapter):
     * RC_API_PROCESS_HOST:      Process API hostname
     * RC_API_PROCESS_TOKEN:     Process API access token
 
-    * RC_WORKSPACE_ID:          Control room worksapce ID
+    * RC_WORKSPACE_ID:          Control room workspace ID
     * RC_PROCESS_ID:            Control room process ID
+    * RC_PROCESS_RUN_ID:        Control room process run ID
+    * RC_ROBOT_RUN_ID:          Control room robot run ID
 
     * RC_WORKITEM_ID:           Control room work item ID (input)
     """
@@ -103,27 +118,60 @@ class RobocorpAdapter(BaseAdapter):
         #: Current execution IDs
         self.workspace_id = required_env("RC_WORKSPACE_ID")
         self.process_id = required_env("RC_PROCESS_ID")
+        self.process_run_id = required_env("RC_PROCESS_RUN_ID")
+        self.step_run_id = required_env("RC_ACTIVITY_RUN_ID")
 
         #: Input queue of work items
-        #: NOTE: Only one input item currently supported, through runtime env
-        self.input_queue = [required_env("RC_WORKITEM_ID")]
+        self._initial_item_id: Optional[str] = required_env("RC_WORKITEM_ID")
 
-    def get_input(self) -> str:
-        try:
-            return self.input_queue.pop()
-        except IndexError as err:
-            raise EmptyQueue("No work items in input queue") from err
-
-    def create_output(self, parent_id: str, payload: Optional[JSONType] = None) -> str:
-        url = self.process_url(parent_id, "output")
-        logging.info("Creating output item: %s", url)
-
-        data = json_dumps({"payload": payload}).encode("utf-8")
-        response = requests.post(url, headers=self.process_headers, data=data)
+    def _pop_item(self):
+        # Get the next input work item from the cloud queue.
+        url = self.process_url(
+            "runs",
+            self.process_run_id,
+            "robotRuns",
+            self.step_run_id,
+            "reserve-next-work-item",
+        )
+        response = requests.post(url, headers=self.process_headers)
         self.handle_error(response)
 
-        fields = response.json()
-        return fields["id"]
+        return response.json()["workItemId"]
+
+    def reserve_input(self) -> str:
+        if self._initial_item_id:
+            item_id = self._initial_item_id
+            self._initial_item_id = None
+            return item_id
+
+        item_id = self._pop_item()
+        if not item_id:
+            raise EmptyQueue("No work items in the input queue")
+        return item_id
+
+    def release_input(self, item_id: str, state: State):
+        # Release the current input work item in the cloud queue.
+        url = self.process_url(
+            "runs",
+            self.process_run_id,
+            "robotRuns",
+            self.step_run_id,
+            "release-work-item",
+        )
+        body = {"workItemId": item_id, "state": state.value}
+        response = requests.post(url, headers=self.process_headers, json=body)
+        self.handle_error(response)
+
+    def create_output(self, parent_id: str, payload: Optional[JSONType] = None) -> str:
+        # Putting "output" for the current input work item identified by `parent_id`.
+        url = self.process_url("work-items", parent_id, "output")
+        logging.info("Creating output item: %s", url)
+
+        body = {"payload": payload}
+        response = requests.post(url, headers=self.process_headers, json=body)
+        self.handle_error(response)
+
+        return response.json()["id"]
 
     def load_payload(self, item_id: str) -> JSONType:
         url = self.workitem_url(item_id, "data")
@@ -188,11 +236,7 @@ class RobocorpAdapter(BaseAdapter):
             info["fileSize"],
         )
 
-        response = requests.post(
-            url,
-            headers={"Authorization": f"Bearer {self.workitem_token}"},
-            data=json.dumps(info),
-        )
+        response = requests.post(url, headers=self.workitem_headers, json=info)
         self.handle_error(response)
         data = response.json()
 
@@ -254,7 +298,7 @@ class RobocorpAdapter(BaseAdapter):
     def process_headers(self):
         return {"Authorization": f"Bearer {self.process_token}"}
 
-    def process_url(self, item_id: str, *parts: str):
+    def process_url(self, *parts: str):
         return url_join(
             self.process_host,
             "process-v1",
@@ -262,8 +306,6 @@ class RobocorpAdapter(BaseAdapter):
             self.workspace_id,
             "processes",
             self.process_id,
-            "work-items",
-            item_id,
             *parts,
         )
 
@@ -330,6 +372,7 @@ class FileAdapter(BaseAdapter):
         self.index: int = 0
 
     def _get_item(self, item_id: str) -> Tuple[str, Dict[str, Any]]:
+        # The work item ID is analogue to inputs/outputs list queues index.
         idx = int(item_id)
         if idx < len(self.inputs):
             return "input", self.inputs[idx]
@@ -339,7 +382,7 @@ class FileAdapter(BaseAdapter):
 
         raise ValueError(f"Unknown work item ID: {item_id}")
 
-    def get_input(self) -> str:
+    def reserve_input(self) -> str:
         if self.index >= len(self.inputs):
             raise EmptyQueue("No work items in the input queue")
 
@@ -347,6 +390,9 @@ class FileAdapter(BaseAdapter):
             return str(self.index)
         finally:
             self.index += 1
+
+    def release_input(self, item_id: str, state: State):
+        pass  # nothing happens for now on releasing local dev input work items
 
     @property
     def output_path(self):
@@ -480,10 +526,12 @@ class WorkItem:
     def __init__(self, adapter, item_id=None, parent_id=None):
         #: Adapter for loading/saving content
         self.adapter = adapter
-        #: This item's ID, if created
+        #: This item's and/or parent's ID
         self.id: Optional[str] = item_id
         self.parent_id: Optional[str] = parent_id
         assert self.id is not None or self.parent_id is not None
+        #: Item's state on release; can be set once
+        self.state: Optional[State] = None
         #: Remote JSON payload, and queued changes
         self._payload: JSONType = {}
         self._payload_cache: JSONType = {}
@@ -880,16 +928,15 @@ class WorkItems:
         If the library import argument ``autoload`` is truthy (default),
         this is called automatically when the Robot Framework suite
         starts.
-
-        **NOTE**: Currently only one input work item per execution is supported
-                  by Control Room.
         """
         if not _internal_call:
             self._raise_under_iteration("get input work item")
-        if isinstance(self.adapter, RobocorpAdapter):
-            self._raise_under_iteration("get more than one input item in the cloud")
 
-        item_id = self.adapter.get_input()
+        # Automatically release (with success) the lastly retrieved input work item
+        # when asking for the next one.
+        self.release_input_work_item(State.DONE, _auto_release=True)
+
+        item_id = self.adapter.reserve_input()
         item = WorkItem(item_id=item_id, parent_id=None, adapter=self.adapter)
         item.load()
 
@@ -921,12 +968,17 @@ class WorkItems:
         if not self.inputs:
             raise RuntimeError(
                 "Unable to create output work item without an input, "
-                "call `Get input work item` first"
+                "call `Get Input Work Item` first"
             )
 
         parent = self.inputs[-1]
-        item = WorkItem(item_id=None, parent_id=parent.id, adapter=self.adapter)
+        if parent.state is not None:
+            raise RuntimeError(
+                "Can't create any more output work items since the last input was "
+                "released, get a new input work item first"
+            )
 
+        item = WorkItem(item_id=None, parent_id=parent.id, adapter=self.adapter)
         self.outputs.append(item)
         self.current = item
         return self.current
@@ -1006,7 +1058,7 @@ class WorkItems:
 
         If key does not exist and default is not defined, raises `KeyError`.
 
-        :param key: Name of variable
+        :param name: Name of variable
         :param default: Default value if key does not exist
 
         Example:
@@ -1052,7 +1104,7 @@ class WorkItems:
     def set_work_item_variable(self, name, value):
         """Set a single variable value in the current work item.
 
-        :param key: Name of variable
+        :param name: Name of variable
         :param value: Value of variable
 
         Example:
@@ -1346,3 +1398,86 @@ class WorkItems:
             self._under_iteration.clear()
 
         return outputs
+
+    @keyword
+    def release_input_work_item(self, state: State, _auto_release: bool = False):
+        """Set the result state for the current input work item, then release it.
+
+        After this has been called, no more output work items can be created
+        unless a new input work item has been loaded.
+
+        :param state: The status on the currently processed input work item
+
+        Example:
+
+        .. code-block:: robotframework
+
+            *** Tasks ***
+            Explicit state set
+                ${payload} =     Get Work Item Payload
+                Log     ${payload}
+                Set Work Item State     SUCCESS
+
+        OR
+
+        .. code-block:: python
+
+            from RPA.Robocorp.WorkItems import State, WorkItems
+
+            library = WorkItems()
+
+            def process_and_set_state():
+                library.get_input_work_item()
+                library.release_input_work_item(State.DONE)
+                print(library.current.state.value)  # would print "State.DONE"
+
+            process_and_set_state()
+        """
+        # Note that `_auto_release` here is True when automatically releasing items.
+        # (internal call)
+
+        last_input = self.inputs[-1] if self.inputs else None
+        if not last_input:
+            if _auto_release:
+                # Have nothing to release and that's normal (reserving for the first
+                # time).
+                return
+            raise RuntimeError(
+                "Can't release without reserving first an input work item"
+            )
+        if last_input.state is not None:
+            if _auto_release:
+                # Item already released and that's normal when reaching an empty queue
+                # and we ask for another item again. We don't want to set states twice.
+                return
+            raise RuntimeError("Input work item already released")
+        assert last_input.parent_id is None, "set state on output item"
+        assert last_input.id is not None, "set state on input item with null ID"
+
+        if not isinstance(state, State):
+            state = State(state)
+        self.adapter.release_input(last_input.id, state)
+        last_input.state = state
+
+    @keyword
+    def get_current_work_item(self) -> WorkItem:
+        """Get the currently active work item.
+
+        The current work item is used as the target by other keywords
+        in this library.
+
+        Keywords ``Get input work item`` and ``Create output work item``
+        set the active work item automatically, and return the created
+        instance.
+
+        With this keyword the active work item can be retrieved manually.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${input} =    Get Current Work Item
+            ${output} =   Create Output Work Item
+            Set Current Work Item    ${input}
+        """
+        return self.current
