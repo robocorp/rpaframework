@@ -119,7 +119,7 @@ class RobocorpAdapter(BaseAdapter):
         self.workspace_id = required_env("RC_WORKSPACE_ID")
         self.process_id = required_env("RC_PROCESS_ID")
         self.process_run_id = required_env("RC_PROCESS_RUN_ID")
-        self.robot_run_id = required_env("RC_ROBOT_RUN_ID")
+        self.step_run_id = required_env("RC_ACTIVITY_RUN_ID")
 
         #: Input queue of work items
         self._initial_item_id: Optional[str] = required_env("RC_WORKITEM_ID")
@@ -130,7 +130,7 @@ class RobocorpAdapter(BaseAdapter):
             "runs",
             self.process_run_id,
             "robotRuns",
-            self.robot_run_id,
+            self.step_run_id,
             "reserve-next-work-item",
         )
         response = requests.post(url, headers=self.process_headers)
@@ -155,7 +155,7 @@ class RobocorpAdapter(BaseAdapter):
             "runs",
             self.process_run_id,
             "robotRuns",
-            self.robot_run_id,
+            self.step_run_id,
             "release-work-item",
         )
         body = {"workItemId": item_id, "state": state.value}
