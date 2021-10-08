@@ -922,9 +922,11 @@ class WorkItems:
 
     @keyword
     def get_input_work_item(self, _internal_call: bool = False):
-        """Load the next work item from the input queue,
-        and set it as the active work item.
+        """Load the next work item from the input queue, and set it as the active work
+        item.
 
+        Each time this is called, the previous input work item is released (as DONE)
+        prior to reserving the next one.
         If the library import argument ``autoload`` is truthy (default),
         this is called automatically when the Robot Framework suite
         starts.
