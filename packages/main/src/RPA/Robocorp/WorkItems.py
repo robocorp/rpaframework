@@ -46,7 +46,7 @@ class BaseAdapter(ABC):
 
     @abstractmethod
     def release_input(self, item_id: str, state: State):
-        """Set the state for an input work item, then release it."""
+        """Release the lastly retrieved input work item and set state."""
         raise NotImplementedError
 
     @abstractmethod
@@ -922,9 +922,11 @@ class WorkItems:
 
     @keyword
     def get_input_work_item(self, _internal_call: bool = False):
-        """Load the next work item from the input queue,
-        and set it as the active work item.
+        """Load the next work item from the input queue, and set it as the active work
+        item.
 
+        Each time this is called, the previous input work item is released (as DONE)
+        prior to reserving the next one.
         If the library import argument ``autoload`` is truthy (default),
         this is called automatically when the Robot Framework suite
         starts.
@@ -1401,12 +1403,12 @@ class WorkItems:
 
     @keyword
     def release_input_work_item(self, state: State, _auto_release: bool = False):
-        """Set the result state for the current input work item, then release it.
+        """Release the lastly retrieved input work item and set its state.
 
         After this has been called, no more output work items can be created
         unless a new input work item has been loaded.
 
-        :param state: The status on the currently processed input work item
+        :param state: The status on the last processed input work item
 
         Example:
 
@@ -1416,7 +1418,7 @@ class WorkItems:
             Explicit state set
                 ${payload} =     Get Work Item Payload
                 Log     ${payload}
-                Set Work Item State     SUCCESS
+                Release Input Work Item     DONE
 
         OR
 
