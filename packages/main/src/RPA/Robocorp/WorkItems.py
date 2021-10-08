@@ -1416,7 +1416,7 @@ class WorkItems:
             Explicit state set
                 ${payload} =     Get Work Item Payload
                 Log     ${payload}
-                Release Input Work Item     SUCCESS
+                Release Input Work Item     DONE
 
         OR
 
