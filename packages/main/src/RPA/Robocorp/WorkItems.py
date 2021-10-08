@@ -46,7 +46,7 @@ class BaseAdapter(ABC):
 
     @abstractmethod
     def release_input(self, item_id: str, state: State):
-        """Set the state for an input work item, then release it."""
+        """Release the lastly retrieved input work item and set state."""
         raise NotImplementedError
 
     @abstractmethod
@@ -1401,12 +1401,12 @@ class WorkItems:
 
     @keyword
     def release_input_work_item(self, state: State, _auto_release: bool = False):
-        """Set the result state for the current input work item, then release it.
+        """Release the lastly retrieved input work item and set its state.
 
         After this has been called, no more output work items can be created
         unless a new input work item has been loaded.
 
-        :param state: The status on the currently processed input work item
+        :param state: The status on the last processed input work item
 
         Example:
 
