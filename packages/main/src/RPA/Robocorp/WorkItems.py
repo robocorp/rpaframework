@@ -14,6 +14,7 @@ import requests
 from requests.exceptions import HTTPError
 from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn
+from tenacity import before_log, retry, stop_after_attempt, wait_exponential
 
 from RPA.FileSystem import FileSystem
 from RPA.core.helpers import UNDEFINED as UNDEFINED_VAR, import_by_name, required_env
@@ -124,6 +125,12 @@ class RobocorpAdapter(BaseAdapter):
         #: Input queue of work items
         self._initial_item_id: Optional[str] = required_env("RC_WORKITEM_ID")
 
+    @retry(
+        # try, wait 1s, retry, wait 2s, retry, wait 4s, retry, give-up
+        stop=stop_after_attempt(4),
+        wait=wait_exponential(min=1, max=4),
+        before=before_log(logging.root, logging.DEBUG),
+    )
     def _pop_item(self):
         # Get the next input work item from the cloud queue.
         url = self.process_url(
