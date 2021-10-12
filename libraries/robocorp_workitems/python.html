@@ -257,7 +257,7 @@
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.BaseAdapter.release_input">
 <em class="property">abstract </em><code class="sig-name descname">release_input</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">state: RPA.Robocorp.WorkItems.State</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.BaseAdapter.release_input" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the state for an input work item, then release it.</p>
+<dd><p>Release the lastly retrieved input work item and set state.</p>
 </dd></dl>
 
 <dl class="method">
@@ -361,7 +361,7 @@ folder as the given input database.</p>
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.FileAdapter.release_input">
 <code class="sig-name descname">release_input</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">state: RPA.Robocorp.WorkItems.State</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.FileAdapter.release_input" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the state for an input work item, then release it.</p>
+<dd><p>Release the lastly retrieved input work item and set state.</p>
 </dd></dl>
 
 <dl class="method">
@@ -460,7 +460,7 @@ folder as the given input database.</p>
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.RobocorpAdapter.release_input">
 <code class="sig-name descname">release_input</code><span class="sig-paren">(</span><em class="sig-param">item_id: str</em>, <em class="sig-param">state: RPA.Robocorp.WorkItems.State</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.RobocorpAdapter.release_input" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the state for an input work item, then release it.</p>
+<dd><p>Release the lastly retrieved input work item and set state.</p>
 </dd></dl>
 
 <dl class="method">
@@ -865,12 +865,18 @@ to the output queue after the keyword <code class="docutils literal notranslate"
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.for_each_input_work_item">
-<code class="sig-name descname">for_each_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">keyword_or_func: Union[str, Callable], *args, **kwargs</em><span class="sig-paren">)</span> &#x2192; List[Any]<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.for_each_input_work_item" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">for_each_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">keyword_or_func: Union[str, Callable], *args, _limit: int = 0, **kwargs</em><span class="sig-paren">)</span> &#x2192; List[Any]<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.for_each_input_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run a keyword or function for each work item in the input queue.</p>
+<p>Note that you have to get an initial input work item explicitly if <code class="docutils literal notranslate"><span class="pre">autoload</span></code>
+is falsy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>keyword_or_func</strong> – The RF keyword or Py function you want to map through
-all the work items</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyword_or_func</strong> – The RF keyword or Py function you want to map through
+all the work items</p></li>
+<li><p><strong>_limit</strong> – Limit the queue item retrieval to a certain amount, otherwise
+all the items are retrieved from the queue.</p></li>
+</ul>
 </dd>
 </dl>
 <p>Example:</p>
@@ -883,8 +889,8 @@ all the work items</p>
 
 <span class="gh">*** Tasks ***</span><span class="p"></span>
 <span class="gu">Log Payloads</span><span class="p"></span>
-<span class="p">    @{</span><span class="nv">results</span><span class="p">} =     </span><span class="nf">For Each Input Work Item</span><span class="p">    </span><span class="s">Log Payload</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Log</span><span class="p">   </span><span class="s">Items keys length: </span><span class="p">@{</span><span class="nv">results</span><span class="p">}</span>
+<span class="p">    @{</span><span class="nv">lengths</span><span class="p">} =     </span><span class="nf">For Each Input Work Item</span><span class="p">    </span><span class="s">Log Payload</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log</span><span class="p">   </span><span class="s">Payload lengths: </span><span class="p">@{</span><span class="nv">lengths</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>OR</p>
@@ -900,8 +906,8 @@ all the work items</p>
 
 <span class="k">def</span> <span class="nf">log_payloads</span><span class="p">():</span>
     <span class="n">library</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">for_each_input_work_item</span><span class="p">(</span><span class="n">log_payload</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Items keys length: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+    <span class="n">lengths</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">for_each_input_work_item</span><span class="p">(</span><span class="n">log_payload</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Items keys length: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">lengths</span><span class="p">)</span>
 
 <span class="n">log_payloads</span><span class="p">()</span>
 </pre></div>
@@ -930,9 +936,11 @@ instance.</p>
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.get_input_work_item">
 <code class="sig-name descname">get_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">_internal_call: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_input_work_item" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load the next work item from the input queue,
-and set it as the active work item.</p>
-<p>If the library import argument <code class="docutils literal notranslate"><span class="pre">autoload</span></code> is truthy (default),
+<dd><p>Load the next work item from the input queue, and set it as the active work
+item.</p>
+<p>Each time this is called, the previous input work item is released (as DONE)
+prior to reserving the next one.
+If the library import argument <code class="docutils literal notranslate"><span class="pre">autoload</span></code> is truthy (default),
 this is called automatically when the Robot Framework suite
 starts.</p>
 </dd></dl>
@@ -1061,12 +1069,12 @@ return their names and values as a dictionary.</p>
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.release_input_work_item">
 <code class="sig-name descname">release_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">state: RPA.Robocorp.WorkItems.State</em>, <em class="sig-param">_auto_release: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.release_input_work_item" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the result state for the current input work item, then release it.</p>
+<dd><p>Release the lastly retrieved input work item and set its state.</p>
 <p>After this has been called, no more output work items can be created
 unless a new input work item has been loaded.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>state</strong> – The status on the currently processed input work item</p>
+<dd class="field-odd"><p><strong>state</strong> – The status on the last processed input work item</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -1074,7 +1082,7 @@ unless a new input work item has been loaded.</p>
 <span class="gu">Explicit state set</span><span class="p"></span>
 <span class="p">    ${</span><span class="nv">payload</span><span class="p">} =     </span><span class="nf">Get Work Item Payload</span><span class="p"></span>
 <span class="p">    </span><span class="nf">Log</span><span class="p">     ${</span><span class="nv">payload</span><span class="p">}</span>
-<span class="p">    </span><span class="nf">Set Work Item State</span><span class="p">     </span><span class="s">SUCCESS</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Release Input Work Item</span><span class="p">     </span><span class="s">DONE</span><span class="p"></span>
 </pre></div>
 </div>
 <p>OR</p>

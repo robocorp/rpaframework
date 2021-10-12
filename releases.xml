@@ -6,6 +6,20 @@
 	<description>Recent updates to the Python Package Index for rpaframework</description>
 	<language>en</language>
 	<item>
+		<title>Release 11.4.0</title>
+		<link>https://pypi.org/project/rpaframework/11.4.0/</link>
+		<description>- Library &lt;b&gt;RPA.Robocorp.WorkItems&lt;/b&gt; support on iterating work items for both local
+&lt;br&gt;      development and in the cloud:
+&lt;br&gt;      - Add keyword `For Each Input Work Item` for applying a keyword over all input work
+&lt;br&gt;        items (:pr:`241`)
+&lt;br&gt;      - Add keywords `Get Current Work Item` and `Release Input Work Item` for releasing
+&lt;br&gt;        and setting the state of the currently processed input work item (:pr:`245`)
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Tue, 12 Oct 2021 13:58:07 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
 		<title>Release 11.3.0</title>
 		<link>https://pypi.org/project/rpaframework/11.3.0/</link>
 		<description>- Library &lt;b&gt;RPA.Robocorp.Vault&lt;/b&gt;: Supports both .yaml/.json local vault secrets file formats (:issue:`225`)

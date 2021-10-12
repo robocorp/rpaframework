@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+11.4.0
+------
+
 - Library **RPA.Robocorp.WorkItems** support on iterating work items for both local
   development and in the cloud:
 
