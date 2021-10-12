@@ -1342,6 +1342,9 @@ class WorkItems:
     ) -> List[Any]:
         """Run a keyword or function for each work item in the input queue.
 
+        Note that you have to get an initial input work item explicitly if ``autoload``
+        is falsy.
+
         :param keyword_or_func: The RF keyword or Py function you want to map through
             all the work items
         :param _limit: Limit the queue item retrieval to a certain amount, otherwise
@@ -1360,8 +1363,8 @@ class WorkItems:
 
             *** Tasks ***
             Log Payloads
-                @{results} =     For Each Input Work Item    Log Payload
-                Log   Payload lengths: @{results}
+                @{lengths} =     For Each Input Work Item    Log Payload
+                Log   Payload lengths: @{lengths}
 
         OR
 
@@ -1379,8 +1382,8 @@ class WorkItems:
 
             def log_payloads():
                 library.get_input_work_item()
-                results = library.for_each_input_work_item(log_payload)
-                logging.info("Items keys length: %s", results)
+                lengths = library.for_each_input_work_item(log_payload)
+                logging.info("Items keys length: %s", lengths)
 
             log_payloads()
 
