@@ -1338,12 +1338,14 @@ class WorkItems:
 
     @keyword
     def for_each_input_work_item(
-        self, keyword_or_func: Union[str, Callable], *args, **kwargs
+        self, keyword_or_func: Union[str, Callable], *args, _limit: int = 0, **kwargs
     ) -> List[Any]:
         """Run a keyword or function for each work item in the input queue.
 
         :param keyword_or_func: The RF keyword or Py function you want to map through
             all the work items
+        :param _limit: Limit the queue item retrieval to a certain amount, otherwise
+            all the items are retrieved from the queue.
 
         Example:
 
@@ -1359,7 +1361,7 @@ class WorkItems:
             *** Tasks ***
             Log Payloads
                 @{results} =     For Each Input Work Item    Log Payload
-                Log   Items keys length: @{results}
+                Log   Payload lengths: @{results}
 
         OR
 
@@ -1397,8 +1399,13 @@ class WorkItems:
 
         try:
             self._under_iteration.set()
+            count = 0
             while True:
                 outputs.append(to_call())
+                count += 1
+                if _limit and count >= _limit:
+                    break
+
                 try:
                     self.get_input_work_item(_internal_call=True)
                 except EmptyQueue:
