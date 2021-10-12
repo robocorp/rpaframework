@@ -1383,7 +1383,7 @@ class WorkItems:
             def log_payloads():
                 library.get_input_work_item()
                 lengths = library.for_each_input_work_item(log_payload)
-                logging.info("Items keys length: %s", lengths)
+                logging.info("Payload lengths: %s", lengths)
 
             log_payloads()
 
