@@ -62,6 +62,6 @@ Explicit state set
     Run Keyword And Expect Error    ${err_item_released}    Release Input Work Item     DONE
 
 Consume queue
-    @{results} =     For Each Input Work Item    Log Payload
+    @{results} =     For Each Input Work Item    Log Payload    _limit=1
     Log   Items keys length: @{results}
-    Length should be    ${results}  2
+    Length should be    ${results}  1
