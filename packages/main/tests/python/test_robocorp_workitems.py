@@ -486,10 +486,12 @@ class TestLibrary:
             "vars": {"cool": "beans", "yeah": "boi"},
         }
 
-    def test_iter_work_items(self, library):
+    @pytest.mark.parametrize("limit", [0, 1, 2, 3, 4])  # no, existing and over limit
+    def test_iter_work_items(self, library, limit):
         usernames = []
 
-        def func():
+        def func(a, b, r=3):
+            assert a + b == r
             # Collects the "username" variable from the payload if provided and returns
             #   True if found, False otherwise.
             payload = library.get_work_item_payload()
@@ -499,13 +501,19 @@ class TestLibrary:
             username = payload.get("username")
             if username:
                 usernames.append(username)
+
             return username is not None
 
         library.get_input_work_item()
-        results = library.for_each_input_work_item(func)
+        results = library.for_each_input_work_item(func, 1, 2, _limit=limit, r=3)
 
-        assert usernames == ["testguy", "another"]
-        assert results == [True, True, False]
+        expected_usernames = ["testguy", "another"]
+        expected_results = [True, True, False]
+        if limit:
+            expected_usernames = expected_usernames[:limit]
+            expected_results = expected_results[:limit]
+        assert usernames == expected_usernames
+        assert results == expected_results
 
     def test_release_work_item(self, library):
         library.get_input_work_item()
