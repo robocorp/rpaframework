@@ -358,8 +358,8 @@ class FileAdapter(BaseAdapter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self._input_path = None
-        self._output_path = None
+        self._input_path = UNDEFINED
+        self._output_path = UNDEFINED
 
         self.inputs: List[Dict[str, Any]] = self.load_database()
         self.outputs: List[Dict[str, Any]] = []
@@ -389,8 +389,8 @@ class FileAdapter(BaseAdapter):
         pass  # nothing happens for now on releasing local dev input work items
 
     @property
-    def input_path(self):
-        if self._input_path is None:
+    def input_path(self) -> Optional[Path]:
+        if self._input_path is UNDEFINED:
             # pylint: disable=invalid-envvar-default
             old_path = os.getenv("RPA_WORKITEMS_PATH")
             if old_path:
@@ -404,15 +404,15 @@ class FileAdapter(BaseAdapter):
                 logging.info("Resolving path: %s", path)
                 self._input_path = resolve_path(path)
             else:
-                # Will raise `FileNotFoundError` during inputs loading and will
-                # populate the list with one empty initial input.
-                self._input_path = ""
+                # Will raise `TypeError` during inputs loading and will populate the
+                # list with one empty initial input.
+                self._input_path = None
 
         return self._input_path
 
     @property
-    def output_path(self):
-        if not self._output_path:
+    def output_path(self) -> Path:
+        if self._output_path is UNDEFINED:
             # This is usually set once per loaded input work item.
             new_path = os.getenv("RPA_OUTPUT_WORKITEM_PATH")
             if new_path:
@@ -424,12 +424,17 @@ class FileAdapter(BaseAdapter):
                     "'RPA_OUTPUT_WORKITEM_PATH' env var instead "
                     "(more details under documentation: https://robocorp.com/docs/development-guide/control-room/data-pipeline#developing-with-work-items-locally)"  # noqa: E501
                 )
-                self._output_path = self.input_path.with_suffix(".output.json")
+                self._output_path = (
+                    self.input_path.with_suffix(".output.json") if self._input_path
+                    else resolve_path("output.json")  # FIXME
+                )
 
         return self._output_path
 
     def _save_to_disk(self, source: str) -> None:
         if source == "input":
+            if not self.input_path:
+                raise RuntimeError("Can't save input item without a path defined")
             path = self.input_path
             data = self.inputs
         else:
@@ -508,7 +513,7 @@ class FileAdapter(BaseAdapter):
             try:
                 with open(self.input_path, "r", encoding="utf-8") as infile:
                     data = json.load(infile)
-            except FileNotFoundError:
+            except (TypeError, FileNotFoundError):
                 logging.warning("No work items file found: %s", self.input_path)
                 data = []
 
