@@ -1354,17 +1354,16 @@ class WorkItems:
 
         .. code-block:: robotframework
 
+            Log Payloads
+                @{lengths} =     For Each Input Work Item    Log Payload
+                Log   Payload lengths: @{lengths}
+
             *** Keywords ***
             Log Payload
                 ${payload} =     Get Work Item Payload
                 Log To Console    ${payload}
                 ${len} =     Get Length    ${payload}
                 [Return]    ${len}
-
-            *** Tasks ***
-            Log Payloads
-                @{lengths} =     For Each Input Work Item    Log Payload
-                Log   Payload lengths: @{lengths}
 
         OR
 
@@ -1431,7 +1430,6 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            *** Tasks ***
             Explicit state set
                 ${payload} =     Get Work Item Payload
                 Log     ${payload}
