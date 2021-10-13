@@ -581,12 +581,12 @@ class TestFileAdapter:
             content=b"somedata",
         )
         assert adapter.inputs[0]["files"]["secondfile.txt"] == "secondfile2.txt"
-        assert os.path.isfile(Path(adapter.path).parent / "secondfile2.txt")
+        assert os.path.isfile(Path(adapter.input_path).parent / "secondfile2.txt")
 
     def test_save_data_input(self, adapter):
         item_id = adapter.reserve_input()
         adapter.save_payload(item_id, {"key": "value"})
-        with open(adapter.path) as fd:
+        with open(adapter.input_path) as fd:
             data = json.load(fd)
             assert data == [
                 {"payload": {"key": "value"}, "files": {"a-file": "file.txt"}}
@@ -600,7 +600,7 @@ class TestFileAdapter:
         if output:
             assert "output_dir" in output  # checks automatic dir creation
         else:
-            output = Path(adapter.path).with_suffix(".output.json")
+            output = Path(adapter.input_path).with_suffix(".output.json")
 
         assert os.path.isfile(output)
         with open(output) as fd:
