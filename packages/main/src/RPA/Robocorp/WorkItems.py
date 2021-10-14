@@ -436,7 +436,7 @@ class FileAdapter(BaseAdapter):
                 )
                 self._output_path = (
                     self.input_path.with_suffix(".output.json") if self._input_path
-                    else resolve_path("output.json")  # FIXME
+                    else resolve_path("output.json")
                 )
 
         return self._output_path
@@ -444,7 +444,10 @@ class FileAdapter(BaseAdapter):
     def _save_to_disk(self, source: str) -> None:
         if source == "input":
             if not self.input_path:
-                raise RuntimeError("Can't save input item without a path defined")
+                raise RuntimeError(
+                    "Can't save an input item without a path defined, use "
+                    "'RPA_INPUT_WORKITEM_PATH' env for this matter"
+                )
             path = self.input_path
             data = self.inputs
         else:
