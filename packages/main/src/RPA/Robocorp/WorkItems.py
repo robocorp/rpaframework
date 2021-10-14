@@ -316,13 +316,18 @@ class RobocorpAdapter(BaseAdapter):
             *parts,
         )
 
-    def handle_error(self, response: requests.Response):
+    @staticmethod
+    def handle_error(response: requests.Response):
         if response.ok:
             return
 
         fields = {}
         try:
             fields = response.json()
+            if not isinstance(fields, dict):
+                # For some reason we might still get a string from the deserialized
+                # retrieved JSON payload.
+                fields = json.loads(fields)
         except ValueError:
             response.raise_for_status()
 
