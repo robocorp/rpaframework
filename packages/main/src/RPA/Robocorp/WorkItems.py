@@ -199,8 +199,7 @@ class RobocorpAdapter(BaseAdapter):
         url = self.workitem_url(item_id, "data")
         logging.info("Saving work item payload: %s", url)
 
-        data = json_dumps(payload).encode("utf-8")
-        response = requests.put(url, headers=self.workitem_headers, data=data)
+        response = requests.put(url, headers=self.workitem_headers, json=payload)
         self.handle_error(response)
 
     def list_files(self, item_id: str) -> List[str]:
@@ -288,7 +287,10 @@ class RobocorpAdapter(BaseAdapter):
 
     @property
     def workitem_headers(self):
-        return {"Authorization": f"Bearer {self.workitem_token}"}
+        return {
+            "Authorization": f"Bearer {self.workitem_token}",
+            "Content-type": "application/json",
+        }
 
     def workitem_url(self, item_id: str, *parts: str):
         return url_join(
@@ -303,7 +305,10 @@ class RobocorpAdapter(BaseAdapter):
 
     @property
     def process_headers(self):
-        return {"Authorization": f"Bearer {self.process_token}"}
+        return {
+            "Authorization": f"Bearer {self.process_token}",
+            "Content-type": "application/json",
+        }
 
     def process_url(self, *parts: str):
         return url_join(
