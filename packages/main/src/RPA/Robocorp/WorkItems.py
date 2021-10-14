@@ -435,7 +435,8 @@ class FileAdapter(BaseAdapter):
                     "(more details under documentation: https://robocorp.com/docs/development-guide/control-room/data-pipeline#developing-with-work-items-locally)"  # noqa: E501
                 )
                 self._output_path = (
-                    self.input_path.with_suffix(".output.json") if self._input_path
+                    self.input_path.with_suffix(".output.json")
+                    if self._input_path
                     else resolve_path("output.json")
                 )
 
@@ -491,7 +492,9 @@ class FileAdapter(BaseAdapter):
 
         path = files[name]
         if not Path(path).is_absolute():
-            parent = self.input_path.parent if source == "input" else self.output_path.parent
+            parent = (
+                self.input_path.parent if source == "input" else self.output_path.parent
+            )
             path = parent / path
 
         with open(path, "rb") as infile:
@@ -501,7 +504,9 @@ class FileAdapter(BaseAdapter):
         source, item = self._get_item(item_id)
         files = item.setdefault("files", {})
 
-        parent = self.input_path.parent if source == "input" else self.output_path.parent
+        parent = (
+            self.input_path.parent if source == "input" else self.output_path.parent
+        )
         path = parent / original_name  # the file on disk will keep its original name
         with open(path, "wb") as fd:
             fd.write(content)
