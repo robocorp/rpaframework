@@ -5,6 +5,7 @@ import pytest
 import tempfile
 from contextlib import contextmanager
 from pathlib import Path
+from unittest.mock import patch
 
 from RPA.Robocorp.WorkItems import (
     BaseAdapter,
@@ -537,11 +538,14 @@ class TestFileAdapter:
     def _input_work_items(self):
         with tempfile.TemporaryDirectory() as datadir:
             items_in = os.path.join(datadir, "items.json")
-            items_out = os.path.join(datadir, "output_dir", "items-out.json")
             with open(items_in, "w") as fd:
                 json.dump(ITEMS_JSON, fd)
             with open(os.path.join(datadir, "file.txt"), "w") as fd:
                 fd.write("some mock content")
+
+            output_dir = os.path.join(datadir, "output_dir")
+            os.makedirs(output_dir)
+            items_out = os.path.join(output_dir, "items-out.json")
 
             yield items_in, items_out
 
@@ -556,6 +560,17 @@ class TestFileAdapter:
             monkeypatch.setenv(request.param[0], items_in)
             monkeypatch.setenv(request.param[1], items_out)
             yield FileAdapter()
+
+    @pytest.fixture
+    def empty_adapter(self):
+        # Create the items JSON files (and dir paths) but don't set any env pointing to
+        # them.
+        with self._input_work_items() as (_, items_out):
+            adapter = FileAdapter()
+            # We use this with the `BuiltIn` mock since there's no running robot
+            # context here. (while solving env variables)
+            adapter.output_dir = os.path.dirname(items_out)
+            yield adapter
 
     def test_load_data(self, adapter):
         item_id = adapter.reserve_input()
@@ -593,7 +608,7 @@ class TestFileAdapter:
             ]
 
     def test_save_data_output(self, adapter):
-        item_id = adapter.create_output(0, {})
+        item_id = adapter.create_output("0", {})
         adapter.save_payload(item_id, {"key": "value"})
 
         output = os.getenv("RPA_OUTPUT_WORKITEM_PATH")
@@ -631,3 +646,20 @@ class TestFileAdapter:
             monkeypatch.setenv("RPA_WORKITEMS_PATH", items)
             adapter = FileAdapter()
             assert adapter.inputs == [{"payload": {}}]
+
+    @patch("RPA.Robocorp.WorkItems.BuiltIn")
+    def test_without_items_paths(self, mock_builtin, empty_adapter):
+        assert empty_adapter.inputs == [{"payload": {}}]
+        with pytest.raises(RuntimeError):
+            # Can't save inputs since there's no path defined for them.
+            empty_adapter.save_payload("0", {"input": "value"})
+
+        # But we can save outputs even if there's no i/o path defined at all.
+        mock_builtin.return_value.get_variable_value.return_value = (
+            empty_adapter.output_dir
+        )
+        empty_adapter.create_output("1", {"var": "some-value"})
+        assert os.path.isfile(empty_adapter.output_path)
+        with open(empty_adapter.output_path) as stream:
+            data = json.load(stream)
+            assert data == [{"payload": {"var": "some-value"}, "files": {}}]
