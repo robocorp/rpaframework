@@ -289,7 +289,7 @@ class RobocorpAdapter(BaseAdapter):
     def workitem_headers(self):
         return {
             "Authorization": f"Bearer {self.workitem_token}",
-            "Content-type": "application/json",
+            "Content-Type": "application/json",
         }
 
     def workitem_url(self, item_id: str, *parts: str):
@@ -307,7 +307,7 @@ class RobocorpAdapter(BaseAdapter):
     def process_headers(self):
         return {
             "Authorization": f"Bearer {self.process_token}",
-            "Content-type": "application/json",
+            "Content-Type": "application/json",
         }
 
     def process_url(self, *parts: str):
@@ -437,7 +437,8 @@ class FileAdapter(BaseAdapter):
                 self._output_path = (
                     self.input_path.with_suffix(".output.json")
                     if self._input_path
-                    else resolve_path("output.json")
+                    else resolve_path(BuiltIn().get_variable_value("${OUTPUT_DIR}"))
+                    / "output.json"
                 )
 
         return self._output_path
