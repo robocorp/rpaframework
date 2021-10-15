@@ -533,7 +533,7 @@ class FileAdapter(BaseAdapter):
                 with open(self.input_path, "r", encoding="utf-8") as infile:
                     data = json.load(infile)
             except (TypeError, FileNotFoundError):
-                logging.warning("No work items file found: %s", self.input_path)
+                logging.warning("No input work items file found: %s", self.input_path)
                 data = []
 
             if isinstance(data, list):
