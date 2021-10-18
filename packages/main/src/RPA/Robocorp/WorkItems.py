@@ -17,7 +17,7 @@ from robot.libraries.BuiltIn import BuiltIn
 from tenacity import before_log, retry, stop_after_attempt, wait_exponential
 
 from RPA.FileSystem import FileSystem
-from RPA.core.helpers import UNDEFINED as UNDEFINED_VAR, import_by_name, required_env
+from RPA.core.helpers import import_by_name, required_env
 from RPA.core.logger import deprecation
 from RPA.core.notebook import notebook_print
 from .utils import JSONType, url_join, json_dumps, is_json_equal, truncate, resolve_path
@@ -199,8 +199,7 @@ class RobocorpAdapter(BaseAdapter):
         url = self.workitem_url(item_id, "data")
         logging.info("Saving work item payload: %s", url)
 
-        data = json_dumps(payload).encode("utf-8")
-        response = requests.put(url, headers=self.workitem_headers, data=data)
+        response = requests.put(url, headers=self.workitem_headers, json=payload)
         self.handle_error(response)
 
     def list_files(self, item_id: str) -> List[str]:
@@ -288,7 +287,10 @@ class RobocorpAdapter(BaseAdapter):
 
     @property
     def workitem_headers(self):
-        return {"Authorization": f"Bearer {self.workitem_token}"}
+        return {
+            "Authorization": f"Bearer {self.workitem_token}",
+            "Content-Type": "application/json",
+        }
 
     def workitem_url(self, item_id: str, *parts: str):
         return url_join(
@@ -303,7 +305,10 @@ class RobocorpAdapter(BaseAdapter):
 
     @property
     def process_headers(self):
-        return {"Authorization": f"Bearer {self.process_token}"}
+        return {
+            "Authorization": f"Bearer {self.process_token}",
+            "Content-Type": "application/json",
+        }
 
     def process_url(self, *parts: str):
         return url_join(
@@ -316,13 +321,18 @@ class RobocorpAdapter(BaseAdapter):
             *parts,
         )
 
-    def handle_error(self, response: requests.Response):
+    @staticmethod
+    def handle_error(response: requests.Response):
         if response.ok:
             return
 
         fields = {}
         try:
             fields = response.json()
+            if not isinstance(fields, dict):
+                # For some reason we might still get a string from the deserialized
+                # retrieved JSON payload.
+                fields = json.loads(fields)
         except ValueError:
             response.raise_for_status()
 
@@ -349,30 +359,17 @@ class FileAdapter(BaseAdapter):
     Reads and writes all work item files from/to the same parent
     folder as the given input database.
 
-    Required environment variables:
-
-    * RPA_INPUT_WORKITEM_PATH:  Path to work items input database file
-
     Optional environment variables:
 
+    * RPA_INPUT_WORKITEM_PATH:  Path to work items input database file
     * RPA_OUTPUT_WORKITEM_PATH:  Path to work items output database file
     """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # pylint: disable=invalid-envvar-default
-        old_path = os.getenv("RPA_WORKITEMS_PATH", UNDEFINED_VAR)
-        if old_path is not UNDEFINED_VAR:
-            deprecation(
-                "Work items load - Old path style usage detected, please use the "
-                "'RPA_INPUT_WORKITEM_PATH' env var "
-                "(more details under documentation: https://robocorp.com/docs/development-guide/control-room/data-pipeline#developing-with-work-items-locally)"  # noqa: E501
-            )
-        path = required_env("RPA_INPUT_WORKITEM_PATH", default=old_path)
-        logging.info("Resolving path: %s", path)
-        self.path = resolve_path(path)
-        self._output_path = None
+        self._input_path = UNDEFINED
+        self._output_path = UNDEFINED
 
         self.inputs: List[Dict[str, Any]] = self.load_database()
         self.outputs: List[Dict[str, Any]] = []
@@ -402,8 +399,30 @@ class FileAdapter(BaseAdapter):
         pass  # nothing happens for now on releasing local dev input work items
 
     @property
-    def output_path(self):
-        if not self._output_path:
+    def input_path(self) -> Optional[Path]:
+        if self._input_path is UNDEFINED:
+            # pylint: disable=invalid-envvar-default
+            old_path = os.getenv("RPA_WORKITEMS_PATH")
+            if old_path:
+                deprecation(
+                    "Work items load - Old path style usage detected, please use the "
+                    "'RPA_INPUT_WORKITEM_PATH' env var instead "
+                    "(more details under documentation: https://robocorp.com/docs/development-guide/control-room/data-pipeline#developing-with-work-items-locally)"  # noqa: E501
+                )
+            path = os.getenv("RPA_INPUT_WORKITEM_PATH", default=old_path)
+            if path:
+                logging.info("Resolving path: %s", path)
+                self._input_path = resolve_path(path)
+            else:
+                # Will raise `TypeError` during inputs loading and will populate the
+                # list with one empty initial input.
+                self._input_path = None
+
+        return self._input_path
+
+    @property
+    def output_path(self) -> Path:
+        if self._output_path is UNDEFINED:
             # This is usually set once per loaded input work item.
             new_path = os.getenv("RPA_OUTPUT_WORKITEM_PATH")
             if new_path:
@@ -412,16 +431,26 @@ class FileAdapter(BaseAdapter):
             else:
                 deprecation(
                     "Work items save - Old path style usage detected, please use the "
-                    "'RPA_OUTPUT_WORKITEM_PATH' env var "
+                    "'RPA_OUTPUT_WORKITEM_PATH' env var instead "
                     "(more details under documentation: https://robocorp.com/docs/development-guide/control-room/data-pipeline#developing-with-work-items-locally)"  # noqa: E501
                 )
-                self._output_path = self.path.with_suffix(".output.json")
+                if not self.input_path:
+                    raise RuntimeError(
+                        "You must provide a path for at least one of the input or "
+                        "output work items files"
+                    )
+                self._output_path = self.input_path.with_suffix(".output.json")
 
         return self._output_path
 
     def _save_to_disk(self, source: str) -> None:
         if source == "input":
-            path = self.path
+            if not self.input_path:
+                raise RuntimeError(
+                    "Can't save an input item without a path defined, use "
+                    "'RPA_INPUT_WORKITEM_PATH' env for this matter"
+                )
+            path = self.input_path
             data = self.inputs
         else:
             path = self.output_path
@@ -464,7 +493,9 @@ class FileAdapter(BaseAdapter):
 
         path = files[name]
         if not Path(path).is_absolute():
-            parent = self.path.parent if source == "input" else self.output_path.parent
+            parent = (
+                self.input_path.parent if source == "input" else self.output_path.parent
+            )
             path = parent / path
 
         with open(path, "rb") as infile:
@@ -474,7 +505,9 @@ class FileAdapter(BaseAdapter):
         source, item = self._get_item(item_id)
         files = item.setdefault("files", {})
 
-        parent = self.path.parent if source == "input" else self.output_path.parent
+        parent = (
+            self.input_path.parent if source == "input" else self.output_path.parent
+        )
         path = parent / original_name  # the file on disk will keep its original name
         with open(path, "wb") as fd:
             fd.write(content)
@@ -497,10 +530,10 @@ class FileAdapter(BaseAdapter):
     def load_database(self) -> List:
         try:
             try:
-                with open(self.path, "r", encoding="utf-8") as infile:
+                with open(self.input_path, "r", encoding="utf-8") as infile:
                     data = json.load(infile)
-            except FileNotFoundError:
-                logging.warning("No work items file found: %s", self.path)
+            except (TypeError, FileNotFoundError):
+                logging.warning("No input work items file found: %s", self.input_path)
                 data = []
 
             if isinstance(data, list):
@@ -1354,17 +1387,16 @@ class WorkItems:
 
         .. code-block:: robotframework
 
+            Log Payloads
+                @{lengths} =     For Each Input Work Item    Log Payload
+                Log   Payload lengths: @{lengths}
+
             *** Keywords ***
             Log Payload
                 ${payload} =     Get Work Item Payload
                 Log To Console    ${payload}
                 ${len} =     Get Length    ${payload}
                 [Return]    ${len}
-
-            *** Tasks ***
-            Log Payloads
-                @{lengths} =     For Each Input Work Item    Log Payload
-                Log   Payload lengths: @{lengths}
 
         OR
 
@@ -1383,7 +1415,7 @@ class WorkItems:
             def log_payloads():
                 library.get_input_work_item()
                 lengths = library.for_each_input_work_item(log_payload)
-                logging.info("Items keys length: %s", lengths)
+                logging.info("Payload lengths: %s", lengths)
 
             log_payloads()
 
@@ -1431,7 +1463,6 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            *** Tasks ***
             Explicit state set
                 ${payload} =     Get Work Item Payload
                 Log     ${payload}

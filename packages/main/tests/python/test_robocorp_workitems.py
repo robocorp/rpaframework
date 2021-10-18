@@ -537,11 +537,14 @@ class TestFileAdapter:
     def _input_work_items(self):
         with tempfile.TemporaryDirectory() as datadir:
             items_in = os.path.join(datadir, "items.json")
-            items_out = os.path.join(datadir, "output_dir", "items-out.json")
             with open(items_in, "w") as fd:
                 json.dump(ITEMS_JSON, fd)
             with open(os.path.join(datadir, "file.txt"), "w") as fd:
                 fd.write("some mock content")
+
+            output_dir = os.path.join(datadir, "output_dir")
+            os.makedirs(output_dir)
+            items_out = os.path.join(output_dir, "items-out.json")
 
             yield items_in, items_out
 
@@ -555,6 +558,13 @@ class TestFileAdapter:
         with self._input_work_items() as (items_in, items_out):
             monkeypatch.setenv(request.param[0], items_in)
             monkeypatch.setenv(request.param[1], items_out)
+            yield FileAdapter()
+
+    @pytest.fixture
+    def empty_adapter(self):
+        # Create the items JSON files (and dir paths) but don't set any env pointing to
+        # them.
+        with self._input_work_items():
             yield FileAdapter()
 
     def test_load_data(self, adapter):
@@ -581,26 +591,26 @@ class TestFileAdapter:
             content=b"somedata",
         )
         assert adapter.inputs[0]["files"]["secondfile.txt"] == "secondfile2.txt"
-        assert os.path.isfile(Path(adapter.path).parent / "secondfile2.txt")
+        assert os.path.isfile(Path(adapter.input_path).parent / "secondfile2.txt")
 
     def test_save_data_input(self, adapter):
         item_id = adapter.reserve_input()
         adapter.save_payload(item_id, {"key": "value"})
-        with open(adapter.path) as fd:
+        with open(adapter.input_path) as fd:
             data = json.load(fd)
             assert data == [
                 {"payload": {"key": "value"}, "files": {"a-file": "file.txt"}}
             ]
 
     def test_save_data_output(self, adapter):
-        item_id = adapter.create_output(0, {})
+        item_id = adapter.create_output("0", {})
         adapter.save_payload(item_id, {"key": "value"})
 
         output = os.getenv("RPA_OUTPUT_WORKITEM_PATH")
         if output:
             assert "output_dir" in output  # checks automatic dir creation
         else:
-            output = Path(adapter.path).with_suffix(".output.json")
+            output = Path(adapter.input_path).with_suffix(".output.json")
 
         assert os.path.isfile(output)
         with open(output) as fd:
@@ -631,3 +641,14 @@ class TestFileAdapter:
             monkeypatch.setenv("RPA_WORKITEMS_PATH", items)
             adapter = FileAdapter()
             assert adapter.inputs == [{"payload": {}}]
+
+    def test_without_items_paths(self, empty_adapter):
+        assert empty_adapter.inputs == [{"payload": {}}]
+
+        # Can't save inputs nor outputs since there's no path defined for them.
+        with pytest.raises(RuntimeError):
+            empty_adapter.save_payload("0", {"input": "value"})
+        with pytest.raises(RuntimeError):
+            _ = empty_adapter.output_path
+        with pytest.raises(RuntimeError):
+            empty_adapter.create_output("1", {"var": "some-value"})
