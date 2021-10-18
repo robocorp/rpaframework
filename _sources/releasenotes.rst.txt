@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+- Library **RPA.Robocorp.WorkItems**: Default input item during local dev, docs and
+  cloud requests hotfixes (:pr:`253`)
+
 11.4.0
 ------
 
