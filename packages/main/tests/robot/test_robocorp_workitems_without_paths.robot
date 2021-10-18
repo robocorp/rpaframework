@@ -14,7 +14,7 @@ Load mock library
     Remove environment variable    RPA_OUTPUT_WORKITEM_PATH
 
     Import library    RPA.Robocorp.WorkItems     default_adapter=FileAdapter
-    # For some reason autoload (which is True here) doesn't work.
+    # Autoload (which is True here) doesn't work since the suite is already started.
     Get Input Work Item  # so we call it explicitly
 
 
