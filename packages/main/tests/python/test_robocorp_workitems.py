@@ -5,7 +5,6 @@ import pytest
 import tempfile
 from contextlib import contextmanager
 from pathlib import Path
-from unittest.mock import patch
 
 from RPA.Robocorp.WorkItems import (
     BaseAdapter,
@@ -565,12 +564,8 @@ class TestFileAdapter:
     def empty_adapter(self):
         # Create the items JSON files (and dir paths) but don't set any env pointing to
         # them.
-        with self._input_work_items() as (_, items_out):
-            adapter = FileAdapter()
-            # We use this with the `BuiltIn` mock since there's no running robot
-            # context here. (while solving env variables)
-            adapter.output_dir = os.path.dirname(items_out)
-            yield adapter
+        with self._input_work_items():
+            yield FileAdapter()
 
     def test_load_data(self, adapter):
         item_id = adapter.reserve_input()
@@ -647,19 +642,13 @@ class TestFileAdapter:
             adapter = FileAdapter()
             assert adapter.inputs == [{"payload": {}}]
 
-    @patch("RPA.Robocorp.WorkItems.BuiltIn")
-    def test_without_items_paths(self, mock_builtin, empty_adapter):
+    def test_without_items_paths(self, empty_adapter):
         assert empty_adapter.inputs == [{"payload": {}}]
-        with pytest.raises(RuntimeError):
-            # Can't save inputs since there's no path defined for them.
-            empty_adapter.save_payload("0", {"input": "value"})
 
-        # But we can save outputs even if there's no i/o path defined at all.
-        mock_builtin.return_value.get_variable_value.return_value = (
-            empty_adapter.output_dir
-        )
-        empty_adapter.create_output("1", {"var": "some-value"})
-        assert os.path.isfile(empty_adapter.output_path)
-        with open(empty_adapter.output_path) as stream:
-            data = json.load(stream)
-            assert data == [{"payload": {"var": "some-value"}, "files": {}}]
+        # Can't save inputs nor outputs since there's no path defined for them.
+        with pytest.raises(RuntimeError):
+            empty_adapter.save_payload("0", {"input": "value"})
+        with pytest.raises(RuntimeError):
+            _ = empty_adapter.output_path
+        with pytest.raises(RuntimeError):
+            empty_adapter.create_output("1", {"var": "some-value"})

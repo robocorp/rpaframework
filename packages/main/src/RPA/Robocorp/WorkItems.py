@@ -434,12 +434,12 @@ class FileAdapter(BaseAdapter):
                     "'RPA_OUTPUT_WORKITEM_PATH' env var instead "
                     "(more details under documentation: https://robocorp.com/docs/development-guide/control-room/data-pipeline#developing-with-work-items-locally)"  # noqa: E501
                 )
-                self._output_path = (
-                    self.input_path.with_suffix(".output.json")
-                    if self._input_path
-                    else resolve_path(BuiltIn().get_variable_value("${OUTPUT_DIR}"))
-                    / "output.json"
-                )
+                if not self.input_path:
+                    raise RuntimeError(
+                        "You must provide a path for at least one of the input or "
+                        "output work items files"
+                    )
+                self._output_path = self.input_path.with_suffix(".output.json")
 
         return self._output_path
 
