@@ -113,9 +113,13 @@ class Requests:
     @staticmethod
     def _needs_retry(exc: BaseException) -> bool:
         # Don't retry on server (500/internal/unexpected) and auth errors (401/403).
+        no_retry_codes = [400, 401, 403, 409, 500]
+        no_retry_messages = ["ERR_UNEXPECTED"]
+
         if isinstance(exc, RequestsHTTPError):
-            if exc.status_code in (401, 403, 500) or exc.status_message in (
-                "ERR_UNEXPECTED",
+            if (
+                exc.status_code in no_retry_codes
+                or exc.status_message in no_retry_messages
             ):
                 return False
 
