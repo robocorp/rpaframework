@@ -1,13 +1,20 @@
 import json
 import logging
 import urllib.parse as urlparse
+from json import JSONDecodeError
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Union
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
 import requests
 from requests.exceptions import HTTPError
-from tenacity import before_log, retry, stop_after_attempt, wait_exponential
+from tenacity import (
+    before_sleep_log,
+    retry,
+    retry_if_exception,
+    stop_after_attempt,
+    wait_random_exponential,
+)
 
 
 JSONType = Union[Dict[str, Any], List[Any], str, int, float, bool, None]
@@ -50,6 +57,16 @@ def resolve_path(path: str) -> Path:
     return Path(path).expanduser().resolve()
 
 
+class RequestsHTTPError(HTTPError):
+    def __init__(
+        self, *args, status_code: int = 0, status_message: str = "Error", **kwargs
+    ):
+        super().__init__(*args, **kwargs)
+
+        self.status_code = status_code
+        self.status_message = status_message
+
+
 class Requests:
     """Wrapper over `requests` 3rd-party with error handling and retrying support."""
 
@@ -69,25 +86,45 @@ class Requests:
                 # For some reason we might still get a string from the deserialized
                 # retrieved JSON payload.
                 fields = json.loads(fields)
-        except ValueError:
-            response.raise_for_status()
+        except (JSONDecodeError, ValueError):
+            # No `fields` dictionary can be obtained at all.
+            try:
+                response.raise_for_status()
+            except Exception as exc:  # pylint: disable=broad-except
+                raise RequestsHTTPError(exc, status_code=response.status_code) from exc
 
+        status_code = 0
+        status_message = "Error"
         try:
-            status_code = fields.get("status", response.status_code)
-            status_msg = fields.get("error", {}).get("code", "Error")
+            status_code = int(fields.get("status", response.status_code))
+            status_message = fields.get("error", {}).get("code", "Error")
             reason = fields.get("message") or fields.get("error", {}).get(
                 "message", response.reason
             )
 
-            raise HTTPError(f"{status_code} {status_msg}: {reason}")
-        except Exception as err:  # pylint: disable=broad-except
-            raise HTTPError(str(fields)) from err
+            raise HTTPError(f"{status_code} {status_message}: {reason}")
+        except Exception as exc:  # pylint: disable=broad-except
+            raise RequestsHTTPError(
+                str(fields), status_code=status_code, status_message=status_message
+            ) from exc
+
+    @staticmethod
+    def _needs_retry(exc: BaseException) -> bool:
+        # Don't retry on server (500/internal/unexpected) and auth errors (401/403).
+        if isinstance(exc, RequestsHTTPError):
+            if exc.status_code in (401, 403, 500) or exc.status_message in (
+                "ERR_UNEXPECTED",
+            ):
+                return False
+
+        return True
 
     @retry(
-        # try, wait 1s, retry, wait 2s, retry, wait 4s, retry, give-up
-        stop=stop_after_attempt(4),
-        wait=wait_exponential(min=1, max=4),
-        before=before_log(logging.root, logging.DEBUG),
+        stop=stop_after_attempt(5),
+        reraise=True,
+        retry=retry_if_exception(_needs_retry),
+        before_sleep=before_sleep_log(logging.root, logging.DEBUG),
+        wait=wait_random_exponential(multiplier=2, max=5),
     )
     def _request(
         self,
@@ -104,6 +141,7 @@ class Requests:
 
         response = func(url, *args, headers=headers, **kwargs)
         handle_error(response)
+
         return response
 
     def get(self, *args, **kwargs) -> requests.Response:
