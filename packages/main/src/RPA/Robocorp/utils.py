@@ -58,7 +58,7 @@ def resolve_path(path: str) -> Path:
 
 
 class RequestsHTTPError(HTTPError):
-    """Custom HTTP `requests` error with status code and message."""
+    """Custom `requests` HTTP error with status code and message."""
 
     def __init__(
         self, *args, status_code: int = 0, status_message: str = "Error", **kwargs

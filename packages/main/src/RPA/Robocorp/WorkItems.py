@@ -20,11 +20,11 @@ from RPA.core.notebook import notebook_print
 from .utils import (
     JSONType,
     Requests,
-    url_join,
-    json_dumps,
     is_json_equal,
-    truncate,
+    json_dumps,
     resolve_path,
+    truncate,
+    url_join,
 )
 
 
