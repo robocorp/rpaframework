@@ -7,6 +7,8 @@ from contextlib import contextmanager
 from pathlib import Path
 from unittest import mock
 
+from requests import HTTPError
+
 from RPA.Robocorp.WorkItems import (
     BaseAdapter,
     EmptyQueue,
@@ -15,6 +17,7 @@ from RPA.Robocorp.WorkItems import (
     State,
     WorkItems,
 )
+from RPA.Robocorp.utils import RequestsHTTPError
 
 
 VARIABLES_FIRST = {"username": "testguy", "address": "guy@company.com"}
@@ -689,7 +692,9 @@ class TestRobocorpAdapter:
             "RPA.Robocorp.utils.requests.put"
         ) as mock_put, mock.patch(
             "RPA.Robocorp.utils.requests.delete"
-        ) as mock_delete:
+        ) as mock_delete, mock.patch(
+            "time.sleep", return_value=None
+        ):
             self.mock_get = mock_get
             self.mock_post = mock_post
             self.mock_put = mock_put
@@ -751,3 +756,51 @@ class TestRobocorpAdapter:
 
         url = f"https://api.workitem.com/json-v1/workspaces/1/workitems/{item_id}/files/{file_id}"
         self.mock_delete.assert_called_once_with(url, headers=self.HEADERS_WORKITEM)
+
+    def test_list_files(self, adapter):
+        expected_files = ["just.py", "mark.robot", "it.txt"]
+        self.mock_get.return_value.json.return_value = [
+            {"fileName": expected_files[0], "fileId": "1"},
+            {"fileName": expected_files[1], "fileId": "2"},
+            {"fileName": expected_files[2], "fileId": "3"},
+        ]
+        files = adapter.list_files("4")
+        assert files == expected_files
+
+    @pytest.fixture(
+        params=[
+            # Requests response attribute values for: `.ok`, `.json()`, `.raise_for_status()`
+            (False, {}, None),
+            (False, None, HTTPError()),
+        ]
+    )
+    def failing_response(self, request):
+        resp = mock.MagicMock()
+        resp.ok = request.param[0]
+        resp.json.return_value = request.param[1]
+        resp.raise_for_status.side_effect = request.param[2]
+        return resp
+
+    @pytest.mark.parametrize(
+        "status_code,call_count",
+        [
+            # Retrying enabled:
+            (429, 5),
+            # Retrying disabled:
+            (400, 1),
+            (401, 1),
+            (403, 1),
+            (409, 1),
+            (500, 1),
+        ],
+    )
+    def test_list_files_retrying(
+        self, adapter, failing_response, status_code, call_count
+    ):
+        self.mock_get.return_value = failing_response
+        failing_response.status_code = status_code
+
+        with pytest.raises(RequestsHTTPError) as exc_info:
+            adapter.list_files("4")
+        assert exc_info.value.status_code == status_code
+        assert self.mock_get.call_count == call_count  # tried once or 5 times in a row

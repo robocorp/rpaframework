@@ -88,7 +88,7 @@ class Requests:
                 # For some reason we might still get a string from the deserialized
                 # retrieved JSON payload.
                 fields = json.loads(fields)
-        except (JSONDecodeError, ValueError):
+        except (JSONDecodeError, ValueError, TypeError):
             # No `fields` dictionary can be obtained at all.
             try:
                 response.raise_for_status()
