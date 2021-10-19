@@ -671,11 +671,11 @@ class TestRobocorpAdapter:
 
     HEADERS_WORKITEM = {
         "Authorization": f"Bearer {ENV['RC_API_WORKITEM_TOKEN']}",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
     }
     HEADERS_PROCESS = {
         "Authorization": f"Bearer {ENV['RC_API_PROCESS_TOKEN']}",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
     }
 
     @pytest.fixture
@@ -713,7 +713,9 @@ class TestRobocorpAdapter:
 
         url = "https://api.process.com/process-v1/workspaces/1/processes/5/runs/2/robotRuns/3/release-work-item"
         body = {"workItemId": item_id, "state": State.FAILED.value}
-        self.mock_post.assert_called_once_with(url, headers=self.HEADERS_PROCESS, json=body)
+        self.mock_post.assert_called_once_with(
+            url, headers=self.HEADERS_PROCESS, json=body
+        )
 
     def test_load_payload(self, adapter):
         item_id = "4"
@@ -734,13 +736,17 @@ class TestRobocorpAdapter:
         adapter.save_payload(item_id, payload)
 
         url = f"https://api.workitem.com/json-v1/workspaces/1/workitems/{item_id}/data"
-        self.mock_put.assert_called_once_with(url, headers=self.HEADERS_WORKITEM, json=payload)
+        self.mock_put.assert_called_once_with(
+            url, headers=self.HEADERS_WORKITEM, json=payload
+        )
 
     def test_remove_file(self, adapter):
         item_id = "44"
         name = "procrastination.txt"
         file_id = "88"
-        self.mock_get.return_value.json.return_value = [{"fileName": name, "fileId": file_id}]
+        self.mock_get.return_value.json.return_value = [
+            {"fileName": name, "fileId": file_id}
+        ]
         adapter.remove_file(item_id, name)
 
         url = f"https://api.workitem.com/json-v1/workspaces/1/workitems/{item_id}/files/{file_id}"
