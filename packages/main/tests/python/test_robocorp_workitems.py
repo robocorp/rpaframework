@@ -5,11 +5,13 @@ import pytest
 import tempfile
 from contextlib import contextmanager
 from pathlib import Path
+from unittest import mock
 
 from RPA.Robocorp.WorkItems import (
     BaseAdapter,
     EmptyQueue,
     FileAdapter,
+    RobocorpAdapter,
     State,
     WorkItems,
 )
@@ -562,10 +564,8 @@ class TestFileAdapter:
 
     @pytest.fixture
     def empty_adapter(self):
-        # Create the items JSON files (and dir paths) but don't set any env pointing to
-        # them.
-        with self._input_work_items():
-            yield FileAdapter()
+        # No work items i/o files nor envs set.
+        return FileAdapter()
 
     def test_load_data(self, adapter):
         item_id = adapter.reserve_input()
@@ -652,3 +652,96 @@ class TestFileAdapter:
             _ = empty_adapter.output_path
         with pytest.raises(RuntimeError):
             empty_adapter.create_output("1", {"var": "some-value"})
+
+
+class TestRobocorpAdapter:
+    """Test control room API calls and retrying behaviour."""
+
+    ENV = {
+        "RC_WORKSPACE_ID": "1",
+        "RC_PROCESS_RUN_ID": "2",
+        "RC_ACTIVITY_RUN_ID": "3",
+        "RC_WORKITEM_ID": "4",
+        "RC_API_WORKITEM_HOST": "https://api.workitem.com",
+        "RC_API_WORKITEM_TOKEN": "workitem-token",
+        "RC_API_PROCESS_HOST": "https://api.process.com",
+        "RC_API_PROCESS_TOKEN": "process-token",
+        "RC_PROCESS_ID": "5",
+    }
+
+    HEADERS_WORKITEM = {
+        "Authorization": f"Bearer {ENV['RC_API_WORKITEM_TOKEN']}",
+        "Content-Type": "application/json"
+    }
+    HEADERS_PROCESS = {
+        "Authorization": f"Bearer {ENV['RC_API_PROCESS_TOKEN']}",
+        "Content-Type": "application/json"
+    }
+
+    @pytest.fixture
+    def adapter(self, monkeypatch):
+        for name, value in self.ENV.items():
+            monkeypatch.setenv(name, value)
+
+        with mock.patch("RPA.Robocorp.utils.requests.get") as mock_get, mock.patch(
+            "RPA.Robocorp.utils.requests.post"
+        ) as mock_post, mock.patch(
+            "RPA.Robocorp.utils.requests.put"
+        ) as mock_put, mock.patch(
+            "RPA.Robocorp.utils.requests.delete"
+        ) as mock_delete:
+            self.mock_get = mock_get
+            self.mock_post = mock_post
+            self.mock_put = mock_put
+            self.mock_delete = mock_delete
+            yield RobocorpAdapter()
+
+    def test_reserve_input(self, adapter):
+        initial_item_id = adapter.reserve_input()
+        assert initial_item_id == self.ENV["RC_WORKITEM_ID"]
+
+        self.mock_post.return_value.json.return_value = {"workItemId": "44"}
+        reserved_item_id = adapter.reserve_input()
+        assert reserved_item_id == "44"
+
+        url = "https://api.process.com/process-v1/workspaces/1/processes/5/runs/2/robotRuns/3/reserve-next-work-item"
+        self.mock_post.assert_called_once_with(url, headers=self.HEADERS_PROCESS)
+
+    def test_release_input(self, adapter):
+        item_id = "26"
+        adapter.release_input(item_id, State.FAILED)
+
+        url = "https://api.process.com/process-v1/workspaces/1/processes/5/runs/2/robotRuns/3/release-work-item"
+        body = {"workItemId": item_id, "state": State.FAILED.value}
+        self.mock_post.assert_called_once_with(url, headers=self.HEADERS_PROCESS, json=body)
+
+    def test_load_payload(self, adapter):
+        item_id = "4"
+        expected_payload = {"name": "value"}
+        self.mock_get.return_value.json.return_value = expected_payload
+        payload = adapter.load_payload(item_id)
+        assert payload == expected_payload
+
+        response = self.mock_get.return_value
+        response.ok = False
+        response.status_code = 404
+        payload = adapter.load_payload(item_id)
+        assert payload == {}
+
+    def test_save_payload(self, adapter):
+        item_id = "1993"
+        payload = {"Cosmin": "Poieana"}
+        adapter.save_payload(item_id, payload)
+
+        url = f"https://api.workitem.com/json-v1/workspaces/1/workitems/{item_id}/data"
+        self.mock_put.assert_called_once_with(url, headers=self.HEADERS_WORKITEM, json=payload)
+
+    def test_remove_file(self, adapter):
+        item_id = "44"
+        name = "procrastination.txt"
+        file_id = "88"
+        self.mock_get.return_value.json.return_value = [{"fileName": name, "fileId": file_id}]
+        adapter.remove_file(item_id, name)
+
+        url = f"https://api.workitem.com/json-v1/workspaces/1/workitems/{item_id}/files/{file_id}"
+        self.mock_delete.assert_called_once_with(url, headers=self.HEADERS_WORKITEM)

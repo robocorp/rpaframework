@@ -110,7 +110,6 @@ class Requests:
                 str(fields), status_code=status_code, status_message=status_message
             ) from exc
 
-    @staticmethod
     def _needs_retry(exc: BaseException) -> bool:
         # Don't retry on server (500/internal/unexpected) and auth errors (401/403).
         no_retry_codes = [400, 401, 403, 409, 500]
