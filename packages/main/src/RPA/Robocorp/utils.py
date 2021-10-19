@@ -1,7 +1,7 @@
 import json
 import logging
 import urllib.parse as urlparse
-from json import JSONDecodeError
+from json import JSONDecodeError  # pylint: disable=no-name-in-module
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Union
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
@@ -58,6 +58,8 @@ def resolve_path(path: str) -> Path:
 
 
 class RequestsHTTPError(HTTPError):
+    """Custom HTTP `requests` error with status code and message."""
+
     def __init__(
         self, *args, status_code: int = 0, status_message: str = "Error", **kwargs
     ):
