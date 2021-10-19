@@ -122,10 +122,21 @@ class Requests:
         return True
 
     @retry(
+        # Retry until either succeed or trying for the fifth time and still failing.
+        # So sleep and retry for 4 times at most.
         stop=stop_after_attempt(5),
+        # If the exception is no worth retrying or the number of tries is depleted,
+        # then re-raise the last raised exception.
         reraise=True,
+        # Decide if the raised exception needs retrying or not.
         retry=retry_if_exception(_needs_retry),
+        # Produce debugging logging prior to each time we sleep & re-try.
         before_sleep=before_sleep_log(logging.root, logging.DEBUG),
+        # Sleep between the tries with a random float amount of seconds like so:
+        # 1. [0, 2]
+        # 2. [0, 4]
+        # 3. [0, 5]
+        # 4. [0, 5]
         wait=wait_random_exponential(multiplier=2, max=5),
     )
     def _request(
