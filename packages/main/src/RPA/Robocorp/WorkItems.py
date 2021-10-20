@@ -10,17 +10,22 @@ from shutil import copy2
 from threading import Event
 from typing import Callable, Type, Any, Optional, Union, Dict, List, Tuple
 
-import requests
-from requests.exceptions import HTTPError
 from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn
-from tenacity import before_log, retry, stop_after_attempt, wait_exponential
 
 from RPA.FileSystem import FileSystem
 from RPA.core.helpers import import_by_name, required_env
 from RPA.core.logger import deprecation
 from RPA.core.notebook import notebook_print
-from .utils import JSONType, url_join, json_dumps, is_json_equal, truncate, resolve_path
+from .utils import (
+    JSONType,
+    Requests,
+    is_json_equal,
+    json_dumps,
+    resolve_path,
+    truncate,
+    url_join,
+)
 
 
 UNDEFINED = object()  # Undefined default value
@@ -108,41 +113,68 @@ class RobocorpAdapter(BaseAdapter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        #: Endpoint for old work items API
-        self.workitem_host = required_env("RC_API_WORKITEM_HOST")
-        self.workitem_token = required_env("RC_API_WORKITEM_TOKEN")
-
-        #: Endpoint for new process API
-        self.process_host = required_env("RC_API_PROCESS_HOST")
-        self.process_token = required_env("RC_API_PROCESS_TOKEN")
-
-        #: Current execution IDs
-        self.workspace_id = required_env("RC_WORKSPACE_ID")
-        self.process_id = required_env("RC_PROCESS_ID")
-        self.process_run_id = required_env("RC_PROCESS_RUN_ID")
-        self.step_run_id = required_env("RC_ACTIVITY_RUN_ID")
-
-        #: Input queue of work items
+        # IDs identifying the current robot run and its input.
+        self._workspace_id = required_env("RC_WORKSPACE_ID")
+        self._process_run_id = required_env("RC_PROCESS_RUN_ID")
+        self._step_run_id = required_env("RC_ACTIVITY_RUN_ID")
         self._initial_item_id: Optional[str] = required_env("RC_WORKITEM_ID")
 
-    @retry(
-        # try, wait 1s, retry, wait 2s, retry, wait 4s, retry, give-up
-        stop=stop_after_attempt(4),
-        wait=wait_exponential(min=1, max=4),
-        before=before_log(logging.root, logging.DEBUG),
-    )
+        self._workitem_requests = self._process_requests = None
+        self._init_workitem_requests()
+        self._init_process_requests()
+
+    def _init_workitem_requests(self):
+        # Endpoint for old work items API.
+        workitem_host = required_env("RC_API_WORKITEM_HOST")
+        workitem_token = required_env("RC_API_WORKITEM_TOKEN")
+        route_prefix = (
+            url_join(
+                workitem_host, "json-v1", "workspaces", self._workspace_id, "workitems"
+            )
+            + "/"
+        )
+        default_headers = {
+            "Authorization": f"Bearer {workitem_token}",
+            "Content-Type": "application/json",
+        }
+        logging.info("Work item API route prefix: %s", route_prefix)
+        self._workitem_requests = Requests(
+            route_prefix, default_headers=default_headers
+        )
+
+    def _init_process_requests(self):
+        # Endpoint for the new process API.
+        process_host = required_env("RC_API_PROCESS_HOST")
+        process_token = required_env("RC_API_PROCESS_TOKEN")
+        process_id = required_env("RC_PROCESS_ID")
+        route_prefix = (
+            url_join(
+                process_host,
+                "process-v1",
+                "workspaces",
+                self._workspace_id,
+                "processes",
+                process_id,
+            )
+            + "/"
+        )
+        default_headers = {
+            "Authorization": f"Bearer {process_token}",
+            "Content-Type": "application/json",
+        }
+        logging.info("Process API route prefix: %s", route_prefix)
+        self._process_requests = Requests(route_prefix, default_headers=default_headers)
+
     def _pop_item(self):
         # Get the next input work item from the cloud queue.
-        url = self.process_url(
+        url = url_join(
             "runs",
-            self.process_run_id,
+            self._process_run_id,
             "robotRuns",
-            self.step_run_id,
+            self._step_run_id,
             "reserve-next-work-item",
         )
-        response = requests.post(url, headers=self.process_headers)
-        self.handle_error(response)
-
+        response = self._process_requests.post(url)
         return response.json()["workItemId"]
 
     def reserve_input(self) -> str:
@@ -158,82 +190,74 @@ class RobocorpAdapter(BaseAdapter):
 
     def release_input(self, item_id: str, state: State):
         # Release the current input work item in the cloud queue.
-        url = self.process_url(
+        url = url_join(
             "runs",
-            self.process_run_id,
+            self._process_run_id,
             "robotRuns",
-            self.step_run_id,
+            self._step_run_id,
             "release-work-item",
         )
         body = {"workItemId": item_id, "state": state.value}
-        response = requests.post(url, headers=self.process_headers, json=body)
-        self.handle_error(response)
+        self._process_requests.post(url, json=body)
 
     def create_output(self, parent_id: str, payload: Optional[JSONType] = None) -> str:
         # Putting "output" for the current input work item identified by `parent_id`.
-        url = self.process_url("work-items", parent_id, "output")
-        logging.info("Creating output item: %s", url)
-
+        url = url_join("work-items", parent_id, "output")
         body = {"payload": payload}
-        response = requests.post(url, headers=self.process_headers, json=body)
-        self.handle_error(response)
 
+        logging.info("Creating output item: %s", url)
+        response = self._process_requests.post(url, json=body)
         return response.json()["id"]
 
     def load_payload(self, item_id: str) -> JSONType:
-        url = self.workitem_url(item_id, "data")
+        url = url_join(item_id, "data")
+
+        def handle_error(resp):
+            # NOTE: The API might return 404 if no payload is attached to the work
+            # item.
+            if not (resp.ok or resp.status_code == 404):
+                self._workitem_requests.handle_error(resp)
+
         logging.info("Loading work item payload: %s", url)
-
-        response = requests.get(url, headers=self.workitem_headers)
-
-        if response.ok:
-            return response.json()
-        elif response.status_code == 404:
-            # NOTE: The API might return 404 if no payload is
-            #       attached to the work item
-            return {}
-        else:
-            return self.handle_error(response)
+        response = self._workitem_requests.get(url, _handle_error=handle_error)
+        return response.json() if response.ok else {}
 
     def save_payload(self, item_id: str, payload: JSONType):
-        url = self.workitem_url(item_id, "data")
-        logging.info("Saving work item payload: %s", url)
+        url = url_join(item_id, "data")
 
-        response = requests.put(url, headers=self.workitem_headers, json=payload)
-        self.handle_error(response)
+        logging.info("Saving work item payload: %s", url)
+        self._workitem_requests.put(url, json=payload)
 
     def list_files(self, item_id: str) -> List[str]:
-        url = self.workitem_url(item_id, "files")
-        logging.info("Listing work item files: %s", url)
+        url = url_join(item_id, "files")
 
-        response = requests.get(url, headers=self.workitem_headers)
-        self.handle_error(response)
+        logging.info("Listing work item files: %s", url)
+        response = self._workitem_requests.get(url)
 
         return [item["fileName"] for item in response.json()]
 
     def get_file(self, item_id: str, name: str) -> bytes:
-        # Robocorp API returns URL for S3 download
+        # Robocorp API returns URL for S3 download.
         file_id = self.file_id(item_id, name)
-        url = self.workitem_url(item_id, "files", file_id)
+        url = url_join(item_id, "files", file_id)
+
         logging.info("Downloading work item file: %s", url)
+        response = self._workitem_requests.get(url)
 
-        response = requests.get(url, headers=self.workitem_headers)
-        self.handle_error(response)
-
-        # Perform actual file download
-        fields = response.json()
-        logging.debug("File download URL: %s", fields["url"])
-
-        response = requests.get(fields["url"])
-        response.raise_for_status()
+        # Perform the actual file download.
+        file_url = response.json()["url"]
+        logging.debug("Downloading file from URL: %s", file_url)
+        response = self._workitem_requests.get(
+            file_url, _handle_error=lambda resp: resp.raise_for_status(), headers={}
+        )
 
         return response.content
 
     def add_file(self, item_id: str, name: str, *, original_name: str, content: bytes):
         # Note that here the `original_name` is useless thus not used.
         del original_name
-        # Robocorp API returns pre-signed POST details for S3 upload
-        url = self.workitem_url(item_id, "files")
+        # Robocorp API returns pre-signed POST details for S3 upload.
+        url = url_join(item_id, "files")
         info = {"fileName": str(name), "fileSize": len(content)}
         logging.info(
             "Adding work item file: %s (name: %s, size: %s)",
@@ -242,32 +266,33 @@ class RobocorpAdapter(BaseAdapter):
             info["fileSize"],
         )
 
-        response = requests.post(url, headers=self.workitem_headers, json=info)
-        self.handle_error(response)
+        response = self._workitem_requests.post(url, json=info)
         data = response.json()
 
-        # Perform actual file upload
+        # Perform the actual file upload.
         url = data["url"]
         fields = data["fields"]
         files = {"file": (name, content)}
-        logging.debug("File upload URL: %s", url)
 
-        response = requests.post(url, data=fields, files=files)
-        response.raise_for_status()
+        logging.debug("Uploading file to URL: %s", url)
+        self._workitem_requests.post(
+            url,
+            _handle_error=lambda resp: resp.raise_for_status(),
+            headers={},
+            data=fields,
+            files=files,
+        )
 
     def remove_file(self, item_id: str, name: str):
         file_id = self.file_id(item_id, name)
-        url = self.workitem_url(item_id, "files", file_id)
-        logging.info("Removing work item file: %s", url)
+        url = url_join(item_id, "files", file_id)
 
-        response = requests.delete(url, headers=self.workitem_headers)
-        self.handle_error(response)
+        logging.info("Removing work item file: %s", url)
+        self._workitem_requests.delete(url)
 
     def file_id(self, item_id: str, name: str) -> str:
-        url = self.workitem_url(item_id, "files")
-
-        response = requests.get(url, headers=self.workitem_headers)
-        self.handle_error(response)
+        url = url_join(item_id, "files")
+        response = self._workitem_requests.get(url)
 
         files = response.json()
         if not files:
@@ -284,68 +309,6 @@ class RobocorpAdapter(BaseAdapter):
         # Duplicate filenames should never exist,
         # but use last item just in case
         return matches[-1]["fileId"]
-
-    @property
-    def workitem_headers(self):
-        return {
-            "Authorization": f"Bearer {self.workitem_token}",
-            "Content-Type": "application/json",
-        }
-
-    def workitem_url(self, item_id: str, *parts: str):
-        return url_join(
-            self.workitem_host,
-            "json-v1",
-            "workspaces",
-            self.workspace_id,
-            "workitems",
-            item_id,
-            *parts,
-        )
-
-    @property
-    def process_headers(self):
-        return {
-            "Authorization": f"Bearer {self.process_token}",
-            "Content-Type": "application/json",
-        }
-
-    def process_url(self, *parts: str):
-        return url_join(
-            self.process_host,
-            "process-v1",
-            "workspaces",
-            self.workspace_id,
-            "processes",
-            self.process_id,
-            *parts,
-        )
-
-    @staticmethod
-    def handle_error(response: requests.Response):
-        if response.ok:
-            return
-
-        fields = {}
-        try:
-            fields = response.json()
-            if not isinstance(fields, dict):
-                # For some reason we might still get a string from the deserialized
-                # retrieved JSON payload.
-                fields = json.loads(fields)
-        except ValueError:
-            response.raise_for_status()
-
-        try:
-            status_code = fields.get("status", response.status_code)
-            status_msg = fields.get("error", {}).get("code", "Error")
-            reason = fields.get("message") or fields.get("error", {}).get(
-                "message", response.reason
-            )
-
-            raise HTTPError(f"{status_code} {status_msg}: {reason}")
-        except Exception as err:  # pylint: disable=broad-except
-            raise HTTPError(str(fields)) from err
 
 
 class FileAdapter(BaseAdapter):
