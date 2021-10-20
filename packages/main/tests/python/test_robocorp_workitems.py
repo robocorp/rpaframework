@@ -767,19 +767,23 @@ class TestRobocorpAdapter:
         files = adapter.list_files("4")
         assert files == expected_files
 
+    @staticmethod
+    def _failing_response(request):
+        resp = mock.MagicMock()
+        resp.ok = False
+        resp.json.return_value = request.param[0]
+        resp.raise_for_status.side_effect = request.param[1]
+        return resp
+
     @pytest.fixture(
         params=[
-            # Requests response attribute values for: `.ok`, `.json()`, `.raise_for_status()`
-            (False, {}, None),
-            (False, None, HTTPError()),
+            # Requests response attribute values for: `.json()`, `.raise_for_status()`
+            ({}, None),
+            (None, HTTPError()),
         ]
     )
     def failing_response(self, request):
-        resp = mock.MagicMock()
-        resp.ok = request.param[0]
-        resp.json.return_value = request.param[1]
-        resp.raise_for_status.side_effect = request.param[2]
-        return resp
+        return self._failing_response(request)
 
     @pytest.mark.parametrize(
         "status_code,call_count",
@@ -804,3 +808,31 @@ class TestRobocorpAdapter:
             adapter.list_files("4")
         assert exc_info.value.status_code == status_code
         assert self.mock_get.call_count == call_count  # tried once or 5 times in a row
+
+    @pytest.fixture(
+        params=[
+            # Requests response attribute values for: `.json()`, `.raise_for_status()`
+            ({"error": {"code": "ERR_UNEXPECTED"}}, None),  # normal response
+            ('{"error": {"code": "ERR_UNEXPECTED"}}', None),  # double serialized
+            (r'"{\"error\": {\"code\": \"ERR_UNEXPECTED\"}}"', None),  # triple
+            ('[{"some": "value"}]', HTTPError()),  # double serialized list
+        ]
+    )
+    def failing_deserializing_response(self, request):
+        return self._failing_response(request)
+
+    def test_bad_response_payload(self, adapter, failing_deserializing_response):
+        self.mock_get.return_value = failing_deserializing_response
+        failing_deserializing_response.status_code = 429
+
+        with pytest.raises(RequestsHTTPError) as exc_info:
+            adapter.list_files("4")
+
+        err = "ERR_UNEXPECTED"
+        call_count = 1
+        if err not in str(failing_deserializing_response.json.return_value):
+            err = "Error"  # default error message in the absence of it
+            call_count = 5
+        assert exc_info.value.status_code == 429
+        assert exc_info.value.status_message == err
+        assert self.mock_get.call_count == call_count

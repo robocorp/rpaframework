@@ -84,9 +84,10 @@ class Requests:
         fields = {}
         try:
             fields = response.json()
-            if not isinstance(fields, dict):
+            while not isinstance(fields, dict):
                 # For some reason we might still get a string from the deserialized
-                # retrieved JSON payload.
+                # retrieved JSON payload. If a dictionary couldn't be obtained at all,
+                # it will end up raising `RequestsHTTPError`.
                 fields = json.loads(fields)
         except (JSONDecodeError, ValueError, TypeError):
             # No `fields` dictionary can be obtained at all.
