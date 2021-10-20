@@ -137,6 +137,7 @@ class RobocorpAdapter(BaseAdapter):
             "Authorization": f"Bearer {workitem_token}",
             "Content-Type": "application/json",
         }
+        logging.info("Work item API route prefix: %s", route_prefix)
         self._workitem_requests = Requests(
             route_prefix, default_headers=default_headers
         )
@@ -161,6 +162,7 @@ class RobocorpAdapter(BaseAdapter):
             "Authorization": f"Bearer {process_token}",
             "Content-Type": "application/json",
         }
+        logging.info("Process API route prefix: %s", route_prefix)
         self._process_requests = Requests(route_prefix, default_headers=default_headers)
 
     def _pop_item(self):
