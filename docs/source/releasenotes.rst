@@ -4,8 +4,10 @@ Release notes
 Upcoming release
 ----------------
 
-- Library **RPA.Robocorp.WorkItems**: Default input item during local dev, docs and
-  cloud requests hotfixes (:pr:`253`)
+- Library **RPA.Robocorp.WorkItems**:
+
+  - Default input item during local dev, docs and cloud requests hotfixes (:pr:`253`)
+  - Automatic API call retrying under Control Room for failed requests (:issue:`252`)
 
 11.4.0
 ------
