@@ -573,7 +573,7 @@ class TestLibrary:
             success = False
         return exception or None, effect, success
 
-    def test_release_work_item(self, library, release_exception):
+    def test_release_work_item_failed(self, library, release_exception):
         exception, effect, success = release_exception
 
         library.get_input_work_item()
@@ -595,6 +595,16 @@ class TestLibrary:
             assert library.adapter.releases == [
                 ("workitem-id-first", State.FAILED, exception)
             ]
+
+    @pytest.mark.parametrize("exception", [None, {"err_type": Error.APPLICATION}])
+    def test_release_work_item_done(self, library, exception):
+        library.get_input_work_item()
+        library.release_input_work_item(State.DONE, **(exception or {}))
+        assert library.current.state is State.DONE
+        assert library.adapter.releases == [
+            # No exception sent for non failures.
+            ("workitem-id-first", State.DONE, None)
+        ]
 
     def test_auto_release_work_item(self, library):
         library.get_input_work_item()
