@@ -65,3 +65,7 @@ Consume queue
     @{results} =     For Each Input Work Item    Log Payload    _limit=1
     Log   Items keys length: @{results}
     Length should be    ${results}  1
+
+Failed release with exception
+    Get Input Work Item
+    Release Input Work Item     FAILED      err_type=BUSINESS   code=ERR_UNEXPECTED     message="Unexpected error"
