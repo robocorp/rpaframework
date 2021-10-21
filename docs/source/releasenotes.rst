@@ -6,8 +6,10 @@ Upcoming release
 
 - Library **RPA.Robocorp.WorkItems**:
 
-  - Default input item during local dev, docs and cloud requests hotfixes (:pr:`253`)
+  - Keyword `Release Input Work Item` allows exception passing with type, code and
+    name (:pr:`256`)
   - Automatic API call retrying under Control Room for failed requests (:issue:`252`)
+  - Default input item during local dev, docs and cloud requests hotfixes (:pr:`253`)
 
 11.4.0
 ------
