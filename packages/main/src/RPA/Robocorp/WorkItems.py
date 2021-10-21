@@ -58,7 +58,9 @@ class BaseAdapter(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def release_input(self, item_id: str, state: State, exception: Optional[dict] = None):
+    def release_input(
+        self, item_id: str, state: State, exception: Optional[dict] = None
+    ):
         """Release the lastly retrieved input work item and set state."""
         raise NotImplementedError
 
@@ -181,6 +183,7 @@ class RobocorpAdapter(BaseAdapter):
             self._step_run_id,
             "reserve-next-work-item",
         )
+        logging.info("Reserving new input work item from: %s", url)
         response = self._process_requests.post(url)
         return response.json()["workItemId"]
 
@@ -195,7 +198,9 @@ class RobocorpAdapter(BaseAdapter):
             raise EmptyQueue("No work items in the input queue")
         return item_id
 
-    def release_input(self, item_id: str, state: State, exception: Optional[dict] = None):
+    def release_input(
+        self, item_id: str, state: State, exception: Optional[dict] = None
+    ):
         # Release the current input work item in the cloud queue.
         url = url_join(
             "runs",
@@ -205,6 +210,13 @@ class RobocorpAdapter(BaseAdapter):
             "release-work-item",
         )
         body = {"workItemId": item_id, "state": state.value, "exception": exception}
+        logging.info(
+            "Releasing %s input work item %r into %r with exception: %s",
+            state.value,
+            item_id,
+            url,
+            exception,
+        )
         self._process_requests.post(url, json=body)
 
     def create_output(self, parent_id: str, payload: Optional[JSONType] = None) -> str:
@@ -365,9 +377,16 @@ class FileAdapter(BaseAdapter):
         finally:
             self.index += 1
 
-    def release_input(self, item_id: str, state: State, exception: Optional[dict] = None):
+    def release_input(
+        self, item_id: str, state: State, exception: Optional[dict] = None
+    ):
         # Nothing happens for now on releasing local dev input work items.
-        logging.info("Releasing item %r with %s state and exception: %s", item_id, state.value, exception)
+        logging.info(
+            "Releasing item %r with %s state and exception: %s",
+            item_id,
+            state.value,
+            exception,
+        )
 
     @property
     def input_path(self) -> Optional[Path]:
@@ -1422,13 +1441,24 @@ class WorkItems:
         return outputs
 
     @keyword
-    def release_input_work_item(self, state: State, _auto_release: bool = False, err_type: Optional[Error] = None, code: Optional[str] = None, message: Optional[str] = None):
+    def release_input_work_item(
+        self,
+        state: State,
+        _auto_release: bool = False,
+        err_type: Optional[Error] = None,
+        code: Optional[str] = None,
+        message: Optional[str] = None,
+    ):
         """Release the lastly retrieved input work item and set its state.
 
         After this has been called, no more output work items can be created
         unless a new input work item has been loaded.
 
         :param state: The status on the last processed input work item
+        :param err_type: Error type (BUSINESS, APPLICATION). If `None`, then no
+            exception is sent to Control Room
+        :param code: Optional error code
+        :param message: Optional error message
 
         Example:
 
@@ -1487,7 +1517,9 @@ class WorkItems:
                 }
             else:
                 if code or message:
-                    raise RuntimeError("Must specify failure type from: %s", list(Error.__members__))
+                    raise RuntimeError(
+                        f"Must specify failure type from: {list(Error.__members__)}"
+                    )
 
         self.adapter.release_input(last_input.id, state, exception=exception)
         last_input.state = state
