@@ -540,6 +540,23 @@ class TestLibrary:
         else:
             assert results is None
 
+    @pytest.mark.parametrize("processed_items", [0, 1, 2, 3])
+    def test_successive_work_items_iteration(self, library, processed_items):
+        for _ in range(processed_items):
+            library.get_input_work_item()
+            library.release_input_work_item(State.DONE)
+
+        def func():
+            pass
+
+        # Checks if all remaining input work items are processed once.
+        results = library.for_each_input_work_item(func)
+        assert len(results) == 3 - processed_items
+
+        # Checks if there's no double processing of the last already processed item.
+        results = library.for_each_input_work_item(func)
+        assert len(results) == 0
+
     @pytest.fixture(
         params=[
             None,

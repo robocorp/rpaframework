@@ -1374,8 +1374,6 @@ class WorkItems:
 
         Automatically collects and returns a list of results, switch
         ``_collect_results`` to ``False`` for avoiding this.
-        Note that you have to get an initial input work item explicitly if ``autoload``
-        is falsy.
 
         :param keyword_or_func: The RF keyword or Py function you want to map through
             all the work items
@@ -1439,6 +1437,16 @@ class WorkItems:
             self._under_iteration.set()
             count = 0
             while True:
+                last_input = self.inputs[-1] if self.inputs else None
+                last_state = last_input.state if last_input else None
+                if not last_input or last_state:
+                    # There are no inputs loaded yet or the last retrieved input work
+                    # item is already processed. Time for trying to load a new one.
+                    try:
+                        self.get_input_work_item(_internal_call=True)
+                    except EmptyQueue:
+                        break
+
                 result = to_call()
                 if _collect_results:
                     results.append(result)

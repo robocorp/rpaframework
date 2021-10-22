@@ -73,7 +73,7 @@ Failed release with exception
     Release Input Work Item     FAILED      exception_type=BUSINESS   code=LOGIN_PORTAL_DOWN     message=Unable to login into the portal – not proceeding
 
 Consume queue without results
-    @{expected_results} =   Create List     ${4}
+    @{expected_results} =   Create List     ${2}
     ${results} =     For Each Input Work Item    Log Payload    _collect_results=True
     Should Be Equal     @{results}      @{expected_results}
 
