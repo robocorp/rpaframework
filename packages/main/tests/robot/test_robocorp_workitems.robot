@@ -68,4 +68,4 @@ Consume queue
 
 Failed release with exception
     Get Input Work Item
-    Release Input Work Item     FAILED      err_type=BUSINESS   code=ERR_UNEXPECTED     message="Unexpected error"
+    Release Input Work Item     FAILED      exception_type=BUSINESS   code=ERR_UNEXPECTED     message="Unexpected error"

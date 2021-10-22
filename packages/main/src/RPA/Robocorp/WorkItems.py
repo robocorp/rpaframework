@@ -1445,20 +1445,25 @@ class WorkItems:
         self,
         state: State,
         _auto_release: bool = False,
-        err_type: Optional[Error] = None,
+        exception_type: Optional[Error] = None,
         code: Optional[str] = None,
         message: Optional[str] = None,
     ):
         """Release the lastly retrieved input work item and set its state.
 
+        This can be released with (DONE or FAILED states). With the FAILED state, an
+        additional exception can be sent to Control Room describing the problem that
+        you encountered by specifying a type and optionally a code and/or message.
         After this has been called, no more output work items can be created
-        unless a new input work item has been loaded.
+        unless a new input work item has been loaded again.
 
         :param state: The status on the last processed input work item
-        :param err_type: Error type (BUSINESS, APPLICATION). If `None`, then no
-            exception is sent to Control Room
-        :param code: Optional error code
-        :param message: Optional error message
+        :param exception_type: Error type (BUSINESS, APPLICATION). If this is not
+            specified, then the cloud will assume UNSPECIFIED
+        :param code: Optional error code identifying the exception for future
+            filtering, grouping and custom retrying behaviour in the cloud
+        :param message: Optional human-friendly error message supplying additional
+            details regarding the sent exception
 
         Example:
 
@@ -1509,9 +1514,9 @@ class WorkItems:
             state = State(state)
         exception = None
         if state is State.FAILED:
-            if err_type:
+            if exception_type:
                 exception = {
-                    "type": Error(err_type),
+                    "type": Error(exception_type),
                     "code": code,
                     "message": message,
                 }

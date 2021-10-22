@@ -529,34 +529,34 @@ class TestLibrary:
     @pytest.fixture(
         params=[
             None,
-            {"err_type": "BUSINESS"},
+            {"exception_type": "BUSINESS"},
             {
-                "err_type": "APPLICATION",
+                "exception_type": "APPLICATION",
                 "code": "ERR_UNEXPECTED",
                 "message": "This is an unexpected error",
             },
             {
-                "err_type": "APPLICATION",
+                "exception_type": "APPLICATION",
                 "code": None,
                 "message": "This is an unexpected error",
             },
             {
-                "err_type": "APPLICATION",
+                "exception_type": "APPLICATION",
                 "code": None,
                 "message": None,
             },
             {
-                "err_type": None,
+                "exception_type": None,
                 "code": None,
                 "message": None,
             },
             {
-                "err_type": None,
+                "exception_type": None,
                 "code": "APPLICATION",
                 "message": None,
             },
             {
-                "err_type": None,
+                "exception_type": None,
                 "code": "",
                 "message": "Not empty",
             },
@@ -566,7 +566,7 @@ class TestLibrary:
         exception = request.param or {}
         effect = nullcontext()
         success = True
-        if not exception.get("err_type") and any(
+        if not exception.get("exception_type") and any(
             map(lambda key: exception.get(key), ["code", "message"])
         ):
             effect = pytest.raises(RuntimeError)
@@ -584,9 +584,9 @@ class TestLibrary:
         if success:
             assert library.current.state == State.FAILED
 
-        err_type = (exception or {}).pop("err_type", None)
-        if err_type:
-            exception["type"] = Error(err_type)
+        exception_type = (exception or {}).pop("exception_type", None)
+        if exception_type:
+            exception["type"] = Error(exception_type)
             exception.setdefault("code", None)
             exception.setdefault("message", None)
         else:
@@ -596,7 +596,7 @@ class TestLibrary:
                 ("workitem-id-first", State.FAILED, exception)
             ]
 
-    @pytest.mark.parametrize("exception", [None, {"err_type": Error.APPLICATION}])
+    @pytest.mark.parametrize("exception", [None, {"exception_type": Error.APPLICATION}])
     def test_release_work_item_done(self, library, exception):
         library.get_input_work_item()
         library.release_input_work_item(State.DONE, **(exception or {}))
