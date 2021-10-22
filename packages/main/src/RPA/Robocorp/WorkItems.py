@@ -1394,8 +1394,8 @@ class WorkItems:
         :param kwargs: Variable list of keyword arguments that go into the called
             keyword/function
         :param _limit: Limit the queue item retrieval to a certain amount, otherwise
-            all the items are retrieved from the queue.
-        :param _collect_results: Collect and return a list of results if truthy.
+            all the items are retrieved from the queue
+        :param _collect_results: Collect and return a list of results if truthy
 
         Example:
 
