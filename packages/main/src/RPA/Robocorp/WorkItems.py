@@ -38,6 +38,13 @@ class State(Enum):
     FAILED = "FAILED"
 
 
+class Error(Enum):
+    """Failed work item error type."""
+
+    BUSINESS = "BUSINESS"  # wrong/missing data, shouldn't be retried
+    APPLICATION = "APPLICATION"  # logic issue/timeout, can be retried
+
+
 class EmptyQueue(IndexError):
     """Raised when trying to load an input item and none available."""
 
@@ -51,7 +58,9 @@ class BaseAdapter(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def release_input(self, item_id: str, state: State):
+    def release_input(
+        self, item_id: str, state: State, exception: Optional[dict] = None
+    ):
         """Release the lastly retrieved input work item and set state."""
         raise NotImplementedError
 
@@ -174,6 +183,7 @@ class RobocorpAdapter(BaseAdapter):
             self._step_run_id,
             "reserve-next-work-item",
         )
+        logging.info("Reserving new input work item from: %s", url)
         response = self._process_requests.post(url)
         return response.json()["workItemId"]
 
@@ -188,7 +198,9 @@ class RobocorpAdapter(BaseAdapter):
             raise EmptyQueue("No work items in the input queue")
         return item_id
 
-    def release_input(self, item_id: str, state: State):
+    def release_input(
+        self, item_id: str, state: State, exception: Optional[dict] = None
+    ):
         # Release the current input work item in the cloud queue.
         url = url_join(
             "runs",
@@ -198,6 +210,15 @@ class RobocorpAdapter(BaseAdapter):
             "release-work-item",
         )
         body = {"workItemId": item_id, "state": state.value}
+        if exception:
+            body["exception"] = exception
+        logging.info(
+            "Releasing %s input work item %r into %r with exception: %s",
+            state.value,
+            item_id,
+            url,
+            exception,
+        )
         self._process_requests.post(url, json=body)
 
     def create_output(self, parent_id: str, payload: Optional[JSONType] = None) -> str:
@@ -358,8 +379,16 @@ class FileAdapter(BaseAdapter):
         finally:
             self.index += 1
 
-    def release_input(self, item_id: str, state: State):
-        pass  # nothing happens for now on releasing local dev input work items
+    def release_input(
+        self, item_id: str, state: State, exception: Optional[dict] = None
+    ):
+        # Nothing happens for now on releasing local dev input work items.
+        logging.info(
+            "Releasing item %r with %s state and exception: %s",
+            item_id,
+            state.value,
+            exception,
+        )
 
     @property
     def input_path(self) -> Optional[Path]:
@@ -1414,22 +1443,38 @@ class WorkItems:
         return outputs
 
     @keyword
-    def release_input_work_item(self, state: State, _auto_release: bool = False):
+    def release_input_work_item(
+        self,
+        state: State,
+        _auto_release: bool = False,
+        exception_type: Optional[Error] = None,
+        code: Optional[str] = None,
+        message: Optional[str] = None,
+    ):
         """Release the lastly retrieved input work item and set its state.
 
+        This can be released with DONE or FAILED states. With the FAILED state, an
+        additional exception can be sent to Control Room describing the problem that
+        you encountered by specifying a type and optionally a code and/or message.
         After this has been called, no more output work items can be created
-        unless a new input work item has been loaded.
+        unless a new input work item has been loaded again.
 
         :param state: The status on the last processed input work item
+        :param exception_type: Error type (BUSINESS, APPLICATION). If this is not
+            specified, then the cloud will assume UNSPECIFIED
+        :param code: Optional error code identifying the exception for future
+            filtering, grouping and custom retrying behaviour in the cloud
+        :param message: Optional human-friendly error message supplying additional
+            details regarding the sent exception
 
         Example:
 
         .. code-block:: robotframework
 
-            Explicit state set
-                ${payload} =     Get Work Item Payload
-                Log     ${payload}
-                Release Input Work Item     DONE
+            Login into portal
+                ${user} =     Get Work Item Variable    user
+                Log     Logging in ${user}
+                Release Input Work Item     FAILED      exception_type=BUSINESS   code=LOGIN_PORTAL_DOWN     message=Unable to login into the portal – not proceeding  # noqa
 
         OR
 
@@ -1442,7 +1487,7 @@ class WorkItems:
             def process_and_set_state():
                 library.get_input_work_item()
                 library.release_input_work_item(State.DONE)
-                print(library.current.state.value)  # would print "State.DONE"
+                print(library.current.state)  # would print "State.DONE"
 
             process_and_set_state()
         """
@@ -1469,7 +1514,20 @@ class WorkItems:
 
         if not isinstance(state, State):
             state = State(state)
-        self.adapter.release_input(last_input.id, state)
+        exception = None
+        if state is State.FAILED:
+            if exception_type:
+                exception = {
+                    "type": Error(exception_type),
+                    "code": code,
+                    "message": message,
+                }
+            else:
+                if code or message:
+                    exc_types = ", ".join(list(Error.__members__))
+                    raise RuntimeError(f"Must specify failure type from: {exc_types}")
+
+        self.adapter.release_input(last_input.id, state, exception=exception)
         last_input.state = state
 
     @keyword

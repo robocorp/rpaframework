@@ -12,6 +12,7 @@ ${first_item}   None
 
 ${err_state_set}        Can't create any more output work items since the last input was released, get a new input work item first
 ${err_item_released}    Input work item already released
+${err_fail_without_type}     Must specify failure type from: BUSINESS, APPLICATION
 
 
 *** Keywords ***
@@ -65,3 +66,8 @@ Consume queue
     @{results} =     For Each Input Work Item    Log Payload    _limit=1
     Log   Items keys length: @{results}
     Length should be    ${results}  1
+
+Failed release with exception
+    Get Input Work Item
+    Run Keyword And Expect Error    ${err_fail_without_type}    Release Input Work Item     FAILED      code=LOGIN_PORTAL_DOWN
+    Release Input Work Item     FAILED      exception_type=BUSINESS   code=LOGIN_PORTAL_DOWN     message=Unable to login into the portal – not proceeding

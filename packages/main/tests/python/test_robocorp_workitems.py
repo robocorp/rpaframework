@@ -4,6 +4,11 @@ import os
 import pytest
 import tempfile
 from contextlib import contextmanager
+
+try:
+    from contextlib import nullcontext
+except ImportError:
+    from contextlib import suppress as nullcontext
 from pathlib import Path
 from unittest import mock
 
@@ -12,6 +17,7 @@ from requests import HTTPError
 from RPA.Robocorp.WorkItems import (
     BaseAdapter,
     EmptyQueue,
+    Error,
     FileAdapter,
     RobocorpAdapter,
     State,
@@ -97,8 +103,8 @@ class MockAdapter(BaseAdapter):
         finally:
             self.INDEX += 1
 
-    def release_input(self, item_id: str, state: State):
-        self.releases.append((item_id, state))  # purely for testing purposes
+    def release_input(self, item_id: str, state: State, exception: dict = None):
+        self.releases.append((item_id, state, exception))  # purely for testing purposes
 
     def create_output(self, parent_id, payload=None) -> str:
         raise NotImplementedError
@@ -520,19 +526,92 @@ class TestLibrary:
         assert usernames == expected_usernames
         assert results == expected_results
 
-    def test_release_work_item(self, library):
-        library.get_input_work_item()
-        library.release_input_work_item("FAILED")  # intentionally provide a string
+    @pytest.fixture(
+        params=[
+            None,
+            {"exception_type": "BUSINESS"},
+            {
+                "exception_type": "APPLICATION",
+                "code": "ERR_UNEXPECTED",
+                "message": "This is an unexpected error",
+            },
+            {
+                "exception_type": "APPLICATION",
+                "code": None,
+                "message": "This is an unexpected error",
+            },
+            {
+                "exception_type": "APPLICATION",
+                "code": None,
+                "message": None,
+            },
+            {
+                "exception_type": None,
+                "code": None,
+                "message": None,
+            },
+            {
+                "exception_type": None,
+                "code": "APPLICATION",
+                "message": None,
+            },
+            {
+                "exception_type": None,
+                "code": "",
+                "message": "Not empty",
+            },
+        ]
+    )
+    def release_exception(self, request):
+        exception = request.param or {}
+        effect = nullcontext()
+        success = True
+        if not exception.get("exception_type") and any(
+            map(lambda key: exception.get(key), ["code", "message"])
+        ):
+            effect = pytest.raises(RuntimeError)
+            success = False
+        return exception or None, effect, success
 
-        assert library.current.state == State.FAILED
-        assert library.adapter.releases == [("workitem-id-first", State.FAILED)]
+    def test_release_work_item_failed(self, library, release_exception):
+        exception, effect, success = release_exception
+
+        library.get_input_work_item()
+        with effect:
+            library.release_input_work_item(
+                "FAILED", **(exception or {})
+            )  # intentionally provide a string for the state
+        if success:
+            assert library.current.state == State.FAILED
+
+        exception_type = (exception or {}).pop("exception_type", None)
+        if exception_type:
+            exception["type"] = Error(exception_type)
+            exception.setdefault("code", None)
+            exception.setdefault("message", None)
+        else:
+            exception = None
+        if success:
+            assert library.adapter.releases == [
+                ("workitem-id-first", State.FAILED, exception)
+            ]
+
+    @pytest.mark.parametrize("exception", [None, {"exception_type": Error.APPLICATION}])
+    def test_release_work_item_done(self, library, exception):
+        library.get_input_work_item()
+        library.release_input_work_item(State.DONE, **(exception or {}))
+        assert library.current.state is State.DONE
+        assert library.adapter.releases == [
+            # No exception sent for non failures.
+            ("workitem-id-first", State.DONE, None)
+        ]
 
     def test_auto_release_work_item(self, library):
         library.get_input_work_item()
         library.get_input_work_item()  # this automatically sets the state of the last
 
         assert library.current.state is None  # because the previous one has a state
-        assert library.adapter.releases == [("workitem-id-first", State.DONE)]
+        assert library.adapter.releases == [("workitem-id-first", State.DONE, None)]
 
 
 class TestFileAdapter:
@@ -712,12 +791,20 @@ class TestRobocorpAdapter:
         url = "https://api.process.com/process-v1/workspaces/1/processes/5/runs/2/robotRuns/3/reserve-next-work-item"
         self.mock_post.assert_called_once_with(url, headers=self.HEADERS_PROCESS)
 
-    def test_release_input(self, adapter):
+    @pytest.mark.parametrize(
+        "exception", [None, {"type": "BUSINESS", "code": "ERR_UNEXPECTED"}]
+    )
+    def test_release_input(self, adapter, exception):
         item_id = "26"
-        adapter.release_input(item_id, State.FAILED)
+        adapter.release_input(item_id, State.FAILED, exception=exception)
 
         url = "https://api.process.com/process-v1/workspaces/1/processes/5/runs/2/robotRuns/3/release-work-item"
-        body = {"workItemId": item_id, "state": State.FAILED.value}
+        body = {
+            "workItemId": item_id,
+            "state": State.FAILED.value,
+        }
+        if exception:
+            body["exception"] = exception
         self.mock_post.assert_called_once_with(
             url, headers=self.HEADERS_PROCESS, json=body
         )
