@@ -810,14 +810,15 @@ class ImapSmtp:
         values = result["uids"].values()
         converted = []
         for v in values:
-            converted.append(
-                {
-                    str(key): value
-                    if isinstance(value, (str, bool, int, Message))
-                    else str(value)
-                    for key, value in v.items()
-                }
-            )
+            if v:
+                converted.append(
+                    {
+                        str(key): value
+                        if isinstance(value, (str, bool, int, Message))
+                        else str(value)
+                        for key, value in v.items()
+                    }
+                )
         return converted
 
     @imap_connection
