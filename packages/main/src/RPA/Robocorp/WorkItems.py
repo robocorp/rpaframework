@@ -1474,7 +1474,7 @@ class WorkItems:
             Login into portal
                 ${user} =     Get Work Item Variable    user
                 Log     Logging in ${user}
-                Release Input Work Item     FAILED      exception_type=BUSINESS   code=LOGIN_PORTAL_DOWN     message=Unable to login into the portal – not proceeding
+                Release Input Work Item     FAILED      exception_type=BUSINESS   code=LOGIN_PORTAL_DOWN     message=Unable to login into the portal – not proceeding  # noqa
 
         OR
 
@@ -1525,9 +1525,7 @@ class WorkItems:
             else:
                 if code or message:
                     exc_types = ", ".join(list(Error.__members__))
-                    raise RuntimeError(
-                        f"Must specify failure type from: {exc_types}"
-                    )
+                    raise RuntimeError(f"Must specify failure type from: {exc_types}")
 
         self.adapter.release_input(last_input.id, state, exception=exception)
         last_input.state = state
