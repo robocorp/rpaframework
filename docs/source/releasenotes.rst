@@ -6,6 +6,8 @@ Upcoming release
 
 - Library **RPA.Robocorp.WorkItems**:
 
+  - Keyword `For Each Input Work Item` bugfixes and results collection switch
+    (:issue:`250`)
   - Keyword `Release Input Work Item` allows exception passing with type, code and
     name (:pr:`256`)
   - Automatic API call retrying under Control Room for failed requests (:issue:`252`)
