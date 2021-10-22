@@ -1451,7 +1451,7 @@ class WorkItems:
     ):
         """Release the lastly retrieved input work item and set its state.
 
-        This can be released with (DONE or FAILED states). With the FAILED state, an
+        This can be released with DONE or FAILED states. With the FAILED state, an
         additional exception can be sent to Control Room describing the problem that
         you encountered by specifying a type and optionally a code and/or message.
         After this has been called, no more output work items can be created
