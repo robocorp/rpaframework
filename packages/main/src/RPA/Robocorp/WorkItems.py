@@ -1378,10 +1378,10 @@ class WorkItems:
     def for_each_input_work_item(
         self,
         keyword_or_func: Union[str, Callable],
-        *args: tuple,
+        *args,
         _limit: int = 0,
         _collect_results: bool = True,
-        **kwargs: dict[str, Any],
+        **kwargs,
     ) -> List[Any]:
         """Run a keyword or function for each work item in the input queue.
 
