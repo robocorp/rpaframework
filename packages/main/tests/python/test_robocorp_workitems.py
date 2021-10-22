@@ -802,8 +802,9 @@ class TestRobocorpAdapter:
         body = {
             "workItemId": item_id,
             "state": State.FAILED.value,
-            "exception": exception,
         }
+        if exception:
+            body["exception"] = exception
         self.mock_post.assert_called_once_with(
             url, headers=self.HEADERS_PROCESS, json=body
         )

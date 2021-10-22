@@ -209,7 +209,9 @@ class RobocorpAdapter(BaseAdapter):
             self._step_run_id,
             "release-work-item",
         )
-        body = {"workItemId": item_id, "state": state.value, "exception": exception}
+        body = {"workItemId": item_id, "state": state.value}
+        if exception:
+            body["exception"] = exception
         logging.info(
             "Releasing %s input work item %r into %r with exception: %s",
             state.value,
@@ -1469,10 +1471,10 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            Explicit state set
-                ${payload} =     Get Work Item Payload
-                Log     ${payload}
-                Release Input Work Item     DONE
+            Login into portal
+                ${user} =     Get Work Item Variable    user
+                Log     Logging in ${user}
+                Release Input Work Item     FAILED      exception_type=BUSINESS   code=LOGIN_PORTAL_DOWN     message=Unable to login into the portal – not proceeding
 
         OR
 
@@ -1485,7 +1487,7 @@ class WorkItems:
             def process_and_set_state():
                 library.get_input_work_item()
                 library.release_input_work_item(State.DONE)
-                print(library.current.state.value)  # would print "State.DONE"
+                print(library.current.state)  # would print "State.DONE"
 
             process_and_set_state()
         """
@@ -1522,8 +1524,9 @@ class WorkItems:
                 }
             else:
                 if code or message:
+                    exc_types = ", ".join(list(Error.__members__))
                     raise RuntimeError(
-                        f"Must specify failure type from: {list(Error.__members__)}"
+                        f"Must specify failure type from: {exc_types}"
                     )
 
         self.adapter.release_input(last_input.id, state, exception=exception)
