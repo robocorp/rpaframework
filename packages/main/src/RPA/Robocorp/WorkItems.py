@@ -1361,6 +1361,19 @@ class WorkItems:
         if self._under_iteration.is_set():
             raise RuntimeError(f"Can't {action} while iterating input work items")
 
+    def _ensure_input_for_iteration(self) -> bool:
+        last_input = self.inputs[-1] if self.inputs else None
+        last_state = last_input.state if last_input else None
+        if not last_input or last_state:
+            # There are no inputs loaded yet or the last retrieved input work
+            # item is already processed. Time for trying to load a new one.
+            try:
+                self.get_input_work_item(_internal_call=True)
+            except EmptyQueue:
+                return False
+
+        return True
+
     @keyword
     def for_each_input_work_item(
         self,
@@ -1437,15 +1450,9 @@ class WorkItems:
             self._under_iteration.set()
             count = 0
             while True:
-                last_input = self.inputs[-1] if self.inputs else None
-                last_state = last_input.state if last_input else None
-                if not last_input or last_state:
-                    # There are no inputs loaded yet or the last retrieved input work
-                    # item is already processed. Time for trying to load a new one.
-                    try:
-                        self.get_input_work_item(_internal_call=True)
-                    except EmptyQueue:
-                        break
+                input_ensured = self._ensure_input_for_iteration()
+                if not input_ensured:
+                    break
 
                 result = to_call()
                 if _collect_results:
