@@ -1363,17 +1363,28 @@ class WorkItems:
 
     @keyword
     def for_each_input_work_item(
-        self, keyword_or_func: Union[str, Callable], *args, _limit: int = 0, **kwargs
+        self,
+        keyword_or_func: Union[str, Callable],
+        *args: tuple,
+        _limit: int = 0,
+        _collect_results: bool = True,
+        **kwargs: dict[str, Any],
     ) -> List[Any]:
         """Run a keyword or function for each work item in the input queue.
 
+        Automatically collects and returns a list of results, switch
+        ``_collect_results`` to ``False`` for avoiding this.
         Note that you have to get an initial input work item explicitly if ``autoload``
         is falsy.
 
         :param keyword_or_func: The RF keyword or Py function you want to map through
             all the work items
+        :param args: Variable list of arguments that go into the called keyword/function
+        :param kwargs: Variable list of keyword arguments that go into the called
+            keyword/function
         :param _limit: Limit the queue item retrieval to a certain amount, otherwise
             all the items are retrieved from the queue.
+        :param _collect_results: Collect and return a list of results if truthy.
 
         Example:
 
@@ -1422,13 +1433,15 @@ class WorkItems:
             )
         else:
             to_call = lambda: keyword_or_func(*args, **kwargs)  # noqa: E731
-        outputs = []
+        results = []
 
         try:
             self._under_iteration.set()
             count = 0
             while True:
-                outputs.append(to_call())
+                result = to_call()
+                if _collect_results:
+                    results.append(result)
                 count += 1
                 if _limit and count >= _limit:
                     break
@@ -1440,7 +1453,7 @@ class WorkItems:
         finally:
             self._under_iteration.clear()
 
-        return outputs
+        return results if _collect_results else None
 
     @keyword
     def release_input_work_item(

@@ -526,6 +526,20 @@ class TestLibrary:
         assert usernames == expected_usernames
         assert results == expected_results
 
+    @pytest.mark.parametrize("collect_results", [True, False])
+    def test_iter_work_items_results(self, library, collect_results):
+        def func():
+            return 1
+
+        library.get_input_work_item()
+        results = library.for_each_input_work_item(
+            func, _collect_results=collect_results
+        )
+        if collect_results:
+            assert results == [1] * 3
+        else:
+            assert results is None
+
     @pytest.fixture(
         params=[
             None,
