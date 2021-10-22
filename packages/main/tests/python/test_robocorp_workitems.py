@@ -527,7 +527,7 @@ class TestLibrary:
         assert results == expected_results
 
     @pytest.mark.parametrize("collect_results", [True, False])
-    def test_iter_work_items_results(self, library, collect_results):
+    def test_iter_work_items_collect_results(self, library, collect_results):
         def func():
             return 1
 
