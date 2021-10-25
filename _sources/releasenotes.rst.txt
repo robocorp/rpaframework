@@ -13,6 +13,16 @@ Upcoming release
   - Automatic API call retrying under Control Room for failed requests (:issue:`252`)
   - Default input item during local dev, docs and cloud requests hotfixes (:pr:`253`)
 
+- Library **RPA.Outlook.Application**:
+
+  - Changes related to (:issue:`248`)
+  - Add new keyword `Get Emails`
+  - Add new keyword `Mark Emails As Read`
+  - Add new keyword `Move Emails`
+  - Add new keyword `Save Email Attachments`
+  - Renamed keyword `Send Email` (old keyword `Send Message` gives Deprecation warning)
+  - Renamed keyword `Wait For Email`  (old keyword `Wait For Message` gives Deprecation warning)
+
 11.4.0
 ------
 
