@@ -880,8 +880,14 @@ class ImapSmtp:
         for part in msg.walk():
             content_maintype = part.get_content_maintype()
             content_disposition = part.get("Content-Disposition")
+            self.logger.info(
+                "Email attachment content-type: '%s' and content-disposition: '%s'",
+                content_maintype,
+                content_disposition,
+            )
             if content_maintype != "multipart" and content_disposition is not None:
                 filename = part.get_filename().replace("\r", "").replace("\n", "")
+                self.logger.info("Attachment filename: '%s'", filename)
                 if filename:
                     transfer_encoding = part.get_all("Content-Transfer-Encoding")
                     if transfer_encoding and transfer_encoding[0] == "base64":
@@ -891,6 +897,7 @@ class ImapSmtp:
                                 filename_parts[1]
                             )
                     filepath = Path(target_folder) / Path(filename).name
+                    self.logger.info("Attachment filepath: '%s'", filepath)
                     if not filepath.exists() or overwrite:
                         payload = part.get_payload(decode=True)
                         if payload:
