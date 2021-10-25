@@ -6,6 +6,37 @@
 	<description>Recent updates to the Python Package Index for rpaframework</description>
 	<language>en</language>
 	<item>
+		<title>Release 11.5.0</title>
+		<link>https://pypi.org/project/rpaframework/11.5.0/</link>
+		<description>- Library &lt;b&gt;RPA.Robocorp.WorkItems&lt;/b&gt;:
+&lt;br&gt;      - Keyword `For Each Input Work Item` bugfixes and results collection switch
+&lt;br&gt;        (:issue:`250`)
+&lt;br&gt;      - Keyword `Release Input Work Item` allows exception passing with type, code and
+&lt;br&gt;        name (:pr:`256`)
+&lt;br&gt;      - Automatic API call retrying under Control Room for failed requests (:issue:`252`)
+&lt;br&gt;      - Default input item during local dev, docs and cloud requests hotfixes (:pr:`253`)
+&lt;br&gt;    - Library &lt;b&gt;RPA.Outlook.Application&lt;/b&gt;:
+&lt;br&gt;      - Changes related to (:issue:`248`)
+&lt;br&gt;      - Add new keyword `Get Emails`
+&lt;br&gt;      - Add new keyword `Mark Emails As Read`
+&lt;br&gt;      - Add new keyword `Move Emails`
+&lt;br&gt;      - Add new keyword `Save Email Attachments`
+&lt;br&gt;      - Renamed keyword `Send Email` (old keyword `Send Message` gives Deprecation warning)
+&lt;br&gt;      - Renamed keyword `Wait For Email`  (old keyword `Wait For Message` gives Deprecation warning)
+&lt;br&gt;    - Add warning message if importing Windows platform dependtant library on non-Windows platform
+&lt;br&gt;      - &lt;b&gt;RPA.Desktop.Windows&lt;/b&gt;
+&lt;br&gt;      - &lt;b&gt;RPA.Excel.Application&lt;/b&gt;
+&lt;br&gt;      - &lt;b&gt;RPA.Outlook.Application&lt;/b&gt;
+&lt;br&gt;      - &lt;b&gt;RPA.Word.Application&lt;/b&gt;
+&lt;br&gt;    - Library &lt;b&gt;RPA.Desktop.Windows&lt;/b&gt;: Add possibility to bypass initial element lookup when
+&lt;br&gt;      using `Open Dialog` or `Connect By Handle` keywords
+&lt;br&gt;    - Library &lt;b&gt;RPA.Email.ImapSmtp&lt;/b&gt;: Keyword `List Messages` bugfix
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Mon, 25 Oct 2021 18:45:26 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
 		<title>Release 11.4.0</title>
 		<link>https://pypi.org/project/rpaframework/11.4.0/</link>
 		<description>- Library &lt;b&gt;RPA.Robocorp.WorkItems&lt;/b&gt; support on iterating work items for both local
