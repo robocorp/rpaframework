@@ -201,39 +201,44 @@ Default installation method With Robocorp `Developer Tools`_ using conda.yaml:
 .. code-block:: yaml
 
    channels:
-      - conda-forge
+     - conda-forge
    dependencies:
-      - python=3.7.5
-      - pip=20.1
-      - pip:
-         - rpaframework==11.4.0
+     - python=3.7.5
+     - pip=20.1
+     - pip:
+       - rpaframework==11.4.0
 
-To install all extra packages, you can use:
+To install all extra packages (including Playwright dependencies), you can use:
 
 .. code-block:: yaml
 
    channels:
-      - conda-forge
+     - conda-forge
    dependencies:
-      - python=3.7.5
-      - pip=20.1
-      - pip:
-         - rpaframework[aws,cv]==11.4.0
-         - rpaframework-google==0.3.0
-         - rpaframework-recognition==0.7.2
+     - python=3.7.5
+     - tesseract=4.1.1
+     - pip=20.1
+     - nodejs=14.17.4
+     - pip:
+       - rpaframework[aws]==11.4.0
+       - rpaframework-google==0.3.0
+       - rpaframework-recognition==0.7.2
+       - robotframework-browser==8.0.2
+   rccPostInstall:
+     - rfbrowser init
 
 Separate installation of PDF and Dialogs libraries without main rpaframework:
 
 .. code-block:: yaml
 
    channels:
-      - conda-forge
+     - conda-forge
    dependencies:
-      - python=3.7.5
-      - pip=20.1
-      - pip:
-         - rpaframework-dialogs==0.4.2  # included in the rpaframework by default
-         - rpaframework-pdf==0.9.0  # included in the rpaframework by default
+     - python=3.7.5
+     - pip=20.1
+     - pip:
+       - rpaframework-dialogs==0.4.2  # included in the rpaframework by default
+       - rpaframework-pdf==0.9.0  # included in the rpaframework by default
 
 
 .. note:: Python 3.6 or higher is required
