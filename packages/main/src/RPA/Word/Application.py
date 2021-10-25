@@ -5,6 +5,10 @@ import platform
 if platform.system() == "Windows":
     import win32com.client
     from win32com.client import constants
+else:
+    logging.getLogger(__name__).warning(
+        "RPA.Word.Application library works only on Windows platform"
+    )
 
 
 FILEFORMATS = {

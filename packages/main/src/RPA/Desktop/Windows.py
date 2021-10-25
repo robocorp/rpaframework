@@ -30,6 +30,10 @@ if platform.system() == "Windows":
     import pywinauto
     import win32gui
     from comtypes import COMError
+else:
+    logging.getLogger(__name__).warning(
+        "RPA.Desktop.Windows library works only on Windows platform"
+    )
 
 
 def write_element_info_as_json(

@@ -23,6 +23,13 @@ Upcoming release
   - Renamed keyword `Send Email` (old keyword `Send Message` gives Deprecation warning)
   - Renamed keyword `Wait For Email`  (old keyword `Wait For Message` gives Deprecation warning)
 
+- Add warning message if importing Windows platform dependtant library on non-Windows platform
+
+  - **RPA.Desktop.Windows**
+  - **RPA.Excel.Application**
+  - **RPA.Outlook.Application**
+  - **RPA.Word.Application**
+
 11.4.0
 ------
 
