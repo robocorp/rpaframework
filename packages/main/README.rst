@@ -30,7 +30,7 @@ Learn more about RPA at `Robocorp Documentation`_.
 .. _Robocorp: https://robocorp.com
 .. _Robocorp Documentation: https://robocorp.com/docs/
 .. _Control Room: https://robocorp.com/docs/control-room
-.. _Developer Tools: https://robocorp.com/docs/developer-tools
+.. _Developer Tools: https://robocorp.com/downloads
 .. _Installing Python Packages: https://robocorp.com/docs/setup/installing-python-package-dependencies
 
 Links
