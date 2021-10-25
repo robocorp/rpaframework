@@ -491,7 +491,7 @@ documentation page.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.connect_by_handle">
-<code class="sig-name descname">connect_by_handle</code><span class="sig-paren">(</span><em class="sig-param">handle: int</em>, <em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">existing_app: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_handle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">connect_by_handle</code><span class="sig-paren">(</span><em class="sig-param">handle: int</em>, <em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">existing_app: bool = False</em>, <em class="sig-param">parse_elements: bool = True</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.connect_by_handle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to application by its handle</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -500,6 +500,8 @@ documentation page.</p>
 <li><p><strong>windowtitle</strong> – name of the window, defaults to active window if None</p></li>
 <li><p><strong>existing_app</strong> – set True if selecting window which library has already
 accessed, default False</p></li>
+<li><p><strong>parse_elements</strong> – set False to not to parse elements of the window,
+default True</p></li>
 </ul>
 </dd>
 </dl>
@@ -1152,7 +1154,7 @@ Excel, Word, Outlook and Powerpoint.</p>
 
 <dl class="method">
 <dt id="RPA.Desktop.Windows.Windows.open_dialog">
-<code class="sig-name descname">open_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">highlight: bool = False</em>, <em class="sig-param">timeout: int = 10</em>, <em class="sig-param">existing_app: bool = False</em>, <em class="sig-param">wildcard: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_dialog" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_dialog</code><span class="sig-paren">(</span><em class="sig-param">windowtitle: str = None</em>, <em class="sig-param">highlight: bool = False</em>, <em class="sig-param">timeout: int = 10</em>, <em class="sig-param">existing_app: bool = False</em>, <em class="sig-param">wildcard: bool = False</em>, <em class="sig-param">parse_elements: bool = True</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Desktop.Windows.Windows.open_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open window by its title.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1163,6 +1165,8 @@ Excel, Word, Outlook and Powerpoint.</p>
 <li><p><strong>existing_app</strong> – set True if selecting window which library has already
 accessed, default False</p></li>
 <li><p><strong>wildcard</strong> – set True for inclusive window title search, default False</p></li>
+<li><p><strong>parse_elements</strong> – set False to not to parse elements of the window,
+default True</p></li>
 </ul>
 </dd>
 </dl>
