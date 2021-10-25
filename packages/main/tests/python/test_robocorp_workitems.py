@@ -635,7 +635,7 @@ class TestLibrary:
 
         exception_type = (exception or {}).pop("exception_type", None)
         if exception_type:
-            exception["type"] = Error(exception_type)
+            exception["type"] = Error(exception_type).value
             exception.setdefault("code", None)
             exception.setdefault("message", None)
         else:
