@@ -1457,13 +1457,10 @@ class WorkItems:
                 result = to_call()
                 if _collect_results:
                     results.append(result)
+                self.release_input_work_item(State.DONE, _auto_release=True)
+
                 count += 1
                 if _limit and count >= _limit:
-                    break
-
-                try:
-                    self.get_input_work_item(_internal_call=True)
-                except EmptyQueue:
                     break
         finally:
             self._under_iteration.clear()

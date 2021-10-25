@@ -526,6 +526,24 @@ class TestLibrary:
         assert usernames == expected_usernames
         assert results == expected_results
 
+    def test_iter_work_items_limit_and_state(self, library):
+        def func():
+            return 1
+
+        # Pick one single item and make sure its state is set implicitly.
+        results = library.for_each_input_work_item(func, _limit=1)
+        assert len(results) == 1
+        assert library.current.state is State.DONE
+
+        def func2():
+            library.release_input_work_item(State.FAILED)
+            return 2
+
+        # Pick-up the rest of the two inputs and set state explicitly.
+        results = library.for_each_input_work_item(func2)
+        assert len(results) == 2
+        assert library.current.state is State.FAILED
+
     @pytest.mark.parametrize("collect_results", [True, False])
     def test_iter_work_items_collect_results(self, library, collect_results):
         def func():
