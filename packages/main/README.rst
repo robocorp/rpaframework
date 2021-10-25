@@ -196,7 +196,7 @@ Installation
 
 Learn about installing Python packages at `Installing Python Packages`_.
 
-Default installation method With Robocorp `Developer Tools`_ using conda.yaml:
+Default installation method with Robocorp `Developer Tools`_ using conda.yaml:
 
 .. code-block:: yaml
 
