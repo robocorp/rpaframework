@@ -1543,7 +1543,7 @@ class WorkItems:
         if state is State.FAILED:
             if exception_type:
                 exception = {
-                    "type": Error(exception_type),
+                    "type": Error(exception_type).value,
                     "code": code,
                     "message": message,
                 }
