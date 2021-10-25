@@ -4,6 +4,9 @@ Release notes
 Upcoming release
 ----------------
 
+11.5.0
+------
+
 - Library **RPA.Robocorp.WorkItems**:
 
   - Keyword `For Each Input Work Item` bugfixes and results collection switch
