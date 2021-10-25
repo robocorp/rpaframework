@@ -71,3 +71,11 @@ Failed release with exception
     Get Input Work Item
     Run Keyword And Expect Error    ${err_fail_without_type}    Release Input Work Item     FAILED      code=LOGIN_PORTAL_DOWN
     Release Input Work Item     FAILED      exception_type=BUSINESS   code=LOGIN_PORTAL_DOWN     message=Unable to login into the portal – not proceeding
+
+Consume queue without results
+    @{expected_results} =   Create List     ${2}
+    ${results} =     For Each Input Work Item    Log Payload    _collect_results=True
+    Should Be Equal     @{results}      @{expected_results}
+
+    ${results} =     For Each Input Work Item    Log Payload    _collect_results=False
+    Should Be Equal     ${results}      ${None}

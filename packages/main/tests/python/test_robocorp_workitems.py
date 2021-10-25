@@ -227,16 +227,16 @@ class TestLibrary:
         with pytest.raises(KeyError):
             library.delete_work_item_variables("doesntexist", force=False)
 
-    def test_delete_variables_multiple(self, library):
+    def test_delete_variables_single(self, library):
         library.get_input_work_item()
 
         assert "username" in library.list_work_item_variables()
-        assert len(library.current["variables"]) == 2
+        assert len(library.current.payload) == 2
 
         library.delete_work_item_variables("username")
 
         assert "username" not in library.list_work_item_variables()
-        assert len(library.current["variables"]) == 1
+        assert len(library.current.payload) == 1
 
     def test_delete_variables_multiple(self, library):
         library.get_input_work_item()
@@ -525,6 +525,55 @@ class TestLibrary:
             expected_results = expected_results[:limit]
         assert usernames == expected_usernames
         assert results == expected_results
+
+    def test_iter_work_items_limit_and_state(self, library):
+        def func():
+            return 1
+
+        # Pick one single item and make sure its state is set implicitly.
+        results = library.for_each_input_work_item(func, _limit=1)
+        assert len(results) == 1
+        assert library.current.state is State.DONE
+
+        def func2():
+            library.release_input_work_item(State.FAILED)
+            return 2
+
+        # Pick-up the rest of the two inputs and set state explicitly.
+        results = library.for_each_input_work_item(func2)
+        assert len(results) == 2
+        assert library.current.state is State.FAILED
+
+    @pytest.mark.parametrize("collect_results", [True, False])
+    def test_iter_work_items_collect_results(self, library, collect_results):
+        def func():
+            return 1
+
+        library.get_input_work_item()
+        results = library.for_each_input_work_item(
+            func, _collect_results=collect_results
+        )
+        if collect_results:
+            assert results == [1] * 3
+        else:
+            assert results is None
+
+    @pytest.mark.parametrize("processed_items", [0, 1, 2, 3])
+    def test_successive_work_items_iteration(self, library, processed_items):
+        for _ in range(processed_items):
+            library.get_input_work_item()
+            library.release_input_work_item(State.DONE)
+
+        def func():
+            pass
+
+        # Checks if all remaining input work items are processed once.
+        results = library.for_each_input_work_item(func)
+        assert len(results) == 3 - processed_items
+
+        # Checks if there's no double processing of the last already processed item.
+        results = library.for_each_input_work_item(func)
+        assert len(results) == 0
 
     @pytest.fixture(
         params=[

@@ -1361,19 +1361,41 @@ class WorkItems:
         if self._under_iteration.is_set():
             raise RuntimeError(f"Can't {action} while iterating input work items")
 
+    def _ensure_input_for_iteration(self) -> bool:
+        last_input = self.inputs[-1] if self.inputs else None
+        last_state = last_input.state if last_input else None
+        if not last_input or last_state:
+            # There are no inputs loaded yet or the last retrieved input work
+            # item is already processed. Time for trying to load a new one.
+            try:
+                self.get_input_work_item(_internal_call=True)
+            except EmptyQueue:
+                return False
+
+        return True
+
     @keyword
     def for_each_input_work_item(
-        self, keyword_or_func: Union[str, Callable], *args, _limit: int = 0, **kwargs
+        self,
+        keyword_or_func: Union[str, Callable],
+        *args,
+        _limit: int = 0,
+        _collect_results: bool = True,
+        **kwargs,
     ) -> List[Any]:
         """Run a keyword or function for each work item in the input queue.
 
-        Note that you have to get an initial input work item explicitly if ``autoload``
-        is falsy.
+        Automatically collects and returns a list of results, switch
+        ``_collect_results`` to ``False`` for avoiding this.
 
         :param keyword_or_func: The RF keyword or Py function you want to map through
             all the work items
+        :param args: Variable list of arguments that go into the called keyword/function
+        :param kwargs: Variable list of keyword arguments that go into the called
+            keyword/function
         :param _limit: Limit the queue item retrieval to a certain amount, otherwise
-            all the items are retrieved from the queue.
+            all the items are retrieved from the queue
+        :param _collect_results: Collect and return a list of results if truthy
 
         Example:
 
@@ -1422,25 +1444,28 @@ class WorkItems:
             )
         else:
             to_call = lambda: keyword_or_func(*args, **kwargs)  # noqa: E731
-        outputs = []
+        results = []
 
         try:
             self._under_iteration.set()
             count = 0
             while True:
-                outputs.append(to_call())
-                count += 1
-                if _limit and count >= _limit:
+                input_ensured = self._ensure_input_for_iteration()
+                if not input_ensured:
                     break
 
-                try:
-                    self.get_input_work_item(_internal_call=True)
-                except EmptyQueue:
+                result = to_call()
+                if _collect_results:
+                    results.append(result)
+                self.release_input_work_item(State.DONE, _auto_release=True)
+
+                count += 1
+                if _limit and count >= _limit:
                     break
         finally:
             self._under_iteration.clear()
 
-        return outputs
+        return results if _collect_results else None
 
     @keyword
     def release_input_work_item(
