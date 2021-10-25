@@ -227,16 +227,16 @@ class TestLibrary:
         with pytest.raises(KeyError):
             library.delete_work_item_variables("doesntexist", force=False)
 
-    def test_delete_variables_multiple(self, library):
+    def test_delete_variables_single(self, library):
         library.get_input_work_item()
 
         assert "username" in library.list_work_item_variables()
-        assert len(library.current["variables"]) == 2
+        assert len(library.current.payload) == 2
 
         library.delete_work_item_variables("username")
 
         assert "username" not in library.list_work_item_variables()
-        assert len(library.current["variables"]) == 1
+        assert len(library.current.payload) == 1
 
     def test_delete_variables_multiple(self, library):
         library.get_input_work_item()
