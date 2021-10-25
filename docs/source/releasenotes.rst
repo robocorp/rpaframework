@@ -34,7 +34,7 @@ Upcoming release
   - **RPA.Word.Application**
 
 - Library **RPA.Desktop.Windows**: Add possibility to bypass initial element lookup when
-  using `Open Dialog` or `Connect Using Handle` keywords
+  using `Open Dialog` or `Connect By Handle` keywords
 
 - Library **RPA.Email.ImapSmtp**: Keyword `List Messages` bugfix
 
