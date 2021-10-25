@@ -678,6 +678,7 @@ class Windows(OperatingSystem):
         timeout: int = 10,
         existing_app: bool = False,
         wildcard: bool = False,
+        parse_elements: bool = True,
     ) -> Any:
         """Open window by its title.
 
@@ -687,6 +688,8 @@ class Windows(OperatingSystem):
         :param existing_app: set True if selecting window which library has already
          accessed, default False
         :param wildcard: set True for inclusive window title search, default False
+        :param parse_elements: set False to not to parse elements of the window,
+         default True
 
         Example:
 
@@ -711,6 +714,7 @@ class Windows(OperatingSystem):
                         window["handle"],
                         windowtitle=self.windowtitle,
                         existing_app=existing_app,
+                        parse_elements=parse_elements,
                     )
                     break
             time.sleep(0.1)
@@ -750,7 +754,11 @@ class Windows(OperatingSystem):
         return None
 
     def connect_by_handle(
-        self, handle: int, windowtitle: str = None, existing_app: bool = False
+        self,
+        handle: int,
+        windowtitle: str = None,
+        existing_app: bool = False,
+        parse_elements: bool = True,
     ) -> Any:
         """Connect to application by its handle
 
@@ -758,6 +766,8 @@ class Windows(OperatingSystem):
         :param windowtitle: name of the window, defaults to active window if None
         :param existing_app: set True if selecting window which library has already
          accessed, default False
+        :param parse_elements: set False to not to parse elements of the window,
+         default True
 
         Example:
 
@@ -784,7 +794,8 @@ class Windows(OperatingSystem):
             if windowtitle is not None:
                 params = {"windowtitle": windowtitle}
             app_instance = self._add_app_instance(app=app, params=params, dialog=False)
-        self.refresh_window()
+        if parse_elements:
+            self.refresh_window()
         return app_instance
 
     def close_all_applications(self) -> None:

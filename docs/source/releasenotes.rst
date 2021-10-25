@@ -30,6 +30,9 @@ Upcoming release
   - **RPA.Outlook.Application**
   - **RPA.Word.Application**
 
+- Library **RPA.Desktop.Windows**: Add possibility to bypass initial element lookup when
+  using `Open Dialog` or `Connect Using Handle` keywords
+
 11.4.0
 ------
 
