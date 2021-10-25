@@ -31,6 +31,7 @@ Learn more about RPA at `Robocorp Documentation`_.
 .. _Robocorp Documentation: https://robocorp.com/docs/
 .. _Control Room: https://robocorp.com/docs/control-room
 .. _Developer Tools: https://robocorp.com/docs/developer-tools
+.. _Installing Python Packages: https://robocorp.com/docs/setup/installing-python-package-dependencies
 
 Links
 ^^^^^
@@ -193,27 +194,47 @@ The RPA Framework project currently includes the following libraries:
 Installation
 ------------
 
-If you already have Python_ and `pip <http://pip-installer.org>`_ installed,
-you can use:
+Learn about installing Python packages at `Installing Python Packages`_.
 
-.. code-block:: console
+Default installation method With Robocorp `Developer Tools`_ using conda.yaml:
 
-    pip install rpaframework
+.. code-block:: yaml
+
+   channels:
+      - conda-forge
+   dependencies:
+      - python=3.7.5
+      - pip=20.1
+      - pip:
+         - rpaframework==11.4.0
 
 To install all extra packages, you can use:
 
-.. code-block:: console
+.. code-block:: yaml
 
-    pip install rpaframework[aws,cv]
+   channels:
+      - conda-forge
+   dependencies:
+      - python=3.7.5
+      - pip=20.1
+      - pip:
+         - rpaframework[aws,cv]==11.4.0
+         - rpaframework-google==0.3.0
+         - rpaframework-recognition==0.7.2
 
-Other packages that can be installed separately are:
+Separate installation of PDF and Dialogs libraries without main rpaframework:
 
-.. code-block:: console
+.. code-block:: yaml
 
-    pip install rpaframework-dialogs  # included in the rpaframework by default
-    pip install rpaframework-google
-    pip install rpaframework-pdf  # included in the rpaframework by default
-    pip install rpaframework-recognition
+   channels:
+      - conda-forge
+   dependencies:
+      - python=3.7.5
+      - pip=20.1
+      - pip:
+         - rpaframework-dialogs==0.4.2  # included in the rpaframework by default
+         - rpaframework-pdf==0.9.0  # included in the rpaframework by default
+
 
 .. note:: Python 3.6 or higher is required
 
