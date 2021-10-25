@@ -33,6 +33,8 @@ Upcoming release
 - Library **RPA.Desktop.Windows**: Add possibility to bypass initial element lookup when
   using `Open Dialog` or `Connect Using Handle` keywords
 
+- Library **RPA.Email.ImapSmtp**: Keyword `List Messages` bugfix
+
 11.4.0
 ------
 
