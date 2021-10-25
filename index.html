@@ -384,35 +384,40 @@ actively maintained core libraries for Software Robot Developers.</p>
 <p>Learn about installing Python packages at <a class="reference external" href="https://robocorp.com/docs/setup/installing-python-package-dependencies">Installing Python Packages</a>.</p>
 <p>Default installation method With Robocorp <a class="reference external" href="https://robocorp.com/downloads">Developer Tools</a> using conda.yaml:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
-   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
 <span class="nt">dependencies</span><span class="p">:</span>
-   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span>
-   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pip=20.1</span>
-   <span class="p p-Indicator">-</span> <span class="nt">pip</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework==11.4.0</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pip=20.1</span>
+  <span class="p p-Indicator">-</span> <span class="nt">pip</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework==11.4.0</span>
 </pre></div>
 </div>
-<p>To install all extra packages, you can use:</p>
+<p>To install all extra packages (including Playwright dependencies), you can use:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
-   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
 <span class="nt">dependencies</span><span class="p">:</span>
-   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span>
-   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pip=20.1</span>
-   <span class="p p-Indicator">-</span> <span class="nt">pip</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework[aws,cv]==11.4.0</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework-google==0.3.0</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework-recognition==0.7.2</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">tesseract=4.1.1</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pip=20.1</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">nodejs=14.17.4</span>
+  <span class="p p-Indicator">-</span> <span class="nt">pip</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework[aws]==11.4.0</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework-google==0.3.0</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework-recognition==0.7.2</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">robotframework-browser==8.0.2</span>
+<span class="nt">rccPostInstall</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rfbrowser init</span>
 </pre></div>
 </div>
 <p>Separate installation of PDF and Dialogs libraries without main rpaframework:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
-   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
 <span class="nt">dependencies</span><span class="p">:</span>
-   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span>
-   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pip=20.1</span>
-   <span class="p p-Indicator">-</span> <span class="nt">pip</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework-dialogs==0.4.2</span>  <span class="c1"># included in the rpaframework by default</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework-pdf==0.9.0</span>  <span class="c1"># included in the rpaframework by default</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pip=20.1</span>
+  <span class="p p-Indicator">-</span> <span class="nt">pip</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework-dialogs==0.4.2</span>  <span class="c1"># included in the rpaframework by default</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework-pdf==0.9.0</span>  <span class="c1"># included in the rpaframework by default</span>
 </pre></div>
 </div>
 <div class="admonition note">
