@@ -1436,8 +1436,6 @@ class WorkItems:
                 logging.info("Payload lengths: %s", lengths)
 
             log_payloads()
-
-        Returns a list of results.
         """
 
         self._raise_under_iteration("iterate input work items")

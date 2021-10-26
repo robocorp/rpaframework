@@ -4,6 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+11.5.1
+------
+
+- Library **RPA.Robocorp.WorkItems**: Keyword `For Each Input Work Item` supports now
+  human-friendly parameter names as `items_limit` and `return_results`
+
 11.5.0
 ------
 
