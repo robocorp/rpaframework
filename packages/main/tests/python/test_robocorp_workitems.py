@@ -544,16 +544,16 @@ class TestLibrary:
         assert len(results) == 2
         assert library.current.state is State.FAILED
 
-    @pytest.mark.parametrize("collect_results", [True, False])
-    def test_iter_work_items_collect_results(self, library, collect_results):
+    @pytest.mark.parametrize("return_results", [True, False])
+    def test_iter_work_items_return_results(self, library, return_results):
         def func():
             return 1
 
         library.get_input_work_item()
         results = library.for_each_input_work_item(
-            func, return_results=collect_results
+            func, return_results=return_results
         )
-        if collect_results:
+        if return_results:
             assert results == [1] * 3
         else:
             assert results is None
