@@ -516,7 +516,7 @@ class TestLibrary:
             return username is not None
 
         library.get_input_work_item()
-        results = library.for_each_input_work_item(func, 1, 2, _limit=limit, r=3)
+        results = library.for_each_input_work_item(func, 1, 2, items_limit=limit, r=3)
 
         expected_usernames = ["testguy", "another"]
         expected_results = [True, True, False]
@@ -531,7 +531,7 @@ class TestLibrary:
             return 1
 
         # Pick one single item and make sure its state is set implicitly.
-        results = library.for_each_input_work_item(func, _limit=1)
+        results = library.for_each_input_work_item(func, items_limit=1)
         assert len(results) == 1
         assert library.current.state is State.DONE
 
@@ -544,16 +544,14 @@ class TestLibrary:
         assert len(results) == 2
         assert library.current.state is State.FAILED
 
-    @pytest.mark.parametrize("collect_results", [True, False])
-    def test_iter_work_items_collect_results(self, library, collect_results):
+    @pytest.mark.parametrize("return_results", [True, False])
+    def test_iter_work_items_return_results(self, library, return_results):
         def func():
             return 1
 
         library.get_input_work_item()
-        results = library.for_each_input_work_item(
-            func, _collect_results=collect_results
-        )
-        if collect_results:
+        results = library.for_each_input_work_item(func, return_results=return_results)
+        if return_results:
             assert results == [1] * 3
         else:
             assert results is None
@@ -841,11 +839,16 @@ class TestRobocorpAdapter:
         self.mock_post.assert_called_once_with(url, headers=self.HEADERS_PROCESS)
 
     @pytest.mark.parametrize(
-        "exception", [None, {"type": "BUSINESS", "code": "ERR_UNEXPECTED"}]
+        "exception",
+        [None, {"type": "BUSINESS", "code": "ERR_UNEXPECTED", "message": None}],
     )
     def test_release_input(self, adapter, exception):
         item_id = "26"
-        adapter.release_input(item_id, State.FAILED, exception=exception)
+        adapter.release_input(
+            item_id,
+            State.FAILED,
+            exception=exception.copy() if exception else exception,
+        )
 
         url = "https://api.process.com/process-v1/workspaces/1/processes/5/runs/2/robotRuns/3/release-work-item"
         body = {
@@ -853,7 +856,9 @@ class TestRobocorpAdapter:
             "state": State.FAILED.value,
         }
         if exception:
-            body["exception"] = exception
+            body["exception"] = {
+                key: value for (key, value) in exception.items() if value
+            }
         self.mock_post.assert_called_once_with(
             url, headers=self.HEADERS_PROCESS, json=body
         )

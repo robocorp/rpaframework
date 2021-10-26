@@ -211,6 +211,9 @@ class RobocorpAdapter(BaseAdapter):
         )
         body = {"workItemId": item_id, "state": state.value}
         if exception:
+            for key, value in list(exception.items()):
+                if value is None:
+                    del exception[key]
             body["exception"] = exception
         logging.info(
             "Releasing %s input work item %r into %r with exception: %s",
@@ -1379,23 +1382,24 @@ class WorkItems:
         self,
         keyword_or_func: Union[str, Callable],
         *args,
-        _limit: int = 0,
-        _collect_results: bool = True,
+        items_limit: int = 0,
+        return_results: bool = True,
         **kwargs,
     ) -> List[Any]:
         """Run a keyword or function for each work item in the input queue.
 
         Automatically collects and returns a list of results, switch
-        ``_collect_results`` to ``False`` for avoiding this.
+        ``return_results`` to ``False`` for avoiding this.
 
         :param keyword_or_func: The RF keyword or Py function you want to map through
             all the work items
         :param args: Variable list of arguments that go into the called keyword/function
         :param kwargs: Variable list of keyword arguments that go into the called
             keyword/function
-        :param _limit: Limit the queue item retrieval to a certain amount, otherwise
-            all the items are retrieved from the queue
-        :param _collect_results: Collect and return a list of results if truthy
+        :param items_limit: Limit the queue item retrieval to a certain amount,
+            otherwise all the items are retrieved from the queue until depletion
+        :param return_results: Collect and return a list of results given each
+            keyword/function call if truthy
 
         Example:
 
@@ -1432,8 +1436,6 @@ class WorkItems:
                 logging.info("Payload lengths: %s", lengths)
 
             log_payloads()
-
-        Returns a list of results.
         """
 
         self._raise_under_iteration("iterate input work items")
@@ -1455,17 +1457,17 @@ class WorkItems:
                     break
 
                 result = to_call()
-                if _collect_results:
+                if return_results:
                     results.append(result)
                 self.release_input_work_item(State.DONE, _auto_release=True)
 
                 count += 1
-                if _limit and count >= _limit:
+                if items_limit and count >= items_limit:
                     break
         finally:
             self._under_iteration.clear()
 
-        return results if _collect_results else None
+        return results if return_results else None
 
     @keyword
     def release_input_work_item(
