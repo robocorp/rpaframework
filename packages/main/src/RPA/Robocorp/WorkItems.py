@@ -211,6 +211,9 @@ class RobocorpAdapter(BaseAdapter):
         )
         body = {"workItemId": item_id, "state": state.value}
         if exception:
+            for key, value in list(exception.items()):
+                if value is None:
+                    del exception[key]
             body["exception"] = exception
         logging.info(
             "Releasing %s input work item %r into %r with exception: %s",

@@ -841,11 +841,16 @@ class TestRobocorpAdapter:
         self.mock_post.assert_called_once_with(url, headers=self.HEADERS_PROCESS)
 
     @pytest.mark.parametrize(
-        "exception", [None, {"type": "BUSINESS", "code": "ERR_UNEXPECTED"}]
+        "exception",
+        [None, {"type": "BUSINESS", "code": "ERR_UNEXPECTED", "message": None}],
     )
     def test_release_input(self, adapter, exception):
         item_id = "26"
-        adapter.release_input(item_id, State.FAILED, exception=exception)
+        adapter.release_input(
+            item_id,
+            State.FAILED,
+            exception=exception.copy() if exception else exception,
+        )
 
         url = "https://api.process.com/process-v1/workspaces/1/processes/5/runs/2/robotRuns/3/release-work-item"
         body = {
@@ -853,7 +858,9 @@ class TestRobocorpAdapter:
             "state": State.FAILED.value,
         }
         if exception:
-            body["exception"] = exception
+            body["exception"] = {
+                key: value for (key, value) in exception.items() if value
+            }
         self.mock_post.assert_called_once_with(
             url, headers=self.HEADERS_PROCESS, json=body
         )
