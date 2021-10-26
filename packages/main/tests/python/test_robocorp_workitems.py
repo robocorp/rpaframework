@@ -550,9 +550,7 @@ class TestLibrary:
             return 1
 
         library.get_input_work_item()
-        results = library.for_each_input_work_item(
-            func, return_results=return_results
-        )
+        results = library.for_each_input_work_item(func, return_results=return_results)
         if return_results:
             assert results == [1] * 3
         else:
