@@ -63,7 +63,7 @@ Explicit state set
     Run Keyword And Expect Error    ${err_item_released}    Release Input Work Item     DONE
 
 Consume queue
-    @{results} =     For Each Input Work Item    Log Payload    _limit=1
+    @{results} =     For Each Input Work Item    Log Payload    items_limit=1
     Log   Items keys length: @{results}
     Length should be    ${results}  1
 
@@ -74,8 +74,8 @@ Failed release with exception
 
 Consume queue without results
     @{expected_results} =   Create List     ${2}
-    ${results} =     For Each Input Work Item    Log Payload    _collect_results=True
+    ${results} =     For Each Input Work Item    Log Payload    return_results=True
     Should Be Equal     @{results}      @{expected_results}
 
-    ${results} =     For Each Input Work Item    Log Payload    _collect_results=False
+    ${results} =     For Each Input Work Item    Log Payload    return_results=False
     Should Be Equal     ${results}      ${None}

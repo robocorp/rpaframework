@@ -516,7 +516,7 @@ class TestLibrary:
             return username is not None
 
         library.get_input_work_item()
-        results = library.for_each_input_work_item(func, 1, 2, _limit=limit, r=3)
+        results = library.for_each_input_work_item(func, 1, 2, items_limit=limit, r=3)
 
         expected_usernames = ["testguy", "another"]
         expected_results = [True, True, False]
@@ -531,7 +531,7 @@ class TestLibrary:
             return 1
 
         # Pick one single item and make sure its state is set implicitly.
-        results = library.for_each_input_work_item(func, _limit=1)
+        results = library.for_each_input_work_item(func, items_limit=1)
         assert len(results) == 1
         assert library.current.state is State.DONE
 
@@ -551,7 +551,7 @@ class TestLibrary:
 
         library.get_input_work_item()
         results = library.for_each_input_work_item(
-            func, _collect_results=collect_results
+            func, return_results=collect_results
         )
         if collect_results:
             assert results == [1] * 3
