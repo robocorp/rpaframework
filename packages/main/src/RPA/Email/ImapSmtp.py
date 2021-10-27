@@ -95,6 +95,15 @@ class ImapSmtp:
     """`ImapSmtp` is a library for sending, reading, and deleting emails.
     `ImapSmtp` is interfacing with SMTP and IMAP protocols.
 
+    ***About criteria argument***
+
+    Various keywords like ``List Messages`` and ``Move Messages`` have keyword
+    argument called ``criterion`` which can be used to filter emails according
+    to given criteria.
+
+    Syntax needs to according to specification and more information about that
+    can be read from https://robocorp.com/docs/development-guide/email/sending-emails-with-gmail-smtp#listing-email-messages-by-criteria
+
     **Troubleshooting**
 
     - Authentication error with Gmail - "Application-specific password required"
