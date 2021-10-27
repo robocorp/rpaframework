@@ -6,6 +6,16 @@
 	<description>Recent updates to the Python Package Index for rpaframework</description>
 	<language>en</language>
 	<item>
+		<title>Release 11.5.1</title>
+		<link>https://pypi.org/project/rpaframework/11.5.1/</link>
+		<description>- Library &lt;b&gt;RPA.Robocorp.WorkItems&lt;/b&gt;: Keyword `For Each Input Work Item` supports now
+&lt;br&gt;      human-friendly parameter names as `items_limit` and `return_results`
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Tue, 26 Oct 2021 15:48:51 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
 		<title>Release 11.5.0</title>
 		<link>https://pypi.org/project/rpaframework/11.5.0/</link>
 		<description>- Library &lt;b&gt;RPA.Robocorp.WorkItems&lt;/b&gt;:

@@ -841,10 +841,10 @@ to the output queue after the keyword <code class="docutils literal notranslate"
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.for_each_input_work_item">
-<code class="sig-name descname">for_each_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">keyword_or_func: Union[str, Callable], *args, _limit: int = 0, _collect_results: bool = True, **kwargs</em><span class="sig-paren">)</span> &#x2192; List[Any]<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.for_each_input_work_item" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">for_each_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">keyword_or_func: Union[str, Callable], *args, items_limit: int = 0, return_results: bool = True, **kwargs</em><span class="sig-paren">)</span> &#x2192; List[Any]<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.for_each_input_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run a keyword or function for each work item in the input queue.</p>
 <p>Automatically collects and returns a list of results, switch
-<code class="docutils literal notranslate"><span class="pre">_collect_results</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code> for avoiding this.</p>
+<code class="docutils literal notranslate"><span class="pre">return_results</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code> for avoiding this.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -853,9 +853,10 @@ all the work items</p></li>
 <li><p><strong>args</strong> – Variable list of arguments that go into the called keyword/function</p></li>
 <li><p><strong>kwargs</strong> – Variable list of keyword arguments that go into the called
 keyword/function</p></li>
-<li><p><strong>_limit</strong> – Limit the queue item retrieval to a certain amount, otherwise
-all the items are retrieved from the queue</p></li>
-<li><p><strong>_collect_results</strong> – Collect and return a list of results if truthy</p></li>
+<li><p><strong>items_limit</strong> – Limit the queue item retrieval to a certain amount,
+otherwise all the items are retrieved from the queue until depletion</p></li>
+<li><p><strong>return_results</strong> – Collect and return a list of results given each
+keyword/function call if truthy</p></li>
 </ul>
 </dd>
 </dl>
@@ -891,7 +892,6 @@ all the items are retrieved from the queue</p></li>
 <span class="n">log_payloads</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Returns a list of results.</p>
 </dd></dl>
 
 <dl class="method">
