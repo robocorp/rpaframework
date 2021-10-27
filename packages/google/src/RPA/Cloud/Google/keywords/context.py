@@ -57,6 +57,10 @@ class LibraryContext:
     def cloud_auth_type(self):
         return self.ctx.cloud_auth_type
 
+    @property
+    def region(self):
+        return self.ctx.region
+
     def get_secret_from_robocorp_vault(self, secret_type="serviceaccount"):
         if self.ctx.secrets_library is None:
             raise KeyError("RPA.Robocorp.Vault library is required to use Vault")

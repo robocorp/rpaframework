@@ -13,10 +13,12 @@ class BaseKeywords(LibraryContext):
         vault_name: str = None,
         vault_secret_key: str = None,
         auth_type: str = "serviceaccount",
+        region: str = None,
     ):
         """Set Robocorp Vault name and secret key name
         :param vault_name: Robocorp Vault name
         :param vault_secret_key: Robocorp Vault secret key name
+        :param region: GCP region,
         """
         if vault_name:
             self.ctx.robocorp_vault_name = vault_name
@@ -25,3 +27,5 @@ class BaseKeywords(LibraryContext):
         if self.ctx.robocorp_vault_name and self.ctx.robocorp_vault_secret_key:
             self.ctx.use_robocorp_vault = True
         self.ctx.cloud_auth_type = auth_type
+        if region:
+            self.ctx.region = region

@@ -53,7 +53,7 @@ class StorageKeywords(LibraryContext):
 
             ${result}=   Create Storage Bucket   visionfolder
         """
-        bucket = self.service.create_bucket(bucket_name)
+        bucket = self.service.create_bucket(bucket_name, location=self.region)
         return bucket
 
     @keyword(tags=["storage"])

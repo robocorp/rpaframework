@@ -227,6 +227,7 @@ class Google(DynamicCore):
         vault_name: str = None,
         vault_secret_key: str = None,
         cloud_auth_type: str = "serviceaccount",
+        region: str = None,
     ):
         """Library initialization
 
@@ -235,12 +236,14 @@ class Google(DynamicCore):
         :param vault_secret_key: Robocorp secret key
         :param cloud_auth_type: "serviceaccount" or "token",
          defaults to "serviceaccount"
+        :param region: GCP region,
         """
         self.logger = logging.getLogger(__name__)
         self.service_account_file = service_account
         self.robocorp_vault_name = vault_name
         self.robocorp_vault_secret_key = vault_secret_key
         self.cloud_auth_type = cloud_auth_type
+        self.region = region
         self.use_robocorp_vault = False
         if self.robocorp_vault_name and self.robocorp_vault_secret_key:
             self.use_robocorp_vault = True
