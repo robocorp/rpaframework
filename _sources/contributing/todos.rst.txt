@@ -102,7 +102,7 @@ RPA.JavaAccessBridge:
 
    "202", "add keyword for taking screenshots of elements and window"
    "203", "implement proper XPath syntax support"
-   "589", "change to use RPA.core.geometry Region/Point"
+   "593", "change to use RPA.core.geometry Region/Point"
 
 RPA.Robocorp.Process:
 =====================
