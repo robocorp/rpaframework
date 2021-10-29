@@ -4,6 +4,12 @@ Release notes
 Upcoming release
 ----------------
 
+11.5.2
+------
+
+- Library **RPA.JavaAccessBridge**: Raise the causing error (instead of just logging it)
+  if initialization fails
+
 11.5.1
 ------
 
