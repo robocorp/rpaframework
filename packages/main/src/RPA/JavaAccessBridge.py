@@ -230,7 +230,11 @@ class JavaAccessBridge:
             target=self._pump_background, daemon=True, args=[pipe]
         )
         self.pumper_thread.start()
-        self.jab_wrapper = pipe.get(timeout=10)
+        obj = pipe.get(timeout=10)
+        if isinstance(obj, Exception):
+            raise obj
+        if isinstance(obj, JavaAccessBridgeWrapper):
+            self.jab_wrapper = obj
         if not self.jab_wrapper:
             raise Exception("Failed to initialize Java Access Bridge Wrapper")
         time.sleep(1)
@@ -255,7 +259,7 @@ class JavaAccessBridge:
         # pylint: disable=broad-except
         except Exception as err:
             self.logger.error(err)
-            pipe.put(None)
+            pipe.put(err)
         finally:
             self.logger.info("Stopped processing events")
 
