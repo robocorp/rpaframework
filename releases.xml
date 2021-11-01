@@ -6,6 +6,16 @@
 	<description>Recent updates to the Python Package Index for rpaframework</description>
 	<language>en</language>
 	<item>
+		<title>Release 11.5.2</title>
+		<link>https://pypi.org/project/rpaframework/11.5.2/</link>
+		<description>- Library &lt;b&gt;RPA.JavaAccessBridge&lt;/b&gt;: Raise the causing error (instead of just logging it)
+&lt;br&gt;      if initialization fails
+&lt;br&gt;</description>
+		<author>rpafw@robocorp.com</author>
+		<pubDate>Fri, 29 Oct 2021 14:11:52 +0300</pubDate>
+		<source url="https://rpaframework.org/releasenotes.html">Release Notes</source>
+	</item>
+	<item>
 		<title>Release 11.5.1</title>
 		<link>https://pypi.org/project/rpaframework/11.5.1/</link>
 		<description>- Library &lt;b&gt;RPA.Robocorp.WorkItems&lt;/b&gt;: Keyword `For Each Input Work Item` supports now
