@@ -366,6 +366,15 @@ class Selenium(SeleniumLibrary):
     The run-on-failure functionality can be disabled by using a special value
     ``NOTHING`` or anything considered false (see `Boolean arguments`)
     such as ``NONE``.
+
+    = Auto closing browser =
+
+    By default browser instances created during task execution are closed
+    at the end of the task. This can be prevented with the ``auto_close``
+    argument when `importing` the library.
+
+    Value needs to be set to ``False`` or anything considered false (see `Boolean arguments`).
+
     """  # noqa: E501
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
