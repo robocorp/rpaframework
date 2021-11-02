@@ -11,8 +11,6 @@ import time
 from pathlib import Path
 from typing import Any, Optional
 
-from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
-
 from RPA.Desktop import Desktop
 from RPA.Desktop.Clipboard import Clipboard
 from RPA.Desktop.OperatingSystem import OperatingSystem
@@ -1638,7 +1636,7 @@ class Windows(OperatingSystem):
         if region is not None:
             region = Region(*region)
 
-        path = Desktop().take_screenshot(path=filename, locator=region)
+        Desktop().take_screenshot(path=filename, locator=region)
 
     def _parse_element_attributes(self, element: dict) -> dict:
         """Return filtered element dictionary for an element.
