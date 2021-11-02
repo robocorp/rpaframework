@@ -2,12 +2,12 @@ Release notes
 =============
 
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3>`_
------------------
++++++++++++++++++
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
----------
++++++++++
 
-11.5.3 - 2 Nov 2021
+11.5.3 - 3 Nov 2021
 -------------------
 
 - Library **RPA.Excel.Application**: Fix for Windows given pywin32 dependency update
