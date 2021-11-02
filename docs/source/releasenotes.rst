@@ -4,6 +4,14 @@ Release notes
 Upcoming release
 ----------------
 
+Released
+--------
+
+11.5.3 - 2 Nov 2021
+-------------------
+
+- Library **RPA.Excel.Application**: Fix on Windows given pywin32 dependency update
+
 11.5.2
 ------
 
