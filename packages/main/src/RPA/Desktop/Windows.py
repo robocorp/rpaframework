@@ -1638,13 +1638,7 @@ class Windows(OperatingSystem):
         if region is not None:
             region = Region(*region)
 
-        try:
-            dirname = BuiltIn().get_variable_value("${OUTPUT_DIR}")
-        except (ModuleNotFoundError, RobotNotRunningError):
-            dirname = Path.cwd()
-
-        path = Path(dirname, "images", clean_filename(filename))
-        path = Desktop().take_screenshot(path=path, locator=region)
+        path = Desktop().take_screenshot(path=filename, locator=region)
 
     def _parse_element_attributes(self, element: dict) -> dict:
         """Return filtered element dictionary for an element.
