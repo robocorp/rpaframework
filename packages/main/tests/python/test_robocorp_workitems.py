@@ -28,13 +28,11 @@ from RPA.Robocorp.utils import RequestsHTTPError
 
 VARIABLES_FIRST = {"username": "testguy", "address": "guy@company.com"}
 VARIABLES_SECOND = {"username": "another", "address": "dude@company.com"}
-
 VALID_DATA = {
     "workitem-id-first": VARIABLES_FIRST,
     "workitem-id-second": VARIABLES_SECOND,
     "workitem-id-custom": [1, 2, 3],
 }
-
 VALID_FILES = {
     "workitem-id-first": {
         "file1.txt": b"data1",
@@ -46,6 +44,8 @@ VALID_FILES = {
 }
 
 ITEMS_JSON = [{"payload": {"a-key": "a-value"}, "files": {"a-file": "file.txt"}}]
+
+RESOURCES_DIR = Path(__file__).resolve().parent.parent / "resources"
 
 
 @contextmanager
@@ -659,6 +659,31 @@ class TestLibrary:
 
         assert library.current.state is None  # because the previous one has a state
         assert library.adapter.releases == [("workitem-id-first", State.DONE, None)]
+
+    def _get_body_from_email(self, library):
+        library.get_input_work_item()
+        return library.parse_work_item_from_email()
+
+    @pytest.mark.parametrize(
+        "email_file,expected_body,effect",
+        [
+            ("email-mika.txt", {"message": "from email"}, nullcontext()),
+            ("email-mika-no-json.txt", None, pytest.raises(json.JSONDecodeError)),
+        ],
+    )
+    def test_parse_work_item_from_email(
+        self, library, email_file, expected_body, effect
+    ):
+        raw_email = (RESOURCES_DIR / "work-items" / email_file).read_text()
+        library.adapter.DATA["workitem-id-first"]["rawEmail"] = raw_email
+
+        with effect:
+            body = self._get_body_from_email(library)
+            assert body == expected_body
+
+    def test_parse_work_item_from_email_missing_content(self, library):
+        with pytest.raises(KeyError):
+            self._get_body_from_email(library)
 
 
 class TestFileAdapter:
