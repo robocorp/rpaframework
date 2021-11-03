@@ -1584,12 +1584,13 @@ class WorkItems:
 
     @keyword
     def parse_work_item_from_email(self) -> dict:
-        """Parse and return a dictionary from the sent mail trigger.
+        """Parse and return a dictionary from the input work item of a process started
+        by e-mail trigger.
 
         Since a process can be started in Control Room by sending an e-mail, a body
         in JSON format can be sent as well and this gets attached to the input work
         item with the `rawEmail` payload variable. This keyword parses the content of
-        it and returns the original dictionary that was sent through the mail.
+        it and returns the dictionary transformation of the original e-mail.
 
         Example:
 
@@ -1598,8 +1599,8 @@ class WorkItems:
             ${payload} =    Parse Work Item From Email
             Set Work Item Variables    &{payload}
             Save Work Item
-            ${action} =     Get Work Item Variable     action
-            Log    ${action}
+            ${action} =     Get Work Item Variable     message
+            Log    ${message}
         """
         raw_email = self.get_work_item_variable("rawEmail")
         message = email.message_from_string(raw_email)
