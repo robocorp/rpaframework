@@ -79,3 +79,9 @@ Consume queue without results
 
     ${results} =     For Each Input Work Item    Log Payload    return_results=False
     Should Be Equal     ${results}      ${None}
+
+Get payload given e-mail process triggering
+    ${payload} =    Parse Work Item From Email
+    Set Work Item Variables    &{payload}
+    ${message} =     Get Work Item Variable     message
+    Should Be Equal     ${message}      from email

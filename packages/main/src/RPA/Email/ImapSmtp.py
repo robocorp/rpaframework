@@ -503,14 +503,12 @@ class ImapSmtp:
             for k, v in message.items():
                 msg_item = decode_header(v)
                 message_dict[k] = make_header(msg_item)
-            message_dict["Body"], has_attachments = self._get_decoded_email_body(
-                message
-            )
+            message_dict["Body"], has_attachments = self.get_decoded_email_body(message)
             message_dict["Has-Attachments"] = has_attachments
             messages.append(message_dict)
         return messages
 
-    def _get_decoded_email_body(self, message):
+    def get_decoded_email_body(self, message):
         """Decode email body.
 
         :param message_body: Raw 7-bit message body input e.g. from imaplib. Double
@@ -1248,7 +1246,7 @@ class ImapSmtp:
         (
             message_dict["Body"],
             has_attachments,
-        ) = self._get_decoded_email_body(message)
+        ) = self.get_decoded_email_body(message)
         # SET DEFAULT VALUES FOR KEYS
         if "Delivered-To" not in message_dict.keys():
             message_dict["Delivered-To"] = ""
