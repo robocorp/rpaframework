@@ -1,0 +1,55 @@
+Return-Path: <mika.hanninen@gmail.com>
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+ by inbound-smtp.eu-west-1.amazonaws.com with SMTP id 8acccvbblktusfv2gori4r9g5f58lp18p96dpog1
+ for process.Robocorp.WorkItemDemo.5lm3d9l1tp@mail.eu1.robocloud.eu;
+ Tue, 02 Nov 2021 14:22:46 +0000 (UTC)
+X-SES-Spam-Verdict: PASS
+X-SES-Virus-Verdict: PASS
+Received-SPF: pass (spfCheck: domain of _spf.google.com designates 209.85.219.182 as permitted sender) client-ip=209.85.219.182; envelope-from=mika.hanninen@gmail.com; helo=mail-yb1-f182.google.com;
+Authentication-Results: amazonses.com;
+ spf=pass (spfCheck: domain of _spf.google.com designates 209.85.219.182 as permitted sender) client-ip=209.85.219.182; envelope-from=mika.hanninen@gmail.com; helo=mail-yb1-f182.google.com;
+ dmarc=none header.from=iki.fi;
+X-SES-RECEIPT: AEFBQUFBQUFBQUFIUVVtVEtEc2dJNUp5Z2Z1L2xBK2JvVWdlTDA5RzVJMGJ4Vmk5bGJFUExiWXZ0L0ZIN1EvZnBvRWtvc01rQU50c003QWZ6YXNSemNiZFRlOWYxV2kxUUkwK0QxNjRFWlR0R01Ua082eENSc1NLTlhvSms4WVU2a0VpZ3ZVcFlvY1Z2Uk9DRlJYSjZmZCs0N2ppRDBCcHJyOVpxUUFDdnozWXNEZ3VEWTNzakVkaW5pbkxleWttWEZ0M1I3STJrRCsxZzhZTVRqMEFETVZIaEgyN3IraXlTY1o5WE5CT0crc1BleStseFNsSjJ3bXhTa09jWkFxVjVlZlppbWlHZTVOQ1lmVzJWWk0yaFhsZjhCb1ZUT3BzbldhUktRZ2tZWkh6WXZYUDBhS2N0UlE9PQ==
+X-SES-DKIM-SIGNATURE: a=rsa-sha256; q=dns/txt; b=gt8vVZHZuXj+EyaEzxe1/xoDM3zx4S5yrD9nar1X3QKUYzIlEM9nhUOOgUtPSpgE5FlTv6odVoQWqULZYk6P051FePkniQB6YXHpVymIiCe8yw8k1qWpwOqo71+K6XkTaavkmIMvslLgmJKBZMOJr4+hMCA6HwZcCxoyaodlfwk=; c=relaxed/simple; s=uku4taia5b5tsbglxyj6zym32efj7xqv; d=amazonses.com; t=1635862967; v=1; bh=aL4RLbzbC4fp2asO1iJICcbJo1jNWPennC9jUKJBS+0=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;
+Received: by mail-yb1-f182.google.com with SMTP id 131so41986571ybc.7
+        for <process.Robocorp.WorkItemDemo.5lm3d9l1tp@mail.eu1.robocloud.eu>; Tue, 02 Nov 2021 07:22:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=aL4RLbzbC4fp2asO1iJICcbJo1jNWPennC9jUKJBS+0=;
+        b=vMarEVx4xhS7GOaMNB5hdh0uSvqIzxG9iv3MlQXivgIU9KDkJOnIcYw5ar+zXM8WPW
+         GY/tREhmmhrd/j6FW2LDTuOEUzolrH16Dl/iTs/k1FtdSZWa4wAx+YrTsjadBCTYiL2Z
+         9lGrSNqoxoWCd/xbVBSBkG0Afrg0FjFiwIF0pR+RCN+cAUejahB5TCVD2DTPYhXBHW7Z
+         NfyaTCEPVT/Qf8S6Z4YKOOlZgk/0+UCwlBEw/hXr9U6itYWf5gZVy1hMNpbyYZD//yqD
+         gotIGIKtzuQVSwGNUJF7qwYYEZkSnf4h/L4So2irhKWOr1fmldSZxKUlhZpzXGqQVieF
+         dJRw==
+X-Gm-Message-State: AOAM533qwxQTjwtrwl+GA0b6gZhyv0/rpkiDRXRNO+M+awo9aH+F295/
+	bN/uHB4avtTzcRrrRHn8KY7pwqEyhxXcOsmlx4HDjamcX+4=
+X-Google-Smtp-Source: ABdhPJzNNJvicK9zsQy1yo6KIosVFzVSuUk6Q06JuSbAKiFkNtoApR1pkRHG7VEmt7F9+t53iMARLY+OcsR+sUkOrDc=
+X-Received: by 2002:a25:ac0b:: with SMTP id w11mr32893942ybi.163.1635862965354;
+ Tue, 02 Nov 2021 07:22:45 -0700 (PDT)
+MIME-Version: 1.0
+From: =?UTF-8?Q?Mika_H=C3=A4nninen?= <mika.hanninen@iki.fi>
+Date: Tue, 2 Nov 2021 16:22:34 +0200
+Message-ID: <CAN2yf=W3yibz-6w6QQj1fk95ezOL8N=uM3-=59E1Wwj0e-7ghg@mail.gmail.com>
+Subject: trigger process
+To: process.Robocorp.WorkItemDemo.5lm3d9l1tp@mail.eu1.robocloud.eu
+Content-Type: multipart/alternative; boundary="000000000000f3825c05cfcf0687"
+
+--000000000000f3825c05cfcf0687
+Content-Type: text/plain; charset="UTF-8"
+
+{
+"message": "from email"
+}
+
+--000000000000f3825c05cfcf0687
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div class=3D"gmail_default" style=3D"font-family:monospac=
+e,monospace">{</div><div class=3D"gmail_default" style=3D"font-family:monos=
+pace,monospace">&quot;message&quot;: &quot;from email&quot;</div><div class=
+=3D"gmail_default" style=3D"font-family:monospace,monospace">}</div></div>
+
+--000000000000f3825c05cfcf0687--

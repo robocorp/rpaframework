@@ -1,4 +1,5 @@
 import copy
+import email
 import fnmatch
 import json
 import logging
@@ -13,6 +14,7 @@ from typing import Callable, Type, Any, Optional, Union, Dict, List, Tuple
 from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn
 
+from RPA.Email.ImapSmtp import ImapSmtp
 from RPA.FileSystem import FileSystem
 from RPA.core.helpers import import_by_name, required_env
 from RPA.core.logger import deprecation
@@ -1579,3 +1581,27 @@ class WorkItems:
             Set Current Work Item    ${input}
         """
         return self.current
+
+    @keyword
+    def parse_work_item_from_email(self) -> dict:
+        """Parse and return a dictionary from the sent mail trigger.
+
+        Since a process can be started in Control Room by sending an e-mail, a body
+        in JSON format can be sent as well and this gets attached to the input work
+        item with the `rawEmail` payload variable. This keyword parses the content of
+        it and returns the original dictionary that was sent through the mail.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${payload} =    Parse Work Item From Email
+            Set Work Item Variables    &{payload}
+            Save Work Item
+            ${action} =     Get Work Item Variable     action
+            Log    ${action}
+        """
+        raw_email = self.get_work_item_variable("rawEmail")
+        message = email.message_from_string(raw_email)
+        body, _ = ImapSmtp().get_decoded_email_body(message)
+        return json.loads(body.replace("\r", "").replace("\n", "").strip())
