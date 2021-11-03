@@ -1603,6 +1603,7 @@ class WorkItems:
             Log    ${message}
         """
         raw_email = self.get_work_item_variable("rawEmail")
+        # pylint: disable=no-member
         message = email.message_from_string(raw_email)
         body, _ = ImapSmtp().get_decoded_email_body(message)
         return json.loads(body.replace("\r", "").replace("\n", "").strip())
