@@ -1606,7 +1606,7 @@ class WorkItems:
 
             ${payload} =    Parse Work Item From Email
             Set Work Item Variables    &{payload}
-            ${action} =     Get Work Item Variable     message
+            ${message} =     Get Work Item Variable     message
             Log    ${message}
         """
         raw_email = self.get_work_item_variable("rawEmail")
