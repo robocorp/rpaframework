@@ -621,6 +621,24 @@ source folder</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.get_decoded_email_body">
+<code class="sig-name descname">get_decoded_email_body</code><span class="sig-paren">(</span><em class="sig-param">message</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.get_decoded_email_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode email body.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>message_body</strong> – Raw 7-bit message body input e.g. from imaplib. Double
+encoded in quoted-printable and latin-1</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Message body as unicode string and information if message has
+attachments</p>
+</dd>
+</dl>
+<p>Detect character set if the header is not set.
+We try to get text/plain, but if there is not one then fallback to text/html.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.get_folder_list">
 <code class="sig-name descname">get_folder_list</code><span class="sig-paren">(</span><em class="sig-param">subdirectory: str = None</em>, <em class="sig-param">pattern: str = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.get_folder_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of folders on the server</p>

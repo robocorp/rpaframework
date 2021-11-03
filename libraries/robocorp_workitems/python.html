@@ -1046,6 +1046,30 @@ return their names and values as a dictionary.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Robocorp.WorkItems.WorkItems.parse_work_item_from_email">
+<code class="sig-name descname">parse_work_item_from_email</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.parse_work_item_from_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse and return a dictionary from the input work item of a process started
+by e-mail trigger.</p>
+<p>Since a process can be started in Control Room by sending an e-mail, a body
+in JSON format can be sent as well and this gets attached to the input work
+item with the <cite>rawEmail</cite> payload variable. This keyword parses the content of
+it and returns the dictionary transformation of the original e-mail.</p>
+<p>Example:</p>
+<p>After starting the process by sending an e-mail with a body like:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello world!&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${payload} =</span><span class="p">    </span><span class="c">Parse Work Item From Email</span><span class="p"></span>
+<span class="c">Set Work Item Variables</span><span class="p">    </span><span class="c">&amp;{payload}</span><span class="p"></span>
+<span class="c">${message} =</span><span class="p">     </span><span class="c">Get Work Item Variable</span><span class="p">     </span><span class="c">message</span><span class="p"></span>
+<span class="c">Log</span><span class="p">    </span><span class="c">${message}</span><span class="p"></span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.release_input_work_item">
 <code class="sig-name descname">release_input_work_item</code><span class="sig-paren">(</span><em class="sig-param">state: RPA.Robocorp.WorkItems.State</em>, <em class="sig-param">_auto_release: bool = False</em>, <em class="sig-param">exception_type: Optional[RPA.Robocorp.WorkItems.Error] = None</em>, <em class="sig-param">code: Optional[str] = None</em>, <em class="sig-param">message: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.release_input_work_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Release the lastly retrieved input work item and set its state.</p>
