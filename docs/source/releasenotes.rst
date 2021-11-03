@@ -5,8 +5,8 @@ Upcoming release
 ----------------
 
 - Library **RPA.Robocorp.WorkItems**: Keyword `Parse Work Item From Email` for
-  retrieving the payload as a dictionary from the process triggering sent e-mail JSON
-  body
+  retrieving the input item dictionary payload from the sent e-mail JSON body which
+  triggered the process
 
 11.5.2
 ------
