@@ -4,6 +4,7 @@ import os
 import pytest
 import tempfile
 from contextlib import contextmanager
+
 try:
     from contextlib import nullcontext
 except ImportError:
@@ -664,12 +665,15 @@ class TestLibrary:
         return library.parse_work_item_from_email()
 
     @pytest.mark.parametrize(
-        "email_file,expected_body,effect", [
+        "email_file,expected_body,effect",
+        [
             ("email-mika.txt", {"message": "from email"}, nullcontext()),
             ("email-mika-no-json.txt", None, pytest.raises(json.JSONDecodeError)),
-        ]
+        ],
     )
-    def test_parse_work_item_from_email(self, library, email_file, expected_body, effect):
+    def test_parse_work_item_from_email(
+        self, library, email_file, expected_body, effect
+    ):
         raw_email = (RESOURCES_DIR / "work-items" / email_file).read_text()
         library.adapter.DATA["workitem-id-first"]["rawEmail"] = raw_email
 
