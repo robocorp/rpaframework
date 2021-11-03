@@ -7,11 +7,10 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 
-11.5.3 - 3 Nov 2021
--------------------
+11.6.0 - 4 Nov 2021
+------
 
-- Library **RPA.Excel.Application**: Fix for Windows given pywin32 dependency update
-
+- Library **RPA.Excel.Application**: Fix on Windows 11 given pywin32 dependency update
 - Library **RPA.Robocorp.WorkItems**: Keyword `Parse Work Item From Email` for
   retrieving the input item dictionary payload from the sent e-mail JSON body which
   triggered the process
