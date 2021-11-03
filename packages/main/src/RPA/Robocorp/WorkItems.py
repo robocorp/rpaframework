@@ -1594,11 +1594,18 @@ class WorkItems:
 
         Example:
 
+        After starting the process by sending an e-mail with a body like:
+
+        .. code-block:: json
+
+            {
+                "message": "Hello world!"
+            }
+
         .. code-block:: robotframework
 
             ${payload} =    Parse Work Item From Email
             Set Work Item Variables    &{payload}
-            Save Work Item
             ${action} =     Get Work Item Variable     message
             Log    ${message}
         """
