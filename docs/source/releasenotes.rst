@@ -13,8 +13,9 @@ Release notes
 - Library **RPA.Excel.Application**: Fix on Windows 11 given pywin32 dependency update
 - Library **RPA.Robocorp.WorkItems**: Keyword `Parse Work Item From Email` for
   retrieving the input item dictionary payload from the sent e-mail JSON body which
-  triggered the process
-- Library **RPA.Desktop.Windows**: Fix how keyword ``Screenshot`` handles filename when saving
+  triggered the process (:issue:`275`)
+- Library **RPA.Desktop.Windows**: Fix how keyword ``Screenshot`` handles filename when
+  saving
 
 11.5.2
 ------
