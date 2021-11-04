@@ -10,7 +10,7 @@ Release notes
 11.6.0 - 4 Nov 2021
 ------
 
-- Library **RPA.Robocorp.WorkItems**: Keyword `Parse Work Item From Email` for
+- Library **RPA.Robocorp.WorkItems**: Keyword ``Parse Work Item From Email`` for
   retrieving the input item dictionary payload from the sent e-mail JSON body which
   triggered the process (:issue:`275`)
 - Library **RPA.Desktop.Windows**: Fix how keyword ``Screenshot`` handles filename when
