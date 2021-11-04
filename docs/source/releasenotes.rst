@@ -1,7 +1,7 @@
 Release notes
 =============
 
-`Upcoming release <https://github.com/robocorp/rpaframework/projects/3>`_
+`Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
