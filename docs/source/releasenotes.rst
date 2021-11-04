@@ -10,7 +10,6 @@ Release notes
 11.6.0 - 4 Nov 2021
 ------
 
-- Library **RPA.Excel.Application**: Fix on Windows 11 given pywin32 dependency update
 - Library **RPA.Robocorp.WorkItems**: Keyword `Parse Work Item From Email` for
   retrieving the input item dictionary payload from the sent e-mail JSON body which
   triggered the process (:issue:`275`)
