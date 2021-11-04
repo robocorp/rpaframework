@@ -1,13 +1,20 @@
 Release notes
 =============
 
-Upcoming release
-----------------
+`Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
++++++++++++++++++
 
-- Library **RPA.Robocorp.WorkItems**: Keyword `Parse Work Item From Email` for
+`Released <https://pypi.org/project/rpaframework/#history>`_
++++++++++
+
+11.6.0 - 4 Nov 2021
+------
+
+- Library **RPA.Robocorp.WorkItems**: Keyword ``Parse Work Item From Email`` for
   retrieving the input item dictionary payload from the sent e-mail JSON body which
-  triggered the process
-- Library **RPA.Desktop.Windows**: Fix how keyword ``Screenshot`` handles filename when saving
+  triggered the process (:issue:`275`)
+- Library **RPA.Desktop.Windows**: Fix how keyword ``Screenshot`` handles filename when
+  saving
 
 11.5.2
 ------
