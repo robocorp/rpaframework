@@ -672,9 +672,7 @@ class TestLibrary:
             ("mail-yaml.txt", {"message": "from email", "extra": {"value": 1}}),
         ],
     )
-    def test_parse_work_item_from_email(
-        self, library, email_file, expected_body
-    ):
+    def test_parse_work_item_from_email(self, library, email_file, expected_body):
         raw_email = (RESOURCES_DIR / "work-items" / email_file).read_text()
         library.adapter.DATA["workitem-id-first"]["rawEmail"] = raw_email
 

@@ -1594,7 +1594,7 @@ class WorkItems:
                     "Failed deserializing input e-mail body content with loader %r "
                     "due to: %s",
                     loader.__name__,
-                    exc
+                    exc,
                 )
             else:
                 break
