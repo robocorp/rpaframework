@@ -4,6 +4,8 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++
 
+- Skip Control Room unexpected errors from retrying during API calls
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 

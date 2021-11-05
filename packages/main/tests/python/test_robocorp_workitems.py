@@ -579,7 +579,7 @@ class TestLibrary:
             {"exception_type": "BUSINESS"},
             {
                 "exception_type": "APPLICATION",
-                "code": "ERR_UNEXPECTED",
+                "code": "UNEXPECTED_ERROR",
                 "message": "This is an unexpected error",
             },
             {
@@ -865,7 +865,7 @@ class TestRobocorpAdapter:
 
     @pytest.mark.parametrize(
         "exception",
-        [None, {"type": "BUSINESS", "code": "ERR_UNEXPECTED", "message": None}],
+        [None, {"type": "BUSINESS", "code": "UNEXPECTED_ERROR", "message": None}],
     )
     def test_release_input(self, adapter, exception):
         item_id = "26"
@@ -978,9 +978,9 @@ class TestRobocorpAdapter:
     @pytest.fixture(
         params=[
             # Requests response attribute values for: `.json()`, `.raise_for_status()`
-            ({"error": {"code": "ERR_UNEXPECTED"}}, None),  # normal response
-            ('{"error": {"code": "ERR_UNEXPECTED"}}', None),  # double serialized
-            (r'"{\"error\": {\"code\": \"ERR_UNEXPECTED\"}}"', None),  # triple
+            ({"error": {"code": "UNEXPECTED_ERROR"}}, None),  # normal response
+            ('{"error": {"code": "UNEXPECTED_ERROR"}}', None),  # double serialized
+            (r'"{\"error\": {\"code\": \"UNEXPECTED_ERROR\"}}"', None),  # triple
             ('[{"some": "value"}]', HTTPError()),  # double serialized list
         ]
     )
@@ -994,7 +994,7 @@ class TestRobocorpAdapter:
         with pytest.raises(RequestsHTTPError) as exc_info:
             adapter.list_files("4")
 
-        err = "ERR_UNEXPECTED"
+        err = "UNEXPECTED_ERROR"
         call_count = 1
         if err not in str(failing_deserializing_response.json.return_value):
             err = "Error"  # default error message in the absence of it
