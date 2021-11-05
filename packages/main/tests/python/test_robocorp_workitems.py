@@ -665,21 +665,21 @@ class TestLibrary:
         return library.parse_work_item_from_email()
 
     @pytest.mark.parametrize(
-        "email_file,expected_body,effect",
+        "email_file,expected_body",
         [
-            ("email-mika.txt", {"message": "from email"}, nullcontext()),
-            ("email-mika-no-json.txt", None, pytest.raises(json.JSONDecodeError)),
+            ("mail-text.txt", "A message from e-mail"),
+            ("mail-json.txt", {"message": "from email"}),
+            ("mail-yaml.txt", {"message": "from email", "extra": {"value": 1}}),
         ],
     )
     def test_parse_work_item_from_email(
-        self, library, email_file, expected_body, effect
+        self, library, email_file, expected_body
     ):
         raw_email = (RESOURCES_DIR / "work-items" / email_file).read_text()
         library.adapter.DATA["workitem-id-first"]["rawEmail"] = raw_email
 
-        with effect:
-            body = self._get_body_from_email(library)
-            assert body == expected_body
+        body = self._get_body_from_email(library)["Body"]
+        assert body == expected_body
 
     def test_parse_work_item_from_email_missing_content(self, library):
         with pytest.raises(KeyError):

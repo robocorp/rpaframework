@@ -4,6 +4,9 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++
 
+- Library **RPA.Robocorp.WorkItems**: Keyword ``Parse Work Item From Email`` supports
+  multiple e-mail body formats like JSON/YAML/Text
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 

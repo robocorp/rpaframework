@@ -82,6 +82,6 @@ Consume queue without results
 
 Get payload given e-mail process triggering
     ${payload} =    Parse Work Item From Email
-    Set Work Item Variables    &{payload}
+    Set Work Item Variables    &{payload}[Body]
     ${message} =     Get Work Item Variable     message
     Should Be Equal     ${message}      from email

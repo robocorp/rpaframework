@@ -11,6 +11,7 @@ from shutil import copy2
 from threading import Event
 from typing import Callable, Type, Any, Optional, Union, Dict, List, Tuple
 
+import yaml
 from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn
 
@@ -1582,15 +1583,33 @@ class WorkItems:
         """
         return self.current
 
+    @staticmethod
+    def _interpret_content(body: str) -> Union[dict, str]:
+        loaders = [json.loads, yaml.full_load]
+        for loader in loaders:
+            try:
+                body = loader(body)
+            except Exception as exc:  # pylint: disable=broad-except
+                logging.debug(
+                    "Failed deserializing input e-mail body content with loader %r "
+                    "due to: %s",
+                    loader,
+                    exc
+                )
+            else:
+                break
+
+        return body
+
     @keyword
     def parse_work_item_from_email(self) -> dict:
         """Parse and return a dictionary from the input work item of a process started
         by e-mail trigger.
 
         Since a process can be started in Control Room by sending an e-mail, a body
-        in JSON format can be sent as well and this gets attached to the input work
-        item with the `rawEmail` payload variable. This keyword parses the content of
-        it and returns the dictionary transformation of the original e-mail.
+        in JSON/YAML/Text format can be sent as well and this gets attached to the
+        input work item with the `rawEmail` payload variable. This keyword parses the
+        content of it and returns the dictionary transformation of the original e-mail.
 
         Example:
 
@@ -1605,12 +1624,15 @@ class WorkItems:
         .. code-block:: robotframework
 
             ${payload} =    Parse Work Item From Email
-            Set Work Item Variables    &{payload}
+            Set Work Item Variables    &{payload}[Body]
             ${message} =     Get Work Item Variable     message
-            Log    ${message}
+            Log    ${message}  # will print "Hello world!"
         """
         raw_email = self.get_work_item_variable("rawEmail")
         # pylint: disable=no-member
         message = email.message_from_string(raw_email)
+        message_dict = dict(message.items())
         body, _ = ImapSmtp().get_decoded_email_body(message)
-        return json.loads(body.replace("\r", "").replace("\n", "").strip())
+        body = self._interpret_content(body)
+        message_dict["Body"] = body
+        return message_dict
