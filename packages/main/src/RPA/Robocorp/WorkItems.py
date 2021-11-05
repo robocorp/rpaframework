@@ -1593,7 +1593,7 @@ class WorkItems:
                 logging.debug(
                     "Failed deserializing input e-mail body content with loader %r "
                     "due to: %s",
-                    loader,
+                    loader.__name__,
                     exc
                 )
             else:
