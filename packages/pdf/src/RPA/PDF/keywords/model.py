@@ -185,7 +185,7 @@ class Document:
 
     def set_to_beginning(self):
         if self.fileobject:
-            self.fileobject.seek(0, whence=0)
+            self.fileobject.seek(0, 0)
 
     def reinitialize(self, path: str, *, fileobject: typing.BinaryIO):
         """Reinitialize the document once the PDF source is switched."""
