@@ -171,11 +171,11 @@ class Page:
 
 
 class Document:
-    """Class for parsed PDF document"""
+    """Class for the parsed PDF document."""
 
     ENCODING: str = "utf-8"
 
-    def __init__(self, path: str, *, fileobject: typing.BinaryIO) -> None:
+    def __init__(self, path: str, *, fileobject: typing.BinaryIO):
         self._path = path
         self._fileobject = fileobject
 
@@ -189,16 +189,14 @@ class Document:
         return self._path
 
     @property
-    def fileobject(self) -> Optional[typing.BinaryIO]:
-        if self._fileobject:
-            self._fileobject.seek(0, 0)
+    def fileobject(self) -> typing.BinaryIO:
+        self._fileobject.seek(0, 0)
         return self._fileobject
 
     @property
-    def reader(self) -> Optional[PyPDF2.PdfFileReader]:
+    def reader(self) -> PyPDF2.PdfFileReader:
         """Get a PyPDF reader instance for the PDF."""
-        fileobject = self.fileobject
-        return PyPDF2.PdfFileReader(fileobject, strict=False) if fileobject else None
+        return PyPDF2.PdfFileReader(self.fileobject, strict=False)
 
     def add_page(self, page: Page) -> None:
         self._pages[page.pageid] = page
@@ -692,9 +690,7 @@ class ModelKeywords(LibraryContext):
         # The tests will XFAIL for the time being.
 
         self.ctx.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(
-            self.ctx.active_pdf_document.fileobject, strict=False
-        )
+        reader = self.ctx.active_pdf_document.reader
         if "/AcroForm" in reader.trailer["/Root"]:
             reader.trailer["/Root"]["/AcroForm"].update(
                 {

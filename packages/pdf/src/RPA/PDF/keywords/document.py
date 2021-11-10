@@ -269,8 +269,9 @@ class DocumentKeywords(LibraryContext):
         """
         self.switch_to_pdf(source_path)
 
-        pdf = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
-        docinfo = pdf.getDocumentInfo()
+        reader = self.ctx.active_pdf_document.reader
+        docinfo = reader.getDocumentInfo()
+        num_pages = reader.getNumPages()
 
         parser = PDFParser(self.ctx.active_pdf_document.fileobject)
         document = PDFDocument(parser)
@@ -288,7 +289,7 @@ class DocumentKeywords(LibraryContext):
             "Producer": optional("producer"),
             "Subject": optional("subject"),
             "Title": optional("title"),
-            "Pages": pdf.getNumPages(),
+            "Pages": num_pages,
             "Encrypted": self.is_pdf_encrypted(source_path),
             "Fields": bool(fields),
         }
@@ -714,8 +715,6 @@ class DocumentKeywords(LibraryContext):
         :return: True if decrypt was successful, else False or Exception.
         :raises ValueError: on decryption errors.
         """
-        output_path = self.resolve_output(output_path)
-
         self.switch_to_pdf(source_path)
         reader = self.ctx.active_pdf_document.reader
         try:
@@ -730,12 +729,13 @@ class DocumentKeywords(LibraryContext):
             else:
                 return False
 
+            output_path = self.resolve_output(output_path)
             self.save_pdf(output_path, reader)
             return True
 
         except NotImplementedError as e:
             raise ValueError(
-                f"Document {source_path} uses an unsupported encryption method."
+                f"Document {source_path!r} uses an unsupported encryption method"
             ) from e
         except KeyError:
             self.logger.info("PDF is not encrypted")
@@ -889,17 +889,17 @@ class DocumentKeywords(LibraryContext):
         :param reader: a PyPDF2 reader.
         """
         writer = PyPDF2.PdfFileWriter()
-        for i in range(reader.getNumPages()):
-            page = reader.getPage(i)
+        for idx in range(reader.getNumPages()):
+            page = reader.getPage(idx)
             try:
                 writer.addPage(page)
-            except Exception as e:  # pylint: disable=W0703
-                self.logger.warning(repr(e))
-                writer.addPage(page)
+            except Exception as exc:  # pylint: disable=W0703
+                self.logger.warning(repr(exc))
+                raise
 
         output_path = self.resolve_output(output_path)
-        with open(output_path, "wb") as f:
-            writer.write(f)
+        with open(output_path, "wb") as stream:
+            writer.write(stream)
 
     @staticmethod
     def _get_page_numbers(
