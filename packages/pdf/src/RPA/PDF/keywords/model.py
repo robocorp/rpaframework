@@ -1,5 +1,6 @@
 import re
 import sys
+import typing
 from collections import OrderedDict
 from typing import (
     Any,
@@ -171,38 +172,56 @@ class Page:
 class Document:
     """Class for parsed PDF document"""
 
-    encoding: str = "utf-8"
-    pages: OrderedDict
-    xml_content: bytearray = bytearray()
+    ENCODING: str = "utf-8"
 
     def __init__(self) -> None:
-        self.pages = OrderedDict()
-        self.fields = None
-        self.fileobject = None
         self.path = None
+        self.fileobject = None
+        self.fields = None
         self.is_converted = False
+
+        self._pages = OrderedDict()
+        self._xml_content_list: typing.List[bytes] = []
+
+    def set_to_beginning(self):
+        if self.fileobject:
+            self.fileobject.seek(0, whence=0)
+
+    def reinitialize(self, path: str, *, fileobject: typing.BinaryIO):
+        """Reinitialize the document once the PDF source is switched."""
+        self.path = path
+        self.fileobject = fileobject
+        self.fields = None
+        self.is_converted = False
+
+        self._pages.clear()
+        self._xml_content_list.clear()
+
+        self.set_to_beginning()
 
     @property
     def reader(self):
         """Get a PyPDF reader instance for the PDF."""
-        if self.fileobject:
-            return PyPDF2.PdfFileReader(self.fileobject, strict=False)
-        return None
+        if not self.fileobject:
+            return None
 
-    def append_xml(self, xml: bytes) -> None:
-        self.xml_content += xml
+        self.set_to_beginning()
+        return PyPDF2.PdfFileReader(self.fileobject, strict=False)
 
     def add_page(self, page: Page) -> None:
-        self.pages[page.pageid] = page
+        self._pages[page.pageid] = page
 
     def get_pages(self) -> OrderedDict:
-        return self.pages
+        return self._pages
 
     def get_page(self, pagenum: int) -> Page:
-        return self.pages[pagenum]
+        return self._pages[pagenum]
+
+    def append_xml(self, xml: bytes) -> None:
+        self._xml_content_list.append(xml)
 
     def dump_xml(self) -> str:
-        return self.xml_content.decode("utf-8")
+        return b"".join(self._xml_content_list).decode(self.ENCODING)
 
 
 class Converter(PDFConverter):
@@ -235,6 +254,8 @@ class Converter(PDFConverter):
     def write(self, text: str):
         if self.codec:
             text = text.encode(self.codec)
+        else:
+            text = text.encode()
         self.active_pdf_document.append_xml(text)
 
     def write_header(self):
@@ -377,9 +398,8 @@ class Converter(PDFConverter):
 
         render(ltpage)
 
-    def close(self) -> Document:
+    def close(self):
         self.write_footer()
-        return self.active_pdf_document
 
 
 class ModelKeywords(LibraryContext):
@@ -416,25 +436,30 @@ class ModelKeywords(LibraryContext):
             def example_keyword():
                 pdf.convert("/tmp/sample.pdf")
 
-        :param source_path: source PDF filepath.
+        :param source_path: source PDF filepath
+        :param trim: trim whitespace from the text is set to True (default)
         """
+        self.ctx.switch_to_pdf(source_path)
+        if self.ctx.active_pdf_document.is_converted:
+            return
+
+        rsrcmgr = PDFResourceManager()
         if not self.ctx.convert_settings:
             self.set_convert_settings()
-        self.ctx.switch_to_pdf(source_path)
-        source_parser = PDFParser(self.ctx.active_pdf_document.fileobject)
-        source_document = PDFDocument(source_parser)
-        source_pages = PDFPage.create_pages(source_document)
-        rsrcmgr = PDFResourceManager()
         laparams = pdfminer.layout.LAParams(**self.ctx.convert_settings)
         device = Converter(
             self.ctx.active_pdf_document, rsrcmgr, laparams=laparams, trim=trim
         )
         interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
 
-        # Look at all (nested) objects on each page
+        # Look at all (nested) objects on each page.
+        source_parser = PDFParser(self.ctx.active_pdf_document.fileobject)
+        source_document = PDFDocument(source_parser)
+        source_pages = PDFPage.create_pages(source_document)
         for _, page in enumerate(source_pages, 0):
             interpreter.process_page(page)
-        self.ctx.active_pdf_document = device.close()
+        device.close()
+
         self.ctx.active_pdf_document.is_converted = True
 
     @keyword
@@ -479,9 +504,9 @@ class ModelKeywords(LibraryContext):
             defaults to False.
         :return: dictionary of input key values or `None`.
         """
-        record_fields = {}
         if not source_path and self.ctx.active_pdf_document.fields:
             return self.ctx.active_pdf_document.fields
+
         self.ctx.switch_to_pdf(source_path)
         source_parser = PDFParser(self.ctx.active_pdf_document.fileobject)
         source_document = PDFDocument(source_parser)
@@ -496,10 +521,12 @@ class ModelKeywords(LibraryContext):
                 % self.ctx.active_pdf_document.path
             ) from err
 
-        for i in fields:
-            field = pdfminer.pdftypes.resolve1(i)
+        record_fields = {}
+        for miner_field in fields:
+            field = pdfminer.pdftypes.resolve1(miner_field)
             if field is None:
                 continue
+
             name, value, rect, label = (
                 field.get("T"),
                 field.get("V"),
@@ -764,11 +791,10 @@ class ModelKeywords(LibraryContext):
                 xml = pdf.dump_pdf_as_xml("/tmp/sample.pdf")
 
         :param source_path: filepath to the source PDF
-        :return: XML content as a string.
+        :return: XML content as a string
         """
         self.ctx.switch_to_pdf(source_path)
-        if self.active_pdf_document is None:
-            self.convert()
+        self.convert()
         return self.active_pdf_document.dump_xml()
 
     @keyword

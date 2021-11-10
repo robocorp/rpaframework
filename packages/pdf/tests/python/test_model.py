@@ -12,7 +12,7 @@ from . import (
 
 def test_convert(library):
     library.convert(TestFiles.vero_pdf)
-    first_paragraph = library.active_pdf_document.pages[1].content[0]
+    first_paragraph = library.active_pdf_document._pages[1].content[0]
 
     assert library.active_pdf_document
     assert first_paragraph.text == "ILMOITA VERKOSSA\nvero.fi/omavero"
@@ -99,8 +99,8 @@ def test_dump_pdf_as_xml(library):
 def test_convert_after_line_margin_is_set(library):
     library.set_convert_settings(line_margin=0.00000001)
     library.convert(TestFiles.vero_pdf)
-    first_paragraph = library.active_pdf_document.pages[1].content[0]
-    second_paragraph = library.active_pdf_document.pages[1].content[1]
+    first_paragraph = library.active_pdf_document._pages[1].content[0]
+    second_paragraph = library.active_pdf_document._pages[1].content[1]
 
     assert library.active_pdf_document
     assert first_paragraph.text == "ILMOITA VERKOSSA"
