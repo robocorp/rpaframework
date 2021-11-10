@@ -1,8 +1,8 @@
-import PyPDF2
 import pytest
 
 from . import (
-    library,
+    # noqa
+    library,  # for the fixture to work
     temp_filename,
     TestFiles,
 )
@@ -99,9 +99,9 @@ def test_dump_pdf_as_xml(library):
 def test_convert_after_line_margin_is_set(library):
     library.set_convert_settings(line_margin=0.00000001)
     library.convert(TestFiles.vero_pdf)
-    first_paragraph = library.active_pdf_document._pages[1].content[0]
-    second_paragraph = library.active_pdf_document._pages[1].content[1]
-
     assert library.active_pdf_document
+
+    page = library.active_pdf_document.get_page(1)
+    first_paragraph, second_paragraph = page.content[0], page.content[1]
     assert first_paragraph.text == "ILMOITA VERKOSSA"
     assert second_paragraph.text == "vero.fi/omavero"
