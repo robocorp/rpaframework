@@ -5,6 +5,7 @@ from collections import OrderedDict
 from typing import (
     Any,
     Iterable,
+    Optional,
 )
 
 import PyPDF2
@@ -174,39 +175,31 @@ class Document:
 
     ENCODING: str = "utf-8"
 
-    def __init__(self) -> None:
-        self.path = None
-        self.fileobject = None
-        self.fields = None
-        self.is_converted = False
+    def __init__(self, path: str, *, fileobject: typing.BinaryIO) -> None:
+        self._path = path
+        self._fileobject = fileobject
 
         self._pages = OrderedDict()
         self._xml_content_list: typing.List[bytes] = []
-
-    def set_to_beginning(self):
-        if self.fileobject:
-            self.fileobject.seek(0, 0)
-
-    def reinitialize(self, path: str, *, fileobject: typing.BinaryIO):
-        """Reinitialize the document once the PDF source is switched."""
-        self.path = path
-        self.fileobject = fileobject
-        self.fields = None
+        self.fields: Optional[dict] = None
         self.is_converted = False
 
-        self._pages.clear()
-        self._xml_content_list.clear()
-
-        self.set_to_beginning()
+    @property
+    def path(self):
+        return self._path
 
     @property
-    def reader(self):
-        """Get a PyPDF reader instance for the PDF."""
-        if not self.fileobject:
-            return None
+    def fileobject(self) -> Optional[typing.BinaryIO]:
+        if self._fileobject:
+            self._fileobject.seek(0, 0)
+        return self._fileobject
 
-        self.set_to_beginning()
-        return PyPDF2.PdfFileReader(self.fileobject, strict=False)
+    @property
+    def reader(self) -> Optional[PyPDF2.PdfFileReader]:
+        """Get a PyPDF reader instance for the PDF."""
+        fileobject = self.fileobject
+        if fileobject:
+            return PyPDF2.PdfFileReader(fileobject, strict=False)
 
     def add_page(self, page: Page) -> None:
         self._pages[page.pageid] = page
@@ -222,6 +215,9 @@ class Document:
 
     def dump_xml(self) -> str:
         return b"".join(self._xml_content_list).decode(self.ENCODING)
+
+    def close(self):
+        self._fileobject.close()
 
 
 class Converter(PDFConverter):
@@ -504,11 +500,14 @@ class ModelKeywords(LibraryContext):
             defaults to False.
         :return: dictionary of input key values or `None`.
         """
-        if not source_path and self.ctx.active_pdf_document.fields:
-            return self.ctx.active_pdf_document.fields
-
         self.ctx.switch_to_pdf(source_path)
-        source_parser = PDFParser(self.ctx.active_pdf_document.fileobject)
+        active_document = self.ctx.active_pdf_document
+
+        active_fields = active_document.fields
+        if active_fields:
+            return active_fields
+
+        source_parser = PDFParser(active_document.fileobject)
         source_document = PDFDocument(source_parser)
 
         try:
@@ -599,26 +598,24 @@ class ModelKeywords(LibraryContext):
         :raises ValueError: when field can't be found or more than 1 field matches
             the given `field_name`.
         """
-        self.ctx.switch_to_pdf(source_path)
-        if not self.ctx.active_pdf_document.fields:
-            self.get_input_fields()
-            if not self.ctx.active_pdf_document.fields:
-                raise ValueError("Document does not have input fields")
+        fields = self.get_input_fields(source_path=source_path)
+        if not fields:
+            raise ValueError("Document does not have input fields")
 
-        if field_name in self.ctx.active_pdf_document.fields.keys():
-            self.ctx.active_pdf_document.fields[field_name][
+        if field_name in fields.keys():
+            fields[field_name][
                 "value"
             ] = value  # pylint: disable=E1136
         else:
             label_matches = 0
             field_key = None
-            for k, _ in self.ctx.active_pdf_document.fields.items():
+            for k, _ in fields.items():
                 # pylint: disable=E1136
-                if self.ctx.active_pdf_document.fields[k]["label"] == field_name:
+                if fields[k]["label"] == field_name:
                     label_matches += 1
                     field_key = k
             if label_matches == 1:
-                self.ctx.active_pdf_document.fields[field_key][
+                fields[field_key][
                     "value"
                 ] = value  # pylint: disable=E1136
             elif label_matches > 1:
@@ -686,18 +683,19 @@ class ModelKeywords(LibraryContext):
                     newvals=new_fields
                 )
 
-        :param source_path: source PDF with fields to update.
-        :param output_path: updated target PDF.
-        :param newvals: new values when updating many at once.
+        :param source_path: source PDF with fields to update
+        :param output_path: updated target PDF
+        :param newvals: new values when updating many at once
         :param use_appearances_writer: for some PDF documents the updated
-            fields won't show visible. Try to set this to `True` if you
-            encounter problems.
+            fields won't be visible, try to set this to `True` if you
+            encounter problems
         """
         # NOTE:
         # The resulting PDF will be a mutated version of the original PDF,
         # and it won't necessarily show correctly in all document viewers.
         # It also won't show anymore as having fields at all.
         # The tests will XFAIL for the time being.
+
         self.ctx.switch_to_pdf(source_path)
         reader = PyPDF2.PdfFileReader(
             self.ctx.active_pdf_document.fileobject, strict=False
@@ -710,32 +708,36 @@ class ModelKeywords(LibraryContext):
                     ): PyPDF2.generic.BooleanObject(True)
                 }
             )
-        writer = PyPDF2.PdfFileWriter()
 
+        writer = PyPDF2.PdfFileWriter()
         if use_appearances_writer:
             writer = self._set_need_appearances_writer(writer)
+        if newvals:
+            self.logger.debug("Updating form fields with provided values for all pages")
+            updated_fields = newvals
+        elif self.ctx.active_pdf_document.fields:
+            self.logger.debug("Updating form fields with PDF values for all pages")
+            updated_fields = {
+                k: v["value"] or ""
+                for (k, v) in self.ctx.active_pdf_document.fields.items()
+            }
+        else:
+            self.logger.debug("No values available for updating the form fields")
+            updated_fields = {}
 
-        for i in range(reader.getNumPages()):
-            page = reader.getPage(i)
-            try:
-                if newvals:
-                    self.logger.debug("Updating form field values for page %s", i)
-                    updated_fields = newvals
-                elif self.ctx.active_pdf_document.fields:
-                    updated_fields = {
-                        k: v["value"] if v["value"] else ""
-                        for (k, v) in self.ctx.active_pdf_document.fields.items()
-                    }
-                writer.updatePageFormFieldValues(page, fields=updated_fields)
-                writer.addPage(page)
-            except Exception as e:  # pylint: disable=W0703
-                self.logger.warning(repr(e))
-                writer.addPage(page)
+        for idx in range(reader.getNumPages()):
+            page = reader.getPage(idx)
+            if updated_fields:
+                try:
+                    writer.updatePageFormFieldValues(page, fields=updated_fields)
+                except Exception as exc:  # pylint: disable=W0703
+                    self.logger.warning(repr(exc))
+            writer.addPage(page)
 
         if output_path is None:
             output_path = self.ctx.active_pdf_document.path
-        with open(output_path, "wb") as f:
-            writer.write(f)
+        with open(output_path, "wb") as stream:
+            writer.write(stream)
 
     def _set_need_appearances_writer(self, writer: PyPDF2.PdfFileWriter):
         # See 12.7.2 and 7.7.2 for more information:

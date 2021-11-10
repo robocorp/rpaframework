@@ -52,7 +52,7 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def close_all_pdfs(self) -> None:
         """Close all opened PDF file descriptors."""
-        file_paths = list(self.ctx.fileobjects.keys())
+        file_paths = list(self.ctx.documents.keys())
         for filename in file_paths:
             self.close_pdf(filename)
 
@@ -67,15 +67,15 @@ class DocumentKeywords(LibraryContext):
             if self.active_pdf_document:
                 source_pdf = self.active_pdf_document.path
             else:
-                raise ValueError("No active PDF document open.")
+                raise ValueError("No active PDF document open")
 
         source_pdf = str(source_pdf)
-        if source_pdf not in self.ctx.fileobjects:
+        if source_pdf not in self.ctx.documents:
             raise ValueError(f"PDF {source_pdf!r} is not open")
 
         self.logger.info("Closing PDF document: %s", source_pdf)
-        self.ctx.fileobjects[source_pdf].close()
-        del self.ctx.fileobjects[source_pdf]
+        self.ctx.documents[source_pdf].close()
+        del self.ctx.documents[source_pdf]
         self.active_pdf_document = None
 
     @keyword
@@ -116,16 +116,14 @@ class DocumentKeywords(LibraryContext):
             raise ValueError("Source PDF is missing")
 
         source_path = str(source_path)
-        if source_path in self.ctx.fileobjects.keys():
+        if source_path in self.ctx.documents:
             raise ValueError(
-                "PDF file is already open. Please close it before opening again."
+                "PDF file is already open, please close it before opening it again"
             )
 
         self.logger.debug("Opening new document: %s", source_path)
-        self.ctx.active_pdf_document = Document()
         # pylint: disable=consider-using-with
-        self.ctx.active_pdf_document.reinitialize(source_path, fileobject=open(source_path, "rb"))
-        self.ctx.fileobjects[source_path] = self.ctx.active_pdf_document.fileobject
+        self.active_pdf_document = self.ctx.documents[source_path] = Document(source_path, fileobject=open(source_path, "rb"))
 
     @keyword
     def template_html_to_pdf(
@@ -268,10 +266,10 @@ class DocumentKeywords(LibraryContext):
         :return: dictionary of PDF information.
         """
         self.switch_to_pdf(source_path)
+
         pdf = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
         docinfo = pdf.getDocumentInfo()
 
-        self.ctx.active_pdf_document.set_to_beginning()
         parser = PDFParser(self.ctx.active_pdf_document.fileobject)
         document = PDFDocument(parser)
         try:
@@ -405,17 +403,17 @@ class DocumentKeywords(LibraryContext):
             file to activate.
         """
         if not source_path:
-            if not (self.ctx.active_pdf_document and self.ctx.active_pdf_document.fileobject):
+            if not self.ctx.active_pdf_document:
                 raise ValueError("No PDF is open")
             self.logger.debug("Using already set document: %s", self.ctx.active_pdf_document.path)
             return
 
         source_path = str(source_path)
-        if source_path not in self.ctx.fileobjects:
+        if source_path not in self.ctx.documents:
             self.open_pdf(source_path)
-        elif self.ctx.fileobjects[source_path] != self.ctx.active_pdf_document.fileobject:
+        elif self.ctx.documents[source_path] != self.ctx.active_pdf_document:
             self.logger.debug("Switching to already opened document: %s", source_path)
-            self.ctx.active_pdf_document.reinitialize(source_path, fileobject=self.ctx.fileobjects[source_path])
+            self.ctx.active_pdf_document = self.ctx.documents[source_path]
         else:
             self.logger.debug("Using already set document: %s", source_path)
 
@@ -539,8 +537,8 @@ class DocumentKeywords(LibraryContext):
         pages = self._get_page_numbers(pages, reader)
         for pagenum in pages:
             writer.addPage(reader.getPage(int(pagenum) - 1))
-        with open(output_path, "wb") as f:
-            writer.write(f)
+        with open(output_path, "wb") as stream:
+            writer.write(stream)
 
     @keyword
     def rotate_page(
@@ -771,8 +769,7 @@ class DocumentKeywords(LibraryContext):
         :return: dictionary of figures divided into pages.
         """
         self.switch_to_pdf(source_path)
-        if not self.active_pdf_document.is_converted:
-            self.ctx.convert()
+        self.ctx.convert()
         pages = {}
         for pagenum, page in self.active_pdf_document.get_pages().items():
             pages[pagenum] = page.get_figures()

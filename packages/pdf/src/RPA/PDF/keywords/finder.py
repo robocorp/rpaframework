@@ -43,7 +43,22 @@ class FinderKeywords(LibraryContext):
     ) -> Union[Union[List[TextBox], List[None]], TextBox]:
         """Get closest text (value) to the anchor element.
 
-        PDF needs to be parsed before elements can be found.
+        PDF will be parsed automatically before elements can be found.
+
+        :param locator: element to set anchor to. This can be prefixed with either
+            `text:` or `coords:` to find the anchor by text or coordinates.
+            Default is `text`.
+        :param pagenum: page number where search if performed on, default 1 (first).
+        :param direction: in which direction to search for text,
+            directions  'top'/'up', 'bottom'/'down', 'left' or 'right',
+            defaults to 'right'.
+        :param strict: if element margins should be used for matching points,
+            used when direction is 'top' or 'bottom', default `False`.
+        :param regexp: expected format of value to match, defaults to None.
+        :param only_closest: return all possible values or only the closest.
+        :param trim: set to `False` to match on raw texts, default `True`
+            means whitespace is trimmed from the text
+        :return: all possible values, only the closest value, or an empty list.
 
         **Examples**
 
@@ -68,21 +83,6 @@ class FinderKeywords(LibraryContext):
 
             def example_keyword():
                 value = pdf.find_text("text:Invoice Number")
-
-        :param locator: element to set anchor to. This can be prefixed with either
-            `text:` or `coords:` to find the anchor by text or coordinates.
-            Default is `text`.
-        :param pagenum: page number where search if performed on, default 1 (first).
-        :param direction: in which direction to search for text,
-            directions  'top'/'up', 'bottom'/'down', 'left' or 'right',
-            defaults to 'right'.
-        :param strict: if element margins should be used for matching points,
-            used when direction is 'top' or 'bottom', default `False`.
-        :param regexp: expected format of value to match, defaults to None.
-        :param only_closest: return all possible values or only the closest.
-        :param trim: set to `False` to match on raw texts, default `True`
-            means whitespace is trimmed from the text
-        :return: all possible values, only the closest value, or an empty list.
         """
         self.logger.debug(
             "Get Value From Anchor: ('locator=%s', 'direction=%s', 'regexp=%s')",
@@ -155,8 +155,8 @@ class FinderKeywords(LibraryContext):
         :return: True if element was found.
         """
         self.logger.info("Set anchor to element: ('locator=%s')", locator)
-        if not self.ctx.active_pdf_document.is_converted:
-            self.ctx.convert(trim=trim)
+        self.ctx.convert(trim=trim)
+
         if locator.startswith("text:"):
             criteria = "text"
             _, locator = locator.split(":", 1)
@@ -164,6 +164,7 @@ class FinderKeywords(LibraryContext):
             if match:
                 self.anchor_element = match
                 return True
+
         elif locator.startswith("coords:"):
             _, locator = locator.split(":", 1)
             coords = locator.split(",")
@@ -175,6 +176,7 @@ class FinderKeywords(LibraryContext):
                 left, bottom, right, top = coords
             else:
                 raise ValueError("Give 2 coordinates for point, or 4 for area")
+
             self.anchor_element = TargetObject()
             self.anchor_element.boxid = -1
             self.anchor_element.bbox = (
@@ -185,6 +187,7 @@ class FinderKeywords(LibraryContext):
             )
             self.anchor_element.text = None
             return True
+
         else:
             # use "text" criteria by default
             criteria = "text"
@@ -192,6 +195,7 @@ class FinderKeywords(LibraryContext):
             if match:
                 self.anchor_element = match
                 return True
+
         self.anchor_element = None
         return False
 
