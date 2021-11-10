@@ -123,7 +123,9 @@ class DocumentKeywords(LibraryContext):
 
         self.logger.debug("Opening new document: %s", source_path)
         # pylint: disable=consider-using-with
-        self.active_pdf_document = self.ctx.documents[source_path] = Document(source_path, fileobject=open(source_path, "rb"))
+        self.active_pdf_document = self.ctx.documents[source_path] = Document(
+            source_path, fileobject=open(source_path, "rb")
+        )
 
     @keyword
     def template_html_to_pdf(
@@ -277,7 +279,9 @@ class DocumentKeywords(LibraryContext):
         except KeyError:
             fields = None
 
-        optional = lambda attr: getattr(docinfo, attr) if docinfo is not None else None
+        optional = (
+            lambda attr: getattr(docinfo, attr) if docinfo is not None else None
+        )  # noqa
         return {
             "Author": optional("author"),
             "Creator": optional("creator"),
@@ -405,7 +409,9 @@ class DocumentKeywords(LibraryContext):
         if not source_path:
             if not self.ctx.active_pdf_document:
                 raise ValueError("No PDF is open")
-            self.logger.debug("Using already set document: %s", self.ctx.active_pdf_document.path)
+            self.logger.debug(
+                "Using already set document: %s", self.ctx.active_pdf_document.path
+            )
             return
 
         source_path = str(source_path)

@@ -198,8 +198,7 @@ class Document:
     def reader(self) -> Optional[PyPDF2.PdfFileReader]:
         """Get a PyPDF reader instance for the PDF."""
         fileobject = self.fileobject
-        if fileobject:
-            return PyPDF2.PdfFileReader(fileobject, strict=False)
+        return PyPDF2.PdfFileReader(fileobject, strict=False) if fileobject else None
 
     def add_page(self, page: Page) -> None:
         self._pages[page.pageid] = page
@@ -603,9 +602,7 @@ class ModelKeywords(LibraryContext):
             raise ValueError("Document does not have input fields")
 
         if field_name in fields.keys():
-            fields[field_name][
-                "value"
-            ] = value  # pylint: disable=E1136
+            fields[field_name]["value"] = value  # pylint: disable=E1136
         else:
             label_matches = 0
             field_key = None
@@ -615,9 +612,7 @@ class ModelKeywords(LibraryContext):
                     label_matches += 1
                     field_key = k
             if label_matches == 1:
-                fields[field_key][
-                    "value"
-                ] = value  # pylint: disable=E1136
+                fields[field_key]["value"] = value  # pylint: disable=E1136
             elif label_matches > 1:
                 raise ValueError(
                     "Unable to set field value - field name: '%s' matched %d fields"
