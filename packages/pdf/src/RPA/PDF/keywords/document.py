@@ -298,9 +298,10 @@ class DocumentKeywords(LibraryContext):
     def is_pdf_encrypted(self, source_path: str = None) -> bool:
         """Check if PDF is encrypted.
 
-        Returns True even if PDF was decrypted.
-
         If no source path given, assumes a PDF is already opened.
+
+        :param source_path: filepath to the source pdf.
+        :return: True if file is encrypted.
 
         **Examples**
 
@@ -325,11 +326,7 @@ class DocumentKeywords(LibraryContext):
 
             def example_keyword():
                 is_encrypted = pdf.is_pdf_encrypted("/tmp/sample.pdf")
-
-        :param source_path: filepath to the source pdf.
-        :return: True if file is encrypted.
         """
-        # TODO: Why "Returns True even if PDF was decrypted."?
         self.switch_to_pdf(source_path)
         reader = self.ctx.active_pdf_document.reader
         return reader.isEncrypted

@@ -7,15 +7,25 @@ from . import (
     TestFiles,
 )
 
-# TODO: add tests to cover more conditions
 
+@pytest.mark.parametrize(
+    "trim,text",
+    [
+        (True, "ILMOITA VERKOSSA\nvero.fi/omavero"),
+        (False, "ILMOITA VERKOSSA\nvero.fi/omavero\n"),
+    ],
+)
+def test_convert(library, trim, text):
+    library.convert(TestFiles.vero_pdf, trim=trim)
+    assert library.active_pdf_document.is_converted
 
-def test_convert(library):
-    library.convert(TestFiles.vero_pdf)
-    first_paragraph = library.active_pdf_document._pages[1].content[0]
+    first_paragraph = library.active_pdf_document.get_page(1).content[0]
+    assert first_paragraph.text == text
 
-    assert library.active_pdf_document
-    assert first_paragraph.text == "ILMOITA VERKOSSA\nvero.fi/omavero"
+    # A secondary conversion wouldn't be triggered on already converted PDF files.
+    library.convert(TestFiles.vero_pdf, trim=not trim)  # reverse trimming flag
+    first_paragraph = library.active_pdf_document.get_page(1).content[0]
+    assert first_paragraph.text == text  # still getting the same expected text
 
 
 def test_get_input_fields(library):
