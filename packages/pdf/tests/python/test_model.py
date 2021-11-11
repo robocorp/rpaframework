@@ -91,9 +91,12 @@ def test_save_field_values_multiple_updates_in_one_operation(library):
 
 
 def test_dump_pdf_as_xml(library):
-    xml = library.dump_pdf_as_xml(TestFiles.invoice_pdf)
+    head = '<?xml version="1.0" encoding="utf-8" ?>'
+    xml = library.dump_pdf_as_xml(TestFiles.invoice_pdf)  # get non-empty output
+    assert xml.count(head) == 1
 
-    assert '<?xml version="1.0" encoding="utf-8" ?>' in xml
+    xml = library.dump_pdf_as_xml(TestFiles.invoice_pdf)  # no double output
+    assert xml.count(head) == 1
 
 
 def test_convert_after_line_margin_is_set(library):

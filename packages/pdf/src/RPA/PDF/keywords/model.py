@@ -400,10 +400,14 @@ class ModelKeywords(LibraryContext):
 
     @keyword
     def convert(self, source_path: str = None, trim: bool = True) -> None:
-        """Parse source PDF into entities which can be
-        used for text searches, for example.
+        """Parse source PDF into entities.
 
-        This is also used inside other PDF keywords.
+        These entities can be used for text searches or XML dumping for example. The
+        conversion will be done automatically when using the dependent keywords
+        directly.
+
+        :param source_path: source PDF filepath
+        :param trim: trim whitespace from the text is set to True (default)
 
         **Examples**
 
@@ -428,14 +432,14 @@ class ModelKeywords(LibraryContext):
 
             def example_keyword():
                 pdf.convert("/tmp/sample.pdf")
-
-        :param source_path: source PDF filepath
-        :param trim: trim whitespace from the text is set to True (default)
         """
         self.ctx.switch_to_pdf(source_path)
         if self.ctx.active_pdf_document.is_converted:
             return
 
+        self.logger.debug(
+            "Converting active PDF document: %s", self.ctx.active_pdf_document.path
+        )
         rsrcmgr = PDFResourceManager()
         if not self.ctx.convert_settings:
             self.set_convert_settings()
@@ -786,8 +790,7 @@ class ModelKeywords(LibraryContext):
         :param source_path: filepath to the source PDF
         :return: XML content as a string
         """
-        self.ctx.switch_to_pdf(source_path)
-        self.convert()
+        self.convert(source_path)
         return self.active_pdf_document.dump_xml()
 
     @keyword
