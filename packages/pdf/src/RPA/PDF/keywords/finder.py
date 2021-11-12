@@ -1,15 +1,17 @@
+import functools
 import math
 import re
-
 from typing import (
+    Callable,
     List,
+    Optional,
     Union,
 )
+
 from RPA.PDF.keywords import (
     LibraryContext,
     keyword,
 )
-
 from RPA.PDF.keywords.model import TextBox
 
 
@@ -30,6 +32,16 @@ class FinderKeywords(LibraryContext):
         super().__init__(ctx)
         self.anchor_element = None
 
+    def _get_candidate_search_function(self, direction: str, regexp: str, strict: bool) -> Callable[[TextBox], bool]:
+        if direction in ["left", "right"]:
+            return functools.partial(self._is_match_on_horizontal, direction=direction, regexp=regexp)
+        if direction in ["top", "bottom", "up", "down"]:
+            return functools.partial(self._is_match_on_vertical, direction=direction, regexp=regexp, strict=strict)
+        if direction == "box":
+            return self._is_match_in_box
+
+        raise ValueError(f"Not recognized direction search {direction!r}")
+
     @keyword
     def find_text(
         self,
@@ -40,10 +52,10 @@ class FinderKeywords(LibraryContext):
         regexp: str = None,
         only_closest: bool = True,
         trim: bool = True,
-    ) -> Union[Union[List[TextBox], List[None]], TextBox]:
-        """Get closest text (value) to the anchor element.
+    ) -> Union[List[str], str]:
+        """Get the closest text as string value to the anchored element.
 
-        PDF will be parsed automatically before elements can be found.
+        PDF will be parsed automatically before elements can be searched.
 
         :param locator: element to set anchor to. This can be prefixed with either
             `text:` or `coords:` to find the anchor by text or coordinates.
@@ -71,7 +83,7 @@ class FinderKeywords(LibraryContext):
 
             ***Tasks***
             Example Keyword
-                ${value}=  Find Text    text:Invoice Number
+                ${value} =  Find Text    text:Invoice Number
 
         **Python**
 
@@ -91,33 +103,24 @@ class FinderKeywords(LibraryContext):
             regexp,
         )
         self.set_anchor_to_element(locator, trim=trim)
-        possibles = []
+        if not self.anchor_element:
+            self.logger.info("No anchor.")
+            return []
 
-        if self.anchor_element:
-            self.logger.debug("Current anchor: %s", self.anchor_element.bbox)
-            page = self.ctx.active_pdf_document.get_page(int(pagenum))
-            for _, item in page.get_textboxes().items():
-                possible = None
-                # Skip anchor element from matching
-                if item.boxid == self.anchor_element.boxid:
-                    continue
-                if direction in ["left", "right"]:
-                    possible = self._is_match_on_horizontal(direction, item, regexp)
-                elif direction in ["top", "bottom", "up", "down"]:
-                    possible = self._is_match_on_vertical(
-                        direction, item, strict, regexp
-                    )
-                elif direction == "box":
-                    possible = self._is_match_in_box(item)
-                if possible:
-                    possibles.append(possible)
-            if only_closest:
-                return self._get_closest_from_possibles(direction, possibles)
-            else:
-                return possibles
-        self.logger.info("No anchor.")
+        self.logger.debug("Current anchor: %s", self.anchor_element.bbox)
+        page = self.ctx.active_pdf_document.get_page(int(pagenum))
+        search_for_candidate = self._get_candidate_search_function(direction, regexp, strict)
+        candidates = []
+        for candidate in page.get_textboxes().values():
+            # Skip anchor element itself from matching.
+            if candidate.boxid != self.anchor_element.boxid and search_for_candidate(candidate):
+                candidates.append(candidate)
 
-        return possibles
+        if only_closest:
+            closest_candidate = self._get_closest_from_possibles(direction, candidates)
+            return closest_candidate.text
+
+        return [candidate.text for candidate in candidates]
 
     @keyword
     def set_anchor_to_element(self, locator: str, trim: bool = True) -> bool:
@@ -199,95 +202,102 @@ class FinderKeywords(LibraryContext):
         self.anchor_element = None
         return False
 
-    def _find_matching_textbox(self, criteria: str, locator: str) -> str:
+    def _find_matching_textbox(self, criteria: str, locator: str) -> Optional[str]:
         self.logger.info(
             "find_matching_textbox: ('criteria=%s', 'locator=%s')", criteria, locator
         )
+
+        lower_locator = locator.lower()
         matches = []
-        for _, page in self.active_pdf_document.get_pages().items():
+        for page in self.active_pdf_document.get_pages().values():
             content = page.get_textboxes()
-            for _, item in content.items():
-                # Only text matching at the moment
-                if item.text.lower() == locator.lower():
+            for item in content.values():
+                # Only text matching at the moment.
+                if item.text.lower() == lower_locator:
                     matches.append(item)
+
         match_count = len(matches)
         if match_count == 1:
             self.logger.debug("Found 1 match for locator '%s'", locator)
             return matches[0]
-        elif match_count == 0:
-            self.logger.info("Did not find any matches")
-        else:
-            self.logger.info("Found %d matches for locator '%s'", match_count, locator)
-            for m in matches:
-                self.logger.debug("box %d bbox %s text '%s'", m.boxid, m.bbox, m.text)
-        return False
 
-    def _is_within_tolerance(self, base: int, target: int) -> bool:
-        max_target = target + self.PIXEL_TOLERANCE
-        min_target = max(target - self.PIXEL_TOLERANCE, 0)
+        if match_count:
+            self.logger.info("Found %d matches for locator %r, using the first one", match_count, locator)
+            for match in matches:
+                self.logger.debug("box %d bbox %s text '%s'", match.boxid, match.bbox, match.text)
+            return matches[0]
+
+        self.logger.info("Did not find any matches")
+        return None
+
+    @classmethod
+    def _is_within_tolerance(cls, base: int, target: int) -> bool:
+        max_target = target + cls.PIXEL_TOLERANCE
+        min_target = max(target - cls.PIXEL_TOLERANCE, 0)
         return min_target <= base <= max_target
 
     def _is_match_on_horizontal(
-        self, direction: str, item: TextBox, regexp: str
-    ) -> Union[TextBox, None]:
-        (left, _, right, top) = self.anchor_element.bbox
-        match = False
-        direction_ok = False
-        if (
-            direction == "right"
-            and self._is_within_tolerance(item.top, top)
-            and item.left >= right
-        ):
-            direction_ok = True
-        elif (
-            direction == "left"
-            and self._is_within_tolerance(item.top, top)
-            and item.right <= left
-        ):
-            direction_ok = True
-        if regexp and direction_ok and item and re.match(regexp, item.text):
-            match = True
-        elif regexp is None and direction_ok and item:
-            match = True
+        self, item: TextBox, *, direction: str, regexp: str
+    ) -> bool:
+        if not item:
+            return False
 
-        return item if match else None
+        (left, _, right, top) = self.anchor_element.bbox
+        direction_ok = False
+        if self._is_within_tolerance(item.top, top):
+            if (
+                direction == "right"
+                and item.left >= right
+            ):
+                direction_ok = True
+            elif (
+                direction == "left"
+                and item.right <= left
+            ):
+                direction_ok = True
+        if not direction_ok:
+            return False
+
+        regex_matched = regexp and re.match(regexp, item.text)
+        no_regex = regexp is None
+        return any([regex_matched, no_regex])
 
     def _is_match_on_vertical(
-        self, direction: str, item: TextBox, strict: bool, regexp: str
-    ) -> Union[TextBox, None]:
+        self, item: TextBox, *, direction: str, regexp: str, strict: bool
+    ) -> bool:
         (left, bottom, right, top) = self.anchor_element.bbox
-        text = None
         direction_down = direction in ["bottom", "down"]
         direction_up = direction in ["top", "up"]
+
         if (direction_down and item.top <= bottom) or (
             direction_up and item.bottom >= top
         ):
-            if not strict and (item.right <= right or item.left >= left):
-                text = item
-            elif strict and (item.right == right or item.left == left):
-                text = item
-            if regexp and text and re.match(regexp, item.text):
-                self.logger.debug(
-                    "POSSIBLE MATCH %s %s %s", item.boxid, item.text, item.bbox
-                )
-                return item
-            elif regexp is None and text:
-                self.logger.debug(
-                    "POSSIBLE MATCH %s %s %s", item.boxid, item.text, item.bbox
-                )
-                return item
-        return None
+            non_strict_match = not strict and (item.right <= right or item.left >= left)
+            strict_match = strict and (item.right == right or item.left == left)
+            if not any([non_strict_match, strict_match]):
+                return False  # item not in range
 
-    def _is_match_in_box(self, item: TextBox) -> Union[TextBox, None]:
+            if regexp and re.match(regexp, item.text):
+                self.logger.debug(
+                    "REGEX MATCH %s %s %s", item.boxid, item.text, item.bbox
+                )
+                return True
+            if regexp is None:
+                self.logger.debug(
+                    "POSSIBLE MATCH %s %s %s", item.boxid, item.text, item.bbox
+                )
+                return True
+
+        return False
+
+    def _is_match_in_box(self, item: TextBox) -> bool:
         (left, bottom, right, top) = self.anchor_element.bbox
-        if (
+        return (
             left <= item.left
             and right >= item.right
             and bottom <= item.bottom
             and top >= item.top
-        ):
-            return item
-        return None
+        )
 
     def _get_closest_from_possibles(
         self, direction: str, possibles: List[TextBox]
