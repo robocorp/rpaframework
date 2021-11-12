@@ -372,7 +372,7 @@ class ImapSmtp:
         recipients: str,
         subject: str = "",
         body: str = "",
-        attachments: str = None,
+        attachments: Union[List[str], str] = None,
         html: bool = False,
         images: str = None,
     ) -> bool:
