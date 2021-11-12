@@ -411,7 +411,7 @@ class ImapSmtp:
         msg["From"] = sender
         msg["To"] = ",".join(recipients)
         msg["Subject"] = Header(subject, self.encoding)
-
+        sender = sender.encode("idna").decode("ascii")
         if html:
             for im in images:
                 im = im.strip()
