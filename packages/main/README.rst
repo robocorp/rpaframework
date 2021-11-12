@@ -56,7 +56,7 @@ Links
    :target: https://pypi.python.org/pypi/rpaframework
    :alt: rpaframework
 
-.. image:: https://img.shields.io/pypi/l/rpaframework.svg?style=for-the-badge
+.. image:: https://img.shields.io/pypi/l/rpaframework.svg?style=for-the-badge&color=brightgreen
    :target: http://www.apache.org/licenses/LICENSE-2.0.html
    :alt: License
 
