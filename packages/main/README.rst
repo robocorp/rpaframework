@@ -69,31 +69,30 @@ Packages
    :target: https://pypi.python.org/pypi/rpaframework
    :alt: rpaframework latest version
    
-|br|
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-core.svg?label=rpaframework-core&style=for-the-badge
    :target: https://pypi.python.org/pypi/rpaframework-core
    :alt: rpaframework-core latest version
 
-|br|
+
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-dialogs.svg?label=rpaframework-dialogs&style=for-the-badge&color=blue
    :target: https://pypi.python.org/pypi/rpaframework-dialogs
    :alt: rpaframework-dialogs latest version
 
-|br|
+
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-google.svg?label=rpaframework-google&style=for-the-badge&color=blue   
    :target: https://pypi.python.org/pypi/rpaframework-google
    :alt: rpaframework-google latest version
 
-|br|
+
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-pdf.svg?label=rpaframework-pdf&style=for-the-badge&color=blue   
    :target: https://pypi.python.org/pypi/rpaframework-pdf
    :alt: rpaframework-pdf latest version
 
-|br|
+
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-recognition.svg?label=rpaframework-recognition&style=for-the-badge&color=blue   
    :target: https://pypi.python.org/pypi/rpaframework-recognition
