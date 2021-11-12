@@ -349,9 +349,11 @@ Token could be stored into <code class="docutils literal notranslate"><span clas
 <span class="gh">*** Tasks ***</span><span class="p"></span>
 <span class="gu">Upload a file into a new storage bucket</span><span class="p"></span>
 <span class="p">    [</span><span class="kn">Setup</span><span class="p">]   </span><span class="nf">Init Storage</span><span class="p">    ${</span><span class="nv">SERVICE_ACCOUNT</span><span class="p">}</span>
-<span class="p">    </span><span class="nf">Create Bucket</span><span class="p">    ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
-<span class="p">    </span><span class="nf">Upload File</span><span class="p">      ${</span><span class="nv">BUCKET_NAME</span><span class="p">}   ${</span><span class="nv">/</span><span class="p">}</span><span class="s">path</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">to</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">file.pdf</span><span class="p">  </span><span class="s">myfile.pdf</span><span class="p"></span>
-<span class="p">    @{</span><span class="nv">files</span><span class="p">}         </span><span class="nf">List Files</span><span class="p">   ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Create Storage Bucket</span><span class="p">    ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
+<span class="p">    </span><span class="nf">Upload Storage File</span><span class="p">      ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
+<span class="p">    ...   ${</span><span class="nv">/</span><span class="p">}</span><span class="s">path</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">to</span><span class="p">${</span><span class="nv">/</span><span class="p">}</span><span class="s">file.pdf</span><span class="p"></span>
+<span class="p">    ...   </span><span class="s">myfile.pdf</span><span class="p"></span>
+<span class="p">    @{</span><span class="nv">files</span><span class="p">}         </span><span class="nf">List Storage Files</span><span class="p">   ${</span><span class="nv">BUCKET_NAME</span><span class="p">}</span>
 <span class="p">    FOR   ${</span><span class="nv">file</span><span class="p">}  IN   @{</span><span class="nv">files</span><span class="p">}</span>
 <span class="p">        </span><span class="nf">Log</span><span class="p">  ${</span><span class="nv">file</span><span class="p">}</span>
 <span class="p">    END</span>
