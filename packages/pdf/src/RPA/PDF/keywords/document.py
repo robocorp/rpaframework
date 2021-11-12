@@ -52,27 +52,30 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def close_all_pdfs(self) -> None:
         """Close all opened PDF file descriptors."""
-        file_paths = list(self.ctx.fileobjects.keys())
+        file_paths = list(self.ctx.documents.keys())
         for filename in file_paths:
             self.close_pdf(filename)
 
     @keyword
     def close_pdf(self, source_pdf: str = None) -> None:
-        """Close PDF file descriptor for certain file.
+        """Close PDF file descriptor for a certain file.
 
         :param source_pdf: filepath to the source pdf.
         :raises ValueError: if file descriptor for the file is not found.
         """
-        if not source_pdf and self.active_pdf_document:
-            source_pdf = self.active_pdf_document.path
-        elif not source_pdf and not self.active_pdf_document:
-            raise ValueError("No active PDF document open.")
-        if source_pdf not in self.ctx.fileobjects:
-            raise ValueError('PDF "%s" is not open' % source_pdf)
-        self.logger.info("Closing PDF document: %s", source_pdf)
-        self.ctx.fileobjects[source_pdf].close()
-        del self.ctx.fileobjects[source_pdf]
+        if not source_pdf:
+            if self.active_pdf_document:
+                source_pdf = self.active_pdf_document.path
+            else:
+                raise ValueError("No active PDF document open")
 
+        source_pdf = str(source_pdf)
+        if source_pdf not in self.ctx.documents:
+            raise ValueError(f"PDF {source_pdf!r} is not open")
+
+        self.logger.info("Closing PDF document: %s", source_pdf)
+        self.ctx.documents[source_pdf].close()
+        del self.ctx.documents[source_pdf]
         self.active_pdf_document = None
 
     @keyword
@@ -111,15 +114,18 @@ class DocumentKeywords(LibraryContext):
         """
         if source_path is None:
             raise ValueError("Source PDF is missing")
-        if str(source_path) in self.ctx.fileobjects.keys():
+
+        source_path = str(source_path)
+        if source_path in self.ctx.documents:
             raise ValueError(
-                "PDF file is already open. Please close it before opening again."
+                "PDF file is already open, please close it before opening it again"
             )
-        self.ctx.active_pdf_document = Document()
-        self.ctx.active_pdf_document.path = str(source_path)
+
+        self.logger.debug("Opening new document: %s", source_path)
         # pylint: disable=consider-using-with
-        self.ctx.active_pdf_document.fileobject = open(source_path, "rb")
-        self.ctx.fileobjects[source_path] = self.ctx.active_pdf_document.fileobject
+        self.active_pdf_document = self.ctx.documents[source_path] = Document(
+            source_path, fileobject=open(source_path, "rb")
+        )
 
     @keyword
     def template_html_to_pdf(
@@ -263,11 +269,9 @@ class DocumentKeywords(LibraryContext):
         """
         self.switch_to_pdf(source_path)
 
-        pdf = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
-        docinfo = pdf.getDocumentInfo()
-
-        def optional(attr):
-            return getattr(docinfo, attr) if docinfo is not None else None
+        reader = self.ctx.active_pdf_document.reader
+        docinfo = reader.getDocumentInfo()
+        num_pages = reader.getNumPages()
 
         parser = PDFParser(self.ctx.active_pdf_document.fileobject)
         document = PDFDocument(parser)
@@ -276,13 +280,16 @@ class DocumentKeywords(LibraryContext):
         except KeyError:
             fields = None
 
+        optional = (
+            lambda attr: getattr(docinfo, attr) if docinfo is not None else None
+        )  # noqa
         return {
             "Author": optional("author"),
             "Creator": optional("creator"),
             "Producer": optional("producer"),
             "Subject": optional("subject"),
             "Title": optional("title"),
-            "Pages": pdf.getNumPages(),
+            "Pages": num_pages,
             "Encrypted": self.is_pdf_encrypted(source_path),
             "Fields": bool(fields),
         }
@@ -291,9 +298,10 @@ class DocumentKeywords(LibraryContext):
     def is_pdf_encrypted(self, source_path: str = None) -> bool:
         """Check if PDF is encrypted.
 
-        Returns True even if PDF was decrypted.
-
         If no source path given, assumes a PDF is already opened.
+
+        :param source_path: filepath to the source pdf.
+        :return: True if file is encrypted.
 
         **Examples**
 
@@ -318,11 +326,7 @@ class DocumentKeywords(LibraryContext):
 
             def example_keyword():
                 is_encrypted = pdf.is_pdf_encrypted("/tmp/sample.pdf")
-
-        :param source_path: filepath to the source pdf.
-        :return: True if file is encrypted.
         """
-        # TODO: Why "Returns True even if PDF was decrypted."?
         self.switch_to_pdf(source_path)
         reader = self.ctx.active_pdf_document.reader
         return reader.isEncrypted
@@ -366,8 +370,8 @@ class DocumentKeywords(LibraryContext):
 
     @keyword
     def switch_to_pdf(self, source_path: str = None) -> None:
-        """Switch library's current fileobject to already open file
-        or open file if not opened.
+        """Switch library's current fileobject to already opened file
+        or open a new file if not opened.
 
         This is done automatically in the PDF library keywords.
 
@@ -400,24 +404,22 @@ class DocumentKeywords(LibraryContext):
         :raises ValueError: if PDF filepath is not given and there are no active
             file to activate.
         """
-        # TODO: should this be a keyword or a private method?
-        if source_path and source_path not in self.ctx.fileobjects:
+        if not source_path:
+            if not self.ctx.active_pdf_document:
+                raise ValueError("No PDF is open")
+            self.logger.debug(
+                "Using already set document: %s", self.ctx.active_pdf_document.path
+            )
+            return
+
+        source_path = str(source_path)
+        if source_path not in self.ctx.documents:
             self.open_pdf(source_path)
-        elif not source_path and not (
-            self.ctx.active_pdf_document or self.ctx.active_pdf_document.fileobject
-        ):
-            raise ValueError("No PDF is open")
-        elif (
-            source_path
-            and self.ctx.active_pdf_document.fileobject
-            != self.ctx.fileobjects[source_path]
-        ):
-            self.logger.debug("Switching to document %s", source_path)
-            self.ctx.active_pdf_document.path = str(source_path)
-            self.ctx.active_pdf_document.fileobject = self.ctx.fileobjects[
-                str(source_path)
-            ]
-            self.ctx.active_pdf_document.fields = None
+        elif self.ctx.documents[source_path] != self.ctx.active_pdf_document:
+            self.logger.debug("Switching to already opened document: %s", source_path)
+            self.ctx.active_pdf_document = self.ctx.documents[source_path]
+        else:
+            self.logger.debug("Using already set document: %s", source_path)
 
     @keyword
     def get_text_from_pdf(
@@ -464,8 +466,7 @@ class DocumentKeywords(LibraryContext):
         :return: dictionary of pages and their texts.
         """
         self.switch_to_pdf(source_path)
-        if not self.active_pdf_document.is_converted:
-            self.ctx.convert(trim=trim)
+        self.ctx.convert(trim=trim)
 
         reader = self.ctx.active_pdf_document.reader
         pages = self._get_page_numbers(pages, reader)
@@ -540,8 +541,8 @@ class DocumentKeywords(LibraryContext):
         pages = self._get_page_numbers(pages, reader)
         for pagenum in pages:
             writer.addPage(reader.getPage(int(pagenum) - 1))
-        with open(output_path, "wb") as f:
-            writer.write(f)
+        with open(output_path, "wb") as stream:
+            writer.write(stream)
 
     @keyword
     def rotate_page(
@@ -711,8 +712,6 @@ class DocumentKeywords(LibraryContext):
         :return: True if decrypt was successful, else False or Exception.
         :raises ValueError: on decryption errors.
         """
-        output_path = self.resolve_output(output_path)
-
         self.switch_to_pdf(source_path)
         reader = self.ctx.active_pdf_document.reader
         try:
@@ -727,12 +726,13 @@ class DocumentKeywords(LibraryContext):
             else:
                 return False
 
+            output_path = self.resolve_output(output_path)
             self.save_pdf(output_path, reader)
             return True
 
         except NotImplementedError as e:
             raise ValueError(
-                f"Document {source_path} uses an unsupported encryption method."
+                f"Document {source_path!r} uses an unsupported encryption method"
             ) from e
         except KeyError:
             self.logger.info("PDF is not encrypted")
@@ -772,8 +772,7 @@ class DocumentKeywords(LibraryContext):
         :return: dictionary of figures divided into pages.
         """
         self.switch_to_pdf(source_path)
-        if not self.active_pdf_document.is_converted:
-            self.ctx.convert()
+        self.ctx.convert()
         pages = {}
         for pagenum, page in self.active_pdf_document.get_pages().items():
             pages[pagenum] = page.get_figures()
@@ -887,17 +886,17 @@ class DocumentKeywords(LibraryContext):
         :param reader: a PyPDF2 reader.
         """
         writer = PyPDF2.PdfFileWriter()
-        for i in range(reader.getNumPages()):
-            page = reader.getPage(i)
+        for idx in range(reader.getNumPages()):
+            page = reader.getPage(idx)
             try:
                 writer.addPage(page)
-            except Exception as e:  # pylint: disable=W0703
-                self.logger.warning(repr(e))
-                writer.addPage(page)
+            except Exception as exc:  # pylint: disable=W0703
+                self.logger.warning(repr(exc))
+                raise
 
         output_path = self.resolve_output(output_path)
-        with open(output_path, "wb") as f:
-            writer.write(f)
+        with open(output_path, "wb") as stream:
+            writer.write(stream)
 
     @staticmethod
     def _get_page_numbers(

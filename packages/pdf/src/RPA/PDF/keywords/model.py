@@ -1,9 +1,11 @@
 import re
 import sys
+import typing
 from collections import OrderedDict
 from typing import (
     Any,
     Iterable,
+    Optional,
 )
 
 import PyPDF2
@@ -169,40 +171,50 @@ class Page:
 
 
 class Document:
-    """Class for parsed PDF document"""
+    """Class for the parsed PDF document."""
 
-    encoding: str = "utf-8"
-    pages: OrderedDict
-    xml_content: bytearray = bytearray()
+    ENCODING: str = "utf-8"
 
-    def __init__(self) -> None:
-        self.pages = OrderedDict()
-        self.fields = None
-        self.fileobject = None
-        self.path = None
+    def __init__(self, path: str, *, fileobject: typing.BinaryIO):
+        self._path = path
+        self._fileobject = fileobject
+
+        self._pages = OrderedDict()
+        self._xml_content_list: typing.List[bytes] = []
+        self.fields: Optional[dict] = None
         self.is_converted = False
 
     @property
-    def reader(self):
-        """Get a PyPDF reader instance for the PDF."""
-        if self.fileobject:
-            return PyPDF2.PdfFileReader(self.fileobject, strict=False)
-        return None
+    def path(self):
+        return self._path
 
-    def append_xml(self, xml: bytes) -> None:
-        self.xml_content += xml
+    @property
+    def fileobject(self) -> typing.BinaryIO:
+        self._fileobject.seek(0, 0)
+        return self._fileobject
+
+    @property
+    def reader(self) -> PyPDF2.PdfFileReader:
+        """Get a PyPDF reader instance for the PDF."""
+        return PyPDF2.PdfFileReader(self.fileobject, strict=False)
 
     def add_page(self, page: Page) -> None:
-        self.pages[page.pageid] = page
+        self._pages[page.pageid] = page
 
     def get_pages(self) -> OrderedDict:
-        return self.pages
+        return self._pages
 
     def get_page(self, pagenum: int) -> Page:
-        return self.pages[pagenum]
+        return self._pages[pagenum]
+
+    def append_xml(self, xml: bytes) -> None:
+        self._xml_content_list.append(xml)
 
     def dump_xml(self) -> str:
-        return self.xml_content.decode("utf-8")
+        return b"".join(self._xml_content_list).decode(self.ENCODING)
+
+    def close(self):
+        self._fileobject.close()
 
 
 class Converter(PDFConverter):
@@ -235,6 +247,8 @@ class Converter(PDFConverter):
     def write(self, text: str):
         if self.codec:
             text = text.encode(self.codec)
+        else:
+            text = text.encode()
         self.active_pdf_document.append_xml(text)
 
     def write_header(self):
@@ -377,9 +391,8 @@ class Converter(PDFConverter):
 
         render(ltpage)
 
-    def close(self) -> Document:
+    def close(self):
         self.write_footer()
-        return self.active_pdf_document
 
 
 class ModelKeywords(LibraryContext):
@@ -387,10 +400,14 @@ class ModelKeywords(LibraryContext):
 
     @keyword
     def convert(self, source_path: str = None, trim: bool = True) -> None:
-        """Parse source PDF into entities which can be
-        used for text searches, for example.
+        """Parse source PDF into entities.
 
-        This is also used inside other PDF keywords.
+        These entities can be used for text searches or XML dumping for example. The
+        conversion will be done automatically when using the dependent keywords
+        directly.
+
+        :param source_path: source PDF filepath
+        :param trim: trim whitespace from the text is set to True (default)
 
         **Examples**
 
@@ -415,26 +432,31 @@ class ModelKeywords(LibraryContext):
 
             def example_keyword():
                 pdf.convert("/tmp/sample.pdf")
-
-        :param source_path: source PDF filepath.
         """
+        self.ctx.switch_to_pdf(source_path)
+        if self.ctx.active_pdf_document.is_converted:
+            return
+
+        self.logger.debug(
+            "Converting active PDF document: %s", self.ctx.active_pdf_document.path
+        )
+        rsrcmgr = PDFResourceManager()
         if not self.ctx.convert_settings:
             self.set_convert_settings()
-        self.ctx.switch_to_pdf(source_path)
-        source_parser = PDFParser(self.ctx.active_pdf_document.fileobject)
-        source_document = PDFDocument(source_parser)
-        source_pages = PDFPage.create_pages(source_document)
-        rsrcmgr = PDFResourceManager()
         laparams = pdfminer.layout.LAParams(**self.ctx.convert_settings)
         device = Converter(
             self.ctx.active_pdf_document, rsrcmgr, laparams=laparams, trim=trim
         )
         interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
 
-        # Look at all (nested) objects on each page
+        # Look at all (nested) objects on each page.
+        source_parser = PDFParser(self.ctx.active_pdf_document.fileobject)
+        source_document = PDFDocument(source_parser)
+        source_pages = PDFPage.create_pages(source_document)
         for _, page in enumerate(source_pages, 0):
             interpreter.process_page(page)
-        self.ctx.active_pdf_document = device.close()
+        device.close()
+
         self.ctx.active_pdf_document.is_converted = True
 
     @keyword
@@ -479,11 +501,14 @@ class ModelKeywords(LibraryContext):
             defaults to False.
         :return: dictionary of input key values or `None`.
         """
-        record_fields = {}
-        if not source_path and self.ctx.active_pdf_document.fields:
-            return self.ctx.active_pdf_document.fields
         self.ctx.switch_to_pdf(source_path)
-        source_parser = PDFParser(self.ctx.active_pdf_document.fileobject)
+        active_document = self.ctx.active_pdf_document
+
+        active_fields = active_document.fields
+        if active_fields:
+            return active_fields
+
+        source_parser = PDFParser(active_document.fileobject)
         source_document = PDFDocument(source_parser)
 
         try:
@@ -496,10 +521,12 @@ class ModelKeywords(LibraryContext):
                 % self.ctx.active_pdf_document.path
             ) from err
 
-        for i in fields:
-            field = pdfminer.pdftypes.resolve1(i)
+        record_fields = {}
+        for miner_field in fields:
+            field = pdfminer.pdftypes.resolve1(miner_field)
             if field is None:
                 continue
+
             name, value, rect, label = (
                 field.get("T"),
                 field.get("V"),
@@ -572,28 +599,22 @@ class ModelKeywords(LibraryContext):
         :raises ValueError: when field can't be found or more than 1 field matches
             the given `field_name`.
         """
-        self.ctx.switch_to_pdf(source_path)
-        if not self.ctx.active_pdf_document.fields:
-            self.get_input_fields()
-            if not self.ctx.active_pdf_document.fields:
-                raise ValueError("Document does not have input fields")
+        fields = self.get_input_fields(source_path=source_path)
+        if not fields:
+            raise ValueError("Document does not have input fields")
 
-        if field_name in self.ctx.active_pdf_document.fields.keys():
-            self.ctx.active_pdf_document.fields[field_name][
-                "value"
-            ] = value  # pylint: disable=E1136
+        if field_name in fields.keys():
+            fields[field_name]["value"] = value  # pylint: disable=E1136
         else:
             label_matches = 0
             field_key = None
-            for k, _ in self.ctx.active_pdf_document.fields.items():
+            for k, _ in fields.items():
                 # pylint: disable=E1136
-                if self.ctx.active_pdf_document.fields[k]["label"] == field_name:
+                if fields[k]["label"] == field_name:
                     label_matches += 1
                     field_key = k
             if label_matches == 1:
-                self.ctx.active_pdf_document.fields[field_key][
-                    "value"
-                ] = value  # pylint: disable=E1136
+                fields[field_key]["value"] = value  # pylint: disable=E1136
             elif label_matches > 1:
                 raise ValueError(
                     "Unable to set field value - field name: '%s' matched %d fields"
@@ -659,22 +680,21 @@ class ModelKeywords(LibraryContext):
                     newvals=new_fields
                 )
 
-        :param source_path: source PDF with fields to update.
-        :param output_path: updated target PDF.
-        :param newvals: new values when updating many at once.
+        :param source_path: source PDF with fields to update
+        :param output_path: updated target PDF
+        :param newvals: new values when updating many at once
         :param use_appearances_writer: for some PDF documents the updated
-            fields won't show visible. Try to set this to `True` if you
-            encounter problems.
+            fields won't be visible, try to set this to `True` if you
+            encounter problems
         """
         # NOTE:
         # The resulting PDF will be a mutated version of the original PDF,
         # and it won't necessarily show correctly in all document viewers.
         # It also won't show anymore as having fields at all.
         # The tests will XFAIL for the time being.
+
         self.ctx.switch_to_pdf(source_path)
-        reader = PyPDF2.PdfFileReader(
-            self.ctx.active_pdf_document.fileobject, strict=False
-        )
+        reader = self.ctx.active_pdf_document.reader
         if "/AcroForm" in reader.trailer["/Root"]:
             reader.trailer["/Root"]["/AcroForm"].update(
                 {
@@ -683,32 +703,36 @@ class ModelKeywords(LibraryContext):
                     ): PyPDF2.generic.BooleanObject(True)
                 }
             )
-        writer = PyPDF2.PdfFileWriter()
 
+        writer = PyPDF2.PdfFileWriter()
         if use_appearances_writer:
             writer = self._set_need_appearances_writer(writer)
+        if newvals:
+            self.logger.debug("Updating form fields with provided values for all pages")
+            updated_fields = newvals
+        elif self.ctx.active_pdf_document.fields:
+            self.logger.debug("Updating form fields with PDF values for all pages")
+            updated_fields = {
+                k: v["value"] or ""
+                for (k, v) in self.ctx.active_pdf_document.fields.items()
+            }
+        else:
+            self.logger.debug("No values available for updating the form fields")
+            updated_fields = {}
 
-        for i in range(reader.getNumPages()):
-            page = reader.getPage(i)
-            try:
-                if newvals:
-                    self.logger.debug("Updating form field values for page %s", i)
-                    updated_fields = newvals
-                elif self.ctx.active_pdf_document.fields:
-                    updated_fields = {
-                        k: v["value"] if v["value"] else ""
-                        for (k, v) in self.ctx.active_pdf_document.fields.items()
-                    }
-                writer.updatePageFormFieldValues(page, fields=updated_fields)
-                writer.addPage(page)
-            except Exception as e:  # pylint: disable=W0703
-                self.logger.warning(repr(e))
-                writer.addPage(page)
+        for idx in range(reader.getNumPages()):
+            page = reader.getPage(idx)
+            if updated_fields:
+                try:
+                    writer.updatePageFormFieldValues(page, fields=updated_fields)
+                except Exception as exc:  # pylint: disable=W0703
+                    self.logger.warning(repr(exc))
+            writer.addPage(page)
 
         if output_path is None:
             output_path = self.ctx.active_pdf_document.path
-        with open(output_path, "wb") as f:
-            writer.write(f)
+        with open(output_path, "wb") as stream:
+            writer.write(stream)
 
     def _set_need_appearances_writer(self, writer: PyPDF2.PdfFileWriter):
         # See 12.7.2 and 7.7.2 for more information:
@@ -764,11 +788,9 @@ class ModelKeywords(LibraryContext):
                 xml = pdf.dump_pdf_as_xml("/tmp/sample.pdf")
 
         :param source_path: filepath to the source PDF
-        :return: XML content as a string.
+        :return: XML content as a string
         """
-        self.ctx.switch_to_pdf(source_path)
-        if self.active_pdf_document is None:
-            self.convert()
+        self.convert(source_path)
         return self.active_pdf_document.dump_xml()
 
     @keyword
