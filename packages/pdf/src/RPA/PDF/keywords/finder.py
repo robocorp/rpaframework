@@ -52,7 +52,7 @@ class FinderKeywords(LibraryContext):
         regexp: str = None,
         only_closest: bool = True,
         trim: bool = True,
-    ) -> Union[List[str], str]:
+    ) -> Union[List[str], Optional[str]]:
         """Get the closest text as string value to the anchored element.
 
         PDF will be parsed automatically before elements can be searched.
@@ -117,8 +117,8 @@ class FinderKeywords(LibraryContext):
                 candidates.append(candidate)
 
         if only_closest:
-            closest_candidate = self._get_closest_from_possibles(direction, candidates)
-            return closest_candidate.text
+            closest_candidate = self._get_closest_candidate(candidates, direction=direction)
+            return closest_candidate.text if closest_candidate else None
 
         return [candidate.text for candidate in candidates]
 
@@ -299,26 +299,27 @@ class FinderKeywords(LibraryContext):
             and top >= item.top
         )
 
-    def _get_closest_from_possibles(
-        self, direction: str, possibles: List[TextBox]
-    ) -> TextBox:
-        distance = 500000
+    def _get_closest_candidate(
+        self, candidates: List[TextBox], *, direction: str
+    ) -> Optional[TextBox]:
+        distance = 500000  # TODO(cmin764): Document this constant somewhere!
         closest = None
         (_, bottom, right, top) = self.anchor_element.bbox
         direction_down = direction in ["bottom", "down"]
-        for p in possibles:
+
+        for candidate in candidates:
             if direction_down:
-                vertical_distance = bottom - p.top
+                vertical_distance = bottom - candidate.top
             else:
-                vertical_distance = top - p.bottom
-            h_distance_to_right = abs(right - p.right)
-            h_distance_to_left = abs(right - p.left)
+                vertical_distance = top - candidate.bottom
+            h_distance_to_right = abs(right - candidate.right)
+            h_distance_to_left = abs(right - candidate.left)
             horizontal_distance = min(h_distance_to_left, h_distance_to_right)
             calc_distance = math.sqrt(
                 math.pow(horizontal_distance, 2) + math.pow(vertical_distance, 2)
             )
             if calc_distance < distance:
                 distance = calc_distance
-                closest = p
+                closest = candidate
 
         return closest
