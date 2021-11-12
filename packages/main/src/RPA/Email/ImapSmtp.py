@@ -1,4 +1,3 @@
-import base64
 from enum import Enum
 from functools import wraps
 
@@ -884,6 +883,15 @@ class ImapSmtp:
     def _save_attachment(self, message, target_folder, overwrite):
         attachments_saved = []
         msg = message["Message"] if isinstance(message, dict) else message
+
+        def get_part_filename(msg):
+            filename = msg.get_filename()
+            if decode_header(filename)[0][1] is not None:
+                filename = decode_header(filename)[0][0].decode(
+                    decode_header(filename)[0][1]
+                )
+            return filename
+
         for part in msg.walk():
             content_maintype = part.get_content_maintype()
             content_disposition = part.get("Content-Disposition")
@@ -893,16 +901,9 @@ class ImapSmtp:
                 content_disposition,
             )
             if content_maintype != "multipart" and content_disposition is not None:
-                filename = part.get_filename().replace("\r", "").replace("\n", "")
+                filename = get_part_filename(part)
                 self.logger.info("Attachment filename: '%s'", filename)
                 if filename:
-                    transfer_encoding = part.get_all("Content-Transfer-Encoding")
-                    if transfer_encoding and transfer_encoding[0] == "base64":
-                        filename_parts = filename.split("?")
-                        if len(filename_parts) > 1:
-                            filename = base64.b64decode(filename_parts[3]).decode(
-                                filename_parts[1]
-                            )
                     filepath = Path(target_folder) / Path(filename).name
                     self.logger.info("Attachment filepath: '%s'", filepath)
                     if not filepath.exists() or overwrite:
@@ -916,7 +917,7 @@ class ImapSmtp:
                                 f.write(payload)
                                 attachments_saved.append(str(filepath))
                         else:
-                            self.logger.debug(
+                            self.logger.info(
                                 "Attachment '%s' did not have payload to write",
                                 filename,
                             )
