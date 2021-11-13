@@ -59,6 +59,15 @@ def to_action(value):
         raise ValueError(f"Unknown email action: {value}") from err
 
 
+def get_part_filename(msg):
+    filename = msg.get_filename()
+    if filename and decode_header(filename)[0][1] is not None:
+        filename = decode_header(filename)[0][0].decode(decode_header(filename)[0][1])
+    if filename:
+        filename = filename.replace("\r", "").replace("\n", "")
+    return filename
+
+
 IMAGE_FORMATS = ["jpg", "jpeg", "bmp", "png", "gif"]
 FLAG_DELETED = "\\Deleted"
 FLAG_SEEN = "\\Seen"
@@ -524,21 +533,25 @@ class ImapSmtp:
             html = None
 
             for part in message.walk():
-                # content_maintype = part.get_content_maintype()
-                content_disposition = part.get("Content-Disposition")
-                if content_disposition and "attachment" in content_disposition:
+                content_type = part.get_content_type()
+                content_filename = get_part_filename(part)
+                content_charset = part.get_content_charset()
+                if bool(content_filename):
                     has_attachments = True
                     continue
-                if part.get_content_charset() is None:
+                if not content_charset:
                     # We cannot know the character set, so return decoded "something"
                     text = part.get_payload(decode=True)
                     continue
 
-                charset = part.get_content_charset()
-                if part.get_content_type() == "text/plain":
-                    text = str(part.get_payload(decode=True), str(charset), "ignore")
-                if part.get_content_type() == "text/html":
-                    html = str(part.get_payload(decode=True), str(charset), "ignore")
+                if content_type == "text/plain":
+                    text = str(
+                        part.get_payload(decode=True), str(content_charset), "ignore"
+                    )
+                if content_type == "text/html":
+                    html = str(
+                        part.get_payload(decode=True), str(content_charset), "ignore"
+                    )
 
             if text:
                 return (
@@ -884,26 +897,11 @@ class ImapSmtp:
         attachments_saved = []
         msg = message["Message"] if isinstance(message, dict) else message
 
-        def get_part_filename(msg):
-            filename = msg.get_filename()
-            if decode_header(filename)[0][1] is not None:
-                filename = decode_header(filename)[0][0].decode(
-                    decode_header(filename)[0][1]
-                )
-            return filename
-
         for part in msg.walk():
             content_maintype = part.get_content_maintype()
-            content_disposition = part.get("Content-Disposition")
-            self.logger.info(
-                "Email attachment content-type: '%s' and content-disposition: '%s'",
-                content_maintype,
-                content_disposition,
-            )
-            if content_maintype != "multipart" and content_disposition is not None:
+            if content_maintype != "multipart":
                 filename = get_part_filename(part)
-                self.logger.info("Attachment filename: '%s'", filename)
-                if filename:
+                if bool(filename):
                     filepath = Path(target_folder) / Path(filename).name
                     self.logger.info("Attachment filepath: '%s'", filepath)
                     if not filepath.exists() or overwrite:
