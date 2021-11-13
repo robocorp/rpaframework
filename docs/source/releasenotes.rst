@@ -7,6 +7,11 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 
+11.6.2 - 13 Nov 2021
+--------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix handling of application/octet-stream attachments
+
 11.6.1 - 12 Nov 2021
 --------------------
 
