@@ -1,10 +1,6 @@
 RPA Framework
 =============
 
-.. |br| raw:: html
-
-   <div style="line-height: 0; padding: 0; margin: 0"></div>
-
 .. contents:: Table of Contents
    :local:
    :depth: 1
@@ -51,7 +47,7 @@ Links
 .. image:: https://img.shields.io/github/workflow/status/robocorp/rpaframework/main?style=for-the-badge
    :target: https://github.com/robocorp/rpaframework/actions?query=workflow%3Amain
    :alt: Status
-   
+
 .. image:: https://img.shields.io/pypi/dw/rpaframework?style=for-the-badge
    :target: https://pypi.python.org/pypi/rpaframework
    :alt: rpaframework
@@ -65,10 +61,10 @@ Links
 Packages
 --------
 
-.. image:: https://img.shields.io/pypi/v/rpaframework.svg?label=rpaframework&style=for-the-badge  
+.. image:: https://img.shields.io/pypi/v/rpaframework.svg?label=rpaframework&style=for-the-badge
    :target: https://pypi.python.org/pypi/rpaframework
    :alt: rpaframework latest version
-   
+
 
 .. image:: https://img.shields.io/pypi/v/rpaframework-core.svg?label=rpaframework-core&style=for-the-badge
    :target: https://pypi.python.org/pypi/rpaframework-core
@@ -82,19 +78,19 @@ Packages
 
 
 
-.. image:: https://img.shields.io/pypi/v/rpaframework-google.svg?label=rpaframework-google&style=for-the-badge&color=blue   
+.. image:: https://img.shields.io/pypi/v/rpaframework-google.svg?label=rpaframework-google&style=for-the-badge&color=blue
    :target: https://pypi.python.org/pypi/rpaframework-google
    :alt: rpaframework-google latest version
 
 
 
-.. image:: https://img.shields.io/pypi/v/rpaframework-pdf.svg?label=rpaframework-pdf&style=for-the-badge&color=blue   
+.. image:: https://img.shields.io/pypi/v/rpaframework-pdf.svg?label=rpaframework-pdf&style=for-the-badge&color=blue
    :target: https://pypi.python.org/pypi/rpaframework-pdf
    :alt: rpaframework-pdf latest version
 
 
 
-.. image:: https://img.shields.io/pypi/v/rpaframework-recognition.svg?label=rpaframework-recognition&style=for-the-badge&color=blue   
+.. image:: https://img.shields.io/pypi/v/rpaframework-recognition.svg?label=rpaframework-recognition&style=for-the-badge&color=blue
    :target: https://pypi.python.org/pypi/rpaframework-recognition
    :alt: rpaframework-recognition latest version
 
