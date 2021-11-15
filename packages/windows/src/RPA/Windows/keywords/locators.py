@@ -22,6 +22,8 @@ WINDOWS_LOCATOR_STRATEGIES = {
     "index": "index",
     "offset": "offset",
     "desktop": "desktop",
+    "process": "process",
+    "executable": "executable",
 }
 
 
@@ -53,10 +55,9 @@ class MatchObject:
                     level, part, match_object, default_value, strategy
                 )
             if not strategy and len(default_value) > 0:
-                match_object.add_locator("name", " ".join(default_value), level)
-            # if len(list(parts)) == 0:
-            #    self.logger.warning("add locator at parts 0")
-            #    match_object.add_locator("name", locator)
+                match_object.add_locator("Name", " ".join(default_value), level)
+        if len(match_object.locators) == 0:
+            match_object.add_locator("Name", locator)
         return match_object
 
     def handle_locator_part(self, level, part, match_object, default_value, strategy):
@@ -76,7 +77,7 @@ class MatchObject:
             # self.logger.info("STRATEGY: %s VALUE: %s" % (strategy, value))
             if strategy:
                 if len(default_value) > 0:
-                    match_object.add_locator("name", " ".join(default_value))
+                    match_object.add_locator("Name", " ".join(default_value))
                     default_value = []
                 windows_locator_strategy = WINDOWS_LOCATOR_STRATEGIES[strategy]
                 match_object.add_locator(windows_locator_strategy, value, level)
@@ -122,12 +123,31 @@ class LocatorKeywords(LibraryContext):
         search_params = {}
         for loc in mo.locators:
             search_params[loc[0]] = loc[1]
+        if "executable" in search_params.keys():
+            root_element = auto.GetRootControl()
+            search_params.pop("ControlType")
+            executable = search_params.pop("executable")
+            window_list = self.ctx.list_windows()
+            matches = [w for w in window_list if w["name"] == executable]
+            if not matches:
+                raise WindowControlError(
+                    "Could not locate window with executable '%s'" % executable
+                )
+            elif len(matches) > 1:
+                raise WindowControlError(
+                    "Found more than one window with executable '%s'" % executable
+                )
+            self.logger.info(
+                "Found process with window title: '%s'" % matches[0]["title"]
+            )
+            search_params["Name"] = matches[0]["title"]
+            control = Control(**search_params, searchDepth=search_depth)
+            return Control.CreateControlFromControl(control)
         if "desktop" in search_params.keys():
             root_element = auto
             search_params.pop("desktop")
         if "ControlType" in search_params.keys():
-            control_type = search_params["ControlType"]
-            search_params.pop("ControlType")
+            control_type = search_params.pop("ControlType")
             control = getattr(root_element, control_type)
             return control(**search_params, searchDepth=search_depth)
 
@@ -135,12 +155,18 @@ class LocatorKeywords(LibraryContext):
         return control(**search_params, searchDepth=search_depth)
 
     @keyword
-    def locator_to_control(self, locator, default_search_depth=8):
+    def get_control(self, locator: str, default_search_depth: int = 8) -> Control:
+        """[summary]
+
+        :param locator: [description]
+        :param default_search_depth: [description], defaults to 8
+        """
         self.logger.info("Locator '%s' into control", locator)
         locators = locator.split(" > ")
-        root_element = self.window or auto.GetRootControl
+        root_element = self.ctx.window or auto
         control = None
         for loc in locators:
+            self.logger.info("Root control: '%s'" % root_element)
             control = self._get_control_with_locator_part(
                 loc, default_search_depth, root_element
             )
@@ -148,11 +174,23 @@ class LocatorKeywords(LibraryContext):
         return control
 
     @keyword
-    def get_control_property(self, locator, property_key):
+    def get_control_property(self, locator: str, property_key: str):
+        """[summary]
+
+        :param locator: [description]
+        :param property_key: [description]
+        """
         if property_key not in WINDOWS_LOCATOR_STRATEGIES.keys():
             raise AttributeError("Can't get property '%s' from control" % property_key)
         try:
-            control = self.locator_to_control(locator)
+            control = self.get_control(locator)
             return getattr(control, WINDOWS_LOCATOR_STRATEGIES[property_key])
         except Exception as err:
             raise WindowControlError from err
+
+    def _get_control_class_id_by_string(self, name: str) -> Control:
+        for key, value in auto.ControlTypeNames.items():
+            if name == value:
+                return key
+
+        raise WindowControlError("Can't find control class with name '%s'" % name)

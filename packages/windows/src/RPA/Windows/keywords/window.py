@@ -1,6 +1,8 @@
 import time
 from typing import List, Dict
 
+import uiautomation as auto
+
 from RPA.Windows.keywords import (
     keyword,
     LibraryContext,
@@ -9,15 +11,13 @@ from RPA.Windows.keywords import (
 from RPA.Windows import utils
 
 
-if utils.is_windows():
-    import uiautomation as auto
-
-
 class WindowKeywords(LibraryContext):
     """Keywords for handling Window controls"""
 
     @keyword
-    def control_window(self, title: str = None, process_name: str = None) -> int:
+    def control_window(
+        self, locator: str = None
+    ):  # , process_name: str = None) -> int:
         """[summary]
 
         Return process id of the window
@@ -25,53 +25,58 @@ class WindowKeywords(LibraryContext):
         :param title: [description], defaults to None
         :param process_name: [description], defaults to None
         """
-        subname = None
-        if title:
-            subname = title
-        elif process_name:
-            window_list = self.list_windows()
-            matches = [w for w in window_list if w["name"] == process_name]
-            if not matches:
-                raise WindowControlError(
-                    "Could not locate window with process name '%s'" % process_name
-                )
-            elif len(matches) > 1:
-                raise WindowControlError(
-                    "Found more than one window with process_name '%s'" % process_name
-                )
-            subname = matches[0]["title"]
+        self.ctx.window = self.ctx.get_control(locator + " and type:WindowControl")
+        # elif process_name:
+        #    window_list = self.list_windows()
+        #    matches = [w for w in window_list if w["name"] == process_name]
+        #    if not matches:
+        #        raise WindowControlError(
+        #            "Could not locate window with process name '%s'" % process_name
+        #        )
+        #    elif len(matches) > 1:
+        #        raise WindowControlError(
+        #            "Found more than one window with process_name '%s'" % process_name
+        #        )
+        #    subname = matches[0]["title"]
 
-        self.ctx.window = auto.WindowControl(
-            searchDepth=8, SubName=subname
-        )  # RegexName=f'{title}')
-        if not self.window.Exists():
-            self.ctx.window = auto.PaneControl(
-                searchDepth=8, SubName=subname
-            )  # RegexName=f'{title}')
+        # self.ctx.window = auto.WindowControl(
+        #    searchDepth=8, Name=subname
+        # )  # RegexName=f'{title}')
         if not self.ctx.window.Exists():
-            raise WindowControlError("Could not locate window title '%s'" % title)
+            self.ctx.window = self.ctx.get_control(locator + " and type:PaneControl")
+            # self.ctx.window = auto.PaneControl(
+            #    searchDepth=8, SubName=subname
+            # )  # RegexName=f'{title}')
+        if not self.ctx.window.Exists():
+            raise WindowControlError(
+                "Could not locate window with locator '%s'" % locator
+            )
         # or PaneControl ?
         self.ctx.logger.info(dir(self.ctx.window))
-        self.ctx.window.Restore()
+        if hasattr(self.ctx.window, "Restore"):
+            self.ctx.window.Restore()
         self.ctx.window.SetFocus()
         self.ctx.window.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
         time.sleep(1.0)
         return self.ctx.window.ProcessId
 
     @keyword
-    def minimize_window(self, title: str = None, process_name: str = None) -> None:
-        if title or process_name:
-            self.control_window(title, process_name)
+    def minimize_window(self, locator: str = None) -> None:
+        if locator:
+            self.control_window(locator)
         if not self.ctx.window:
             raise WindowControlError("There is no active window")
         if not hasattr(self.ctx.window, "Minimize"):
-            raise WindowControlError("Window does not have attribute Minimize")
+            self.logger.warning(
+                "Control '%s' does not have attribute Minimize" % self.ctx.window
+            )
+            return
         self.ctx.window.Minimize()
 
     @keyword
-    def maximize_window(self, title: str = None, process_name: str = None) -> None:
-        if title or process_name:
-            self.control_window(title, process_name)
+    def maximize_window(self, locator: str = None) -> None:
+        if locator:
+            self.control_window(locator)
         if not self.ctx.window:
             raise WindowControlError("There is no active window")
         if not hasattr(self.ctx.window, "Maximize"):
@@ -126,7 +131,7 @@ class WindowKeywords(LibraryContext):
         control = locator
         if isinstance(locator, str):
             try:
-                control = self.ctx.locator_to_control(locator)
+                control = self.ctx.get_control(locator)
             except Exception as err:
                 raise WindowControlError from err
         # rect = control.BoundingRectangle
@@ -152,14 +157,14 @@ class WindowKeywords(LibraryContext):
         control = locator
         if isinstance(locator, str):
             try:
-                control = self.ctx.locator_to_control(locator)
+                control = self.ctx.get_control(locator)
             except Exception as err:
                 raise WindowControlError from err
         control.Select(value)
 
     @keyword
     def input_text(self, locator, text):
-        control = self.ctx.locator_to_control(locator)
+        control = self.ctx.get_control(locator)
         self.send_keys(text, control)
 
     @keyword
@@ -179,7 +184,7 @@ class WindowKeywords(LibraryContext):
 
     @keyword
     def get_text(self, locator):
-        control = self.ctx.locator_to_control(locator)
+        control = self.ctx.get_control(locator)
         return control.GetWindowText()
         # return control.GetValuePattern().Value
 

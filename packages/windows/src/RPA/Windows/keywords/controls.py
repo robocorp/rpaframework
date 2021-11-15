@@ -1,4 +1,4 @@
-from RPA.Windows.keywords import keyword, LibraryContext
+from RPA.Windows.keywords import LibraryContext
 from RPA.Windows import utils
 
 if utils.is_windows():
@@ -8,17 +8,6 @@ if utils.is_windows():
 
 class ControlKeywords(LibraryContext):
     """Keywords for handling Control objects"""
-
-    @keyword
-    def get_control(self, control_type, search_depth=3, **kwargs):
-        result = None
-        if control_type.lower() == "control":
-            result = auto.Control(searchDepth=search_depth, **kwargs)
-        else:
-            control_element = getattr(self.ctx.window, control_type)
-            result = control_element(searchDepth=search_depth, **kwargs)
-        # self.logger.info("Get control result: %s" % result)
-        return result
 
     def debug_control(self, target=None, max_depth=2, encoding="utf-8", level="info"):
         index = 1

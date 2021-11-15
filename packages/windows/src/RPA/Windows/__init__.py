@@ -13,28 +13,29 @@ from RPA.Windows.keywords import (
     WindowKeywords,
 )
 
-if platform.system() == "Windows":
-    # Configure comtypes to not generate DLL bindings into
-    # current environment, instead keeping them in memory.
-    # Slower, but prevents dirtying environments.
-    import comtypes.client
-
-    comtypes.client.gen_dir = None
-
-    # Ignore pywinauto warning about threading mode,
-    # which comtypes initializes to STA instead of MTA on import.
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", category=UserWarning)
-        import uiautomation as auto
-        from uiautomation.uiautomation import Control
-
 
 class Windows(DynamicCore):
     """The `Windows` can be used for Windows desktop automation.
 
     This library is at this moment in "BETA" stage as an alternative
     library for `RPA.Desktop.Windows`. Main difference being that this
-    library is using `uiautomation` dependency instead of `pywinauto`.
+    library is using `uiautomation`_ dependency instead of `pywinauto`.
+
+    .. _uiautomation: https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
+
+    About terminology
+
+    The most used term in uiautomation package is "Control" which means different
+    objects of the application like Window, Button or ListItem.
+
+    How to inspect
+
+    xxxxxx
+
+    Examples
+
+    xxxxxx
+
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -48,7 +49,7 @@ class Windows(DynamicCore):
 
         # Register keyword libraries to LibCore
         libraries = [
-            ControlKeywords(self),
+            # ControlKeywords(self),
             LocatorKeywords(self),
             RecorderKeywords(self),
             WindowKeywords(self),

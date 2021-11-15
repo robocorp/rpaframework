@@ -114,9 +114,6 @@ class RecorderKeywords(LibraryContext):
         self.recording = []
         self.record_time = None
 
-        def on_move(x, y):
-            self.ctx.logger.warning("Pointer moved to %s,%s" % (x, y))
-
         def on_click(x, y, button, pressed):  # pylint: disable=W0613
             if pressed:
                 inspect_time = datetime.now()
