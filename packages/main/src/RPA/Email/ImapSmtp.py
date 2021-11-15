@@ -1223,14 +1223,17 @@ class ImapSmtp:
 
         key_to_change = None
         message_id_to_add = None
-        for key, val in body.items():
-            if key.lower() == "message-id":
-                key_to_change = key
-                message_id_to_add = str(val).replace("<", "").replace(">", "").strip()
-        if key_to_change:
-            body["Message-ID"] = message_id_to_add
-            if key_to_change != "Message-ID":
-                del body[key_to_change]
+        if body:
+            for key, val in body.items():
+                if key.lower() == "message-id":
+                    key_to_change = key
+                    message_id_to_add = (
+                        str(val).replace("<", "").replace(">", "").strip()
+                    )
+            if key_to_change:
+                body["Message-ID"] = message_id_to_add
+                if key_to_change != "Message-ID":
+                    del body[key_to_change]
         return uid, body
 
     def _fetch_body(self, mail_id, data, actions):
