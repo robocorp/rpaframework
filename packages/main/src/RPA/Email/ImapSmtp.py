@@ -656,7 +656,7 @@ class ImapSmtp:
                 result["message_count"] += len(mail_ids)
                 result["ids"].extend(mail_ids)
                 for mail_id in mail_ids:
-                    mail_uid, message = self._fetch_uid_and_body(mail_id, actions)
+                    mail_uid, message = self._fetch_uid_and_message(mail_id, actions)
                     if mail_uid is None or mail_uid in result["uids"].keys():
                         continue
                     message["uid"] = mail_uid
@@ -1211,32 +1211,32 @@ class ImapSmtp:
         if criterion is None or len(criterion) < 1:
             raise KeyError("Criterion is required parameter")
 
-    def _fetch_uid_and_body(self, mail_id, actions):
-        body = None
+    def _fetch_uid_and_message(self, mail_id, actions):
+        message_dict = None
         _, data = self.imap_conn.fetch(mail_id, "(UID RFC822)")
         pattern_uid = re.compile(r".*UID (\d+) RFC822")
         decoded_data = bytes.decode(data[0][0]) if data[0] else None
         match_result = pattern_uid.match(decoded_data) if decoded_data else None
         uid = match_result.group(1) if match_result else None
         if uid:
-            body = self._fetch_body(mail_id, data, actions)
+            message_dict = self._fetch_message_dict(mail_id, data, actions)
 
         key_to_change = None
         message_id_to_add = None
-        if body:
-            for key, val in body.items():
+        if message_dict:
+            for key, val in message_dict.items():
                 if key.lower() == "message-id":
                     key_to_change = key
                     message_id_to_add = (
                         str(val).replace("<", "").replace(">", "").strip()
                     )
             if key_to_change:
-                body["Message-ID"] = message_id_to_add
+                message_dict["Message-ID"] = message_id_to_add
                 if key_to_change != "Message-ID":
-                    del body[key_to_change]
-        return uid, body
+                    del message_dict[key_to_change]
+        return uid, message_dict
 
-    def _fetch_body(self, mail_id, data, actions):
+    def _fetch_message_dict(self, mail_id, data, actions):
         # _, data = self.imap_conn.fetch(mail_id, "(RFC822)")
         message = message_from_bytes(data[0][1])
         message_dict = {"Mail-Id": mail_id, "Message": message}
