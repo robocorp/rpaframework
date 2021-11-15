@@ -1216,6 +1216,7 @@ class ImapSmtp:
         _, data = self.imap_conn.fetch(mail_id, "(UID RFC822)")
         pattern_uid = re.compile(r".*UID (\d+) RFC822")
         decoded_data = bytes.decode(data[0][0]) if data[0] else None
+        self.logger.debug("message identification: %s", decoded_data)
         match_result = pattern_uid.match(decoded_data) if decoded_data else None
         uid = match_result.group(1) if match_result else None
         if uid:
@@ -1239,7 +1240,7 @@ class ImapSmtp:
     def _fetch_message_dict(self, mail_id, data, actions):
         # _, data = self.imap_conn.fetch(mail_id, "(RFC822)")
         message = message_from_bytes(data[0][1])
-        message_dict = {"Mail-Id": mail_id, "Message": message}
+        message_dict = {"Mail-Id": mail_id, "Message": message, "Body": ""}
         if Action.msg_save in actions:
             message_dict["bytes"] = data[0][1]
         for k, v in message.items():

@@ -7,6 +7,11 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 
+11.6.3 - 15 Nov 2021
+--------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix email fetch when uid is empty
+
 11.6.2 - 13 Nov 2021
 --------------------
 
