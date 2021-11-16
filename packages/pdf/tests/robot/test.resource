@@ -16,6 +16,8 @@ ${UNICODE_PDF}    ${WORK_DIR}${/}öåä.pdf
 ...               zip=00100
 ...               items=Item 1, Item 2
 ${PASSWORD}       mysecretpassword
+${XML_FILE}       ${WORK_DIR}${/}result.xml
+
 
 *** Keywords ***
 RPA Should Contain

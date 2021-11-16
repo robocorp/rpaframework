@@ -29,12 +29,12 @@ class TestFiles:
 
 
 @contextmanager
-def temp_filename(content=None):
+def temp_filename(content=None, **kwargs):
     """Create temporary file and return filename, delete file afterwards.
     Needs to close file handle, since Windows won't allow multiple
     open handles to the same file.
     """
-    with tempfile.NamedTemporaryFile(delete=False) as fd:
+    with tempfile.NamedTemporaryFile(delete=False, **kwargs) as fd:
         path = fd.name
         if content:
             fd.write(content)

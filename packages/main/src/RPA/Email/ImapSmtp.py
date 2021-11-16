@@ -1,4 +1,3 @@
-import base64
 from enum import Enum
 from functools import wraps
 
@@ -58,6 +57,15 @@ def to_action(value):
         return Action[sanitized]
     except KeyError as err:
         raise ValueError(f"Unknown email action: {value}") from err
+
+
+def get_part_filename(msg):
+    filename = msg.get_filename()
+    if filename and decode_header(filename)[0][1] is not None:
+        filename = decode_header(filename)[0][0].decode(decode_header(filename)[0][1])
+    if filename:
+        filename = filename.replace("\r", "").replace("\n", "")
+    return filename
 
 
 IMAGE_FORMATS = ["jpg", "jpeg", "bmp", "png", "gif"]
@@ -373,7 +381,7 @@ class ImapSmtp:
         recipients: str,
         subject: str = "",
         body: str = "",
-        attachments: str = None,
+        attachments: Union[List[str], str] = None,
         html: bool = False,
         images: str = None,
     ) -> bool:
@@ -412,7 +420,7 @@ class ImapSmtp:
         msg["From"] = sender
         msg["To"] = ",".join(recipients)
         msg["Subject"] = Header(subject, self.encoding)
-
+        sender = sender.encode("idna").decode("ascii")
         if html:
             for im in images:
                 im = im.strip()
@@ -525,21 +533,25 @@ class ImapSmtp:
             html = None
 
             for part in message.walk():
-                # content_maintype = part.get_content_maintype()
-                content_disposition = part.get("Content-Disposition")
-                if content_disposition and "attachment" in content_disposition:
+                content_type = part.get_content_type()
+                content_filename = get_part_filename(part)
+                content_charset = part.get_content_charset()
+                if bool(content_filename):
                     has_attachments = True
                     continue
-                if part.get_content_charset() is None:
+                if not content_charset:
                     # We cannot know the character set, so return decoded "something"
                     text = part.get_payload(decode=True)
                     continue
 
-                charset = part.get_content_charset()
-                if part.get_content_type() == "text/plain":
-                    text = str(part.get_payload(decode=True), str(charset), "ignore")
-                if part.get_content_type() == "text/html":
-                    html = str(part.get_payload(decode=True), str(charset), "ignore")
+                if content_type == "text/plain":
+                    text = str(
+                        part.get_payload(decode=True), str(content_charset), "ignore"
+                    )
+                if content_type == "text/html":
+                    html = str(
+                        part.get_payload(decode=True), str(content_charset), "ignore"
+                    )
 
             if text:
                 return (
@@ -644,7 +656,7 @@ class ImapSmtp:
                 result["message_count"] += len(mail_ids)
                 result["ids"].extend(mail_ids)
                 for mail_id in mail_ids:
-                    mail_uid, message = self._fetch_uid_and_body(mail_id, actions)
+                    mail_uid, message = self._fetch_uid_and_message(mail_id, actions)
                     if mail_uid is None or mail_uid in result["uids"].keys():
                         continue
                     message["uid"] = mail_uid
@@ -884,25 +896,12 @@ class ImapSmtp:
     def _save_attachment(self, message, target_folder, overwrite):
         attachments_saved = []
         msg = message["Message"] if isinstance(message, dict) else message
+
         for part in msg.walk():
             content_maintype = part.get_content_maintype()
-            content_disposition = part.get("Content-Disposition")
-            self.logger.info(
-                "Email attachment content-type: '%s' and content-disposition: '%s'",
-                content_maintype,
-                content_disposition,
-            )
-            if content_maintype != "multipart" and content_disposition is not None:
-                filename = part.get_filename().replace("\r", "").replace("\n", "")
-                self.logger.info("Attachment filename: '%s'", filename)
-                if filename:
-                    transfer_encoding = part.get_all("Content-Transfer-Encoding")
-                    if transfer_encoding and transfer_encoding[0] == "base64":
-                        filename_parts = filename.split("?")
-                        if len(filename_parts) > 1:
-                            filename = base64.b64decode(filename_parts[3]).decode(
-                                filename_parts[1]
-                            )
+            if content_maintype != "multipart":
+                filename = get_part_filename(part)
+                if bool(filename):
                     filepath = Path(target_folder) / Path(filename).name
                     self.logger.info("Attachment filepath: '%s'", filepath)
                     if not filepath.exists() or overwrite:
@@ -916,7 +915,7 @@ class ImapSmtp:
                                 f.write(payload)
                                 attachments_saved.append(str(filepath))
                         else:
-                            self.logger.debug(
+                            self.logger.info(
                                 "Attachment '%s' did not have payload to write",
                                 filename,
                             )
@@ -1212,32 +1211,36 @@ class ImapSmtp:
         if criterion is None or len(criterion) < 1:
             raise KeyError("Criterion is required parameter")
 
-    def _fetch_uid_and_body(self, mail_id, actions):
-        body = None
+    def _fetch_uid_and_message(self, mail_id, actions):
+        message_dict = None
         _, data = self.imap_conn.fetch(mail_id, "(UID RFC822)")
         pattern_uid = re.compile(r".*UID (\d+) RFC822")
         decoded_data = bytes.decode(data[0][0]) if data[0] else None
+        self.logger.debug("message identification: %s", decoded_data)
         match_result = pattern_uid.match(decoded_data) if decoded_data else None
         uid = match_result.group(1) if match_result else None
         if uid:
-            body = self._fetch_body(mail_id, data, actions)
+            message_dict = self._fetch_message_dict(mail_id, data, actions)
 
         key_to_change = None
         message_id_to_add = None
-        for key, val in body.items():
-            if key.lower() == "message-id":
-                key_to_change = key
-                message_id_to_add = str(val).replace("<", "").replace(">", "").strip()
-        if key_to_change:
-            body["Message-ID"] = message_id_to_add
-            if key_to_change != "Message-ID":
-                del body[key_to_change]
-        return uid, body
+        if message_dict:
+            for key, val in message_dict.items():
+                if key.lower() == "message-id":
+                    key_to_change = key
+                    message_id_to_add = (
+                        str(val).replace("<", "").replace(">", "").strip()
+                    )
+            if key_to_change:
+                message_dict["Message-ID"] = message_id_to_add
+                if key_to_change != "Message-ID":
+                    del message_dict[key_to_change]
+        return uid, message_dict
 
-    def _fetch_body(self, mail_id, data, actions):
+    def _fetch_message_dict(self, mail_id, data, actions):
         # _, data = self.imap_conn.fetch(mail_id, "(RFC822)")
         message = message_from_bytes(data[0][1])
-        message_dict = {"Mail-Id": mail_id, "Message": message}
+        message_dict = {"Mail-Id": mail_id, "Message": message, "Body": ""}
         if Action.msg_save in actions:
             message_dict["bytes"] = data[0][1]
         for k, v in message.items():

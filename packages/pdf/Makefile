@@ -81,8 +81,20 @@ lint: install ## Verify code formatting and conventions
 	$(call title,"Verifying pylint")
 	poetry run pylint -j1 --rcfile $(configs)/pylint src/RPA
 
-test: install ## Run all unittests
+test: test-python test-robot ## Run all acceptance tests
+
+test-python: install ## Run all Python unittests
 	poetry run pytest
+
+test-robot: install ## Run Robot Framework tests
+	$(rm) tests/results
+	poetry run robot\
+	 $(robot_args)\
+	 $(EXTRA_ROBOT_ARGS)\
+	 --loglevel TRACE\
+	 --pythonpath tests/resources\
+	 --outputdir tests/results\
+	 tests/robot
 
 todo: install ## Print all TODO/FIXME comments
 	poetry run pylint --disable=all --enable=fixme --exit-zero src/
