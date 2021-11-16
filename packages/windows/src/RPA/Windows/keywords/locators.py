@@ -14,7 +14,7 @@ WINDOWS_LOCATOR_STRATEGIES = {
     "id": "AutomationId",
     "class": "ClassName",
     "control": "ControlType",
-    "depth": "depth",
+    "depth": "searchDepth",
     "name": "Name",
     "regex": "RegexName",
     "subname": "SubName",
@@ -91,8 +91,7 @@ class MatchObject:
             self.regex = value
         elif strategy == "regex_field":
             self.regex_field = value
-        elif strategy == "foundIndex":
-            self.match_index = int(value.strip())
+        elif strategy == "foundIndex" or strategy == "searchDepth":
             value = int(value.strip())
             self.locators.append([strategy, value, level])
         elif strategy == "ControlType":
@@ -130,6 +129,8 @@ class LocatorKeywords(LibraryContext):
         for loc in mo.locators:
             search_params[loc[0]] = loc[1]
         offset = search_params.pop("offset", None)
+        if "searchDepth" not in search_params.keys():
+            search_params["searchDepth"] = search_depth
         if "executable" in search_params.keys():
             root_control = auto.GetRootControl()
             search_params.pop("ControlType")
@@ -148,7 +149,7 @@ class LocatorKeywords(LibraryContext):
                 "Found process with window title: '%s'" % matches[0]["title"]
             )
             search_params["Name"] = matches[0]["title"]
-            control = Control(**search_params, searchDepth=search_depth)
+            control = Control(**search_params)
             new_control = Control.CreateControlFromControl(control)
             new_control.robocorp_click_offset = offset
             return new_control
@@ -158,13 +159,13 @@ class LocatorKeywords(LibraryContext):
         if "ControlType" in search_params.keys():
             control_type = search_params.pop("ControlType")
             control = getattr(root_control, control_type)
-            new_control = control(**search_params, searchDepth=search_depth)
+            new_control = control(**search_params)
             new_control.robocorp_click_offset = offset
             return new_control
 
         control = getattr(root_control, "Control")
 
-        new_control = control(**search_params, searchDepth=search_depth)
+        new_control = control(**search_params)
         new_control.robocorp_click_offset = offset
         return new_control
 
