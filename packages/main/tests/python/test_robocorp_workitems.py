@@ -660,10 +660,6 @@ class TestLibrary:
         assert library.current.state is None  # because the previous one has a state
         assert library.adapter.releases == [("workitem-id-first", State.DONE, None)]
 
-    def _get_body_from_email(self, library):
-        library.get_input_work_item()
-        return library.parse_work_item_from_email()
-
     @pytest.mark.parametrize(
         "email_file,expected_body",
         [
@@ -676,12 +672,14 @@ class TestLibrary:
         raw_email = (RESOURCES_DIR / "work-items" / email_file).read_text()
         library.adapter.DATA["workitem-id-first"]["rawEmail"] = raw_email
 
-        body = self._get_body_from_email(library)["Body"]
+        library.get_input_work_item()
+        body = library.get_work_item_variable("parsedEmail")["Body"]
         assert body == expected_body
 
     def test_parse_work_item_from_email_missing_content(self, library):
+        library.get_input_work_item()
         with pytest.raises(KeyError):
-            self._get_body_from_email(library)
+            library.get_work_item_variable("parsedEmail")
 
 
 class TestFileAdapter:
