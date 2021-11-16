@@ -4,7 +4,6 @@ Library           OperatingSystem
 Library           RPA.Email.ImapSmtp
 Library           RPA.FileSystem
 Library           RPA.HTTP
-Library           RPA.Robocorp.Vault
 Library           RPA.Tables
 #Task Setup        Init GMail  # not working yet
 
@@ -21,6 +20,9 @@ ${mail_file}      ${RESOURCES}${/}emails${/}work-item-documentation.eml
 
 *** Keywords ***
 Init GMail
+    Set environment variable    RPA_SECRET_MANAGER    RPA.Robocorp.Vault.FileSecrets
+    Set environment variable    RPA_SECRET_FILE       ${RESOURCES}${/}secrets.json
+    Import library   RPA.Robocorp.Vault
     ${email} =    Get secret    gmail
     Authorize SMTP    ${email}[account]    ${email}[password]    ${email}[smtpserver]
     Authorize IMAP    ${email}[account]    ${email}[password]    ${email}[imapserver]

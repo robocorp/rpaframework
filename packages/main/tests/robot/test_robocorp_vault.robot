@@ -1,12 +1,12 @@
 *** Settings ***
-Suite setup     Set mock data
 Library         OperatingSystem
 Default Tags    RPA.Robocorp.Vault
+Suite setup     Set mock data
 Task Template   File secrets
 
 
 *** Variables ***
-${RESOURCES}      ${CURDIR}/../resources
+${RESOURCES}      ${CURDIR}${/}..${/}resources
 
 
 *** Keywords ***
@@ -26,6 +26,6 @@ File secrets
     Run Keyword And Expect Error   KeyError: 'Undefined secret: notexist'  Get secret  notexist
 
 
-*** Tasks ***                    SECRETS_FILE
-JSON secrets file                    \${RESOURCES}/secrets.json
-YAML secrets file                    \${RESOURCES}/secrets.yaml
+*** Tasks ***                        SECRETS_FILE
+JSON secrets file                    ${RESOURCES}${/}secrets.json
+YAML secrets file                    ${RESOURCES}${/}secrets.yaml
