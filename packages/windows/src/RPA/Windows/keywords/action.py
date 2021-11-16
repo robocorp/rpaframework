@@ -88,8 +88,6 @@ class ActionKeywords(LibraryContext):
         callable = getattr(auto, click_type)
         rect = control.BoundingRectangle
         offset_x, offset_y = [int(v) for v in control.robocorp_click_offset.split(",")]
-        x = rect.xcenter() + offset_x
-        y = rect.ycenter() + offset_y
         callable(
             rect.xcenter() + offset_x,
             rect.ycenter() + offset_y,
