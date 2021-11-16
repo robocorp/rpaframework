@@ -520,7 +520,9 @@ class ImapSmtp:
             messages.append(message_dict)
         return messages
 
-    def get_decoded_email_body(self, message, html_first: bool = False) -> Tuple[str, bool]:
+    def get_decoded_email_body(
+        self, message, html_first: bool = False
+    ) -> Tuple[str, bool]:
         """Decodes email body and extracts its text/html content.
 
         Automatically detects character set if the header is not set.
@@ -1481,7 +1483,9 @@ class ImapSmtp:
             source = Path(source)
         return source.expanduser().resolve()
 
-    def email_to_document(self, input_source: Union[FilePath, BinaryIO, bytes], output_path: FilePath):
+    def email_to_document(
+        self, input_source: Union[FilePath, BinaryIO, bytes], output_path: FilePath
+    ):
         """Convert a raw e-mail into a Word document.
 
         This keyword extracts the HTML (or Text) content from the passed input e-mail
@@ -1530,7 +1534,9 @@ class ImapSmtp:
             input_source = self._ensure_path_object(input_source)
             self.logger.info("Reading raw e-mail bytes from: %s", input_source)
             data = input_source.read_bytes()
-        assert isinstance(data, bytes), "bytes expected for e-mail parsing, got %s" % type(data)
+        assert isinstance(
+            data, bytes
+        ), "bytes expected for e-mail parsing, got %s" % type(data)
 
         self.logger.info("Getting the html/text from the raw e-mail")
         message = message_from_bytes(data)
