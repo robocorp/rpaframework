@@ -1481,7 +1481,7 @@ class ImapSmtp:
             source = Path(source)
         return source.expanduser().resolve()
 
-    def email_to_document(self, input_source: Union[FilePath, BinaryIO], output_path: FilePath):
+    def email_to_document(self, input_source: Union[FilePath, BinaryIO, bytes], output_path: FilePath):
         """Convert a raw e-mail into a Word document.
 
         This keyword extracts the HTML (or Text) content from the passed input e-mail
@@ -1507,13 +1507,15 @@ class ImapSmtp:
 
             from pathlib import Path
             from RPA.Email.ImapSmtp import ImapSmtp
+            from RPA.Robocorp.WorkItems import WorkItems
 
-            library = ImapSmtp()
+            lib_work = WorkItems()
+            lib_mail = ImapSmtp()
 
             def convert_email_to_docx():
-                library.get_input_work_item()
-                mail_file = library.get_work_item_file("mail.eml")
-                library.email_to_document(mail_file, Path("./output") / "mail.docx")
+                lib_work.get_input_work_item()
+                mail_file = lib_work.get_work_item_file("mail.eml")
+                lib_mail.email_to_document(mail_file, Path("./output") / "mail.docx")
 
             convert_email_to_docx()
         """
@@ -1521,6 +1523,9 @@ class ImapSmtp:
         if hasattr(input_source, "read"):
             self.logger.info("Reading raw e-mail bytes from the provided source object")
             data = input_source.read()
+        elif isinstance(input_source, bytes):
+            self.logger.info("Using the provided source bytes as raw e-mail content")
+            data = input_source
         else:
             input_source = self._ensure_path_object(input_source)
             self.logger.info("Reading raw e-mail bytes from: %s", input_source)
@@ -1536,4 +1541,5 @@ class ImapSmtp:
         docx = h2d_parser.parse_html_string(body)
         output_path = self._ensure_path_object(output_path)
         self.logger.info("Writing converted document into: %s", output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
         docx.save(output_path)
