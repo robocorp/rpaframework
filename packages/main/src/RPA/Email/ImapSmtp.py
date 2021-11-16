@@ -1478,7 +1478,7 @@ class ImapSmtp:
         )
 
     @staticmethod
-    def _ensure_path_object(source: Union[str, Path]):
+    def _ensure_path_object(source: FilePath) -> Path:
         if not isinstance(source, Path):
             source = Path(source)
         return source.expanduser().resolve()
