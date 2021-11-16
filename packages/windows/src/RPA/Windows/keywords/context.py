@@ -14,6 +14,10 @@ class WindowControlError(ValueError):
     """Matching window was not found"""
 
 
+class ActionNotPossible(ValueError):
+    """Action is not possible for the given Control"""
+
+
 class LibraryContext:
     """Shared context for all keyword libraries."""
 

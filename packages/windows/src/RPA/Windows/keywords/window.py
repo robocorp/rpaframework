@@ -1,8 +1,6 @@
 import time
 from typing import List, Dict
 
-import uiautomation as auto
-
 from RPA.Windows.keywords import (
     keyword,
     LibraryContext,
@@ -10,49 +8,32 @@ from RPA.Windows.keywords import (
 )
 from RPA.Windows import utils
 
+if utils.is_windows():
+    import uiautomation as auto
+
 
 class WindowKeywords(LibraryContext):
     """Keywords for handling Window controls"""
 
-    @keyword
-    def control_window(
-        self, locator: str = None
-    ):  # , process_name: str = None) -> int:
-        """[summary]
+    @keyword(tags=["window"])
+    def control_window(self, locator: str = None) -> int:
+        """Control window defined by the locator string.
 
-        Return process id of the window
+        Returns process id of the window.
 
-        :param title: [description], defaults to None
-        :param process_name: [description], defaults to None
+        :param locator: string locator
         """
-        self.ctx.window = self.ctx.get_control(locator + " and type:WindowControl")
-        # elif process_name:
-        #    window_list = self.list_windows()
-        #    matches = [w for w in window_list if w["name"] == process_name]
-        #    if not matches:
-        #        raise WindowControlError(
-        #            "Could not locate window with process name '%s'" % process_name
-        #        )
-        #    elif len(matches) > 1:
-        #        raise WindowControlError(
-        #            "Found more than one window with process_name '%s'" % process_name
-        #        )
-        #    subname = matches[0]["title"]
-
-        # self.ctx.window = auto.WindowControl(
-        #    searchDepth=8, Name=subname
-        # )  # RegexName=f'{title}')
+        self.ctx.window = self.ctx.get_control(
+            locator + " and type:WindowControl", root_control=auto
+        )
         if not self.ctx.window.Exists():
-            self.ctx.window = self.ctx.get_control(locator + " and type:PaneControl")
-            # self.ctx.window = auto.PaneControl(
-            #    searchDepth=8, SubName=subname
-            # )  # RegexName=f'{title}')
+            self.ctx.window = self.ctx.get_control(
+                locator + " and type:PaneControl", root_control=auto
+            )
         if not self.ctx.window.Exists():
             raise WindowControlError(
                 "Could not locate window with locator '%s'" % locator
             )
-        # or PaneControl ?
-        self.ctx.logger.info(dir(self.ctx.window))
         if hasattr(self.ctx.window, "Restore"):
             self.ctx.window.Restore()
         self.ctx.window.SetFocus()
@@ -60,8 +41,13 @@ class WindowKeywords(LibraryContext):
         time.sleep(1.0)
         return self.ctx.window.ProcessId
 
-    @keyword
+    @keyword(tags=["window"])
     def minimize_window(self, locator: str = None) -> None:
+        """Minimize window defined by the locator string or the
+        current active window.
+
+        :param locator: string locator
+        """
         if locator:
             self.control_window(locator)
         if not self.ctx.window:
@@ -73,8 +59,13 @@ class WindowKeywords(LibraryContext):
             return
         self.ctx.window.Minimize()
 
-    @keyword
+    @keyword(tags=["window"])
     def maximize_window(self, locator: str = None) -> None:
+        """Maximize window defined by the locator string or the
+        current active window.
+
+        :param locator: string locator
+        """
         if locator:
             self.control_window(locator)
         if not self.ctx.window:
@@ -83,8 +74,13 @@ class WindowKeywords(LibraryContext):
             raise WindowControlError("Window does not have attribute Maximize")
         self.ctx.window.Maximize()
 
-    @keyword
+    @keyword(tags=["window"])
     def list_windows(self) -> List[Dict]:
+        """List all window Controls on the system.
+
+        :return: list of dictionaries containing information
+         about Window controls
+        """
         windows = auto.GetRootControl().GetChildren()
         process_list = utils.get_process_list()
         win_list = []
@@ -98,96 +94,38 @@ class WindowKeywords(LibraryContext):
             win_list.append(info)
         return win_list
 
-    @keyword
-    def windows_run(self, name: str, wait_time: float = 3.0) -> None:
-        self.send_keys("{Win}r")
-        self.send_keys(name)
-        self.send_keys("{Enter}")
+    @keyword(tags=["window"])
+    def windows_run(self, text: str, wait_time: float = 3.0) -> None:
+        """Use Windows run window to launch application
+
+        :param text: text to enter into run input field
+        :param wait_time: sleep time after search has been entered (default 3.0 seconds)
+        """
+        self.ctx.send_keys("{Win}r")
+        self.ctx.send_keys(text)
+        self.ctx.send_keys("{Enter}")
         time.sleep(wait_time)
 
-    @keyword
-    def windows_search(self, name: str, wait_time: float = 3.0) -> None:
-        self.send_keys("{Win}s")
-        self.send_keys(name)
-        self.send_keys("{Enter}")
+    @keyword(tags=["window"])
+    def windows_search(self, text: str, wait_time: float = 3.0) -> None:
+        """Use Windows search window to launch application
+
+        :param text: text to enter into search input field
+        :param wait_time: sleep time after search has been entered (default 3.0 seconds)
+        """
+        self.ctx.send_keys("{Win}s")
+        self.ctx.send_keys(text)
+        self.ctx.send_keys("{Enter}")
         time.sleep(wait_time)
 
-    @keyword
+    @keyword(tags=["window"])
     def close_current_window(self) -> None:
+        """Closes current active window or log warning message"""
         if not self.ctx.window:
-            raise WindowControlError("There is no active window")
+            self.ctx.logger.warning("There is no active window")
+            return
         self.ctx.logger.warning(
-            "Current window process id = %s" % self.window.ProcessId
+            "Current window process id = %s" % self.ctx.window.ProcessId
         )
         self.ctx.window.SetActive()
         self.ctx.window.SendKeys("{Alt}{F4}")
-
-    @keyword
-    def click(
-        self,
-        locator,
-        set_focus: bool = False,
-    ):
-        control = locator
-        if isinstance(locator, str):
-            try:
-                control = self.ctx.get_control(locator)
-            except Exception as err:
-                raise WindowControlError from err
-        # rect = control.BoundingRectangle
-        # self.logger.info(type(rect))
-        # self.logger.info(dir(rect))
-        # self.logger.info(rect.xcenter())
-        # self.logger.info(rect.ycenter())
-        # offset_x = offset_x or 0
-        # offset_y = offset_y or 0
-        # auto.Click(rect.xcenter()+offset_x, rect.ycenter()+offset_y)
-        if set_focus:
-            control.SetFocus()
-            if hasattr(control, "SetActive"):
-                control.SetActive()
-            control.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
-            time.sleep(0.5)
-        control.Click(waitTime=self.ctx.timeout, simulateMove=self.ctx.simulate_move)
-        return control
-        # time.sleep(self.timeout)
-
-    @keyword
-    def select(self, locator, value):
-        control = locator
-        if isinstance(locator, str):
-            try:
-                control = self.ctx.get_control(locator)
-            except Exception as err:
-                raise WindowControlError from err
-        control.Select(value)
-
-    @keyword
-    def input_text(self, locator, text):
-        control = self.ctx.get_control(locator)
-        self.send_keys(text, control)
-
-    @keyword
-    def send_keys(self, keys=None, control=None):
-        control = control or self.ctx.window or auto
-        control.SendKeys(keys, waitTime=self.ctx.timeout)
-
-    @keyword
-    def get_item_value(self, item):
-        value_pattern = item.GetValuePattern()
-        return value_pattern.Value
-
-    @keyword
-    def set_item_value(self, item, value):
-        value_pattern = item.GetValuePattern()
-        value_pattern.SetValue(value)
-
-    @keyword
-    def get_text(self, locator):
-        control = self.ctx.get_control(locator)
-        return control.GetWindowText()
-        # return control.GetValuePattern().Value
-
-    @keyword
-    def set_timeout(self, timeout: float):
-        self.ctx.timeout = timeout

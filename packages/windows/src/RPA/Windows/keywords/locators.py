@@ -19,7 +19,7 @@ WINDOWS_LOCATOR_STRATEGIES = {
     "regex": "RegexName",
     "subname": "SubName",
     "type": "ControlType",
-    "index": "index",
+    "index": "foundIndex",
     "offset": "offset",
     "desktop": "desktop",
     "process": "process",
@@ -91,8 +91,13 @@ class MatchObject:
             self.regex = value
         elif strategy == "regex_field":
             self.regex_field = value
-        elif strategy == "index":
+        elif strategy == "foundIndex":
             self.match_index = int(value.strip())
+            value = int(value.strip())
+            self.locators.append([strategy, value, level])
+        elif strategy == "ControlType":
+            value = value if value.endswith("Control") else f"{value}Control"
+            self.locators.append([strategy, value, level])
         else:
             self.locators.append([strategy, value, level])
         if (
@@ -111,20 +116,22 @@ class MatchObject:
 
 
 class LocatorKeywords(LibraryContext):
-    """Keywords for handling library locators"""
+    """Keywords for handling Windows locators"""
 
     def _get_control_with_locator_part(
-        self, locator, search_depth, root_element=None
+        self, locator, search_depth, root_control=None
     ) -> Control:
         control = None
+
         match_object = MatchObject()
         mo = match_object.parse_locator(locator)
         self.ctx.logger.info("locator '%s' to match object: %s" % (locator, mo))
         search_params = {}
         for loc in mo.locators:
             search_params[loc[0]] = loc[1]
+        offset = search_params.pop("offset", None)
         if "executable" in search_params.keys():
-            root_element = auto.GetRootControl()
+            root_control = auto.GetRootControl()
             search_params.pop("ControlType")
             executable = search_params.pop("executable")
             window_list = self.ctx.list_windows()
@@ -142,55 +149,45 @@ class LocatorKeywords(LibraryContext):
             )
             search_params["Name"] = matches[0]["title"]
             control = Control(**search_params, searchDepth=search_depth)
-            return Control.CreateControlFromControl(control)
+            new_control = Control.CreateControlFromControl(control)
+            new_control.robocorp_click_offset = offset
+            return new_control
         if "desktop" in search_params.keys():
-            root_element = auto
+            root_control = auto
             search_params.pop("desktop")
         if "ControlType" in search_params.keys():
             control_type = search_params.pop("ControlType")
-            control = getattr(root_element, control_type)
-            return control(**search_params, searchDepth=search_depth)
+            control = getattr(root_control, control_type)
+            new_control = control(**search_params, searchDepth=search_depth)
+            new_control.robocorp_click_offset = offset
+            return new_control
 
-        control = getattr(root_element, "Control")
-        return control(**search_params, searchDepth=search_depth)
+        control = getattr(root_control, "Control")
+
+        new_control = control(**search_params, searchDepth=search_depth)
+        new_control.robocorp_click_offset = offset
+        return new_control
 
     @keyword
-    def get_control(self, locator: str, default_search_depth: int = 8) -> Control:
-        """[summary]
+    def get_control(
+        self, locator: str, search_depth: int = 8, root_control: Control = None
+    ) -> Control:
+        """Get Control object defined by the locator.
 
-        :param locator: [description]
-        :param default_search_depth: [description], defaults to 8
+        :param locator: locator as a string
+        :param search_depth: how deep the Control search will traverse (default 8)
+        :param root_control: can be used to restrict Control search into
+         a specific Control object
         """
         self.logger.info("Locator '%s' into control", locator)
         locators = locator.split(" > ")
-        root_element = self.ctx.window or auto
+        root_control = root_control or self.ctx.window or auto
         control = None
         for loc in locators:
-            self.logger.info("Root control: '%s'" % root_element)
+            self.logger.info("Root control: '%s'" % root_control)
             control = self._get_control_with_locator_part(
-                loc, default_search_depth, root_element
+                loc, search_depth, root_control
             )
-            root_element = control
+            root_control = control
+        self.logger.info("Returning control: '%s'", control)
         return control
-
-    @keyword
-    def get_control_property(self, locator: str, property_key: str):
-        """[summary]
-
-        :param locator: [description]
-        :param property_key: [description]
-        """
-        if property_key not in WINDOWS_LOCATOR_STRATEGIES.keys():
-            raise AttributeError("Can't get property '%s' from control" % property_key)
-        try:
-            control = self.get_control(locator)
-            return getattr(control, WINDOWS_LOCATOR_STRATEGIES[property_key])
-        except Exception as err:
-            raise WindowControlError from err
-
-    def _get_control_class_id_by_string(self, name: str) -> Control:
-        for key, value in auto.ControlTypeNames.items():
-            if name == value:
-                return key
-
-        raise WindowControlError("Can't find control class with name '%s'" % name)

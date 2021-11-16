@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-windows"
-version = "0.2.0"
+version = "0.3.0"
 description = "Windows library for RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",

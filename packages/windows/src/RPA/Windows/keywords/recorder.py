@@ -20,10 +20,14 @@ class RecorderKeywords(LibraryContext):
         self.recording = []
         self.record_time = None
 
-    @keyword
-    def inspect_element(
-        self, action="Click", control_window=True, regex_limit=20  # , syntax="RFW"
-    ):
+    @keyword(tags=["recording"])
+    def inspect_control(self, action: str = "Click", control_window: bool = True):
+        """Inspect Windows Control under mouse pointer
+
+        :param action: which action is attached to locator
+        :param control_window: set False to not include ``Control Window`` keyword
+        """
+        # TODO. Add Python syntax
         with auto.UIAutomationInitializerInThread(debug=True):
             control = auto.ControlFromCursor()
             self.ctx.logger.warning(control)
@@ -32,10 +36,8 @@ class RecorderKeywords(LibraryContext):
             # self.logger.warning("Top: %s" % top_level_control)
             # self.logger.warning("Parent: %s" % parent_control)
             # self.logger.warning(dir(control))
-            parent_locator = self._get_control_key_properties(
-                parent_control, regex_limit
-            )
-            child_locator = self._get_control_key_properties(control, regex_limit)
+            parent_locator = self._get_control_key_properties(parent_control)
+            child_locator = self._get_control_key_properties(control)
             locator_path = f"{parent_locator} > {child_locator}"
             if "id:" in child_locator:
                 locator_path = child_locator
@@ -66,9 +68,9 @@ class RecorderKeywords(LibraryContext):
                         "locator": locator_path,
                     }
                 )
-            return "\n".join(output)
+            return output
 
-    def _get_control_key_properties(self, control, regex_limit):
+    def _get_control_key_properties(self, control, regex_limit=300):
         automation_id = control.AutomationId
         snippet = ""
         if automation_id and not utils.is_integer(automation_id):
@@ -104,12 +106,16 @@ class RecorderKeywords(LibraryContext):
         mouse.Listener.stop()
         keyboard.Listener.stop()
 
-    @keyword
+    @keyword(tags=["recording"])
     def stop_recording(self):
         self.record = False
 
-    @keyword
+    @keyword(tags=["recording"])
     def start_recording(self):
+        """Start recording mouse clicks.
+
+        Can be stopped by pressing keyboard ``ESC``.
+        """
         self.record = True
         self.recording = []
         self.record_time = None
@@ -124,7 +130,7 @@ class RecorderKeywords(LibraryContext):
                     )
                     self.recording.append({"type": "sleep", "value": seconds})
                 self.record_time = inspect_time
-                self.inspect_element()
+                self.inspect_control()
 
         def on_release(key):
             if key == keyboard.Key.esc:
@@ -140,8 +146,12 @@ class RecorderKeywords(LibraryContext):
         mouse_listener.stop()
         self.ctx.logger.warning("LEN = %s" % len(self.recording))
 
-    @keyword
+    @keyword(tags=["recording"])
     def get_recording(self, sleeps=True):
+        """Get list of recorded steps.
+
+        :param sleeps: set False to exclude recording sleeps
+        """
         # TODO. atm will always use CLICK
         output = []
         top = None
