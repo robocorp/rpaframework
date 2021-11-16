@@ -27,6 +27,80 @@ class ActionKeywords(LibraryContext):
         :param locator: string locator or Control object
         :param set_focus: set True to focus on Control object
         """
+        click_type = "Click"
+        control = self._mouse_click(locator, set_focus, click_type)
+        return control
+
+    @keyword(tags=["action"])
+    def double_click(
+        self,
+        locator: Union[str, Control],
+        set_focus: bool = False,
+    ):
+        """Double mouse click on control matching given locator.
+
+        :param locator: string locator or Control object
+        :param set_focus: set True to focus on Control object
+        """
+        click_type = "DoubleClick"
+        control = self._mouse_click(locator, set_focus, click_type)
+        return control
+
+    @keyword(tags=["action"])
+    def right_click(
+        self,
+        locator: Union[str, Control],
+        set_focus: bool = False,
+    ):
+        """Right mouse click on control matching given locator.
+
+        :param locator: string locator or Control object
+        :param set_focus: set True to focus on Control object
+        """
+        click_type = "RightClick"
+        control = self._mouse_click(locator, set_focus, click_type)
+        return control
+
+    @keyword(tags=["action"])
+    def middle_click(
+        self,
+        locator: Union[str, Control],
+        set_focus: bool = False,
+    ):
+        """Right mouse click on control matching given locator.
+
+        :param locator: string locator or Control object
+        :param set_focus: set True to focus on Control object
+        """
+        click_type = "MiddleClick"
+        control = self._mouse_click(locator, set_focus, click_type)
+        return control
+
+    def _mouse_click(self, locator, set_focus, click_type):
+        control = self._get_control_for_click(locator, set_focus)
+        if control.robocorp_click_offset:
+            self._click_control_coordinates(control, click_type)
+        else:
+            self._click_control(control, click_type)
+        return control
+
+    def _click_control_coordinates(self, control, click_type):
+        callable = getattr(auto, click_type)
+        rect = control.BoundingRectangle
+        offset_x, offset_y = [int(v) for v in control.robocorp_click_offset.split(",")]
+        x = rect.xcenter() + offset_x
+        y = rect.ycenter() + offset_y
+        callable(
+            rect.xcenter() + offset_x,
+            rect.ycenter() + offset_y,
+            waitTime=self.ctx.timeout,
+        )
+
+    def _click_control(self, control, click_type):
+        callable = getattr(control, click_type)
+        callable(waitTime=self.ctx.timeout, simulateMove=self.ctx.simulate_move)
+
+    def _get_control_for_click(self, locator, set_focus):
         control = locator
         if isinstance(locator, str):
             try:
@@ -38,20 +112,6 @@ class ActionKeywords(LibraryContext):
             if hasattr(control, "SetActive"):
                 control.SetActive()
         control.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
-        if control.robocorp_click_offset:
-            rect = control.BoundingRectangle
-            offset_x, offset_y = [
-                int(v) for v in control.robocorp_click_offset.split(",")
-            ]
-            auto.Click(
-                rect.xcenter() + offset_x,
-                rect.ycenter() + offset_y,
-                waitTime=self.ctx.timeout,
-            )
-        else:
-            control.Click(
-                waitTime=self.ctx.timeout, simulateMove=self.ctx.simulate_move
-            )
         return control
 
     @keyword(tags=["action"])

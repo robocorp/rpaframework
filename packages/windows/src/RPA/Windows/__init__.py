@@ -46,11 +46,12 @@ class Windows(DynamicCore):
     automationid    AutomationId
     regex           RegexName
     subname         SubName
-    index           foundIndex
+    index           foundIndex (int)
     offset          offset coordinates (x (int), y (int)) from control center
     executable      target window by its executable name
     desktop         target desktop
     process         target window by its executable's process id
+    depth           searchDepth (int) for finding Control (default 8)
     =============== =======================
 
     Getting control over application object (Control) is done usually by first executing
