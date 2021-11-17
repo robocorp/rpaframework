@@ -537,7 +537,7 @@ class ImapSmtp:
             content_charset = message.get_content_charset()
             text = str(
                 message.get_payload(decode=True),
-                content_charset or "utf-8",
+                content_charset or self.encoding,
                 "ignore",
             )
             return text.strip(), False
