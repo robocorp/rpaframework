@@ -435,6 +435,18 @@ grpcio = ">=1.37.1"
 protobuf = ">=3.5.0.post1,<4.0dev"
 
 [[package]]
+name = "htmldocx"
+version = "0.0.6"
+description = "Convert html to docx"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+beautifulsoup4 = ">=4.7.0"
+python-docx = ">=0.8.10"
+
+[[package]]
 name = "idna"
 version = "3.3"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -1108,6 +1120,17 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 six = ">=1.5"
 
 [[package]]
+name = "python-docx"
+version = "0.8.11"
+description = "Create and update Microsoft Word .docx files."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+lxml = ">=2.3.2"
+
+[[package]]
 name = "python-xlib"
 version = "0.31"
 description = "Python X Library"
@@ -1712,7 +1735,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "57b0b8dbca59441220da9e94367bf2f6149d9b6497ddef55dfb157958df00823"
+content-hash = "c5b8950d2442c77eae7157ce7fc2463800dc0c80592563ad2acecd1bb2790c36"
 
 [metadata.files]
 amazon-textract-response-parser = [
@@ -2076,6 +2099,10 @@ grpcio-tools = [
     {file = "grpcio_tools-1.37.1-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:6a7cd8c81d22d9420c712fa383fb8a4c4f55326037222f0f5095382a8d4d4e1a"},
     {file = "grpcio_tools-1.37.1-cp39-cp39-win32.whl", hash = "sha256:98fcd8d1a7b347f835c1b1d104931a4522cec2c08fc0eafb13a8e7a325a62fed"},
     {file = "grpcio_tools-1.37.1-cp39-cp39-win_amd64.whl", hash = "sha256:63d701170d5dd64b5eaeb291c75de9320b447bfea8df3a21ebb5fa954b792aae"},
+]
+htmldocx = [
+    {file = "htmldocx-0.0.6-py3-none-any.whl", hash = "sha256:adf5e95ad8ba8121e606cf138c614de13327a1192a5782acdb4a0abdc23db1b7"},
+    {file = "htmldocx-0.0.6.tar.gz", hash = "sha256:b4bcec895f86d7a50ffc7133ca24d85c24f3614db2b37d33a30d9d04654a5486"},
 ]
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},
@@ -2604,6 +2631,9 @@ pytest-cov = [
 python-dateutil = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
+]
+python-docx = [
+    {file = "python-docx-0.8.11.tar.gz", hash = "sha256:1105d233a0956dd8dd1e710d20b159e2d72ac3c301041b95f4d4ceb3e0ebebc4"},
 ]
 python-xlib = [
     {file = "python-xlib-0.31.tar.gz", hash = "sha256:74d83a081f532bc07f6d7afcd6416ec38403d68f68b9b9dc9e1f28fbf2d799e9"},

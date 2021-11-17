@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "11.6.3"
+version = "11.7.0"
 description = "A collection of tools and libraries for RPA"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -78,6 +78,7 @@ amazon-textract-response-parser = { version = "^0.1.1", optional = true }
 java-access-bridge-wrapper = "^0.7.4"
 PyYAML = "^5.4.1"
 tenacity = "^8.0.1"
+htmldocx = "^0.0.6"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.5b0", allow-prereleases = true}
@@ -87,6 +88,7 @@ pytest = "^6.1.2"
 pytest-cov = "^2.10.1"
 mock = "^4.0.2"
 mypy = "^0.782"
+python-docx = "^0.8.11"
 
 [tool.poetry.scripts]
 rpa-crypto = 'RPA.scripts.crypto:main'

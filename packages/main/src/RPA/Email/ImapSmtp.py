@@ -24,10 +24,14 @@ from imaplib import IMAP4_SSL
 from smtplib import SMTP, SMTP_SSL, ssl
 from smtplib import SMTPConnectError, SMTPNotSupportedError, SMTPServerDisconnected
 
-from typing import Any, List, Union
+from typing import Any, BinaryIO, List, Tuple, Union
 
+from htmldocx import HtmlToDocx
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.RobotLogListener import RobotLogListener
+
+
+FilePath = Union[str, Path]
 
 
 class Action(Enum):
@@ -516,59 +520,56 @@ class ImapSmtp:
             messages.append(message_dict)
         return messages
 
-    def get_decoded_email_body(self, message):
-        """Decode email body.
+    def get_decoded_email_body(
+        self, message, html_first: bool = False
+    ) -> Tuple[str, bool]:
+        """Decodes email body and extracts its text/html content.
 
-        :param message_body: Raw 7-bit message body input e.g. from imaplib. Double
+        Automatically detects character set if the header is not set.
+
+        :param message: Raw 7-bit message body input e.g. from `imaplib`. Double
             encoded in quoted-printable and latin-1
-        :return: Message body as unicode string and information if message has
-            attachments
-
-        Detect character set if the header is not set.
-        We try to get text/plain, but if there is not one then fallback to text/html.
+        :param html_first: Prioritize html extraction over text when this is True
+        :returns: Message body as unicode string and a boolean telling if the message
+            has attachments
         """
-        text = ""
-        has_attachments = False
-        if message.is_multipart():
-            html = None
-
-            for part in message.walk():
-                content_type = part.get_content_type()
-                content_filename = get_part_filename(part)
-                content_charset = part.get_content_charset()
-                if bool(content_filename):
-                    has_attachments = True
-                    continue
-                if not content_charset:
-                    # We cannot know the character set, so return decoded "something"
-                    text = part.get_payload(decode=True)
-                    continue
-
-                if content_type == "text/plain":
-                    text = str(
-                        part.get_payload(decode=True), str(content_charset), "ignore"
-                    )
-                if content_type == "text/html":
-                    html = str(
-                        part.get_payload(decode=True), str(content_charset), "ignore"
-                    )
-
-            if text:
-                return (
-                    (text.strip(), has_attachments) if text else ("", has_attachments)
-                )
-            else:
-                return (
-                    (html.strip(), has_attachments) if html else ("", has_attachments)
-                )
-        else:
+        if not message.is_multipart():
             content_charset = message.get_content_charset()
             text = str(
                 message.get_payload(decode=True),
                 content_charset or self.encoding,
                 "ignore",
             )
-            return text.strip(), has_attachments
+            return text.strip(), False
+
+        text = html = None
+        has_attachments = False
+
+        for part in message.walk():
+            content_filename = get_part_filename(part)
+            if content_filename:
+                has_attachments = True
+                continue
+
+            content_charset = part.get_content_charset()
+            if not content_charset:
+                # We cannot know the character set, so return decoded "something"
+                text = part.get_payload(decode=True)
+                continue
+
+            content_type = part.get_content_type()
+            _data = str(part.get_payload(decode=True), str(content_charset), "ignore")
+            if content_type == "text/plain":
+                text = _data
+            elif content_type == "text/html":
+                html = _data
+
+        if html_first:
+            data = html or text
+        else:
+            data = text or html
+        data = data.strip() if data else ""
+        return data, has_attachments
 
     @imap_connection
     def _do_actions_on_messages(
@@ -1475,3 +1476,76 @@ class ImapSmtp:
             result["actions_done"] > 0
             and result["actions_done"] == result["message_count"]
         )
+
+    @staticmethod
+    def _ensure_path_object(source: FilePath) -> Path:
+        if not isinstance(source, Path):
+            source = Path(source)
+        return source.expanduser().resolve()
+
+    def email_to_document(
+        self, input_source: Union[FilePath, BinaryIO, bytes], output_path: FilePath
+    ):
+        """Convert a raw e-mail into a Word document.
+
+        This keyword extracts the HTML (or Text) content from the passed input e-mail
+        and saves it into docx format at the provided output path.
+
+        :param input_source: Path, bytes or file-like object with the input raw e-mail
+            content
+        :param output_path: Where to save the output docx file
+
+        Example:
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            Convert email to docx
+                ${mail_file} =     Get Work Item File    mail.eml
+                Email To Document    ${mail_file}    ${OUTPUT_DIR}${/}mail.docx
+
+        **Python**
+
+        .. code-block:: python
+
+            from pathlib import Path
+            from RPA.Email.ImapSmtp import ImapSmtp
+            from RPA.Robocorp.WorkItems import WorkItems
+
+            lib_work = WorkItems()
+            lib_mail = ImapSmtp()
+
+            def convert_email_to_docx():
+                lib_work.get_input_work_item()
+                mail_file = lib_work.get_work_item_file("mail.eml")
+                lib_mail.email_to_document(mail_file, Path("./output") / "mail.docx")
+
+            convert_email_to_docx()
+        """
+
+        if hasattr(input_source, "read"):
+            self.logger.info("Reading raw e-mail bytes from the provided source object")
+            data = input_source.read()
+        elif isinstance(input_source, bytes):
+            self.logger.info("Using the provided source bytes as raw e-mail content")
+            data = input_source
+        else:
+            input_source = self._ensure_path_object(input_source)
+            self.logger.info("Reading raw e-mail bytes from: %s", input_source)
+            data = input_source.read_bytes()
+        assert isinstance(
+            data, bytes
+        ), "bytes expected for e-mail parsing, got %s" % type(data)
+
+        self.logger.info("Getting the html/text from the raw e-mail")
+        message = message_from_bytes(data)
+        body, _ = self.get_decoded_email_body(message, html_first=True)
+
+        h2d_parser = HtmlToDocx()
+        self.logger.debug("Converting html/text content:\n%s", body)
+        docx = h2d_parser.parse_html_string(body)
+        output_path = self._ensure_path_object(output_path)
+        self.logger.info("Writing converted document into: %s", output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        docx.save(output_path)
