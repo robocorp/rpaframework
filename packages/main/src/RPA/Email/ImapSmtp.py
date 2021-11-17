@@ -1491,7 +1491,7 @@ class ImapSmtp:
         This keyword extracts the HTML (or Text) content from the passed input e-mail
         and saves it into docx format at the provided output path.
 
-        :param input_source: Path or file-like object with the input raw e-mail
+        :param input_source: Path, bytes or file-like object with the input raw e-mail
             content
         :param output_path: Where to save the output docx file
 
