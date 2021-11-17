@@ -6,7 +6,9 @@ Release notes
 
 - Library **RPA.Email.ImapSmtp**: Keyword ``Email To Document`` for converting HTML or
   Text e-mails into Word documents (:issue:`295`)
+
 - Library **RPA.Robocorp.WorkItems**:
+
   - Removed Keyword ``Parse Work Item From Email``
   - Automatically loads e-mail body formats like JSON/YAML/Text/HTML into "parsedEmail"
     work item variable
