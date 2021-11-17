@@ -609,7 +609,7 @@ until <code class="docutils literal notranslate"><span class="pre">save()</span>
 
 <dl class="class">
 <dt id="RPA.Robocorp.WorkItems.WorkItems">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.WorkItems.</code><code class="sig-name descname">WorkItems</code><span class="sig-paren">(</span><em class="sig-param">autoload: bool = True, root: Optional[str] = None, default_adapter: Union[Type[RPA.Robocorp.WorkItems.BaseAdapter], str] = &lt;class 'RPA.Robocorp.WorkItems.RobocorpAdapter'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.WorkItems.</code><code class="sig-name descname">WorkItems</code><span class="sig-paren">(</span><em class="sig-param">autoload: bool = True, root: Optional[str] = None, default_adapter: Union[Type[RPA.Robocorp.WorkItems.BaseAdapter], str] = &lt;class 'RPA.Robocorp.WorkItems.RobocorpAdapter'&gt;, auto_parse_email: Optional[Dict[str, str]] = {'rawEmail': 'parsedEmail'}</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A library for interacting with Control Room work items.</p>
 <p>Work items are used for managing data that go through multiple
@@ -777,12 +777,6 @@ of local file is used.</p></li>
 <span class="c">Save work item</span><span class="p"></span>
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="RPA.Robocorp.WorkItems.WorkItems.autoload">
-<code class="sig-name descname">autoload</code><em class="property">: bool</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.autoload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Auto-load first input item</p>
 </dd></dl>
 
 <dl class="method">
@@ -1043,30 +1037,6 @@ return their names and values as a dictionary.</p>
 <dt id="RPA.Robocorp.WorkItems.WorkItems.outputs">
 <code class="sig-name descname">outputs</code><em class="property">: List[WorkItem]</em><em class="property"> = None</em><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.outputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output work items</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Robocorp.WorkItems.WorkItems.parse_work_item_from_email">
-<code class="sig-name descname">parse_work_item_from_email</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.parse_work_item_from_email" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse and return a dictionary from the input work item of a process started
-by e-mail trigger.</p>
-<p>Since a process can be started in Control Room by sending an e-mail, a body
-in JSON format can be sent as well and this gets attached to the input work
-item with the <cite>rawEmail</cite> payload variable. This keyword parses the content of
-it and returns the dictionary transformation of the original e-mail.</p>
-<p>Example:</p>
-<p>After starting the process by sending an e-mail with a body like:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello world!&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${payload} =</span><span class="p">    </span><span class="c">Parse Work Item From Email</span><span class="p"></span>
-<span class="c">Set Work Item Variables</span><span class="p">    </span><span class="c">&amp;{payload}</span><span class="p"></span>
-<span class="c">${message} =</span><span class="p">     </span><span class="c">Get Work Item Variable</span><span class="p">     </span><span class="c">message</span><span class="p"></span>
-<span class="c">Log</span><span class="p">    </span><span class="c">${message}</span><span class="p"></span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="method">
