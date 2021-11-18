@@ -627,7 +627,7 @@ class TestLibrary:
         with effect:
             library.release_input_work_item(
                 "FAILED", **(exception or {})
-            )  # intentionally provide a string for the state
+            )  # intentionally providing a string for the state
         if success:
             assert library.current.state == State.FAILED
 
@@ -861,7 +861,7 @@ class TestRobocorpAdapter:
 
     @pytest.mark.parametrize(
         "exception",
-        [None, {"type": "BUSINESS", "code": "UNEXPECTED_ERROR", "message": None}],
+        [None, {"type": "BUSINESS", "code": "INVALID_DATA", "message": None}],
     )
     def test_release_input(self, adapter, exception):
         item_id = "26"
@@ -952,12 +952,12 @@ class TestRobocorpAdapter:
         [
             # Retrying enabled:
             (429, 5),
+            (500, 5),
             # Retrying disabled:
             (400, 1),
             (401, 1),
             (403, 1),
             (409, 1),
-            (500, 1),
         ],
     )
     def test_list_files_retrying(
@@ -991,10 +991,9 @@ class TestRobocorpAdapter:
             adapter.list_files("4")
 
         err = "UNEXPECTED_ERROR"
-        call_count = 1
+        call_count = 5
         if err not in str(failing_deserializing_response.json.return_value):
             err = "Error"  # default error message in the absence of it
-            call_count = 5
         assert exc_info.value.status_code == 429
         assert exc_info.value.status_message == err
         assert self.mock_get.call_count == call_count

@@ -113,9 +113,15 @@ class Requests:
 
     # pylint: disable=no-self-argument
     def _needs_retry(exc: BaseException) -> bool:
-        # Don't retry on server (500/internal/unexpected) and auth errors (401/403).
-        no_retry_codes = [400, 401, 403, 409, 500]
-        no_retry_messages = ["UNEXPECTED_ERROR"]
+        # Don't retry on some specific error codes or messages.
+
+        # https://www.restapitutorial.com/httpstatuscodes.html
+        # 400 - payload is bad and needs to be changed
+        # 401 - missing auth bearer token
+        # 403 - auth is in place, but not allowed (insufficient privileges)
+        # 409 - payload not good for the affected resource
+        no_retry_codes = [400, 401, 403, 409]
+        no_retry_messages = []
 
         if isinstance(exc, RequestsHTTPError):
             if (
@@ -162,14 +168,18 @@ class Requests:
 
         return response
 
-    def get(self, *args, **kwargs) -> requests.Response:
-        return self._request(requests.get, *args, **kwargs)
-
+    # CREATE
     def post(self, *args, **kwargs) -> requests.Response:
         return self._request(requests.post, *args, **kwargs)
 
+    # RETRIEVE
+    def get(self, *args, **kwargs) -> requests.Response:
+        return self._request(requests.get, *args, **kwargs)
+
+    # UPDATE
     def put(self, *args, **kwargs) -> requests.Response:
         return self._request(requests.put, *args, **kwargs)
 
+    # DELETE
     def delete(self, *args, **kwargs) -> requests.Response:
         return self._request(requests.delete, *args, **kwargs)
