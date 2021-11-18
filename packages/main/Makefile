@@ -85,7 +85,7 @@ lint: install ## Verify code formatting and conventions
 test: test-python test-robot ## Run all acceptance tests
 
 test-python: install ## Run python unittests
-	poetry run pytest
+	poetry run pytest tests/python
 
 test-robot: install ## Run Robot Framework tests
 	$(rm) tests/results
