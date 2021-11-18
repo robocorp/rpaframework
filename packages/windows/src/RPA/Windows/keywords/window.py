@@ -142,9 +142,9 @@ class WindowKeywords(LibraryContext):
 
             Windows Run   explorer.exe
         """
-        self.ctx.send_keys("{Win}r")
-        self.ctx.send_keys(text)
-        self.ctx.send_keys("{Enter}")
+        self.ctx.send_keys(None, "{Win}r")
+        self.ctx.send_keys(None, text)
+        self.ctx.send_keys(None, "{Enter}")
         time.sleep(wait_time)
 
     @keyword(tags=["window"])
@@ -160,9 +160,9 @@ class WindowKeywords(LibraryContext):
 
             Windows Search   Outlook
         """
-        self.ctx.send_keys("{Win}s")
-        self.ctx.send_keys(text)
-        self.ctx.send_keys("{Enter}")
+        self.ctx.send_keys(None, "{Win}s")
+        self.ctx.send_keys(None, text)
+        self.ctx.send_keys(None, "{Enter}")
         time.sleep(wait_time)
 
     @keyword(tags=["window"])
@@ -175,6 +175,7 @@ class WindowKeywords(LibraryContext):
 
             Close Current Window
         """
+        # TODO. Fix this keyword
         if not self.ctx.window:
             self.ctx.logger.warning("There is no active window")
             return False
