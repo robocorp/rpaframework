@@ -1,6 +1,8 @@
 import json
 import logging
 import os
+import random
+import time
 import urllib.parse as urlparse
 from json import JSONDecodeError  # pylint: disable=no-name-in-module
 from pathlib import Path
@@ -19,6 +21,9 @@ from tenacity import (
 
 
 JSONType = Union[Dict[str, Any], List[Any], str, int, float, bool, None]
+
+DEBUG_ON = bool(os.getenv("RPA_DEBUG_API"))
+log_to_console = BuiltIn().log_to_console
 
 
 def url_join(*parts):
@@ -58,6 +63,12 @@ def resolve_path(path: str) -> Path:
     return Path(path).expanduser().resolve()
 
 
+def log_more(message, *args, func=logging.debug):
+    func(message, *args)
+    if DEBUG_ON:
+        log_to_console(str(message) % args)
+
+
 class RequestsHTTPError(HTTPError):
     """Custom `requests` HTTP error with status code and message."""
 
@@ -77,19 +88,11 @@ class Requests:
         self._route_prefix = route_prefix
         self._default_headers = default_headers
 
-        self._debug_on = bool(os.getenv("RPA_DEBUG_API"))
-        self._log_to_console = BuiltIn().log_to_console
-
-    def _log(self, message, *args, func=logging.debug):
-        func(message, *args)
-        if self._debug_on:
-            self._log_to_console(str(message) % args)
-
     def handle_error(self, response: requests.Response):
         log_func = (
             logging.critical if response.status_code // 100 == 5 else logging.debug
         )
-        self._log(
+        log_more(
             "API response: %s %r", response.status_code, response.reason, func=log_func
         )
         if response.ok:
@@ -105,11 +108,11 @@ class Requests:
                 fields = json.loads(fields)
         except (JSONDecodeError, ValueError, TypeError):
             # No `fields` dictionary can be obtained at all.
-            self._log("No fields were sent by server", func=logging.critical)
+            log_more("No fields were returned by the server", func=logging.critical)
             try:
                 response.raise_for_status()
             except Exception as exc:  # pylint: disable=broad-except
-                self._log(exc, func=logging.exception)
+                log_more(exc, func=logging.exception)
                 raise RequestsHTTPError(exc, status_code=response.status_code) from exc
 
         status_code = 0
@@ -123,7 +126,7 @@ class Requests:
 
             raise HTTPError(f"{status_code} {status_message}: {reason}")
         except Exception as exc:  # pylint: disable=broad-except
-            self._log(exc, func=logging.exception)
+            log_more(exc, func=logging.exception)
             raise RequestsHTTPError(
                 str(fields), status_code=status_code, status_message=status_message
             ) from exc
@@ -146,6 +149,11 @@ class Requests:
                 or exc.status_message in no_retry_messages
             ):
                 return False
+            if exc.status_code == 429:
+                # We hit the rate limiter, so sleep extra.
+                seconds = random.uniform(1, 3)
+                log_more("Rate limit hit, sleeping: %fs", seconds, func=logging.warning)
+                time.sleep(seconds)
 
         return True
 
@@ -153,12 +161,10 @@ class Requests:
     def _before_sleep_log():
         logger = logging.root
         logger_log = logger.log
-        debug_on = bool(os.getenv("RPA_DEBUG_API"))
-        log_to_console = BuiltIn().log_to_console
 
         def extensive_log(level, msg, *args, **kwargs):
             logger_log(level, msg, *args, **kwargs)
-            if debug_on:
+            if DEBUG_ON:
                 log_to_console(str(msg) % args)
 
         # Monkeypatch inner logging function so it produces an exhaustive log when
@@ -197,7 +203,7 @@ class Requests:
         headers = headers if headers is not None else self._default_headers
         handle_error = _handle_error or self.handle_error
 
-        self._log("%s %r", func.__name__.upper(), url)
+        log_more("%s %r", func.__name__.upper(), url)
         response = func(url, *args, headers=headers, **kwargs)
         handle_error(response)
 
