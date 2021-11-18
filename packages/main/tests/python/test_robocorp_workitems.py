@@ -1,5 +1,6 @@
 import copy
 import json
+import logging
 import os
 import pytest
 import tempfile
@@ -1020,7 +1021,8 @@ class TestRobocorpAdapter:
         failing_response.reason = "for no reason :)"
         self.mock_post.return_value = failing_response
         with pytest.raises(RequestsHTTPError) as exc_info:
-            adapter.create_output("1")
+            with caplog.at_level(logging.DEBUG):
+                adapter.create_output("1")
 
         assert exc_info.value.status_code == 400  # last received server code
         assert self.mock_sleep.call_count == 3  # 1 sleep (500) + 2 sleeps (429)

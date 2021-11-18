@@ -90,9 +90,7 @@ class Requests:
 
     def handle_error(self, response: requests.Response):
         resp_status_code = response.status_code
-        log_func = (
-            logging.critical if resp_status_code // 100 == 5 else logging.debug
-        )
+        log_func = logging.critical if resp_status_code // 100 == 5 else logging.debug
         log_more(
             "API response: %s %r", resp_status_code, response.reason, func=log_func
         )
