@@ -89,11 +89,12 @@ class Requests:
         self._default_headers = default_headers
 
     def handle_error(self, response: requests.Response):
+        resp_status_code = response.status_code
         log_func = (
-            logging.critical if response.status_code // 100 == 5 else logging.debug
+            logging.critical if resp_status_code // 100 == 5 else logging.debug
         )
         log_more(
-            "API response: %s %r", response.status_code, response.reason, func=log_func
+            "API response: %s %r", resp_status_code, response.reason, func=log_func
         )
         if response.ok:
             return
@@ -113,22 +114,21 @@ class Requests:
                 response.raise_for_status()
             except Exception as exc:  # pylint: disable=broad-except
                 log_more(exc, func=logging.exception)
-                raise RequestsHTTPError(exc, status_code=response.status_code) from exc
+                raise RequestsHTTPError(exc, status_code=resp_status_code) from exc
 
-        status_code = 0
+        err_status_code = 0
         status_message = "Error"
         try:
-            status_code = int(fields.get("status", response.status_code))
+            err_status_code = int(fields.get("status", resp_status_code))
             status_message = fields.get("error", {}).get("code", "Error")
             reason = fields.get("message") or fields.get("error", {}).get(
                 "message", response.reason
             )
-
-            raise HTTPError(f"{status_code} {status_message}: {reason}")
+            raise HTTPError(f"{err_status_code} {status_message}: {reason}")
         except Exception as exc:  # pylint: disable=broad-except
             log_more(exc, func=logging.exception)
             raise RequestsHTTPError(
-                str(fields), status_code=status_code, status_message=status_message
+                str(fields), status_code=err_status_code, status_message=status_message
             ) from exc
 
     # pylint: disable=no-self-argument

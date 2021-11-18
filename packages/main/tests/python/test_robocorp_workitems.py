@@ -23,7 +23,7 @@ from RPA.Robocorp.WorkItems import (
     State,
     WorkItems,
 )
-from RPA.Robocorp.utils import RequestsHTTPError
+from RPA.Robocorp.utils import DEBUG_ON, RequestsHTTPError
 
 
 VARIABLES_FIRST = {"username": "testguy", "address": "guy@company.com"}
@@ -841,7 +841,7 @@ class TestRobocorpAdapter:
             "RPA.Robocorp.utils.requests.delete"
         ) as mock_delete, mock.patch(
             "time.sleep", return_value=None
-        ):
+        ) as mock_sleep:
             self.mock_get = mock_get
             self.mock_post = mock_post
             self.mock_put = mock_put
@@ -851,6 +851,8 @@ class TestRobocorpAdapter:
             self.mock_post.__name__ = "post"
             self.mock_put.__name__ = "put"
             self.mock_delete.__name__ = "delete"
+
+            self.mock_sleep = mock_sleep
 
             yield RobocorpAdapter()
 
@@ -1003,3 +1005,31 @@ class TestRobocorpAdapter:
         assert exc_info.value.status_code == 429
         assert exc_info.value.status_message == err
         assert self.mock_get.call_count == call_count
+
+    def test_logging_and_sleeping(self, adapter, failing_response, caplog):
+        assert DEBUG_ON, 'this test should be ran with "RPA_DEBUG_API" on'
+
+        # 1st call: raises 500 -> unexpected server crash, therefore needs retry
+        #   (1 sleep)
+        # 2nd call: now raises 429 -> rate limit hit, needs retry and sleeps extra
+        #   (2 sleeps)
+        # 3rd call: raises 400 -> malformed request, doesn't retry anymore and raises
+        #   with last error, no sleeps performed
+        status_code = mock.PropertyMock(side_effect=[500, 429, 400])
+        type(failing_response).status_code = status_code
+        failing_response.reason = "for no reason :)"
+        self.mock_post.return_value = failing_response
+        with pytest.raises(RequestsHTTPError) as exc_info:
+            adapter.create_output("1")
+
+        assert exc_info.value.status_code == 400  # last received server code
+        assert self.mock_sleep.call_count == 3  # 1 sleep (500) + 2 sleeps (429)
+        expected_logs = [
+            "POST 'https://api.process.com/process-v1/workspaces/1/processes/5/work-items/1/output'",
+            "API response: 500 'for no reason :)'",
+            "API response: 429 'for no reason :)'",
+            "API response: 400 'for no reason :)'",
+        ]
+        captured_logs = set(record.message for record in caplog.records)
+        for expected_log in expected_logs:
+            assert expected_log in captured_logs
