@@ -660,30 +660,26 @@ class TestLibrary:
         assert library.current.state is None  # because the previous one has a state
         assert library.adapter.releases == [("workitem-id-first", State.DONE, None)]
 
-    def _get_body_from_email(self, library):
-        library.get_input_work_item()
-        return library.parse_work_item_from_email()
-
     @pytest.mark.parametrize(
-        "email_file,expected_body,effect",
+        "email_file,expected_body",
         [
-            ("email-mika.txt", {"message": "from email"}, nullcontext()),
-            ("email-mika-no-json.txt", None, pytest.raises(json.JSONDecodeError)),
+            ("mail-text.txt", "A message from e-mail"),
+            ("mail-json.txt", {"message": "from email"}),
+            ("mail-yaml.txt", {"message": "from email", "extra": {"value": 1}}),
         ],
     )
-    def test_parse_work_item_from_email(
-        self, library, email_file, expected_body, effect
-    ):
+    def test_parse_work_item_from_email(self, library, email_file, expected_body):
         raw_email = (RESOURCES_DIR / "work-items" / email_file).read_text()
         library.adapter.DATA["workitem-id-first"]["rawEmail"] = raw_email
 
-        with effect:
-            body = self._get_body_from_email(library)
-            assert body == expected_body
+        library.get_input_work_item()
+        body = library.get_work_item_variable("parsedEmail")["Body"]
+        assert body == expected_body
 
     def test_parse_work_item_from_email_missing_content(self, library):
+        library.get_input_work_item()
         with pytest.raises(KeyError):
-            self._get_body_from_email(library)
+            library.get_work_item_variable("parsedEmail")
 
 
 class TestFileAdapter:

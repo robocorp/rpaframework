@@ -61,7 +61,7 @@ class PDF(DynamicCore):
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.fileobjects = {}
+        self.documents = {}
         self.active_pdf_document = None
         self.convert_settings = {}
 
@@ -76,4 +76,4 @@ class PDF(DynamicCore):
         listener = RobotLogListener()
         listener.register_protected_keywords(["RPA.PDF.decrypt"])
 
-        logging.getLogger("pdfminer").setLevel(logging.INFO)
+        logging.getLogger("pdfminer").setLevel(logging.WARNING)

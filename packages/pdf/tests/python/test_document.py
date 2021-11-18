@@ -110,16 +110,22 @@ def test_encrypt_pdf(library):
 
 def test_decrypt_pdf(library):
     passw = "secrett"
+    assert not library.is_pdf_encrypted(TestFiles.vero_pdf)
 
-    with temp_filename() as tmp_file:
-        library.encrypt_pdf(TestFiles.vero_pdf, tmp_file, passw)
+    with temp_filename(suffix="-enc.pdf") as encrypted_pdf:
+        library.encrypt_pdf(TestFiles.vero_pdf, encrypted_pdf, passw)
+        assert library.is_pdf_encrypted(encrypted_pdf)
 
-        assert library.is_pdf_encrypted(tmp_file)
+        with temp_filename(suffix="-dec.pdf") as decrypted_pdf:
+            with pytest.raises(ValueError):
+                library.decrypt_pdf(encrypted_pdf, decrypted_pdf, passw + "extra")
 
-        with temp_filename() as another_file:
-            library.decrypt_pdf(tmp_file, another_file, passw)
-
-            assert not library.is_pdf_encrypted(another_file)
+            library.decrypt_pdf(encrypted_pdf, decrypted_pdf, passw)
+            assert not library.is_pdf_encrypted(decrypted_pdf)
+            assert (
+                not library.is_pdf_encrypted()
+            )  # the very same active document as above
+            assert library.is_pdf_encrypted(encrypted_pdf)
 
 
 @pytest.mark.skip(reason="replacing text in PDF is missing")
