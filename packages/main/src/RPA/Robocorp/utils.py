@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 import urllib.parse as urlparse
 from json import JSONDecodeError  # pylint: disable=no-name-in-module
 from pathlib import Path
@@ -76,8 +77,16 @@ class Requests:
         self._route_prefix = route_prefix
         self._default_headers = default_headers
 
-    @staticmethod
-    def handle_error(response: requests.Response):
+        self._debug_on = bool(os.getenv("RPA_DEBUG_API"))
+        self._log_to_console = BuiltIn().log_to_console
+
+    def _log(self, message, *args, func=logging.debug):
+        func(message, *args)
+        if self._debug_on:
+            self._log_to_console(str(message) % args)
+
+    def handle_error(self, response: requests.Response):
+        self._log("API response: %s %r", response.status_code, response.reason)
         if response.ok:
             return
 
@@ -91,9 +100,11 @@ class Requests:
                 fields = json.loads(fields)
         except (JSONDecodeError, ValueError, TypeError):
             # No `fields` dictionary can be obtained at all.
+            self._log("No fields were sent by server", func=logging.critical)
             try:
                 response.raise_for_status()
             except Exception as exc:  # pylint: disable=broad-except
+                self._log(exc, func=logging.exception)
                 raise RequestsHTTPError(exc, status_code=response.status_code) from exc
 
         status_code = 0
@@ -107,6 +118,7 @@ class Requests:
 
             raise HTTPError(f"{status_code} {status_message}: {reason}")
         except Exception as exc:  # pylint: disable=broad-except
+            self._log(exc, func=logging.exception)
             raise RequestsHTTPError(
                 str(fields), status_code=status_code, status_message=status_message
             ) from exc
@@ -132,6 +144,23 @@ class Requests:
 
         return True
 
+    # pylint: disable=no-self-argument,no-method-argument
+    def _before_sleep_log():
+        logger = logging.root
+        logger_log = logger.log
+        debug_on = bool(os.getenv("RPA_DEBUG_API"))
+        log_to_console = BuiltIn().log_to_console
+
+        def extensive_log(level, msg, *args, **kwargs):
+            logger_log(level, msg, *args, **kwargs)
+            if debug_on:
+                log_to_console(str(msg) % args)
+
+        # Monkeypatch inner logging function so it produces an exhaustive log when
+        # used under the before-sleep logging utility in `tenacity`.
+        logger.log = extensive_log
+        return before_sleep_log(logger, logging.DEBUG, exc_info=True)
+
     @retry(
         # Retry until either succeed or trying for the fifth time and still failing.
         # So sleep and retry for 4 times at most.
@@ -142,7 +171,7 @@ class Requests:
         # Decide if the raised exception needs retrying or not.
         retry=retry_if_exception(_needs_retry),
         # Produce debugging logging prior to each time we sleep & re-try.
-        before_sleep=before_sleep_log(logging.root, logging.DEBUG),
+        before_sleep=_before_sleep_log(),
         # Sleep between the tries with a random float amount of seconds like so:
         # 1. [0, 2]
         # 2. [0, 4]
@@ -163,6 +192,7 @@ class Requests:
         headers = headers if headers is not None else self._default_headers
         handle_error = _handle_error or self.handle_error
 
+        self._log("%s %r", func.__name__.upper(), url)
         response = func(url, *args, headers=headers, **kwargs)
         handle_error(response)
 

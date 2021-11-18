@@ -846,6 +846,12 @@ class TestRobocorpAdapter:
             self.mock_post = mock_post
             self.mock_put = mock_put
             self.mock_delete = mock_delete
+
+            self.mock_get.__name__ = "get"
+            self.mock_post.__name__ = "post"
+            self.mock_put.__name__ = "put"
+            self.mock_delete.__name__ = "delete"
+
             yield RobocorpAdapter()
 
     def test_reserve_input(self, adapter):
