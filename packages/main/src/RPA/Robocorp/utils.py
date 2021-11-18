@@ -149,6 +149,7 @@ class Requests:
                 or exc.status_message in no_retry_messages
             ):
                 return False
+
             if exc.status_code == 429:
                 # We hit the rate limiter, so sleep extra.
                 seconds = random.uniform(1, 3)

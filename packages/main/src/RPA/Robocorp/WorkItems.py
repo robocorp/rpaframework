@@ -245,20 +245,20 @@ class RobocorpAdapter(BaseAdapter):
             if not (resp.ok or resp.status_code == 404):
                 self._workitem_requests.handle_error(resp)
 
-        logging.info("Loading work item payload: %s", url)
+        logging.info("Loading work item payload from: %s", url)
         response = self._workitem_requests.get(url, _handle_error=handle_error)
         return response.json() if response.ok else {}
 
     def save_payload(self, item_id: str, payload: JSONType):
         url = url_join(item_id, "data")
 
-        logging.info("Saving work item payload: %s", url)
+        logging.info("Saving work item payload to: %s", url)
         self._workitem_requests.put(url, json=payload)
 
     def list_files(self, item_id: str) -> List[str]:
         url = url_join(item_id, "files")
 
-        logging.info("Listing work item files: %s", url)
+        logging.info("Listing work item files at: %s", url)
         response = self._workitem_requests.get(url)
 
         return [item["fileName"] for item in response.json()]
@@ -268,7 +268,7 @@ class RobocorpAdapter(BaseAdapter):
         file_id = self.file_id(item_id, name)
         url = url_join(item_id, "files", file_id)
 
-        logging.info("Downloading work item file: %s", url)
+        logging.info("Downloading work item file at: %s", url)
         response = self._workitem_requests.get(url)
 
         # Perform the actual file download.
@@ -314,7 +314,7 @@ class RobocorpAdapter(BaseAdapter):
         file_id = self.file_id(item_id, name)
         url = url_join(item_id, "files", file_id)
 
-        logging.info("Removing work item file: %s", url)
+        logging.info("Removing work item file at: %s", url)
         self._workitem_requests.delete(url)
 
     def file_id(self, item_id: str, name: str) -> str:
@@ -409,7 +409,7 @@ class FileAdapter(BaseAdapter):
                 )
             path = os.getenv("RPA_INPUT_WORKITEM_PATH", default=old_path)
             if path:
-                logging.info("Resolving path: %s", path)
+                logging.info("Resolving input path: %s", path)
                 self._input_path = resolve_path(path)
             else:
                 # Will raise `TypeError` during inputs loading and will populate the
@@ -461,7 +461,6 @@ class FileAdapter(BaseAdapter):
 
     def create_output(self, _: str, payload: Optional[JSONType] = None) -> str:
         # Note that the `parent_id` is not used during local development.
-        logging.debug("Payload: %s", json_dumps(payload, indent=4))
         item: Dict[str, Any] = {"payload": payload, "files": {}}
         self.outputs.append(item)
 
@@ -474,10 +473,7 @@ class FileAdapter(BaseAdapter):
 
     def save_payload(self, item_id: str, payload: JSONType):
         source, item = self._get_item(item_id)
-
         item["payload"] = payload
-        logging.debug("Payload: %s", json_dumps(payload, indent=4))
-
         self._save_to_disk(source)
 
     def list_files(self, item_id: str) -> List[str]:
@@ -549,7 +545,7 @@ class FileAdapter(BaseAdapter):
             work_item = next(iter(workspace.values()))
             return [{"payload": work_item}]
         except Exception as exc:  # pylint: disable=broad-except
-            logging.error("Invalid work items file: %s", exc)
+            logging.exception("Invalid work items file because of: %s", exc)
             return [{"payload": {}}]
 
 
