@@ -86,7 +86,12 @@ class Requests:
             self._log_to_console(str(message) % args)
 
     def handle_error(self, response: requests.Response):
-        self._log("API response: %s %r", response.status_code, response.reason)
+        log_func = (
+            logging.critical if response.status_code // 100 == 5 else logging.debug
+        )
+        self._log(
+            "API response: %s %r", response.status_code, response.reason, func=log_func
+        )
         if response.ok:
             return
 
