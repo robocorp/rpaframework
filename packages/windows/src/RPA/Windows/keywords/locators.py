@@ -1,7 +1,12 @@
 from dataclasses import dataclass, field
 import re
 from typing import List
-from RPA.Windows.keywords import keyword, LibraryContext, WindowControlError
+from RPA.Windows.keywords import (
+    ControlNotFound,
+    keyword,
+    LibraryContext,
+    WindowControlError,
+)
 from RPA.Windows import utils
 
 if utils.is_windows():
@@ -91,7 +96,7 @@ class MatchObject:
             self.regex = value
         elif strategy == "regex_field":
             self.regex_field = value
-        elif strategy == "foundIndex" or strategy == "searchDepth":
+        elif strategy in ["foundIndex", "searchDepth"]:
             value = int(value.strip())
             self.locators.append([strategy, value, level])
         elif strategy == "ControlType":
@@ -180,9 +185,26 @@ class LocatorKeywords(LibraryContext):
         :param root_control: can be used to restrict Control search into
          a specific Control object
         """
+        # TODO. Add examples
         self.logger.info("Locator '%s' into control", locator)
+        if not locator:
+            control = self.ctx.window or auto
+        elif isinstance(locator, str):
+            control = self.get_control_by_locator_string(
+                locator, search_depth, root_control
+            )
+        else:
+            control = locator
+        if not control:
+            raise ControlNotFound("Unable to get Control with '%s'" % locator)
+        self.logger.info("Returning control: '%s'", control)
+        return control
+
+    def get_control_by_locator_string(self, locator, search_depth, root_control):
         locators = locator.split(" > ")
-        root_control = root_control or self.ctx.window or auto
+        root_control = (
+            self.ctx.control_anchor or root_control or self.ctx.window or auto
+        )
         control = None
         for loc in locators:
             self.logger.info("Root control: '%s'" % root_control)
@@ -190,5 +212,4 @@ class LocatorKeywords(LibraryContext):
                 loc, search_depth, root_control
             )
             root_control = control
-        self.logger.info("Returning control: '%s'", control)
         return control

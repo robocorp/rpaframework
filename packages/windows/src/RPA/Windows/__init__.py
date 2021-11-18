@@ -16,7 +16,7 @@ from RPA.Windows.keywords import (
 
 
 class Windows(DynamicCore):
-    """The `Windows` is a libraru that can be used for Windows desktop automation.
+    """The `Windows` is a library that can be used for Windows desktop automation.
 
     This library is at this moment in "BETA" stage as an alternative
     library for `RPA.Desktop.Windows`. Main difference being that this
@@ -74,9 +74,14 @@ class Windows(DynamicCore):
 
         id:clearButton
         type:Group and name:'Number pad' > type:Button and index:4
-        type:Group and name:'Number pad' > control:Button index:5 offset:370,0
+        type:Group and name:'Number pad' > control:Button index:5
         id:Units1 > name:${unit}
-        class:Button
+        class:Button offset:370,0
+
+
+    **Keyboard and mouse**
+
+    Keyword
 
     **How to inspect**
 
@@ -105,10 +110,11 @@ class Windows(DynamicCore):
 
         *** Tasks ***
         Record Task
-            Log To Console    \nRecord steps for the Task
+            Log To Console    Record steps for the Task
             Start Recording
             ${recording}=    Get Recording    sleeps=${FALSE}
-            Log To Console    \n${recording}
+            Log To Console    ${recording}
+
 
     **Examples**
 
@@ -121,6 +127,7 @@ class Windows(DynamicCore):
         *** Settings ***
         Library    RPA.Windows
 
+
     Windows Calculator steps
 
     .. code-block:: robotframework
@@ -131,7 +138,8 @@ class Windows(DynamicCore):
             Click    id:clearButton
             Send Keys   96+4=
             ${result}=    Get Control Property    id:CalculatorResults    name
-            Log To Console    \n${result}
+            Log To Console    n${result}
+
 
     """  # noqa: E501
 

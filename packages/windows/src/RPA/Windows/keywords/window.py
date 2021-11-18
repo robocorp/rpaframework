@@ -22,6 +22,16 @@ class WindowKeywords(LibraryContext):
         Returns process id of the window.
 
         :param locator: string locator
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Control Window   Calculator
+            Control Window   name:Calculator
+            Control Window   subname:Notepad
+            Control Window   regex:.*Notepad
+            ${pid}=  Control Window   executable:Spotify.exe
         """
         self.ctx.window = self.ctx.get_control(
             locator + " and type:WindowControl", root_control=auto
@@ -47,6 +57,13 @@ class WindowKeywords(LibraryContext):
         current active window.
 
         :param locator: string locator
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Minimize Window   # Current active window
+            Minimize Window   executable:Spotify.exe
         """
         if locator:
             self.control_window(locator)
@@ -65,6 +82,13 @@ class WindowKeywords(LibraryContext):
         current active window.
 
         :param locator: string locator
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Maximize Window   # Current active window
+            Maximize Window   executable:Spotify.exe
         """
         if locator:
             self.control_window(locator)
@@ -80,6 +104,17 @@ class WindowKeywords(LibraryContext):
 
         :return: list of dictionaries containing information
          about Window controls
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${windows}=  List Windows
+            FOR  ${window}  IN  @{windows}
+                Log  Window title:${window}[title]
+                Log  Window process name:${window}[name]
+                Log  Window process id:${window}[pid]
+            END
         """
         windows = auto.GetRootControl().GetChildren()
         process_list = utils.get_process_list()
@@ -96,10 +131,16 @@ class WindowKeywords(LibraryContext):
 
     @keyword(tags=["window"])
     def windows_run(self, text: str, wait_time: float = 3.0) -> None:
-        """Use Windows run window to launch application
+        """Use Windows run window to launch application.
 
         :param text: text to enter into run input field
         :param wait_time: sleep time after search has been entered (default 3.0 seconds)
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Windows Run   explorer.exe
         """
         self.ctx.send_keys("{Win}r")
         self.ctx.send_keys(text)
@@ -112,6 +153,12 @@ class WindowKeywords(LibraryContext):
 
         :param text: text to enter into search input field
         :param wait_time: sleep time after search has been entered (default 3.0 seconds)
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Windows Search   Outlook
         """
         self.ctx.send_keys("{Win}s")
         self.ctx.send_keys(text)
@@ -119,13 +166,21 @@ class WindowKeywords(LibraryContext):
         time.sleep(wait_time)
 
     @keyword(tags=["window"])
-    def close_current_window(self) -> None:
-        """Closes current active window or log warning message"""
+    def close_current_window(self) -> bool:
+        """Closes current active window or log warning message
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Close Current Window
+        """
         if not self.ctx.window:
             self.ctx.logger.warning("There is no active window")
-            return
+            return False
         self.ctx.logger.warning(
-            "Current window process id = %s" % self.ctx.window.ProcessId
+            "Closing window process id = %s" % self.ctx.window.ProcessId
         )
         self.ctx.window.SetActive()
         self.ctx.window.SendKeys("{Alt}{F4}")
+        return True

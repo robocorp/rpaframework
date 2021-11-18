@@ -28,6 +28,7 @@ class RecorderKeywords(LibraryContext):
         :param control_window: set False to not include ``Control Window`` keyword
         """
         # TODO. Add Python syntax
+        # TODO. Add examples
         with auto.UIAutomationInitializerInThread(debug=True):
             control = auto.ControlFromCursor()
             self.ctx.logger.warning(control)
@@ -116,6 +117,7 @@ class RecorderKeywords(LibraryContext):
 
         Can be stopped by pressing keyboard ``ESC``.
         """
+        # TODO. Add examples
         self.record = True
         self.recording = []
         self.record_time = None
@@ -153,6 +155,7 @@ class RecorderKeywords(LibraryContext):
         :param sleeps: set False to exclude recording sleeps
         """
         # TODO. atm will always use CLICK
+        # TODO. Add examples
         output = []
         top = None
         for item in self.recording:
