@@ -15,10 +15,6 @@ if utils.is_windows():
 class ControlKeywords(LibraryContext):
     """Keywords for handling Control objects"""
 
-    def __init__(self, ctx):
-        super().__init__(ctx)
-        self.control_anchor = None
-
     @keyword
     def set_control_anchor(self, locator: Union[str, Control]):
         """Set control anchor to specified Control object.
@@ -45,12 +41,12 @@ class ControlKeywords(LibraryContext):
             END
             Clear Control Anchor
         """
-        self.control_anchor = self.ctx.get_control(locator)
+        self.ctx.control_anchor = self.ctx.get_control(locator)
 
     @keyword
     def clear_control_anchor(self):
         """Clears control anchor set by ``Set Control Anchor``"""
-        self.control_anchor = None
+        self.ctx.control_anchor = None
 
     @keyword
     def print_control_tree(

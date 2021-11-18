@@ -152,6 +152,7 @@ class Windows(DynamicCore):
         self.timeout = 0.5
         self.simulate_move = False
         self.window = None
+        self.control_anchor = None
 
         # Register keyword libraries to LibCore
         libraries = [
