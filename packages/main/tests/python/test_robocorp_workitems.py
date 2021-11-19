@@ -956,6 +956,12 @@ class TestRobocorpAdapter:
     def failing_response(self, request):
         return self._failing_response(request)
 
+    @pytest.fixture
+    def success_response(self):
+        resp = mock.MagicMock()
+        resp.ok = True
+        return resp
+
     @pytest.mark.parametrize(
         "status_code,call_count",
         [
@@ -1035,3 +1041,62 @@ class TestRobocorpAdapter:
         captured_logs = set(record.message for record in caplog.records)
         for expected_log in expected_logs:
             assert expected_log in captured_logs
+
+    def test_add_get_file(self, adapter, success_response, caplog):
+        """Uploads and retrieves files with AWS support.
+
+        This way we check if sensitive information (like auth params) don't get
+        exposed.
+        """
+        item_id = adapter.reserve_input()  # reserved initially from the env var
+        file_name = "myfile.txt"
+        file_content = b"some-data"
+
+        # Behaviour for: adding a file (2x POST), getting the file (3x GET).
+        #
+        # POST #1: 201 - default error handling
+        # POST #2: 201 - custom error handling -> status code retrieved
+        # GET #1: 200 - default error handling
+        # GET #2: 200 - default error handling
+        # GET #3: 200 - custom error handling -> status code retrieved
+        status_code = mock.PropertyMock(side_effect=[201, 200, 200])
+        type(success_response).status_code = status_code
+        # POST #1: JSON with file related data
+        # POST #2: ignored response content
+        # GET #1: JSON with all the file IDs
+        # GET #2: JSON with the file URL corresponding to ID
+        # GET #3: bytes response content (not ignored)
+        post_data = {
+            "url": "https://s3.eu-west-1.amazonaws.com/ci-4f23e-robocloud-td",
+            "fields": {
+                "dont": "care",
+            }
+        }
+        get_files_data = [{
+            "fileName": file_name,
+            "fileId": "file-id",
+        }]
+        get_file_data = {
+            "url": "https://ci-4f23e-robocloud-td.s3.eu-west-1.amazonaws.com/files/ws_17/wi_0dd63f07-ba7b-414a-bf92-293080975d2f/file_eddfd9ac-143f-4eb9-888f-b9c378e67aec?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=secret-credentials",
+        }
+        success_response.json.side_effect = [post_data, get_files_data, get_file_data]
+        success_response.content = file_content
+        self.mock_post.return_value = self.mock_get.return_value = success_response
+
+        # 2x POST (CR file entry, AWS file content)
+        adapter.add_file(
+            item_id,
+            file_name,
+            original_name="not-used.txt",
+            content=file_content,
+        )
+        files = self.mock_post.call_args_list[-1][1]["files"]
+        assert files == {"file": (file_name, file_content)}
+
+        # 3x GET (all files, specific file, file content)
+        content = adapter.get_file(item_id, file_name)
+        assert content == file_content
+
+        # Making sure sensitive info doesn't get exposed.
+        exposed = any("secret-credentials" in record.message for record in caplog.records)
+        assert not exposed, "secret got exposed"

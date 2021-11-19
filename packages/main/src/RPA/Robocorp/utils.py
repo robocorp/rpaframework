@@ -191,21 +191,28 @@ class Requests:
     )
     def _request(
         self,
-        func: Callable[..., requests.Response],
+        verb: Callable[..., requests.Response],
         url: str,
         *args,
         _handle_error: Callable[[requests.Response], None] = None,
+        _sensitive: bool = False,
         headers: dict = None,
         **kwargs,
     ) -> requests.Response:
+        # Absolute URLs override the prefix, so they are safe to be sent as they'll be
+        # the same after joining.
         url = urlparse.urljoin(self._route_prefix, url)
         headers = headers if headers is not None else self._default_headers
         handle_error = _handle_error or self.handle_error
 
-        log_more("%s %r", func.__name__.upper(), url)
-        response = func(url, *args, headers=headers, **kwargs)
+        url_for_log = url
+        if _sensitive:
+            # Omit query from the URL since might contain sensitive info.
+            split = urlparse.urlsplit(url_for_log)
+            url_for_log = urlparse.urlunsplit([split.scheme, split.netloc, split.path, "", split.fragment])
+        log_more("%s %r", verb.__name__.upper(), url_for_log)
+        response = verb(url, *args, headers=headers, **kwargs)
         handle_error(response)
-
         return response
 
     # CREATE

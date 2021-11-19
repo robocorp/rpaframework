@@ -270,41 +270,39 @@ class RobocorpAdapter(BaseAdapter):
 
         logging.info("Downloading work item file at: %s", url)
         response = self._workitem_requests.get(url)
+        file_url = response.json()["url"]
 
         # Perform the actual file download.
-        file_url = response.json()["url"]
-        logging.debug("Downloading file from URL: %s", file_url)
         response = self._workitem_requests.get(
-            file_url, _handle_error=lambda resp: resp.raise_for_status(), headers={}
+            file_url, _handle_error=lambda resp: resp.raise_for_status(), _sensitive=True, headers={}
         )
-
         return response.content
 
     def add_file(self, item_id: str, name: str, *, original_name: str, content: bytes):
-        # Note that here the `original_name` is useless thus not used.
+        # Note that here the `original_name` is useless here. (used with `FileAdapter`
+        #   only)
         del original_name
+
         # Robocorp API returns pre-signed POST details for S3 upload.
         url = url_join(item_id, "files")
-        info = {"fileName": str(name), "fileSize": len(content)}
+        body = {"fileName": str(name), "fileSize": len(content)}
         logging.info(
-            "Adding work item file: %s (name: %s, size: %s)",
+            "Adding work item file into: %s (name: %s, size: %d)",
             url,
-            info["fileName"],
-            info["fileSize"],
+            body["fileName"],
+            body["fileSize"],
         )
-
-        response = self._workitem_requests.post(url, json=info)
+        response = self._workitem_requests.post(url, json=body)
         data = response.json()
 
         # Perform the actual file upload.
         url = data["url"]
         fields = data["fields"]
         files = {"file": (name, content)}
-
-        logging.debug("Uploading file to URL: %s", url)
         self._workitem_requests.post(
             url,
             _handle_error=lambda resp: resp.raise_for_status(),
+            _sensitive=True,
             headers={},
             data=fields,
             files=files,
@@ -313,8 +311,6 @@ class RobocorpAdapter(BaseAdapter):
     def remove_file(self, item_id: str, name: str):
         file_id = self.file_id(item_id, name)
         url = url_join(item_id, "files", file_id)
-
-        logging.info("Removing work item file at: %s", url)
         self._workitem_requests.delete(url)
 
     def file_id(self, item_id: str, name: str) -> str:
