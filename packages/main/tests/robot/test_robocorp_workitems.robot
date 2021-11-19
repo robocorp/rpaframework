@@ -4,7 +4,7 @@ Library        OperatingSystem
 
 
 *** Variables ***
-${RESOURCES}    ${CURDIR}/../resources
+${RESOURCES}    ${CURDIR}/../resources/work-items
 ${RESULTS}      ${CURDIR}/../results
 ${temp_in}      ${RESOURCES}/temp_items.json
 ${temp_out}     ${RESULTS}/output_dir/temp_items.json
@@ -81,7 +81,7 @@ Consume queue without results
     Should Be Equal     ${results}      ${None}
 
 Get payload given e-mail process triggering
-    ${payload} =    Parse Work Item From Email
-    Set Work Item Variables    &{payload}
+    ${mail} =    Get Work Item Variable    parsedEmail
+    Set Work Item Variables    &{mail}[Body]
     ${message} =     Get Work Item Variable     message
     Should Be Equal     ${message}      from email

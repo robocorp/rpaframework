@@ -1,0 +1,116 @@
+MIME-Version: 1.0
+Date: Mon, 15 Nov 2021 14:23:26 +0100
+Message-ID: <CAJen4hie4QUdncg3GoDph4WiOiuztki2A44NW6ULw7603Mg6PQ@mail.gmail.com>
+Subject: Get Work Item File
+From: =?UTF-8?Q?Cosmin_Poiean=C4=83?= <cosmin@robocorp.com>
+To: =?UTF-8?Q?Cosmin_Poiean=C4=83?= <cosmin@robocorp.com>
+Cc: =?UTF-8?Q?Cosmin_Poiean=C4=83?= <cmin764@gmail.com>
+Content-Type: multipart/alternative; boundary="000000000000d126da05d0d3b625"
+
+--000000000000d126da05d0d3b625
+Content-Type: text/plain; charset="UTF-8"
+
+Get Work Item File
+<https://robocorp.com/docs/libraries/rpa-framework/rpa-robocorp-workitems/keywords#get-work-item-file>
+
+Get attached file from work item to disk. Returns the absolute path to the
+created file.
+Arguments
+ArgumentTypeDefault valueDescription
+name null Name of attached file
+path None Destination path of file. If not given, current working directory
+is used.
+
+Get attached file from work item to disk. Returns the absolute path to the
+created file.
+Examples
+
+*** Tasks ***${path}=    Get work item file    input.xlsOpen workbook    ${path}
+
+--000000000000d126da05d0d3b625
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><h2 style=3D"margin:1rem 0px 1.5rem;padding:0px;border:0px=
+;font-weight:500;box-sizing:border-box;outline:none;font-family:&quot;Barlo=
+w Semi Condensed&quot;,sans-serif;font-size:28px;line-height:33.6px;display=
+:flex;color:rgb(0,38,66)"><a href=3D"https://robocorp.com/docs/libraries/rp=
+a-framework/rpa-robocorp-workitems/keywords#get-work-item-file" style=3D"ma=
+rgin:0px;padding:0px;border:0px;box-sizing:border-box;outline:none;text-dec=
+oration-line:none;color:rgb(0,38,66)">Get Work Item File</a><div style=3D"m=
+argin:3px 0px 0px 12px;padding:0px;border:0px;box-sizing:border-box;outline=
+:none;height:20px"></div></h2><div style=3D"margin:0px;padding:0px;border:0=
+px;box-sizing:border-box;outline:none;color:rgb(0,38,66);font-family:Inter,=
+sans-serif;font-size:16px"><p class=3D"gmail-shortdoc" style=3D"margin:1rem=
+ 0px 2rem;padding:0px;border:0px;box-sizing:border-box;outline:none;font-si=
+ze:15px;line-height:24px">Get attached file from work item to disk. Returns=
+ the absolute path to the created file.</p><h3 style=3D"margin:0px 0px 1rem=
+;padding:0px;border:0px;box-sizing:border-box;outline:none;font-family:&quo=
+t;Barlow Semi Condensed&quot;,sans-serif;font-size:20px;line-height:24px">A=
+rguments</h3><table class=3D"gmail-arguments" style=3D"margin:0px 0px 32px;=
+padding:0px;border:0px;outline:none;table-layout:fixed;width:672px"><tbody =
+style=3D"margin:0px;padding:0px;border:0px;box-sizing:border-box;outline:no=
+ne"><tr style=3D"margin:0px;padding:0px;border:0px;box-sizing:border-box;ou=
+tline:none;background:rgb(247,246,250)"><th style=3D"margin:0px;padding:4px=
+ 8px;border:0px;box-sizing:border-box;outline:none;font-size:14px;backgroun=
+d:rgb(239,234,245)">Argument</th><th style=3D"margin:0px;padding:4px 8px;bo=
+rder:0px;box-sizing:border-box;outline:none;font-size:14px;background:rgb(2=
+39,234,245)">Type</th><th style=3D"margin:0px;padding:4px 8px;border:0px;bo=
+x-sizing:border-box;outline:none;font-size:14px;background:rgb(239,234,245)=
+">Default value</th><th style=3D"margin:0px;padding:4px 8px;border:0px;box-=
+sizing:border-box;outline:none;font-size:14px;background:rgb(239,234,245)">=
+Description</th></tr><tr style=3D"margin:0px;padding:0px;border:0px;box-siz=
+ing:border-box;outline:none"><td style=3D"padding:4px 8px;border:0px;box-si=
+zing:border-box;outline:none;font-size:14px">name</td><td style=3D"padding:=
+4px 8px;border:0px;box-sizing:border-box;outline:none;font-size:14px"></td>=
+<td style=3D"padding:4px 8px;border:0px;box-sizing:border-box;outline:none;=
+font-size:14px">null</td><td style=3D"padding:4px 8px;border:0px;box-sizing=
+:border-box;outline:none;font-size:14px">Name of attached file</td></tr><tr=
+ style=3D"margin:0px;padding:0px;border:0px;box-sizing:border-box;outline:n=
+one;background:rgb(247,246,250)"><td style=3D"padding:4px 8px;border:0px;bo=
+x-sizing:border-box;outline:none;font-size:14px">path</td><td style=3D"padd=
+ing:4px 8px;border:0px;box-sizing:border-box;outline:none;font-size:14px"><=
+/td><td style=3D"padding:4px 8px;border:0px;box-sizing:border-box;outline:n=
+one;font-size:14px">None</td><td style=3D"padding:4px 8px;border:0px;box-si=
+zing:border-box;outline:none;font-size:14px">Destination path of file. If n=
+ot given, current working directory is used.</td></tr></tbody></table><div =
+class=3D"gmail-document" style=3D"margin:0px;padding:0px;border:0px;box-siz=
+ing:border-box;outline:none"><p style=3D"margin:1rem 0px 2rem;padding:0px;b=
+order:0px;box-sizing:border-box;outline:none;font-size:15px;line-height:24p=
+x">Get attached file from work item to disk. Returns the absolute path to t=
+he created file.</p><h3 style=3D"margin:0px 0px 1rem;padding:0px;border:0px=
+;box-sizing:border-box;outline:none;font-family:&quot;Barlow Semi Condensed=
+&quot;,sans-serif;font-size:20px;line-height:24px">Examples</h3><pre class=
+=3D"gmail-language-robot gmail-line-numbers" style=3D"margin-top:0px;margin=
+-bottom:32px;padding:1em 1em 1em 3.8em;border:0px;box-sizing:border-box;out=
+line:none;overflow:auto;border-radius:0px 0px 4px 4px;background:rgb(46,52,=
+64);color:rgb(248,248,242)"><code class=3D"gmail-language-robot" style=3D"m=
+argin:0px;padding:0px;border:0px;box-sizing:border-box;outline:none;display=
+:block;font-size:14px;background:none;font-family:&quot;Fira Code&quot;,Con=
+solas,Monaco,&quot;Andale Mono&quot;,&quot;Ubuntu Mono&quot;,monospace;whit=
+e-space:inherit;word-spacing:normal;word-break:normal"><span class=3D"gmail=
+-token gmail-tasks gmail-section" style=3D"margin:0px;padding:0px;border:0p=
+x;box-sizing:border-box;outline:none"><span class=3D"gmail-token gmail-sect=
+ion-header gmail-keyword" style=3D"margin:0px;padding:0px;border:0px;box-si=
+zing:border-box;outline:none;color:rgb(165,140,246)">*** Tasks ***</span>
+<span class=3D"gmail-token gmail-task-name gmail-function" style=3D"margin:=
+0px;padding:0px;border:0px;box-sizing:border-box;outline:none;color:rgb(221=
+,74,104)"><span class=3D"gmail-token gmail-variable" style=3D"margin:0px;pa=
+dding:0px;border:0px;box-sizing:border-box;outline:none;color:rgb(238,153,0=
+)"><span class=3D"gmail-token gmail-punctuation" style=3D"margin:0px;paddin=
+g:0px;border:0px;box-sizing:border-box;outline:none;color:rgb(153,153,153)"=
+>${</span>path<span class=3D"gmail-token gmail-punctuation" style=3D"margin=
+:0px;padding:0px;border:0px;box-sizing:border-box;outline:none;color:rgb(15=
+3,153,153)">}</span></span>=3D</span>    Get work item file    input.xls
+<span class=3D"gmail-token gmail-task-name gmail-function" style=3D"margin:=
+0px;padding:0px;border:0px;box-sizing:border-box;outline:none;color:rgb(221=
+,74,104)">Open workbook</span>    <span class=3D"gmail-token gmail-variable=
+" style=3D"margin:0px;padding:0px;border:0px;box-sizing:border-box;outline:=
+none;color:rgb(238,153,0)"><span class=3D"gmail-token gmail-punctuation" st=
+yle=3D"margin:0px;padding:0px;border:0px;box-sizing:border-box;outline:none=
+;color:rgb(153,153,153)">${</span>path<span class=3D"gmail-token gmail-punc=
+tuation" style=3D"margin:0px;padding:0px;border:0px;box-sizing:border-box;o=
+utline:none;color:rgb(153,153,153)">}</span></span></span></code></pre></di=
+v></div></div>
+
+--000000000000d126da05d0d3b625--

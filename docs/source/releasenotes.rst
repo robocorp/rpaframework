@@ -4,11 +4,43 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++
 
+- Library **RPA.Email.ImapSmtp**: Keyword ``Email To Document`` for converting HTML or
+  Text e-mails into Word documents (:issue:`295`)
+
+- Library **RPA.Robocorp.WorkItems**:
+
+  - Removed Keyword ``Parse Work Item From Email``
+  - Automatically loads e-mail body formats like JSON/YAML/Text/HTML into "parsedEmail"
+    work item variable
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 
+11.6.3 - 15 Nov 2021
+--------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix email fetch when uid is empty
+
+11.6.2 - 13 Nov 2021
+--------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix handling of application/octet-stream attachments
+
+11.6.1 - 12 Nov 2021
+--------------------
+
+- Library **RPA.PDF**:
+
+  - Fix non empty or junk XML dumping on PDF parsing (:issue:`287`)
+  - Fixed by ``rpaframework-pdf`` **0.10.0** (included in this release)
+
+- Library **RPA.Email.ImapSmtp**:
+
+  - Fix sender name encoding when using ``Send Message`` keyword (:issue:`279`)
+  - Fix filename encoding when using ``Save Attachment``/``Save Attachments`` keywords (:issue:`290`)
+
 11.6.0 - 4 Nov 2021
-------
+-------------------
 
 - Library **RPA.Robocorp.WorkItems**: Keyword ``Parse Work Item From Email`` for
   retrieving the input item dictionary payload from the sent e-mail JSON body which
