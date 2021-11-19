@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 import re
-from time import sleep
 from typing import List, Union
 from RPA.Windows.keywords import (
     ControlNotFound,
