@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 import re
+from time import sleep
 from typing import List, Union
 from RPA.Windows.keywords import (
     ControlNotFound,
@@ -246,3 +247,28 @@ class LocatorKeywords(LibraryContext):
             )
             root_element = element
         return element
+
+    @keyword
+    def get_elements(
+        self,
+        locator: Union[str, Control],
+        search_depth: int = 8,
+        root_element: Control = None,
+    ) -> List:
+        """Get list of elements matching locator.
+
+        :param locator: locator as a string or as a element
+        :param search_depth: how deep the element search will traverse (default 8)
+        :param root_element: can be used to set search root element
+        """
+        elements = []
+        element = self.get_element(locator, search_depth, root_element)
+        elements.append(element)
+        while True:
+            next_element = element.GetNextSiblingControl()
+            if next_element:
+                elements.append(next_element)
+            else:
+                break
+            element = next_element
+        return elements

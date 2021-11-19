@@ -104,13 +104,22 @@ Play Task Temperature
     Close Current Window
 
 Play Task UIDemo
-    Windows Run    ${EXE_UIDEMO}
-    Control Window    UiDemo    # Handle: 5835532
-    Input Text    admin    id:user
-    Input Text    password    id:pass
-    Click    class:Button
+    ${running}=    Start application if it is not open    UIDemo    ${FALSE}
+    Log To Console    \nUIDemo running: True
+    IF    not $running
+        Windows Run    ${EXE_UIDEMO}
+        Control Window    UiDemo    # Handle: 5835532
+        Send Keys    id:user    admin
+        Send Keys    id:pass    password
+        Click    class:Button
+    END
+    Set Anchor    id:DataGrid
+    ${elements}=    Get Elements    type:HeaderItem
+    #Log To Console    ${element.Name}
+    FOR    ${el}    IN    @{elements}
+        Log To Console    ${el.Name}
+    END
     #Maximize Window
-    Sleep    5s
     #Minimize Window
     #Control Window    UIDemo    # Handle: 5901414
     #Click    type:ButtonControl and class:Button and name:Exit > type:TextControl and class:TextBlock and name:Exit
