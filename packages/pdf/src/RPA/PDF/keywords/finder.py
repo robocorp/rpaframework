@@ -69,6 +69,10 @@ class FinderKeywords(LibraryContext):
 
         raise ValueError(f"Not recognized direction search {direction!r}")
 
+    def _log_element(self, elem: Union[TextBox, TargetObject], prefix: str = ""):
+        template = f"{prefix} box %d | bbox %s | text %r"
+        self.logger.debug(template, elem.boxid, elem.bbox, elem.text)
+
     @keyword
     def find_text(
         self,
@@ -143,9 +147,9 @@ class FinderKeywords(LibraryContext):
 
         candidates_dict = {}
         for candidate in page.get_textboxes().values():
-            self.logger.debug("Current candidate: %s", candidate.bbox)
+            self._log_element(candidate, prefix="Current candidate:")
             for anchor in self._anchors:
-                self.logger.debug("Current anchor: %s", anchor.bbox)
+                self._log_element(anchor, prefix="Current anchor:")
                 # Skip anchor element itself from matching and check if the candidate
                 # matches the search criteria.
                 if candidate.boxid != anchor.boxid and search_for_candidate(
@@ -262,9 +266,7 @@ class FinderKeywords(LibraryContext):
         if matches:
             self.logger.debug("Found %d matches for locator %r:", len(matches), locator)
             for match in matches:
-                self.logger.debug(
-                    "box %d | bbox %s | text %r", match.boxid, match.bbox, match.text
-                )
+                self._log_element(match)
         else:
             self.logger.info("Did not find any matches")
 
@@ -324,12 +326,12 @@ class FinderKeywords(LibraryContext):
 
             if regexp and regexp.match(item.text):
                 self.logger.debug(
-                    "EXACT MATCH %s %s %s", item.boxid, item.text, item.bbox
+                    "EXACT MATCH %s %r %s", item.boxid, item.text, item.bbox
                 )
                 return True
             if regexp is None:
                 self.logger.debug(
-                    "POTENTIAL MATCH %s %s %s", item.boxid, item.text, item.bbox
+                    "POTENTIAL MATCH %s %r %s", item.boxid, item.text, item.bbox
                 )
                 return True
 
