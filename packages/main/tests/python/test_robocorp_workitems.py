@@ -1070,12 +1070,14 @@ class TestRobocorpAdapter:
             "url": "https://s3.eu-west-1.amazonaws.com/ci-4f23e-robocloud-td",
             "fields": {
                 "dont": "care",
-            }
+            },
         }
-        get_files_data = [{
-            "fileName": file_name,
-            "fileId": "file-id",
-        }]
+        get_files_data = [
+            {
+                "fileName": file_name,
+                "fileId": "file-id",
+            }
+        ]
         get_file_data = {
             "url": "https://ci-4f23e-robocloud-td.s3.eu-west-1.amazonaws.com/files/ws_17/wi_0dd63f07-ba7b-414a-bf92-293080975d2f/file_eddfd9ac-143f-4eb9-888f-b9c378e67aec?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=secret-credentials",
         }
@@ -1098,5 +1100,7 @@ class TestRobocorpAdapter:
         assert content == file_content
 
         # Making sure sensitive info doesn't get exposed.
-        exposed = any("secret-credentials" in record.message for record in caplog.records)
+        exposed = any(
+            "secret-credentials" in record.message for record in caplog.records
+        )
         assert not exposed, "secret got exposed"

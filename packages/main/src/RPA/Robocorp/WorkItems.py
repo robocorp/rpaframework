@@ -274,7 +274,10 @@ class RobocorpAdapter(BaseAdapter):
 
         # Perform the actual file download.
         response = self._workitem_requests.get(
-            file_url, _handle_error=lambda resp: resp.raise_for_status(), _sensitive=True, headers={}
+            file_url,
+            _handle_error=lambda resp: resp.raise_for_status(),
+            _sensitive=True,
+            headers={},
         )
         return response.content
 

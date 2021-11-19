@@ -209,7 +209,9 @@ class Requests:
         if _sensitive:
             # Omit query from the URL since might contain sensitive info.
             split = urlparse.urlsplit(url_for_log)
-            url_for_log = urlparse.urlunsplit([split.scheme, split.netloc, split.path, "", split.fragment])
+            url_for_log = urlparse.urlunsplit(
+                [split.scheme, split.netloc, split.path, "", split.fragment]
+            )
         log_more("%s %r", verb.__name__.upper(), url_for_log)
         response = verb(url, *args, headers=headers, **kwargs)
         handle_error(response)
