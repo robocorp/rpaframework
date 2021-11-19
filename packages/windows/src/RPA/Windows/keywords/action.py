@@ -15,16 +15,11 @@ if utils.is_windows():
 class ActionKeywords(LibraryContext):
     """Keywords for performing desktop actions"""
 
-    @keyword(tags=["action"])
-    def click(
-        self,
-        locator: Union[str, Control],
-        set_focus: bool = False,
-    ):
-        """Mouse click on control matching given locator.
+    @keyword(tags=["action", "mouse"])
+    def click(self, locator: Union[str, Control]):
+        """Mouse click on element matching given locator.
 
-        :param locator: string locator or Control object
-        :param set_focus: set True to focus on Control object
+        :param locator: string locator or Control element
 
         Example:
 
@@ -32,22 +27,15 @@ class ActionKeywords(LibraryContext):
 
             Click  id:button1
             Click  id:button2 offset:10,10
-            Click  name:SendButton  True
+            Click  name:SendButton
         """
-        click_type = "Click"
-        control = self._mouse_click(locator, set_focus, click_type)
-        return control
+        return self._mouse_click(locator, "Click")
 
-    @keyword(tags=["action"])
-    def double_click(
-        self,
-        locator: Union[str, Control],
-        set_focus: bool = False,
-    ):
-        """Double mouse click on control matching given locator.
+    @keyword(tags=["action", "mouse"])
+    def double_click(self, locator: Union[str, Control]):
+        """Double mouse click on element matching given locator.
 
-        :param locator: string locator or Control object
-        :param set_focus: set True to focus on Control object
+        :param locator: string locator or Control element
 
         Example:
 
@@ -55,20 +43,13 @@ class ActionKeywords(LibraryContext):
 
             Double Click  name:ResetButton
         """
-        click_type = "DoubleClick"
-        control = self._mouse_click(locator, set_focus, click_type)
-        return control
+        return self._mouse_click(locator, "DoubleClick")
 
-    @keyword(tags=["action"])
-    def right_click(
-        self,
-        locator: Union[str, Control],
-        set_focus: bool = False,
-    ):
-        """Right mouse click on control matching given locator.
+    @keyword(tags=["action", "mouse"])
+    def right_click(self, locator: Union[str, Control]):
+        """Right mouse click on element matching given locator.
 
-        :param locator: string locator or Control object
-        :param set_focus: set True to focus on Control object
+        :param locator: string locator or Control element
 
         Example:
 
@@ -76,20 +57,13 @@ class ActionKeywords(LibraryContext):
 
             Right Click  name:MenuButton
         """
-        click_type = "RightClick"
-        control = self._mouse_click(locator, set_focus, click_type)
-        return control
+        return self._mouse_click(locator, "RightClick")
 
-    @keyword(tags=["action"])
-    def middle_click(
-        self,
-        locator: Union[str, Control],
-        set_focus: bool = False,
-    ):
-        """Right mouse click on control matching given locator.
+    @keyword(tags=["action", "mouse"])
+    def middle_click(self, locator: Union[str, Control]):
+        """Right mouse click on element matching given locator.
 
-        :param locator: string locator or Control object
-        :param set_focus: set True to focus on Control object
+        :param locator: string locator or Control element
 
         Example:
 
@@ -97,24 +71,22 @@ class ActionKeywords(LibraryContext):
 
             Middle Click  name:button2
         """
-        click_type = "MiddleClick"
-        control = self._mouse_click(locator, set_focus, click_type)
-        return control
+        return self._mouse_click(locator, "MiddleClick")
 
-    def _mouse_click(self, locator, set_focus, click_type):
-        control = self._get_control_for_click(locator, set_focus)
-        if control.robocorp_click_offset:
-            self._click_control_coordinates(control, click_type)
+    def _mouse_click(self, element, click_type):
+        element = self._get_element_for_click(element)
+        if element.robocorp_click_offset:
+            self._click_element_coordinates(element, click_type)
         else:
-            self._click_control(control, click_type)
-        return control
+            self._click_element(element, click_type)
+        return element
 
-    def _click_control_coordinates(self, control, click_type):
+    def _click_element_coordinates(self, element, click_type):
         callable_attribute = getattr(auto, click_type, None)
         if callable_attribute:
-            rect = control.BoundingRectangle
+            rect = element.BoundingRectangle
             offset_x, offset_y = [
-                int(v) for v in control.robocorp_click_offset.split(",")
+                int(v) for v in element.robocorp_click_offset.split(",")
             ]
             callable_attribute(
                 rect.xcenter() + offset_x,
@@ -123,37 +95,33 @@ class ActionKeywords(LibraryContext):
             )
         else:
             raise ActionNotPossible(
-                "Control '%s' does not have '%s' attribute" % (control, click_type)
+                "Element '%s' does not have '%s' attribute" % (element, click_type)
             )
 
-    def _click_control(self, control, click_type):
-        callable_attribute = getattr(control, click_type, None)
-        if callable_attribute:
-            callable_attribute(
-                waitTime=self.ctx.timeout, simulateMove=self.ctx.simulate_move
-            )
+    def _click_element(self, element, click_type):
+        attr = getattr(element, click_type, None)
+        if attr and callable(attr):
+            attr(waitTime=self.ctx.timeout, simulateMove=self.ctx.simulate_move)
         else:
             raise ActionNotPossible(
-                "Control '%s' does not have '%s' attribute" % (control, click_type)
+                "Element '%s' does not have '%s' attribute" % (element, click_type)
             )
 
-    def _get_control_for_click(self, locator, set_focus):
-        control = self.ctx.get_control(locator)
-        if set_focus:
-            control.SetFocus()
-            if hasattr(control, "SetActive"):
-                control.SetActive()
-        control.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
-        return control
+    def _get_element_for_click(self, locator):
+        element = self.ctx.get_element(locator)
+        if hasattr(element, "SetActive"):
+            element.SetActive()
+        element.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
+        return element
 
     @keyword(tags=["action"])
     def select(self, locator: Union[str, Control], value: str):
-        """Select value on Control object if action is supported.
+        """Select value on Control element if action is supported.
 
-        Will print warning if it is not possible to select on object.
+        Will print warning if it is not possible to select on element.
 
-        :param locator: string locator or Control object
-        :param value: string value to select on Control object
+        :param locator: string locator or Control element
+        :param value: string value to select on Control element
 
         Example:
 
@@ -161,43 +129,13 @@ class ActionKeywords(LibraryContext):
 
             Select  type:SelectControl   option2
         """
-        control = self.ctx.get_control(locator)
-        if hasattr(control, "Select"):
-            control.Select(value)
+        element = self.ctx.get_element(locator)
+        if hasattr(element, "Select"):
+            element.Select(value)
         else:
             raise ActionNotPossible(
-                "Control '%s' does not have 'Select' attribute" % locator
+                "Element '%s' does not have 'Select' attribute" % locator
             )
-
-    @keyword(tags=["action"])
-    def input_text(
-        self,
-        locator: Union[str, Control],
-        text: str,
-        interval: float = 0.01,
-        wait_time: float = None,
-    ):
-        """Input text into desktop, current window or to Control object
-        defined by given locator.
-
-        Alias of keyword ``Send Keys``.
-
-        :param locator: string locator or Control object (default None)
-        :param keys: the keys to send
-        :param interval: time between sending keys, default 0.01 seconds
-        :param wait_time: time to wait after sending keys, default is a
-         library timeout
-
-        Example:
-
-        .. code-block:: robotframework
-
-            Send Keys  desktop   {Ctrl}{F4}
-            Send Keys  id:input5  username
-            ${control}=   Get Control   id:pass
-            Send Keys  ${control}  password
-        """
-        self.send_keys(locator, text, interval, wait_time)
 
     @keyword(tags=["action"])
     def send_keys(
@@ -206,39 +144,46 @@ class ActionKeywords(LibraryContext):
         keys: str = None,
         interval: float = 0.01,
         wait_time: float = None,
+        send_enter: bool = False,
     ):
-        """Send keys to desktop, current window or to Control object
+        """Send keys to desktop, current window or to Control element
         defined by given locator.
 
-        :param locator: string locator or Control object (default None)
+        If ``locator`` is `None` then keys are sent to desktop.
+
+        :param locator: string locator or Control element (default None means desktop)
         :param keys: the keys to send
         :param interval: time between sending keys, default 0.01 seconds
         :param wait_time: time to wait after sending keys, default is a
          library timeout
+        :param send_enter: if True then {Enter} is sent at the end of the keys
 
         Example:
 
         .. code-block:: robotframework
 
             Send Keys  desktop   {Ctrl}{F4}
-            Send Keys  id:input5  username
+            Send Keys  None   {Ctrl}{F4}
+            Send Keys  id:input5  username   send_enter=True
             ${control}=   Get Control   id:pass
-            Send Keys  ${control}  password
+            Send Keys  ${control}  password   send_enter=True
         """
-        control = self.ctx.get_control(locator)
+        element = self.ctx.get_element(locator)
         keys_wait_time = wait_time or self.ctx.timeout
-        if hasattr(control, "SendKeys"):
-            control.SendKeys(keys, interval=interval, waitTime=keys_wait_time)
+        if send_enter:
+            keys += "{Enter}"
+        if hasattr(element, "SendKeys"):
+            element.SendKeys(keys, interval=interval, waitTime=keys_wait_time)
         else:
             raise ActionNotPossible(
-                "Control '%s' does not have 'SendKeys' attribute" % locator
+                "Element '%s' does not have 'SendKeys' attribute" % locator
             )
 
     @keyword
     def get_text(self, locator: Union[str, Control]) -> str:
-        """Get text from Control object defined by the locator.
+        """Get text from Control element defined by the locator.
 
-        :param locator: string locator or Control object
+        :param locator: string locator or Control element
 
         Example:
 
@@ -246,53 +191,53 @@ class ActionKeywords(LibraryContext):
 
             ${date}=  Get Text   type:Edit name:'Date of birth'
         """
-        control = self.ctx.get_control(locator)
-        if hasattr(control, "GetWindowText"):
-            return control.GetWindowText()
+        element = self.ctx.get_element(locator)
+        if hasattr(element, "GetWindowText"):
+            return element.GetWindowText()
         raise ActionNotPossible(
-            "Control '%s' does not have 'GetWindowText' attribute" % locator
+            "Element '%s' does not have 'GetWindowText' attribute" % locator
         )
 
     @keyword
-    def get_item_value(self, locator: Union[str, Control]) -> str:
-        """Get Control object item value.
+    def get_value(self, locator: Union[str, Control]) -> str:
+        """Get value of the element defined by the locator.
 
-        :param locator: string locator or Control object
+        :param locator: string locator or Control element
 
         Example:
 
         .. code-block:: robotframework
 
-            ${value}=   Get Item Value   type:DataItem name:column1
+            ${value}=   Get Value   type:DataItem name:column1
         """
-        control = self.ctx.get_control(locator)
-        if hasattr(control, "GetValuePattern"):
-            value_pattern = control.GetValuePattern()
+        element = self.ctx.get_element(locator)
+        if hasattr(element, "GetValuePattern"):
+            value_pattern = element.GetValuePattern()
             return value_pattern.Value
         raise ActionNotPossible(
-            "Control '%s' does not have 'GetValuePattern' attribute" % locator,
+            "Element '%s' does not have 'GetValuePattern' attribute" % locator,
         )
 
     @keyword(tags=["action"])
-    def set_item_value(self, locator: Union[str, Control], value: str) -> None:
-        """Set Control object item value
+    def set_value(self, locator: Union[str, Control], value: str) -> None:
+        """Set value of the element defined by the locator.
 
-        :param locator: string locator or Control object
+        :param locator: string locator or Control element
         :param value: string value to set
 
         Example:
 
         .. code-block:: robotframework
 
-            Set Item Value   type:DataItem name:column1   abc
+            Set Value   type:DataItem name:column1   ab c  # Set value to "ab c"
         """
-        control = self.ctx.get_control(locator)
-        if hasattr(control, "GetValuePattern"):
-            value_pattern = control.GetValuePattern()
+        element = self.ctx.get_element(locator)
+        if hasattr(element, "GetValuePattern"):
+            value_pattern = element.GetValuePattern()
             value_pattern.SetValue(value)
         else:
             raise ActionNotPossible(
-                "Control '%s' does not have 'ValuePattern' attribute to set" % locator,
+                "Element '%s' does not have 'ValuePattern' attribute to set" % locator,
             )
 
     @keyword
@@ -312,4 +257,6 @@ class ActionKeywords(LibraryContext):
 
             ${old_timeout}=  Set Timeout  0.2
         """
+        old_value = self.ctx.timeout
         self.ctx.timeout = timeout
+        return old_value

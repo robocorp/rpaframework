@@ -1,6 +1,4 @@
 import logging
-import platform
-import warnings
 
 # pylint: disable=wrong-import-position
 from robotlibcore import DynamicCore
@@ -8,11 +6,16 @@ from robotlibcore import DynamicCore
 
 from RPA.Windows.keywords import (
     ActionKeywords,
-    ControlKeywords,
+    ElementKeywords,
     LocatorKeywords,
-    RecorderKeywords,
     WindowKeywords,
 )
+
+from RPA.Windows import utils
+
+if utils.is_windows():
+    import uiautomation as auto
+    from uiautomation.uiautomation import Logger
 
 
 class Windows(DynamicCore):
@@ -24,12 +27,19 @@ class Windows(DynamicCore):
 
     .. _uiautomation: https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
 
-    **About terminology**
+    *About terminology*
 
-    The most used term in uiautomation package is "Control" which in the library context
-    maps to objects of the application like for example Window, Button or ListItem.
+    **ControlType**
 
-    **Locators**
+    Value referred to by locator keys `type:` or `control`. Represents type of application
+    object, which can be e.g. `Window`, `Button` or `ListItem`.
+
+    **Element**
+
+    Entity of an application structure (e.g. certain button in a window), which can be
+    identified by a locator.
+
+    *Locators*
 
     Locators are based on different strategies that can used identify Control object.
 
@@ -49,16 +59,35 @@ class Windows(DynamicCore):
     index           foundIndex (int)
     offset          offset coordinates (x (int), y (int)) from control center
     executable      target window by its executable name
-    desktop         target desktop
-    process         target window by its executable's process id
+    handle          target window handle (int)
+    desktop         *SPECIAL* target desktop, no value for the key e.g. `desktop and name:Calculator`
+    process         *NOT YET SUPPORTED* target window by its executable's process id
     depth           searchDepth (int) for finding Control (default 8)
     =============== =======================
 
-    Getting control over application object (Control) is done usually by first executing
-    keyword ``Control Window`` which by default will search from desktop ControlType
-    WindowControl objects with the given locator.
+    **About root element on locators**
 
-    Keyword ``Control Window`` can also be used to target application child WindowControl objects.
+    Locators work on currently active `root element`. At the start `root element` is the whole
+    desktop. There are different ways on changing this root element.
+
+    Keyword ``Control Window`` is the most common method of setting certain system window
+    as a root element for further actions using locators.
+
+    Locators themselves support cascading syntax (denoted by character `>` in the locator string),
+    which can denote root element in "parent (root) & child" terms.
+
+    For example.
+
+    .. code-block:: robotframework
+
+        Click  id:controls > id:activate
+
+    On the above example the left side of the `>` character, `id:controls`, represents the root element
+    (can be called as "parent element" in this case). Right side of the locator string, `id:activate`,
+    represents "child" element and it will be searched under the "parent element".
+
+    This way element search is more efficient, because search are restricted to certain section of element
+    tree which can be quite huge especially on the desktop level and in certain applications.
 
     Keyword examples:
 
@@ -68,7 +97,7 @@ class Windows(DynamicCore):
         Control Window    Calculator  # will execute search by 'name:Calculator'
         Control Window    executable:Spotify.exe
 
-    some example locators:
+    some example locators, `and` can be omitted ie. space ` ` between locator keys means the same thing as `and`:
 
     .. code-block:: bash
 
@@ -78,12 +107,27 @@ class Windows(DynamicCore):
         id:Units1 > name:${unit}
         class:Button offset:370,0
 
+    **About locator restrictions**
 
-    **Keyboard and mouse**
+    Visual locators are not supported in this library and they can't be used in the same chain with these
+    Windows locators. Visual locators are supported by the `RPA.Desktop` library. Locator chaining (image and
+    Windows locators) support will be added in the future.
+
+    Locator syntax does not yet support OR operation (only AND operations).
+
+    **About search depth**
+
+    The library does element search depth by default to the level of 8. This means that locator will look into
+    8 levels of elements under element tree of the root element. This can lead into situation where element
+    can't be found. To fix this it is recommended to set root element which can be found within 8 levels OR
+    defining `depth` in the locator string to a bigger value, e.g. `id:deeplyNestedButton depth:16`. Useful
+    keywords for setting root element are ``Control Window``, ``Set Anchor`` and ``Get Element``.
+
+    *Keyboard and mouse*
 
     Keyword
 
-    **How to inspect**
+    *How to inspect*
 
     Most common and recommended by Microsoft, inspector tool for Windows, is `Accessibility Insights`_ that
     can be installed separately. Other options are tools `Inspect Object`_  and `UI Automation Verify`_, which
@@ -93,30 +137,13 @@ class Windows(DynamicCore):
     .. _Inspect Object: https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects
     .. _UI Automation Verify: https://docs.microsoft.com/en-us/windows/win32/winauto/ui-automation-verify
 
-    **Recording**
+    *Recording*
 
-    Library provides some rudimentary keywords for inspecting and recording locators for
-    Control objects.
+    The package provides some rudimentary inspecting and recording via script SCRIPT_NAME
 
-    Keyword ``Inspect Element`` will return list of steps that can be used to interact with Control object.
+    ADD GUIDE HERE
 
-    Recording can be activated by ``Start Recording`` which then activate mode where upon mouse click
-    Control under mouse pointer will be inspected. Recording can be stopped at any time by keyboard `ESC`.
-    After recording has been stopped, the recorded steps can be retrieved by keyword ``Get Recording``.
-
-    Example task for the recording
-
-    .. code-block:: robotframework
-
-        *** Tasks ***
-        Record Task
-            Log To Console    Record steps for the Task
-            Start Recording
-            ${recording}=    Get Recording    sleeps=${FALSE}
-            Log To Console    ${recording}
-
-
-    **Examples**
+    *Examples*
 
     Both Robot Framework and Python examples follow.
 
@@ -137,8 +164,8 @@ class Windows(DynamicCore):
             Control Window    name:Calculator
             Click    id:clearButton
             Send Keys   96+4=
-            ${result}=    Get Control Property    id:CalculatorResults    name
-            Log To Console    n${result}
+            ${result}=    Access Attribute or Method    id:CalculatorResults    Name
+            Log To Console    ${result}
 
 
     """  # noqa: E501
@@ -152,14 +179,17 @@ class Windows(DynamicCore):
         self.timeout = 0.5
         self.simulate_move = False
         self.window = None
-        self.control_anchor = None
+        self.anchor_element = None
+        # prevent comtypes writing lot of log messages
+        comtypelogger = logging.getLogger("comtypes")
+        comtypelogger.propagate = False
 
+        Logger.SetLogFile("")
         # Register keyword libraries to LibCore
         libraries = [
             ActionKeywords(self),
-            ControlKeywords(self),
+            ElementKeywords(self),
             LocatorKeywords(self),
-            RecorderKeywords(self),
             WindowKeywords(self),
         ]
         super().__init__(libraries)

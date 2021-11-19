@@ -1,3 +1,5 @@
+import os
+import signal
 import time
 from typing import List, Dict
 
@@ -17,9 +19,12 @@ class WindowKeywords(LibraryContext):
 
     @keyword(tags=["window"])
     def control_window(self, locator: str = None) -> int:
-        """Control window defined by the locator string.
+        """Controls the window defined by the locator.
 
-        Returns process id of the window.
+        This means that this window is used as a root element
+        for all the following keywords using locators.
+
+        Returns native handle of the window.
 
         :param locator: string locator
 
@@ -31,30 +36,33 @@ class WindowKeywords(LibraryContext):
             Control Window   name:Calculator
             Control Window   subname:Notepad
             Control Window   regex:.*Notepad
-            ${pid}=  Control Window   executable:Spotify.exe
+            ${handle}=  Control Window   executable:Spotify.exe
         """
-        self.ctx.window = self.ctx.get_control(
-            locator + " and type:WindowControl", root_control=auto
+        self.ctx.window = self.ctx.get_element(
+            locator + " and type:WindowControl", root_element=auto
         )
         if not self.ctx.window.Exists():
-            self.ctx.window = self.ctx.get_control(
-                locator + " and type:PaneControl", root_control=auto
+            self.ctx.window = self.ctx.get_element(
+                locator + " and type:PaneControl", root_element=auto
             )
         if not self.ctx.window.Exists():
             raise WindowControlError(
-                "Could not locate window with locator '%s'" % locator
+                'Could not locate window with locator "%s"' % locator
             )
+        # auto.WaitForExist(self.ctx.window, 5)
         if hasattr(self.ctx.window, "Restore"):
             self.ctx.window.Restore()
         self.ctx.window.SetFocus()
+        self.ctx.window.SetActive()
+        handle = self.ctx.window.NativeWindowHandle
         self.ctx.window.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
-        time.sleep(1.0)
-        return self.ctx.window.ProcessId
+        # time.sleep(1.0)
+        return handle
 
     @keyword(tags=["window"])
     def minimize_window(self, locator: str = None) -> None:
-        """Minimize window defined by the locator string or the
-        current active window.
+        """Minimize the current active window or the window defined
+        by the locator.
 
         :param locator: string locator
 
@@ -78,8 +86,8 @@ class WindowKeywords(LibraryContext):
 
     @keyword(tags=["window"])
     def maximize_window(self, locator: str = None) -> None:
-        """Maximize window defined by the locator string or the
-        current active window.
+        """Minimize the current active window or the window defined
+        by the locator.
 
         :param locator: string locator
 
@@ -100,10 +108,10 @@ class WindowKeywords(LibraryContext):
 
     @keyword(tags=["window"])
     def list_windows(self) -> List[Dict]:
-        """List all window Controls on the system.
+        """List all window element on the system.
 
         :return: list of dictionaries containing information
-         about Window controls
+         about Window elements
 
         Example:
 
@@ -114,6 +122,7 @@ class WindowKeywords(LibraryContext):
                 Log  Window title:${window}[title]
                 Log  Window process name:${window}[name]
                 Log  Window process id:${window}[pid]
+                Log  Window process handle:${window}[handle]
             END
         """
         windows = auto.GetRootControl().GetChildren()
@@ -125,6 +134,7 @@ class WindowKeywords(LibraryContext):
                 "title": win.Name,
                 "pid": win.ProcessId,
                 "name": process_list[pid] if pid in process_list.keys() else None,
+                "handle": win.NativeWindowHandle,
             }
             win_list.append(info)
         return win_list
@@ -149,7 +159,7 @@ class WindowKeywords(LibraryContext):
 
     @keyword(tags=["window"])
     def windows_search(self, text: str, wait_time: float = 3.0) -> None:
-        """Use Windows search window to launch application
+        """Use Windows search window to launch application.
 
         :param text: text to enter into search input field
         :param wait_time: sleep time after search has been entered (default 3.0 seconds)
@@ -167,7 +177,7 @@ class WindowKeywords(LibraryContext):
 
     @keyword(tags=["window"])
     def close_current_window(self) -> bool:
-        """Closes current active window or log warning message
+        """Closes current active window or logs a warning message.
 
         Example:
 
@@ -175,13 +185,13 @@ class WindowKeywords(LibraryContext):
 
             Close Current Window
         """
-        # TODO. Fix this keyword
         if not self.ctx.window:
             self.ctx.logger.warning("There is no active window")
             return False
-        self.ctx.logger.warning(
-            "Closing window process id = %s" % self.ctx.window.ProcessId
+        pid = self.ctx.window.ProcessId
+        name = self.ctx.window.Name
+        self.ctx.logger.info(
+            'Closing window with Name:"%s", ProcessId: %s' % (name, pid)
         )
-        self.ctx.window.SetActive()
-        self.ctx.window.SendKeys("{Alt}{F4}")
+        os.kill(pid, signal.SIGTERM)
         return True

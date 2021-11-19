@@ -9,7 +9,6 @@ from .context import (
     WindowControlError,
 )
 from .action import ActionKeywords
-from .controls import ControlKeywords
+from .elements import ElementKeywords
 from .locators import LocatorKeywords
-from .recorder import RecorderKeywords
 from .window import WindowKeywords
