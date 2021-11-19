@@ -1,6 +1,7 @@
 import functools
 import math
 import re
+from dataclasses import dataclass
 from typing import (
     Callable,
     List,
@@ -15,12 +16,24 @@ from RPA.PDF.keywords import (
 from RPA.PDF.keywords.model import TextBox
 
 
+@dataclass
 class TargetObject:
-    """Container for Target text box"""
+    """Container for Target text boxes with coordinates."""
 
     boxid: int
     bbox: tuple
     text: str
+
+
+@dataclass
+class Match:
+    """Match object returned by the `Find Text` keyword.
+
+    It contains the anchor point and its relative found elements in text format.
+    """
+
+    anchor: str
+    neighbours: List[str]
 
 
 class FinderKeywords(LibraryContext):
@@ -37,11 +50,20 @@ class FinderKeywords(LibraryContext):
         #   first one)
         self.anchor_element = None
 
-    def _get_candidate_search_function(self, direction: str, regexp: str, strict: bool) -> Callable[[TextBox], bool]:
+    def _get_candidate_search_function(
+        self, direction: str, regexp: Optional[re.Pattern], strict: bool
+    ) -> Callable[[TextBox], bool]:
         if direction in ["left", "right"]:
-            return functools.partial(self._is_match_on_horizontal, direction=direction, regexp=regexp)
+            return functools.partial(
+                self._is_match_on_horizontal, direction=direction, regexp=regexp
+            )
         if direction in ["top", "bottom", "up", "down"]:
-            return functools.partial(self._is_match_on_vertical, direction=direction, regexp=regexp, strict=strict)
+            return functools.partial(
+                self._is_match_on_vertical,
+                direction=direction,
+                regexp=regexp,
+                strict=strict,
+            )
         if direction == "box":
             return self._is_match_in_box
 
@@ -57,7 +79,7 @@ class FinderKeywords(LibraryContext):
         strict: bool = False,
         regexp: str = None,
         trim: bool = True,
-    ) -> Union[List[str], Optional[str]]:
+    ) -> List[Match]:
         """Get the closest text as string value to the anchored element.
 
         PDF will be parsed automatically before elements can be searched.
@@ -100,10 +122,12 @@ class FinderKeywords(LibraryContext):
             def example_keyword():
                 value = pdf.find_text("text:Invoice Number")
         """
-        self.logger.debug(
-            "Get Value From Anchor: ('locator=%s', 'direction=%s', 'regexp=%s')",
-            locator,
+        self.logger.info(
+            "Searching for the closest %d neighbour(s) to the %s of %r on page %d using regular expression: %s",
+            closest_neighbours,
             direction,
+            locator,
+            pagenum,
             regexp,
         )
         self.set_anchor_to_element(locator, trim=trim)
@@ -111,24 +135,39 @@ class FinderKeywords(LibraryContext):
             self.logger.warning("No anchor(s) set for locator: %s", locator)
             return []
 
-        self.logger.debug("Current anchor: %s", self.anchor_element.bbox)
         page = self.ctx.active_pdf_document.get_page(int(pagenum))
-        search_for_candidate = self._get_candidate_search_function(direction, regexp, strict)
+        regexp_compiled = re.compile(regexp) if regexp else None
+        search_for_candidate = self._get_candidate_search_function(
+            direction, regexp_compiled, strict
+        )
 
         candidates_dict = {}
         for candidate in page.get_textboxes().values():
-            # Skip anchor element itself from matching.
+            self.logger.debug("Current candidate: %s", candidate.bbox)
             for anchor in self._anchors:
-                if candidate.boxid != anchor.boxid and search_for_candidate(candidate, anchor=anchor):
+                self.logger.debug("Current anchor: %s", anchor.bbox)
+                # Skip anchor element itself from matching and check if the candidate
+                # matches the search criteria.
+                if candidate.boxid != anchor.boxid and search_for_candidate(
+                    candidate, anchor=anchor
+                ):
                     candidates_dict.setdefault(anchor, []).append(candidate)
 
+        matches = []
         for anchor, candidates in candidates_dict.items():
-            self._sort_candidates_by_anchor(candidates, anchor=anchor, direction=direction)
+            self._sort_candidates_by_anchor(
+                candidates, anchor=anchor, direction=direction
+            )
             if closest_neighbours:
                 # Keep the first N closest neighbours from the entire set of candidates.
                 candidates[closest_neighbours:] = []
+            match = Match(
+                anchor=anchor.text,
+                neighbours=[candidate.text for candidate in candidates],
+            )
+            matches.append(match)
 
-        return [[candidate.text for candidate in candidates] for candidates in candidates_dict.values()]
+        return matches
 
     @keyword
     def set_anchor_to_element(self, locator: str, trim: bool = True) -> bool:
@@ -188,15 +227,13 @@ class FinderKeywords(LibraryContext):
             else:
                 raise ValueError("Give 2 coordinates for point, or 4 for area")
 
-            anchor = TargetObject()
-            anchor.boxid = -1
-            anchor.bbox = (
+            bbox = (
                 int(left),
                 int(bottom),
                 int(right),
                 int(top),
             )
-            anchor.text = None
+            anchor = TargetObject(boxid=-1, bbox=bbox, text="")
             self._anchors.append(anchor)
         else:
             matches = self._find_matching_textboxes(criteria, pure_locator)
@@ -225,7 +262,9 @@ class FinderKeywords(LibraryContext):
         if matches:
             self.logger.debug("Found %d matches for locator %r:", len(matches), locator)
             for match in matches:
-                self.logger.debug("box %d | bbox %s | text %r", match.boxid, match.bbox, match.text)
+                self.logger.debug(
+                    "box %d | bbox %s | text %r", match.boxid, match.bbox, match.text
+                )
         else:
             self.logger.info("Did not find any matches")
 
@@ -238,7 +277,12 @@ class FinderKeywords(LibraryContext):
         return min_target <= base <= max_target
 
     def _is_match_on_horizontal(
-        self, item: TextBox, *, direction: str, regexp: str, anchor: TextBox
+        self,
+        item: TextBox,
+        *,
+        direction: str,
+        regexp: Optional[re.Pattern],
+        anchor: TextBox,
     ) -> bool:
         if not item:
             return False
@@ -246,25 +290,25 @@ class FinderKeywords(LibraryContext):
         (left, _, right, top) = anchor.bbox
         direction_ok = False
         if self._is_within_tolerance(item.top, top):
-            if (
-                direction == "right"
-                and item.left >= right
-            ):
+            if direction == "right" and item.left >= right:
                 direction_ok = True
-            elif (
-                direction == "left"
-                and item.right <= left
-            ):
+            elif direction == "left" and item.right <= left:
                 direction_ok = True
         if not direction_ok:
             return False
 
-        regex_matched = regexp and re.match(regexp, item.text)
+        regex_matched = regexp and regexp.match(item.text)
         no_regex = regexp is None
         return any([regex_matched, no_regex])
 
     def _is_match_on_vertical(
-        self, item: TextBox, *, direction: str, regexp: str, strict: bool, anchor: TextBox
+        self,
+        item: TextBox,
+        *,
+        direction: str,
+        regexp: Optional[re.Pattern],
+        strict: bool,
+        anchor: TextBox,
     ) -> bool:
         (left, bottom, right, top) = anchor.bbox
         direction_down = direction in ["bottom", "down"]
@@ -278,14 +322,14 @@ class FinderKeywords(LibraryContext):
             if not any([non_strict_match, strict_match]):
                 return False  # item not in range
 
-            if regexp and re.match(regexp, item.text):
+            if regexp and regexp.match(item.text):
                 self.logger.debug(
-                    "REGEX MATCH %s %s %s", item.boxid, item.text, item.bbox
+                    "EXACT MATCH %s %s %s", item.boxid, item.text, item.bbox
                 )
                 return True
             if regexp is None:
                 self.logger.debug(
-                    "POSSIBLE MATCH %s %s %s", item.boxid, item.text, item.bbox
+                    "POTENTIAL MATCH %s %s %s", item.boxid, item.text, item.bbox
                 )
                 return True
 
