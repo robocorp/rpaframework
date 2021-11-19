@@ -217,6 +217,16 @@ class LocatorKeywords(LibraryContext):
         :param locator: locator as a string or as a element
         :param search_depth: how deep the element search will traverse (default 8)
         :param root_element: can be used to set search root element
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Set Anchor    id:DataGrid
+            ${elements}=    Get Elements    type:HeaderItem
+            FOR    ${el}    IN    @{elements}
+                Log To Console    ${el.Name}
+            END
         """
         # TODO. Add examples
         self.logger.info("Locator '%s' into element", locator)
@@ -259,6 +269,16 @@ class LocatorKeywords(LibraryContext):
         :param locator: locator as a string or as a element
         :param search_depth: how deep the element search will traverse (default 8)
         :param root_element: can be used to set search root element
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Set Anchor    id:DataGrid
+            ${elements}=    Get Elements    type:HeaderItem
+            FOR    ${el}    IN    @{elements}
+                Log To Console    ${el.Name}
+            END
         """
         elements = []
         element = self.get_element(locator, search_depth, root_element)
