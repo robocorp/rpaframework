@@ -144,6 +144,7 @@ class ElementKeywords(LibraryContext):
         element_attributes = [e for e in dir(element) if not e.startswith("_")]
         attributes = []
 
-        for e in element_attributes:
-            if not inspect.ismethod(e):
-                attributes.append(str(e))
+        for attr_name in element_attributes:
+            attr = getattr(element, attr_name)
+            if not inspect.ismethod(attr):
+                attributes.append(attr_name)

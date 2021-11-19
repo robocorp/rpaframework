@@ -27,19 +27,16 @@ class Windows(DynamicCore):
 
     .. _uiautomation: https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
 
-    *About terminology*
+    **About terminology**
 
-    **ControlType**
-
-    Value referred to by locator keys `type:` or `control`. Represents type of application
+    **ControlType** is a value referred to by locator keys `type:` or `control`. Represents type of application
     object, which can be e.g. `Window`, `Button` or `ListItem`.
 
-    **Element**
-
-    Entity of an application structure (e.g. certain button in a window), which can be
+    **Element** is an entity of an application structure (e.g. certain button in a window), which can be
     identified by a locator.
 
-    *Locators*
+
+    **Locators**
 
     Locators are based on different strategies that can used identify Control object.
 
@@ -123,11 +120,12 @@ class Windows(DynamicCore):
     defining `depth` in the locator string to a bigger value, e.g. `id:deeplyNestedButton depth:16`. Useful
     keywords for setting root element are ``Control Window``, ``Set Anchor`` and ``Get Element``.
 
-    *Keyboard and mouse*
 
-    Keyword
+    **Keyboard and mouse**
 
-    *How to inspect*
+    TBD
+
+    **How to inspect**
 
     Most common and recommended by Microsoft, inspector tool for Windows, is `Accessibility Insights`_ that
     can be installed separately. Other options are tools `Inspect Object`_  and `UI Automation Verify`_, which
@@ -137,13 +135,13 @@ class Windows(DynamicCore):
     .. _Inspect Object: https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects
     .. _UI Automation Verify: https://docs.microsoft.com/en-us/windows/win32/winauto/ui-automation-verify
 
-    *Recording*
+    **Recording**
 
     The package provides some rudimentary inspecting and recording via script SCRIPT_NAME
 
     ADD GUIDE HERE
 
-    *Examples*
+    **Examples**
 
     Both Robot Framework and Python examples follow.
 
