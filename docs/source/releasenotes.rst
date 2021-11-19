@@ -4,6 +4,7 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++
 
+- API retrying improvements affecting Work Items
 - Library **RPA.Email.ImapSmtp**: Keyword ``Email To Document`` for converting HTML or
   Text e-mails into Word documents (:issue:`295`)
 

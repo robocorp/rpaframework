@@ -1,5 +1,8 @@
 import json
 import logging
+import os
+import random
+import time
 import urllib.parse as urlparse
 from json import JSONDecodeError  # pylint: disable=no-name-in-module
 from pathlib import Path
@@ -18,6 +21,9 @@ from tenacity import (
 
 
 JSONType = Union[Dict[str, Any], List[Any], str, int, float, bool, None]
+
+DEBUG_ON = bool(os.getenv("RPA_DEBUG_API"))
+log_to_console = BuiltIn().log_to_console
 
 
 def url_join(*parts):
@@ -57,6 +63,12 @@ def resolve_path(path: str) -> Path:
     return Path(path).expanduser().resolve()
 
 
+def log_more(message, *args, func=logging.debug):
+    func(message, *args)
+    if DEBUG_ON:
+        log_to_console(str(message) % args)
+
+
 class RequestsHTTPError(HTTPError):
     """Custom `requests` HTTP error with status code and message."""
 
@@ -76,8 +88,12 @@ class Requests:
         self._route_prefix = route_prefix
         self._default_headers = default_headers
 
-    @staticmethod
-    def handle_error(response: requests.Response):
+    def handle_error(self, response: requests.Response):
+        resp_status_code = response.status_code
+        log_func = logging.critical if resp_status_code // 100 == 5 else logging.debug
+        log_more(
+            "API response: %s %r", resp_status_code, response.reason, func=log_func
+        )
         if response.ok:
             return
 
@@ -91,31 +107,39 @@ class Requests:
                 fields = json.loads(fields)
         except (JSONDecodeError, ValueError, TypeError):
             # No `fields` dictionary can be obtained at all.
+            log_more("No fields were returned by the server", func=logging.critical)
             try:
                 response.raise_for_status()
             except Exception as exc:  # pylint: disable=broad-except
-                raise RequestsHTTPError(exc, status_code=response.status_code) from exc
+                log_more(exc, func=logging.exception)
+                raise RequestsHTTPError(exc, status_code=resp_status_code) from exc
 
-        status_code = 0
+        err_status_code = 0
         status_message = "Error"
         try:
-            status_code = int(fields.get("status", response.status_code))
+            err_status_code = int(fields.get("status", resp_status_code))
             status_message = fields.get("error", {}).get("code", "Error")
             reason = fields.get("message") or fields.get("error", {}).get(
                 "message", response.reason
             )
-
-            raise HTTPError(f"{status_code} {status_message}: {reason}")
+            raise HTTPError(f"{err_status_code} {status_message}: {reason}")
         except Exception as exc:  # pylint: disable=broad-except
+            log_more(exc, func=logging.exception)
             raise RequestsHTTPError(
-                str(fields), status_code=status_code, status_message=status_message
+                str(fields), status_code=err_status_code, status_message=status_message
             ) from exc
 
     # pylint: disable=no-self-argument
     def _needs_retry(exc: BaseException) -> bool:
-        # Don't retry on server (500/internal/unexpected) and auth errors (401/403).
-        no_retry_codes = [400, 401, 403, 409, 500]
-        no_retry_messages = ["ERR_UNEXPECTED"]
+        # Don't retry on some specific error codes or messages.
+
+        # https://www.restapitutorial.com/httpstatuscodes.html
+        # 400 - payload is bad and needs to be changed
+        # 401 - missing auth bearer token
+        # 403 - auth is in place, but not allowed (insufficient privileges)
+        # 409 - payload not good for the affected resource
+        no_retry_codes = [400, 401, 403, 409]
+        no_retry_messages = []
 
         if isinstance(exc, RequestsHTTPError):
             if (
@@ -124,7 +148,28 @@ class Requests:
             ):
                 return False
 
+            if exc.status_code == 429:
+                # We hit the rate limiter, so sleep extra.
+                seconds = random.uniform(1, 3)
+                log_more("Rate limit hit, sleeping: %fs", seconds, func=logging.warning)
+                time.sleep(seconds)
+
         return True
+
+    # pylint: disable=no-self-argument,no-method-argument
+    def _before_sleep_log():
+        logger = logging.root
+        logger_log = logger.log
+
+        def extensive_log(level, msg, *args, **kwargs):
+            logger_log(level, msg, *args, **kwargs)
+            if DEBUG_ON:
+                log_to_console(str(msg) % args)
+
+        # Monkeypatch inner logging function so it produces an exhaustive log when
+        # used under the before-sleep logging utility in `tenacity`.
+        logger.log = extensive_log
+        return before_sleep_log(logger, logging.DEBUG, exc_info=True)
 
     @retry(
         # Retry until either succeed or trying for the fifth time and still failing.
@@ -136,7 +181,7 @@ class Requests:
         # Decide if the raised exception needs retrying or not.
         retry=retry_if_exception(_needs_retry),
         # Produce debugging logging prior to each time we sleep & re-try.
-        before_sleep=before_sleep_log(logging.root, logging.DEBUG),
+        before_sleep=_before_sleep_log(),
         # Sleep between the tries with a random float amount of seconds like so:
         # 1. [0, 2]
         # 2. [0, 4]
@@ -146,30 +191,44 @@ class Requests:
     )
     def _request(
         self,
-        func: Callable[..., requests.Response],
+        verb: Callable[..., requests.Response],
         url: str,
         *args,
         _handle_error: Callable[[requests.Response], None] = None,
+        _sensitive: bool = False,
         headers: dict = None,
         **kwargs,
     ) -> requests.Response:
+        # Absolute URLs override the prefix, so they are safe to be sent as they'll be
+        # the same after joining.
         url = urlparse.urljoin(self._route_prefix, url)
         headers = headers if headers is not None else self._default_headers
         handle_error = _handle_error or self.handle_error
 
-        response = func(url, *args, headers=headers, **kwargs)
+        url_for_log = url
+        if _sensitive:
+            # Omit query from the URL since might contain sensitive info.
+            split = urlparse.urlsplit(url_for_log)
+            url_for_log = urlparse.urlunsplit(
+                [split.scheme, split.netloc, split.path, "", split.fragment]
+            )
+        log_more("%s %r", verb.__name__.upper(), url_for_log)
+        response = verb(url, *args, headers=headers, **kwargs)
         handle_error(response)
-
         return response
 
-    def get(self, *args, **kwargs) -> requests.Response:
-        return self._request(requests.get, *args, **kwargs)
-
+    # CREATE
     def post(self, *args, **kwargs) -> requests.Response:
         return self._request(requests.post, *args, **kwargs)
 
+    # RETRIEVE
+    def get(self, *args, **kwargs) -> requests.Response:
+        return self._request(requests.get, *args, **kwargs)
+
+    # UPDATE
     def put(self, *args, **kwargs) -> requests.Response:
         return self._request(requests.put, *args, **kwargs)
 
+    # DELETE
     def delete(self, *args, **kwargs) -> requests.Response:
         return self._request(requests.delete, *args, **kwargs)

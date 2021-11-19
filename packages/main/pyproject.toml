@@ -87,8 +87,9 @@ pylint = "^2.4.4"
 pytest = "^6.1.2"
 pytest-cov = "^2.10.1"
 mock = "^4.0.2"
-mypy = "^0.782"
+mypy = "^0.910"
 python-docx = "^0.8.11"
+pytest-env = "^0.6.2"
 
 [tool.poetry.scripts]
 rpa-crypto = 'RPA.scripts.crypto:main'
