@@ -81,8 +81,8 @@ lint: install ## Verify code formatting and conventions
 	$(call title,"Verifying pylint")
 	poetry run pylint -j1 --rcfile $(configs)/pylint src/RPA
 
-test: install ## Run all unittests
-	poetry run pytest
+#test: install ## Run all unittests
+#	poetry run pytest
 
 todo: install ## Print all TODO/FIXME comments
 	poetry run pylint --disable=all --enable=fixme --exit-zero src/
