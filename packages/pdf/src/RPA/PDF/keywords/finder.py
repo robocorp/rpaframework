@@ -33,6 +33,7 @@ class Match:
     """
 
     anchor: str
+    direction: str
     neighbours: List[str]
 
 
@@ -126,6 +127,7 @@ class FinderKeywords(LibraryContext):
             def example_keyword():
                 value = pdf.find_text("text:Invoice Number")
         """
+        pagenum = int(pagenum)
         self.logger.info(
             "Searching for the closest %d neighbour(s) to the %s of %r on page %d using regular expression: %s",
             closest_neighbours,
@@ -134,7 +136,6 @@ class FinderKeywords(LibraryContext):
             pagenum,
             regexp,
         )
-        pagenum = int(pagenum)
         self.set_anchor_to_element(locator, trim=trim, pagenum=pagenum)
         if not self.anchor_element:
             self.logger.warning("No anchor(s) set for locator: %s", locator)
@@ -167,6 +168,7 @@ class FinderKeywords(LibraryContext):
                 candidates[int(closest_neighbours) :] = []
             match = Match(
                 anchor=anchor.text,
+                direction=direction,
                 neighbours=[candidate.text for candidate in candidates],
             )
             matches.append(match)
@@ -210,7 +212,7 @@ class FinderKeywords(LibraryContext):
             means whitespace is trimmed from the text
         :return: True if element was found.
         """
-        self.logger.info("Set anchor to element: ('locator=%s')", locator)
+        self.logger.info("Trying to set anchor using locator: %r", locator)
         self.ctx.convert(trim=trim)
         self._anchors.clear()
         self.anchor_element = None
@@ -242,9 +244,7 @@ class FinderKeywords(LibraryContext):
             anchor = TargetObject(boxid=-1, bbox=bbox, text="")
             self._anchors.append(anchor)
         else:
-            anchors = self._find_matching_textboxes(
-                pure_locator, criteria=criteria, pagenum=int(pagenum)
-            )
+            anchors = self._find_matching_textboxes(pure_locator, pagenum=int(pagenum))
             self._anchors.extend(anchors)
 
         if self._anchors:
@@ -257,12 +257,8 @@ class FinderKeywords(LibraryContext):
         page = self.active_pdf_document.get_page(pagenum)
         return list(page.textboxes.values())
 
-    def _find_matching_textboxes(
-        self, locator: str, *, criteria: str, pagenum: int
-    ) -> List[TextBox]:
-        self.logger.info(
-            "find_matching_textbox: ('criteria=%s', 'locator=%s')", criteria, locator
-        )
+    def _find_matching_textboxes(self, locator: str, *, pagenum: int) -> List[TextBox]:
+        self.logger.info("Searching for matching text boxes with: %r", locator)
 
         lower_locator = locator.lower()
         try:
@@ -283,11 +279,11 @@ class FinderKeywords(LibraryContext):
                 anchors.append(anchor)
 
         if anchors:
-            self.logger.debug("Found %d matches for locator %r", len(anchors), locator)
+            self.logger.info("Found %d matches for locator %r", len(anchors), locator)
             for anchor in anchors:
                 self._log_element(anchor)
         else:
-            self.logger.info("Did not find any matches")
+            self.logger.warning("Did not find any matches")
 
         return anchors
 
