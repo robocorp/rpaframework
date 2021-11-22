@@ -327,7 +327,7 @@ class Windows(DynamicCore):
 
 
     Mouse clicks can be executed with keywords specific for a type of a click, e.g. ``Click`` (normal click),
-    ``Right Click`` and ``Right Click``.
+    ``Double Click`` and ``Right Click``.
 
     **How to inspect**
 
