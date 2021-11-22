@@ -45,7 +45,7 @@ class FinderKeywords(LibraryContext):
         super().__init__(ctx)
 
         # Text locator might lead to multiple valid found anchors.
-        self._anchors = []
+        self._anchors: List[Union[TargetObject, TextBox]] = []
         # The others usually have just one. (if multiple are found, set to it the
         #   first one)
         self.anchor_element = None
@@ -77,9 +77,9 @@ class FinderKeywords(LibraryContext):
     def find_text(
         self,
         locator: str,
-        pagenum: int = 1,
+        pagenum: Union[int, str] = 1,
         direction: str = "right",
-        closest_neighbours: int = 1,
+        closest_neighbours: Union[int, str] = 1,
         strict: bool = False,
         regexp: str = None,
         trim: bool = True,
@@ -134,19 +134,19 @@ class FinderKeywords(LibraryContext):
             pagenum,
             regexp,
         )
-        self.set_anchor_to_element(locator, trim=trim)
+        pagenum = int(pagenum)
+        self.set_anchor_to_element(locator, trim=trim, pagenum=pagenum)
         if not self.anchor_element:
             self.logger.warning("No anchor(s) set for locator: %s", locator)
             return []
 
-        page = self.ctx.active_pdf_document.get_page(int(pagenum))
         regexp_compiled = re.compile(regexp) if regexp else None
         search_for_candidate = self._get_candidate_search_function(
             direction, regexp_compiled, strict
         )
 
         candidates_dict = {}
-        for candidate in page.get_textboxes().values():
+        for candidate in self._get_textboxes_on_page(pagenum):
             self._log_element(candidate, prefix="Current candidate:")
             for anchor in self._anchors:
                 self._log_element(anchor, prefix="Current anchor:")
@@ -164,7 +164,7 @@ class FinderKeywords(LibraryContext):
             )
             if closest_neighbours:
                 # Keep the first N closest neighbours from the entire set of candidates.
-                candidates[closest_neighbours:] = []
+                candidates[int(closest_neighbours):] = []
             match = Match(
                 anchor=anchor.text,
                 neighbours=[candidate.text for candidate in candidates],
@@ -174,7 +174,7 @@ class FinderKeywords(LibraryContext):
         return matches
 
     @keyword
-    def set_anchor_to_element(self, locator: str, trim: bool = True) -> bool:
+    def set_anchor_to_element(self, locator: str, trim: bool = True, pagenum: int = 1) -> bool:
         """Sets anchor point in the document for further searches.
 
         This is used internally in the library.
@@ -240,7 +240,7 @@ class FinderKeywords(LibraryContext):
             anchor = TargetObject(boxid=-1, bbox=bbox, text="")
             self._anchors.append(anchor)
         else:
-            matches = self._find_matching_textboxes(criteria, pure_locator)
+            matches = self._find_matching_textboxes(pure_locator, criteria=criteria, pagenum=int(pagenum))
             self._anchors.extend(matches)
 
         if self._anchors:
@@ -249,19 +249,30 @@ class FinderKeywords(LibraryContext):
 
         return False
 
-    def _find_matching_textboxes(self, criteria: str, locator: str) -> List[str]:
+    def _get_textboxes_on_page(self, pagenum: int) -> List[TextBox]:
+        page = self.active_pdf_document.get_page(pagenum)
+        return list(page.textboxes.values())
+
+    def _find_matching_textboxes(self, locator: str, *, criteria: str, pagenum: int) -> List[TextBox]:
         self.logger.info(
             "find_matching_textbox: ('criteria=%s', 'locator=%s')", criteria, locator
         )
 
         lower_locator = locator.lower()
+        try:
+            regex_locator = re.compile(locator)
+        except re.error as exc:
+            self.logger.debug(
+                "Can't use locator %r as regular expression too during the search: %s",
+                locator,
+                exc
+            )
+            regex_locator = None
+
         matches = []
-        # FIXME(cmin764): Search in the current page only.
-        for page in self.active_pdf_document.get_pages().values():
-            content = page.get_textboxes()
-            for item in content.values():
-                if item.text.lower() == lower_locator:
-                    matches.append(item)
+        for item in self._get_textboxes_on_page(pagenum):
+            if (item.text.lower() == lower_locator) or (regex_locator and regex_locator.match(item.text)):
+                matches.append(item)
 
         if matches:
             self.logger.debug("Found %d matches for locator %r:", len(matches), locator)

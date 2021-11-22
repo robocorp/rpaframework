@@ -475,7 +475,7 @@ class DocumentKeywords(LibraryContext):
             if page.pageid not in pages:
                 continue
             pdf_text[idx] = [] if details else ""
-            for _, item in page.get_textboxes().items():
+            for _, item in page.textboxes.items():
                 if details:
                     pdf_text[idx].append(item)
                 else:
@@ -775,7 +775,7 @@ class DocumentKeywords(LibraryContext):
         self.ctx.convert()
         pages = {}
         for pagenum, page in self.active_pdf_document.get_pages().items():
-            pages[pagenum] = page.get_figures()
+            pages[pagenum] = page.figures
         return pages
 
     @keyword

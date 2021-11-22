@@ -131,33 +131,42 @@ class TextBox:
 
 
 class Page:
-    """Class for each PDF page"""
-
-    bbox: list
-    content: OrderedDict
-    content_id: int
-    pageid: str
-    rotate: int
+    """Class that abstracts a PDF page."""
 
     def __init__(self, pageid: int, bbox: Iterable, rotate: int) -> None:
         self.pageid = pageid
         self.bbox = iterable_items_to_int(bbox)
         self.rotate = rotate
-        self.content = OrderedDict()
-        self.content_id = 0
+
+        self._content = OrderedDict()
+        self._content_id = 0
+        self._figures = OrderedDict()
+        self._textboxes = OrderedDict()
 
     def add_content(self, content: Any) -> None:
-        self.content[self.content_id] = content
-        self.content_id += 1
+        self._content[self._content_id] = content
+        if isinstance(content, Figure):
+            content_dict = self._figures
+        elif isinstance(content, TextBox):
+            content_dict = self._textboxes
+        else:
+            content_dict = None
+        if content_dict is not None:
+            content_dict[self._content_id] = content
 
-    def get_content(self) -> OrderedDict:
-        return self.content
+        self._content_id += 1
 
-    def get_figures(self) -> OrderedDict:
-        return {k: v for k, v in self.content.items() if isinstance(v, Figure)}
+    @property
+    def content(self) -> OrderedDict:
+        return self._content
 
-    def get_textboxes(self) -> OrderedDict:
-        return {k: v for k, v in self.content.items() if isinstance(v, TextBox)}
+    @property
+    def figures(self) -> OrderedDict:
+        return self._figures
+
+    @property
+    def textboxes(self) -> OrderedDict:
+        return self._textboxes
 
     def __str__(self) -> str:
         page_as_str = '<page id="%s" bbox="%s" rotate="%d">\n' % (
@@ -165,7 +174,7 @@ class Page:
             bbox2str(self.bbox),
             self.rotate,
         )
-        for _, c in self.content.items():
+        for _, c in self._content.items():
             page_as_str += f"{c}\n"
         return page_as_str
 
