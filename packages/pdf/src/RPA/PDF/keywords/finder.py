@@ -80,7 +80,7 @@ class FinderKeywords(LibraryContext):
         locator: str,
         pagenum: Union[int, str] = 1,
         direction: str = "right",
-        closest_neighbours: Union[int, str] = 1,
+        closest_neighbours: Optional[Union[int, str]] = 1,
         strict: bool = False,
         regexp: str = None,
         trim: bool = True,
@@ -128,9 +128,13 @@ class FinderKeywords(LibraryContext):
                 value = pdf.find_text("text:Invoice Number")
         """
         pagenum = int(pagenum)
+        if closest_neighbours is not None:
+            closest_neighbours = int(closest_neighbours)
         self.logger.info(
-            "Searching for the closest %d neighbour(s) to the %s of %r on page %d using regular expression: %s",
-            closest_neighbours,
+            "Searching for %s neighbour(s) to the %s of %r on page %d using regular expression: %s",
+            f"closest {closest_neighbours}"
+            if closest_neighbours is not None
+            else "all",
             direction,
             locator,
             pagenum,
@@ -165,7 +169,7 @@ class FinderKeywords(LibraryContext):
             )
             if closest_neighbours:
                 # Keep the first N closest neighbours from the entire set of candidates.
-                candidates[int(closest_neighbours) :] = []
+                candidates[closest_neighbours:] = []
             match = Match(
                 anchor=anchor.text,
                 direction=direction,
@@ -279,11 +283,11 @@ class FinderKeywords(LibraryContext):
                 anchors.append(anchor)
 
         if anchors:
-            self.logger.info("Found %d matches for locator %r", len(anchors), locator)
+            self.logger.info("Found %d matches with locator %r", len(anchors), locator)
             for anchor in anchors:
                 self._log_element(anchor)
         else:
-            self.logger.warning("Did not find any matches")
+            self.logger.warning("Did not find any matches with locator %r", locator)
 
         return anchors
 
@@ -334,7 +338,9 @@ class FinderKeywords(LibraryContext):
         if (direction_down and item.top <= bottom) or (
             direction_up and item.bottom >= top
         ):
-            non_strict_match = not strict and (item.right <= right or item.left >= left)
+            non_strict_match = not strict and (
+                left <= item.right <= right or left <= item.left <= right
+            )
             strict_match = strict and (item.right == right or item.left == left)
             if not any([non_strict_match, strict_match]):
                 return False  # item not in range
