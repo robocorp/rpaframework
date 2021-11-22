@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-windows"
-version = "1.0.0"
+version = "1.1.0"
 description = "Windows library for RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -49,6 +49,9 @@ pylint = "^2.4.4"
 pytest = "^6.1.2"
 mock = "^4.0.2"
 pytest-cov = "^2.10.1"
+
+[tool.poetry.scripts]
+windows-record = 'RPA.scripts.record:main'
 
 [tool.black]
 target-version = ["py36", "py37", "py38", "py39"]

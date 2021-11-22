@@ -176,5 +176,9 @@ def get_recording(sleeps=False):
     return f"{header}{result}{footer}"
 
 
-if __name__ == "__main__":
+def main():
     start_recording()
+
+
+if __name__ == "__main__":
+    main()
