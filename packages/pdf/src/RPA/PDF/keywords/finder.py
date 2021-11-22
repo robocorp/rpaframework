@@ -164,7 +164,7 @@ class FinderKeywords(LibraryContext):
             )
             if closest_neighbours:
                 # Keep the first N closest neighbours from the entire set of candidates.
-                candidates[int(closest_neighbours):] = []
+                candidates[int(closest_neighbours) :] = []
             match = Match(
                 anchor=anchor.text,
                 neighbours=[candidate.text for candidate in candidates],
@@ -174,7 +174,9 @@ class FinderKeywords(LibraryContext):
         return matches
 
     @keyword
-    def set_anchor_to_element(self, locator: str, trim: bool = True, pagenum: int = 1) -> bool:
+    def set_anchor_to_element(
+        self, locator: str, trim: bool = True, pagenum: int = 1
+    ) -> bool:
         """Sets anchor point in the document for further searches.
 
         This is used internally in the library.
@@ -240,8 +242,10 @@ class FinderKeywords(LibraryContext):
             anchor = TargetObject(boxid=-1, bbox=bbox, text="")
             self._anchors.append(anchor)
         else:
-            matches = self._find_matching_textboxes(pure_locator, criteria=criteria, pagenum=int(pagenum))
-            self._anchors.extend(matches)
+            anchors = self._find_matching_textboxes(
+                pure_locator, criteria=criteria, pagenum=int(pagenum)
+            )
+            self._anchors.extend(anchors)
 
         if self._anchors:
             self.anchor_element = self._anchors[0]
@@ -253,7 +257,9 @@ class FinderKeywords(LibraryContext):
         page = self.active_pdf_document.get_page(pagenum)
         return list(page.textboxes.values())
 
-    def _find_matching_textboxes(self, locator: str, *, criteria: str, pagenum: int) -> List[TextBox]:
+    def _find_matching_textboxes(
+        self, locator: str, *, criteria: str, pagenum: int
+    ) -> List[TextBox]:
         self.logger.info(
             "find_matching_textbox: ('criteria=%s', 'locator=%s')", criteria, locator
         )
@@ -265,23 +271,25 @@ class FinderKeywords(LibraryContext):
             self.logger.debug(
                 "Can't use locator %r as regular expression too during the search: %s",
                 locator,
-                exc
+                exc,
             )
             regex_locator = None
 
-        matches = []
-        for item in self._get_textboxes_on_page(pagenum):
-            if (item.text.lower() == lower_locator) or (regex_locator and regex_locator.match(item.text)):
-                matches.append(item)
+        anchors = []
+        for anchor in self._get_textboxes_on_page(pagenum):
+            if (anchor.text.lower() == lower_locator) or (
+                regex_locator and regex_locator.match(anchor.text)
+            ):
+                anchors.append(anchor)
 
-        if matches:
-            self.logger.debug("Found %d matches for locator %r:", len(matches), locator)
-            for match in matches:
-                self._log_element(match)
+        if anchors:
+            self.logger.debug("Found %d matches for locator %r", len(anchors), locator)
+            for anchor in anchors:
+                self._log_element(anchor)
         else:
             self.logger.info("Did not find any matches")
 
-        return matches
+        return anchors
 
     @classmethod
     def _is_within_tolerance(cls, base: int, target: int) -> bool:
