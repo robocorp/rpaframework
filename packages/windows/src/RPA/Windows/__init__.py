@@ -350,7 +350,7 @@ class Windows(DynamicCore):
 
     **How to inspect**
 
-    Most common and recommended by Microsoft, inspector tool for Windows, is `Accessibility Insights`_ that
+    Most common, and recommended by Microsoft, inspector tool for Windows is `Accessibility Insights`_ that
     can be installed separately. Other options are tools `Inspect Object`_  and `UI Automation Verify`_, which
     can be accessed by installing Windows SDK.
 
@@ -363,7 +363,7 @@ class Windows(DynamicCore):
     The package provides some rudimentary inspecting and recording via script ``windows-record``, which can
     be started in the command line (in a environment containing ``rpaframework-windows`` installation).
 
-    Recording inspect elements on **mouse click** and can be stopped with keyboard **ESC**.
+    Recording inspects elements on **mouse click** and can be stopped with keyboard **ESC**.
     Expected console output.
 
     .. code-block:: bash
@@ -457,7 +457,7 @@ class Windows(DynamicCore):
         # disable uiautomation writing a log file
         Logger.SetLogFile("")
 
-        # Register keyword libraries to LibCore
+        # register keyword libraries to LibCore
         libraries = [
             ActionKeywords(self),
             ElementKeywords(self),
