@@ -28,6 +28,25 @@ class Windows(DynamicCore):
 
     .. _uiautomation: https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
 
+
+    **Installation**
+
+    This library, ``RPA.Windows`` is available via **rpaframework-windows** package. This
+    package is first available as a separate package installation from **rpaframework** package.
+    In the next stage this is integrated into **rpaframework** package. Ultimately this library
+    will replace current library ``RPA.Desktop.Windows`` if seen as approriate.
+
+    .. code-block:: yaml
+
+        channels:
+          - conda-forge
+        dependencies:
+          - python=3.7.5
+          - pip=20.1
+          - pip:
+            - rpaframework-windows==1.1.1
+
+
     **About terminology**
 
     **ControlType** is a value referred to by locator keys `type:` or `control`. Represents type of application
