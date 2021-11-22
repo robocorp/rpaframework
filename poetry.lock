@@ -28,7 +28,7 @@ python-versions = "*"
 
 [[package]]
 name = "astroid"
-version = "2.8.5"
+version = "2.8.6"
 description = "An abstract syntax tree for Python with inference support."
 category = "dev"
 optional = false
@@ -126,7 +126,7 @@ lxml = ["lxml"]
 
 [[package]]
 name = "black"
-version = "21.10b0"
+version = "21.11b1"
 description = "The uncompromising code formatter."
 category = "dev"
 optional = false
@@ -138,9 +138,9 @@ dataclasses = {version = ">=0.6", markers = "python_version < \"3.7\""}
 mypy-extensions = ">=0.4.3"
 pathspec = ">=0.9.0,<1"
 platformdirs = ">=2"
-regex = ">=2020.1.8"
+regex = ">=2021.4.4"
 tomli = ">=0.2.6,<2.0.0"
-typed-ast = {version = ">=1.4.2", markers = "python_version < \"3.8\""}
+typed-ast = {version = ">=1.4.2", markers = "python_version < \"3.8\" and implementation_name == \"cpython\""}
 typing-extensions = [
     {version = ">=3.10.0.0", markers = "python_version < \"3.10\""},
     {version = "!=3.10.0.1", markers = "python_version >= \"3.10\""},
@@ -155,14 +155,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.20.6"
+version = "1.20.10"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.23.6,<1.24.0"
+botocore = ">=1.23.10,<1.24.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -171,7 +171,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.23.6"
+version = "1.23.10"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -339,7 +339,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "exchangelib"
-version = "4.6.0"
+version = "4.6.1"
 description = "Client for Microsoft Exchange Web Services (EWS)"
 category = "main"
 optional = false
@@ -412,7 +412,7 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.30.0"
+version = "2.31.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
@@ -517,7 +517,7 @@ proto-plus = ">=1.4.0"
 
 [[package]]
 name = "google-cloud-storage"
-version = "1.42.3"
+version = "1.43.0"
 description = "Google Cloud Storage API client library"
 category = "main"
 optional = false
@@ -534,7 +534,7 @@ six = "*"
 
 [[package]]
 name = "google-cloud-texttospeech"
-version = "2.8.0"
+version = "2.9.0"
 description = "Google Cloud Text-to-Speech API client library"
 category = "main"
 optional = false
@@ -1022,14 +1022,14 @@ typing-utils = ">=0.0.3"
 
 [[package]]
 name = "packaging"
-version = "21.2"
+version = "21.3"
 description = "Core utilities for Python packages"
 category = "dev"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-pyparsing = ">=2.0.2,<3"
+pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
 
 [[package]]
 name = "pathspec"
@@ -1239,11 +1239,14 @@ pyobjc-framework-Cocoa = ">=7.3"
 
 [[package]]
 name = "pyparsing"
-version = "2.4.7"
+version = "3.0.6"
 description = "Python parsing module"
 category = "main"
 optional = false
-python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+python-versions = ">=3.6"
+
+[package.extras]
+diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
 name = "pypdf2"
@@ -1782,7 +1785,7 @@ rpaframework-core = ">=6.0.0,<7.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "0.3.0"
+version = "1.0.0"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
@@ -1861,7 +1864,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "snowballstemmer"
-version = "2.1.0"
+version = "2.2.0"
 description = "This package provides 29 stemmers for 28 languages generated from Snowball algorithms."
 category = "dev"
 optional = false
@@ -1885,7 +1888,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "sphinx"
-version = "2.4.4"
+version = "2.4.5"
 description = "Python documentation generator"
 category = "dev"
 optional = false
@@ -1895,7 +1898,7 @@ python-versions = ">=3.5"
 alabaster = ">=0.7,<0.8"
 babel = ">=1.3,<2.0 || >2.0"
 colorama = {version = ">=0.3.5", markers = "sys_platform == \"win32\""}
-docutils = ">=0.12"
+docutils = ">=0.12,<0.18"
 imagesize = "*"
 Jinja2 = ">=2.3"
 packaging = "*"
@@ -2319,8 +2322,8 @@ appdirs = [
     {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
 ]
 astroid = [
-    {file = "astroid-2.8.5-py3-none-any.whl", hash = "sha256:abc423a1e85bc1553954a14f2053473d2b7f8baf32eae62a328be24f436b5107"},
-    {file = "astroid-2.8.5.tar.gz", hash = "sha256:11f7356737b624c42e21e71fe85eea6875cb94c03c82ac76bd535a0ff10b0f25"},
+    {file = "astroid-2.8.6-py3-none-any.whl", hash = "sha256:cd8326b424c971e7d87678609cf6275d22028afd37d6ac59c16d47f1245882f6"},
+    {file = "astroid-2.8.6.tar.gz", hash = "sha256:5f6f75e45f15290e73b56f9dfde95b4bf96382284cde406ef4203e928335a495"},
 ]
 attrs = [
     {file = "attrs-21.2.0-py2.py3-none-any.whl", hash = "sha256:149e90d6d8ac20db7a955ad60cf0e6881a3f20d37096140088356da6c716b0b1"},
@@ -2364,16 +2367,16 @@ beautifulsoup4 = [
     {file = "beautifulsoup4-4.10.0.tar.gz", hash = "sha256:c23ad23c521d818955a4151a67d81580319d4bf548d3d49f4223ae041ff98891"},
 ]
 black = [
-    {file = "black-21.10b0-py3-none-any.whl", hash = "sha256:6eb7448da9143ee65b856a5f3676b7dda98ad9abe0f87fce8c59291f15e82a5b"},
-    {file = "black-21.10b0.tar.gz", hash = "sha256:a9952229092e325fe5f3dae56d81f639b23f7131eb840781947e4b2886030f33"},
+    {file = "black-21.11b1-py3-none-any.whl", hash = "sha256:802c6c30b637b28645b7fde282ed2569c0cd777dbe493a41b6a03c1d903f99ac"},
+    {file = "black-21.11b1.tar.gz", hash = "sha256:a042adbb18b3262faad5aff4e834ff186bb893f95ba3a8013f09de1e5569def2"},
 ]
 boto3 = [
-    {file = "boto3-1.20.6-py3-none-any.whl", hash = "sha256:265d949fb6f86b5e698ca17393864d073fe0ed9225ebad6b58281297e3e1196c"},
-    {file = "boto3-1.20.6.tar.gz", hash = "sha256:9c0bb2315ef2d718d31322f27eff68c8175234105a5d3859a2683acf7681ffd0"},
+    {file = "boto3-1.20.10-py3-none-any.whl", hash = "sha256:e2b5ce2679424a6c2bfc2ee4bb42d9100c8c08b21eff8d74cff85a7243a76d7b"},
+    {file = "boto3-1.20.10.tar.gz", hash = "sha256:20a5109a37414a52c55d2048388f02cb7cf46fc0ca7be08b3bf81f4c5c053feb"},
 ]
 botocore = [
-    {file = "botocore-1.23.6-py3-none-any.whl", hash = "sha256:66e8ae9249b1a66f049baae05b2d0556193db9efae58fc5791186341e123001c"},
-    {file = "botocore-1.23.6.tar.gz", hash = "sha256:9e8d870a0a4335ce4816c707137da54b1ab7bf98f0ed959a7ba59c98c7f6c057"},
+    {file = "botocore-1.23.10-py3-none-any.whl", hash = "sha256:11670d3ac14eed1122e0154a7e1563c2c270beef43996466f8d11fbf5cf31611"},
+    {file = "botocore-1.23.10.tar.gz", hash = "sha256:0adda9a4a95221027312eaaee0ec9fe2239fb2f285fced3ddca54b1310b864ee"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2504,8 +2507,8 @@ et-xmlfile = [
     {file = "et_xmlfile-1.1.0.tar.gz", hash = "sha256:8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c"},
 ]
 exchangelib = [
-    {file = "exchangelib-4.6.0-py2.py3-none-any.whl", hash = "sha256:e4374680b735e98c8cc867caf6e4d6eb9e7583bad5174d17b57b7db1022871dd"},
-    {file = "exchangelib-4.6.0.tar.gz", hash = "sha256:770d31974c3477cff0c227f4b7481c6810acfbd71b52af41f3cd86ac20fcf76f"},
+    {file = "exchangelib-4.6.1-py2.py3-none-any.whl", hash = "sha256:9f9e30f3f46ccbc5a2c5c1ffa69c5a5fef69c702fc53ecee1f6fb56e33aacef8"},
+    {file = "exchangelib-4.6.1.tar.gz", hash = "sha256:d46131d79493604d18e4d694d7021984290069e33a97a000002d66ccb2479252"},
 ]
 fpdf2 = [
     {file = "fpdf2-2.4.6-py2.py3-none-any.whl", hash = "sha256:39b6cd244fdac6479dbd58aef262906fcf397e3ae603cdbf9b5f9df30dea089a"},
@@ -2520,8 +2523,8 @@ google-api-core = [
     {file = "google_api_core-2.2.2-py2.py3-none-any.whl", hash = "sha256:e7853735d4f51f4212d6bf9750620d76fc0106c0f271be0c3f43b73501c7ddf9"},
 ]
 google-api-python-client = [
-    {file = "google-api-python-client-2.30.0.tar.gz", hash = "sha256:d46418a296f8ee309b2044791aeffae512cb1a9d9bfb3def2bfb37058f01c645"},
-    {file = "google_api_python_client-2.30.0-py2.py3-none-any.whl", hash = "sha256:54e60f20acc3a5ac48e37b3d86bf5191fd6a1acb0f1efe76c47ed6b90f8c5a50"},
+    {file = "google-api-python-client-2.31.0.tar.gz", hash = "sha256:3f64a5eee6fa03ab51806dccf48e342fda83fea60c290518c6a2dfdbf2de9efd"},
+    {file = "google_api_python_client-2.31.0-py2.py3-none-any.whl", hash = "sha256:d9f1539db48abfea3d7d65e4cfba258a5a95c901e99fb49c7cfe4de99921a757"},
 ]
 google-auth = [
     {file = "google-auth-2.3.3.tar.gz", hash = "sha256:d83570a664c10b97a1dc6f8df87e5fdfff012f48f62be131e449c20dfc32630e"},
@@ -2548,12 +2551,12 @@ google-cloud-speech = [
     {file = "google_cloud_speech-2.11.1-py2.py3-none-any.whl", hash = "sha256:b00a3fd2cfcb79ea709516cb12f84066222d0579f97668a85687e68d481c59d2"},
 ]
 google-cloud-storage = [
-    {file = "google-cloud-storage-1.42.3.tar.gz", hash = "sha256:7754d4dcaa45975514b404ece0da2bb4292acbc67ca559a69e12a19d54fcdb06"},
-    {file = "google_cloud_storage-1.42.3-py2.py3-none-any.whl", hash = "sha256:71ee3a0dcf2c139f034a054181cd7658f1ec8f12837d2769c450a8a00fcd4c6d"},
+    {file = "google-cloud-storage-1.43.0.tar.gz", hash = "sha256:f3b4f4be5c8a1b5727a8f7136c94d3bacdd4b7bf11f9553f51ae4c1d876529d3"},
+    {file = "google_cloud_storage-1.43.0-py2.py3-none-any.whl", hash = "sha256:bb3e4088054d50616bd57e4b81bb158db804c91faed39279d666e2fd07d2c118"},
 ]
 google-cloud-texttospeech = [
-    {file = "google-cloud-texttospeech-2.8.0.tar.gz", hash = "sha256:e132b600d1ec9b4ddc224457b46ccf56dc588405a988f06ce6fbd3934d5ad4b4"},
-    {file = "google_cloud_texttospeech-2.8.0-py2.py3-none-any.whl", hash = "sha256:ab6c9f48b2fff30764e7efe6325d685fb7a2a7c60594a21f02d05e05d690dfe9"},
+    {file = "google-cloud-texttospeech-2.9.0.tar.gz", hash = "sha256:e8e272ab54be00285c8f9451081d833980c9fc2a1eff828448dfe315dfa61250"},
+    {file = "google_cloud_texttospeech-2.9.0-py2.py3-none-any.whl", hash = "sha256:89ae9d028624c5b1e0c8fbcc14f91614e8752a37b045d70cbc1d5c65a53173b5"},
 ]
 google-cloud-translate = [
     {file = "google-cloud-translate-3.6.1.tar.gz", hash = "sha256:38772cc60ef4315d25a7dbeef5ddab9e75674722cb4500bc69b295e5d0af6a97"},
@@ -3050,8 +3053,8 @@ overrides = [
     {file = "overrides-6.1.0.tar.gz", hash = "sha256:5ba636b73bf72d3d80550f4a5dfe3c7d04ec6e8fd246c4074bfc7ad82bd0ea3d"},
 ]
 packaging = [
-    {file = "packaging-21.2-py3-none-any.whl", hash = "sha256:14317396d1e8cdb122989b916fa2c7e9ca8e2be9e8060a6eff75b6b7b4d8a7e0"},
-    {file = "packaging-21.2.tar.gz", hash = "sha256:096d689d78ca690e4cd8a89568ba06d07ca097e3306a4381635073ca91479966"},
+    {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
+    {file = "packaging-21.3.tar.gz", hash = "sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"},
 ]
 pathspec = [
     {file = "pathspec-0.9.0-py2.py3-none-any.whl", hash = "sha256:7d15c4ddb0b5c802d161efc417ec1a2558ea2653c2e8ad9c19098201dc1c993a"},
@@ -3256,8 +3259,8 @@ pyobjc-framework-quartz = [
     {file = "pyobjc_framework_Quartz-7.3-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:7aba3cd966a0768dd58a35680742820f0c5ac596a9cd11014e2057818e65b0af"},
 ]
 pyparsing = [
-    {file = "pyparsing-2.4.7-py2.py3-none-any.whl", hash = "sha256:ef9d7589ef3c200abe66653d3f1ab1033c3c419ae9b9bdb1240a85b024efc88b"},
-    {file = "pyparsing-2.4.7.tar.gz", hash = "sha256:c203ec8783bf771a155b207279b9bccb8dea02d8f0c9e5f8ead507bc3246ecc1"},
+    {file = "pyparsing-3.0.6-py3-none-any.whl", hash = "sha256:04ff808a5b90911829c55c4e26f75fa5ca8a2f5f36aa3a51f68e27033341d3e4"},
+    {file = "pyparsing-3.0.6.tar.gz", hash = "sha256:d9bdec0013ef1eb5a84ab39a3b3868911598afa494f5faa038647101504e2b81"},
 ]
 pypdf2 = [
     {file = "PyPDF2-1.26.0.tar.gz", hash = "sha256:e28f902f2f0a1603ea95ebe21dff311ef09be3d0f0ef29a3e44a932729564385"},
@@ -3566,8 +3569,8 @@ six = [
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
 snowballstemmer = [
-    {file = "snowballstemmer-2.1.0-py2.py3-none-any.whl", hash = "sha256:b51b447bea85f9968c13b650126a888aabd4cb4463fca868ec596826325dedc2"},
-    {file = "snowballstemmer-2.1.0.tar.gz", hash = "sha256:e997baa4f2e9139951b6f4c631bad912dfd3c792467e2f03d7239464af90e914"},
+    {file = "snowballstemmer-2.2.0-py2.py3-none-any.whl", hash = "sha256:c8e1716e83cc398ae16824e5572ae04e0d9fc2c6b985fb0f900f5f0c96ecba1a"},
+    {file = "snowballstemmer-2.2.0.tar.gz", hash = "sha256:09b16deb8547d3412ad7b590689584cd0fe25ec8db3be37788be3810cbf19cb1"},
 ]
 sortedcontainers = [
     {file = "sortedcontainers-2.4.0-py2.py3-none-any.whl", hash = "sha256:a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0"},
@@ -3578,8 +3581,8 @@ soupsieve = [
     {file = "soupsieve-2.3.1.tar.gz", hash = "sha256:b8d49b1cd4f037c7082a9683dfa1801aa2597fb11c3a1155b7a5b94829b4f1f9"},
 ]
 sphinx = [
-    {file = "Sphinx-2.4.4-py3-none-any.whl", hash = "sha256:fc312670b56cb54920d6cc2ced455a22a547910de10b3142276495ced49231cb"},
-    {file = "Sphinx-2.4.4.tar.gz", hash = "sha256:b4c750d546ab6d7e05bdff6ac24db8ae3e8b8253a3569b754e445110a0a12b66"},
+    {file = "Sphinx-2.4.5-py3-none-any.whl", hash = "sha256:02d7e9dc5f30caa42a682b26de408b755a55c7b07f356a30a3b6300bf7d4740e"},
+    {file = "Sphinx-2.4.5.tar.gz", hash = "sha256:b00394e90463e7482c4cf59e7db1c8604baeca1468abfc062904dedc1cea6fcc"},
 ]
 sphinx-issues = [
     {file = "sphinx-issues-1.2.0.tar.gz", hash = "sha256:845294736c7ac4c09c706f13431f709e1164037cbb00f6bf623ae16eccf509f3"},

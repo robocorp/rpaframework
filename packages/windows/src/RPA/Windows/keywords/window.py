@@ -3,12 +3,9 @@ import signal
 import time
 from typing import List, Dict
 
-from RPA.Windows.keywords import (
-    keyword,
-    LibraryContext,
-    WindowControlError,
-)
+from RPA.Windows.keywords import keyword, LibraryContext, WindowControlError
 from RPA.Windows import utils
+from .locators import WindowsElement
 
 if utils.is_windows():
     import uiautomation as auto
@@ -38,24 +35,24 @@ class WindowKeywords(LibraryContext):
             Control Window   regex:.*Notepad
             ${handle}=  Control Window   executable:Spotify.exe
         """
-        self.ctx.window = self.ctx.get_element(
-            locator + " and type:WindowControl", root_element=auto
-        )
-        if not self.ctx.window.Exists():
-            self.ctx.window = self.ctx.get_element(
-                locator + " and type:PaneControl", root_element=auto
-            )
-        if not self.ctx.window.Exists():
+        window_locator = f"{locator}  and type:WindowControl"
+        pane_locator = f"{locator}  and type:PaneControl"
+        desktop = WindowsElement(auto.GetRootControl(), window_locator)
+        self.ctx.window = self.ctx.get_element(window_locator, root_element=desktop)
+        if not self.ctx.window.item.Exists():
+            desktop = WindowsElement(auto.GetRootControl(), pane_locator)
+            self.ctx.window = self.ctx.get_element(pane_locator, root_element=desktop)
+        if not self.ctx.window.item.Exists():
             raise WindowControlError(
                 'Could not locate window with locator "%s"' % locator
             )
         # auto.WaitForExist(self.ctx.window, 5)
-        if hasattr(self.ctx.window, "Restore"):
-            self.ctx.window.Restore()
-        self.ctx.window.SetFocus()
-        self.ctx.window.SetActive()
-        handle = self.ctx.window.NativeWindowHandle
-        self.ctx.window.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
+        if hasattr(self.ctx.window.item, "Restore"):
+            self.ctx.window.item.Restore()
+        self.ctx.window.item.SetFocus()
+        self.ctx.window.item.SetActive()
+        handle = self.ctx.window.item.NativeWindowHandle
+        self.ctx.window.item.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
         # time.sleep(1.0)
         return handle
 
@@ -77,12 +74,12 @@ class WindowKeywords(LibraryContext):
             self.control_window(locator)
         if not self.ctx.window:
             raise WindowControlError("There is no active window")
-        if not hasattr(self.ctx.window, "Minimize"):
+        if not hasattr(self.ctx.window.item, "Minimize"):
             self.logger.warning(
                 "Control '%s' does not have attribute Minimize" % self.ctx.window
             )
             return
-        self.ctx.window.Minimize()
+        self.ctx.window.item.Minimize()
 
     @keyword(tags=["window"])
     def maximize_window(self, locator: str = None) -> None:
@@ -102,9 +99,9 @@ class WindowKeywords(LibraryContext):
             self.control_window(locator)
         if not self.ctx.window:
             raise WindowControlError("There is no active window")
-        if not hasattr(self.ctx.window, "Maximize"):
+        if not hasattr(self.ctx.window.item, "Maximize"):
             raise WindowControlError("Window does not have attribute Maximize")
-        self.ctx.window.Maximize()
+        self.ctx.window.item.Maximize()
 
     @keyword(tags=["window"])
     def list_windows(self) -> List[Dict]:
@@ -143,6 +140,8 @@ class WindowKeywords(LibraryContext):
     def windows_run(self, text: str, wait_time: float = 3.0) -> None:
         """Use Windows run window to launch application.
 
+        Activated by pressing `win + r`.
+
         :param text: text to enter into run input field
         :param wait_time: sleep time after search has been entered (default 3.0 seconds)
 
@@ -160,6 +159,8 @@ class WindowKeywords(LibraryContext):
     @keyword(tags=["window"])
     def windows_search(self, text: str, wait_time: float = 3.0) -> None:
         """Use Windows search window to launch application.
+
+        Activated by pressing `win + s`.
 
         :param text: text to enter into search input field
         :param wait_time: sleep time after search has been entered (default 3.0 seconds)
@@ -188,8 +189,8 @@ class WindowKeywords(LibraryContext):
         if not self.ctx.window:
             self.ctx.logger.warning("There is no active window")
             return False
-        pid = self.ctx.window.ProcessId
-        name = self.ctx.window.Name
+        pid = self.ctx.window.item.ProcessId
+        name = self.ctx.window.item.Name
         self.ctx.logger.info(
             'Closing window with Name:"%s", ProcessId: %s' % (name, pid)
         )

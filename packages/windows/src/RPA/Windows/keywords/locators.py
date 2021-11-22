@@ -13,6 +13,7 @@ if utils.is_windows():
     import uiautomation as auto
     from uiautomation.uiautomation import Control
 
+DEFAULT_SEARCH_TIMEOUT = 5.0
 
 WINDOWS_LOCATOR_STRATEGIES = {
     "automationid": "AutomationId",
@@ -31,6 +32,18 @@ WINDOWS_LOCATOR_STRATEGIES = {
     "handle": "handle",
     "executable": "executable",
 }
+
+
+@dataclass
+class WindowsElement:
+    """Represent Control as dataclass"""
+
+    item: Control
+    locator: str = None
+    name: str = ""
+    automation_id: str = ""
+    control_type: str = ""
+    class_name: str = ""
 
 
 @dataclass
@@ -81,7 +94,7 @@ class MatchObject:
                 strategy = None
                 default_value.append(part_text)
             # self.logger.info("STRATEGY: %s VALUE: %s" % (strategy, value))
-            if strategy:
+            if strategy and strategy in WINDOWS_LOCATOR_STRATEGIES:
                 if len(default_value) > 0:
                     match_object.add_locator("Name", " ".join(default_value))
                     default_value = []
@@ -203,10 +216,11 @@ class LocatorKeywords(LibraryContext):
     @keyword
     def get_element(
         self,
-        locator: Union[str, Control],
+        locator: Union[str, WindowsElement],
         search_depth: int = 8,
-        root_element: Control = None,
-    ) -> Control:
+        root_element: WindowsElement = None,
+        timeout: float = DEFAULT_SEARCH_TIMEOUT,
+    ) -> WindowsElement:
         """Get Control element defined by the locator.
 
         Returned element can be used instead of a locator string for
@@ -217,6 +231,7 @@ class LocatorKeywords(LibraryContext):
         :param locator: locator as a string or as a element
         :param search_depth: how deep the element search will traverse (default 8)
         :param root_element: can be used to set search root element
+        :param timeout: timeout in seconds for element lookup (default 5.0)
 
         Example:
 
@@ -225,19 +240,21 @@ class LocatorKeywords(LibraryContext):
             Set Anchor    id:DataGrid
             ${elements}=    Get Elements    type:HeaderItem
             FOR    ${el}    IN    @{elements}
-                Log To Console    ${el.Name}
+                Log To Console    ${el.item.Name}
             END
         """
         # TODO. Add examples
         self.logger.info("Locator '%s' into element", locator)
         if not locator:
-            element = self.ctx.window or auto
+            element = self.ctx.window or WindowsElement(auto.GetRootControl(), None)
         elif isinstance(locator, str):
             element = self.get_element_by_locator_string(
                 locator, search_depth, root_element
             )
         else:
             element = locator
+        if hasattr(element.item, "Exists"):
+            element.item.Exists(maxSearchSeconds=timeout)
         if not element:
             raise ControlNotFound("Unable to get element with '%s'" % locator)
         self.logger.info("Returning element: '%s'", element)
@@ -245,9 +262,10 @@ class LocatorKeywords(LibraryContext):
 
     def get_element_by_locator_string(self, locator, search_depth, root_element):
         locators = locator.split(" > ")
-        root_element = (
-            self.ctx.anchor_element or root_element or self.ctx.window or auto
-        )
+        anchor = self.ctx.anchor_element.item if self.ctx.anchor_element else None
+        root = root_element.item if root_element else None
+        window = self.ctx.window.item if self.ctx.window else None
+        root_element = root or anchor or window or auto.GetRootControl()
         element = None
         for loc in locators:
             self.logger.info("Root element: '%s'" % root_element)
@@ -255,20 +273,29 @@ class LocatorKeywords(LibraryContext):
                 loc, search_depth, root_element
             )
             root_element = element
-        return element
+        return WindowsElement(
+            element,
+            locator,
+            element.Name,
+            element.AutomationId,
+            element.ControlTypeName,
+            element.ClassName,
+        )
 
     @keyword
     def get_elements(
         self,
-        locator: Union[str, Control],
+        locator: Union[str, WindowsElement],
         search_depth: int = 8,
-        root_element: Control = None,
+        root_element: WindowsElement = None,
+        timeout: float = DEFAULT_SEARCH_TIMEOUT,
     ) -> List:
         """Get list of elements matching locator.
 
         :param locator: locator as a string or as a element
         :param search_depth: how deep the element search will traverse (default 8)
         :param root_element: can be used to set search root element
+        :param timeout: timeout in seconds for element lookup (default 5.0)
 
         Example:
 
@@ -281,13 +308,21 @@ class LocatorKeywords(LibraryContext):
             END
         """
         elements = []
-        element = self.get_element(locator, search_depth, root_element)
-        elements.append(element)
+        window_element = self.get_element(locator, search_depth, root_element, timeout)
+        elements.append(window_element)
         while True:
-            next_element = element.GetNextSiblingControl()
+            # TODO. the sibling needs to match the original locator
+            next_element = window_element.item.GetNextSiblingControl()
             if next_element:
-                elements.append(next_element)
+                window_element = WindowsElement(
+                    next_element,
+                    locator,
+                    next_element.Name,
+                    next_element.AutomationId,
+                    next_element.ControlTypeName,
+                    next_element.ClassName,
+                )
+                elements.append(window_element)
             else:
                 break
-            element = next_element
         return elements

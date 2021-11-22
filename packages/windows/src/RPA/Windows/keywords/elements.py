@@ -7,17 +7,21 @@ from RPA.Windows.keywords import (
     LibraryContext,
 )
 from RPA.Windows import utils
+from .locators import DEFAULT_SEARCH_TIMEOUT, WindowsElement
 
 if utils.is_windows():
     import uiautomation as auto
-    from uiautomation.uiautomation import Control
 
 
 class ElementKeywords(LibraryContext):
     """Keywords for handling Control elements"""
 
     @keyword
-    def set_anchor(self, locator: Union[str, Control]):
+    def set_anchor(
+        self,
+        locator: Union[WindowsElement, str],
+        timeout: float = DEFAULT_SEARCH_TIMEOUT,
+    ):
         """Set anchor to an element specified by the locator.
 
         All following keywords using locators will use this element
@@ -28,6 +32,7 @@ class ElementKeywords(LibraryContext):
         To release anchor call ``Clear Anchor`` keyword.
 
         :param locator: string locator or Control element
+        :param timeout: timeout in seconds for element lookup (default 5.0)
 
         Example:
 
@@ -42,7 +47,7 @@ class ElementKeywords(LibraryContext):
             END
             Clear Anchor
         """
-        self.ctx.anchor_element = self.ctx.get_element(locator)
+        self.ctx.anchor_element = self.ctx.get_element(locator, timeout=timeout)
 
     @keyword
     def clear_anchor(self):
@@ -52,7 +57,7 @@ class ElementKeywords(LibraryContext):
     @keyword
     def print_tree(
         self,
-        locator: Union[str, Control] = None,
+        locator: Union[WindowsElement, str] = None,
         max_depth: int = 8,
         encoding: str = "utf-8",
         capture_image_folder: str = None,
@@ -76,17 +81,17 @@ class ElementKeywords(LibraryContext):
         index = 1
 
         def GetFirstChild(element):
-            return element.GetFirstChildControl()
+            return element.item.GetFirstChildControl()
 
         def GetNextSibling(element):
-            return element.GetNextSiblingControl()
+            return element.item.GetNextSiblingControl()
 
         target = self.ctx.get_element(locator)
         image_folder = (
             Path(capture_image_folder).resolve() if capture_image_folder else None
         )
         for element, depth in auto.WalkTree(
-            target,
+            target.item,
             getFirstChild=GetFirstChild,
             getNextSibling=GetNextSibling,
             includeTop=True,
@@ -107,7 +112,7 @@ class ElementKeywords(LibraryContext):
             index += 1
 
     @keyword
-    def get_attribute(self, locator: Union[str, Control], attribute: str):
+    def get_attribute(self, locator: Union[WindowsElement, str], attribute: str):
         """Get attribute value of the element defined by the locator.
 
         :param locator: string locator or Control element
@@ -117,34 +122,33 @@ class ElementKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${value}=   Get Attribute
-            ...  locator=type:Edit name:firstname
-            ...  attribute=AutomationId
+            ${id}=   Get Attribute  type:Edit name:firstname   AutomationId
         """
         # TODO. Add examples
         element = self.ctx.get_element(locator)
-        attr = getattr(element, attribute, None)
+        attr = hasattr(element.item, attribute)
         if not attr:
             raise ActionNotPossible(
                 'Element "%s" does not have "%s" attribute' % (locator, attribute)
             )
-        if callable(attribute):
+        if callable(attr):
             raise ActionNotPossible(
                 'Can\'t access attribute "%s" of element "%s"' % (attribute, locator)
             )
-        return str(attr)
+        return str(getattr(element.item, attribute))
 
     @keyword
-    def list_attributes(self, locator: Union[str, Control]) -> List:
+    def list_attributes(self, locator: Union[WindowsElement, str]) -> List:
         """List all element attributes.
 
         :param locator: string locator or Control element
         """
         element = self.ctx.get_element(locator)
-        element_attributes = [e for e in dir(element) if not e.startswith("_")]
+        element_attributes = [e for e in dir(element.item) if not e.startswith("_")]
         attributes = []
 
         for attr_name in element_attributes:
-            attr = getattr(element, attr_name)
+            attr = getattr(element.item, attr_name)
             if not inspect.ismethod(attr):
                 attributes.append(attr_name)
+        return attributes

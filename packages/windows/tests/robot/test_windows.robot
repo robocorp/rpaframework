@@ -2,7 +2,7 @@
 Library           RPA.Windows
 Library           String
 Library           Process
-Task Setup        Set Timeout    0.1
+Task Setup        Set Wait Time    0.1
 
 *** Variables ***
 ${EXE_UIDEMO}     c:\\koodi\\uidemo.exe
@@ -42,22 +42,25 @@ Get Temperature Values
 
 Start application if it is not open
     [Arguments]    ${windowtitle}    ${start}=${TRUE}
+    ${returnvalue}=    Set Variable    ${FALSE}
     ${windowlist}=    List Windows
     FOR    ${win}    IN    @{windowlist}
         ${match}=    Get Regexp Matches    ${win}[title]    ^${windowtitle}$
         IF    ${match}
-            Return From Keyword    ${TRUE}
+            Control Window    name:${win}[title]
+            ${returnvalue}=    Set Variable    ${TRUE}
+            Exit For Loop
         END
     END
-    IF    $start
+    IF    not $returnvalue and $start
         Windows Search    ${windowtitle}
+        Control Window    name:${windowtitle}
     END
-    Return From Keyword    ${FALSE}
+    Return From Keyword    ${returnvalue}
 
 *** Tasks ***
 Calculator by clicking buttons
     Start application if it is not open    Calculator
-    Control Window    name:Calculator
     Click    id:num9Button
     Click    id:num6Button
     Click    id:plusButton
@@ -70,18 +73,20 @@ Calculator by clicking buttons
 
 *** Tasks ***
 Do some calculations
-    Start application if it is not open    Calculator
+    [Setup]    Windows Run    calc.exe
     Control Window    name:Calculator
-    Click    id:clearButton depth:16
+    Click    id:clearButton
     Send Keys    keys=96+4=
     ${result}=    Get Attribute    id:CalculatorResults    Name
-    Log To Console    \n${result}
-    Close Current Window
+    Log To Console    ${result}
+    ${buttons}=    Get Elements    type:Group and name:'Number pad' > type:Button
+    FOR    ${button}    IN    @{buttons}
+        Log To Console    ${button}
+    END
+    [Teardown]    Close Current Window
 
 Play Task Calculator
     Start application if it is not open    Calculator
-    Control Window    name:Calculator
-    #Control Window    executable:calc.exe
     Click    id:clearButton
     Click    type:Group and name:'Number pad' > type:Button and index:4
     Click    type:Group and name:'Number pad' > type:Button index:5 offset:370,0    # it is optional to use "and" in the locator syntax
@@ -91,7 +96,6 @@ Play Task Calculator
 
 Play Task Temperature
     Start application if it is not open    Calculator
-    Control Window    name:Calculator
     Click    id:TogglePaneButton
     Click    id:Temperature    # TODO. make the click even when not visible
     Log To Console    \nGet temperatures
@@ -104,8 +108,9 @@ Play Task Temperature
     Close Current Window
 
 Play Task UIDemo
+    Screenshot    ${NONE}    desktop.png
     ${running}=    Start application if it is not open    UIDemo    ${FALSE}
-    Log To Console    \nUIDemo running: True
+    Log To Console    \nUIDemo running: ${running}
     IF    not $running
         Windows Run    ${EXE_UIDEMO}
         Control Window    UiDemo    # Handle: 5835532
@@ -113,14 +118,22 @@ Play Task UIDemo
         Send Keys    id:pass    password
         Click    class:Button
     END
-    Set Anchor    id:DataGrid
-    ${elements}=    Get Elements    type:HeaderItem
+    Set Anchor    id:DataGrid    10.0
+    ${headers}=    Get Elements    type:HeaderItem
+    ${rows}=    Get Elements    class:DataGridRow name:'UiDemo.DepositControl+LineOfTable'
     #Log To Console    ${element.Name}
-    FOR    ${el}    IN    @{elements}
-        Log To Console    ${el.Name}
+    FOR    ${row}    IN    @{rows}
+        ${columns}=    Get Elements    class:DataGridCell    root_element=${row}
+        FOR    ${col}    IN    @{columns}
+            Log To Console    Cell value: ${col.item.Name}
+        END
+#    Screenshot    $el    element${el.item.Name}.png
+#    ${name}=    Get Attribute    $el    Name
+#    Log To Console    ${name}
     END
-    #Maximize Window
-    #Minimize Window
+    #${element}=    Get Element    type:HeaderItem
+    #Screenshot    ${element}    element${element.item.Name}.png
+    #${name}=    Get Attribute    ${element}    Name
     #Control Window    UIDemo    # Handle: 5901414
     #Click    type:ButtonControl and class:Button and name:Exit > type:TextControl and class:TextBlock and name:Exit
     # TODO. add more actions to the task --- slider, checkboxes, table (get/set vals)
@@ -153,6 +166,7 @@ Notepad write text into a file
     Select    type:ComboBox id:1136    Trebuchet MS
     Select    type:ComboBox id:1138    28
     Click    type:Button name:OK
+    Control Window    subname:'- Notepad'
     Send Keys    keys={Ctrl}a{Del}
     Send Keys    keys=Lets add some text to the notepad
     Control Window    subname:'- Notepad'
