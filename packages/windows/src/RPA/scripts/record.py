@@ -132,7 +132,7 @@ def start_recording():
     mouse_listener = mouse.Listener(on_click=on_click)
     mouse_listener.start()
     with keyboard.Listener(on_release=on_release) as key_listener:
-        print("keyboard and mouse listeners started")
+        print("keyboard and mouse listeners started", flush=True)
         key_listener.join()
     mouse_listener.stop()
     the_recording = get_recording()

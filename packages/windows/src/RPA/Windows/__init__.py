@@ -341,9 +341,30 @@ class Windows(DynamicCore):
 
     **Recording**
 
-    The package provides some rudimentary inspecting and recording via script SCRIPT_NAME
+    The package provides some rudimentary inspecting and recording via script ``windows-record``, which can
+    be started in the command line (in a environment containing ``rpaframework-windows`` installation).
 
-    ADD GUIDE HERE
+    Recording inspect elements on **mouse click** and can be stopped with keyboard **ESC**.
+    Expected console output.
+
+    .. code-block:: bash
+
+        C:\\Users\\User\\robots\\>windows-record
+        keyboard and mouse listeners started
+
+        --------------------------------------------------------------------------------
+        COPY & PASTE BELOW CODE INTO *** Tasks *** or *** Keywords ***
+        --------------------------------------------------------------------------------
+
+        Control Window    Taskbar  # Handle: 131380
+        Click   name:'Type here to search'
+        Control Window    Calculator  # Handle: 3411840
+        Click   name:'Five'
+        Click   name:'Eight'
+        Click   name:'Five'
+
+        --------------------------------------------------------------------------------
+
 
     **Examples**
 
