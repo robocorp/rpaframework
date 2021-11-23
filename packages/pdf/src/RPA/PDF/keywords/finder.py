@@ -40,8 +40,6 @@ class Match:
 class FinderKeywords(LibraryContext):
     """Keywords for locating elements."""
 
-    PIXEL_TOLERANCE = 5
-
     def __init__(self, ctx):
         super().__init__(ctx)
 
@@ -56,7 +54,7 @@ class FinderKeywords(LibraryContext):
     ) -> Callable[[TextBox], bool]:
         if direction in ["left", "right"]:
             return functools.partial(
-                self._is_match_on_horizontal, direction=direction, regexp=regexp
+                self._is_match_on_horizontal, direction=direction, regexp=regexp, strict=strict
             )
         if direction in ["top", "bottom", "up", "down"]:
             return functools.partial(
@@ -285,40 +283,50 @@ class FinderKeywords(LibraryContext):
 
         return anchors
 
-    @classmethod
-    def _is_within_tolerance(cls, base: int, target: int) -> bool:
-        max_target = target + cls.PIXEL_TOLERANCE
-        min_target = max(target - cls.PIXEL_TOLERANCE, 0)
-        return min_target <= base <= max_target
+    def _check_text_match(self, candidate: TextBox, regexp: Optional[re.Pattern]) -> bool:
+        if regexp and regexp.match(candidate.text):
+            self._log_element(candidate, prefix="Exact match:")
+            return True
+        if regexp is None:
+            self._log_element(candidate, prefix="Potential match:")
+            return True
+
+        return False
 
     def _is_match_on_horizontal(
         self,
-        item: TextBox,
+        candidate: TextBox,
         *,
         direction: str,
         regexp: Optional[re.Pattern],
+        strict: bool,
         anchor: TextBox,
     ) -> bool:
-        if not item:
-            return False
+        (left, bottom, right, top) = anchor.bbox
+        direction_left = direction == "left"
+        direction_right = direction == "right"
 
-        (left, _, right, top) = anchor.bbox
-        direction_ok = False
-        if self._is_within_tolerance(item.top, top):
-            if direction == "right" and item.left >= right:
-                direction_ok = True
-            elif direction == "left" and item.right <= left:
-                direction_ok = True
-        if not direction_ok:
-            return False
+        if not any([
+            direction_left and candidate.right <= left,
+            direction_right and candidate.left >= right
+        ]):
+            return False  # not in the seeked direction
 
-        regex_matched = regexp and regexp.match(item.text)
-        no_regex = regexp is None
-        return any([regex_matched, no_regex])
+        non_strict_match = not strict and (
+            bottom <= candidate.bottom <= top
+            or bottom <= candidate.top <= top
+            or candidate.bottom <= bottom <= candidate.top
+            or candidate.bottom <= top <= candidate.top
+        )
+        strict_match = strict and (candidate.bottom == bottom or candidate.top == top)
+        if not any([non_strict_match, strict_match]):
+            return False  # candidate not in boundaries
+
+        return self._check_text_match(candidate, regexp)
 
     def _is_match_on_vertical(
         self,
-        item: TextBox,
+        candidate: TextBox,
         *,
         direction: str,
         regexp: Optional[re.Pattern],
@@ -329,39 +337,31 @@ class FinderKeywords(LibraryContext):
         direction_down = direction in ["bottom", "down"]
         direction_up = direction in ["top", "up"]
 
-        if (direction_down and item.top <= bottom) or (
-            direction_up and item.bottom >= top
-        ):
-            non_strict_match = not strict and (
-                left <= item.left <= right
-                or left <= item.right <= right
-                or item.left <= left <= item.right
-                or item.left <= right <= item.right
-            )
-            strict_match = strict and (item.right == right or item.left == left)
-            if not any([non_strict_match, strict_match]):
-                return False  # item not in range
+        if not any([
+            direction_down and candidate.top <= bottom,
+            direction_up and candidate.bottom >= top
+        ]):
+            return False  # not in the seeked direction
 
-            if regexp and regexp.match(item.text):
-                self.logger.debug(
-                    "EXACT MATCH %s %r %s", item.boxid, item.text, item.bbox
-                )
-                return True
-            if regexp is None:
-                self.logger.debug(
-                    "POTENTIAL MATCH %s %r %s", item.boxid, item.text, item.bbox
-                )
-                return True
+        non_strict_match = not strict and (
+            left <= candidate.left <= right
+            or left <= candidate.right <= right
+            or candidate.left <= left <= candidate.right
+            or candidate.left <= right <= candidate.right
+        )
+        strict_match = strict and (candidate.left == left or candidate.right == right)
+        if not any([non_strict_match, strict_match]):
+            return False  # candidate not in boundaries
 
-        return False
+        return self._check_text_match(candidate, regexp)
 
-    def _is_match_in_box(self, item: TextBox, *, anchor: TextBox) -> bool:
+    def _is_match_in_box(self, candidate: TextBox, *, anchor: TextBox) -> bool:
         (left, bottom, right, top) = anchor.bbox
         return (
-            left <= item.left
-            and right >= item.right
-            and bottom <= item.bottom
-            and top >= item.top
+            left <= candidate.left
+            and right >= candidate.right
+            and bottom <= candidate.bottom
+            and top >= candidate.top
         )
 
     @staticmethod
