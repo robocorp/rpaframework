@@ -216,22 +216,28 @@ class ActionKeywords(LibraryContext):
         )
 
     @keyword(tags=["action"])
-    def set_value(self, locator: Union[WindowsElement, str], value: str) -> None:
+    def set_value(
+        self, locator: Union[WindowsElement, str], value: str, enter: bool = False
+    ) -> None:
         """Set value of the element defined by the locator.
 
         :param locator: string locator or Control element
         :param value: string value to set
+        :param enter: set True to send ENTER key to the element
 
         Example:
 
         .. code-block:: robotframework
 
             Set Value   type:DataItem name:column1   ab c  # Set value to "ab c"
+            # Press ENTER after setting the value
+            Set Value    type:Edit name:'File name:'    console.txt    True
         """
         element = self.ctx.get_element(locator)
         if hasattr(element.item, "GetValuePattern"):
             value_pattern = element.item.GetValuePattern()
             value_pattern.SetValue(value)
+            self.send_keys(element, "{enter}")
         else:
             raise ActionNotPossible(
                 "Element '%s' does not have 'ValuePattern' attribute to set" % locator,
