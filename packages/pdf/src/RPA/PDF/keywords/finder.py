@@ -164,9 +164,7 @@ class FinderKeywords(LibraryContext):
 
         matches = []
         for anchor, candidates in candidates_dict.items():
-            self._sort_candidates_by_anchor(
-                candidates, anchor=anchor, direction=direction
-            )
+            self._sort_candidates_by_anchor(candidates, anchor=anchor)
             if closest_neighbours:
                 # Keep the first N closest neighbours from the entire set of candidates.
                 candidates[closest_neighbours:] = []
@@ -181,7 +179,7 @@ class FinderKeywords(LibraryContext):
 
     @keyword
     def set_anchor_to_element(
-        self, locator: str, trim: bool = True, pagenum: int = 1
+        self, locator: str, trim: bool = True, pagenum: Union[int, str] = 1
     ) -> bool:
         """Sets anchor point in the document for further searches.
 
@@ -224,7 +222,7 @@ class FinderKeywords(LibraryContext):
         pure_locator = locator
         criteria = "text"
         parts = locator.split(":", 1)
-        if len(parts) == 2 and parts[0] in ("coords", "text"):
+        if len(parts) == 2 and parts[0] in ("coords", "text", "regex"):
             criteria = parts[0]
             pure_locator = parts[1]
 
@@ -248,6 +246,8 @@ class FinderKeywords(LibraryContext):
             anchor = TargetObject(boxid=-1, bbox=bbox, text="")
             self._anchors.append(anchor)
         else:
+            if criteria == "regex":
+                pure_locator = re.compile(pure_locator)
             anchors = self._find_matching_textboxes(pure_locator, pagenum=int(pagenum))
             self._anchors.extend(anchors)
 
@@ -261,25 +261,19 @@ class FinderKeywords(LibraryContext):
         page = self.active_pdf_document.get_page(pagenum)
         return list(page.textboxes.values())
 
-    def _find_matching_textboxes(self, locator: str, *, pagenum: int) -> List[TextBox]:
+    def _find_matching_textboxes(
+        self, locator: Union[str, re.Pattern], *, pagenum: int
+    ) -> List[TextBox]:
         self.logger.info("Searching for matching text boxes with: %r", locator)
 
-        lower_locator = locator.lower()
-        try:
-            regex_locator = re.compile(locator)
-        except re.error as exc:
-            self.logger.debug(
-                "Can't use locator %r as regular expression too during the search: %s",
-                locator,
-                exc,
-            )
-            regex_locator = None
-
+        if isinstance(locator, str):
+            lower_locator = locator.lower()
+            matches_anchor = lambda _anchor: _anchor.text.lower() == lower_locator
+        else:
+            matches_anchor = lambda _anchor: locator.match(_anchor.text)
         anchors = []
         for anchor in self._get_textboxes_on_page(pagenum):
-            if (anchor.text.lower() == lower_locator) or (
-                regex_locator and regex_locator.match(anchor.text)
-            ):
+            if matches_anchor(anchor):
                 anchors.append(anchor)
 
         if anchors:
@@ -339,7 +333,10 @@ class FinderKeywords(LibraryContext):
             direction_up and item.bottom >= top
         ):
             non_strict_match = not strict and (
-                left <= item.right <= right or left <= item.left <= right
+                left <= item.left <= right
+                or left <= item.right <= right
+                or item.left <= left <= item.right
+                or item.left <= right <= item.right
             )
             strict_match = strict and (item.right == right or item.left == left)
             if not any([non_strict_match, strict_match]):
@@ -369,22 +366,20 @@ class FinderKeywords(LibraryContext):
 
     @staticmethod
     def _sort_candidates_by_anchor(
-        candidates: List[TextBox], *, anchor: TextBox, direction: str
+        candidates: List[TextBox], *, anchor: TextBox
     ) -> None:
-        (_, bottom, right, top) = anchor.bbox
-        direction_down = direction in ["bottom", "down"]
+        get_center = lambda item: (
+            (item.left + item.right) / 2,
+            (item.bottom + item.top) / 2,
+        )
+        anchor_center = get_center(anchor)
 
         def get_distance(candidate):
-            if direction_down:
-                vertical_distance = bottom - candidate.top
-            else:
-                vertical_distance = top - candidate.bottom
-            abs_dist_from_right = abs(right - candidate.right)
-            abs_dist_from_left = abs(right - candidate.left)
-            horizontal_distance = min(abs_dist_from_left, abs_dist_from_right)
-            calc_distance = math.sqrt(
-                math.pow(horizontal_distance, 2) + math.pow(vertical_distance, 2)
+            candidate_center = get_center(candidate)
+            anchor_to_candidate_distance = math.sqrt(
+                math.pow((candidate_center[0] - anchor_center[0]), 2)
+                + math.pow((candidate_center[1] - anchor_center[1]), 2)
             )
-            return calc_distance
+            return anchor_to_candidate_distance
 
         candidates.sort(key=get_distance)
