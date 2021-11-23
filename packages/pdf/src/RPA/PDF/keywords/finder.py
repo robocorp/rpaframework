@@ -54,7 +54,10 @@ class FinderKeywords(LibraryContext):
     ) -> Callable[[TextBox], bool]:
         if direction in ["left", "right"]:
             return functools.partial(
-                self._is_match_on_horizontal, direction=direction, regexp=regexp, strict=strict
+                self._is_match_on_horizontal,
+                direction=direction,
+                regexp=regexp,
+                strict=strict,
             )
         if direction in ["top", "bottom", "up", "down"]:
             return functools.partial(
@@ -129,7 +132,8 @@ class FinderKeywords(LibraryContext):
         if closest_neighbours is not None:
             closest_neighbours = int(closest_neighbours)
         self.logger.info(
-            "Searching for %s neighbour(s) to the %s of %r on page %d using regular expression: %s",
+            "Searching for %s neighbour(s) to the %s of %r on page %d using regular "
+            "expression: %s",
             f"closest {closest_neighbours}"
             if closest_neighbours is not None
             else "all",
@@ -266,9 +270,11 @@ class FinderKeywords(LibraryContext):
 
         if isinstance(locator, str):
             lower_locator = locator.lower()
-            matches_anchor = lambda _anchor: _anchor.text.lower() == lower_locator
+            matches_anchor = (
+                lambda _anchor: _anchor.text.lower() == lower_locator
+            )  # noqa: E731
         else:
-            matches_anchor = lambda _anchor: locator.match(_anchor.text)
+            matches_anchor = lambda _anchor: locator.match(_anchor.text)  # noqa: E731
         anchors = []
         for anchor in self._get_textboxes_on_page(pagenum):
             if matches_anchor(anchor):
@@ -283,7 +289,9 @@ class FinderKeywords(LibraryContext):
 
         return anchors
 
-    def _check_text_match(self, candidate: TextBox, regexp: Optional[re.Pattern]) -> bool:
+    def _check_text_match(
+        self, candidate: TextBox, regexp: Optional[re.Pattern]
+    ) -> bool:
         if regexp and regexp.match(candidate.text):
             self._log_element(candidate, prefix="Exact match:")
             return True
@@ -306,10 +314,12 @@ class FinderKeywords(LibraryContext):
         direction_left = direction == "left"
         direction_right = direction == "right"
 
-        if not any([
-            direction_left and candidate.right <= left,
-            direction_right and candidate.left >= right
-        ]):
+        if not any(
+            [
+                direction_left and candidate.right <= left,
+                direction_right and candidate.left >= right,
+            ]
+        ):
             return False  # not in the seeked direction
 
         non_strict_match = not strict and (
@@ -337,10 +347,12 @@ class FinderKeywords(LibraryContext):
         direction_down = direction in ["bottom", "down"]
         direction_up = direction in ["top", "up"]
 
-        if not any([
-            direction_down and candidate.top <= bottom,
-            direction_up and candidate.bottom >= top
-        ]):
+        if not any(
+            [
+                direction_down and candidate.top <= bottom,
+                direction_up and candidate.bottom >= top,
+            ]
+        ):
             return False  # not in the seeked direction
 
         non_strict_match = not strict and (
@@ -368,7 +380,7 @@ class FinderKeywords(LibraryContext):
     def _sort_candidates_by_anchor(
         candidates: List[TextBox], *, anchor: TextBox
     ) -> None:
-        get_center = lambda item: (
+        get_center = lambda item: (  # noqa: E731
             (item.left + item.right) / 2,
             (item.bottom + item.top) / 2,
         )
