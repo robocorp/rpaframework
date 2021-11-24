@@ -167,7 +167,7 @@ class FinderKeywords(LibraryContext):
         matches = []
         for anchor, candidates in candidates_dict.items():
             self._sort_candidates_by_anchor(candidates, anchor=anchor)
-            if closest_neighbours:
+            if closest_neighbours is not None:
                 # Keep the first N closest neighbours from the entire set of candidates.
                 candidates[closest_neighbours:] = []
             match = Match(
