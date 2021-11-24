@@ -17,6 +17,11 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 
+11.6.4 - 24 Nov 2021
+--------------------
+
+- Updated ``rpaframework-recognition`` dependency (to version 1.0.0) (:pr:`303`)
+
 11.6.3 - 15 Nov 2021
 --------------------
 
