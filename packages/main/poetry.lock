@@ -144,14 +144,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.20.10"
+version = "1.20.12"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.23.10,<1.24.0"
+botocore = ">=1.23.12,<1.24.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -160,7 +160,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.23.10"
+version = "1.23.12"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -315,7 +315,7 @@ trio = ["trio (>=0.14.0)", "sniffio (>=1.1)"]
 
 [[package]]
 name = "docutils"
-version = "0.18"
+version = "0.18.1"
 description = "Docutils -- Python Documentation Utilities"
 category = "main"
 optional = false
@@ -1453,7 +1453,7 @@ rpaframework-core = ">=6.1.0,<7.0.0"
 
 [[package]]
 name = "rpaframework-recognition"
-version = "0.7.2"
+version = "1.0.0"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = true
@@ -1462,7 +1462,7 @@ python-versions = ">=3.6.2,<4.0.0"
 [package.dependencies]
 numpy = ">=1.19.3,<2.0.0"
 opencv-python-headless = ">=4.5.2,<5.0.0"
-pillow = ">=8.0.1,<9.0.0"
+pillow = ">=8.4.0,<9.0.0"
 pytesseract = ">=0.3.6,<0.4.0"
 rpaframework-core = ">=6.0.0,<7.0.0"
 
@@ -1751,7 +1751,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "e6aa9edf282fb454fff9e72a436ba1b82e6e5debeeca51094fea91c6de7b6986"
+content-hash = "963b3b2850dccfb375ab96bbba098e19cf1f7c43a4176b1e6eaa38aa02725cdf"
 
 [metadata.files]
 amazon-textract-response-parser = [
@@ -1812,12 +1812,12 @@ black = [
     {file = "black-21.11b1.tar.gz", hash = "sha256:a042adbb18b3262faad5aff4e834ff186bb893f95ba3a8013f09de1e5569def2"},
 ]
 boto3 = [
-    {file = "boto3-1.20.10-py3-none-any.whl", hash = "sha256:e2b5ce2679424a6c2bfc2ee4bb42d9100c8c08b21eff8d74cff85a7243a76d7b"},
-    {file = "boto3-1.20.10.tar.gz", hash = "sha256:20a5109a37414a52c55d2048388f02cb7cf46fc0ca7be08b3bf81f4c5c053feb"},
+    {file = "boto3-1.20.12-py3-none-any.whl", hash = "sha256:df9c74f3dd35e1147e0e873984384e00b0db8c3f6552d8e0b7f50e7b8177f537"},
+    {file = "boto3-1.20.12.tar.gz", hash = "sha256:224a380a3a825beaf7aa54119e7469884c6adb9098cbf3d64bd487ac6c564d57"},
 ]
 botocore = [
-    {file = "botocore-1.23.10-py3-none-any.whl", hash = "sha256:11670d3ac14eed1122e0154a7e1563c2c270beef43996466f8d11fbf5cf31611"},
-    {file = "botocore-1.23.10.tar.gz", hash = "sha256:0adda9a4a95221027312eaaee0ec9fe2239fb2f285fced3ddca54b1310b864ee"},
+    {file = "botocore-1.23.12-py3-none-any.whl", hash = "sha256:002f96a07503c83c1d110174506e68a8fbcb4765b7eafa5f66ef59d910912d17"},
+    {file = "botocore-1.23.12.tar.gz", hash = "sha256:3047ddf3ee3e54d58b896b442d3044eab30e6bfac2a2fbac428e5c12d8670a3d"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -1985,8 +1985,8 @@ dnspython = [
     {file = "dnspython-2.1.0.zip", hash = "sha256:e4a87f0b573201a0f3727fa18a516b055fd1107e0e5477cded4a2de497df1dd4"},
 ]
 docutils = [
-    {file = "docutils-0.18-py2.py3-none-any.whl", hash = "sha256:a31688b2ea858517fa54293e5d5df06fbb875fb1f7e4c64529271b77781ca8fc"},
-    {file = "docutils-0.18.tar.gz", hash = "sha256:c1d5dab2b11d16397406a282e53953fe495a46d69ae329f55aa98a5c4e3c5fbb"},
+    {file = "docutils-0.18.1-py2.py3-none-any.whl", hash = "sha256:23010f129180089fbcd3bc08cfefccb3b890b0050e1ca00c867036e9d161b98c"},
+    {file = "docutils-0.18.1.tar.gz", hash = "sha256:679987caf361a7539d76e584cbeddc311e3aee937877c87346f31debc63e9d06"},
 ]
 et-xmlfile = [
     {file = "et_xmlfile-1.1.0-py3-none-any.whl", hash = "sha256:a2ba85d1d6a74ef63837eed693bcb89c3f752169b0e3e7ae5b16ca5e1b3deada"},
@@ -2854,8 +2854,8 @@ rpaframework-pdf = [
     {file = "rpaframework_pdf-0.10.0-py3-none-any.whl", hash = "sha256:6b3aaaa6377978a09c975d6820152a7cec860491382e3e1248d7dafcd1e2c148"},
 ]
 rpaframework-recognition = [
-    {file = "rpaframework-recognition-0.7.2.tar.gz", hash = "sha256:67555b9711eac68f7207ab6e33ab5292ab76124d53e7044b6c9b29179b6a6f66"},
-    {file = "rpaframework_recognition-0.7.2-py3-none-any.whl", hash = "sha256:0dbebbcfa34984265af9e9f60ed74b678af94ee5d2a5878f67eca83f8bab1f49"},
+    {file = "rpaframework-recognition-1.0.0.tar.gz", hash = "sha256:5fa73ce22f6a6d96f37b5335c50d7e566655bbf36ee8f57d33a4b38a2bde7a5d"},
+    {file = "rpaframework_recognition-1.0.0-py3-none-any.whl", hash = "sha256:4357786352bff575f9c3bb8440ff6e3a9f9d053d07dece919652facfa6ea41d0"},
 ]
 s3transfer = [
     {file = "s3transfer-0.5.0-py3-none-any.whl", hash = "sha256:9c1dc369814391a6bda20ebbf4b70a0f34630592c9aa520856bf384916af2803"},
