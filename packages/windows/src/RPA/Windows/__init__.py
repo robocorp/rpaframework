@@ -44,7 +44,7 @@ class Windows(DynamicCore):
           - python=3.7.5
           - pip=20.1
           - pip:
-            - rpaframework-windows==1.1.1
+            - rpaframework-windows==1.2.1
 
 
     **About terminology**
