@@ -142,6 +142,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tables/index.html">Tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tasks/index.html">Tasks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../twitter/index.html">Twitter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows/index.html">Windows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../word_application/index.html">Word.Application</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Project</span></p>
@@ -599,6 +600,46 @@ source folder</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.Email.ImapSmtp.ImapSmtp.email_to_document">
+<code class="sig-name descname">email_to_document</code><span class="sig-paren">(</span><em class="sig-param">input_source: Union[str, pathlib.Path, BinaryIO, bytes], output_path: Union[str, pathlib.Path]</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.email_to_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a raw e-mail into a Word document.</p>
+<p>This keyword extracts the HTML (or Text) content from the passed input e-mail
+and saves it into docx format at the provided output path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_source</strong> – Path, bytes or file-like object with the input raw e-mail
+content</p></li>
+<li><p><strong>output_path</strong> – Where to save the output docx file</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Convert email to docx</span><span class="p"></span>
+<span class="p">    </span><span class="c">${mail_file} =</span><span class="p">     </span><span class="c">Get Work Item File</span><span class="p">    </span><span class="c">mail.eml</span><span class="p"></span>
+<span class="p">    </span><span class="c">Email To Document</span><span class="p">    </span><span class="c">${mail_file}</span><span class="p">    </span><span class="c">${OUTPUT_DIR}${/}mail.docx</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Python</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">RPA.Email.ImapSmtp</span> <span class="kn">import</span> <span class="n">ImapSmtp</span>
+<span class="kn">from</span> <span class="nn">RPA.Robocorp.WorkItems</span> <span class="kn">import</span> <span class="n">WorkItems</span>
+
+<span class="n">lib_work</span> <span class="o">=</span> <span class="n">WorkItems</span><span class="p">()</span>
+<span class="n">lib_mail</span> <span class="o">=</span> <span class="n">ImapSmtp</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">convert_email_to_docx</span><span class="p">():</span>
+    <span class="n">lib_work</span><span class="o">.</span><span class="n">get_input_work_item</span><span class="p">()</span>
+    <span class="n">mail_file</span> <span class="o">=</span> <span class="n">lib_work</span><span class="o">.</span><span class="n">get_work_item_file</span><span class="p">(</span><span class="s2">&quot;mail.eml&quot;</span><span class="p">)</span>
+    <span class="n">lib_mail</span><span class="o">.</span><span class="n">email_to_document</span><span class="p">(</span><span class="n">mail_file</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./output&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;mail.docx&quot;</span><span class="p">)</span>
+
+<span class="n">convert_email_to_docx</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.flag_messages">
 <code class="sig-name descname">flag_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = None</em>, <em class="sig-param">unflag: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.flag_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mark messages as <cite>flagged</cite></p>
@@ -622,20 +663,22 @@ source folder</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.get_decoded_email_body">
-<code class="sig-name descname">get_decoded_email_body</code><span class="sig-paren">(</span><em class="sig-param">message</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.get_decoded_email_body" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decode email body.</p>
+<code class="sig-name descname">get_decoded_email_body</code><span class="sig-paren">(</span><em class="sig-param">message</em>, <em class="sig-param">html_first: bool = False</em><span class="sig-paren">)</span> &#x2192; Tuple[str, bool]<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.get_decoded_email_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes email body and extracts its text/html content.</p>
+<p>Automatically detects character set if the header is not set.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>message_body</strong> – Raw 7-bit message body input e.g. from imaplib. Double
-encoded in quoted-printable and latin-1</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – Raw 7-bit message body input e.g. from <cite>imaplib</cite>. Double
+encoded in quoted-printable and latin-1</p></li>
+<li><p><strong>html_first</strong> – Prioritize html extraction over text when this is True</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Message body as unicode string and information if message has
-attachments</p>
+<dd class="field-even"><p>Message body as unicode string and a boolean telling if the message
+has attachments</p>
 </dd>
 </dl>
-<p>Detect character set if the header is not set.
-We try to get text/plain, but if there is not one then fallback to text/html.</p>
 </dd></dl>
 
 <dl class="method">
