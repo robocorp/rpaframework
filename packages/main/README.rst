@@ -96,6 +96,12 @@ Packages
 
 
 
+.. image:: https://img.shields.io/pypi/v/rpaframework-windows.svg?label=rpaframework-windows&style=for-the-badge&color=blue
+   :target: https://pypi.python.org/pypi/rpaframework-windows
+   :alt: rpaframework-windows latest version
+
+
+
 Libraries
 ---------
 
@@ -170,6 +176,8 @@ The RPA Framework project currently includes the following libraries:
 +----------------------------+----------------------------------------------+
 | `Twitter`_                 | Twitter API interface                        |
 +----------------------------+----------------------------------------------+
+| `Windows`_                 | Alternative library for Windows automation   |
++----------------------------+----------------------------------------------+
 | `Word.Application`_        | Control the Word desktop application         |
 +----------------------------+----------------------------------------------+
 
@@ -207,6 +215,7 @@ The RPA Framework project currently includes the following libraries:
 .. _Tables: https://rpaframework.org/libraries/tables/
 .. _Tasks: https://rpaframework.org/libraries/tasks/
 .. _Twitter: https://rpaframework.org/libraries/twitter/
+.. _Windows: https://rpaframework.org/libraries/windows/
 .. _Word.Application: https://rpaframework.org/libraries/word_application/
 
 Installation
@@ -224,7 +233,7 @@ Default installation method with Robocorp `Developer Tools`_ using conda.yaml:
      - python=3.7.5
      - pip=20.1
      - pip:
-       - rpaframework==11.6.1
+       - rpaframework==11.6.3
 
 To install all extra packages (including Playwright dependencies), you can use:
 
@@ -238,9 +247,10 @@ To install all extra packages (including Playwright dependencies), you can use:
      - pip=20.1
      - nodejs=14.17.4
      - pip:
-       - rpaframework[aws]==11.6.1
+       - rpaframework[aws]==11.6.3
        - rpaframework-google==0.3.0
        - rpaframework-recognition==0.7.2
+       - rpaframework-windows==1.2.1
        - robotframework-browser==10.0.3
    rccPostInstall:
      - rfbrowser init
