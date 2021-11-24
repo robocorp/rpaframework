@@ -14,6 +14,7 @@ docs/source/libdoc/
 docs/source/robot/
 docs/source/prebuild/
 docs/source/json/
+docs/source/libspec/
 docs/source/include/libdoc/
 docs/source/include/latest.json
 docs/source/contributing/todos.rst
