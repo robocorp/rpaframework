@@ -443,30 +443,30 @@ class ModelKeywords(LibraryContext):
                 pdf.convert("/tmp/sample.pdf")
         """
         self.ctx.switch_to_pdf(source_path)
-        if self.ctx.active_pdf_document.is_converted:
+        if self.active_pdf_document.is_converted:
             return
 
         self.logger.debug(
-            "Converting active PDF document: %s", self.ctx.active_pdf_document.path
+            "Converting active PDF document: %s", self.active_pdf_document.path
         )
         rsrcmgr = PDFResourceManager()
         if not self.ctx.convert_settings:
             self.set_convert_settings()
         laparams = pdfminer.layout.LAParams(**self.ctx.convert_settings)
         device = Converter(
-            self.ctx.active_pdf_document, rsrcmgr, laparams=laparams, trim=trim
+            self.active_pdf_document, rsrcmgr, laparams=laparams, trim=trim
         )
         interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
 
         # Look at all (nested) objects on each page.
-        source_parser = PDFParser(self.ctx.active_pdf_document.fileobject)
+        source_parser = PDFParser(self.active_pdf_document.fileobject)
         source_document = PDFDocument(source_parser)
         source_pages = PDFPage.create_pages(source_document)
         for _, page in enumerate(source_pages, 0):
             interpreter.process_page(page)
         device.close()
 
-        self.ctx.active_pdf_document.is_converted = True
+        self.active_pdf_document.is_converted = True
 
     @keyword
     def get_input_fields(
@@ -511,7 +511,7 @@ class ModelKeywords(LibraryContext):
         :return: dictionary of input key values or `None`.
         """
         self.ctx.switch_to_pdf(source_path)
-        active_document = self.ctx.active_pdf_document
+        active_document = self.active_pdf_document
 
         active_fields = active_document.fields
         if active_fields:
@@ -527,7 +527,7 @@ class ModelKeywords(LibraryContext):
         except KeyError as err:
             raise KeyError(
                 'PDF "%s" does not have any input fields.'
-                % self.ctx.active_pdf_document.path
+                % self.active_pdf_document.path
             ) from err
 
         record_fields = {}
@@ -563,7 +563,7 @@ class ModelKeywords(LibraryContext):
                         "label": label.decode("iso-8859-1") if label else None,
                     }
 
-        self.ctx.active_pdf_document.fields = record_fields or None
+        self.active_pdf_document.fields = record_fields or None
         return record_fields
 
     @keyword
@@ -703,7 +703,7 @@ class ModelKeywords(LibraryContext):
         # The tests will XFAIL for the time being.
 
         self.ctx.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         if "/AcroForm" in reader.trailer["/Root"]:
             reader.trailer["/Root"]["/AcroForm"].update(
                 {
@@ -719,11 +719,11 @@ class ModelKeywords(LibraryContext):
         if newvals:
             self.logger.debug("Updating form fields with provided values for all pages")
             updated_fields = newvals
-        elif self.ctx.active_pdf_document.fields:
+        elif self.active_pdf_document.fields:
             self.logger.debug("Updating form fields with PDF values for all pages")
             updated_fields = {
                 k: v["value"] or ""
-                for (k, v) in self.ctx.active_pdf_document.fields.items()
+                for (k, v) in self.active_pdf_document.fields.items()
             }
         else:
             self.logger.debug("No values available for updating the form fields")
@@ -739,7 +739,7 @@ class ModelKeywords(LibraryContext):
             writer.addPage(page)
 
         if output_path is None:
-            output_path = self.ctx.active_pdf_document.path
+            output_path = self.active_pdf_document.path
         with open(output_path, "wb") as stream:
             writer.write(stream)
 
