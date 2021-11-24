@@ -4,6 +4,13 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
++++++++++
+
+11.6.4 - 24 Nov 2021
+--------------------
+
 - API retrying improvements affecting Work Items
 - Library **RPA.Email.ImapSmtp**: Keyword ``Email To Document`` for converting HTML or
   Text e-mails into Word documents (:issue:`295`)
@@ -13,12 +20,6 @@ Release notes
   - Removed Keyword ``Parse Work Item From Email``
   - Automatically loads e-mail body formats like JSON/YAML/Text/HTML into "parsedEmail"
     work item variable
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-+++++++++
-
-11.6.4 - 24 Nov 2021
---------------------
 
 - Updated ``rpaframework-recognition`` dependency (to version 1.0.0) (:pr:`303`)
 
