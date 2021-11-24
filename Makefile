@@ -61,7 +61,7 @@ docs: docs-libdoc install ## Generate documentation using Sphinx
 	poetry run $(MAKE) -C docs html
 	poetry run python ./tools/rss.py
 
-docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
+docs-libdoc: install docs-libspec  ## Generate documentation using Robot Framework Libdoc
 	poetry run docgen\
 		--template docs/source/template/libdoc/libdoc.html\
 		--format html\
@@ -86,6 +86,25 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 		--no-patches\
 		--format json-html\
 		--output docs/source/json/\
+		--exclude RPA.core*\
+		--exclude RPA.recognition*\
+		--exclude RPA.scripts*\
+		--exclude RPA.Desktop.keywords*\
+		--exclude RPA.Desktop.utils*\
+		--exclude RPA.PDF.keywords*\
+		--exclude RPA.Cloud.objects*\
+		--exclude RPA.Cloud.Google.keywords*\
+		--exclude RPA.Robocorp.utils*\
+		--exclude RPA.Dialogs.*\
+		--exclude RPA.Windows.keywords*\
+		--exclude RPA.Windows.utils*\
+		rpaframework
+
+docs-libspec:
+	poetry run docgen\
+		--no-patches\
+		--format libspec\
+		--output docs/source/libspec/\
 		--exclude RPA.core*\
 		--exclude RPA.recognition*\
 		--exclude RPA.scripts*\
