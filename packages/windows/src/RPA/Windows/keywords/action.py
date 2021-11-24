@@ -237,7 +237,8 @@ class ActionKeywords(LibraryContext):
         if hasattr(element.item, "GetValuePattern"):
             value_pattern = element.item.GetValuePattern()
             value_pattern.SetValue(value)
-            self.send_keys(element, "{enter}")
+            if enter:
+                self.send_keys(element, "{enter}")
         else:
             raise ActionNotPossible(
                 "Element '%s' does not have 'ValuePattern' attribute to set" % locator,
