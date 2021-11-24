@@ -1,4 +1,3 @@
-import pathlib
 import platform
 import shutil
 import subprocess
@@ -90,12 +89,14 @@ def test_robot(ctx):
 @task(lint)
 def build(ctx):
     """Build distributable python package"""
-    source_file = Path("../../docs/source/libspec/RPA_Windows.libspec")
-    target = Path("libspec")
-    target.mkdir(parents=True, exist_ok=True)
+    spec_file = "RPA_Windows.libspec"
+    source_file = Path("../../docs/source/libspec") / spec_file
     shutil.copy(source_file, Path(".").resolve())
     poetry(ctx, "build -v")
-    # shutil.rmtree(target, ignore_errors=True)
+    try:
+        Path(spec_file).unlink()
+    except OSError as e:
+        pass
 
 
 @task(clean, build, help={"ci": "Publish package to devpi instead of PyPI"})
