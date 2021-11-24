@@ -20,7 +20,7 @@ python-versions = "*"
 
 [[package]]
 name = "astroid"
-version = "2.8.5"
+version = "2.8.6"
 description = "An abstract syntax tree for Python with inference support."
 category = "dev"
 optional = false
@@ -144,14 +144,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.20.9"
+version = "1.20.10"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.23.9,<1.24.0"
+botocore = ">=1.23.10,<1.24.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -160,7 +160,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.23.9"
+version = "1.23.10"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -238,7 +238,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "comtypes"
-version = "1.1.7"
+version = "1.1.10"
 description = "Pure Python COM package"
 category = "main"
 optional = false
@@ -331,7 +331,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "exchangelib"
-version = "4.6.0"
+version = "4.6.1"
 description = "Client for Microsoft Exchange Web Services (EWS)"
 category = "main"
 optional = false
@@ -1751,7 +1751,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "9b906457b9613d5ad08ba185b56aec348c10600d8a2785205d237125401eee4a"
+content-hash = "e6aa9edf282fb454fff9e72a436ba1b82e6e5debeeca51094fea91c6de7b6986"
 
 [metadata.files]
 amazon-textract-response-parser = [
@@ -1763,8 +1763,8 @@ appdirs = [
     {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
 ]
 astroid = [
-    {file = "astroid-2.8.5-py3-none-any.whl", hash = "sha256:abc423a1e85bc1553954a14f2053473d2b7f8baf32eae62a328be24f436b5107"},
-    {file = "astroid-2.8.5.tar.gz", hash = "sha256:11f7356737b624c42e21e71fe85eea6875cb94c03c82ac76bd535a0ff10b0f25"},
+    {file = "astroid-2.8.6-py3-none-any.whl", hash = "sha256:cd8326b424c971e7d87678609cf6275d22028afd37d6ac59c16d47f1245882f6"},
+    {file = "astroid-2.8.6.tar.gz", hash = "sha256:5f6f75e45f15290e73b56f9dfde95b4bf96382284cde406ef4203e928335a495"},
 ]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
@@ -1812,12 +1812,12 @@ black = [
     {file = "black-21.11b1.tar.gz", hash = "sha256:a042adbb18b3262faad5aff4e834ff186bb893f95ba3a8013f09de1e5569def2"},
 ]
 boto3 = [
-    {file = "boto3-1.20.9-py3-none-any.whl", hash = "sha256:6608387b5f744e5e7db61c4f2746c3769ee909a605a5bd8ea5c949c001b6fb55"},
-    {file = "boto3-1.20.9.tar.gz", hash = "sha256:70a735d7c0a68b6d04065bd06ee3d1972b2bc4203f87719eaf462347e847768f"},
+    {file = "boto3-1.20.10-py3-none-any.whl", hash = "sha256:e2b5ce2679424a6c2bfc2ee4bb42d9100c8c08b21eff8d74cff85a7243a76d7b"},
+    {file = "boto3-1.20.10.tar.gz", hash = "sha256:20a5109a37414a52c55d2048388f02cb7cf46fc0ca7be08b3bf81f4c5c053feb"},
 ]
 botocore = [
-    {file = "botocore-1.23.9-py3-none-any.whl", hash = "sha256:e36c5831c971150777845519a3c5dbb2e924e54ac4cc7126b1360129f0512d8a"},
-    {file = "botocore-1.23.9.tar.gz", hash = "sha256:810e259776bdc233c60333ff9d5f4d14b48ca5adefb9198d5ac8410c1d90efc4"},
+    {file = "botocore-1.23.10-py3-none-any.whl", hash = "sha256:11670d3ac14eed1122e0154a7e1563c2c270beef43996466f8d11fbf5cf31611"},
+    {file = "botocore-1.23.10.tar.gz", hash = "sha256:0adda9a4a95221027312eaaee0ec9fe2239fb2f285fced3ddca54b1310b864ee"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -1896,7 +1896,7 @@ colorama = [
     {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
 ]
 comtypes = [
-    {file = "comtypes-1.1.7.zip", hash = "sha256:c9d59f57d559613940f22da54d70add066faa23b4fa9b5cd95facdc501a63b0b"},
+    {file = "comtypes-1.1.10.tar.gz", hash = "sha256:a9929e4bea8f874adc7c370e58a553aa91a4c08cecd58a0fdcf7ff5238af14e5"},
 ]
 coverage = [
     {file = "coverage-6.1.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:675adb3b3380967806b3cbb9c5b00ceb29b1c472692100a338730c1d3e59c8b9"},
@@ -1954,6 +1954,8 @@ cryptography = [
     {file = "cryptography-3.4.8-cp36-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:34dae04a0dce5730d8eb7894eab617d8a70d0c97da76b905de9efb7128ad7085"},
     {file = "cryptography-3.4.8-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1eb7bb0df6f6f583dd8e054689def236255161ebbcf62b226454ab9ec663746b"},
     {file = "cryptography-3.4.8-cp36-abi3-manylinux_2_24_x86_64.whl", hash = "sha256:9965c46c674ba8cc572bc09a03f4c649292ee73e1b683adb1ce81e82e9a6a0fb"},
+    {file = "cryptography-3.4.8-cp36-abi3-musllinux_1_1_aarch64.whl", hash = "sha256:3c4129fc3fdc0fa8e40861b5ac0c673315b3c902bbdc05fc176764815b43dd1d"},
+    {file = "cryptography-3.4.8-cp36-abi3-musllinux_1_1_x86_64.whl", hash = "sha256:695104a9223a7239d155d7627ad912953b540929ef97ae0c34c7b8bf30857e89"},
     {file = "cryptography-3.4.8-cp36-abi3-win32.whl", hash = "sha256:21ca464b3a4b8d8e86ba0ee5045e103a1fcfac3b39319727bc0fc58c09c6aff7"},
     {file = "cryptography-3.4.8-cp36-abi3-win_amd64.whl", hash = "sha256:3520667fda779eb788ea00080124875be18f2d8f0848ec00733c0ec3bb8219fc"},
     {file = "cryptography-3.4.8-pp36-pypy36_pp73-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:d2a6e5ef66503da51d2110edf6c403dc6b494cc0082f85db12f54e9c5d4c3ec5"},
@@ -1991,8 +1993,8 @@ et-xmlfile = [
     {file = "et_xmlfile-1.1.0.tar.gz", hash = "sha256:8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c"},
 ]
 exchangelib = [
-    {file = "exchangelib-4.6.0-py2.py3-none-any.whl", hash = "sha256:e4374680b735e98c8cc867caf6e4d6eb9e7583bad5174d17b57b7db1022871dd"},
-    {file = "exchangelib-4.6.0.tar.gz", hash = "sha256:770d31974c3477cff0c227f4b7481c6810acfbd71b52af41f3cd86ac20fcf76f"},
+    {file = "exchangelib-4.6.1-py2.py3-none-any.whl", hash = "sha256:9f9e30f3f46ccbc5a2c5c1ffa69c5a5fef69c702fc53ecee1f6fb56e33aacef8"},
+    {file = "exchangelib-4.6.1.tar.gz", hash = "sha256:d46131d79493604d18e4d694d7021984290069e33a97a000002d66ccb2479252"},
 ]
 flake8 = [
     {file = "flake8-3.9.2-py2.py3-none-any.whl", hash = "sha256:bf8fd333346d844f616e8d47905ef3a3384edae6b4e9beb0c5101e25e3110907"},
@@ -2535,6 +2537,7 @@ pynput-robocorp-fork = [
 pyobjc-core = [
     {file = "pyobjc-core-7.3.tar.gz", hash = "sha256:5081aedf8bb40aac1a8ad95adac9e44e148a882686ded614adf46bb67fd67574"},
     {file = "pyobjc_core-7.3-1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:a1f1e6b457127cbf2b5bd2b94520a7c89fb590b739911eadb2b0499a3a5b0e6f"},
+    {file = "pyobjc_core-7.3-1-cp38-cp38-macosx_11_0_universal2.whl", hash = "sha256:ed708cc47bae8b711f81f252af09898a5f986c7a38cec5ad5623d571d328bff8"},
     {file = "pyobjc_core-7.3-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:4e93ad769a20b908778fe950f62a843a6d8f0fa71996e5f3cc9fab5ae7d17771"},
     {file = "pyobjc_core-7.3-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:9f63fd37bbf3785af4ddb2f86cad5ca81c62cfc7d1c0099637ca18343c3656c1"},
     {file = "pyobjc_core-7.3-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:e9b1311f72f2e170742a7ee3a8149f52c35158dc024a21e88d6f1e52ba5d718b"},
@@ -2544,6 +2547,7 @@ pyobjc-core = [
 pyobjc-framework-cocoa = [
     {file = "pyobjc-framework-Cocoa-7.3.tar.gz", hash = "sha256:b18d05e7a795a3455ad191c3e43d6bfa673c2a4fd480bb1ccf57191051b80b7e"},
     {file = "pyobjc_framework_Cocoa-7.3-1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:1e31376806e5de883a1d7c7c87d9ff2a8b09fc05d267e0dfce6e42409fb70c67"},
+    {file = "pyobjc_framework_Cocoa-7.3-1-cp38-cp38-macosx_11_0_universal2.whl", hash = "sha256:d999387927284346035cb63ebb51f86331abc41f9376f9a6970e7f18207db392"},
     {file = "pyobjc_framework_Cocoa-7.3-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:9edffdfa6dd1f71f21b531c3e61fdd3e4d5d3bf6c5a528c98e88828cd60bac11"},
     {file = "pyobjc_framework_Cocoa-7.3-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:35a6340437a4e0109a302150b7d1f6baf57004ccf74834f9e6062fcafe2fd8d7"},
     {file = "pyobjc_framework_Cocoa-7.3-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:7c3886f2608ab3ed02482f8b2ebf9f782b324c559e84b52cfd92dba8a1109872"},
@@ -2553,6 +2557,7 @@ pyobjc-framework-cocoa = [
 pyobjc-framework-quartz = [
     {file = "pyobjc-framework-Quartz-7.3.tar.gz", hash = "sha256:98812844c34262def980bdf60923a875cd43428a8375b6fd53bd2cd800eccf0b"},
     {file = "pyobjc_framework_Quartz-7.3-1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:1139bc6874c0f8b58f0b8602015e0994198bc506a6bcec1071208de32b55ed26"},
+    {file = "pyobjc_framework_Quartz-7.3-1-cp38-cp38-macosx_11_0_universal2.whl", hash = "sha256:d94a3ed7051266c52392ec07d3b5adbf28d4be83341a24df0d88639344dcd84f"},
     {file = "pyobjc_framework_Quartz-7.3-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:1ef18f5a16511ded65980bf4f5983ea5d35c88224dbad1b3112abd29c60413ea"},
     {file = "pyobjc_framework_Quartz-7.3-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:3b41eec8d4b10c7c7e011e2f9051367f5499ef315ba52dfbae573c3a2e05469c"},
     {file = "pyobjc_framework_Quartz-7.3-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:2c65456ed045dfe1711d0298734e5a3ad670f8c770f7eb3b19979256c388bdd2"},
@@ -2583,6 +2588,10 @@ pyqt5-qt5 = [
     {file = "PyQt5_Qt5-5.15.2-py3-none-win_amd64.whl", hash = "sha256:750b78e4dba6bdf1607febedc08738e318ea09e9b10aea9ff0d73073f11f6962"},
 ]
 pyqt5-sip = [
+    {file = "PyQt5_sip-12.9.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:6d5bca2fc222d58e8093ee8a81a6e3437067bb22bc3f86d06ec8be721e15e90a"},
+    {file = "PyQt5_sip-12.9.0-cp310-cp310-manylinux1_x86_64.whl", hash = "sha256:d59af63120d1475b2bf94fe8062610720a9be1e8940ea146c7f42bb449d49067"},
+    {file = "PyQt5_sip-12.9.0-cp310-cp310-win32.whl", hash = "sha256:0fc9aefacf502696710b36cdc9fa2a61487f55ee883dbcf2c2a6477e261546f7"},
+    {file = "PyQt5_sip-12.9.0-cp310-cp310-win_amd64.whl", hash = "sha256:485972daff2fb0311013f471998f8ec8262ea381bded244f9d14edaad5f54271"},
     {file = "PyQt5_sip-12.9.0-cp36-cp36m-macosx_10_6_intel.whl", hash = "sha256:d85002238b5180bce4b245c13d6face848faa1a7a9e5c6e292025004f2fd619a"},
     {file = "PyQt5_sip-12.9.0-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:83c3220b1ca36eb8623ba2eb3766637b19eb0ce9f42336ad8253656d32750c0a"},
     {file = "PyQt5_sip-12.9.0-cp36-cp36m-win32.whl", hash = "sha256:d8b2bdff7bbf45bc975c113a03b14fd669dc0c73e1327f02706666a7dd51a197"},
@@ -2926,7 +2935,6 @@ typed-ast = [
 ]
 typing-extensions = [
     {file = "typing_extensions-4.0.0-py3-none-any.whl", hash = "sha256:829704698b22e13ec9eaf959122315eabb370b0884400e9818334d8b677023d9"},
-    {file = "typing_extensions-4.0.0.tar.gz", hash = "sha256:2cdf80e4e04866a9b3689a51869016d36db0814d84b8d8a568d22781d45d27ed"},
 ]
 typing-utils = [
     {file = "typing_utils-0.1.0-py3-none-any.whl", hash = "sha256:6bd26f3d38a5dd526ca3a59f0a451ccb59bcee9dc829c872dd6c0aae4ec8bbef"},

@@ -61,7 +61,7 @@ docs: docs-libdoc install ## Generate documentation using Sphinx
 	poetry run $(MAKE) -C docs html
 	poetry run python ./tools/rss.py
 
-docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
+docs-libdoc: install docs-libspec  ## Generate documentation using Robot Framework Libdoc
 	poetry run docgen\
 		--template docs/source/template/libdoc/libdoc.html\
 		--format html\
@@ -76,6 +76,8 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 		--exclude RPA.Cloud.Google.keywords*\
 		--exclude RPA.Robocorp.utils*\
 		--exclude RPA.Dialogs.*\
+		--exclude RPA.Windows.keywords*\
+		--exclude RPA.Windows.utils*\
 		rpaframework
 
 	poetry run python -c "import shutil; shutil.copy2('docs/source/template/iframeResizer.contentWindow.map', 'docs/source/include/libdoc/')"
@@ -94,6 +96,27 @@ docs-libdoc: install ## Generate documentation using Robot Framework Libdoc
 		--exclude RPA.Cloud.Google.keywords*\
 		--exclude RPA.Robocorp.utils*\
 		--exclude RPA.Dialogs.*\
+		--exclude RPA.Windows.keywords*\
+		--exclude RPA.Windows.utils*\
+		rpaframework
+
+docs-libspec:
+	poetry run docgen\
+		--no-patches\
+		--format libspec\
+		--output docs/source/libspec/\
+		--exclude RPA.core*\
+		--exclude RPA.recognition*\
+		--exclude RPA.scripts*\
+		--exclude RPA.Desktop.keywords*\
+		--exclude RPA.Desktop.utils*\
+		--exclude RPA.PDF.keywords*\
+		--exclude RPA.Cloud.objects*\
+		--exclude RPA.Cloud.Google.keywords*\
+		--exclude RPA.Robocorp.utils*\
+		--exclude RPA.Dialogs.*\
+		--exclude RPA.Windows.keywords*\
+		--exclude RPA.Windows.utils*\
 		rpaframework
 
 changelog: ## Print changes in latest release
