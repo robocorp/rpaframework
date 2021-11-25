@@ -44,7 +44,7 @@ class Windows(DynamicCore):
           - python=3.7.5
           - pip=20.1
           - pip:
-            - rpaframework-windows==1.2.1
+            - rpaframework-windows==1.3.0
 
 
     **About terminology**
@@ -70,6 +70,14 @@ class Windows(DynamicCore):
             automation_id: str   # ``AutomationId`` attribute of the element
             control_type: str    # ``ControlTypeName`` attribute of the element
             class_name: str      # ``ClassName`` attribute of the element
+            left: int            # element's rectangle left coordinate
+            right: int           # element's rectangle right coordinate
+            top: int             # element's rectangle top coordinate
+            bottom: int          # element's rectangle bottom coordinate
+            width: int           # element's rectangle horizontal width
+            height: int          # element's rectangle vertical height
+            xcenter: int         # element's rectangle center point x coordinate
+            ycenter: int         # element's rectangle center point y coordinate
 
     Example of the ``WindowsElement`` usage
 
