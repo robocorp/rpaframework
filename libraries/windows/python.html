@@ -241,7 +241,7 @@ will replace current library <code class="docutils literal notranslate"><span cl
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pip=20.1</span>
   <span class="p p-Indicator">-</span> <span class="nt">pip</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework-windows==1.2.1</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework-windows==1.3.0</span>
 </pre></div>
 </div>
 <p><strong>About terminology</strong></p>
@@ -260,6 +260,14 @@ element as <code class="docutils literal notranslate"><span class="pre">WindowsE
     <span class="n">automation_id</span><span class="p">:</span> <span class="nb">str</span>   <span class="c1"># ``AutomationId`` attribute of the element</span>
     <span class="n">control_type</span><span class="p">:</span> <span class="nb">str</span>    <span class="c1"># ``ControlTypeName`` attribute of the element</span>
     <span class="n">class_name</span><span class="p">:</span> <span class="nb">str</span>      <span class="c1"># ``ClassName`` attribute of the element</span>
+    <span class="n">left</span><span class="p">:</span> <span class="nb">int</span>            <span class="c1"># element&#39;s rectangle left coordinate</span>
+    <span class="n">right</span><span class="p">:</span> <span class="nb">int</span>           <span class="c1"># element&#39;s rectangle right coordinate</span>
+    <span class="n">top</span><span class="p">:</span> <span class="nb">int</span>             <span class="c1"># element&#39;s rectangle top coordinate</span>
+    <span class="n">bottom</span><span class="p">:</span> <span class="nb">int</span>          <span class="c1"># element&#39;s rectangle bottom coordinate</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span>           <span class="c1"># element&#39;s rectangle horizontal width</span>
+    <span class="n">height</span><span class="p">:</span> <span class="nb">int</span>          <span class="c1"># element&#39;s rectangle vertical height</span>
+    <span class="n">xcenter</span><span class="p">:</span> <span class="nb">int</span>         <span class="c1"># element&#39;s rectangle center point x coordinate</span>
+    <span class="n">ycenter</span><span class="p">:</span> <span class="nb">int</span>         <span class="c1"># element&#39;s rectangle center point y coordinate</span>
 </pre></div>
 </div>
 <p>Example of the <code class="docutils literal notranslate"><span class="pre">WindowsElement</span></code> usage</p>
