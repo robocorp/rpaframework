@@ -89,15 +89,16 @@ class Figure(BaseElement):
         self.item: Optional[LTItem] = None
 
     def __str__(self) -> str:
-        return f'<image src="{self._figure_name}" width="{int(self.item.width)}" height="{int(self.item.height)}" />'
+        return (
+            f'<image src="{self._figure_name}" width="{int(self.item.width)}" '
+            f'height="{int(self.item.height)}" />'
+        )
 
 
 class TextBox(BaseElement):
     """Class for each LTTextBox element in the PDF."""
 
-    def __init__(
-        self, boxid: int, *, item: Any, trim: bool = True
-    ) -> None:
+    def __init__(self, boxid: int, *, item: Any, trim: bool = True) -> None:
         super().__init__(item.bbox)
 
         self._boxid = boxid

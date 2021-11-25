@@ -7,7 +7,6 @@ from typing import (
     Dict,
     List,
     Optional,
-    Tuple,
     Union,
 )
 
@@ -15,7 +14,7 @@ from RPA.PDF.keywords import (
     LibraryContext,
     keyword,
 )
-from RPA.PDF.keywords.model import BaseElement, Coords, TextBox
+from RPA.PDF.keywords.model import BaseElement, TextBox
 
 
 class TargetObject(BaseElement):
