@@ -6,6 +6,8 @@ from typing import (
     Any,
     Iterable,
     Optional,
+    Tuple,
+    Union,
 )
 
 import PyPDF2
@@ -39,92 +41,77 @@ from RPA.PDF.keywords import (
 )
 
 
-def iterable_items_to_int(bbox) -> list:
+Coords = Tuple[int, ...]
+LTItem = Union[LTFigure, LTImage]
+
+
+def iterable_items_to_ints(bbox: Optional[Iterable]) -> Coords:
     if bbox is None:
-        return []
-    return list(map(int, bbox))
+        return ()
+    return tuple(map(int, bbox))
 
 
-class Figure:
+class BaseElement:
+    """Base class for all kind of elements found in PDFs."""
+
+    def __init__(self, bbox: Optional[Iterable]):
+        self._bbox: Coords = iterable_items_to_ints(bbox)
+        assert len(self._bbox) == 4, "must be in (left, bottom, right, top) format"
+
+    @property
+    def bbox(self) -> Coords:
+        return self._bbox
+
+    @property
+    def left(self) -> int:
+        return self.bbox[0]
+
+    @property
+    def bottom(self) -> int:
+        return self.bbox[1]
+
+    @property
+    def right(self) -> int:
+        return self.bbox[2]
+
+    @property
+    def top(self) -> int:
+        return self.bbox[3]
+
+
+class Figure(BaseElement):
     """Class for each LTFigure element in the PDF"""
 
-    figure_name: str
-    figure_bbox: list
-    item: dict
-    image_name: str
-
     def __init__(self, name: str, bbox: Iterable) -> None:
-        self.figure_name = name
-        self.figure_bbox = iterable_items_to_int(bbox)
-        self.image_name = None
-        self.item = None
+        super().__init__(bbox)
 
-    def set_item(self, item: Any):
-        # LTImage
-        self.item = item
+        self._figure_name = name
+        self.item: Optional[LTItem] = None
 
-    def details(self) -> str:
-        return '<image src="%s" width="%d" height="%d" />' % (
-            self.image_name or self.figure_name,
-            self.item.width,
-            self.item.height,
-        )
+    def __str__(self) -> str:
+        return f'<image src="{self._figure_name}" width="{int(self.item.width)}" height="{int(self.item.height)}" />'
 
 
-class TextBox:
-    """Class for each LTTextBox element in the PDF"""
-
-    item: dict
-    textbox_bbox: list
-    textbox_id: int
-    textbox_wmode: str
+class TextBox(BaseElement):
+    """Class for each LTTextBox element in the PDF."""
 
     def __init__(
-        self, boxid: int, bbox: Iterable, wmode: str, trim: bool = True
+        self, boxid: int, *, item: Any, trim: bool = True
     ) -> None:
-        self.textbox_id = boxid
-        self.textbox_bbox = iterable_items_to_int(bbox)
-        self.textbox_wmode = wmode
-        self.trim = trim
+        super().__init__(item.bbox)
 
-    def set_item(self, item: Any):
-        text = item.get_text()
-        self.item = {
-            "bbox": iterable_items_to_int(item.bbox),
-            "text": text.strip() if self.trim else text,
-        }
-
-    @property
-    def left(self) -> Any:
-        return self.bbox[0] if (self.bbox and len(self.bbox) == 4) else None
-
-    @property
-    def bottom(self) -> Any:
-        return self.bbox[1] if (self.bbox and len(self.bbox) == 4) else None
-
-    @property
-    def right(self) -> Any:
-        return self.bbox[2] if (self.bbox and len(self.bbox) == 4) else None
-
-    @property
-    def top(self) -> Any:
-        return self.bbox[3] if (self.bbox and len(self.bbox) == 4) else None
+        self._boxid = boxid
+        self._text = item.get_text()
+        if trim:
+            self._text = self._text.strip()
 
     @property
     def boxid(self) -> int:
-        return self.textbox_id
+        return self._boxid
 
     @property
     def text(self) -> str:
-        return self.item["text"]
-
-    @text.setter
-    def text(self, newtext):
-        self.item["text"] = newtext
-
-    @property
-    def bbox(self) -> list:
-        return self.item["bbox"]
+        return self._text
 
     def __str__(self) -> str:
         return f"{self.text} {self.bbox}"
@@ -135,7 +122,7 @@ class Page:
 
     def __init__(self, pageid: int, bbox: Iterable, rotate: int) -> None:
         self.pageid = pageid
-        self.bbox = iterable_items_to_int(bbox)
+        self.bbox = iterable_items_to_ints(bbox)
         self.rotate = rotate
 
         self._content = OrderedDict()
@@ -338,7 +325,7 @@ class Converter(PDFConverter):
                     self.write(s)
                     for child in item:
                         if self.figure:
-                            self.figure.set_item(item)
+                            self.figure.item = item
                         render(child)
                     self.write("</figure>\n")
                     self.current_page.add_content(self.figure)
@@ -358,9 +345,8 @@ class Converter(PDFConverter):
                     bbox2str(item.bbox),
                     wmode,
                 )
-                box = TextBox(item.index, item.bbox, wmode, self.trim)
+                box = TextBox(item.index, item=item, trim=self.trim)
                 self.write(s)
-                box.set_item(item)
                 self.current_page.add_content(box)
                 for child in item:
                     render(child)
@@ -384,7 +370,7 @@ class Converter(PDFConverter):
                 self.write("<text>%s</text>\n" % item.get_text())
             elif isinstance(item, LTImage):
                 if self.figure:
-                    self.figure.set_item(item)
+                    self.figure.item = item
                 if self.imagewriter is not None:
                     name = self.imagewriter.export_image(item)
                     self.write(
@@ -545,21 +531,21 @@ class ModelKeywords(LibraryContext):
             if value is None and replace_none_value:
                 record_fields[name.decode("iso-8859-1")] = {
                     "value": name.decode("iso-8859-1"),
-                    "rect": iterable_items_to_int(rect),
+                    "rect": iterable_items_to_ints(rect),
                     "label": label.decode("iso-8859-1") if label else None,
                 }
             else:
                 try:
                     record_fields[name.decode("iso-8859-1")] = {
                         "value": value.decode("iso-8859-1") if value else "",
-                        "rect": iterable_items_to_int(rect),
+                        "rect": iterable_items_to_ints(rect),
                         "label": label.decode("iso-8859-1") if label else None,
                     }
                 except AttributeError:
                     self.logger.debug("Attribute error")
                     record_fields[name.decode("iso-8859-1")] = {
                         "value": value,
-                        "rect": iterable_items_to_int(rect),
+                        "rect": iterable_items_to_ints(rect),
                         "label": label.decode("iso-8859-1") if label else None,
                     }
 

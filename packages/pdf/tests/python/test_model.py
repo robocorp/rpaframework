@@ -33,7 +33,7 @@ def test_get_input_fields(library):
 
     assert len(fields) == 65
     assert fields["Puhelinnumero"]["value"] == ""
-    assert isinstance(fields["Puhelinnumero"]["rect"], list)
+    assert isinstance(fields["Puhelinnumero"]["rect"], tuple)
 
 
 def test_get_input_fields_replace_none_values(library):

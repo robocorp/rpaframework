@@ -142,7 +142,7 @@ def test_get_all_figures(library):
     details = '<image src="Im0" width="45" height="45" />'
 
     assert len(pages) == 2
-    assert figure.details() == details
+    assert str(figure) == details
 
 
 @pytest.mark.parametrize(

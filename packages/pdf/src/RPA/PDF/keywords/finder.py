@@ -4,8 +4,10 @@ import re
 from dataclasses import dataclass
 from typing import (
     Callable,
+    Dict,
     List,
     Optional,
+    Tuple,
     Union,
 )
 
@@ -13,16 +15,18 @@ from RPA.PDF.keywords import (
     LibraryContext,
     keyword,
 )
-from RPA.PDF.keywords.model import TextBox
+from RPA.PDF.keywords.model import BaseElement, Coords, TextBox
 
 
-@dataclass
-class TargetObject:
+class TargetObject(BaseElement):
     """Container for Target text boxes with coordinates."""
 
-    boxid: int
-    bbox: tuple
-    text: str
+    # Class level constants.
+    boxid: int = -1
+    text: str = ""
+
+
+Element = Union[TextBox, TargetObject]
 
 
 @dataclass
@@ -44,7 +48,7 @@ class FinderKeywords(LibraryContext):
         super().__init__(ctx)
 
         # Text locator might lead to multiple valid found anchors.
-        self._anchors: List[Union[TargetObject, TextBox]] = []
+        self._anchors: List[Element] = []
         # The others usually have just one. (if multiple are found, set to it the
         #   first one)
         self.anchor_element = None
@@ -71,7 +75,7 @@ class FinderKeywords(LibraryContext):
 
         raise ValueError(f"Not recognized direction search {direction!r}")
 
-    def _log_element(self, elem: Union[TextBox, TargetObject], prefix: str = ""):
+    def _log_element(self, elem: Element, prefix: str = ""):
         template = f"{prefix} box %d | bbox %s | text %r"
         self.logger.debug(template, elem.boxid, elem.bbox, elem.text)
 
@@ -152,7 +156,8 @@ class FinderKeywords(LibraryContext):
             direction, regexp_compiled, strict
         )
 
-        candidates_dict = {}
+        candidates_dict: Dict[int, List[Element]] = {}
+        anchors_map = {anchor.boxid: anchor for anchor in self._anchors}
         for candidate in self._get_textboxes_on_page(pagenum):
             self._log_element(candidate, prefix="Current candidate:")
             for anchor in self._anchors:
@@ -162,10 +167,11 @@ class FinderKeywords(LibraryContext):
                 if candidate.boxid != anchor.boxid and search_for_candidate(
                     candidate, anchor=anchor
                 ):
-                    candidates_dict.setdefault(anchor, []).append(candidate)
+                    candidates_dict.setdefault(anchor.boxid, []).append(candidate)
 
         matches = []
-        for anchor, candidates in candidates_dict.items():
+        for anchor_id, candidates in candidates_dict.items():
+            anchor = anchors_map[anchor_id]
             self._sort_candidates_by_anchor(candidates, anchor=anchor)
             if closest_neighbours is not None:
                 # Keep the first N closest neighbours from the entire set of candidates.
@@ -245,7 +251,7 @@ class FinderKeywords(LibraryContext):
                 int(right),
                 int(top),
             )
-            anchor = TargetObject(boxid=-1, bbox=bbox, text="")
+            anchor = TargetObject(bbox=bbox)
             self._anchors.append(anchor)
         else:
             if criteria == "regex":

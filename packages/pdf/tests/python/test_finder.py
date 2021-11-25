@@ -39,28 +39,28 @@ def test_find_text_default_right(library, locator, trim, expected):
     library.open_pdf(TestFiles.invoice_pdf)
     result = library.find_text(locator, trim=trim)
 
-    assert result.text == expected
+    assert result[0].neighbours[0] == expected
 
 
 def test_find_text_left(library):
     library.open_pdf(TestFiles.invoice_pdf)
     invoice_label = library.find_text("text:INV-3337", direction="left")
 
-    assert invoice_label.text == "Invoice Number"
+    assert invoice_label[0].neighbours[0] == "Invoice Number"
 
 
 def test_find_text_bottom(library):
     library.open_pdf(TestFiles.invoice_pdf)
     service = library.find_text("text:service", direction="bottom")
 
-    assert "Web Design" in service.text
+    assert "Web Design" in service[0].neighbours[0]
 
 
 def test_find_text_top(library):
     library.open_pdf(TestFiles.invoice_pdf)
     item = library.find_text("text:Tax", direction="top")
 
-    assert item.text == "Sub Total"
+    assert item[0].neighbours[0] == "Sub Total"
 
 
 def test_find_text_matching_regexp(library):
@@ -69,7 +69,7 @@ def test_find_text_matching_regexp(library):
         "text:Invoice Number", direction="right", regexp="INV-\\d{4}"
     )
 
-    assert item.text == "INV-3337"
+    assert item[0].neighbours[0] == "INV-3337"
 
 
 def test_find_text_by_box_coordinates(library):
@@ -87,12 +87,12 @@ def test_find_text_by_box_coordinates(library):
     ]
     library.open_pdf(TestFiles.invoice_pdf)
     items = library.find_text(
-        "coords:345,645,520,725", direction="box", only_closest=False
+        "coords:345,645,520,725", direction="box", closest_neighbours=None
     )
 
-    assert len(items) == len(expected)
-    for item in items:
-        assert item.text in expected
+    assert len(items[0].neighbours) == len(expected)
+    for item in items[0].neighbours:
+        assert item in expected
 
 
 def test_find_text_box_not_found(library):
