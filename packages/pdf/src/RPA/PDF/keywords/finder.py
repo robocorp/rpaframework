@@ -96,23 +96,30 @@ class FinderKeywords(LibraryContext):
         regexp: str = None,
         trim: bool = True,
     ) -> List[Match]:
-        """Get the closest text as string value to the anchored element.
+        """Find the closest text elements near the set anchor(s) through `locator`.
 
-        PDF will be parsed automatically before elements can be searched.
+        The PDF will be parsed automatically before elements can be searched.
 
-        :param locator: element to set anchor to. This can be prefixed with either
-            `text:` or `coords:` to find the anchor by text or coordinates.
-            Default is `text`.
-        :param pagenum: page number where search if performed on, default 1 (first).
-        :param direction: in which direction to search for text,
-            directions  'top'/'up', 'bottom'/'down', 'left' or 'right',
-            defaults to 'right'.
-        :param strict: if element margins should be used for matching points,
-            used when direction is 'top' or 'bottom', default `False`.
-        :param regexp: expected format of value to match, defaults to None.
-        :param trim: set to `False` to match on raw texts, default `True`
-            means whitespace is trimmed from the text
-        :return: all possible values, only the closest value, or an empty list.
+        :param locator: Element to set anchor to. This can be prefixed with either
+            `text:`, `regex:` or `coords:` to find the anchor by text or coordinates.
+            `text` is assumed if no such prefix is specified. (text search is
+             case-insensitive)
+        :param pagenum: Page number where search if performed on, defaults to 1 (first
+            page).
+        :param direction: In which direction to search for text elements. This can be
+            any of 'top'/'up', 'bottom'/'down', 'left' or 'right'. (defaults to
+            'right')
+        :param closest_neighbours: How many neighbours to return at most, sorted by the
+            distance from the current anchor.
+        :param strict: If element's margins should be used for matching those which are
+            aligned to the anchor. (turned off by default)
+        :param regexp: Expected format of the searched text value. By default all the
+            candidates in range are considered valid neighbours.
+        :param trim: Automatically trim leading/trailing whitespace from the text
+            elements. (switched on by default)
+        :returns: A list of `Match` objects where every match has the following
+            attributes: `.anchor` - the matched text with the locator; `.neighbours` -
+            a list of adjacent texts found on the specified direction
 
         **Examples**
 
@@ -120,12 +127,8 @@ class FinderKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
             Example Keyword
-                ${value} =  Find Text    text:Invoice Number
+                ${matches} =  Find Text    Invoice Number
 
         **Python**
 
@@ -136,7 +139,7 @@ class FinderKeywords(LibraryContext):
             pdf = PDF()
 
             def example_keyword():
-                value = pdf.find_text("text:Invoice Number")
+                ${matches} = pdf.find_text("Invoice Number")
         """
         pagenum = int(pagenum)
         if closest_neighbours is not None:
@@ -199,9 +202,20 @@ class FinderKeywords(LibraryContext):
     def set_anchor_to_element(
         self, locator: str, trim: bool = True, pagenum: Union[int, str] = 1
     ) -> bool:
-        """Sets anchor point in the document for further searches.
+        """Sets main anchor point in the document for further searches.
 
-        This is used internally in the library.
+        This is used internally in the library and can work with multiple anchors at
+        the same time if such are found.
+
+        :param locator: Element to set anchor to. This can be prefixed with either
+            `text:`, `regex:` or `coords:` to find the anchor by text or coordinates.
+            `text` is assumed if no such prefix is specified. (text search is
+             case-insensitive)
+        :param trim: Automatically trim leading/trailing whitespace from the text
+            elements. (switched on by default)
+        :param pagenum: Page number where search if performed on, defaults to 1 (first
+            page).
+        :returns: True if at least one anchor was found.
 
         **Examples**
 
@@ -209,12 +223,8 @@ class FinderKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
             Example Keyword
-                 ${success}=  Set Anchor To Element    text:Invoice Number
+                 ${success} =  Set Anchor To Element    Invoice Number
 
         **Python**
 
@@ -225,12 +235,7 @@ class FinderKeywords(LibraryContext):
             pdf = PDF()
 
             def example_keyword():
-                success = pdf.set_anchor_to_element("text:Invoice Number")
-
-        :param locator: element to search for
-        :param trim: set to `False` to match on raw texts, default `True`
-            means whitespace is trimmed from the text
-        :return: True if element was found.
+                success = pdf.set_anchor_to_element("Invoice Number")
         """
         self.logger.info("Trying to set anchor using locator: %r", locator)
         self.ctx.convert(trim=trim)
