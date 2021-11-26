@@ -156,7 +156,11 @@ class FinderKeywords(LibraryContext):
         )
 
         candidates_dict: Dict[int, List[Element]] = {}
-        anchors_map = {anchor.boxid: anchor for anchor in self._anchors}
+        anchors_map: Dict[int, Element] = {}
+        for anchor in self._anchors:
+            candidates_dict[anchor.boxid] = []
+            anchors_map[anchor.boxid] = anchor
+
         for candidate in self._get_textboxes_on_page(pagenum):
             self._log_element(candidate, prefix="Current candidate:")
             for anchor in self._anchors:
@@ -166,7 +170,7 @@ class FinderKeywords(LibraryContext):
                 if candidate.boxid != anchor.boxid and search_for_candidate(
                     candidate, anchor=anchor
                 ):
-                    candidates_dict.setdefault(anchor.boxid, []).append(candidate)
+                    candidates_dict[anchor.boxid].append(candidate)
 
         matches = []
         for anchor_id, candidates in candidates_dict.items():

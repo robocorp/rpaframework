@@ -4,10 +4,10 @@ import typing
 from collections import OrderedDict
 from typing import (
     Any,
+    Set,
     Iterable,
     Optional,
     Tuple,
-    Union,
 )
 
 import PyPDF2
@@ -42,7 +42,6 @@ from RPA.PDF.keywords import (
 
 
 Coords = Tuple[int, ...]
-LTItem = Union[LTFigure, LTImage]
 
 
 def iterable_items_to_ints(bbox: Optional[Iterable]) -> Coords:
@@ -82,15 +81,17 @@ class BaseElement:
 class Figure(BaseElement):
     """Class for each LTFigure element in the PDF"""
 
-    def __init__(self, name: str, bbox: Iterable) -> None:
-        super().__init__(bbox)
+    def __init__(self, item):
+        super().__init__(item.bbox)
+        self._item = item
 
-        self._figure_name = name
-        self.item: Optional[LTItem] = None
+    @property
+    def item(self):
+        return self._item
 
     def __str__(self) -> str:
         return (
-            f'<image src="{self._figure_name}" width="{int(self.item.width)}" '
+            f'<image src="{self.item.name}" width="{int(self.item.width)}" '
             f'height="{int(self.item.height)}" />'
         )
 
@@ -118,12 +119,13 @@ class TextBox(BaseElement):
         return f"{self.text} {self.bbox}"
 
 
-class Page:
+class Page(BaseElement):
     """Class that abstracts a PDF page."""
 
     def __init__(self, pageid: int, bbox: Iterable, rotate: int) -> None:
+        super().__init__(bbox)
+
         self.pageid = pageid
-        self.bbox = iterable_items_to_ints(bbox)
         self.rotate = rotate
 
         self._content = OrderedDict()
@@ -156,15 +158,13 @@ class Page:
     def textboxes(self) -> OrderedDict:
         return self._textboxes
 
+    @property
+    def tag(self) -> str:
+        return f'<page id="{self.pageid}" bbox="{bbox2str(self.bbox)}" rotate="{self.rotate}">'
+
     def __str__(self) -> str:
-        page_as_str = '<page id="%s" bbox="%s" rotate="%d">\n' % (
-            self.pageid,
-            bbox2str(self.bbox),
-            self.rotate,
-        )
-        for _, c in self._content.items():
-            page_as_str += f"{c}\n"
-        return page_as_str
+        items_str = "\n".join(self._content.values())
+        return f"{self.tag}\n{items_str}"
 
 
 class Document:
@@ -223,6 +223,8 @@ class Converter(PDFConverter):
         self,
         active_document: Document,
         rsrcmgr,
+        *,
+        logger,
         codec: str = "utf-8",
         pageno: int = 1,
         laparams=None,
@@ -234,12 +236,20 @@ class Converter(PDFConverter):
             rsrcmgr, sys.stdout, codec=codec, pageno=pageno, laparams=laparams
         )
         self.active_pdf_document = active_document
-        self.figure = None
         self.current_page = None
         self.imagewriter = imagewriter
         self.stripcontrol = stripcontrol
         self.trim = trim
         self.write_header()
+
+        self._logger = logger
+        self._unique_figures: Set[Tuple[int, str, Coords]] = set()
+
+    def _add_unique_figure(self, figure: Figure):
+        figure_key = (self.current_page.pageid, str(figure), figure.bbox)
+        if figure_key not in self._unique_figures:
+            self.current_page.add_content(figure)
+            self._unique_figures.add(figure_key)
 
     def write(self, text: str):
         if self.codec:
@@ -280,14 +290,8 @@ class Converter(PDFConverter):
         #  pylint: disable=R0912, R0915
         def render(item):
             if isinstance(item, LTPage):
-                s = '<page id="%s" bbox="%s" rotate="%d">\n' % (
-                    item.pageid,
-                    bbox2str(item.bbox),
-                    item.rotate,
-                )
                 self.current_page = Page(item.pageid, item.bbox, item.rotate)
-
-                self.write(s)
+                self.write(self.current_page.tag + "\n")
                 for child in item:
                     render(child)
                 if item.groups is not None:
@@ -317,20 +321,16 @@ class Converter(PDFConverter):
                 )
                 self.write(s)
             elif isinstance(item, LTFigure):
-                self.figure = Figure(item.name, item.bbox)
-                if self.figure:
-                    s = '<figure name="%s" bbox="%s">\n' % (
-                        item.name,
-                        bbox2str(item.bbox),
-                    )
-                    self.write(s)
-                    for child in item:
-                        if self.figure:
-                            self.figure.item = item
-                        render(child)
-                    self.write("</figure>\n")
-                    self.current_page.add_content(self.figure)
-                    self.figure = None
+                figure = Figure(item)
+                s = '<figure name="%s" bbox="%s">\n' % (
+                    item.name,
+                    bbox2str(item.bbox),
+                )
+                self.write(s)
+                for child in item:
+                    render(child)
+                self.write("</figure>\n")
+                self._add_unique_figure(figure)
             elif isinstance(item, LTTextLine):
                 self.write('<textline bbox="%s">\n' % bbox2str(item.bbox))
                 for child in item:
@@ -370,8 +370,7 @@ class Converter(PDFConverter):
             elif isinstance(item, LTText):
                 self.write("<text>%s</text>\n" % item.get_text())
             elif isinstance(item, LTImage):
-                if self.figure:
-                    self.figure.item = item
+                figure = Figure(item)
                 if self.imagewriter is not None:
                     name = self.imagewriter.export_image(item)
                     self.write(
@@ -382,8 +381,9 @@ class Converter(PDFConverter):
                     self.write(
                         '<image width="%d" height="%d" />\n' % (item.width, item.height)
                     )
+                self._add_unique_figure(figure)
             else:
-                assert False, str(("Unhandled", item))
+                self._logger.warning("Unknown item: %r", item)
 
         render(ltpage)
 
@@ -441,7 +441,11 @@ class ModelKeywords(LibraryContext):
             self.set_convert_settings()
         laparams = pdfminer.layout.LAParams(**self.ctx.convert_settings)
         device = Converter(
-            self.active_pdf_document, rsrcmgr, laparams=laparams, trim=trim
+            self.active_pdf_document,
+            rsrcmgr,
+            laparams=laparams,
+            trim=trim,
+            logger=self.logger,
         )
         interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
 
