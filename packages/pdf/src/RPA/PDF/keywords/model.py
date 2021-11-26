@@ -160,7 +160,10 @@ class Page(BaseElement):
 
     @property
     def tag(self) -> str:
-        return f'<page id="{self.pageid}" bbox="{bbox2str(self.bbox)}" rotate="{self.rotate}">'
+        return (
+            f'<page id="{self.pageid}" bbox="{bbox2str(self.bbox)}" '
+            f'rotate="{self.rotate}">'
+        )
 
     def __str__(self) -> str:
         items_str = "\n".join(self._content.values())
