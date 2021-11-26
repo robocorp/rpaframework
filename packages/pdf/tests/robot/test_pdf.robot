@@ -30,7 +30,7 @@ Get text from one page
     &{text} =    Get Text From PDF    ${VERO_PDF}    1
     RPA Should Contain    ${text}[${1}]    Omaisuus on saatu
 
-    # The same, but using textboses now.
+    # The same, but using text boxes now.
     &{text} =    Get Text From PDF    ${VERO_PDF}    1      details=${True}
     @{text_boxes} =    Set Variable     ${text}[${1}]
     RPA Should Contain     ${text_boxes[0].text}    ILMOITA VERKOSSA
