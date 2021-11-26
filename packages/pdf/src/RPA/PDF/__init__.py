@@ -1,9 +1,11 @@
 import logging
-from robotlibcore import DynamicCore
+from typing import Dict
 
+from robotlibcore import DynamicCore
 from RPA.core.logger import RobotLogListener
 
 from RPA.PDF.keywords import DocumentKeywords, FinderKeywords, ModelKeywords
+from RPA.PDF.keywords.model import Document
 
 
 class PDF(DynamicCore):
@@ -25,12 +27,12 @@ class PDF(DynamicCore):
 
     .. code-block:: robotframework
 
-        ***Settings***
+        *** Settings ***
         Library    RPA.PDF
 
-        ***Tasks***
+        *** Tasks ***
         Extract Data
-            ${text}=    Get Text From PDF    ./tmp/sample.pdf
+            ${text} =    Get Text From PDF    ./tmp/sample.pdf
 
         Fill Form
             Open PDF    ./tmp/sample.pdf
@@ -53,7 +55,6 @@ class PDF(DynamicCore):
             pdf.set_field_value("phone_nr", 080123123)
             pdf.set_field_value("address", "robot street 14")
             pdf.save_field_values(output_path="output.pdf")
-
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -61,7 +62,7 @@ class PDF(DynamicCore):
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.documents = {}
+        self.documents: Dict[str, Document] = {}
         self.active_pdf_document = None
         self.convert_settings = {}
 
@@ -74,6 +75,6 @@ class PDF(DynamicCore):
         super().__init__(libraries)
 
         listener = RobotLogListener()
-        listener.register_protected_keywords(["RPA.PDF.decrypt"])
+        listener.register_protected_keywords(["RPA.PDF.Decrypt PDF"])
 
         logging.getLogger("pdfminer").setLevel(logging.WARNING)

@@ -4,8 +4,10 @@ import typing
 from collections import OrderedDict
 from typing import (
     Any,
+    Set,
     Iterable,
     Optional,
+    Tuple,
 )
 
 import PyPDF2
@@ -39,135 +41,133 @@ from RPA.PDF.keywords import (
 )
 
 
-def iterable_items_to_int(bbox) -> list:
+Coords = Tuple[int, ...]
+
+
+def iterable_items_to_ints(bbox: Optional[Iterable]) -> Coords:
     if bbox is None:
-        return []
-    return list(map(int, bbox))
+        return ()
+    return tuple(map(int, bbox))
 
 
-class Figure:
+class BaseElement:
+    """Base class for all kind of elements found in PDFs."""
+
+    def __init__(self, bbox: Optional[Iterable]):
+        self._bbox: Coords = iterable_items_to_ints(bbox)
+        assert len(self._bbox) == 4, "must be in (left, bottom, right, top) format"
+
+    @property
+    def bbox(self) -> Coords:
+        return self._bbox
+
+    @property
+    def left(self) -> int:
+        return self.bbox[0]
+
+    @property
+    def bottom(self) -> int:
+        return self.bbox[1]
+
+    @property
+    def right(self) -> int:
+        return self.bbox[2]
+
+    @property
+    def top(self) -> int:
+        return self.bbox[3]
+
+
+class Figure(BaseElement):
     """Class for each LTFigure element in the PDF"""
 
-    figure_name: str
-    figure_bbox: list
-    item: dict
-    image_name: str
+    def __init__(self, item):
+        super().__init__(item.bbox)
+        self._item = item
 
-    def __init__(self, name: str, bbox: Iterable) -> None:
-        self.figure_name = name
-        self.figure_bbox = iterable_items_to_int(bbox)
-        self.image_name = None
-        self.item = None
+    @property
+    def item(self):
+        return self._item
 
-    def set_item(self, item: Any):
-        # LTImage
-        self.item = item
-
-    def details(self) -> str:
-        return '<image src="%s" width="%d" height="%d" />' % (
-            self.image_name or self.figure_name,
-            self.item.width,
-            self.item.height,
+    def __str__(self) -> str:
+        return (
+            f'<image src="{self.item.name}" width="{int(self.item.width)}" '
+            f'height="{int(self.item.height)}" />'
         )
 
 
-class TextBox:
-    """Class for each LTTextBox element in the PDF"""
+class TextBox(BaseElement):
+    """Class for each LTTextBox element in the PDF."""
 
-    item: dict
-    textbox_bbox: list
-    textbox_id: int
-    textbox_wmode: str
+    def __init__(self, boxid: int, *, item: Any, trim: bool = True) -> None:
+        super().__init__(item.bbox)
 
-    def __init__(
-        self, boxid: int, bbox: Iterable, wmode: str, trim: bool = True
-    ) -> None:
-        self.textbox_id = boxid
-        self.textbox_bbox = iterable_items_to_int(bbox)
-        self.textbox_wmode = wmode
-        self.trim = trim
-
-    def set_item(self, item: Any):
-        text = item.get_text()
-        self.item = {
-            "bbox": iterable_items_to_int(item.bbox),
-            "text": text.strip() if self.trim else text,
-        }
-
-    @property
-    def left(self) -> Any:
-        return self.bbox[0] if (self.bbox and len(self.bbox) == 4) else None
-
-    @property
-    def bottom(self) -> Any:
-        return self.bbox[1] if (self.bbox and len(self.bbox) == 4) else None
-
-    @property
-    def right(self) -> Any:
-        return self.bbox[2] if (self.bbox and len(self.bbox) == 4) else None
-
-    @property
-    def top(self) -> Any:
-        return self.bbox[3] if (self.bbox and len(self.bbox) == 4) else None
+        self._boxid = boxid
+        self._text = item.get_text()
+        if trim:
+            self._text = self._text.strip()
 
     @property
     def boxid(self) -> int:
-        return self.textbox_id
+        return self._boxid
 
     @property
     def text(self) -> str:
-        return self.item["text"]
-
-    @text.setter
-    def text(self, newtext):
-        self.item["text"] = newtext
-
-    @property
-    def bbox(self) -> list:
-        return self.item["bbox"]
+        return self._text
 
     def __str__(self) -> str:
         return f"{self.text} {self.bbox}"
 
 
-class Page:
-    """Class for each PDF page"""
-
-    bbox: list
-    content: OrderedDict
-    content_id: int
-    pageid: str
-    rotate: int
+class Page(BaseElement):
+    """Class that abstracts a PDF page."""
 
     def __init__(self, pageid: int, bbox: Iterable, rotate: int) -> None:
+        super().__init__(bbox)
+
         self.pageid = pageid
-        self.bbox = iterable_items_to_int(bbox)
         self.rotate = rotate
-        self.content = OrderedDict()
-        self.content_id = 0
+
+        self._content = OrderedDict()
+        self._content_id = 0
+        self._figures = OrderedDict()
+        self._textboxes = OrderedDict()
 
     def add_content(self, content: Any) -> None:
-        self.content[self.content_id] = content
-        self.content_id += 1
+        self._content[self._content_id] = content
+        if isinstance(content, Figure):
+            content_dict = self._figures
+        elif isinstance(content, TextBox):
+            content_dict = self._textboxes
+        else:
+            content_dict = None
+        if content_dict is not None:
+            content_dict[self._content_id] = content
 
-    def get_content(self) -> OrderedDict:
-        return self.content
+        self._content_id += 1
 
-    def get_figures(self) -> OrderedDict:
-        return {k: v for k, v in self.content.items() if isinstance(v, Figure)}
+    @property
+    def content(self) -> OrderedDict:
+        return self._content
 
-    def get_textboxes(self) -> OrderedDict:
-        return {k: v for k, v in self.content.items() if isinstance(v, TextBox)}
+    @property
+    def figures(self) -> OrderedDict:
+        return self._figures
+
+    @property
+    def textboxes(self) -> OrderedDict:
+        return self._textboxes
+
+    @property
+    def tag(self) -> str:
+        return (
+            f'<page id="{self.pageid}" bbox="{bbox2str(self.bbox)}" '
+            f'rotate="{self.rotate}">'
+        )
 
     def __str__(self) -> str:
-        page_as_str = '<page id="%s" bbox="%s" rotate="%d">\n' % (
-            self.pageid,
-            bbox2str(self.bbox),
-            self.rotate,
-        )
-        for _, c in self.content.items():
-            page_as_str += f"{c}\n"
-        return page_as_str
+        items_str = "\n".join(self._content.values())
+        return f"{self.tag}\n{items_str}"
 
 
 class Document:
@@ -226,6 +226,8 @@ class Converter(PDFConverter):
         self,
         active_document: Document,
         rsrcmgr,
+        *,
+        logger,
         codec: str = "utf-8",
         pageno: int = 1,
         laparams=None,
@@ -237,12 +239,20 @@ class Converter(PDFConverter):
             rsrcmgr, sys.stdout, codec=codec, pageno=pageno, laparams=laparams
         )
         self.active_pdf_document = active_document
-        self.figure = None
         self.current_page = None
         self.imagewriter = imagewriter
         self.stripcontrol = stripcontrol
         self.trim = trim
         self.write_header()
+
+        self._logger = logger
+        self._unique_figures: Set[Tuple[int, str, Coords]] = set()
+
+    def _add_unique_figure(self, figure: Figure):
+        figure_key = (self.current_page.pageid, str(figure), figure.bbox)
+        if figure_key not in self._unique_figures:
+            self.current_page.add_content(figure)
+            self._unique_figures.add(figure_key)
 
     def write(self, text: str):
         if self.codec:
@@ -283,14 +293,8 @@ class Converter(PDFConverter):
         #  pylint: disable=R0912, R0915
         def render(item):
             if isinstance(item, LTPage):
-                s = '<page id="%s" bbox="%s" rotate="%d">\n' % (
-                    item.pageid,
-                    bbox2str(item.bbox),
-                    item.rotate,
-                )
                 self.current_page = Page(item.pageid, item.bbox, item.rotate)
-
-                self.write(s)
+                self.write(self.current_page.tag + "\n")
                 for child in item:
                     render(child)
                 if item.groups is not None:
@@ -320,20 +324,16 @@ class Converter(PDFConverter):
                 )
                 self.write(s)
             elif isinstance(item, LTFigure):
-                self.figure = Figure(item.name, item.bbox)
-                if self.figure:
-                    s = '<figure name="%s" bbox="%s">\n' % (
-                        item.name,
-                        bbox2str(item.bbox),
-                    )
-                    self.write(s)
-                    for child in item:
-                        if self.figure:
-                            self.figure.set_item(item)
-                        render(child)
-                    self.write("</figure>\n")
-                    self.current_page.add_content(self.figure)
-                    self.figure = None
+                figure = Figure(item)
+                s = '<figure name="%s" bbox="%s">\n' % (
+                    item.name,
+                    bbox2str(item.bbox),
+                )
+                self.write(s)
+                for child in item:
+                    render(child)
+                self.write("</figure>\n")
+                self._add_unique_figure(figure)
             elif isinstance(item, LTTextLine):
                 self.write('<textline bbox="%s">\n' % bbox2str(item.bbox))
                 for child in item:
@@ -349,9 +349,8 @@ class Converter(PDFConverter):
                     bbox2str(item.bbox),
                     wmode,
                 )
-                box = TextBox(item.index, item.bbox, wmode, self.trim)
+                box = TextBox(item.index, item=item, trim=self.trim)
                 self.write(s)
-                box.set_item(item)
                 self.current_page.add_content(box)
                 for child in item:
                     render(child)
@@ -374,8 +373,7 @@ class Converter(PDFConverter):
             elif isinstance(item, LTText):
                 self.write("<text>%s</text>\n" % item.get_text())
             elif isinstance(item, LTImage):
-                if self.figure:
-                    self.figure.set_item(item)
+                figure = Figure(item)
                 if self.imagewriter is not None:
                     name = self.imagewriter.export_image(item)
                     self.write(
@@ -386,8 +384,9 @@ class Converter(PDFConverter):
                     self.write(
                         '<image width="%d" height="%d" />\n' % (item.width, item.height)
                     )
+                self._add_unique_figure(figure)
             else:
-                assert False, str(("Unhandled", item))
+                self._logger.warning("Unknown item: %r", item)
 
         render(ltpage)
 
@@ -434,30 +433,34 @@ class ModelKeywords(LibraryContext):
                 pdf.convert("/tmp/sample.pdf")
         """
         self.ctx.switch_to_pdf(source_path)
-        if self.ctx.active_pdf_document.is_converted:
+        if self.active_pdf_document.is_converted:
             return
 
         self.logger.debug(
-            "Converting active PDF document: %s", self.ctx.active_pdf_document.path
+            "Converting active PDF document: %s", self.active_pdf_document.path
         )
         rsrcmgr = PDFResourceManager()
         if not self.ctx.convert_settings:
             self.set_convert_settings()
         laparams = pdfminer.layout.LAParams(**self.ctx.convert_settings)
         device = Converter(
-            self.ctx.active_pdf_document, rsrcmgr, laparams=laparams, trim=trim
+            self.active_pdf_document,
+            rsrcmgr,
+            laparams=laparams,
+            trim=trim,
+            logger=self.logger,
         )
         interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
 
         # Look at all (nested) objects on each page.
-        source_parser = PDFParser(self.ctx.active_pdf_document.fileobject)
+        source_parser = PDFParser(self.active_pdf_document.fileobject)
         source_document = PDFDocument(source_parser)
         source_pages = PDFPage.create_pages(source_document)
         for _, page in enumerate(source_pages, 0):
             interpreter.process_page(page)
         device.close()
 
-        self.ctx.active_pdf_document.is_converted = True
+        self.active_pdf_document.is_converted = True
 
     @keyword
     def get_input_fields(
@@ -502,7 +505,7 @@ class ModelKeywords(LibraryContext):
         :return: dictionary of input key values or `None`.
         """
         self.ctx.switch_to_pdf(source_path)
-        active_document = self.ctx.active_pdf_document
+        active_document = self.active_pdf_document
 
         active_fields = active_document.fields
         if active_fields:
@@ -518,7 +521,7 @@ class ModelKeywords(LibraryContext):
         except KeyError as err:
             raise KeyError(
                 'PDF "%s" does not have any input fields.'
-                % self.ctx.active_pdf_document.path
+                % self.active_pdf_document.path
             ) from err
 
         record_fields = {}
@@ -536,25 +539,25 @@ class ModelKeywords(LibraryContext):
             if value is None and replace_none_value:
                 record_fields[name.decode("iso-8859-1")] = {
                     "value": name.decode("iso-8859-1"),
-                    "rect": iterable_items_to_int(rect),
+                    "rect": iterable_items_to_ints(rect),
                     "label": label.decode("iso-8859-1") if label else None,
                 }
             else:
                 try:
                     record_fields[name.decode("iso-8859-1")] = {
                         "value": value.decode("iso-8859-1") if value else "",
-                        "rect": iterable_items_to_int(rect),
+                        "rect": iterable_items_to_ints(rect),
                         "label": label.decode("iso-8859-1") if label else None,
                     }
                 except AttributeError:
                     self.logger.debug("Attribute error")
                     record_fields[name.decode("iso-8859-1")] = {
                         "value": value,
-                        "rect": iterable_items_to_int(rect),
+                        "rect": iterable_items_to_ints(rect),
                         "label": label.decode("iso-8859-1") if label else None,
                     }
 
-        self.ctx.active_pdf_document.fields = record_fields or None
+        self.active_pdf_document.fields = record_fields or None
         return record_fields
 
     @keyword
@@ -694,7 +697,7 @@ class ModelKeywords(LibraryContext):
         # The tests will XFAIL for the time being.
 
         self.ctx.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         if "/AcroForm" in reader.trailer["/Root"]:
             reader.trailer["/Root"]["/AcroForm"].update(
                 {
@@ -710,11 +713,11 @@ class ModelKeywords(LibraryContext):
         if newvals:
             self.logger.debug("Updating form fields with provided values for all pages")
             updated_fields = newvals
-        elif self.ctx.active_pdf_document.fields:
+        elif self.active_pdf_document.fields:
             self.logger.debug("Updating form fields with PDF values for all pages")
             updated_fields = {
                 k: v["value"] or ""
-                for (k, v) in self.ctx.active_pdf_document.fields.items()
+                for (k, v) in self.active_pdf_document.fields.items()
             }
         else:
             self.logger.debug("No values available for updating the form fields")
@@ -730,7 +733,7 @@ class ModelKeywords(LibraryContext):
             writer.addPage(page)
 
         if output_path is None:
-            output_path = self.ctx.active_pdf_document.path
+            output_path = self.active_pdf_document.path
         with open(output_path, "wb") as stream:
             writer.write(stream)
 

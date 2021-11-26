@@ -9,6 +9,7 @@ ${INVOICE_PDF}    ${RESOURCE_DIR}${/}invoice.pdf
 ${VERO_PDF}       ${RESOURCE_DIR}${/}vero.pdf
 ${ENCRYPTED_PDF}    ${RESOURCE_DIR}${/}encrypted.pdf
 ${IMAGES_PDF}     ${RESOURCE_DIR}${/}imagesandtext.pdf
+${BOOK_PDF}     ${RESOURCE_DIR}${/}18467.pdf
 ${PDF}            ${WORK_DIR}${/}result.pdf
 ${UNICODE_PDF}    ${WORK_DIR}${/}öåä.pdf
 &{VARS_ORDER}     name=Robot Generated

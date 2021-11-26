@@ -1,4 +1,5 @@
 *** Settings ***
+Library           Collections
 Library           OperatingSystem
 Library           RPA.PDF
 Library           XML
@@ -27,13 +28,18 @@ Unicode HTML text to PDF
 
 Get text from one page
     &{text} =    Get Text From PDF    ${VERO_PDF}    1
-    RPA Should Contain    ${text}[${1}].text    Omaisuus on saatu
+    RPA Should Contain    ${text}[${1}]    Omaisuus on saatu
+
+    # The same, but using textboses now.
+    &{text} =    Get Text From PDF    ${VERO_PDF}    1      details=${True}
+    @{text_boxes} =    Set Variable     ${text}[${1}]
+    RPA Should Contain     ${text_boxes[0].text}    ILMOITA VERKOSSA
 
 Get text from multiple pages as string parameter
     &{text} =    Get Text From PDF    ${VERO_PDF}    1,2
-    RPA Should Contain    ${text}[${1}].text    Omaisuus on saatu
-    RPA Should Contain    ${text}[${2}].text    4.5 Omaisuuden hankkimisesta aiheutuneet menot
-    RPA Should Not Contain    ${text}[${2}].text    Omaisuus on saatu
+    RPA Should Contain    ${text}[${1}]    Omaisuus on saatu
+    RPA Should Contain    ${text}[${2}]    4.5 Omaisuuden hankkimisesta aiheutuneet menot
+    RPA Should Not Contain    ${text}[${2}]    Omaisuus on saatu
 
 Get text from multiple pages as list parameter
     @{pages} =    Create List    0    1
@@ -42,8 +48,8 @@ Get text from multiple pages as list parameter
 
 Get text from all pages
     &{text} =    Get Text From PDF    ${VERO_PDF}
-    RPA Should Contain    ${text}[${1}].text    Omaisuus on saatu
-    RPA Should Contain    ${text}[${2}].text    4.5 Omaisuuden hankkimisesta aiheutuneet menot
+    RPA Should Contain    ${text}[${1}]    Omaisuus on saatu
+    RPA Should Contain    ${text}[${2}]    4.5 Omaisuuden hankkimisesta aiheutuneet menot
 
 Get number of pages
     ${pages} =    Get number of pages    ${NORMAL_PDF}
@@ -76,25 +82,35 @@ Extract pages from PDF
 
 Get text closest to element on the right (default)
     Open PDF    ${INVOICE_PDF}
-    ${item} =    Find Text    text:due date
-    Should Be Equal    ${item.text}    January 31, 2016
+    ${items} =    Find Text    text:due date
+    Should Be Equal    ${items[0].neighbours}[0]    January 31, 2016
 
 Get text closest to element on the left
     Open PDF    ${INVOICE_PDF}
-    ${item} =    Find Text    text:January 31, 2016    pagenum=1    direction=left
-    Should Be Equal    ${item.text}    Due Date
+    ${items} =    Find Text    text:January 31, 2016    pagenum=1    direction=left
+    Should Be Equal    ${items[0].neighbours}[0]    Due Date
 
 Get text closest to element using regexp match for value
     Open PDF    ${INVOICE_PDF}
-    ${item} =    Find Text    text:Hrs/Qty    pagenum=1    direction=bottom    regexp=\\d+[.]\\d+
-    Should Be Equal    ${item.text}    1.00
+    ${items} =    Find Text    text:Hrs/Qty    pagenum=1    direction=bottom    regexp=\\d+[.]\\d+
+    Should Be Equal    ${items[0].neighbours}[0]    1.00
 
 Get figures from PDF
-    Open PDF    ${VERO_PDF}
-    &{figures} =    Get All Figures
-    FOR    ${key}    ${figure}    IN    &{FIGURES}
-        Log    ${key}
-        Log    ${figure}
+    # In the PDF with images we get one figure for each page and each figure's `top`
+    # value is found among the ones below.
+    @{expect_tops} =    Create List     ${817}  ${587}
+
+    Open PDF    ${IMAGES_PDF}
+    &{figures_by_page} =    Get All Figures
+
+    FOR    ${page}    ${figures}    IN    &{figures_by_page}
+        Log    On page: ${page}
+        FOR    ${figure_id}    ${figure}    IN    &{figures}
+            Log     Figure ID: ${figure_id}
+            Log     Figure: ${figure}
+            Log     Figure bbox: ${figure.bbox}
+            List Should Contain Value   ${expect_tops}    ${figure.top}
+        END
     END
 
 Get input fields from PDF
@@ -123,3 +139,21 @@ XML Dumping And Parsing
     HTML to PDF    ${xml}    ${PDF}
     ${text_dict} =   Get Text From Pdf   ${PDF}
     RPA Should Contain    ${text_dict}[${1}]     t e s t @ t e s t . c o m
+
+
+Find multiple anchors in multi-page PDF
+    Open PDF    ${BOOK_PDF}
+
+    @{all_matches} =    Create List
+    ${pages} =     Get Number Of Pages
+    FOR    ${page}    IN RANGE    1    ${pages + 1}
+        ${matches} =    Find Text   regex:.*Python.*    pagenum=${page}     direction=down
+        Append To List  ${all_matches}      @{matches}
+    END
+
+    # First text below first "Python" result.
+    RPA Should Contain  ${all_matches[0].neighbours[0]}     Simple, Rapid, Effective, and Scalable
+    # Second "Python" result's text.
+    RPA Should Contain  ${all_matches[1].anchor}     13. A4. Packaging and Distributing Python Projects
+    # Paragraph under the last "Python" match.
+    RPA Should Contain  ${all_matches[7].neighbours[0]}     Flask is another popular framework

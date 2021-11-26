@@ -269,11 +269,11 @@ class DocumentKeywords(LibraryContext):
         """
         self.switch_to_pdf(source_path)
 
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         docinfo = reader.getDocumentInfo()
         num_pages = reader.getNumPages()
 
-        parser = PDFParser(self.ctx.active_pdf_document.fileobject)
+        parser = PDFParser(self.active_pdf_document.fileobject)
         document = PDFDocument(parser)
         try:
             fields = pdfminer.pdftypes.resolve1(document.catalog["AcroForm"])["Fields"]
@@ -328,7 +328,7 @@ class DocumentKeywords(LibraryContext):
                 is_encrypted = pdf.is_pdf_encrypted("/tmp/sample.pdf")
         """
         self.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         return reader.isEncrypted
 
     @keyword
@@ -365,7 +365,7 @@ class DocumentKeywords(LibraryContext):
         :raises PdfReadError: if file is encrypted or other restrictions are in place
         """
         self.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         return reader.getNumPages()
 
     @keyword
@@ -405,19 +405,19 @@ class DocumentKeywords(LibraryContext):
             file to activate.
         """
         if not source_path:
-            if not self.ctx.active_pdf_document:
+            if not self.active_pdf_document:
                 raise ValueError("No PDF is open")
             self.logger.debug(
-                "Using already set document: %s", self.ctx.active_pdf_document.path
+                "Using already set document: %s", self.active_pdf_document.path
             )
             return
 
         source_path = str(source_path)
         if source_path not in self.ctx.documents:
             self.open_pdf(source_path)
-        elif self.ctx.documents[source_path] != self.ctx.active_pdf_document:
+        elif self.ctx.documents[source_path] != self.active_pdf_document:
             self.logger.debug("Switching to already opened document: %s", source_path)
-            self.ctx.active_pdf_document = self.ctx.documents[source_path]
+            self.active_pdf_document = self.ctx.documents[source_path]
         else:
             self.logger.debug("Using already set document: %s", source_path)
 
@@ -468,14 +468,14 @@ class DocumentKeywords(LibraryContext):
         self.switch_to_pdf(source_path)
         self.ctx.convert(trim=trim)
 
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         pages = self._get_page_numbers(pages, reader)
         pdf_text = {}
         for idx, page in self.active_pdf_document.get_pages().items():
             if page.pageid not in pages:
                 continue
             pdf_text[idx] = [] if details else ""
-            for _, item in page.get_textboxes().items():
+            for _, item in page.textboxes.items():
                 if details:
                     pdf_text[idx].append(item)
                 else:
@@ -533,7 +533,7 @@ class DocumentKeywords(LibraryContext):
             if None then extracts all pages.
         """
         self.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         writer = PyPDF2.PdfFileWriter()
 
         output_path = self.resolve_output(output_path)
@@ -597,7 +597,7 @@ class DocumentKeywords(LibraryContext):
         """
         # TODO: don't save to a new file every time
         self.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         writer = PyPDF2.PdfFileWriter()
 
         output_path = self.resolve_output(output_path)
@@ -664,7 +664,7 @@ class DocumentKeywords(LibraryContext):
         """
         # TODO: don't save to a new file every time
         self.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
 
         output_path = self.resolve_output(output_path)
 
@@ -713,7 +713,7 @@ class DocumentKeywords(LibraryContext):
         :raises ValueError: on decryption errors.
         """
         self.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         try:
             match_result = reader.decrypt(password)
 
@@ -775,7 +775,7 @@ class DocumentKeywords(LibraryContext):
         self.ctx.convert()
         pages = {}
         for pagenum, page in self.active_pdf_document.get_pages().items():
-            pages[pagenum] = page.get_figures()
+            pages[pagenum] = page.figures
         return pages
 
     @keyword
@@ -833,7 +833,7 @@ class DocumentKeywords(LibraryContext):
         writer = PyPDF2.PdfFileWriter()
         pdf = FPDF()
         pdf.add_page()
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         mediabox = reader.getPage(0).mediaBox
         im = Image.open(image_path)
         max_width = int(float(mediabox.getWidth()) * coverage)
