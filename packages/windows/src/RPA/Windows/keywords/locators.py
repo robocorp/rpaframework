@@ -44,6 +44,31 @@ class WindowsElement:
     automation_id: str = ""
     control_type: str = ""
     class_name: str = ""
+    left: int = -1
+    right: int = -1
+    top: int = -1
+    bottom: int = -1
+    width: int = -1
+    height: int = -1
+    xcenter: int = -1
+    ycenter: int = -1
+
+    def __init__(self, item, locator):
+        self.item = item
+        self.locator = locator
+        self.name = item.Name
+        self.automation_id = item.AutomationId
+        self.control_type = item.ControlTypeName
+        self.class_name = item.ClassName
+        rect = item.BoundingRectangle
+        self.left = rect.left if rect else -1
+        self.right = rect.right if rect else -1
+        self.top = rect.top if rect else -1
+        self.bottom = rect.bottom if rect else -1
+        self.width = rect.width() if rect else -1
+        self.height = rect.height() if rect else -1
+        self.xcenter = rect.xcenter() if rect else -1
+        self.ycenter = rect.ycenter() if rect else -1
 
 
 @dataclass
@@ -273,14 +298,7 @@ class LocatorKeywords(LibraryContext):
                 loc, search_depth, root_element
             )
             root_element = element
-        return WindowsElement(
-            element,
-            locator,
-            element.Name,
-            element.AutomationId,
-            element.ControlTypeName,
-            element.ClassName,
-        )
+        return WindowsElement(element, locator)
 
     @keyword
     def get_elements(
@@ -314,14 +332,7 @@ class LocatorKeywords(LibraryContext):
             # TODO. the sibling needs to match the original locator
             next_element = window_element.item.GetNextSiblingControl()
             if next_element:
-                window_element = WindowsElement(
-                    next_element,
-                    locator,
-                    next_element.Name,
-                    next_element.AutomationId,
-                    next_element.ControlTypeName,
-                    next_element.ClassName,
-                )
+                window_element = WindowsElement(next_element, locator)
                 elements.append(window_element)
             else:
                 break
