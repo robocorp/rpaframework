@@ -2,6 +2,13 @@ import functools
 import math
 import re
 from dataclasses import dataclass
+
+try:
+    # Python >=3.7
+    from re import Pattern
+except ImportError:
+    # Python =3.6
+    from re import _pattern_type as Pattern
 from typing import (
     Callable,
     Dict,
@@ -53,7 +60,7 @@ class FinderKeywords(LibraryContext):
         self.anchor_element = None
 
     def _get_candidate_search_function(
-        self, direction: str, regexp: Optional[re.Pattern], strict: bool
+        self, direction: str, regexp: Optional[Pattern], strict: bool
     ) -> Callable[[TextBox], bool]:
         if direction in ["left", "right"]:
             return functools.partial(
@@ -273,7 +280,7 @@ class FinderKeywords(LibraryContext):
         return list(page.textboxes.values())
 
     def _find_matching_textboxes(
-        self, locator: Union[str, re.Pattern], *, pagenum: int
+        self, locator: Union[str, Pattern], *, pagenum: int
     ) -> List[TextBox]:
         self.logger.info("Searching for matching text boxes with: %r", locator)
 
@@ -298,9 +305,7 @@ class FinderKeywords(LibraryContext):
 
         return anchors
 
-    def _check_text_match(
-        self, candidate: TextBox, regexp: Optional[re.Pattern]
-    ) -> bool:
+    def _check_text_match(self, candidate: TextBox, regexp: Optional[Pattern]) -> bool:
         if regexp and regexp.match(candidate.text):
             self._log_element(candidate, prefix="Exact match:")
             return True
@@ -315,7 +320,7 @@ class FinderKeywords(LibraryContext):
         candidate: TextBox,
         *,
         direction: str,
-        regexp: Optional[re.Pattern],
+        regexp: Optional[Pattern],
         strict: bool,
         anchor: TextBox,
     ) -> bool:
@@ -348,7 +353,7 @@ class FinderKeywords(LibraryContext):
         candidate: TextBox,
         *,
         direction: str,
-        regexp: Optional[re.Pattern],
+        regexp: Optional[Pattern],
         strict: bool,
         anchor: TextBox,
     ) -> bool:
