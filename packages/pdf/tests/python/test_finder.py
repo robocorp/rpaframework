@@ -1,3 +1,5 @@
+import re
+
 import pytest
 
 from . import (
@@ -5,8 +7,6 @@ from . import (
     temp_filename,
     TestFiles,
 )
-
-# TODO: add tests to cover more conditions
 
 
 @pytest.mark.parametrize(
@@ -58,18 +58,18 @@ def test_find_text_bottom(library):
 
 def test_find_text_top(library):
     library.open_pdf(TestFiles.invoice_pdf)
-    item = library.find_text("text:Tax", direction="top")
+    items = library.find_text("text:Tax", direction="top")
 
-    assert item[0].neighbours[0] == "Sub Total"
+    assert items[0].neighbours[0] == "Sub Total"
 
 
 def test_find_text_matching_regexp(library):
     library.open_pdf(TestFiles.invoice_pdf)
-    item = library.find_text(
+    items = library.find_text(
         "text:Invoice Number", direction="right", regexp="INV-\\d{4}"
     )
 
-    assert item[0].neighbours[0] == "INV-3337"
+    assert items[0].neighbours[0] == "INV-3337"
 
 
 def test_find_text_by_box_coordinates(library):
@@ -97,6 +97,36 @@ def test_find_text_by_box_coordinates(library):
 
 def test_find_text_box_not_found(library):
     library.open_pdf(TestFiles.invoice_pdf)
-    item = library.find_text("text:Taxx", direction="box")
+    items = library.find_text("text:Taxx", direction="box")
 
-    assert not item
+    assert not items
+
+
+@pytest.mark.parametrize(
+    "locator,direction,neighbour,expected_anchor,expected_neighbour",
+    [
+        ("Rate/Price", "down", 1, None, r"\$85.00"),
+        ("Total", "right", 1, None, r"\$93.50"),
+        ("Total", "up", 1, None, "Tax"),
+        ("regex:.*Bank", "down", 1, "ANZ", "Payment.+Page 1/1$"),
+        ("regex:Payment", "up", 1, "Payment", "ANZ Bank.+432$"),
+        ("regex:To:", "up", 1, "Test Business", "From:.+slicedinvoices.com$"),
+        ("regex:January 31", "left", 1, "2016", "Due Date"),
+        ("Sub Total", "down", 3, None, r"\$8.50"),
+    ],
+)
+def test_find_text(
+    library, locator, direction, neighbour, expected_anchor, expected_neighbour
+):
+    library.open_pdf(TestFiles.invoice_pdf)
+    matches = library.find_text(
+        locator, pagenum=1, direction=direction, closest_neighbours=neighbour
+    )
+    assert matches, "no results found"
+    match = matches[0]
+    expected_anchor = expected_anchor or locator
+    assert expected_anchor in match.anchor
+    found_neighbour = match.neighbours[neighbour - 1]
+    assert re.match(
+        expected_neighbour, found_neighbour, flags=re.DOTALL
+    ), f"doesn't match pattern {expected_neighbour}"
