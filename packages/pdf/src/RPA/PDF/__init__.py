@@ -1,9 +1,11 @@
 import logging
-from robotlibcore import DynamicCore
+from typing import Dict
 
+from robotlibcore import DynamicCore
 from RPA.core.logger import RobotLogListener
 
 from RPA.PDF.keywords import DocumentKeywords, FinderKeywords, ModelKeywords
+from RPA.PDF.keywords.model import Document
 
 
 class PDF(DynamicCore):
@@ -60,6 +62,7 @@ class PDF(DynamicCore):
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
+        self.documents: Dict[str, Document] = {}
         self.active_pdf_document = None
         self.convert_settings = {}
 
