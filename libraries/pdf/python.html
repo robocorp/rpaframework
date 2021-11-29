@@ -235,12 +235,12 @@ or it can be omitted if you first call <cite>Open PDF</cite>. Reference
 to the current active PDF will be stored in the library instance.</p>
 <p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">***Settings***</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
 <span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.PDF</span><span class="p"></span>
 
-<span class="gh">***Tasks***</span><span class="p"></span>
+<span class="gh">*** Tasks ***</span><span class="p"></span>
 <span class="gu">Extract Data</span><span class="p"></span>
-<span class="p">    ${</span><span class="nv">text</span><span class="p">}=    </span><span class="nf">Get Text From PDF</span><span class="p">    </span><span class="s">./tmp/sample.pdf</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">text</span><span class="p">} =    </span><span class="nf">Get Text From PDF</span><span class="p">    </span><span class="s">./tmp/sample.pdf</span><span class="p"></span>
 
 <span class="gu">Fill Form</span><span class="p"></span>
 <span class="p">    </span><span class="nf">Open PDF</span><span class="p">    </span><span class="s">./tmp/sample.pdf</span><span class="p"></span>
