@@ -11,6 +11,7 @@ Release notes
 12.0.0 - 29 Nov 2021
 --------------------
 
+- Add .libspec files for all the libraries (used by VScode extension)
 - Library **RPA.PDF** (:issue:`243`):
 
     - Keyword ``Find Text`` improvements and **breaking** changes:

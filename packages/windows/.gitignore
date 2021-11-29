@@ -5,6 +5,7 @@ __pycache__/
 # Build artifacts
 dist/
 sdist/
+*.libspec
 
 # Exports
 requirements.txt

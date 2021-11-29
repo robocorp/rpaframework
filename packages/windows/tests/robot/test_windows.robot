@@ -188,3 +188,12 @@ Write to Notepad on background
     Set Value    value= and it's task run time    append=True    newline=True
     Set Value    value=this will appear on the 2nd line    append=True
     Set Value    value=${EMPTY}    append=True    enter=True
+
+Test get element
+    [Tags]    skip    manual
+    ${desktop}=    Get Element
+    ${buttons}=    Get Elements    name:'Running applications' > type:Button    root_element=${desktop}
+    Log To Console    \nList task bar applications
+    FOR    ${b}    IN    @{buttons}
+        Log To Console    name = ${b.name}
+    END
