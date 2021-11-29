@@ -175,3 +175,16 @@ Result from recording
     Click    name:'Two'
     Click    name:'Three'
     Click    name:'Equals'
+
+Write to Notepad on background
+    [Tags]    skip    manual
+    Control Window    subname:'- Notepad'    foreground=False
+    # Clear Notepad window and start appending text
+    Set Anchor    name:'Text Editor'
+    # all following keyword calls will use anchor element as locator
+    # UNLESS they specify locator specifically or `Clear Anchor` is used
+    ${time}=    Get Time
+    Set Value    value=time now is ${time}    # clears when append=False (default)
+    Set Value    value= and it's task run time    append=True    newline=True
+    Set Value    value=this will appear on the 2nd line    append=True
+    Set Value    value=${EMPTY}    append=True    enter=True
