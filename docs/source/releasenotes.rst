@@ -11,9 +11,9 @@ Release notes
 12.0.0 - 29 Nov 2021
 --------------------
 
-- Library **RPA.PDF**:
+- Library **RPA.PDF** (:issue:`243`):
 
-    - Keyword ``Find Text`` improvements and breaking changes:
+    - Keyword ``Find Text`` improvements and **breaking** changes:
 
         - Sets and works with multiple anchors if more than one are found.
         - Anchor search supports "regex:" criteria too through the locator.
@@ -28,11 +28,11 @@ Release notes
 11.6.4 - 24 Nov 2021
 --------------------
 
-- API retrying improvements affecting Work Items
+- API retrying improvements affecting Work Items (:issue:`298`)
 - Library **RPA.Email.ImapSmtp**: Keyword ``Email To Document`` for converting HTML or
   Text e-mails into Word documents (:issue:`295`)
 
-- Library **RPA.Robocorp.WorkItems**:
+- Library **RPA.Robocorp.WorkItems** (:pr:`285`):
 
   - Removed Keyword ``Parse Work Item From Email``
   - Automatically loads e-mail body formats like JSON/YAML/Text/HTML into "parsedEmail"
