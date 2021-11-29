@@ -137,22 +137,28 @@ class MatchObject:
             self.regex_field = value
         elif strategy in ["foundIndex", "searchDepth", "handle"]:
             value = int(value.strip())
-            self.locators.append([strategy, value, level])
+            self.locators.append([strategy, value, level])  # pylint: disable=no-member
         elif strategy == "ControlType":
             value = value if value.endswith("Control") else f"{value}Control"
-            self.locators.append([strategy, value, level])
+            self.locators.append([strategy, value, level])  # pylint: disable=no-member
         else:
-            self.locators.append([strategy, value, level])
+            self.locators.append([strategy, value, level])  # pylint: disable=no-member
         if (
-            strategy in ["class", "class_name", "friendly", "friendly_class_name"]
+            strategy
+            in [
+                "class",
+                "class_name",
+                "friendly",
+                "friendly_class_name",
+            ]  # pylint: disable=unsupported-membership-test
             and value.lower() not in self._classes
         ):
-            self._classes.append(value.lower())
+            self._classes.append(value.lower())  # pylint: disable=no-member
 
     @property
     def classes(self) -> List:
         uniques = []
-        for c in self._classes:
+        for c in self._classes:  # pylint: disable=not-an-iterable
             if c not in uniques:
                 uniques.append(c)
         return uniques
@@ -171,7 +177,7 @@ class LocatorKeywords(LibraryContext):
         mo = match_object.parse_locator(locator)
         self.ctx.logger.info("locator '%s' to match element: %s" % (locator, mo))
         search_params = {}
-        for loc in mo.locators:
+        for loc in mo.locators:  # pylint: disable=not-an-iterable
             search_params[loc[0]] = loc[1]
         offset = search_params.pop("offset", None)
         if "searchDepth" not in search_params.keys():
@@ -222,18 +228,11 @@ class LocatorKeywords(LibraryContext):
             return new_element
 
         if "desktop" in search_params.keys():
-            root_element = auto
+            root_element = auto.GetRootControl()
             search_params.pop("desktop")
-        # if "ControlType" in search_params.keys():
-        #    control_type = search_params.pop("ControlType")
-        #    child_control = getattr(root_control, control_type)
-        #    new_control = control(**search_params)
-        # new_control.robocorp_click_offset = offset
-        # return new_control
 
         control_type = search_params.pop("ControlType", "Control")
         element = getattr(root_element, control_type)
-
         new_element = element(**search_params)
         new_element.robocorp_click_offset = offset
         return new_element
@@ -241,7 +240,7 @@ class LocatorKeywords(LibraryContext):
     @keyword
     def get_element(
         self,
-        locator: Union[str, WindowsElement],
+        locator: Union[str, WindowsElement] = None,
         search_depth: int = 8,
         root_element: WindowsElement = None,
         timeout: float = DEFAULT_SEARCH_TIMEOUT,
@@ -253,6 +252,12 @@ class LocatorKeywords(LibraryContext):
 
         Keyword ``Get Attribute`` can be used to read element attribute values.
 
+        If `locator` is *None* then returned `element` will be in order of preference:
+
+            1. anchor element if that has been set with `Set Anchor`
+            2. current active window if that has been set with `Control Window`
+            3. final option is the `Desktop`
+
         :param locator: locator as a string or as a element
         :param search_depth: how deep the element search will traverse (default 8)
         :param root_element: can be used to set search root element
@@ -262,16 +267,17 @@ class LocatorKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            Set Anchor    id:DataGrid
-            ${elements}=    Get Elements    type:HeaderItem
-            FOR    ${el}    IN    @{elements}
-                Log To Console    ${el.item.Name}
-            END
+            ${element}=    Get Element    name:'Text Editor*
+            Set Value   ${element}  note to myself
         """
         # TODO. Add examples
         self.logger.info("Locator '%s' into element", locator)
         if not locator:
-            element = self.ctx.window or WindowsElement(auto.GetRootControl(), None)
+            element = (
+                self.ctx.anchor_element
+                or self.ctx.window
+                or WindowsElement(auto.GetRootControl(), None)
+            )
         elif isinstance(locator, str):
             element = self.get_element_by_locator_string(
                 locator, search_depth, root_element

@@ -113,7 +113,7 @@ class Windows(DynamicCore):
     offset          offset coordinates (x (int), y (int)) from control center
     executable      target window by its executable name
     handle          target window handle (int)
-    desktop         *SPECIAL* target desktop, no value for the key e.g. `desktop and name:Calculator`
+    desktop         *SPECIAL* target desktop, no value for the key e.g. `desktop:desktop and name:Calculator`
     process         *NOT YET SUPPORTED* target window by its executable's process id
     depth           searchDepth (int) for finding Control (default 8)
     =============== =======================
