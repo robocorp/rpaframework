@@ -125,4 +125,4 @@ jobs:
       run: |
         poetry config repositories.devpi ${{ secrets.devpiUrl }}
         poetry config http-basic.devpi ci ${{ secrets.devpiPassword }}
-        invoke publish --no-interaction --build --ci
+        poetry publish --no-interaction --build --ci
