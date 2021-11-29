@@ -1,4 +1,3 @@
-# pylint: disable=no-member
 from dataclasses import dataclass, field
 import re
 from typing import List, Union
@@ -138,22 +137,28 @@ class MatchObject:
             self.regex_field = value
         elif strategy in ["foundIndex", "searchDepth", "handle"]:
             value = int(value.strip())
-            self.locators.append([strategy, value, level])
+            self.locators.append([strategy, value, level])  # pylint: disable=no-member
         elif strategy == "ControlType":
             value = value if value.endswith("Control") else f"{value}Control"
-            self.locators.append([strategy, value, level])
+            self.locators.append([strategy, value, level])  # pylint: disable=no-member
         else:
-            self.locators.append([strategy, value, level])
+            self.locators.append([strategy, value, level])  # pylint: disable=no-member
         if (
-            strategy in ["class", "class_name", "friendly", "friendly_class_name"]
+            strategy
+            in [
+                "class",
+                "class_name",
+                "friendly",
+                "friendly_class_name",
+            ]  # pylint: disable=unsupported-membership-test
             and value.lower() not in self._classes
         ):
-            self._classes.append(value.lower())
+            self._classes.append(value.lower())  # pylint: disable=no-member
 
     @property
     def classes(self) -> List:
         uniques = []
-        for c in self._classes:
+        for c in self._classes:  # pylint: disable=not-an-iterable
             if c not in uniques:
                 uniques.append(c)
         return uniques
@@ -172,7 +177,7 @@ class LocatorKeywords(LibraryContext):
         mo = match_object.parse_locator(locator)
         self.ctx.logger.info("locator '%s' to match element: %s" % (locator, mo))
         search_params = {}
-        for loc in mo.locators:
+        for loc in mo.locators:  # pylint: disable=not-an-iterable
             search_params[loc[0]] = loc[1]
         offset = search_params.pop("offset", None)
         if "searchDepth" not in search_params.keys():
