@@ -15,6 +15,7 @@ def _git_root():
 GIT_ROOT = _git_root()
 CONFIG = GIT_ROOT / "config"
 TOOLS = GIT_ROOT / "tools"
+PACKAGE_DIR = GIT_ROOT / "packages" / "windows"
 
 CLEAN_PATTERNS = [
     "coverage",
@@ -37,6 +38,12 @@ def poetry(ctx, command, **kwargs):
     ctx.run(f"poetry {command}", **kwargs)
 
 
+def delete_leftover_libspec_files():
+    files = glob(str(PACKAGE_DIR / "*.libspec"), recursive=False)
+    for f in files:
+        Path(f).unlink()
+
+
 @task
 def clean(ctx):
     """Remove all generated files"""
@@ -44,6 +51,29 @@ def clean(ctx):
         for path in glob(pattern, recursive=True):
             print(f"Removing: {path}")
             shutil.rmtree(path, ignore_errors=True)
+
+
+@task
+def libspec(ctx):
+    """Generate library libspec file"""
+    excludes = [
+        "RPA.scripts*",
+        "RPA.core*",
+        "RPA.recognition*",
+        "RPA.Desktop.keywords*",
+        "RPA.Desktop.utils*",
+        "RPA.PDF.keywords*",
+        "RPA.Cloud.objects*",
+        "RPA.Cloud.Google.keywords*",
+        "RPA.Robocorp.utils*",
+        "RPA.Dialogs.*",
+        "RPA.Windows.keywords*",
+        "RPA.Windows.utils*",
+    ]
+    exclude_commands = [f"--exclude {package}" for package in excludes]
+    exclude_strings = " ".join(exclude_commands)
+    command = f"run docgen --no-patches --format libspec --output . {exclude_strings} rpaframework"
+    poetry(ctx, command)
 
 
 @task
@@ -80,23 +110,23 @@ def test(ctx):
 
 
 @task(install)
-def test_robot(ctx):
+def testrobot(ctx, ci=False):
     """Run Robot Framework tests"""
-    poetry(ctx, "run robot -d tests/output -L TRACE tests/test_dialogs.robot")
+    exclude = "--exclude manual"
+    if ci:
+        exclude += " --exclude skip"
+    poetry(
+        ctx,
+        f"run robot -d tests/output {exclude} -L TRACE tests/robot/test_windows.robot",
+    )
 
 
 # lint, typecheck, test
-@task(lint)
+@task(lint, libspec)
 def build(ctx):
     """Build distributable python package"""
-    spec_file = "RPA_Windows.libspec"
-    source_file = Path("../../docs/source/libspec") / spec_file
-    shutil.copy(source_file, Path(".").resolve())
     poetry(ctx, "build -v")
-    try:
-        Path(spec_file).unlink()
-    except OSError as e:
-        pass
+    delete_leftover_libspec_files()
 
 
 @task(clean, build, help={"ci": "Publish package to devpi instead of PyPI"})

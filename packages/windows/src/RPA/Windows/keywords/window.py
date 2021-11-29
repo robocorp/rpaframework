@@ -1,7 +1,7 @@
 import os
 import signal
 import time
-from typing import List, Dict
+from typing import List, Dict, Union
 
 from RPA.Windows.keywords import keyword, LibraryContext, WindowControlError
 from RPA.Windows import utils
@@ -15,15 +15,18 @@ class WindowKeywords(LibraryContext):
     """Keywords for handling Window controls"""
 
     @keyword(tags=["window"])
-    def control_window(self, locator: str = None) -> int:
+    def control_window(
+        self, locator: Union[WindowsElement, str] = None, foreground: bool = True
+    ) -> int:
         """Controls the window defined by the locator.
 
         This means that this window is used as a root element
         for all the following keywords using locators.
 
-        Returns native handle of the window.
+        Returns `WindowsElement`.
 
-        :param locator: string locator
+        :param locator: string locator or Control element
+        :param foreground: True to bring window to foreground
 
         Example:
 
@@ -35,33 +38,51 @@ class WindowKeywords(LibraryContext):
             Control Window   regex:.*Notepad
             ${handle}=  Control Window   executable:Spotify.exe
         """
-        window_locator = f"{locator}  and type:WindowControl"
-        pane_locator = f"{locator}  and type:PaneControl"
-        desktop = WindowsElement(auto.GetRootControl(), window_locator)
-        self.ctx.window = self.ctx.get_element(window_locator, root_element=desktop)
-        if not self.ctx.window.item.Exists():
-            desktop = WindowsElement(auto.GetRootControl(), pane_locator)
-            self.ctx.window = self.ctx.get_element(pane_locator, root_element=desktop)
+        if isinstance(locator, WindowsElement):
+            self.ctx.window = locator
+        else:
+            window_locator = f"{locator}  and type:WindowControl"
+            pane_locator = f"{locator}  and type:PaneControl"
+            desktop = WindowsElement(auto.GetRootControl(), window_locator)
+            self.ctx.window = self.ctx.get_element(window_locator, root_element=desktop)
+            if not self.ctx.window.item.Exists():
+                desktop = WindowsElement(auto.GetRootControl(), pane_locator)
+                self.ctx.window = self.ctx.get_element(
+                    pane_locator, root_element=desktop
+                )
         if not self.ctx.window.item.Exists():
             raise WindowControlError(
                 'Could not locate window with locator "%s"' % locator
             )
-        # auto.WaitForExist(self.ctx.window, 5)
+        if foreground:
+            self.foreground_window()
+        return self.ctx.window
+
+    @keyword(tags=["window"])
+    def foreground_window(self, locator: Union[WindowsElement, str] = None) -> None:
+        """Bring the current active window or the window defined
+        by the locator to the foreground.
+
+        :param locator: string locator or Control element
+        """
+        if locator:
+            self.control_window(locator, foreground=True)
+            return
+        if not self.ctx.window.item:
+            raise WindowControlError("There is no active window")
+        auto.WaitForExist(self.ctx.window.item, 5)
         if hasattr(self.ctx.window.item, "Restore"):
             self.ctx.window.item.Restore()
         self.ctx.window.item.SetFocus()
         self.ctx.window.item.SetActive()
-        handle = self.ctx.window.item.NativeWindowHandle
         self.ctx.window.item.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
-        # time.sleep(1.0)
-        return handle
 
     @keyword(tags=["window"])
-    def minimize_window(self, locator: str = None) -> None:
+    def minimize_window(self, locator: Union[WindowsElement, str] = None) -> None:
         """Minimize the current active window or the window defined
         by the locator.
 
-        :param locator: string locator
+        :param locator: string locator or Control element
 
         Example:
 
@@ -82,11 +103,11 @@ class WindowKeywords(LibraryContext):
         self.ctx.window.item.Minimize()
 
     @keyword(tags=["window"])
-    def maximize_window(self, locator: str = None) -> None:
+    def maximize_window(self, locator: Union[WindowsElement, str] = None) -> None:
         """Minimize the current active window or the window defined
         by the locator.
 
-        :param locator: string locator
+        :param locator: string locator or Control element
 
         Example:
 
@@ -195,4 +216,5 @@ class WindowKeywords(LibraryContext):
             'Closing window with Name:"%s", ProcessId: %s' % (name, pid)
         )
         os.kill(pid, signal.SIGTERM)
+        self.ctx.window = None
         return True

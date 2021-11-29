@@ -217,32 +217,58 @@ class ActionKeywords(LibraryContext):
 
     @keyword(tags=["action"])
     def set_value(
-        self, locator: Union[WindowsElement, str], value: str, enter: bool = False
+        self,
+        locator: Union[WindowsElement, str] = None,
+        value: str = None,
+        append: bool = False,
+        enter: bool = False,
     ) -> None:
         """Set value of the element defined by the locator.
 
         :param locator: string locator or Control element
         :param value: string value to set
+        :param append: False for setting value, True for appending value
         :param enter: set True to send ENTER key to the element
 
-        Example:
+        Example:what
 
         .. code-block:: robotframework
 
             Set Value   type:DataItem name:column1   ab c  # Set value to "ab c"
             # Press ENTER after setting the value
             Set Value    type:Edit name:'File name:'    console.txt    True
+
+            # Add newline at the end of the string (Notepad example)
+            Set Value    name:'Text Editor'  abc\\n
+
+            # Clear Notepad window and start appending text
+            Set Anchor  name:'Text Editor'
+            # all following keyword calls will use anchor element as locator
+            # UNLESS they specify locator specifically or `Clear Anchor` is used
+            Set Value   value=time now is 12:26   # clears when append=False (default)
+            Set Value   value=' and it is Friday\\n'  append=True
+            Set Value   value='this will appear on the 2nd line'  append=True
         """
+        if not value:
+            raise ValueError("Value parameter is required for the keyword `Set Value`")
         element = self.ctx.get_element(locator)
+        current_value = ""
         if hasattr(element.item, "GetValuePattern"):
             value_pattern = element.item.GetValuePattern()
-            value_pattern.SetValue(value)
-            if enter:
-                self.send_keys(element, "{enter}")
+            if append:
+                current_value = value_pattern.Value
+            value_pattern.SetValue(f"{current_value}{value}")
+        elif hasattr(element.item, "GetLegacyIAccessiblePattern"):
+            pattern = element.item.GetLegacyIAccessiblePattern()
+            if append:
+                current_value = pattern.Value
+            pattern.SetValue(f"{current_value}{value}")
         else:
             raise ActionNotPossible(
-                "Element '%s' does not have 'ValuePattern' attribute to set" % locator,
+                "Element '%s' does not have value attribute to set" % locator,
             )
+        if enter:
+            self.send_keys(element, "{enter}")
 
     @keyword
     def set_wait_time(self, wait_time: float) -> float:
