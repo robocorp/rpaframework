@@ -89,23 +89,16 @@ jobs:
     - name: Upgrade pip
       run: python -m pip install --upgrade pip
     - name: Install poetry
-      run: pip install poetry
-    - name: Get python version
-      id: full-python-version
-      shell: bash
-      run: |
-        echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info[:3]))")
-    - name: Set up cache
-      uses: actions/cache@v1
-      with:
-        path: .venv
-        key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
+      run: python -m pip install poetry
+    - name: Install invoke
+      run: python -m pip install invoke
     - name: Install
-      run: make install
+      run: invoke install
     - name: Lint
-      run: make lint
-    - name: Test
-      run: make test
+      run: invoke lint
+    # Windows tests disabled in CI for now
+    #- name: Test
+    #  run: invoke test
 
   publish:
     # Only publish on master workflow runs
@@ -123,11 +116,13 @@ jobs:
       run: python -m pip install --upgrade pip
     - name: Install poetry
       run: pip install poetry
+    - name: Install invoke
+      run: pip install invoke
     - name: Install dependencies
-      run: make install
+      run: invoke install
     - name: Build and publish package
       if: success()
       run: |
         poetry config repositories.devpi ${{ secrets.devpiUrl }}
         poetry config http-basic.devpi ci ${{ secrets.devpiPassword }}
-        poetry publish --no-interaction --build --repository devpi
+        invoke publish --no-interaction --build --ci

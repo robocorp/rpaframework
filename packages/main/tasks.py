@@ -16,7 +16,7 @@ def _git_root():
 GIT_ROOT = _git_root()
 CONFIG = GIT_ROOT / "config"
 TOOLS = GIT_ROOT / "tools"
-PACKAGE_DIR = GIT_ROOT / "packages" / "windows"
+PACKAGE_DIR = GIT_ROOT / "packages" / "main"
 
 CLEAN_PATTERNS = [
     "coverage",
@@ -28,9 +28,14 @@ CLEAN_PATTERNS = [
     "**/__pycache__",
     "**/*.pyc",
     "**/*.egg-info",
-    "tests/output",
+    "tests/results",
     "*.libspec",
 ]
+
+if platform.system() == "Windows":
+    OS_ROBOT_ARGS = "--exclude skip --exclude posix"
+else:
+    OS_ROBOT_ARGS = "--exclude skip --exclude windows"
 
 
 def poetry(ctx, command, **kwargs):
@@ -58,7 +63,7 @@ def clean(ctx):
 
 @task
 def libspec(ctx):
-    """Generate library libspec file"""
+    """Generate library libspec files"""
     excludes = [
         "RPA.scripts*",
         "RPA.core*",
@@ -106,29 +111,53 @@ def typecheck(ctx):
     poetry(ctx, "run mypy src")
 
 
-@task(install)
+@task
 def test(ctx):
-    """Run unittests"""
-    poetry(ctx, "run pytest")
+    """Run Python unit tests and Robot Framework tests"""
+    testpython(ctx)
+    testrobot(ctx)
 
 
 @task(install)
-def testrobot(ctx, ci=False):
+def testpython(ctx):
+    """Run Python unit tests"""
+    poetry(ctx, "run pytest tests/python")
+
+
+@task(install)
+def testrobot(ctx):
     """Run Robot Framework tests"""
-    exclude = "--exclude manual"
-    if ci:
-        exclude += " --exclude skip"
+    arguments = (
+        "--loglevel TRACE --outputdir tests/results --pythonpath tests/resources"
+    )
     poetry(
         ctx,
-        f"run robot -d tests/output {exclude} -L TRACE tests/robot/test_windows.robot",
+        f"run robot {arguments} {OS_ROBOT_ARGS} -L TRACE tests/robot",
     )
 
 
-# lint, typecheck, test
-@task(lint, libspec)
+@task(install)
+def todo(ctx):
+    """Print all TODO/FIXME comments"""
+    poetry(ctx, "run pylint --disable=all --enable=fixme --exit-zero src/")
+
+
+@task(install)
+def exports(ctx):
+    """Create setup.py and requirements.txt files"""
+    poetry(ctx, "export --without-hashes -f requirements.txt -o requirements.txt")
+    poetry(
+        ctx, "export --dev --without-hashes -f requirements.txt -o requirements-dev.txt"
+    )
+    # TODO. fix setup.py
+    # poetry(ctx, f'run python {TOOLS / "setup.py"}')
+
+
+@task(lint, libspec, test)
 def build(ctx):
     """Build distributable python package"""
-    poetry(ctx, "build -v")
+    poetry(ctx, "build -vv -f sdist")
+    poetry(ctx, "build -vv -f wheel")
     delete_leftover_libspec_files()
 
 
@@ -139,3 +168,4 @@ def publish(ctx, ci=False):
         poetry(ctx, "publish -v --no-interaction --repository devpi")
     else:
         poetry(ctx, "publish -v")
+        ctx.run(f'{TOOLS / "tag.py"}')

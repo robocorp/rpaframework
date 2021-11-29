@@ -8,14 +8,32 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 
+12.0.0 - 29 Nov 2021
+--------------------
+
+- Add .libspec files for all the libraries (used by VScode extension)
+- Library **RPA.PDF** (:issue:`243`):
+
+    - Keyword ``Find Text`` improvements and **breaking** changes:
+
+        - Sets and works with multiple anchors if more than one are found
+        - Anchor search supports "regex:" criteria too through the locator
+        - `only_closest` parameter got replaced by `closest_neighbours` which can
+          specify the max number of adjacent texts to return in the match object
+        - The return value is a list of `Match` objects where every match has an
+          `anchor` (the pinpoint in the PDF through locator) and a list of `neighbours`
+          (the adjacent texts to the anchor given the provided direction)
+
+    - Fixed by ``rpaframework-pdf`` **1.26.11** (included in this release)
+
 11.6.4 - 24 Nov 2021
 --------------------
 
-- API retrying improvements affecting Work Items
+- API retrying improvements affecting Work Items (:issue:`298`)
 - Library **RPA.Email.ImapSmtp**: Keyword ``Email To Document`` for converting HTML or
   Text e-mails into Word documents (:issue:`295`)
 
-- Library **RPA.Robocorp.WorkItems**:
+- Library **RPA.Robocorp.WorkItems** (:pr:`285`):
 
   - Removed Keyword ``Parse Work Item From Email``
   - Automatically loads e-mail body formats like JSON/YAML/Text/HTML into "parsedEmail"

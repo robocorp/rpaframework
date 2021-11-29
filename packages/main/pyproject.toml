@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "11.6.4"
+version = "12.0.0"
 description = "A collection of tools and libraries for RPA"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -27,6 +27,8 @@ classifiers = [
 	"Programming Language :: Python :: 3.8",
 ]
 
+include = ["*.libspec"]
+
 packages = [
 	{ include = "RPA", from = "src" },
 	{ include = "tests", format = "sdist" }
@@ -37,7 +39,7 @@ python = "^3.6.2"
 docutils = "*"
 dataclasses = { version = "^0.7", python=">=3.6,<3.7" }
 rpaframework-core = "^6.5.1"
-rpaframework-pdf = "^0.10.0"
+rpaframework-pdf = "^1.26.11"
 rpaframework-dialogs = "^0.4.1"
 rpaframework-recognition = { version = "^1.0.0", optional = true }
 jsonpath-ng = "^1.5.2"
@@ -84,12 +86,21 @@ htmldocx = "^0.0.6"
 black = {version = "^21.5b0", allow-prereleases = true}
 flake8 = "^3.7.9"
 pylint = "^2.4.4"
-pytest = "^6.1.2"
+pytest = "^6.2.5"
 pytest-cov = "^2.10.1"
 mock = "^4.0.2"
 mypy = "^0.910"
 python-docx = "^0.8.11"
 pytest-env = "^0.6.2"
+setuptools = "^51.1.2"
+invoke = "^1.6.0"
+sphinx = "^2.3.1"
+sphinx_rtd_theme = "^0.4.3"
+toml = "^0.10.1"
+sphinx-markdown-builder = "^0.5.4"
+robotframework-docgen = "^0.11.0"
+sphinx-issues = "^1.2.0"
+docutils = "0.16"
 
 [tool.poetry.scripts]
 rpa-crypto = 'RPA.scripts.crypto:main'
