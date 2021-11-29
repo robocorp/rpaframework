@@ -37,7 +37,7 @@ python = "^3.6.2"
 docutils = "*"
 dataclasses = { version = "^0.7", python=">=3.6,<3.7" }
 rpaframework-core = "^6.5.1"
-rpaframework-pdf = "^0.10.0"
+rpaframework-pdf = "^1.26.11"
 rpaframework-dialogs = "^0.4.1"
 rpaframework-recognition = { version = "^1.0.0", optional = true }
 jsonpath-ng = "^1.5.2"

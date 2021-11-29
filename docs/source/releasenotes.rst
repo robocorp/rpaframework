@@ -8,6 +8,23 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 
+12.0.0 - 29 Nov 2021
+--------------------
+
+- Library **RPA.PDF**:
+
+    - Keyword ``Find Text`` improvements and breaking changes:
+
+        - Sets and works with multiple anchors if more than one are found.
+        - Anchor search supports "regex:" criteria too through the locator.
+        - `only_closest` parameter got replaced by `closest_neighbours` which can
+          specify the max number of adjacent texts to return in the match object
+        - The return value is a list of Match objects where every match has an
+          `anchor` (the pinpoint in the PDF through locator) and a list of `neighbours`
+          (the adjacent texts to the anchor given the provided direction)
+
+    - Fixed by ``rpaframework-pdf`` **1.26.11** (included in this release)
+
 11.6.4 - 24 Nov 2021
 --------------------
 
