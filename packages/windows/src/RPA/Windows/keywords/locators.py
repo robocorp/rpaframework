@@ -1,3 +1,4 @@
+# pylint: disable=no-member
 from dataclasses import dataclass, field
 import re
 from typing import List, Union
