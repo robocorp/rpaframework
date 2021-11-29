@@ -3,6 +3,9 @@
 clean:
 	inv clean
 
+install:
+    inv install
+
 lint:
 	inv lint
 
