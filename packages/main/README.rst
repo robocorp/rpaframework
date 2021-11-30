@@ -233,7 +233,7 @@ Default installation method with Robocorp `Developer Tools`_ using conda.yaml:
      - python=3.7.5
      - pip=20.1
      - pip:
-       - rpaframework==11.6.3
+       - rpaframework==12.0.0
 
 To install all extra packages (including Playwright dependencies), you can use:
 
@@ -247,9 +247,9 @@ To install all extra packages (including Playwright dependencies), you can use:
      - pip=20.1
      - nodejs=14.17.4
      - pip:
-       - rpaframework[aws]==11.6.3
-       - rpaframework-google==0.3.0
-       - rpaframework-recognition==0.7.2
+       - rpaframework[aws]==12.0.0
+       - rpaframework-google==1.0.0
+       - rpaframework-recognition==1.0.0
        - rpaframework-windows==1.2.1
        - robotframework-browser==10.0.3
    rccPostInstall:
@@ -266,7 +266,7 @@ Separate installation of PDF and Dialogs libraries without main rpaframework:
      - pip=20.1
      - pip:
        - rpaframework-dialogs==0.4.2  # included in the rpaframework by default
-       - rpaframework-pdf==0.10.0  # included in the rpaframework by default
+       - rpaframework-pdf==1.26.11  # included in the rpaframework by default
 
 
 .. note:: Python 3.6 or higher is required
