@@ -139,3 +139,4 @@ def publish(ctx, ci=False):
         poetry(ctx, "publish -v --no-interaction --repository devpi")
     else:
         poetry(ctx, "publish -v")
+        ctx.run(f'{TOOLS / "tag.py"}')
