@@ -150,7 +150,8 @@ def testrobot(ctx, ci=False):
 @task(cleanlibspec, lint, libspec)
 def build(ctx):
     """Build distributable python package"""
-    poetry(ctx, "build -v")
+    poetry(ctx, "build -vv -f sdist")
+    poetry(ctx, "build -vv -f wheel")
     cleanlibspec(ctx)
 
 
