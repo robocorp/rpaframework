@@ -8,7 +8,7 @@ python-versions = "*"
 
 [[package]]
 name = "amazon-textract-response-parser"
-version = "0.1.20"
+version = "0.1.22"
 description = "Easily parse JSON returned by Amazon Textract."
 category = "main"
 optional = true
@@ -1427,7 +1427,7 @@ wrapt = ">=1.12.1"
 
 [[package]]
 name = "robotframework-docgen"
-version = "0.13.0"
+version = "0.14.0"
 description = "Robot Framework documentation finder and generator"
 category = "dev"
 optional = false
@@ -2016,7 +2016,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "5e12f2206667cb7a8e74f3e7bed813d43b699cc10c0b1ba67567ad7a6bb4bdd9"
+content-hash = "12f6dd21befb80508174543e340a10a0cc39a702d4f2a7e407296de90edca072"
 
 [metadata.files]
 alabaster = [
@@ -2024,8 +2024,8 @@ alabaster = [
     {file = "alabaster-0.7.12.tar.gz", hash = "sha256:a661d72d58e6ea8a57f7a86e37d86716863ee5e92788398526d58b26a4e4dc02"},
 ]
 amazon-textract-response-parser = [
-    {file = "amazon-textract-response-parser-0.1.20.tar.gz", hash = "sha256:5caac9ca2701c74dc3e5f0ccf50535f8f6d58b69753ff233a516c110a09914b8"},
-    {file = "amazon_textract_response_parser-0.1.20-py2.py3-none-any.whl", hash = "sha256:5e6fa433672db2e5248eae4cc3a159d46c382e4fdcc1d939ccc3413cb9855134"},
+    {file = "amazon-textract-response-parser-0.1.22.tar.gz", hash = "sha256:60869300b644e08bd0b4c0e814ca25f5da6d05f77e60a58f52df39acf0670af9"},
+    {file = "amazon_textract_response_parser-0.1.22-py2.py3-none-any.whl", hash = "sha256:8af562bcda0a9279762d1fc92732498a3168beb2f6650ad0a2afd748c1cbc228"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
@@ -3213,8 +3213,8 @@ robotframework-browser = [
     {file = "robotframework_browser-4.5.2-py3-none-any.whl", hash = "sha256:368102fbab19dc45e0f37438b6f1e0f968040b2dc7810434dc6e2319cf67fc49"},
 ]
 robotframework-docgen = [
-    {file = "robotframework-docgen-0.13.0.tar.gz", hash = "sha256:a8979b8d6a2d2c44559f34fc00c053de354b5c0cbe6fa7688dfbb66e51299eb9"},
-    {file = "robotframework_docgen-0.13.0-py3-none-any.whl", hash = "sha256:610b2ca84d2c5e0aa197ae92f60abee8d1e4b50dc9ebae2210664f2fe203b857"},
+    {file = "robotframework-docgen-0.14.0.tar.gz", hash = "sha256:9bf716ed85daa5e33fd4861f34645d522ec110eade58883057931619eecde3b0"},
+    {file = "robotframework_docgen-0.14.0-py3-none-any.whl", hash = "sha256:d22e7a19c26eac7ca030a3b0c803910354c81d12770573c23f6112d7b7ff1456"},
 ]
 robotframework-pythonlibcore = [
     {file = "robotframework-pythonlibcore-3.0.0.tar.gz", hash = "sha256:1bce3b8dfcb7519789ee3a89320f6402e126f6d0a02794184a1ab8cee0e46b5d"},
