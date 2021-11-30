@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+import os
 import platform
+import re
 import shutil
 import subprocess
 from glob import glob
@@ -46,10 +48,29 @@ def poetry(ctx, command, **kwargs):
     ctx.run(f"poetry {command}", **kwargs)
 
 
-def delete_leftover_libspec_files():
+@task
+def cleanlibspec(ctx):
     files = glob(str(PACKAGE_DIR / "*.libspec"), recursive=False)
     for f in files:
         Path(f).unlink()
+
+
+def modify_libspec_files():
+    files = glob(str(PACKAGE_DIR / "src" / "*.libspec"), recursive=False)
+    pattern = r"source=\"([^\"]+)"
+    sub_pattern = rf'source=".\{os.path.sep}\g<1>'
+    for f in files:
+        outfilename = f"{f}.modified"
+        with open(f) as file_in:
+            file_content = file_in.read()
+            with open(outfilename, "w") as file_out:
+                new_content = re.sub(
+                    pattern, sub_pattern, file_content, 0, re.MULTILINE
+                )
+                file_out.write(new_content)
+        target_file = PACKAGE_DIR / Path(f).name
+        Path(f).unlink()
+        Path(outfilename).rename(target_file)
 
 
 @task
@@ -80,8 +101,9 @@ def libspec(ctx):
     ]
     exclude_commands = [f"--exclude {package}" for package in excludes]
     exclude_strings = " ".join(exclude_commands)
-    command = f"run docgen --no-patches --format libspec --output . {exclude_strings} rpaframework"
+    command = f"run docgen --no-patches --relative-source --format libspec --output src {exclude_strings} rpaframework"
     poetry(ctx, command)
+    modify_libspec_files()
 
 
 @task
@@ -153,12 +175,12 @@ def exports(ctx):
     # poetry(ctx, f'run python {TOOLS / "setup.py"}')
 
 
-@task(lint, libspec, test)
+@task(cleanlibspec, lint, libspec, test)
 def build(ctx):
     """Build distributable python package"""
     poetry(ctx, "build -vv -f sdist")
     poetry(ctx, "build -vv -f wheel")
-    delete_leftover_libspec_files()
+    cleanlibspec(ctx)
 
 
 @task(clean, build, help={"ci": "Publish package to devpi instead of PyPI"})

@@ -163,14 +163,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.20.15"
+version = "1.20.16"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.23.15,<1.24.0"
+botocore = ">=1.23.16,<1.24.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -179,7 +179,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.23.15"
+version = "1.23.16"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -1427,7 +1427,7 @@ wrapt = ">=1.12.1"
 
 [[package]]
 name = "robotframework-docgen"
-version = "0.11.0"
+version = "0.13.0"
 description = "Robot Framework documentation finder and generator"
 category = "dev"
 optional = false
@@ -2016,7 +2016,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "6ed7f718e500a85292059f62e8c319e1bd350eb10afd26282cce370a737ed3d4"
+content-hash = "5e12f2206667cb7a8e74f3e7bed813d43b699cc10c0b1ba67567ad7a6bb4bdd9"
 
 [metadata.files]
 alabaster = [
@@ -2085,12 +2085,12 @@ black = [
     {file = "black-21.11b1.tar.gz", hash = "sha256:a042adbb18b3262faad5aff4e834ff186bb893f95ba3a8013f09de1e5569def2"},
 ]
 boto3 = [
-    {file = "boto3-1.20.15-py3-none-any.whl", hash = "sha256:0684825d74ad41675279b9bbb725b8acbf4c5ae299b2e426c93d98e16bc6c473"},
-    {file = "boto3-1.20.15.tar.gz", hash = "sha256:dd763ead8541688d7ed4641414c236b592672e990dbea5e114ca56b8f42a181c"},
+    {file = "boto3-1.20.16-py3-none-any.whl", hash = "sha256:ef44676226c21215268be5c348c50fd9a2aed876de5c19962c79d9321f10f051"},
+    {file = "boto3-1.20.16.tar.gz", hash = "sha256:22808328fc81937244a971f739e5f8d95acd36c8e5638787e562d504b33727be"},
 ]
 botocore = [
-    {file = "botocore-1.23.15-py3-none-any.whl", hash = "sha256:6ae8ef3d86009c71d8aeef19e37b7042f008ddc60128f469ad495bcd2c5a615e"},
-    {file = "botocore-1.23.15.tar.gz", hash = "sha256:0d66edd9e2bbeb430bc71cbf1420afa1d9a07a5e31c9eb1ff7874968bd2b011a"},
+    {file = "botocore-1.23.16-py3-none-any.whl", hash = "sha256:5656fd2b6aea9477d514d5ccf128d664e6ae4536ffca45a753844881dc65e0f8"},
+    {file = "botocore-1.23.16.tar.gz", hash = "sha256:c813e67c0f7d45cbff97a1047d8241f334eb386b3f81825e9e87e29d3a0c2ddf"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -3213,8 +3213,8 @@ robotframework-browser = [
     {file = "robotframework_browser-4.5.2-py3-none-any.whl", hash = "sha256:368102fbab19dc45e0f37438b6f1e0f968040b2dc7810434dc6e2319cf67fc49"},
 ]
 robotframework-docgen = [
-    {file = "robotframework-docgen-0.11.0.tar.gz", hash = "sha256:94ee651665c624251353ba9a9faf382d2c36a6dae48cc3b077a910dff96944a0"},
-    {file = "robotframework_docgen-0.11.0-py3-none-any.whl", hash = "sha256:da780c31a200135d37f9a9212a6b6631ddf04d8b50d3a6cfaa7c64362fa379e6"},
+    {file = "robotframework-docgen-0.13.0.tar.gz", hash = "sha256:a8979b8d6a2d2c44559f34fc00c053de354b5c0cbe6fa7688dfbb66e51299eb9"},
+    {file = "robotframework_docgen-0.13.0-py3-none-any.whl", hash = "sha256:610b2ca84d2c5e0aa197ae92f60abee8d1e4b50dc9ebae2210664f2fe203b857"},
 ]
 robotframework-pythonlibcore = [
     {file = "robotframework-pythonlibcore-3.0.0.tar.gz", hash = "sha256:1bce3b8dfcb7519789ee3a89320f6402e126f6d0a02794184a1ab8cee0e46b5d"},
