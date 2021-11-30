@@ -55,21 +55,29 @@ def cleanlibspec(ctx):
         Path(f).unlink()
 
 
+def replace_source(m):
+    source = m.group(1).replace("\\", "/")
+    return f'source="./{source}'
+
+
 def modify_libspec_files():
     files = glob(str(PACKAGE_DIR / "src" / "*.libspec"), recursive=False)
     pattern = r"source=\"([^\"]+)"
-    sub_pattern = rf'source=".\{os.path.sep}\g<1>'
     for f in files:
         outfilename = f"{f}.modified"
         with open(f) as file_in:
             file_content = file_in.read()
             with open(outfilename, "w") as file_out:
                 new_content = re.sub(
-                    pattern, sub_pattern, file_content, 0, re.MULTILINE
+                    pattern, replace_source, file_content, 0, re.MULTILINE
                 )
                 file_out.write(new_content)
         target_file = PACKAGE_DIR / Path(f).name
         Path(f).unlink()
+        try:
+            Path(target_file).unlink()
+        except FileNotFoundError:
+            pass
         Path(outfilename).rename(target_file)
 
 

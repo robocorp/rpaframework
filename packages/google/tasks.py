@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+import os
 import platform
+import re
 import shutil
 import subprocess
 from glob import glob
@@ -41,10 +43,37 @@ def poetry(ctx, command, **kwargs):
     ctx.run(f"poetry {command}", **kwargs)
 
 
-def delete_leftover_libspec_files():
+@task
+def cleanlibspec(ctx):
     files = glob(str(PACKAGE_DIR / "*.libspec"), recursive=False)
     for f in files:
         Path(f).unlink()
+
+
+def replace_source(m):
+    source = m.group(1).replace("\\", "/")
+    return f'source="./{source}'
+
+
+def modify_libspec_files():
+    files = glob(str(PACKAGE_DIR / "src" / "*.libspec"), recursive=False)
+    pattern = r"source=\"([^\"]+)"
+    for f in files:
+        outfilename = f"{f}.modified"
+        with open(f) as file_in:
+            file_content = file_in.read()
+            with open(outfilename, "w") as file_out:
+                new_content = re.sub(
+                    pattern, replace_source, file_content, 0, re.MULTILINE
+                )
+                file_out.write(new_content)
+        target_file = PACKAGE_DIR / Path(f).name
+        Path(f).unlink()
+        try:
+            Path(target_file).unlink()
+        except FileNotFoundError:
+            pass
+        Path(outfilename).rename(target_file)
 
 
 @task
@@ -75,8 +104,9 @@ def libspec(ctx):
     ]
     exclude_commands = [f"--exclude {package}" for package in excludes]
     exclude_strings = " ".join(exclude_commands)
-    command = f"run docgen --no-patches --format libspec --output . {exclude_strings} rpaframework"
+    command = f"run docgen --no-patches --relative-source --format libspec --output src {exclude_strings} rpaframework"
     poetry(ctx, command)
+    modify_libspec_files()
 
 
 @task
@@ -115,21 +145,20 @@ def test(ctx):
 @task(install)
 def testrobot(ctx, ci=False):
     """Run Robot Framework tests"""
-    exclude = "--exclude manual"
-    if ci:
-        exclude += " --exclude skip"
+    exclude = "--exclude manual --exclude skip"
     poetry(
         ctx,
-        f"run robot -d tests/output {exclude} -L TRACE tests/robot/test_windows.robot",
+        f"run robot -d tests/output {exclude} -L TRACE tests/robot",
     )
 
 
 # lint, typecheck, test
-@task(lint, libspec)
+@task(cleanlibspec, lint, libspec)
 def build(ctx):
     """Build distributable python package"""
-    poetry(ctx, "build -v")
-    delete_leftover_libspec_files()
+    poetry(ctx, "build -vv -f sdist")
+    poetry(ctx, "build -vv -f wheel")
+    cleanlibspec(ctx)
 
 
 @task(clean, build, help={"ci": "Publish package to devpi instead of PyPI"})
