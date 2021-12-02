@@ -238,6 +238,7 @@ class DocumentKeywords(LibraryContext):
         self.logger.info("Writing output to file %s", output_path)
 
         fpdf = PDF()
+        # Support unicode content with a font capable of rendering it.
         fpdf.core_fonts_encoding = encoding
         fpdf.add_font("Inter", style="", fname=fpdf.FONT_PATH, uni=True)
         fpdf.set_font("Inter")
