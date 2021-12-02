@@ -22,9 +22,13 @@ Create PDF from HTML template
     RPA Should Contain    ${text_dict}[${1}]     ${VARS_ORDER}[zip]
 
 Unicode HTML text to PDF
-    ${VARS_GREETING} =    Create Dictionary    header=Hyvää yötä ja nÄkemiin
+    ${header} =   Set Variable    Hyvääă yötä ja nÄkemiin
+    ${VARS_GREETING} =    Create Dictionary    header=${header}
     Template HTML to PDF    ${TEMPLATE_GREETING}    ${UNICODE_PDF}    ${VARS_GREETING}
     Should Exist    ${UNICODE_PDF}
+
+    &{text} =    Get Text From PDF    ${UNICODE_PDF}    1
+    RPA Should Contain    ${text}[${1}]    ${header}
 
 Get text from one page
     &{text} =    Get Text From PDF    ${VERO_PDF}    1

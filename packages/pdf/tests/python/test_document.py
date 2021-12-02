@@ -81,7 +81,7 @@ def test_extract_pages_from_pdf(library):
         ("Who's Poieană?", "latin-1"),
         ("Who's Poieană?", "utf-8"),
         ("Who's Poieană ĄĆĘŁŃÓŚŹŻąćęłńóśźż?", None),
-    ]
+    ],
 )
 def test_html_to_pdf(library, text, encoding):
     html = f"<html> <body> {text} </body></html>"
