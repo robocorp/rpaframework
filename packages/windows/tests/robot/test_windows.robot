@@ -40,27 +40,10 @@ Get Temperature Values
         Log To Console    ${temperature}
     END
 
-Start application if it is not open
-    [Arguments]    ${windowtitle}    ${start}=${TRUE}
-    ${returnvalue}=    Set Variable    ${FALSE}
-    ${windowlist}=    List Windows
-    FOR    ${win}    IN    @{windowlist}
-        ${match}=    Get Regexp Matches    ${win}[title]    ^${windowtitle}$
-        IF    ${match}
-            Control Window    name:${win}[title]
-            ${returnvalue}=    Set Variable    ${TRUE}
-            Exit For Loop
-        END
-    END
-    IF    not $returnvalue and $start
-        Windows Search    ${windowtitle}
-        Control Window    name:${windowtitle}
-    END
-    Return From Keyword    ${returnvalue}
-
 *** Tasks ***
 Calculator by clicking buttons
-    Start application if it is not open    Calculator
+    Windows Search    Calculator
+    Control Window    Calculator
     Click    id:num9Button
     Click    id:num6Button
     Click    id:plusButton
@@ -69,12 +52,12 @@ Calculator by clicking buttons
     ${result}=    Get Attribute    id:CalculatorResults    Name
     Log To Console    \n${result}
     Send Keys    keys={Esc}
-    Close Current Window
+    [Teardown]    Close Current Window
 
 *** Tasks ***
 Do some calculations
-    [Setup]    Windows Run    calc.exe
-    Control Window    name:Calculator
+    Windows Run    calc.exe
+    Control Window    Calculator
     Click    id:clearButton
     Send Keys    keys=96+4=
     ${result}=    Get Attribute    id:CalculatorResults    Name
@@ -86,16 +69,18 @@ Do some calculations
     [Teardown]    Close Current Window
 
 Play Task Calculator
-    Start application if it is not open    Calculator
+    Windows Search    Calculator
+    Control Window    Calculator
     Click    id:clearButton
     Click    type:Group and name:'Number pad' > type:Button and index:4
     Click    type:Group and name:'Number pad' > type:Button index:5 offset:370,0    # it is optional to use "and" in the locator syntax
     Click    control:Group and name:'Number pad' > control:Button index:7    # "control" maps to same thing as "type" -> "ControlType"
     Click    id:equalButton
-    Close Current Window
+    [Teardown]    Close Current Window
 
 Play Task Temperature
-    Start application if it is not open    Calculator
+    Windows Search    Calculator
+    Control Window    Calculator
     Click    id:TogglePaneButton
     Click    id:Temperature    # TODO. make the click even when not visible
     Log To Console    \nGet temperatures
@@ -105,19 +90,16 @@ Play Task Temperature
     Get Temperature Values    Kelvin
     Select Temperature Unit    Celsius    225
     Get Temperature Values    Kelvin,Fahrenheit
-    Close Current Window
+    [Teardown]    Close Current Window
 
 Play Task UIDemo
-    Screenshot    ${NONE}    desktop.png
-    ${running}=    Start application if it is not open    UIDemo    ${FALSE}
-    Log To Console    \nUIDemo running: ${running}
-    IF    not $running
-        Windows Run    ${EXE_UIDEMO}
-        Control Window    UiDemo    # Handle: 5835532
-        Send Keys    id:user    admin
-        Send Keys    id:pass    password
-        Click    class:Button
-    END
+    [Tags]    skip
+    Windows Run    C:\\apps\\UIDemo.exe
+    Control Window    UiDemo
+    Send Keys    id:user    admin
+    Send Keys    id:pass    password
+    Click    class:Button
+    Control Window    UIDemo
     Set Anchor    id:DataGrid    10.0
     ${headers}=    Get Elements    type:HeaderItem
     ${rows}=    Get Elements    class:DataGridRow name:'UiDemo.DepositControl+LineOfTable'
@@ -137,17 +119,13 @@ Play Task UIDemo
     #Control Window    UIDemo    # Handle: 5901414
     #Click    type:ButtonControl and class:Button and name:Exit > type:TextControl and class:TextBlock and name:Exit
     # TODO. add more actions to the task --- slider, checkboxes, table (get/set vals)
+    [Teardown]    Close Current Window
 
 Play Task Spotify
-    #Windows Search    spotify
-    # TODO. make process find faster
-    Run Keyword And Expect Error
-    ...    WindowControlError: There is no active window
-    ...    Minimize Window
-    Run Keyword And Expect Error
-    ...    WindowControlError: There is no active window
-    ...    Maximize Window
-    Control Window    executable:Spotify.exe
+    [Tags]    skip
+    ${window}=    Control Window    executable:Spotify.exe
+    Sleep    5s
+    Log To Console    ${window}
     #Maximize Window
     FOR    ${_}    IN RANGE    3
         Click    ${SPOTIFY_NEXT}
@@ -156,6 +134,8 @@ Play Task Spotify
     Minimize Window
     Sleep    10s
     Maximize Window
+    Sleep    2s
+    Foreground Window
 
 Notepad write text into a file
     Windows Search    notepad
@@ -176,25 +156,16 @@ Notepad write text into a file
     Minimize Window    subname:'- Notepad'
     Close Current Window
 
-Windows run and close app
-    ${running}=    Start application if it is not open    Calculator    ${FALSE}
-    IF    not $running
-        Windows Run    calc.exe
-    END
-    Control Window    Calculator
-    Log To Console    Calculator in control
-    Close Current Window
-    Log To Console    Calculator closed
-
 Control Window by handle
     Log To Console    \nList Windows
     ${win}=    List Windows
     FOR    ${w}    IN    @{win}
         Log To Console    ${w}
     END
-    Control Window    handle:3672864
+    Control Window    handle:${win}[0][handle]    # handle of the first window in the list
 
 Result from recording
+    [Tags]    skip    manual
     Control Window    Calculator    # Handle: 4066848
     Click    name:'Seven'
     Click    name:'Eight'
@@ -204,3 +175,25 @@ Result from recording
     Click    name:'Two'
     Click    name:'Three'
     Click    name:'Equals'
+
+Write to Notepad on background
+    [Tags]    skip    manual
+    Control Window    subname:'- Notepad'    foreground=False
+    # Clear Notepad window and start appending text
+    Set Anchor    name:'Text Editor'
+    # all following keyword calls will use anchor element as locator
+    # UNLESS they specify locator specifically or `Clear Anchor` is used
+    ${time}=    Get Time
+    Set Value    value=time now is ${time}    # clears when append=False (default)
+    Set Value    value= and it's task run time    append=True    newline=True
+    Set Value    value=this will appear on the 2nd line    append=True
+    Set Value    value=${EMPTY}    append=True    enter=True
+
+Test get element
+    [Tags]    skip    manual
+    ${desktop}=    Get Element
+    ${buttons}=    Get Elements    name:'Running applications' > type:Button    root_element=${desktop}
+    Log To Console    \nList task bar applications
+    FOR    ${b}    IN    @{buttons}
+        Log To Console    name = ${b.name}
+    END

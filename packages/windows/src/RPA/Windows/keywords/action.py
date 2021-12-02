@@ -217,13 +217,24 @@ class ActionKeywords(LibraryContext):
 
     @keyword(tags=["action"])
     def set_value(
-        self, locator: Union[WindowsElement, str], value: str, enter: bool = False
+        self,
+        locator: Union[WindowsElement, str] = None,
+        value: str = None,
+        append: bool = False,
+        enter: bool = False,
+        newline: bool = False,
     ) -> None:
         """Set value of the element defined by the locator.
 
         :param locator: string locator or Control element
         :param value: string value to set
-        :param enter: set True to send ENTER key to the element
+        :param append: False for setting value, True for appending value
+        :param enter: set True to press enter key at the end of the line
+        :param newline: set True to add newline to the end of value
+
+        *Note.* It is important to set ``append=True`` if you want keep text in
+        the element. Other option is to read current text into a variable and
+        modify that value to pass for ``Set Value`` keyword.
 
         Example:
 
@@ -231,18 +242,45 @@ class ActionKeywords(LibraryContext):
 
             Set Value   type:DataItem name:column1   ab c  # Set value to "ab c"
             # Press ENTER after setting the value
-            Set Value    type:Edit name:'File name:'    console.txt    True
+            Set Value    type:Edit name:'File name:'    console.txt    enter=True
+
+            # Add newline (manually) at the end of the string (Notepad example)
+            Set Value    name:'Text Editor'  abc\\n
+            # Add newline with parameter
+            Set Value    name:'Text Editor'  abc   newline=True
+
+            # Clear Notepad window and start appending text
+            Set Anchor  name:'Text Editor'
+            # all following keyword calls will use anchor element as locator
+            # UNLESS they specify locator specifically or `Clear Anchor` is used
+            ${time}=    Get Time
+            # Clears when append=False (default)
+            Set Value    value=time now is ${time}
+            # Append text and add newline to the end
+            Set Value    value= and it's task run time    append=True    newline=True
+            # Continue appending
+            Set Value    value=this will appear on the 2nd line    append=True
         """
+        value = value or ""
         element = self.ctx.get_element(locator)
+        current_value = ""
+        newline_string = "\n" if newline else ""
         if hasattr(element.item, "GetValuePattern"):
             value_pattern = element.item.GetValuePattern()
-            value_pattern.SetValue(value)
-            if enter:
-                self.send_keys(element, "{enter}")
+            if append:
+                current_value = value_pattern.Value
+            value_pattern.SetValue(f"{current_value}{value}{newline_string}")
+        elif hasattr(element.item, "GetLegacyIAccessiblePattern"):
+            pattern = element.item.GetLegacyIAccessiblePattern()
+            if append:
+                current_value = pattern.Value
+            pattern.SetValue(f"{current_value}{value}{newline_string}")
         else:
             raise ActionNotPossible(
-                "Element '%s' does not have 'ValuePattern' attribute to set" % locator,
+                "Element '%s' does not have value attribute to set" % locator,
             )
+        if enter:
+            self.send_keys(element, "{Ctrl}{End}{Enter}")
 
     @keyword
     def set_wait_time(self, wait_time: float) -> float:

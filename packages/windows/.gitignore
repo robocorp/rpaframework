@@ -5,6 +5,7 @@ __pycache__/
 # Build artifacts
 dist/
 sdist/
+*.libspec
 
 # Exports
 requirements.txt
@@ -16,7 +17,7 @@ setup.py
 .coverage
 
 # Robot Framework
-tests/results
+tests/output
 tests/temp
 tests/*.html
 tests/*.xml

@@ -1,10 +1,19 @@
 import os
 import tempfile
 from contextlib import contextmanager
+import platform
 from pathlib import Path
 
 
 RESOURCE_DIR = Path(__file__).resolve().parent / ".." / "resources"
+
+if platform.system() == "Windows":
+    # workaround for comtypes._shutdown exception
+    # https://issueexplorer.com/issue/pywinauto/pywinauto/1083
+    import atexit
+    import comtypes
+
+    atexit.unregister(comtypes._shutdown)
 
 
 @contextmanager

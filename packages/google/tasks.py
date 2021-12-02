@@ -18,7 +18,7 @@ def _git_root():
 GIT_ROOT = _git_root()
 CONFIG = GIT_ROOT / "config"
 TOOLS = GIT_ROOT / "tools"
-PACKAGE_DIR = GIT_ROOT / "packages" / "windows"
+PACKAGE_DIR = GIT_ROOT / "packages" / "google"
 
 CLEAN_PATTERNS = [
     "coverage",
@@ -145,16 +145,14 @@ def test(ctx):
 @task(install)
 def testrobot(ctx, ci=False):
     """Run Robot Framework tests"""
-    exclude = "--exclude manual"
-    if ci:
-        exclude += " --exclude skip"
+    exclude = "--exclude manual --exclude skip"
     poetry(
         ctx,
-        f"run robot -d tests/output {exclude} -L TRACE tests/robot/test_windows.robot",
+        f"run robot -d tests/output {exclude} -L TRACE tests/robot",
     )
 
 
-# add test
+# lint, typecheck, test
 @task(cleanlibspec, lint, libspec)
 def build(ctx):
     """Build distributable python package"""
