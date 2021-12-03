@@ -18,8 +18,9 @@ class PDF(DynamicCore):
 
     Input PDF file can be passed as an argument to the keywords,
     or it can be omitted if you first call `Open PDF`. Reference
-    to the current active PDF will be stored in the library instance.
-
+    to the current active PDF will be stored in the library instance and can be
+    changed by using `Switch To PDF` with another PDF file path, therefore you can
+    asynchronously work with multiple PDFs.
 
     **Examples**
 

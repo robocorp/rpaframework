@@ -102,9 +102,9 @@ class FinderKeywords(LibraryContext):
 
         :param locator: Element to set anchor to. This can be prefixed with either
             `text:`, `regex:` or `coords:` to find the anchor by text or coordinates.
-            `text` is assumed if no such prefix is specified. (text search is
-             case-insensitive)
-        :param pagenum: Page number where search if performed on, defaults to 1 (first
+            `text` is assumed if no such prefix is specified. (text search is case
+            insensitive)
+        :param pagenum: Page number where search is performed on, defaults to 1 (first
             page).
         :param direction: In which direction to search for text elements. This can be
             any of 'top'/'up', 'bottom'/'down', 'left' or 'right'. (defaults to
@@ -225,11 +225,11 @@ class FinderKeywords(LibraryContext):
 
         :param locator: Element to set anchor to. This can be prefixed with either
             `text:`, `regex:` or `coords:` to find the anchor by text or coordinates.
-            `text` is assumed if no such prefix is specified. (text search is
-             case-insensitive)
+            `text` is assumed if no such prefix is specified. (text search is case
+            insensitive)
         :param trim: Automatically trim leading/trailing whitespace from the text
             elements. (switched on by default)
-        :param pagenum: Page number where search if performed on, defaults to 1 (first
+        :param pagenum: Page number where search is performed on, defaults to 1 (first
             page).
         :returns: True if at least one anchor was found.
 
