@@ -8,6 +8,17 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 
+Releases on 01 Dec 2021
+-----------------------
+
+- All rpaframework packages include now `.libspec` file for each library in the package.
+  This will make coding experience in the VSCode editor better via ``Robot Framework Language Server``
+  extension.
+
+  - `rpaframework` **12.0.3**
+  - `rpaframework-windows` **1.4.2**
+  - `rpaframework-google` **1.0.2**
+
 12.0.0 - 29 Nov 2021
 --------------------
 
