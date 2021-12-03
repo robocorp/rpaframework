@@ -127,8 +127,15 @@ class FinderKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            Example Keyword
+            PDF Invoice Parsing
+                Open Pdf    invoice.pdf
                 ${matches} =  Find Text    Invoice Number
+                Log List      ${matches}
+
+        .. code-block::
+
+            List has one item:
+            Match(anchor='Invoice Number', direction='right', neighbours=['INV-3337'])
 
         **Python**
 
@@ -138,8 +145,17 @@ class FinderKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
-                ${matches} = pdf.find_text("Invoice Number")
+            def pdf_invoice_parsing():
+                pdf.open_pdf("invoice.pdf")
+                matches = pdf.find_text("Invoice Number")
+                for match in matches:
+                    print(match)
+
+            pdf_invoice_parsing()
+
+        .. code-block::
+
+            Match(anchor='Invoice Number', direction='right', neighbours=['INV-3337'])
         """
         pagenum = int(pagenum)
         if closest_neighbours is not None:
