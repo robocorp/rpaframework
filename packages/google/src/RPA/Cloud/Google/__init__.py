@@ -175,7 +175,17 @@ class Google(DynamicCore):
 
     **Installation**
 
-    ``pip install rpaframework-google``
+    This library, ``RPA.Cloud.Google`` is available via **rpaframework-google** package.
+
+    .. code-block:: yaml
+
+        channels:
+          - conda-forge
+        dependencies:
+          - python=3.7.5
+          - pip=20.1
+          - pip:
+            - rpaframework-google==1.0.2
 
     **Examples**
 
