@@ -957,9 +957,15 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
     The default installation depends on `boto3`_ library. Due to the size of the
     dependency, this library has been set as an optional package for ``rpaframework``.
 
-    This can be installed by opting in to the `aws` dependency:
+    .. code-block:: yaml
 
-    ``pip install rpaframework[aws]``
+        channels:
+          - conda-forge
+        dependencies:
+          - python=3.7.5
+          - pip=20.1
+          - pip:
+            - rpaframework[aws]e==12.0.3
 
     .. _boto3:
         https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
