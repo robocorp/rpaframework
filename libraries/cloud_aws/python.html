@@ -281,13 +281,15 @@ names.</p></li>
 <p><strong>Requirements</strong></p>
 <p>The default installation depends on <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html">boto3</a> library. Due to the size of the
 dependency, this library has been set as an optional package for <code class="docutils literal notranslate"><span class="pre">rpaframework</span></code>.</p>
+<p>Following declaration, <cite>rpaframework[aws]</cite>, will install all rpaframework libraries
+plus <cite>RPA.Cloud.AWS</cite>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
 <span class="nt">dependencies</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pip=20.1</span>
   <span class="p p-Indicator">-</span> <span class="nt">pip</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework[aws]e==12.0.3</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework[aws]==12.0.3</span>
 </pre></div>
 </div>
 <p><strong>Example</strong></p>
