@@ -48,7 +48,8 @@ class PDF(DynamicCore):
             ${fields} =     Get Input Fields   encoding=utf-16
             Log Dictionary    ${fields}
             Set Field Value    Given Name Text Box    Mark
-            Save Field Values    output_path=${OUTPUT_DIR}${/}completed-form.pdf    use_appearances_writer=${True}
+            Save Field Values    output_path=${OUTPUT_DIR}${/}completed-form.pdf
+            ...                  use_appearances_writer=${True}
 
     .. code-block:: python
 
@@ -75,7 +76,10 @@ class PDF(DynamicCore):
             for key, value in fields.items():
                 print(f"{key}: {value}")
             pdf.set_field_value("Given Name Text Box", "Mark")
-            pdf.save_field_values(output_path="completed-form.pdf", use_appearances_writer=True)
+            pdf.save_field_values(
+                output_path="completed-form.pdf",
+                use_appearances_writer=True
+            )
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
