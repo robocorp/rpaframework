@@ -20,3 +20,6 @@ tests/results
 tests/temp
 tests/*.html
 tests/*.xml
+
+# FPDF fonts
+*.pkl

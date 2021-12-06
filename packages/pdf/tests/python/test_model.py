@@ -17,7 +17,10 @@ from . import (
 )
 def test_convert(library, trim, text):
     library.convert(TestFiles.vero_pdf, trim=trim)
-    assert library.active_pdf_document.is_converted
+    assert (
+        len(library.active_pdf_document.has_converted_pages)
+        == library.get_number_of_pages()
+    )
 
     first_paragraph = library.active_pdf_document.get_page(1).content[0]
     assert first_paragraph.text == text
@@ -50,6 +53,25 @@ def test_set_field_value(library):
     library.set_field_value("Puhelinnumero", new_number)
 
     assert fields["Puhelinnumero"]["value"] == new_number
+
+
+def test_set_field_value_encoding(library):
+    fields = library.get_input_fields(TestFiles.foersom_pdf, encoding="utf-16")
+    name_field = "Given Name Text Box"
+    assert not fields[name_field]["value"]
+
+    new_name = "Mark"
+    library.set_field_value(name_field, new_name)
+    assert fields[name_field]["value"] == new_name
+
+    with temp_filename(suffix=".pdf") as tmp_file:
+        library.save_field_values(output_path=tmp_file, use_appearances_writer=True)
+        library.switch_to_pdf(tmp_file)
+        with pytest.raises(KeyError):
+            # This output can't retrieve fields after save anymore.
+            library.get_input_fields()
+        content = library.active_pdf_document.fileobject.read()
+        assert new_name.encode() in content
 
 
 @pytest.mark.xfail(reason="Known issue: PDF won't show as having fields after saving")

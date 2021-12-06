@@ -39,3 +39,6 @@ poetry.toml
 
 # coverage
 *.coverage
+
+# FPDF fonts
+*.pkl

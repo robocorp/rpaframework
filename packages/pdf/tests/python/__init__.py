@@ -8,7 +8,7 @@ import pytest
 from RPA.PDF import PDF
 
 
-RESOURCE_DIR = Path(__file__).resolve().parent / ".." / "resources"
+RESOURCE_DIR = Path(__file__).resolve().parent.parent / "resources"
 
 
 @pytest.fixture
@@ -26,6 +26,7 @@ class TestFiles:
     encrypted_pdf = RESOURCE_DIR / "encrypted.pdf"
     seal_of_approval = RESOURCE_DIR / "approved.png"
     big_nope = RESOURCE_DIR / "big_nope.png"
+    foersom_pdf = RESOURCE_DIR / "foersom.pdf"
 
 
 @contextmanager

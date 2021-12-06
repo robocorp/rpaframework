@@ -18,6 +18,8 @@ from .model import Document, Figure
 
 ListOrString = Union[List[int], List[str], str, None]
 
+ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
+
 
 class PDF(FPDF, HTMLMixin):
     """
@@ -27,9 +29,13 @@ class PDF(FPDF, HTMLMixin):
     https://github.com/PyFPDF/fpdf2
     """
 
+    FONT_PATH = ASSETS_DIR / "Inter-Regular.ttf"
+
 
 class DocumentKeywords(LibraryContext):
     """Keywords for basic PDF operations"""
+
+    ENCODING = "utf-8"
 
     def resolve_output(self, path: Optional[str] = None) -> str:
         if path is None:
@@ -133,6 +139,7 @@ class DocumentKeywords(LibraryContext):
         template: str,
         output_path: str,
         variables: dict = None,
+        encoding: str = ENCODING,
     ) -> None:
         """Use HTML template file to generate PDF file.
 
@@ -176,24 +183,26 @@ class DocumentKeywords(LibraryContext):
             }
             p.template_html_to_pdf("order.template", "order.pdf", data)
 
-        :param template: filepath to the HTML template.
-        :param output_path: filepath where to save PDF document.
-        :param variables: dictionary of variables to fill into template, defaults to {}.
+        :param template: Filepath to the HTML template.
+        :param output_path: Filepath where to save PDF document.
+        :param variables: Dictionary of variables to fill into template, defaults to {}.
+        :param encoding: Codec used for text I/O.
         """
         variables = variables or {}
 
-        with open(template, "r", encoding="utf-8") as templatefile:
+        with open(template, "r", encoding=encoding or self.ENCODING) as templatefile:
             html = templatefile.read()
         for key, value in variables.items():
             html = html.replace("{{" + key + "}}", str(value))
 
-        self.html_to_pdf(html, output_path)
+        self.html_to_pdf(html, output_path, encoding=encoding)
 
     @keyword
     def html_to_pdf(
         self,
         content: str,
         output_path: str,
+        encoding: str = ENCODING,
     ) -> None:
         """Generate a PDF file from HTML content.
 
@@ -222,17 +231,22 @@ class DocumentKeywords(LibraryContext):
                 pdf.html_to_pdf(html_content_as_string, "/tmp/output.pdf")
 
         :param content: HTML content.
-        :param output_path: filepath where to save the PDF document.
+        :param output_path: Filepath where to save the PDF document.
+        :param encoding: Codec used for text I/O.
         """
         output_path = self.resolve_output(output_path)
         self.logger.info("Writing output to file %s", output_path)
 
         fpdf = PDF()
+        # Support unicode content with a font capable of rendering it.
+        fpdf.core_fonts_encoding = encoding
+        fpdf.add_font("Inter", style="", fname=fpdf.FONT_PATH, uni=True)
+        fpdf.set_font("Inter")
+
         fpdf.set_margin(0)
         fpdf.add_page()
         fpdf.write_html(content)
         fpdf.output(name=output_path)
-        fpdf = PDF()
 
     @keyword
     def get_pdf_info(self, source_path: str = None) -> dict:

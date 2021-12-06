@@ -8,6 +8,7 @@ from typing import (
     Iterable,
     Optional,
     Tuple,
+    Union,
 )
 
 import PyPDF2
@@ -182,7 +183,7 @@ class Document:
         self._pages = OrderedDict()
         self._xml_content_list: typing.List[bytes] = []
         self.fields: Optional[dict] = None
-        self.is_converted = False
+        self.has_converted_pages: Set[int] = set()
 
     @property
     def path(self):
@@ -397,8 +398,15 @@ class Converter(PDFConverter):
 class ModelKeywords(LibraryContext):
     """Keywords for converting PDF document into specific RPA object model"""
 
+    FIELDS_ENCODING = "iso-8859-1"
+
     @keyword
-    def convert(self, source_path: str = None, trim: bool = True) -> None:
+    def convert(
+        self,
+        source_path: str = None,
+        trim: bool = True,
+        pagenum: Optional[Union[int, str]] = None,
+    ):
         """Parse source PDF into entities.
 
         These entities can be used for text searches or XML dumping for example. The
@@ -407,6 +415,8 @@ class ModelKeywords(LibraryContext):
 
         :param source_path: source PDF filepath
         :param trim: trim whitespace from the text is set to True (default)
+        :param pagenum: Page number where search is performed on, defaults to `None`. (
+            meaning all pages get converted)
 
         **Examples**
 
@@ -433,11 +443,20 @@ class ModelKeywords(LibraryContext):
                 pdf.convert("/tmp/sample.pdf")
         """
         self.ctx.switch_to_pdf(source_path)
-        if self.active_pdf_document.is_converted:
-            return
+        converted_pages = self.active_pdf_document.has_converted_pages
+        if pagenum is not None:
+            pagenum = int(pagenum)
+            if pagenum in converted_pages:
+                return  # specific page already converted
+        else:
+            pages_count = self.active_pdf_document.reader.getNumPages()
+            if len(converted_pages) >= pages_count:
+                return  # all pages got converted already
 
         self.logger.debug(
-            "Converting active PDF document: %s", self.active_pdf_document.path
+            "Converting active PDF document page %s on: %s",
+            pagenum if pagenum is not None else "<all>",
+            self.active_pdf_document.path,
         )
         rsrcmgr = PDFResourceManager()
         if not self.ctx.convert_settings:
@@ -449,6 +468,8 @@ class ModelKeywords(LibraryContext):
             laparams=laparams,
             trim=trim,
             logger=self.logger,
+            # Also explicitly set by us when iterating pages for processing.
+            pageno=pagenum if pagenum is not None else 1,
         )
         interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
 
@@ -456,24 +477,52 @@ class ModelKeywords(LibraryContext):
         source_parser = PDFParser(self.active_pdf_document.fileobject)
         source_document = PDFDocument(source_parser)
         source_pages = PDFPage.create_pages(source_document)
-        for _, page in enumerate(source_pages, 0):
-            interpreter.process_page(page)
+        for idx, page in enumerate(source_pages, start=1):
+            # Process relevant pages only if instructed like so.
+            # (`pagenum` starts from 1 as well)
+            if pagenum is None or idx == pagenum:
+                if idx not in converted_pages:
+                    # Skipping converted pages will leave this counter un-incremented,
+                    # therefore we increment it explicitly.
+                    device.pageno = idx
+                    interpreter.process_page(page)
+                    converted_pages.add(idx)
+
         device.close()
 
-        self.active_pdf_document.is_converted = True
+    @classmethod
+    def _decode_field(
+        cls, binary: Optional[bytes], *, encoding
+    ) -> Optional[Union[str, bytes]]:
+        if not (binary and hasattr(binary, "decode")):
+            return binary
+
+        try:
+            return binary.decode(encoding)
+        except UnicodeDecodeError:
+            return binary.decode(cls.FIELDS_ENCODING)
 
     @keyword
     def get_input_fields(
-        self, source_path: str = None, replace_none_value: bool = False
+        self,
+        source_path: Optional[str] = None,
+        replace_none_value: bool = False,
+        encoding: str = FIELDS_ENCODING,
     ) -> dict:
         """Get input fields in the PDF.
 
-        Stores input fields internally so that they can be used without
-        parsing the PDF again.
+        Stores input fields internally so that they can be used without parsing the PDF
+        again.
 
-        Parameter ``replace_none_value`` is for convience to visualize fields.
-
-        If no source path given, assumes a PDF is already opened.
+        :param source_path: Filepath to source, if not given use the currently active
+            PDF.
+        :param replace_none_value: Enable this to conveniently visualize the fields. (
+            replaces the null value with field's name)
+        :param encoding: Use an explicit encoding for field name/value parsing. (
+            defaults to "iso-8859-1" but "utf-16" might work for you)
+        :returns: A dictionary with all the found fields. Use their key names when
+            setting values into them.
+        :raises KeyError: If no input fields are enabled in the PDF.
 
         **Examples**
 
@@ -481,12 +530,9 @@ class ModelKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
             Example Keyword
-                ${fields}=  Get Input Fields    /tmp/sample.pdf
+                ${fields} =     Get Input Fields    form.pdf
+                Log Dictionary    ${fields}
 
         **Python**
 
@@ -497,12 +543,10 @@ class ModelKeywords(LibraryContext):
             pdf = PDF()
 
             def example_keyword():
-                fields = pdf.get_input_fields("/tmp/sample.pdf")
+                fields = pdf.get_input_fields("form.pdf")
+                print(fields)
 
-        :param source_path: source filepath, defaults to None.
-        :param replace_none_value: if value is None replace it with key name,
-            defaults to False.
-        :return: dictionary of input key values or `None`.
+            example_keyword()
         """
         self.ctx.switch_to_pdf(source_path)
         active_document = self.active_pdf_document
@@ -530,32 +574,20 @@ class ModelKeywords(LibraryContext):
             if field is None:
                 continue
 
-            name, value, rect, label = (
-                field.get("T"),
-                field.get("V"),
+            name, value, raw_rect, label = (
+                self._decode_field(field.get("T"), encoding=encoding),
+                self._decode_field(field.get("V"), encoding=encoding),
                 field.get("Rect"),
-                field.get("TU"),
+                self._decode_field(field.get("TU"), encoding=encoding),
             )
             if value is None and replace_none_value:
-                record_fields[name.decode("iso-8859-1")] = {
-                    "value": name.decode("iso-8859-1"),
-                    "rect": iterable_items_to_ints(rect),
-                    "label": label.decode("iso-8859-1") if label else None,
-                }
-            else:
-                try:
-                    record_fields[name.decode("iso-8859-1")] = {
-                        "value": value.decode("iso-8859-1") if value else "",
-                        "rect": iterable_items_to_ints(rect),
-                        "label": label.decode("iso-8859-1") if label else None,
-                    }
-                except AttributeError:
-                    self.logger.debug("Attribute error")
-                    record_fields[name.decode("iso-8859-1")] = {
-                        "value": value,
-                        "rect": iterable_items_to_ints(rect),
-                        "label": label.decode("iso-8859-1") if label else None,
-                    }
+                value = name
+            parsed_field = {
+                "value": value or "",
+                "rect": iterable_items_to_ints(raw_rect),
+                "label": label or None,
+            }
+            record_fields[name] = parsed_field
 
         self.active_pdf_document.fields = record_fields or None
         return record_fields
@@ -566,7 +598,13 @@ class ModelKeywords(LibraryContext):
     ) -> None:
         """Set value for field with given name on the active document.
 
-        Tries to match on field identifier and its label.
+        Tries to match with field's identifier directly or its label.
+
+        :param field_name: Field to update.
+        :param value: New value for the field.
+        :param source_path: Source PDF file path.
+        :raises ValueError: When field can't be found or more than one field matches
+            the given `field_name`.
 
         **Examples**
 
@@ -574,10 +612,6 @@ class ModelKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
             Example Keyword
                 Open PDF    ./tmp/sample.pdf
                 Set Field Value    phone_nr    077123123
@@ -595,12 +629,6 @@ class ModelKeywords(LibraryContext):
                 pdf.open_pdf("./tmp/sample.pdf")
                 pdf.set_field_value("phone_nr", "077123123")
                 pdf.save_field_values(output_path="./tmp/output.pdf")
-
-        :param field_name: field to update.
-        :param value: new value for the field.
-        :param source_path: source PDF filepath.
-        :raises ValueError: when field can't be found or more than 1 field matches
-            the given `field_name`.
         """
         fields = self.get_input_fields(source_path=source_path)
         if not fields:
@@ -611,11 +639,11 @@ class ModelKeywords(LibraryContext):
         else:
             label_matches = 0
             field_key = None
-            for k, _ in fields.items():
+            for key in fields.keys():
                 # pylint: disable=E1136
-                if fields[k]["label"] == field_name:
+                if fields[key]["label"] == field_name:
                     label_matches += 1
-                    field_key = k
+                    field_key = key
             if label_matches == 1:
                 fields[field_key]["value"] = value  # pylint: disable=E1136
             elif label_matches > 1:
@@ -639,16 +667,20 @@ class ModelKeywords(LibraryContext):
     ) -> None:
         """Save field values in PDF if it has fields.
 
+        :param source_path: Source PDF with fields to update.
+        :param output_path: Updated target PDF.
+        :param newvals: New values when updating many at once.
+        :param use_appearances_writer: For some PDF documents the updated
+            fields won't be visible, try to set this to `True` if you
+            encounter problems. (viewing the output PDF in browser might display the
+            field values then)
+
         **Examples**
 
         **Robot Framework**
 
         .. code-block:: robotframework
 
-            ***Settings***
-            Library    RPA.PDF
-
-            ***Tasks***
             Example Keyword
                 Open PDF    ./tmp/sample.pdf
                 Set Field Value    phone_nr    077123123
@@ -682,20 +714,12 @@ class ModelKeywords(LibraryContext):
                     output_path="./tmp/output.pdf",
                     newvals=new_fields
                 )
-
-        :param source_path: source PDF with fields to update
-        :param output_path: updated target PDF
-        :param newvals: new values when updating many at once
-        :param use_appearances_writer: for some PDF documents the updated
-            fields won't be visible, try to set this to `True` if you
-            encounter problems
         """
         # NOTE:
         # The resulting PDF will be a mutated version of the original PDF,
         # and it won't necessarily show correctly in all document viewers.
         # It also won't show anymore as having fields at all.
         # The tests will XFAIL for the time being.
-
         self.ctx.switch_to_pdf(source_path)
         reader = self.active_pdf_document.reader
         if "/AcroForm" in reader.trailer["/Root"]:
@@ -706,10 +730,10 @@ class ModelKeywords(LibraryContext):
                     ): PyPDF2.generic.BooleanObject(True)
                 }
             )
-
         writer = PyPDF2.PdfFileWriter()
         if use_appearances_writer:
             writer = self._set_need_appearances_writer(writer)
+
         if newvals:
             self.logger.debug("Updating form fields with provided values for all pages")
             updated_fields = newvals

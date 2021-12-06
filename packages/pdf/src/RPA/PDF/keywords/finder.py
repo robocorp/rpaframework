@@ -102,9 +102,9 @@ class FinderKeywords(LibraryContext):
 
         :param locator: Element to set anchor to. This can be prefixed with either
             `text:`, `regex:` or `coords:` to find the anchor by text or coordinates.
-            `text` is assumed if no such prefix is specified. (text search is
-             case-insensitive)
-        :param pagenum: Page number where search if performed on, defaults to 1 (first
+            `text` is assumed if no such prefix is specified. (text search is case
+            insensitive)
+        :param pagenum: Page number where search is performed on, defaults to 1 (first
             page).
         :param direction: In which direction to search for text elements. This can be
             any of 'top'/'up', 'bottom'/'down', 'left' or 'right'. (defaults to
@@ -127,8 +127,15 @@ class FinderKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            Example Keyword
+            PDF Invoice Parsing
+                Open Pdf    invoice.pdf
                 ${matches} =  Find Text    Invoice Number
+                Log List      ${matches}
+
+        .. code-block::
+
+            List has one item:
+            Match(anchor='Invoice Number', direction='right', neighbours=['INV-3337'])
 
         **Python**
 
@@ -138,8 +145,17 @@ class FinderKeywords(LibraryContext):
 
             pdf = PDF()
 
-            def example_keyword():
-                ${matches} = pdf.find_text("Invoice Number")
+            def pdf_invoice_parsing():
+                pdf.open_pdf("invoice.pdf")
+                matches = pdf.find_text("Invoice Number")
+                for match in matches:
+                    print(match)
+
+            pdf_invoice_parsing()
+
+        .. code-block::
+
+            Match(anchor='Invoice Number', direction='right', neighbours=['INV-3337'])
         """
         pagenum = int(pagenum)
         if closest_neighbours is not None:
@@ -209,11 +225,11 @@ class FinderKeywords(LibraryContext):
 
         :param locator: Element to set anchor to. This can be prefixed with either
             `text:`, `regex:` or `coords:` to find the anchor by text or coordinates.
-            `text` is assumed if no such prefix is specified. (text search is
-             case-insensitive)
+            `text` is assumed if no such prefix is specified. (text search is case
+            insensitive)
         :param trim: Automatically trim leading/trailing whitespace from the text
             elements. (switched on by default)
-        :param pagenum: Page number where search if performed on, defaults to 1 (first
+        :param pagenum: Page number where search is performed on, defaults to 1 (first
             page).
         :returns: True if at least one anchor was found.
 
@@ -237,8 +253,11 @@ class FinderKeywords(LibraryContext):
             def example_keyword():
                 success = pdf.set_anchor_to_element("Invoice Number")
         """
-        self.logger.info("Trying to set anchor using locator: %r", locator)
-        self.ctx.convert(trim=trim)
+        pagenum = int(pagenum)
+        self.logger.info(
+            "Trying to set anchor on page %d using locator: %r", pagenum, locator
+        )
+        self.ctx.convert(trim=trim, pagenum=pagenum)
         self._anchors.clear()
         self.anchor_element = None
 
@@ -271,7 +290,7 @@ class FinderKeywords(LibraryContext):
         else:
             if criteria == "regex":
                 pure_locator = re.compile(pure_locator)
-            anchors = self._find_matching_textboxes(pure_locator, pagenum=int(pagenum))
+            anchors = self._find_matching_textboxes(pure_locator, pagenum=pagenum)
             self._anchors.extend(anchors)
 
         if self._anchors:
