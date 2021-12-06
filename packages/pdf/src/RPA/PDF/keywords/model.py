@@ -183,7 +183,7 @@ class Document:
         self._pages = OrderedDict()
         self._xml_content_list: typing.List[bytes] = []
         self.fields: Optional[dict] = None
-        self.is_converted = False
+        self.has_converted_pages: Set[int] = set()
 
     @property
     def path(self):
@@ -401,7 +401,12 @@ class ModelKeywords(LibraryContext):
     FIELDS_ENCODING = "iso-8859-1"
 
     @keyword
-    def convert(self, source_path: str = None, trim: bool = True) -> None:
+    def convert(
+        self,
+        source_path: str = None,
+        trim: bool = True,
+        pagenum: Optional[Union[int, str]] = None,
+    ):
         """Parse source PDF into entities.
 
         These entities can be used for text searches or XML dumping for example. The
@@ -410,6 +415,8 @@ class ModelKeywords(LibraryContext):
 
         :param source_path: source PDF filepath
         :param trim: trim whitespace from the text is set to True (default)
+        :param pagenum: Page number where search is performed on, defaults to `None`. (
+            meaning all pages get converted)
 
         **Examples**
 
@@ -436,11 +443,20 @@ class ModelKeywords(LibraryContext):
                 pdf.convert("/tmp/sample.pdf")
         """
         self.ctx.switch_to_pdf(source_path)
-        if self.active_pdf_document.is_converted:
-            return
+        converted_pages = self.active_pdf_document.has_converted_pages
+        if pagenum is not None:
+            pagenum = int(pagenum)
+            if pagenum in converted_pages:
+                return  # specific page already converted
+        else:
+            pages_count = self.active_pdf_document.reader.getNumPages()
+            if len(converted_pages) >= pages_count:
+                return  # all pages got converted already
 
         self.logger.debug(
-            "Converting active PDF document: %s", self.active_pdf_document.path
+            "Converting active PDF document page %s on: %s",
+            pagenum if pagenum is not None else "<all>",
+            self.active_pdf_document.path,
         )
         rsrcmgr = PDFResourceManager()
         if not self.ctx.convert_settings:
@@ -452,6 +468,8 @@ class ModelKeywords(LibraryContext):
             laparams=laparams,
             trim=trim,
             logger=self.logger,
+            # Also explicitly set by us when iterating pages for processing.
+            pageno=pagenum if pagenum is not None else 1,
         )
         interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
 
@@ -459,11 +477,18 @@ class ModelKeywords(LibraryContext):
         source_parser = PDFParser(self.active_pdf_document.fileobject)
         source_document = PDFDocument(source_parser)
         source_pages = PDFPage.create_pages(source_document)
-        for _, page in enumerate(source_pages, 0):
-            interpreter.process_page(page)
-        device.close()
+        for idx, page in enumerate(source_pages, start=1):
+            # Process relevant pages only if instructed like so.
+            # (`pagenum` starts from 1 as well)
+            if pagenum is None or idx == pagenum:
+                if idx not in converted_pages:
+                    # Skipping converted pages will leave this counter un-incremented,
+                    # therefore we increment it explicitly.
+                    device.pageno = idx
+                    interpreter.process_page(page)
+                    converted_pages.add(idx)
 
-        self.active_pdf_document.is_converted = True
+        device.close()
 
     @classmethod
     def _decode_field(

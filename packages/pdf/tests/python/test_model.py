@@ -17,7 +17,10 @@ from . import (
 )
 def test_convert(library, trim, text):
     library.convert(TestFiles.vero_pdf, trim=trim)
-    assert library.active_pdf_document.is_converted
+    assert (
+        len(library.active_pdf_document.has_converted_pages)
+        == library.get_number_of_pages()
+    )
 
     first_paragraph = library.active_pdf_document.get_page(1).content[0]
     assert first_paragraph.text == text

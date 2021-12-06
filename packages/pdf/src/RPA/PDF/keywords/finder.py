@@ -253,8 +253,11 @@ class FinderKeywords(LibraryContext):
             def example_keyword():
                 success = pdf.set_anchor_to_element("Invoice Number")
         """
-        self.logger.info("Trying to set anchor using locator: %r", locator)
-        self.ctx.convert(trim=trim)
+        pagenum = int(pagenum)
+        self.logger.info(
+            "Trying to set anchor on page %d using locator: %r", pagenum, locator
+        )
+        self.ctx.convert(trim=trim, pagenum=pagenum)
         self._anchors.clear()
         self.anchor_element = None
 
@@ -287,7 +290,7 @@ class FinderKeywords(LibraryContext):
         else:
             if criteria == "regex":
                 pure_locator = re.compile(pure_locator)
-            anchors = self._find_matching_textboxes(pure_locator, pagenum=int(pagenum))
+            anchors = self._find_matching_textboxes(pure_locator, pagenum=pagenum)
             self._anchors.extend(anchors)
 
         if self._anchors:
