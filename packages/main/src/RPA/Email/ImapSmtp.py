@@ -852,14 +852,17 @@ class ImapSmtp:
         :param target_folder: local folder for saving attachments to (needs to exist),
             defaults to user's home directory if None
         :param overwrite: overwrite existing file is True, defaults to False
-        :return: list of saved attachments
+        :return: list of saved attachments (list of absolute filepaths) of all emails
 
         Example:
 
         .. code-block:: robotframework
 
-            ${numsaved}  Save Attachments   SUBJECT "rpa task"
-            ...          target_folder=${CURDIR}${/}messages  overwrite=True
+            ${attachments}  Save Attachments   SUBJECT "rpa task"
+            ...             target_folder=${CURDIR}${/}messages  overwrite=True
+            FOR  ${a}  IN  @{attachments}
+                OperatingSystem.File Should Exist  ${a}
+            END
         """  # noqa: E501
         attachments_saved = []
         messages = self.list_messages(criterion)
@@ -871,23 +874,30 @@ class ImapSmtp:
 
     def save_attachment(
         self, message: Union[dict, Message], target_folder: str, overwrite: bool
-    ):
+    ) -> str:
         # pylint: disable=C0301
         """Save mail attachment of single given email into local folder
 
         :param message: message item
         :param target_folder: local folder for saving attachments to (needs to exist),
-            defaults to user's home directory if None
+         defaults to user's home directory if None
         :param overwrite: overwrite existing file is True, defaults to False
+        :return: list of saved attachments (list of absolute filepaths) in one email
 
         Example:
 
         .. code-block:: robotframework
 
-            @{emails}  List Messages  SUBJECT "rpa task"
-            FOR  ${email}  IN  @{emails}
-                Run Keyword If   ${email}[Has-Attachments] == True
-                ...              Save Attachment  ${email}  target_folder=${CURDIR}  overwrite=True
+            @{emails}    List Messages    ALL
+            FOR    ${email}    IN    @{emails}
+                IF    ${email}[Has-Attachments]
+                    Log To Console    Saving attachment for: ${email}[Subject]
+                    ${attachments}=    Save Attachment
+                    ...    ${email}
+                    ...    target_folder=${CURDIR}
+                    ...    overwrite=True
+                    Log To Console    Saved attachments: ${attachments}
+                END
             END
         """  # noqa: E501
         if target_folder is None:
