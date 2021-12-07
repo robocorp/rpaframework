@@ -8,6 +8,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 
+12.1.1 - 7 Dec 2021
+-------------------
+
+- Library **RPA.PDF**: Serialize PDF related fonts under Robocorp's home directory
+  (:pr:`315`, ``rpaframework-pdf`` **1.30.2**)
+
 12.1.0 - 7 Dec 2021
 -------------------
 
