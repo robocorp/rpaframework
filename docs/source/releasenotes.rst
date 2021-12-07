@@ -11,8 +11,12 @@ Release notes
 12.1.0 - 7 Dec 2021
 -------------------
 
-- Library **RPA.PDF**: Fixed unicode when rendering HTML as PDF (:issue:`304`,
-  ``rpaframework-pdf`` **1.30.1**)
+- Library **RPA.PDF** (:issue:`304`, ``rpaframework-pdf`` **1.30.1**):
+
+    - Fixed unicode when rendering HTML as PDF
+    - Fixed PDF form fields setting given various codecs
+    - Faster PDF parsing
+    - Updated docs on ``Find Text`` keyword and library
 
 Releases on 01 Dec 2021
 -----------------------
