@@ -21,6 +21,21 @@ ListOrString = Union[List[int], List[str], str, None]
 ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 
 
+def get_output_dir() -> Path:
+    try:
+        # A `None` may come from here too.
+        output_dir = BuiltIn().get_variable_value("${OUTPUT_DIR}")
+    except Exception:  # pylint: disable=broad-except
+        output_dir = None
+    # Keep empty string as current working directory path.
+    if output_dir is None:
+        output_dir = "output"
+
+    output_dir = Path(output_dir).expanduser().resolve()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    return output_dir
+
+
 class PDF(FPDF, HTMLMixin):
     """
     FDPF helper class.
@@ -29,7 +44,34 @@ class PDF(FPDF, HTMLMixin):
     https://github.com/PyFPDF/fpdf2
     """
 
-    FONT_PATH = ASSETS_DIR / "Inter-Regular.ttf"
+    FONT_PATHS = {
+        "": ASSETS_DIR / "Inter-Regular.ttf",
+        "B": ASSETS_DIR / "Inter-Bold.ttf",
+        "I": ASSETS_DIR / "Inter-Italic.ttf",
+        "BI": ASSETS_DIR / "Inter-BoldItalic.ttf",
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.font_cache_dir = get_output_dir()
+
+    # pylint: disable=arguments-differ
+    def add_font(self, *args, fname, **kwargs):
+        try:
+            return super().add_font(*args, fname=fname, **kwargs)
+        # pylint: disable=broad-except
+        except Exception:
+            # Usually caching issues, like importing a *.pkl font file serialized on
+            # another OS/env.
+            unifilename = self.font_cache_dir / f"{fname.stem}.pkl"
+            if unifilename.exists():
+                os.remove(unifilename)
+            return super().add_font(*args, fname=fname, **kwargs)
+
+    def add_unicode_fonts(self):
+        for style, path in self.FONT_PATHS.items():
+            self.add_font("Inter", style=style, fname=path, uni=True)
+        self.set_font("Inter")
 
 
 class DocumentKeywords(LibraryContext):
@@ -37,21 +79,14 @@ class DocumentKeywords(LibraryContext):
 
     ENCODING = "utf-8"
 
-    def resolve_output(self, path: Optional[str] = None) -> str:
+    @staticmethod
+    def resolve_output(path: Optional[str] = None) -> str:
         if path is None:
-            try:
-                output_dir = BuiltIn().get_variable_value("${OUTPUT_DIR}")
-            except Exception:  # pylint: disable=broad-except
-                output_dir = None
-
-            if output_dir is None:
-                output_dir = "output"
-
-            output = Path(output_dir) / "output.pdf"
-            output = output.resolve()
+            output = get_output_dir() / "output.pdf"
         else:
-            output = Path(path).resolve()
+            output = Path(path)
 
+        output = output.expanduser().resolve()
         output.parent.mkdir(parents=True, exist_ok=True)
         return str(output)
 
@@ -240,9 +275,7 @@ class DocumentKeywords(LibraryContext):
         fpdf = PDF()
         # Support unicode content with a font capable of rendering it.
         fpdf.core_fonts_encoding = encoding
-        fpdf.add_font("Inter", style="", fname=fpdf.FONT_PATH, uni=True)
-        fpdf.set_font("Inter")
-
+        fpdf.add_unicode_fonts()
         fpdf.set_margin(0)
         fpdf.add_page()
         fpdf.write_html(content)
