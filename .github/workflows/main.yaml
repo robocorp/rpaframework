@@ -36,7 +36,8 @@ jobs:
           "ubuntu-py38",
           "ubuntu-py39",
 
-          "macos-py36",
+          # This version has been disabled for now
+          #"macos-py36",
           "macos-py37",
           "macos-py38",
           "macos-py39",
@@ -67,9 +68,10 @@ jobs:
           - name: "ubuntu-py39"
             python: "3.9"
             os: ubuntu-latest
-          - name: "macos-py36"
-            python: "3.6"
-            os: macos-latest
+          #
+          #- name: "macos-py36"
+          #  python: "3.6"
+          #  os: macos-latest
           - name: "macos-py37"
             python: "3.7"
             os: macos-latest
