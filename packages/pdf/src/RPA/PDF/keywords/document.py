@@ -13,6 +13,7 @@ from PIL import Image
 from robot.libraries.BuiltIn import BuiltIn
 
 from RPA.PDF.keywords import LibraryContext, keyword
+from RPA.core.robocorp import robocorp_home
 from .model import Document, Figure
 
 
@@ -53,7 +54,8 @@ class PDF(FPDF, HTMLMixin):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.font_cache_dir = get_output_dir()
+        self.font_cache_dir = robocorp_home() / "fonts"
+        self.font_cache_dir.mkdir(parents=True, exist_ok=True)
 
     # pylint: disable=arguments-differ
     def add_font(self, *args, fname, **kwargs):
