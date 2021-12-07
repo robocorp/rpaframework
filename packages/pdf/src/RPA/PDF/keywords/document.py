@@ -29,7 +29,17 @@ class PDF(FPDF, HTMLMixin):
     https://github.com/PyFPDF/fpdf2
     """
 
-    FONT_PATH = ASSETS_DIR / "Inter-Regular.ttf"
+    FONT_PATHS = {
+        "": ASSETS_DIR / "Inter-Regular.ttf",
+        "B": ASSETS_DIR / "Inter-Bold.ttf",
+        "I": ASSETS_DIR / "Inter-Italic.ttf",
+        "BI": ASSETS_DIR / "Inter-BoldItalic.ttf",
+    }
+
+    def add_unicode_fonts(self):
+        for style, path in self.FONT_PATHS.items():
+            self.add_font("Inter", style=style, fname=path, uni=True)
+        self.set_font("Inter")
 
 
 class DocumentKeywords(LibraryContext):
@@ -240,9 +250,7 @@ class DocumentKeywords(LibraryContext):
         fpdf = PDF()
         # Support unicode content with a font capable of rendering it.
         fpdf.core_fonts_encoding = encoding
-        fpdf.add_font("Inter", style="", fname=fpdf.FONT_PATH, uni=True)
-        fpdf.set_font("Inter")
-
+        fpdf.add_unicode_fonts()
         fpdf.set_margin(0)
         fpdf.add_page()
         fpdf.write_html(content)

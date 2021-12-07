@@ -84,7 +84,9 @@ def test_extract_pages_from_pdf(library):
     ],
 )
 def test_html_to_pdf(library, text, encoding):
-    html = f"<html> <body> {text} </body></html>"
+    html = (
+        f"<html> <body> <b>bold</b> <b><i>{text}</i></b> <i>italic</i> </body></html>"
+    )
     with temp_filename() as tmp_file:
         library.html_to_pdf(html, tmp_file, encoding=encoding)
         result = library.get_text_from_pdf(tmp_file)[1]
