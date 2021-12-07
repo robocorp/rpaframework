@@ -55,9 +55,11 @@ class PDF(FPDF, HTMLMixin):
         super().__init__(*args, **kwargs)
         self.font_cache_dir = get_output_dir()
 
+    # pylint: disable=arguments-differ
     def add_font(self, *args, fname, **kwargs):
         try:
             return super().add_font(*args, fname=fname, **kwargs)
+        # pylint: disable=broad-except
         except Exception:
             # Usually caching issues, like importing a *.pkl font file serialized on
             # another OS/env.
