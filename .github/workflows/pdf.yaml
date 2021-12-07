@@ -36,7 +36,7 @@ jobs:
           "ubuntu-py38",
           "ubuntu-py39",
 
-          "macos-py36",
+          #"macos-py36",  # currently disabled
           "macos-py37",
           "macos-py38",
           "macos-py39",
