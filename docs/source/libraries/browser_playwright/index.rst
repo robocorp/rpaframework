@@ -35,7 +35,7 @@ Example ``conda.yaml``:
     - pip=20.1
     - nodejs=14.15.4
     - pip:
-      - robotframework-browser==5.0.1
+      - robotframework-browser==11.1.0
       - rpaframework==10.2.0
   rccPostInstall:
     - rfbrowser init
