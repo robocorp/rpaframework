@@ -40,10 +40,8 @@ Get Temperature Values
         Log To Console    ${temperature}
     END
 
-*** Tasks ***
-Calculator by clicking buttons
-    Windows Search    Calculator
-    Control Window    Calculator
+Calculator button actions
+    Control Window    Calculator type:Window
     Click    id:num9Button
     Click    id:num6Button
     Click    id:plusButton
@@ -52,11 +50,8 @@ Calculator by clicking buttons
     ${result}=    Get Attribute    id:CalculatorResults    Name
     Log To Console    \n${result}
     Send Keys    keys={Esc}
-    [Teardown]    Close Current Window
 
-*** Tasks ***
-Do some calculations
-    Windows Run    calc.exe
+Calculator with keys
     Control Window    Calculator
     Click    id:clearButton
     Send Keys    keys=96+4=
@@ -66,7 +61,24 @@ Do some calculations
     FOR    ${button}    IN    @{buttons}
         Log To Console    ${button}
     END
+
+*** Tasks ***
+Windows search Calculator by clicking buttons
+    Windows Search    Calculator
+    Calculator button actions
     [Teardown]    Close Current Window
+
+Calculator by clicking buttons already running
+    Calculator button actions
+
+*** Tasks ***
+Windows run Do some calculations
+    Windows Run    calc.exe
+    Calculator with keys
+    [Teardown]    Close Current Window
+
+Windows run Do some calculations already running
+    Calculator with keys
 
 Play Task Calculator
     Windows Search    Calculator
