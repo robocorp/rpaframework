@@ -265,7 +265,8 @@ class LocatorKeywords(LibraryContext):
         :param locator: locator as a string or as a element
         :param search_depth: how deep the element search will traverse (default 8)
         :param root_element: can be used to set search root element
-        :param timeout: timeout in seconds for element lookup (default 10.0)
+        :param timeout: float value in seconds, see keyword
+         ``Set Global Timeout``
 
         Example:
 
@@ -340,7 +341,8 @@ class LocatorKeywords(LibraryContext):
         :param locator: locator as a string or as a element
         :param search_depth: how deep the element search will traverse (default 8)
         :param root_element: can be used to set search root element
-        :param timeout: timeout in seconds for element lookup (default 10.0)
+        :param timeout: float value in seconds, see keyword
+         ``Set Global Timeout``
 
         Example:
 
