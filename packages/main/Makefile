@@ -110,7 +110,3 @@ build: lint test ## Build distribution packages
 	# https://github.com/python-poetry/poetry/issues/266#issuecomment-636627858
 	poetry build -vv -f sdist
 	poetry build -vv -f wheel
-
-publish: build ## Publish package to PyPI
-	poetry publish -v
-	$(tools)/tag.py
