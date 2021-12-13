@@ -1,3 +1,4 @@
+import glob
 import imghdr
 import os
 import tempfile
@@ -51,10 +52,11 @@ class PDF(FPDF, HTMLMixin):
         "I": ASSETS_DIR / "Inter-Italic.ttf",
         "BI": ASSETS_DIR / "Inter-BoldItalic.ttf",
     }
+    FONT_CACHE_DIR = robocorp_home() / "fonts"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.font_cache_dir = robocorp_home() / "fonts"
+        self.font_cache_dir = self.FONT_CACHE_DIR
         self.font_cache_dir.mkdir(parents=True, exist_ok=True)
 
     # pylint: disable=arguments-differ
@@ -274,14 +276,23 @@ class DocumentKeywords(LibraryContext):
         output_path = self.resolve_output(output_path)
         self.logger.info("Writing output to file %s", output_path)
 
-        fpdf = PDF()
-        # Support unicode content with a font capable of rendering it.
-        fpdf.core_fonts_encoding = encoding
-        fpdf.add_unicode_fonts()
-        fpdf.set_margin(0)
-        fpdf.add_page()
-        fpdf.write_html(content)
-        fpdf.output(name=output_path)
+        def _html_to_pdf():
+            fpdf = PDF()
+            # Support unicode content with a font capable of rendering it.
+            fpdf.core_fonts_encoding = encoding
+            fpdf.add_unicode_fonts()
+            fpdf.set_margin(0)
+            fpdf.add_page()
+            fpdf.write_html(content)
+            fpdf.output(name=output_path)
+
+        try:
+            _html_to_pdf()
+        except FileNotFoundError:
+            serialized_fonts = glob.glob(str(PDF.FONT_CACHE_DIR / "*.pkl"))
+            for serialized_font in serialized_fonts:
+                os.remove(serialized_font)
+            _html_to_pdf()
 
     @keyword
     def get_pdf_info(self, source_path: str = None) -> dict:
