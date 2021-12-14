@@ -8,6 +8,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 
+12.1.2 - 14 Dec 2021
+--------------------
+
+- Library **RPA.PDF**: HTML -> PDF rendering serialized fonts cleanup bug fix
+  (:pr:`322`, ``rpaframework-pdf`` **1.30.3**)
+
 12.1.1 - 7 Dec 2021
 -------------------
 
