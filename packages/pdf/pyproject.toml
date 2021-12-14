@@ -47,6 +47,14 @@ pylint = "^2.4.4"
 pytest = "^6.1.2"
 mock = "^4.0.2"
 pytest-cov = "^2.10.1"
+invoke = "^1.6.0"
+sphinx = "^2.3.1"
+sphinx_rtd_theme = "^0.4.3"
+toml = "^0.10.1"
+sphinx-markdown-builder = "^0.5.4"
+robotframework-docgen = "^0.14.0"
+sphinx-issues = "^1.2.0"
+docutils = "0.16"
 
 [tool.black]
 target-version = ["py36", "py37", "py38", "py39"]
