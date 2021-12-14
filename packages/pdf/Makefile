@@ -87,13 +87,13 @@ test-python: install ## Run all Python unittests
 	poetry run pytest
 
 test-robot: install ## Run Robot Framework tests
-	$(rm) tests/results
+	$(rm) tests/output
 	poetry run robot\
 	 $(robot_args)\
 	 $(EXTRA_ROBOT_ARGS)\
 	 --loglevel TRACE\
 	 --pythonpath tests/resources\
-	 --outputdir tests/results\
+	 --outputdir tests/output\
 	 tests/robot
 
 todo: install ## Print all TODO/FIXME comments
