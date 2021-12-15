@@ -306,7 +306,7 @@ class WindowKeywords(LibraryContext):
         time.sleep(wait_time)
 
     @keyword(tags=["window"])
-    def close_current_window(self) -> None:
+    def close_current_window(self) -> bool:
         """Closes current active window or logs a warning message.
 
         :return: True if close was successful, False if not

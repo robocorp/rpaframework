@@ -256,7 +256,7 @@ class ActionKeywords(LibraryContext):
         allow GetWindowText action.
 
         :param locator: string locator or Control element
-        :return: value of WindowText  attribute of an element
+        :return: value of WindowText attribute of an element
 
         Example:
 

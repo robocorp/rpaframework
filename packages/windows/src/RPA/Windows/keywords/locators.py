@@ -267,6 +267,7 @@ class LocatorKeywords(LibraryContext):
         :param root_element: can be used to set search root element
         :param timeout: float value in seconds, see keyword
          ``Set Global Timeout``
+        :return: WindowsElement object
 
         Example:
 
@@ -343,6 +344,7 @@ class LocatorKeywords(LibraryContext):
         :param root_element: can be used to set search root element
         :param timeout: float value in seconds, see keyword
          ``Set Global Timeout``
+        :return: list of WindowsElement objects
 
         Example:
 
