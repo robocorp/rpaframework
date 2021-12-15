@@ -21,7 +21,7 @@ class ElementKeywords(LibraryContext):
         self,
         locator: Union[WindowsElement, str],
         timeout: float = DEFAULT_SEARCH_TIMEOUT,
-    ):
+    ) -> None:
         """Set anchor to an element specified by the locator.
 
         All following keywords using locators will use this element
@@ -50,8 +50,12 @@ class ElementKeywords(LibraryContext):
         self.ctx.anchor_element = self.ctx.get_element(locator, timeout=timeout)
 
     @keyword
-    def clear_anchor(self):
-        """Clears control anchor set by ``Set Anchor``"""
+    def clear_anchor(self) -> None:
+        """Clears control anchor set by ``Set Anchor``
+
+        This means that all following keywords accessing elements
+        will use active window or desktop as root element.
+        """
         self.ctx.anchor_element = None
 
     @keyword
@@ -62,7 +66,7 @@ class ElementKeywords(LibraryContext):
         encoding: str = "utf-8",
         capture_image_folder: str = None,
         log_as_warnings: bool = False,
-    ):
+    ) -> None:
         """Print Control element tree.
 
         Windows application structure can contain multilevel element
@@ -112,11 +116,12 @@ class ElementKeywords(LibraryContext):
             index += 1
 
     @keyword
-    def get_attribute(self, locator: Union[WindowsElement, str], attribute: str):
+    def get_attribute(self, locator: Union[WindowsElement, str], attribute: str) -> str:
         """Get attribute value of the element defined by the locator.
 
         :param locator: string locator or Control element
         :param attribute: name of the attribute to get
+        :return: value of attribute
 
         Example:
 
@@ -142,6 +147,7 @@ class ElementKeywords(LibraryContext):
         """List all element attributes.
 
         :param locator: string locator or Control element
+        :return: list of element attributes (strings)
         """
         element = self.ctx.get_element(locator)
         element_attributes = [e for e in dir(element.item) if not e.startswith("_")]

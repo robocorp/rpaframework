@@ -2,6 +2,7 @@ from robot.api.deco import keyword
 
 from .context import (
     ActionNotPossible,
+    ElementNotFound,
     LibraryContext,
     ControlNotFound,
     MultipleControlsFound,

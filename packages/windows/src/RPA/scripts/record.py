@@ -71,7 +71,7 @@ def _get_element_key_properties(element, regex_limit=300):
     snippet = ""
     if element_name and len(element_name) > 0:
         snippet = f"name:'{element_name.strip()}'"
-    elif automation_id and not utils.is_integer(automation_id):
+    elif automation_id and not utils.is_numeric(automation_id):
         snippet = f"id:{automation_id}"
     else:
         control_type = element.ControlTypeName.strip()

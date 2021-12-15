@@ -3,7 +3,12 @@ import signal
 import time
 from typing import List, Dict, Union
 
-from RPA.Windows.keywords import keyword, LibraryContext, WindowControlError
+from RPA.Windows.keywords import (
+    keyword,
+    ElementNotFound,
+    LibraryContext,
+    WindowControlError,
+)
 from RPA.Windows import utils
 from .locators import WindowsElement
 
@@ -16,8 +21,13 @@ class WindowKeywords(LibraryContext):
 
     @keyword(tags=["window"])
     def control_window(
-        self, locator: Union[WindowsElement, str] = None, foreground: bool = True
-    ) -> int:
+        self,
+        locator: Union[WindowsElement, str] = None,
+        foreground: bool = True,
+        wait_time: float = None,
+        timeout: float = None,
+        main: bool = True,
+    ) -> WindowsElement:
         """Controls the window defined by the locator.
 
         This means that this window is used as a root element
@@ -27,6 +37,13 @@ class WindowKeywords(LibraryContext):
 
         :param locator: string locator or Control element
         :param foreground: True to bring window to foreground
+        :param wait_time: time to wait after activating a window
+        :param timeout: float value in seconds, see keyword
+         ``Set Global Timeout``
+        :param main: on True (default) starts search from desktop level,
+         on False will continue search on child elements of current
+         active window
+        :return: WindowsElement object
 
         Example:
 
@@ -36,59 +53,119 @@ class WindowKeywords(LibraryContext):
             Control Window   name:Calculator
             Control Window   subname:Notepad
             Control Window   regex:.*Notepad
-            ${handle}=  Control Window   executable:Spotify.exe
+            ${window}=  Control Window   executable:Spotify.exe
         """
+        current_timeout = timeout or self.ctx.global_timeout
+        if timeout:
+            auto.SetGlobalSearchTimeout(timeout)
         if isinstance(locator, WindowsElement):
             self.ctx.window = locator
+        elif "type:" in locator:
+            self.ctx.window = self._find_window(locator, main)
         else:
-            window_locator = f"{locator}  and type:WindowControl"
-            pane_locator = f"{locator}  and type:PaneControl"
-            desktop = WindowsElement(auto.GetRootControl(), window_locator)
-            self.ctx.window = self.ctx.get_element(window_locator, root_element=desktop)
-            if not self.ctx.window.item.Exists():
-                desktop = WindowsElement(auto.GetRootControl(), pane_locator)
-                self.ctx.window = self.ctx.get_element(
-                    pane_locator, root_element=desktop
-                )
-        if not self.ctx.window.item.Exists():
+            window_locator = f"{locator} and type:WindowControl"
+            pane_locator = f"{locator} and type:PaneControl"
+            self.ctx.window = self._find_window(window_locator, main)
+            if not self.ctx.window:
+                self.ctx.window = self._find_window(pane_locator, main)
+
+        auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
+        if not self.ctx.window or not self.ctx.window.item.Exists():
             raise WindowControlError(
-                'Could not locate window with locator "%s"' % locator
+                'Could not locate window with locator: "%s" and timeout:%s'
+                % (locator, current_timeout)
             )
         if foreground:
             self.foreground_window()
+        if wait_time:
+            time.sleep(wait_time)
         return self.ctx.window
 
     @keyword(tags=["window"])
-    def foreground_window(self, locator: Union[WindowsElement, str] = None) -> None:
-        """Bring the current active window or the window defined
-        by the locator to the foreground.
+    def control_child_window(
+        self,
+        locator: Union[WindowsElement, str] = None,
+        foreground: bool = True,
+        wait_time: float = None,
+        timeout: float = None,
+    ) -> WindowsElement:
+        """Get control of child window of the active window
+        by locator.
 
         :param locator: string locator or Control element
-        """
-        if locator:
-            self.control_window(locator, foreground=True)
-            return
-        if not self.ctx.window.item:
-            raise WindowControlError("There is no active window")
-        auto.WaitForExist(self.ctx.window.item, 5)
-        if hasattr(self.ctx.window.item, "Restore"):
-            self.ctx.window.item.Restore()
-        self.ctx.window.item.SetFocus()
-        self.ctx.window.item.SetActive()
-        self.ctx.window.item.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
-
-    @keyword(tags=["window"])
-    def minimize_window(self, locator: Union[WindowsElement, str] = None) -> None:
-        """Minimize the current active window or the window defined
-        by the locator.
-
-        :param locator: string locator or Control element
+        :param foreground: True to bring window to foreground
+        :param wait_time: time to wait after activeting a window
+        :param timeout: float value in seconds, see keyword
+         ``Set Global Timeout``
+        :return: WindowsElement object
 
         Example:
 
         .. code-block:: robotframework
 
-            Minimize Window   # Current active window
+            Control Window   subname:'Sage 50' type:Window
+            # actions on the main application window
+            # ...
+            # get control of child window of Sage application
+            Control Child Window   subname:'Test Company' depth:1
+        """
+        self.control_window(locator, foreground, timeout, wait_time, False)
+        return self.ctx.window
+
+    def _find_window(self, locator, main) -> bool:
+        try:
+            # root_element = None means using self.ctx.window as root
+            root_element = (
+                WindowsElement(auto.GetRootControl(), locator) if main else None
+            )
+
+            window = self.ctx.get_element(locator, root_element=root_element)
+            return window
+        except ElementNotFound:
+            return None
+        except LookupError:
+            return None
+
+    @keyword(tags=["window"])
+    def foreground_window(
+        self, locator: Union[WindowsElement, str] = None
+    ) -> WindowsElement:
+        """Bring the current active window or the window defined
+        by the locator to the foreground.
+
+        :param locator: string locator or Control element
+        :return: WindowsElement object
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${window}=  Foreground Window   Calculator
+        """
+        if locator:
+            return self.control_window(locator, foreground=True)
+        if not self.ctx.window.item:
+            raise WindowControlError("There is no active window")
+        utils.call_attribute_if_available(self.ctx.window.item, "SetFocus")
+        utils.call_attribute_if_available(self.ctx.window.item, "SetActive")
+        self.ctx.window.item.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
+        return self.ctx.window
+
+    @keyword(tags=["window"])
+    def minimize_window(
+        self, locator: Union[WindowsElement, str] = None
+    ) -> WindowsElement:
+        """Minimize the current active window or the window defined
+        by the locator.
+
+        :param locator: string locator or Control element
+        :return: WindowsElement object
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${window}=  Minimize Window   # Current active window
             Minimize Window   executable:Spotify.exe
         """
         if locator:
@@ -99,22 +176,26 @@ class WindowKeywords(LibraryContext):
             self.logger.warning(
                 "Control '%s' does not have attribute Minimize" % self.ctx.window
             )
-            return
+            return self.ctx.window
         self.ctx.window.item.Minimize()
+        return self.ctx.window
 
     @keyword(tags=["window"])
-    def maximize_window(self, locator: Union[WindowsElement, str] = None) -> None:
+    def maximize_window(
+        self, locator: Union[WindowsElement, str] = None
+    ) -> WindowsElement:
         """Minimize the current active window or the window defined
         by the locator.
 
         :param locator: string locator or Control element
+        :return: WindowsElement object
 
         Example:
 
         .. code-block:: robotframework
 
             Maximize Window   # Current active window
-            Maximize Window   executable:Spotify.exe
+            ${window}=  Maximize Window   executable:Spotify.exe
         """
         if locator:
             self.control_window(locator)
@@ -123,6 +204,33 @@ class WindowKeywords(LibraryContext):
         if not hasattr(self.ctx.window.item, "Maximize"):
             raise WindowControlError("Window does not have attribute Maximize")
         self.ctx.window.item.Maximize()
+        return self.ctx.window
+
+    @keyword(tags=["window"])
+    def restore_window(
+        self, locator: Union[WindowsElement, str] = None
+    ) -> WindowsElement:
+        """Window restore the current active window or the window
+        defined by the locator.
+
+        :param locator: string locator or Control element
+        :return: WindowsElement object
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${window}=  Restore Window   # Current active window
+            Restore Window   executable:Spotify.exe
+        """
+        if locator:
+            self.control_window(locator)
+        if not self.ctx.window:
+            raise WindowControlError("There is no active window")
+        if not hasattr(self.ctx.window.item, "Restore"):
+            raise WindowControlError("Window does not have attribute Restore")
+        self.ctx.window.item.Restore()
+        return self.ctx.window
 
     @keyword(tags=["window"])
     def list_windows(self) -> List[Dict]:
@@ -201,11 +309,13 @@ class WindowKeywords(LibraryContext):
     def close_current_window(self) -> bool:
         """Closes current active window or logs a warning message.
 
+        :return: True if close was successful, False if not
+
         Example:
 
         .. code-block:: robotframework
 
-            Close Current Window
+            ${status}=  Close Current Window
         """
         if not self.ctx.window:
             self.ctx.logger.warning("There is no active window")

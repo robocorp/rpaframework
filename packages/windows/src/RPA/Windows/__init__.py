@@ -14,6 +14,13 @@ from RPA.Windows.keywords import (
 from RPA.Windows import utils
 
 if utils.is_windows():
+    # Configure comtypes to not generate DLL bindings into
+    # current environment, instead keeping them in memory.
+    # Slower, but prevents dirtying environments.
+    import comtypes.client
+
+    comtypes.client.gen_dir = None
+
     import uiautomation as auto
     from uiautomation.uiautomation import Logger
 
@@ -352,6 +359,15 @@ class Windows(DynamicCore):
         lib.send_keys('`~!@#$%^&*()-_=+{Enter}')
         lib.send_keys('[]{{}{}}\\|;:\'\",<.>/?{Enter}')
 
+    Using access key of the element (element property -> AccessKey 'alt+s').
+    The `(+s)` means that previous special key is kept down until closing parenthesis is reached.
+
+    On the below example this means that 'ALT' key is pressed down, then '+' and 's' keys are pressed
+    down before they are all released up.
+
+    .. code-block:: robotframework
+
+        Send Keys   keys={Alt}(+s)
 
     Mouse clicks can be executed with keywords specific for a type of a click, e.g. ``Click`` (normal click),
     ``Double Click`` and ``Right Click``.
@@ -451,9 +467,9 @@ class Windows(DynamicCore):
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
     def __init__(self):
-        # , timeout: float = None, simulate_move: bool = False
         self.logger = logging.getLogger(__name__)
         self.wait_time = 0.5
+        self.global_timeout = auto.uiautomation.TIME_OUT_SECOND
         self.simulate_move = False
         self.window = None
         self.anchor_element = None

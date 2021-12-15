@@ -14,7 +14,7 @@ def get_process_list() -> Dict:
     return process_list
 
 
-def is_integer(value):
+def is_numeric(value):
     try:
         float(value)
     except ValueError:
@@ -25,3 +25,9 @@ def is_integer(value):
 
 def is_windows():
     return platform.system() == "Windows"
+
+
+def call_attribute_if_available(object_name, attribute_name):
+    if hasattr(object_name, attribute_name):
+        return getattr(object_name, attribute_name)()
+    return None
