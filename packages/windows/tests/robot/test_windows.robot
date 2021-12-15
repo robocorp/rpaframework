@@ -206,7 +206,8 @@ Test get element
     [Tags]    skip    manual
     ${desktop}=    Get Element
     ${buttons}=    Get Elements    name:'Running applications' > type:Button    root_element=${desktop}
-    Log To Console    \nList task bar applications
+    Log To Console    \nList task bar applications\n
+    Log To Console    Desktop: ${desktop}
     FOR    ${b}    IN    @{buttons}
-        Log To Console    name = ${b.name}
+        Log To Console    app = ${b}
     END
