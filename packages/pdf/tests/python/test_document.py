@@ -1,3 +1,4 @@
+import shutil
 from contextlib import contextmanager
 
 import PyPDF2
@@ -176,6 +177,19 @@ def test_add_watermark_image_to_pdf(library, watermark_image):
 
         assert len(figures_before[1]) == 1
         assert len(figures_after[1]) == 2
+
+
+def test_add_watermark_image_to_same_pdf(library):
+    with temp_filename(suffix="-receipt.pdf") as receipt_pdf:
+        shutil.copyfile(TestFiles.receipt_pdf, receipt_pdf)
+        library.add_watermark_image_to_pdf(
+            image_path=TestFiles.robot_png,
+            # Use same file source for both input and output.
+            output_path=receipt_pdf,
+            source_path=receipt_pdf,
+        )
+        figures = library.get_all_figures(source_path=receipt_pdf)
+        assert len(figures[1]) == 1  # means watermarking finished successfully
 
 
 @pytest.mark.parametrize(

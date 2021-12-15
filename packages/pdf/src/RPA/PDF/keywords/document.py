@@ -1,5 +1,6 @@
 import glob
 import imghdr
+import io
 import os
 import tempfile
 from pathlib import Path
@@ -18,6 +19,7 @@ from RPA.core.robocorp import robocorp_home
 from .model import Document, Figure
 
 
+FilePath = Union[str, Path]
 ListOrString = Union[List[int], List[str], str, None]
 
 ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
@@ -84,7 +86,15 @@ class DocumentKeywords(LibraryContext):
     ENCODING = "utf-8"
 
     @staticmethod
-    def resolve_output(path: Optional[str] = None) -> str:
+    def resolve_input(path: FilePath) -> str:
+        """Normalizes input path and returns as string."""
+        inp = Path(path)
+        inp = inp.expanduser().resolve()
+        return str(inp)
+
+    @staticmethod
+    def resolve_output(path: Optional[FilePath] = None) -> str:
+        """Normalizes output path and returns as string."""
         if path is None:
             output = get_output_dir() / "output.pdf"
         else:
@@ -124,7 +134,7 @@ class DocumentKeywords(LibraryContext):
         self.active_pdf_document = None
 
     @keyword
-    def open_pdf(self, source_path: str = None) -> None:
+    def open_pdf(self, source_path: FilePath) -> None:
         """Open a PDF document for reading.
 
         This is called automatically in the other PDF keywords
@@ -157,10 +167,10 @@ class DocumentKeywords(LibraryContext):
         :param source_path: filepath to the source pdf.
         :raises ValueError: if PDF is already open.
         """
-        if source_path is None:
+        if not source_path:
             raise ValueError("Source PDF is missing")
 
-        source_path = str(source_path)
+        source_path = self.resolve_input(source_path)
         if source_path in self.ctx.documents:
             raise ValueError(
                 "PDF file is already open, please close it before opening it again"
@@ -429,7 +439,7 @@ class DocumentKeywords(LibraryContext):
         return reader.getNumPages()
 
     @keyword
-    def switch_to_pdf(self, source_path: str = None) -> None:
+    def switch_to_pdf(self, source_path: Optional[FilePath] = None) -> None:
         """Switch library's current fileobject to already opened file
         or open a new file if not opened.
 
@@ -472,7 +482,7 @@ class DocumentKeywords(LibraryContext):
             )
             return
 
-        source_path = str(source_path)
+        source_path = self.resolve_input(source_path)
         if source_path not in self.ctx.documents:
             self.open_pdf(source_path)
         elif self.ctx.documents[source_path] != self.active_pdf_document:
@@ -841,14 +851,14 @@ class DocumentKeywords(LibraryContext):
     @keyword
     def add_watermark_image_to_pdf(
         self,
-        image_path: str,
-        output_path: str,
-        source_path: str = None,
+        image_path: FilePath,
+        output_path: FilePath,
+        source_path: Optional[FilePath] = None,
         coverage: float = 0.2,
     ) -> None:
-        """Add image to PDF which can be new or existing PDF.
+        """Add an image into an existing or new PDF.
 
-        If no source path given, assumes a PDF is already opened.
+        If no source path is given, assume a PDF is already opened.
 
         **Examples**
 
@@ -888,31 +898,53 @@ class DocumentKeywords(LibraryContext):
         :param coverage: how the watermark image should be scaled on page,
          defaults to 0.2
         """
+        # Ensure an active input PDF.
         self.switch_to_pdf(source_path)
-        temp_pdf = os.path.join(tempfile.gettempdir(), "temp.pdf")
-        writer = PyPDF2.PdfFileWriter()
-        pdf = FPDF()
-        pdf.add_page()
-        reader = self.active_pdf_document.reader
-        mediabox = reader.getPage(0).mediaBox
-        im = Image.open(image_path)
+        input_reader = self.active_pdf_document.reader
+
+        # Set image boundaries.
+        mediabox = input_reader.getPage(0).mediaBox
+        img_obj = Image.open(image_path)
         max_width = int(float(mediabox.getWidth()) * coverage)
         max_height = int(float(mediabox.getHeight()) * coverage)
-        width, height = self.fit_dimensions_to_box(*im.size, max_width, max_height)
+        img_width, img_height = self.fit_dimensions_to_box(
+            *img_obj.size, max_width, max_height
+        )
 
-        pdf.image(name=image_path, x=40, y=60, w=width, h=height)
-        pdf.output(name=temp_pdf)
+        # Put the image on the first page of a temporary PDF file, so we can merge this
+        #  PDF formatted image page with every single page of the targeted PDF.
+        # NOTE(cmin764): Keep the watermark image PDF reader open along the entire
+        #  process, so the final PDF gets rendered correctly)
+        with tempfile.TemporaryFile(suffix=".pdf") as temp_img_pdf:
+            # Save image in temporary PDF using FPDF.
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.image(name=image_path, x=40, y=60, w=img_width, h=img_height)
+            pdf.output(name=temp_img_pdf)
 
-        img = PyPDF2.PdfFileReader(temp_pdf)
-        watermark = img.getPage(0)
-        for n in range(reader.getNumPages()):
-            page = reader.getPage(n)
-            page.mergePage(watermark)
-            writer.addPage(page)
+            # Get image page from temporary PDF using PyPDF2. (compatible with the
+            # writer)
+            img_pdf_reader = PyPDF2.PdfFileReader(temp_img_pdf)
+            watermark_page = img_pdf_reader.getPage(0)
 
-        output_path = self.resolve_output(output_path)
-        with open(output_path, "wb") as f:
-            writer.write(f)
+            # Write the merged pages of source PDF into the destination one.
+            output_writer = PyPDF2.PdfFileWriter()
+            for idx in range(input_reader.getNumPages()):
+                page = input_reader.getPage(idx)
+                page.mergePage(watermark_page)
+                output_writer.addPage(page)
+
+            # Since the input PDF can be the same with the output, make sure we close
+            #  the input stream after writing into an auxiliary buffer. (if the input
+            #  stream is closed before writing, then the writing is incomplete; and we
+            #  can't read and write at the same time into the same file, that's why we
+            #  use an auxiliary buffer)
+            output_buffer = io.BytesIO()
+            output_writer.write(output_buffer)
+            self.active_pdf_document.close()
+            output_path = self.resolve_output(output_path)
+            with open(output_path, "wb") as output_stream:
+                output_stream.write(output_buffer.getvalue())
 
     @staticmethod
     def fit_dimensions_to_box(

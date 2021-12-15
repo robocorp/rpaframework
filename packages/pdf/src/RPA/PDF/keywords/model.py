@@ -191,6 +191,9 @@ class Document:
 
     @property
     def fileobject(self) -> typing.BinaryIO:
+        if self._fileobject.closed:
+            # pylint: disable=consider-using-with
+            self._fileobject = open(self.path, "rb")
         self._fileobject.seek(0, 0)
         return self._fileobject
 

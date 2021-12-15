@@ -144,7 +144,6 @@ XML Dumping And Parsing
     ${text_dict} =   Get Text From Pdf   ${PDF}
     RPA Should Contain    ${text_dict}[${1}]     t e s t @ t e s t . c o m
 
-
 Find multiple anchors in multi-page PDF
     Open PDF    ${BOOK_PDF}
 
@@ -161,3 +160,9 @@ Find multiple anchors in multi-page PDF
     RPA Should Contain  ${all_matches[1].anchor}     13. A4. Packaging and Distributing Python Projects
     # Paragraph under the last "Python" match.
     RPA Should Contain  ${all_matches[7].neighbours[0]}     Flask is another popular framework
+
+Add watermark into PDF
+    ${pdf} =    Set Variable    ${WORK_DIR}${/}receipt.pdf
+    Copy File    ${RECEIPT_PDF}    ${pdf}
+    Open Pdf    ${pdf}
+    Add Watermark Image to PDF    ${ROBOT_PNG}      ${pdf}

@@ -2,14 +2,17 @@
 ${WORK_DIR}       ${OUTPUT_DIR}${/}pdftests
 ${RESOURCE_DIR}    ${CURDIR}${/}..${/}resources
 ${CONTENT}        <h1>Order confirmation</h1><p>Thank you for the order {{name}}</p>
-${TEMPLATE_ORDER}    ${RESOURCE_DIR}${/}order.template
+${TEMPLATE_ORDER}       ${RESOURCE_DIR}${/}order.template
 ${TEMPLATE_GREETING}    ${RESOURCE_DIR}${/}greeting.template
-${NORMAL_PDF}     ${RESOURCE_DIR}${/}generated.pdf
-${INVOICE_PDF}    ${RESOURCE_DIR}${/}invoice.pdf
-${VERO_PDF}       ${RESOURCE_DIR}${/}vero.pdf
+${NORMAL_PDF}       ${RESOURCE_DIR}${/}generated.pdf
+${INVOICE_PDF}      ${RESOURCE_DIR}${/}invoice.pdf
+${VERO_PDF}         ${RESOURCE_DIR}${/}vero.pdf
 ${ENCRYPTED_PDF}    ${RESOURCE_DIR}${/}encrypted.pdf
-${IMAGES_PDF}     ${RESOURCE_DIR}${/}imagesandtext.pdf
-${BOOK_PDF}     ${RESOURCE_DIR}${/}18467.pdf
+${IMAGES_PDF}       ${RESOURCE_DIR}${/}imagesandtext.pdf
+${BOOK_PDF}         ${RESOURCE_DIR}${/}18467.pdf
+${RECEIPT_PDF}      ${RESOURCE_DIR}${/}receipt.pdf
+${ROBOT_PNG}        ${RESOURCE_DIR}${/}robot.png
+
 ${PDF}            ${WORK_DIR}${/}result.pdf
 ${UNICODE_PDF}    ${WORK_DIR}${/}öåäă.pdf
 &{VARS_ORDER}     name=Robot Generated
