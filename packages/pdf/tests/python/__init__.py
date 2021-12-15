@@ -27,6 +27,8 @@ class TestFiles:
     seal_of_approval = RESOURCE_DIR / "approved.png"
     big_nope = RESOURCE_DIR / "big_nope.png"
     foersom_pdf = RESOURCE_DIR / "foersom.pdf"
+    receipt_pdf = RESOURCE_DIR / "receipt.pdf"
+    robot_png = RESOURCE_DIR / "robot.png"
 
 
 @contextmanager
