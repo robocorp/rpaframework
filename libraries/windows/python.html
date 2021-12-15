@@ -857,6 +857,13 @@ keywords for setting root element are <code class="docutils literal notranslate"
 <span class="n">lib</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;[]{{}</span><span class="si">{}</span><span class="s1">}\|;:&#39;</span><span class="s2">&quot;,&lt;.&gt;/?</span><span class="si">{Enter}</span><span class="s2">&#39;)</span>
 </pre></div>
 </div>
+<p>Using access key of the element (element property -&gt; AccessKey ‘alt+s’).
+The <cite>(+s)</cite> means that previous special key is kept down until closing parenthesis is reached.</p>
+<p>On the below example this means that ‘ALT’ key is pressed down, then ‘+’ and ‘s’ keys are pressed
+down before they are all released up.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Send Keys</span><span class="p">   </span><span class="c">keys={Alt}(+s)</span><span class="p"></span>
+</pre></div>
+</div>
 <p>Mouse clicks can be executed with keywords specific for a type of a click, e.g. <code class="docutils literal notranslate"><span class="pre">Click</span></code> (normal click),
 <code class="docutils literal notranslate"><span class="pre">Double</span> <span class="pre">Click</span></code> and <code class="docutils literal notranslate"><span class="pre">Right</span> <span class="pre">Click</span></code>.</p>
 <p><strong>How to inspect</strong></p>
