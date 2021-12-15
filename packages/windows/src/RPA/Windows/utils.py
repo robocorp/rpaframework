@@ -14,7 +14,7 @@ def get_process_list() -> Dict:
     return process_list
 
 
-def is_integer(value):
+def is_numeric(value):
     try:
         float(value)
     except ValueError:
