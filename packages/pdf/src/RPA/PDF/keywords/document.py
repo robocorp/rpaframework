@@ -907,7 +907,9 @@ class DocumentKeywords(LibraryContext):
         img_obj = Image.open(image_path)
         max_width = int(float(mediabox.getWidth()) * coverage)
         max_height = int(float(mediabox.getHeight()) * coverage)
-        img_width, img_height = self.fit_dimensions_to_box(*img_obj.size, max_width, max_height)
+        img_width, img_height = self.fit_dimensions_to_box(
+            *img_obj.size, max_width, max_height
+        )
 
         # Put the image on the first page of a temporary PDF file, so we can merge this
         #  PDF formatted image page with every single page of the targeted PDF.
