@@ -127,23 +127,25 @@ class ActionKeywords(LibraryContext):
             auto.SetGlobalSearchTimeout(timeout)
         click_wait_time = wait_time or self.ctx.wait_time
         try:
-            element = self._get_element_for_click(element)
+            element = self.ctx.get_element(element)
             if element.item.robocorp_click_offset:
+                self.ctx.logger.debug("Click element with offset")
                 self._click_element_coordinates(element, click_type, click_wait_time)
             else:
+                self.ctx.logger.debug("Click element")
                 self._click_element(element, click_type, click_wait_time)
         finally:
             auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
         return element
 
     def _click_element_coordinates(self, element, click_type, click_wait_time):
-        callable_attribute = getattr(auto, click_type, None)
+        callable_attribute = hasattr(element.item, click_type)
         if callable_attribute:
             rect = element.item.BoundingRectangle
             offset_x, offset_y = [
                 int(v) for v in element.item.robocorp_click_offset.split(",")
             ]
-            callable_attribute(
+            getattr(element.item, click_type)(
                 rect.xcenter() + offset_x,
                 rect.ycenter() + offset_y,
                 waitTime=click_wait_time,
@@ -154,21 +156,16 @@ class ActionKeywords(LibraryContext):
             )
 
     def _click_element(self, element, click_type, click_wait_time):
-        attr = getattr(element.item, click_type, None)
-        if attr and callable(attr):
-            attr(waitTime=click_wait_time, simulateMove=self.ctx.simulate_move)
+        attr = hasattr(element.item, click_type)
+        if attr:
+            getattr(element.item, click_type)(
+                waitTime=click_wait_time,
+                simulateMove=False,
+            )
         else:
             raise ActionNotPossible(
                 "Element '%s' does not have '%s' attribute" % (element, click_type)
             )
-
-    def _get_element_for_click(self, locator):
-        element = self.ctx.get_element(locator)
-        element.item.SetFocus()
-        if hasattr(element.item, "SetActive"):
-            element.item.SetActive()
-        element.item.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
-        return element
 
     @keyword(tags=["action"])
     def select(self, locator: Union[WindowsElement, str], value: str) -> WindowsElement:

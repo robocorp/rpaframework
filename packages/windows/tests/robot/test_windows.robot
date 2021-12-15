@@ -148,12 +148,13 @@ Play Task Spotify
     Maximize Window
     Sleep    2s
     Foreground Window
+    Restore Window
 
 Notepad write text into a file
     Windows Search    notepad
     Control Window    subname:'- Notepad'
     Click    type:MenuBar name:Application > name:Format
-    Click    type:MenuItem name:'Font...'
+    Click    name:Font...
     Control Window    Font
     Select    type:ComboBox id:1136    Trebuchet MS
     Select    type:ComboBox id:1138    28
@@ -164,7 +165,7 @@ Notepad write text into a file
     Control Window    subname:'- Notepad'
     Click    type:MenuBar name:Application > name:File
     Click    type:MenuItem subname:'Save As'
-    Send Keys    keys=story3.txt{Enter}
+    Send Keys    keys=story4.txt{Enter}
     Minimize Window    subname:'- Notepad'
     Close Current Window
 
