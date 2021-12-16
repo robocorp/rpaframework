@@ -13,10 +13,23 @@ class ActionKeywords(LibraryContext):
     """Keywords for performing desktop actions"""
 
     @keyword(tags=["action", "mouse"])
-    def click(self, locator: Union[WindowsElement, str]):
+    def click(
+        self,
+        locator: Union[WindowsElement, str],
+        wait_time: float = None,
+        timeout: float = None,
+    ) -> WindowsElement:
         """Mouse click on element matching given locator.
 
+        Exception ``ActionNotPossible`` is raised if element does not
+        allow Click action.
+
         :param locator: string locator or Control element
+        :param wait_time: time to wait after click, default is a
+         library `wait_time`, see keyword ``Set Wait Time``
+        :param timeout: float value in seconds, see keyword
+         ``Set Global Timeout``
+        :return: WindowsElement object
 
         Example:
 
@@ -24,101 +37,146 @@ class ActionKeywords(LibraryContext):
 
             Click  id:button1
             Click  id:button2 offset:10,10
-            Click  name:SendButton
+            ${element}=  Click  name:SendButton  wait_time=5.0
         """
-        return self._mouse_click(locator, "Click")
+        return self._mouse_click(locator, "Click", wait_time, timeout)
 
     @keyword(tags=["action", "mouse"])
-    def double_click(self, locator: Union[WindowsElement, str]):
+    def double_click(
+        self,
+        locator: Union[WindowsElement, str],
+        wait_time: float = None,
+        timeout: float = None,
+    ) -> WindowsElement:
         """Double mouse click on element matching given locator.
 
+        Exception ``ActionNotPossible`` is raised if element does not
+        allow Click action.
+
         :param locator: string locator or Control element
+        :param wait_time: time to wait after click, default is a
+         library `wait_time`, see keyword ``Set Wait Time``
+        :param timeout: float value in seconds, see keyword
+         ``Set Global Timeout``
+        :return: WindowsElement object
 
         Example:
 
         .. code-block:: robotframework
 
-            Double Click  name:ResetButton
+            ${element}=  Double Click  name:ResetButton
         """
-        return self._mouse_click(locator, "DoubleClick")
+        return self._mouse_click(locator, "DoubleClick", wait_time, timeout)
 
     @keyword(tags=["action", "mouse"])
-    def right_click(self, locator: Union[WindowsElement, str]):
+    def right_click(
+        self,
+        locator: Union[WindowsElement, str],
+        wait_time: float = None,
+        timeout: float = None,
+    ) -> WindowsElement:
         """Right mouse click on element matching given locator.
 
+        Exception ``ActionNotPossible`` is raised if element does not
+        allow Click action.
+
         :param locator: string locator or Control element
+        :param wait_time: time to wait after click, default is a
+         library `wait_time`, see keyword ``Set Wait Time``
+        :param timeout: float value in seconds, see keyword
+         ``Set Global Timeout``
+        :return: WindowsElement object
 
         Example:
 
         .. code-block:: robotframework
 
-            Right Click  name:MenuButton
+            ${element}=  Right Click  name:MenuButton
         """
-        return self._mouse_click(locator, "RightClick")
+        return self._mouse_click(locator, "RightClick", wait_time, timeout)
 
     @keyword(tags=["action", "mouse"])
-    def middle_click(self, locator: Union[WindowsElement, str]):
+    def middle_click(
+        self,
+        locator: Union[WindowsElement, str],
+        wait_time: float = None,
+        timeout: float = None,
+    ) -> WindowsElement:
         """Right mouse click on element matching given locator.
 
+        Exception ``ActionNotPossible`` is raised if element does not
+        allow Click action.
+
         :param locator: string locator or Control element
+        :param wait_time: time to wait after click, default is a
+         library `wait_time`, see keyword ``Set Wait Time``
+        :param timeout: float value in seconds, see keyword
+         ``Set Global Timeout``
+        :return: WindowsElement object
 
         Example:
 
         .. code-block:: robotframework
 
-            Middle Click  name:button2
+            ${element}=  Middle Click  name:button2
         """
-        return self._mouse_click(locator, "MiddleClick")
+        return self._mouse_click(locator, "MiddleClick", wait_time, timeout)
 
-    def _mouse_click(self, element, click_type):
-        element = self._get_element_for_click(element)
-        if element.item.robocorp_click_offset:
-            self._click_element_coordinates(element, click_type)
-        else:
-            self._click_element(element, click_type)
+    def _mouse_click(self, element, click_type, wait_time, timeout):
+        if timeout:
+            auto.SetGlobalSearchTimeout(timeout)
+        click_wait_time = wait_time or self.ctx.wait_time
+        try:
+            element = self.ctx.get_element(element)
+            if element.item.robocorp_click_offset:
+                self.ctx.logger.debug("Click element with offset")
+                self._click_element_coordinates(element, click_type, click_wait_time)
+            else:
+                self.ctx.logger.debug("Click element")
+                self._click_element(element, click_type, click_wait_time)
+        finally:
+            auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
         return element
 
-    def _click_element_coordinates(self, element, click_type):
-        callable_attribute = getattr(auto, click_type, None)
+    def _click_element_coordinates(self, element, click_type, click_wait_time):
+        callable_attribute = hasattr(element.item, click_type)
         if callable_attribute:
             rect = element.item.BoundingRectangle
             offset_x, offset_y = [
                 int(v) for v in element.item.robocorp_click_offset.split(",")
             ]
-            callable_attribute(
+            getattr(element.item, click_type)(
                 rect.xcenter() + offset_x,
                 rect.ycenter() + offset_y,
-                waitTime=self.ctx.wait_time,
+                waitTime=click_wait_time,
             )
         else:
             raise ActionNotPossible(
                 "Element '%s' does not have '%s' attribute" % (element, click_type)
             )
 
-    def _click_element(self, element, click_type):
-        attr = getattr(element.item, click_type, None)
-        if attr and callable(attr):
-            attr(waitTime=self.ctx.wait_time, simulateMove=self.ctx.simulate_move)
+    def _click_element(self, element, click_type, click_wait_time):
+        attr = hasattr(element.item, click_type)
+        if attr:
+            getattr(element.item, click_type)(
+                waitTime=click_wait_time,
+                simulateMove=False,
+            )
         else:
             raise ActionNotPossible(
                 "Element '%s' does not have '%s' attribute" % (element, click_type)
             )
-
-    def _get_element_for_click(self, locator):
-        element = self.ctx.get_element(locator)
-        if hasattr(element.item, "SetActive"):
-            element.item.SetActive()
-        element.item.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
-        return element
 
     @keyword(tags=["action"])
-    def select(self, locator: Union[WindowsElement, str], value: str):
+    def select(self, locator: Union[WindowsElement, str], value: str) -> WindowsElement:
         """Select value on Control element if action is supported.
 
-        Will print warning if it is not possible to select on element.
+        Exception ``ActionNotPossible`` is raised if element does not
+        allow Select action.
 
         :param locator: string locator or Control element
         :param value: string value to select on Control element
+        :return: WindowsElement object
 
         Example:
 
@@ -133,6 +191,7 @@ class ActionKeywords(LibraryContext):
             raise ActionNotPossible(
                 "Element '%s' does not have 'Select' attribute" % locator
             )
+        return element
 
     @keyword(tags=["action"])
     def send_keys(
@@ -142,11 +201,14 @@ class ActionKeywords(LibraryContext):
         interval: float = 0.01,
         wait_time: float = None,
         send_enter: bool = False,
-    ):
+    ) -> WindowsElement:
         """Send keys to desktop, current window or to Control element
         defined by given locator.
 
         If ``locator`` is `None` then keys are sent to desktop.
+
+        Exception ``ActionNotPossible`` is raised if element does not
+        allow SendKeys action.
 
         :param locator: string locator or Control element (default None means desktop)
         :param keys: the keys to send
@@ -154,6 +216,7 @@ class ActionKeywords(LibraryContext):
         :param wait_time: time to wait after sending keys, default is a
          library `wait_time`, see keyword ``Set Wait Time``
         :param send_enter: if True then {Enter} is sent at the end of the keys
+        :return: WindowsElement object
 
         Example:
 
@@ -161,16 +224,22 @@ class ActionKeywords(LibraryContext):
 
             Send Keys  desktop   {Ctrl}{F4}
             Send Keys  keys={Ctrl}{F4}   # locator will be NONE, keys send to desktop
-            Send Keys  id:input5  username   send_enter=True
+            ${element}=   Send Keys  id:input5  username   send_enter=True
             ${element}=   Get Element   id:pass
             Send Keys  ${element}  password   send_enter=True
         """
-        element = self.ctx.get_element(locator)
+        element = self.ctx.window
+        if locator:
+            element = self.ctx.get_element(locator).item
+        else:
+            element = auto
         keys_wait_time = wait_time or self.ctx.wait_time
         if send_enter:
             keys += "{Enter}"
-        if hasattr(element.item, "SendKeys"):
-            element.item.SendKeys(keys, interval=interval, waitTime=keys_wait_time)
+        if hasattr(element, "SendKeys"):
+            self.logger.info("Sending keys '%s' to element '%s'" % (keys, element))
+            # element.item.SendKeys(keys, interval=interval, waitTime=keys_wait_time)
+            element.SendKeys(text=keys, interval=interval, waitTime=keys_wait_time)
         else:
             raise ActionNotPossible(
                 "Element '%s' does not have 'SendKeys' attribute" % locator
@@ -180,7 +249,11 @@ class ActionKeywords(LibraryContext):
     def get_text(self, locator: Union[WindowsElement, str]) -> str:
         """Get text from Control element defined by the locator.
 
+        Exception ``ActionNotPossible`` is raised if element does not
+        allow GetWindowText action.
+
         :param locator: string locator or Control element
+        :return: value of WindowText attribute of an element
 
         Example:
 
@@ -199,7 +272,11 @@ class ActionKeywords(LibraryContext):
     def get_value(self, locator: Union[WindowsElement, str]) -> str:
         """Get value of the element defined by the locator.
 
+        Exception ``ActionNotPossible`` is raised if element does not
+        allow GetValuePattern action.
+
         :param locator: string locator or Control element
+        :return: value of ValuePattern attribute of an element
 
         Example:
 
@@ -223,14 +300,22 @@ class ActionKeywords(LibraryContext):
         append: bool = False,
         enter: bool = False,
         newline: bool = False,
-    ) -> None:
+    ) -> WindowsElement:
         """Set value of the element defined by the locator.
+
+        *Note.* Anchor works only on element structures where it can
+        be relied on that root/child element tree will remain the same.
+        Usually these kind of structures are tables.
+
+        Exception ``ActionNotPossible`` is raised if element does not
+        allow SetValue action.
 
         :param locator: string locator or Control element
         :param value: string value to set
         :param append: False for setting value, True for appending value
         :param enter: set True to press enter key at the end of the line
         :param newline: set True to add newline to the end of value
+        :return: WindowsElement object
 
         *Note.* It is important to set ``append=True`` if you want keep text in
         the element. Other option is to read current text into a variable and
@@ -281,6 +366,7 @@ class ActionKeywords(LibraryContext):
             )
         if enter:
             self.send_keys(element, "{Ctrl}{End}{Enter}")
+        return element
 
     @keyword
     def set_wait_time(self, wait_time: float) -> float:
@@ -294,6 +380,7 @@ class ActionKeywords(LibraryContext):
         Returns value of the previous wait_time value.
 
         :param wait_time: float value (in seconds), e.g. `0.1`
+        :return: previous wait value
 
         Example:
 
@@ -306,17 +393,52 @@ class ActionKeywords(LibraryContext):
         return old_value
 
     @keyword
-    def screenshot(self, locator: Union[WindowsElement, str], filename: str):
+    def screenshot(self, locator: Union[WindowsElement, str], filename: str) -> str:
         """Take a screenshot of the element defined by the locator.
+
+        Exception ``ActionNotPossible`` is raised if element does not
+        allow CaptureToImage action.
 
         :param locator: string locator or Control element
         :param filename: image filename
+        :return: absolute path to the screenshot file
+
+        Example:
+
+        .. code-block:: robotframework
+
+            Screenshot  desktop   desktop.png
+            Screenshot  subname:Notepad   notepad.png
         """
         filepath = Path(filename).resolve()
         element = self.ctx.get_element(locator)
+        element.item.SetFocus()
         if hasattr(element.item, "CaptureToImage"):
             element.item.CaptureToImage(str(filepath))
         else:
             raise ActionNotPossible(
                 "Element '%s' does not have 'CaptureToImage' attribute" % locator,
             )
+        return filepath
+
+    @keyword
+    def set_global_timeout(self, timeout: float) -> float:
+        """Set global timeout for element search. Applies also
+        to ``Control Window`` keyword.
+
+        By default library has timeout of 10 seconds.
+
+        :param timeout: float value in seconds
+        :return: previous timeout value
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${old_timeout}=  Set Global Timeout  20
+            ${old_timeout}=  Set Global Timeout  9.5
+        """
+        previous_timeout = self.ctx.global_timeout
+        self.ctx.global_timeout = timeout
+        auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
+        return previous_timeout

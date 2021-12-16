@@ -40,10 +40,8 @@ Get Temperature Values
         Log To Console    ${temperature}
     END
 
-*** Tasks ***
-Calculator by clicking buttons
-    Windows Search    Calculator
-    Control Window    Calculator
+Calculator button actions
+    Control Window    Calculator type:Window
     Click    id:num9Button
     Click    id:num6Button
     Click    id:plusButton
@@ -52,11 +50,8 @@ Calculator by clicking buttons
     ${result}=    Get Attribute    id:CalculatorResults    Name
     Log To Console    \n${result}
     Send Keys    keys={Esc}
-    [Teardown]    Close Current Window
 
-*** Tasks ***
-Do some calculations
-    Windows Run    calc.exe
+Calculator with keys
     Control Window    Calculator
     Click    id:clearButton
     Send Keys    keys=96+4=
@@ -66,7 +61,24 @@ Do some calculations
     FOR    ${button}    IN    @{buttons}
         Log To Console    ${button}
     END
+
+*** Tasks ***
+Windows search Calculator by clicking buttons
+    Windows Search    Calculator
+    Calculator button actions
     [Teardown]    Close Current Window
+
+Calculator by clicking buttons already running
+    Calculator button actions
+
+*** Tasks ***
+Windows run Do some calculations
+    Windows Run    calc.exe
+    Calculator with keys
+    [Teardown]    Close Current Window
+
+Windows run Do some calculations already running
+    Calculator with keys
 
 Play Task Calculator
     Windows Search    Calculator
@@ -136,12 +148,13 @@ Play Task Spotify
     Maximize Window
     Sleep    2s
     Foreground Window
+    Restore Window
 
 Notepad write text into a file
     Windows Search    notepad
     Control Window    subname:'- Notepad'
     Click    type:MenuBar name:Application > name:Format
-    Click    type:MenuItem name:'Font...'
+    Click    name:Font...
     Control Window    Font
     Select    type:ComboBox id:1136    Trebuchet MS
     Select    type:ComboBox id:1138    28
@@ -152,7 +165,7 @@ Notepad write text into a file
     Control Window    subname:'- Notepad'
     Click    type:MenuBar name:Application > name:File
     Click    type:MenuItem subname:'Save As'
-    Send Keys    keys=story3.txt{Enter}
+    Send Keys    keys=story4.txt{Enter}
     Minimize Window    subname:'- Notepad'
     Close Current Window
 
@@ -193,7 +206,8 @@ Test get element
     [Tags]    skip    manual
     ${desktop}=    Get Element
     ${buttons}=    Get Elements    name:'Running applications' > type:Button    root_element=${desktop}
-    Log To Console    \nList task bar applications
+    Log To Console    \nList task bar applications\n
+    Log To Console    Desktop: ${desktop}
     FOR    ${b}    IN    @{buttons}
-        Log To Console    name = ${b.name}
+        Log To Console    app = ${b}
     END

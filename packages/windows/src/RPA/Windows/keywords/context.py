@@ -2,6 +2,10 @@ class ControlNotFound(ValueError):
     """No matching controls were found."""
 
 
+class ElementNotFound(ValueError):
+    """No matching elements were found."""
+
+
 class MultipleControlsFound(ValueError):
     """Multiple matching controls were found, but only one was expected."""
 

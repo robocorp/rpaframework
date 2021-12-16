@@ -844,7 +844,7 @@ format_nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "lazy-object-proxy"
-version = "1.6.0"
+version = "1.7.0"
 description = "A fast and thorough lazy object proxy."
 category = "dev"
 optional = false
@@ -1797,7 +1797,7 @@ rpaframework-core = ">=6.0.0,<7.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "1.4.2"
+version = "2.0.0"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
@@ -2793,28 +2793,43 @@ jsonschema = [
     {file = "jsonschema-4.0.0.tar.gz", hash = "sha256:bc51325b929171791c42ebc1c70b9713eb134d3bb8ebd5474c8b659b15be6d86"},
 ]
 lazy-object-proxy = [
-    {file = "lazy-object-proxy-1.6.0.tar.gz", hash = "sha256:489000d368377571c6f982fba6497f2aa13c6d1facc40660963da62f5c379726"},
-    {file = "lazy_object_proxy-1.6.0-cp27-cp27m-macosx_10_14_x86_64.whl", hash = "sha256:c6938967f8528b3668622a9ed3b31d145fab161a32f5891ea7b84f6b790be05b"},
-    {file = "lazy_object_proxy-1.6.0-cp27-cp27m-win32.whl", hash = "sha256:ebfd274dcd5133e0afae738e6d9da4323c3eb021b3e13052d8cbd0e457b1256e"},
-    {file = "lazy_object_proxy-1.6.0-cp27-cp27m-win_amd64.whl", hash = "sha256:ed361bb83436f117f9917d282a456f9e5009ea12fd6de8742d1a4752c3017e93"},
-    {file = "lazy_object_proxy-1.6.0-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:d900d949b707778696fdf01036f58c9876a0d8bfe116e8d220cfd4b15f14e741"},
-    {file = "lazy_object_proxy-1.6.0-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:5743a5ab42ae40caa8421b320ebf3a998f89c85cdc8376d6b2e00bd12bd1b587"},
-    {file = "lazy_object_proxy-1.6.0-cp36-cp36m-manylinux2014_aarch64.whl", hash = "sha256:bf34e368e8dd976423396555078def5cfc3039ebc6fc06d1ae2c5a65eebbcde4"},
-    {file = "lazy_object_proxy-1.6.0-cp36-cp36m-win32.whl", hash = "sha256:b579f8acbf2bdd9ea200b1d5dea36abd93cabf56cf626ab9c744a432e15c815f"},
-    {file = "lazy_object_proxy-1.6.0-cp36-cp36m-win_amd64.whl", hash = "sha256:4f60460e9f1eb632584c9685bccea152f4ac2130e299784dbaf9fae9f49891b3"},
-    {file = "lazy_object_proxy-1.6.0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:d7124f52f3bd259f510651450e18e0fd081ed82f3c08541dffc7b94b883aa981"},
-    {file = "lazy_object_proxy-1.6.0-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:22ddd618cefe54305df49e4c069fa65715be4ad0e78e8d252a33debf00f6ede2"},
-    {file = "lazy_object_proxy-1.6.0-cp37-cp37m-win32.whl", hash = "sha256:9d397bf41caad3f489e10774667310d73cb9c4258e9aed94b9ec734b34b495fd"},
-    {file = "lazy_object_proxy-1.6.0-cp37-cp37m-win_amd64.whl", hash = "sha256:24a5045889cc2729033b3e604d496c2b6f588c754f7a62027ad4437a7ecc4837"},
-    {file = "lazy_object_proxy-1.6.0-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:17e0967ba374fc24141738c69736da90e94419338fd4c7c7bef01ee26b339653"},
-    {file = "lazy_object_proxy-1.6.0-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:410283732af311b51b837894fa2f24f2c0039aa7f220135192b38fcc42bd43d3"},
-    {file = "lazy_object_proxy-1.6.0-cp38-cp38-win32.whl", hash = "sha256:85fb7608121fd5621cc4377a8961d0b32ccf84a7285b4f1d21988b2eae2868e8"},
-    {file = "lazy_object_proxy-1.6.0-cp38-cp38-win_amd64.whl", hash = "sha256:d1c2676e3d840852a2de7c7d5d76407c772927addff8d742b9808fe0afccebdf"},
-    {file = "lazy_object_proxy-1.6.0-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:b865b01a2e7f96db0c5d12cfea590f98d8c5ba64ad222300d93ce6ff9138bcad"},
-    {file = "lazy_object_proxy-1.6.0-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:4732c765372bd78a2d6b2150a6e99d00a78ec963375f236979c0626b97ed8e43"},
-    {file = "lazy_object_proxy-1.6.0-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:9698110e36e2df951c7c36b6729e96429c9c32b3331989ef19976592c5f3c77a"},
-    {file = "lazy_object_proxy-1.6.0-cp39-cp39-win32.whl", hash = "sha256:1fee665d2638491f4d6e55bd483e15ef21f6c8c2095f235fef72601021e64f61"},
-    {file = "lazy_object_proxy-1.6.0-cp39-cp39-win_amd64.whl", hash = "sha256:f5144c75445ae3ca2057faac03fda5a902eff196702b0a24daf1d6ce0650514b"},
+    {file = "lazy-object-proxy-1.7.0.tar.gz", hash = "sha256:2185392631e9d1733749d06ee5210438908d46cc04666a0eba5679d885754894"},
+    {file = "lazy_object_proxy-1.7.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:2ce8da459d711302f4c95942c243c3b219a5b8ce9a7e3cbb6fe2deadddb62111"},
+    {file = "lazy_object_proxy-1.7.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d3087cb819773e37354d5e95ca6bdb5f73d831179971b2437320ec3de901abee"},
+    {file = "lazy_object_proxy-1.7.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4f5fd85b271c8bd29b565a776e3a803ac488de9df2b68c53caa3dc442e8d8754"},
+    {file = "lazy_object_proxy-1.7.0-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:a6b22b6075e14537eebbc8652fcafe1076be7fde4d4a31cd9fadcf0eb1af27ca"},
+    {file = "lazy_object_proxy-1.7.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:1b19e68114ef8ba3f6cc6686d38ff4342fff82cb9918e2cd94ffaa65255fc833"},
+    {file = "lazy_object_proxy-1.7.0-cp310-cp310-win32.whl", hash = "sha256:6ba8151eab9d39fa0f1d3f9b74064669c89680f08db206ec434400bde717cbdb"},
+    {file = "lazy_object_proxy-1.7.0-cp310-cp310-win_amd64.whl", hash = "sha256:70a67e4e12d18243a3710dd085eb8913a2555b416467e85d5269e05008042224"},
+    {file = "lazy_object_proxy-1.7.0-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:1b4b228d58fdf4f57db967929ca5cb8df5f0d1ea06f5155fa65c1c66ba95339c"},
+    {file = "lazy_object_proxy-1.7.0-cp36-cp36m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:9cc0518f5d4004845cda9241f07d911d9bc9395379cd77bf8dd3ad62a1915f09"},
+    {file = "lazy_object_proxy-1.7.0-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:682a83f5134c3f267bc07fefed8d50450aec6a8dc339c17b1beb07422a137c8c"},
+    {file = "lazy_object_proxy-1.7.0-cp36-cp36m-musllinux_1_1_aarch64.whl", hash = "sha256:1aa3097b421e932670a4c0e826b5b9877ad5f0dff736bb5347cc28f1dacd9ad5"},
+    {file = "lazy_object_proxy-1.7.0-cp36-cp36m-musllinux_1_1_x86_64.whl", hash = "sha256:3c9362f6cf03d150c9282298a2ed316a14992383c67abecd111fe4a8f5fea875"},
+    {file = "lazy_object_proxy-1.7.0-cp36-cp36m-win32.whl", hash = "sha256:64bf2c4ae8fb4f2a3c8c1649f76a07741e59c2d8841ffe2e686c9c1e4aa27e08"},
+    {file = "lazy_object_proxy-1.7.0-cp36-cp36m-win_amd64.whl", hash = "sha256:896a0f2e4fdfeab980f42cb326de1c8e59cfb8914f4dbdf2af1be45a20300a9e"},
+    {file = "lazy_object_proxy-1.7.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:5b05d300d90a626f6e12d4a462a6a1a19054fea70878d9e7797d49404e54411a"},
+    {file = "lazy_object_proxy-1.7.0-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:af144174b8b70e4b09f9b72ba31fcafd936308aa6a6a1c63d22f723d388f4165"},
+    {file = "lazy_object_proxy-1.7.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:838913a85d675901b22f01d236e6ab560af5ef31f28159a0e241271b75b300dd"},
+    {file = "lazy_object_proxy-1.7.0-cp37-cp37m-musllinux_1_1_aarch64.whl", hash = "sha256:b8793cddf912a48242440a63300db2b051f5fb7a8b01572d1d89e14749bce783"},
+    {file = "lazy_object_proxy-1.7.0-cp37-cp37m-musllinux_1_1_x86_64.whl", hash = "sha256:2a732deb47c46b0f6422e7f250dd09de2e8cca612d10ea8472e20e2a6d327696"},
+    {file = "lazy_object_proxy-1.7.0-cp37-cp37m-win32.whl", hash = "sha256:32d5ce9c61b77e38b70fbee565fa7351d1fa6b97a2e7aa391cea58764c94dd77"},
+    {file = "lazy_object_proxy-1.7.0-cp37-cp37m-win_amd64.whl", hash = "sha256:db9a0dfd7e85814eee0b3ab3985b163eefb60e2c8f62537f9adc83a38585e507"},
+    {file = "lazy_object_proxy-1.7.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:a1e4b163a6e6a7ef643d012bffe0357369c5c47e4b6a510777877353c443518f"},
+    {file = "lazy_object_proxy-1.7.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f2f059ab2df150aa74c456072a7b9e144531bed0c35e73be4a087f3e7ce2bf63"},
+    {file = "lazy_object_proxy-1.7.0-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3b324126db57574166d3e96a9066d45461db7ff8e7baa3846dbb869b37057e2e"},
+    {file = "lazy_object_proxy-1.7.0-cp38-cp38-musllinux_1_1_aarch64.whl", hash = "sha256:d55dffc9a96bc3d68779557b8cbce37e9335e5b972aa83874c6269e30f69fff2"},
+    {file = "lazy_object_proxy-1.7.0-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:3a01b05b4591fbb63e1498dfd894ed44686873788ab437f86fcca8186f914f5b"},
+    {file = "lazy_object_proxy-1.7.0-cp38-cp38-win32.whl", hash = "sha256:e5263f216b9d905f93a381242d9e11364dd5c38699822a48c949d4a9f22f6e44"},
+    {file = "lazy_object_proxy-1.7.0-cp38-cp38-win_amd64.whl", hash = "sha256:a77eec36a3bc90808f6a6d605337e904abafab20fd3b1ad7b9d4194e4ab38a4c"},
+    {file = "lazy_object_proxy-1.7.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:8768b7d3e606b4900d444449fe2f6463ca11f9c3e37e723c37a1cf42fc748e26"},
+    {file = "lazy_object_proxy-1.7.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:26124051d32e0f40a2864d0af4e9be751fa9a0ef65164c496163a99c3fd4c295"},
+    {file = "lazy_object_proxy-1.7.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a87f307527473d8fe32c28c0f27208150d8f72e98ad19b929ddecdad1e824c6b"},
+    {file = "lazy_object_proxy-1.7.0-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:7912e5887e548ab33b34ad1a2370c09f39b30de410198befd2e18d1f96f7f914"},
+    {file = "lazy_object_proxy-1.7.0-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:f2694aac2bdabc36de10e51619552e6c7e76d28a5910986e7d633ee8f6d86024"},
+    {file = "lazy_object_proxy-1.7.0-cp39-cp39-win32.whl", hash = "sha256:6b5b5ed5b2052d204b0791b9cdee289141eeb1f3e00a113916fe7e34b5f15751"},
+    {file = "lazy_object_proxy-1.7.0-cp39-cp39-win_amd64.whl", hash = "sha256:d202e73eb141c56b3dd8b021282c8de3dc048e8e936a8dd0ac4ff40458ef876f"},
+    {file = "lazy_object_proxy-1.7.0-pp37.pp38-none-any.whl", hash = "sha256:90fca6db4b472872df8790fddab854183762903f7e3fa976ab744d89b7100422"},
 ]
 libcst = [
     {file = "libcst-0.3.23-py3-none-any.whl", hash = "sha256:2e1f77fbaaff93b889376c92f588b718edbdc21f956abbe27d10dfd1ff2d76c3"},
