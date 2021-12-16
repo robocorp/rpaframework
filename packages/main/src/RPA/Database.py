@@ -507,13 +507,33 @@ class Database:
 
         .. code-block:: robotframework
 
-            @{res}   Query   Select firstname, lastname FROM table
-            FOR  ${row}  IN  @{RES}
-                Log   ${row}
-            END
-            @{res}   Query  Select * FROM table  row_count > ${EXPECTED}
-            @{res}   Query  Select * FROM table  'arvo' in columns
-            @{res}   Query  Select * FROM table  columns == ['id', 'arvo']
+            *** Settings ***
+            Library    RPA.Database
+
+            *** Tasks ***
+            Select Values From Table
+                @{rows} =    Query   SELECT id,value FROM table
+                FOR  ${row}  IN  @{rows}
+                    Log   ${row}
+                END
+                @{res} =    Query   Select * FROM table   row_count > ${EXPECTED}
+                @{res} =    Query   Select * FROM table   'value' in columns
+                @{res} =    Query   Select * FROM table   columns == ['id', 'value']
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.Database import Database
+
+            lib = Database()
+
+            def insert_and_return_names():
+                lib.connect_to_database("sqlite3", "sqlite.db")
+                lib.query("DROP TABLE IF EXISTS orders;")
+                lib.query("CREATE TABLE orders(id INTEGER PRIMARY KEY, name TEXT);")
+                rows = lib.query('INSERT INTO orders(id, name) VALUES(1, "my-1st-order"),(2, "my-2nd-order") RETURNING name;')
+                print([row["name"] for row in rows])  # ['my-1st-order', 'my-2nd-order']
         """
         cursor = None
         try:
