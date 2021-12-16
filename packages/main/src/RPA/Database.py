@@ -340,6 +340,8 @@ class Database:
             conf = self.config.all_but_empty()
             self.logger.info(self.config.get_connection_parameters_as_string(conf))
             self._dbconnection = dbmodule.connect(**conf)
+            if module_name == "sqlite3":
+                self._dbconnection.isolation_level = None if autocommit else "IMMEDIATE"
 
     def call_stored_procedure(self, name, params=None, sanstran=False):
         """Call stored procedure with name and params.
