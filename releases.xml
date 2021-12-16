@@ -156,7 +156,17 @@
 	<item>
 		<title>Release 11.0.0</title>
 		<link>https://pypi.org/project/rpaframework/11.0.0/</link>
-		<description>- Terminology fixes for Robocorp Control Room
+		<description>- Migration guide: Given this major upgrade, the `Load Work Item ...` keywords got
+&lt;br&gt;      removed with functionality replaced by `Get Input Work Item`. Use this keyword for
+&lt;br&gt;      loading your next input work item no matter if you&#x27;re running the robot in Control
+&lt;br&gt;      Room or locally. Keep in mind that under &lt;b&gt;Robot Framework&lt;/b&gt; code, the first input work
+&lt;br&gt;      item gets loaded automatically and you don&#x27;t need to call this keyword if you only
+&lt;br&gt;      process one item in your run. For disabling this behavior, use `autoload=${False}`
+&lt;br&gt;      when importing the `RPA.Robocorp.WorkItems` library.
+&lt;br&gt;        If multiple steps are configured in Control Room, make sure that &quot;Done items
+&lt;br&gt;        forwarding&quot; is checked in Process&#x27; configuration. Uncheck this if you have a modern
+&lt;br&gt;        robot that explicitly retrieves multiple input work items and creates output ones.
+&lt;br&gt;    - Terminology fixes for Robocorp Control Room
 &lt;br&gt;    - Renamed library RPA.Robocloud.Items to &lt;b&gt;RPA.Robocorp.WorkItems&lt;/b&gt;:
 &lt;br&gt;      - Previous import works as before, with deprecation warning
 &lt;br&gt;      - Removed keywords `Load work item` and `Load work item from environment`

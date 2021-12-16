@@ -485,10 +485,23 @@ during local dev (“RPA_INPUT_WORKITEM_PATH”, “RPA_OUTPUT_WORKITEM_PATH” 
 </div>
 <div class="section" id="id21">
 <h3>11.0.0<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
+<ul>
+<li><p>Migration guide: Given this major upgrade, the <code class="docutils literal notranslate"><span class="pre">Load</span> <span class="pre">Work</span> <span class="pre">Item</span> <span class="pre">...</span></code> keywords got
+removed with functionality replaced by <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Input</span> <span class="pre">Work</span> <span class="pre">Item</span></code>. Use this keyword for
+loading your next input work item no matter if you’re running the robot in Control
+Room or locally. Keep in mind that under <em>Robot Framework</em> code, the first input work
+item gets loaded automatically and you don’t need to call this keyword if you only
+process one item in your run. For disabling this behavior, use <code class="docutils literal notranslate"><span class="pre">autoload=${False}</span></code>
+when importing the <code class="docutils literal notranslate"><span class="pre">RPA.Robocorp.WorkItems</span></code> library.</p>
+<blockquote>
+<div><p>If multiple steps are configured in Control Room, make sure that “Done items
+forwarding” is checked in Process’ configuration. Uncheck this if you have a modern
+robot that explicitly retrieves multiple input work items and creates output ones.</p>
+</div></blockquote>
+</li>
 <li><p>Terminology fixes for Robocorp Control Room</p></li>
 <li><p>Renamed library <strong>RPA.Robocloud.Items</strong> to <strong>RPA.Robocorp.WorkItems</strong>:</p>
-<ul>
+<ul class="simple">
 <li><p>Previous import works as before, with deprecation warning</p></li>
 <li><p>Removed keywords <code class="docutils literal notranslate"><span class="pre">Load</span> <span class="pre">work</span> <span class="pre">item</span></code> and <code class="docutils literal notranslate"><span class="pre">Load</span> <span class="pre">work</span> <span class="pre">item</span> <span class="pre">from</span> <span class="pre">environment</span></code></p></li>
 <li><p>Added keywords <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">input</span> <span class="pre">work</span> <span class="pre">item</span></code> and <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">output</span> <span class="pre">work</span> <span class="pre">item</span></code></p></li>
@@ -497,27 +510,27 @@ during local dev (“RPA_INPUT_WORKITEM_PATH”, “RPA_OUTPUT_WORKITEM_PATH” 
 </ul>
 </li>
 <li><p>Renamed library <strong>RPA.Robocloud.Secrets</strong> to <strong>RPA.Robocorp.Vault</strong>:</p>
-<ul>
+<ul class="simple">
 <li><p>Previous import works as before, with deprecation warning</p></li>
 <li><p>Added support for variables and home directory in local vault path</p></li>
 </ul>
 </li>
 <li><p>Library <strong>RPA.Email.ImapSmtp</strong>:</p>
-<ul>
+<ul class="simple">
 <li><p>Add <cite>uid</cite> into email dictionary</p></li>
 <li><p>Fix email body decoding</p></li>
 <li><p>Fix folder list problem when requesting non-existing folder</p></li>
 </ul>
 </li>
 <li><p>Library <strong>RPA.PDF</strong>:</p>
-<ul>
+<ul class="simple">
 <li><p>Handle missing document information</p></li>
 <li><p>Always create output directory when writing to disk</p></li>
 </ul>
 </li>
 <li><p>Library <strong>RPA.Windows</strong>: Fix exception from empty parent attribute</p></li>
 <li><p>Library <strong>RPA.Images</strong>:</p>
-<ul>
+<ul class="simple">
 <li><p>Deprecate screenshot keywords, use <code class="docutils literal notranslate"><span class="pre">rpaframework-recognition</span></code> for template matching</p></li>
 <li><p>Use the library <strong>RPA.Desktop</strong> for image-based automation going forward</p></li>
 </ul>
