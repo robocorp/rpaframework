@@ -13,7 +13,6 @@ from . import RESOURCE_DIR, RESULTS_DIR, temp_filename
 
 
 DB_PATH = RESULTS_DIR / "database.db"
-SQL_SCRIPT = RESULTS_DIR / "script.sql"
 
 
 def _get_library(**kwargs):
