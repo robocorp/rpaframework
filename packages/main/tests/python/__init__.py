@@ -5,7 +5,11 @@ import platform
 from pathlib import Path
 
 
-RESOURCE_DIR = Path(__file__).resolve().parent / ".." / "resources"
+TESTS_DIR = Path(__file__).resolve().parent.parent
+RESOURCE_DIR = TESTS_DIR / "resources"
+RESULTS_DIR = TESTS_DIR / "results"
+RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+
 
 if platform.system() == "Windows":
     # workaround for comtypes._shutdown exception
@@ -17,12 +21,12 @@ if platform.system() == "Windows":
 
 
 @contextmanager
-def temp_filename(content=None):
+def temp_filename(content=None, **kwargs):
     """Create temporary file and return filename, delete file afterwards.
     Needs to close file handle, since Windows won't allow multiple
     open handles to the same file.
     """
-    with tempfile.NamedTemporaryFile(delete=False) as fd:
+    with tempfile.NamedTemporaryFile(delete=False, **kwargs) as fd:
         path = fd.name
         if content:
             fd.write(content)
