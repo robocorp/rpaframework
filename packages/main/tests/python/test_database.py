@@ -12,7 +12,7 @@ from RPA.Database import Database
 from . import RESOURCE_DIR, RESULTS_DIR, temp_filename
 
 
-DB_PATH = RESULTS_DIR / "database.db"
+DB_PATH = str(RESULTS_DIR / "database.db")
 RETURNING_REASON = "On some systems SQLite fails to recognize the RETURNING properly"
 
 
