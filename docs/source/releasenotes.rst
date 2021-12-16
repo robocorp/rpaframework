@@ -15,7 +15,8 @@ Release notes
 
     - Keyword ``Query`` supports now a ``returning`` parameter which explicitly
       instructs the statement execution to return or not the fetched values.
-    - Auto commits and rollbacks fixes given the ``sanstran`` flag.
+      (:issue:`286`)
+    - Auto commits and rollbacks fixes given the ``sanstran`` flag. (:issue:`282`)
 
 - Library **RPA.PDF**: Fixed ``Add Watermark Image To PDF`` with the same file for both
   input and output (:issue:`337`, ``rpaframework-pdf`` **1.30.4**)
