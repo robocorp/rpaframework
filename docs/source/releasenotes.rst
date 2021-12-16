@@ -4,12 +4,6 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++
 
-- Library **RPA.Database**:
-
-    - Keyword ``Query`` supports now a ``returning`` parameter which explicitly
-      instructs the statement execution to return or not the fetched values.
-    - Auto commits and rollbacks fixes given the ``sanstran`` flag.
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
