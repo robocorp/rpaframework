@@ -227,6 +227,18 @@ Releases on 01 Dec 2021
 11.0.0
 ------
 
+- Migration guide: Given this major upgrade, the ``Load Work Item ...`` keywords got
+  removed with functionality replaced by ``Get Input Work Item``. Use this keyword for
+  loading your next input work item no matter if you're running the robot in Control
+  Room or locally. Keep in mind that under *Robot Framework* code, the first input work
+  item gets loaded automatically and you don't need to call this keyword if you only
+  process one item in your run. For disabling this behavior, use ``autoload=${False}``
+  when importing the ``RPA.Robocorp.WorkItems`` library.
+
+    If multiple steps are configured in Control Room, make sure that "Done items
+    forwarding" is checked in Process' configuration. Uncheck this if you have a modern
+    robot that explicitly retrieves multiple input work items and creates output ones.
+
 - Terminology fixes for Robocorp Control Room
 - Renamed library **RPA.Robocloud.Items** to **RPA.Robocorp.WorkItems**:
 
