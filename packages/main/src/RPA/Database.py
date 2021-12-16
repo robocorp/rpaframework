@@ -173,7 +173,7 @@ class Database:
         listener = RobotLogListener()
         listener.register_protected_keywords(["RPA.Database.connect_to_database"])
 
-    # pylint: disable=R0915
+    # pylint: disable=R0915, too-many-branches
     def connect_to_database(  # noqa: C901
         self,
         module_name: str = None,
@@ -532,7 +532,10 @@ class Database:
                 lib.connect_to_database("sqlite3", "sqlite.db")
                 lib.query("DROP TABLE IF EXISTS orders;")
                 lib.query("CREATE TABLE orders(id INTEGER PRIMARY KEY, name TEXT);")
-                rows = lib.query('INSERT INTO orders(id, name) VALUES(1, "my-1st-order"),(2, "my-2nd-order") RETURNING name;')
+                rows = lib.query(
+                    'INSERT INTO orders(id, name) VALUES(1, "my-1st-order"),'
+                    '(2, "my-2nd-order") RETURNING name;'
+                )
                 print([row["name"] for row in rows])  # ['my-1st-order', 'my-2nd-order']
         """
         cursor = None
