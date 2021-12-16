@@ -13,6 +13,7 @@ from . import RESOURCE_DIR, RESULTS_DIR, temp_filename
 
 
 DB_PATH = RESULTS_DIR / "database.db"
+RETURNING_REASON = "On some systems SQLite fails to recognize the RETURNING properly"
 
 
 def _get_library(**kwargs):
@@ -37,6 +38,7 @@ def _ensure_orders(query):
     query('INSERT INTO orders(id, name) VALUES(1, "my-1st-order"),(2, "my-2nd-order");')
 
 
+@pytest.mark.xfail(reason=RETURNING_REASON)
 def test_query(library):
     _ensure_orders(library.query)
     orders_ids = library.query(
@@ -97,6 +99,7 @@ def test_execute_sql_script(library_no_commit, should_fail, no_trans, orders_nr)
     assert len(orders) == orders_nr
 
 
+@pytest.mark.xfail(reason=RETURNING_REASON)
 def test_query_explicit_returning(library):
     _ensure_orders(library.query)
     cursor = library.query(

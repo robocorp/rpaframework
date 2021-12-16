@@ -68,5 +68,9 @@ Query No Rows
     Length Should Be    ${rows}   0
 
 Insert With Returning
-    ${table} =   Query  INSERT INTO incoming_orders(asiakas,amount) VALUES ('Robocorp',99) RETURNING asiakas;    returning=${True}
-    Should Be Equal    ${table}[0][0]    Robocorp
+    @{result} =   Run Keyword And Ignore Error   Query   INSERT INTO incoming_orders(asiakas,amount) VALUES ('Robocorp',99) RETURNING asiakas;  returning=${True}
+    ${status} =   Set Variable  ${result}[0]
+    IF    "${status}" == "PASS"
+        ${table} =    Set Variable  ${result}[1]
+        Should Be Equal    ${table}[0][0]    Robocorp
+    END

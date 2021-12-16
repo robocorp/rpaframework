@@ -1,7 +1,7 @@
 import importlib
 import logging
 import sys
-from typing import Optional
+from typing import Any, Dict, List, Optional, Union
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
@@ -485,7 +485,7 @@ class Database:
         sanstran: bool = False,
         as_table: bool = True,
         returning: Optional[bool] = None,
-    ):
+    ) -> Union[List, Dict, Table, Any]:
         """Execute a SQL query and optionally return the execution result.
 
         :param statement: SQL statement to execute.
@@ -500,6 +500,9 @@ class Database:
         :param returning: Set this to `True` if you want to have rows explicitly
             returned (instead of the query result), `False` otherwise. (by default a
             heuristic detects if it should return or not)
+        :returns: Fetched rows when `returning` is `True` or if the heuristic decides
+            that the statement should return (raw rows or as `Table` if `as_table` is
+            `True`), otherwise the object produced by the execution is returned.
 
         **Examples**
 
