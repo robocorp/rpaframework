@@ -18,7 +18,7 @@ Release notes
     - Auto commits and rollbacks fixes given the ``sanstran`` flag.
 
 - Library **RPA.PDF**: Fixed ``Add Watermark Image To PDF`` with the same file for both
-  input and output (:pr:`339`, ``rpaframework-pdf`` **1.30.4**)
+  input and output (:issue:`337`, ``rpaframework-pdf`` **1.30.4**)
 
 12.1.2 - 14 Dec 2021
 --------------------
