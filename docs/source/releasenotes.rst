@@ -232,7 +232,11 @@ Releases on 01 Dec 2021
   loading your next input work item no matter if you're running the robot in Control
   Room or locally. Keep in mind that under *Robot Framework* code the first input work
   item gets loaded automatically. For disabling this behavior, use ``autoload=${False}``
-  when importing ``RPA.Robocorp.WorkItems``.
+  when importing the ``RPA.Robocorp.WorkItems`` library.
+
+    If multiple steps are configured in Control Room, make sure that "Done items
+    forwarding" is checked in Process' configuration. Uncheck this if you have a modern
+    robot that explicitly retrieves multiple input work items and creates output ones.
 
 - Terminology fixes for Robocorp Control Room
 - Renamed library **RPA.Robocloud.Items** to **RPA.Robocorp.WorkItems**:
