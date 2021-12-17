@@ -2161,7 +2161,7 @@ pytz = "*"
 
 [[package]]
 name = "uiautomation"
-version = "2.0.15"
+version = "2.0.16"
 description = "Python UIAutomation for Windows"
 category = "main"
 optional = false
@@ -3654,7 +3654,7 @@ tzlocal = [
     {file = "tzlocal-2.1.tar.gz", hash = "sha256:643c97c5294aedc737780a49d9df30889321cbe1204eac2c2ec6134035a92e44"},
 ]
 uiautomation = [
-    {file = "uiautomation-2.0.15-py3-none-any.whl", hash = "sha256:7e224ecc5e88b5cbf0a2b1d3472b66c6cfc9e0dba3d8f3b196b1b1571c2675f1"},
+    {file = "uiautomation-2.0.16-py3-none-any.whl", hash = "sha256:ebe8ef1a7c02e1fd70ecc73a868f796dbf079d4384373a3e6e61aeff4859545b"},
 ]
 unify = [
     {file = "unify-0.5.tar.gz", hash = "sha256:8ddce812b2457212b7598fe574c9e6eb3ad69710f445391338270c7f8a71723c"},
