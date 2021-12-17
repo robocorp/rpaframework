@@ -6,7 +6,6 @@ Release notes
 
 - Library **RPA.Excel.Application**: Fix on Windows 11 given pywin32 dependency update
 
-
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 
