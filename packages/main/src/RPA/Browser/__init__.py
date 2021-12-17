@@ -2,7 +2,7 @@ import logging
 from RPA.Browser.Selenium import Selenium as _Selenium
 
 
-class Browser(_Selenium):
+class Browser(_Selenium):  # pylint: disable=missing-class-docstring
     __doc__ = _Selenium.__doc__
 
     def __init__(self, *args, **kwargs):

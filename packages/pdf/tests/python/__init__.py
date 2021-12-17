@@ -8,7 +8,7 @@ import pytest
 from RPA.PDF import PDF
 
 
-RESOURCE_DIR = Path(__file__).resolve().parent / ".." / "resources"
+RESOURCE_DIR = Path(__file__).resolve().parent.parent / "resources"
 
 
 @pytest.fixture
@@ -26,15 +26,18 @@ class TestFiles:
     encrypted_pdf = RESOURCE_DIR / "encrypted.pdf"
     seal_of_approval = RESOURCE_DIR / "approved.png"
     big_nope = RESOURCE_DIR / "big_nope.png"
+    foersom_pdf = RESOURCE_DIR / "foersom.pdf"
+    receipt_pdf = RESOURCE_DIR / "receipt.pdf"
+    robot_png = RESOURCE_DIR / "robot.png"
 
 
 @contextmanager
-def temp_filename(content=None):
+def temp_filename(content=None, **kwargs):
     """Create temporary file and return filename, delete file afterwards.
     Needs to close file handle, since Windows won't allow multiple
     open handles to the same file.
     """
-    with tempfile.NamedTemporaryFile(delete=False) as fd:
+    with tempfile.NamedTemporaryFile(delete=False, **kwargs) as fd:
         path = fd.name
         if content:
             fd.write(content)

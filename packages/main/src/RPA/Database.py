@@ -1,6 +1,7 @@
 import importlib
 import logging
 import sys
+from typing import Any, Dict, List, Optional, Union
 
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 
@@ -172,7 +173,7 @@ class Database:
         listener = RobotLogListener()
         listener.register_protected_keywords(["RPA.Database.connect_to_database"])
 
-    # pylint: disable=R0915
+    # pylint: disable=R0915, too-many-branches
     def connect_to_database(  # noqa: C901
         self,
         module_name: str = None,
@@ -339,14 +340,16 @@ class Database:
             conf = self.config.all_but_empty()
             self.logger.info(self.config.get_connection_parameters_as_string(conf))
             self._dbconnection = dbmodule.connect(**conf)
+            if module_name == "sqlite3":
+                self._dbconnection.isolation_level = None if autocommit else "IMMEDIATE"
 
     def call_stored_procedure(self, name, params=None, sanstran=False):
         """Call stored procedure with name and params.
 
         :param name: procedure name
         :param params: parameters for the procedure as a list, defaults to None
-        :param sanstran: run command without an explicit transaction commit or rollback,
-         defaults to False
+        :param sanstran: Run the query without an implicit transaction commit or
+            rollback if such additional action was detected. (turned off by default)
 
         Example:
 
@@ -371,13 +374,16 @@ class Database:
             value = []
             for row in cur:
                 value.append(row)
+        except Exception as exc:
+            # Implicitly rollback when error occurs.
+            self.logger.error(exc)
+            if cur and not sanstran:
+                self._dbconnection.rollback()
+            raise
+        else:
             if not sanstran:
                 self._dbconnection.commit()
             return value
-        finally:
-            if cur:
-                if not sanstran:
-                    self._dbconnection.rollback()
 
     def description(self, table):
         """Get description of the SQL table
@@ -417,14 +423,14 @@ class Database:
             self._dbconnection.close()
 
     # pylint: disable=R0912
-    def execute_sql_script(
+    def execute_sql_script(  # noqa: C901
         self, filename, sanstran=False, encoding="utf-8"
     ):  # noqa: C901
         """Execute content of SQL script as SQL commands.
 
         :param filename: filepath to SQL script to execute
-        :param sanstran: run command without an explicit transaction commit or rollback,
-         defaults to False
+        :param sanstran: Run the query without an implicit transaction commit or
+            rollback if such additional action was detected. (turned off by default)
         :param encoding: character encoding of file
 
         Example:
@@ -462,75 +468,117 @@ class Database:
             sqlStatement = sqlStatement.strip()
             if len(sqlStatement) != 0:
                 self.__execute_sql(cur, sqlStatement)
-
+        except Exception as exc:
+            # Implicitly rollback when error occurs.
+            self.logger.error(exc)
+            if cur and not sanstran:
+                self._dbconnection.rollback()
+            raise
+        else:
             if not sanstran:
                 self._dbconnection.commit()
-        finally:
-            if cur:
-                if not sanstran:
-                    self._dbconnection.rollback()
 
     def query(
         self,
         statement: str,
-        assertion: str = None,
+        assertion: Optional[str] = None,
         sanstran: bool = False,
         as_table: bool = True,
-    ):
-        """Make a SQL query.
+        returning: Optional[bool] = None,
+    ) -> Union[List, Dict, Table, Any]:
+        """Execute a SQL query and optionally return the execution result.
 
-        :param statement: SQL statement to execute
-        :param assertion: assert on query result, row_count or columns.
-         Works only for SELECT statements Defaults to None.
-        :param sanstran: run command without an explicit transaction commit or rollback,
-         defaults to False
-        :param as_table: if result should be instance of ``Table``, defaults to `True`
-         `False` means that return type would be `list`
+        :param statement: SQL statement to execute.
+        :param assertion: Assert on query result, row_count or columns.
+            Works only for `SELECT` statements. (defaults to `None`)
+        :param sanstran: Run the query without an implicit transaction commit or
+            rollback if such additional action was detected and this is set to `True`.
+            (turned off by default, meaning that *commit* is performed on successful
+            queries and *rollback* on failing ones automatically)
+        :param as_table: If the result should be an instance of `Table`, otherwise a
+            `list` will be returned.
+        :param returning: Set this to `True` if you want to have rows explicitly
+            returned (instead of the query result), `False` otherwise. (by default a
+            heuristic detects if it should return or not)
+        :returns: Fetched rows when `returning` is `True` or if the heuristic decides
+            that the statement should return (raw rows or as `Table` if `as_table` is
+            `True`), otherwise the object produced by the execution is returned.
 
-        Example:
+        **Examples**
+
+        **Robot Framework**
 
         .. code-block:: robotframework
 
-            @{res}   Query   Select firstname, lastname FROM table
-            FOR  ${row}  IN  @{RES}
-                Log   ${row}
-            END
-            @{res}   Query  Select * FROM table  row_count > ${EXPECTED}
-            @{res}   Query  Select * FROM table  'arvo' in columns
-            @{res}   Query  Select * FROM table  columns == ['id', 'arvo']
+            *** Settings ***
+            Library    RPA.Database
 
+            *** Tasks ***
+            Select Values From Table
+                @{rows} =    Query   SELECT id,value FROM table
+                FOR  ${row}  IN  @{rows}
+                    Log   ${row}
+                END
+                @{res} =    Query   Select * FROM table   row_count > ${EXPECTED}
+                @{res} =    Query   Select * FROM table   'value' in columns
+                @{res} =    Query   Select * FROM table   columns == ['id', 'value']
+
+        **Python**
+
+        .. code-block:: python
+
+            from RPA.Database import Database
+
+            lib = Database()
+
+            def insert_and_return_names():
+                lib.connect_to_database("sqlite3", "sqlite.db")
+                lib.query("DROP TABLE IF EXISTS orders;")
+                lib.query("CREATE TABLE orders(id INTEGER PRIMARY KEY, name TEXT);")
+                rows = lib.query(
+                    'INSERT INTO orders(id, name) VALUES(1, "my-1st-order"),'
+                    '(2, "my-2nd-order") RETURNING name;'
+                )
+                print([row["name"] for row in rows])  # ['my-1st-order', 'my-2nd-order']
         """
-        rows = None
-        columns = None
-        result = None
         cursor = None
-
         try:
+            self.logger.info("Executing query: %s", statement)
             cursor = self._dbconnection.cursor()
-            self.logger.info("Executing : Query  |  %s ", statement)
             result = self.__execute_sql(cursor, statement)
-            if self._is_returnable_statement(statement):
+            should_return = (returning is True) or (
+                returning is None and self._is_returnable_statement(statement)
+            )
+            if should_return:
                 rows = cursor.fetchall()
-                columns = [c[0] for c in cursor.description]
+                columns = [c[0] for c in (cursor.description or [])]
                 self._result_assertion(rows, columns, assertion)
                 if as_table:
-                    return Table(rows, columns)
-                return rows
-            else:
-                if result is not None:
-                    if not sanstran:
-                        self._dbconnection.commit()
-                if not sanstran:
-                    self._dbconnection.commit()
-        finally:
-            if cursor:
-                if not sanstran:
-                    self._dbconnection.rollback()
-        return result
+                    result = Table(rows, columns)
+                else:
+                    result = rows
+        except Exception as exc:
+            # Implicitly rollback when error occurs.
+            self.logger.error(exc)
+            if cursor and not sanstran:
+                self._dbconnection.rollback()
+            raise
+        else:
+            if not sanstran:
+                self._dbconnection.commit()
+            return result
 
-    def _is_returnable_statement(self, statement):
-        starts_with = statement.lower().split(" ")[0]
-        return starts_with in ["select", "describe", "show", "explain"]
+    def _is_returnable_statement(self, statement: str) -> bool:
+        lower_parts = statement.lower().split()
+
+        starts_with = lower_parts[0]
+        if starts_with in ["select", "describe", "show", "explain"]:
+            return True
+
+        if "returning" in lower_parts:
+            return True
+
+        return False
 
     def _result_assertion(self, rows, columns, assertion):
         if assertion:

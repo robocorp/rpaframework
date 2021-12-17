@@ -6,11 +6,114 @@ Release notes
 
 - Library **RPA.Excel.Application**: Fix on Windows 11 given pywin32 dependency update
 
+
 `Released <https://pypi.org/project/rpaframework/#history>`_
 +++++++++
 
+12.2.0 - 17 Dec 2021
+--------------------
+
+- Library **RPA.Database**:
+
+    - Keyword ``Query`` supports now a ``returning`` parameter which explicitly
+      instructs the statement execution to return or not the fetched values.
+      (:issue:`286`)
+    - Auto commits and rollbacks fixes given the ``sanstran`` flag. (:issue:`282`)
+
+- Library **RPA.PDF**: Fixed ``Add Watermark Image To PDF`` with the same file for both
+  input and output (:issue:`337`, ``rpaframework-pdf`` **1.30.4**)
+
+12.1.2 - 14 Dec 2021
+--------------------
+
+- Library **RPA.PDF**: HTML -> PDF rendering serialized fonts cleanup bug fix
+  (:pr:`322`, ``rpaframework-pdf`` **1.30.3**)
+
+12.1.1 - 7 Dec 2021
+-------------------
+
+- Library **RPA.PDF**: Serialize PDF related fonts under Robocorp's home directory
+  (:pr:`315`, ``rpaframework-pdf`` **1.30.2**)
+
+12.1.0 - 7 Dec 2021
+-------------------
+
+- Library **RPA.PDF** (:issue:`304`, ``rpaframework-pdf`` **1.30.1**):
+
+    - Fixed unicode when rendering HTML as PDF
+    - Fixed PDF form fields setting given various codecs
+    - Faster PDF parsing
+    - Updated docs on ``Find Text`` keyword and library
+
+Releases on 01 Dec 2021
+-----------------------
+
+- All rpaframework packages include now `.libspec` file for each library in the package.
+  This will make coding experience in the VSCode editor better via ``Robot Framework Language Server``
+  extension.
+
+  - `rpaframework` **12.0.3**
+  - `rpaframework-windows` **1.4.2**
+  - `rpaframework-google` **1.0.2**
+
+12.0.0 - 29 Nov 2021
+--------------------
+
+- Add .libspec files for all the libraries (used by VScode extension)
+- Library **RPA.PDF** (:issue:`243`):
+
+    - Keyword ``Find Text`` improvements and **breaking** changes:
+
+        - Sets and works with multiple anchors if more than one are found
+        - Anchor search supports "regex:" criteria too through the locator
+        - `only_closest` parameter got replaced by `closest_neighbours` which can
+          specify the max number of adjacent texts to return in the match object
+        - The return value is a list of `Match` objects where every match has an
+          `anchor` (the pinpoint in the PDF through locator) and a list of `neighbours`
+          (the adjacent texts to the anchor given the provided direction)
+
+    - Fixed by ``rpaframework-pdf`` **1.26.11** (included in this release)
+
+11.6.4 - 24 Nov 2021
+--------------------
+
+- API retrying improvements affecting Work Items (:issue:`298`)
+- Library **RPA.Email.ImapSmtp**: Keyword ``Email To Document`` for converting HTML or
+  Text e-mails into Word documents (:issue:`295`)
+
+- Library **RPA.Robocorp.WorkItems** (:pr:`285`):
+
+  - Removed Keyword ``Parse Work Item From Email``
+  - Automatically loads e-mail body formats like JSON/YAML/Text/HTML into "parsedEmail"
+    work item variable
+
+- Updated ``rpaframework-recognition`` dependency (to version 1.0.0) (:pr:`303`)
+
+11.6.3 - 15 Nov 2021
+--------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix email fetch when uid is empty
+
+11.6.2 - 13 Nov 2021
+--------------------
+
+- Library **RPA.Email.ImapSmtp**: Fix handling of application/octet-stream attachments
+
+11.6.1 - 12 Nov 2021
+--------------------
+
+- Library **RPA.PDF**:
+
+  - Fix non empty or junk XML dumping on PDF parsing (:issue:`287`)
+  - Fixed by ``rpaframework-pdf`` **0.10.0** (included in this release)
+
+- Library **RPA.Email.ImapSmtp**:
+
+  - Fix sender name encoding when using ``Send Message`` keyword (:issue:`279`)
+  - Fix filename encoding when using ``Save Attachment``/``Save Attachments`` keywords (:issue:`290`)
+
 11.6.0 - 4 Nov 2021
-------
+-------------------
 
 - Library **RPA.Robocorp.WorkItems**: Keyword ``Parse Work Item From Email`` for
   retrieving the input item dictionary payload from the sent e-mail JSON body which
@@ -138,6 +241,18 @@ Release notes
 
 11.0.0
 ------
+
+- Migration guide: Given this major upgrade, the ``Load Work Item ...`` keywords got
+  removed with functionality replaced by ``Get Input Work Item``. Use this keyword for
+  loading your next input work item no matter if you're running the robot in Control
+  Room or locally. Keep in mind that under *Robot Framework* code, the first input work
+  item gets loaded automatically and you don't need to call this keyword if you only
+  process one item in your run. For disabling this behavior, use ``autoload=${False}``
+  when importing the ``RPA.Robocorp.WorkItems`` library.
+
+    If multiple steps are configured in Control Room, make sure that "Done items
+    forwarding" is checked in Process' configuration. Uncheck this if you have a modern
+    robot that explicitly retrieves multiple input work items and creates output ones.
 
 - Terminology fixes for Robocorp Control Room
 - Renamed library **RPA.Robocloud.Items** to **RPA.Robocorp.WorkItems**:

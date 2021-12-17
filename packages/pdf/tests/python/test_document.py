@@ -1,9 +1,10 @@
+import shutil
 from contextlib import contextmanager
 
 import PyPDF2
 import pytest
 
-from RPA.PDF.keywords.document import DocumentKeywords
+from RPA.PDF.keywords.document import DocumentKeywords, PDF as FPDF
 from . import library, temp_filename, TestFiles
 
 
@@ -73,14 +74,25 @@ def test_extract_pages_from_pdf(library):
         assert "Plugins for Web Development" in text[1]
 
 
-def test_html_to_pdf(library):
-    text = "let's do some testing ÄÄ"
-    html = f"<html> <body> {text} </body></html>"
+@pytest.mark.parametrize(
+    "text,encoding",
+    [
+        ("let's do some testing ÄÄ", "latin-1"),
+        ("let's do some testing ÄÄ", "utf-8"),
+        ("Who's Poieană?", "latin-1"),
+        ("Who's Poieană?", "utf-8"),
+        ("Who's Poieană ĄĆĘŁŃÓŚŹŻąćęłńóśźż?", None),
+    ],
+)
+def test_html_to_pdf(library, text, encoding):
+    html = (
+        f"<html> <body> <b>bold</b> <b><i>{text}</i></b> <i>italic</i> </body></html>"
+    )
     with temp_filename() as tmp_file:
-        library.html_to_pdf(html, tmp_file)
-        result = library.get_text_from_pdf(tmp_file)
+        library.html_to_pdf(html, tmp_file, encoding=encoding)
+        result = library.get_text_from_pdf(tmp_file)[1]
 
-        assert text in result[1]
+    assert text in result
 
 
 def test_rotate_page(library):
@@ -110,16 +122,22 @@ def test_encrypt_pdf(library):
 
 def test_decrypt_pdf(library):
     passw = "secrett"
+    assert not library.is_pdf_encrypted(TestFiles.vero_pdf)
 
-    with temp_filename() as tmp_file:
-        library.encrypt_pdf(TestFiles.vero_pdf, tmp_file, passw)
+    with temp_filename(suffix="-enc.pdf") as encrypted_pdf:
+        library.encrypt_pdf(TestFiles.vero_pdf, encrypted_pdf, passw)
+        assert library.is_pdf_encrypted(encrypted_pdf)
 
-        assert library.is_pdf_encrypted(tmp_file)
+        with temp_filename(suffix="-dec.pdf") as decrypted_pdf:
+            with pytest.raises(ValueError):
+                library.decrypt_pdf(encrypted_pdf, decrypted_pdf, passw + "extra")
 
-        with temp_filename() as another_file:
-            library.decrypt_pdf(tmp_file, another_file, passw)
-
-            assert not library.is_pdf_encrypted(another_file)
+            library.decrypt_pdf(encrypted_pdf, decrypted_pdf, passw)
+            assert not library.is_pdf_encrypted(decrypted_pdf)
+            assert (
+                not library.is_pdf_encrypted()
+            )  # the very same active document as above
+            assert library.is_pdf_encrypted(encrypted_pdf)
 
 
 @pytest.mark.skip(reason="replacing text in PDF is missing")
@@ -136,7 +154,7 @@ def test_get_all_figures(library):
     details = '<image src="Im0" width="45" height="45" />'
 
     assert len(pages) == 2
-    assert figure.details() == details
+    assert str(figure) == details
 
 
 @pytest.mark.parametrize(
@@ -159,6 +177,19 @@ def test_add_watermark_image_to_pdf(library, watermark_image):
 
         assert len(figures_before[1]) == 1
         assert len(figures_after[1]) == 2
+
+
+def test_add_watermark_image_to_same_pdf(library):
+    with temp_filename(suffix="-receipt.pdf") as receipt_pdf:
+        shutil.copyfile(TestFiles.receipt_pdf, receipt_pdf)
+        library.add_watermark_image_to_pdf(
+            image_path=TestFiles.robot_png,
+            # Use same file source for both input and output.
+            output_path=receipt_pdf,
+            source_path=receipt_pdf,
+        )
+        figures = library.get_all_figures(source_path=receipt_pdf)
+        assert len(figures[1]) == 1  # means watermarking finished successfully
 
 
 @pytest.mark.parametrize(
@@ -250,3 +281,20 @@ def test_get_text_from_pdf_all_one_page_after_line_margin_is_set(library):
 
     assert len(pages) == 1
     assert len(pages[1]) == 3556
+
+
+def test_font_serialization(library):
+    html = "<html><body> textă </body></html>"
+    with temp_filename(suffix="-html2.pdf") as pdf_file:
+        library.html_to_pdf(html, pdf_file)
+
+    # Simulate environments swap by changing the path to the .ttf font into a
+    # non-existent one under the serialized artifact. This will trigger a serialized
+    # fonts cleanup before regenerating them with the right path.
+    font_file = FPDF.FONT_CACHE_DIR / f'{FPDF.FONT_PATHS[""].stem}.pkl'
+    content = font_file.read_bytes()
+    content = content.replace(b"assets", b"aseets")  # note the different path here
+    font_file.write_bytes(content)
+
+    with temp_filename(suffix="-html2.pdf") as pdf_file:
+        library.html_to_pdf(html, pdf_file)

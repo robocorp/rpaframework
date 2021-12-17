@@ -1,4 +1,6 @@
+import glob
 import imghdr
+import io
 import os
 import tempfile
 from pathlib import Path
@@ -13,10 +15,29 @@ from PIL import Image
 from robot.libraries.BuiltIn import BuiltIn
 
 from RPA.PDF.keywords import LibraryContext, keyword
+from RPA.core.robocorp import robocorp_home
 from .model import Document, Figure
 
 
+FilePath = Union[str, Path]
 ListOrString = Union[List[int], List[str], str, None]
+
+ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
+
+
+def get_output_dir() -> Path:
+    try:
+        # A `None` may come from here too.
+        output_dir = BuiltIn().get_variable_value("${OUTPUT_DIR}")
+    except Exception:  # pylint: disable=broad-except
+        output_dir = None
+    # Keep empty string as current working directory path.
+    if output_dir is None:
+        output_dir = "output"
+
+    output_dir = Path(output_dir).expanduser().resolve()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    return output_dir
 
 
 class PDF(FPDF, HTMLMixin):
@@ -27,56 +48,93 @@ class PDF(FPDF, HTMLMixin):
     https://github.com/PyFPDF/fpdf2
     """
 
+    FONT_PATHS = {
+        "": ASSETS_DIR / "Inter-Regular.ttf",
+        "B": ASSETS_DIR / "Inter-Bold.ttf",
+        "I": ASSETS_DIR / "Inter-Italic.ttf",
+        "BI": ASSETS_DIR / "Inter-BoldItalic.ttf",
+    }
+    FONT_CACHE_DIR = robocorp_home() / "fonts"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.font_cache_dir = self.FONT_CACHE_DIR
+        self.font_cache_dir.mkdir(parents=True, exist_ok=True)
+
+    # pylint: disable=arguments-differ
+    def add_font(self, *args, fname, **kwargs):
+        try:
+            return super().add_font(*args, fname=fname, **kwargs)
+        # pylint: disable=broad-except
+        except Exception:
+            # Usually caching issues, like importing a *.pkl font file serialized on
+            # another OS/env.
+            unifilename = self.font_cache_dir / f"{fname.stem}.pkl"
+            if unifilename.exists():
+                os.remove(unifilename)
+            return super().add_font(*args, fname=fname, **kwargs)
+
+    def add_unicode_fonts(self):
+        for style, path in self.FONT_PATHS.items():
+            self.add_font("Inter", style=style, fname=path, uni=True)
+        self.set_font("Inter")
+
 
 class DocumentKeywords(LibraryContext):
     """Keywords for basic PDF operations"""
 
-    def resolve_output(self, path: Optional[str] = None) -> str:
+    ENCODING = "utf-8"
+
+    @staticmethod
+    def resolve_input(path: FilePath) -> str:
+        """Normalizes input path and returns as string."""
+        inp = Path(path)
+        inp = inp.expanduser().resolve()
+        return str(inp)
+
+    @staticmethod
+    def resolve_output(path: Optional[FilePath] = None) -> str:
+        """Normalizes output path and returns as string."""
         if path is None:
-            try:
-                output_dir = BuiltIn().get_variable_value("${OUTPUT_DIR}")
-            except Exception:  # pylint: disable=broad-except
-                output_dir = None
-
-            if output_dir is None:
-                output_dir = "output"
-
-            output = Path(output_dir) / "output.pdf"
-            output = output.resolve()
+            output = get_output_dir() / "output.pdf"
         else:
-            output = Path(path).resolve()
+            output = Path(path)
 
+        output = output.expanduser().resolve()
         output.parent.mkdir(parents=True, exist_ok=True)
         return str(output)
 
     @keyword
     def close_all_pdfs(self) -> None:
         """Close all opened PDF file descriptors."""
-        file_paths = list(self.ctx.fileobjects.keys())
+        file_paths = list(self.ctx.documents.keys())
         for filename in file_paths:
             self.close_pdf(filename)
 
     @keyword
     def close_pdf(self, source_pdf: str = None) -> None:
-        """Close PDF file descriptor for certain file.
+        """Close PDF file descriptor for a certain file.
 
         :param source_pdf: filepath to the source pdf.
         :raises ValueError: if file descriptor for the file is not found.
         """
-        if not source_pdf and self.active_pdf_document:
-            source_pdf = self.active_pdf_document.path
-        elif not source_pdf and not self.active_pdf_document:
-            raise ValueError("No active PDF document open.")
-        if source_pdf not in self.ctx.fileobjects:
-            raise ValueError('PDF "%s" is not open' % source_pdf)
-        self.logger.info("Closing PDF document: %s", source_pdf)
-        self.ctx.fileobjects[source_pdf].close()
-        del self.ctx.fileobjects[source_pdf]
+        if not source_pdf:
+            if self.active_pdf_document:
+                source_pdf = self.active_pdf_document.path
+            else:
+                raise ValueError("No active PDF document open")
 
+        source_pdf = str(source_pdf)
+        if source_pdf not in self.ctx.documents:
+            raise ValueError(f"PDF {source_pdf!r} is not open")
+
+        self.logger.info("Closing PDF document: %s", source_pdf)
+        self.ctx.documents[source_pdf].close()
+        del self.ctx.documents[source_pdf]
         self.active_pdf_document = None
 
     @keyword
-    def open_pdf(self, source_path: str = None) -> None:
+    def open_pdf(self, source_path: FilePath) -> None:
         """Open a PDF document for reading.
 
         This is called automatically in the other PDF keywords
@@ -109,17 +167,20 @@ class DocumentKeywords(LibraryContext):
         :param source_path: filepath to the source pdf.
         :raises ValueError: if PDF is already open.
         """
-        if source_path is None:
+        if not source_path:
             raise ValueError("Source PDF is missing")
-        if str(source_path) in self.ctx.fileobjects.keys():
+
+        source_path = self.resolve_input(source_path)
+        if source_path in self.ctx.documents:
             raise ValueError(
-                "PDF file is already open. Please close it before opening again."
+                "PDF file is already open, please close it before opening it again"
             )
-        self.ctx.active_pdf_document = Document()
-        self.ctx.active_pdf_document.path = str(source_path)
+
+        self.logger.debug("Opening new document: %s", source_path)
         # pylint: disable=consider-using-with
-        self.ctx.active_pdf_document.fileobject = open(source_path, "rb")
-        self.ctx.fileobjects[source_path] = self.ctx.active_pdf_document.fileobject
+        self.active_pdf_document = self.ctx.documents[source_path] = Document(
+            source_path, fileobject=open(source_path, "rb")
+        )
 
     @keyword
     def template_html_to_pdf(
@@ -127,6 +188,7 @@ class DocumentKeywords(LibraryContext):
         template: str,
         output_path: str,
         variables: dict = None,
+        encoding: str = ENCODING,
     ) -> None:
         """Use HTML template file to generate PDF file.
 
@@ -170,24 +232,26 @@ class DocumentKeywords(LibraryContext):
             }
             p.template_html_to_pdf("order.template", "order.pdf", data)
 
-        :param template: filepath to the HTML template.
-        :param output_path: filepath where to save PDF document.
-        :param variables: dictionary of variables to fill into template, defaults to {}.
+        :param template: Filepath to the HTML template.
+        :param output_path: Filepath where to save PDF document.
+        :param variables: Dictionary of variables to fill into template, defaults to {}.
+        :param encoding: Codec used for text I/O.
         """
         variables = variables or {}
 
-        with open(template, "r", encoding="utf-8") as templatefile:
+        with open(template, "r", encoding=encoding or self.ENCODING) as templatefile:
             html = templatefile.read()
         for key, value in variables.items():
             html = html.replace("{{" + key + "}}", str(value))
 
-        self.html_to_pdf(html, output_path)
+        self.html_to_pdf(html, output_path, encoding=encoding)
 
     @keyword
     def html_to_pdf(
         self,
         content: str,
         output_path: str,
+        encoding: str = ENCODING,
     ) -> None:
         """Generate a PDF file from HTML content.
 
@@ -216,17 +280,29 @@ class DocumentKeywords(LibraryContext):
                 pdf.html_to_pdf(html_content_as_string, "/tmp/output.pdf")
 
         :param content: HTML content.
-        :param output_path: filepath where to save the PDF document.
+        :param output_path: Filepath where to save the PDF document.
+        :param encoding: Codec used for text I/O.
         """
         output_path = self.resolve_output(output_path)
         self.logger.info("Writing output to file %s", output_path)
 
-        fpdf = PDF()
-        fpdf.set_margin(0)
-        fpdf.add_page()
-        fpdf.write_html(content)
-        fpdf.output(name=output_path)
-        fpdf = PDF()
+        def _html_to_pdf():
+            fpdf = PDF()
+            # Support unicode content with a font capable of rendering it.
+            fpdf.core_fonts_encoding = encoding
+            fpdf.add_unicode_fonts()
+            fpdf.set_margin(0)
+            fpdf.add_page()
+            fpdf.write_html(content)
+            fpdf.output(name=output_path)
+
+        try:
+            _html_to_pdf()
+        except FileNotFoundError:
+            serialized_fonts = glob.glob(str(PDF.FONT_CACHE_DIR / "*.pkl"))
+            for serialized_font in serialized_fonts:
+                os.remove(serialized_font)
+            _html_to_pdf()
 
     @keyword
     def get_pdf_info(self, source_path: str = None) -> dict:
@@ -263,26 +339,27 @@ class DocumentKeywords(LibraryContext):
         """
         self.switch_to_pdf(source_path)
 
-        pdf = PyPDF2.PdfFileReader(self.ctx.active_pdf_document.fileobject)
-        docinfo = pdf.getDocumentInfo()
+        reader = self.active_pdf_document.reader
+        docinfo = reader.getDocumentInfo()
+        num_pages = reader.getNumPages()
 
-        def optional(attr):
-            return getattr(docinfo, attr) if docinfo is not None else None
-
-        parser = PDFParser(self.ctx.active_pdf_document.fileobject)
+        parser = PDFParser(self.active_pdf_document.fileobject)
         document = PDFDocument(parser)
         try:
             fields = pdfminer.pdftypes.resolve1(document.catalog["AcroForm"])["Fields"]
         except KeyError:
             fields = None
 
+        optional = (
+            lambda attr: getattr(docinfo, attr) if docinfo is not None else None
+        )  # noqa
         return {
             "Author": optional("author"),
             "Creator": optional("creator"),
             "Producer": optional("producer"),
             "Subject": optional("subject"),
             "Title": optional("title"),
-            "Pages": pdf.getNumPages(),
+            "Pages": num_pages,
             "Encrypted": self.is_pdf_encrypted(source_path),
             "Fields": bool(fields),
         }
@@ -291,9 +368,10 @@ class DocumentKeywords(LibraryContext):
     def is_pdf_encrypted(self, source_path: str = None) -> bool:
         """Check if PDF is encrypted.
 
-        Returns True even if PDF was decrypted.
-
         If no source path given, assumes a PDF is already opened.
+
+        :param source_path: filepath to the source pdf.
+        :return: True if file is encrypted.
 
         **Examples**
 
@@ -318,13 +396,9 @@ class DocumentKeywords(LibraryContext):
 
             def example_keyword():
                 is_encrypted = pdf.is_pdf_encrypted("/tmp/sample.pdf")
-
-        :param source_path: filepath to the source pdf.
-        :return: True if file is encrypted.
         """
-        # TODO: Why "Returns True even if PDF was decrypted."?
         self.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         return reader.isEncrypted
 
     @keyword
@@ -361,13 +435,13 @@ class DocumentKeywords(LibraryContext):
         :raises PdfReadError: if file is encrypted or other restrictions are in place
         """
         self.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         return reader.getNumPages()
 
     @keyword
-    def switch_to_pdf(self, source_path: str = None) -> None:
-        """Switch library's current fileobject to already open file
-        or open file if not opened.
+    def switch_to_pdf(self, source_path: Optional[FilePath] = None) -> None:
+        """Switch library's current fileobject to already opened file
+        or open a new file if not opened.
 
         This is done automatically in the PDF library keywords.
 
@@ -400,24 +474,22 @@ class DocumentKeywords(LibraryContext):
         :raises ValueError: if PDF filepath is not given and there are no active
             file to activate.
         """
-        # TODO: should this be a keyword or a private method?
-        if source_path and source_path not in self.ctx.fileobjects:
+        if not source_path:
+            if not self.active_pdf_document:
+                raise ValueError("No PDF is open")
+            self.logger.debug(
+                "Using already set document: %s", self.active_pdf_document.path
+            )
+            return
+
+        source_path = self.resolve_input(source_path)
+        if source_path not in self.ctx.documents:
             self.open_pdf(source_path)
-        elif not source_path and not (
-            self.ctx.active_pdf_document or self.ctx.active_pdf_document.fileobject
-        ):
-            raise ValueError("No PDF is open")
-        elif (
-            source_path
-            and self.ctx.active_pdf_document.fileobject
-            != self.ctx.fileobjects[source_path]
-        ):
-            self.logger.debug("Switching to document %s", source_path)
-            self.ctx.active_pdf_document.path = str(source_path)
-            self.ctx.active_pdf_document.fileobject = self.ctx.fileobjects[
-                str(source_path)
-            ]
-            self.ctx.active_pdf_document.fields = None
+        elif self.ctx.documents[source_path] != self.active_pdf_document:
+            self.logger.debug("Switching to already opened document: %s", source_path)
+            self.active_pdf_document = self.ctx.documents[source_path]
+        else:
+            self.logger.debug("Using already set document: %s", source_path)
 
     @keyword
     def get_text_from_pdf(
@@ -464,17 +536,16 @@ class DocumentKeywords(LibraryContext):
         :return: dictionary of pages and their texts.
         """
         self.switch_to_pdf(source_path)
-        if not self.active_pdf_document.is_converted:
-            self.ctx.convert(trim=trim)
+        self.ctx.convert(trim=trim)
 
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         pages = self._get_page_numbers(pages, reader)
         pdf_text = {}
         for idx, page in self.active_pdf_document.get_pages().items():
             if page.pageid not in pages:
                 continue
             pdf_text[idx] = [] if details else ""
-            for _, item in page.get_textboxes().items():
+            for _, item in page.textboxes.items():
                 if details:
                     pdf_text[idx].append(item)
                 else:
@@ -532,7 +603,7 @@ class DocumentKeywords(LibraryContext):
             if None then extracts all pages.
         """
         self.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         writer = PyPDF2.PdfFileWriter()
 
         output_path = self.resolve_output(output_path)
@@ -540,8 +611,8 @@ class DocumentKeywords(LibraryContext):
         pages = self._get_page_numbers(pages, reader)
         for pagenum in pages:
             writer.addPage(reader.getPage(int(pagenum) - 1))
-        with open(output_path, "wb") as f:
-            writer.write(f)
+        with open(output_path, "wb") as stream:
+            writer.write(stream)
 
     @keyword
     def rotate_page(
@@ -596,7 +667,7 @@ class DocumentKeywords(LibraryContext):
         """
         # TODO: don't save to a new file every time
         self.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         writer = PyPDF2.PdfFileWriter()
 
         output_path = self.resolve_output(output_path)
@@ -663,7 +734,7 @@ class DocumentKeywords(LibraryContext):
         """
         # TODO: don't save to a new file every time
         self.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
 
         output_path = self.resolve_output(output_path)
 
@@ -711,10 +782,8 @@ class DocumentKeywords(LibraryContext):
         :return: True if decrypt was successful, else False or Exception.
         :raises ValueError: on decryption errors.
         """
-        output_path = self.resolve_output(output_path)
-
         self.switch_to_pdf(source_path)
-        reader = self.ctx.active_pdf_document.reader
+        reader = self.active_pdf_document.reader
         try:
             match_result = reader.decrypt(password)
 
@@ -727,12 +796,13 @@ class DocumentKeywords(LibraryContext):
             else:
                 return False
 
+            output_path = self.resolve_output(output_path)
             self.save_pdf(output_path, reader)
             return True
 
         except NotImplementedError as e:
             raise ValueError(
-                f"Document {source_path} uses an unsupported encryption method."
+                f"Document {source_path!r} uses an unsupported encryption method"
             ) from e
         except KeyError:
             self.logger.info("PDF is not encrypted")
@@ -772,24 +842,23 @@ class DocumentKeywords(LibraryContext):
         :return: dictionary of figures divided into pages.
         """
         self.switch_to_pdf(source_path)
-        if not self.active_pdf_document.is_converted:
-            self.ctx.convert()
+        self.ctx.convert()
         pages = {}
         for pagenum, page in self.active_pdf_document.get_pages().items():
-            pages[pagenum] = page.get_figures()
+            pages[pagenum] = page.figures
         return pages
 
     @keyword
     def add_watermark_image_to_pdf(
         self,
-        image_path: str,
-        output_path: str,
-        source_path: str = None,
+        image_path: FilePath,
+        output_path: FilePath,
+        source_path: Optional[FilePath] = None,
         coverage: float = 0.2,
     ) -> None:
-        """Add image to PDF which can be new or existing PDF.
+        """Add an image into an existing or new PDF.
 
-        If no source path given, assumes a PDF is already opened.
+        If no source path is given, assume a PDF is already opened.
 
         **Examples**
 
@@ -829,31 +898,53 @@ class DocumentKeywords(LibraryContext):
         :param coverage: how the watermark image should be scaled on page,
          defaults to 0.2
         """
+        # Ensure an active input PDF.
         self.switch_to_pdf(source_path)
-        temp_pdf = os.path.join(tempfile.gettempdir(), "temp.pdf")
-        writer = PyPDF2.PdfFileWriter()
-        pdf = FPDF()
-        pdf.add_page()
-        reader = self.ctx.active_pdf_document.reader
-        mediabox = reader.getPage(0).mediaBox
-        im = Image.open(image_path)
+        input_reader = self.active_pdf_document.reader
+
+        # Set image boundaries.
+        mediabox = input_reader.getPage(0).mediaBox
+        img_obj = Image.open(image_path)
         max_width = int(float(mediabox.getWidth()) * coverage)
         max_height = int(float(mediabox.getHeight()) * coverage)
-        width, height = self.fit_dimensions_to_box(*im.size, max_width, max_height)
+        img_width, img_height = self.fit_dimensions_to_box(
+            *img_obj.size, max_width, max_height
+        )
 
-        pdf.image(name=image_path, x=40, y=60, w=width, h=height)
-        pdf.output(name=temp_pdf)
+        # Put the image on the first page of a temporary PDF file, so we can merge this
+        #  PDF formatted image page with every single page of the targeted PDF.
+        # NOTE(cmin764): Keep the watermark image PDF reader open along the entire
+        #  process, so the final PDF gets rendered correctly)
+        with tempfile.TemporaryFile(suffix=".pdf") as temp_img_pdf:
+            # Save image in temporary PDF using FPDF.
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.image(name=image_path, x=40, y=60, w=img_width, h=img_height)
+            pdf.output(name=temp_img_pdf)
 
-        img = PyPDF2.PdfFileReader(temp_pdf)
-        watermark = img.getPage(0)
-        for n in range(reader.getNumPages()):
-            page = reader.getPage(n)
-            page.mergePage(watermark)
-            writer.addPage(page)
+            # Get image page from temporary PDF using PyPDF2. (compatible with the
+            # writer)
+            img_pdf_reader = PyPDF2.PdfFileReader(temp_img_pdf)
+            watermark_page = img_pdf_reader.getPage(0)
 
-        output_path = self.resolve_output(output_path)
-        with open(output_path, "wb") as f:
-            writer.write(f)
+            # Write the merged pages of source PDF into the destination one.
+            output_writer = PyPDF2.PdfFileWriter()
+            for idx in range(input_reader.getNumPages()):
+                page = input_reader.getPage(idx)
+                page.mergePage(watermark_page)
+                output_writer.addPage(page)
+
+            # Since the input PDF can be the same with the output, make sure we close
+            #  the input stream after writing into an auxiliary buffer. (if the input
+            #  stream is closed before writing, then the writing is incomplete; and we
+            #  can't read and write at the same time into the same file, that's why we
+            #  use an auxiliary buffer)
+            output_buffer = io.BytesIO()
+            output_writer.write(output_buffer)
+            self.active_pdf_document.close()
+            output_path = self.resolve_output(output_path)
+            with open(output_path, "wb") as output_stream:
+                output_stream.write(output_buffer.getvalue())
 
     @staticmethod
     def fit_dimensions_to_box(
@@ -887,17 +978,17 @@ class DocumentKeywords(LibraryContext):
         :param reader: a PyPDF2 reader.
         """
         writer = PyPDF2.PdfFileWriter()
-        for i in range(reader.getNumPages()):
-            page = reader.getPage(i)
+        for idx in range(reader.getNumPages()):
+            page = reader.getPage(idx)
             try:
                 writer.addPage(page)
-            except Exception as e:  # pylint: disable=W0703
-                self.logger.warning(repr(e))
-                writer.addPage(page)
+            except Exception as exc:  # pylint: disable=W0703
+                self.logger.warning(repr(exc))
+                raise
 
         output_path = self.resolve_output(output_path)
-        with open(output_path, "wb") as f:
-            writer.write(f)
+        with open(output_path, "wb") as stream:
+            writer.write(stream)
 
     @staticmethod
     def _get_page_numbers(

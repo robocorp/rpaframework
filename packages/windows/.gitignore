@@ -1,0 +1,23 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+
+# Build artifacts
+dist/
+sdist/
+*.libspec
+
+# Exports
+requirements.txt
+requirements-dev.txt
+setup.py
+
+# Unit tests
+.pytest_cache/
+.coverage
+
+# Robot Framework
+tests/output
+tests/temp
+tests/*.html
+tests/*.xml

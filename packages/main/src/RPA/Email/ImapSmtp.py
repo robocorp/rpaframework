@@ -1,4 +1,3 @@
-import base64
 from enum import Enum
 from functools import wraps
 
@@ -25,10 +24,14 @@ from imaplib import IMAP4_SSL
 from smtplib import SMTP, SMTP_SSL, ssl
 from smtplib import SMTPConnectError, SMTPNotSupportedError, SMTPServerDisconnected
 
-from typing import Any, List, Union
+from typing import Any, BinaryIO, List, Tuple, Union
 
+from htmldocx import HtmlToDocx
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
 from RPA.RobotLogListener import RobotLogListener
+
+
+FilePath = Union[str, Path]
 
 
 class Action(Enum):
@@ -58,6 +61,15 @@ def to_action(value):
         return Action[sanitized]
     except KeyError as err:
         raise ValueError(f"Unknown email action: {value}") from err
+
+
+def get_part_filename(msg):
+    filename = msg.get_filename()
+    if filename and decode_header(filename)[0][1] is not None:
+        filename = decode_header(filename)[0][0].decode(decode_header(filename)[0][1])
+    if filename:
+        filename = filename.replace("\r", "").replace("\n", "")
+    return filename
 
 
 IMAGE_FORMATS = ["jpg", "jpeg", "bmp", "png", "gif"]
@@ -373,7 +385,7 @@ class ImapSmtp:
         recipients: str,
         subject: str = "",
         body: str = "",
-        attachments: str = None,
+        attachments: Union[List[str], str] = None,
         html: bool = False,
         images: str = None,
     ) -> bool:
@@ -412,7 +424,7 @@ class ImapSmtp:
         msg["From"] = sender
         msg["To"] = ",".join(recipients)
         msg["Subject"] = Header(subject, self.encoding)
-
+        sender = sender.encode("idna").decode("ascii")
         if html:
             for im in images:
                 im = im.strip()
@@ -508,55 +520,56 @@ class ImapSmtp:
             messages.append(message_dict)
         return messages
 
-    def get_decoded_email_body(self, message):
-        """Decode email body.
+    def get_decoded_email_body(
+        self, message, html_first: bool = False
+    ) -> Tuple[str, bool]:
+        """Decodes email body and extracts its text/html content.
 
-        :param message_body: Raw 7-bit message body input e.g. from imaplib. Double
+        Automatically detects character set if the header is not set.
+
+        :param message: Raw 7-bit message body input e.g. from `imaplib`. Double
             encoded in quoted-printable and latin-1
-        :return: Message body as unicode string and information if message has
-            attachments
-
-        Detect character set if the header is not set.
-        We try to get text/plain, but if there is not one then fallback to text/html.
+        :param html_first: Prioritize html extraction over text when this is True
+        :returns: Message body as unicode string and a boolean telling if the message
+            has attachments
         """
-        text = ""
-        has_attachments = False
-        if message.is_multipart():
-            html = None
-
-            for part in message.walk():
-                # content_maintype = part.get_content_maintype()
-                content_disposition = part.get("Content-Disposition")
-                if content_disposition and "attachment" in content_disposition:
-                    has_attachments = True
-                    continue
-                if part.get_content_charset() is None:
-                    # We cannot know the character set, so return decoded "something"
-                    text = part.get_payload(decode=True)
-                    continue
-
-                charset = part.get_content_charset()
-                if part.get_content_type() == "text/plain":
-                    text = str(part.get_payload(decode=True), str(charset), "ignore")
-                if part.get_content_type() == "text/html":
-                    html = str(part.get_payload(decode=True), str(charset), "ignore")
-
-            if text:
-                return (
-                    (text.strip(), has_attachments) if text else ("", has_attachments)
-                )
-            else:
-                return (
-                    (html.strip(), has_attachments) if html else ("", has_attachments)
-                )
-        else:
+        if not message.is_multipart():
             content_charset = message.get_content_charset()
             text = str(
                 message.get_payload(decode=True),
                 content_charset or self.encoding,
                 "ignore",
             )
-            return text.strip(), has_attachments
+            return text.strip(), False
+
+        text = html = None
+        has_attachments = False
+
+        for part in message.walk():
+            content_filename = get_part_filename(part)
+            if content_filename:
+                has_attachments = True
+                continue
+
+            content_charset = part.get_content_charset()
+            if not content_charset:
+                # We cannot know the character set, so return decoded "something"
+                text = part.get_payload(decode=True)
+                continue
+
+            content_type = part.get_content_type()
+            _data = str(part.get_payload(decode=True), str(content_charset), "ignore")
+            if content_type == "text/plain":
+                text = _data
+            elif content_type == "text/html":
+                html = _data
+
+        if html_first:
+            data = html or text
+        else:
+            data = text or html
+        data = data.strip() if data else ""
+        return data, has_attachments
 
     @imap_connection
     def _do_actions_on_messages(
@@ -644,7 +657,7 @@ class ImapSmtp:
                 result["message_count"] += len(mail_ids)
                 result["ids"].extend(mail_ids)
                 for mail_id in mail_ids:
-                    mail_uid, message = self._fetch_uid_and_body(mail_id, actions)
+                    mail_uid, message = self._fetch_uid_and_message(mail_id, actions)
                     if mail_uid is None or mail_uid in result["uids"].keys():
                         continue
                     message["uid"] = mail_uid
@@ -839,14 +852,17 @@ class ImapSmtp:
         :param target_folder: local folder for saving attachments to (needs to exist),
             defaults to user's home directory if None
         :param overwrite: overwrite existing file is True, defaults to False
-        :return: list of saved attachments
+        :return: list of saved attachments (list of absolute filepaths) of all emails
 
         Example:
 
         .. code-block:: robotframework
 
-            ${numsaved}  Save Attachments   SUBJECT "rpa task"
-            ...          target_folder=${CURDIR}${/}messages  overwrite=True
+            ${attachments}  Save Attachments   SUBJECT "rpa task"
+            ...             target_folder=${CURDIR}${/}messages  overwrite=True
+            FOR  ${a}  IN  @{attachments}
+                OperatingSystem.File Should Exist  ${a}
+            END
         """  # noqa: E501
         attachments_saved = []
         messages = self.list_messages(criterion)
@@ -858,23 +874,30 @@ class ImapSmtp:
 
     def save_attachment(
         self, message: Union[dict, Message], target_folder: str, overwrite: bool
-    ):
+    ) -> str:
         # pylint: disable=C0301
         """Save mail attachment of single given email into local folder
 
         :param message: message item
         :param target_folder: local folder for saving attachments to (needs to exist),
-            defaults to user's home directory if None
+         defaults to user's home directory if None
         :param overwrite: overwrite existing file is True, defaults to False
+        :return: list of saved attachments (list of absolute filepaths) in one email
 
         Example:
 
         .. code-block:: robotframework
 
-            @{emails}  List Messages  SUBJECT "rpa task"
-            FOR  ${email}  IN  @{emails}
-                Run Keyword If   ${email}[Has-Attachments] == True
-                ...              Save Attachment  ${email}  target_folder=${CURDIR}  overwrite=True
+            @{emails}    List Messages    ALL
+            FOR    ${email}    IN    @{emails}
+                IF    ${email}[Has-Attachments]
+                    Log To Console    Saving attachment for: ${email}[Subject]
+                    ${attachments}=    Save Attachment
+                    ...    ${email}
+                    ...    target_folder=${CURDIR}
+                    ...    overwrite=True
+                    Log To Console    Saved attachments: ${attachments}
+                END
             END
         """  # noqa: E501
         if target_folder is None:
@@ -884,25 +907,12 @@ class ImapSmtp:
     def _save_attachment(self, message, target_folder, overwrite):
         attachments_saved = []
         msg = message["Message"] if isinstance(message, dict) else message
+
         for part in msg.walk():
             content_maintype = part.get_content_maintype()
-            content_disposition = part.get("Content-Disposition")
-            self.logger.info(
-                "Email attachment content-type: '%s' and content-disposition: '%s'",
-                content_maintype,
-                content_disposition,
-            )
-            if content_maintype != "multipart" and content_disposition is not None:
-                filename = part.get_filename().replace("\r", "").replace("\n", "")
-                self.logger.info("Attachment filename: '%s'", filename)
-                if filename:
-                    transfer_encoding = part.get_all("Content-Transfer-Encoding")
-                    if transfer_encoding and transfer_encoding[0] == "base64":
-                        filename_parts = filename.split("?")
-                        if len(filename_parts) > 1:
-                            filename = base64.b64decode(filename_parts[3]).decode(
-                                filename_parts[1]
-                            )
+            if content_maintype != "multipart":
+                filename = get_part_filename(part)
+                if bool(filename):
                     filepath = Path(target_folder) / Path(filename).name
                     self.logger.info("Attachment filepath: '%s'", filepath)
                     if not filepath.exists() or overwrite:
@@ -916,7 +926,7 @@ class ImapSmtp:
                                 f.write(payload)
                                 attachments_saved.append(str(filepath))
                         else:
-                            self.logger.debug(
+                            self.logger.info(
                                 "Attachment '%s' did not have payload to write",
                                 filename,
                             )
@@ -1212,32 +1222,36 @@ class ImapSmtp:
         if criterion is None or len(criterion) < 1:
             raise KeyError("Criterion is required parameter")
 
-    def _fetch_uid_and_body(self, mail_id, actions):
-        body = None
+    def _fetch_uid_and_message(self, mail_id, actions):
+        message_dict = None
         _, data = self.imap_conn.fetch(mail_id, "(UID RFC822)")
         pattern_uid = re.compile(r".*UID (\d+) RFC822")
         decoded_data = bytes.decode(data[0][0]) if data[0] else None
+        self.logger.debug("message identification: %s", decoded_data)
         match_result = pattern_uid.match(decoded_data) if decoded_data else None
         uid = match_result.group(1) if match_result else None
         if uid:
-            body = self._fetch_body(mail_id, data, actions)
+            message_dict = self._fetch_message_dict(mail_id, data, actions)
 
         key_to_change = None
         message_id_to_add = None
-        for key, val in body.items():
-            if key.lower() == "message-id":
-                key_to_change = key
-                message_id_to_add = str(val).replace("<", "").replace(">", "").strip()
-        if key_to_change:
-            body["Message-ID"] = message_id_to_add
-            if key_to_change != "Message-ID":
-                del body[key_to_change]
-        return uid, body
+        if message_dict:
+            for key, val in message_dict.items():
+                if key.lower() == "message-id":
+                    key_to_change = key
+                    message_id_to_add = (
+                        str(val).replace("<", "").replace(">", "").strip()
+                    )
+            if key_to_change:
+                message_dict["Message-ID"] = message_id_to_add
+                if key_to_change != "Message-ID":
+                    del message_dict[key_to_change]
+        return uid, message_dict
 
-    def _fetch_body(self, mail_id, data, actions):
+    def _fetch_message_dict(self, mail_id, data, actions):
         # _, data = self.imap_conn.fetch(mail_id, "(RFC822)")
         message = message_from_bytes(data[0][1])
-        message_dict = {"Mail-Id": mail_id, "Message": message}
+        message_dict = {"Mail-Id": mail_id, "Message": message, "Body": ""}
         if Action.msg_save in actions:
             message_dict["bytes"] = data[0][1]
         for k, v in message.items():
@@ -1472,3 +1486,76 @@ class ImapSmtp:
             result["actions_done"] > 0
             and result["actions_done"] == result["message_count"]
         )
+
+    @staticmethod
+    def _ensure_path_object(source: FilePath) -> Path:
+        if not isinstance(source, Path):
+            source = Path(source)
+        return source.expanduser().resolve()
+
+    def email_to_document(
+        self, input_source: Union[FilePath, BinaryIO, bytes], output_path: FilePath
+    ):
+        """Convert a raw e-mail into a Word document.
+
+        This keyword extracts the HTML (or Text) content from the passed input e-mail
+        and saves it into docx format at the provided output path.
+
+        :param input_source: Path, bytes or file-like object with the input raw e-mail
+            content
+        :param output_path: Where to save the output docx file
+
+        Example:
+
+        **Robot Framework**
+
+        .. code-block:: robotframework
+
+            Convert email to docx
+                ${mail_file} =     Get Work Item File    mail.eml
+                Email To Document    ${mail_file}    ${OUTPUT_DIR}${/}mail.docx
+
+        **Python**
+
+        .. code-block:: python
+
+            from pathlib import Path
+            from RPA.Email.ImapSmtp import ImapSmtp
+            from RPA.Robocorp.WorkItems import WorkItems
+
+            lib_work = WorkItems()
+            lib_mail = ImapSmtp()
+
+            def convert_email_to_docx():
+                lib_work.get_input_work_item()
+                mail_file = lib_work.get_work_item_file("mail.eml")
+                lib_mail.email_to_document(mail_file, Path("./output") / "mail.docx")
+
+            convert_email_to_docx()
+        """
+
+        if hasattr(input_source, "read"):
+            self.logger.info("Reading raw e-mail bytes from the provided source object")
+            data = input_source.read()
+        elif isinstance(input_source, bytes):
+            self.logger.info("Using the provided source bytes as raw e-mail content")
+            data = input_source
+        else:
+            input_source = self._ensure_path_object(input_source)
+            self.logger.info("Reading raw e-mail bytes from: %s", input_source)
+            data = input_source.read_bytes()
+        assert isinstance(
+            data, bytes
+        ), "bytes expected for e-mail parsing, got %s" % type(data)
+
+        self.logger.info("Getting the html/text from the raw e-mail")
+        message = message_from_bytes(data)
+        body, _ = self.get_decoded_email_body(message, html_first=True)
+
+        h2d_parser = HtmlToDocx()
+        self.logger.debug("Converting html/text content:\n%s", body)
+        docx = h2d_parser.parse_html_string(body)
+        output_path = self._ensure_path_object(output_path)
+        self.logger.info("Writing converted document into: %s", output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        docx.save(output_path)

@@ -1,15 +1,18 @@
 *** Settings ***
 Library          RPA.Database
 Library          OperatingSystem
+
 Force Tags       database  database-sqlite3
 Suite Setup      Initialize sqlite3 database
 Suite Teardown   Disconnect from sqlite3 database
 
+
 *** Variables ***
-${RESOURCE_DIR}   ${CURDIR}${/}..${/}resources${/}
-${SQLITE_FILE}    ${RESOURCE_DIR}orders.db
+${RESOURCE_DIR}   ${CURDIR}${/}..${/}resources
+${SQLITE_FILE}    ${RESOURCE_DIR}${/}orders.db
 ${SQLITE_TESTDB}  ${CURDIR}${/}sqlitetest.db
-${SQLITE_INIT}    ${RESOURCE_DIR}sqllite3_init.sql
+${SQLITE_INIT}    ${RESOURCE_DIR}${/}sqllite3_init.sql
+
 
 *** Keywords ***
 Initialize sqlite3 database
@@ -20,6 +23,7 @@ Initialize sqlite3 database
 Disconnect from sqlite3 database
     Disconnect From Database
     Remove File   ${SQLITE_TESTDB}
+
 
 *** Tasks ***
 Select data from sqlite3 database
@@ -62,3 +66,11 @@ Get Number of Rows From Table
 Query No Rows
     ${rows}=    Get Rows  incoming_orders  conditions=asiakas='notexist'
     Length Should Be    ${rows}   0
+
+Insert With Returning
+    @{result} =   Run Keyword And Ignore Error   Query   INSERT INTO incoming_orders(asiakas,amount) VALUES ('Robocorp',99) RETURNING asiakas;  returning=${True}
+    ${status} =   Set Variable  ${result}[0]
+    IF    "${status}" == "PASS"
+        ${table} =    Set Variable  ${result}[1]
+        Should Be Equal    ${table}[0][0]    Robocorp
+    END

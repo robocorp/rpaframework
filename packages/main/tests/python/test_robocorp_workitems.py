@@ -1,5 +1,6 @@
 import copy
 import json
+import logging
 import os
 import pytest
 import tempfile
@@ -23,7 +24,7 @@ from RPA.Robocorp.WorkItems import (
     State,
     WorkItems,
 )
-from RPA.Robocorp.utils import RequestsHTTPError
+from RPA.Robocorp.utils import DEBUG_ON, RequestsHTTPError
 
 
 VARIABLES_FIRST = {"username": "testguy", "address": "guy@company.com"}
@@ -579,7 +580,7 @@ class TestLibrary:
             {"exception_type": "BUSINESS"},
             {
                 "exception_type": "APPLICATION",
-                "code": "ERR_UNEXPECTED",
+                "code": "UNEXPECTED_ERROR",
                 "message": "This is an unexpected error",
             },
             {
@@ -627,7 +628,7 @@ class TestLibrary:
         with effect:
             library.release_input_work_item(
                 "FAILED", **(exception or {})
-            )  # intentionally provide a string for the state
+            )  # intentionally providing a string for the state
         if success:
             assert library.current.state == State.FAILED
 
@@ -660,30 +661,26 @@ class TestLibrary:
         assert library.current.state is None  # because the previous one has a state
         assert library.adapter.releases == [("workitem-id-first", State.DONE, None)]
 
-    def _get_body_from_email(self, library):
-        library.get_input_work_item()
-        return library.parse_work_item_from_email()
-
     @pytest.mark.parametrize(
-        "email_file,expected_body,effect",
+        "email_file,expected_body",
         [
-            ("email-mika.txt", {"message": "from email"}, nullcontext()),
-            ("email-mika-no-json.txt", None, pytest.raises(json.JSONDecodeError)),
+            ("mail-text.txt", "A message from e-mail"),
+            ("mail-json.txt", {"message": "from email"}),
+            ("mail-yaml.txt", {"message": "from email", "extra": {"value": 1}}),
         ],
     )
-    def test_parse_work_item_from_email(
-        self, library, email_file, expected_body, effect
-    ):
+    def test_parse_work_item_from_email(self, library, email_file, expected_body):
         raw_email = (RESOURCES_DIR / "work-items" / email_file).read_text()
         library.adapter.DATA["workitem-id-first"]["rawEmail"] = raw_email
 
-        with effect:
-            body = self._get_body_from_email(library)
-            assert body == expected_body
+        library.get_input_work_item()
+        body = library.get_work_item_variable("parsedEmail")["Body"]
+        assert body == expected_body
 
     def test_parse_work_item_from_email_missing_content(self, library):
+        library.get_input_work_item()
         with pytest.raises(KeyError):
-            self._get_body_from_email(library)
+            library.get_work_item_variable("parsedEmail")
 
 
 class TestFileAdapter:
@@ -845,11 +842,19 @@ class TestRobocorpAdapter:
             "RPA.Robocorp.utils.requests.delete"
         ) as mock_delete, mock.patch(
             "time.sleep", return_value=None
-        ):
+        ) as mock_sleep:
             self.mock_get = mock_get
             self.mock_post = mock_post
             self.mock_put = mock_put
             self.mock_delete = mock_delete
+
+            self.mock_get.__name__ = "get"
+            self.mock_post.__name__ = "post"
+            self.mock_put.__name__ = "put"
+            self.mock_delete.__name__ = "delete"
+
+            self.mock_sleep = mock_sleep
+
             yield RobocorpAdapter()
 
     def test_reserve_input(self, adapter):
@@ -865,7 +870,7 @@ class TestRobocorpAdapter:
 
     @pytest.mark.parametrize(
         "exception",
-        [None, {"type": "BUSINESS", "code": "ERR_UNEXPECTED", "message": None}],
+        [None, {"type": "BUSINESS", "code": "INVALID_DATA", "message": None}],
     )
     def test_release_input(self, adapter, exception):
         item_id = "26"
@@ -951,17 +956,23 @@ class TestRobocorpAdapter:
     def failing_response(self, request):
         return self._failing_response(request)
 
+    @pytest.fixture
+    def success_response(self):
+        resp = mock.MagicMock()
+        resp.ok = True
+        return resp
+
     @pytest.mark.parametrize(
         "status_code,call_count",
         [
             # Retrying enabled:
             (429, 5),
+            (500, 5),
             # Retrying disabled:
             (400, 1),
             (401, 1),
             (403, 1),
             (409, 1),
-            (500, 1),
         ],
     )
     def test_list_files_retrying(
@@ -978,9 +989,9 @@ class TestRobocorpAdapter:
     @pytest.fixture(
         params=[
             # Requests response attribute values for: `.json()`, `.raise_for_status()`
-            ({"error": {"code": "ERR_UNEXPECTED"}}, None),  # normal response
-            ('{"error": {"code": "ERR_UNEXPECTED"}}', None),  # double serialized
-            (r'"{\"error\": {\"code\": \"ERR_UNEXPECTED\"}}"', None),  # triple
+            ({"error": {"code": "UNEXPECTED_ERROR"}}, None),  # normal response
+            ('{"error": {"code": "UNEXPECTED_ERROR"}}', None),  # double serialized
+            (r'"{\"error\": {\"code\": \"UNEXPECTED_ERROR\"}}"', None),  # triple
             ('[{"some": "value"}]', HTTPError()),  # double serialized list
         ]
     )
@@ -994,11 +1005,102 @@ class TestRobocorpAdapter:
         with pytest.raises(RequestsHTTPError) as exc_info:
             adapter.list_files("4")
 
-        err = "ERR_UNEXPECTED"
-        call_count = 1
+        err = "UNEXPECTED_ERROR"
+        call_count = 5
         if err not in str(failing_deserializing_response.json.return_value):
             err = "Error"  # default error message in the absence of it
-            call_count = 5
         assert exc_info.value.status_code == 429
         assert exc_info.value.status_message == err
         assert self.mock_get.call_count == call_count
+
+    def test_logging_and_sleeping(self, adapter, failing_response, caplog):
+        assert DEBUG_ON, 'this test should be ran with "RPA_DEBUG_API" on'
+
+        # 1st call: raises 500 -> unexpected server crash, therefore needs retry
+        #   (1 sleep)
+        # 2nd call: now raises 429 -> rate limit hit, needs retry and sleeps extra
+        #   (2 sleeps)
+        # 3rd call: raises 400 -> malformed request, doesn't retry anymore and raises
+        #   with last error, no sleeps performed
+        status_code = mock.PropertyMock(side_effect=[500, 429, 400])
+        type(failing_response).status_code = status_code
+        failing_response.reason = "for no reason :)"
+        self.mock_post.return_value = failing_response
+        with pytest.raises(RequestsHTTPError) as exc_info:
+            with caplog.at_level(logging.DEBUG):
+                adapter.create_output("1")
+
+        assert exc_info.value.status_code == 400  # last received server code
+        assert self.mock_sleep.call_count == 3  # 1 sleep (500) + 2 sleeps (429)
+        expected_logs = [
+            "POST 'https://api.process.com/process-v1/workspaces/1/processes/5/work-items/1/output'",
+            "API response: 500 'for no reason :)'",
+            "API response: 429 'for no reason :)'",
+            "API response: 400 'for no reason :)'",
+        ]
+        captured_logs = set(record.message for record in caplog.records)
+        for expected_log in expected_logs:
+            assert expected_log in captured_logs
+
+    def test_add_get_file(self, adapter, success_response, caplog):
+        """Uploads and retrieves files with AWS support.
+
+        This way we check if sensitive information (like auth params) don't get
+        exposed.
+        """
+        item_id = adapter.reserve_input()  # reserved initially from the env var
+        file_name = "myfile.txt"
+        file_content = b"some-data"
+
+        # Behaviour for: adding a file (2x POST), getting the file (3x GET).
+        #
+        # POST #1: 201 - default error handling
+        # POST #2: 201 - custom error handling -> status code retrieved
+        # GET #1: 200 - default error handling
+        # GET #2: 200 - default error handling
+        # GET #3: 200 - custom error handling -> status code retrieved
+        status_code = mock.PropertyMock(side_effect=[201, 200, 200])
+        type(success_response).status_code = status_code
+        # POST #1: JSON with file related data
+        # POST #2: ignored response content
+        # GET #1: JSON with all the file IDs
+        # GET #2: JSON with the file URL corresponding to ID
+        # GET #3: bytes response content (not ignored)
+        post_data = {
+            "url": "https://s3.eu-west-1.amazonaws.com/ci-4f23e-robocloud-td",
+            "fields": {
+                "dont": "care",
+            },
+        }
+        get_files_data = [
+            {
+                "fileName": file_name,
+                "fileId": "file-id",
+            }
+        ]
+        get_file_data = {
+            "url": "https://ci-4f23e-robocloud-td.s3.eu-west-1.amazonaws.com/files/ws_17/wi_0dd63f07-ba7b-414a-bf92-293080975d2f/file_eddfd9ac-143f-4eb9-888f-b9c378e67aec?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=secret-credentials",
+        }
+        success_response.json.side_effect = [post_data, get_files_data, get_file_data]
+        success_response.content = file_content
+        self.mock_post.return_value = self.mock_get.return_value = success_response
+
+        # 2x POST (CR file entry, AWS file content)
+        adapter.add_file(
+            item_id,
+            file_name,
+            original_name="not-used.txt",
+            content=file_content,
+        )
+        files = self.mock_post.call_args_list[-1][1]["files"]
+        assert files == {"file": (file_name, file_content)}
+
+        # 3x GET (all files, specific file, file content)
+        content = adapter.get_file(item_id, file_name)
+        assert content == file_content
+
+        # Making sure sensitive info doesn't get exposed.
+        exposed = any(
+            "secret-credentials" in record.message for record in caplog.records
+        )
+        assert not exposed, "secret got exposed"
