@@ -4,15 +4,22 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
++++++++++
+
+12.2.0 - 17 Dec 2021
+--------------------
+
 - Library **RPA.Database**:
 
     - Keyword ``Query`` supports now a ``returning`` parameter which explicitly
       instructs the statement execution to return or not the fetched values.
-    - Auto commits and rollbacks fixes given the ``sanstran`` flag.
+      (:issue:`286`)
+    - Auto commits and rollbacks fixes given the ``sanstran`` flag. (:issue:`282`)
 
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-+++++++++
+- Library **RPA.PDF**: Fixed ``Add Watermark Image To PDF`` with the same file for both
+  input and output (:issue:`337`, ``rpaframework-pdf`` **1.30.4**)
 
 12.1.2 - 14 Dec 2021
 --------------------
