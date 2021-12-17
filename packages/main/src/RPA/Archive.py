@@ -94,16 +94,17 @@ class Archive:
 
         :param folder: name of the folder to archive
         :param archive_name: filename of the archive
-        :param recursive: should sub directories be included, defaults is False
-        :param include: define file pattern to include in the package, defaults to None (means all files)
-        :param exclude: define file pattern to exclude from the package, defaults is None
-        :param compression: type of package compression method, defaults to "stored"
+        :param recursive: should sub directories be included, default is False
+        :param include: define file pattern to include in the package, default is None which means all files are included
+        :param exclude: define file pattern to exclude from the package, default is None
+        :param compression: type of package compression method, default is "stored"
+        :return: None
 
         This keyword creates an ZIP archive of a local folder. By default subdirectories are not
-        included, but they can included using `recursive` argument.
+        included, but they can be included using the `recursive` argument.
 
         To include only certain files, like TXT files, the argument `include` can be used.
-        Similarly to exclude certain file, like dotfiles, the argument `exclude` can be used.
+        Similarly to exclude certain files, like dotfiles, the argument `exclude` can be used.
 
         Compression methods:
 
@@ -158,10 +159,10 @@ class Archive:
 
         :param folder: name of the folder to archive
         :param archive_name: filename of the archive
-        :param recursive: should sub directories be included, defaults is False
-        :param include: define file pattern to include in the package,
-            by default all files are included
-        :param exclude: define file pattern to exclude from the package
+        :param recursive: should sub directories be included, default is False
+        :param include: define file pattern to include in the package, default is None which means all files are included
+        :param exclude: define file pattern to exclude from the package, default is None
+        :return: None
 
         This keyword creates an TAR or TAR.GZ archive of a local folder. Type of archive
         is determined by the file extension. By default subdirectories are not
@@ -197,10 +198,10 @@ class Archive:
 
         :param files: name of the file, or list of files, to add
         :param archive_name: filename of the archive
-        :param folder: name of the folder for added file,
-            relative path in the archive
+        :param folder: name of the folder where the file will be added, relative path within the archive
+        :return: None
 
-        This keyword adds file or list of files into existing archive. Files
+        This keyword adds a file or list of files into an existing archive. Files
         can be added to archive structure with relative path using argument `folder`.
 
         Example:
@@ -239,8 +240,9 @@ class Archive:
         """List files in an archive
 
         :param archive_name: filename of the archive
+        :return: dictionary variable containing the keys name, size, mtime, modified
 
-        Returns list of file, where each file in a list is a dictionary
+        Returns list of files, where each file in a list is a dictionary
         with following attributes:
 
         - name
@@ -290,6 +292,7 @@ class Archive:
         """Get information about the archive
 
         :param archive_name: filename of the archive
+        :return: dictionary variable containing the keys filename, filemode, size, mtime, modified
 
         Returns following file attributes in a dictionary:
 
@@ -334,8 +337,9 @@ class Archive:
 
         :param archive_name: filename of the archive
         :param path: filepath to extract file into, default is current working directory
-        :param members: list of files to extract from, by default
+        :param members: list of files to extract from archive, by default
             all files in archive are extracted
+        :return: None
 
         This keyword supports extracting files from zip, tar and tar.gz archives.
 
@@ -369,13 +373,14 @@ class Archive:
 
     def extract_file_from_archive(
         self, filename: str, archive_name: str, path: str = None
-    ):  # pylint: disable=C0301
+    ) -> None:  # pylint: disable=C0301
         """Extract a file from archive into local directory
 
         :param filename: name of the file to extract
         :param archive_name: filename of the archive
         :param path: filepath to extract file into,
             default is current working directory
+        :return: None
 
         This keyword supports extracting a file from zip, tar and tar.gz archives.
 
