@@ -270,12 +270,14 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>files</strong> – name of the file, or list of files, to add</p></li>
 <li><p><strong>archive_name</strong> – filename of the archive</p></li>
-<li><p><strong>folder</strong> – name of the folder for added file,
-relative path in the archive</p></li>
+<li><p><strong>folder</strong> – name of the folder where the file will be added, relative path within the archive</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
 </dl>
-<p>This keyword adds file or list of files into existing archive. Files
+<p>This keyword adds a file or list of files into an existing archive. Files
 can be added to archive structure with relative path using argument <cite>folder</cite>.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add To Archive</span><span class="p">  </span><span class="c">extrafile.txt</span><span class="p">  </span><span class="c">myfiles.zip</span><span class="p"></span>
@@ -295,11 +297,13 @@ can be added to archive structure with relative path using argument <cite>folder
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>folder</strong> – name of the folder to archive</p></li>
 <li><p><strong>archive_name</strong> – filename of the archive</p></li>
-<li><p><strong>recursive</strong> – should sub directories be included, defaults is False</p></li>
-<li><p><strong>include</strong> – define file pattern to include in the package,
-by default all files are included</p></li>
-<li><p><strong>exclude</strong> – define file pattern to exclude from the package</p></li>
+<li><p><strong>recursive</strong> – should sub directories be included, default is False</p></li>
+<li><p><strong>include</strong> – define file pattern to include in the package, default is None which means all files are included</p></li>
+<li><p><strong>exclude</strong> – define file pattern to exclude from the package, default is None</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <p>This keyword creates an TAR or TAR.GZ archive of a local folder. Type of archive
@@ -325,17 +329,20 @@ Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</ci
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>folder</strong> – name of the folder to archive</p></li>
 <li><p><strong>archive_name</strong> – filename of the archive</p></li>
-<li><p><strong>recursive</strong> – should sub directories be included, defaults is False</p></li>
-<li><p><strong>include</strong> – define file pattern to include in the package, defaults to None (means all files)</p></li>
-<li><p><strong>exclude</strong> – define file pattern to exclude from the package, defaults is None</p></li>
-<li><p><strong>compression</strong> – type of package compression method, defaults to “stored”</p></li>
+<li><p><strong>recursive</strong> – should sub directories be included, default is False</p></li>
+<li><p><strong>include</strong> – define file pattern to include in the package, default is None which means all files are included</p></li>
+<li><p><strong>exclude</strong> – define file pattern to exclude from the package, default is None</p></li>
+<li><p><strong>compression</strong> – type of package compression method, default is “stored”</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <p>This keyword creates an ZIP archive of a local folder. By default subdirectories are not
-included, but they can included using <cite>recursive</cite> argument.</p>
+included, but they can be included using the <cite>recursive</cite> argument.</p>
 <p>To include only certain files, like TXT files, the argument <cite>include</cite> can be used.
-Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</cite> can be used.</p>
+Similarly to exclude certain files, like dotfiles, the argument <cite>exclude</cite> can be used.</p>
 <p>Compression methods:</p>
 <ul class="simple">
 <li><p>stored, default</p></li>
@@ -363,9 +370,12 @@ Similarly to exclude certain file, like dotfiles, the argument <cite>exclude</ci
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>archive_name</strong> – filename of the archive</p></li>
 <li><p><strong>path</strong> – filepath to extract file into, default is current working directory</p></li>
-<li><p><strong>members</strong> – list of files to extract from, by default
+<li><p><strong>members</strong> – list of files to extract from archive, by default
 all files in archive are extracted</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <p>This keyword supports extracting files from zip, tar and tar.gz archives.</p>
@@ -381,7 +391,7 @@ can be set to define extraction path.</p>
 
 <dl class="method">
 <dt id="RPA.Archive.Archive.extract_file_from_archive">
-<code class="sig-name descname">extract_file_from_archive</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">archive_name: str</em>, <em class="sig-param">path: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Archive.Archive.extract_file_from_archive" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">extract_file_from_archive</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">archive_name: str</em>, <em class="sig-param">path: str = None</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.Archive.Archive.extract_file_from_archive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract a file from archive into local directory</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -391,6 +401,9 @@ can be set to define extraction path.</p>
 <li><p><strong>path</strong> – filepath to extract file into,
 default is current working directory</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <p>This keyword supports extracting a file from zip, tar and tar.gz archives.</p>
@@ -410,6 +423,9 @@ but <cite>path</cite> argument can be set to define extraction path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>archive_name</strong> – filename of the archive</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary variable containing the keys filename, filemode, size, mtime, modified</p>
 </dd>
 </dl>
 <p>Returns following file attributes in a dictionary:</p>
@@ -434,8 +450,11 @@ but <cite>path</cite> argument can be set to define extraction path.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>archive_name</strong> – filename of the archive</p>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary variable containing the keys name, size, mtime, modified</p>
+</dd>
 </dl>
-<p>Returns list of file, where each file in a list is a dictionary
+<p>Returns list of files, where each file in a list is a dictionary
 with following attributes:</p>
 <ul class="simple">
 <li><p>name</p></li>
