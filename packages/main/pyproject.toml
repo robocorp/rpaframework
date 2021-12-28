@@ -115,7 +115,7 @@ aws = ["boto3", "amazon-textract-response-parser"]
 target-version = ["py36", "py37", "py38", "py39"]
 
 [build-system]
-requires = ["poetry>=0.12"]
+requires = ["setuptools", "poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
 [tool.pytest.ini_options]
