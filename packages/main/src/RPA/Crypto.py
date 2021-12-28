@@ -95,6 +95,8 @@ class Crypto:
     def generate_key(self) -> str:
         """Generate a Fernet encryption key as base64 string.
 
+        :return: Generated key as a string 
+
         This key can be used for encryption/decryption operations
         with this library.
 
@@ -104,10 +106,11 @@ class Crypto:
         """
         return Fernet.generate_key().decode("utf-8")
 
-    def use_encryption_key(self, key: str):
+    def use_encryption_key(self, key: str) -> None:
         """Set key for all following encryption/decryption operations.
 
         :param key: Encryption key as base64 string
+        :return: None
 
         Assumes the given key has been generated previously using
         either the keyword ``Generate Key`` or with the matching command
@@ -122,11 +125,12 @@ class Crypto:
         """
         self._key = Fernet(key)
 
-    def use_encryption_key_from_vault(self, name: str, key: Optional[str] = None):
+    def use_encryption_key_from_vault(self, name: str, key: Optional[str] = None) -> None:
         """Load an encryption key from Robocorp Vault.
 
         :param name: Name of secret in Vault
         :param key: Name of encryption key in secret
+        :return: None
 
         If the secret only has one value, the key argument is optional.
 
@@ -159,6 +163,7 @@ class Crypto:
         :param text: String to hash
         :param method: Used hashing method
         :param encoding: Used text encoding
+        :return: Hash digest of the string
 
         Example:
 
@@ -181,6 +186,7 @@ class Crypto:
 
         :param path: Path to file
         :param method: The used hashing method
+        :return: Hash digest of the file
 
         Example:
 
@@ -205,6 +211,7 @@ class Crypto:
 
         :param text: Source text to encrypt
         :param encoding: Used text encoding
+        :return: Token of the encrypted string in bytes
 
         Example:
 
@@ -229,6 +236,7 @@ class Crypto:
 
         :param data: Encrypted data as base64 string
         :param encoding: Original encoding of string
+        :return: Decrypted string or raw bytes, if None given as encoding
 
         Returns the decrypted string that is parsed with the given encoding,
         or if the encoding is ``None`` the raw bytes are returned.
@@ -264,8 +272,9 @@ class Crypto:
 
         :param path: Path to source input file
         :param output: Path to encrypted output file
+        :return: Path to the encrypted file
 
-        If not output path is given, it will generate one from the input path.
+        If no output path is given, it will generate one from the input path.
         The resulting output path is returned.
 
         Example:
@@ -298,8 +307,9 @@ class Crypto:
 
         :param path: Path to encrypted input file
         :param output: Path to decrypted output file
+        :return: Path to the decrypted file
 
-        If not output path is given, it will generate one from the input path.
+        If no output path is given, it will generate one from the input path.
         The resulting output path is returned.
 
         Example:
