@@ -30,7 +30,7 @@ Setup files and folders
     ${file_id}=    Upload Drive File    ${RESOURCE_FOLDER}${/}source.png    subfolder
     Append To List    ${TEST_FILES_IN_DRIVE}    ${file_id}
     Log To Console    List test files after upload
-    ${test_files}=    List Drive Files    source=${FOLDER_NAME}
+    ${test_files}=    Search Drive Files    source=${FOLDER_NAME}
     FOR    ${f}    IN    @{test_files}
         IF    ${f}[is_folder]
             Log To Console    FOLDER: ${f}[name] ${f}[id]
@@ -38,7 +38,7 @@ Setup files and folders
             Log To Console    FILE: ${f}[name] ${f}[id]
         END
     END
-    ${test_files}=    List Drive Files    source=subfolder
+    ${test_files}=    Search Drive Files    source=subfolder
     FOR    ${f}    IN    @{test_files}
         IF    ${f}[is_folder]
             Log To Console    FOLDER: ${f}[name] ${f}[id]
@@ -132,3 +132,13 @@ Add share to folder and remove permission
     # actions on shared files ....
     #
     Remove Drive Share By Permission Id    ${share}[permission_id]    ${share}[file_id]
+
+List Shared Files
+    [Tags]    share
+    Add Drive Share
+    ...    query=name = 'source.png'
+    ...    domain=robocorp.com
+    ${shared}=    List Shared Drive Files    source=subfolder
+    FOR    ${file}    IN    @{shared}
+        Log To Console    ${file}
+    END

@@ -483,13 +483,27 @@ class DriveKeywords(LibraryContext):
         return result_files
 
     @keyword(tags=["drive"])
-    def list_drive_files(
-        self, recurse: bool = False, source: str = None, shared: bool = False
-    ) -> List:
-        files = self.search_drive_files(recurse=recurse, source=source)
-        if shared:
-            files = [f for f in files if f["shared"]]
-        return files
+    def list_shared_drive_files(self, query: str = None, source: str = None) -> List:
+        """Keyword for listing shared files in the source folder.
+
+        Alias keyword for ``Search Drive Files`` which can be used to list
+        only files which have been shared.
+
+        :param query: drive query string to find target files
+        :param source: source directory where query is executed
+        :return: list of shared files
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${shared}=    List Shared Drive Files    source=subfolder
+            FOR    ${file}    IN    @{shared}
+                Log To Console    ${file}
+            END
+        """
+        files = self.search_drive_files(query=query, source=source)
+        return [f for f in files if f["shared"]]
 
     @keyword(tags=["drive"])
     def search_drive_files(
