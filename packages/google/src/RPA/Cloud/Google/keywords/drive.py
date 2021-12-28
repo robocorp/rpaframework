@@ -482,7 +482,7 @@ class DriveKeywords(LibraryContext):
             result_files.append(result_file)
         return result_files
 
-    @keyword(tags=["drive"])
+    @keyword(tags=["drive", "drive share", "v2.0.0"])
     def list_shared_drive_files(self, query: str = None, source: str = None) -> List:
         """Keyword for listing shared files in the source folder.
 
@@ -712,7 +712,7 @@ class DriveKeywords(LibraryContext):
             shutil.copyfileobj(fh, f, length=131072)
         return filepath
 
-    @keyword(tags=["drive"])
+    @keyword(tags=["drive", "drive share", "v2.0.0"])
     def add_drive_share(
         self,
         file_id: str = None,
@@ -811,7 +811,7 @@ class DriveKeywords(LibraryContext):
         except HttpError as err:
             raise GoogleDriveError(str(err)) from err
 
-    @keyword(tags=["drive"])
+    @keyword(tags=["drive", "drive share", "v2.0.0"])
     def remove_drive_share_by_permission_id(
         self,
         permission_id: str,
@@ -873,7 +873,7 @@ class DriveKeywords(LibraryContext):
                 raise GoogleDriveError(str(err)) from err
         return response
 
-    @keyword(tags=["drive"])
+    @keyword(tags=["drive", "drive share", "v2.0.0"])
     def remove_drive_share_by_criteria(
         self,
         email: str = None,
@@ -980,7 +980,7 @@ class DriveKeywords(LibraryContext):
             else:
                 raise GoogleDriveError(str(err)) from err
 
-    @keyword(tags=["drive"])
+    @keyword(tags=["drive", "drive share", "v2.0.0"])
     def remove_all_drive_shares(
         self,
         file_id: str = None,
@@ -1023,7 +1023,7 @@ class DriveKeywords(LibraryContext):
                         permissions_removed.append(p)
         return permissions_removed
 
-    @keyword(tags=["drive"])
+    @keyword(tags=["drive", "v2.0.0"])
     def get_drive_file_by_id(self, file_id: str, suppress_errors: bool = False) -> Dict:
         """Get file dictionary by its file id.
 
