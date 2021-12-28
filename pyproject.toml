@@ -22,7 +22,6 @@ robotframework-docgen = "^0.14.0"
 pylint = "^2.6.0"
 sphinx-issues = "^1.2.0"
 docutils = "0.16"
-setuptools = "^51.1.2"
 black = {version = "^21.7b0", allow-prereleases = true}
 
 [build-system]

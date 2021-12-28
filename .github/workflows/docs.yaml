@@ -40,9 +40,7 @@ jobs:
           path: .venv
           key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
       - name: Install dependencies
-        run: |
-          set SETUPTOOLS_USE_DISTUTILS=stdlib
-          make install
+        run: make install
       - name: Build HTML documentation
         run: make docs
       - name: Publish HTML documentation
