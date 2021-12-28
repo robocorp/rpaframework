@@ -9,6 +9,7 @@ from apiclient.errors import HttpError
 from apiclient.http import MediaFileUpload, MediaIoBaseDownload
 
 from . import LibraryContext, keyword, UpdateAction
+from .enums import DriveRole, DriveType, to_drive_role, to_drive_type
 
 
 class GoogleDriveError(Exception):
@@ -89,7 +90,8 @@ class DriveKeywords(LibraryContext):
         """
         folder_id = self.get_drive_folder_id(folder)
         if folder_id is None and make_dir:
-            folder_id = self.create_drive_directory(folder)
+            folder = self.create_drive_directory(folder)
+            folder_id = folder["id"]
         if folder_id is None:
             raise GoogleDriveError(
                 "Target folder '%s' does not exist or could not be created" % folder
@@ -104,6 +106,7 @@ class DriveKeywords(LibraryContext):
             raise GoogleDriveError("Filename '%s' does not exist" % filename)
 
         query_string = f"name = '{filepath.name}' and '{folder_id}' in parents"
+        self.logger.debug("Upload query_string: '%s'" % query_string)
         target_file = self.search_drive_files(query=query_string, recurse=True)
         guess_mimetype = mimetypes.guess_type(str(filepath.absolute()))
         file_mimetype = guess_mimetype[0] if guess_mimetype else "*/*"
@@ -115,17 +118,13 @@ class DriveKeywords(LibraryContext):
             "parents": [folder_id],
             "mimeType": file_mimetype,
         }
+        self.logger.debug("Upload file_metadata: '%s'" % file_metadata)
         if len(target_file) == 1 and overwrite:
             self.logger.info("Overwriting file '%s' with new content", filename)
-            file = (
-                self.service.files()
-                .update(fileId=target_file[0]["id"], media_body=media, fields="id")
-                .execute()
-            )
-            return file.get("id", None)
+            return self._file_update(target_file, media)
         elif len(target_file) == 1 and not overwrite:
             self.logger.warn("Not uploading new copy of file '%s'", filepath.name)
-            return None
+            return target_file[0]["id"]
         elif len(target_file) > 1:
             self.logger.warn(
                 "Drive already contains '%s' copies of file '%s'. Not uploading again."
@@ -133,7 +132,11 @@ class DriveKeywords(LibraryContext):
             )
             return None
         else:
-            file = (
+            return self._file_create(file_metadata, media)
+
+    def _file_create(self, file_metadata, media):
+        try:
+            result = (
                 self.service.files()
                 .create(
                     body=file_metadata,
@@ -142,10 +145,26 @@ class DriveKeywords(LibraryContext):
                 )
                 .execute()
             )
-            return file.get("id", None)
+            return result.get("id", None)
+        except HttpError as err:
+            raise GoogleDriveError(str(err)) from err
+
+    def _file_update(self, target_file, media):
+        try:
+            result = (
+                self.service.files()
+                .update(fileId=target_file[0]["id"], media_body=media, fields="id")
+                .execute()
+            )
+            return result.get("id", None)
+        except HttpError as err:
+            raise GoogleDriveError(str(err)) from err
 
     def _download_with_fileobject(self, file_object):
-        request = self.service.files().get_media(fileId=file_object["id"])
+        try:
+            request = self.service.files().get_media(fileId=file_object["id"])
+        except HttpError as err:
+            raise GoogleDriveError(str(err)) from err
         fh = BytesIO()
         downloader = MediaIoBaseDownload(fh, request)
         done = False
@@ -189,7 +208,7 @@ class DriveKeywords(LibraryContext):
             END
 
             ${folder_id}=   Get Drive Folder Id   datafolder
-            Download Drive Files  query=name contains '.json' and '${folder_id}' in parents  recurse=True
+            Download Drive Files  query=name contains '.json' and '${folder_id}' in parents
         """  # noqa: E501
         if query:
             filelist = self.search_drive_files(query, source=source)
@@ -264,15 +283,21 @@ class DriveKeywords(LibraryContext):
             update_count += 1
         return update_count
 
-    def _get_target_file(self, file_id, file_dict, query, multiple_ok, source=None):
+    def _get_target_file(
+        self, file_id, file_dict, query, multiple_ok, source=None, details=False
+    ):
         target_files = []
         if file_id:
-            target_files.append(file_id)
+            if details:
+                filedata = self.get_drive_file_by_id(file_id)
+                target_files.append(filedata)
+            else:
+                target_files.append(file_id)
         elif file_dict:
             target_files.append(file_dict.get("id", None))
         else:
             files = self.search_drive_files(query, source=source, recurse=True)
-            target_files = [tf.get("id", None) for tf in files]
+            target_files = [tf if details else tf.get("id", None) for tf in files]
             if not multiple_ok and len(target_files) > 1:
                 raise GoogleDriveError(
                     "expected search to match 1 file, but it matched %s files"
@@ -294,8 +319,13 @@ class DriveKeywords(LibraryContext):
         else:
             # TODO: mypy should handle enum exhaustivity validation
             raise ValueError(f"Unsupported update action: {action}")
-        self.logger.info(body)
-        updated_file = self.service.files().update(fileId=file_id, body=body).execute()
+        self.logger.debug(body)
+        try:
+            updated_file = (
+                self.service.files().update(fileId=file_id, body=body).execute()
+            )
+        except HttpError as err:
+            raise GoogleDriveError(str(err)) from err
         return updated_file
 
     @keyword(tags=["drive"])
@@ -305,6 +335,7 @@ class DriveKeywords(LibraryContext):
         file_dict: dict = None,
         query: str = None,
         multiple_ok: bool = False,
+        suppress_errors: bool = False,
     ) -> int:
         """Delete file specified by id, file dictionary or query string
 
@@ -316,6 +347,8 @@ class DriveKeywords(LibraryContext):
          unless parameter `multiple_ok` is set to `True`
         :param multiple_ok: set to `True` if it is ok to perform delete
          on more than 1 file
+        :param suppress_errors: on True will log warning message instead of
+         raising an exception, defaults to False
         :return: how many files where deleted
 
         Example:
@@ -330,17 +363,29 @@ class DriveKeywords(LibraryContext):
 
         delete_count = 0
         for tf in target_files:
-            self.service.files().delete(fileId=tf).execute()
+            try:
+                self.service.files().delete(fileId=tf).execute()
+            except HttpError as err:
+                if suppress_errors:
+                    self.logger.warn(str(err))
+                else:
+                    raise GoogleDriveError(str(err)) from err
             delete_count += 1
         return delete_count
 
     @keyword(tags=["drive"])
-    def get_drive_folder_id(self, folder: str = None) -> str:
+    def get_drive_folder_id(
+        self, folder: str = None, parent_folder: str = None, details: bool = False
+    ) -> str:
         """Get file id for the folder
 
         :param folder: name of the folder to identify, by default returns drive's
          `root` folder id
-        :return: file id of the folder
+        :param parent_folder: can be used to narrow search by giving parent
+         folder name
+        :param details: on True will return folder dictionary, on False (default)
+         folder id is returned
+        :return: file id of the folder or file dictionary when details = True
 
         Example:
 
@@ -350,20 +395,29 @@ class DriveKeywords(LibraryContext):
             ${folder_id}=  Get Drive Folder Id  subdir
         """
         mime_folder_type = "application/vnd.google-apps.folder"
-        folder_id = None
+        drive_file = None
         if folder is None:
-            file = self.service.files().get(fileId="root", fields="id").execute()
-            folder_id = file.get("id", None)
+            try:
+                drive_file = (
+                    self.service.files().get(fileId="root", fields="id").execute()
+                )
+            except HttpError as err:
+                raise GoogleDriveError(str(err)) from err
         else:
             query_string = f"name = '{folder}' AND mimeType = '{mime_folder_type}'"
-            folders = self.search_drive_files(query=query_string, recurse=True)
+            parameters = {"query": query_string, "recurse": True}
+            if parent_folder:
+                parameters["source"] = parent_folder
+            folders = self.search_drive_files(**parameters)
             if len(folders) == 1:
-                folder_id = folders[0].get("id", None)
+                drive_file = folders[0]  # .get("id", None)
             else:
                 self.logger.info(
                     "Found %s directories with name '%s'" % (len(folders), folder)
                 )
-        return folder_id
+        if drive_file:
+            return drive_file if details else drive_file.get("id", None)
+        return None
 
     @keyword(tags=["drive"])
     def move_drive_file(
@@ -412,18 +466,44 @@ class DriveKeywords(LibraryContext):
         for tf in target_files:
             file = self.service.files().get(fileId=tf["id"], fields="parents").execute()
             previous_parents = ",".join(file.get("parents"))
-            result_file = (
-                self.service.files()
-                .update(
-                    fileId=tf["id"],
-                    addParents=target_parent,
-                    removeParents=previous_parents,
-                    fields="id, parents",
+            try:
+                result_file = (
+                    self.service.files()
+                    .update(
+                        fileId=tf["id"],
+                        addParents=target_parent,
+                        removeParents=previous_parents,
+                        fields="id, parents",
+                    )
+                    .execute()
                 )
-                .execute()
-            )
+            except HttpError as err:
+                raise GoogleDriveError(str(err)) from err
             result_files.append(result_file)
         return result_files
+
+    @keyword(tags=["drive", "drive share", "v2.0.0"])
+    def list_shared_drive_files(self, query: str = None, source: str = None) -> List:
+        """Keyword for listing shared files in the source folder.
+
+        Alias keyword for ``Search Drive Files`` which can be used to list
+        only files which have been shared.
+
+        :param query: drive query string to find target files
+        :param source: source directory where query is executed
+        :return: list of shared files
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${shared}=    List Shared Drive Files    source=subfolder
+            FOR    ${file}    IN    @{shared}
+                Log To Console    ${file}
+            END
+        """
+        files = self.search_drive_files(query=query, source=source)
+        return [f for f in files if f["shared"]]
 
     @keyword(tags=["drive"])
     def search_drive_files(
@@ -449,48 +529,89 @@ class DriveKeywords(LibraryContext):
         """  # noqa: E501
         page_token = None
         filelist = []
-        parameters = {
-            "fields": "nextPageToken, files(id, name, mimeType, parents)",
-            "q": query,
-        }
 
-        if not recurse:
-            folder_id = "root" if not source else self.get_drive_folder_id(source)
-            if folder_id is None:
-                return []
-            parameters["q"] += f" and '{folder_id}' in parents"
+        parameters = self._set_search_parameters(query, source, recurse)
 
         while True:
             if page_token:
                 parameters["pageToken"] = page_token
             try:
+                self.logger.debug("Searching with parameters: '%s'" % parameters)
                 response = self.service.files().list(**parameters).execute()
-                self.logger.info(response)
-                for file in response.get("files", []):
-                    filesize = file.get("size")
-                    filelist.append(
-                        {
-                            "name": file.get("name"),
-                            "id": file.get("id"),
-                            "size": int(filesize) if filesize else None,
-                            "kind": file.get("kind"),
-                            "parents": file.get("parents"),
-                            "starred": file.get("starred"),
-                            "trashed": file.get("trashed"),
-                            "shared": file.get("shared"),
-                            "mimeType": file.get("mimeType"),
-                            "spaces": file.get("spaces", None),
-                            "exportLinks": file.get("exportLinks"),
-                            "createdTime": file.get("createdTime"),
-                            "modifiedTime": file.get("modifiedTime"),
-                        }
-                    )
+                for file_details in response.get("files", []):
+                    file_dict = self._drive_file_details_into_file_dict(file_details)
+                    filelist.append(file_dict)
                 page_token = response.get("nextPageToken", None)
                 if page_token is None:
                     break
-            except HttpError as e:
-                raise GoogleDriveError(str(e)) from e
+            except HttpError as err:
+                raise GoogleDriveError(str(err)) from err
         return filelist
+
+    def _set_search_parameters(self, query, source, recurse):
+        parameters = {
+            "fields": "*",
+        }
+        if query:
+            parameters["q"] = query
+
+        folder_id = None
+        if source:
+            folder_id = self.get_drive_folder_id(source)
+        elif not recurse:
+            folder_id = "root"
+
+        if folder_id:
+            if "q" in parameters:
+                parameters["q"] += f" and '{folder_id}' in parents"
+            else:
+                parameters["q"] = f"'{folder_id}' in parents"
+        return parameters
+
+    def _drive_file_details_into_file_dict(self, details):
+        filesize = details.get("size")
+        file_id = details.get("id")
+        parents = details.get("parents")
+        kind = details.get("kind")
+        mimetype = details.get("mimeType")
+        is_folder = mimetype == "application/vnd.google-apps.folder"
+        folder_id = (
+            file_id
+            if mimetype == "application/vnd.google-apps.folder"
+            else parents[0]
+            if parents and len(parents) > 0
+            else None
+        )
+        file_link = (
+            None
+            if mimetype == "application/vnd.google-apps.folder"
+            else f"https://drive.google.com/file/d/{file_id}?usp=sharing"
+        )
+        folder_link = (
+            f"https://drive.google.com/drive/folders/{folder_id}?usp=sharing"
+            if folder_id
+            else ""
+        )
+        file_dict = {
+            "name": details.get("name"),
+            "id": file_id,
+            "size": int(filesize) if filesize else None,
+            "kind": kind,
+            "is_folder": is_folder,
+            "parents": parents,
+            "starred": details.get("starred"),
+            "trashed": details.get("trashed"),
+            "shared": details.get("shared"),
+            "permissions": details.get("permissions", []),
+            "mimeType": mimetype,
+            "spaces": details.get("spaces", None),
+            "exportLinks": details.get("exportLinks"),
+            "createdTime": details.get("createdTime"),
+            "modifiedTime": details.get("modifiedTime"),
+            "fileLink": file_link,
+            "folderLink": folder_link,
+        }
+        return file_dict
 
     @keyword(tags=["drive"])
     def create_drive_directory(
@@ -500,17 +621,25 @@ class DriveKeywords(LibraryContext):
 
         :param folder: name for the new directory
         :param parent_folder: top level directory for new directory
-        :return: created file id
+        :return: dictionary containing folder ID and folder URL
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${folder}=  Create Drive Directory   example-folder
+            Log To Console    Google Drive folder ID: ${folder}[id]
+            Log To Console    Google Drive folder URL:  ${folder}[url]
         """
         if not folder or len(folder) == 0:
             raise GoogleDriveError("Can't create Drive directory with empty name")
 
-        folder_id = self.get_drive_folder_id(folder)  # , parent_folder)
+        folder_id = self.get_drive_folder_id(folder, parent_folder=parent_folder)
         if folder_id:
             self.logger.info(
                 "Folder '%s' already exists. Not creating new one.", folder_id
             )
-            return None
+            return self._folder_response(folder_id)
 
         file_metadata = {
             "name": folder,
@@ -520,10 +649,19 @@ class DriveKeywords(LibraryContext):
         if parent_folder:
             parent_folder_id = self.get_drive_folder_id(parent_folder)
             file_metadata["parents"] = [parent_folder_id]
-        added_folder = (
-            self.service.files().create(body=file_metadata, fields="id").execute()
-        )
-        return added_folder
+        try:
+            added_folder = (
+                self.service.files().create(body=file_metadata, fields="id").execute()
+            )
+            return self._folder_response(added_folder["id"])
+        except HttpError as err:
+            raise GoogleDriveError(str(err)) from err
+
+    def _folder_response(self, folder_id):
+        return {
+            "id": folder_id,
+            "url": f"https://drive.google.com/drive/folders/{folder_id}?usp=sharing",
+        }
 
     @keyword(tags=["drive"])
     def export_drive_file(
@@ -555,7 +693,12 @@ class DriveKeywords(LibraryContext):
         target_files = self._get_target_file(file_id, file_dict, None, False)
         if len(target_files) != 1:
             raise ValueError("Did not find the Google Drive file to export")
-        request = self.service.files().export(fileId=target_files[0], mimeType=mimetype)
+        try:
+            request = self.service.files().export(
+                fileId=target_files[0], mimeType=mimetype
+            )
+        except HttpError as err:
+            raise GoogleDriveError(str(err)) from err
 
         fh = BytesIO()
         downloader = MediaIoBaseDownload(fh, request)
@@ -568,3 +711,342 @@ class DriveKeywords(LibraryContext):
         with open(filepath, "wb") as f:
             shutil.copyfileobj(fh, f, length=131072)
         return filepath
+
+    @keyword(tags=["drive", "drive share", "v2.0.0"])
+    def add_drive_share(
+        self,
+        file_id: str = None,
+        file_dict: dict = None,
+        query: str = None,
+        source: str = None,
+        email: str = None,
+        domain: str = None,
+        role: DriveRole = DriveRole.READER,
+        share_type: DriveType = DriveType.USER,
+        notification: bool = False,
+        notification_message: str = None,
+    ) -> Dict:
+        """Keyword for sharing drive file or folder.
+
+        Parameters `file_id`, `file_dict`, `query` and `source` can be
+        used to select files to which sharing is added to.
+
+        If share is added to a folder, all files within that folder get same
+        sharing permissions.
+
+        :param file_id: drive file id
+        :param file_dict: file dictionary returned by `Search Drive Files`
+        :param query: drive query string to find target file, needs to match 1 file
+        :param source: name of the folder to search files in, is by default drive's
+         `root` folder
+        :param email: user or group email address if share type
+         is DriveType.USER or DriveType.GROUP
+        :param domain: domain name if share type is DriveType.DOMAIN
+        :param role: see ``DriveRole`` enum for possible values,
+         defaults to DriveRole.READER
+        :param share_type: see ``DriveType`` enum for possible values,
+         defaults to DriveType.USER
+        :param notification: whether to send notificatin email, defaults to False
+        :param notification_message: optional message to include with the notification
+        :return: share response dictionary containing 'file_id' and 'permission_id'
+
+        Example:
+
+        .. code-block:: robotframework
+
+            # Add file share for a email address with email notification
+            Add Drive Share
+            ...    query=name = 'okta.png'
+            ...    email=robocorp.tester@gmail.com
+            ...    notification=True
+            ...    notification_message=Hello. I have shared 'okta.png' with you for review.
+            # Add file share for a domain
+            Add Drive Share
+            ...    query=name = 'okta.png'
+            ...    domain=robocorp.com
+            # Add folder share for a email address
+            ${folder}=    Create Drive Directory   attachments-for-the-task
+            ${share}=  Add Drive Share
+            ...   file_id=${folder}[id]
+            ...   email=robocorp.tester@gmail.com
+            ...   role=writer
+            Log To Console  Share details: ${share}[file_id], ${share}[permission_id]
+        """  # noqa: E501
+        target_file = self._get_target_file(
+            file_id, file_dict, query, False, source=source
+        )
+        if not target_file:
+            raise GoogleDriveError("Did not find target file")
+        if domain:
+            share_type = DriveType.DOMAIN
+        user_permission = {
+            "type": to_drive_type(share_type),
+            "role": to_drive_role(role),
+        }
+        if share_type in [DriveType.USER, DriveType.GROUP]:
+            if not email:
+                raise ValueError(
+                    "email parameter is required with share_type = 'user' or 'group'"
+                )
+            user_permission["emailAddress"] = email
+        if share_type == DriveType.DOMAIN:
+            if not domain:
+                raise ValueError(
+                    "domain parameter is required with share_type = 'domain'"
+                )
+            user_permission["domain"] = domain
+
+        request_parameters = {
+            "fileId": target_file[0],
+            "body": user_permission,
+            "fields": "id",
+            "sendNotificationEmail": notification,
+        }
+        if notification and notification_message:
+            request_parameters["emailMessage"] = notification_message
+
+        try:
+            response = self.service.permissions().create(**request_parameters).execute()
+            return {"file_id": target_file[0], "permission_id": response["id"]}
+        except HttpError as err:
+            raise GoogleDriveError(str(err)) from err
+
+    @keyword(tags=["drive", "drive share", "v2.0.0"])
+    def remove_drive_share_by_permission_id(
+        self,
+        permission_id: str,
+        file_id: str = None,
+        file_dict: dict = None,
+        query: str = None,
+        source: str = None,
+        suppress_errors: bool = False,
+    ) -> Dict:
+        """Keyword for removing share permission of file or folder
+        permission id.
+
+        Parameters `file_id`, `file_dict`, `query` and `source` can be
+        used to select files from which sharing is removed.
+
+        :param permission_id: id of the permission to remove
+        :param file_id: drive file id
+        :param file_dict: file dictionary returned by `Search Drive Files`
+        :param query: drive query string to find target file, needs to match 1 file
+        :param source: name of the folder to search files in, is by default drive's
+         `root` folder
+        :param suppress_errors: on True will log warning message instead of
+         raising an exception, defaults to False (exception is raised)
+        :return: dictionary of permission response
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${share}=   Add Drive Share
+            ...  query=name = 'sharable-files' and mimeType = 'application/vnd.google-apps.folder'
+            ...  email=robocorp.tester@gmail.com
+            #
+            # actions on shared files in the folder 'shareable-files' ....
+            #
+            Remove Drive Share By Permission Id   ${share}[permission_id]  ${share}[file_id]
+        """  # noqa: E501
+        target_file = self._get_target_file(
+            file_id, file_dict, query, False, source=source
+        )
+        if not target_file:
+            raise GoogleDriveError("Did not find target file")
+
+        self.logger.info(
+            "Removing permission id '%s' for file_id '%s'"
+            % (permission_id, target_file[0])
+        )
+        response = None
+        try:
+            response = (
+                self.service.permissions()
+                .delete(fileId=target_file[0], permissionId=permission_id)
+                .execute()
+            )
+        except HttpError as err:
+            if suppress_errors:
+                self.logger.warn(str(err))
+            else:
+                raise GoogleDriveError(str(err)) from err
+        return response
+
+    @keyword(tags=["drive", "drive share", "v2.0.0"])
+    def remove_drive_share_by_criteria(
+        self,
+        email: str = None,
+        domain: str = None,
+        permission_id: str = None,
+        file_id: str = None,
+        file_dict: dict = None,
+        query: str = None,
+        source: str = None,
+        suppress_errors: bool = False,
+    ) -> List:
+        """Keyword for removing share from file or folder
+        based on criteria.
+
+        Parameters `file_id`, `file_dict`, `query` and `source` can be
+        used to select files from which sharing is removed.
+
+        Parameters `email`, `domain` or `permission_id` can be
+        used to select which share is removed from selected files.
+
+        :param email: email address of the permission to remove
+        :param domain: domain name of the permission to remove
+        :param permission_id: id of the permission to remove
+        :param file_id: drive file id
+        :param file_dict: file dictionary returned by `Search Drive Files`
+        :param query: drive query string to find target files
+        :param source: name of the folder to search files in, is by default drive's
+         `root` folder
+        :param suppress_errors: on True will log warning message instead of
+         raising an exception, defaults to False (exception is raised)
+        :return: list of dictionaries containing information of file permissions removed
+
+        Example:
+
+        .. code-block:: robotframework
+
+            # Remove domain shares for files in the folder ${FOLDER_NAME}
+            ${removed}=    Remove Drive Share By Criteria
+            ...    domain=robocorp.com
+            ...    source=${FOLDER_NAME}
+            # Remove email share for a file
+            ${removed}=    Remove Drive Share By Criteria
+            ...    query=name = 'okta.png'
+            ...    email=robocorp.tester@gmail.com
+        """
+        if not email and not domain and permission_id:
+            raise AttributeError(
+                "At least one of the 'email', 'domain' or 'permission_id' "
+                "is required to remove drive share"
+            )
+        target_files = self._get_target_file(
+            file_id, file_dict, query, multiple_ok=True, source=source, details=True
+        )
+        if not target_files or len(target_files) == 0:
+            raise GoogleDriveError("Did not find target files")
+        permissions_removed = []
+        for tf in target_files:
+            file_permissions_removed = []
+            if "permissions" in tf and tf["permissions"]:
+                self.logger.info(
+                    "Removing shares from file '%s' id '%s'" % (tf["name"], tf["id"])
+                )
+                for p in tf["permissions"]:
+                    if self._is_permission_removable(p, email, domain, permission_id):
+                        self._remove_file_permission(
+                            tf, p, file_permissions_removed, suppress_errors
+                        )
+            if file_permissions_removed:
+                permissions_removed.append(
+                    {
+                        "file_id": tf["id"],
+                        "file_name": tf["name"],
+                        "permissions_removed": file_permissions_removed,
+                    }
+                )
+        return permissions_removed
+
+    def _is_permission_removable(self, permission, email, domain, permission_id):
+        return (
+            (
+                email
+                and "emailAddress" in permission.keys()
+                and permission["emailAddress"] == email
+            )
+            or (
+                domain
+                and "domain" in permission.keys()
+                and permission["domain"] == domain
+            )
+            or (permission_id and permission["id"] == permission_id)
+        )
+
+    def _remove_file_permission(
+        self, drive_file, permission, permissions_removed, suppress_errors
+    ):
+        try:
+            self.service.permissions().delete(
+                fileId=drive_file["id"], permissionId=permission["id"]
+            ).execute()
+            permissions_removed.append(permission)
+        except HttpError as err:
+            if suppress_errors:
+                self.logger.warn(str(err))
+            else:
+                raise GoogleDriveError(str(err)) from err
+
+    @keyword(tags=["drive", "drive share", "v2.0.0"])
+    def remove_all_drive_shares(
+        self,
+        file_id: str = None,
+        file_dict: dict = None,
+        query: str = None,
+        suppress_errors: bool = False,
+    ) -> List:
+        """Keyword for removing all shares from selected files (only owner
+        permission is retained).
+
+        :param file_id: drive file id
+        :param file_dict: file dictionary returned by `Search Drive Files`
+        :param query: drive query string to find target files
+        :param suppress_errors: on True will log warning message instead of
+         raising an exception, defaults to False (exception is raised)
+        :return: list of dictionaries containing information of file permissions removed
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${removed}=  Remove All Drive Shares    file_id=${FOLDER_ID}
+        """
+        target_files = self._get_target_file(
+            file_id, file_dict, query, multiple_ok=True, details=True
+        )
+        permissions_removed = []
+        for tf in target_files:
+            if "permissions" in tf and tf["permissions"]:
+                self.logger.info(
+                    "Removing shares from file '%s' id '%s'" % (tf["name"], tf["id"])
+                )
+                for p in tf["permissions"]:
+                    if p["role"] != "owner":
+                        self.remove_drive_share_by_permission_id(
+                            file_id=tf["id"],
+                            permission_id=p["id"],
+                            suppress_errors=suppress_errors,
+                        )
+                        permissions_removed.append(p)
+        return permissions_removed
+
+    @keyword(tags=["drive", "v2.0.0"])
+    def get_drive_file_by_id(self, file_id: str, suppress_errors: bool = False) -> Dict:
+        """Get file dictionary by its file id.
+
+        :param file_id: id of the file in the Google Drive
+        :param suppress_errors: on True will log warning message instead of
+         raising an exception, defaults to False (exception is raised)
+        :return: dictionary containing file information
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${file_dict}=  Get Drive File By ID    file_id=${FILE_ID}
+        """
+        response = None
+        try:
+            raw_response = (
+                self.service.files().get(fileId=file_id, fields="*").execute()
+            )
+            response = self._drive_file_details_into_file_dict(raw_response)
+        except HttpError as err:
+            if suppress_errors:
+                self.logger.warn(str(err))
+            else:
+                raise GoogleDriveError(str(err)) from err
+        return response
