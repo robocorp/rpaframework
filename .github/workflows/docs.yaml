@@ -41,7 +41,7 @@ jobs:
           key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
       - name: Install dependencies
         run: |
-          export SETUPTOOLS_USE_DISTUTILS=stdlib
+          set SETUPTOOLS_USE_DISTUTILS=stdlib
           make install
       - name: Build HTML documentation
         run: make docs
