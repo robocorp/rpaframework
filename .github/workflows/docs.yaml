@@ -24,7 +24,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
-          python-version: "3.8"
+          python-version: "3.7"
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
       - name: Install poetry
@@ -40,7 +40,9 @@ jobs:
           path: .venv
           key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
       - name: Install dependencies
-        run: make install
+        run: |
+          export SETUPTOOLS_USE_DISTUTILS=stdlib
+          make install
       - name: Build HTML documentation
         run: make docs
       - name: Publish HTML documentation
