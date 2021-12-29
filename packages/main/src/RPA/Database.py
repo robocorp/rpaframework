@@ -185,7 +185,7 @@ class Database:
         charset: str = None,
         config_file: str = "db.cfg",
         autocommit: bool = False,
-    ):
+    ) -> None:
         """Connect to database using DB API 2.0 module.
 
         :param module_name: database module to use
@@ -197,6 +197,7 @@ class Database:
         :param charset: for example, "utf-8", defaults to None
         :param config_file: location of configuration file, defaults to "db.cfg"
         :param autocommit: set autocommit value for connect (only with pymssql atm)
+        :returns: None
 
         Example:
 
@@ -343,13 +344,14 @@ class Database:
             if module_name == "sqlite3":
                 self._dbconnection.isolation_level = None if autocommit else "IMMEDIATE"
 
-    def call_stored_procedure(self, name, params=None, sanstran=False):
+    def call_stored_procedure(self, name, params=None, sanstran=False) -> list:
         """Call stored procedure with name and params.
 
         :param name: procedure name
         :param params: parameters for the procedure as a list, defaults to None
         :param sanstran: Run the query without an implicit transaction commit or
             rollback if such additional action was detected. (turned off by default)
+        :returns: list of results
 
         Example:
 
@@ -385,10 +387,11 @@ class Database:
                 self._dbconnection.commit()
             return value
 
-    def description(self, table):
+    def description(self, table) -> list:
         """Get description of the SQL table
 
         :param table: name of the SQL table
+        :returns: database descripton as a list
 
         Example:
 
@@ -407,8 +410,10 @@ class Database:
             ) from e
         return result.to_list()
 
-    def disconnect_from_database(self):
+    def disconnect_from_database(self) -> None:
         """Close connection to SQL database
+
+        :returns: None
 
         Example:
 
@@ -425,13 +430,14 @@ class Database:
     # pylint: disable=R0912
     def execute_sql_script(  # noqa: C901
         self, filename, sanstran=False, encoding="utf-8"
-    ):  # noqa: C901
+    ) -> None:  # noqa: C901
         """Execute content of SQL script as SQL commands.
 
         :param filename: filepath to SQL script to execute
         :param sanstran: Run the query without an implicit transaction commit or
             rollback if such additional action was detected. (turned off by default)
         :param encoding: character encoding of file
+        :returns: None
 
         Example:
 
@@ -600,10 +606,11 @@ class Database:
     def __execute_sql(self, cursor, sqlStatement):
         return cursor.execute(sqlStatement)
 
-    def set_auto_commit(self, autocommit=True):
+    def set_auto_commit(self, autocommit=True) -> None:
         """Set database auto commit mode.
 
         :param autocommit: boolean value for auto commit, defaults to True
+        :returns: None
 
         Example:
 
@@ -615,7 +622,7 @@ class Database:
         """
         self._dbconnection.autocommit = autocommit
 
-    def get_rows(self, table, columns=None, conditions=None, as_table=True):
+    def get_rows(self, table, columns=None, conditions=None, as_table=True) -> Union[List, Dict, Table, Any]:
         """Get rows from table. Columns and conditions can be
         set to filter result.
 
@@ -625,6 +632,7 @@ class Database:
         :param conditions: limiting result by WHERE clause, defaults to `None`
         :param as_table: if result should be instance of ``Table``, defaults to `True`
          `False` means that return type would be `list`
+        :returns: table or list based on param as_table arguement
 
         Example:
 
@@ -642,12 +650,13 @@ class Database:
             "SELECT %s FROM %s%s" % (columns, table, where_cond), as_table=as_table
         )
 
-    def get_number_of_rows(self, table, conditions=None):
+    def get_number_of_rows(self, table, conditions=None) -> int:
         """Get number of rows in a table. Conditions can be given
         as arguments for WHERE clause.
 
         :param table: name of the SQL table
         :param conditions: restrictions for selections, defaults to None
+        :returns: number or rows
 
         Example:
 
