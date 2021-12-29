@@ -220,79 +220,8 @@
             
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-RPA.Desktop.Clipboard">
-<span id="clipboard"></span><h2>Clipboard<a class="headerlink" href="#module-RPA.Desktop.Clipboard" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="RPA.Desktop.Clipboard.Clipboard">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.Desktop.Clipboard.</code><code class="sig-name descname">Clipboard</code><a class="headerlink" href="#RPA.Desktop.Clipboard.Clipboard" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p><em>DEPRECATED!!</em> Use library RPA.Desktop’s clipboard functionality instead.</p>
-<p><cite>Clipboard</cite> is a library for managing clipboard - <strong>copy</strong> text to,
-<strong>paste</strong> text from, and <strong>clear</strong> clipboard contents.</p>
-<p><strong>Examples</strong></p>
-<p><strong>Robot Framework</strong></p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
-<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Desktop.Clipboard</span><span class="p"></span>
-
-<span class="gh">*** Tasks ***</span><span class="p"></span>
-<span class="gu">Clipping</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Copy To Clipboard</span><span class="p">   </span><span class="s">Text from Robot to clipboard</span><span class="p"></span>
-<span class="p">    ${</span><span class="nv">var</span><span class="p">}=             </span><span class="nf">Paste From Clipboard</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Clear Clipboard</span><span class="p"></span>
-</pre></div>
-</div>
-<p><strong>Python</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">RPA.Desktop.Clipboard</span> <span class="kn">import</span> <span class="n">Clipboard</span>
-
-<span class="n">clip</span> <span class="o">=</span> <span class="n">Clipboard</span><span class="p">()</span>
-<span class="n">clip</span><span class="o">.</span><span class="n">copy_to_clipboard</span><span class="p">(</span><span class="s1">&#39;Text from Python to clipboard&#39;</span><span class="p">)</span>
-<span class="n">text</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">paste_from_clipboard</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;clipboard had text: &#39;</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-<span class="n">clip</span><span class="o">.</span><span class="n">clear_clipboard</span><span class="p">()</span>
-</pre></div>
-</div>
-<dl class="attribute">
-<dt id="RPA.Desktop.Clipboard.Clipboard.ROBOT_LIBRARY_DOC_FORMAT">
-<code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Desktop.Clipboard.Clipboard.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="RPA.Desktop.Clipboard.Clipboard.ROBOT_LIBRARY_SCOPE">
-<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Desktop.Clipboard.Clipboard.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="RPA.Desktop.Clipboard.Clipboard.clear_clipboard">
-<code class="sig-name descname">clear_clipboard</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Clipboard.Clipboard.clear_clipboard" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>DEPRECATED!!</em> Use <cite>RPA.Desktop</cite> library’s <cite>Clear Clipboard</cite> instead.
-Clear clipboard contents</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Desktop.Clipboard.Clipboard.copy_to_clipboard">
-<code class="sig-name descname">copy_to_clipboard</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Clipboard.Clipboard.copy_to_clipboard" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>DEPRECATED!!</em> Use <cite>RPA.Desktop</cite> library’s <cite>Copy to Clipboard</cite> instead.</p>
-<p>Copy text to clipboard</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> – to copy</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="RPA.Desktop.Clipboard.Clipboard.paste_from_clipboard">
-<code class="sig-name descname">paste_from_clipboard</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Desktop.Clipboard.Clipboard.paste_from_clipboard" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>DEPRECATED!!</em> Use <cite>RPA.Desktop</cite> library’s <cite>Paste from Clipboard</cite> instead.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>text</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="clipboard">
+<h2>Clipboard<a class="headerlink" href="#clipboard" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
