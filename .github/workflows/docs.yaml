@@ -34,11 +34,11 @@ jobs:
         shell: bash
         run: |
           echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info[:3]))")
-      - name: Set up cache
-        uses: actions/cache@v1
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
+      #- name: Set up cache
+      #  uses: actions/cache@v1
+      #  with:
+      #    path: .venv
+      #    key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('poetry.lock') }}
       - name: Install dependencies
         run: make install
       - name: Build HTML documentation
