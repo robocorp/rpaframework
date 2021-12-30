@@ -397,7 +397,7 @@ structure changes after window refresh.</p>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.click_element">
-<code class="sig-name descname">click_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">index: int = 0</em>, <em class="sig-param">action: bool = True</em>, <em class="sig-param">timeout: int = 10</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.click_element" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">click_element</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], index: int = 0, action: bool = True, timeout: int = 10</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.click_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -435,7 +435,7 @@ structure changes after window refresh.</p>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.get_element_text">
-<code class="sig-name descname">get_element_text</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">index: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_element_text" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_element_text</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], index: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_element_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get element text</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -466,7 +466,7 @@ structure changes after window refresh.</p>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.highlight_element">
-<code class="sig-name descname">highlight_element</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">index: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.highlight_element" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">highlight_element</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], index: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.highlight_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Highlight an element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -532,7 +532,7 @@ structure changes after window refresh.</p>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.set_mouse_position">
-<code class="sig-name descname">set_mouse_position</code><span class="sig-paren">(</span><em class="sig-param">element: object</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.set_mouse_position" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_mouse_position</code><span class="sig-paren">(</span><em class="sig-param">element: JABWrapper.context_tree.ContextNode</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.set_mouse_position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set mouse position to element center</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -580,7 +580,7 @@ structure changes after window refresh.</p>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_is_focused">
-<code class="sig-name descname">wait_until_element_is_focused</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">index: int = 0</em>, <em class="sig-param">timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_is_focused" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wait_until_element_is_focused</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], index: int = 0, timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_is_focused" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait until element is focused</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -595,7 +595,7 @@ structure changes after window refresh.</p>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_contains">
-<code class="sig-name descname">wait_until_element_text_contains</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">text: str</em>, <em class="sig-param">index: int = 0</em>, <em class="sig-param">timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_contains" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wait_until_element_text_contains</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], text: str, index: int = 0, timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_contains" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait until element text contains expected text</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -611,7 +611,7 @@ structure changes after window refresh.</p>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_equals">
-<code class="sig-name descname">wait_until_element_text_equals</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">text: str</em>, <em class="sig-param">index: int = 0</em>, <em class="sig-param">timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_equals" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wait_until_element_text_equals</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], text: str, index: int = 0, timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_equals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait until element text equals expected text</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

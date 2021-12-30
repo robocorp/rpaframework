@@ -220,8 +220,773 @@
             
   <div class="section" id="python-api">
 <h1>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="windows">
-<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-RPA.Windows">
+<span id="windows"></span><h2>Windows<a class="headerlink" href="#module-RPA.Windows" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="RPA.Windows.Windows">
+<em class="property">class </em><code class="sig-prename descclassname">RPA.Windows.</code><code class="sig-name descname">Windows</code><a class="headerlink" href="#RPA.Windows.Windows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">robotlibcore.DynamicCore</span></code></p>
+<p>The <cite>Windows</cite> is a library that can be used for Windows desktop automation.</p>
+<p>This library is at this moment in “BETA” stage as an alternative
+library for <cite>RPA.Desktop.Windows</cite>. Main difference being that this
+library is using <a class="reference external" href="https://github.com/yinkaisheng/Python-UIAutomation-for-Windows">uiautomation</a> dependency instead of <cite>pywinauto</cite>.</p>
+<p><strong>Installation</strong></p>
+<p>This library, <code class="docutils literal notranslate"><span class="pre">RPA.Windows</span></code> is available via <strong>rpaframework-windows</strong> package. This
+package is first available as a separate package installation from <strong>rpaframework</strong> package.
+In the next stage this is integrated into <strong>rpaframework</strong> package. Ultimately this library
+will replace current library <code class="docutils literal notranslate"><span class="pre">RPA.Desktop.Windows</span></code> if seen as approriate.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">channels</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
+<span class="nt">dependencies</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">python=3.7.5</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pip=20.1</span>
+  <span class="p p-Indicator">-</span> <span class="nt">pip</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rpaframework-windows==2.0.0</span>
+</pre></div>
+</div>
+<p><strong>About terminology</strong></p>
+<p><strong>ControlType</strong> is a value referred to by locator keys <cite>type:</cite> or <cite>control</cite>. Represents type of application
+object, which can be e.g. <cite>Window</cite>, <cite>Button</cite> or <cite>ListItem</cite>.</p>
+<p><strong>Element</strong> is an entity of an application structure (e.g. certain button in a window), which can be
+identified by a locator.</p>
+<p><strong>WindowsElement</strong> is an library container object for the <code class="docutils literal notranslate"><span class="pre">Element</span></code>. All keywords returning element, return
+element as <code class="docutils literal notranslate"><span class="pre">WindowsElement</span></code> and all keywords taking in <code class="docutils literal notranslate"><span class="pre">locator</span></code> or <code class="docutils literal notranslate"><span class="pre">root_element</span></code> arguments accept
+<code class="docutils literal notranslate"><span class="pre">WindowsElement</span></code> as an argument value.</p>
+<p>Structure of the <code class="docutils literal notranslate"><span class="pre">WindowsElement</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">WindowsElement</span><span class="p">:</span>
+    <span class="n">item</span><span class="p">:</span> <span class="n">Control</span>        <span class="c1"># ``item`` contains object instance of the element</span>
+    <span class="n">locator</span><span class="p">:</span> <span class="nb">str</span>         <span class="c1"># ``locator`` that found this element</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>            <span class="c1"># ``Name`` attribute of the element</span>
+    <span class="n">automation_id</span><span class="p">:</span> <span class="nb">str</span>   <span class="c1"># ``AutomationId`` attribute of the element</span>
+    <span class="n">control_type</span><span class="p">:</span> <span class="nb">str</span>    <span class="c1"># ``ControlTypeName`` attribute of the element</span>
+    <span class="n">class_name</span><span class="p">:</span> <span class="nb">str</span>      <span class="c1"># ``ClassName`` attribute of the element</span>
+    <span class="n">left</span><span class="p">:</span> <span class="nb">int</span>            <span class="c1"># element&#39;s rectangle left coordinate</span>
+    <span class="n">right</span><span class="p">:</span> <span class="nb">int</span>           <span class="c1"># element&#39;s rectangle right coordinate</span>
+    <span class="n">top</span><span class="p">:</span> <span class="nb">int</span>             <span class="c1"># element&#39;s rectangle top coordinate</span>
+    <span class="n">bottom</span><span class="p">:</span> <span class="nb">int</span>          <span class="c1"># element&#39;s rectangle bottom coordinate</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span>           <span class="c1"># element&#39;s rectangle horizontal width</span>
+    <span class="n">height</span><span class="p">:</span> <span class="nb">int</span>          <span class="c1"># element&#39;s rectangle vertical height</span>
+    <span class="n">xcenter</span><span class="p">:</span> <span class="nb">int</span>         <span class="c1"># element&#39;s rectangle center point x coordinate</span>
+    <span class="n">ycenter</span><span class="p">:</span> <span class="nb">int</span>         <span class="c1"># element&#39;s rectangle center point y coordinate</span>
+</pre></div>
+</div>
+<p>Example of the <code class="docutils literal notranslate"><span class="pre">WindowsElement</span></code> usage</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${rows}=</span><span class="p">    </span><span class="c">Get Elements</span><span class="p">    </span><span class="c">class:DataGridRow</span><span class="p"></span>
+<span class="c"># ${rows} is a list of ``WindowsElement``s</span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${row}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{rows}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Log To Console</span><span class="p">   </span><span class="c">${row.name}</span><span class="p">                </span><span class="c"># access ``WindowsElement``</span>
+<span class="p">    </span><span class="c">Log To Console</span><span class="p">   </span><span class="c">${row.item.AutomationId}</span><span class="p">   </span><span class="c"># access ``WindowsElement.item`` directly</span>
+<span class="p">    </span><span class="c">Log To Console</span><span class="p">   </span><span class="c">${row.item.Name}</span><span class="p">           </span><span class="c"># same as ``${row.name}``</span>
+<span class="c">END</span><span class="p"></span>
+</pre></div>
+</div>
+<p><strong>Locators</strong></p>
+<p>Locators are based on different strategies that can used identify Control object.</p>
+<p>Available strategies that can be used for the locators:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 86%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Maps to search property</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>Name</p></td>
+</tr>
+<tr class="row-odd"><td><p>class</p></td>
+<td><p>ClassName</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p>ControlType</p></td>
+</tr>
+<tr class="row-odd"><td><p>control</p></td>
+<td><p>ControlType</p></td>
+</tr>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutomationId</p></td>
+</tr>
+<tr class="row-odd"><td><p>automationid</p></td>
+<td><p>AutomationId</p></td>
+</tr>
+<tr class="row-even"><td><p>regex</p></td>
+<td><p>RegexName</p></td>
+</tr>
+<tr class="row-odd"><td><p>subname</p></td>
+<td><p>SubName</p></td>
+</tr>
+<tr class="row-even"><td><p>index</p></td>
+<td><p>foundIndex (int)</p></td>
+</tr>
+<tr class="row-odd"><td><p>offset</p></td>
+<td><p>offset coordinates (x (int), y (int)) from control center</p></td>
+</tr>
+<tr class="row-even"><td><p>executable</p></td>
+<td><p>target window by its executable name</p></td>
+</tr>
+<tr class="row-odd"><td><p>handle</p></td>
+<td><p>target window handle (int)</p></td>
+</tr>
+<tr class="row-even"><td><p>desktop</p></td>
+<td><p><em>SPECIAL</em> target desktop, no value for the key e.g. <cite>desktop:desktop and name:Calculator</cite></p></td>
+</tr>
+<tr class="row-odd"><td><p>process</p></td>
+<td><p><em>NOT YET SUPPORTED</em> target window by its executable’s process id</p></td>
+</tr>
+<tr class="row-even"><td><p>depth</p></td>
+<td><p>searchDepth (int) for finding Control (default 8)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>About root element on locators</strong></p>
+<p>Locators work on currently active <cite>root element</cite>. At the start <cite>root element</cite> is the whole
+desktop. There are different ways on changing this root element.</p>
+<p>Keyword <code class="docutils literal notranslate"><span class="pre">Control</span> <span class="pre">Window</span></code> is the most common method of setting certain system window
+as a root element for further actions using locators.</p>
+<p>Locators themselves support cascading syntax (denoted by character <cite>&gt;</cite> in the locator string),
+which can denote root element in “parent (root) &amp; child” terms.</p>
+<p>For example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Click</span><span class="p">  </span><span class="c">id:controls &gt; id:activate</span><span class="p"></span>
+</pre></div>
+</div>
+<p>On the above example the left side of the <cite>&gt;</cite> character, <cite>id:controls</cite>, represents the root element
+(can be called as “parent element” in this case). Right side of the locator string, <cite>id:activate</cite>,
+represents “child” element and it will be searched under the “parent element”.</p>
+<p>This way element search is more efficient, because search are restricted to certain section of element
+tree which can be quite huge especially on the desktop level and in certain applications.</p>
+<p>Keyword examples:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Control Window</span><span class="p">    </span><span class="c">name:Calculator</span><span class="p"></span>
+<span class="c">Control Window</span><span class="p">    </span><span class="c">Calculator</span><span class="p">  </span><span class="c"># will execute search by &#39;name:Calculator&#39;</span>
+<span class="c">Control Window</span><span class="p">    </span><span class="c">executable:Spotify.exe</span><span class="p"></span>
+</pre></div>
+</div>
+<p>some example locators, <cite>and</cite> can be omitted ie. space ` ` between locator keys means the same thing as <cite>and</cite>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>id:clearButton
+type:Group and name:<span class="s1">&#39;Number pad&#39;</span> &gt; type:Button and index:4
+type:Group and name:<span class="s1">&#39;Number pad&#39;</span> &gt; control:Button index:5
+id:Units1 &gt; name:<span class="si">${</span><span class="nv">unit</span><span class="si">}</span>
+class:Button offset:370,0
+</pre></div>
+</div>
+<p><strong>About locator restrictions</strong></p>
+<p>Visual locators are not supported in this library and they can’t be used in the same chain with these
+Windows locators. Visual locators are supported by the <cite>RPA.Desktop</cite> library. Locator chaining (image and
+Windows locators) support will be added in the future.</p>
+<p>Locator syntax does not yet support OR operation (only AND operations).</p>
+<p><strong>About search depth</strong></p>
+<p>The library does element search depth by default to the level of 8. This means that locator will look into
+8 levels of elements under element tree of the root element. This can lead into situation where element
+can’t be found. To fix this it is recommended to set root element which can be found within 8 levels OR
+defining <cite>depth</cite> in the locator string to a bigger value, e.g. <cite>id:deeplyNestedButton depth:16</cite>. Useful
+keywords for setting root element are <code class="docutils literal notranslate"><span class="pre">Control</span> <span class="pre">Window</span></code>, <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">Anchor</span></code> and <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Element</span></code>.</p>
+<p><strong>Keyboard and mouse</strong></p>
+<p>Keys for the keyboard actions are given using <code class="docutils literal notranslate"><span class="pre">uiautomation</span></code> specification.</p>
+<p>Special keys which are given within <cite>{}</cite> syntax.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 93%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Maps to action</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LBUTTON</p></td>
+<td><p>Left mouse button</p></td>
+</tr>
+<tr class="row-odd"><td><p>RBUTTON</p></td>
+<td><p>Right mouse button</p></td>
+</tr>
+<tr class="row-even"><td><p>CANCEL</p></td>
+<td><p>Control-break processing</p></td>
+</tr>
+<tr class="row-odd"><td><p>MBUTTON</p></td>
+<td><p>Middle mouse button (three-button mouse)</p></td>
+</tr>
+<tr class="row-even"><td><p>XBUTTON1</p></td>
+<td><p>X1 mouse button</p></td>
+</tr>
+<tr class="row-odd"><td><p>XBUTTON2</p></td>
+<td><p>X2 mouse button</p></td>
+</tr>
+<tr class="row-even"><td><p>BACK</p></td>
+<td><p>BACKSPACE key</p></td>
+</tr>
+<tr class="row-odd"><td><p>TAB</p></td>
+<td><p>TAB key</p></td>
+</tr>
+<tr class="row-even"><td><p>CLEAR</p></td>
+<td><p>CLEAR key</p></td>
+</tr>
+<tr class="row-odd"><td><p>RETURN</p></td>
+<td><p>ENTER key</p></td>
+</tr>
+<tr class="row-even"><td><p>ENTER</p></td>
+<td><p>ENTER key</p></td>
+</tr>
+<tr class="row-odd"><td><p>SHIFT</p></td>
+<td><p>SHIFT key</p></td>
+</tr>
+<tr class="row-even"><td><p>CTRL</p></td>
+<td><p>CTRL key</p></td>
+</tr>
+<tr class="row-odd"><td><p>CONTROL</p></td>
+<td><p>CTRL key</p></td>
+</tr>
+<tr class="row-even"><td><p>ALT</p></td>
+<td><p>ALT key</p></td>
+</tr>
+<tr class="row-odd"><td><p>PAUSE</p></td>
+<td><p>PAUSE key</p></td>
+</tr>
+<tr class="row-even"><td><p>CAPITAL</p></td>
+<td><p>CAPS LOCK key</p></td>
+</tr>
+<tr class="row-odd"><td><p>KANA</p></td>
+<td><p>IME Kana mode</p></td>
+</tr>
+<tr class="row-even"><td><p>HANGUEL</p></td>
+<td><p>IME Hanguel mode (maintained for compatibility; use VK_HANGUL)</p></td>
+</tr>
+<tr class="row-odd"><td><p>HANGUL</p></td>
+<td><p>IME Hangul mode</p></td>
+</tr>
+<tr class="row-even"><td><p>JUNJA</p></td>
+<td><p>IME Junja mode</p></td>
+</tr>
+<tr class="row-odd"><td><p>FINAL</p></td>
+<td><p>IME final mode</p></td>
+</tr>
+<tr class="row-even"><td><p>HANJA</p></td>
+<td><p>IME Hanja mode</p></td>
+</tr>
+<tr class="row-odd"><td><p>KANJI</p></td>
+<td><p>IME Kanji mode</p></td>
+</tr>
+<tr class="row-even"><td><p>ESC</p></td>
+<td><p>ESC key</p></td>
+</tr>
+<tr class="row-odd"><td><p>ESCAPE</p></td>
+<td><p>ESC key</p></td>
+</tr>
+<tr class="row-even"><td><p>CONVERT</p></td>
+<td><p>IME convert</p></td>
+</tr>
+<tr class="row-odd"><td><p>NONCONVERT</p></td>
+<td><p>IME nonconvert</p></td>
+</tr>
+<tr class="row-even"><td><p>ACCEPT</p></td>
+<td><p>IME accept</p></td>
+</tr>
+<tr class="row-odd"><td><p>MODECHANGE</p></td>
+<td><p>IME mode change request</p></td>
+</tr>
+<tr class="row-even"><td><p>SPACE</p></td>
+<td><p>SPACEBAR</p></td>
+</tr>
+<tr class="row-odd"><td><p>PRIOR</p></td>
+<td><p>PAGE UP key</p></td>
+</tr>
+<tr class="row-even"><td><p>PAGEUP</p></td>
+<td><p>PAGE UP key</p></td>
+</tr>
+<tr class="row-odd"><td><p>NEXT</p></td>
+<td><p>PAGE DOWN key</p></td>
+</tr>
+<tr class="row-even"><td><p>PAGEDOWN</p></td>
+<td><p>PAGE DOWN key</p></td>
+</tr>
+<tr class="row-odd"><td><p>END</p></td>
+<td><p>END key</p></td>
+</tr>
+<tr class="row-even"><td><p>HOME</p></td>
+<td><p>HOME key</p></td>
+</tr>
+<tr class="row-odd"><td><p>LEFT</p></td>
+<td><p>LEFT ARROW key</p></td>
+</tr>
+<tr class="row-even"><td><p>UP</p></td>
+<td><p>UP ARROW key</p></td>
+</tr>
+<tr class="row-odd"><td><p>RIGHT</p></td>
+<td><p>RIGHT ARROW key</p></td>
+</tr>
+<tr class="row-even"><td><p>DOWN</p></td>
+<td><p>DOWN ARROW key</p></td>
+</tr>
+<tr class="row-odd"><td><p>SELECT</p></td>
+<td><p>SELECT key</p></td>
+</tr>
+<tr class="row-even"><td><p>PRINT</p></td>
+<td><p>PRINT key</p></td>
+</tr>
+<tr class="row-odd"><td><p>EXECUTE</p></td>
+<td><p>EXECUTE key</p></td>
+</tr>
+<tr class="row-even"><td><p>SNAPSHOT</p></td>
+<td><p>PRINT SCREEN key</p></td>
+</tr>
+<tr class="row-odd"><td><p>PRINTSCREEN</p></td>
+<td><p>PRINT SCREEN key</p></td>
+</tr>
+<tr class="row-even"><td><p>INSERT</p></td>
+<td><p>INS key</p></td>
+</tr>
+<tr class="row-odd"><td><p>INS</p></td>
+<td><p>INS key</p></td>
+</tr>
+<tr class="row-even"><td><p>DELETE</p></td>
+<td><p>DEL key</p></td>
+</tr>
+<tr class="row-odd"><td><p>DEL</p></td>
+<td><p>DEL key</p></td>
+</tr>
+<tr class="row-even"><td><p>HELP</p></td>
+<td><p>HELP key</p></td>
+</tr>
+<tr class="row-odd"><td><p>WIN</p></td>
+<td><p>Left Windows key (Natural keyboard)</p></td>
+</tr>
+<tr class="row-even"><td><p>LWIN</p></td>
+<td><p>Left Windows key (Natural keyboard)</p></td>
+</tr>
+<tr class="row-odd"><td><p>RWIN</p></td>
+<td><p>Right Windows key (Natural keyboard)</p></td>
+</tr>
+<tr class="row-even"><td><p>APPS</p></td>
+<td><p>Applications key (Natural keyboard)</p></td>
+</tr>
+<tr class="row-odd"><td><p>SLEEP</p></td>
+<td><p>Computer Sleep key</p></td>
+</tr>
+<tr class="row-even"><td><p>NUMPAD0</p></td>
+<td><p>Numeric keypad 0 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>NUMPAD1</p></td>
+<td><p>Numeric keypad 1 key</p></td>
+</tr>
+<tr class="row-even"><td><p>NUMPAD2</p></td>
+<td><p>Numeric keypad 2 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>NUMPAD3</p></td>
+<td><p>Numeric keypad 3 key</p></td>
+</tr>
+<tr class="row-even"><td><p>NUMPAD4</p></td>
+<td><p>Numeric keypad 4 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>NUMPAD5</p></td>
+<td><p>Numeric keypad 5 key</p></td>
+</tr>
+<tr class="row-even"><td><p>NUMPAD6</p></td>
+<td><p>Numeric keypad 6 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>NUMPAD7</p></td>
+<td><p>Numeric keypad 7 key</p></td>
+</tr>
+<tr class="row-even"><td><p>NUMPAD8</p></td>
+<td><p>Numeric keypad 8 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>NUMPAD9</p></td>
+<td><p>Numeric keypad 9 key</p></td>
+</tr>
+<tr class="row-even"><td><p>MULTIPLY</p></td>
+<td><p>Multiply key</p></td>
+</tr>
+<tr class="row-odd"><td><p>ADD</p></td>
+<td><p>Add key</p></td>
+</tr>
+<tr class="row-even"><td><p>SEPARATOR</p></td>
+<td><p>Separator key</p></td>
+</tr>
+<tr class="row-odd"><td><p>SUBTRACT</p></td>
+<td><p>Subtract key</p></td>
+</tr>
+<tr class="row-even"><td><p>DECIMAL</p></td>
+<td><p>Decimal key</p></td>
+</tr>
+<tr class="row-odd"><td><p>DIVIDE</p></td>
+<td><p>Divide key</p></td>
+</tr>
+<tr class="row-even"><td><p>F1</p></td>
+<td><p>F1 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>F2</p></td>
+<td><p>F2 key</p></td>
+</tr>
+<tr class="row-even"><td><p>F3</p></td>
+<td><p>F3 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>F4</p></td>
+<td><p>F4 key</p></td>
+</tr>
+<tr class="row-even"><td><p>F5</p></td>
+<td><p>F5 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>F6</p></td>
+<td><p>F6 key</p></td>
+</tr>
+<tr class="row-even"><td><p>F7</p></td>
+<td><p>F7 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>F8</p></td>
+<td><p>F8 key</p></td>
+</tr>
+<tr class="row-even"><td><p>F9</p></td>
+<td><p>F9 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>F10</p></td>
+<td><p>F10 key</p></td>
+</tr>
+<tr class="row-even"><td><p>F11</p></td>
+<td><p>F11 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>F12</p></td>
+<td><p>F12 key</p></td>
+</tr>
+<tr class="row-even"><td><p>F13</p></td>
+<td><p>F13 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>F14</p></td>
+<td><p>F14 key</p></td>
+</tr>
+<tr class="row-even"><td><p>F15</p></td>
+<td><p>F15 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>F16</p></td>
+<td><p>F16 key</p></td>
+</tr>
+<tr class="row-even"><td><p>F17</p></td>
+<td><p>F17 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>F18</p></td>
+<td><p>F18 key</p></td>
+</tr>
+<tr class="row-even"><td><p>F19</p></td>
+<td><p>F19 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>F20</p></td>
+<td><p>F20 key</p></td>
+</tr>
+<tr class="row-even"><td><p>F21</p></td>
+<td><p>F21 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>F22</p></td>
+<td><p>F22 key</p></td>
+</tr>
+<tr class="row-even"><td><p>F23</p></td>
+<td><p>F23 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>F24</p></td>
+<td><p>F24 key</p></td>
+</tr>
+<tr class="row-even"><td><p>NUMLOCK</p></td>
+<td><p>NUM LOCK key</p></td>
+</tr>
+<tr class="row-odd"><td><p>SCROLL</p></td>
+<td><p>SCROLL LOCK key</p></td>
+</tr>
+<tr class="row-even"><td><p>LSHIFT</p></td>
+<td><p>Left SHIFT key</p></td>
+</tr>
+<tr class="row-odd"><td><p>RSHIFT</p></td>
+<td><p>Right SHIFT key</p></td>
+</tr>
+<tr class="row-even"><td><p>LCONTROL</p></td>
+<td><p>Left CONTROL key</p></td>
+</tr>
+<tr class="row-odd"><td><p>LCTRL</p></td>
+<td><p>Left CONTROL key</p></td>
+</tr>
+<tr class="row-even"><td><p>RCONTROL</p></td>
+<td><p>Right CONTROL key</p></td>
+</tr>
+<tr class="row-odd"><td><p>RCTRL</p></td>
+<td><p>Right CONTROL key</p></td>
+</tr>
+<tr class="row-even"><td><p>LALT</p></td>
+<td><p>Left MENU key</p></td>
+</tr>
+<tr class="row-odd"><td><p>RALT</p></td>
+<td><p>Right MENU key</p></td>
+</tr>
+<tr class="row-even"><td><p>BROWSER_BACK</p></td>
+<td><p>Browser Back key</p></td>
+</tr>
+<tr class="row-odd"><td><p>BROWSER_FORWARD</p></td>
+<td><p>Browser Forward key</p></td>
+</tr>
+<tr class="row-even"><td><p>BROWSER_REFRESH</p></td>
+<td><p>Browser Refresh key</p></td>
+</tr>
+<tr class="row-odd"><td><p>BROWSER_STOP</p></td>
+<td><p>Browser Stop key</p></td>
+</tr>
+<tr class="row-even"><td><p>BROWSER_SEARCH</p></td>
+<td><p>Browser Search key</p></td>
+</tr>
+<tr class="row-odd"><td><p>BROWSER_FAVORITES</p></td>
+<td><p>Browser Favorites key</p></td>
+</tr>
+<tr class="row-even"><td><p>BROWSER_HOME</p></td>
+<td><p>Browser Start and Home key</p></td>
+</tr>
+<tr class="row-odd"><td><p>VOLUME_MUTE</p></td>
+<td><p>Volume Mute key</p></td>
+</tr>
+<tr class="row-even"><td><p>VOLUME_DOWN</p></td>
+<td><p>Volume Down key</p></td>
+</tr>
+<tr class="row-odd"><td><p>VOLUME_UP</p></td>
+<td><p>Volume Up key</p></td>
+</tr>
+<tr class="row-even"><td><p>MEDIA_NEXT_TRACK</p></td>
+<td><p>Next Track key</p></td>
+</tr>
+<tr class="row-odd"><td><p>MEDIA_PREV_TRACK</p></td>
+<td><p>Previous Track key</p></td>
+</tr>
+<tr class="row-even"><td><p>MEDIA_STOP</p></td>
+<td><p>Stop Media key</p></td>
+</tr>
+<tr class="row-odd"><td><p>MEDIA_PLAY_PAUSE</p></td>
+<td><p>Play/Pause Media key</p></td>
+</tr>
+<tr class="row-even"><td><p>LAUNCH_MAIL</p></td>
+<td><p>Start Mail key</p></td>
+</tr>
+<tr class="row-odd"><td><p>LAUNCH_MEDIA_SELECT</p></td>
+<td><p>Select Media key</p></td>
+</tr>
+<tr class="row-even"><td><p>LAUNCH_APP1</p></td>
+<td><p>Start Application 1 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>LAUNCH_APP2</p></td>
+<td><p>Start Application 2 key</p></td>
+</tr>
+<tr class="row-even"><td><p>OEM_1</p></td>
+<td><p>Used for miscellaneous characters; it can vary by keyboard.For the US standard keyboard, the ‘;:’ key</p></td>
+</tr>
+<tr class="row-odd"><td><p>OEM_PLUS</p></td>
+<td><p>For any country/region, the ‘+’ key</p></td>
+</tr>
+<tr class="row-even"><td><p>OEM_COMMA</p></td>
+<td><p>For any country/region, the ‘,’ key</p></td>
+</tr>
+<tr class="row-odd"><td><p>OEM_MINUS</p></td>
+<td><p>For any country/region, the ‘-‘ key</p></td>
+</tr>
+<tr class="row-even"><td><p>OEM_PERIOD</p></td>
+<td><p>For any country/region, the ‘.’ key</p></td>
+</tr>
+<tr class="row-odd"><td><p>OEM_2</p></td>
+<td><p>Used for miscellaneous characters; it can vary by keyboard.</p></td>
+</tr>
+<tr class="row-even"><td><p>OEM_3</p></td>
+<td><p>Used for miscellaneous characters; it can vary by keyboard.</p></td>
+</tr>
+<tr class="row-odd"><td><p>OEM_4</p></td>
+<td><p>Used for miscellaneous characters; it can vary by keyboard.</p></td>
+</tr>
+<tr class="row-even"><td><p>OEM_5</p></td>
+<td><p>Used for miscellaneous characters; it can vary by keyboard.</p></td>
+</tr>
+<tr class="row-odd"><td><p>OEM_6</p></td>
+<td><p>Used for miscellaneous characters; it can vary by keyboard.</p></td>
+</tr>
+<tr class="row-even"><td><p>OEM_7</p></td>
+<td><p>Used for miscellaneous characters; it can vary by keyboard.</p></td>
+</tr>
+<tr class="row-odd"><td><p>OEM_8</p></td>
+<td><p>Used for miscellaneous characters; it can vary by keyboard.</p></td>
+</tr>
+<tr class="row-even"><td><p>OEM_102</p></td>
+<td><p>Either the angle bracket key or the backslash key on the RT 102-key keyboard</p></td>
+</tr>
+<tr class="row-odd"><td><p>PROCESSKEY</p></td>
+<td><p>IME PROCESS key</p></td>
+</tr>
+<tr class="row-even"><td><p>PACKET</p></td>
+<td><p>Used to pass Unicode characters as if they were keystrokes. The VK_PACKET key is the low word of a 32-bit Virtual Key value used for non-keyboard input methods. For more information, see Remark in KEYBDINPUT, SendInput, WM_KEYDOWN, and WM_KeyUp</p></td>
+</tr>
+<tr class="row-odd"><td><p>ATTN</p></td>
+<td><p>Attn key</p></td>
+</tr>
+<tr class="row-even"><td><p>CRSEL</p></td>
+<td><p>CrSel key</p></td>
+</tr>
+<tr class="row-odd"><td><p>EXSEL</p></td>
+<td><p>ExSel key</p></td>
+</tr>
+<tr class="row-even"><td><p>EREOF</p></td>
+<td><p>Erase EOF key</p></td>
+</tr>
+<tr class="row-odd"><td><p>PLAY</p></td>
+<td><p>Play key</p></td>
+</tr>
+<tr class="row-even"><td><p>ZOOM</p></td>
+<td><p>Zoom key</p></td>
+</tr>
+<tr class="row-odd"><td><p>NONAME</p></td>
+<td><p>Reserved</p></td>
+</tr>
+<tr class="row-even"><td><p>PA1</p></td>
+<td><p>PA1 key</p></td>
+</tr>
+<tr class="row-odd"><td><p>OEM_CLEAR</p></td>
+<td><p>Clear key</p></td>
+</tr>
+</tbody>
+</table>
+<p>Examples.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lib</span> <span class="o">=</span> <span class="n">Windows</span><span class="p">()</span>
+<span class="c1"># {Ctrl}, {Delete} ... are special keys&#39; name in SpecialKeyNames.</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{Ctrl}</span><span class="s1">a</span><span class="si">{Delete}{Ctrl}</span><span class="s1">v</span><span class="si">{Ctrl}</span><span class="s1">s</span><span class="si">{Ctrl}{Shift}</span><span class="s1">s</span><span class="si">{Win}</span><span class="s1">e</span><span class="si">{PageDown}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">#press Ctrl+a, Delete, Ctrl+v, Ctrl+s, Ctrl+Shift+s, Win+e, PageDown</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{Ctrl}</span><span class="s1">(AB)(</span><span class="si">{Shift}</span><span class="s1">(123))&#39;</span><span class="p">)</span> <span class="c1">#press Ctrl+A+B, type &#39;(&#39;, press Shift+1+2+3, type &#39;)&#39;, if &#39;()&#39; follows a hold key, hold key won&#39;t release util &#39;)&#39;</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{Ctrl}</span><span class="s1">{a 3}&#39;</span><span class="p">)</span> <span class="c1">#press Ctrl+a at the same time, release Ctrl+a, then type &#39;a&#39; 2 times</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;{a 3}{B 5}&#39;</span><span class="p">)</span> <span class="c1">#type &#39;a&#39; 3 times, type &#39;B&#39; 5 times</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;{{}Hello</span><span class="si">{}</span><span class="s1">}abc </span><span class="si">{a}{b}{c}</span><span class="s1"> test</span><span class="si">{}</span><span class="s1"> 3}{!}</span><span class="si">{a}</span><span class="s1"> (){(}{)}&#39;</span><span class="p">)</span> <span class="c1">#type: &#39;{Hello}abc abc test}}}!a ()()&#39;</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;0123456789</span><span class="si">{Enter}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;ABCDEFGHIJKLMNOPQRSTUVWXYZ</span><span class="si">{Enter}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;abcdefghijklmnopqrstuvwxyz</span><span class="si">{Enter}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;`~!@#$%^&amp;*()-_=+</span><span class="si">{Enter}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;[]{{}</span><span class="si">{}</span><span class="s1">}\|;:&#39;</span><span class="s2">&quot;,&lt;.&gt;/?</span><span class="si">{Enter}</span><span class="s2">&#39;)</span>
+</pre></div>
+</div>
+<p>Using access key of the element (element property -&gt; AccessKey ‘alt+s’).
+The <cite>(+s)</cite> means that previous special key is kept down until closing parenthesis is reached.</p>
+<p>On the below example this means that ‘ALT’ key is pressed down, then ‘+’ and ‘s’ keys are pressed
+down before they are all released up.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Send Keys</span><span class="p">   </span><span class="c">keys={Alt}(+s)</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Mouse clicks can be executed with keywords specific for a type of a click, e.g. <code class="docutils literal notranslate"><span class="pre">Click</span></code> (normal click),
+<code class="docutils literal notranslate"><span class="pre">Double</span> <span class="pre">Click</span></code> and <code class="docutils literal notranslate"><span class="pre">Right</span> <span class="pre">Click</span></code>.</p>
+<p><strong>How to inspect</strong></p>
+<p>Most common, and recommended by Microsoft, inspector tool for Windows is <a class="reference external" href="https://github.com/yinkaisheng/Python-UIAutomation-for-Windows">Accessibility Insights</a> that
+can be installed separately. Other options are tools <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects">Inspect Object</a>  and <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winauto/ui-automation-verify">UI Automation Verify</a>, which
+can be accessed by installing Windows SDK.</p>
+<p><strong>Recording</strong></p>
+<p>The package provides some rudimentary inspecting and recording via script <code class="docutils literal notranslate"><span class="pre">windows-record</span></code>, which can
+be started in the command line (in a environment containing <code class="docutils literal notranslate"><span class="pre">rpaframework-windows</span></code> installation).</p>
+<p>Recording inspects elements on <strong>mouse click</strong> and can be stopped with keyboard <strong>ESC</strong>.
+Expected console output.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>C:<span class="se">\U</span>sers<span class="se">\U</span>ser<span class="se">\r</span>obots<span class="se">\&gt;</span>windows-record
+keyboard and mouse listeners started
+
+--------------------------------------------------------------------------------
+COPY <span class="p">&amp;</span> PASTE BELOW CODE INTO *** Tasks *** or *** Keywords ***
+--------------------------------------------------------------------------------
+
+Control Window    Taskbar  <span class="c1"># Handle: 131380</span>
+Click   name:<span class="s1">&#39;Type here to search&#39;</span>
+Control Window    Calculator  <span class="c1"># Handle: 3411840</span>
+Click   name:<span class="s1">&#39;Five&#39;</span>
+Click   name:<span class="s1">&#39;Eight&#39;</span>
+Click   name:<span class="s1">&#39;Five&#39;</span>
+
+--------------------------------------------------------------------------------
+</pre></div>
+</div>
+<p><strong>Examples</strong></p>
+<p>Both Robot Framework and Python examples follow.</p>
+<p>The library must be imported first.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
+<span class="kn">Library</span><span class="p">    </span><span class="nn">RPA.Windows</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Windows Calculator task</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Tasks ***</span><span class="p"></span>
+<span class="gu">Do some calculations</span><span class="p"></span>
+<span class="p">    [</span><span class="kn">Setup</span><span class="p">]  </span><span class="nf">Windows Run</span><span class="p">   </span><span class="s">calc.exe</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Control Window</span><span class="p">    </span><span class="s">name:Calculator</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Click</span><span class="p">    </span><span class="s">id:clearButton</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Send Keys</span><span class="p">   </span><span class="s">keys=96+4=</span><span class="p"></span>
+<span class="p">    ${</span><span class="nv">result</span><span class="p">}=    </span><span class="nf">Get Attribute</span><span class="p">    </span><span class="s">id:CalculatorResults</span><span class="p">    </span><span class="s">Name</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Log To Console</span><span class="p">    ${</span><span class="nv">result</span><span class="p">}</span>
+<span class="p">    ${</span><span class="nv">buttons</span><span class="p">}=  </span><span class="nf">Get Elements</span><span class="p">  </span><span class="s">type:Group and name:&#39;Number pad&#39; &gt; type:Button</span><span class="p"></span>
+<span class="p">    FOR  ${</span><span class="nv">button</span><span class="p">}  IN  @{</span><span class="nv">buttons</span><span class="p">}</span>
+<span class="p">        </span><span class="nf">Log To Console</span><span class="p">   ${</span><span class="nv">button</span><span class="p">}</span>
+<span class="p">    END</span>
+<span class="p">    [</span><span class="kn">Teardown</span><span class="p">]   </span><span class="nf">Close Current Window</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Python example</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">from RPA.Windows import Windows</span><span class="p"></span>
+
+<span class="c">library = Windows()</span><span class="p"></span>
+
+<span class="c">def test_do_some_calculations():</span><span class="p"></span>
+<span class="p">    </span><span class="c">try:</span><span class="p"></span>
+<span class="p">        </span><span class="c">library.windows_run(&quot;calc.exe&quot;)</span><span class="p"></span>
+<span class="p">        </span><span class="c">library.control_window(&quot;name:Calculator&quot;)</span><span class="p"></span>
+<span class="p">        </span><span class="c">library.click(&quot;id:clearButton&quot;)</span><span class="p"></span>
+<span class="p">        </span><span class="c">library.send_keys(keys=&quot;96+4=&quot;)</span><span class="p"></span>
+<span class="p">        </span><span class="c">result = library.get_attribute(&quot;id:CalculatorResults&quot;, &quot;Name&quot;)</span><span class="p"></span>
+<span class="p">        </span><span class="c">print(result)</span><span class="p"></span>
+<span class="p">        </span><span class="c">buttons = library.get_elements(&quot;type:Group and name:&#39;Number pad&#39; &gt; type:Button&quot;)</span><span class="p"></span>
+<span class="p">        </span><span class="c">for button in buttons:</span><span class="p"></span>
+<span class="p">            </span><span class="c">print(button)</span><span class="p"></span>
+<span class="p">    </span><span class="c">finally:</span><span class="p"></span>
+<span class="p">        </span><span class="c">library.close_current_window()</span><span class="p"></span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="RPA.Windows.Windows.ROBOT_LIBRARY_DOC_FORMAT">
+<code class="sig-name descname">ROBOT_LIBRARY_DOC_FORMAT</code><em class="property"> = 'REST'</em><a class="headerlink" href="#RPA.Windows.Windows.ROBOT_LIBRARY_DOC_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.Windows.Windows.ROBOT_LIBRARY_SCOPE">
+<code class="sig-name descname">ROBOT_LIBRARY_SCOPE</code><em class="property"> = 'GLOBAL'</em><a class="headerlink" href="#RPA.Windows.Windows.ROBOT_LIBRARY_SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Windows.Windows.add_library_components">
+<code class="sig-name descname">add_library_components</code><span class="sig-paren">(</span><em class="sig-param">library_components</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Windows.Windows.add_library_components" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Windows.Windows.get_keyword_arguments">
+<code class="sig-name descname">get_keyword_arguments</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Windows.Windows.get_keyword_arguments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Windows.Windows.get_keyword_documentation">
+<code class="sig-name descname">get_keyword_documentation</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Windows.Windows.get_keyword_documentation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Windows.Windows.get_keyword_names">
+<code class="sig-name descname">get_keyword_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Windows.Windows.get_keyword_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Windows.Windows.get_keyword_source">
+<code class="sig-name descname">get_keyword_source</code><span class="sig-paren">(</span><em class="sig-param">keyword_name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Windows.Windows.get_keyword_source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Windows.Windows.get_keyword_tags">
+<code class="sig-name descname">get_keyword_tags</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Windows.Windows.get_keyword_tags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Windows.Windows.get_keyword_types">
+<code class="sig-name descname">get_keyword_types</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Windows.Windows.get_keyword_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Windows.Windows.run_keyword">
+<code class="sig-name descname">run_keyword</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">args</em>, <em class="sig-param">kwargs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Windows.Windows.run_keyword" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
