@@ -487,15 +487,15 @@ class Vault:
 
     .. code-block:: python
 
-        from RPA.Robocorp.Vault import Secrets
+        from RPA.Robocorp.Vault import Vault
 
-        SECRETS = Secrets()
+        VAULT = Vault()
 
         def reading_secrets():
-            print(f"My secrets: {SECRETS.get_secret('swaglabs')}")
+            print(f"My secrets: {VAULT.get_secret('swaglabs')}")
 
         def modifying_secrets():
-            secret = SECRETS.get_secret("swaglabs")
+            secret = VAULT.get_secret("swaglabs")
             secret["username"] = "nobody"
             secrets.set_secret(secret)
 
