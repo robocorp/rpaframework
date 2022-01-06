@@ -81,7 +81,8 @@ jobs:
           - name: "macos-py39"
             python: "3.9"
             os: macos-latest
-
+    env:
+      SETUPTOOLS_USE_DISTUTILS: stdlib
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python ${{ matrix.python }}
