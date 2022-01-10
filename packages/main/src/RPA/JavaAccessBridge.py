@@ -58,6 +58,53 @@ class InvalidLocatorError(AttributeError):
 IntegerLocatorTypes = ["x", "y", "width", "height", "indexInParent", "childrentCount"]
 
 
+@dataclass
+class JavaElement:
+    """Abstraction for Java object properties"""
+
+    name: str
+    role: str
+    states: list
+    checked: bool
+    selected: bool
+    visible: bool
+    enabled: bool
+    states_string: str
+    x: int
+    y: int
+    width: int
+    height: int
+    node: ContextNode
+    row: int
+    col: int
+
+    def __init__(
+        self, node, internal_node=None, index: int = None, columnCount: int = 0
+    ):
+        self.name = node.context_info.name
+        self.role = node.context_info.role
+        self.states = node.context_info.states.split(",")
+        self.checked = "checked" in self.states
+        self.selected = "selected" in self.states
+        self.visible = "visible" in self.states
+        self.enabled = "enabled" in self.states
+        self.node = node
+        self.internal = internal_node
+        self.states_string = node.context_info.states
+        self.x = int(node.context_info.x)
+        self.y = int(node.context_info.y)
+        self.width = int(node.context_info.width)
+        self.height = int(node.context_info.height)
+        if columnCount > 0:
+            self.row = 0 if index < columnCount else int(index / columnCount)
+            self.col = (
+                index if index < columnCount else int(index - (self.row * columnCount))
+            )
+        else:
+            self.row = -1
+            self.col = -1
+
+
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
 class JavaAccessBridge:
     # pylint: disable=W1401
@@ -764,50 +811,3 @@ class JavaAccessBridge:
             for i in range(0, len(table_elements), columnCount)
         ]
         return table_rows
-
-
-@dataclass
-class JavaElement:
-    """Abstraction for Java object properties"""
-
-    name: str
-    role: str
-    states: list
-    checked: bool
-    selected: bool
-    visible: bool
-    enabled: bool
-    states_string: str
-    x: int
-    y: int
-    width: int
-    height: int
-    node: ContextNode
-    row: int
-    col: int
-
-    def __init__(
-        self, node, internal_node=None, index: int = None, columnCount: int = 0
-    ):
-        self.name = node.context_info.name
-        self.role = node.context_info.role
-        self.states = node.context_info.states.split(",")
-        self.checked = "checked" in self.states
-        self.selected = "selected" in self.states
-        self.visible = "visible" in self.states
-        self.enabled = "enabled" in self.states
-        self.node = node
-        self.internal = internal_node
-        self.states_string = node.context_info.states
-        self.x = int(node.context_info.x)
-        self.y = int(node.context_info.y)
-        self.width = int(node.context_info.width)
-        self.height = int(node.context_info.height)
-        if columnCount > 0:
-            self.row = 0 if index < columnCount else int(index / columnCount)
-            self.col = (
-                index if index < columnCount else int(index - (self.row * columnCount))
-            )
-        else:
-            self.row = -1
-            self.col = -1
