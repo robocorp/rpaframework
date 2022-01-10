@@ -251,24 +251,24 @@ input is in <cite>RPA.Table</cite> format in <strong>method a</strong> and list 
 </pre></div>
 </div>
 <p>Example file <strong>orders.json</strong></p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-    <span class="p">{</span>
-        <span class="nt">&quot;asiakas&quot;</span><span class="p">:</span> <span class="s2">&quot;0015I000002jBLIQA2&quot;</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-        <span class="nt">&quot;asiakas&quot;</span><span class="p">:</span> <span class="s2">&quot;0015I000002jBLDQA2&quot;</span>
-    <span class="p">},</span>
-<span class="p">]</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;asiakas&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0015I000002jBLIQA2&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;asiakas&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0015I000002jBLDQA2&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
 </pre></div>
 </div>
 <p><cite>mapping_object</cite> describes how the input data fields are mapped into Salesforce
 object attributes. In the example, the mapping defines that <cite>asiakas</cite> attribute in the
 input object is mapped into <cite>Tilaaja__c</cite> attribute of <cite>Tilaus__c</cite> custom Salesforce object.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="nt">&quot;Tilaus__c&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;asiakas&quot;</span><span class="p">:</span> <span class="s2">&quot;Tilaaja__c&quot;</span>
-    <span class="p">},</span>
-<span class="p">}</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;Tilaus__c&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;asiakas&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Tilaaja__c&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Object type could be, for example, <cite>Tilaus__c</cite>.</p>
