@@ -8,7 +8,7 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-12.3.0 - 10 Jan 2021
+12.3.0 - 10 Jan 2022
 --------------------
 
 - Library **RPA.JavaAccessBridge**:
