@@ -8,6 +8,20 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+12.3.0 - 10 Jan 2021
+--------------------
+
+- Library **RPA.JavaAccessBridge**:
+
+    - Add keyword ``Read Table`` which returns table cells as ``Java Element``s
+     (more info in the documentation).
+    - Keyword ``Get Elements`` can also return elements as ``Java Element`` when
+     new parameter `java_element=True`.
+    - Fix locator value parsing for keys like `indexInParent` which can have
+     only integer value.
+    - Open known issue: clicking table cell elements seems to be problematic
+     atleast on Java Swing application (:issue:`355`)
+
 12.2.0 - 17 Dec 2021
 --------------------
 
