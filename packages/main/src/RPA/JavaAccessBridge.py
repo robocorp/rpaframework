@@ -1,4 +1,5 @@
 import atexit
+from dataclasses import dataclass
 import logging
 import os
 import platform
@@ -48,6 +49,13 @@ else:
 
 class ElementNotFound(ValueError):
     """No matching elements were found."""
+
+
+class InvalidLocatorError(AttributeError):
+    """Invalid locator string."""
+
+
+IntegerLocatorTypes = ["x", "y", "width", "height", "indexInParent", "childrentCount"]
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
@@ -318,6 +326,13 @@ class JavaAccessBridge:
                 parts = cond.split(":", 1)
                 if len(parts) == 1:
                     parts = ["name", parts[0]]
+                elif parts[0] in IntegerLocatorTypes:
+                    try:
+                        parts[1] = int(parts[1])
+                    except ValueError as err:
+                        raise InvalidLocatorError(
+                            "Locator '%s' needs to be of 'integer' type" % parts[0]
+                        ) from err
                 lvl_search.append(parts)
             searches.append(lvl_search)
         return searches
@@ -401,12 +416,23 @@ class JavaAccessBridge:
             raise ValueError(f"Element={element} not cleared")
 
     @keyword
-    def get_elements(self, locator: str):
+    def get_elements(self, locator: str, java_elements: bool = False):
         """Get matching elements
 
         :param locator: elements to get
+        :param java_elements: if True will return elements as ``JavaElement``
+         on False will return Java ContextNodes
+
+        Example.
+
+        .. code:: python
+
+            elements = java.get_elements("role:push button", java_elements=True)
+            for e in elements:
+                print(e.name if e.name else "EMPTY", e.visible, e.x, e.y)
         """
-        return self._find_elements(locator)
+        elements = self._find_elements(locator)
+        return [JavaElement(e) for e in elements] if java_elements else elements
 
     @keyword
     def wait_until_element_text_contains(
@@ -582,10 +608,16 @@ class JavaAccessBridge:
         :param locator: target element
         :param action: name of the element action to call
         """
-        elements = self._find_elements(locator)
-        if len(elements) != 1:
-            raise ElementNotFound("Locator %s did not match a unique element" % locator)
-        matching = elements[0]
+        if isinstance(locator, str):
+            elements = self._find_elements(locator)
+            if len(elements) != 1:
+                raise ElementNotFound(
+                    "Locator %s did not match a unique element" % locator
+                )
+
+            matching = elements[0]
+        else:
+            matching = locator
         self.logger.info("Element '%s' action", action)
         matching.do_action(action)
 
@@ -602,7 +634,11 @@ class JavaAccessBridge:
         self.logger.info("Element click coordinates")
         middle_x = element.context_info.x + int(element.context_info.width / 2)
         middle_y = element.context_info.y + int(element.context_info.height / 2)
-        locator = f"coordinates:{middle_x},{middle_y}"
+        self.click_coordinates(middle_x, middle_y, click_type)
+
+    @keyword
+    def click_coordinates(self, x: int, y: int, click_type="click"):
+        locator = f"coordinates:{x},{y}"
         self.desktop.click(locator, action=click_type)
         time.sleep(0.5)
 
@@ -688,3 +724,90 @@ class JavaAccessBridge:
             version_info.bridgeWinDLLVersion,
         )
         return version_info
+
+    @keyword
+    def read_table(self, locator: str):
+        """Return Java table as list of lists (rows containing columns).
+
+        Each cell element is represented by ``JavaElement`` class.
+
+        :param locator: locator to match element with type of table
+        :return: list of lists
+
+        Example.
+
+        .. code:: python
+
+            table = java.read_table(locator_table)
+            for row in table:
+                for cell in row:
+                    if cell.role == "check box":
+                        print(cell.row, cell.col, str(cell.checked))
+                    else:
+                        print(cell.row, cell.col, cell.name)
+        """
+        table = self._get_matching_element(locator)
+        columnCount = table.table.table.columnCount
+        if not columnCount or columnCount == 0:
+            raise InvalidLocatorError(
+                "Locator '%s' does not match 'table' element" % locator
+            )
+        visible_children = table.get_visible_children()
+
+        indexes = range(len(visible_children))
+        table_elements = [
+            JavaElement(vc, c, index, columnCount)
+            for index, vc, c in zip(indexes, visible_children, table.children)
+        ]
+        table_rows = [
+            table_elements[i : i + columnCount]
+            for i in range(0, len(table_elements), columnCount)
+        ]
+        return table_rows
+
+
+@dataclass
+class JavaElement:
+    """Abstraction for Java object properties"""
+
+    name: str
+    role: str
+    states: list
+    checked: bool
+    selected: bool
+    visible: bool
+    enabled: bool
+    states_string: str
+    x: int
+    y: int
+    width: int
+    height: int
+    node: ContextNode
+    row: int
+    col: int
+
+    def __init__(
+        self, node, internal_node=None, index: int = None, columnCount: int = 0
+    ):
+        self.name = node.context_info.name
+        self.role = node.context_info.role
+        self.states = node.context_info.states.split(",")
+        self.checked = "checked" in self.states
+        self.selected = "selected" in self.states
+        self.visible = "visible" in self.states
+        self.enabled = "enabled" in self.states
+        self.node = node
+        self.internal = internal_node
+        self.states_string = node.context_info.states
+        self.x = int(node.context_info.x)
+        self.y = int(node.context_info.y)
+        self.width = int(node.context_info.width)
+        self.height = int(node.context_info.height)
+        if columnCount > 0:
+            self.row = 0 if index < columnCount else int(index / columnCount)
+            self.col = (
+                index if index < columnCount else int(index - (self.row * columnCount))
+            )
+        else:
+            self.row = -1
+            self.col = -1

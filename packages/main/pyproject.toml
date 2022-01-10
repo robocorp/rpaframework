@@ -77,7 +77,7 @@ selenium = "^3.141.0"
 click = "^7.1.2"
 boto3 = { version = "^1.13.4", optional = true }
 amazon-textract-response-parser = { version = "^0.1.1", optional = true }
-java-access-bridge-wrapper = "^0.7.4"
+java-access-bridge-wrapper = "^0.8.2"
 PyYAML = "^5.4.1"
 tenacity = "^8.0.1"
 htmldocx = "^0.0.6"
