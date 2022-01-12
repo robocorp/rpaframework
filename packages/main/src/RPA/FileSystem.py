@@ -299,7 +299,9 @@ class FileSystem:
         """
         Path(path).touch()
 
-    def create_file(self, path, content=None, encoding="utf-8", overwrite=False) -> None:
+    def create_file(
+        self, path, content=None, encoding="utf-8", overwrite=False
+    ) -> None:
         """Creates a new text file, and writes content if any is given.
 
         :param path:        path to file to write
