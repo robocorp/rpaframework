@@ -216,7 +216,7 @@ class Images:
         :param region:  coordinates for region or Region object
         :param color:   color of rectangle
         :param width:   line width of rectangle
-        :return: 
+        :return:    Image of the selected region
         """
         image = to_image(image)
         region = to_region(region)
@@ -270,7 +270,9 @@ class TemplateMatcher:
         else:
             return self._find_exact(image, template, limit, tolerance)
 
-    def _find_recognition(self, image, template, limit=None, tolerance=None) -> List[Region]:
+    def _find_recognition(
+        self, image, template, limit=None, tolerance=None
+    ) -> List[Region]:
         """Find template using recognition module."""
         if tolerance is None:
             tolerance = self._tolerance
