@@ -317,6 +317,38 @@ using a feature called <cite>locators</cite>. Locator describes properties of an
 </div>
 </div></blockquote>
 <p>Some keywords accept element as an parameter in place of locator.</p>
+<p><strong>About JavaElement object</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">JavaElement</span></code> was added in rpaframework==12.3.0 for easy access into
+<code class="docutils literal notranslate"><span class="pre">ContextNode</span></code> objects which have been returned by <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Elements</span></code> keyword.</p>
+<p>Keyword <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Elements</span></code> still returns <code class="docutils literal notranslate"><span class="pre">ContextNode</span></code> objects, but with parameter
+<code class="docutils literal notranslate"><span class="pre">java_elements=True</span></code> the keyword returns <code class="docutils literal notranslate"><span class="pre">JavaElement</span></code> objects instead (they
+still contain reference to <code class="docutils literal notranslate"><span class="pre">ContextNode</span></code> object via <code class="docutils literal notranslate"><span class="pre">node</span></code> property, e.g.
+JavaObject.node).</p>
+<p>Properties and methods included in the JavaElement:</p>
+<ul class="simple">
+<li><p>name: str</p></li>
+<li><p>role: str</p></li>
+<li><p>states: list      # list presentation of states (string)</p></li>
+<li><p>checked: bool</p></li>
+<li><p>selected: bool</p></li>
+<li><p>visible: bool</p></li>
+<li><p>enabled: bool</p></li>
+<li><p>states_string: str</p></li>
+<li><p>x: int           # left coordinate of the element</p></li>
+<li><p>y: int           # top coordinate of the element</p></li>
+<li><p>width: int</p></li>
+<li><p>height: int</p></li>
+<li><p>node: ContextNode  # original ContextNode</p></li>
+<li><p>row: int           # table row, -1 if element is not member of table</p></li>
+<li><p>col: int           # table column, -1 if element is not member of table</p></li>
+<li><p>text: str          # text content of the element</p></li>
+<li><p>column_count = int   # table column count</p></li>
+</ul>
+<p># visible_children elements of this element
+# is some cases only way to access element coordinates
+- visible_children: list
+- click(click_type=”click”)       # method for clicking element center
+- type_text(text, clear=False)   # method for typing text into element (if possible)</p>
 <p><strong>Interacting with elements</strong></p>
 <p>By default application elements are interacted with Actions supported by the element.
 Most common example is <cite>click</cite> action supported by an button element.</p>
@@ -416,12 +448,24 @@ structure changes after window refresh.</p>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.click_coordinates">
-<code class="sig-name descname">click_coordinates</code><span class="sig-paren">(</span><em class="sig-param">x: int</em>, <em class="sig-param">y: int</em>, <em class="sig-param">click_type='click'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.click_coordinates" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">click_coordinates</code><span class="sig-paren">(</span><em class="sig-param">x: int</em>, <em class="sig-param">y: int</em>, <em class="sig-param">click_type: str = 'click'</em>, <em class="sig-param">delay: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.click_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keyword to mouse click at specific coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – horizontal coordinate</p></li>
+<li><p><strong>y</strong> – vertical coordinates</p></li>
+<li><p><strong>click_type</strong> – default <cite>click</cite>, see <cite>RPA.Desktop</cite> for different
+click options</p></li>
+<li><p><strong>delay</strong> – how much in seconds to delay after click, defaults to 0.5</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.click_element">
-<code class="sig-name descname">click_element</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], index: int = 0, action: bool = True, timeout: int = 10</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.click_element" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">click_element</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, RPA.JavaAccessBridge.JavaElement, str], index: int = 0, action: bool = True, timeout: int = 10</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.click_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -448,7 +492,7 @@ structure changes after window refresh.</p>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.get_element_actions">
-<code class="sig-name descname">get_element_actions</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_element_actions" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_element_actions</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, RPA.JavaAccessBridge.JavaElement, str]</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_element_actions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of possible element actions</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -459,7 +503,7 @@ structure changes after window refresh.</p>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.get_element_text">
-<code class="sig-name descname">get_element_text</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], index: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_element_text" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_element_text</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, RPA.JavaAccessBridge.JavaElement, str], index: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_element_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get element text</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -483,6 +527,9 @@ structure changes after window refresh.</p>
 on False will return Java ContextNodes</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of ContextNodes or JavaElements</p>
+</dd>
 </dl>
 <p>Example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">elements</span> <span class="o">=</span> <span class="n">java</span><span class="o">.</span><span class="n">get_elements</span><span class="p">(</span><span class="s2">&quot;role:push button&quot;</span><span class="p">,</span> <span class="n">java_elements</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -500,7 +547,7 @@ on False will return Java ContextNodes</p></li>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.highlight_element">
-<code class="sig-name descname">highlight_element</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], index: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.highlight_element" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">highlight_element</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, RPA.JavaAccessBridge.JavaElement, str], index: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.highlight_element" title="Permalink to this definition">¶</a></dt>
 <dd><p>Highlight an element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -537,7 +584,7 @@ on False will return Java ContextNodes</p></li>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.read_table">
-<code class="sig-name descname">read_table</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.read_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_table</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, RPA.JavaAccessBridge.JavaElement, str]</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.read_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return Java table as list of lists (rows containing columns).</p>
 <p>Each cell element is represented by <code class="docutils literal notranslate"><span class="pre">JavaElement</span></code> class.</p>
 <dl class="field-list simple">
@@ -590,6 +637,21 @@ on False will return Java ContextNodes</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.set_display_scale_factor">
+<code class="sig-name descname">set_display_scale_factor</code><span class="sig-paren">(</span><em class="sig-param">factor: float</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.set_display_scale_factor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override library display scale factor.</p>
+<p>Keyword returns previous value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>factor</strong> – value for the new display scale factor</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>previous display scale factor value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.set_mouse_position">
 <code class="sig-name descname">set_mouse_position</code><span class="sig-paren">(</span><em class="sig-param">element: JABWrapper.context_tree.ContextNode</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.set_mouse_position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set mouse position to element center</p>
@@ -608,7 +670,7 @@ on False will return Java ContextNodes</p></li>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.toggle_drop_down">
-<code class="sig-name descname">toggle_drop_down</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">index: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.toggle_drop_down" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">toggle_drop_down</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, RPA.JavaAccessBridge.JavaElement, str], index: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.toggle_drop_down" title="Permalink to this definition">¶</a></dt>
 <dd><p>Toggle dropdown action on element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -622,7 +684,7 @@ on False will return Java ContextNodes</p></li>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.type_text">
-<code class="sig-name descname">type_text</code><span class="sig-paren">(</span><em class="sig-param">locator: str</em>, <em class="sig-param">text: str</em>, <em class="sig-param">index: int = 0</em>, <em class="sig-param">clear: bool = False</em>, <em class="sig-param">enter: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.type_text" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">type_text</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, RPA.JavaAccessBridge.JavaElement, str], text: str, index: int = 0, clear: bool = False, enter: bool = False, typing: bool = True</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.type_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Type text into coordinates defined by locator</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -632,6 +694,8 @@ on False will return Java ContextNodes</p></li>
 <li><p><strong>index</strong> – target element if multiple are returned</p></li>
 <li><p><strong>clear</strong> – should element be cleared before typing</p></li>
 <li><p><strong>enter</strong> – should enter key be pressed after typing</p></li>
+<li><p><strong>typing</strong> – if True (default) will use Desktop().type_text()
+if False will use Desktop().press_keys()</p></li>
 </ul>
 </dd>
 </dl>
@@ -639,7 +703,7 @@ on False will return Java ContextNodes</p></li>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_is_focused">
-<code class="sig-name descname">wait_until_element_is_focused</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], index: int = 0, timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_is_focused" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wait_until_element_is_focused</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, RPA.JavaAccessBridge.JavaElement, str], index: int = 0, timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_is_focused" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait until element is focused</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -654,7 +718,7 @@ on False will return Java ContextNodes</p></li>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_contains">
-<code class="sig-name descname">wait_until_element_text_contains</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], text: str, index: int = 0, timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_contains" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wait_until_element_text_contains</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, RPA.JavaAccessBridge.JavaElement, str], text: str, index: int = 0, timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_contains" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait until element text contains expected text</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -670,7 +734,7 @@ on False will return Java ContextNodes</p></li>
 
 <dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_equals">
-<code class="sig-name descname">wait_until_element_text_equals</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, str], text: str, index: int = 0, timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_equals" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wait_until_element_text_equals</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, RPA.JavaAccessBridge.JavaElement, str], text: str, index: int = 0, timeout: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.wait_until_element_text_equals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait until element text equals expected text</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -688,7 +752,7 @@ on False will return Java ContextNodes</p></li>
 
 <dl class="class">
 <dt id="RPA.JavaAccessBridge.JavaElement">
-<em class="property">class </em><code class="sig-prename descclassname">RPA.JavaAccessBridge.</code><code class="sig-name descname">JavaElement</code><span class="sig-paren">(</span><em class="sig-param">node</em>, <em class="sig-param">internal_node=None</em>, <em class="sig-param">index: int = None</em>, <em class="sig-param">columnCount: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">RPA.JavaAccessBridge.</code><code class="sig-name descname">JavaElement</code><span class="sig-paren">(</span><em class="sig-param">node</em>, <em class="sig-param">scaling_factor=None</em>, <em class="sig-param">internal_node=None</em>, <em class="sig-param">index=0</em>, <em class="sig-param">column_count=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Abstraction for Java object properties</p>
 <dl class="attribute">
@@ -696,10 +760,21 @@ on False will return Java ContextNodes</p></li>
 <code class="sig-name descname">checked</code><em class="property">: bool</em><em class="property"> = None</em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.checked" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaElement.click">
+<code class="sig-name descname">click</code><span class="sig-paren">(</span><em class="sig-param">click_type: str = 'click'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.click" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="RPA.JavaAccessBridge.JavaElement.col">
 <code class="sig-name descname">col</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.col" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.JavaAccessBridge.JavaElement.column_count">
+<code class="sig-name descname">column_count</code><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.column_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">builtins.int</span></code></p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="RPA.JavaAccessBridge.JavaElement.enabled">
@@ -747,8 +822,23 @@ on False will return Java ContextNodes</p></li>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.JavaAccessBridge.JavaElement.text">
+<code class="sig-name descname">text</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaElement.type_text">
+<code class="sig-name descname">type_text</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">clear: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.type_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.JavaAccessBridge.JavaElement.visible">
 <code class="sig-name descname">visible</code><em class="property">: bool</em><em class="property"> = None</em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.visible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RPA.JavaAccessBridge.JavaElement.visible_children">
+<code class="sig-name descname">visible_children</code><em class="property">: list</em><em class="property"> = None</em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.visible_children" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -767,6 +857,11 @@ on False will return Java ContextNodes</p></li>
 <dd></dd></dl>
 
 </dd></dl>
+
+<dl class="function">
+<dt id="RPA.JavaAccessBridge.get_scaled_coordinate">
+<code class="sig-prename descclassname">RPA.JavaAccessBridge.</code><code class="sig-name descname">get_scaled_coordinate</code><span class="sig-paren">(</span><em class="sig-param">coordinate</em>, <em class="sig-param">scaling_factor</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.get_scaled_coordinate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 </div>

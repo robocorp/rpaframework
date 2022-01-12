@@ -226,8 +226,8 @@
 <dt id="RPA.Notifier.Notifier">
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Notifier.</code><code class="sig-name descname">Notifier</code><a class="headerlink" href="#RPA.Notifier.Notifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p><cite>Notifier</cite> is a library interfacting with different notification services.</p>
-<p>Supported services:</p>
+<p><cite>Notifier</cite> is a library interfacting with different notification providers.</p>
+<p><strong>Supported providers</strong></p>
 <ul class="simple">
 <li><p>email</p></li>
 <li><p>gmail</p></li>
@@ -236,7 +236,7 @@
 <li><p>telegram</p></li>
 <li><p>twilio</p></li>
 </ul>
-<p>Services not supported yet:</p>
+<p><strong>Providers not supported yet via specific keywords</strong></p>
 <ul class="simple">
 <li><p>gitter</p></li>
 <li><p>join</p></li>
@@ -248,7 +248,53 @@
 <li><p>statuspage</p></li>
 <li><p>zulip</p></li>
 </ul>
+<p>There is a keyword <code class="docutils literal notranslate"><span class="pre">Generic</span> <span class="pre">Notify</span></code> which can be used
+to call above services, for example.</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Generic Notify</span><span class="p"></span>
+<span class="p">    </span><span class="c">provider_name=gitter</span><span class="p"></span>
+<span class="p">    </span><span class="c">message=Hello from Robot</span><span class="p"></span>
+<span class="p">    </span><span class="c">token=TOKEN</span><span class="p"></span>
+<span class="p">    </span><span class="c">room_id=ID_OF_THE_GITTER_ROOM</span><span class="p"></span>
+</pre></div>
+</div>
+<p>Parameters for different providers can be read from the
+<strong>Notifiers</strong> documents (link below).</p>
 <p>Read more at <a class="reference external" href="https://notifiers.readthedocs.io/en/latest/">https://notifiers.readthedocs.io/en/latest/</a></p>
+<p><strong>About kwargs</strong></p>
+<p>The <cite>**kwargs</cite> is a term for any extra named parameters, which
+can be included in the same way as already named arguments,
+e.g. <code class="docutils literal notranslate"><span class="pre">Notify</span> <span class="pre">Email</span></code> could be called with <cite>subject=my email subject</cite>
+which will be passed through <a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs.</p>
+<p>Notifier documentation contains information about all possible
+arguments that different providers support.</p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">&amp;{account}=</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">host=smtp.office365.com</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">username=ACCOUNT_USERNAME</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">password=ACCOUNT_PASSWORD</span><span class="p"></span>
+<span class="c">Notify Email</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">to=RECIPIENT_EMAIL</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">from_=SENDER_ADDRESS</span><span class="p">            </span><span class="c"># passed via kwargs</span>
+<span class="c">...</span><span class="p">    </span><span class="c">subject=Hello from the Robot</span><span class="p">    </span><span class="c"># passed via kwargs</span>
+<span class="c">...</span><span class="p">    </span><span class="c">message=Hello from the Robot</span><span class="p"></span>
+<span class="c">...</span><span class="p">    </span><span class="c">&amp;{account}</span><span class="p">                      </span><span class="c"># passed via kwargs</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">notifier</span> <span class="o">=</span> <span class="n">Notifier</span><span class="p">()</span>
+<span class="n">account</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;smtp.office365.com&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;EMAIL_USERNAME&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;EMAIL_PASSWORD&quot;</span>
+<span class="p">}</span>
+<span class="n">notifier</span><span class="o">.</span><span class="n">email_notify</span><span class="p">(</span>
+    <span class="n">to</span><span class="o">=</span><span class="s2">&quot;RECIPIENT_EMAIL&quot;</span><span class="p">,</span>
+    <span class="n">from_</span><span class="o">=</span><span class="s2">&quot;SENDER_EMAIL&quot;</span><span class="p">,</span>
+    <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;Hello from the Python Robot&quot;</span><span class="p">,</span>
+    <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Hello from the Python RObot&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">account</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="gh">*** Settings ***</span><span class="p"></span>
@@ -295,16 +341,14 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="RPA.Notifier.Notifier.notify_email">
-<code class="sig-name descname">notify_email</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">to: str = None</em>, <em class="sig-param">username: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_email" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notify using email service</p>
+<dt id="RPA.Notifier.Notifier.generic_notify">
+<code class="sig-name descname">generic_notify</code><span class="sig-paren">(</span><em class="sig-param">provider_name: str</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Notifier.Notifier.generic_notify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generic keyword to use with any notifier provider.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> – notification message</p></li>
-<li><p><strong>to</strong> – target of email message</p></li>
-<li><p><strong>username</strong> – email service username</p></li>
-<li><p><strong>password</strong> – email service password</p></li>
+<li><p><strong>provider_name</strong> – name of the notifier service</p></li>
+<li><p><strong>kwargs</strong> – see library documentation</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -314,16 +358,51 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="RPA.Notifier.Notifier.notify_gmail">
-<code class="sig-name descname">notify_gmail</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">to: str = None</em>, <em class="sig-param">username: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_gmail" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notify using Gmail service</p>
+<dt id="RPA.Notifier.Notifier.notify_email">
+<code class="sig-name descname">notify_email</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">to: str = None</em>, <em class="sig-param">username: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">host: str = None</em>, <em class="sig-param">port: int = 587</em>, <em class="sig-param">tls: bool = True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify using email provider</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – notification message</p></li>
 <li><p><strong>to</strong> – target of email message</p></li>
-<li><p><strong>username</strong> – GMail service username</p></li>
-<li><p><strong>password</strong> – GMail service password</p></li>
+<li><p><strong>username</strong> – email account username</p></li>
+<li><p><strong>password</strong> – email account password</p></li>
+<li><p><strong>host</strong> – email SMTP host name</p></li>
+<li><p><strong>port</strong> – email SMTP host port number</p></li>
+<li><p><strong>tls</strong> – should TLS be used (default True)</p></li>
+<li><p><strong>kwargs</strong> – see library documentation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True is notification was success, False if not</p>
+</dd>
+</dl>
+<p>Example.</p>
+<blockquote>
+<div><p># Notify with Outlook account
+Notify Email
+…   message=Message from the Robot
+…   to=RECIPIENT_EMAIL_ADDRESS
+…   username=OUTLOOK_USERNAME
+…   password=OUTLOOK_PASSWORD
+…   host=smtp.office365.com
+…   subject=Subject of the Message</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="RPA.Notifier.Notifier.notify_gmail">
+<code class="sig-name descname">notify_gmail</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">to: str = None</em>, <em class="sig-param">username: str = None</em>, <em class="sig-param">password: str = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_gmail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify using Gmail provider</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> – notification message</p></li>
+<li><p><strong>to</strong> – target of email message</p></li>
+<li><p><strong>username</strong> – GMail account username</p></li>
+<li><p><strong>password</strong> – GMail account password</p></li>
+<li><p><strong>kwargs</strong> – see library documentation</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -334,14 +413,15 @@
 
 <dl class="method">
 <dt id="RPA.Notifier.Notifier.notify_pushover">
-<code class="sig-name descname">notify_pushover</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">user: str = None</em>, <em class="sig-param">token: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_pushover" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notify using Pushover service</p>
+<code class="sig-name descname">notify_pushover</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">user: str = None</em>, <em class="sig-param">token: str = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_pushover" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify using Pushover provider</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – notification message</p></li>
 <li><p><strong>user</strong> – target user for the notification</p></li>
 <li><p><strong>token</strong> – service token</p></li>
+<li><p><strong>kwargs</strong> – see library documentation</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -352,14 +432,15 @@
 
 <dl class="method">
 <dt id="RPA.Notifier.Notifier.notify_slack">
-<code class="sig-name descname">notify_slack</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">channel: str = None</em>, <em class="sig-param">webhook_url: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_slack" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notify using Slack service</p>
+<code class="sig-name descname">notify_slack</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">channel: str = None</em>, <em class="sig-param">webhook_url: str = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_slack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify using Slack provider</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – notification message</p></li>
 <li><p><strong>channel</strong> – target channel for the notification</p></li>
 <li><p><strong>webhook_url</strong> – Slack webhook url</p></li>
+<li><p><strong>kwargs</strong> – see library documentation</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -370,14 +451,15 @@
 
 <dl class="method">
 <dt id="RPA.Notifier.Notifier.notify_telegram">
-<code class="sig-name descname">notify_telegram</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">chat_id: str = None</em>, <em class="sig-param">token: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_telegram" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notify using Telegram service</p>
+<code class="sig-name descname">notify_telegram</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">chat_id: str = None</em>, <em class="sig-param">token: str = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_telegram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify using Telegram provider</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – notification message</p></li>
 <li><p><strong>chat_id</strong> – target chat id for the notification</p></li>
 <li><p><strong>token</strong> – service token</p></li>
+<li><p><strong>kwargs</strong> – see library documentation</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -388,8 +470,8 @@
 
 <dl class="method">
 <dt id="RPA.Notifier.Notifier.notify_twilio">
-<code class="sig-name descname">notify_twilio</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">number_from: str = None</em>, <em class="sig-param">number_to: str = None</em>, <em class="sig-param">account_sid: str = None</em>, <em class="sig-param">token: str = None</em>, <em class="sig-param">**kwargs: dict</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_twilio" title="Permalink to this definition">¶</a></dt>
-<dd><p>Notify using Twilio service</p>
+<code class="sig-name descname">notify_twilio</code><span class="sig-paren">(</span><em class="sig-param">message: str = None</em>, <em class="sig-param">number_from: str = None</em>, <em class="sig-param">number_to: str = None</em>, <em class="sig-param">account_sid: str = None</em>, <em class="sig-param">token: str = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Notifier.Notifier.notify_twilio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify using Twilio provider</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -398,6 +480,7 @@
 <li><p><strong>number_to</strong> – number where the messages goes to</p></li>
 <li><p><strong>account_sid</strong> – Twilio account SID</p></li>
 <li><p><strong>token</strong> – Twilio account token</p></li>
+<li><p><strong>kwargs</strong> – see library documentation</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
