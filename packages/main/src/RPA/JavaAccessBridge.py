@@ -14,90 +14,8 @@ from robot.libraries.BuiltIn import BuiltIn
 
 from RPA.Desktop import Desktop
 
-if platform.system() == "Windows":
-    from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
-    from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
-
 
 DESKTOP = Desktop()
-
-
-@dataclass
-class JavaElement:
-    """Abstraction for Java object properties"""
-
-    name: str
-    role: str
-    states: list
-    checked: bool
-    selected: bool
-    visible: bool
-    enabled: bool
-    states_string: str
-    x: int
-    y: int
-    width: int
-    height: int
-    node: ContextNode
-    row: int
-    col: int
-    text: str
-    column_count = int
-    visible_children: list
-
-    def __init__(
-        self,
-        node,
-        scaling_factor=None,
-        internal_node=None,
-        index=0,
-        column_count=None,
-    ):
-        scaling_factor = scaling_factor or ScalingFactor
-        self.name = node.context_info.name
-        self.role = node.context_info.role
-        self.states = node.context_info.states.split(",")
-        self.checked = "checked" in self.states
-        self.selected = "selected" in self.states
-        self.visible = "visible" in self.states
-        self.enabled = "enabled" in self.states
-        self.node = node
-        self.internal = internal_node
-        self.states_string = node.context_info.states
-        self.x = get_scaled_coordinate(node.context_info.x, scaling_factor)
-        self.y = get_scaled_coordinate(node.context_info.y, scaling_factor)
-        self.width = get_scaled_coordinate(node.context_info.width, scaling_factor)
-        self.height = get_scaled_coordinate(node.context_info.height, scaling_factor)
-        self.center_x = self.x + int(self.width / 2)
-        self.center_y = self.y + int(self.height / 2)
-        self.text = node.text._items.sentence
-        self.visible_children = node.get_visible_children()
-        self.column_count = column_count or len(self.visible_children)
-        if self.column_count > 0:
-            self.row = (
-                0 if index < self.column_count else int(index / self.column_count)
-            )
-            self.col = (
-                index
-                if index < self.column_count
-                else int(index - (self.row * self.column_count))
-            )
-        else:
-            self.row = -1
-            self.col = -1
-
-    def click(self, click_type: str = "click"):
-        if self.x != -1 and self.y != -1:
-            locator = f"coordinates:{self.center_x},{self.center_y}"
-            DESKTOP.click(locator, action=click_type)
-
-    def type_text(self, text: str, clear: bool = False) -> None:
-        self.click()
-        if clear:
-            DESKTOP.press_keys("ctrl", "a", "delete")
-            time.sleep(0.2)
-        for c in text:
-            DESKTOP.press_keys(c)
 
 
 def get_scaled_coordinate(coordinate, scaling_factor):
@@ -105,6 +23,8 @@ def get_scaled_coordinate(coordinate, scaling_factor):
 
 
 if platform.system() == "Windows":
+    from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
+    from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
     import ctypes
     from ctypes import wintypes, byref
 
@@ -127,11 +47,92 @@ if platform.system() == "Windows":
     TranslateMessage = ctypes.windll.user32.TranslateMessage
     DispatchMessage = ctypes.windll.user32.DispatchMessageW
     ScalingFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
+
+    @dataclass
+    class JavaElement:
+        """Abstraction for Java object properties"""
+
+        name: str
+        role: str
+        states: list
+        checked: bool
+        selected: bool
+        visible: bool
+        enabled: bool
+        states_string: str
+        x: int
+        y: int
+        width: int
+        height: int
+        node: ContextNode
+        row: int
+        col: int
+        text: str
+        column_count = int
+        visible_children: list
+
+        def __init__(
+            self,
+            node,
+            scaling_factor=None,
+            internal_node=None,
+            index=0,
+            column_count=None,
+        ):
+            scaling_factor = scaling_factor or ScalingFactor
+            self.name = node.context_info.name
+            self.role = node.context_info.role
+            self.states = node.context_info.states.split(",")
+            self.checked = "checked" in self.states
+            self.selected = "selected" in self.states
+            self.visible = "visible" in self.states
+            self.enabled = "enabled" in self.states
+            self.node = node
+            self.internal = internal_node
+            self.states_string = node.context_info.states
+            self.x = get_scaled_coordinate(node.context_info.x, scaling_factor)
+            self.y = get_scaled_coordinate(node.context_info.y, scaling_factor)
+            self.width = get_scaled_coordinate(node.context_info.width, scaling_factor)
+            self.height = get_scaled_coordinate(
+                node.context_info.height, scaling_factor
+            )
+            self.center_x = self.x + int(self.width / 2)
+            self.center_y = self.y + int(self.height / 2)
+            self.text = node.text._items.sentence
+            self.visible_children = node.get_visible_children()
+            self.column_count = column_count or len(self.visible_children)
+            if self.column_count > 0:
+                self.row = (
+                    0 if index < self.column_count else int(index / self.column_count)
+                )
+                self.col = (
+                    index
+                    if index < self.column_count
+                    else int(index - (self.row * self.column_count))
+                )
+            else:
+                self.row = -1
+                self.col = -1
+
+        def click(self, click_type: str = "click"):
+            if self.x != -1 and self.y != -1:
+                locator = f"coordinates:{self.center_x},{self.center_y}"
+                DESKTOP.click(locator, action=click_type)
+
+        def type_text(self, text: str, clear: bool = False) -> None:
+            self.click()
+            if clear:
+                DESKTOP.press_keys("ctrl", "a", "delete")
+                time.sleep(0.2)
+            for c in text:
+                DESKTOP.press_keys(c)
+
     LocatorType = Union[ContextNode, JavaElement, str]
 else:
     ScalingFactor = 1.0
     LocatorType = str
     ContextNode = object
+    JavaElement = object
 
 
 class ElementNotFound(ValueError):
