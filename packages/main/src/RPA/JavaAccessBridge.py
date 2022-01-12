@@ -68,7 +68,7 @@ if platform.system() == "Windows":
         row: int
         col: int
         text: str
-        column_count = int
+        column_count: int
         visible_children: list
 
         def __init__(
@@ -245,12 +245,10 @@ class JavaAccessBridge:
     - row: int           # table row, -1 if element is not member of table
     - col: int           # table column, -1 if element is not member of table
     - text: str          # text content of the element
-    - column_count = int   # table column count
-    # visible_children elements of this element
-    # is some cases only way to access element coordinates
-    - visible_children: list
-    - click(click_type="click")       # method for clicking element center
-    - type_text(text, clear=False)   # method for typing text into element (if possible)
+    - column_count: int   # table column count
+    - visible_children: list    #visible_children elements of this element
+    - click()       # method for clicking element center
+    - type_text()   # method for typing text into element (if possible)
 
     **Interacting with elements**
 
