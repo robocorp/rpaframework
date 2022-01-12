@@ -622,7 +622,9 @@ class Database:
         """
         self._dbconnection.autocommit = autocommit
 
-    def get_rows(self, table, columns=None, conditions=None, as_table=True) -> Union[List, Dict, Table, Any]:
+    def get_rows(
+        self, table, columns=None, conditions=None, as_table=True
+    ) -> Union[List, Dict, Table, Any]:
         """Get rows from table. Columns and conditions can be
         set to filter result.
 
