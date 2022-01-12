@@ -77,8 +77,8 @@ class Notifier:
             "password": "EMAIL_PASSWORD"
         }
         notifier.email_notify(
-            to="mika.hanninen@gmail.com",
-            from_="mika@beissi.onmicrosoft.com",
+            to="RECIPIENT_EMAIL",
+            from_="SENDER_EMAIL",
             subject="Hello from the Python Robot",
             message="Hello from the Python RObot",
             **account
@@ -264,7 +264,6 @@ class Notifier:
             ...   username=OUTLOOK_USERNAME
             ...   password=OUTLOOK_PASSWORD
             ...   host=smtp.office365.com
-            ...   port=587
             ...   subject=Subject of the Message
         """
         arguments = {
