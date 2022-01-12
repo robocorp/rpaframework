@@ -44,7 +44,8 @@ class HTTP(RequestsLibrary):
         :param target_file: filepath to save request content, default ``None``
         :param verify: if SSL verification should be done, default ``True``,
             a CA_BUNDLE path can also be provided
-        :param force_new_session: if new HTTP session should be created, default ``False``
+        :param force_new_session: if new HTTP session should be created,
+            default ``False``
         :param overwrite: used together with ``target_file``, if ``True`` will overwrite
             the target file, default ``False``
         :param stream: if ``False``, the response content will be immediately downloaded
@@ -116,10 +117,12 @@ class HTTP(RequestsLibrary):
         :param target_file: filepath to save request content, default ``None``
         :param verify: if SSL verification should be done, default ``True``,
             a CA_BUNDLE path can also be provided
-        :param force_new_session: if new HTTP session should be created, default ``False``
+        :param force_new_session: if new HTTP session should be created,
+            default ``False``
         :param overwrite: used together with ``target_file``, if ``True`` will overwrite
             the target file, default ``False``
-        :param stream`` if ``False``, the response content will be immediately downloaded
+        :param stream`` if ``False``, the response content will
+            be immediately downloaded
         :return: request response as a dict
         """
         response = self.http_get(
