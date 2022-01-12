@@ -217,6 +217,41 @@ class JavaAccessBridge:
 
     Some keywords accept element as an parameter in place of locator.
 
+    **About JavaElement object**
+
+    The ``JavaElement`` was added in rpaframework==12.3.0 for easy access into
+    ``ContextNode`` objects which have been returned by ``Get Elements`` keyword.
+
+    Keyword ``Get Elements`` still returns ``ContextNode`` objects, but with parameter
+    ``java_elements=True`` the keyword returns ``JavaElement`` objects instead (they
+    still contain reference to ``ContextNode`` object via ``node`` property, e.g.
+    JavaObject.node).
+
+    Properties and methods included in the JavaElement:
+
+    - name: str
+    - role: str
+    - states: list      # list presentation of states (string)
+    - checked: bool
+    - selected: bool
+    - visible: bool
+    - enabled: bool
+    - states_string: str
+    - x: int           # left coordinate of the element
+    - y: int           # top coordinate of the element
+    - width: int
+    - height: int
+    - node: ContextNode  # original ContextNode
+    - row: int           # table row, -1 if element is not member of table
+    - col: int           # table column, -1 if element is not member of table
+    - text: str          # text content of the element
+    - column_count = int   # table column count
+    # visible_children elements of this element
+    # is some cases only way to access element coordinates
+    - visible_children: list
+    - click(click_type="click")       # method for clicking element center
+    - type_text(text, clear=False)   # method for typing text into element (if possible)
+
     **Interacting with elements**
 
     By default application elements are interacted with Actions supported by the element.
