@@ -210,7 +210,7 @@ class FTP:
     @ftpcommand
     def pwd(self) -> str:
         """Get current working directory on the server
-        
+
         :return: current working directory name as a string
         """
         return self.instance.pwd()
@@ -289,7 +289,7 @@ class FTP:
     @ftpcommand
     def abort(self) -> bool:
         """Abort a file transfer in progress
-        
+
         :return: true or false based on success or failure
         """
         self.instance.abort()
@@ -320,14 +320,14 @@ class FTP:
 
     def set_ascii_mode(self) -> bool:
         """Set transfer mode to ASCII
-        
+
         :return: true or false based on success or failure
         """
         self.send_command("TYPE a")
 
     def set_binary_mode(self) -> bool:
         """Set transfer mode to BINARY
-        
+
         :return: true or false based on success or failure
         """
         self.send_command("TYPE i")
