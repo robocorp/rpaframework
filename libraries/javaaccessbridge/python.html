@@ -342,13 +342,11 @@ JavaObject.node).</p>
 <li><p>row: int           # table row, -1 if element is not member of table</p></li>
 <li><p>col: int           # table column, -1 if element is not member of table</p></li>
 <li><p>text: str          # text content of the element</p></li>
-<li><p>column_count = int   # table column count</p></li>
+<li><p>column_count: int   # table column count</p></li>
+<li><p>visible_children: list    #visible_children elements of this element</p></li>
+<li><p>click()       # method for clicking element center</p></li>
+<li><p>type_text()   # method for typing text into element (if possible)</p></li>
 </ul>
-<p># visible_children elements of this element
-# is some cases only way to access element coordinates
-- visible_children: list
-- click(click_type=”click”)       # method for clicking element center
-- type_text(text, clear=False)   # method for typing text into element (if possible)</p>
 <p><strong>Interacting with elements</strong></p>
 <p>By default application elements are interacted with Actions supported by the element.
 Most common example is <cite>click</cite> action supported by an button element.</p>
@@ -772,9 +770,8 @@ if False will use Desktop().press_keys()</p></li>
 
 <dl class="attribute">
 <dt id="RPA.JavaAccessBridge.JavaElement.column_count">
-<code class="sig-name descname">column_count</code><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.column_count" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">builtins.int</span></code></p>
-</dd></dl>
+<code class="sig-name descname">column_count</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.column_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="RPA.JavaAccessBridge.JavaElement.enabled">

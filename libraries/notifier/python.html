@@ -264,7 +264,7 @@ to call above services, for example.</p>
 <p>The <cite>**kwargs</cite> is a term for any extra named parameters, which
 can be included in the same way as already named arguments,
 e.g. <code class="docutils literal notranslate"><span class="pre">Notify</span> <span class="pre">Email</span></code> could be called with <cite>subject=my email subject</cite>
-which will be passed through <a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs.</p>
+which will be passed through <cite>**kwargs</cite>.</p>
 <p>Notifier documentation contains information about all possible
 arguments that different providers support.</p>
 <p><strong>Robot Framework</strong></p>
@@ -379,16 +379,16 @@ arguments that different providers support.</p>
 </dd>
 </dl>
 <p>Example.</p>
-<blockquote>
-<div><p># Notify with Outlook account
-Notify Email
-…   message=Message from the Robot
-…   to=RECIPIENT_EMAIL_ADDRESS
-…   username=OUTLOOK_USERNAME
-…   password=OUTLOOK_PASSWORD
-…   host=smtp.office365.com
-…   subject=Subject of the Message</p>
-</div></blockquote>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c"># Notify with Outlook account</span>
+<span class="c">Notify Email</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">message=Message from the Robot</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">to=RECIPIENT_EMAIL_ADDRESS</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">username=OUTLOOK_USERNAME</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">password=OUTLOOK_PASSWORD</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">host=smtp.office365.com</span><span class="p"></span>
+<span class="c">...</span><span class="p">   </span><span class="c">subject=Subject of the Message</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
