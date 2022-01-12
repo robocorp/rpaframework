@@ -12,50 +12,11 @@ import warnings
 from robot.api.deco import library, keyword
 from robot.libraries.BuiltIn import BuiltIn
 
+from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
+from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
 from RPA.Desktop import Desktop
 
-if platform.system() == "Windows":
-    import ctypes
-    from ctypes import wintypes, byref
-
-    # Configure comtypes to not generate DLL bindings into
-    # current environment, instead keeping them in memory.
-    # Slower, but prevents dirtying environments.
-    import comtypes.client
-
-    from JABWrapper.context_tree import ContextTree, ContextNode, SearchElement
-    from JABWrapper.jab_wrapper import JavaAccessBridgeWrapper
-
-    comtypes.client.gen_dir = None
-
-    # Ignore warning about threading mode,
-    # which comtypes initializes to STA instead of MTA on import.
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", category=UserWarning)
-        import win32con
-        import win32gui
-
-    PeekMessage = ctypes.windll.user32.PeekMessageW
-    GetMessage = ctypes.windll.user32.GetMessageW
-    TranslateMessage = ctypes.windll.user32.TranslateMessage
-    DispatchMessage = ctypes.windll.user32.DispatchMessageW
-    ScalingFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
-    LocatorType = Union[ContextNode, str]
-else:
-    ScalingFactor = 1.0
-    LocatorType = str
-    ContextNode = object
-
-
-class ElementNotFound(ValueError):
-    """No matching elements were found."""
-
-
-class InvalidLocatorError(AttributeError):
-    """Invalid locator string."""
-
-
-IntegerLocatorTypes = ["x", "y", "width", "height", "indexInParent", "childrentCount"]
+DESKTOP = Desktop()
 
 
 @dataclass
@@ -77,10 +38,19 @@ class JavaElement:
     node: ContextNode
     row: int
     col: int
+    text: str
+    column_count = int
+    visible_children: list
 
     def __init__(
-        self, node, internal_node=None, index: int = None, columnCount: int = 0
+        self,
+        node,
+        scaling_factor=None,
+        internal_node=None,
+        index=0,
+        column_count=None,
     ):
+        scaling_factor = scaling_factor or ScalingFactor
         self.name = node.context_info.name
         self.role = node.context_info.role
         self.states = node.context_info.states.split(",")
@@ -91,18 +61,85 @@ class JavaElement:
         self.node = node
         self.internal = internal_node
         self.states_string = node.context_info.states
-        self.x = int(node.context_info.x)
-        self.y = int(node.context_info.y)
-        self.width = int(node.context_info.width)
-        self.height = int(node.context_info.height)
-        if columnCount > 0:
-            self.row = 0 if index < columnCount else int(index / columnCount)
+        self.x = get_scaled_coordinate(node.context_info.x, scaling_factor)
+        self.y = get_scaled_coordinate(node.context_info.y, scaling_factor)
+        self.width = get_scaled_coordinate(node.context_info.width, scaling_factor)
+        self.height = get_scaled_coordinate(node.context_info.height, scaling_factor)
+        self.center_x = self.x + int(self.width / 2)
+        self.center_y = self.y + int(self.height / 2)
+        self.text = node.text._items.sentence
+        self.visible_children = node.get_visible_children()
+        self.column_count = column_count or len(self.visible_children)
+        if self.column_count > 0:
+            self.row = (
+                0 if index < self.column_count else int(index / self.column_count)
+            )
             self.col = (
-                index if index < columnCount else int(index - (self.row * columnCount))
+                index
+                if index < self.column_count
+                else int(index - (self.row * self.column_count))
             )
         else:
             self.row = -1
             self.col = -1
+
+    def click(self, click_type: str = "click"):
+        if self.x != -1 and self.y != -1:
+            locator = f"coordinates:{self.center_x},{self.center_y}"
+            DESKTOP.click(locator, action=click_type)
+
+    def type_text(self, text: str, clear: bool = False) -> None:
+        self.click()
+        if clear:
+            DESKTOP.press_keys("ctrl", "a", "delete")
+            time.sleep(0.2)
+        for c in text:
+            DESKTOP.press_keys(c)
+
+
+def get_scaled_coordinate(coordinate, scaling_factor):
+    return int(coordinate * scaling_factor)
+
+
+if platform.system() == "Windows":
+    import ctypes
+    from ctypes import wintypes, byref
+
+    # Configure comtypes to not generate DLL bindings into
+    # current environment, instead keeping them in memory.
+    # Slower, but prevents dirtying environments.
+    import comtypes.client
+
+    comtypes.client.gen_dir = None
+
+    # Ignore warning about threading mode,
+    # which comtypes initializes to STA instead of MTA on import.
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=UserWarning)
+        import win32con
+        import win32gui
+
+    PeekMessage = ctypes.windll.user32.PeekMessageW
+    GetMessage = ctypes.windll.user32.GetMessageW
+    TranslateMessage = ctypes.windll.user32.TranslateMessage
+    DispatchMessage = ctypes.windll.user32.DispatchMessageW
+    ScalingFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
+    LocatorType = Union[ContextNode, JavaElement, str]
+else:
+    ScalingFactor = 1.0
+    LocatorType = str
+    ContextNode = object
+
+
+class ElementNotFound(ValueError):
+    """No matching elements were found."""
+
+
+class InvalidLocatorError(AttributeError):
+    """Invalid locator string."""
+
+
+IntegerLocatorTypes = ["x", "y", "width", "height", "indexInParent", "childrentCount"]
 
 
 @library(scope="GLOBAL", doc_format="REST", auto_keywords=False)
@@ -259,7 +296,8 @@ class JavaAccessBridge:
 
     def __init__(self, ignore_callbacks: bool = False, access_bridge_path: str = None):
         self.logger = logging.getLogger(__name__)
-        self.desktop = Desktop()
+        desktoplogger = logging.getLogger("RPA.Desktop")
+        desktoplogger.setLevel(logging.WARNING)
         if platform.system() != "Windows":
             self.logger.warning(
                 "JavaAccessBridge library requires Windows dependencies to work"
@@ -317,6 +355,19 @@ class JavaAccessBridge:
             pipe.put(err)
         finally:
             self.logger.info("Stopped processing events")
+
+    @keyword
+    def set_display_scale_factor(self, factor: float):
+        """Override library display scale factor.
+
+        Keyword returns previous value.
+
+        :param factor: value for the new display scale factor
+        :return: previous display scale factor value
+        """
+        previous_factor = self.display_scale_factor
+        self.display_scale_factor(factor)
+        return previous_factor
 
     @keyword
     def select_window(
@@ -420,12 +471,12 @@ class JavaAccessBridge:
         middle_x = int((left + right) / 2)
         middle_y = int((top + bottom) / 2)
         point = f"point:{middle_x},{middle_y}"
-        self.desktop.move_mouse(point)
+        DESKTOP.move_mouse(point)
 
     @keyword
     def type_text(
         self,
-        locator: str,
+        locator: LocatorType,
         text: str,
         index: int = 0,
         clear: bool = False,
@@ -439,21 +490,26 @@ class JavaAccessBridge:
         :param clear: should element be cleared before typing
         :param enter: should enter key be pressed after typing
         """
-        element = self._find_elements(locator, index)
-        self._click_element_middle(element[0], "double click")
+        target = self._get_matching_element(locator, index)
+        self._click_element_middle(target, "double click")
+
         if not self.ignore_callbacks:
-            element[0].request_focus()
+            target.request_focus()
         if clear:
-            self.desktop.press_keys("ctrl", "a")
-            self.desktop.press_keys("delete")
-        self.desktop.type_text(text, enter=enter)
+            DESKTOP.press_keys("ctrl", "a", "delete")
+            time.sleep(0.2)
+        self.logger.info("type text: %s", text)
+        for c in text:
+            DESKTOP.press_keys(c)
+        if enter:
+            DESKTOP.press_keys("enter")
 
     def _clear_element(self, element):
         self.wait_until_element_is_focused(element)
         element_cleared = False
         for _ in range(10):
-            self.desktop.press_keys("ctrl", "a")
-            self.desktop.press_keys("delete")
+            DESKTOP.press_keys("ctrl", "a")
+            DESKTOP.press_keys("delete")
             try:
                 self.wait_until_element_text_equals(element, "")
                 element_cleared = True
@@ -469,6 +525,7 @@ class JavaAccessBridge:
         :param locator: elements to get
         :param java_elements: if True will return elements as ``JavaElement``
          on False will return Java ContextNodes
+        :return: list of ContextNodes or JavaElements
 
         Example.
 
@@ -479,7 +536,11 @@ class JavaAccessBridge:
                 print(e.name if e.name else "EMPTY", e.visible, e.x, e.y)
         """
         elements = self._find_elements(locator)
-        return [JavaElement(e) for e in elements] if java_elements else elements
+        return (
+            [JavaElement(e, self.display_scale_factor) for e in elements]
+            if java_elements
+            else elements
+        )
 
     @keyword
     def wait_until_element_text_contains(
@@ -535,8 +596,11 @@ class JavaAccessBridge:
         """
         matching = self._get_matching_element(locator, index)
         end_time = time.time() + float(timeout)
+        java_element = JavaElement(matching, self.display_scale_factor)
+        self.logger.warning(java_element)
+
         while time.time() <= end_time:
-            if matching.state == "focused":
+            if "focused" in java_element.states:
                 return
             time.sleep(0.05)
 
@@ -553,7 +617,9 @@ class JavaAccessBridge:
         # pylint: disable=protected-access
         return matching.text._items.sentence
 
-    def _get_matching_element(self, locator: LocatorType, index: int = 0):
+    def _get_matching_element(
+        self, locator: LocatorType, index: int = 0, as_java_element: bool = False
+    ):
         matching = None
         if isinstance(locator, str):
             elements = self._find_elements(locator)
@@ -562,18 +628,30 @@ class JavaAccessBridge:
                     "Locator '%s' matched only %s elements" % (locator, len(elements))
                 )
             matching = elements[index]
-        else:
+        elif isinstance(locator, ContextNode):
             matching = locator
-        return matching
+        elif isinstance(locator, JavaElement):
+            matching = locator.node
+        return (
+            JavaElement(matching, self.display_scale_factor)
+            if as_java_element
+            else matching
+        )
 
     @keyword
-    def get_element_actions(self, locator: str):
+    def get_element_actions(self, locator: LocatorType):
         """Get list of possible element actions
 
         :param locator: target element
         """
-        elements = self._find_elements(locator)
-        return elements[0].get_actions().keys()
+        if isinstance(locator, str):
+            elements = self._find_elements(locator)
+            target = elements[0]
+        elif isinstance(locator, ContextNode):
+            target = locator
+        else:
+            target = locator.node
+        return target.get_actions().keys()
 
     def _elements_to_console(self, elements, function=""):
         BuiltIn().log_to_console(f"\nElements to Console: {function}")
@@ -590,7 +668,7 @@ class JavaAccessBridge:
         matching = self._get_matching_element(locator, index)
         self.logger.info("Highlighting element: %s", repr(matching))
         region_locator = self._get_region_locator(matching)
-        self.desktop.highlight_elements(region_locator)
+        DESKTOP.highlight_elements(region_locator)
 
     def _get_scaled_coordinates(self, element):
         left = int(element.context_info.x / self.display_scale_factor)
@@ -603,7 +681,7 @@ class JavaAccessBridge:
 
     def _get_region_locator(self, element):
         left, top, right, bottom = self._get_scaled_coordinates(element)
-        return self.desktop.define_region(left, top, right, bottom)
+        return DESKTOP.define_region(left, top, right, bottom)
 
     @keyword
     def click_element(
@@ -669,35 +747,34 @@ class JavaAccessBridge:
         matching.do_action(action)
 
     def _click_element_middle(self, element, click_type="click"):
-        # TODO. change to use RPA.core.geometry Region/Point
-        # region = Region.from_size(
-        # element.left,
-        # element.top,
-        # element.width,
-        # element.height
-        # )
-        # region.scale(self.scale_factor)
-        # Desktop().click(region.center)
         self.logger.info("Element click coordinates")
-        middle_x = element.context_info.x + int(element.context_info.width / 2)
-        middle_y = element.context_info.y + int(element.context_info.height / 2)
-        self.click_coordinates(middle_x, middle_y, click_type)
+        java_element = JavaElement(element, self.display_scale_factor)
+        self.click_coordinates(java_element.center_x, java_element.center_y, click_type)
 
     @keyword
-    def click_coordinates(self, x: int, y: int, click_type="click"):
+    def click_coordinates(
+        self, x: int, y: int, click_type: str = "click", delay: float = 0.5
+    ):
+        """Keyword to mouse click at specific coordinates.
+
+        :param x: horizontal coordinate
+        :param y: vertical coordinates
+        :param click_type: default `click`, see `RPA.Desktop` for different
+         click options
+        :param delay: how much in seconds to delay after click, defaults to 0.5
+        """
         locator = f"coordinates:{x},{y}"
-        self.desktop.click(locator, action=click_type)
-        time.sleep(0.5)
+        DESKTOP.click(locator, action=click_type)
+        time.sleep(delay)
 
     @keyword
-    def toggle_drop_down(self, locator: str, index: int = 0):
+    def toggle_drop_down(self, locator: LocatorType, index: int = 0):
         """Toggle dropdown action on element
 
         :param locator: element locator
         :param index: target element index if multiple are returned
         """
-        elements = self._find_elements(locator)
-        matching = elements[index]
+        matching = self._get_matching_element(locator, index)
         matching.toggle_drop_down()
 
     @keyword
@@ -719,7 +796,7 @@ class JavaAccessBridge:
 
         :param keys: keys to press
         """
-        self.desktop.press_keys(*keys)
+        DESKTOP.press_keys(*keys)
 
     @keyword
     def print_element_tree(self, filename: str = None):
@@ -773,7 +850,7 @@ class JavaAccessBridge:
         return version_info
 
     @keyword
-    def read_table(self, locator: str):
+    def read_table(self, locator: LocatorType):
         """Return Java table as list of lists (rows containing columns).
 
         Each cell element is represented by ``JavaElement`` class.
@@ -793,18 +870,25 @@ class JavaAccessBridge:
                     else:
                         print(cell.row, cell.col, cell.name)
         """
-        table = self._get_matching_element(locator)
-        columnCount = table.table.table.columnCount
+        table = self._get_matching_element(locator, as_java_element=True)
+        self.logger.warning(table)
+        columnCount = table.column_count
         if not columnCount or columnCount == 0:
             raise InvalidLocatorError(
                 "Locator '%s' does not match 'table' element" % locator
             )
-        visible_children = table.get_visible_children()
+        visible_children = table.visible_children
 
         indexes = range(len(visible_children))
         table_elements = [
-            JavaElement(vc, c, index, columnCount)
-            for index, vc, c in zip(indexes, visible_children, table.children)
+            JavaElement(
+                vc,
+                scaling_factor=self.display_scale_factor,
+                internal_node=c,
+                index=index,
+                column_count=columnCount,
+            )
+            for index, vc, c in zip(indexes, visible_children, table.node.children)
         ]
         table_rows = [
             table_elements[i : i + columnCount]
