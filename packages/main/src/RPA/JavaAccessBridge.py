@@ -520,6 +520,7 @@ class JavaAccessBridge:
         index: int = 0,
         clear: bool = False,
         enter: bool = False,
+        typing: bool = True,
     ):
         """Type text into coordinates defined by locator
 
@@ -528,6 +529,8 @@ class JavaAccessBridge:
         :param index: target element if multiple are returned
         :param clear: should element be cleared before typing
         :param enter: should enter key be pressed after typing
+        :param typing: if True (default) will use Desktop().type_text()
+         if False will use Desktop().press_keys()
         """
         target = self._get_matching_element(locator, index)
         self._click_element_middle(target, "double click")
@@ -538,8 +541,11 @@ class JavaAccessBridge:
             DESKTOP.press_keys("ctrl", "a", "delete")
             time.sleep(0.2)
         self.logger.info("type text: %s", text)
-        for c in text:
-            DESKTOP.press_keys(c)
+        if typing:
+            DESKTOP.type_text(text, enter=enter)
+        else:
+            for c in text:
+                DESKTOP.press_keys(c)
         if enter:
             DESKTOP.press_keys("enter")
 
