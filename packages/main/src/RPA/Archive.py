@@ -198,7 +198,8 @@ class Archive:
 
         :param files: name of the file, or list of files, to add
         :param archive_name: filename of the archive
-        :param folder: name of the folder where the file will be added, relative path within the archive
+        :param folder: name of the folder where the file will be added,
+            relative path within the archive
         :return: None
 
         This keyword adds a file or list of files into an existing archive. Files
@@ -292,7 +293,8 @@ class Archive:
         """Get information about the archive
 
         :param archive_name: filename of the archive
-        :return: dictionary variable containing the keys filename, filemode, size, mtime, modified
+        :return: dictionary variable containing the keys
+            filename, filemode, size, mtime, modified
 
         Returns following file attributes in a dictionary:
 

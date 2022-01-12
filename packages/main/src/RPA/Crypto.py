@@ -95,7 +95,7 @@ class Crypto:
     def generate_key(self) -> str:
         """Generate a Fernet encryption key as base64 string.
 
-        :return: Generated key as a string 
+        :return: Generated key as a string
 
         This key can be used for encryption/decryption operations
         with this library.
@@ -125,7 +125,9 @@ class Crypto:
         """
         self._key = Fernet(key)
 
-    def use_encryption_key_from_vault(self, name: str, key: Optional[str] = None) -> None:
+    def use_encryption_key_from_vault(
+        self, name: str, key: Optional[str] = None
+    ) -> None:
         """Load an encryption key from Robocorp Vault.
 
         :param name: Name of secret in Vault
