@@ -8,6 +8,20 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+12.4.0 - 12 Jan 2022
+--------------------
+
+- Library **RPA.JavaAccessBridge**:
+
+  - Fix scaling issue when clicking element coordinates (:issue:`355`)
+  - Add ``click`` and ``type_text`` methods into ``Java Element`` object
+  - Fix ``Type Text
+
+- Library **RPA.Notifier**:
+
+  - Fix handling of keyword **kwargs parameter
+  - Add kwargs documentation and examples
+
 12.3.0 - 10 Jan 2022
 --------------------
 
