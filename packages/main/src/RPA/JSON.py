@@ -316,7 +316,9 @@ class JSON:
         return [match.value for match in parse(expr).find(doc)]
 
     @keyword("Update value to JSON")
-    def update_value_to_json(self, doc: JSONType, expr: str, value: JSONType) -> JSONType:
+    def update_value_to_json(
+        self, doc: JSONType, expr: str, value: JSONType
+    ) -> JSONType:
         """Update existing values in a JSON serializable object and return the result.
         Will change all values that match the expression.
 
