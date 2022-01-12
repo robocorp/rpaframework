@@ -48,7 +48,7 @@ class Notifier:
     The `**kwargs` is a term for any extra named parameters, which
     can be included in the same way as already named arguments,
     e.g. ``Notify Email`` could be called with `subject=my email subject`
-    which will be passed through **kwargs.
+    which will be passed through `**kwargs`.
 
     Notifier documentation contains information about all possible
     arguments that different providers support.
@@ -255,7 +255,7 @@ class Notifier:
 
         Example.
 
-            .. code:: robotframework
+        .. code:: robotframework
 
             # Notify with Outlook account
             Notify Email
