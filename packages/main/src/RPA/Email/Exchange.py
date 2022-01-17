@@ -629,7 +629,7 @@ class Exchange:
                 Save Attachments    ${msg}    %{ROBOT_ARTIFACTS}
             END
             ${attachments}=  Save Attachments  ${CURDIR}${/}saved.eml  %{ROBOT_ARTIFACTS}
-        """
+        """  # noqa: E501
         if isinstance(message, dict):
             return self._save_attachments(message["attachments_object"], save_dir)
         else:

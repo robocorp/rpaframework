@@ -8,6 +8,11 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+12.5.0 - 17 Jan 2022
+--------------------
+
+- Library **RPA.Email.Exchange**: Add .eml file support to ``Save Attachments`` keyword
+
 12.4.1 - 12 Jan 2022
 --------------------
 
