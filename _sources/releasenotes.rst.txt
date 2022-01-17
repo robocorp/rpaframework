@@ -12,6 +12,10 @@ Release notes
 --------------------
 
 - Library **RPA.Email.Exchange**: Add .eml file support to ``Save Attachments`` keyword
+- Library **RPA.JavaAccessBridge**:
+
+  - Add `strict` locator match support to locator string and to keyword ``Get Elements``
+  - Fix some issues related to ``JavaElement`` objects
 
 12.4.1 - 12 Jan 2022
 --------------------
