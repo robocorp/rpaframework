@@ -602,7 +602,7 @@ class JavaAccessBridge:
          False will be using startsWith matching on non-integer properties
         :return: list of ContextNodes or JavaElements
 
-        Example.
+        Python example.
 
         .. code:: python
 
@@ -617,6 +617,8 @@ class JavaAccessBridge:
             # following does NOT return anything because search is strict
             # and there are no 'push butto' role
             elements = java.get_elements("role:push butto", strict=True)
+
+        Robotframework  example.
 
         .. code:: robotframework
 
