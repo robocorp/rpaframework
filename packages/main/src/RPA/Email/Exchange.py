@@ -619,6 +619,16 @@ class Exchange:
         :param message: dictionary or .eml filepath containing message details
         :param save_dir: filepath where attachments will be saved
         :return: list of saved attachments
+
+        Example.
+
+            .. code:: robotframework
+
+            ${messages}=    List Messages
+            FOR    ${msg}    IN    @{messages}}
+                Save Attachments    ${msg}    %{ROBOT_ARTIFACTS}
+            END
+            ${attachments}=  Save Attachments  ${CURDIR}${/}saved.eml  %{ROBOT_ARTIFACTS}
         """
         if isinstance(message, dict):
             return self._save_attachments(message["attachments_object"], save_dir)
