@@ -2,7 +2,10 @@ import logging
 import os
 from pathlib import Path
 import time
-from typing import Any
+from typing import Any, Union
+
+import email
+from email import policy
 
 from exchangelib import (
     Account,
@@ -568,55 +571,92 @@ class Exchange:
                         buffer = fp.read(1024)
                 self.logger.info("Attachment saved to: %s", local_path)
                 attachments.append(
-                    {
-                        "name": attachment.name,
-                        "content_type": attachment.content_type,
-                        "size": attachment.size,
-                        "is_contact_photo": attachment.is_contact_photo,
-                        "local_path": local_path,
-                    }
+                    self._new_attachment_dictionary(attachment, local_path)
                 )
         return attachments
 
-    def _get_email_details(self, email, attachments):
+    def _new_attachment_dictionary(self, attachment, local_path):
         return {
-            "subject": email.subject,
-            "sender": mailbox_to_email_address(email.sender),
-            "datetime_received": email.datetime_received,
-            "folder": str(self._get_folder_object(email.folder)),
-            "body": email.body,
-            "text_body": email.text_body,
-            "received_by": mailbox_to_email_address(email.received_by),
-            "cc_recipients": [
-                mailbox_to_email_address(cc) for cc in email.cc_recipients
-            ]
-            if email.cc_recipients
-            else [],
-            "bcc_recipients": [
-                mailbox_to_email_address(bcc) for bcc in email.bcc_recipients
-            ]
-            if email.bcc_recipients
-            else [],
-            "is_read": email.is_read,
-            "importance": email.importance,
-            "message_id": email.message_id,
-            "size": email.size,
-            "categories": email.categories,
-            "attachments": attachments,
-            "attachments_object": email.attachments,
-            "id": email.id,
-            "changekey": email.changekey,
-            "mime_content": email.mime_content,
+            "name": attachment.name,
+            "content_type": attachment.content_type,
+            "size": attachment.size,
+            "is_contact_photo": attachment.is_contact_photo,
+            "local_path": local_path,
         }
 
-    def save_attachments(self, message: dict, save_dir: str = None) -> list:
+    def _get_email_details(self, item, attachments):
+        return {
+            "subject": item.subject,
+            "sender": mailbox_to_email_address(item.sender),
+            "datetime_received": item.datetime_received,
+            "folder": str(self._get_folder_object(item.folder)),
+            "body": item.body,
+            "text_body": item.text_body,
+            "received_by": mailbox_to_email_address(item.received_by),
+            "cc_recipients": [mailbox_to_email_address(cc) for cc in item.cc_recipients]
+            if item.cc_recipients
+            else [],
+            "bcc_recipients": [
+                mailbox_to_email_address(bcc) for bcc in item.bcc_recipients
+            ]
+            if item.bcc_recipients
+            else [],
+            "is_read": item.is_read,
+            "importance": item.importance,
+            "message_id": item.message_id,
+            "size": item.size,
+            "categories": item.categories,
+            "attachments": attachments,
+            "attachments_object": item.attachments,
+            "id": item.id,
+            "changekey": item.changekey,
+            "mime_content": item.mime_content,
+        }
+
+    def save_attachments(self, message: Union[dict, str], save_dir: str = None) -> list:
         """Save attachments in message into given directory
 
-        :param message: dictionary containing message details
+        :param message: dictionary or .eml filepath containing message details
         :param save_dir: filepath where attachments will be saved
         :return: list of saved attachments
         """
-        return self._save_attachments(message["attachments_object"], save_dir)
+        if isinstance(message, dict):
+            return self._save_attachments(message["attachments_object"], save_dir)
+        else:
+            # extract attachments from .eml file
+            absolute_filepath = Path(message).resolve()
+            if absolute_filepath.suffix != ".eml":
+                raise ValueError("Filename extension needs to be '.eml'")
+            return self._save_attachments_from_file(message, save_dir)
+
+    def _save_attachments_from_file(self, filename: str, save_dir: str):
+        """
+        Try to extract the attachments from given .eml file
+        """
+        # ensure that an output dir exists
+        attachments = []
+        with open(filename, "r") as f:  # pylint: disable=unspecified-encoding
+            msg = email.message_from_file(f, policy=policy.default)
+            for attachment in msg.iter_attachments():
+                output_filename = attachment.get_filename()
+                # If no attachments are found, skip this file
+                if output_filename:
+                    local_path = os.path.join(save_dir, output_filename)
+                    with open(local_path, "wb") as of:
+                        payload = attachment.get_payload(decode=True)
+                        of.write(payload)
+                        attachments.append(
+                            {
+                                "name": output_filename,
+                                "content_type": None,
+                                "size": len(payload),
+                                "is_contact_photo": None,
+                                "local_path": local_path,
+                            }
+                        )
+            if len(attachments) == 0:
+                self.logger.warning("No attachment found for file %s!", f.name)
+        return attachments
 
     def save_message(self, message: dict, filename: str) -> list:
         """Save email as .eml file
