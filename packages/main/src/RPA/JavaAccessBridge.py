@@ -122,8 +122,10 @@ if platform.system() == "Windows":
         def type_text(self, text: str, clear: bool = False) -> None:
             self.click()
             if clear:
-                DESKTOP.press_keys("ctrl", "a", "delete")
+                DESKTOP.press_keys("ctrl", "a")
                 time.sleep(0.2)
+                DESKTOP.press_keys("delete")
+            time.sleep(0.2)
             for c in text:
                 DESKTOP.press_keys(c)
 
@@ -216,6 +218,29 @@ class JavaAccessBridge:
             name:Find Purchase Orders > name:NumberField
 
     Some keywords accept element as an parameter in place of locator.
+
+    New locator type `strict` has been added in rpaframework==12.5.0. Currently
+    property values of string type have been evaluated with `startsWith` which
+    can match several property values. With `strict` set in the locator string,
+    all locator on the right side of this definition will be matched using
+    strict (equal matching), example:
+
+        .. code-block:: robotframework
+
+            # without strict, name can be 'Type', 'Type1', 'Type of'...
+            Get Elements   role:push button and name:Type
+            # name must be equal to 'Type'
+            Get Elements  role:push button and strict:True and name:Type
+
+    Keyword ``Get Elements`` has extra parameter ``strict``, which when set to
+    ``True`` forces all locator value matches to be strict, example:
+
+        .. code-block:: robotframework
+
+            # without strict, name can be 'Type', 'Type1', 'Type of'...
+            Get Elements  role:push button and name:Type
+            # name must be equal to 'Type' and role must be equal to 'text'
+            Get Elements  role:text and name:Type  strict=True
 
     **About JavaElement object**
 
@@ -450,17 +475,21 @@ class JavaAccessBridge:
 
         self.application_refresh()
 
-    def _parse_locator(self, locator):
+    def _parse_locator(self, locator, strict_default=False):
         levels = locator.split(">")
         levels = [lvl.strip() for lvl in levels]
         searches = []
         for lvl in levels:
             conditions = lvl.split(" and ")
             lvl_search = []
+            strict_mode = strict_default
             for cond in conditions:
                 parts = cond.split(":", 1)
                 if len(parts) == 1:
                     parts = ["name", parts[0]]
+                elif parts[0].lower() == "strict":
+                    strict_mode = bool(parts[1])
+                    continue
                 elif parts[0] in IntegerLocatorTypes:
                     try:
                         parts[1] = int(parts[1])
@@ -468,20 +497,17 @@ class JavaAccessBridge:
                         raise InvalidLocatorError(
                             "Locator '%s' needs to be of 'integer' type" % parts[0]
                         ) from err
-                lvl_search.append(parts)
+                lvl_search.append(SearchElement(parts[0], parts[1], strict=strict_mode))
             searches.append(lvl_search)
         return searches
 
-    def _find_elements(self, locator: str, index: int = None):
+    def _find_elements(self, locator: str, index: int = None, strict: bool = False):
         if not self.context_info_tree:
             raise ValueError("ContextTree has not been initialized")
-        searches = self._parse_locator(locator)
+        searches = self._parse_locator(locator, strict)
         self.logger.info("Searches: %s", searches)
         elements = []
-        for lvl, search in enumerate(searches):
-            search_elements = []
-            for s in search:
-                search_elements.append(SearchElement(s[0], s[1]))
+        for lvl, search_elements in enumerate(searches):
             if lvl == 0:
                 elements = self.context_info_tree.get_by_attrs(search_elements)
             else:
@@ -496,7 +522,7 @@ class JavaAccessBridge:
                 "Locator '%s' returned only %s elements (can't index element at %s)"
                 % (locator, len(elements), index)
             )
-        return elements if index is None else [elements[index]]
+        return elements[index] if index else elements
 
     @keyword
     def set_mouse_position(self, element: ContextNode):
@@ -536,8 +562,10 @@ class JavaAccessBridge:
         if not self.ignore_callbacks:
             target.request_focus()
         if clear:
-            DESKTOP.press_keys("ctrl", "a", "delete")
+            DESKTOP.press_keys("ctrl", "a")
             time.sleep(0.2)
+            DESKTOP.press_keys("delete")
+            time.sleep(1.0)
         self.logger.info("type text: %s", text)
         if typing:
             DESKTOP.type_text(text, enter=enter)
@@ -562,23 +590,48 @@ class JavaAccessBridge:
             raise ValueError(f"Element={element} not cleared")
 
     @keyword
-    def get_elements(self, locator: str, java_elements: bool = False):
+    def get_elements(
+        self, locator: str, java_elements: bool = False, strict: bool = False
+    ):
         """Get matching elements
 
         :param locator: elements to get
         :param java_elements: if True will return elements as ``JavaElement``
          on False will return Java ContextNodes
+        :param strict: on True all locator matches need to match exactly, on
+         False will be using startsWith matching on non-integer properties
         :return: list of ContextNodes or JavaElements
 
         Example.
 
         .. code:: python
 
-            elements = java.get_elements("role:push button", java_elements=True)
+            elements = java.get_elements("name:common", java_elements=True)
             for e in elements:
                 print(e.name if e.name else "EMPTY", e.visible, e.x, e.y)
+                if e.role == "check box":
+                    e.click()
+                else:
+                    java.type_text(e, "new content", clear=True, typing=False)
+
+            # following does NOT return anything because search is strict
+            # and there are no 'push butto' role
+            elements = java.get_elements("role:push butto", strict=True)
+
+        .. code:: robotframework
+
+            ${elements}=    Get Elements
+            ...    role:push button and name:Send
+            ...    java_elements=True
+            Evaluate   $elements[0].click()
+            Click Element    ${elements}[0]    action=False
+            Type Text
+            ...    ${elements}[0]
+            ...    moretext
+            ...    clear=True
+            ...    typing=False
         """
-        elements = self._find_elements(locator)
+        elements = self._find_elements(locator, strict=strict)
         return (
             [JavaElement(e, self.display_scale_factor) for e in elements]
             if java_elements
@@ -668,7 +721,7 @@ class JavaAccessBridge:
             elements = self._find_elements(locator)
             if len(elements) < (index + 1):
                 raise ElementNotFound(
-                    "Locator '%s' matched only %s elements" % (locator, len(elements))
+                    "Locator '%s' matched  %s elements" % (locator, len(elements))
                 )
             matching = elements[index]
         elif isinstance(locator, ContextNode):
@@ -791,7 +844,10 @@ class JavaAccessBridge:
 
     def _click_element_middle(self, element, click_type="click"):
         self.logger.info("Element click coordinates")
-        java_element = JavaElement(element, self.display_scale_factor)
+        if not isinstance(element, JavaElement):
+            java_element = JavaElement(element, self.display_scale_factor)
+        else:
+            java_element = element
         self.click_coordinates(java_element.center_x, java_element.center_y, click_type)
 
     @keyword

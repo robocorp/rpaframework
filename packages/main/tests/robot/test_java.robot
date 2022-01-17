@@ -57,3 +57,7 @@ Test get elements
     Log Many    ${elements}[1]
     Highlight Element    ${elements}[0]
     Highlight Element    ${elements}[1]
+
+Test Java Elements
+    ${elements}=    Get Elements    role:table > role:text
+    Log To Console    ${elements}
