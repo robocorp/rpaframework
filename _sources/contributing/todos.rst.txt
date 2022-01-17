@@ -100,8 +100,8 @@ RPA.JavaAccessBridge:
    :header: "Line", "Message"
    :widths: 10, 40
 
-   "331", "add keyword for taking screenshots of elements and window"
-   "332", "implement proper XPath syntax support"
+   "356", "add keyword for taking screenshots of elements and window"
+   "357", "implement proper XPath syntax support"
 
 RPA.Robocorp.Process:
 =====================
