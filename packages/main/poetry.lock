@@ -263,6 +263,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "comtypes-fork"
+version = "1.1.10"
+description = "Pure Python COM package"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+comtypes = "*"
+
+[[package]]
 name = "coverage"
 version = "6.2"
 description = "Code coverage measurement for Python"
@@ -2021,7 +2032,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "1ad58e372d477cf80d401c41644bdb9ee14b283d2d0219cc4c1cff5a3499af3f"
+content-hash = "1d4a89313a099fb4b0ae7a9a3cec9447c27a931ef692b2293237093b330760db"
 
 [metadata.files]
 alabaster = [
@@ -2175,6 +2186,10 @@ colorama = [
 ]
 comtypes = [
     {file = "comtypes-1.1.10.tar.gz", hash = "sha256:a9929e4bea8f874adc7c370e58a553aa91a4c08cecd58a0fdcf7ff5238af14e5"},
+]
+comtypes-fork = [
+    {file = "comtypes-fork-1.1.10.tar.gz", hash = "sha256:6e87a077fcbdc80c9860471281afdfa44d50bdc99f8f978b286ebb563970b719"},
+    {file = "comtypes_fork-1.1.10-py3-none-any.whl", hash = "sha256:5c769531f689e1051cea5775a11f1ce7a3d7cdde9fa71437690bed66a283fc14"},
 ]
 coverage = [
     {file = "coverage-6.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:6dbc1536e105adda7a6312c778f15aaabe583b0e9a0b0a324990334fd458c94b"},
