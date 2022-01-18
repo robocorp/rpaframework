@@ -1835,6 +1835,7 @@ develop = false
 
 [package.dependencies]
 comtypes = {version = "1.1.10", markers = "sys_platform == \"win32\""}
+comtypes-fork = {version = "1.1.10", markers = "sys_platform == \"win32\""}
 dataclasses = {version = "^0.7", markers = "python_version >= \"3.6\" and python_version < \"3.7\""}
 psutil = {version = "^5.8.0", markers = "sys_platform == \"win32\""}
 pynput-robocorp-fork = "^4.0.0"
