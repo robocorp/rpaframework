@@ -1826,7 +1826,7 @@ rpaframework-core = ">=6.0.0,<7.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "2.0.0"
+version = "2.0.1"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
