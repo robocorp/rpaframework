@@ -8,6 +8,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+12.5.1 - 18 Jan 2022
+--------------------
+
+- Fix importing issues of **RPA.Desktop** on Windows due to ``comtypes`` dependency
+  Python 3 compatibility.
+
 12.5.0 - 17 Jan 2022
 --------------------
 
