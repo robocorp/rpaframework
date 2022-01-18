@@ -263,6 +263,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "comtypes-fork"
+version = "1.1.10"
+description = "Pure Python COM package"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+comtypes = "*"
+
+[[package]]
 name = "cryptography"
 version = "3.4.8"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
@@ -1664,7 +1675,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "12.5.0"
+version = "12.5.1"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1677,6 +1688,7 @@ boto3 = {version = "^1.13.4", optional = true}
 chardet = "^3.0.0"
 click = "^7.1.2"
 comtypes = {version = "1.1.10", markers = "sys_platform == \"win32\""}
+comtypes-fork = {version = "1.1.10", markers = "sys_platform == \"win32\""}
 cryptography = "^3.3.1"
 dataclasses = {version = "^0.7", markers = "python_version >= \"3.6\" and python_version < \"3.7\""}
 docutils = "*"
@@ -1814,7 +1826,7 @@ rpaframework-core = ">=6.0.0,<7.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "2.0.0"
+version = "2.0.1"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
@@ -1823,6 +1835,7 @@ develop = false
 
 [package.dependencies]
 comtypes = {version = "1.1.10", markers = "sys_platform == \"win32\""}
+comtypes-fork = {version = "1.1.10", markers = "sys_platform == \"win32\""}
 dataclasses = {version = "^0.7", markers = "python_version >= \"3.6\" and python_version < \"3.7\""}
 psutil = {version = "^5.8.0", markers = "sys_platform == \"win32\""}
 pynput-robocorp-fork = "^4.0.0"
@@ -2489,6 +2502,10 @@ colorama = [
 ]
 comtypes = [
     {file = "comtypes-1.1.10.tar.gz", hash = "sha256:a9929e4bea8f874adc7c370e58a553aa91a4c08cecd58a0fdcf7ff5238af14e5"},
+]
+comtypes-fork = [
+    {file = "comtypes-fork-1.1.10.tar.gz", hash = "sha256:6e87a077fcbdc80c9860471281afdfa44d50bdc99f8f978b286ebb563970b719"},
+    {file = "comtypes_fork-1.1.10-py3-none-any.whl", hash = "sha256:5c769531f689e1051cea5775a11f1ce7a3d7cdde9fa71437690bed66a283fc14"},
 ]
 cryptography = [
     {file = "cryptography-3.4.8-cp36-abi3-macosx_10_10_x86_64.whl", hash = "sha256:a00cf305f07b26c351d8d4e1af84ad7501eca8a342dedf24a7acb0e7b7406e14"},
