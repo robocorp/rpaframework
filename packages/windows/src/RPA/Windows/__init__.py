@@ -378,7 +378,7 @@ class Windows(DynamicCore):
     can be installed separately. Other options are tools `Inspect Object`_  and `UI Automation Verify`_, which
     can be accessed by installing Windows SDK.
 
-    .. _Accessibility Insights: https://github.com/yinkaisheng/Python-UIAutomation-for-Windows
+    .. _Accessibility Insights: https://accessibilityinsights.io/
     .. _Inspect Object: https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects
     .. _UI Automation Verify: https://docs.microsoft.com/en-us/windows/win32/winauto/ui-automation-verify
 
