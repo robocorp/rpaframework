@@ -2,12 +2,11 @@ import base64
 from io import BytesIO
 import os
 from pathlib import Path
-import shutil
-from PIL import Image
 import signal
 import time
 from typing import List, Dict, Union
 
+from PIL import Image
 from RPA.Windows.keywords import (
     keyword,
     ElementNotFound,
@@ -272,8 +271,8 @@ class WindowKeywords(LibraryContext):
             try:
                 handle = win32api.OpenProcess(win32con.PROCESS_ALL_ACCESS, False, pid)
                 fullpath = win32process.GetModuleFileNameEx(handle, 0)
-            except:
-                pass
+            except Exception as err:  # pylint: disable=broad-except
+                self.logger.info("Open process error in `List Windows`: %s", str(err))
 
             info = {
                 "title": win.Name,
