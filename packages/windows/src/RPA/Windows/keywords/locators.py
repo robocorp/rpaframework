@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 import re
+from time import sleep
 from typing import List, Union
 from RPA.Windows.keywords import (
     ElementNotFound,
@@ -373,3 +374,17 @@ class LocatorKeywords(LibraryContext):
         finally:
             auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
         return elements
+
+    @keyword
+    def element_wait(
+        self,
+        locator: Union[str, WindowsElement] = None,
+        search_depth: int = 8,
+        root_element: WindowsElement = None,
+        timeout: float = None,
+    ) -> WindowsElement:
+        while True:
+            element = self.get_element(locator, search_depth, root_element, timeout=1.0)
+            if element:
+                break
+            sleep(1)
