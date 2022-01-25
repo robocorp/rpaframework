@@ -138,6 +138,13 @@ class BrowserLocator(Locator):
     source: Optional[str] = None
     screenshot: Optional[str] = None
 
+@dataclass
+class WindowsLocator(Locator):
+    """Windows-based locator for windows UI elements"""
+
+    window: str
+    value: str
+
 
 # Aliases for backwards compatibility, just in case.
 Offset = OffsetLocator
@@ -156,6 +163,7 @@ TYPES = {
     "ocr": OcrLocator,
     "browser": BrowserLocator,
     "coordinates": PointLocator,  # Backwards compatibility
+    "windows": WindowsLocator,
 }
 
 # Above mapping but in reverse direction.
@@ -168,4 +176,5 @@ NAMES = {
     OcrLocator: "ocr",
     BrowserLocator: "browser",
     PointLocator: "point",  # Backwards compatibility
+    WindowsLocator: "windows"
 }
