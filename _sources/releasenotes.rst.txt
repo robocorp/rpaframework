@@ -8,6 +8,11 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+12.6.0 - 27 Jan 2022
+--------------------
+
+- Library **RPA.JavaAccessBridge**: Add ``Close Java Window`` keyword
+
 12.5.1 - 18 Jan 2022
 --------------------
 

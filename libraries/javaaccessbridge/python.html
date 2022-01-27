@@ -512,6 +512,13 @@ click options</p></li>
 </dd></dl>
 
 <dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaAccessBridge.close_java_window">
+<code class="sig-name descname">close_java_window</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.close_java_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close active Java window which has been accessed
+via <code class="docutils literal notranslate"><span class="pre">`Select</span> <span class="pre">Window</span></code> keyword.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="RPA.JavaAccessBridge.JavaAccessBridge.get_element_actions">
 <code class="sig-name descname">get_element_actions</code><span class="sig-paren">(</span><em class="sig-param">locator: Union[JABWrapper.context_tree.ContextNode, RPA.JavaAccessBridge.JavaElement, str]</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaAccessBridge.get_element_actions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of possible element actions</p>
@@ -898,6 +905,25 @@ if False will use Desktop().press_keys()</p></li>
 <dt id="RPA.JavaAccessBridge.JavaElement.y">
 <code class="sig-name descname">y</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#RPA.JavaAccessBridge.JavaElement.y" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="RPA.JavaAccessBridge.JavaWindowNotFound">
+<em class="property">exception </em><code class="sig-prename descclassname">RPA.JavaAccessBridge.</code><code class="sig-name descname">JavaWindowNotFound</code><a class="headerlink" href="#RPA.JavaAccessBridge.JavaWindowNotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+<p>No active Java window were found.</p>
+<dl class="attribute">
+<dt id="RPA.JavaAccessBridge.JavaWindowNotFound.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#RPA.JavaAccessBridge.JavaWindowNotFound.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.JavaAccessBridge.JavaWindowNotFound.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.JavaAccessBridge.JavaWindowNotFound.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
 
 </dd></dl>
 
