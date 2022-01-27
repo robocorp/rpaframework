@@ -1,9 +1,9 @@
 *** Settings ***
 Library           RPA.JavaAccessBridge
 Library           Process
-Suite Setup       Start Demo Application
+#Suite Setup      Start Demo Application
 Task Setup        Task setup actions
-Suite Teardown    Exit Demo Application
+#Suite Teardown    Exit Demo Application
 Force Tags        windows    skip
 
 *** Variables ***
@@ -61,3 +61,8 @@ Test get elements
 Test Java Elements
     ${elements}=    Get Elements    role:table > role:text
     Log To Console    ${elements}
+
+Test Closing Java Window
+    Select Window    Chat Frame
+    Sleep    5
+    Close Java Window

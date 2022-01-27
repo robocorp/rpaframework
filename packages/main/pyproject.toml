@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework"
-version = "12.5.1"
+version = "12.6.0"
 description = "A collection of tools and libraries for RPA"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -78,7 +78,7 @@ selenium = "^3.141.0"
 click = "^7.1.2"
 boto3 = { version = "^1.13.4", optional = true }
 amazon-textract-response-parser = { version = "^0.1.1", optional = true }
-java-access-bridge-wrapper = "^0.8.4"
+java-access-bridge-wrapper = "^0.9.1"
 PyYAML = "^5.4.1"
 tenacity = "^8.0.1"
 htmldocx = "^0.0.6"
