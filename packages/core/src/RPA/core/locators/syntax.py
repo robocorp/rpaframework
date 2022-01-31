@@ -1,6 +1,6 @@
 import re
 from enum import Enum
-from typing import List, Union, NamedTuple
+from typing import Callable, List, Union, NamedTuple, Optional
 
 from RPA.core.geometry import Point, Region, Undefined
 from RPA.core.locators import literal, Locator
@@ -136,7 +136,9 @@ class Tokenizer:
     PATTERN = re.compile("|".join(TOKEN_PATTERNS))
 
     @classmethod
-    def tokenize(cls, locator: str) -> List[TokenPair]:
+    def tokenize(
+        cls, locator: str, parser: Callable[[str], Locator]
+    ) -> List[TokenPair]:
         """Convert locator string to list of token pairs."""
         scanner = cls.PATTERN.scanner(locator)
 
@@ -152,7 +154,7 @@ class Tokenizer:
                 continue
 
             if name == "LOCATOR":
-                value = literal.parse(value)
+                value = parser(value)
 
             pair = TokenPair(Token[name], value)
             tokens.append(pair)
@@ -169,9 +171,9 @@ class SyntaxParser:
     def __init__(self):
         self.tokens = Peekable([])
 
-    def parse(self, locator: str) -> ValueType:
+    def parse(self, locator: str, parser: Callable[[str], Locator]) -> ValueType:
         """Parse locator string to tokenized expression."""
-        pairs = Tokenizer.tokenize(locator)
+        pairs = Tokenizer.tokenize(locator, parser)
         self.tokens = Peekable(pairs)
         return self._chain()
 
@@ -239,8 +241,9 @@ class Resolver:
     """Parser for locator expressions and resolving them into a set of
     final values."""
 
-    def __init__(self, finder):
+    def __init__(self, finder, database: Optional[str] = None):
         self.finder = finder
+        self.database = database
         self._stack = [Undefined()]
 
     @property
@@ -249,7 +252,11 @@ class Resolver:
 
     def dispatch(self, locator: str):
         """Visit locator tree."""
-        root = SyntaxParser().parse(locator)
+
+        def from_literal(value: str) -> Locator:
+            return literal.parse(value, self.database)
+
+        root = SyntaxParser().parse(locator=locator, parser=from_literal)
         return sorted(self._resolve(root))
 
     def _resolve(self, value: Union[ValueType, bool]):

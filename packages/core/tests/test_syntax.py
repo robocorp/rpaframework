@@ -1,6 +1,7 @@
 import pytest
 from RPA.core.geometry import Undefined
 from RPA.core.locators import (
+    literal,
     LocatorsDatabase,
     PointLocator,
     OffsetLocator,
@@ -99,9 +100,9 @@ class TestTokenizer:
     @pytest.mark.parametrize("text, tokens", TOKENIZED.items())
     def test_tokenizer(self, monkeypatch, text, tokens):
         monkeypatch.setattr(
-            LocatorsDatabase, "load_by_name", lambda name: self.ALIASES[name]
+            LocatorsDatabase, "load_by_name", lambda name, _: self.ALIASES[name]
         )
-        assert Tokenizer.tokenize(text) == tokens
+        assert Tokenizer.tokenize(text, literal.parse) == tokens
 
 
 class TestParser:
@@ -136,7 +137,7 @@ class TestParser:
 
     @pytest.mark.parametrize("text, expression", PARSED.items())
     def test_parser(self, text, expression):
-        assert SyntaxParser().parse(text) == expression
+        assert SyntaxParser().parse(text, literal.parse) == expression
 
 
 class TestResolver:
