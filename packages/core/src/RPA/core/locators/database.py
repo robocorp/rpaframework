@@ -83,7 +83,7 @@ class LocatorsDatabase:
     def default_path(self):
         """Return default path for locators database file."""
         dirname = os.getenv("ROBOT_ROOT", "")
-        filename = "locators.json"
+        filename = os.getenv("RC_LOCATORS_DATABASE", "").strip() or "locators.json"
         return os.path.join(dirname, filename)
 
     @property
