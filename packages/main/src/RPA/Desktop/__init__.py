@@ -1,7 +1,7 @@
 import logging
 import platform
-import sys
 import warnings
+from typing import Optional
 
 if platform.system() == "Windows":
     # Configure comtypes to not generate DLL bindings into
@@ -19,7 +19,7 @@ if platform.system() == "Windows":
 
 # pylint: disable=wrong-import-position
 from robotlibcore import DynamicCore
-from RPA.Desktop.utils import Buffer, is_windows
+from RPA.Desktop.utils import Buffer
 from RPA.Desktop.keywords import (
     ElementNotFound,
     MultipleElementsFound,
@@ -336,9 +336,10 @@ class Desktop(DynamicCore):
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
-    def __init__(self):
+    def __init__(self, locators_path: Optional[str] = None):
         self.logger = logging.getLogger(__name__)
         self.buffer = Buffer(self.logger)
+        self.locators_path = locators_path
 
         # Register keyword libraries to LibCore
         libraries = [

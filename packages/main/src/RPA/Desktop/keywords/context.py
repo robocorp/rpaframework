@@ -32,3 +32,7 @@ class LibraryContext:
     @property
     def buffer(self):
         return self.ctx.buffer
+
+    @property
+    def locators_path(self):
+        return self.ctx.locators_path
