@@ -1,8 +1,12 @@
+import base64
+from io import BytesIO
 import os
+from pathlib import Path
 import signal
 import time
 from typing import List, Dict, Union
 
+from PIL import Image
 from RPA.Windows.keywords import (
     keyword,
     ElementNotFound,
@@ -14,6 +18,11 @@ from .locators import WindowsElement
 
 if utils.is_windows():
     import uiautomation as auto
+    import win32process
+    import win32api
+    import win32con
+    import win32ui
+    import win32gui
 
 
 class WindowKeywords(LibraryContext):
@@ -233,9 +242,11 @@ class WindowKeywords(LibraryContext):
         return self.ctx.window
 
     @keyword(tags=["window"])
-    def list_windows(self) -> List[Dict]:
+    def list_windows(self, icons: bool = False) -> List[Dict]:
         """List all window element on the system.
 
+        :param icons: on True dictionary will contain Base64
+         string of the icon, default False
         :return: list of dictionaries containing information
          about Window elements
 
@@ -256,14 +267,53 @@ class WindowKeywords(LibraryContext):
         win_list = []
         for win in windows:
             pid = win.ProcessId
+            fullpath = None
+            try:
+                handle = win32api.OpenProcess(win32con.PROCESS_ALL_ACCESS, False, pid)
+                fullpath = win32process.GetModuleFileNameEx(handle, 0)
+            except Exception as err:  # pylint: disable=broad-except
+                self.logger.info("Open process error in `List Windows`: %s", str(err))
+
             info = {
                 "title": win.Name,
-                "pid": win.ProcessId,
+                "pid": pid,
                 "name": process_list[pid] if pid in process_list.keys() else None,
+                "path": fullpath,
                 "handle": win.NativeWindowHandle,
+                "icon": self.get_icon(fullpath) if icons else None,
             }
             win_list.append(info)
         return win_list
+
+    def get_icon(self, filepath: str) -> str:
+        image_string = None
+        executable_path = Path(filepath)
+        ico_x = win32api.GetSystemMetrics(win32con.SM_CXICON)
+        ico_y = win32api.GetSystemMetrics(win32con.SM_CYICON)
+
+        large, small = win32gui.ExtractIconEx(filepath, 0, 10)
+        if len(small) > 0:
+            win32gui.DestroyIcon(small[0])
+
+        hdc = win32ui.CreateDCFromHandle(win32gui.GetDC(0))
+        hbmp = win32ui.CreateBitmap()
+
+        hbmp.CreateCompatibleBitmap(hdc, ico_x, ico_y)
+        hdc = hdc.CreateCompatibleDC()
+
+        hdc.SelectObject(hbmp)
+
+        if len(large) > 0:
+            hdc.DrawIcon((0, 0), large[0])
+            result_image_file = f"icon_{executable_path.name}.bmp"
+            hbmp.SaveBitmapFile(hdc, result_image_file)
+            # signedIntsArray = hbmp.GetBitmapBits(True)
+            with Image.open(result_image_file) as img:
+                buffered = BytesIO()
+                img.save(buffered, format="PNG")
+                image_string = base64.b64encode(buffered.getvalue())
+            Path(result_image_file).unlink()
+        return image_string
 
     @keyword(tags=["window"])
     def windows_run(self, text: str, wait_time: float = 3.0) -> None:
