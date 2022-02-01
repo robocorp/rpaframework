@@ -1,7 +1,7 @@
 import platform
-import psutil
 from typing import Dict, Optional
 
+import psutil
 from comtypes import COMError
 
 

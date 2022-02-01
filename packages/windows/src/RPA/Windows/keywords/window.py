@@ -384,9 +384,7 @@ class WindowKeywords(LibraryContext):
 
         pid = window.item.ProcessId
         name = window.item.Name
-        self.logger.info(
-            'Closing window with Name:"%s", ProcessId: %s' % (name, pid)
-        )
+        self.logger.info('Closing window with Name:"%s", ProcessId: %s' % (name, pid))
         os.kill(pid, signal.SIGTERM)
         self.ctx.window = None
         return True
