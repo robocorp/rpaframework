@@ -1,6 +1,8 @@
-from typing import Dict
 import platform
 import psutil
+from typing import Dict, Optional
+
+from comtypes import COMError
 
 
 def get_process_list() -> Dict:
@@ -30,4 +32,19 @@ def is_windows():
 def call_attribute_if_available(object_name, attribute_name):
     if hasattr(object_name, attribute_name):
         return getattr(object_name, attribute_name)()
+    return None
+
+
+def window_or_none(window, timeout: float = 5) -> Optional["WindowsElement"]:
+    if window and window.item:
+        if hasattr(window.item, "Exists"):
+            return window if window.item.Exists(maxSearchSeconds=timeout) else None
+
+        try:
+            window.item.BoundingRectangle
+        except COMError:
+            return None
+
+        return window
+
     return None

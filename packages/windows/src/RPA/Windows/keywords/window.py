@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 import signal
 import time
-from typing import List, Dict, Union
+from typing import Dict, List, Optional, Union
 
 from PIL import Image
 from RPA.Windows.keywords import (
@@ -79,7 +79,7 @@ class WindowKeywords(LibraryContext):
                 self.ctx.window = self._find_window(pane_locator, main)
 
         auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
-        if not self.ctx.window or not self.ctx.window.item.Exists():
+        if self.window is None:
             raise WindowControlError(
                 'Could not locate window with locator: "%s" and timeout:%s'
                 % (locator, current_timeout)
@@ -121,7 +121,7 @@ class WindowKeywords(LibraryContext):
         self.control_window(locator, foreground, timeout, wait_time, False)
         return self.ctx.window
 
-    def _find_window(self, locator, main) -> bool:
+    def _find_window(self, locator, main) -> Optional[WindowsElement]:
         try:
             # root_element = None means using self.ctx.window as root
             root_element = (
@@ -153,12 +153,14 @@ class WindowKeywords(LibraryContext):
         """
         if locator:
             return self.control_window(locator, foreground=True)
-        if not self.ctx.window.item:
+        window = self.window
+        if window is None:
             raise WindowControlError("There is no active window")
-        utils.call_attribute_if_available(self.ctx.window.item, "SetFocus")
-        utils.call_attribute_if_available(self.ctx.window.item, "SetActive")
-        self.ctx.window.item.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
-        return self.ctx.window
+
+        utils.call_attribute_if_available(window.item, "SetFocus")
+        utils.call_attribute_if_available(window.item, "SetActive")
+        window.item.MoveCursorToMyCenter(simulateMove=self.ctx.simulate_move)
+        return window
 
     @keyword(tags=["window"])
     def minimize_window(
@@ -179,15 +181,17 @@ class WindowKeywords(LibraryContext):
         """
         if locator:
             self.control_window(locator)
-        if not self.ctx.window:
+        window = self.window
+        if window is None:
             raise WindowControlError("There is no active window")
-        if not hasattr(self.ctx.window.item, "Minimize"):
+
+        if hasattr(window.item, "Minimize"):
+            window.item.Minimize()
+        else:
             self.logger.warning(
-                "Control '%s' does not have attribute Minimize" % self.ctx.window
+                "Control '%s' does not have attribute Minimize" % window
             )
-            return self.ctx.window
-        self.ctx.window.item.Minimize()
-        return self.ctx.window
+        return window
 
     @keyword(tags=["window"])
     def maximize_window(
@@ -208,12 +212,15 @@ class WindowKeywords(LibraryContext):
         """
         if locator:
             self.control_window(locator)
-        if not self.ctx.window:
+        window = self.window
+        if window is None:
             raise WindowControlError("There is no active window")
-        if not hasattr(self.ctx.window.item, "Maximize"):
+
+        if not hasattr(window.item, "Maximize"):
             raise WindowControlError("Window does not have attribute Maximize")
-        self.ctx.window.item.Maximize()
-        return self.ctx.window
+
+        window.item.Maximize()
+        return window
 
     @keyword(tags=["window"])
     def restore_window(
@@ -234,12 +241,15 @@ class WindowKeywords(LibraryContext):
         """
         if locator:
             self.control_window(locator)
-        if not self.ctx.window:
+        window = self.window
+        if window is None:
             raise WindowControlError("There is no active window")
-        if not hasattr(self.ctx.window.item, "Restore"):
+
+        if not hasattr(window.item, "Restore"):
             raise WindowControlError("Window does not have attribute Restore")
-        self.ctx.window.item.Restore()
-        return self.ctx.window
+
+        window.item.Restore()
+        return window
 
     @keyword(tags=["window"])
     def list_windows(self, icons: bool = False) -> List[Dict]:
@@ -367,12 +377,14 @@ class WindowKeywords(LibraryContext):
 
             ${status}=  Close Current Window
         """
-        if not self.ctx.window:
-            self.ctx.logger.warning("There is no active window")
+        window = self.window
+        if window is None:
+            self.logger.warning("There is no active window")
             return False
-        pid = self.ctx.window.item.ProcessId
-        name = self.ctx.window.item.Name
-        self.ctx.logger.info(
+
+        pid = window.item.ProcessId
+        name = window.item.Name
+        self.logger.info(
             'Closing window with Name:"%s", ProcessId: %s' % (name, pid)
         )
         os.kill(pid, signal.SIGTERM)

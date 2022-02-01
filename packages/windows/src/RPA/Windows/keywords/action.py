@@ -228,7 +228,6 @@ class ActionKeywords(LibraryContext):
             ${element}=   Get Element   id:pass
             Send Keys  ${element}  password   send_enter=True
         """
-        element = self.ctx.window
         if locator:
             element = self.ctx.get_element(locator).item
         else:

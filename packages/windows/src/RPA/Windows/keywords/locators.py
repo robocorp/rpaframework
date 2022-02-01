@@ -172,9 +172,6 @@ class LocatorKeywords(LibraryContext):
     def _get_element_with_locator_part(
         self, locator, search_depth, root_element=None
     ) -> Control:
-        # TODO. refactor code
-        element = None
-
         match_object = MatchObject()
         mo = match_object.parse_locator(locator)
         self.ctx.logger.info("locator '%s' to match element: %s" % (locator, mo))
@@ -184,8 +181,8 @@ class LocatorKeywords(LibraryContext):
         offset = search_params.pop("offset", None)
         if "searchDepth" not in search_params.keys():
             search_params["searchDepth"] = search_depth
+
         if "executable" in search_params.keys():
-            root_element = auto.GetRootControl()
             search_params.pop("ControlType")
             executable = search_params.pop("executable")
             window_list = self.ctx.list_windows()
@@ -206,8 +203,8 @@ class LocatorKeywords(LibraryContext):
             new_element = Control.CreateControlFromControl(element)
             new_element.robocorp_click_offset = offset
             return new_element
-        elif "handle" in search_params.keys():
-            root_element = auto.GetRootControl()
+
+        if "handle" in search_params.keys():
             search_params.pop("ControlType")
             handle = search_params.pop("handle")
             window_list = self.ctx.list_windows()
@@ -298,31 +295,30 @@ class LocatorKeywords(LibraryContext):
                 auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
         else:
             element = locator
-        if hasattr(element.item, "Exists"):
-            element.item.Exists(maxSearchSeconds=timeout)
-        if not element:
+        if utils.window_or_none(element) is None:
             raise ElementNotFound("Unable to get element with '%s'" % locator)
         self.logger.info("Returning element: '%s'", element)
         return element
 
     def get_element_by_locator_string(self, locator, search_depth, root_element):
-        locators = locator.split(" > ")
-        anchor = self.ctx.anchor_element.item if self.ctx.anchor_element else None
-        root = root_element.item if root_element else None
-        window = self.ctx.window.item if self.ctx.window else None
-        root_element = root or anchor or window or auto.GetRootControl()
-        self.logger.debug("argument root_element = %s" % root)
-        self.logger.debug("active anchor_element = %s" % anchor)
+        root = root_element.item if utils.window_or_none(root_element) else None
+        anchor = self.anchor.item if self.anchor else None
+        window = self.window.item if self.window else None
+        self.logger.debug("argument root = %s" % root)
+        self.logger.debug("active anchor = %s" % anchor)
         self.logger.debug("active window = %s" % window)
-        self.logger.debug("resulting root_element = %s" % root_element)
+        root_result = root or anchor or window or auto.GetRootControl()
+        self.logger.debug("resulting root = %s" % root_result)
         element = None
+
+        locators = locator.split(" > ")
         try:
             for loc in locators:
-                self.logger.info("Root element: '%s'" % root_element)
+                self.logger.info("Root element: '%s'" % root_result)
                 element = self._get_element_with_locator_part(
-                    loc, search_depth, root_element
+                    loc, search_depth, root_result
                 )
-                root_element = element
+                root_result = element
         except LookupError as err:
             raise ElementNotFound(
                 "Element not found with locator %s" % locator

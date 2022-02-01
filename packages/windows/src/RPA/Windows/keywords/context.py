@@ -1,3 +1,8 @@
+from typing import Optional
+
+from RPA.Windows.utils import window_or_none
+
+
 class ControlNotFound(ValueError):
     """No matching controls were found."""
 
@@ -33,5 +38,9 @@ class LibraryContext:
         return self.ctx.logger
 
     @property
-    def window(self):
-        return self.ctx.window
+    def anchor(self) -> Optional["WindowsElement"]:
+        return window_or_none(self.ctx.anchor_element)
+
+    @property
+    def window(self) -> Optional["WindowsElement"]:
+        return window_or_none(self.ctx.window)
