@@ -70,6 +70,13 @@ class WindowsElement:
         self.xcenter = rect.xcenter() if rect else -1
         self.ycenter = rect.ycenter() if rect else -1
 
+    def is_sibling(self, win_elem: "WindowsElement") -> bool:
+        """Returns `True` if the provided window element is a sibling."""
+        # FIXME(cmin764): Is this enough to recognize the provided element as a
+        #  sibling? Do we need info from the locator too?
+        cmp_attrs = ["name", "class_name"]
+        checks = (getattr(self, attr) == getattr(win_elem, attr) for attr in cmp_attrs)
+        return all(checks)
 
 @dataclass
 class MatchObject:
@@ -170,7 +177,7 @@ class LocatorKeywords(LibraryContext):
     """Keywords for handling Windows locators"""
 
     def _get_element_with_locator_part(
-        self, locator, search_depth, root_element=None
+        self, locator, search_depth, root_element
     ) -> Control:
         match_object = MatchObject()
         mo = match_object.parse_locator(locator)
@@ -355,15 +362,15 @@ class LocatorKeywords(LibraryContext):
         if timeout:
             auto.SetGlobalSearchTimeout(timeout)
         elements = []
-        window_element = self.get_element(locator, search_depth, root_element, timeout)
-        elements.append(window_element)
+        initial_window_element = window_element = self.get_element(locator, search_depth, root_element, timeout)
+        elements.append(initial_window_element)
         try:
             while True:
-                # TODO. the sibling needs to match the original locator
                 next_element = window_element.item.GetNextSiblingControl()
                 if next_element:
                     window_element = WindowsElement(next_element, locator)
-                    elements.append(window_element)
+                    if initial_window_element.is_sibling(window_element):
+                        elements.append(window_element)
                 else:
                     break
         finally:

@@ -392,7 +392,7 @@ class WindowKeywords(LibraryContext):
 
     @keyword(tags=["window"])
     def close_window(self, locator: Union[WindowsElement, str]) -> int:
-        """Closes identified window or logs a warning message.
+        """Closes identified windows or logs the problems.
 
         :param locator: String locator or `Control` element.
         :return: How many windows were found and closed.
@@ -401,18 +401,19 @@ class WindowKeywords(LibraryContext):
 
         .. code-block:: robotframework
 
-            ${status} =     Close Window    Calculator
+            ${closed_count} =     Close Window    Calculator
         """
         # Starts the search from desktop level.
         root_element = WindowsElement(auto.GetRootControl(), locator)
         try:
             elements = self.ctx.get_elements(locator, root_element=root_element)
         except (ElementNotFound, LookupError):
-            self.logger.warning("Couldn't find any window with locator: %s", locator)
+            self.logger.info("Couldn't find any window with locator: %s", locator)
             return 0
 
         closed = 0
         for element in elements:
+            self.logger.debug("Controlling and closing window: %s", element)
             try:
                 self.control_window(element)
                 closed += int(self.close_current_window())
