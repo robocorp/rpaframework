@@ -39,7 +39,7 @@ def window_or_none(
 ) -> Optional["WindowsElement"]:  # noqa: F821
     if is_windows():
         # pylint: disable=import-outside-toplevel
-        from comtypes import COMError
+        from comtypes import COMError  # noqa
     else:
         COMError = Exception
 
