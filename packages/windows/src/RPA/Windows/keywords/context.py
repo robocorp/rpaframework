@@ -38,9 +38,9 @@ class LibraryContext:
         return self.ctx.logger
 
     @property
-    def anchor(self) -> Optional["WindowsElement"]:
+    def anchor(self) -> Optional["WindowsElement"]:  # noqa: F821
         return window_or_none(self.ctx.anchor_element)
 
     @property
-    def window(self) -> Optional["WindowsElement"]:
+    def window(self) -> Optional["WindowsElement"]:  # noqa: F821
         return window_or_none(self.ctx.window)

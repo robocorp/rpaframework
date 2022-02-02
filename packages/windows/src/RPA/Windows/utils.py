@@ -35,7 +35,9 @@ def call_attribute_if_available(object_name, attribute_name):
     return None
 
 
-def window_or_none(window, timeout: float = 5) -> Optional["WindowsElement"]:
+def window_or_none(
+    window, timeout: float = 5
+) -> Optional["WindowsElement"]:  # noqa: F821
     if window and window.item:
         if hasattr(window.item, "Exists"):
             return window if window.item.Exists(maxSearchSeconds=timeout) else None
