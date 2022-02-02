@@ -259,7 +259,7 @@ class LocatorKeywords(LibraryContext):
             2. current active window if that has been set with `Control Window`
             3. final option is the `Desktop`
 
-        :param locator: locator as a string or as a element
+        :param locator: locator as a string or as an element
         :param search_depth: how deep the element search will traverse (default 8)
         :param root_element: can be used to set search root element
         :param timeout: float value in seconds, see keyword
@@ -332,10 +332,10 @@ class LocatorKeywords(LibraryContext):
         search_depth: int = 8,
         root_element: WindowsElement = None,
         timeout: float = None,
-    ) -> List:
+    ) -> List[WindowsElement]:
         """Get list of elements matching locator.
 
-        :param locator: locator as a string or as a element
+        :param locator: locator as a string or as an element
         :param search_depth: how deep the element search will traverse (default 8)
         :param root_element: can be used to set search root element
         :param timeout: float value in seconds, see keyword

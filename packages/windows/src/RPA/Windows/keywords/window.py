@@ -79,7 +79,8 @@ class WindowKeywords(LibraryContext):
                 self.ctx.window = self._find_window(pane_locator, main)
 
         auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
-        if self.window is None:
+        window = self.window
+        if window is None:
             raise WindowControlError(
                 'Could not locate window with locator: "%s" and timeout:%s'
                 % (locator, current_timeout)
@@ -88,7 +89,7 @@ class WindowKeywords(LibraryContext):
             self.foreground_window()
         if wait_time:
             time.sleep(wait_time)
-        return self.ctx.window
+        return window
 
     @keyword(tags=["window"])
     def control_child_window(
@@ -118,8 +119,7 @@ class WindowKeywords(LibraryContext):
             # get control of child window of Sage application
             Control Child Window   subname:'Test Company' depth:1
         """
-        self.control_window(locator, foreground, timeout, wait_time, False)
-        return self.ctx.window
+        return self.control_window(locator, foreground, wait_time, timeout, main=False)
 
     def _find_window(self, locator, main) -> Optional[WindowsElement]:
         try:
@@ -380,6 +380,7 @@ class WindowKeywords(LibraryContext):
         window = self.window
         if window is None:
             self.logger.warning("There is no active window")
+            self.ctx.window = None
             return False
 
         pid = window.item.ProcessId
@@ -388,3 +389,33 @@ class WindowKeywords(LibraryContext):
         os.kill(pid, signal.SIGTERM)
         self.ctx.window = None
         return True
+
+    @keyword(tags=["window"])
+    def close_window(self, locator: Union[WindowsElement, str]) -> int:
+        """Closes identified window or logs a warning message.
+
+        :param locator: String locator or `Control` element.
+        :return: How many windows were found and closed.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${status} =     Close Window    Calculator
+        """
+        # Starts the search from desktop level.
+        root_element = WindowsElement(auto.GetRootControl(), locator)
+        try:
+            elements = self.ctx.get_elements(locator, root_element=root_element)
+        except (ElementNotFound, LookupError):
+            self.logger.warning("Couldn't find any window with locator: %s", locator)
+            return 0
+
+        closed = 0
+        for element in elements:
+            try:
+                self.control_window(element)
+                closed += int(self.close_current_window())
+            except Exception as exc:
+                self.logger.error("Couldn't close window %r due to: %s", element, exc)
+        return closed
