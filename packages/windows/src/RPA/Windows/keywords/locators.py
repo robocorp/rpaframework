@@ -8,6 +8,7 @@ from RPA.Windows.keywords import (
     WindowControlError,
 )
 from RPA.Windows import utils
+from RPA.core.locators import LocatorsDatabase, WindowsLocator
 
 if utils.is_windows():
     import uiautomation as auto
@@ -241,6 +242,16 @@ class LocatorKeywords(LibraryContext):
         new_element.robocorp_click_offset = offset
         return new_element
 
+    def _load_by_alias(self, criteria: str) -> str:
+        try:
+            locator = LocatorsDatabase.load_by_name(criteria, self._locators_db_path)
+            if isinstance(locator, WindowsLocator):
+                return locator.value
+        except ValueError:
+            # How to check if locator check should be done as inspector locators are just strings?
+            pass
+        return criteria
+
     @keyword
     def get_element(
         self,
@@ -277,6 +288,8 @@ class LocatorKeywords(LibraryContext):
             Set Value   ${element}  note to myself
         """
         # TODO. Add examples
+        if isinstance(locator, str):
+            locator = self._load_by_alias(locator)
         self.logger.info("Locator '%s' into element", locator)
         if timeout:
             auto.SetGlobalSearchTimeout(timeout)

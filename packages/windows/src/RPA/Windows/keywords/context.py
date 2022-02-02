@@ -1,3 +1,5 @@
+import os
+
 class ControlNotFound(ValueError):
     """No matching controls were found."""
 
@@ -25,8 +27,9 @@ class ActionNotPossible(ValueError):
 class LibraryContext:
     """Shared context for all keyword libraries."""
 
-    def __init__(self, ctx):
+    def __init__(self, ctx, locator_db_path: str = None):
         self.ctx = ctx
+        self._locators_db_path = os.path.abspath(locator_db_path) if locator_db_path else None
 
     @property
     def logger(self):

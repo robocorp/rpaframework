@@ -108,8 +108,12 @@ def libspec(ctx):
     poetry(ctx, command)
     modify_libspec_files()
 
-
 @task
+def lock(ctx):
+    """Lock the poetry environment"""
+    poetry(ctx, "lock")
+
+@task(lock)
 def install(ctx):
     """Install development environment"""
     poetry(ctx, "install")
