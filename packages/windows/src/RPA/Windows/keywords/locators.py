@@ -78,6 +78,7 @@ class WindowsElement:
         checks = (getattr(self, attr) == getattr(win_elem, attr) for attr in cmp_attrs)
         return all(checks)
 
+
 @dataclass
 class MatchObject:
     """Represents all locator parts as object properties"""
@@ -362,7 +363,9 @@ class LocatorKeywords(LibraryContext):
         if timeout:
             auto.SetGlobalSearchTimeout(timeout)
         elements = []
-        initial_window_element = window_element = self.get_element(locator, search_depth, root_element, timeout)
+        initial_window_element = window_element = self.get_element(
+            locator, search_depth, root_element, timeout
+        )
         elements.append(initial_window_element)
         try:
             while True:

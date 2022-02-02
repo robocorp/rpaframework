@@ -417,6 +417,6 @@ class WindowKeywords(LibraryContext):
             try:
                 self.control_window(element)
                 closed += int(self.close_current_window())
-            except Exception as exc:
+            except Exception as exc:  # pylint: disable=broad-except
                 self.logger.error("Couldn't close window %r due to: %s", element, exc)
         return closed

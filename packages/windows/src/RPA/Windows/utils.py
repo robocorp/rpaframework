@@ -38,6 +38,7 @@ def window_or_none(
     window, timeout: float = 5
 ) -> Optional["WindowsElement"]:  # noqa: F821
     if is_windows():
+        # pylint: disable=import-outside-toplevel
         from comtypes import COMError
     else:
         COMError = Exception
@@ -48,6 +49,7 @@ def window_or_none(
 
         try:
             window.item.BoundingRectangle
+        # pylint: disable=broad-except
         except COMError:
             return None
 
