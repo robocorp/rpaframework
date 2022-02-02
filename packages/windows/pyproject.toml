@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-windows"
-version = "2.0.1"
+version = "2.0.2"
 description = "Windows library for RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -36,7 +36,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.6.2"
 dataclasses = { version = "^0.7", python=">=3.6,<3.7" }
-rpaframework-core = "^6.5.1"
+rpaframework-core = "^6.5.3"
 robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
 robotframework-pythonlibcore = "^3.0.0"
 pynput-robocorp-fork = "^4.0.0"
