@@ -1,11 +1,13 @@
-from dataclasses import dataclass, field
 import re
-from typing import List, Union
+from dataclasses import dataclass, field
+from typing import List, Optional, Union
+
 from RPA.Windows.keywords import (
     ElementNotFound,
-    keyword,
     LibraryContext,
     WindowControlError,
+    keyword,
+    with_timeout,
 )
 from RPA.Windows import utils
 
@@ -13,7 +15,6 @@ if utils.IS_WINDOWS:
     import uiautomation as auto
     from uiautomation.uiautomation import Control
 
-DEFAULT_SEARCH_TIMEOUT = auto.uiautomation.TIME_OUT_SECOND
 
 WINDOWS_LOCATOR_STRATEGIES = {
     "automationid": "AutomationId",
@@ -247,12 +248,13 @@ class LocatorKeywords(LibraryContext):
         return new_element
 
     @keyword
+    @with_timeout
     def get_element(
         self,
         locator: Union[str, WindowsElement] = None,
         search_depth: int = 8,
         root_element: WindowsElement = None,
-        timeout: float = None,
+        timeout: Optional[float] = None,  # pylint: disable=unused-argument
     ) -> WindowsElement:
         """Get Control element defined by the locator.
 
@@ -283,11 +285,6 @@ class LocatorKeywords(LibraryContext):
         """
         # TODO. Add examples
         self.logger.info("Locator '%s' into element", locator)
-        if timeout:
-            auto.SetGlobalSearchTimeout(timeout)
-        self.logger.info(
-            "Locator timeout set to: %s" % auto.uiautomation.TIME_OUT_SECOND
-        )
         if not locator:
             element = (
                 self.ctx.anchor_element
@@ -295,21 +292,18 @@ class LocatorKeywords(LibraryContext):
                 or WindowsElement(auto.GetRootControl(), None)
             )
         elif isinstance(locator, str):
-            try:
-                element = self.get_element_by_locator_string(
-                    locator, search_depth, root_element
-                )
-            finally:
-                auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
+            element = self.get_element_by_locator_string(
+                locator, search_depth, root_element
+            )
         else:
             element = locator
-        if utils.window_or_none(element) is None:
+        if self._window_or_none(element) is None:
             raise ElementNotFound("Unable to get element with '%s'" % locator)
         self.logger.info("Returning element: '%s'", element)
         return element
 
     def get_element_by_locator_string(self, locator, search_depth, root_element):
-        root = root_element.item if utils.window_or_none(root_element) else None
+        root = root_element.item if self._window_or_none(root_element) else None
         anchor = self.anchor.item if self.anchor else None
         window = self.window.item if self.window else None
         self.logger.debug("argument root = %s" % root)
@@ -334,12 +328,13 @@ class LocatorKeywords(LibraryContext):
         return WindowsElement(element, locator)
 
     @keyword
+    @with_timeout
     def get_elements(
         self,
         locator: Union[str, WindowsElement],
         search_depth: int = 8,
         root_element: WindowsElement = None,
-        timeout: float = None,
+        timeout: Optional[float] = None,  # pylint: disable=unused-argument
     ) -> List[WindowsElement]:
         """Get list of elements matching locator.
 
@@ -360,22 +355,17 @@ class LocatorKeywords(LibraryContext):
                 Log To Console    ${el.Name}
             END
         """
-        if timeout:
-            auto.SetGlobalSearchTimeout(timeout)
         elements = []
         initial_window_element = window_element = self.get_element(
-            locator, search_depth, root_element, timeout
+            locator, search_depth, root_element
         )
         elements.append(initial_window_element)
-        try:
-            while True:
-                next_element = window_element.item.GetNextSiblingControl()
-                if next_element:
-                    window_element = WindowsElement(next_element, locator)
-                    if initial_window_element.is_sibling(window_element):
-                        elements.append(window_element)
-                else:
-                    break
-        finally:
-            auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
+        while True:
+            next_element = window_element.item.GetNextSiblingControl()
+            if next_element:
+                window_element = WindowsElement(next_element, locator)
+                if initial_window_element.is_sibling(window_element):
+                    elements.append(window_element)
+            else:
+                break
         return elements

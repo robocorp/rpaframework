@@ -468,8 +468,8 @@ class Windows(DynamicCore):
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.wait_time = 0.5
-        self.global_timeout = auto.uiautomation.TIME_OUT_SECOND
+        self.wait_time: float = 0.5
+        self.global_timeout: float = float(auto.uiautomation.TIME_OUT_SECOND)
         self.simulate_move = False
         self.window = None
         self.anchor_element = None

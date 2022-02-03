@@ -1,17 +1,19 @@
 import base64
-from io import BytesIO
 import os
-from pathlib import Path
 import signal
 import time
+from io import BytesIO
+from pathlib import Path
 from typing import Dict, List, Optional, Union
 
 from PIL import Image
+
 from RPA.Windows.keywords import (
-    keyword,
     ElementNotFound,
     LibraryContext,
     WindowControlError,
+    keyword,
+    with_timeout,
 )
 from RPA.Windows import utils
 from .locators import WindowsElement
@@ -29,12 +31,13 @@ class WindowKeywords(LibraryContext):
     """Keywords for handling Window controls"""
 
     @keyword(tags=["window"])
+    @with_timeout
     def control_window(
         self,
         locator: Union[WindowsElement, str] = None,
         foreground: bool = True,
         wait_time: float = None,
-        timeout: float = None,
+        timeout: float = None,  # pylint: disable=unused-argument
         main: bool = True,
     ) -> WindowsElement:
         """Controls the window defined by the locator.
@@ -64,26 +67,22 @@ class WindowKeywords(LibraryContext):
             Control Window   regex:.*Notepad
             ${window}=  Control Window   executable:Spotify.exe
         """
-        current_timeout = timeout or self.ctx.global_timeout
-        if timeout:
-            auto.SetGlobalSearchTimeout(timeout)
         if isinstance(locator, WindowsElement):
             self.ctx.window = locator
         elif "type:" in locator:
             self.ctx.window = self._find_window(locator, main)
         else:
             window_locator = f"{locator} and type:WindowControl"
-            pane_locator = f"{locator} and type:PaneControl"
             self.ctx.window = self._find_window(window_locator, main)
             if not self.ctx.window:
+                pane_locator = f"{locator} and type:PaneControl"
                 self.ctx.window = self._find_window(pane_locator, main)
 
-        auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
         window = self.window
         if window is None:
             raise WindowControlError(
-                'Could not locate window with locator: "%s" and timeout:%s'
-                % (locator, current_timeout)
+                f'Could not locate window with locator: "{locator}" '
+                f"(timeout: {self.current_timeout})"
             )
         if foreground:
             self.foreground_window()

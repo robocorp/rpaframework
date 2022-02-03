@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Union, Optional
 
-from RPA.Windows.keywords import ActionNotPossible, keyword, LibraryContext
+from RPA.Windows.keywords import ActionNotPossible, LibraryContext, keyword
 from RPA.Windows import utils
 from .locators import WindowsElement
 
@@ -123,10 +123,8 @@ class ActionKeywords(LibraryContext):
         return self._mouse_click(locator, "MiddleClick", wait_time, timeout)
 
     def _mouse_click(self, element, click_type, wait_time, timeout):
-        if timeout:
-            auto.SetGlobalSearchTimeout(timeout)
         click_wait_time = wait_time or self.ctx.wait_time
-        try:
+        with self.set_timeout(timeout):
             element = self.ctx.get_element(element)
             if element.item.robocorp_click_offset:
                 self.ctx.logger.debug("Click element with offset")
@@ -134,8 +132,6 @@ class ActionKeywords(LibraryContext):
             else:
                 self.ctx.logger.debug("Click element")
                 self._click_element(element, click_type, click_wait_time)
-        finally:
-            auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
         return element
 
     def _click_element_coordinates(self, element, click_type, click_wait_time):

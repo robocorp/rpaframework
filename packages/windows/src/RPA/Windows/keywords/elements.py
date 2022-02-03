@@ -1,13 +1,13 @@
 import inspect
 from pathlib import Path
-from typing import List, Union
+from typing import List, Optional, Union
 from RPA.Windows.keywords import (
     ActionNotPossible,
     keyword,
     LibraryContext,
 )
 from RPA.Windows import utils
-from .locators import DEFAULT_SEARCH_TIMEOUT, WindowsElement
+from .locators import WindowsElement
 
 if utils.IS_WINDOWS:
     import uiautomation as auto
@@ -20,7 +20,7 @@ class ElementKeywords(LibraryContext):
     def set_anchor(
         self,
         locator: Union[WindowsElement, str],
-        timeout: float = DEFAULT_SEARCH_TIMEOUT,
+        timeout: Optional[float] = None,
     ) -> None:
         """Set anchor to an element specified by the locator.
 
@@ -32,7 +32,7 @@ class ElementKeywords(LibraryContext):
         To release anchor call ``Clear Anchor`` keyword.
 
         :param locator: string locator or Control element
-        :param timeout: timeout in seconds for element lookup (default 5.0)
+        :param timeout: timeout in seconds for element lookup (default 10.0)
 
         Example:
 
