@@ -1,7 +1,8 @@
 from pathlib import Path
 from typing import Union, Optional
 
-from RPA.Windows.keywords import ActionNotPossible, LibraryContext, keyword
+from RPA.Windows.keywords import keyword
+from RPA.Windows.keywords.context import ActionNotPossible, LibraryContext
 from RPA.Windows import utils
 from .locators import WindowsElement
 

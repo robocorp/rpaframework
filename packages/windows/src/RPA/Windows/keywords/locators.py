@@ -2,14 +2,14 @@ import re
 from dataclasses import dataclass, field
 from typing import List, Optional, Union
 
-from RPA.Windows.keywords import (
+from RPA.Windows import utils
+from RPA.Windows.keywords import keyword
+from RPA.Windows.keywords.context import (
     ElementNotFound,
     LibraryContext,
     WindowControlError,
-    keyword,
     with_timeout,
 )
-from RPA.Windows import utils
 
 if utils.IS_WINDOWS:
     import uiautomation as auto

@@ -3,7 +3,6 @@ import functools
 from typing import Optional
 
 from RPA.Windows.utils import IS_WINDOWS
-from .locators import WindowsElement
 
 if IS_WINDOWS:
     from comtypes import COMError  # noqa
@@ -51,7 +50,7 @@ class LibraryContext:
         # This value can change based on `auto.SetGlobalSearchTimeout(...)` calls.
         return auto.uiautomation.TIME_OUT_SECOND
 
-    def _window_or_none(self, window) -> Optional[WindowsElement]:
+    def _window_or_none(self, window) -> Optional["WindowsElement"]:  # noqa: F821
         if window and window.item:
             if hasattr(window.item, "Exists"):
                 return (
@@ -70,11 +69,11 @@ class LibraryContext:
         return None
 
     @property
-    def anchor(self) -> Optional[WindowsElement]:
+    def anchor(self) -> Optional["WindowsElement"]:  # noqa: F821
         return self._window_or_none(self.ctx.anchor_element)
 
     @property
-    def window(self) -> Optional[WindowsElement]:
+    def window(self) -> Optional["WindowsElement"]:  # noqa: F821
         return self._window_or_none(self.ctx.window)
 
     @contextlib.contextmanager

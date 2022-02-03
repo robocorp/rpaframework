@@ -4,14 +4,13 @@ import logging
 from robotlibcore import DynamicCore
 
 
-from RPA.Windows.keywords import (
+from . import utils
+from .keywords import (
     ActionKeywords,
     ElementKeywords,
     LocatorKeywords,
     WindowKeywords,
 )
-
-from RPA.Windows import utils
 
 if utils.IS_WINDOWS:
     # Configure comtypes to not generate DLL bindings into
