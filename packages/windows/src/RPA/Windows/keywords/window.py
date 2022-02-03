@@ -390,7 +390,12 @@ class WindowKeywords(LibraryContext):
         return True
 
     @keyword(tags=["window"])
-    def close_window(self, locator: Union[WindowsElement, str]) -> int:
+    @with_timeout
+    def close_window(
+        self,
+        locator: Union[WindowsElement, str],
+        timeout: Optional[float] = None,  # pylint: disable=unused-argument
+    ) -> int:
         """Closes identified windows or logs the problems.
 
         :param locator: String locator or `Control` element.

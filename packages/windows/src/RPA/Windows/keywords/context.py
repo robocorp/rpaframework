@@ -52,12 +52,14 @@ class LibraryContext:
 
     def _window_or_none(self, window) -> Optional["WindowsElement"]:  # noqa: F821
         if window and window.item:
-            if hasattr(window.item, "Exists"):
-                return (
-                    window
-                    if window.item.Exists(maxSearchSeconds=self.current_timeout)
-                    else None
-                )
+            # FIXME(cmiN): Investigate why `.Exists()` is `False` with Desktop element.
+            #  (`auto.GetRootControl().Exists()` -> `False`)
+            # if hasattr(window.item, "Exists"):
+            #     return (
+            #         window
+            #         if window.item.Exists(maxSearchSeconds=self.current_timeout)
+            #         else None
+            #     )
 
             try:
                 window.item.BoundingRectangle
@@ -97,8 +99,10 @@ def with_timeout(func):
 
     @functools.wraps(func)
     def wrapper(self, *args, **kwargs):
-        timeout = kwargs.pop("timeout")
+        timeout: Optional[float] = kwargs.pop("timeout", None)
         with self.set_timeout(timeout):
+            # Do not send on purpose the `timeout` back to the original decorated
+            #  function. (as the temporary timeout setting is currently active)
             return func(self, *args, **kwargs)
 
     return wrapper

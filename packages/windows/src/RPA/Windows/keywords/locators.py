@@ -333,7 +333,7 @@ class LocatorKeywords(LibraryContext):
         self,
         locator: Union[str, WindowsElement],
         search_depth: int = 8,
-        root_element: WindowsElement = None,
+        root_element: Optional[WindowsElement] = None,
         timeout: Optional[float] = None,  # pylint: disable=unused-argument
     ) -> List[WindowsElement]:
         """Get list of elements matching locator.
