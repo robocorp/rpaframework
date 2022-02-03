@@ -75,7 +75,7 @@ class WindowsElement:
         """Returns `True` if the provided window element is a sibling."""
         # FIXME(cmin764): Is this enough to recognize the provided element as a
         #  sibling? Do we need info from the locator too?
-        cmp_attrs = ["name", "class_name"]
+        cmp_attrs = ["name", "class_name", "control_type"]
         checks = (getattr(self, attr) == getattr(win_elem, attr) for attr in cmp_attrs)
         return all(checks)
 
@@ -298,7 +298,7 @@ class LocatorKeywords(LibraryContext):
         else:
             element = locator
         if self._window_or_none(element) is None:
-            raise ElementNotFound("Unable to get element with '%s'" % locator)
+            raise ElementNotFound(f"Unable to get element with '{locator}'")
         self.logger.info("Returning element: '%s'", element)
         return element
 

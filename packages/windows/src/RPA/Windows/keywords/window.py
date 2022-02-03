@@ -378,15 +378,20 @@ class WindowKeywords(LibraryContext):
         """
         window = self.window
         if window is None:
-            self.logger.warning("There is no active window")
+            self.logger.warning("There is no active window!")
             self.ctx.window = None
             return False
 
         pid = window.item.ProcessId
-        name = window.item.Name
-        self.logger.info('Closing window with Name:"%s", ProcessId: %s' % (name, pid))
+        self.logger.info("Closing window with name: %s (PID: %d)", window.name, pid)
         os.kill(pid, signal.SIGTERM)
         self.ctx.window = None
+
+        anchor = self.ctx.anchor_element
+        if anchor and window.is_sibling(anchor):
+            # We just closed the anchor, so clear it out properly.
+            self.ctx.clear_anchor()
+
         return True
 
     @keyword(tags=["window"])
