@@ -1,7 +1,16 @@
-import platform
 from typing import Dict, Optional
 
+import platform
 import psutil
+
+
+IS_WINDOWS = platform.system() == "Windows"
+
+
+if IS_WINDOWS:
+    from comtypes import COMError  # noqa
+else:
+    COMError = Exception
 
 
 def get_process_list() -> Dict:
@@ -24,10 +33,6 @@ def is_numeric(value):
         return float(value).is_integer()
 
 
-def is_windows():
-    return platform.system() == "Windows"
-
-
 def call_attribute_if_available(object_name, attribute_name):
     if hasattr(object_name, attribute_name):
         return getattr(object_name, attribute_name)()
@@ -37,11 +42,6 @@ def call_attribute_if_available(object_name, attribute_name):
 def window_or_none(
     window, timeout: float = 5
 ) -> Optional["WindowsElement"]:  # noqa: F821
-    if is_windows():
-        # pylint: disable=import-outside-toplevel
-        from comtypes import COMError  # noqa
-    else:
-        COMError = Exception
 
     if window and window.item:
         if hasattr(window.item, "Exists"):
@@ -49,8 +49,7 @@ def window_or_none(
 
         try:
             window.item.BoundingRectangle
-        # pylint: disable=broad-except
-        except COMError:
+        except COMError:  # pylint: disable=broad-except
             return None
 
         return window

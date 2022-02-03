@@ -13,7 +13,7 @@ from RPA.Windows.keywords import (
 
 from RPA.Windows import utils
 
-if utils.is_windows():
+if utils.IS_WINDOWS:
     # Configure comtypes to not generate DLL bindings into
     # current environment, instead keeping them in memory.
     # Slower, but prevents dirtying environments.

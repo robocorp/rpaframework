@@ -9,7 +9,7 @@ from RPA.Windows.keywords import (
 )
 from RPA.Windows import utils
 
-if utils.is_windows():
+if utils.IS_WINDOWS:
     import uiautomation as auto
     from uiautomation.uiautomation import Control
 

@@ -5,7 +5,7 @@ from RPA.Windows.keywords import ActionNotPossible, keyword, LibraryContext
 from RPA.Windows import utils
 from .locators import WindowsElement
 
-if utils.is_windows():
+if utils.IS_WINDOWS:
     import uiautomation as auto
 
 

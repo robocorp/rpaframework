@@ -9,7 +9,7 @@ from RPA.Windows.keywords import (
 from RPA.Windows import utils
 from .locators import DEFAULT_SEARCH_TIMEOUT, WindowsElement
 
-if utils.is_windows():
+if utils.IS_WINDOWS:
     import uiautomation as auto
 
 
