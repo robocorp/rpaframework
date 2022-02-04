@@ -81,7 +81,9 @@ class WindowKeywords(LibraryContext):
             ${window}=  Control Window   executable:Spotify.exe
         """
         for loc in self._iter_locator(locator):
-            self.ctx.window_element = self._find_window(loc, main)  # works with windows too
+            self.ctx.window_element = self._find_window(
+                loc, main
+            )  # works with windows too
             if self.ctx.window_element:
                 break  # first window found is enough
 
