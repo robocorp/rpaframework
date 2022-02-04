@@ -42,7 +42,7 @@ class WindowsElement:
     """Represent Control as dataclass"""
 
     _WINDOW_SIBLING_COMPARE = {
-        "name": "name",
+        "name": "name",  # this works for "subname" as well
         "class": "class_name",
         "control": "control_type",
     }
@@ -88,7 +88,7 @@ class WindowsElement:
         if not locator:
             return True  # nothing to check, can be considered sibling
 
-        # FIXME(cmin764): Implement missing strategies like "subname", "regex".
+        # FIXME(cmin764): Implement missing strategies like "regex".
         cmp_attrs = []
         for strategy, attr in self._WINDOW_SIBLING_COMPARE.items():
             if f"{strategy}:" in locator:
@@ -305,7 +305,7 @@ class LocatorKeywords(LibraryContext):
         if not locator:
             element = (
                 self.ctx.anchor_element
-                or self.ctx.window
+                or self.ctx.window_element
                 or WindowsElement(auto.GetRootControl(), None)
             )
         elif isinstance(locator, str):
@@ -339,9 +339,8 @@ class LocatorKeywords(LibraryContext):
                 )
                 root_result = element
         except LookupError as err:
-            raise ElementNotFound(
-                "Element not found with locator %s" % locator
-            ) from err
+            raise ElementNotFound(f"Element not found with locator {locator}") from err
+
         return WindowsElement(element, locator)
 
     @keyword

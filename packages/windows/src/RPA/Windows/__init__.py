@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 # pylint: disable=wrong-import-position
 from robotlibcore import DynamicCore
@@ -7,6 +8,7 @@ from . import utils
 from .keywords import (
     ActionKeywords,
     ElementKeywords,
+    Locator,
     LocatorKeywords,
     WindowKeywords,
 )
@@ -469,8 +471,8 @@ class Windows(DynamicCore):
         self.wait_time: float = 0.5
         self.global_timeout: float = float(auto.uiautomation.TIME_OUT_SECOND)
         self.simulate_move = False
-        self.window = None
-        self.anchor_element = None
+        self.window_element: Optional[Locator] = None
+        self.anchor_element: Optional[Locator] = None
 
         # prevent comtypes writing lot of log messages
         comtypelogger = logging.getLogger("comtypes")

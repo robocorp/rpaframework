@@ -78,7 +78,7 @@ class LibraryContext:
 
     @property
     def window(self) -> Optional["WindowsElement"]:  # noqa: F821
-        return self._window_or_none(self.ctx.window)
+        return self._window_or_none(self.ctx.window_element)
 
     @contextlib.contextmanager
     def set_timeout(self, timeout: Optional[float] = None):

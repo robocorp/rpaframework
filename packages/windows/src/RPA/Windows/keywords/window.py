@@ -34,8 +34,7 @@ class WindowKeywords(LibraryContext):
     def _iter_locator(locator: Optional[Locator]) -> Optional[Locator]:
         if not locator:
             yield locator  # usually `None`
-
-        if isinstance(locator, WindowsElement):
+        elif isinstance(locator, WindowsElement):
             yield locator  # yields element as it is
         elif "type:" in locator or "control:" in locator:
             yield locator  # yields rigid string locator
@@ -82,8 +81,8 @@ class WindowKeywords(LibraryContext):
             ${window}=  Control Window   executable:Spotify.exe
         """
         for loc in self._iter_locator(locator):
-            self.ctx.window = self._find_window(loc, main)  # works with windows too
-            if self.ctx.window:
+            self.ctx.window_element = self._find_window(loc, main)  # works with windows too
+            if self.ctx.window_element:
                 break  # first window found is enough
 
         window = self.window
@@ -131,8 +130,8 @@ class WindowKeywords(LibraryContext):
 
     def _find_window(self, locator, main) -> Optional[WindowsElement]:
         try:
-            # `root_element = None` means using the anchor or `self.ctx.window` as root
-            #  later on (fallbacks to Desktop)
+            # `root_element = None` means using the `anchor` or `window` as root later
+            #  on. (fallbacks to Desktop)
             root_element = (
                 WindowsElement(auto.GetRootControl(), locator) if main else None
             )
@@ -378,13 +377,13 @@ class WindowKeywords(LibraryContext):
         window = self.window
         if window is None:
             self.logger.warning("There is no active window!")
-            self.ctx.window = None
+            self.ctx.window_element = None
             return False
 
         pid = window.item.ProcessId
         self.logger.info("Closing window with name: %s (PID: %d)", window.name, pid)
         os.kill(pid, signal.SIGTERM)
-        self.ctx.window = None
+        self.ctx.window_element = None
 
         anchor = self.ctx.anchor_element
         if anchor and window.is_sibling(anchor):

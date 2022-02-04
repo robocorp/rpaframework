@@ -12,5 +12,5 @@ from .context import (
     with_timeout,
 )
 from .elements import ElementKeywords
-from .locators import LocatorKeywords
+from .locators import Locator, LocatorKeywords
 from .window import WindowKeywords
