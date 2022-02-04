@@ -248,7 +248,8 @@ class LocatorKeywords(LibraryContext):
             if isinstance(locator, WindowsLocator):
                 return locator.value
         except ValueError:
-            # How to check if locator check should be done as inspector locators are just strings?
+            # How to check if locator check should be done as inspector
+            # locators are just strings?
             pass
         return criteria
 

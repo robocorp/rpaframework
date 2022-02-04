@@ -25,7 +25,7 @@ class ActionNotPossible(ValueError):
 class LibraryContext:
     """Shared context for all keyword libraries."""
 
-    def __init__(self, ctx, *args, **kwargs):
+    def __init__(self, ctx, **kwargs):
         self.ctx = ctx
         self._locators_path = kwargs.get("locators_path", None)
 
