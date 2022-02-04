@@ -82,6 +82,7 @@ class ElementKeywords(LibraryContext):
         :param capture_image_folder: if None images are not captured
         :param log_as_warnings: if set log messages are visible on the console
         """
+
         def GetFirstChild(ctrl: TreeNode) -> TreeNode:
             return ctrl.GetFirstChildControl()
 
@@ -109,8 +110,10 @@ class ElementKeywords(LibraryContext):
                 img_path = str(image_folder / capture_filename)
                 try:
                     control.CaptureToImage(img_path)
-                except Exception as exc:
-                    self.logger.warning("Couldn't capture into %r due to: %s", img_path, exc)
+                except Exception as exc:  # pylint: disable=broad-except
+                    self.logger.warning(
+                        "Couldn't capture into %r due to: %s", img_path, exc
+                    )
                 else:
                     control_str += f" [{capture_filename}]"
             control_log(" " * depth * 4 + control_str)

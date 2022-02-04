@@ -85,6 +85,8 @@ class WindowsElement:
         while locator:
             if isinstance(locator, WindowsElement):
                 locator = locator.locator
+            else:  # reached a string/`None`
+                break
         if not locator:
             return True  # nothing to check, can be considered sibling
 
