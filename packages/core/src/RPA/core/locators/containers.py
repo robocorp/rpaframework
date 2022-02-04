@@ -145,6 +145,8 @@ class WindowsLocator(Locator):
 
     window: str
     value: str
+    version: float
+    screenshot: Optional[str] = None
 
 
 # Aliases for backwards compatibility, just in case.
