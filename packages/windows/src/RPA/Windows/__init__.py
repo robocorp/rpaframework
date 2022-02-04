@@ -466,7 +466,7 @@ class Windows(DynamicCore):
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
     ROBOT_LIBRARY_DOC_FORMAT = "REST"
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         self.logger = logging.getLogger(__name__)
         self.wait_time = 0.5
         self.global_timeout = auto.uiautomation.TIME_OUT_SECOND
@@ -485,7 +485,7 @@ class Windows(DynamicCore):
         libraries = [
             ActionKeywords(self),
             ElementKeywords(self),
-            LocatorKeywords(self),
+            LocatorKeywords(self, kwargs.get("locators_path", None)),
             WindowKeywords(self),
         ]
         super().__init__(libraries)

@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 import re
-from typing import List, Union
+from typing import List, Union, Optional
 from RPA.Windows.keywords import (
     ElementNotFound,
     keyword,
@@ -8,6 +8,7 @@ from RPA.Windows.keywords import (
     WindowControlError,
 )
 from RPA.Windows import utils
+from RPA.core.locators import LocatorsDatabase, WindowsLocator
 
 if utils.is_windows():
     import uiautomation as auto
@@ -169,6 +170,10 @@ class MatchObject:
 class LocatorKeywords(LibraryContext):
     """Keywords for handling Windows locators"""
 
+    def __init__(self, ctx, locators_path: Optional[str] = None):
+        self._locators_path = locators_path
+        super().__init__(ctx)
+
     def _get_element_with_locator_part(
         self, locator, search_depth, root_element=None
     ) -> Control:
@@ -241,6 +246,17 @@ class LocatorKeywords(LibraryContext):
         new_element.robocorp_click_offset = offset
         return new_element
 
+    def _load_by_alias(self, criteria: str) -> str:
+        try:
+            locator = LocatorsDatabase.load_by_name(criteria, self._locators_path)
+            if isinstance(locator, WindowsLocator):
+                return locator.value
+        except ValueError:
+            # How to check if locator check should be done as inspector
+            # locators are just strings?
+            pass
+        return criteria
+
     @keyword
     def get_element(
         self,
@@ -277,6 +293,8 @@ class LocatorKeywords(LibraryContext):
             Set Value   ${element}  note to myself
         """
         # TODO. Add examples
+        if isinstance(locator, str):
+            locator = self._load_by_alias(locator)
         self.logger.info("Locator '%s' into element", locator)
         if timeout:
             auto.SetGlobalSearchTimeout(timeout)
