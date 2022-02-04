@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 import re
-from typing import List, Union
+from typing import List, Union, Optional
 from RPA.Windows.keywords import (
     ElementNotFound,
     keyword,
@@ -169,6 +169,10 @@ class MatchObject:
 
 class LocatorKeywords(LibraryContext):
     """Keywords for handling Windows locators"""
+
+    def __init__(self, ctx, locators_path: Optional[str] = None):
+        self._locators_path = locators_path
+        super().__init__(ctx)
 
     def _get_element_with_locator_part(
         self, locator, search_depth, root_element=None
