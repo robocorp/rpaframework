@@ -41,8 +41,14 @@ Locator = Union["WindowsElement", str]
 class WindowsElement:
     """Represent Control as dataclass"""
 
+    _WINDOW_SIBLING_COMPARE = {
+        "name": "name",
+        "class": "class_name",
+        "control": "control_type",
+    }
+
     item: Control
-    locator: str = None
+    locator: Optional[Locator] = None
     name: str = ""
     automation_id: str = ""
     control_type: str = ""
@@ -56,9 +62,9 @@ class WindowsElement:
     xcenter: int = -1
     ycenter: int = -1
 
-    def __init__(self, item, locator):
+    def __init__(self, item, locator: Optional[Locator]):
         self.item = item
-        self.locator = locator
+        self.locator: Optional[Locator] = locator
         self.name = item.Name
         self.automation_id = item.AutomationId
         self.control_type = item.ControlTypeName
@@ -75,9 +81,18 @@ class WindowsElement:
 
     def is_sibling(self, win_elem: "WindowsElement") -> bool:
         """Returns `True` if the provided window element is a sibling."""
-        # FIXME(cmin764): Is this enough to recognize the provided element as a
-        #  sibling? Do we need info from the locator too?
-        cmp_attrs = ["name", "class_name", "control_type"]
+        locator: Optional[Locator] = win_elem.locator
+        while locator:
+            if isinstance(locator, WindowsElement):
+                locator = locator.locator
+        if not locator:
+            return True  # nothing to check, can be considered sibling
+
+        # FIXME(cmin764): Implement missing strategies like "subname", "regex".
+        cmp_attrs = []
+        for strategy, attr in self._WINDOW_SIBLING_COMPARE.items():
+            if f"{strategy}:" in locator:
+                cmp_attrs.append(attr)
         checks = (getattr(self, attr) == getattr(win_elem, attr) for attr in cmp_attrs)
         return all(checks)
 
@@ -253,7 +268,7 @@ class LocatorKeywords(LibraryContext):
     @with_timeout
     def get_element(
         self,
-        locator: Union[str, WindowsElement] = None,
+        locator: Optional[Locator] = None,
         search_depth: int = 8,
         root_element: WindowsElement = None,
         timeout: Optional[float] = None,  # pylint: disable=unused-argument
@@ -333,7 +348,7 @@ class LocatorKeywords(LibraryContext):
     @with_timeout
     def get_elements(
         self,
-        locator: Union[str, WindowsElement],
+        locator: Optional[Locator] = None,
         search_depth: int = 8,
         root_element: Optional[WindowsElement] = None,
         timeout: Optional[float] = None,  # pylint: disable=unused-argument
