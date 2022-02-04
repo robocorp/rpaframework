@@ -1,13 +1,13 @@
 import inspect
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Optional
 from RPA.Windows.keywords import (
     ActionNotPossible,
     keyword,
     LibraryContext,
 )
 from RPA.Windows import utils
-from .locators import WindowsElement
+from .locators import Locator
 
 if utils.IS_WINDOWS:
     import uiautomation as auto
@@ -19,7 +19,7 @@ class ElementKeywords(LibraryContext):
     @keyword
     def set_anchor(
         self,
-        locator: Union[WindowsElement, str],
+        locator: Locator,
         timeout: Optional[float] = None,
     ) -> None:
         """Set anchor to an element specified by the locator.
@@ -61,7 +61,7 @@ class ElementKeywords(LibraryContext):
     @keyword
     def print_tree(
         self,
-        locator: Union[WindowsElement, str] = None,
+        locator: Optional[Locator] = None,
         max_depth: int = 8,
         encoding: str = "utf-8",
         capture_image_folder: str = None,
@@ -116,7 +116,7 @@ class ElementKeywords(LibraryContext):
             index += 1
 
     @keyword
-    def get_attribute(self, locator: Union[WindowsElement, str], attribute: str) -> str:
+    def get_attribute(self, locator: Locator, attribute: str) -> str:
         """Get attribute value of the element defined by the locator.
 
         :param locator: string locator or Control element
@@ -143,7 +143,7 @@ class ElementKeywords(LibraryContext):
         return str(getattr(element.item, attribute))
 
     @keyword
-    def list_attributes(self, locator: Union[WindowsElement, str]) -> List:
+    def list_attributes(self, locator: Locator) -> List:
         """List all element attributes.
 
         :param locator: string locator or Control element

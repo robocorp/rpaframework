@@ -64,6 +64,8 @@ class LibraryContext:
             try:
                 window.item.BoundingRectangle
             except COMError:  # pylint: disable=broad-except
+                # Failure to get the bounding rectangle proves that the window doesn't
+                #  exist anymore.
                 return None
 
             return window

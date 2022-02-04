@@ -4,7 +4,7 @@ import signal
 import time
 from io import BytesIO
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional
 
 from PIL import Image
 
@@ -16,7 +16,7 @@ from RPA.Windows.keywords import (
     with_timeout,
 )
 from RPA.Windows import utils
-from .locators import WindowsElement
+from .locators import Locator, WindowsElement
 
 if utils.IS_WINDOWS:
     import uiautomation as auto
@@ -30,11 +30,25 @@ if utils.IS_WINDOWS:
 class WindowKeywords(LibraryContext):
     """Keywords for handling Window controls"""
 
+    @staticmethod
+    def _iter_locator(locator: Optional[Locator]) -> Optional[Locator]:
+        if not locator:
+            yield locator  # usually `None`
+
+        if isinstance(locator, WindowsElement):
+            yield locator  # yields element as it is
+        elif "type:" in locator or "control:" in locator:
+            yield locator  # yields rigid string locator
+        else:
+            # yields flexible string locators with different types
+            yield f"{locator} and type:WindowControl"
+            yield f"{locator} and type:PaneControl"
+
     @keyword(tags=["window"])
     @with_timeout
     def control_window(
         self,
-        locator: Union[WindowsElement, str] = None,
+        locator: Optional[Locator] = None,
         foreground: bool = True,
         wait_time: float = None,
         timeout: float = None,  # pylint: disable=unused-argument
@@ -67,16 +81,10 @@ class WindowKeywords(LibraryContext):
             Control Window   regex:.*Notepad
             ${window}=  Control Window   executable:Spotify.exe
         """
-        if isinstance(locator, WindowsElement):
-            self.ctx.window = locator
-        elif "type:" in locator:
-            self.ctx.window = self._find_window(locator, main)
-        else:
-            window_locator = f"{locator} and type:WindowControl"
-            self.ctx.window = self._find_window(window_locator, main)
-            if not self.ctx.window:
-                pane_locator = f"{locator} and type:PaneControl"
-                self.ctx.window = self._find_window(pane_locator, main)
+        for loc in self._iter_locator(locator):
+            self.ctx.window = self._find_window(loc, main)  # works with windows too
+            if self.ctx.window:
+                break  # first window found is enough
 
         window = self.window
         if window is None:
@@ -84,6 +92,7 @@ class WindowKeywords(LibraryContext):
                 f'Could not locate window with locator: "{locator}" '
                 f"(timeout: {self.current_timeout})"
             )
+
         if foreground:
             self.foreground_window()
         if wait_time:
@@ -93,7 +102,7 @@ class WindowKeywords(LibraryContext):
     @keyword(tags=["window"])
     def control_child_window(
         self,
-        locator: Union[WindowsElement, str] = None,
+        locator: Optional[Locator] = None,
         foreground: bool = True,
         wait_time: float = None,
         timeout: float = None,
@@ -122,22 +131,18 @@ class WindowKeywords(LibraryContext):
 
     def _find_window(self, locator, main) -> Optional[WindowsElement]:
         try:
-            # root_element = None means using self.ctx.window as root
+            # `root_element = None` means using the anchor or `self.ctx.window` as root
+            #  later on (fallbacks to Desktop)
             root_element = (
                 WindowsElement(auto.GetRootControl(), locator) if main else None
             )
-
             window = self.ctx.get_element(locator, root_element=root_element)
             return window
-        except ElementNotFound:
-            return None
-        except LookupError:
+        except (ElementNotFound, LookupError):
             return None
 
     @keyword(tags=["window"])
-    def foreground_window(
-        self, locator: Union[WindowsElement, str] = None
-    ) -> WindowsElement:
+    def foreground_window(self, locator: Optional[Locator] = None) -> WindowsElement:
         """Bring the current active window or the window defined
         by the locator to the foreground.
 
@@ -162,9 +167,7 @@ class WindowKeywords(LibraryContext):
         return window
 
     @keyword(tags=["window"])
-    def minimize_window(
-        self, locator: Union[WindowsElement, str] = None
-    ) -> WindowsElement:
+    def minimize_window(self, locator: Optional[Locator] = None) -> WindowsElement:
         """Minimize the current active window or the window defined
         by the locator.
 
@@ -193,9 +196,7 @@ class WindowKeywords(LibraryContext):
         return window
 
     @keyword(tags=["window"])
-    def maximize_window(
-        self, locator: Union[WindowsElement, str] = None
-    ) -> WindowsElement:
+    def maximize_window(self, locator: Optional[Locator] = None) -> WindowsElement:
         """Minimize the current active window or the window defined
         by the locator.
 
@@ -222,9 +223,7 @@ class WindowKeywords(LibraryContext):
         return window
 
     @keyword(tags=["window"])
-    def restore_window(
-        self, locator: Union[WindowsElement, str] = None
-    ) -> WindowsElement:
+    def restore_window(self, locator: Optional[Locator] = None) -> WindowsElement:
         """Window restore the current active window or the window
         defined by the locator.
 
@@ -389,7 +388,8 @@ class WindowKeywords(LibraryContext):
 
         anchor = self.ctx.anchor_element
         if anchor and window.is_sibling(anchor):
-            # We just closed the anchor, so clear it out properly.
+            # We just closed the anchor (along with its relatives), so clear it out
+            #  properly.
             self.ctx.clear_anchor()
 
         return True
@@ -398,7 +398,7 @@ class WindowKeywords(LibraryContext):
     @with_timeout
     def close_window(
         self,
-        locator: Union[WindowsElement, str],
+        locator: Optional[Locator] = None,
         timeout: Optional[float] = None,  # pylint: disable=unused-argument
     ) -> int:
         """Closes identified windows or logs the problems.
@@ -412,11 +412,18 @@ class WindowKeywords(LibraryContext):
 
             ${closed_count} =     Close Window    Calculator
         """
-        # Starts the search from desktop level.
+        # Starts the search from Desktop level.
         root_element = WindowsElement(auto.GetRootControl(), locator)
-        try:
-            elements = self.ctx.get_elements(locator, root_element=root_element)
-        except (ElementNotFound, LookupError):
+        # With all flavors of locators. (if flexible)
+        elements: Optional[List[WindowsElement]] = None
+        for loc in self._iter_locator(locator):
+            try:
+                elements = self.ctx.get_elements(loc, root_element=root_element)
+            except (ElementNotFound, LookupError):
+                pass
+            else:
+                break
+        if not elements:
             self.logger.info("Couldn't find any window with locator: %s", locator)
             return 0
 

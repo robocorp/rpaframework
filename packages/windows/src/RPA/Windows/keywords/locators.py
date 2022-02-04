@@ -34,6 +34,8 @@ WINDOWS_LOCATOR_STRATEGIES = {
     "executable": "executable",
 }
 
+Locator = Union["WindowsElement", str]
+
 
 @dataclass
 class WindowsElement:

@@ -3,7 +3,6 @@ import logging
 # pylint: disable=wrong-import-position
 from robotlibcore import DynamicCore
 
-
 from . import utils
 from .keywords import (
     ActionKeywords,
