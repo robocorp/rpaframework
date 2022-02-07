@@ -51,7 +51,7 @@ class LibraryContext:
         return auto.uiautomation.TIME_OUT_SECOND
 
     def _window_or_none(
-        self, window: "WindowsElement"
+        self, window: "WindowsElement"  # noqa: F821
     ) -> Optional["WindowsElement"]:  # noqa: F821
         if window and window.item:
             try:

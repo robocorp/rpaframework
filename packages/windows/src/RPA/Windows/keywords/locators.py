@@ -86,10 +86,10 @@ class WindowsElement:
         while locator:
             if isinstance(locator, WindowsElement):
                 locator = locator.locator
-            else:  # reached a string/`None`
+            else:  # reached a string
                 break
-        if not locator:
-            return True  # nothing to check, can be considered sibling
+        else:
+            return True  # nothing to check here, can be considered sibling
 
         # FIXME(cmin764): Implement missing strategies like "regex".
         cmp_attrs = []
