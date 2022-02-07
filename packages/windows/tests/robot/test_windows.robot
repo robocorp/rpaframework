@@ -15,6 +15,7 @@ ${SPOTIFY_PLAY}    ${SPOTIFY_PLAYCONTROL}Play
 ${SPOTIFY_PAUSE}    ${SPOTIFY_PLAYCONTROL}Pause
 ${SPOTIFY_NEXT}    ${SPOTIFY_PLAYCONTROL}Next
 ${SPOTIFY_Prev}    ${SPOTIFY_PLAYCONTROL}Prev
+${TIMEOUT}         1
 
 *** Keywords ***
 Calculator Teardown
@@ -61,6 +62,27 @@ Calculator with keys
     FOR    ${button}    IN    @{buttons}
         Log To Console    ${button}
     END
+
+Keep open a single Notepad
+    Set Global Timeout    ${TIMEOUT}
+    ${closed} =    Close Window    subname:Notepad control:WindowControl
+    Log    Closed Notepads: ${closed}
+    Windows Run   Notepad
+
+Kill app by name
+    [Arguments]     ${app_name}
+
+    ${window_list} =   List Windows
+    FOR  ${win}  IN   @{window_list}
+        ${exists} =   Evaluate   re.match(".*${app_name}.*", """${win}[title]""")
+
+        IF  ${exists}
+            ${command} =    Set Variable    os.kill($win["pid"], signal.SIGTERM)
+            Log     Killing app: ${win}[title] (PID: $win["pid"])
+            Evaluate    ${command}    signal
+        END
+    END
+
 
 *** Tasks ***
 Windows search Calculator by clicking buttons
@@ -211,3 +233,29 @@ Test get element
     FOR    ${b}    IN    @{buttons}
         Log To Console    app = ${b}
     END
+
+Control window after closing linked root element
+    [Setup]    Keep open a single Notepad
+    ${window} =     Control Window   subname:Notepad control:WindowControl
+    Log    Controlling Notepad window: ${window}
+
+    Kill app by name    Notepad
+
+    Windows Run   Calc
+    # Tests against `COMError` fixes.
+    ${window} =     Control Window   subname:Calc    main=${False}
+    Log    Controlling Calculator window: ${window}
+
+    [Teardown]    Close Current Window  # closes Calculator (last active window)
+
+Tree printing and controlled anchor cleanup
+    Print Tree     #capture_image_folder=output${/}controls
+    Windows Run   Calc
+    ${win} =    Control Window   subname:Calc control:WindowControl    timeout=${TIMEOUT}
+    Set Anchor    ${win}
+    Close Window    subname:Calc control:WindowControl    timeout=${TIMEOUT}
+
+    # With the controlled Calculator closed and active window/anchor cleaned up, we
+    #  should get the Desktop control only.
+    ${desktop} =    Get Element
+    Should Be Equal     ${desktop.name}     Desktop 1
