@@ -50,17 +50,8 @@ class LibraryContext:
         # This value can change based on `auto.SetGlobalSearchTimeout(...)` calls.
         return auto.uiautomation.TIME_OUT_SECOND
 
-    def _window_or_none(self, window) -> Optional["WindowsElement"]:  # noqa: F821
+    def _window_or_none(self, window: "WindowsElement") -> Optional["WindowsElement"]:  # noqa: F821
         if window and window.item:
-            # FIXME(cmiN): Investigate why `.Exists()` is `False` with Desktop element.
-            #  (`auto.GetRootControl().Exists()` -> `False`)
-            # if hasattr(window.item, "Exists"):
-            #     return (
-            #         window
-            #         if window.item.Exists(maxSearchSeconds=self.current_timeout)
-            #         else None
-            #     )
-
             try:
                 window.item.BoundingRectangle
             except COMError:  # pylint: disable=broad-except
