@@ -10,14 +10,14 @@ from RPA.Windows import Windows
 #     library = Windows()
 #     return library
 
-library = Windows()
+library = Windows(locators_path="tests/python/locators.json")
 
 
 def test_do_some_calculations():  # (library):
     try:
         library.windows_run("calc.exe")
         library.control_window("name:Calculator")
-        library.click("id:clearButton")
+        library.click("CLEAR_BUTTON")
         library.send_keys(keys="96+4=")
         result = library.get_attribute("id:CalculatorResults", "Name")
         print(result)

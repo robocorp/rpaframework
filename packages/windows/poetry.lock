@@ -641,7 +641,7 @@ python-versions = ">=3.6, <4"
 
 [[package]]
 name = "rpaframework-core"
-version = "6.5.1"
+version = "6.5.3"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
@@ -966,7 +966,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "7e7b8aa6767900dba3c5fdb616259ff0346bbed0770f9313b01eacc9207e8938"
+content-hash = "8ca7aa4d52e43822e9d3d86c0c8e877a5a60437b8a4cf7a727c608bc0c05201c"
 
 [metadata.files]
 alabaster = [
@@ -1503,8 +1503,8 @@ robotframework-pythonlibcore = [
     {file = "robotframework_pythonlibcore-3.0.0-py2.py3-none-any.whl", hash = "sha256:af10c2403cd38834988c4ce68ffb6ec6f9b14bd2cd39ecf836d443377c59b7c4"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-6.5.1.tar.gz", hash = "sha256:367443560836dbab97ed1362226cbc4a6dc663b212fcf456d4eaa07f8d286f8d"},
-    {file = "rpaframework_core-6.5.1-py3-none-any.whl", hash = "sha256:53963178008548ab585c2ca9358a726f855b68c592067bfcfdc9b77a994d1082"},
+    {file = "rpaframework-core-6.5.3.tar.gz", hash = "sha256:39896fc90823ad174b7101a2f86f62debebe3b5f909117bd921d3dc42909dd6a"},
+    {file = "rpaframework_core-6.5.3-py3-none-any.whl", hash = "sha256:6575b3fbfc1bccb0e031d9cf0d13a1908ff4482a10b06240d8e1d66f36fc55de"},
 ]
 selenium = [
     {file = "selenium-3.141.0-py2.py3-none-any.whl", hash = "sha256:2d7131d7bc5a5b99a2d9b04aaf2612c411b03b8ca1b1ee8d3de5845a9be2cb3c"},
