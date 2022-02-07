@@ -1,11 +1,12 @@
 from pathlib import Path
-from typing import Union, Optional
+from typing import Optional
 
-from RPA.Windows.keywords import ActionNotPossible, keyword, LibraryContext
+from RPA.Windows.keywords import keyword
+from RPA.Windows.keywords.context import ActionNotPossible, LibraryContext
 from RPA.Windows import utils
-from .locators import WindowsElement
+from .locators import Locator, WindowsElement
 
-if utils.is_windows():
+if utils.IS_WINDOWS:
     import uiautomation as auto
 
 
@@ -15,7 +16,7 @@ class ActionKeywords(LibraryContext):
     @keyword(tags=["action", "mouse"])
     def click(
         self,
-        locator: Union[WindowsElement, str],
+        locator: Locator,
         wait_time: float = None,
         timeout: float = None,
     ) -> WindowsElement:
@@ -44,7 +45,7 @@ class ActionKeywords(LibraryContext):
     @keyword(tags=["action", "mouse"])
     def double_click(
         self,
-        locator: Union[WindowsElement, str],
+        locator: Locator,
         wait_time: float = None,
         timeout: float = None,
     ) -> WindowsElement:
@@ -71,7 +72,7 @@ class ActionKeywords(LibraryContext):
     @keyword(tags=["action", "mouse"])
     def right_click(
         self,
-        locator: Union[WindowsElement, str],
+        locator: Locator,
         wait_time: float = None,
         timeout: float = None,
     ) -> WindowsElement:
@@ -98,7 +99,7 @@ class ActionKeywords(LibraryContext):
     @keyword(tags=["action", "mouse"])
     def middle_click(
         self,
-        locator: Union[WindowsElement, str],
+        locator: Locator,
         wait_time: float = None,
         timeout: float = None,
     ) -> WindowsElement:
@@ -123,10 +124,8 @@ class ActionKeywords(LibraryContext):
         return self._mouse_click(locator, "MiddleClick", wait_time, timeout)
 
     def _mouse_click(self, element, click_type, wait_time, timeout):
-        if timeout:
-            auto.SetGlobalSearchTimeout(timeout)
         click_wait_time = wait_time or self.ctx.wait_time
-        try:
+        with self.set_timeout(timeout):
             element = self.ctx.get_element(element)
             if element.item.robocorp_click_offset:
                 self.ctx.logger.debug("Click element with offset")
@@ -134,8 +133,6 @@ class ActionKeywords(LibraryContext):
             else:
                 self.ctx.logger.debug("Click element")
                 self._click_element(element, click_type, click_wait_time)
-        finally:
-            auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
         return element
 
     def _click_element_coordinates(self, element, click_type, click_wait_time):
@@ -168,7 +165,7 @@ class ActionKeywords(LibraryContext):
             )
 
     @keyword(tags=["action"])
-    def select(self, locator: Union[WindowsElement, str], value: str) -> WindowsElement:
+    def select(self, locator: Locator, value: str) -> WindowsElement:
         """Select value on Control element if action is supported.
 
         Exception ``ActionNotPossible`` is raised if element does not
@@ -196,7 +193,7 @@ class ActionKeywords(LibraryContext):
     @keyword(tags=["action"])
     def send_keys(
         self,
-        locator: Optional[Union[WindowsElement, str]] = None,
+        locator: Optional[Locator] = None,
         keys: str = None,
         interval: float = 0.01,
         wait_time: float = None,
@@ -228,7 +225,6 @@ class ActionKeywords(LibraryContext):
             ${element}=   Get Element   id:pass
             Send Keys  ${element}  password   send_enter=True
         """
-        element = self.ctx.window
         if locator:
             element = self.ctx.get_element(locator).item
         else:
@@ -246,7 +242,7 @@ class ActionKeywords(LibraryContext):
             )
 
     @keyword
-    def get_text(self, locator: Union[WindowsElement, str]) -> str:
+    def get_text(self, locator: Locator) -> str:
         """Get text from Control element defined by the locator.
 
         Exception ``ActionNotPossible`` is raised if element does not
@@ -269,7 +265,7 @@ class ActionKeywords(LibraryContext):
         )
 
     @keyword
-    def get_value(self, locator: Union[WindowsElement, str]) -> str:
+    def get_value(self, locator: Locator) -> str:
         """Get value of the element defined by the locator.
 
         Exception ``ActionNotPossible`` is raised if element does not
@@ -295,7 +291,7 @@ class ActionKeywords(LibraryContext):
     @keyword(tags=["action"])
     def set_value(
         self,
-        locator: Union[WindowsElement, str] = None,
+        locator: Optional[Locator] = None,
         value: str = None,
         append: bool = False,
         enter: bool = False,
@@ -393,7 +389,7 @@ class ActionKeywords(LibraryContext):
         return old_value
 
     @keyword
-    def screenshot(self, locator: Union[WindowsElement, str], filename: str) -> str:
+    def screenshot(self, locator: Locator, filename: str) -> str:
         """Take a screenshot of the element defined by the locator.
 
         Exception ``ActionNotPossible`` is raised if element does not

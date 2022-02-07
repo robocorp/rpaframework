@@ -1,6 +1,10 @@
 from typing import Dict
+
 import platform
 import psutil
+
+
+IS_WINDOWS = platform.system() == "Windows"
 
 
 def get_process_list() -> Dict:
@@ -21,10 +25,6 @@ def is_numeric(value):
         return False
     else:
         return float(value).is_integer()
-
-
-def is_windows():
-    return platform.system() == "Windows"
 
 
 def call_attribute_if_available(object_name, attribute_name):

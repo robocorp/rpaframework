@@ -1,16 +1,17 @@
 import inspect
 from pathlib import Path
-from typing import List, Union
+from typing import List, Optional
 from RPA.Windows.keywords import (
     ActionNotPossible,
     keyword,
     LibraryContext,
 )
 from RPA.Windows import utils
-from .locators import DEFAULT_SEARCH_TIMEOUT, WindowsElement
+from .locators import Locator
 
-if utils.is_windows():
+if utils.IS_WINDOWS:
     import uiautomation as auto
+    from uiautomation import TreeNode
 
 
 class ElementKeywords(LibraryContext):
@@ -19,8 +20,8 @@ class ElementKeywords(LibraryContext):
     @keyword
     def set_anchor(
         self,
-        locator: Union[WindowsElement, str],
-        timeout: float = DEFAULT_SEARCH_TIMEOUT,
+        locator: Locator,
+        timeout: Optional[float] = None,
     ) -> None:
         """Set anchor to an element specified by the locator.
 
@@ -32,7 +33,7 @@ class ElementKeywords(LibraryContext):
         To release anchor call ``Clear Anchor`` keyword.
 
         :param locator: string locator or Control element
-        :param timeout: timeout in seconds for element lookup (default 5.0)
+        :param timeout: timeout in seconds for element lookup (default 10.0)
 
         Example:
 
@@ -61,10 +62,9 @@ class ElementKeywords(LibraryContext):
     @keyword
     def print_tree(
         self,
-        locator: Union[WindowsElement, str] = None,
+        locator: Optional[Locator] = None,
         max_depth: int = 8,
-        encoding: str = "utf-8",
-        capture_image_folder: str = None,
+        capture_image_folder: Optional[str] = None,
         log_as_warnings: bool = False,
     ) -> None:
         """Print Control element tree.
@@ -77,46 +77,50 @@ class ElementKeywords(LibraryContext):
         starting with the element defined by the `locator`.
 
         :param locator: string locator or Control element
-        :param max_depth: level , defaults to 8
+        :param max_depth: maximum depth level (defaults to 8)
         :param encoding: defaults to "utf-8"
         :param capture_image_folder: if None images are not captured
         :param log_as_warnings: if set log messages are visible on the console
         """
+
+        def GetFirstChild(ctrl: TreeNode) -> TreeNode:
+            return ctrl.GetFirstChildControl()
+
+        def GetNextSibling(ctrl: TreeNode) -> TreeNode:
+            return ctrl.GetNextSiblingControl()
+
         index = 1
+        target_elem = self.ctx.get_element(locator)
+        image_folder = None
+        if capture_image_folder:
+            image_folder = Path(capture_image_folder).expanduser().resolve()
+            image_folder.mkdir(parents=True, exist_ok=True)
+        control_log = self.logger.warning if log_as_warnings else self.logger.info
 
-        def GetFirstChild(element):
-            return element.item.GetFirstChildControl()
-
-        def GetNextSibling(element):
-            return element.item.GetNextSiblingControl()
-
-        target = self.ctx.get_element(locator)
-        image_folder = (
-            Path(capture_image_folder).resolve() if capture_image_folder else None
-        )
-        for element, depth in auto.WalkTree(
-            target.item,
+        for control, depth in auto.WalkTree(
+            target_elem.item,
             getFirstChild=GetFirstChild,
             getNextSibling=GetNextSibling,
             includeTop=True,
             maxDepth=max_depth,
         ):
-            element_as_text = (
-                str(element).encode(encoding) if encoding else str(element)
-            )
+            control_str = str(control)
             if image_folder:
-                capture_filename = f"{element.ControlType}_{index}.png"
-                # TODO. exception handling
-                element.CaptureToImage(str(image_folder / capture_filename))
-                element_as_text += f" [{capture_filename}]"
-            if log_as_warnings:
-                self.ctx.logger.warning(f"{' ' * depth * 4}{element_as_text}")
-            else:
-                self.ctx.logger.info(f"{' ' * depth * 4}{element_as_text}")
+                capture_filename = f"{control.ControlType}_{index}.png"
+                img_path = str(image_folder / capture_filename)
+                try:
+                    control.CaptureToImage(img_path)
+                except Exception as exc:  # pylint: disable=broad-except
+                    self.logger.warning(
+                        "Couldn't capture into %r due to: %s", img_path, exc
+                    )
+                else:
+                    control_str += f" [{capture_filename}]"
+            control_log(" " * depth * 4 + control_str)
             index += 1
 
     @keyword
-    def get_attribute(self, locator: Union[WindowsElement, str], attribute: str) -> str:
+    def get_attribute(self, locator: Locator, attribute: str) -> str:
         """Get attribute value of the element defined by the locator.
 
         :param locator: string locator or Control element
@@ -143,7 +147,7 @@ class ElementKeywords(LibraryContext):
         return str(getattr(element.item, attribute))
 
     @keyword
-    def list_attributes(self, locator: Union[WindowsElement, str]) -> List:
+    def list_attributes(self, locator: Locator) -> List:
         """List all element attributes.
 
         :param locator: string locator or Control element

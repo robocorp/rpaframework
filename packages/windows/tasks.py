@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-import os
 import platform
 import re
 import shutil
 import subprocess
 from glob import glob
 from pathlib import Path
+
 from invoke import task
 
 
@@ -147,15 +147,16 @@ def test(ctx):
 
 
 @task(install)
-def testrobot(ctx, ci=False):
+def testrobot(ctx, ci=False, robot_task=None):
     """Run Robot Framework tests"""
     exclude = "--exclude manual"
     if ci:
         exclude += " --exclude skip"
-    poetry(
-        ctx,
-        f"run robot -d tests/output {exclude} -L TRACE tests/robot/test_windows.robot",
-    )
+    run_cmd = f"run robot -d tests/output {exclude} -L TRACE"
+    if robot_task:
+        run_cmd += f' --task "{robot_task}"'
+    run_cmd += " tests/robot/test_windows.robot"
+    poetry(ctx, run_cmd)
 
 
 # add test

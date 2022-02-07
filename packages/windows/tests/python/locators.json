@@ -2,6 +2,7 @@
     "CLEAR_BUTTON": {
         "type": "windows",
         "value": "id:clearButton",
-        "window": "Calculator"
+        "window": "Calculator",
+        "version": 1
     }
 }

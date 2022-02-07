@@ -6,7 +6,7 @@ from pynput_robocorp import mouse, keyboard
 from RPA.Windows import utils
 
 
-if utils.is_windows():
+if utils.IS_WINDOWS:
     import uiautomation as auto
 
 
