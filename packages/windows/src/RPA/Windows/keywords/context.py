@@ -50,7 +50,9 @@ class LibraryContext:
         # This value can change based on `auto.SetGlobalSearchTimeout(...)` calls.
         return auto.uiautomation.TIME_OUT_SECOND
 
-    def _window_or_none(self, window: "WindowsElement") -> Optional["WindowsElement"]:  # noqa: F821
+    def _window_or_none(
+        self, window: "WindowsElement"
+    ) -> Optional["WindowsElement"]:  # noqa: F821
         if window and window.item:
             try:
                 window.item.BoundingRectangle

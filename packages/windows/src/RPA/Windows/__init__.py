@@ -470,7 +470,7 @@ class Windows(DynamicCore):
         self.logger = logging.getLogger(__name__)
         self.wait_time: float = 0.5
         self.global_timeout: float = float(auto.uiautomation.TIME_OUT_SECOND)
-        self.simulate_move = False
+        self.simulate_move = False  # this is currently used, but not set anywhere else
         self.window_element: Optional[Locator] = None
         self.anchor_element: Optional[Locator] = None
 
