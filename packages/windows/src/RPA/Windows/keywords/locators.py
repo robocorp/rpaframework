@@ -321,7 +321,7 @@ class LocatorKeywords(LibraryContext):
         # TODO. Add examples
         if isinstance(locator, str):
             locator = self._load_by_alias(locator)
-        self.logger.info("Locator '%s' into element", locator)
+        self.logger.info("Getting element with locator: %s", locator)
         if not locator:
             element = (
                 self.ctx.anchor_element
@@ -336,7 +336,7 @@ class LocatorKeywords(LibraryContext):
             element = locator
         if self._window_or_none(element) is None:
             raise ElementNotFound(f"Unable to get element with '{locator}'")
-        self.logger.info("Returning element: '%s'", element)
+        self.logger.info("Returning element: %s", element)
         return element
 
     def get_element_by_locator_string(self, locator, search_depth, root_element):
