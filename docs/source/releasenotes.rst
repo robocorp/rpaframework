@@ -8,6 +8,12 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+12.6.1 - 08 Feb 2022
+--------------------
+
+  - Library **RPA.Email.Exchange**: Fix saving .eml attachments from emails (:issue:`381`)
+  - Library **RPA.Email.ImapSmtp**: Fix handling of folder names with spaces (:issue:`380`)
+
 12.6.0 - 27 Jan 2022
 --------------------
 
