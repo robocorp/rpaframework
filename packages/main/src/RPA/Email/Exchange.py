@@ -18,6 +18,7 @@ from exchangelib import (
     Folder,
     HTMLBody,
     IMPERSONATION,
+    ItemAttachment,
     Mailbox,
     Message,
 )
@@ -118,6 +119,7 @@ class Exchange:
         self.credentials = None
         self.config = None
         self.account = None
+        self._saved_attachments = []
 
     def authorize(
         self,
@@ -558,10 +560,11 @@ class Exchange:
             self.logger.info("Did not receive any matching items")
         return messages
 
-    def _save_attachments(self, item, save_dir):
-        attachments = []
+    def _save_attachments(self, item, save_dir, attachments_from_emls: bool = False):
+        self._saved_attachments = self._saved_attachments or []
         incoming_items = item.attachments if hasattr(item, "attachments") else item
         for attachment in incoming_items:
+            self.logger.info("Attachment type: %s", type(attachment))
             if isinstance(attachment, FileAttachment):
                 local_path = os.path.join(save_dir, attachment.name)
                 with open(local_path, "wb") as f, attachment.fp as fp:
@@ -570,17 +573,29 @@ class Exchange:
                         f.write(buffer)
                         buffer = fp.read(1024)
                 self.logger.info("Attachment saved to: %s", local_path)
-                attachments.append(
+                self._saved_attachments.append(
                     self._new_attachment_dictionary(attachment, local_path)
                 )
-        return attachments
+            elif isinstance(attachment, ItemAttachment):
+                local_path = os.path.join(save_dir, attachment.name)
+                with open(local_path, "wb") as message_out:
+                    message_out.write(attachment.item.mime_content)
+                self.logger.info("Attachment saved to: %s", local_path)
+                self._saved_attachments.append(
+                    self._new_attachment_dictionary(attachment, local_path)
+                )
+                if attachments_from_emls:
+                    self._save_attachments(attachment.item, save_dir, False)
+        return self._saved_attachments
 
     def _new_attachment_dictionary(self, attachment, local_path):
         return {
             "name": attachment.name,
             "content_type": attachment.content_type,
             "size": attachment.size,
-            "is_contact_photo": attachment.is_contact_photo,
+            "is_contact_photo": attachment.is_contact_photo
+            if hasattr(attachment, "is_contact_photo")
+            else False,
             "local_path": local_path,
         }
 
@@ -613,11 +628,18 @@ class Exchange:
             "mime_content": item.mime_content,
         }
 
-    def save_attachments(self, message: Union[dict, str], save_dir: str = None) -> list:
+    def save_attachments(
+        self,
+        message: Union[dict, str],
+        save_dir: str = None,
+        attachments_from_emls: bool = False,
+    ) -> list:
         """Save attachments in message into given directory
 
         :param message: dictionary or .eml filepath containing message details
         :param save_dir: filepath where attachments will be saved
+        :param attachments_from_emls: if attachment is a EML file, set to True to
+         save attachments from that EML file, default False
         :return: list of saved attachments
 
         Example.
@@ -626,12 +648,15 @@ class Exchange:
 
             ${messages}=    List Messages
             FOR    ${msg}    IN    @{messages}}
-                Save Attachments    ${msg}    %{ROBOT_ARTIFACTS}
+                Save Attachments    ${msg}    %{ROBOT_ARTIFACTS}  True
             END
             ${attachments}=  Save Attachments  ${CURDIR}${/}saved.eml  %{ROBOT_ARTIFACTS}
         """  # noqa: E501
+        self._saved_attachments = []
         if isinstance(message, dict):
-            return self._save_attachments(message["attachments_object"], save_dir)
+            return self._save_attachments(
+                message["attachments_object"], save_dir, attachments_from_emls
+            )
         else:
             # extract attachments from .eml file
             absolute_filepath = Path(message).resolve()
