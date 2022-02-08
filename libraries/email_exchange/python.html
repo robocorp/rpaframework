@@ -490,13 +490,15 @@ and not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>
 
 <dl class="method">
 <dt id="RPA.Email.Exchange.Exchange.save_attachments">
-<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">message: Union[dict, str], save_dir: str = None</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.save_attachments" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">message: Union[dict, str], save_dir: str = None, attachments_from_emls: bool = False</em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#RPA.Email.Exchange.Exchange.save_attachments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save attachments in message into given directory</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>message</strong> – dictionary or .eml filepath containing message details</p></li>
 <li><p><strong>save_dir</strong> – filepath where attachments will be saved</p></li>
+<li><p><strong>attachments_from_emls</strong> – if attachment is a EML file, set to True to
+save attachments from that EML file, default False</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -508,7 +510,7 @@ and not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>
 <div><p>${messages}=    List Messages
 FOR    ${msg}    IN    &#64;{messages}}</p>
 <blockquote>
-<div><p>Save Attachments    ${msg}    %{ROBOT_ARTIFACTS}</p>
+<div><p>Save Attachments    ${msg}    %{ROBOT_ARTIFACTS}  True</p>
 </div></blockquote>
 <p>END
 ${attachments}=  Save Attachments  ${CURDIR}${/}saved.eml  %{ROBOT_ARTIFACTS}</p>
