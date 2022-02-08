@@ -588,10 +588,11 @@ class ImapSmtp:
         result = {"actions_done": 0, "message_count": 0, "ids": [], "uids": {}}
 
         if source_folder:
-            for f in folders:
-                if "Noselect" in f["flags"]:
+            for folder in folders:
+                if "Noselect" in folder["flags"]:
                     continue
-                self.select_folder(f["name"], readonly)
+                folder_name = folder["name"]
+                self.select_folder(folder_name, readonly)
                 self._search_message(criterion, actions, limit, result)
         else:
             self._search_message(criterion, actions, limit, result)
@@ -1010,7 +1011,7 @@ class ImapSmtp:
         """
         kwparams = {}
         if subdirectory:
-            kwparams["directory"] = subdirectory
+            kwparams["directory"] = f'"{subdirectory}"'
         if pattern:
             kwparams["pattern"] = pattern
 
