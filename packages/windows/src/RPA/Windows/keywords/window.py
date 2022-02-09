@@ -416,17 +416,18 @@ class WindowKeywords(LibraryContext):
         # Starts the search from Desktop level.
         root_element = WindowsElement(auto.GetRootControl(), locator)
         # With all flavors of locators. (if flexible)
-        elements: Optional[List[WindowsElement]] = None
         for loc in self._iter_locator(locator):
             try:
-                elements = self.ctx.get_elements(loc, root_element=root_element)
+                elements: List[WindowsElement] = self.ctx.get_elements(
+                    loc, root_element=root_element
+                )
             except (ElementNotFound, LookupError):
-                pass
-            else:
-                break
-        if not elements:
-            self.logger.info("Couldn't find any window with locator: %s", locator)
-            return 0
+                continue
+            break
+        else:
+            raise WindowControlError(
+                f"Couldn't find any window with locator: {locator}"
+            )
 
         closed = 0
         for element in elements:

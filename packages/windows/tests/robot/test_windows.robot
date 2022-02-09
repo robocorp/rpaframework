@@ -65,7 +65,11 @@ Calculator with keys
 
 Keep open a single Notepad
     Set Global Timeout    ${TIMEOUT}
-    ${closed} =    Close Window    subname:Notepad control:WindowControl
+    ${closed} =     Set Variable    0
+    ${run} =    Run Keyword And Ignore Error    Close Window    subname:Notepad control:WindowControl
+    IF    "${run}[0]" == "PASS"
+        ${closed} =    Set Variable    ${run}[1]
+    END
     Log    Closed Notepads: ${closed}
     Windows Run   Notepad
 
