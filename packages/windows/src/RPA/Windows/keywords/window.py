@@ -286,7 +286,7 @@ class WindowKeywords(LibraryContext):
             info = {
                 "title": win.Name,
                 "pid": pid,
-                "name": process_list[pid] if pid in process_list.keys() else None,
+                "name": process_list[pid] if pid in process_list else None,
                 "path": fullpath,
                 "handle": win.NativeWindowHandle,
                 "icon": self.get_icon(fullpath) if icons else None,

@@ -156,7 +156,7 @@ def get_recording(sleeps=False):
         if (
             item["type"] == "locator"
             and not top
-            or "top" in item.keys()
+            or "top" in item
             and item["top"] != top
         ):
             output.append(
