@@ -743,6 +743,8 @@ class ImapSmtp:
             elif action == Action.msg_move:
                 m_op, m_param = store_params[Action.msg_delete]
                 for uid in mail_uids:
+                    if " " in target_folder:
+                        target_folder = f'"{target_folder}"'
                     action_status = self._command_mail_uid(
                         "COPY", uid, target_folder=target_folder
                     )
