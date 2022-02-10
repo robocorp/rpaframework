@@ -1419,7 +1419,7 @@ which have only <code class="docutils literal notranslate"><span class="pre">Non
 
 <dl class="method">
 <dt id="RPA.Tables.Tables.write_table_to_csv">
-<code class="sig-name descname">write_table_to_csv</code><span class="sig-paren">(</span><em class="sig-param">table: RPA.Tables.Table</em>, <em class="sig-param">path: str</em>, <em class="sig-param">header: bool = True</em>, <em class="sig-param">dialect: RPA.Tables.Dialect = &lt;Dialect.Excel: 'excel'&gt;</em>, <em class="sig-param">encoding: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.write_table_to_csv" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_table_to_csv</code><span class="sig-paren">(</span><em class="sig-param">table: RPA.Tables.Table</em>, <em class="sig-param">path: str</em>, <em class="sig-param">header: bool = True</em>, <em class="sig-param">dialect: RPA.Tables.Dialect = &lt;Dialect.Excel: 'excel'&gt;</em>, <em class="sig-param">encoding: Optional[str] = None</em>, <em class="sig-param">delimiter: Optional[str] = '</em>, <em class="sig-param">'</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Tables.Tables.write_table_to_csv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a table as a CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1430,6 +1430,7 @@ which have only <code class="docutils literal notranslate"><span class="pre">Non
 <li><p><strong>dialect</strong> – The format of output CSV</p></li>
 <li><p><strong>encoding</strong> – Text encoding for output file,
 uses system encoding by default</p></li>
+<li><p><strong>delimiter</strong> – Delimiter character between columns</p></li>
 </ul>
 </dd>
 </dl>
