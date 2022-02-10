@@ -584,6 +584,7 @@ class ImapSmtp:
         limit: int = None,
         overwrite: bool = False,
         readonly: bool = False,
+        prefix: str = "",
     ) -> list:
         selected_folder = source_folder or self.selected_folder
         folders = self.get_folder_list(subdirectory=selected_folder)
@@ -614,6 +615,7 @@ class ImapSmtp:
                     labels=labels,
                     target_folder=target_folder,
                     overwrite=overwrite,
+                    prefix=prefix,
                 )
                 if status:
                     result["actions_done"] += 1
@@ -714,6 +716,7 @@ class ImapSmtp:
         labels: str = None,
         target_folder: str = None,
         overwrite: bool = False,
+        prefix: str = "",
     ):
         action_status = True
         mail_uids, mail_dicts = self._get_mail_uids_and_dicts(mail)
@@ -754,13 +757,13 @@ class ImapSmtp:
                     target_folder = os.path.expanduser("~")
                 for mail_dict in mail_dicts:
                     action_status = self._save_eml_file(
-                        mail_dict, target_folder, overwrite
+                        mail_dict, target_folder, overwrite, prefix
                     )
             elif action == Action.msg_attachment_save and len(mail_dicts) > 0:
                 if target_folder is None:
                     target_folder = os.path.expanduser("~")
                 for mail_dict in mail_dicts:
-                    self._save_attachment(mail_dict, target_folder, overwrite)
+                    self._save_attachment(mail_dict, target_folder, overwrite, prefix)
             else:
                 # TODO: mypy should handle enum exhaustivity validation
                 raise ValueError(
@@ -861,7 +864,10 @@ class ImapSmtp:
 
     @imap_connection
     def save_messages(
-        self, criterion: Union[str, dict, list] = None, target_folder: str = None
+        self,
+        criterion: Union[str, dict, list] = None,
+        target_folder: str = None,
+        prefix: str = None,
     ) -> bool:
         # pylint: disable=C0301
         """Save messages based on criteria and store them to target folder
@@ -871,6 +877,7 @@ class ImapSmtp:
 
         :param criterion: filter messages based on this, defaults to ""
         :param target_folder: path to folder where message are saved, defaults to None
+        :param prefix: optional filename prefix added to the message file, default empty
         :return: True if success, False if not
 
         Example:
@@ -879,16 +886,20 @@ class ImapSmtp:
 
             Save Messages  SUBJECT Important message  target_folder=${USERDIR}${/}messages
         """  # noqa: E501
+        prefix = prefix or ""
         if target_folder is None:
             target_folder = os.path.expanduser("~")
         if isinstance(criterion, (dict, list)):
             status = self._perform_actions(
-                [Action.msg_save], criterion, target_folder=target_folder
+                [Action.msg_save], criterion, target_folder=target_folder, prefix=prefix
             )
             return status
         else:
             result = self._do_actions_on_messages(
-                criterion, actions=[Action.msg_save], target_folder=target_folder
+                criterion,
+                actions=[Action.msg_save],
+                target_folder=target_folder,
+                prefix=prefix,
             )
         return (
             result["actions_done"] > 0
@@ -1048,9 +1059,9 @@ class ImapSmtp:
                         self.logger.warning("Did not overwrite file: %s", filepath)
         return attachments_saved
 
-    def _save_eml_file(self, message, target_folder, overwrite):
+    def _save_eml_file(self, message, target_folder, overwrite, prefix):
         save_status = True
-        emlfile = f"{message['Mail-Id']}.eml"
+        emlfile = f"{prefix}{message['uid']}.eml"
         full_emlfile_path = Path(os.path.join(target_folder, emlfile))
         if not full_emlfile_path.exists() or overwrite:
             with open(full_emlfile_path, "wb") as f:
@@ -1565,6 +1576,7 @@ class ImapSmtp:
         labels: str = None,
         limit: int = None,
         overwrite: bool = False,
+        prefix: str = None,
     ) -> Any:
         """Do actions to messages matching criterion and if given,
         source folder
@@ -1598,6 +1610,7 @@ class ImapSmtp:
         :param limit:  maximum number of messages (for example action: msg_delete)
         :param overwrite: to control if file should overwrite
          (for example action: msg_attachment_save)
+        :param prefix: prefix to be added into filename (for example: msg_save)
         :return: result object
 
         Example:
@@ -1621,6 +1634,7 @@ class ImapSmtp:
             target_folder=target_folder,
             limit=limit,
             overwrite=overwrite,
+            prefix=prefix,
         )
         return (
             result["actions_done"] > 0
