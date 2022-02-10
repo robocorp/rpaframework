@@ -1280,7 +1280,9 @@ class ImapSmtp:
             return False
 
     @imap_connection
-    def flag_messages(self, criterion: str = None, unflag: bool = False) -> Any:
+    def flag_messages(
+        self, criterion: Union[str, dict] = None, unflag: bool = False
+    ) -> Any:
         """Mark messages as `flagged`
 
         :param criterion: mark messages matching criterion
@@ -1294,16 +1296,19 @@ class ImapSmtp:
             ${flagged}  ${oftotal}    Flag Messages   SUBJECT rpa
             ${unflagged}  ${oftotal}  Flag Messages   SUBJECT rpa  unflag=True
         """
-        self._validate_criterion(criterion)
         action = Action.msg_unflag if unflag else Action.msg_flag
-        result = self._do_actions_on_messages(criterion, actions=[action])
-        return (
-            result["actions_done"] > 0
-            and result["actions_done"] == result["message_count"]
-        )
+        if isinstance(criterion, dict):
+            status = self._perform_actions(mail=criterion, actions=[action])
+            return status
+        else:
+            result = self._do_actions_on_messages(criterion, actions=[action])
+            return (
+                result["actions_done"] > 0
+                and result["actions_done"] == result["message_count"]
+            )
 
     @imap_connection
-    def unflag_messages(self, criterion: str = None) -> Any:
+    def unflag_messages(self, criterion: Union[str, dict] = None) -> Any:
         """Mark messages as not `flagged`
 
         :param criterion: mark messages matching criterion
@@ -1318,7 +1323,9 @@ class ImapSmtp:
         return self.flag_messages(criterion, unflag=True)
 
     @imap_connection
-    def mark_as_read(self, criterion: str = None, unread: bool = False) -> Any:
+    def mark_as_read(
+        self, criterion: Union[str, dict] = None, unread: bool = False
+    ) -> Any:
         """Mark messages as `read`
 
         :param criterion: mark messages matching criterion
@@ -1331,16 +1338,19 @@ class ImapSmtp:
 
             ${read}  ${oftotal}  Mark As Read   SUBJECT rpa
         """
-        self._validate_criterion(criterion)
         action = Action.msg_unread if unread else Action.msg_read
-        result = self._do_actions_on_messages(criterion, actions=[action])
-        return (
-            result["actions_done"] > 0
-            and result["actions_done"] == result["message_count"]
-        )
+        if isinstance(criterion, dict):
+            status = self._perform_actions(mail=criterion, actions=[action])
+            return status
+        else:
+            result = self._do_actions_on_messages(criterion, actions=[action])
+            return (
+                result["actions_done"] > 0
+                and result["actions_done"] == result["message_count"]
+            )
 
     @imap_connection
-    def mark_as_unread(self, criterion: str = None) -> Any:
+    def mark_as_unread(self, criterion: Union[str, dict] = None) -> Any:
         """Mark messages as not `read`
 
         :param criterion: mark messages matching criterion
@@ -1508,21 +1518,31 @@ class ImapSmtp:
     def _modify_gmail_labels(
         self,
         labels: str,
-        criterion: str,
+        criterion: Union[str, dict],
         action: bool = True,
         source_folder: str = None,
     ) -> bool:
-        result = self._do_actions_on_messages(
-            criterion=criterion,
-            actions=[action],
-            labels=labels,
-            source_folder=source_folder,
-        )
+        if isinstance(criterion, dict):
+            selected_folder = source_folder or self.selected_folder
+            self.select_folder(selected_folder)
+            status = self._perform_actions(
+                mail=criterion,
+                actions=[action],
+                labels=labels,
+            )
+            return status
+        else:
+            result = self._do_actions_on_messages(
+                criterion=criterion,
+                actions=[action],
+                labels=labels,
+                source_folder=source_folder,
+            )
 
-        return (
-            result["actions_done"] > 0
-            and result["actions_done"] == result["message_count"]
-        )
+            return (
+                result["actions_done"] > 0
+                and result["actions_done"] == result["message_count"]
+            )
 
     @imap_connection
     def add_gmail_labels(self, labels, criterion, source_folder: str = None) -> bool:
