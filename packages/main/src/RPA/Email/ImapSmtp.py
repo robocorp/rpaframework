@@ -945,7 +945,11 @@ class ImapSmtp:
 
     @imap_connection
     def save_attachments(
-        self, criterion: str = "", target_folder: str = None, overwrite: bool = False
+        self,
+        criterion: str = "",
+        target_folder: str = None,
+        overwrite: bool = False,
+        prefix: str = None,
     ) -> List:
         # pylint: disable=C0301
         """Save mail attachments of emails matching criterion into local folder.
@@ -954,6 +958,7 @@ class ImapSmtp:
         :param target_folder: local folder for saving attachments to (needs to exist),
             defaults to user's home directory if None
         :param overwrite: overwrite existing file is True, defaults to False
+        :param prefix: optional filename prefix added to the attachments, default empty
         :return: list of saved attachments (list of absolute filepaths) of all emails
 
         Example:
@@ -967,15 +972,20 @@ class ImapSmtp:
             END
         """  # noqa: E501
         attachments_saved = []
+        prefix = prefix or ""
         messages = self.list_messages(criterion)
         for msg in messages:
             attachments_saved.extend(
-                self.save_attachment(msg, target_folder, overwrite)
+                self.save_attachment(msg, target_folder, overwrite, prefix)
             )
         return attachments_saved
 
     def save_attachment(
-        self, message: Union[dict, Message], target_folder: str, overwrite: bool
+        self,
+        message: Union[dict, Message],
+        target_folder: str,
+        overwrite: bool,
+        prefix: str = None,
     ) -> str:
         # pylint: disable=C0301
         """Save mail attachment of single given email into local folder
@@ -984,6 +994,7 @@ class ImapSmtp:
         :param target_folder: local folder for saving attachments to (needs to exist),
          defaults to user's home directory if None
         :param overwrite: overwrite existing file is True, defaults to False
+        :param prefix: optional filename prefix added to the attachments, default empty
         :return: list of saved attachments (list of absolute filepaths) in one email
 
         Example:
@@ -1002,11 +1013,12 @@ class ImapSmtp:
                 END
             END
         """  # noqa: E501
+        prefix = prefix or ""
         if target_folder is None:
             target_folder = os.path.expanduser("~")
-        return self._save_attachment(message, target_folder, overwrite)
+        return self._save_attachment(message, target_folder, overwrite, prefix)
 
-    def _save_attachment(self, message, target_folder, overwrite):
+    def _save_attachment(self, message, target_folder, overwrite, prefix):
         attachments_saved = []
         msg = message["Message"] if isinstance(message, dict) else message
 
@@ -1015,7 +1027,7 @@ class ImapSmtp:
             if content_maintype != "multipart":
                 filename = get_part_filename(part)
                 if bool(filename):
-                    filepath = Path(target_folder) / Path(filename).name
+                    filepath = Path(target_folder) / Path(f"{prefix}{filename}").name
                     self.logger.info("Attachment filepath: '%s'", filepath)
                     if not filepath.exists() or overwrite:
                         payload = part.get_payload(decode=True)
