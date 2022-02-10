@@ -14,7 +14,7 @@ Release notes
   - Library **RPA.Email.ImapSmtp**
 
     - Add email dictionary support for all keywords with parameter `criterion`
-    - Add `prefix` parameter to keywords ...
+    - Add `prefix` parameter to keywords ``Save Message`` and ``Save Attachment``
 
 12.6.1 - 08 Feb 2022
 --------------------
