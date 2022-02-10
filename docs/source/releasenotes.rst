@@ -8,12 +8,17 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+12.8.0 - 10 Feb 2022
+--------------------
+
+  - Library **RPA.Tables**: Add delimiter support to ``Write Table To CSV``
+
 12.7.0 - 10 Feb 2022
 --------------------
 
   - Library **RPA.Email.ImapSmtp**
 
-    - Add email dictionary support for all keywords with parameter `criterion`
+    - Add email dictionary support for all keywords with parameter ``criterion``
     - Add `prefix` parameter to keywords ``Save Message`` and ``Save Attachment``
 
 12.6.1 - 08 Feb 2022
