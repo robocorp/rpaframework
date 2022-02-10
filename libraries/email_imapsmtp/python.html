@@ -278,6 +278,11 @@
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="RPA.Email.ImapSmtp.Action.msg_trash">
+<code class="sig-name descname">msg_trash</code><em class="property"> = 11</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.msg_trash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="RPA.Email.ImapSmtp.Action.msg_unflag">
 <code class="sig-name descname">msg_unflag</code><em class="property"> = 5</em><a class="headerlink" href="#RPA.Email.ImapSmtp.Action.msg_unflag" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -507,11 +512,16 @@ keyword <code class="docutils literal notranslate"><span class="pre">Set</span> 
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.delete_message">
-<code class="sig-name descname">delete_message</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.delete_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_message</code><span class="sig-paren">(</span><em class="sig-param">criterion: Union[str</em>, <em class="sig-param">dict] = None</em>, <em class="sig-param">source_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.delete_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete single message from server based on criterion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>criterion</strong> – filter messages based on this, defaults to “”</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>criterion</strong> – filter messages based on this search, can also be a
+message dictionary</p></li>
+<li><p><strong>source_folder</strong> – defaults to already selected folder, but can be
+set to delete message in a specific folder</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>True if success, False if not</p>
@@ -526,13 +536,16 @@ keyword <code class="docutils literal notranslate"><span class="pre">Set</span> 
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.delete_messages">
-<code class="sig-name descname">delete_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">limit: int = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.delete_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: Union[str</em>, <em class="sig-param">list] = None</em>, <em class="sig-param">limit: int = None</em>, <em class="sig-param">source_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.delete_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete messages from server based on criterion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>criterion</strong> – filter messages based on this, defaults to “”</p></li>
+<li><p><strong>criterion</strong> – filter messages based on this search, can also be a
+list of message dictionaries</p></li>
 <li><p><strong>limit</strong> – maximum number of message to delete</p></li>
+<li><p><strong>source_folder</strong> – defaults to already selected folder, but can be
+set to delete message in a specific folder</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -547,7 +560,7 @@ keyword <code class="docutils literal notranslate"><span class="pre">Set</span> 
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.do_message_actions">
-<code class="sig-name descname">do_message_actions</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">actions: list = None</em>, <em class="sig-param">source_folder: str = None</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">labels: str = None</em>, <em class="sig-param">limit: int = None</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.do_message_actions" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">do_message_actions</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">actions: list = None</em>, <em class="sig-param">source_folder: str = None</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">labels: str = None</em>, <em class="sig-param">limit: int = None</em>, <em class="sig-param">overwrite: bool = False</em>, <em class="sig-param">prefix: str = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.do_message_actions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Do actions to messages matching criterion and if given,
 source folder</p>
 <p>Actions can be:</p>
@@ -582,6 +595,7 @@ source folder</p>
 <li><p><strong>limit</strong> – maximum number of messages (for example action: msg_delete)</p></li>
 <li><p><strong>overwrite</strong> – to control if file should overwrite
 (for example action: msg_attachment_save)</p></li>
+<li><p><strong>prefix</strong> – prefix to be added into filename (for example: msg_save)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -641,7 +655,7 @@ content</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.flag_messages">
-<code class="sig-name descname">flag_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = None</em>, <em class="sig-param">unflag: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.flag_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">flag_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: Union[str</em>, <em class="sig-param">dict] = None</em>, <em class="sig-param">unflag: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.flag_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mark messages as <cite>flagged</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -738,7 +752,7 @@ has attachments</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.mark_as_read">
-<code class="sig-name descname">mark_as_read</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = None</em>, <em class="sig-param">unread: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.mark_as_read" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mark_as_read</code><span class="sig-paren">(</span><em class="sig-param">criterion: Union[str</em>, <em class="sig-param">dict] = None</em>, <em class="sig-param">unread: bool = False</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.mark_as_read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mark messages as <cite>read</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -759,7 +773,7 @@ has attachments</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.mark_as_unread">
-<code class="sig-name descname">mark_as_unread</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.mark_as_unread" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mark_as_unread</code><span class="sig-paren">(</span><em class="sig-param">criterion: Union[str</em>, <em class="sig-param">dict] = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.mark_as_unread" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mark messages as not <cite>read</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -777,7 +791,7 @@ has attachments</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.move_messages">
-<code class="sig-name descname">move_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = None</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">source_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.move_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">move_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: Union[str</em>, <em class="sig-param">dict] = None</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">source_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.move_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move messages from source folder to target folder</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -872,7 +886,7 @@ source folder</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.save_attachment">
-<code class="sig-name descname">save_attachment</code><span class="sig-paren">(</span><em class="sig-param">message: Union[dict, email.message.Message], target_folder: str, overwrite: bool</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_attachment</code><span class="sig-paren">(</span><em class="sig-param">message: Union[dict, email.message.Message], target_folder: str, overwrite: bool, prefix: str = None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save mail attachment of single given email into local folder</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -881,6 +895,7 @@ source folder</p>
 <li><p><strong>target_folder</strong> – local folder for saving attachments to (needs to exist),
 defaults to user’s home directory if None</p></li>
 <li><p><strong>overwrite</strong> – overwrite existing file is True, defaults to False</p></li>
+<li><p><strong>prefix</strong> – optional filename prefix added to the attachments, default empty</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -905,7 +920,7 @@ defaults to user’s home directory if None</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.save_attachments">
-<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">overwrite: bool = False</em><span class="sig-paren">)</span> &#x2192; List<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachments" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_attachments</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">overwrite: bool = False</em>, <em class="sig-param">prefix: str = None</em><span class="sig-paren">)</span> &#x2192; List<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_attachments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save mail attachments of emails matching criterion into local folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -914,6 +929,7 @@ defaults to user’s home directory if None</p></li>
 <li><p><strong>target_folder</strong> – local folder for saving attachments to (needs to exist),
 defaults to user’s home directory if None</p></li>
 <li><p><strong>overwrite</strong> – overwrite existing file is True, defaults to False</p></li>
+<li><p><strong>prefix</strong> – optional filename prefix added to the attachments, default empty</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -932,7 +948,7 @@ defaults to user’s home directory if None</p></li>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.save_messages">
-<code class="sig-name descname">save_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = ''</em>, <em class="sig-param">target_folder: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: Union[str</em>, <em class="sig-param">dict</em>, <em class="sig-param">list] = None</em>, <em class="sig-param">target_folder: str = None</em>, <em class="sig-param">prefix: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.save_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save messages based on criteria and store them to target folder
 with attachment files.</p>
 <p>Does not save message if <cite>target_folder</cite> is not given.</p>
@@ -941,6 +957,7 @@ with attachment files.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>criterion</strong> – filter messages based on this, defaults to “”</p></li>
 <li><p><strong>target_folder</strong> – path to folder where message are saved, defaults to None</p></li>
+<li><p><strong>prefix</strong> – optional filename prefix added to the message file, default empty</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1035,7 +1052,7 @@ exception if folder does not exist on the server.</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.unflag_messages">
-<code class="sig-name descname">unflag_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: str = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.unflag_messages" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">unflag_messages</code><span class="sig-paren">(</span><em class="sig-param">criterion: Union[str</em>, <em class="sig-param">dict] = None</em><span class="sig-paren">)</span> &#x2192; Any<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.unflag_messages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mark messages as not <cite>flagged</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
