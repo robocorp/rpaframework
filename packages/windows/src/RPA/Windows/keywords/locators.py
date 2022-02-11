@@ -147,13 +147,13 @@ class MatchObject:
             try:
                 strategy, value = part_text.split(":", 1)
             except ValueError:
-                strategy = None
+                strategy = value = None
                 default_value.append(part_text)
             # self.logger.info("STRATEGY: %s VALUE: %s" % (strategy, value))
             if strategy and strategy in WINDOWS_LOCATOR_STRATEGIES:
                 if len(default_value) > 0:
                     match_object.add_locator("Name", " ".join(default_value))
-                    default_value = []
+                    default_value.clear()
                 windows_locator_strategy = WINDOWS_LOCATOR_STRATEGIES[strategy]
                 match_object.add_locator(windows_locator_strategy, value, level)
 

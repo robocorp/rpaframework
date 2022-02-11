@@ -359,7 +359,10 @@ class WindowKeywords(LibraryContext):
 
             Windows Search   Outlook
         """
-        self.ctx.send_keys(None, "{Win}s")
+        search_cmd = "{Win}s"
+        if utils.get_win_version() == "11":
+            search_cmd = search_cmd.rstrip("s")
+        self.ctx.send_keys(None, search_cmd)
         self.ctx.send_keys(None, text)
         self.ctx.send_keys(None, "{Enter}")
         time.sleep(wait_time)
@@ -438,3 +441,17 @@ class WindowKeywords(LibraryContext):
             except Exception as exc:  # pylint: disable=broad-except
                 self.logger.warning("Couldn't close window %r due to: %s", element, exc)
         return closed
+
+    @keyword(tags=["window"])
+    @with_timeout
+    def get_os_version(self) -> str:
+        """Returns the current Windows version as string.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${ver} =     Get OS Version
+            Log     ${ver}
+        """
+        return utils.get_win_version()

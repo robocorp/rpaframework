@@ -149,10 +149,13 @@ def test(ctx):
 @task(install)
 def testrobot(ctx, ci=False, robot_task=None):
     """Run Robot Framework tests"""
-    exclude = "--exclude manual"
-    if ci:
-        exclude += " --exclude skip"
-    run_cmd = f"run robot -d tests/output {exclude} -L TRACE"
+    exclude = []
+    if not robot_task:
+        exclude.append("manual")
+        if ci:
+            exclude.append("skip")
+    exclude_str = " ".join(f"--exclude {tag}" for tag in exclude)
+    run_cmd = f"run robot -d tests/output {exclude_str} -L TRACE"
     if robot_task:
         run_cmd += f' --task "{robot_task}"'
     run_cmd += " tests/robot/test_windows.robot"
