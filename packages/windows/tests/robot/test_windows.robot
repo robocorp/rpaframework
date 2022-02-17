@@ -187,9 +187,9 @@ Play Task UIDemo
     [Teardown]    Close Current Window
 
 Resize window with Spotify
-    [Tags]    skip
+    [Tags]    skip    manual
 
-    Windows Run     Spotify.exe
+#    Windows Run     Spotify.exe
     ${window} =    Control Window    executable:Spotify.exe
     Log To Console      Spotify window: ${window}
     Maximize Window
@@ -204,16 +204,18 @@ Resize window with Spotify
     Foreground Window
     Restore Window
 
+    [Teardown]    Close Current Window
+
 Notepad write text into a file
     Windows Search    notepad
     Control Window    subname:'- Notepad'
 
     ${ver} =    Get OS Version
     IF    "${ver}" == "11"
-        Click    Edit   wait_time=0.3
-        Click    Font   wait_time=0.3  # for some reason this only highlitghts the button
+        Click    Edit   wait_time=0.5
+        Click    Font   wait_time=0.5  # for some reason this only highlitghts the button
         Click    Font  # and this finally clicks it
-        Click   name:'Family'   wait_time=0.5
+        Send Keys   keys={TAB}{TAB}{TAB}     interval=0.2     wait_time=0.3   send_enter=${True}
         Click   name:'Lucida Sans Unicode'  wait_time=0.5
         Send Keys   keys={TAB}{TAB}     interval=0.2     wait_time=0.3   send_enter=${True}
         Click   name:'26'   wait_time=0.5
@@ -240,7 +242,7 @@ Notepad write text into a file
         Click    type:MenuBar name:Application > name:File
         Click    type:MenuItem subname:'Save As'
     END
-    Send Keys    keys=best-win-autox.txt{Enter}  interval=0.1
+    Send Keys    keys=best-win-auto.txt{Enter}  interval=0.1
     ${run} =    Run Keyword And Ignore Error    Control Window    Confirm Save As   timeout=0.5
     IF    "${run}[0]" == "PASS"
         Click   Yes   wait_time=0.3
@@ -302,19 +304,22 @@ Write to Notepad in the background
     [Teardown]    Close Window      subname:Notepad  # finally Notepad is closed too
 
 Test getting elements
-    [Tags]    skip    manual
+    [Tags]    skip
     Clear Anchor
+#    Print Tree     log_as_warnings=${True}
 
-#    Print Tree      id:TaskbarFrameRepeater     log_as_warnings=${True}
-    # FIXME: Simplify test with something better to localize.
-    Print Tree     log_as_warnings=${True}
-#    ${desktop} =    Get Element
-#    ${buttons} =    Get Elements    name:'Running applications' > type:Button    root_element=${desktop}
-#    Log To Console    \nList task bar applications\n
-#    Log To Console    Desktop: ${desktop}
-#    FOR    ${b}    IN    @{buttons}
-#        Log To Console    app = ${b}
-#    END
+    ${ver} =    Get OS Version
+    ${desktop} =    Get Element
+    IF    "${ver}" == "11"
+        ${buttons} =    Get Elements    id:TaskbarFrameRepeater > type:Button   root_element=${desktop}
+    ELSE
+        ${buttons} =    Get Elements    name:'Running applications' > type:Button   root_element=${desktop}
+    END
+    Log To Console    \nList Taskbar applications\n
+    Log To Console    Desktop: ${desktop}
+    FOR    ${button}    IN    @{buttons}
+        Log To Console    App: ${button.name}
+    END
 
 Control window after closing linked root element
     [Setup]    Keep open a single Notepad
