@@ -125,7 +125,7 @@ def install(ctx):
 @task(install)
 def lint(ctx):
     """Run format checks and static analysis"""
-    poetry(ctx, "run black --check src")
+    poetry(ctx, "run black --diff --check src")
     poetry(ctx, f'run flake8 --config {CONFIG / "flake8"} src')
     poetry(ctx, f'run pylint --rcfile {CONFIG / "pylint"} src')
 
@@ -200,4 +200,4 @@ def publish(ctx, ci=False):
         poetry(ctx, "publish -v --no-interaction --repository devpi")
     else:
         poetry(ctx, "publish -v")
-        ctx.run(f'{TOOLS / "tag.py"}')
+        poetry(ctx, f'run python {TOOLS / "tag.py"}')

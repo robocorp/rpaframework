@@ -1,19 +1,21 @@
-from dataclasses import dataclass, field
 import re
-from typing import List, Union
-from RPA.Windows.keywords import (
+from dataclasses import dataclass, field
+from typing import List, Optional, Union
+
+from RPA.Windows import utils
+from RPA.Windows.keywords import keyword
+from RPA.Windows.keywords.context import (
     ElementNotFound,
-    keyword,
     LibraryContext,
     WindowControlError,
+    with_timeout,
 )
-from RPA.Windows import utils
+from RPA.core.locators import LocatorsDatabase, WindowsLocator
 
-if utils.is_windows():
+if utils.IS_WINDOWS:
     import uiautomation as auto
     from uiautomation.uiautomation import Control
 
-DEFAULT_SEARCH_TIMEOUT = auto.uiautomation.TIME_OUT_SECOND
 
 WINDOWS_LOCATOR_STRATEGIES = {
     "automationid": "AutomationId",
@@ -33,13 +35,21 @@ WINDOWS_LOCATOR_STRATEGIES = {
     "executable": "executable",
 }
 
+Locator = Union["WindowsElement", str]
+
 
 @dataclass
 class WindowsElement:
     """Represent Control as dataclass"""
 
+    _WINDOW_SIBLING_COMPARE = {
+        "name": "name",  # this works for "subname" as well
+        "class": "class_name",
+        "control": "control_type",
+    }
+
     item: Control
-    locator: str = None
+    locator: Optional[Locator] = None
     name: str = ""
     automation_id: str = ""
     control_type: str = ""
@@ -53,9 +63,9 @@ class WindowsElement:
     xcenter: int = -1
     ycenter: int = -1
 
-    def __init__(self, item, locator):
+    def __init__(self, item, locator: Optional[Locator]):
         self.item = item
-        self.locator = locator
+        self.locator: Optional[Locator] = locator
         self.name = item.Name
         self.automation_id = item.AutomationId
         self.control_type = item.ControlTypeName
@@ -69,6 +79,25 @@ class WindowsElement:
         self.height = rect.height() if rect else -1
         self.xcenter = rect.xcenter() if rect else -1
         self.ycenter = rect.ycenter() if rect else -1
+
+    def is_sibling(self, win_elem: "WindowsElement") -> bool:
+        """Returns `True` if the provided window element is a sibling."""
+        locator: Optional[Locator] = win_elem.locator
+        while locator:
+            if isinstance(locator, WindowsElement):
+                locator = locator.locator
+            else:  # reached a string
+                break
+        else:
+            return True  # nothing to check here, can be considered sibling
+
+        # FIXME(cmin764): Implement missing strategies like "regex".
+        cmp_attrs = []
+        for strategy, attr in self._WINDOW_SIBLING_COMPARE.items():
+            if f"{strategy}:" in locator:
+                cmp_attrs.append(attr)
+        checks = (getattr(self, attr) == getattr(win_elem, attr) for attr in cmp_attrs)
+        return all(checks)
 
 
 @dataclass
@@ -169,12 +198,13 @@ class MatchObject:
 class LocatorKeywords(LibraryContext):
     """Keywords for handling Windows locators"""
 
-    def _get_element_with_locator_part(
-        self, locator, search_depth, root_element=None
-    ) -> Control:
-        # TODO. refactor code
-        element = None
+    def __init__(self, ctx, locators_path: Optional[str] = None):
+        self._locators_path = locators_path
+        super().__init__(ctx)
 
+    def _get_element_with_locator_part(
+        self, locator, search_depth, root_element
+    ) -> Control:
         match_object = MatchObject()
         mo = match_object.parse_locator(locator)
         self.ctx.logger.info("locator '%s' to match element: %s" % (locator, mo))
@@ -184,8 +214,8 @@ class LocatorKeywords(LibraryContext):
         offset = search_params.pop("offset", None)
         if "searchDepth" not in search_params.keys():
             search_params["searchDepth"] = search_depth
+
         if "executable" in search_params.keys():
-            root_element = auto.GetRootControl()
             search_params.pop("ControlType")
             executable = search_params.pop("executable")
             window_list = self.ctx.list_windows()
@@ -206,8 +236,8 @@ class LocatorKeywords(LibraryContext):
             new_element = Control.CreateControlFromControl(element)
             new_element.robocorp_click_offset = offset
             return new_element
-        elif "handle" in search_params.keys():
-            root_element = auto.GetRootControl()
+
+        if "handle" in search_params.keys():
             search_params.pop("ControlType")
             handle = search_params.pop("handle")
             window_list = self.ctx.list_windows()
@@ -241,13 +271,25 @@ class LocatorKeywords(LibraryContext):
         new_element.robocorp_click_offset = offset
         return new_element
 
+    def _load_by_alias(self, criteria: str) -> str:
+        try:
+            locator = LocatorsDatabase.load_by_name(criteria, self._locators_path)
+            if isinstance(locator, WindowsLocator):
+                return locator.value
+        except ValueError:
+            # How to check if locator check should be done as inspector
+            # locators are just strings?
+            pass
+        return criteria
+
     @keyword
+    @with_timeout
     def get_element(
         self,
-        locator: Union[str, WindowsElement] = None,
+        locator: Optional[Locator] = None,
         search_depth: int = 8,
         root_element: WindowsElement = None,
-        timeout: float = None,
+        timeout: Optional[float] = None,  # pylint: disable=unused-argument
     ) -> WindowsElement:
         """Get Control element defined by the locator.
 
@@ -262,7 +304,7 @@ class LocatorKeywords(LibraryContext):
             2. current active window if that has been set with `Control Window`
             3. final option is the `Desktop`
 
-        :param locator: locator as a string or as a element
+        :param locator: locator as a string or as an element
         :param search_depth: how deep the element search will traverse (default 8)
         :param root_element: can be used to set search root element
         :param timeout: float value in seconds, see keyword
@@ -277,69 +319,62 @@ class LocatorKeywords(LibraryContext):
             Set Value   ${element}  note to myself
         """
         # TODO. Add examples
-        self.logger.info("Locator '%s' into element", locator)
-        if timeout:
-            auto.SetGlobalSearchTimeout(timeout)
-        self.logger.info(
-            "Locator timeout set to: %s" % auto.uiautomation.TIME_OUT_SECOND
-        )
+        if isinstance(locator, str):
+            locator = self._load_by_alias(locator)
+        self.logger.info("Getting element with locator: %s", locator)
         if not locator:
             element = (
                 self.ctx.anchor_element
-                or self.ctx.window
+                or self.ctx.window_element
                 or WindowsElement(auto.GetRootControl(), None)
             )
         elif isinstance(locator, str):
-            try:
-                element = self.get_element_by_locator_string(
-                    locator, search_depth, root_element
-                )
-            finally:
-                auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
+            element = self.get_element_by_locator_string(
+                locator, search_depth, root_element
+            )
         else:
             element = locator
-        if hasattr(element.item, "Exists"):
-            element.item.Exists(maxSearchSeconds=timeout)
-        if not element:
-            raise ElementNotFound("Unable to get element with '%s'" % locator)
-        self.logger.info("Returning element: '%s'", element)
+        if self._window_or_none(element) is None:
+            raise ElementNotFound(f"Unable to get element with '{locator}'")
+        self.logger.info("Returning element: %s", element)
         return element
 
     def get_element_by_locator_string(self, locator, search_depth, root_element):
-        locators = locator.split(" > ")
-        anchor = self.ctx.anchor_element.item if self.ctx.anchor_element else None
-        root = root_element.item if root_element else None
-        window = self.ctx.window.item if self.ctx.window else None
-        root_element = root or anchor or window or auto.GetRootControl()
-        self.logger.debug("argument root_element = %s" % root)
-        self.logger.debug("active anchor_element = %s" % anchor)
+        root = root_element.item if self._window_or_none(root_element) else None
+        anchor = self.anchor.item if self.anchor else None
+        window = self.window.item if self.window else None
+        self.logger.debug("argument root = %s" % root)
+        self.logger.debug("active anchor = %s" % anchor)
         self.logger.debug("active window = %s" % window)
-        self.logger.debug("resulting root_element = %s" % root_element)
+        root_result = root or anchor or window or auto.GetRootControl()
+        self.logger.debug("resulting root = %s" % root_result)
         element = None
+
+        locators = locator.split(" > ")
         try:
             for loc in locators:
-                self.logger.info("Root element: '%s'" % root_element)
+                self.logger.info("Root element: '%s'" % root_result)
                 element = self._get_element_with_locator_part(
-                    loc, search_depth, root_element
+                    loc, search_depth, root_result
                 )
-                root_element = element
+                root_result = element
         except LookupError as err:
-            raise ElementNotFound(
-                "Element not found with locator %s" % locator
-            ) from err
+            raise ElementNotFound(f"Element not found with locator {locator}") from err
+
         return WindowsElement(element, locator)
 
     @keyword
+    @with_timeout
     def get_elements(
         self,
-        locator: Union[str, WindowsElement],
+        locator: Optional[Locator] = None,
         search_depth: int = 8,
-        root_element: WindowsElement = None,
-        timeout: float = None,
-    ) -> List:
+        root_element: Optional[WindowsElement] = None,
+        timeout: Optional[float] = None,  # pylint: disable=unused-argument
+    ) -> List[WindowsElement]:
         """Get list of elements matching locator.
 
-        :param locator: locator as a string or as a element
+        :param locator: locator as a string or as an element
         :param search_depth: how deep the element search will traverse (default 8)
         :param root_element: can be used to set search root element
         :param timeout: float value in seconds, see keyword
@@ -356,20 +391,17 @@ class LocatorKeywords(LibraryContext):
                 Log To Console    ${el.Name}
             END
         """
-        if timeout:
-            auto.SetGlobalSearchTimeout(timeout)
         elements = []
-        window_element = self.get_element(locator, search_depth, root_element, timeout)
-        elements.append(window_element)
-        try:
-            while True:
-                # TODO. the sibling needs to match the original locator
-                next_element = window_element.item.GetNextSiblingControl()
-                if next_element:
-                    window_element = WindowsElement(next_element, locator)
+        initial_window_element = window_element = self.get_element(
+            locator, search_depth, root_element
+        )
+        elements.append(initial_window_element)
+        while True:
+            next_element = window_element.item.GetNextSiblingControl()
+            if next_element:
+                window_element = WindowsElement(next_element, locator)
+                if initial_window_element.is_sibling(window_element):
                     elements.append(window_element)
-                else:
-                    break
-        finally:
-            auto.SetGlobalSearchTimeout(self.ctx.global_timeout)
+            else:
+                break
         return elements

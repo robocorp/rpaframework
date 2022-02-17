@@ -2,12 +2,79 @@ Release notes
 =============
 
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
-+++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 - Library **RPA.Excel.Application**: Fix on Windows 11 given pywin32 dependency update
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
-+++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+12.8.0 - 10 Feb 2022
+--------------------
+
+  - Library **RPA.Tables**: Add delimiter support to ``Write Table To CSV``
+
+12.7.0 - 10 Feb 2022
+--------------------
+
+  - Library **RPA.Email.ImapSmtp**
+
+    - Add email dictionary support for all keywords with parameter ``criterion``
+    - Add `prefix` parameter to keywords ``Save Message`` and ``Save Attachment``
+
+12.6.1 - 08 Feb 2022
+--------------------
+
+  - Library **RPA.Email.Exchange**: Fix saving .eml attachments from emails (:issue:`381`)
+  - Library **RPA.Email.ImapSmtp**: Fix handling of folder names with spaces (:issue:`380`)
+
+12.6.0 - 27 Jan 2022
+--------------------
+
+- Library **RPA.JavaAccessBridge**: Add ``Close Java Window`` keyword
+
+12.5.1 - 18 Jan 2022
+--------------------
+
+- Fix importing issues of **RPA.Desktop** on Windows due to ``comtypes`` dependency
+  Python 3 compatibility.
+
+12.5.0 - 17 Jan 2022
+--------------------
+
+- Library **RPA.Email.Exchange**: Add .eml file support to ``Save Attachments`` keyword
+- Library **RPA.JavaAccessBridge**:
+
+  - Add `strict` locator match support to locator string and to keyword ``Get Elements``
+  - Fix some issues related to ``JavaElement`` objects
+
+12.4.1 - 12 Jan 2022
+--------------------
+
+- Library **RPA.JavaAccessBridge**:
+
+  - Fix scaling issue when clicking element coordinates (:issue:`355`)
+  - Add ``click`` and ``type_text`` methods into ``Java Element`` object
+  - Fix ``Type Text
+
+- Library **RPA.Notifier**:
+
+  - Fix handling of keyword **kwargs parameter
+  - Add kwargs documentation and examples
+
+12.3.0 - 10 Jan 2022
+--------------------
+
+- Library **RPA.JavaAccessBridge**:
+
+    - Add keyword ``Read Table`` which returns table cells as ``Java Element``s
+     (more info in the documentation).
+    - Keyword ``Get Elements`` can also return elements as ``Java Element`` when
+     new parameter `java_element=True`.
+    - Fix locator value parsing for keys like `indexInParent` which can have
+     only integer value.
+    - Open known issue: clicking table cell elements seems to be problematic
+     atleast on Java Swing application (:issue:`355`)
 
 12.2.0 - 17 Dec 2021
 --------------------

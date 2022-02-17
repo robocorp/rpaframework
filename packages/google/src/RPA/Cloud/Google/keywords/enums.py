@@ -53,3 +53,47 @@ def to_feature(value):
         return int(VideoFeature[sanitized].value)
     except KeyError as err:
         raise ValueError(f"Unknown video feature: {value}") from err
+
+
+class DriveRole(Enum):
+    """Possible Drive user roles"""
+
+    OWNER = "owner"
+    ORGANIZER = "organizer"
+    FILE_ORGANIZER = "fileOrganizer"
+    WRITER = "writer"
+    COMMENTER = "commenter"
+    READER = "reader"
+
+
+def to_drive_role(value):
+    """Convert value to DriveRole enum."""
+    if isinstance(value, DriveRole):
+        return value.value
+
+    sanitized = str(value).upper().strip().replace(" ", "_")
+    try:
+        return DriveRole[sanitized].value
+    except KeyError as err:
+        raise ValueError(f"Unknown drive role: {value}") from err
+
+
+class DriveType(Enum):
+    """Possible Drive Share types"""
+
+    USER = "user"
+    GROUP = "group"
+    DOMAIN = "domain"
+    ANY = "anyone"
+
+
+def to_drive_type(value):
+    """Convert value to DriveType enum."""
+    if isinstance(value, DriveType):
+        return value.value
+
+    sanitized = str(value).upper().strip().replace(" ", "_")
+    try:
+        return DriveType[sanitized].value
+    except KeyError as err:
+        raise ValueError(f"Unknown drive type: {value}") from err
