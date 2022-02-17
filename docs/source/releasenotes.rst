@@ -4,7 +4,9 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Excel.Application**: Fix on Windows 11 given pywin32 dependency update
+- Library **RPA.Excel.Application**: Fix on Windows 11 given pywin32 dependency update.
+- Package **comtypes** upgrade which fixes `Syntax Error` issues.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
