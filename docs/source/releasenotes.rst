@@ -4,6 +4,14 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+  - Library **RPA.core**: Add internal ``interact()`` helper for interrupting code
+    execution and spawning an interactive shell which aids REPL debugging.
+  - Library **RPA.Windows**:
+
+    - Add keyword ``Get Os Version`` which returns the current Windows version.
+    - Add keyword ``Close Window`` which closes any matched open window.
+    - General library and tests fixes. (`COMError`, comtypes)
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -408,6 +408,8 @@ class WindowKeywords(LibraryContext):
         """Closes identified windows or logs the problems.
 
         :param locator: String locator or `Control` element.
+        :param timeout: float value in seconds, see keyword
+         ``Set Global Timeout``
         :return: How many windows were found and closed.
 
         Example:
