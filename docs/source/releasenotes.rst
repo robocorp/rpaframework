@@ -15,7 +15,7 @@ Release notes
 - Package **comtypes** upgrade which fixes `Syntax Error` issues.
 - Library **RPA.core**: Add internal ``interact()`` helper for interrupting code
   execution and spawning an interactive shell which aids REPL debugging.
-- Library **RPA.Windows**:
+- Library **RPA.Windows** (``rpaframework-windows`` **2.2.1**):
 
   - Add keyword ``Get Os Version`` which returns the current Windows version.
   - Add keyword ``Close Window`` which closes any matched open window.
