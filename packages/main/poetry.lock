@@ -564,7 +564,7 @@ plugins = ["setuptools"]
 
 [[package]]
 name = "java-access-bridge-wrapper"
-version = "0.9.2"
+version = "0.9.4"
 description = "Python wrapper for the Windows Java Access Bridge"
 category = "main"
 optional = false
@@ -2028,7 +2028,7 @@ playwright = ["robotframework-browser"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "c7ceecc67bde12e655d00d5c8aa37ec423d923c887a9b8a0fd5ae0db016cbef1"
+content-hash = "ee0df9894ac56e80d85c532bd961f8b6c974f05b3540e19e526d0a7b84b4f710"
 
 [metadata.files]
 alabaster = [
@@ -2432,8 +2432,8 @@ isort = [
     {file = "isort-5.10.1.tar.gz", hash = "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"},
 ]
 java-access-bridge-wrapper = [
-    {file = "java-access-bridge-wrapper-0.9.2.tar.gz", hash = "sha256:c1ac035ef1e5b23442705b8b7bb71bd7f2d5bcad3d06df54c42676d97d861090"},
-    {file = "java_access_bridge_wrapper-0.9.2-py3-none-any.whl", hash = "sha256:48e818dec2d96bfa395c08c16a051decc18137fdf00aebc1c30096264561461b"},
+    {file = "java-access-bridge-wrapper-0.9.4.tar.gz", hash = "sha256:6bac676a70c2e4a4e29e1d282694f5cfea4f9e2e201083a60c16d8e1ed18af39"},
+    {file = "java_access_bridge_wrapper-0.9.4-py3-none-any.whl", hash = "sha256:274aa98c87bf380025206688303e95dfe1546bf6fdc6d599604f6dbe4469d9a4"},
 ]
 jinja2 = [
     {file = "Jinja2-3.0.3-py3-none-any.whl", hash = "sha256:077ce6014f7b40d03b47d1f1ca4b0fc8328a692bd284016f806ed0eaca390ad8"},
