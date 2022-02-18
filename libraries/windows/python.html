@@ -870,12 +870,15 @@ down before they are all released up.</p>
 <p>Most common, and recommended by Microsoft, inspector tool for Windows is <a class="reference external" href="https://accessibilityinsights.io/">Accessibility Insights</a> that
 can be installed separately. Other options are tools <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winauto/inspect-objects">Inspect Object</a>  and <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winauto/ui-automation-verify">UI Automation Verify</a>, which
 can be accessed by installing Windows SDK.</p>
+<p>A more programmatic approach is to run <cite>Print Tree    log_as_warnings=${True}</cite>
+keyword and then observe in the logs the found elements structure starting from
+Desktop as root. (refer to keyword’s documentation for more details)</p>
 <p><strong>Recording</strong></p>
 <p>The package provides some rudimentary inspecting and recording via script <code class="docutils literal notranslate"><span class="pre">windows-record</span></code>, which can
 be started in the command line (in a environment containing <code class="docutils literal notranslate"><span class="pre">rpaframework-windows</span></code> installation).</p>
 <p>Recording inspects elements on <strong>mouse click</strong> and can be stopped with keyboard <strong>ESC</strong>.
 Expected console output.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>C:<span class="se">\U</span>sers<span class="se">\U</span>ser<span class="se">\r</span>obots<span class="se">\&gt;</span>windows-record
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>C:<span class="se">\U</span>sers<span class="se">\U</span>ser<span class="se">\r</span>obots<span class="se">\&gt;</span>windows-record  <span class="c1"># or &gt;python -m RPA.Windows</span>
 keyboard and mouse listeners started
 
 --------------------------------------------------------------------------------

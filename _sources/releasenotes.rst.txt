@@ -4,6 +4,16 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.core**: Add internal ``interact()`` helper for interrupting code
+  execution and spawning an interactive shell which aids REPL debugging.
+- Library **RPA.Windows**:
+
+  - Add keyword ``Get Os Version`` which returns the current Windows version.
+  - Add keyword ``Close Window`` which closes any matched open window.
+  - Keyword ``Get Elements`` returns now only sibling elements similar to provided
+    `locator`.
+  - General library and tests fixes. (`COMError`, comtypes)
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -11,21 +21,21 @@ Release notes
 12.8.0 - 10 Feb 2022
 --------------------
 
-  - Library **RPA.Tables**: Add delimiter support to ``Write Table To CSV``
+- Library **RPA.Tables**: Add delimiter support to ``Write Table To CSV``
 
 12.7.0 - 10 Feb 2022
 --------------------
 
-  - Library **RPA.Email.ImapSmtp**
+- Library **RPA.Email.ImapSmtp**
 
-    - Add email dictionary support for all keywords with parameter ``criterion``
-    - Add `prefix` parameter to keywords ``Save Message`` and ``Save Attachment``
+  - Add email dictionary support for all keywords with parameter ``criterion``
+  - Add `prefix` parameter to keywords ``Save Message`` and ``Save Attachment``
 
 12.6.1 - 08 Feb 2022
 --------------------
 
-  - Library **RPA.Email.Exchange**: Fix saving .eml attachments from emails (:issue:`381`)
-  - Library **RPA.Email.ImapSmtp**: Fix handling of folder names with spaces (:issue:`380`)
+- Library **RPA.Email.Exchange**: Fix saving .eml attachments from emails (:issue:`381`)
+- Library **RPA.Email.ImapSmtp**: Fix handling of folder names with spaces (:issue:`380`)
 
 12.6.0 - 27 Jan 2022
 --------------------
