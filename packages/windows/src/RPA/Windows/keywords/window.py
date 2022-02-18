@@ -286,7 +286,7 @@ class WindowKeywords(LibraryContext):
             info = {
                 "title": win.Name,
                 "pid": pid,
-                "name": process_list[pid] if pid in process_list.keys() else None,
+                "name": process_list[pid] if pid in process_list else None,
                 "path": fullpath,
                 "handle": win.NativeWindowHandle,
                 "icon": self.get_icon(fullpath) if icons else None,
@@ -359,7 +359,10 @@ class WindowKeywords(LibraryContext):
 
             Windows Search   Outlook
         """
-        self.ctx.send_keys(None, "{Win}s")
+        search_cmd = "{Win}s"
+        if utils.get_win_version() == "11":
+            search_cmd = search_cmd.rstrip("s")
+        self.ctx.send_keys(None, search_cmd)
         self.ctx.send_keys(None, text)
         self.ctx.send_keys(None, "{Enter}")
         time.sleep(wait_time)
@@ -405,6 +408,8 @@ class WindowKeywords(LibraryContext):
         """Closes identified windows or logs the problems.
 
         :param locator: String locator or `Control` element.
+        :param timeout: float value in seconds, see keyword
+         ``Set Global Timeout``
         :return: How many windows were found and closed.
 
         Example:
@@ -416,17 +421,18 @@ class WindowKeywords(LibraryContext):
         # Starts the search from Desktop level.
         root_element = WindowsElement(auto.GetRootControl(), locator)
         # With all flavors of locators. (if flexible)
-        elements: Optional[List[WindowsElement]] = None
         for loc in self._iter_locator(locator):
             try:
-                elements = self.ctx.get_elements(loc, root_element=root_element)
+                elements: List[WindowsElement] = self.ctx.get_elements(
+                    loc, root_element=root_element
+                )
             except (ElementNotFound, LookupError):
-                pass
-            else:
-                break
-        if not elements:
-            self.logger.info("Couldn't find any window with locator: %s", locator)
-            return 0
+                continue
+            break
+        else:
+            raise WindowControlError(
+                f"Couldn't find any window with locator: {locator}"
+            )
 
         closed = 0
         for element in elements:
@@ -437,3 +443,17 @@ class WindowKeywords(LibraryContext):
             except Exception as exc:  # pylint: disable=broad-except
                 self.logger.warning("Couldn't close window %r due to: %s", element, exc)
         return closed
+
+    @keyword(tags=["window"])
+    @with_timeout
+    def get_os_version(self) -> str:
+        """Returns the current Windows version as string.
+
+        Example:
+
+        .. code-block:: robotframework
+
+            ${ver} =     Get OS Version
+            Log     ${ver}
+        """
+        return utils.get_win_version()
