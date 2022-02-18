@@ -561,6 +561,47 @@ as a separate run</p></li>
 </ul>
 </dd>
 </dl>
+<p>Table showing different results depending on parameter
+values.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 6%" />
+<col style="width: 83%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>work_items</p></th>
+<th class="head"><p>batch</p></th>
+<th class="head"><p>result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>None</p></td>
+<td><p>False</p></td>
+<td><p>Trigger a process with empty a work item</p></td>
+</tr>
+<tr class="row-odd"><td><p>None</p></td>
+<td><p>True</p></td>
+<td><p>Error. work_items needs to be a list</p></td>
+</tr>
+<tr class="row-even"><td><p>dict</p></td>
+<td><p>False</p></td>
+<td><p>Trigger a process with a work item containing payload of a dict</p></td>
+</tr>
+<tr class="row-odd"><td><p>dict</p></td>
+<td><p>True</p></td>
+<td><p>Error. work_items needs to be a list</p></td>
+</tr>
+<tr class="row-even"><td><p>list</p></td>
+<td><p>False</p></td>
+<td><p>Trigger a process with a work item containing payload of a list</p></td>
+</tr>
+<tr class="row-odd"><td><p>list</p></td>
+<td><p>True</p></td>
+<td><p>Trigger multiple process runs with work items each containing payload of a dict</p></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
