@@ -115,7 +115,7 @@ class MatchObject:
     def parse_locator(self, locator: str):
         locator_tree = [loc.strip() for loc in locator.split(">")]
         # self.logger.warning(locator_tree)
-        regex = rf"({':|'.join(WINDOWS_LOCATOR_STRATEGIES.keys())}:|or|and|desktop)('{{1}}(.+)'{{1}})|(\S+)?"  # noqa: E501
+        regex = rf"({':|'.join(WINDOWS_LOCATOR_STRATEGIES)}:|or|and|desktop)('{{1}}(.+)'{{1}})|(\S+)?"  # noqa: E501
         match_object = MatchObject()
         for level, branch in enumerate(locator_tree):
             parts = re.finditer(regex, branch, re.IGNORECASE)
@@ -147,13 +147,13 @@ class MatchObject:
             try:
                 strategy, value = part_text.split(":", 1)
             except ValueError:
-                strategy = None
+                strategy = value = None
                 default_value.append(part_text)
             # self.logger.info("STRATEGY: %s VALUE: %s" % (strategy, value))
             if strategy and strategy in WINDOWS_LOCATOR_STRATEGIES:
                 if len(default_value) > 0:
                     match_object.add_locator("Name", " ".join(default_value))
-                    default_value = []
+                    default_value.clear()
                 windows_locator_strategy = WINDOWS_LOCATOR_STRATEGIES[strategy]
                 match_object.add_locator(windows_locator_strategy, value, level)
 
@@ -212,10 +212,10 @@ class LocatorKeywords(LibraryContext):
         for loc in mo.locators:  # pylint: disable=not-an-iterable
             search_params[loc[0]] = loc[1]
         offset = search_params.pop("offset", None)
-        if "searchDepth" not in search_params.keys():
+        if "searchDepth" not in search_params:
             search_params["searchDepth"] = search_depth
 
-        if "executable" in search_params.keys():
+        if "executable" in search_params:
             search_params.pop("ControlType")
             executable = search_params.pop("executable")
             window_list = self.ctx.list_windows()
@@ -237,7 +237,7 @@ class LocatorKeywords(LibraryContext):
             new_element.robocorp_click_offset = offset
             return new_element
 
-        if "handle" in search_params.keys():
+        if "handle" in search_params:
             search_params.pop("ControlType")
             handle = search_params.pop("handle")
             window_list = self.ctx.list_windows()
@@ -259,7 +259,7 @@ class LocatorKeywords(LibraryContext):
             new_element.robocorp_click_offset = offset
             return new_element
 
-        if "desktop" in search_params.keys():
+        if "desktop" in search_params:
             root_element = auto.GetRootControl()
             search_params.pop("desktop")
             return Control.CreateControlFromControl(root_element)

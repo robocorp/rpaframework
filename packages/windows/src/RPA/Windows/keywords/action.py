@@ -406,15 +406,15 @@ class ActionKeywords(LibraryContext):
             Screenshot  desktop   desktop.png
             Screenshot  subname:Notepad   notepad.png
         """
-        filepath = Path(filename).resolve()
         element = self.ctx.get_element(locator)
-        element.item.SetFocus()
-        if hasattr(element.item, "CaptureToImage"):
-            element.item.CaptureToImage(str(filepath))
-        else:
+        if not hasattr(element.item, "CaptureToImage"):
             raise ActionNotPossible(
                 "Element '%s' does not have 'CaptureToImage' attribute" % locator,
             )
+
+        element.item.SetFocus()
+        filepath = str(Path(filename).expanduser().resolve())
+        element.item.CaptureToImage(filepath)
         return filepath
 
     @keyword

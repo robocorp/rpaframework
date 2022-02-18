@@ -2,20 +2,24 @@
 Library           RPA.Windows
 Library           String
 Library           Process
-Task Setup        Set Wait Time    0.1
+Task Setup        Set Wait Time    0.7
+
 
 *** Variables ***
-${EXE_UIDEMO}     c:\\koodi\\uidemo.exe
-${EXE_CALCULATOR}    calc.exe
-${EXE_NOTEPAD}    notepad.exe
-${EXE_SPOTIFY}    Spotify.exe
-${EXE_SAGE50}     sage.exe
+# Not used as vars, but make sure you have these in PATH.
+${EXE_UIDEMO}           uidemo.exe
+${EXE_CALCULATOR}       calc.exe
+${EXE_NOTEPAD}          notepad.exe
+${EXE_SPOTIFY}          Spotify.exe
+${EXE_SAGE50}           sage.exe
+
 ${SPOTIFY_PLAYCONTROL}    name:'Player controls' > control:ButtonControl and name:
 ${SPOTIFY_PLAY}    ${SPOTIFY_PLAYCONTROL}Play
 ${SPOTIFY_PAUSE}    ${SPOTIFY_PLAYCONTROL}Pause
 ${SPOTIFY_NEXT}    ${SPOTIFY_PLAYCONTROL}Next
 ${SPOTIFY_Prev}    ${SPOTIFY_PLAYCONTROL}Prev
 ${TIMEOUT}         1
+
 
 *** Keywords ***
 Calculator Teardown
@@ -65,7 +69,11 @@ Calculator with keys
 
 Keep open a single Notepad
     Set Global Timeout    ${TIMEOUT}
-    ${closed} =    Close Window    subname:Notepad control:WindowControl
+    ${closed} =     Set Variable    0
+    ${run} =    Run Keyword And Ignore Error    Close Window    subname:Notepad control:WindowControl
+    IF    "${run}[0]" == "PASS"
+        ${closed} =    Set Variable    ${run}[1]
+    END
     Log    Closed Notepads: ${closed}
     Windows Run   Notepad
 
@@ -91,19 +99,20 @@ Windows search Calculator by clicking buttons
     [Teardown]    Close Current Window
 
 Calculator by clicking buttons already running
+    [Tags]    skip      manual
     Calculator button actions
 
-*** Tasks ***
 Windows run Do some calculations
     Windows Run    calc.exe
     Calculator with keys
     [Teardown]    Close Current Window
 
 Windows run Do some calculations already running
+    [Tags]    skip      manual
     Calculator with keys
 
 Play Task Calculator
-    Windows Search    Calculator
+    Windows Search    Calculator    wait_time=1
     Control Window    Calculator
     Click    id:clearButton
     Click    type:Group and name:'Number pad' > type:Button and index:4
@@ -115,8 +124,17 @@ Play Task Calculator
 Play Task Temperature
     Windows Search    Calculator
     Control Window    Calculator
+
+    # Go to Temperature Converter view.
     Click    id:TogglePaneButton
-    Click    id:Temperature    # TODO. make the click even when not visible
+    Send Keys   keys={PAGEDOWN}     wait_time=0.1  # to see the Temperature view
+    ${temp} =  Set Variable    id:Temperature  # works on Windows 10 and lower
+    ${ver} =    Get OS Version
+    IF    "${ver}" == "11"
+        ${temp} =  Set Variable    name:'Temperature Converter'
+    END
+    Click    ${temp}
+
     Log To Console    \nGet temperatures
     Select Temperature Unit    Kelvin    225
     Get Temperature Values    Fahrenheit
@@ -124,83 +142,127 @@ Play Task Temperature
     Get Temperature Values    Kelvin
     Select Temperature Unit    Celsius    225
     Get Temperature Values    Kelvin,Fahrenheit
+
+    # Go back to Standard Calculator view.
+    Click    id:TogglePaneButton
+    Send Keys   keys={PAGEUP}     wait_time=0.1  # to see the Standard view
+    ${std} =  Set Variable    id:Standard
+    IF    "${ver}" == "11"
+        ${std} =  Set Variable    name:'Standard Calculator'
+    END
+    Click    ${std}
+
     [Teardown]    Close Current Window
 
 Play Task UIDemo
     [Tags]    skip
-    Windows Run    C:\\apps\\UIDemo.exe
+
+    Windows Run    UIDemo.exe
     Control Window    UiDemo
     Send Keys    id:user    admin
     Send Keys    id:pass    password
     Click    class:Button
+
     Control Window    UIDemo
     Set Anchor    id:DataGrid    10.0
-    ${headers}=    Get Elements    type:HeaderItem
-    ${rows}=    Get Elements    class:DataGridRow name:'UiDemo.DepositControl+LineOfTable'
-    #Log To Console    ${element.Name}
+    ${headers} =    Get Elements    type:HeaderItem
+    Log To Console      Headers: ${headers}
+    ${rows} =    Get Elements    class:DataGridRow name:'UiDemo.DepositControl+LineOfTable'
     FOR    ${row}    IN    @{rows}
-        ${columns}=    Get Elements    class:DataGridCell    root_element=${row}
+        ${columns} =    Get Elements    class:DataGridCell    root_element=${row}
         FOR    ${col}    IN    @{columns}
-            Log To Console    Cell value: ${col.item.Name}
+            Log To Console    Cell value: ${col.name}
         END
-#    Screenshot    $el    element${el.item.Name}.png
-#    ${name}=    Get Attribute    $el    Name
-#    Log To Console    ${name}
     END
-    #${element}=    Get Element    type:HeaderItem
-    #Screenshot    ${element}    element${element.item.Name}.png
-    #${name}=    Get Attribute    ${element}    Name
-    #Control Window    UIDemo    # Handle: 5901414
-    #Click    type:ButtonControl and class:Button and name:Exit > type:TextControl and class:TextBlock and name:Exit
-    # TODO. add more actions to the task --- slider, checkboxes, table (get/set vals)
+    ${element} =    Get Element    type:HeaderItem
+    Screenshot    ${element}    ${OUTPUT_DIR}${/}element${element.name}.png
+    ${name} =    Get Attribute    ${element}    Name
+    Log To Console      Attribute: ${name}
+
+    # Clears set anchor above so the clicks would work on the current active window.
+    Clear Anchor
+    Control Window    UIDemo    # Handle: 5901414
+    Click    type:ButtonControl and class:Button and name:Exit > type:TextControl and class:TextBlock and name:Exit     timeout=1
+    # TODO: Add more actions to the task: slider, checkboxes, table (get/set vals).
     [Teardown]    Close Current Window
 
-Play Task Spotify
-    [Tags]    skip
-    ${window}=    Control Window    executable:Spotify.exe
-    Sleep    5s
-    Log To Console    ${window}
-    #Maximize Window
+Resize window with Spotify
+    [Tags]    skip    manual
+
+#    Windows Run     Spotify.exe
+    ${window} =    Control Window    executable:Spotify.exe
+    Log To Console      Spotify window: ${window}
+    Maximize Window
     FOR    ${_}    IN RANGE    3
         Click    ${SPOTIFY_NEXT}
-        Sleep    5s
+        Sleep    3s
     END
     Minimize Window
-    Sleep    10s
+    Sleep    1s
     Maximize Window
     Sleep    2s
     Foreground Window
     Restore Window
 
+    [Teardown]    Close Current Window
+
 Notepad write text into a file
     Windows Search    notepad
     Control Window    subname:'- Notepad'
-    Click    type:MenuBar name:Application > name:Format
-    Click    name:Font...
-    Control Window    Font
-    Select    type:ComboBox id:1136    Trebuchet MS
-    Select    type:ComboBox id:1138    28
-    Click    type:Button name:OK
+
+    ${ver} =    Get OS Version
+    IF    "${ver}" == "11"
+        Click    Edit   wait_time=0.5
+        Click    Font   wait_time=0.5  # for some reason this only highlitghts the button
+        Click    Font  # and this finally clicks it
+        Send Keys   keys={TAB}{TAB}{TAB}     interval=0.2     wait_time=0.3   send_enter=${True}
+        Click   name:'Lucida Sans Unicode'  wait_time=0.5
+        Send Keys   keys={TAB}{TAB}     interval=0.2     wait_time=0.3   send_enter=${True}
+        Click   name:'26'   wait_time=0.5
+        Click   name:'Back'
+    ELSE
+        Control Window    Font
+        Click    type:MenuBar name:Application > name:Format
+        Click    name:Font...
+        Select    type:ComboBox id:1136    Trebuchet MS
+        Select    type:ComboBox id:1138    28
+        Click    type:Button name:OK
+    END
+
     Control Window    subname:'- Notepad'
     Send Keys    keys={Ctrl}a{Del}
     Send Keys    keys=Lets add some text to the notepad
+
     Control Window    subname:'- Notepad'
-    Click    type:MenuBar name:Application > name:File
-    Click    type:MenuItem subname:'Save As'
-    Send Keys    keys=story4.txt{Enter}
+    IF    "${ver}" == "11"
+        Click   File    wait_time=0.3
+        Click   Save as
+        Click   Save as     wait_time=1.5
+    ELSE
+        Click    type:MenuBar name:Application > name:File
+        Click    type:MenuItem subname:'Save As'
+    END
+    Send Keys    keys=best-win-auto.txt{Enter}  interval=0.1
+    ${run} =    Run Keyword And Ignore Error    Control Window    Confirm Save As   timeout=0.5
+    IF    "${run}[0]" == "PASS"
+        Click   Yes   wait_time=0.3
+    END
     Minimize Window    subname:'- Notepad'
-    Close Current Window
+    [Teardown]      Close Current Window
 
 Control Window by handle
     Log To Console    \nList Windows
-    ${win}=    List Windows
+    ${win} =    List Windows
     FOR    ${w}    IN    @{win}
         Log To Console    ${w}
     END
-    Control Window    handle:${win}[0][handle]    # handle of the first window in the list
+    ${win} =    Control Window    handle:${win}[0][handle]    # handle of the first window in the list
+    Log To Console      Controlled window: ${win}
 
 Result from recording
     [Tags]    skip    manual
+    Windows Run     Calc
+
     Control Window    Calculator    # Handle: 4066848
     Click    name:'Seven'
     Click    name:'Eight'
@@ -211,27 +273,52 @@ Result from recording
     Click    name:'Three'
     Click    name:'Equals'
 
-Write to Notepad on background
-    [Tags]    skip    manual
-    Control Window    subname:'- Notepad'    foreground=False
-    # Clear Notepad window and start appending text
-    Set Anchor    name:'Text Editor'
-    # all following keyword calls will use anchor element as locator
-    # UNLESS they specify locator specifically or `Clear Anchor` is used
-    ${time}=    Get Time
-    Set Value    value=time now is ${time}    # clears when append=False (default)
+    [Teardown]    Close Current Window
+
+Write to Notepad in the background
+    [Tags]    skip
+    Windows Run     Notepad
+    Windows Run     Calc
+
+    Clear Anchor
+    Control Window    subname:'- Notepad'    foreground=${False}
+    # All the following keyword calls will use the set anchor element as root locator,
+    #  UNLESS they specify a locator explicitly or `Clear Anchor` is used.
+    ${text_edit} =      Set Variable    name:'Text Editor'
+    ${ver} =    Get OS Version
+    IF    "${ver}" == "11"
+        ${text_edit} =  Set Variable    name:'RichEdit Control'
+    END
+    Set Anchor      ${text_edit}
+
+    # Write in Notepad while having Calculator as active window.
+    Control Window    Calculator
+    # Clear Notepad edit window by writing initial text, then append rest of the text.
+    ${time} =    Get Time
+    Set Value    value=time now is ${time}  # clears when append=False (default)
     Set Value    value= and it's task run time    append=True    newline=True
     Set Value    value=this will appear on the 2nd line    append=True
     Set Value    value=${EMPTY}    append=True    enter=True
+    Close Current Window  # this closes Calculator first (as active window)
 
-Test get element
-    [Tags]    skip    manual
-    ${desktop}=    Get Element
-    ${buttons}=    Get Elements    name:'Running applications' > type:Button    root_element=${desktop}
-    Log To Console    \nList task bar applications\n
+    [Teardown]    Close Window      subname:Notepad  # finally Notepad is closed too
+
+Test getting elements
+    [Tags]    skip
+    Clear Anchor
+#    Print Tree     log_as_warnings=${True}
+
+    ${ver} =    Get OS Version
+    ${desktop} =    Get Element
+    IF    "${ver}" == "11"
+        ${buttons} =    Get Elements    id:TaskbarFrameRepeater > type:Button   root_element=${desktop}
+    ELSE
+        ${buttons} =    Get Elements    name:'Running applications' > type:Button   root_element=${desktop}
+    END
+    Log To Console    \nList Taskbar applications\n
     Log To Console    Desktop: ${desktop}
-    FOR    ${b}    IN    @{buttons}
-        Log To Console    app = ${b}
+    FOR    ${button}    IN    @{buttons}
+        Log To Console    App: ${button.name}
     END
 
 Control window after closing linked root element

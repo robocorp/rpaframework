@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-windows"
-version = "2.1.0"
+version = "2.2.0"
 description = "Windows library for RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -41,10 +41,9 @@ robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
 robotframework-pythonlibcore = "^3.0.0"
 pynput-robocorp-fork = "^4.0.0"
 uiautomation = "^2.0.15"
-comtypes = { version = "1.1.10", platform = "win32" }
-comtypes-fork = {version = "1.1.10", platform = "win32"}
+comtypes = { version = "1.1.11", platform = "win32" }
 psutil = { version = "^5.9.0", platform = "win32" }
-pywin32 = { version = ">=300,<302", platform = "win32", python = "!=3.8.1,!=3.7.6" }
+pywin32 = { version = ">=300,<304", platform = "win32", python = "!=3.8.1,!=3.7.6" }
 pillow = "^8.4.0"
 
 [tool.poetry.dev-dependencies]
