@@ -4,6 +4,15 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+`Released <https://pypi.org/project/rpaframework/#history>`_
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+12.8.1 - 18 Feb 2022
+--------------------
+
+- Library **RPA.Excel.Application**: Fix on Windows 11 given pywin32 dependency update.
+- Package **comtypes** upgrade which fixes `Syntax Error` issues.
 - Library **RPA.core**: Add internal ``interact()`` helper for interrupting code
   execution and spawning an interactive shell which aids REPL debugging.
 - Library **RPA.Windows**:
@@ -13,10 +22,6 @@ Release notes
   - Keyword ``Get Elements`` returns now only sibling elements similar to provided
     `locator`.
   - General library and tests fixes. (`COMError`, comtypes)
-
-
-`Released <https://pypi.org/project/rpaframework/#history>`_
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 12.8.0 - 10 Feb 2022
 --------------------
