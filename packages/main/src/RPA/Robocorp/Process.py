@@ -232,7 +232,22 @@ class Process:
         :param batch: set to True if sending list of workitems to start each
          as a separate run
         :param process_id: specific process to start
-        """
+
+
+        Table showing different results depending on parameter
+        values.
+
+        ========== ====== =======
+        work_items batch  result
+        ========== ====== =======
+        None       False  Trigger a process with empty a work item
+        None       True   Error. work_items needs to be a list
+        dict       False  Trigger a process with a work item containing payload of a dict
+        dict       True   Error. work_items needs to be a list
+        list       False  Trigger a process with a work item containing payload of a list
+        list       True   Trigger multiple process runs with work items each containing payload of a dict
+        ========== ====== =======
+        """  # noqa: E501
         endpoint = "runs-batch" if batch else "runs"
         response = self.http.session_less_post(
             url=f"{self.process_api(process_id)}/{endpoint}",
