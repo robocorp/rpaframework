@@ -616,6 +616,7 @@ def test_keyword_write_table_to_csv_columns_range(library):
     assert data[0] == "0,1,2\n"
     assert data[1] == "1,2,3\n"
 
+
 def test_keyword_write_table_to_csv_delimiter(library, table):
     with temppath() as path:
         library.write_table_to_csv(table, path, encoding="utf-8", delimiter=";")
@@ -624,6 +625,7 @@ def test_keyword_write_table_to_csv_delimiter(library, table):
 
     assert len(data) == 7
     assert data[0] == "one;two;three;four\n"
+
 
 def test_import_with_integer_keys():
     data = [

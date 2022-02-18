@@ -5,7 +5,7 @@ import time
 from typing import Any, Union
 
 import email
-from email import policy
+from email import policy  # pylint: disable=no-name-in-module
 
 from exchangelib import (
     Account,
@@ -671,7 +671,9 @@ class Exchange:
         # ensure that an output dir exists
         attachments = []
         with open(filename, "r") as f:  # pylint: disable=unspecified-encoding
-            msg = email.message_from_file(f, policy=policy.default)
+            msg = email.message_from_file(  # pylint: disable=no-member
+                f, policy=policy.default
+            )
             for attachment in msg.iter_attachments():
                 output_filename = attachment.get_filename()
                 # If no attachments are found, skip this file
