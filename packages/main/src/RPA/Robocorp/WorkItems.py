@@ -1088,15 +1088,18 @@ class WorkItems:
                 ${customers} =  Load customer data
                 FOR     ${customer}    IN    @{customers}
                     Create Output Work Item
-                    Set Work Item Variables    name=${customer.name}    id=${customer.id}
+                    Set Work Item Variables    name=${customer.name}
+                    ...     id=${customer.id}
                     Save Work Item
                 END
 
             Create and save output items with variables and files in one go
                 ${customers} =  Load customer data
                 FOR     ${customer}    IN    @{customers}
-                    &{customer_vars} =    Create Dictionary    id=${customer.id}    name=${customer.name}
-                    Create Output Work Item     variables=${customer_vars}      files=devdata${/}report.csv   save=${True}
+                    &{customer_vars} =    Create Dictionary    id=${customer.id}
+                    ...     name=${customer.name}
+                    Create Output Work Item     variables=${customer_vars}
+                    ...     files=devdata${/}report.csv   save=${True}
                 END
         """
         if not self.inputs:
