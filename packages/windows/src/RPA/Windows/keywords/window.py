@@ -445,15 +445,14 @@ class WindowKeywords(LibraryContext):
         return closed
 
     @keyword(tags=["window"])
-    @with_timeout
     def get_os_version(self) -> str:
-        """Returns the current Windows version as string.
+        """Returns the current Windows major version as string.
 
         Example:
 
         .. code-block:: robotframework
 
             ${ver} =     Get OS Version
-            Log     ${ver}
+            Log     ${ver}  # 10
         """
         return utils.get_win_version()

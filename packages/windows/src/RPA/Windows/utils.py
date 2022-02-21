@@ -1,6 +1,5 @@
 from typing import Dict
 import platform
-import subprocess
 
 import psutil
 
@@ -35,11 +34,12 @@ def call_attribute_if_available(object_name, attribute_name):
 
 
 def get_win_version() -> str:
-    """Windows only utility which returns the current Windows version."""
-    output = subprocess.getoutput("ver")
+    """Windows only utility which returns the current Windows major version."""
     # Windows terminal `ver` command is bugged, until that's fixed, check by build
     #  number. (the same applies for `platform.version()`)
-    if int(output.split(".")[2]) >= 22000:
-        return "11"  # Windows 11
+    version_parts = platform.version().split(".")
+    major = version_parts[0]
+    if major == "10" and int(version_parts[2]) >= 22000:
+        major = "11"
 
-    return "10"  # Windows 10 (or lower)
+    return major
