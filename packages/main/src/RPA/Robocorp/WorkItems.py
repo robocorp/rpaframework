@@ -1058,25 +1058,46 @@ class WorkItems:
         return self.current
 
     @keyword
-    def create_output_work_item(self):
-        """Create a new output work item.
+    def create_output_work_item(
+        self,
+        variables: Optional[dict] = None,
+        files: Optional[Union[str, List[str]]] = None,
+        save: bool = False,
+    ) -> WorkItem:
+        """Create a new output work item with optional variables and files.
 
-        An output work item is always created as a child for an input item,
-        and as such requires an input to be loaded.
+        An output work item is always created as a child for an input item, therefore
+        a non-released input is required to be loaded first.
+        All changes to the work item are done locally and are sent to the output queue
+        after the keyword ``Save work item`` is called only, except when `save` is
+        `True`.
 
-        All changes to the work item are done locally, and are only sent
-        to the output queue after the keyword ``Save work item`` is called.
+        :param variables: Optional dictionary with variables to be set into the new
+            output work item.
+        :param files: Optional list or comma separated paths to files to be included
+            into the new output work item.
+        :returns: The newly created output work item object.
 
-        Example:
+        **Examples**
+
+        **Robot Framework**
 
         .. code-block:: robotframework
 
-            ${customers}=    Load customer data
-            FOR    ${customer}    IN    @{customers}
-                Create output work item
-                Set work item variables    name=${customer.name}    id=${customer.id}
-                Save work item
-            END
+            Create output items with variables then save
+                ${customers} =  Load customer data
+                FOR     ${customer}    IN    @{customers}
+                    Create Output Work Item
+                    Set Work Item Variables    name=${customer.name}    id=${customer.id}
+                    Save Work Item
+                END
+
+            Create and save output items with variables and files in one go
+                ${customers} =  Load customer data
+                FOR     ${customer}    IN    @{customers}
+                    &{customer_vars} =    Create Dictionary    id=${customer.id}    name=${customer.name}
+                    Create Output Work Item     variables=${customer_vars}      files=devdata${/}report.csv   save=${True}
+                END
         """
         if not self.inputs:
             raise RuntimeError(
@@ -1094,6 +1115,18 @@ class WorkItems:
         item = WorkItem(item_id=None, parent_id=parent.id, adapter=self.adapter)
         self.outputs.append(item)
         self.current = item
+        if variables:
+            self.set_work_item_variables(**variables)
+        if files:
+            if isinstance(files, str):
+                files = [path.strip() for path in files.split(",")]
+            for path in files:
+                # Assumes the name would be the same as the file name itself.
+                self.add_work_item_file(path)
+        if save:
+            logging.debug("Auto-saving the just created output work item.")
+            self.save_work_item()
+
         return self.current
 
     @keyword
