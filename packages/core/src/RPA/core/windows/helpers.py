@@ -1,5 +1,5 @@
 import os
-from typing import Dict
+from typing import Dict, Union
 import psutil
 
 
@@ -15,3 +15,12 @@ def get_process_list() -> Dict:
     for proc in psutil.process_iter():
         process_list[proc.pid] = proc.name()
     return process_list
+
+
+def is_numeric(value: Union[int, float]) -> bool:
+    try:
+        float(value)
+    except ValueError:
+        return False
+    else:
+        return float(value).is_integer()
