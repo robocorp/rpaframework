@@ -50,9 +50,7 @@ class WindowsContext:
     """Shared context for all keyword libraries."""
 
     def __init__(self, ctx):
-        if not ctx:
-            ctx = DefaultWindowsContext()
-        self.ctx = ctx
+        self.ctx = ctx or DefaultWindowsContext()
 
     @property
     def logger(self):
