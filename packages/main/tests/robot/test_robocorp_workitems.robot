@@ -1,5 +1,6 @@
 *** Settings ***
 Test Setup     Load mock library
+Library        RPA.FileSystem
 Library        OperatingSystem
 
 
@@ -61,6 +62,25 @@ Explicit state set
     Release Input Work Item     DONE
     Run Keyword And Expect Error    ${err_state_set}        Create Output Work Item
     Run Keyword And Expect Error    ${err_item_released}    Release Input Work Item     DONE
+
+Create output work item with variables and files
+    Get Input Work Item  # output gets created over a non-released input
+
+    &{customer_vars} =    Create Dictionary    user=Another3    mail=another3@company.com
+    ${test_file} =      Set Variable    ${RESULTS}${/}test.txt
+    ${content} =    Set Variable    Test output work item
+    RPA.FileSystem.Create File    ${test_file}   ${content}  overwrite=${True}
+    Create Output Work Item     variables=${customer_vars}  files=${test_file}  save=${True}
+
+    ${user_value} =     Get Work Item Variable      user
+    Should Be Equal     ${user_value}      Another3
+
+    ${path_out} =      Absolute Path   ${RESULTS}${/}test-out.txt
+    ${path} =   Get Work Item File  test.txt    path=${path_out}
+    Should Be Equal    ${path}      ${path_out}
+    File should exist    ${path}
+    ${obtained_content} =   Read File    ${path}
+    Should Be Equal     ${obtained_content}      ${content}
 
 Consume queue
     @{results} =     For Each Input Work Item    Log Payload    items_limit=1
