@@ -50,6 +50,7 @@ ITEMS_JSON = [{"payload": {"a-key": "a-value"}, "files": {"a-file": "file.txt"}}
 _TESTS_DIR = Path(__file__).resolve().parent.parent
 RESOURCES_DIR = _TESTS_DIR / "resources"
 OUTPUT_DIR = _TESTS_DIR / "results" / "output_dir"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 @contextmanager
