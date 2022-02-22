@@ -638,7 +638,7 @@ class WorkItem:
         self._files_to_add = {}
         self._files_to_remove = []
 
-    def get_file(self, name, path=None):
+    def get_file(self, name, path=None) -> str:
         """Load an attached file and store it on the local filesystem.
 
         :param name: Name of attached file
@@ -1338,7 +1338,7 @@ class WorkItems:
         return self.current.files
 
     @keyword
-    def get_work_item_file(self, name, path=None):
+    def get_work_item_file(self, name, path=None) -> str:
         """Get attached file from work item to disk.
         Returns the absolute path to the created file.
 
@@ -1397,7 +1397,7 @@ class WorkItems:
         return self.current.remove_file(name, missing_ok)
 
     @keyword
-    def get_work_item_files(self, pattern, dirname=None):
+    def get_work_item_files(self, pattern, dirname=None) -> List[str]:
         """Get files attached to work item that match given pattern.
         Returns a list of absolute paths to the downloaded files.
 
