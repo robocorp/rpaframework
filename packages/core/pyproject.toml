@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rpaframework-core"
-version = "6.6.0"
+version = "6.6.1"
 description = "Core utilities used by RPA Framework"
 authors = [
 	"RPA Framework <rpafw@robocorp.com>",
@@ -35,6 +35,7 @@ packages = [
 python = "^3.6.2"
 selenium = "^3.141.0"
 webdrivermanager = "^0.10.0"
+psutil = { version = "^5.9.0", platform = "win32" }
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.5b0", allow-prereleases = true}
