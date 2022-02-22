@@ -498,17 +498,16 @@ class TestLibrary:
     )
     def out_files(self, request):
         """Output work item files."""
-        with temp_filename(b"out-content-1", suffix="-1.txt") as path1,\
-                temp_filename(b"out-content-2", suffix="-2.txt") as path2:
+        with temp_filename(b"out-content-1", suffix="-1.txt") as path1, temp_filename(
+            b"out-content-2", suffix="-2.txt"
+        ) as path2:
             func = request.param
             yield func(path1, path2)
 
     def test_create_output_work_item_variables_files(self, library, out_files):
         library.get_input_work_item()
         variables = {"my_var1": "value1", "my_var2": "value2"}
-        library.create_output_work_item(
-            variables=variables, files=out_files, save=True
-        )
+        library.create_output_work_item(variables=variables, files=out_files, save=True)
 
         assert library.get_work_item_variable("my_var1") == "value1"
         assert library.get_work_item_variable("my_var2") == "value2"
