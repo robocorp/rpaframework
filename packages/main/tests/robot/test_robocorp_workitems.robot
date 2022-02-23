@@ -1,7 +1,7 @@
 *** Settings ***
 Test Setup     Load mock library
 Library        RPA.FileSystem
-Library        OperatingSystem
+Library        OperatingSystem      WITH NAME   OS
 
 
 *** Variables ***
@@ -18,7 +18,7 @@ ${err_fail_without_type}     Must specify failure type from: BUSINESS, APPLICATI
 
 *** Keywords ***
 Load mock library
-    Copy file    ${RESOURCES}/items.json    ${temp_in}
+    OS.Copy file    ${RESOURCES}/items.json    ${temp_in}
     Set environment variable    RPA_INPUT_WORKITEM_PATH    ${temp_in}
     Set environment variable    RPA_OUTPUT_WORKITEM_PATH    ${temp_out}
 
@@ -32,7 +32,7 @@ Load mock library
 
 Log Payload
     ${payload} =     Get Work Item Payload
-    Log To Console    ${payload}
+    Log    Payload: ${payload}
     ${len} =     Get Length    ${payload}
     [Return]    ${len}
 
@@ -49,7 +49,7 @@ Read input and write output
     Save work item
     File should exist    ${temp_out}
 
-    [Teardown]  Remove file     ${temp_out}
+    [Teardown]  OS.Remove file     ${temp_out}
 
 Explicit state set
     ${payload} =     Get Work Item Payload
@@ -103,5 +103,6 @@ Consume queue without results
 Get payload given e-mail process triggering
     ${mail} =    Get Work Item Variable    parsedEmail
     Set Work Item Variables    &{mail}[Body]
+    Save Work Item
     ${message} =     Get Work Item Variable     message
     Should Be Equal     ${message}      from email

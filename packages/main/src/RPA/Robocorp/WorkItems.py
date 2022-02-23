@@ -762,12 +762,12 @@ class WorkItems:
         ${message} =     Get Work Item Variable     message
         Log    ${message}  # will print "Hello world!"
 
-    The behaviour can be disabled by loading the library with ``auto_parse_email=${None}``
-    or altered by providing to it a dictionary with one "key: value" where the key is
-    usually "rawEmail" (the variable set by Control Room, which acts as source for the
-    raw e-mail data) and the value is "parsedEmail" by default (where the parsed
-    e-mail dictionary gets stored into), value which can be customized and retrieved
-    with ``Get Work Item Variable``.
+    The behaviour can be disabled by loading the library with
+    ``auto_parse_email=${None}`` or altered by providing to it a dictionary with one
+    "key: value" where the key is usually "rawEmail" (the variable set by Control Room,
+    which acts as source for the raw e-mail data) and the value is "parsedEmail" by
+    default (where the parsed e-mail dictionary gets stored into), value which can be
+    customized and retrieved with ``Get Work Item Variable``.
 
     **Creating outputs**
 
