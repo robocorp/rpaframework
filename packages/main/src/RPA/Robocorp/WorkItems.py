@@ -735,10 +735,44 @@ class WorkItems:
     After an input has been loaded its payload and files can be accessed
     through corresponding keywords, and optionally these values can be modified.
 
+    **E-mail triggering**
+
+    Since a process can be started in Control Room by sending an e-mail, a body
+    in JSON/YAML/Text/HTML format can be sent as well and this gets attached to the
+    input work item with the "rawEmail" payload variable. This library automatically
+    parses the content of it and saves into "parsedEmail" the dictionary transformation
+    of the original e-mail.
+
+    Example:
+
+    After starting the process by sending an e-mail with a body like:
+
+    .. code-block:: json
+
+        {
+            "message": "Hello world!"
+        }
+
+    The robot can use the parsed e-mail body's dictionary:
+
+    .. code-block:: robotframework
+
+        ${mail} =    Get Work Item Variable    parsedEmail
+        Set Work Item Variables    &{mail}[Body]
+        ${message} =     Get Work Item Variable     message
+        Log    ${message}  # will print "Hello world!"
+
+    The behaviour can be disabled by loading the library with ``auto_parse_email=${None}``
+    or altered by providing to it a dictionary with one "key: value" where the key is
+    usually "rawEmail" (the variable set by Control Room, which acts as source for the
+    raw e-mail data) and the value is "parsedEmail" by default (where the parsed
+    e-mail dictionary gets stored into), value which can be customized and retrieved
+    with ``Get Work Item Variable``.
+
     **Creating outputs**
 
     It's possible to create multiple new work items as an output from a
-    task. With the keyword ``Create output work item`` a new empty item
+    task. With the keyword ``Create Output Work Item`` a new empty item
     is created as a child for the currently loaded input.
 
     All created output items are sent into the input queue of the next
@@ -749,7 +783,7 @@ class WorkItems:
     Keywords that read or write from a work item always operate on the currently
     active work item. Usually that is the input item that has been automatically
     loaded when the execution started, but the currently active item is changed
-    whenever the keywords ``Create output work item`` or ``Get input work item``
+    whenever the keywords ``Create Output Work Item`` or ``Get Input Work Item``
     are called. It's also possible to change the active item manually with the
     keyword ``Set current work item``.
 
@@ -757,7 +791,7 @@ class WorkItems:
 
     While a work item is loaded automatically when a suite starts, changes are
     not automatically reflected back to the source. The work item will be modified
-    locally and then saved when the keyword ``Save work item`` is called.
+    locally and then saved when the keyword ``Save Work Item`` is called.
     This also applies to created output work items.
 
     It is recommended to defer saves until all changes have been made to prevent
@@ -809,9 +843,9 @@ class WorkItems:
 
         *** Tasks ***
         Save variables to Control Room
-            Create output work item
+            Create Output Work Item
             Set work item variables    user=Dude    mail=address@company.com
-            Save work item
+            Save Work Item
 
     In the next step of the process inside a different robot, we can use
     previously saved work item variables. Also note how the input work item is
@@ -950,6 +984,8 @@ class WorkItems:
                 "message": "Hello world!"
             }
 
+        The robot can use the parsed e-mail body's dictionary:
+
         .. code-block:: robotframework
 
             ${mail} =    Get Work Item Variable    parsedEmail
@@ -1011,7 +1047,7 @@ class WorkItems:
         The current work item is used as the target by other keywords
         in this library.
 
-        Keywords ``Get input work item`` and ``Create output work item``
+        Keywords ``Get Input Work Item`` and ``Create Output Work Item``
         set the active work item automatically, and return the created
         instance.
 
@@ -1021,8 +1057,8 @@ class WorkItems:
 
         .. code-block:: robotframework
 
-            ${input}=    Get input work item
-            ${output}=   Create output work item
+            ${input}=    Get Input Work Item
+            ${output}=   Create Output Work Item
             Set current work item    ${input}
         """
         self.current = item
@@ -1039,7 +1075,7 @@ class WorkItems:
         starts.
         """
         if not _internal_call:
-            self._raise_under_iteration("get input work item")
+            self._raise_under_iteration("Get Input Work Item")
 
         # Automatically release (with success) the lastly retrieved input work item
         # when asking for the next one.
@@ -1069,7 +1105,7 @@ class WorkItems:
         An output work item is always created as a child for an input item, therefore
         a non-released input is required to be loaded first.
         All changes to the work item are done locally and are sent to the output queue
-        after the keyword ``Save work item`` is called only, except when `save` is
+        after the keyword ``Save Work Item`` is called only, except when `save` is
         `True`.
 
         :param variables: Optional dictionary with variables to be set into the new
@@ -1148,7 +1184,7 @@ class WorkItems:
         .. code-block:: robotframework
 
             Clear work item
-            Save work item
+            Save Work Item
         """
         self.current.payload = {}
         self.remove_work_item_files("*")
@@ -1261,7 +1297,7 @@ class WorkItems:
         .. code-block:: robotframework
 
             Set work item variable    username    MarkyMark
-            Save work item
+            Save Work Item
         """
         variables = self.get_work_item_variables()
         logging.info("%s = %s", name, value)
@@ -1278,7 +1314,7 @@ class WorkItems:
         .. code-block:: robotframework
 
             Set work item variables    username=MarkyMark    email=mark@example.com
-            Save work item
+            Save Work Item
         """
         variables = self.get_work_item_variables()
         for name, value in kwargs.items():
@@ -1297,7 +1333,7 @@ class WorkItems:
         .. code-block:: robotframework
 
             Delete work item variables    username    email
-            Save work item
+            Save Work Item
         """
         variables = self.get_work_item_variables()
         for name in names:
@@ -1372,7 +1408,7 @@ class WorkItems:
         .. code-block:: robotframework
 
             Add work item file    output.xls
-            Save work item
+            Save Work Item
         """
         logging.info("Adding file: %s", path)
         return self.current.add_file(path, name=name)
@@ -1391,7 +1427,7 @@ class WorkItems:
         .. code-block:: robotframework
 
             Remove work item file    input.xls
-            Save work item
+            Save Work Item
         """
         logging.info("Removing file: %s", name)
         return self.current.remove_file(name, missing_ok)
@@ -1436,7 +1472,7 @@ class WorkItems:
         .. code-block:: robotframework
 
             Add work item files    %{ROBOT_ROOT}/generated/*.csv
-            Save work item
+            Save Work Item
         """
         matches = FileSystem().find_files(pattern, include_dirs=False)
 
@@ -1460,7 +1496,7 @@ class WorkItems:
         .. code-block:: robotframework
 
             Remove work item files    *.xlsx
-            Save work item
+            Save Work Item
         """
         names = []
 
@@ -1676,7 +1712,7 @@ class WorkItems:
         The current work item is used as the target by other keywords
         in this library.
 
-        Keywords ``Get input work item`` and ``Create output work item``
+        Keywords ``Get Input Work Item`` and ``Create Output Work Item``
         set the active work item automatically, and return the created
         instance.
 
