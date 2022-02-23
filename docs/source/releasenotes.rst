@@ -4,6 +4,11 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+- Library **RPA.Robocorp.WorkItems**: Keyword ``Create Output Work Item`` supports
+  adding `variables`, `files` and saving in one go through parameters. (:issue:`392`)
+- Library **RPA.Windows** (``rpaframework-windows`` **2.2.1**): Keyword
+  ``Get Os Version`` returns proper Windows version.
+
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
