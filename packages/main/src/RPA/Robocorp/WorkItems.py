@@ -1112,6 +1112,8 @@ class WorkItems:
             output work item.
         :param files: Optional list or comma separated paths to files to be included
             into the new output work item.
+        :param save: Automatically call ``Save Work Item`` over the newly created
+            output work item.
         :returns: The newly created output work item object.
 
         **Examples**
@@ -1124,8 +1126,8 @@ class WorkItems:
                 ${customers} =  Load customer data
                 FOR     ${customer}    IN    @{customers}
                     Create Output Work Item
-                    Set Work Item Variables    name=${customer.name}
-                    ...     id=${customer.id}
+                    Set Work Item Variables    id=${customer.id}
+                    ...     name=${customer.name}
                     Save Work Item
                 END
 
