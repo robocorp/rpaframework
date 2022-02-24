@@ -622,6 +622,7 @@ class XlsxWorkbook:
     def is_sheet_empty(sheet):
         # Maximum rows/columns are always 1 or more, even when the sheet doesn't
         #  contain cells at all. (https://stackoverflow.com/a/37673211/4766178)
+        # pylint: disable=protected-access
         return not sheet._cells  # there's no public API for this
 
     @property

@@ -18,17 +18,14 @@ def _library(excel_file):
     yield lib
     lib.close_workbook()
 
-@pytest.fixture(
-    params=["example.xlsx", "example.xls"]
-)
+
+@pytest.fixture(params=["example.xlsx", "example.xls"])
 def library(request):
     with _library(request.param) as lib:
         yield lib
 
 
-@pytest.fixture(
-    params=["one-row.xlsx", "one-row.xls", "empty.xlsx", "empty.xls"]
-)
+@pytest.fixture(params=["one-row.xlsx", "one-row.xls", "empty.xlsx", "empty.xls"])
 def library_empty(request):
     with _library(request.param) as lib:
         yield lib
@@ -179,7 +176,7 @@ def test_read_worksheet_header(library):
     [
         (False, [{"A": "Single"}]),
         (True, []),
-    ]
+    ],
 )
 def test_read_worksheet_header_empty(library_empty, header, content):
     data = library_empty.read_worksheet("Sheet", header=header)
