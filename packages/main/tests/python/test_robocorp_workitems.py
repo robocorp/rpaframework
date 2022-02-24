@@ -29,10 +29,11 @@ from RPA.Robocorp.utils import DEBUG_ON, RequestsHTTPError
 
 VARIABLES_FIRST = {"username": "testguy", "address": "guy@company.com"}
 VARIABLES_SECOND = {"username": "another", "address": "dude@company.com"}
+IN_OUT_ID = "workitem-id-out"
 VALID_DATA = {
     "workitem-id-first": VARIABLES_FIRST,
     "workitem-id-second": VARIABLES_SECOND,
-    "workitem-id-custom": [1, 2, 3],
+    IN_OUT_ID: [1, 2, 3],
 }
 VALID_FILES = {
     "workitem-id-first": {
@@ -41,21 +42,24 @@ VALID_FILES = {
         "file3.png": b"data3",
     },
     "workitem-id-second": {},
-    "workitem-id-custom": {},
+    IN_OUT_ID: {},
 }
 
 ITEMS_JSON = [{"payload": {"a-key": "a-value"}, "files": {"a-file": "file.txt"}}]
 
-RESOURCES_DIR = Path(__file__).resolve().parent.parent / "resources"
+_TESTS_DIR = Path(__file__).resolve().parent.parent
+RESOURCES_DIR = _TESTS_DIR / "resources"
+OUTPUT_DIR = _TESTS_DIR / "results" / "output_dir"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 @contextmanager
-def temp_filename(content=None):
-    """Create temporary file and return filename, delete file afterwards.
+def temp_filename(content=None, **kwargs):
+    """Create temporary file and yield file relative path, then delete it afterwards.
     Needs to close file handle, since Windows won't allow multiple
     open handles to the same file.
     """
-    with tempfile.NamedTemporaryFile(delete=False) as fd:
+    with tempfile.NamedTemporaryFile(delete=False, **kwargs) as fd:
         path = fd.name
         if content:
             fd.write(content)
@@ -108,7 +112,8 @@ class MockAdapter(BaseAdapter):
         self.releases.append((item_id, state, exception))  # purely for testing purposes
 
     def create_output(self, parent_id, payload=None) -> str:
-        raise NotImplementedError
+        self.save_payload(IN_OUT_ID, payload)
+        return IN_OUT_ID
 
     def load_payload(self, item_id):
         return self.DATA[item_id]
@@ -484,6 +489,43 @@ class TestLibrary:
     def test_create_output_work_item_no_input(self, library):
         with pytest.raises(RuntimeError):
             library.create_output_work_item()
+
+    @pytest.fixture(
+        params=[
+            lambda *files: files,  # files provided as tuple
+            lambda *files: list(files),  # as list of paths
+            lambda *files: ", ".join(files),  # comma separated paths
+        ]
+    )
+    def out_files(self, request):
+        """Output work item files."""
+        with temp_filename(b"out-content-1", suffix="-1.txt") as path1, temp_filename(
+            b"out-content-2", suffix="-2.txt"
+        ) as path2:
+            func = request.param
+            yield func(path1, path2)
+
+    def test_create_output_work_item_variables_files(self, library, out_files):
+        library.get_input_work_item()
+        variables = {"my_var1": "value1", "my_var2": "value2"}
+        library.create_output_work_item(variables=variables, files=out_files, save=True)
+
+        assert library.get_work_item_variable("my_var1") == "value1"
+        assert library.get_work_item_variable("my_var2") == "value2"
+
+        # This actually "downloads" (creates) the files, so make sure we remove them
+        #  afterwards.
+        paths = library.get_work_item_files("*.txt", dirname=OUTPUT_DIR)
+        try:
+            assert len(paths) == 2
+            for path in paths:
+                with open(path) as stream:
+                    content = stream.read()
+                idx = Path(path).stem.split("-")[-1]
+                assert content == f"out-content-{idx}"
+        finally:
+            for path in paths:
+                os.remove(path)
 
     def test_custom_root(self, adapter):
         library = WorkItems(default_adapter=adapter, root="vars")

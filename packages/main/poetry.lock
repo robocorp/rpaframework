@@ -162,14 +162,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.21.2"
+version = "1.21.5"
 description = "The AWS SDK for Python"
 category = "main"
 optional = true
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.24.2,<1.25.0"
+botocore = ">=1.24.5,<1.25.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -178,7 +178,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.24.2"
+version = "1.24.5"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = true
@@ -1510,14 +1510,18 @@ wrapt = "*"
 
 [[package]]
 name = "rpaframework-core"
-version = "6.5.4"
+version = "6.6.2"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.6.2,<4.0.0"
 
 [package.dependencies]
+pillow = ">=8.4.0,<9.0.0"
+psutil = {version = ">=5.9.0,<6.0.0", markers = "sys_platform == \"win32\""}
+pywin32 = {version = ">=300,<304", markers = "python_full_version < \"3.7.6\" and sys_platform == \"win32\" or python_full_version > \"3.7.6\" and python_full_version < \"3.8.1\" and sys_platform == \"win32\" or python_full_version > \"3.8.1\" and sys_platform == \"win32\""}
 selenium = ">=3.141.0,<4.0.0"
+uiautomation = {version = ">=2.0.15,<3.0.0", markers = "sys_platform == \"win32\""}
 webdrivermanager = ">=0.10.0,<0.11.0"
 
 [[package]]
@@ -1884,6 +1888,17 @@ python-versions = "*"
 pytz = "*"
 
 [[package]]
+name = "uiautomation"
+version = "2.0.16"
+description = "Python UIAutomation for Windows"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+comtypes = ">=1.1.10"
+
+[[package]]
 name = "unify"
 version = "0.5"
 description = "Modifies strings to all use the same (single/double) quote where possible."
@@ -2097,12 +2112,12 @@ black = [
     {file = "black-21.12b0.tar.gz", hash = "sha256:77b80f693a569e2e527958459634f18df9b0ba2625ba4e0c2d5da5be42e6f2b3"},
 ]
 boto3 = [
-    {file = "boto3-1.21.2-py3-none-any.whl", hash = "sha256:50de4ae3dc9cbc3065b184247580160540273b25e7eaf72cdc18b979294a1b54"},
-    {file = "boto3-1.21.2.tar.gz", hash = "sha256:e46133e44d5600e3de6739c60af2cc47d23742234df149aab3ccff4f1edec64d"},
+    {file = "boto3-1.21.5-py3-none-any.whl", hash = "sha256:c650c591e4d28689e1c9e673ad4ee4f9c6183f1e13c7a770c666305a12ae12a5"},
+    {file = "boto3-1.21.5.tar.gz", hash = "sha256:a07b466458a537a548ea8ce7032cfe3818d7d57e7087562ca44848aa369e9df7"},
 ]
 botocore = [
-    {file = "botocore-1.24.2-py3-none-any.whl", hash = "sha256:d1547d0bd8428df2dc1ad95b227e271914bb01f8edbd16a45766465c2090bc9b"},
-    {file = "botocore-1.24.2.tar.gz", hash = "sha256:c017dd174285a07db4e1b844750c43550c1f51e8256e722f1e69030c4f6c78f1"},
+    {file = "botocore-1.24.5-py3-none-any.whl", hash = "sha256:9a15c25c7647adf1187b2a9c4b1426aca93851b969724c5e302a3b2e976904f1"},
+    {file = "botocore-1.24.5.tar.gz", hash = "sha256:10445743cb7a812ec34b0bca8366a830647d1d05c1bbbe4167d0ae872f45219d"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -3191,8 +3206,8 @@ robotframework-seleniumtestability = [
     {file = "robotframework-seleniumtestability-1.1.0.tar.gz", hash = "sha256:18810869a0c0010cc623aea4bb382afdc9aa6fe8404c35fa58452766d0322735"},
 ]
 rpaframework-core = [
-    {file = "rpaframework-core-6.5.4.tar.gz", hash = "sha256:72c205933fe44b3d54626282258db7a4740172b24f67f716ac5ae3b55ce71f87"},
-    {file = "rpaframework_core-6.5.4-py3-none-any.whl", hash = "sha256:0a8915eab6a7bf28a39979f6a6a775a8f2db0a724b0a26954ced72aa0903f200"},
+    {file = "rpaframework-core-6.6.2.tar.gz", hash = "sha256:efde9dc55248bed22fd5d3c2056c739b60cb1ab20f86c5a02f5e7ea4ee93124e"},
+    {file = "rpaframework_core-6.6.2-py3-none-any.whl", hash = "sha256:66846b36bfe87d295cffd555a355af80d6c77e1cd224d33cc42d4a458b83b78e"},
 ]
 rpaframework-dialogs = [
     {file = "rpaframework-dialogs-0.4.2.tar.gz", hash = "sha256:c32fba721d5af0515348a4615b8f36c033ec0361775876810955ffbee4622c5c"},
@@ -3341,6 +3356,9 @@ tzdata = [
 tzlocal = [
     {file = "tzlocal-2.1-py2.py3-none-any.whl", hash = "sha256:e2cb6c6b5b604af38597403e9852872d7f534962ae2954c7f35efcb1ccacf4a4"},
     {file = "tzlocal-2.1.tar.gz", hash = "sha256:643c97c5294aedc737780a49d9df30889321cbe1204eac2c2ec6134035a92e44"},
+]
+uiautomation = [
+    {file = "uiautomation-2.0.16-py3-none-any.whl", hash = "sha256:ebe8ef1a7c02e1fd70ecc73a868f796dbf079d4384373a3e6e61aeff4859545b"},
 ]
 unify = [
     {file = "unify-0.5.tar.gz", hash = "sha256:8ddce812b2457212b7598fe574c9e6eb3ad69710f445391338270c7f8a71723c"},
