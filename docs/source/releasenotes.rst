@@ -4,14 +4,18 @@ Release notes
 `Upcoming release <https://github.com/robocorp/rpaframework/projects/3#column-16713994>`_
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Library **RPA.Robocorp.WorkItems**: Keyword ``Create Output Work Item`` supports
-  adding `variables`, `files` and saving in one go through parameters. (:issue:`392`)
-- Library **RPA.Windows** (``rpaframework-windows`` **2.2.1**): Keyword
-  ``Get Os Version`` returns proper Windows version.
-
 
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+12.8.2 - 25 Feb 2022
+--------------------
+
+- Library **RPA.Excel.Files**: Fix I/O for tables with one or no rows. (:issue:`391`)
+- Library **RPA.Robocorp.WorkItems**: Keyword ``Create Output Work Item`` supports
+  adding `variables`, `files` and saving in one go through parameters. (:issue:`392`)
+- Library **RPA.Windows** (``rpaframework-windows`` **2.2.1**): Keyword
+  ``Get Os Version`` returns proper Windows version. (:pr:`394`)
 
 12.8.1 - 18 Feb 2022
 --------------------
