@@ -6,7 +6,7 @@ on:
       package:
         type: choice
         description: Select the package
-        required: True
+        required: False
         default: 'rpaframework'
         options:
         - rpaframework
@@ -19,7 +19,7 @@ on:
       version:
         type: string
         description: Version number
-        required: True
+        required: False
 
 
 jobs:
