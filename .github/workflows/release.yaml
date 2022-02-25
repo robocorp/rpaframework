@@ -1,0 +1,31 @@
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        type: choice
+        description: Select the package
+        required: True
+        default: 'rpaframework'
+        options:
+        - rpaframework
+        - rpaframework-core
+        - rpaframework-dialogs
+        - rpaframework-google
+        - rpaframework-pdf
+        - rpaframework-recognition
+        - rpaframework-windows
+      version:
+        type: string
+        description: Version number
+        required: True
+
+
+jobs:
+  selections-done:
+    runs-on: windows-latest
+
+    steps:
+      - name: Print selections to STDOUT
+        run: echo  The package is ${{ github.event.inputs.package }} and version is ${{ github.event.inputs.version }}
