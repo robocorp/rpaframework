@@ -407,3 +407,25 @@ def test_create_workbook_default_sheet(fmt):
 
     library.create_worksheet("Test")
     assert library.list_worksheets() == ["Sheet", "Test"]
+
+
+@pytest.mark.parametrize(
+    "excel_file, data_only",
+    [
+        ("formulas.xlsx", False),
+        ("formulas.xls", False),
+        ("formulas.xlsx", True),
+        ("formulas.xls", True),
+    ],
+)
+def test_read_worksheet_with_formulas(excel_file, data_only):
+    library = Files()
+    excel_path = RESOURCES_DIR / excel_file
+    library.open_workbook(excel_path, data_only=data_only)
+    assert library.get_worksheet_value(2, "A") == 1
+    assert library.get_worksheet_value(2, "B") == 3
+    if library.workbook.path.suffix == ".xlsx":
+        assert library.get_worksheet_value(2, "C") == 4 if data_only else "=A2+B2"
+    else:
+        assert library.get_worksheet_value(2, "C") == 4
+    library.close_workbook()
