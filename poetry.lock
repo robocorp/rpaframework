@@ -154,14 +154,14 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.21.2"
+version = "1.21.7"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.6"
 
 [package.dependencies]
-botocore = ">=1.24.2,<1.25.0"
+botocore = ">=1.24.7,<1.25.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.5.0,<0.6.0"
 
@@ -170,7 +170,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.24.2"
+version = "1.24.7"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -412,7 +412,7 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.37.0"
+version = "2.38.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
@@ -546,7 +546,7 @@ proto-plus = ">=1.4.0"
 
 [[package]]
 name = "google-cloud-translate"
-version = "3.6.1"
+version = "3.7.0"
 description = "Google Cloud Translation API client library"
 category = "main"
 optional = false
@@ -559,7 +559,7 @@ proto-plus = ">=0.4.0"
 
 [[package]]
 name = "google-cloud-videointelligence"
-version = "2.5.1"
+version = "2.6.0"
 description = "Google Cloud Video Intelligence API client library"
 category = "main"
 optional = false
@@ -600,7 +600,7 @@ testing = ["pytest"]
 
 [[package]]
 name = "google-resumable-media"
-version = "2.2.1"
+version = "2.3.0"
 description = "Utilities for Google Media Downloads and Resumable Uploads"
 category = "main"
 optional = false
@@ -615,7 +615,7 @@ requests = ["requests (>=2.18.0,<3.0.0dev)"]
 
 [[package]]
 name = "googleapis-common-protos"
-version = "1.54.0"
+version = "1.55.0"
 description = "Common protobufs used in Google APIs"
 category = "main"
 optional = false
@@ -1670,7 +1670,7 @@ python-versions = "*"
 
 [[package]]
 name = "rpaframework"
-version = "12.8.1"
+version = "12.8.2"
 description = "A collection of tools and libraries for RPA"
 category = "main"
 optional = false
@@ -1735,14 +1735,18 @@ url = "packages/main"
 
 [[package]]
 name = "rpaframework-core"
-version = "6.5.4"
+version = "6.6.2"
 description = "Core utilities used by RPA Framework"
 category = "main"
 optional = false
 python-versions = ">=3.6.2,<4.0.0"
 
 [package.dependencies]
+pillow = ">=8.4.0,<9.0.0"
+psutil = {version = ">=5.9.0,<6.0.0", markers = "sys_platform == \"win32\""}
+pywin32 = {version = ">=300,<304", markers = "python_full_version < \"3.7.6\" and sys_platform == \"win32\" or python_full_version > \"3.7.6\" and python_full_version < \"3.8.1\" and sys_platform == \"win32\" or python_full_version > \"3.8.1\" and sys_platform == \"win32\""}
 selenium = ">=3.141.0,<4.0.0"
+uiautomation = {version = ">=2.0.15,<3.0.0", markers = "sys_platform == \"win32\""}
 webdrivermanager = ">=0.10.0,<0.11.0"
 
 [[package]]
@@ -1820,7 +1824,7 @@ rpaframework-core = ">=6.0.0,<7.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "2.2.1"
+version = "2.2.2"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
@@ -1856,7 +1860,7 @@ pyasn1 = ">=0.1.3"
 
 [[package]]
 name = "s3transfer"
-version = "0.5.1"
+version = "0.5.2"
 description = "An Amazon S3 Transfer Manager"
 category = "main"
 optional = false
@@ -2409,12 +2413,12 @@ black = [
     {file = "black-21.12b0.tar.gz", hash = "sha256:77b80f693a569e2e527958459634f18df9b0ba2625ba4e0c2d5da5be42e6f2b3"},
 ]
 boto3 = [
-    {file = "boto3-1.21.2-py3-none-any.whl", hash = "sha256:50de4ae3dc9cbc3065b184247580160540273b25e7eaf72cdc18b979294a1b54"},
-    {file = "boto3-1.21.2.tar.gz", hash = "sha256:e46133e44d5600e3de6739c60af2cc47d23742234df149aab3ccff4f1edec64d"},
+    {file = "boto3-1.21.7-py3-none-any.whl", hash = "sha256:af92931f65e33e7450c3389c6cc6ab6b3e2f619697ea5566aacc0f16f3b21f61"},
+    {file = "boto3-1.21.7.tar.gz", hash = "sha256:8f59383fe578ac9107466a464d7198933e5332d85a4790f2e01cf24a4a7f635b"},
 ]
 botocore = [
-    {file = "botocore-1.24.2-py3-none-any.whl", hash = "sha256:d1547d0bd8428df2dc1ad95b227e271914bb01f8edbd16a45766465c2090bc9b"},
-    {file = "botocore-1.24.2.tar.gz", hash = "sha256:c017dd174285a07db4e1b844750c43550c1f51e8256e722f1e69030c4f6c78f1"},
+    {file = "botocore-1.24.7-py3-none-any.whl", hash = "sha256:a34118bfadc02903ab404148822fe5a6de7a3bb58943f1a6a19cc8b0446d2a50"},
+    {file = "botocore-1.24.7.tar.gz", hash = "sha256:5d1a2a2ac72461bbaa79317b3e4cb72c7ebb315aef184d90f72ec1f6dba0ca6c"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
@@ -2562,8 +2566,8 @@ google-api-core = [
     {file = "google_api_core-2.5.0-py2.py3-none-any.whl", hash = "sha256:7d030edbd3a0e994d796e62716022752684e863a6df9864b6ca82a1616c2a5a6"},
 ]
 google-api-python-client = [
-    {file = "google-api-python-client-2.37.0.tar.gz", hash = "sha256:39bb945d00ce5f70207a312b32418c238f3ae16559e30c4ff10dac1e0ed69244"},
-    {file = "google_api_python_client-2.37.0-py2.py3-none-any.whl", hash = "sha256:8f9176e4f26c11b2561c43458da33d82425673d32298114e26d0e0a83c2011bc"},
+    {file = "google-api-python-client-2.38.0.tar.gz", hash = "sha256:911b3e78981ffb26fa77791a41654d11ac42d863cbc3b7cce992761b826f1a96"},
+    {file = "google_api_python_client-2.38.0-py2.py3-none-any.whl", hash = "sha256:895fd24a5707d4696b754e8cbbd13082087ed6d6e9da43854999faab3e283afc"},
 ]
 google-auth = [
     {file = "google-auth-2.6.0.tar.gz", hash = "sha256:ad160fc1ea8f19e331a16a14a79f3d643d813a69534ba9611d2c80dc10439dad"},
@@ -2598,12 +2602,12 @@ google-cloud-texttospeech = [
     {file = "google_cloud_texttospeech-2.10.0-py2.py3-none-any.whl", hash = "sha256:5b272adb6fd32b91b3b4e9a98c06cc5be6c46ba959c3bd697063b03a94bef827"},
 ]
 google-cloud-translate = [
-    {file = "google-cloud-translate-3.6.1.tar.gz", hash = "sha256:38772cc60ef4315d25a7dbeef5ddab9e75674722cb4500bc69b295e5d0af6a97"},
-    {file = "google_cloud_translate-3.6.1-py2.py3-none-any.whl", hash = "sha256:264dc593ad2945756f7688df3231df5e40b3593267f918d7dc48d883a7ca3caf"},
+    {file = "google-cloud-translate-3.7.0.tar.gz", hash = "sha256:749fa2f03da9e72cf78e1d41c1e744e3f1197ec1f6077007a24bb279d58ae897"},
+    {file = "google_cloud_translate-3.7.0-py2.py3-none-any.whl", hash = "sha256:553f386d4da16b069092e017a28507e776325f741047bcd5b28ff6b53180721f"},
 ]
 google-cloud-videointelligence = [
-    {file = "google-cloud-videointelligence-2.5.1.tar.gz", hash = "sha256:7b735f623d6c3c80d1d40fa491bfe1776a5369d7b240dddab522fd0076d97b1d"},
-    {file = "google_cloud_videointelligence-2.5.1-py2.py3-none-any.whl", hash = "sha256:ab5f2952de2720ecba11f363227bc8cc0e75c194d3b1e8653413a8e3202207eb"},
+    {file = "google-cloud-videointelligence-2.6.0.tar.gz", hash = "sha256:6e590d31d87d7a144cf6c89d8066a3224ac782b2424fdea1cc6de7554d03068e"},
+    {file = "google_cloud_videointelligence-2.6.0-py2.py3-none-any.whl", hash = "sha256:28aa488ef9f75021f8d1644cb774aa77e2f13488342b1358442a245d4dfe7ddf"},
 ]
 google-cloud-vision = [
     {file = "google-cloud-vision-2.6.3.tar.gz", hash = "sha256:54b7f63c746ab95a504bd6b9b1d806192483976a3452a1a59a7faa0eaaa03491"},
@@ -2655,12 +2659,12 @@ google-crc32c = [
     {file = "google_crc32c-1.3.0-pp37-pypy37_pp73-win_amd64.whl", hash = "sha256:7f6fe42536d9dcd3e2ffb9d3053f5d05221ae3bbcefbe472bdf2c71c793e3183"},
 ]
 google-resumable-media = [
-    {file = "google-resumable-media-2.2.1.tar.gz", hash = "sha256:b1edfb98867c9fa25aa7af12d6468665b83c532b7349effab805a027ea8bbee5"},
-    {file = "google_resumable_media-2.2.1-py2.py3-none-any.whl", hash = "sha256:fd616af31b83d48da040c8c09b6994606e1734efb8af9acc97cf5d6070e9ba72"},
+    {file = "google-resumable-media-2.3.0.tar.gz", hash = "sha256:1a7dce5790b04518edc02c2ce33965556660d64957106d66a945086e2b642572"},
+    {file = "google_resumable_media-2.3.0-py2.py3-none-any.whl", hash = "sha256:36dc2f7201ee1cb360ef502187aa4e1f2b6ec4467fcee92e08a8cf165e36f587"},
 ]
 googleapis-common-protos = [
-    {file = "googleapis-common-protos-1.54.0.tar.gz", hash = "sha256:a4031d6ec6c2b1b6dc3e0be7e10a1bd72fb0b18b07ef9be7b51f2c1004ce2437"},
-    {file = "googleapis_common_protos-1.54.0-py2.py3-none-any.whl", hash = "sha256:e54345a2add15dc5e1a7891c27731ff347b4c33765d79b5ed7026a6c0c7cbcae"},
+    {file = "googleapis-common-protos-1.55.0.tar.gz", hash = "sha256:53eb313064738f45d5ac634155ae208e121c963659627b90dfcb61ef514c03e1"},
+    {file = "googleapis_common_protos-1.55.0-py2.py3-none-any.whl", hash = "sha256:183bb0356bd614c4330ad5158bc1c1bcf9bcf7f5e7f911317559fe209496eeee"},
 ]
 graphviz = [
     {file = "graphviz-0.13.2-py2.py3-none-any.whl", hash = "sha256:241fb099e32b8e8c2acca747211c8237e40c0b89f24b1622860075d59f4c4b25"},
@@ -3572,8 +3576,8 @@ robotframeworklexer = [
 ]
 rpaframework = []
 rpaframework-core = [
-    {file = "rpaframework-core-6.5.4.tar.gz", hash = "sha256:72c205933fe44b3d54626282258db7a4740172b24f67f716ac5ae3b55ce71f87"},
-    {file = "rpaframework_core-6.5.4-py3-none-any.whl", hash = "sha256:0a8915eab6a7bf28a39979f6a6a775a8f2db0a724b0a26954ced72aa0903f200"},
+    {file = "rpaframework-core-6.6.2.tar.gz", hash = "sha256:efde9dc55248bed22fd5d3c2056c739b60cb1ab20f86c5a02f5e7ea4ee93124e"},
+    {file = "rpaframework_core-6.6.2-py3-none-any.whl", hash = "sha256:66846b36bfe87d295cffd555a355af80d6c77e1cd224d33cc42d4a458b83b78e"},
 ]
 rpaframework-dialogs = [
     {file = "rpaframework-dialogs-0.4.2.tar.gz", hash = "sha256:c32fba721d5af0515348a4615b8f36c033ec0361775876810955ffbee4622c5c"},
@@ -3594,8 +3598,8 @@ rsa = [
     {file = "rsa-4.8.tar.gz", hash = "sha256:5c6bd9dc7a543b7fe4304a631f8a8a3b674e2bbfc49c2ae96200cdbe55df6b17"},
 ]
 s3transfer = [
-    {file = "s3transfer-0.5.1-py3-none-any.whl", hash = "sha256:25c140f5c66aa79e1ac60be50dcd45ddc59e83895f062a3aab263b870102911f"},
-    {file = "s3transfer-0.5.1.tar.gz", hash = "sha256:69d264d3e760e569b78aaa0f22c97e955891cd22e32b10c51f784eeda4d9d10a"},
+    {file = "s3transfer-0.5.2-py3-none-any.whl", hash = "sha256:7a6f4c4d1fdb9a2b640244008e142cbc2cd3ae34b386584ef044dd0f27101971"},
+    {file = "s3transfer-0.5.2.tar.gz", hash = "sha256:95c58c194ce657a5f4fb0b9e60a84968c808888aed628cd98ab8771fe1db98ed"},
 ]
 selenium = [
     {file = "selenium-3.141.0-py2.py3-none-any.whl", hash = "sha256:2d7131d7bc5a5b99a2d9b04aaf2612c411b03b8ca1b1ee8d3de5845a9be2cb3c"},
