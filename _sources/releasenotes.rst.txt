@@ -13,7 +13,7 @@ Release notes
 
 - Library **RPA.Robocorp.WorkItems**: Keyword ``Create Output Work Item`` supports
   adding `variables`, `files` and saving in one go through parameters. (:issue:`392`)
-- Library **RPA.Windows** (``rpaframework-windows`` **2.2.1**): Keyword
+- Library **RPA.Windows** (``rpaframework-windows`` **2.2.2**): Keyword
   ``Get Os Version`` returns proper Windows version. (:pr:`394`)
 - Library **RPA.Excel.Files**:
 
