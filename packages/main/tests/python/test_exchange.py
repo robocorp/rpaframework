@@ -1,9 +1,10 @@
-import pytest
 import mock
-from pathlib import Path
+import pytest
 from RPA.Email.Exchange import Exchange
 
-RESOURCE_DIR = Path(__file__).resolve().parent / ".." / "resources"
+from . import RESOURCES_DIR
+
+
 SENDMAIL_MOCK = "RPA.Email.Exchange.Message.send"
 recipient = "person1@domain.com"
 multi_recipients = "person2@domain.com,person3@domain.com"
@@ -73,7 +74,7 @@ def test_send_with_html_body_html_format(mocked, library):
 @mock.patch(SENDMAIL_MOCK)
 def test_send_message_with_images(mocked, library):
     status = library.send_message(
-        recipients=recipient, images=RESOURCE_DIR / "approved.png"
+        recipients=recipient, images=RESOURCES_DIR / "approved.png"
     )
     assert status
 
@@ -81,14 +82,14 @@ def test_send_message_with_images(mocked, library):
 @mock.patch(SENDMAIL_MOCK)
 def test_send_message_with_attachments(mocked, library):
     status = library.send_message(
-        recipients=recipient, attachments=RESOURCE_DIR / "approved.png"
+        recipients=recipient, attachments=RESOURCES_DIR / "approved.png"
     )
     assert status
 
 
 @mock.patch(SENDMAIL_MOCK)
 def test_send_message_with_images_and_attachments(mocked, library):
-    imagepath = str(RESOURCE_DIR / "approved.png")
+    imagepath = str(RESOURCES_DIR / "approved.png")
     status = library.send_message(
         recipients=recipient, attachments=imagepath, images=imagepath
     )
