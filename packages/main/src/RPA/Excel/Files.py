@@ -400,9 +400,9 @@ class Files:
         :param content: Rows of values to append
         :param name:    Name of worksheet to append to
         :param header:  Set rows according to existing header row
-        :param start:   Start of data, NOTE: Only required when headers is True
+        :param start:   Start of data, NOTE: Only required when header is True
 
-        The ``content`` argument can be of any tabular format. Typically
+        The ``content`` argument can be of any tabular format. Typically,
         this is a Table object created by the ``RPA.Tables`` library,
         but it can also be a list of lists, or a list of dictionaries.
 
@@ -618,6 +618,13 @@ class XlsxWorkbook:
         self._extension = None
         self._active = None
 
+    @staticmethod
+    def is_sheet_empty(sheet):
+        # Maximum rows/columns are always 1 or more, even when the sheet doesn't
+        #  contain cells at all. (https://stackoverflow.com/a/37673211/4766178)
+        # pylint: disable=protected-access
+        return not sheet._cells  # there's no public API for this
+
     @property
     def sheetnames(self):
         return list(self._book.sheetnames)
@@ -721,7 +728,7 @@ class XlsxWorkbook:
         sheet = self._book[name]
         start = self._to_index(start)
 
-        if start >= sheet.max_row:
+        if start > sheet.max_row or self.is_sheet_empty(sheet):
             return []
 
         if header:
@@ -753,7 +760,7 @@ class XlsxWorkbook:
         name = self._get_sheetname(name)
         sheet = self._book[name]
         start = self._to_index(start)
-        is_empty = sheet.max_row <= 1 and sheet.max_column <= 1
+        is_empty = self.is_sheet_empty(sheet)
 
         if header and not is_empty:
             columns = [cell.value for cell in sheet[start]]
@@ -845,6 +852,10 @@ class XlsWorkbook:
         self._extension = None
         self._active = None
         self._images = []
+
+    @staticmethod
+    def is_sheet_empty(sheet):
+        return not any([sheet.ncols, sheet.nrows])
 
     @property
     def sheetnames(self):
@@ -1033,7 +1044,7 @@ class XlsWorkbook:
         name = self._get_sheetname(name)
         sheet_read = self._book.sheet_by_name(name)
         start = self._to_index(start)
-        is_empty = sheet_read.ncols <= 1 and sheet_read.nrows <= 1
+        is_empty = self.is_sheet_empty(sheet_read)
 
         if header and not is_empty:
             columns = [cell.value for cell in sheet_read.row(start)]

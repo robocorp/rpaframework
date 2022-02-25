@@ -2,7 +2,6 @@ import copy
 import json
 import logging
 import os
-import pytest
 import tempfile
 from contextlib import contextmanager
 
@@ -13,8 +12,8 @@ except ImportError:
 from pathlib import Path
 from unittest import mock
 
+import pytest
 from requests import HTTPError
-
 from RPA.Robocorp.WorkItems import (
     BaseAdapter,
     EmptyQueue,
@@ -25,6 +24,8 @@ from RPA.Robocorp.WorkItems import (
     WorkItems,
 )
 from RPA.Robocorp.utils import DEBUG_ON, RequestsHTTPError
+
+from . import RESOURCES_DIR, RESULTS_DIR
 
 
 VARIABLES_FIRST = {"username": "testguy", "address": "guy@company.com"}
@@ -44,12 +45,9 @@ VALID_FILES = {
     "workitem-id-second": {},
     IN_OUT_ID: {},
 }
-
 ITEMS_JSON = [{"payload": {"a-key": "a-value"}, "files": {"a-file": "file.txt"}}]
 
-_TESTS_DIR = Path(__file__).resolve().parent.parent
-RESOURCES_DIR = _TESTS_DIR / "resources"
-OUTPUT_DIR = _TESTS_DIR / "results" / "output_dir"
+OUTPUT_DIR = RESULTS_DIR / "output_dir"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
