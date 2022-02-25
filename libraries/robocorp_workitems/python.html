@@ -544,7 +544,7 @@ excluding files pending removal.</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItem.get_file">
-<code class="sig-name descname">get_file</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItem.get_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_file</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">path=None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItem.get_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load an attached file and store it on the local filesystem.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -631,9 +631,35 @@ files with work items requires no additional setup from the user.</p>
 library input argument <code class="docutils literal notranslate"><span class="pre">autoload</span></code> is truthy (default).</p>
 <p>After an input has been loaded its payload and files can be accessed
 through corresponding keywords, and optionally these values can be modified.</p>
+<p><strong>E-mail triggering</strong></p>
+<p>Since a process can be started in Control Room by sending an e-mail, a body
+in JSON/YAML/Text/HTML format can be sent as well and this gets attached to the
+input work item with the “rawEmail” payload variable. This library automatically
+parses the content of it and saves into “parsedEmail” the dictionary transformation
+of the original e-mail.</p>
+<p>Example:</p>
+<p>After starting the process by sending an e-mail with a body like:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hello world!&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The robot can use the parsed e-mail body’s dictionary:</p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${mail} =</span><span class="p">    </span><span class="c">Get Work Item Variable</span><span class="p">    </span><span class="c">parsedEmail</span><span class="p"></span>
+<span class="c">Set Work Item Variables</span><span class="p">    </span><span class="c">&amp;{mail}[Body]</span><span class="p"></span>
+<span class="c">${message} =</span><span class="p">     </span><span class="c">Get Work Item Variable</span><span class="p">     </span><span class="c">message</span><span class="p"></span>
+<span class="c">Log</span><span class="p">    </span><span class="c">${message}</span><span class="p">  </span><span class="c"># will print &quot;Hello world!&quot;</span>
+</pre></div>
+</div>
+<p>The behaviour can be disabled by loading the library with
+<code class="docutils literal notranslate"><span class="pre">auto_parse_email=${None}</span></code> or altered by providing to it a dictionary with one
+“key: value” where the key is usually “rawEmail” (the variable set by Control Room,
+which acts as source for the raw e-mail data) and the value is “parsedEmail” by
+default (where the parsed e-mail dictionary gets stored into), value which can be
+customized and retrieved with <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Work</span> <span class="pre">Item</span> <span class="pre">Variable</span></code>.</p>
 <p><strong>Creating outputs</strong></p>
 <p>It’s possible to create multiple new work items as an output from a
-task. With the keyword <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">output</span> <span class="pre">work</span> <span class="pre">item</span></code> a new empty item
+task. With the keyword <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Output</span> <span class="pre">Work</span> <span class="pre">Item</span></code> a new empty item
 is created as a child for the currently loaded input.</p>
 <p>All created output items are sent into the input queue of the next
 step in the process.</p>
@@ -641,13 +667,13 @@ step in the process.</p>
 <p>Keywords that read or write from a work item always operate on the currently
 active work item. Usually that is the input item that has been automatically
 loaded when the execution started, but the currently active item is changed
-whenever the keywords <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">output</span> <span class="pre">work</span> <span class="pre">item</span></code> or <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">input</span> <span class="pre">work</span> <span class="pre">item</span></code>
+whenever the keywords <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Output</span> <span class="pre">Work</span> <span class="pre">Item</span></code> or <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Input</span> <span class="pre">Work</span> <span class="pre">Item</span></code>
 are called. It’s also possible to change the active item manually with the
 keyword <code class="docutils literal notranslate"><span class="pre">Set</span> <span class="pre">current</span> <span class="pre">work</span> <span class="pre">item</span></code>.</p>
 <p><strong>Saving changes</strong></p>
 <p>While a work item is loaded automatically when a suite starts, changes are
 not automatically reflected back to the source. The work item will be modified
-locally and then saved when the keyword <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">work</span> <span class="pre">item</span></code> is called.
+locally and then saved when the keyword <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Work</span> <span class="pre">Item</span></code> is called.
 This also applies to created output work items.</p>
 <p>It is recommended to defer saves until all changes have been made to prevent
 leaving work items in a half-modified state in case of failures.</p>
@@ -686,9 +712,9 @@ and attaches some variables to it.</p>
 
 <span class="gh">*** Tasks ***</span><span class="p"></span>
 <span class="gu">Save variables to Control Room</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Create output work item</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Create Output Work Item</span><span class="p"></span>
 <span class="p">    </span><span class="nf">Set work item variables</span><span class="p">    </span><span class="s">user=Dude</span><span class="p">    </span><span class="s">mail=address@company.com</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Save work item</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 <p>In the next step of the process inside a different robot, we can use
@@ -759,7 +785,7 @@ of local file is used.</p></li>
 <p><strong>NOTE</strong>: Files are not uploaded before work item is saved</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add work item file</span><span class="p">    </span><span class="c">output.xls</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
+<span class="c">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -775,7 +801,7 @@ of local file is used.</p></li>
 </dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Add work item files</span><span class="p">    </span><span class="c">%{ROBOT_ROOT}/generated/*.csv</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
+<span class="c">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -786,26 +812,54 @@ of local file is used.</p></li>
 <dd><p>Remove all data and files in the current work item.</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Clear work item</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
+<span class="c">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.create_output_work_item">
-<code class="sig-name descname">create_output_work_item</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.create_output_work_item" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new output work item.</p>
-<p>An output work item is always created as a child for an input item,
-and as such requires an input to be loaded.</p>
-<p>All changes to the work item are done locally, and are only sent
-to the output queue after the keyword <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">work</span> <span class="pre">item</span></code> is called.</p>
-<p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${customers}=</span><span class="p">    </span><span class="c">Load customer data</span><span class="p"></span>
-<span class="c">FOR</span><span class="p">    </span><span class="c">${customer}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{customers}</span><span class="p"></span>
-<span class="p">    </span><span class="c">Create output work item</span><span class="p"></span>
-<span class="p">    </span><span class="c">Set work item variables</span><span class="p">    </span><span class="c">name=${customer.name}</span><span class="p">    </span><span class="c">id=${customer.id}</span><span class="p"></span>
-<span class="p">    </span><span class="c">Save work item</span><span class="p"></span>
-<span class="c">END</span><span class="p"></span>
+<code class="sig-name descname">create_output_work_item</code><span class="sig-paren">(</span><em class="sig-param">variables: Optional[dict] = None, files: Union[List[str], str, None] = None, save: bool = False</em><span class="sig-paren">)</span> &#x2192; RPA.Robocorp.WorkItems.WorkItem<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.create_output_work_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new output work item with optional variables and files.</p>
+<p>An output work item is always created as a child for an input item, therefore
+a non-released input is required to be loaded first.
+All changes to the work item are done locally and are sent to the output queue
+after the keyword <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Work</span> <span class="pre">Item</span></code> is called only, except when <cite>save</cite> is
+<cite>True</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>variables</strong> – Optional dictionary with variables to be set into the new
+output work item.</p></li>
+<li><p><strong>files</strong> – Optional list or comma separated paths to files to be included
+into the new output work item.</p></li>
+<li><p><strong>save</strong> – Automatically call <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Work</span> <span class="pre">Item</span></code> over the newly created
+output work item.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The newly created output work item object.</p>
+</dd>
+</dl>
+<p><strong>Examples</strong></p>
+<p><strong>Robot Framework</strong></p>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Create output items with variables then save</span><span class="p"></span>
+<span class="p">    </span><span class="c">${customers} =</span><span class="p">  </span><span class="c">Load customer data</span><span class="p"></span>
+<span class="p">    </span><span class="c">FOR</span><span class="p">     </span><span class="c">${customer}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{customers}</span><span class="p"></span>
+<span class="p">        </span><span class="c">Create Output Work Item</span><span class="p"></span>
+<span class="p">        </span><span class="c">Set Work Item Variables</span><span class="p">    </span><span class="c">id=${customer.id}</span><span class="p"></span>
+<span class="p">        </span><span class="c">...</span><span class="p">     </span><span class="c">name=${customer.name}</span><span class="p"></span>
+<span class="p">        </span><span class="c">Save Work Item</span><span class="p"></span>
+<span class="p">    </span><span class="c">END</span><span class="p"></span>
+
+<span class="c">Create and save output items with variables and files in one go</span><span class="p"></span>
+<span class="p">    </span><span class="c">${customers} =</span><span class="p">  </span><span class="c">Load customer data</span><span class="p"></span>
+<span class="p">    </span><span class="c">FOR</span><span class="p">     </span><span class="c">${customer}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{customers}</span><span class="p"></span>
+<span class="p">        </span><span class="c">&amp;{customer_vars} =</span><span class="p">    </span><span class="c">Create Dictionary</span><span class="p">    </span><span class="c">id=${customer.id}</span><span class="p"></span>
+<span class="p">        </span><span class="c">...</span><span class="p">     </span><span class="c">name=${customer.name}</span><span class="p"></span>
+<span class="p">        </span><span class="c">Create Output Work Item</span><span class="p">     </span><span class="c">variables=${customer_vars}</span><span class="p"></span>
+<span class="p">        </span><span class="c">...</span><span class="p">     </span><span class="c">files=devdata${/}report.csv</span><span class="p">   </span><span class="c">save=${True}</span><span class="p"></span>
+<span class="p">    </span><span class="c">END</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -829,7 +883,7 @@ to the output queue after the keyword <code class="docutils literal notranslate"
 </dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Delete work item variables</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">email</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
+<span class="c">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -895,7 +949,7 @@ keyword/function call if truthy</p></li>
 <dd><p>Get the currently active work item.</p>
 <p>The current work item is used as the target by other keywords
 in this library.</p>
-<p>Keywords <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">input</span> <span class="pre">work</span> <span class="pre">item</span></code> and <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">output</span> <span class="pre">work</span> <span class="pre">item</span></code>
+<p>Keywords <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Input</span> <span class="pre">Work</span> <span class="pre">Item</span></code> and <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Output</span> <span class="pre">Work</span> <span class="pre">Item</span></code>
 set the active work item automatically, and return the created
 instance.</p>
 <p>With this keyword the active work item can be retrieved manually.</p>
@@ -921,7 +975,7 @@ starts.</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.get_work_item_file">
-<code class="sig-name descname">get_work_item_file</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_work_item_file</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">path=None</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get attached file from work item to disk.
 Returns the absolute path to the created file.</p>
 <dl class="field-list simple">
@@ -942,7 +996,7 @@ working directory is used.</p></li>
 
 <dl class="method">
 <dt id="RPA.Robocorp.WorkItems.WorkItems.get_work_item_files">
-<code class="sig-name descname">get_work_item_files</code><span class="sig-paren">(</span><em class="sig-param">pattern</em>, <em class="sig-param">dirname=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_files" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_work_item_files</code><span class="sig-paren">(</span><em class="sig-param">pattern</em>, <em class="sig-param">dirname=None</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#RPA.Robocorp.WorkItems.WorkItems.get_work_item_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get files attached to work item that match given pattern.
 Returns a list of absolute paths to the downloaded files.</p>
 <dl class="field-list simple">
@@ -1099,7 +1153,7 @@ details regarding the sent exception</p></li>
 <p><strong>NOTE</strong>: Files are not deleted before work item is saved</p>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Remove work item file</span><span class="p">    </span><span class="c">input.xls</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
+<span class="c">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1118,7 +1172,7 @@ details regarding the sent exception</p></li>
 </dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Remove work item files</span><span class="p">    </span><span class="c">*.xlsx</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
+<span class="c">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1142,13 +1196,13 @@ all changes are discarded when the library goes out of scope.</p>
 <dd><p>Set the currently active work item.</p>
 <p>The current work item is used as the target by other keywords
 in this library.</p>
-<p>Keywords <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">input</span> <span class="pre">work</span> <span class="pre">item</span></code> and <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">output</span> <span class="pre">work</span> <span class="pre">item</span></code>
+<p>Keywords <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Input</span> <span class="pre">Work</span> <span class="pre">Item</span></code> and <code class="docutils literal notranslate"><span class="pre">Create</span> <span class="pre">Output</span> <span class="pre">Work</span> <span class="pre">Item</span></code>
 set the active work item automatically, and return the created
 instance.</p>
 <p>With this keyword the active work item can be set manually.</p>
 <p>Example:</p>
-<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${input}=</span><span class="p">    </span><span class="c">Get input work item</span><span class="p"></span>
-<span class="c">${output}=</span><span class="p">   </span><span class="c">Create output work item</span><span class="p"></span>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${input}=</span><span class="p">    </span><span class="c">Get Input Work Item</span><span class="p"></span>
+<span class="c">${output}=</span><span class="p">   </span><span class="c">Create Output Work Item</span><span class="p"></span>
 <span class="c">Set current work item</span><span class="p">    </span><span class="c">${input}</span><span class="p"></span>
 </pre></div>
 </div>
@@ -1198,7 +1252,7 @@ Robot Framework task variables.</p>
 </dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set work item variable</span><span class="p">    </span><span class="c">username</span><span class="p">    </span><span class="c">MarkyMark</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
+<span class="c">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1214,7 +1268,7 @@ Robot Framework task variables.</p>
 </dl>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Set work item variables</span><span class="p">    </span><span class="c">username=MarkyMark</span><span class="p">    </span><span class="c">email=mark@example.com</span><span class="p"></span>
-<span class="c">Save work item</span><span class="p"></span>
+<span class="c">Save Work Item</span><span class="p"></span>
 </pre></div>
 </div>
 </dd></dl>

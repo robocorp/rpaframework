@@ -334,11 +334,11 @@ which can be iterated over later in a Robot Framework keyword or task:</p>
 <li><p><strong>content</strong> – Rows of values to append</p></li>
 <li><p><strong>name</strong> – Name of worksheet to append to</p></li>
 <li><p><strong>header</strong> – Set rows according to existing header row</p></li>
-<li><p><strong>start</strong> – Start of data, NOTE: Only required when headers is True</p></li>
+<li><p><strong>start</strong> – Start of data, NOTE: Only required when header is True</p></li>
 </ul>
 </dd>
 </dl>
-<p>The <code class="docutils literal notranslate"><span class="pre">content</span></code> argument can be of any tabular format. Typically
+<p>The <code class="docutils literal notranslate"><span class="pre">content</span></code> argument can be of any tabular format. Typically,
 this is a Table object created by the <code class="docutils literal notranslate"><span class="pre">RPA.Tables</span></code> library,
 but it can also be a list of lists, or a list of dictionaries.</p>
 <p>If the <code class="docutils literal notranslate"><span class="pre">header</span></code> flag is enabled, the existing header in the worksheet
@@ -773,6 +773,11 @@ for documentation.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="RPA.Excel.Files.XlsWorkbook.is_sheet_empty">
+<em class="property">static </em><code class="sig-name descname">is_sheet_empty</code><span class="sig-paren">(</span><em class="sig-param">sheet</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.is_sheet_empty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.open">
 <code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param">path=None</em>, <em class="sig-param">read_only=False</em>, <em class="sig-param">write_only=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.open" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -862,6 +867,11 @@ for documentation.</p>
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.insert_image">
 <code class="sig-name descname">insert_image</code><span class="sig-paren">(</span><em class="sig-param">row</em>, <em class="sig-param">column</em>, <em class="sig-param">image</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.insert_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Excel.Files.XlsxWorkbook.is_sheet_empty">
+<em class="property">static </em><code class="sig-name descname">is_sheet_empty</code><span class="sig-paren">(</span><em class="sig-param">sheet</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.is_sheet_empty" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
