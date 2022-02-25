@@ -499,15 +499,20 @@ where the value <code class="docutils literal notranslate"><span class="pre">1.0
 
 <dl class="method">
 <dt id="RPA.Excel.Files.Files.open_workbook">
-<code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.open_workbook" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open_workbook</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">data_only: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.Files.open_workbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open an existing Excel workbook.</p>
 <p>Opens the workbook in memory and sets it as the active workbook.
 This library can only have one workbook open at a time, and
 any previously opened workbooks are closed first.</p>
-<p>The file can be in either <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> or <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> format.</p>
+<p>The file can be in either <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> or <code class="docutils literal notranslate"><span class="pre">.xls</span></code> format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>path</strong> – path to Excel file</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to Excel file</p></li>
+<li><p><strong>data_only</strong> – controls whether cells with formulae have either
+the formula (default, False) or the value stored the last time Excel
+read the sheet (True). Affects only <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> files.</p></li>
+</ul>
 </dd>
 </dl>
 <p>Examples:</p>
@@ -779,7 +784,7 @@ for documentation.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsWorkbook.open">
-<code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param">path=None</em>, <em class="sig-param">read_only=False</em>, <em class="sig-param">write_only=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.open" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param">path=None</em>, <em class="sig-param">read_only=False</em>, <em class="sig-param">write_only=False</em>, <em class="sig-param">data_only=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsWorkbook.open" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -876,7 +881,7 @@ for documentation.</p>
 
 <dl class="method">
 <dt id="RPA.Excel.Files.XlsxWorkbook.open">
-<code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param">path=None</em>, <em class="sig-param">read_only=False</em>, <em class="sig-param">write_only=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.open" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param">path=None</em>, <em class="sig-param">read_only=False</em>, <em class="sig-param">write_only=False</em>, <em class="sig-param">data_only=False</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Excel.Files.XlsxWorkbook.open" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
