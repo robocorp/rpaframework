@@ -314,13 +314,12 @@ class WindowKeywords(LibraryContext):
 
         if len(large) > 0:
             hdc.DrawIcon((0, 0), large[0])
-            result_image_file = f"icon_{executable_path.name}.bmp"
-            hbmp.SaveBitmapFile(hdc, result_image_file)
-            # signedIntsArray = hbmp.GetBitmapBits(True)
-            with Image.open(result_image_file) as img:
-                buffered = BytesIO()
-                img.save(buffered, format="PNG")
-                image_string = base64.b64encode(buffered.getvalue())
+            result_image_file = f"icon_{executable_path.name}.png"
+            bmpstr = hbmp.GetBitmapBits(True)
+            img = Image.frombuffer("RGBA", (32, 32), bmpstr, "raw", "BGRA", 0, 1)
+            img.save(result_image_file)
+            with open(result_image_file, "rb") as img_file:
+                image_string = base64.b64encode(img_file.read())
             Path(result_image_file).unlink()
         return image_string
 
