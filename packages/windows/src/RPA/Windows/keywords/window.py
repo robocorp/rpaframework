@@ -2,7 +2,6 @@ import base64
 import os
 import signal
 import time
-from io import BytesIO
 from pathlib import Path
 from typing import Dict, List, Optional
 
