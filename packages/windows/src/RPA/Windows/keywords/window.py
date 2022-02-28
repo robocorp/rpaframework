@@ -2,7 +2,6 @@ import base64
 import os
 import signal
 import time
-from io import BytesIO
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -251,11 +250,15 @@ class WindowKeywords(LibraryContext):
         return window
 
     @keyword(tags=["window"])
-    def list_windows(self, icons: bool = False) -> List[Dict]:
+    def list_windows(
+        self, icons: bool = False, icon_save_directory: str = None
+    ) -> List[Dict]:
         """List all window element on the system.
 
         :param icons: on True dictionary will contain Base64
          string of the icon, default False
+        :param icon_save_directory: if set will save retrieved icons
+         into this filepath, by default icon files are not saved
         :return: list of dictionaries containing information
          about Window elements
 
@@ -289,21 +292,21 @@ class WindowKeywords(LibraryContext):
                 "name": process_list[pid] if pid in process_list else None,
                 "path": fullpath,
                 "handle": win.NativeWindowHandle,
-                "icon": self.get_icon(fullpath) if icons else None,
+                "icon": self.get_icon(fullpath, icon_save_directory) if icons else None,
             }
             win_list.append(info)
         return win_list
 
-    def get_icon(self, filepath: str) -> str:
+    def get_icon(self, filepath: str, icon_save_directory: str = None) -> str:
         image_string = None
         executable_path = Path(filepath)
         ico_x = win32api.GetSystemMetrics(win32con.SM_CXICON)
         ico_y = win32api.GetSystemMetrics(win32con.SM_CYICON)
 
-        large, small = win32gui.ExtractIconEx(filepath, 0, 10)
+        # TODO. Get different size icons
+        small, large = win32gui.ExtractIconEx(filepath, 0, 10)
         if len(small) > 0:
             win32gui.DestroyIcon(small[0])
-
         hdc = win32ui.CreateDCFromHandle(win32gui.GetDC(0))
         hbmp = win32ui.CreateBitmap()
 
@@ -314,14 +317,17 @@ class WindowKeywords(LibraryContext):
 
         if len(large) > 0:
             hdc.DrawIcon((0, 0), large[0])
-            result_image_file = f"icon_{executable_path.name}.bmp"
-            hbmp.SaveBitmapFile(hdc, result_image_file)
-            # signedIntsArray = hbmp.GetBitmapBits(True)
-            with Image.open(result_image_file) as img:
-                buffered = BytesIO()
-                img.save(buffered, format="PNG")
-                image_string = base64.b64encode(buffered.getvalue())
-            Path(result_image_file).unlink()
+            result_image_file = f"icon_{executable_path.name}.png"
+            if icon_save_directory:
+                result_image_file = Path(icon_save_directory) / result_image_file
+                result_image_file = result_image_file.resolve()
+            bmpstr = hbmp.GetBitmapBits(True)
+            img = Image.frombuffer("RGBA", (32, 32), bmpstr, "raw", "BGRA", 0, 1)
+            img.save(result_image_file)
+            with open(result_image_file, "rb") as img_file:
+                image_string = base64.b64encode(img_file.read())
+            if not icon_save_directory:
+                Path(result_image_file).unlink()
         return image_string
 
     @keyword(tags=["window"])
