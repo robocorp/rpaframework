@@ -36,7 +36,9 @@ def inspect_element(verbose: bool, action: str = "Click", control_window: bool =
             top_level_name = top_level_control.Name
             top_level_handle = top_level_control.NativeWindowHandle
 
-        parent_locator = _get_element_key_properties(parent_control, verbose=verbose) or "N/A"
+        parent_locator = (
+            _get_element_key_properties(parent_control, verbose=verbose) or "N/A"
+        )
         child_locator = _get_element_key_properties(control, verbose=verbose) or "N/A"
         locator_path = f"{parent_locator} > {child_locator}"
         if "name:" in child_locator or "id:" in child_locator:
