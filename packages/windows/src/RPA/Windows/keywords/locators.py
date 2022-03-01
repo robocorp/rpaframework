@@ -292,7 +292,7 @@ class LocatorKeywords(LibraryContext):
         self,
         locator: Optional[Locator] = None,
         search_depth: int = 8,
-        root_element: WindowsElement = None,
+        root_element: Optional[WindowsElement] = None,
         timeout: Optional[float] = None,  # pylint: disable=unused-argument
     ) -> WindowsElement:
         """Get Control element defined by the locator.
