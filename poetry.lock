@@ -1821,7 +1821,7 @@ rpaframework-core = ">=6.0.0,<7.0.0"
 
 [[package]]
 name = "rpaframework-windows"
-version = "2.3.1"
+version = "2.3.2"
 description = "Windows library for RPA Framework"
 category = "main"
 optional = false
@@ -1838,7 +1838,7 @@ pynput-robocorp-fork = "^4.0.0"
 pywin32 = {version = ">=300,<304", markers = "python_full_version < \"3.7.6\" and sys_platform == \"win32\" or python_full_version > \"3.7.6\" and python_full_version < \"3.8.1\" and sys_platform == \"win32\" or python_full_version > \"3.8.1\" and sys_platform == \"win32\""}
 robotframework = ">=4.0.0,!=4.0.1,<5.0.0"
 robotframework-pythonlibcore = "^3.0.0"
-rpaframework-core = "^6.5.4"
+rpaframework-core = "^6.6.2"
 uiautomation = "^2.0.15"
 
 [package.source]
