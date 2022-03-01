@@ -7,6 +7,7 @@ from typing import Dict, List, Optional
 
 from PIL import Image
 
+from RPA.Windows import utils
 from RPA.Windows.keywords import (
     ElementNotFound,
     LibraryContext,
@@ -14,7 +15,6 @@ from RPA.Windows.keywords import (
     keyword,
     with_timeout,
 )
-from RPA.Windows import utils
 from .locators import Locator, WindowsElement
 
 if utils.IS_WINDOWS:

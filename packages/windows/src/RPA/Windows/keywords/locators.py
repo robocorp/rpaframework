@@ -43,9 +43,11 @@ class WindowsElement:
     """Represent Control as dataclass"""
 
     _WINDOW_SIBLING_COMPARE = {
+        # <locator_strategy>: <element_attribute>
         "name": "name",  # this works for "subname" as well
         "class": "class_name",
         "control": "control_type",
+        "id": "automation_id",
     }
 
     item: Control

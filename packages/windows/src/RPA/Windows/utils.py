@@ -1,10 +1,10 @@
 from typing import Dict
 import platform
 
-import psutil
-
-
 IS_WINDOWS = platform.system() == "Windows"
+
+if IS_WINDOWS:
+    import psutil
 
 
 def get_process_list() -> Dict:

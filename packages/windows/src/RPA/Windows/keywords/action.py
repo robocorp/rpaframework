@@ -1,9 +1,9 @@
 from pathlib import Path
 from typing import Optional
 
+from RPA.Windows import utils
 from RPA.Windows.keywords import keyword
 from RPA.Windows.keywords.context import ActionNotPossible, LibraryContext
-from RPA.Windows import utils
 from .locators import Locator, WindowsElement
 
 if utils.IS_WINDOWS:

@@ -5,10 +5,8 @@ from typing import Optional
 from RPA.Windows.utils import IS_WINDOWS
 
 if IS_WINDOWS:
-    from comtypes import COMError  # noqa
     import uiautomation as auto
-else:
-    COMError = Exception
+    from comtypes import COMError  # noqa
 
 
 class ControlNotFound(ValueError):
