@@ -281,24 +281,32 @@ class WindowKeywords(LibraryContext):
             pid = win.ProcessId
             fullpath = None
             try:
-                handle = win32api.OpenProcess(win32con.PROCESS_ALL_ACCESS, False, pid)
+                handle = win32api.OpenProcess(
+                    win32con.PROCESS_QUERY_LIMITED_INFORMATION, False, pid
+                )
                 fullpath = win32process.GetModuleFileNameEx(handle, 0)
             except Exception as err:  # pylint: disable=broad-except
                 self.logger.info("Open process error in `List Windows`: %s", str(err))
-
+            icon_string = (
+                self.get_icon(fullpath, icon_save_directory) if icons else None
+            )
             info = {
                 "title": win.Name,
                 "pid": pid,
                 "name": process_list[pid] if pid in process_list else None,
                 "path": fullpath,
                 "handle": win.NativeWindowHandle,
-                "icon": self.get_icon(fullpath, icon_save_directory) if icons else None,
+                "icon": icon_string,
             }
+            if icons and not icon_string:
+                self.logger.info("Icon for %s returned empty", win.Name)
             win_list.append(info)
         return win_list
 
     def get_icon(self, filepath: str, icon_save_directory: str = None) -> str:
         image_string = None
+        if not filepath:
+            return None
         executable_path = Path(filepath)
         ico_x = win32api.GetSystemMetrics(win32con.SM_CXICON)
         ico_y = win32api.GetSystemMetrics(win32con.SM_CYICON)
