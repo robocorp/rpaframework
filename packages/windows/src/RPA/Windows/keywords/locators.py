@@ -65,22 +65,24 @@ class WindowsElement:
     xcenter: int = -1
     ycenter: int = -1
 
-    def __init__(self, item, locator: Optional[Locator]):
-        self.item = item
+    def __init__(self, item: Control, locator: Optional[Locator]):
+        self.item: Control = item
         self.locator: Optional[Locator] = locator
         self.name = item.Name
         self.automation_id = item.AutomationId
         self.control_type = item.ControlTypeName
         self.class_name = item.ClassName
+        # If there's no rectangle, then all coords are defaulting to -1.
         rect = item.BoundingRectangle
-        self.left = rect.left if rect else -1
-        self.right = rect.right if rect else -1
-        self.top = rect.top if rect else -1
-        self.bottom = rect.bottom if rect else -1
-        self.width = rect.width() if rect else -1
-        self.height = rect.height() if rect else -1
-        self.xcenter = rect.xcenter() if rect else -1
-        self.ycenter = rect.ycenter() if rect else -1
+        if rect:
+            self.left = rect.left
+            self.right = rect.right
+            self.top = rect.top
+            self.bottom = rect.bottom
+            self.width = rect.width()
+            self.height = rect.height()
+            self.xcenter = rect.xcenter()
+            self.ycenter = rect.ycenter()
 
     def is_sibling(self, win_elem: "WindowsElement") -> bool:
         """Returns `True` if the provided window element is a sibling."""
