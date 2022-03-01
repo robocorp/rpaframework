@@ -1,9 +1,9 @@
 from pathlib import Path
 from typing import Optional
 
+from RPA.Windows import utils
 from RPA.Windows.keywords import keyword
 from RPA.Windows.keywords.context import ActionNotPossible, LibraryContext
-from RPA.Windows import utils
 from .locators import Locator, WindowsElement
 
 if utils.IS_WINDOWS:
@@ -17,8 +17,8 @@ class ActionKeywords(LibraryContext):
     def click(
         self,
         locator: Locator,
-        wait_time: float = None,
-        timeout: float = None,
+        wait_time: Optional[float] = None,
+        timeout: Optional[float] = None,
     ) -> WindowsElement:
         """Mouse click on element matching given locator.
 
@@ -46,8 +46,8 @@ class ActionKeywords(LibraryContext):
     def double_click(
         self,
         locator: Locator,
-        wait_time: float = None,
-        timeout: float = None,
+        wait_time: Optional[float] = None,
+        timeout: Optional[float] = None,
     ) -> WindowsElement:
         """Double mouse click on element matching given locator.
 
@@ -73,8 +73,8 @@ class ActionKeywords(LibraryContext):
     def right_click(
         self,
         locator: Locator,
-        wait_time: float = None,
-        timeout: float = None,
+        wait_time: Optional[float] = None,
+        timeout: Optional[float] = None,
     ) -> WindowsElement:
         """Right mouse click on element matching given locator.
 
@@ -100,8 +100,8 @@ class ActionKeywords(LibraryContext):
     def middle_click(
         self,
         locator: Locator,
-        wait_time: float = None,
-        timeout: float = None,
+        wait_time: Optional[float] = None,
+        timeout: Optional[float] = None,
     ) -> WindowsElement:
         """Right mouse click on element matching given locator.
 
@@ -194,9 +194,9 @@ class ActionKeywords(LibraryContext):
     def send_keys(
         self,
         locator: Optional[Locator] = None,
-        keys: str = None,
+        keys: Optional[str] = None,
         interval: float = 0.01,
-        wait_time: float = None,
+        wait_time: Optional[float] = None,
         send_enter: bool = False,
     ) -> WindowsElement:
         """Send keys to desktop, current window or to Control element
@@ -292,7 +292,7 @@ class ActionKeywords(LibraryContext):
     def set_value(
         self,
         locator: Optional[Locator] = None,
-        value: str = None,
+        value: Optional[str] = None,
         append: bool = False,
         enter: bool = False,
         newline: bool = False,

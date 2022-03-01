@@ -1,10 +1,10 @@
 from typing import Dict
 import platform
 
-import psutil
-
-
 IS_WINDOWS = platform.system() == "Windows"
+
+if IS_WINDOWS:
+    import psutil
 
 
 def get_process_list() -> Dict:
@@ -12,10 +12,7 @@ def get_process_list() -> Dict:
 
     Returns dictionary mapping process id to process name
     """
-    process_list = {}
-    for proc in psutil.process_iter():
-        process_list[proc.pid] = proc.name()
-    return process_list
+    return {proc.pid: proc.name() for proc in psutil.process_iter()}
 
 
 def is_numeric(value):

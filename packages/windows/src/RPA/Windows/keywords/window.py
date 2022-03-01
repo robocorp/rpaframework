@@ -7,6 +7,7 @@ from typing import Dict, List, Optional
 
 from PIL import Image
 
+from RPA.Windows import utils
 from RPA.Windows.keywords import (
     ElementNotFound,
     LibraryContext,
@@ -14,7 +15,6 @@ from RPA.Windows.keywords import (
     keyword,
     with_timeout,
 )
-from RPA.Windows import utils
 from .locators import Locator, WindowsElement
 
 if utils.IS_WINDOWS:
@@ -48,8 +48,8 @@ class WindowKeywords(LibraryContext):
         self,
         locator: Optional[Locator] = None,
         foreground: bool = True,
-        wait_time: float = None,
-        timeout: float = None,  # pylint: disable=unused-argument
+        wait_time: Optional[float] = None,
+        timeout: Optional[float] = None,  # pylint: disable=unused-argument
         main: bool = True,
     ) -> WindowsElement:
         """Controls the window defined by the locator.
@@ -104,8 +104,8 @@ class WindowKeywords(LibraryContext):
         self,
         locator: Optional[Locator] = None,
         foreground: bool = True,
-        wait_time: float = None,
-        timeout: float = None,
+        wait_time: Optional[float] = None,
+        timeout: Optional[float] = None,
     ) -> WindowsElement:
         """Get control of child window of the active window
         by locator.
@@ -251,7 +251,7 @@ class WindowKeywords(LibraryContext):
 
     @keyword(tags=["window"])
     def list_windows(
-        self, icons: bool = False, icon_save_directory: str = None
+        self, icons: bool = False, icon_save_directory: Optional[str] = None
     ) -> List[Dict]:
         """List all window element on the system.
 
@@ -303,27 +303,30 @@ class WindowKeywords(LibraryContext):
             win_list.append(info)
         return win_list
 
-    def get_icon(self, filepath: str, icon_save_directory: str = None) -> str:
-        image_string = None
+    @staticmethod
+    def get_icon(
+        filepath: str, icon_save_directory: Optional[str] = None
+    ) -> Optional[str]:
         if not filepath:
             return None
-        executable_path = Path(filepath)
-        ico_x = win32api.GetSystemMetrics(win32con.SM_CXICON)
-        ico_y = win32api.GetSystemMetrics(win32con.SM_CYICON)
 
-        # TODO. Get different size icons
+        # TODO: Get different sized icons.
         small, large = win32gui.ExtractIconEx(filepath, 0, 10)
         if len(small) > 0:
             win32gui.DestroyIcon(small[0])
         hdc = win32ui.CreateDCFromHandle(win32gui.GetDC(0))
         hbmp = win32ui.CreateBitmap()
 
+        ico_x = win32api.GetSystemMetrics(win32con.SM_CXICON)
+        ico_y = win32api.GetSystemMetrics(win32con.SM_CYICON)
         hbmp.CreateCompatibleBitmap(hdc, ico_x, ico_y)
         hdc = hdc.CreateCompatibleDC()
 
         hdc.SelectObject(hbmp)
 
+        image_string = None
         if len(large) > 0:
+            executable_path = Path(filepath)
             hdc.DrawIcon((0, 0), large[0])
             result_image_file = f"icon_{executable_path.name}.png"
             if icon_save_directory:
@@ -336,6 +339,7 @@ class WindowKeywords(LibraryContext):
                 image_string = base64.b64encode(img_file.read())
             if not icon_save_directory:
                 Path(result_image_file).unlink()
+
         return image_string
 
     @keyword(tags=["window"])
