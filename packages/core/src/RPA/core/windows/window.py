@@ -28,7 +28,7 @@ class Window:
         self.logger = logging.getLogger(__file__)
 
     @classmethod
-    def get_icon(cls, filepath: str, icon_save_directory: str = None) -> str:
+    def get_icon(cls, filepath: str, icon_save_directory: Optional[str] = None) -> str:
         image_string = None
         executable_path = Path(filepath)
         ico_x = win32api.GetSystemMetrics(win32con.SM_CXICON)
