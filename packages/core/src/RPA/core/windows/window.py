@@ -63,7 +63,7 @@ class Window:
         return image_string
 
     def list_windows(
-        self, icons: bool = False, icon_save_directory: str = None
+        self, icons: bool = False, icon_save_directory: Optional[str] = None
     ) -> List[Dict]:
         windows = auto.GetRootControl().GetChildren()
         process_list = get_process_list()
