@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Optional
 from pathlib import Path
 from io import BytesIO
 import base64
