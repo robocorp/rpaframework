@@ -63,7 +63,9 @@ class ApplicationKeywords(LibraryContext):
         super().__init__(ctx)
         self._apps = []
 
-    def _create_app(self, name: str, args: Union[List[str], str], shell: bool = False) -> Application:
+    def _create_app(
+        self, name: str, args: Union[List[str], str], shell: bool = False
+    ) -> Application:
         cmd = " ".join(args) if not isinstance(args, str) else args
         self.logger.info("Starting application: %s", cmd)
 
