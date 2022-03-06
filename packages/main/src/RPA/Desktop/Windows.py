@@ -1682,6 +1682,19 @@ class Windows(OperatingSystem):
         element_info = element.element_info
         element_attributes = [a for a in dir(element_info) if not a.startswith("_")]
 
+        for attr in attributes_to_remove:
+            element_dict.pop(attr, None)
+
+        try:
+            element_dict["legacy"] = (
+                element.legacy_properties()
+                if hasattr(element, "legacy_properties")
+                else None
+            )
+        except AttributeError:
+            pass
+
+
         for attr in element_attributes:
             try:
                 attr_value = getattr(element_info, attr)
@@ -1693,17 +1706,11 @@ class Windows(OperatingSystem):
                     )
             except TypeError:
                 pass
+            except NotImplementedError:
+                pass
             except COMError as ce:
                 self.logger.info("Got COM error: %s", str(ce))
 
-        for attr in attributes_to_remove:
-            element_dict.pop(attr, None)
-
-        element_dict["legacy"] = (
-            element.legacy_properties()
-            if hasattr(element, "legacy_properties")
-            else None
-        )
         element_dict["object"] = element
         # child_id = (
         #     f"[{element_dict['legacy']['ChildId']}]"
@@ -1717,7 +1724,7 @@ class Windows(OperatingSystem):
         #     element_dict["xpath"] = f"/Window{element_dict['xpath']}"
 
         return element_dict
-
+    
     def put_system_to_sleep(self) -> None:
         """Put Windows into sleep mode
 
