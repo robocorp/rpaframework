@@ -815,7 +815,7 @@ class Windows(OperatingSystem):
             self.quit_application(aid)
             del self._apps[aid]
 
-    def quit_application(self, app_id: str = None, send_keys: bool = False) -> None:
+    def quit_application(self, app_id: int = None, send_keys: bool = False) -> None:
         """Quit an application by application id or
         active application if `app_id` is None.
 
