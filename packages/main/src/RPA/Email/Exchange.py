@@ -621,6 +621,7 @@ class Exchange:
             "message_id": item.message_id,
             "size": item.size,
             "categories": item.categories,
+            "has_attachments": len(item.attachments) > 0,
             "attachments": attachments,
             "attachments_object": item.attachments,
             "id": item.id,
