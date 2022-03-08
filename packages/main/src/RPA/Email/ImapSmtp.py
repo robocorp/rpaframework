@@ -562,19 +562,21 @@ class ImapSmtp:
         has_attachments = False
 
         for part in message.walk():
+            if not part:
+                continue
             content_filename = get_part_filename(part)
             if content_filename:
                 has_attachments = True
                 continue
-
+            content_type = "text/plain"
+            _data = ""
             content_charset = part.get_content_charset()
-            if not content_charset:
-                # We cannot know the character set, so return decoded "something"
-                text = part.get_payload(decode=True)
-                continue
+            if content_charset:
+                content_type = part.get_content_type()
+            payload = part.get_payload(decode=True)
+            if payload:
+                _data = str(payload, str(content_charset), "ignore")
 
-            content_type = part.get_content_type()
-            _data = str(part.get_payload(decode=True), str(content_charset), "ignore")
             if content_type == "text/plain":
                 text = _data
             elif content_type == "text/html":
