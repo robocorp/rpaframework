@@ -24,7 +24,7 @@ from imaplib import IMAP4_SSL
 from smtplib import SMTP, SMTP_SSL, ssl
 from smtplib import SMTPConnectError, SMTPNotSupportedError, SMTPServerDisconnected
 
-from typing import Any, BinaryIO, List, Tuple, Union
+from typing import Any, BinaryIO, List, Optional, Tuple, Union
 
 from htmldocx import HtmlToDocx
 from robot.libraries.BuiltIn import BuiltIn, RobotNotRunningError
@@ -384,12 +384,14 @@ class ImapSmtp:
     def send_message(
         self,
         sender: str,
-        recipients: str,
+        recipients: Union[List[str], str],
         subject: str = "",
         body: str = "",
-        attachments: Union[List[str], str] = None,
+        attachments: Optional[Union[List[str], str]] = None,
         html: bool = False,
-        images: str = None,
+        images: Optional[Union[List[str], str]] = None,
+        cc: Optional[Union[List[str], str]] = None,
+        bcc: Optional[Union[List[str], str]] = None,
     ) -> bool:
         """Send SMTP email
 
@@ -397,9 +399,11 @@ class ImapSmtp:
         :param recipients: who is receiving, ie. 'to'
         :param subject: mail subject field
         :param body: mail body content
-        :param attachments: list of filepaths to attach, defaults to []
+        :param attachments: list of filepaths to attach
         :param html: if message content is in HTML, default `False`
-        :param images: list of filepaths for inline use, defaults to []
+        :param images: list of filepaths for inline images
+        :param cc: list of email addresses for email 'cc' field
+        :param bcc: list of email addresses for email 'bcc' field
 
         Valid sender values:
 
@@ -411,22 +415,32 @@ class ImapSmtp:
         .. code-block:: robotframework
 
             Send Message  sender@domain.com  recipient@domain.com
+            ...           cc=need_to_know@domain.com
+            ...           bcc=hidden_copy@domain.com
             ...           subject=Greetings Software Robot Developer
             ...           body=${email_body}
             ...           attachments=${CURDIR}${/}report.pdf
         """
         add_charset(self.encoding, QP, QP, self.encoding)
-        recipients, attachments, images = self._handle_message_parameters(
+        to, attachments, images = self._handle_message_parameters(
             recipients, attachments, images
         )
         msg = MIMEMultipart()
 
         self._add_attachments_to_msg(attachments, msg)
 
-        msg["From"] = sender
-        msg["To"] = ",".join(recipients)
-        msg["Subject"] = Header(subject, self.encoding)
         sender = sender.encode("idna").decode("ascii")
+        msg["From"] = sender
+        msg["To"] = ",".join(to).encode("idna").decode("ascii")
+        msg["Subject"] = Header(subject, self.encoding)
+        rcpt_cc = []
+        rcpt_bcc = []
+        if cc:
+            msg["Cc"] = ",".join(cc) if isinstance(cc, list) else cc
+            rcpt_cc = cc if isinstance(cc, list) else cc.split(",")
+        if bcc:
+            rcpt_bcc = bcc if isinstance(bcc, list) else bcc.split(",")
+        recipients = rcpt_cc + rcpt_bcc + [to]
         if html:
             for im in images:
                 im = im.strip()
