@@ -90,12 +90,12 @@ def test_send_message_with_images_and_attachments(mocked, library):
 
 
 def test_get_filter_key_value_unknown_criterion_key(library):
-    criteria = library._get_filter_key_value("dfddff")
-    assert criteria == {}
-    criteria = library._get_filter_key_value("dfddff:a")
-    assert criteria == {}
-    criteria = library._get_filter_key_value("dfddff:")
-    assert criteria == {}
+    with pytest.raises(KeyError):
+        _ = library._get_filter_key_value("dfddff")
+    with pytest.raises(KeyError):
+        _ = library._get_filter_key_value("dfddff:a")
+    with pytest.raises(KeyError):
+        _ = library._get_filter_key_value("dfddff:")
 
 
 def test_get_filter_key_value_dates(library):

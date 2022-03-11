@@ -595,6 +595,8 @@ class Exchange:
             self.logger.debug("Second regex pass: %s %s", res[0], res[1])
             if res[0] not in valid_filters.keys():
                 valid_filters[res[0]] = res[1]
+        if criterion and criterion != "" and len(valid_filters) == 0:
+            raise KeyError("Invalid criterion '%s'" % criterion)
         self.logger.info(
             "Using filter: %s",
             ",".join(["{}:{}".format(k, v) for k, v in valid_filters.items()]),
@@ -604,7 +606,7 @@ class Exchange:
     def _parse_email_criteria(self, part):
         original_key, value = part
         original_key = original_key.replace(":", "")
-        if original_key in ["and", "or", "contains", None]:
+        if original_key in ["and", "or", "contains"]:
             # Note. Not implemented yet
             return None
         key = None
