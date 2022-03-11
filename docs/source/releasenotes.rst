@@ -28,8 +28,8 @@ Release notes
 
   - Add more filtering keys to the `criterion` parameter (detailed description in the
     `library documentation <https://rpaframework.org/libraries/email_exchange/index.html>`_)
-  - The `contains` parameter has been deprecated as filtering keys now contains `_contains`
-    version, for example `sender_contains:name@domain.com`
+  - The `contains` parameter has been deprecated as filtering keys now has `_contains` option, for
+    example `sender_contains:name@domain.com`
   - Fix issue with keyword ``Wait For Message``
 
 - Resolved **Github** issues
