@@ -319,7 +319,11 @@ class ServiceS3(AWSBase):
 
         for _, object_name in enumerate(files):
             try:
-                download_path = str(Path(target_directory) / object_name)
+                if "/" not in object_name:
+                    download_path = str(Path(target_directory) / object_name)
+                else:
+                    file_name = object_name.rpartition("/")
+                    download_path = str(Path(target_directory) / file_name[2])
                 response = client.download_file(bucket_name, object_name, download_path)
                 if response is None:
                     download_count += 1
