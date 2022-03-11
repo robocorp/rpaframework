@@ -268,14 +268,14 @@
 <span class="p">    </span><span class="c"># Using save_dir all attachments in listed messages are saved</span>
 <span class="p">    ${</span><span class="nv">messages</span><span class="p">}=    </span><span class="nf">List Messages</span><span class="p"></span>
 <span class="p">    ...    </span><span class="s">INBOX/Problems/sub1</span><span class="p"></span>
-<span class="p">    ...    </span><span class="s">criterion=subject:about my orders</span><span class="p"></span>
+<span class="p">    ...    </span><span class="s">criterion=subject:&#39;about my orders&#39;</span><span class="p"></span>
 <span class="p">    ...    </span><span class="s">save_dir=</span><span class="p">${</span><span class="nv">CURDIR</span><span class="p">}${</span><span class="nv">/</span><span class="p">}</span><span class="s">savedir2</span><span class="p"></span>
 <span class="p">    FOR    ${</span><span class="nv">msg</span><span class="p">}    IN    @{</span><span class="nv">messages</span><span class="p">}</span>
 <span class="p">        </span><span class="nf">Log Many</span><span class="p">    ${</span><span class="nv">msg</span><span class="p">}</span>
 <span class="p">    END</span>
 
 <span class="gu">Task of moving messages</span><span class="p"></span>
-<span class="p">    </span><span class="nf">Move Messages</span><span class="p">    </span><span class="s">criterion=subject:about my orders</span><span class="p"></span>
+<span class="p">    </span><span class="nf">Move Messages</span><span class="p">    </span><span class="s">criterion=subject:&#39;about my orders&#39;</span><span class="p"></span>
 <span class="p">    ...    </span><span class="s">source=INBOX/Processed Purchase Invoices/sub2</span><span class="p"></span>
 <span class="p">    ...    </span><span class="s">target=INBOX/Problems/sub1</span><span class="p"></span>
 </pre></div>
@@ -293,6 +293,80 @@
     <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;Message from RPA Python&quot;</span><span class="p">,</span>
     <span class="n">body</span><span class="o">=</span><span class="s2">&quot;RPA Python message body&quot;</span><span class="p">,</span>
 <span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>About criterion parameter</strong></p>
+<p>Following table shows possible criterion keys that can be used to filter emails.
+There apply to all keywords which have <code class="docutils literal notranslate"><span class="pre">criterion</span></code> parameter.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Effective search</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>subject</p></td>
+<td><p>subject to match</p></td>
+</tr>
+<tr class="row-odd"><td><p>subject_contains</p></td>
+<td><p>subject to contain</p></td>
+</tr>
+<tr class="row-even"><td><p>body</p></td>
+<td><p>body to match</p></td>
+</tr>
+<tr class="row-odd"><td><p>body_contains</p></td>
+<td><p>body to contain</p></td>
+</tr>
+<tr class="row-even"><td><p>sender</p></td>
+<td><p>sender (from) to match</p></td>
+</tr>
+<tr class="row-odd"><td><p>sender_contains</p></td>
+<td><p>sender (from) to contain</p></td>
+</tr>
+<tr class="row-even"><td><p>before</p></td>
+<td><p>received time before this time</p></td>
+</tr>
+<tr class="row-odd"><td><p>after</p></td>
+<td><p>received time after this time</p></td>
+</tr>
+<tr class="row-even"><td><p>between</p></td>
+<td><p>received time between start and end</p></td>
+</tr>
+<tr class="row-odd"><td><p>category</p></td>
+<td><p>categories to match</p></td>
+</tr>
+<tr class="row-even"><td><p>category_contains</p></td>
+<td><p>categories to contain</p></td>
+</tr>
+<tr class="row-odd"><td><p>importance</p></td>
+<td><p>importance to match</p></td>
+</tr>
+</tbody>
+</table>
+<p>Keys <cite>before</cite>, <cite>after</cite> and <cite>between</cite> at the moment support two
+different timeformats either <cite>%d-%m-%Y %H:%M</cite> or <cite>%d-%m-%Y</cite>. These
+keys also support special string <cite>NOW</cite> which can be used especially
+together with keyword <code class="docutils literal notranslate"><span class="pre">Wait</span> <span class="pre">for</span> <span class="pre">message</span>&#160; <span class="pre">criterion=after:NOW</span></code>.</p>
+<p>When giving time which includes hours and minutes then the whole
+time string needs to be enclosed into single quotes.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>before:25-02-2022
+after:NOW
+between:<span class="s1">&#39;31-12-2021 23:50 and 01-01-2022 00:10&#39;</span>
+</pre></div>
+</div>
+<p>Different criterion keys can be combined.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>subject_contains:<span class="s1">&#39;new year&#39;</span> between:<span class="s1">&#39;31-12-2021 23:50 and 01-01-2022 00:10&#39;</span>
+</pre></div>
+</div>
+<p>Please <strong>note</strong> that all values in the criterion that contain spaces need
+to be enclosed within single quotes.</p>
+<p>In the following example the email <cite>subject</cite> is going to matched
+only against <cite>new</cite> not <cite>new year</cite>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>subject_contains:new year
 </pre></div>
 </div>
 <dl class="attribute">
@@ -506,15 +580,13 @@ save attachments from that EML file, default False</p></li>
 </dd>
 </dl>
 <p>Example.</p>
-<blockquote>
-<div><p>${messages}=    List Messages
-FOR    ${msg}    IN    &#64;{messages}}</p>
-<blockquote>
-<div><p>Save Attachments    ${msg}    %{ROBOT_ARTIFACTS}  True</p>
-</div></blockquote>
-<p>END
-${attachments}=  Save Attachments  ${CURDIR}${/}saved.eml  %{ROBOT_ARTIFACTS}</p>
-</div></blockquote>
+<div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">${messages}=</span><span class="p">    </span><span class="c">List Messages</span><span class="p"></span>
+<span class="c">FOR</span><span class="p">    </span><span class="c">${msg}</span><span class="p">    </span><span class="c">IN</span><span class="p">    </span><span class="c">@{messages}}</span><span class="p"></span>
+<span class="p">    </span><span class="c">Save Attachments</span><span class="p">    </span><span class="c">${msg}</span><span class="p">    </span><span class="c">%{ROBOT_ARTIFACTS}</span><span class="p">  </span><span class="c">True</span><span class="p"></span>
+<span class="c">END</span><span class="p"></span>
+<span class="c">${attachments}=</span><span class="p">  </span><span class="c">Save Attachments</span><span class="p">  </span><span class="c">${CURDIR}${/}saved.eml</span><span class="p">  </span><span class="c">%{ROBOT_ARTIFACTS}</span><span class="p"></span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -565,9 +637,10 @@ account address.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>criterion</strong> – wait for message matching criterion</p></li>
 <li><p><strong>timeout</strong> – total time in seconds to wait for email, defaults to 5.0</p></li>
-<li><p><strong>interval</strong> – time in seconds for new check, defaults to 1.0</p></li>
+<li><p><strong>interval</strong> – time in seconds for new check, defaults to 1.0 (minimum)</p></li>
 <li><p><strong>contains</strong> – if matching should be done using <cite>contains</cite> matching
-and not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>equals</cite> matching</p></li>
+and not <cite>equals</cite> matching, default <cite>False</cite> is means <cite>equals</cite> matching
+THIS PARAMETER IS DEPRECATED AS OF rpaframework 12.9.0</p></li>
 <li><p><strong>save_dir</strong> – set to path where attachments should be saved,
 default None (attachments are not saved)</p></li>
 </ul>

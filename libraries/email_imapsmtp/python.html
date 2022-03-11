@@ -995,7 +995,7 @@ exception if folder does not exist on the server.</p>
 
 <dl class="method">
 <dt id="RPA.Email.ImapSmtp.ImapSmtp.send_message">
-<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">sender: str, recipients: str, subject: str = '', body: str = '', attachments: Union[List[str], str] = None, html: bool = False, images: str = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_message" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">send_message</code><span class="sig-paren">(</span><em class="sig-param">sender: str, recipients: Union[List[str], str], subject: str = '', body: str = '', attachments: Union[List[str], str, None] = None, html: bool = False, images: Union[List[str], str, None] = None, cc: Union[List[str], str, None] = None, bcc: Union[List[str], str, None] = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#RPA.Email.ImapSmtp.ImapSmtp.send_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send SMTP email</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1004,9 +1004,11 @@ exception if folder does not exist on the server.</p>
 <li><p><strong>recipients</strong> – who is receiving, ie. ‘to’</p></li>
 <li><p><strong>subject</strong> – mail subject field</p></li>
 <li><p><strong>body</strong> – mail body content</p></li>
-<li><p><strong>attachments</strong> – list of filepaths to attach, defaults to []</p></li>
+<li><p><strong>attachments</strong> – list of filepaths to attach</p></li>
 <li><p><strong>html</strong> – if message content is in HTML, default <cite>False</cite></p></li>
-<li><p><strong>images</strong> – list of filepaths for inline use, defaults to []</p></li>
+<li><p><strong>images</strong> – list of filepaths for inline images</p></li>
+<li><p><strong>cc</strong> – list of email addresses for email ‘cc’ field</p></li>
+<li><p><strong>bcc</strong> – list of email addresses for email ‘bcc’ field</p></li>
 </ul>
 </dd>
 </dl>
@@ -1017,6 +1019,8 @@ exception if folder does not exist on the server.</p>
 </ul>
 <p>Example:</p>
 <div class="highlight-robotframework notranslate"><div class="highlight"><pre><span></span><span class="c">Send Message</span><span class="p">  </span><span class="c">sender@domain.com</span><span class="p">  </span><span class="c">recipient@domain.com</span><span class="p"></span>
+<span class="c">...</span><span class="p">           </span><span class="c">cc=need_to_know@domain.com</span><span class="p"></span>
+<span class="c">...</span><span class="p">           </span><span class="c">bcc=hidden_copy@domain.com</span><span class="p"></span>
 <span class="c">...</span><span class="p">           </span><span class="c">subject=Greetings Software Robot Developer</span><span class="p"></span>
 <span class="c">...</span><span class="p">           </span><span class="c">body=${email_body}</span><span class="p"></span>
 <span class="c">...</span><span class="p">           </span><span class="c">attachments=${CURDIR}${/}report.pdf</span><span class="p"></span>

@@ -244,10 +244,9 @@
 <em class="property">class </em><code class="sig-prename descclassname">RPA.Robocorp.Process.</code><code class="sig-name descname">Process</code><span class="sig-paren">(</span><em class="sig-param">workspace_id: str = None</em>, <em class="sig-param">process_id: str = None</em>, <em class="sig-param">workspace_api_key: str = None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A library for interacting with Control Room (CR) Process API endpoints.</p>
-<p>See <a class="reference external" href="https://robocorp.com/docs/control-room/operating-workforce">https://robocorp.com/docs/control-room/operating-workforce</a> for information
-about process run, step run and work item states.</p>
-<p>See <a class="reference external" href="https://robocorp.com/docs/control-room/apis-and-webhooks">https://robocorp.com/docs/control-room/apis-and-webhooks</a> for information
-about Control Room APIs.</p>
+<p>See <a class="reference external" href="https://robocorp.com/docs/control-room/operating-workforce">Operating Workforce</a> for information about process run, step run and work
+item states.</p>
+<p>See <a class="reference external" href="https://robocorp.com/docs/control-room/apis-and-webhooks">APIs and webhooks</a> for information about Control Room APIs.</p>
 <p><strong>Examples</strong></p>
 <p><strong>Robot Framework</strong></p>
 <p>In the following example a task creates two input work items,
@@ -370,12 +369,13 @@ before starting the process (note. different start keyword than above).</p>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.get_process_run_status">
-<code class="sig-name descname">get_process_run_status</code><span class="sig-paren">(</span><em class="sig-param">process_run_id: str</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.get_process_run_status" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_process_run_status</code><span class="sig-paren">(</span><em class="sig-param">process_run_id: str</em>, <em class="sig-param">step_run_id: Optional[str] = None</em>, <em class="sig-param">process_id: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.get_process_run_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a process run status by run id</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>process_run_id</strong> – id of the process run</p></li>
+<li><p><strong>step_run_id</strong> – id of the process step run</p></li>
 <li><p><strong>process_id</strong> – specific process to which runs belongs to</p></li>
 </ul>
 </dd>
@@ -402,6 +402,24 @@ the response (default False)</p></li>
 <dt id="RPA.Robocorp.Process.Process.headers">
 <em class="property">property </em><code class="sig-name descname">headers</code><a class="headerlink" href="#RPA.Robocorp.Process.Process.headers" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="RPA.Robocorp.Process.Process.list_process_run_work_items">
+<code class="sig-name descname">list_process_run_work_items</code><span class="sig-paren">(</span><em class="sig-param">process_run_id: str = None</em>, <em class="sig-param">process_id: str = None</em>, <em class="sig-param">include_data: bool = False</em>, <em class="sig-param">item_state: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#RPA.Robocorp.Process.Process.list_process_run_work_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>List work items belonging to a specific process run</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process_run_id</strong> – specific process step run to which items
+belongs to</p></li>
+<li><p><strong>process_id</strong> – specific process to which items belongs to</p></li>
+<li><p><strong>include_data</strong> – include work item payload and files in
+the response (default False)</p></li>
+<li><p><strong>item_state</strong> – state of work items to return (default all)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="RPA.Robocorp.Process.Process.list_process_runs">

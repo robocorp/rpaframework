@@ -8,6 +8,38 @@ Release notes
 `Released <https://pypi.org/project/rpaframework/#history>`_
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+12.9.0 - 11 Mar 2022
+--------------------
+
+- Library **RPA.Robocorp.Process**:
+
+  - Add keyword ``List Process Run Work Items``
+  - Add parameter `step_run_id` into ``Get Process Run Status``
+
+- Library **RPA.Browser.Selenium**: Fix issue of `auto_close=False` "hanging" on
+  Windows OS task teardown
+- Library **RPA.Email.ImapSmtp**:
+
+  - Add parameters `cc` and `bcc` to the ``Send Message`` keyword
+  - Fix issue with ``List Messages``
+
+- Library **RPA.Email.Exchange**:
+
+  - Add more filtering keys to the `criterion` parameter (detailed description in the
+    `library documentation <https://rpaframework.org/libraries/email_exchange/index.html>`_)
+  - The `contains` parameter has been deprecated as filtering keys now contains `_contains`
+    version, for example `sender_contains:name@domain.com`
+
+- Resolved Github issues
+
+  - `RPA.Email.Exchange. Error with Wait For Message keyword filtering <https://github.com/robocorp/rpaframework/issues/418>`_
+  - `RPA.Email.Exchange Wait for Message keyword throws an error <https://github.com/robocorp/rpaframework/issues/377>`_
+  - `Email.Exchange: Add more support for email filtering <https://github.com/robocorp/rpaframework/issues/410`_
+  - `Get Window Elements triggers NotImplementedError <https://github.com/robocorp/rpaframework/issues/344>`_
+  - `Email.ImapSmtp: Issues with filtering emails <https://github.com/robocorp/rpaframework/issues/409>`_
+
+
+
 12.8.2 - 25 Feb 2022
 --------------------
 

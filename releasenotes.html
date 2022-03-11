@@ -220,6 +220,42 @@
 </div>
 <div class="section" id="id2">
 <h2><a class="reference external" href="https://pypi.org/project/rpaframework/#history">Released</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mar-2022">
+<h3>12.9.0 - 11 Mar 2022<a class="headerlink" href="#mar-2022" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Library <strong>RPA.Robocorp.Process</strong>:</p>
+<ul>
+<li><p>Add keyword <code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Process</span> <span class="pre">Run</span> <span class="pre">Work</span> <span class="pre">Items</span></code></p></li>
+<li><p>Add parameter <cite>step_run_id</cite> into <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Process</span> <span class="pre">Run</span> <span class="pre">Status</span></code></p></li>
+</ul>
+</li>
+<li><p>Library <strong>RPA.Browser.Selenium</strong>: Fix issue of <cite>auto_close=False</cite> “hanging” on
+Windows OS task teardown</p></li>
+<li><p>Library <strong>RPA.Email.ImapSmtp</strong>:</p>
+<ul>
+<li><p>Add parameters <cite>cc</cite> and <cite>bcc</cite> to the <code class="docutils literal notranslate"><span class="pre">Send</span> <span class="pre">Message</span></code> keyword</p></li>
+<li><p>Fix issue with <code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Messages</span></code></p></li>
+</ul>
+</li>
+<li><p>Library <strong>RPA.Email.Exchange</strong>:</p>
+<ul>
+<li><p>Add more filtering keys to the <cite>criterion</cite> parameter (detailed description in the
+<a class="reference external" href="https://rpaframework.org/libraries/email_exchange/index.html">library documentation</a>)</p></li>
+<li><p>The <cite>contains</cite> parameter has been deprecated as filtering keys now contains <cite>_contains</cite>
+version, for example <cite>sender_contains:name&#64;domain.com</cite></p></li>
+</ul>
+</li>
+<li><p>Resolved Github issues</p>
+<ul>
+<li><p><a class="reference external" href="https://github.com/robocorp/rpaframework/issues/418">RPA.Email.Exchange. Error with Wait For Message keyword filtering</a></p></li>
+<li><p><a class="reference external" href="https://github.com/robocorp/rpaframework/issues/377">RPA.Email.Exchange Wait for Message keyword throws an error</a></p></li>
+<li><p><a href="#id152"><span class="problematic" id="id153">`Email.Exchange: Add more support for email filtering &lt;https://github.com/robocorp/rpaframework/issues/410`_</span></a></p></li>
+<li><p><a class="reference external" href="https://github.com/robocorp/rpaframework/issues/344">Get Window Elements triggers NotImplementedError</a></p></li>
+<li><p><a class="reference external" href="https://github.com/robocorp/rpaframework/issues/409">Email.ImapSmtp: Issues with filtering emails</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="feb-2022">
 <h3>12.8.2 - 25 Feb 2022<a class="headerlink" href="#feb-2022" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
