@@ -2,21 +2,18 @@ import datetime
 import logging
 import os
 from pathlib import Path
-import pytz
 import re
 import time
 from typing import Any, Union
-
 import email
 from email import policy  # pylint: disable=no-name-in-module
+import pytz
 
 from exchangelib import (
     Account,
     Configuration,
     Credentials,
     DELEGATE,
-    EWSDateTime,
-    EWSTimeZone,
     FileAttachment,
     Folder,
     HTMLBody,
