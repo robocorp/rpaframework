@@ -41,11 +41,13 @@ def to_configuration_type(value):
 class Process:
     """A library for interacting with Control Room (CR) Process API endpoints.
 
-    See https://robocorp.com/docs/control-room/operating-workforce for information
-    about process run, step run and work item states.
+    See `Operating Workforce`_ for information about process run, step run and work
+    item states.
 
-    See https://robocorp.com/docs/control-room/apis-and-webhooks for information
-    about Control Room APIs.
+    See `APIs and webhooks`_ for information about Control Room APIs.
+
+    .. _Operating Workforce: https://robocorp.com/docs/control-room/operating-workforce
+    .. _APIs and webhooks: https://robocorp.com/docs/control-room/apis-and-webhooks
 
     **Examples**
 
