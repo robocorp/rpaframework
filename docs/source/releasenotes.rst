@@ -36,7 +36,7 @@ Release notes
   - `RPA.Email.Exchange Wait for Message keyword throws an error <https://github.com/robocorp/rpaframework/issues/377>`_
   - `Email.Exchange: Add more support for email filtering <https://github.com/robocorp/rpaframework/issues/410`_
   - `Get Window Elements triggers NotImplementedError <https://github.com/robocorp/rpaframework/issues/344>`_
-  - `Email.ImapSmtp: Issues with filtering emails` <https://github.com/robocorp/rpaframework/issues/409>`_
+  - `Email.ImapSmtp: Issues with filtering emails <https://github.com/robocorp/rpaframework/issues/409>`_
 
 
 
