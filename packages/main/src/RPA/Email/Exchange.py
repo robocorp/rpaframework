@@ -2,6 +2,7 @@ import datetime
 import logging
 import os
 from pathlib import Path
+import pytz
 import re
 import time
 from typing import Any, Union
@@ -625,8 +626,8 @@ class Exchange:
     def _parse_date_from_string(self, date_string):
         date = None
         if date_string.upper() == "NOW":
-            tz = EWSTimeZone.localzone()
-            return tz.localize(EWSDateTime.now())  # pylint: disable=E1101
+            right_now = datetime.datetime.now()
+            return right_now.astimezone(pytz.utc)
         try:
             date = datetime.datetime.strptime(date_string, "%d-%m-%Y %H:%M")
             return self._date_for_exchange(date)
