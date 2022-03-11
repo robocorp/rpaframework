@@ -1768,7 +1768,10 @@ class Selenium(SeleniumLibrary):
     def set_download_directory(
         self, directory: str = None, download_pdf: bool = True
     ) -> None:
-        """Set browser download directory
+        """Set browser download directory.
+
+        Works with ``Open Available Browser``, ``Open Chrome Browser`` and
+        ``Open Headless Chrome Browser`` keywords.
 
         ``directory``    target directory for downloads, defaults to None which means
                          that setting is removed
