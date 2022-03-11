@@ -16,6 +16,7 @@ Release notes
   - Add keyword ``List Process Run Work Items``
   - Add parameter `step_run_id` into ``Get Process Run Status``
 
+- Library **RPA.Desktop.Windows**: Fix issue with ``Get Window Elements``
 - Library **RPA.Browser.Selenium**: Fix issue of `auto_close=False` "hanging" on
   Windows OS task teardown
 - Library **RPA.Email.ImapSmtp**:
@@ -29,8 +30,9 @@ Release notes
     `library documentation <https://rpaframework.org/libraries/email_exchange/index.html>`_)
   - The `contains` parameter has been deprecated as filtering keys now contains `_contains`
     version, for example `sender_contains:name@domain.com`
+  - Fix issue with keyword ``Wait For Message``
 
-- Resolved Github issues
+- Resolved **Github** issues
 
   - `RPA.Email.Exchange. Error with Wait For Message keyword filtering <https://github.com/robocorp/rpaframework/issues/418>`_
   - `RPA.Email.Exchange Wait for Message keyword throws an error <https://github.com/robocorp/rpaframework/issues/377>`_
