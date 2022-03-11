@@ -164,45 +164,41 @@ class Process:
         self.http = HTTP()
 
     @keyword(tags=["set"])
-    def set_workspace_id(self, workspace_id: str = None) -> None:
+    def set_workspace_id(self, workspace_id: Optional[str] = None) -> None:
         """Set Control Room workspace ID
 
         :param workspace_id: ID of the Control Room workspace
-        :return: None
         """
         if workspace_id:
             self.workspace_id = workspace_id
 
     @keyword(tags=["set"])
-    def set_process_id(self, process_id: str = None) -> None:
+    def set_process_id(self, process_id: Optional[str] = None) -> None:
         """Set Control Room process ID
 
         :param process_id: ID of the Control Room process
-        :return: None
         """
         if process_id:
             self.process_id = process_id
 
     @keyword(tags=["set"])
-    def set_apikey(self, apikey: str = None) -> None:
+    def set_apikey(self, apikey: Optional[str] = None) -> None:
         """Set Workspace API access key
 
         :param apikey: workspace API access key
-        :return: None
         """
         if apikey:
             self.workspace_api_key = apikey
 
     @keyword(tags=["set"])
     def set_credentials(
-        self, workspace_id: str = None, process_id: str = None, apikey: str = None
+        self, workspace_id: Optional[str] = None, process_id: Optional[str] = None, apikey: Optional[str] = None
     ) -> None:
         """Set credentials needed by the Process API
 
         :param workspace_id: ID of the Control Room workspace
         :param process_id: ID of the Control Room process
         :param apikey: workspace API access key
-        :return: None
         """
         self.set_workspace_id(workspace_id)
         self.set_process_id(process_id)
@@ -216,21 +212,21 @@ class Process:
     def base_api(self) -> str:
         return f"{self.robocorp_api_server}/workspaces/{self.workspace_id}"
 
-    def process_api(self, process_id: str = None) -> str:
+    def process_api(self, process_id: Optional[str] = None) -> str:
         pid = process_id or self.process_id
         return f"{self.base_api}/processes/{pid}"
 
-    def workspace_api(self, workspace_id: str = None) -> str:
+    def workspace_api(self, workspace_id: Optional[str] = None) -> str:
         wid = workspace_id or self.workspace_id
         return f"{self.robocorp_api_server}/workspaces/{wid}"
 
     @keyword(tags=["process", "post", "work item", "start"])
     def start_process(
         self,
-        work_items: Union[Dict, List[Dict]] = None,
+        work_items: Optional[Union[Dict, List[Dict]]] = None,
         batch: bool = False,
-        process_id: str = None,
-    ) -> json:
+        process_id: Optional[str] = None,
+    ) -> Dict[str,Any]:
         """Start a Control Room process
 
         :param work_items: input work items for the process (default empty)
@@ -253,7 +249,7 @@ class Process:
         self,
         config_type: ConfigurationType = ConfigurationType.default,
         extra_info: Optional[Union[str, List]] = None,
-        process_id: str = None,
+        process_id: Optional[str] = None,
     ) -> str:
         """Start a Control Room process with the provided configuration
 
@@ -281,9 +277,9 @@ class Process:
     @keyword(tags=["process", "post", "work item"])
     def create_input_work_item(
         self,
-        payload: Any = None,
+        payload: Optional[Any] = None,
         files: Optional[Union[str, List]] = None,
-        process_id: str = None,
+        process_id: Optional[str] = None,
     ) -> int:
         """Create an input work item for a process
 
@@ -319,7 +315,7 @@ class Process:
         filepath: str,
         workitem_filename: str,
         workitem_id: str,
-        process_id: str = None,
+        process_id: Optional[str] = None,
     ) -> Tuple[str, json]:
         upload_filesize = Path(filepath).stat().st_size
         response = self.http.session_less_post(
@@ -344,7 +340,7 @@ class Process:
             return response.status_code, response.text
 
     @keyword(tags=["process", "get"])
-    def list_processes(self, workspace_id: str = None) -> json:
+    def list_processes(self, workspace_id: Optional[str] = None) -> Dict[str,Any]:
         """List all processes in a workspace
 
         :param workspace_id: specific Control Room workspace to which process belongs to
@@ -359,7 +355,7 @@ class Process:
 
     @keyword(tags=["process", "get", "work item"])
     def list_process_work_items(
-        self, process_id: str = None, include_data: bool = False, item_state: str = None
+        self, process_id: Optional[str] = None, include_data: bool = False, item_state: Optional[str] = None
     ) -> Union[str, None, Any]:
         """List work items belonging to a process
 
@@ -384,8 +380,8 @@ class Process:
 
     @keyword(tags=["process", "get", "work item"])
     def get_work_item(
-        self, workitem_id: str, include_data: bool = False, process_id: str = None
-    ) -> json:
+        self, workitem_id: str, include_data: bool = False, process_id: Optional[str] = None
+    ) -> Dict[str,Any]:
         """Get work item from Control Room
 
         :param workitem_id: id of the work item
@@ -459,7 +455,7 @@ class Process:
     @keyword(tags=["process", "get", "runs"])
     def get_process_run_status(
         self, process_run_id: str, process_id: Optional[str] = None
-    ) -> json:
+    ) -> Dict[str,Any]:
         """Get a process run status by run id
 
         :param process_run_id: id of the process run
@@ -490,8 +486,8 @@ class Process:
     def retry_work_item(
         self,
         work_item_id: str,
-        process_id: str = None,
-    ) -> json:
+        process_id: Optional[str] = None,
+    ) -> Dict[str,Any]:
         """Retry processing of work item in FAILED state
 
         :param work_item_id: ID of the work item to retry
